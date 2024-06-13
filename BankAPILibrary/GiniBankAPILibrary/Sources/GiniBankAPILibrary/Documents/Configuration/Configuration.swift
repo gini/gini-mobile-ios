@@ -8,16 +8,18 @@
 import Foundation
 
 /**
- Struct for configuration settings
+ A struct representing configuration settings for an application.
+ 
+ This struct holds various configuration options that can be used to customize the behavior and features of the application.
  */
 public struct Configuration: Decodable {
     /**
-     An initializer for a `Configuration` structure
+     Creates a new `Configuration` instance.
 
      - parameter clientID: A unique identifier for the client.
      - parameter userJourneyAnalyticsEnabled: A flag indicating whether user journey analytics is enabled.
-     - parameter mixpanelToken: An optional token for Mixpanel integration.
-     - parameter amplitudeApiKey: An optional API key for Amplitude integration.
+     - parameter mixpanelToken: An optional token for Mixpanel integration. Defaults to `nil`.
+     - parameter amplitudeApiKey: An optional API key for Amplitude integration. Defaults to `nil`.
      - parameter skontoEnabled: A flag indicating whether Skonto is enabled.
      - parameter returnAssistantEnabled: A flag indicating whether the return assistant feature is enabled.
      */
