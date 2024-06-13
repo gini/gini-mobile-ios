@@ -211,32 +211,48 @@ extension GiniScreenAPICoordinator {
         }
     }
 
+    @objc func finishWithCancellation() {
+        if let delegate = self.visionDelegate {
+            delegate.didCancelCapturing()
+        } else {
+            Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+        }
+    }
+
+    @objc func finishWithEnterManually() {
+        if let delegate = self.visionDelegate {
+            delegate.didPressEnterManually()
+        } else {
+            Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+        }
+    }
+
     private func navigateBackFromCameraViewController() {
         trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
         AnalyticsManager.track(event: .closeTapped, screenName: screenName())
         guard pages.type != .qrcode else {
-            screenAPINavigationController.dismiss(animated: true)
+            finishWithCancellation()
             return
         }
 
         if pages.count > 0 {
             navigateBack()
         } else {
-            closeScreenApi()
+            finishWithCancellation()
         }
     }
 
     private func navigateBackFromAnalysisViewController() {
         trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
         AnalyticsManager.track(event: .closeTapped, screenName: .analysis)
-        screenAPINavigationController.dismiss(animated: true)
+        finishWithCancellation()
     }
 
     private func navigateBack() {
         if screenAPINavigationController.viewControllers.count > 1 {
             screenAPINavigationController.popViewController(animated: true)
         } else {
-            screenAPINavigationController.dismiss(animated: true)
+            finishWithCancellation()
         }
     }
 
@@ -248,10 +264,6 @@ extension GiniScreenAPICoordinator {
         } else {
             return .camera
         }
-    }
-
-    @objc func closeScreenApi() {
-        self.visionDelegate?.didCancelCapturing()
     }
 
     @objc func showHelpMenuScreen() {
