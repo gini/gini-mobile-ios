@@ -216,12 +216,11 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         configurationService?.fetchConfigurations(completion: { result in
             switch result {
             case .success(let configuration):
-                self.initializeAnalytics(with: configuration)
-            case .failure(let error): 
+                DispatchQueue.main.async {
+                    self.initializeAnalytics(with: configuration)
+                }
+            case .failure(_):
                 break
-                /* There will be no retries if the endpoint fails.
-                We will not implement any caching mechanism on our side if the request is too slow.
-                In case of a failure, the UJ analytics will remain disabled for that session. */
             }
         })
         return self.start(withDocuments: documents, animated: animated)
