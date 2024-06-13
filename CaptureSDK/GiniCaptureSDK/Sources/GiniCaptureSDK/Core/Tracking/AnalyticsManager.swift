@@ -12,18 +12,20 @@ public class AnalyticsManager {
     private static var mixpanelInstance: MixpanelInstance?
     private static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
     private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
+    private static var eventsQueue: [QueuedAnalyticsEvent] = []
 
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
-        initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey)
         initializeMixpanel(with: deviceID, token: configuration.mixpanelToken)
+        initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey)
         superProperties[.giniClientID] = configuration.clientID
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
+        processEventsQueue()
         AnalyticsManager.track(event: .sdkOpened, screenName: nil)
     }
 
@@ -68,6 +70,14 @@ public class AnalyticsManager {
     static func track(event: AnalyticsEvent,
                       screenNameString: String? = nil,
                       properties: [AnalyticsProperty] = []) {
+        guard let mixpanelInstance else {
+            let queuedEvent = QueuedAnalyticsEvent(event: event,
+                                                   screenNameString: screenNameString,
+                                                   properties: properties)
+            eventsQueue.append(queuedEvent)
+            return
+        }
+
         var eventProperties: [String: String] = [:]
 
         if let screenName = screenNameString {
@@ -79,8 +89,17 @@ public class AnalyticsManager {
             eventProperties[property.key.rawValue] = convertPropertyValueToString(propertyValue)
         }
 
-        mixpanelInstance?.track(event: event.rawValue, properties: eventProperties)
+        mixpanelInstance.track(event: event.rawValue, properties: eventProperties)
         Amplitude.instance().logEvent(event.rawValue, withEventProperties: eventProperties)
+    }
+
+    private static func processEventsQueue() {
+        while !eventsQueue.isEmpty {
+            let queuedEvent = eventsQueue.removeFirst()
+            track(event: queuedEvent.event,
+                  screenNameString: queuedEvent.screenNameString,
+                  properties: queuedEvent.properties)
+        }
     }
 
     public static func trackUserProperties(_ properties: [AnalyticsUserProperty: AnalyticsPropertyValue]) {
