@@ -79,7 +79,7 @@ extension GiniBank {
                                                                        captureNetworkService: networkingService,
                                                                        configurationService: configurationService)
         AnalyticsManager.firstSDKOpen = true
-        return screenCoordinator.start(withDocuments: importedDocuments)
+        return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
 
     public class func removeStoredCredentials(for client: Client) throws {
