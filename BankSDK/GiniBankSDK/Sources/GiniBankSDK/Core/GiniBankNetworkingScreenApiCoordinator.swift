@@ -213,6 +213,13 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
+        // Clean the AnalyticsManager properties and events queue between SDK sessions.
+        /// The `cleanManager` method of `AnalyticsManager` is called to ensure that properties and events
+        /// are reset between SDK sessions. This is particularly important when the SDK is reopened using
+        /// the `openWith` flow after it has already been opened for the first time. Without this reset,
+        /// residual properties and events from the previous session could lead to incorrect analytics data.
+        AnalyticsManager.cleanManager()
+
         var entryPointValue = EntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
         if let documents = documents, !documents.isEmpty, !documents.containsDifferentTypes {
             entryPointValue = EntryPointAnalytics.openWith.rawValue
