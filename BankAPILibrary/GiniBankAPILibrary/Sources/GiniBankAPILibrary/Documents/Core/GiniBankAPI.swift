@@ -113,7 +113,7 @@ extension GiniBankAPI {
             let sessionManager = createSessionManager()
             let documentService = DefaultDocumentService(sessionManager: sessionManager, apiDomain: api)
             let paymentService = PaymentService(sessionManager: sessionManager, apiDomain: api)
-            let configurationService = ConfigurationService(sessionManager: sessionManager, apiDomain: api)
+            let configurationService = ClientConfigurationService(sessionManager: sessionManager, apiDomain: api)
 
             return GiniBankAPI(documentService: documentService, 
                                paymentService: paymentService,

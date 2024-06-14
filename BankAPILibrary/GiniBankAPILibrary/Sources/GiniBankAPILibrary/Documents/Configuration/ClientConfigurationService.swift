@@ -1,5 +1,5 @@
 //
-//  ConfigurationService.swift
+//  ClientConfigurationService.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -12,7 +12,7 @@ import Foundation
  
  This service implements the `ConfigurationServiceProtocol` and provides methods to retrieve configuration data from a specified API domain.
  */
-public final class ConfigurationService: ConfigurationServiceProtocol {
+public final class ClientConfigurationService: ConfigurationServiceProtocol {
     /**
      Fetches configuration settings.
      
@@ -43,7 +43,7 @@ public final class ConfigurationService: ConfigurationServiceProtocol {
     }
 }
 
-extension ConfigurationService {
+extension ClientConfigurationService {
     /**
      A helper method to fetch configurations using a resource handler.
      
