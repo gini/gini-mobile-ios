@@ -8,9 +8,9 @@
 import Foundation
 
 /**
- A struct representing configuration settings for an application.
+ A struct representing configuration settings.
  
- This struct holds various configuration options that can be used to customize the behavior and features of the application.
+ This struct holds various configuration options that can be used to customize the behavior and features.
  */
 public struct Configuration: Decodable {
     /**
