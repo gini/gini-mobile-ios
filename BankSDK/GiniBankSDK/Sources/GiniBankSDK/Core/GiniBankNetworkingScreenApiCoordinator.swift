@@ -232,7 +232,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         return self.start(withDocuments: documents, animated: animated)
     }
 
-    private func initializeAnalytics(with configuration: Configuration) {
+    private func initializeAnalytics(with configuration: ClientConfiguration) {
         let analyticsConfiguration = AnalyticsConfiguration(clientID: configuration.clientID,
                                                             userJourneyAnalyticsEnabled: configuration.userJourneyAnalyticsEnabled,
                                                             mixpanelToken: configuration.mixpanelToken,
