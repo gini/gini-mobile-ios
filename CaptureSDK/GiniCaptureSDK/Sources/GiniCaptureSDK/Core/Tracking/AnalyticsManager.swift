@@ -118,12 +118,12 @@ public class AnalyticsManager {
         mixpanelInstance.track(event: event.rawValue, properties: eventProperties)
 
         // Track event in Ampltitude
-        ampltitudeTackEvent(event: event, eventProperties: eventProperties)
+        ampltitudeTrackEvent(event: event, eventProperties: eventProperties)
     }
 
     /// This function logs an event in Amplitude analytics with the specified event properties.
-    private static func ampltitudeTackEvent(event: AnalyticsEvent, eventProperties: [String: Any]) {
-        // Merges the provided event properties with the super properties because Amplitude does not offer 
+    private static func ampltitudeTrackEvent(event: AnalyticsEvent, eventProperties: [String: Any]) {
+        // Merges the provided event properties with the super properties because Amplitude does not offer
         // a dedicated method for this purpose.
 
         // Merge event properties with super properties. In case of key collisions, values from eventProperties will be used.
