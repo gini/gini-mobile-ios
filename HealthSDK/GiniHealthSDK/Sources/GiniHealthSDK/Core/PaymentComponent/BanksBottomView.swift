@@ -192,15 +192,6 @@ class BanksBottomView: BottomSheetViewController {
         viewModel.didTapOnClose()
     }
     
-    private func openPaymentProvidersAppStoreLink(urlString: String?) {
-        guard let urlString = urlString else {
-            print("AppStore link unavailable for this payment provider")
-            return
-        }
-        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url)
-        }
-    }
 }
 
 extension BanksBottomView {
