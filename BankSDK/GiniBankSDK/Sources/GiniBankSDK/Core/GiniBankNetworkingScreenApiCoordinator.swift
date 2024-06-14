@@ -112,7 +112,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
-    private var configurationService: ConfigurationServiceProtocol?
+    private var configurationService: ClientConfigurationServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
     public init(client: Client,
@@ -141,7 +141,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 documentMetadata: Document.Metadata?,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 captureNetworkService: GiniCaptureNetworkService,
-                configurationService: ConfigurationServiceProtocol?) {
+                configurationService: ClientConfigurationServiceProtocol?) {
 
         documentService = DocumentService(giniCaptureNetworkService: captureNetworkService,
                                           metadata: documentMetadata)
