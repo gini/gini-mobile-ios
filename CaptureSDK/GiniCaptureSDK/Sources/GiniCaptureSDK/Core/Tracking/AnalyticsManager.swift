@@ -22,7 +22,7 @@ public class AnalyticsManager {
     private static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
     private static var eventsQueue: [QueuedAnalyticsEvent] = []
     private static var amplitudeSuperPropertiesToTrack: [String: String] = [:]
-    public static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
+    private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
 
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
