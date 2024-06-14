@@ -1,5 +1,5 @@
 //
-//  ConfigurationServiceProtocol.swift
+//  ClientConfigurationServiceProtocol.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -10,7 +10,7 @@ import Foundation
 /**
  Protocol for configuration service
  */
-public protocol ConfigurationServiceProtocol: AnyObject {
+public protocol ClientConfigurationServiceProtocol: AnyObject {
     /**
      Fetches configurations from the server.
 
@@ -19,7 +19,7 @@ public protocol ConfigurationServiceProtocol: AnyObject {
     func fetchConfigurations(completion: @escaping CompletionResult<ClientConfiguration>)
 }
 
-extension ConfigurationServiceProtocol {
+extension ClientConfigurationServiceProtocol {
     /**
      Fetches configurations using the provided resource handler.
 
