@@ -52,6 +52,18 @@ final class GiniDocumentTests: XCTestCase {
                        "document expirationDate should match")
     }
 
+    func testExpirationDateMissing() {
+        lazy var documentWithoutExpirationDate: Document = {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .secondsSince1970
+            lazy var documentJson: Data = loadFile(withName: "documentWithoutExpirationDate", ofType: "json")
+            let giniDocument = try? decoder.decode(Document.self, from: documentJson)
+            return giniDocument!
+        }()
+        XCTAssertNil(documentWithoutExpirationDate.expirationDate,
+                     "document expirationDate should be nil")
+    }
+
 
     func testNameDecoding() {
         XCTAssertEqual(validDocument.name, "scanned.jpg", "document name should match")
