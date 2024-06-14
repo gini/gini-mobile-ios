@@ -43,8 +43,7 @@ extension GiniBank {
                                                                        api: api,
                                                                        userApi: userApi,
                                                                        trackingDelegate: trackingDelegate)
-        AnalyticsManager.firstSDKOpen = true
-        return screenCoordinator.start(withDocuments: importedDocuments)
+        return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
 
     // MARK: - Screen API with Custom Networking - Initializers for 'UIViewController'
@@ -70,14 +69,15 @@ extension GiniBank {
                                      resultsDelegate: GiniCaptureResultsDelegate,
                                      documentMetadata: Document.Metadata? = nil,
                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil,
-                                     networkingService: GiniCaptureNetworkService) -> UIViewController {
+                                     networkingService: GiniCaptureNetworkService,
+                                     configurationService: ClientConfigurationServiceProtocol? = nil) -> UIViewController {
         let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(resultsDelegate: resultsDelegate,
                                                                        configuration: configuration,
                                                                        documentMetadata: documentMetadata,
                                                                        trackingDelegate: trackingDelegate,
-                                                                       captureNetworkService: networkingService)
-        AnalyticsManager.firstSDKOpen = true
-        return screenCoordinator.start(withDocuments: importedDocuments)
+                                                                       captureNetworkService: networkingService,
+                                                                       configurationService: configurationService)
+        return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
 
     public class func removeStoredCredentials(for client: Client) throws {

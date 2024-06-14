@@ -9,36 +9,35 @@ import Mixpanel
 import Amplitude
 
 public class AnalyticsManager {
-    private static let mixPanelToken = "6262hhdfhdb929321222" // this id is fake we need to replace it
     private static var mixpanelInstance: MixpanelInstance?
-    private static let amplitudeKey = ""
     private static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
     private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
-    public static var firstSDKOpen: Bool = false
 
-    public static func initializeAnalytics() {
+    public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
+        guard configuration.userJourneyAnalyticsEnabled,
+              GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
-        initializeAmplitude(with: deviceID)
-        initializeMixpanel(with: deviceID)
+        initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey)
+        initializeMixpanel(with: deviceID, token: configuration.mixpanelToken)
+        superProperties[.giniClientID] = configuration.clientID
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
-        if firstSDKOpen {
-            firstSDKOpen = false
-            AnalyticsManager.track(event: .sdkOpened, screenName: nil)
-        }
+        AnalyticsManager.track(event: .sdkOpened, screenName: nil)
     }
 
-    private static func initializeMixpanel(with deviceID: String) {
-        mixpanelInstance = Mixpanel.initialize(token: mixPanelToken,
+    private static func initializeMixpanel(with deviceID: String, token: String?) {
+        guard let token else { return }
+        mixpanelInstance = Mixpanel.initialize(token: token,
                                                trackAutomaticEvents: false,
                                                serverURL: "https://api-eu.mixpanel.com")
         mixpanelInstance?.identify(distinctId: deviceID)
     }
 
-    private static func initializeAmplitude(with deviceID: String) {
-        Amplitude.instance().initializeApiKey(amplitudeKey)
+    private static func initializeAmplitude(with deviceID: String, apiKey: String?) {
+        guard let apiKey else { return }
+        Amplitude.instance().initializeApiKey(apiKey)
         Amplitude.instance().setDeviceId(deviceID)
     }
 
