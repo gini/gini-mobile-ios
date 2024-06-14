@@ -93,7 +93,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         firstLabel.adjustsFontForContentSizeCategory = true
 
         secondLabel.text = secondLabelText
-        secondLabel.font = configuration.textStyleFonts[.title2Bold]
+        secondLabel.font = configuration.textStyleFonts[.headline]
         secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7).uiColor()
         secondLabel.adjustsFontForContentSizeCategory = true
 
