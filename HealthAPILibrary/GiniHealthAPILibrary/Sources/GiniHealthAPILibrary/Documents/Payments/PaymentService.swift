@@ -111,7 +111,7 @@ public final class PaymentService: PaymentServiceProtocol {
     }
 
     /**
-     *  Returns a list of payment requests.
+     *  Returns a pdf data with a payment request in QR code.
      *
      * - Parameter paymentRequestId: The the payment request's unique identifie
      * - Parameter completion:       A completion callback, returning the pdf document with the payment details in QR Code on success
@@ -200,7 +200,7 @@ protocol PaymentServiceProtocol: AnyObject {
                  completion: @escaping CompletionResult<Payment>)
 
     /**
-     *  Returns a list of payment requests.
+     *  Returns a pdf data with a payment request in QR code.
      *
      * - Parameter paymentRequestId: The the payment request's unique identifie
      * - Parameter completion:       A completion callback, returning the pdf document with the payment details in QR Code on success
