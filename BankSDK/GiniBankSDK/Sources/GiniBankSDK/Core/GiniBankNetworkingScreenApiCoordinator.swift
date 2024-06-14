@@ -112,7 +112,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
-    private var configurationService: ConfigurationServiceProtocol?
+    private var configurationService: ClientConfigurationServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
     public init(client: Client,
@@ -141,7 +141,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 documentMetadata: Document.Metadata?,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 captureNetworkService: GiniCaptureNetworkService,
-                configurationService: ConfigurationServiceProtocol?) {
+                configurationService: ClientConfigurationServiceProtocol?) {
 
         documentService = DocumentService(giniCaptureNetworkService: captureNetworkService,
                                           metadata: documentMetadata)
@@ -212,6 +212,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         self.resultsDelegate?.giniCaptureDidEnterManually()
     }
 
+    /**
+     This method first attempts to fetch configuration settings using the `configurationService`.
+     If the configurations are successfully fetched, it initializes the analytics with the fetched configuration
+     on the main thread. Regardless of the result of fetching configurations, it then proceeds to start the
+     SDK with the provided documents.
+     */
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
         // Clean the AnalyticsManager properties and events queue between SDK sessions.
         /// The `cleanManager` method of `AnalyticsManager` is called to ensure that properties and events
@@ -229,18 +235,20 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         configurationService?.fetchConfigurations(completion: { result in
             switch result {
             case .success(let configuration):
-                self.initializeAnalytics(with: configuration)
+                DispatchQueue.main.async {
+                    self.initializeAnalytics(with: configuration)
+                }
             case .failure(let error):
                 print("❌ configurationService with error: \(error)")
-                /* There will be no retries if the endpoint fails.
-                We will not implement any caching mechanism on our side if the request is too slow.
-                In case of a failure, the UJ analytics will remain disabled for that session. */
+                // There will be no retries if the endpoint fails.
+                // We will not implement any caching mechanism on our side if the request is too slow.
+                // In case of a failure, the UJ analytics will remain disabled for that session.
             }
         })
         return self.start(withDocuments: documents, animated: animated)
     }
 
-    private func initializeAnalytics(with configuration: Configuration) {
+    private func initializeAnalytics(with configuration: ClientConfiguration) {
         let userJourneyAnalyticsEnabled = configuration.userJourneyAnalyticsEnabled
         let analyticsConfiguration = AnalyticsConfiguration(clientID: configuration.clientID,
                                                             userJourneyAnalyticsEnabled: userJourneyAnalyticsEnabled,

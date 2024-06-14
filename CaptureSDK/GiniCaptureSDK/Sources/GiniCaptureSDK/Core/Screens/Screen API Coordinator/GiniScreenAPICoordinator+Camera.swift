@@ -81,7 +81,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             self?.showHelpMenuScreen()
         }
         cameraButtonsViewModel.cancelAction = { [weak self] in
-            self?.closeScreenApi()
+            self?.finishWithCancellation()
         }
         return cameraButtonsViewModel
     }
@@ -102,7 +102,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                 }
             } else {
                 AnalyticsManager.track(event: .closeTapped, screenName: .camera)
-                self?.closeScreenApi()
+                self?.finishWithCancellation()
             }
         }
 

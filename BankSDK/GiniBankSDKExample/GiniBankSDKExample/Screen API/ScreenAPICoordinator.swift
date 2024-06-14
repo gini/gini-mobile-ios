@@ -150,13 +150,26 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         configuration.cleanup()
         delegate?.screenAPI(coordinator: self, didFinish: ())
     }
+
+    private func showAlertOnDidEnterManually(){
+        let alert = UIAlertController(title: "GiniCaptureResultsDelegate was called",
+                                      message: nil,
+                                      preferredStyle: .alert)
+
+        let ok = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            self?.rootViewController.dismiss(animated: true)
+        }
+
+        alert.addAction(ok)
+        rootViewController.present(alert, animated: true)
+    }
 }
 
 // MARK: - GiniCaptureResultsDelegate
 extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
 
     func giniCaptureDidEnterManually() {
-        screenAPIViewController.dismiss(animated: true)
+        showAlertOnDidEnterManually()
     }
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
