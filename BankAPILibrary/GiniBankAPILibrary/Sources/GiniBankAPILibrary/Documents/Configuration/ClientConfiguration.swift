@@ -1,5 +1,5 @@
 //
-//  Configuration.swift
+//  ClientConfiguration.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -12,7 +12,7 @@ import Foundation
  
  This struct holds various configuration options that can be used to customize the behavior and features.
  */
-public struct Configuration: Decodable {
+public struct ClientConfiguration: Decodable {
     /**
      Creates a new `Configuration` instance.
 

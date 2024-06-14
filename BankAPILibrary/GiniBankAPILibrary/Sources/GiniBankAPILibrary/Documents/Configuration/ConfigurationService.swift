@@ -20,7 +20,7 @@ public final class ConfigurationService: ConfigurationServiceProtocol {
      
      This method initiates the process of fetching configuration settings by utilizing the provided session manager to handle the network request.
      */
-    public func fetchConfigurations(completion: @escaping CompletionResult<Configuration>) {
+    public func fetchConfigurations(completion: @escaping CompletionResult<ClientConfiguration>) {
         self.fetchConfigurations(resourceHandler: sessionManager.data, completion: completion)
     }
 
@@ -53,9 +53,9 @@ extension ConfigurationService {
      
      This method constructs an `APIResource` object with the required parameters and utilizes the resource handler to perform the network request. The result is then passed to the completion handler.
      */
-    func fetchConfigurations(resourceHandler: ResourceDataHandler<APIResource<Configuration>>,
-                             completion: @escaping CompletionResult<Configuration>) {
-        let resource = APIResource<Configuration>(method: .configurations, apiDomain: apiDomain, httpMethod: .get)
+    func fetchConfigurations(resourceHandler: ResourceDataHandler<APIResource<ClientConfiguration>>,
+                             completion: @escaping CompletionResult<ClientConfiguration>) {
+        let resource = APIResource<ClientConfiguration>(method: .configurations, apiDomain: apiDomain, httpMethod: .get)
         
         resourceHandler(resource, { result in
             switch result {
