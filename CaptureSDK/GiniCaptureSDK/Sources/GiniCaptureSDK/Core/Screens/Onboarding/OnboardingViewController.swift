@@ -14,12 +14,8 @@ class OnboardingViewController: UIViewController {
     private let configuration = GiniConfiguration.shared
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
+    private lazy var skipButton = GiniBarButton(ofType: .skip)
 
-    lazy var skipButton = UIBarButtonItem(title: NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
-                                                                                  comment: "Skip button"),
-                                          style: .plain,
-                                          target: self,
-                                          action: #selector(skipTapped))
     init() {
         dataSource = OnboardingDataSource(configuration: configuration)
         super.init(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
@@ -87,7 +83,8 @@ class OnboardingViewController: UIViewController {
                                                                          comment: "Next button")
         nextButton.configure(with: GiniConfiguration.shared.primaryButtonConfiguration)
         nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
-        navigationItem.rightBarButtonItem = skipButton
+
+        configureSkipButton()
     }
 
     private func hideTopNavigation() {
@@ -117,17 +114,27 @@ class OnboardingViewController: UIViewController {
             layoutBottomNavigationBar(navigationBar)
             navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next], navigationBar: navigationBar)
 
-            nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
-                                                                 comment: "Next button"),
-                                for: .normal)
-
+            configureNextButton()
             nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
-            navigationItem.rightBarButtonItem = skipButton
+
+            configureSkipButton()
         }
     }
 
     private func removeButtons() {
         nextButton.removeFromSuperview()
+    }
+
+    private func configureSkipButton() {
+        skipButton.addAction(self, #selector(skipTapped))
+        navigationItem.rightBarButtonItem = skipButton.barButton
+    }
+
+    private func configureNextButton() {
+        let getStartedTitle = NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
+                                                               comment: "Get Started button")
+        nextButton.setTitle(getStartedTitle, for: .normal)
+        nextButton.accessibilityValue = getStartedTitle
     }
 
     @objc private func skipTapped() {
@@ -221,11 +228,7 @@ extension OnboardingViewController: OnboardingScreen {
             } else {
                 navigationItem.rightBarButtonItem = nil
                 if nextButton != nil {
-                    nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
-                                                                         comment: "Get Started button"),
-                                        for: .normal)
-                    nextButton.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
-                                                                                     comment: "Get Started button")
+                    configureNextButton()
                 }
             }
         default:
@@ -234,11 +237,10 @@ extension OnboardingViewController: OnboardingScreen {
                 navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next],
                                                         navigationBar: bottomNavigationBar)
             } else {
-                navigationItem.rightBarButtonItem = skipButton
+                configureSkipButton()
+
                 if nextButton != nil {
-                    nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
-                                                                         comment: "Next button"),
-                                        for: .normal)
+                    configureNextButton()
                 }
             }
         }

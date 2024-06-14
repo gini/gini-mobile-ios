@@ -12,10 +12,12 @@ public final class GiniBankAPI {
     
     private let docService: DocumentService!
     private let payService: PaymentService?
-    private let configService: ConfigurationServiceProtocol?
+    private let configService: ClientConfigurationServiceProtocol?
     static var logLevel: LogLevel = .none
 
-    init<T: DocumentService>(documentService: T, paymentService: PaymentService?, configurationService: ConfigurationServiceProtocol?) {
+    init<T: DocumentService>(documentService: T,
+                             paymentService: PaymentService?,
+                             configurationService: ClientConfigurationServiceProtocol?) {
         self.docService = documentService
         self.payService = paymentService
         self.configService = configurationService
@@ -42,7 +44,7 @@ public final class GiniBankAPI {
         return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: .default)
     }
     
-    public func configurationService() -> ConfigurationServiceProtocol? {
+    public func configurationService() -> ClientConfigurationServiceProtocol? {
         return configService
     }
 
@@ -111,7 +113,7 @@ extension GiniBankAPI {
             let sessionManager = createSessionManager()
             let documentService = DefaultDocumentService(sessionManager: sessionManager, apiDomain: api)
             let paymentService = PaymentService(sessionManager: sessionManager, apiDomain: api)
-            let configurationService = ConfigurationService(sessionManager: sessionManager, apiDomain: api)
+            let configurationService = ClientConfigurationService(sessionManager: sessionManager, apiDomain: api)
 
             return GiniBankAPI(documentService: documentService, 
                                paymentService: paymentService,

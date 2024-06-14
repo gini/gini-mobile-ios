@@ -70,7 +70,7 @@ extension GiniBank {
                                      documentMetadata: Document.Metadata? = nil,
                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil,
                                      networkingService: GiniCaptureNetworkService,
-                                     configurationService: ConfigurationServiceProtocol? = nil) -> UIViewController {
+                                     configurationService: ClientConfigurationServiceProtocol? = nil) -> UIViewController {
         let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(resultsDelegate: resultsDelegate,
                                                                        configuration: configuration,
                                                                        documentMetadata: documentMetadata,
