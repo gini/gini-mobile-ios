@@ -225,8 +225,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             switch result {
             case .success(let configuration):
                 self.initializeAnalytics(with: configuration)
-            case .failure(let error): 
-                break
+            case .failure(let error):
+                print("❌ configurationService with error: \(error)")
                 /* There will be no retries if the endpoint fails.
                 We will not implement any caching mechanism on our side if the request is too slow.
                 In case of a failure, the UJ analytics will remain disabled for that session. */
@@ -236,8 +236,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     private func initializeAnalytics(with configuration: Configuration) {
+        let userJourneyAnalyticsEnabled = configuration.userJourneyAnalyticsEnabled
         let analyticsConfiguration = AnalyticsConfiguration(clientID: configuration.clientID,
-                                                            userJourneyAnalyticsEnabled: configuration.userJourneyAnalyticsEnabled,
+                                                            userJourneyAnalyticsEnabled: userJourneyAnalyticsEnabled,
                                                             mixpanelToken: configuration.mixpanelToken,
                                                             amplitudeApiKey: configuration.amplitudeApiKey)
         AnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
