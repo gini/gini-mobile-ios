@@ -68,6 +68,7 @@ final class AppCoordinator: Coordinator {
         self.showSelectAPIScreen()
         paymentComponentsController.delegate = self
         paymentComponentsController.loadPaymentProviders()
+//        try! apiLib.removeStoredCredentials()
     }
     
     func processExternalDocument(withUrl url: URL, sourceApplication: String?) {
@@ -123,6 +124,7 @@ final class AppCoordinator: Coordinator {
         
         screenAPICoordinator.delegate = self
         
+        health.delegate = self
         screenAPICoordinator.giniHealth = health
         
         screenAPICoordinator.start(healthAPI: apiLib)
@@ -276,7 +278,8 @@ final class AppCoordinator: Coordinator {
         configuration.paymentReviewStatusBarStyle = .lightContent
         
         health.setConfiguration(configuration)
-        
+        health.delegate = self
+
         let invoicesListCoordinator = InvoicesListCoordinator()
         paymentComponentsController = PaymentComponentsController(giniHealth: health)
         invoicesListCoordinator.start(documentService: health.documentService,

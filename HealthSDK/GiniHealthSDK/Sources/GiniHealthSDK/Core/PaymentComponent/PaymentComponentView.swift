@@ -16,72 +16,11 @@ final class PaymentComponentView: UIView {
     }
     
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.distribution = .fillProportionally
-        stackView.spacing = Constants.contentStackViewSpacing
-        return stackView
+        EmptyStackView(orientation: .vertical)
     }()
     
-    private lazy var moreInformationStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.distribution = .fillProportionally
-        return stackView
-    }()
-    
-    // We need our label into a view for layout purposes. Stackviews require views in order to satisfy all dynamic constraints
-    private lazy var moreInformationLabelView: UIView = {
-        return UIView()
-    }()
-    
-    private lazy var moreInformationLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = viewModel.moreInformationLabelTextColor
-        label.font = viewModel.moreInformationLabelFont
-        label.numberOfLines = 0
-        label.text = viewModel.moreInformationLabelText
-        
-        let moreInformationActionableAttributtedString = NSMutableAttributedString(string: viewModel.moreInformationLabelText)
-        let moreInformationPartString = (viewModel.moreInformationLabelText as NSString).range(of: viewModel.moreInformationActionablePartText)
-        moreInformationActionableAttributtedString.addAttribute(.foregroundColor,
-                                                                value: viewModel.moreInformationLabelTextColor,
-                                                                range: moreInformationPartString)
-        moreInformationActionableAttributtedString.addAttribute(NSAttributedString.Key.underlineStyle,
-                                                                value: NSUnderlineStyle.single.rawValue,
-                                                                range: moreInformationPartString)
-        moreInformationActionableAttributtedString.addAttribute(NSAttributedString.Key.font,
-                                                                value: viewModel.moreInformationLabelLinkFont,
-                                                                range: moreInformationPartString)
-        label.attributedText = moreInformationActionableAttributtedString
-        
-        let tapOnMoreInformation = UITapGestureRecognizer(target: self,
-                                                          action: #selector(tapOnMoreInformationLabelAction(gesture:)))
-        label.isUserInteractionEnabled = true
-        label.addGestureRecognizer(tapOnMoreInformation)
-        
-        label.attributedText = moreInformationActionableAttributtedString
-        return label
-    }()
-    
-    private lazy var moreInformationButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImageNamedPreferred(named: viewModel.moreInformationIconName)
-        button.setImage(image, for: .normal)
-        button.tintColor = viewModel.moreInformationAccentColor
-        button.addTarget(self, action: #selector(tapOnMoreInformationButtonAction), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var selectBankView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.bankViewHeight)
-        return view
+    private lazy var selectYourBankView: UIView = {
+        EmptyView()
     }()
     
     private lazy var selectYourBankLabel: UILabel = {
@@ -94,31 +33,48 @@ final class PaymentComponentView: UIView {
         return label
     }()
     
+    private lazy var buttonsView: UIView = {
+        EmptyView()
+    }()
+    
+    private lazy var buttonsStackView: UIStackView = {
+        let stackView = EmptyStackView(orientation: .horizontal)
+        stackView.spacing = Constants.buttonsSpacing
+        return stackView
+    }()
+    
     private lazy var selectBankButton: PaymentSecondaryButton = {
         let button = PaymentSecondaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.buttonViewHeight)
         button.configure(with: viewModel.giniHealthConfiguration.secondaryButtonConfiguration)
-        button.customConfigure(labelText: viewModel.bankNameLabelText,
-                               leftImageIcon: viewModel.bankImageIcon,
-                               rightImageIcon: viewModel.chevronDownIconName,
-                               rightImageTintColor: viewModel.chevronDownIconColor,
-                               isPaymentProviderInstalled: viewModel.isPaymentProviderInstalled,
-                               notInstalledTextColor: viewModel.notInstalledBankTextColor)
         return button
     }()
     
     private lazy var payInvoiceButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.buttonViewHeight)
         button.configure(with: viewModel.giniHealthConfiguration.primaryButtonConfiguration)
-        button.customConfigure(paymentProviderColors: viewModel.paymentProviderColors, 
-                               isPaymentProviderInstalled: viewModel.isPaymentProviderInstalled,
+        button.customConfigure(paymentProviderColors: viewModel.paymentProviderColors,
                                text: viewModel.payInvoiceLabelText)
         return button
     }()
     
+    private lazy var bottomView: UIView = {
+        EmptyView()
+    }()
+    
+    private lazy var bottomStackView: UIStackView = {
+        EmptyStackView(orientation: .horizontal)
+    }()
+    
+    private lazy var moreInformationView: MoreInformationView = {
+        let view = MoreInformationView()
+        let viewModel = MoreInformationViewModel()
+        viewModel.delegate = self
+        view.viewModel = viewModel
+        return view
+    }()
+
     private lazy var poweredByGiniView: PoweredByGiniView = {
         let view = PoweredByGiniView()
         view.viewModel = PoweredByGiniViewModel()
@@ -135,32 +91,34 @@ final class PaymentComponentView: UIView {
     
     private func setupView() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.viewHeight)
-
         self.backgroundColor = viewModel.backgroundColor
         
+        selectYourBankView.addSubview(selectYourBankLabel)
+        contentStackView.addArrangedSubview(selectYourBankView)
+        
+        buttonsStackView.addArrangedSubview(selectBankButton)
+        buttonsStackView.addArrangedSubview(payInvoiceButton)
+        buttonsView.addSubview(buttonsStackView)
+        contentStackView.addArrangedSubview(buttonsView)
+        
+        bottomStackView.addArrangedSubview(moreInformationView)
+        bottomStackView.addArrangedSubview(UIView())
+        bottomStackView.addArrangedSubview(poweredByGiniView)
+        bottomView.addSubview(bottomStackView)
+        contentStackView.addArrangedSubview(bottomView)
+        
         self.addSubview(contentStackView)
-
-        contentStackView.addArrangedSubview(moreInformationStackView)
-        contentStackView.addArrangedSubview(selectBankView)
-        moreInformationLabelView.addSubview(moreInformationLabel)
-        moreInformationStackView.addArrangedSubview(moreInformationLabelView)
-        moreInformationStackView.addArrangedSubview(moreInformationButton)
-        selectBankView.addSubview(selectYourBankLabel)
-        selectBankView.addSubview(selectBankButton)
-        selectBankView.addSubview(payInvoiceButton)
-        selectBankView.addSubview(poweredByGiniView)
-
         activateAllConstraints()
+        updateAvailableViews()
+        updateButtonsViews()
         setupGestures()
     }
 
     private func activateAllConstraints() {
         activateContentStackViewConstraints()
-        activateSelectBankButtonConstraints()
-        activatePayInvoiceButtonConstraints()
-        activatePoweredByGiniViewConstraints()
-        activateMoreInformationViewConstraints()
+        activateSelectYourBankButtonConstraints()
+        activateButtonsConstraints()
+        activateBottomViewConstraints()
     }
     
     private func setupGestures() {
@@ -171,76 +129,57 @@ final class PaymentComponentView: UIView {
             self?.tapOnBankPicker()
         }
     }
+    
+    private func updateAvailableViews() {
+        let isPaymentComponentUsed = viewModel.isPaymentComponentUsed()
+        selectYourBankView.isHidden = isPaymentComponentUsed
+        moreInformationView.isHidden = isPaymentComponentUsed
+    }
+    
+    private func updateButtonsViews() {
+        selectBankButton.customConfigure(labelText: viewModel.placeholderBankNameText,
+                                         leftImageIcon: viewModel.bankImageIcon,
+                                         rightImageIcon: viewModel.chevronDownIconName,
+                                         rightImageTintColor: viewModel.chevronDownIconColor,
+                                         shouldShowLabel: !viewModel.hasBankSelected)
+        payInvoiceButton.isHidden = !viewModel.hasBankSelected
+    }
 
     private func activateContentStackViewConstraints() {
-        // Content StackView Constraints
-        let contentViewHeightConstraint = heightAnchor.constraint(equalToConstant: frame.height)
-        contentViewHeightConstraint.priority = .required - 1 // We need this to silent warnings
-
-        let contentViewBottomAnchorConstraint = contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 4)
-        contentViewBottomAnchorConstraint.priority = .required - 1
-
         NSLayoutConstraint.activate([
-            contentViewHeightConstraint,
             contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.contentTopPadding),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.contentBottomPadding),
-            contentViewBottomAnchorConstraint
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.contentBottomPadding)
         ])
     }
 
-    private func activateSelectBankButtonConstraints() {
-        let selectBankViewHeightConstraint = selectBankView.heightAnchor.constraint(equalToConstant: selectBankView.frame.height)
-        selectBankViewHeightConstraint.priority = .required - 1
+    private func activateSelectYourBankButtonConstraints() {
         NSLayoutConstraint.activate([
-            selectBankViewHeightConstraint,
-            selectYourBankLabel.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
-            selectYourBankLabel.topAnchor.constraint(equalTo: selectBankView.topAnchor),
-            selectYourBankLabel.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
-            selectBankButton.heightAnchor.constraint(equalToConstant: selectBankButton.frame.height),
-            selectBankButton.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
-            selectBankButton.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
-            selectBankButton.topAnchor.constraint(equalTo: selectYourBankLabel.bottomAnchor, constant: Constants.contentBottomPadding)
+            selectYourBankLabel.leadingAnchor.constraint(equalTo: selectYourBankView.leadingAnchor),
+            selectYourBankLabel.trailingAnchor.constraint(equalTo: selectYourBankView.trailingAnchor),
+            selectYourBankLabel.topAnchor.constraint(equalTo: selectYourBankView.topAnchor),
+            selectYourBankLabel.bottomAnchor.constraint(equalTo: selectYourBankView.bottomAnchor)
         ])
     }
-
-    private func activatePayInvoiceButtonConstraints() {
+    
+    private func activateButtonsConstraints() {
         NSLayoutConstraint.activate([
-            payInvoiceButton.heightAnchor.constraint(equalToConstant: payInvoiceButton.frame.height),
-            payInvoiceButton.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
-            payInvoiceButton.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
-            payInvoiceButton.topAnchor.constraint(equalTo: selectBankButton.bottomAnchor, constant: Constants.invoicePickerBankPadding)
+            buttonsStackView.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor),
+            buttonsStackView.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor),
+            buttonsStackView.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: Constants.buttonsTopBottomSpacing),
+            buttonsStackView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: -Constants.buttonsTopBottomSpacing),
+            buttonsStackView.heightAnchor.constraint(equalToConstant: viewModel.minimumButtonsHeight)
         ])
     }
-
-    private func activatePoweredByGiniViewConstraints() {
+    
+    private func activateBottomViewConstraints() {
         NSLayoutConstraint.activate([
-            poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
-            poweredByGiniView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
-            poweredByGiniView.topAnchor.constraint(equalTo: payInvoiceButton.bottomAnchor, constant: Constants.contentBottomPadding)
+            bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor),
+            bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor),
+            bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor),
+            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
         ])
-    }
-
-    private func activateMoreInformationViewConstraints() {
-        NSLayoutConstraint.activate([
-            moreInformationLabel.leadingAnchor.constraint(equalTo: moreInformationLabelView.leadingAnchor),
-            moreInformationLabel.trailingAnchor.constraint(equalTo: moreInformationLabelView.trailingAnchor),
-            moreInformationLabel.centerYAnchor.constraint(equalTo: moreInformationLabelView.centerYAnchor)
-        ])
-    }
-
-    @objc
-    private func tapOnMoreInformationLabelAction(gesture: UITapGestureRecognizer) {
-        if gesture.didTapAttributedTextInLabel(label: moreInformationLabel,
-                                               targetText: viewModel.moreInformationActionablePartText) {
-            viewModel.tapOnMoreInformation()
-        }
-    }
-
-    @objc
-    private func tapOnMoreInformationButtonAction(gesture: UITapGestureRecognizer) {
-        viewModel.tapOnMoreInformation()
     }
 
     @objc
@@ -254,15 +193,17 @@ final class PaymentComponentView: UIView {
     }
 }
 
+extension PaymentComponentView: MoreInformationViewProtocol {
+    func didTapOnMoreInformation() {
+        viewModel.tapOnMoreInformation()
+    }
+}
+
 extension PaymentComponentView {
     private enum Constants {
-        static let viewHeight: CGFloat = 240
-        static let bankViewHeight: CGFloat = 185
-        static let buttonViewHeight: CGFloat = 56
-        static let contentStackViewSpacing: CGFloat = 12
-        static let bankIconSize: CGFloat = 32
-        static let contentTopPadding: CGFloat = 16
+        static let contentTopPadding = 8.0
         static let contentBottomPadding: CGFloat = 4
-        static let invoicePickerBankPadding: CGFloat = 8
+        static let buttonsSpacing = 8.0
+        static let buttonsTopBottomSpacing = 4.0
     }
 }

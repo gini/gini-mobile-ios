@@ -109,6 +109,9 @@ final class SessionManagerMock: SessionManagerProtocol {
             case .payment(_):
                 let payment: Payment = loadPayment()
                 completion(.success(payment as! T.ResponseType))
+            case .pdfWithQRCode(_):
+                let pdfData = loadFile(withName: "pdfWithQR", ofType: "pdf")
+                    completion(.success(pdfData as! T.ResponseType))
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))

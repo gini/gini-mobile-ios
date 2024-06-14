@@ -26,22 +26,15 @@ class BankSelectionTableViewCell: UITableViewCell {
                       selectedBorderColor: cellViewModel.selectedBankBorderColor,
                       notSelectedBorderColor: cellViewModel.notSelectedBankBorderColor)
             
-            appStoreImageView.isHidden = !cellViewModel.shouldShowAppStoreIcon
             selectionIndicatorImageView.image = cellViewModel.selectionIndicatorImage
             selectionIndicatorImageView.isHidden = !cellViewModel.shouldShowSelectionIcon
-
-            appStoreBankNameSpacingConstraint.priority = !cellViewModel.shouldShowAppStoreIcon ? .required - 1 : .required
-            selectionIndicatorBankNameSpacingConstraint.priority = !cellViewModel.shouldShowSelectionIcon ? .required - 1 : .required
         }
     }
 
     @IBOutlet private weak var cellView: UIView!
     @IBOutlet private weak var bankImageView: UIImageView!
     @IBOutlet private weak var bankNameLabel: UILabel!
-    @IBOutlet private weak var appStoreImageView: UIImageView!
     @IBOutlet private weak var selectionIndicatorImageView: UIImageView!
-    @IBOutlet private weak var appStoreBankNameSpacingConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var selectionIndicatorBankNameSpacingConstraint: NSLayoutConstraint!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -57,12 +50,6 @@ class BankSelectionTableViewCell: UITableViewCell {
             cellView.layer.borderColor = notSelectedBorderColor.cgColor
             cellView.layer.borderWidth = Constants.notSelectedBorderWidth
         }
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        appStoreBankNameSpacingConstraint.priority = .required - 1
-        selectionIndicatorBankNameSpacingConstraint.priority = .required - 1
     }
 }
 

@@ -18,8 +18,11 @@ public struct PaymentProvider: Codable {
     public var iconData: Data
     public var appStoreUrlIOS: String?
     public var universalLinkIOS: String
+    public var index: Int?
+    public var gpcSupportedPlatforms: [PlatformSupported]
+    public var openWithSupportedPlatforms: [PlatformSupported]
 
-    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconData: Data, appStoreUrlIOS: String?, universalLinkIOS: String) {
+    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconData: Data, appStoreUrlIOS: String?, universalLinkIOS: String, index: Int?, gpcSupportedPlatforms: [PlatformSupported], openWithSupportedPlatforms: [PlatformSupported]) {
         self.id = id
         self.name = name
         self.appSchemeIOS = appSchemeIOS
@@ -28,6 +31,9 @@ public struct PaymentProvider: Codable {
         self.iconData = iconData
         self.appStoreUrlIOS = appStoreUrlIOS
         self.universalLinkIOS = universalLinkIOS
+        self.index = index
+        self.gpcSupportedPlatforms = gpcSupportedPlatforms
+        self.openWithSupportedPlatforms = openWithSupportedPlatforms
     }
 }
 public typealias PaymentProviders = [PaymentProvider]

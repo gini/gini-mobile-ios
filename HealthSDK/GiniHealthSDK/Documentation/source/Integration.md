@@ -29,6 +29,20 @@ If you want to use a transparent proxy with your own authentication you can spec
 ```
 The token your provide will be added as a bearer token to all api.custom.net requests.
 
+> ⚠️  **Important:**
+
+When you implement `AlternativeTokenSource` protocol make sure that you call the completion in one specific thread
+
+```swift
+private class MyAlternativeTokenSource: AlternativeTokenSource {
+    func fetchToken(completion: @escaping (Result<Token, GiniError>) -> Void) {
+        // fetch token from any thread
+        // then call the completion in one specific thread
+        completion(.success(Token()))
+    }
+}
+```
+
 ## Certificate pinning (optional)
 
 If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information)
