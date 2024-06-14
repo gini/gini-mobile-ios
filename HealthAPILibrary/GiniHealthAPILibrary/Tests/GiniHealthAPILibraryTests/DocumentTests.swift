@@ -11,10 +11,11 @@ import XCTest
 
 final class GiniDocumentTests: XCTestCase {
     
-    lazy var documentJson: Data = loadFile(withName: "document", ofType: "json")
-    lazy var compositeDocumentJson: Data = loadFile(withName: "compositeDocument", ofType: "json")
-    lazy var partialDocumentJson: Data = loadFile(withName: "partialDocument", ofType: "json")
-    
+    let documentJson: Data = loadFile(withName: "document", ofType: "json")
+    let compositeDocumentJson: Data = loadFile(withName: "compositeDocument", ofType: "json")
+    let partialDocumentJson: Data = loadFile(withName: "partialDocument", ofType: "json")
+    let documentWithoutExpirationDateJson: Data = loadFile(withName: "documentWithoutExpirationDate", ofType: "json")
+
     lazy var validDocument: Document = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
@@ -56,8 +57,7 @@ final class GiniDocumentTests: XCTestCase {
         lazy var documentWithoutExpirationDate: Document = {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .secondsSince1970
-            lazy var documentJson: Data = loadFile(withName: "documentWithoutExpirationDate", ofType: "json")
-            let giniDocument = try? decoder.decode(Document.self, from: documentJson)
+            let giniDocument = try? decoder.decode(Document.self, from: documentWithoutExpirationDateJson)
             return giniDocument!
         }()
         XCTAssertNil(documentWithoutExpirationDate.expirationDate,
