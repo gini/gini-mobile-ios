@@ -12,7 +12,7 @@ import Foundation
  
  This service implements the `ConfigurationServiceProtocol` and provides methods to retrieve configuration data from a specified API domain.
  */
-public final class ClientConfigurationService: ConfigurationServiceProtocol {
+public final class ClientConfigurationService: ClientConfigurationServiceProtocol {
     /**
      Fetches configuration settings.
      
