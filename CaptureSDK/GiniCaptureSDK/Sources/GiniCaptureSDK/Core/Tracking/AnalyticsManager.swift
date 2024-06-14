@@ -16,12 +16,14 @@ public class AnalyticsManager {
     }
     private static var amplitudeInitialised: Bool = false {
         didSet {
+            amplitudeSuperPropertiesToTrack = mapAmplitudeSuperProperties()
             handleAnalyticsSDKsInit()
         }
     }
     private static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
     private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
     private static var eventsQueue: [QueuedAnalyticsEvent] = []
+    private static var amplitudeSuperPropertiesToTrack: [String: String] = [:]
 
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
@@ -105,8 +107,23 @@ public class AnalyticsManager {
             eventProperties[property.key.rawValue] = convertPropertyValueToString(propertyValue)
         }
 
+        // Track event in Mixpanel
         mixpanelInstance.track(event: event.rawValue, properties: eventProperties)
-        Amplitude.instance().logEvent(event.rawValue, withEventProperties: eventProperties)
+
+        // Track event in Ampltitude
+        ampltitudeTackEvent(event: event, eventProperties: eventProperties)
+    }
+
+    /// This function logs an event in Amplitude analytics with the specified event properties.
+    private static func ampltitudeTackEvent(event: AnalyticsEvent, eventProperties: [String: Any]) {
+        // Merges the provided event properties with the super properties because Amplitude does not offer 
+        // a dedicated method for this purpose.
+
+        // Merge event properties with super properties. In case of key collisions, values from eventProperties will be used.
+        let amplitudeProperties = eventProperties.merging(amplitudeSuperPropertiesToTrack) { (_, new) in new }
+
+        // Log the event with Amplitude instance
+        Amplitude.instance().logEvent(event.rawValue, withEventProperties: amplitudeProperties)
     }
 
     private static func processEventsQueue() {
@@ -132,7 +149,7 @@ public class AnalyticsManager {
                          propertyStore: &superProperties,
                          propertiesHandler: { propertiesToTrack in
             mixpanelInstance?.registerSuperProperties(propertiesToTrack)
-            // Amplitude doesn't have super properties, so it wouldn't be tracked
+            // Amplitude does not offer a dedicated method for this purpose, we will attach super properties manually at each `logEvent`
         })
     }
 
@@ -192,5 +209,15 @@ public class AnalyticsManager {
                 propertyStore[property] = value
             }
         }
+    }
+
+    private static func mapAmplitudeSuperProperties() -> [String: String] {
+        return superProperties
+            .map { (key, value) in
+                (key.rawValue, convertPropertyValueToString(value))
+            }
+            .reduce(into: [String: String]()) { (dict, pair) in
+                dict[pair.0] = pair.1
+            }
     }
 }
