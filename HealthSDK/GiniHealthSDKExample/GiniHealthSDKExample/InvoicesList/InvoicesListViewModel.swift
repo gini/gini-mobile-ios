@@ -58,6 +58,8 @@ final class InvoicesListViewModel {
     private var errors: [String] = []
 
     let dispatchGroup = DispatchGroup()
+    var shouldRefetchExtractions = false
+    var documentIDToRefetch: String?
 
     init(coordinator: InvoicesListCoordinator,
          invoices: [DocumentWithExtractions]? = nil,
@@ -76,6 +78,38 @@ final class InvoicesListViewModel {
     
     func viewDidLoad() {
         paymentComponentsController.loadPaymentProviders()
+    }
+    
+    func refetchExtractions() {
+        guard shouldRefetchExtractions else { return }
+        guard let documentIDToRefetch else { return }
+        DispatchQueue.main.async {
+            self.coordinator.invoicesListViewController?.showActivityIndicator()
+        }
+        self.documentService.fetchDocument(with: documentIDToRefetch) { [weak self] result in
+            switch result {
+            case .success(let document):
+                self?.documentService.extractions(for: document, cancellationToken: CancellationToken()) { resultExtractions in
+                    switch resultExtractions {
+                    case .success(let extractions):
+                        self?.shouldRefetchExtractions = false
+                        self?.documentIDToRefetch = nil
+                        self?.hardcodedInvoicesController.updateDocumentExtractions(documentID: document.id, extractions: extractions)
+                        self?.invoices = self?.hardcodedInvoicesController.getInvoicesWithExtractions() ?? []
+                        DispatchQueue.main.async {
+                            self?.coordinator.invoicesListViewController?.hideActivityIndicator()
+                            self?.coordinator.invoicesListViewController?.reloadTableView()
+                        }
+                    case .failure(let error):
+                        self?.errors.append(error.localizedDescription)
+                        self?.showErrorsIfAny()
+                    }
+                }
+            case .failure(let error):
+                self?.errors.append(error.localizedDescription)
+                self?.showErrorsIfAny()
+            }
+        }
     }
 
     private func setDispatchGroupNotifier() {
@@ -161,10 +195,15 @@ final class InvoicesListViewModel {
 extension InvoicesListViewModel: PaymentComponentViewProtocol {
 
     func didTapOnMoreInformation(documentId: String?) {
-        guard let documentId else { return }
-        Log("Tapped on More Information on :\(documentId)", event: .success)
+        Log("Tapped on More Information", event: .success)
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
-        self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
+        if let presentedViewController = self.coordinator.invoicesListViewController.presentedViewController {
+            presentedViewController.dismiss(animated: true) {
+                self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
+            }
+        } else {
+            self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
+        }
     }
     
     func didTapOnBankPicker(documentId: String?) {
@@ -172,12 +211,13 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
         Log("Tapped on Bank Picker on :\(documentId)", event: .success)
         let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
         bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
-        self.coordinator.invoicesListViewController.present(bankSelectionBottomSheet, animated: true)
+        self.coordinator.invoicesListViewController.present(bankSelectionBottomSheet, animated: false)
     }
-    
+
     func didTapOnPayInvoice(documentId: String?) {
         guard let documentId else { return }
         Log("Tapped on Pay Invoice on :\(documentId)", event: .success)
+        documentIDToRefetch = documentId
         paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
             if let error {
                 self?.errors.append(error.localizedDescription)
@@ -213,7 +253,6 @@ extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
         DispatchQueue.main.async {
             self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
-            self.hardcodedInvoicesController.storeInvoicesWithExtractions(invoices: self.invoices)
             self.coordinator.invoicesListViewController.reloadTableView()
         }
     }
@@ -229,8 +268,10 @@ extension InvoicesListViewModel: GiniHealthTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
         switch event.type {
         case .onToTheBankButtonClicked:
+            self.shouldRefetchExtractions = true
             Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
         case .onCloseButtonClicked:
+            refetchExtractions()
             Log("Close screen was triggered", event: .success)
         case .onCloseKeyboardButtonClicked:
             Log("Close keyboard was triggered", event: .success)

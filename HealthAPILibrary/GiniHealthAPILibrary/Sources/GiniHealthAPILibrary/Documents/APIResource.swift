@@ -2,7 +2,7 @@
 //  APIResource.swift
 //  GiniHealthAPI
 //
-//  Created by Enrique del Pozo Gómez on 1/18/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -10,8 +10,6 @@ import Foundation
 public enum APIDomain {
     /// The default one, which points to https://health-api.gini.net
     case `default`
-    /// The GYM API, which points to https://gym.gini.net/
-    case gym(tokenSource: AlternativeTokenSource)
     /// A custom domain with optional custom token source
     case custom(domain: String, tokenSource: AlternativeTokenSource?)
     
@@ -19,7 +17,6 @@ public enum APIDomain {
         
         switch self {
         case .default: return "health-api.gini.net"
-        case .gym: return "gym.gini.net"
         case .custom(let domain, _): return domain
         }
     }
@@ -46,9 +43,7 @@ struct APIResource<T: Decodable>: Resource {
     
     var apiVersion: Int {
         switch domain {
-        case .default: return 3
-        case .gym: return 2
-        case .custom: return 3
+        case .default, .custom: return 4
         }
     }
     
@@ -108,6 +103,10 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests"
         case .file(urlString: let urlString):
             return urlString
+        case .payment(let id):
+            return "/paymentRequests/\(id)/payment"
+        case .pdfWithQRCode(paymentRequestId: let paymentRequestId):
+            return "/paymentRequests/\(paymentRequestId)"
         }
     }
     
@@ -127,6 +126,10 @@ struct APIResource<T: Decodable>: Resource {
         return ["Accept": ContentType.content(version: apiVersion,
                                               subtype: nil,
                                               mimeSubtype: "json").value]
+        case .pdfWithQRCode(_):
+            return ["Accept": ContentType.content(version: apiVersion,
+                                                  subtype: nil,
+                                                  mimeSubtype: "qr+pdf").value]
         default:
             return ["Accept": ContentType.content(version: apiVersion,
                                                   subtype: nil,

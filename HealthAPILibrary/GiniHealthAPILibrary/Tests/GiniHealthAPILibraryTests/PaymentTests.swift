@@ -69,7 +69,7 @@ final class PaymentTests: XCTestCase {
         payService.paymentProviders { result in
             switch result {
             case .success:
-                XCTAssertEqual(sessionManagerMock.providersResponse.count, 4, "providers should not be empty")
+                XCTAssertEqual(sessionManagerMock.providersResponse.count, 11, "providers should not be empty")
             case .failure:
                 break
             }
@@ -88,5 +88,13 @@ final class PaymentTests: XCTestCase {
                 break
             }
         }
+    }
+    
+    func testPaymentURL() {
+        let resource = APIResource<Payment>(method: .payment(id: "d8b46793-31b4-49d5-8f81-554e9e13f3f5"),
+                                               apiDomain: .default,
+                                               httpMethod: .get)
+        let urlString = resource.url.absoluteString
+        XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/d8b46793-31b4-49d5-8f81-554e9e13f3f5/payment", "path should match")
     }
 }

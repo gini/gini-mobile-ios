@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 struct FileLoader {
     static func loadFile(withName mockFileName: String, ofType fileType: String) -> Data? {
         guard let filePath = Bundle.module.path(forResource: mockFileName, ofType: fileType) else {

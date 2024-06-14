@@ -16,10 +16,7 @@ final class PoweredByGiniView: UIView {
     }
     
     private lazy var poweredByGiniView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.frame = CGRect(x: 0, y: 0, width: .min, height: 22)
-        return view
+        EmptyView()
     }()
     
     private lazy var poweredByGiniLabel: UILabel = {
@@ -28,7 +25,7 @@ final class PoweredByGiniView: UIView {
         label.text = viewModel.poweredByGiniLabelText
         label.textColor = viewModel.poweredByGiniLabelAccentColor
         label.font = viewModel.poweredByGiniLabelFont
-        label.numberOfLines = 1
+        label.numberOfLines = Constants.textNumberOfLines
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -36,7 +33,7 @@ final class PoweredByGiniView: UIView {
     private lazy var giniImageView: UIImageView = {
         let image = UIImageNamedPreferred(named: viewModel.giniIconName)
         let imageView = UIImageView(image: image)
-        imageView.frame = CGRect(x: 0, y: 0, width: 28, height: 18)
+        imageView.frame = CGRect(x: 0, y: 0, width: Constants.widthGiniLogo, height: Constants.heightGiniLogo)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -54,7 +51,6 @@ final class PoweredByGiniView: UIView {
         
         poweredByGiniView.addSubview(poweredByGiniLabel)
         poweredByGiniView.addSubview(giniImageView)
-        self.frame = CGRect(x: 0, y: 0, width: .min, height: 22)
         self.addSubview(poweredByGiniView)
         
         NSLayoutConstraint.activate([
@@ -63,14 +59,25 @@ final class PoweredByGiniView: UIView {
             poweredByGiniView.topAnchor.constraint(equalTo: topAnchor),
             poweredByGiniView.bottomAnchor.constraint(equalTo: bottomAnchor),
             poweredByGiniView.trailingAnchor.constraint(equalTo: giniImageView.trailingAnchor),
-            poweredByGiniView.centerYAnchor.constraint(equalTo: giniImageView.centerYAnchor),
-            giniImageView.leadingAnchor.constraint(equalTo: poweredByGiniLabel.trailingAnchor, constant: 4),
-            poweredByGiniLabel.centerYAnchor.constraint(equalTo: poweredByGiniView.centerYAnchor),
-            poweredByGiniLabel.leadingAnchor.constraint(equalTo: poweredByGiniView.leadingAnchor, constant: 0),
-            poweredByGiniLabel.topAnchor.constraint(equalTo: poweredByGiniView.topAnchor, constant: 0),
-            poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: 0),
+            giniImageView.leadingAnchor.constraint(equalTo: poweredByGiniLabel.trailingAnchor, constant: Constants.spacingImageText),
+            poweredByGiniLabel.centerYAnchor.constraint(equalTo: giniImageView.centerYAnchor),
+            poweredByGiniLabel.leadingAnchor.constraint(equalTo: poweredByGiniView.leadingAnchor),
+            poweredByGiniLabel.topAnchor.constraint(equalTo: poweredByGiniView.topAnchor),
+            poweredByGiniLabel.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor),
             giniImageView.heightAnchor.constraint(equalToConstant: giniImageView.frame.height),
-            giniImageView.widthAnchor.constraint(equalToConstant: giniImageView.frame.width)
+            giniImageView.widthAnchor.constraint(equalToConstant: giniImageView.frame.width),
+            giniImageView.topAnchor.constraint(equalTo: poweredByGiniView.topAnchor, constant: Constants.imageTopBottomPadding),
+            giniImageView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: -Constants.imageTopBottomPadding)
         ])
+    }
+}
+
+extension PoweredByGiniView {
+    private enum Constants {
+        static let imageTopBottomPadding = 3.0
+        static let spacingImageText = 4.0
+        static let widthGiniLogo = 28.0
+        static let heightGiniLogo = 18.0
+        static let textNumberOfLines = 1
     }
 }

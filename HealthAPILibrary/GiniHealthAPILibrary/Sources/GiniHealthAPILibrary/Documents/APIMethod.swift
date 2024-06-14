@@ -2,7 +2,7 @@
 //  APIMethod.swift
 //  GiniHealthAPI
 //
-//  Created by Enrique del Pozo Gómez on 3/4/19.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -31,4 +31,6 @@ enum APIMethod: ResourceMethod {
     case paymentRequest(id: String)
     case paymentRequests(limit: Int?, offset: Int?)
     case file(urlString: String)
+    case payment(id: String)
+    case pdfWithQRCode(paymentRequestId: String)
 }

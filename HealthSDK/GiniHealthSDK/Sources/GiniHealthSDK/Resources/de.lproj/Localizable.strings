@@ -24,10 +24,10 @@
 
 "ginihealth.paymentcomponent.moreInformation.label" = "Bezahldaten an Banking-App übergeben und dort direkt bezahlen. Mehr Informationen.";
 "ginihealth.paymentcomponent.moreInformation.underlined.part" = "Mehr Informationen.";
-"ginihealth.paymentcomponent.selectYourBank.label" = "Wählen Sie Ihre Bank aus";
+"ginihealth.paymentcomponent.selectYourBank.label" = "Bank auswählen und bezahlen";
 "ginihealth.paymentcomponent.payInvoice.label" = "Rechnung bezahlen";
 "ginihealth.paymentcomponent.poweredByGini.label" = "Powered by";
-"ginihealth.paymentcomponent.selectBank.label" = "Bank auswählen";
+"ginihealth.paymentcomponent.selectBank.label" = "Ihre Bank";
 "ginihealth.paymentcomponent.paymentproviderslist.description" = "Sie können die Rechnung nur bezahlen, wenn Sie ein Konto bei einer der unten aufgeführten Banken haben.";
 "ginihealth.paymentcomponent.paymentinfo.title.label" = "Mehr Informationen";
 "ginihealth.paymentcomponent.paymentinfo.payBills.title.label" = "Rechnungen ganz einfach mit der Banking-App bezahlen.";
@@ -49,3 +49,14 @@
 "ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text" = "Datenschutzerklärung[LINK]";
 "ginihealth.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/";
 "ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
+"ginihealth.paymentcomponent.installAppBottomSheet.title" = "Rechnungsdaten bereit zum Teilen mit der [BANK]";
+"ginihealth.paymentcomponent.installAppBottomSheet.notes.description" = "Hinweis: Bitte aktualisieren oder installieren Sie zunächst die [BANK]-App aus dem App-Store.";
+"ginihealth.paymentcomponent.installAppBottomSheet.tip.description" = "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.";
+"ginihealth.paymentcomponent.installAppBottomSheet.continue.button.text" = "Weiter";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.title" = "Rechnungsdaten bereit zum Teilen mit der [BANK]";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.description" = "Im nächsten Schritt wählen Sie die [BANK]-App auf der Seite aus, um Ihre Zahlung in der [BANK]-App abzuschließen.";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.app" = "App";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.more" = "Mehr";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.description" = "Tipp: Wenn Sie die App nicht sehen, scrollen Sie oder tippen Sie auf \"Mehr\", bis Sie die [BANK]-App finden. Wenn Sie die [BANK]-App noch nicht installiert haben, laden Sie sie im Store herunter.";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.underlined.part" = "laden Sie sie im Store herunter";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.continue.button.text" = "Weiter";

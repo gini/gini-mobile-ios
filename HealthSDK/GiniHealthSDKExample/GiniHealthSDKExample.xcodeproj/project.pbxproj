@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284A534F2A86493100183EA7 /* SelectAPIViewController.xib */; };
+		7D6161C62BE1327E0091000B /* test_pdf.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 7D6161C52BE1327E0091000B /* test_pdf.pdf */; };
 		7DB661832B554622004537AA /* InvoicesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661822B554622004537AA /* InvoicesListCoordinator.swift */; };
 		7DB661862B554A6F004537AA /* InvoicesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661842B554A6F004537AA /* InvoicesListViewController.swift */; };
 		7DB6618B2B554ADF004537AA /* InvoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661892B554ADF004537AA /* InvoiceTableViewCell.swift */; };
@@ -73,6 +74,7 @@
 
 /* Begin PBXFileReference section */
 		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
+		7D6161C52BE1327E0091000B /* test_pdf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = test_pdf.pdf; sourceTree = "<group>"; };
 		7DB661822B554622004537AA /* InvoicesListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListCoordinator.swift; sourceTree = "<group>"; };
 		7DB661842B554A6F004537AA /* InvoicesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListViewController.swift; sourceTree = "<group>"; };
 		7DB661892B554ADF004537AA /* InvoiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCell.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				F4EC38EF273C2310007045DC /* UIViewController+Utils.swift */,
 				F4EC38C3273C21E4007045DC /* SceneDelegate.swift */,
 				F4EC38C5273C21E4007045DC /* ViewController.swift */,
+				7D6161C52BE1327E0091000B /* test_pdf.pdf */,
 				F4EC38CC273C21E5007045DC /* LaunchScreen.storyboard */,
 				F4EC38CF273C21E5007045DC /* Info.plist */,
 			);
@@ -453,6 +456,7 @@
 				7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */,
 				F4EC38F9273C2311007045DC /* Credentials.plist in Resources */,
 				284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */,
+				7D6161C62BE1327E0091000B /* test_pdf.pdf in Resources */,
 				F4EC3913273C2B41007045DC /* Assets.xcassets in Resources */,
 				7DB661982B5687F7004537AA /* health-invoice-1.jpg in Resources */,
 				7DB661972B5687F7004537AA /* health-invoice-4.jpg in Resources */,

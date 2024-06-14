@@ -61,7 +61,7 @@ func loadProviders() -> PaymentProviders {
     let providersResponse = try! JSONDecoder().decode([PaymentProviderResponse].self, from: jsonData!)
     for providerResponse in providersResponse {
        let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
-        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData ?? Data(), appStoreUrlIOS: providerResponse.appStoreUrlIOS, universalLinkIOS: providerResponse.universalLinkIOS)
+        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData ?? Data(), appStoreUrlIOS: providerResponse.appStoreUrlIOS, universalLinkIOS: providerResponse.universalLinkIOS, index: providerResponse.index, gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms, openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
             providers.append(provider)
         }
     return providers
@@ -72,4 +72,11 @@ func loadPaymentRequest() -> PaymentRequest {
         .path(forResource: "paymentRequest", ofType: "json")
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
         return try! JSONDecoder().decode(PaymentRequest.self, from: jsonData!)
+}
+
+func loadPayment() -> Payment {
+    let fileURLPath: String? = Bundle.module
+        .path(forResource: "payment", ofType: "json")
+    let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
+        return try! JSONDecoder().decode(Payment.self, from: jsonData!)
 }
