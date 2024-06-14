@@ -34,6 +34,7 @@ public class AnalyticsManager {
         superProperties[.giniClientID] = configuration.clientID
     }
 
+    // MARK: Initialization
     private static func initializeMixpanel(with deviceID: String, token: String?) {
         guard let token else { return }
         mixpanelInstance = Mixpanel.initialize(token: token,
@@ -56,7 +57,6 @@ public class AnalyticsManager {
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
-        AnalyticsManager.track(event: .sdkOpened, screenName: nil)
         processEventsQueue()
     }
 
