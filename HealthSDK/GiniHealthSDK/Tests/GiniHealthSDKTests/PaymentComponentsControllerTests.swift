@@ -10,8 +10,9 @@ import XCTest
 @testable import GiniHealthAPILibrary
 
 final class PaymentComponentsControllerTests: XCTestCase {
-    var giniHealthAPI: GiniHealthAPI!
-    var mockPaymentComponentsController: PaymentComponentsProtocol!
+    private var giniHealthAPI: GiniHealthAPI!
+    private var mockPaymentComponentsController: PaymentComponentsProtocol!
+    private let giniHealthConfiguration = GiniHealthConfiguration.shared
 
     override func setUp() {
         super.setUp()
@@ -35,7 +36,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
 
         // Then
         XCTAssertFalse(mockPaymentComponentsController.isLoading)
-        XCTAssertNotNil(mockPaymentComponentsController.selectedPaymentProvider)
+        XCTAssertNil(mockPaymentComponentsController.selectedPaymentProvider)
     }
     
     func testCheckIfDocumentIsPayable_Success() {
@@ -77,7 +78,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
     func testPaymentView_ReturnsView() {
         // Given
         let documentId = "123456"
-        let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil)
+        let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil, giniHealthConfiguration: giniHealthConfiguration)
         let expectedView = PaymentComponentView()
         expectedView.viewModel = expectedViewModel
 
@@ -98,12 +99,12 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let viewController = mockPaymentComponentsController.bankSelectionBottomSheet()
 
         // Then
-        XCTAssertTrue(viewController is BankSelectionBottomSheet)
-        guard let bottomSheet = viewController as? BankSelectionBottomSheet else {
+        XCTAssertTrue(viewController is BanksBottomView)
+        guard let bottomSheet = viewController as? BanksBottomView else {
             XCTFail("Error finding correct viewController.")
             return
         }
-        XCTAssertNotNil(bottomSheet.bottomSheet)
+        XCTAssertNotNil(bottomSheet.viewModel)
     }
     
     func testLoadPaymentReviewScreenFor_Success() {
@@ -158,5 +159,20 @@ final class PaymentComponentsControllerTests: XCTestCase {
             return
         }
         XCTAssertEqual(paymentInfoViewModel.paymentProviders, [])
+    }
+    
+    func testPaymentProvidersSorting() {
+        let fileName = "notSortedBanks"
+        guard let givenPaymentProviders = loadProviders(fileName: fileName) else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
+        
+        let expectedPaymentProviders = loadProviders(fileName: "sortedBanks")
+        
+        let bottomViewModel = BanksBottomViewModel(paymentProviders: givenPaymentProviders, selectedPaymentProvider: nil, urlOpener: URLOpener(MockUIApplication(canOpen: false)))
+        
+        XCTAssertEqual(bottomViewModel.paymentProviders.count, 11)
+        XCTAssertEqual(bottomViewModel.paymentProviders.map { $0.paymentProvider }, expectedPaymentProviders)
     }
 }

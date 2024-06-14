@@ -54,7 +54,7 @@ class GiniHealthAPILibraryPinningIntegrationTests: XCTestCase {
         paymentService.paymentProviders { result in
             switch result {
             case let .success(providers):
-                XCTAssertNotNil(providers.count > 0)
+                XCTAssertTrue(providers.count > 0)
                 expect.fulfill()
             case let .failure(error):
                 XCTFail(String(describing: error))

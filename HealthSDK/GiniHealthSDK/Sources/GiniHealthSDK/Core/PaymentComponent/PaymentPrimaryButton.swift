@@ -10,13 +10,12 @@ import GiniHealthAPILibrary
 
 final class PaymentPrimaryButton: UIView {
     
-    private var giniHealthConfiguration = GiniHealthConfiguration.shared
+    private let giniHealthConfiguration = GiniHealthConfiguration.shared
     
     var didTapButton: (() -> Void)?
     
     private lazy var contentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+        let view = EmptyView()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnPayInvoiceView)))
         return view
     }()
@@ -86,11 +85,11 @@ extension PaymentPrimaryButton {
         }
     }
     
-    func customConfigure(paymentProviderColors: ProviderColors?, isPaymentProviderInstalled: Bool, text: String, leftImageData: Data? = nil) {
-        if let backgroundHexColor = paymentProviderColors?.background.toColor(), isPaymentProviderInstalled {
+    func customConfigure(paymentProviderColors: ProviderColors?, text: String, leftImageData: Data? = nil) {
+        if let backgroundHexColor = paymentProviderColors?.background.toColor() {
             contentView.backgroundColor = backgroundHexColor
         }
-        contentView.isUserInteractionEnabled = isPaymentProviderInstalled
+        contentView.isUserInteractionEnabled = true
         
         titleLabel.text = text
         if let textHexColor = paymentProviderColors?.text.toColor() {

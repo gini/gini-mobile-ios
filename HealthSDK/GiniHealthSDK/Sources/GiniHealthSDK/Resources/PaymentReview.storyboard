@@ -179,7 +179,6 @@
                                                             </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ahO-LM-1VW">
                                                                 <rect key="frame" x="0.0" y="56" width="343" height="12"/>
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="12" id="ZNT-9d-FXm"/>
                                                                 </constraints>
@@ -234,7 +233,6 @@
                                     <constraint firstItem="yz2-tA-K7L" firstAttribute="centerX" secondItem="X5k-EE-UQ6" secondAttribute="centerX" id="kCz-LV-Mjo"/>
                                     <constraint firstItem="ekk-cJ-hxZ" firstAttribute="top" secondItem="yz2-tA-K7L" secondAttribute="bottom" constant="-60" id="lMV-Pf-vy3"/>
                                     <constraint firstItem="47Q-Qq-7ja" firstAttribute="centerX" secondItem="X5k-EE-UQ6" secondAttribute="centerX" id="rFK-yg-iVc"/>
-                                    <constraint firstAttribute="bottom" secondItem="ekk-cJ-hxZ" secondAttribute="bottom" id="yRU-DH-rpk"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wxg-Qb-D9U">
@@ -258,6 +256,7 @@
                             <constraint firstItem="bnf-9Y-Eta" firstAttribute="bottom" secondItem="X5k-EE-UQ6" secondAttribute="bottom" constant="-34" id="fa8-8k-ztT"/>
                             <constraint firstItem="wxg-Qb-D9U" firstAttribute="top" secondItem="bnf-9Y-Eta" secondAttribute="top" constant="12" id="ic9-9P-aT8"/>
                             <constraint firstItem="bnf-9Y-Eta" firstAttribute="top" secondItem="47Q-Qq-7ja" secondAttribute="top" id="oIc-a6-GLG"/>
+                            <constraint firstItem="ekk-cJ-hxZ" firstAttribute="bottom" secondItem="bnf-9Y-Eta" secondAttribute="bottom" constant="34" id="w9g-Ey-KaZ"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO"/>
@@ -303,7 +302,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemIndigoColor">
-            <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

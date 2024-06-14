@@ -9,13 +9,12 @@ import UIKit
 
 final class PaymentSecondaryButton: UIView {
     
-    private var giniHealthConfiguration = GiniHealthConfiguration.shared
+    private let giniHealthConfiguration = GiniHealthConfiguration.shared
     
     var didTapButton: (() -> Void)?
     
     private lazy var contentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+        let view = EmptyView()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnBankPicker)))
         return view
     }()
@@ -65,25 +64,26 @@ final class PaymentSecondaryButton: UIView {
             rightImageView.heightAnchor.constraint(equalToConstant: rightImageView.frame.height),
             contentView.trailingAnchor.constraint(equalTo: rightImageView.trailingAnchor, constant: Constants.contentTrailingPadding),
             rightImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            rightImageView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: Constants.bankNameChevronIconPadding)
         ])
     }
     
-    private func activateBankImageViewConstraints(isPaymentProviderInstalled: Bool) {
-        if isPaymentProviderInstalled {
-            leftImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentLeadingPadding).isActive = true
+    private func activateImagesViewConstraints() {
+        if !leftImageView.isHidden {
+            leftImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentPadding).isActive = true
             leftImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
             leftImageView.widthAnchor.constraint(equalToConstant: leftImageView.frame.width).isActive = true
             leftImageView.heightAnchor.constraint(equalToConstant: leftImageView.frame.height).isActive = true
-            let bankNameBankViewConstraint = titleLabel.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor, constant: Constants.contentLeadingPadding)
-            bankNameBankViewConstraint.priority = .required - 1 // fix needed because of embeded views in cells issue. We need this to silent the "Unable to simultaneously satisfy constraints" warning
-            bankNameBankViewConstraint.isActive = true
+            
+            titleLabel.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor, constant: Constants.contentPadding).isActive = true
             leftImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor).isActive = true
         } else {
-            let bankNameLeadingSuperviewConstraint = titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentLeadingPadding)
-            bankNameLeadingSuperviewConstraint.priority = .required - 1
-            bankNameLeadingSuperviewConstraint.isActive = true
-            contentView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor).isActive = true
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentPadding).isActive = true
+            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        }
+        if titleLabel.isHidden {
+            rightImageView.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor, constant: Constants.bankIconChevronIconPadding).isActive = true
+        } else {
+            rightImageView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
         }
     }
     
@@ -110,8 +110,8 @@ extension PaymentSecondaryButton {
         }
     }
     
-    func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: String?, rightImageTintColor: UIColor, isPaymentProviderInstalled: Bool, notInstalledTextColor: UIColor) {
-        if let leftImageIcon, isPaymentProviderInstalled {
+    func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: String?, rightImageTintColor: UIColor, shouldShowLabel: Bool) {
+        if let leftImageIcon {
             leftImageView.image = leftImageIcon
             leftImageView.isHidden = false
         } else {
@@ -124,11 +124,13 @@ extension PaymentSecondaryButton {
         } else {
             rightImageView.isHidden = true
         }
-        titleLabel.text = labelText
-        if !isPaymentProviderInstalled {
-            titleLabel.textColor = notInstalledTextColor
+        if shouldShowLabel {
+            titleLabel.text = labelText
+            titleLabel.isHidden = false
+        } else {
+            titleLabel.isHidden = true
         }
-        activateBankImageViewConstraints(isPaymentProviderInstalled: isPaymentProviderInstalled)
+        activateImagesViewConstraints()
     }
 }
 
@@ -138,7 +140,7 @@ extension PaymentSecondaryButton {
         static let bankIconCornerRadius: CGFloat = 6
         static let chevronIconSize: CGFloat = 24
         static let contentTrailingPadding: CGFloat = 16
-        static let bankNameChevronIconPadding: CGFloat = 10
-        static let contentLeadingPadding: CGFloat = 16
+        static let bankIconChevronIconPadding: CGFloat = 12
+        static let contentPadding: CGFloat = 12
     }
 }

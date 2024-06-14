@@ -11,6 +11,7 @@ import GiniHealthAPILibrary
 public protocol PaymentProvidersBottomViewProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider)
     func didTapOnClose()
+    func didTapOnMoreInformation()
 }
 
 struct PaymentProviderAdditionalInfo {
@@ -53,35 +54,29 @@ final class BanksBottomViewModel {
     let descriptionLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark3,
                                                          darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
     var descriptionLabelFont: UIFont
+    
+    private var urlOpener: URLOpener
 
-    init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?) {
+    init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?, urlOpener: URLOpener = URLOpener(UIApplication.shared)) {
         self.selectedPaymentProvider = selectedPaymentProvider
+        self.urlOpener = urlOpener
         
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
-
-        self.selectBankLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.subtitle1] ?? defaultBoldFont
-        self.descriptionLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.caption1] ?? defaultRegularFont
         
+        let giniHealthConfiguration = GiniHealthConfiguration.shared
+
+        self.selectBankLabelFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
+        self.descriptionLabelFont = giniHealthConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
+
         self.paymentProviders = paymentProviders
-            .filter({ $0.appStoreUrlIOS != nil || isPaymentProviderInstalled(paymentProvider: $0) })
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
                                                  paymentProvider: $0)})
-        
+            .filter { $0.paymentProvider.gpcSupportedPlatforms.contains(.ios) || $0.paymentProvider.openWithSupportedPlatforms.contains(.ios) }
+            .sorted(by: { ($0.paymentProvider.index ?? 0 < $1.paymentProvider.index ?? 0) })
+            .sorted(by: { ($0.isInstalled && !$1.isInstalled) })
         self.calculateHeights()
-    }
-    
-    func updatePaymentProvidersInstalledState() {
-        for index in 0 ..< paymentProviders.count {
-            paymentProviders[index].isInstalled = isPaymentProviderInstalled(paymentProvider: paymentProviders[index].paymentProvider)
-        }
-        if selectedPaymentProvider == nil {
-            selectedPaymentProvider = paymentProviders.first(where: { $0.isInstalled == true })?.paymentProvider
-            if let indexSelected = paymentProviders.firstIndex(where: { $0.paymentProvider.id == selectedPaymentProvider?.id }) {
-                paymentProviders[indexSelected].isSelected = true
-            }
-        }
     }
     
     private func calculateHeights() {
@@ -104,8 +99,15 @@ final class BanksBottomViewModel {
         viewDelegate?.didTapOnClose()
     }
     
+    func didTapOnMoreInformation() {
+        viewDelegate?.didTapOnMoreInformation()
+    }
+    
     private func isPaymentProviderInstalled(paymentProvider: PaymentProvider) -> Bool {
-        paymentProvider.appSchemeIOS.canOpenURLString()
+        if let urlAppScheme = URL(string: paymentProvider.appSchemeIOS) {
+            return urlOpener.canOpenLink(url: urlAppScheme)
+        }
+        return false
     }
 }
 

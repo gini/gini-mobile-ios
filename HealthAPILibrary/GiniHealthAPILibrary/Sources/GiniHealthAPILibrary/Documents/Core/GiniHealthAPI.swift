@@ -121,11 +121,6 @@ extension GiniHealthAPI {
                 }
                 return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, apiDomain: api),
                                      paymentService: PaymentService(sessionManager: sessionManager, apiDomain: api))
-            case let .gym(tokenSource):
-                let sessionManager = SessionManager(alternativeTokenSource: tokenSource,
-                                                    sessionDelegate: self.sessionDelegate)
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager),
-                                     paymentService: PaymentService(sessionManager: sessionManager))
             }
         }
         

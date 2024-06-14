@@ -11,13 +11,9 @@ import GiniHealthAPILibrary
 final class BankSelectionTableViewCellModel {
 
     private var isSelected: Bool = false
-    private var isPaymentProviderInstalled = false
 
-    var shouldShowAppStoreIcon: Bool {
-        !isPaymentProviderInstalled
-    }
     var shouldShowSelectionIcon: Bool {
-        isPaymentProviderInstalled && isSelected
+        isSelected
     }
 
     let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark7,
@@ -47,7 +43,6 @@ final class BankSelectionTableViewCellModel {
 
     init(paymentProvider: PaymentProviderAdditionalInfo) {
         self.isSelected = paymentProvider.isSelected
-        self.isPaymentProviderInstalled = paymentProvider.isInstalled
         self.bankImageIconData = paymentProvider.paymentProvider.iconData
         self.bankName = paymentProvider.paymentProvider.name
 

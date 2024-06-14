@@ -24,10 +24,10 @@
 
 "ginihealth.paymentcomponent.moreInformation.label" = "Transfer payment data to the banking app and pay there directly. More information.";
 "ginihealth.paymentcomponent.moreInformation.underlined.part" = "More information.";
-"ginihealth.paymentcomponent.selectYourBank.label" = "Select your bank";
+"ginihealth.paymentcomponent.selectYourBank.label" = "Select your bank to pay";
 "ginihealth.paymentcomponent.payInvoice.label" = "Pay the invoice";
 "ginihealth.paymentcomponent.poweredByGini.label" = "Powered by";
-"ginihealth.paymentcomponent.selectBank.label" = "Select bank";
+"ginihealth.paymentcomponent.selectBank.label" = "Your bank";
 "ginihealth.paymentcomponent.paymentproviderslist.description" = "You can only pay the bill if you have an account with one of the banks listed below.";
 "ginihealth.paymentcomponent.paymentinfo.title.label" = "More information";
 "ginihealth.paymentcomponent.paymentinfo.payBills.title.label" = "Pay bills easily with the banking app.";
@@ -49,3 +49,14 @@
 "ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text" = "privacy policy[LINK]";
 "ginihealth.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/en/";
 "ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
+"ginihealth.paymentcomponent.installAppBottomSheet.title" = "Billing data ready to share with the [BANK] bank";
+"ginihealth.paymentcomponent.installAppBottomSheet.notes.description" = "Note: You must first update or install the [BANK] app from the App store";
+"ginihealth.paymentcomponent.installAppBottomSheet.tip.description" = "Tip: Tap 'Forward' to complete the payment. The [BANK] app will open automatically, for you to confirm the transaction. Thank you!";
+"ginihealth.paymentcomponent.installAppBottomSheet.continue.button.text" = "Forward";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.title" = "Invoice data ready to share";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.description" = "In the next step, select the [BANK] app to open and complete your payment in the banking app.";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.app" = "App";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.more" = "More";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.description" = "Tip: If you don't see the app, scroll or tap \"More\" until you find the [BANK] app. If you haven't installed the [BANK] app yet, download it from the store.";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.underlined.part" = "download it from the store";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.continue.button.text" = "Forward";
