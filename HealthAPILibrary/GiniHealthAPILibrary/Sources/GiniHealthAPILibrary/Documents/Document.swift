@@ -33,7 +33,7 @@ public struct Document {
     /// The document's source classification.
     public let sourceClassification: SourceClassification
     /// The document's expiration date.
-    public let expirationDate: Date
+    public let expirationDate: Date?
 
     fileprivate enum Keys: String, CodingKey {
         case compositeDocuments
@@ -224,7 +224,7 @@ extension Document: Decodable {
         let progress = try container.decode(Progress.self, forKey: .progress)
         let sourceClassification = try container.decode(SourceClassification.self,
                                                         forKey: .sourceClassification)
-        let expirationDate = try container.decode(Date.self, forKey: .expirationDate)
+        let expirationDate = try container.decodeIfPresent(Date.self, forKey: .expirationDate)
 
         self.init(compositeDocuments: compositeDocuments,
                   creationDate: creationDate,
@@ -257,7 +257,7 @@ extension Document: Decodable {
                 name: String,
                 links: Links,
                 sourceClassification: SourceClassification,
-                expirationDate: Date) {
+                expirationDate: Date?) {
         self.init(compositeDocuments: [],
                   creationDate: creationDate,
                   id: id,

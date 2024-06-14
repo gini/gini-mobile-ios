@@ -47,7 +47,7 @@ final class GiniDocumentTests: XCTestCase {
     }
 
     func testExpirationDateDecoding() {
-        XCTAssertEqual(validDocument.expirationDate.timeIntervalSince1970,
+        XCTAssertEqual(validDocument.expirationDate?.timeIntervalSince1970,
                        1515932941.2839971,
                        "document expirationDate should match")
     }

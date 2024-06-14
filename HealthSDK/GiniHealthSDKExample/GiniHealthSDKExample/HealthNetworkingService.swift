@@ -22,7 +22,7 @@ class HealthNetworkingService: GiniCaptureNetworkService {
                                              name: doc.name,
                                              links: links,
                                              sourceClassification: sourceClassification, 
-                                             expirationDate: doc.creationDate) // TODO: Since GiniBankAPILibrary don't have a expirationDate we used creationDate
+                                             expirationDate: nil)
     }
     
     private func mapDocumentToGiniBankAPI(doc: GiniHealthAPILibrary.Document) -> GiniBankAPILibrary.Document {
