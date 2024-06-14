@@ -192,11 +192,10 @@ public class AnalyticsManager {
         }
     }
 
-    private static func handleProperties<T: RawRepresentable>(
-        _ properties: [T: AnalyticsPropertyValue],
-        propertyStore: inout [T: AnalyticsPropertyValue],
-        propertiesHandler: ([String: String]) -> Void
-    ) where T.RawValue == String {
+    private static func handleProperties<T: RawRepresentable>(_ properties: [T: AnalyticsPropertyValue],
+                                                              propertyStore: inout [T: AnalyticsPropertyValue],
+                                                              propertiesHandler: ([String: String]) -> Void) 
+    where T.RawValue == String {
         if mixpanelInstance != nil, amplitudeInitialised {
             var propertiesToTrack: [String: String] = [:]
             for (property, value) in properties {
@@ -210,7 +209,8 @@ public class AnalyticsManager {
         }
     }
 
-    private static func mapAmplitudeSuperProperties(properties: [AnalyticsSuperProperty: AnalyticsPropertyValue]) -> [String: String] {
+    private static func mapAmplitudeSuperProperties(properties: [AnalyticsSuperProperty: AnalyticsPropertyValue])
+    -> [String: String] {
         return properties
             .map { (key, value) in
                 (key.rawValue, convertPropertyValueToString(value))
