@@ -7,28 +7,17 @@
 
 import UIKit
 
-class BanksBottomView: UIView {
+class BanksBottomView: BottomSheetViewController {
 
-    var viewModel: BanksBottomViewModel! {
-        didSet {
-            setupView()
-        }
-    }
-
-    private lazy var rectangleTopView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.frame = CGRect(x: 0, y: 0, width: Constants.widthTopRectangle, height: Constants.heightTopRectangle)
-        view.roundCorners(corners: .allCorners, radius: Constants.cornerRadiusTopRectangle)
-        view.backgroundColor = viewModel.rectangleColor
-        return view
+    var viewModel: BanksBottomViewModel
+    
+    private lazy var contentStackView: UIStackView = {
+        EmptyStackView(orientation: .vertical)
     }()
 
     private lazy var titleView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+        let view = EmptyView()
         view.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.heightTitleView)
-        view.backgroundColor = .clear
         return view
     }()
 
@@ -46,11 +35,14 @@ class BanksBottomView: UIView {
     private lazy var closeTitleIconImageView: UIImageView = {
         let imageView = UIImageView(image: viewModel.closeTitleIcon.withRenderingMode(.alwaysTemplate))
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.frame = CGRect(x: 0, y: 0, width: Constants.closeIconSize, height: Constants.closeIconSize)
         imageView.tintColor = viewModel.closeIconAccentColor
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnCloseIcon)))
         return imageView
+    }()
+    
+    private lazy var descriptionView: UIView = {
+        EmptyView()
     }()
 
     private lazy var descriptionLabel: UILabel = {
@@ -61,6 +53,10 @@ class BanksBottomView: UIView {
         label.font = viewModel.descriptionLabelFont
         label.numberOfLines = 0
         return label
+    }()
+    
+    private lazy var paymentProvidersView: UIView = {
+        EmptyView()
     }()
 
     private lazy var paymentProvidersTableView: UITableView = {
@@ -79,17 +75,39 @@ class BanksBottomView: UIView {
         tableView.showsVerticalScrollIndicator = false
         return tableView
     }()
+    
+    private lazy var bottomView: UIView = {
+        EmptyView()
+    }()
+    
+    private lazy var bottomStackView: UIStackView = {
+        EmptyStackView(orientation: .horizontal)
+    }()
+    
+    private lazy var moreInformationView: MoreInformationView = {
+        let view = MoreInformationView()
+        let viewModel = MoreInformationViewModel()
+        viewModel.delegate = self
+        view.viewModel = viewModel
+        return view
+    }()
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
         let view = PoweredByGiniView()
         view.viewModel = PoweredByGiniViewModel()
         return view
     }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
     }
 
+    init(viewModel: BanksBottomViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -98,99 +116,74 @@ class BanksBottomView: UIView {
         setupViewHierarchy()
         setupViewAttributes()
         setupLayout()
-        setupListeners()
     }
 
     private func setupViewHierarchy() {
-        self.addSubview(rectangleTopView)
-        self.addSubview(titleView)
         titleView.addSubview(titleLabel)
         titleView.addSubview(closeTitleIconImageView)
-        self.addSubview(descriptionLabel)
-        self.addSubview(paymentProvidersTableView)
-        self.addSubview(poweredByGiniView)
+        contentStackView.addArrangedSubview(titleView)
+        descriptionView.addSubview(descriptionLabel)
+        contentStackView.addArrangedSubview(descriptionView)
+        paymentProvidersView.addSubview(paymentProvidersTableView)
+        contentStackView.addArrangedSubview(paymentProvidersView)
+        bottomStackView.addArrangedSubview(moreInformationView)
+        bottomStackView.addArrangedSubview(UIView())
+        bottomStackView.addArrangedSubview(poweredByGiniView)
+        bottomView.addSubview(bottomStackView)
+        contentStackView.addArrangedSubview(bottomView)
+        self.setContent(content: contentStackView)
     }
 
     private func setupViewAttributes() {
-        self.backgroundColor = viewModel.backgroundColor
-        self.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusView)
-        
         let isFullScreen = viewModel.bottomViewHeight >= viewModel.maximumViewHeight
         paymentProvidersTableView.isScrollEnabled = isFullScreen
     }
 
     private func setupLayout() {
-        setupTopRectangleConstraints()
         setupTitleViewConstraints()
         setupDescriptionConstraints()
         setupTableViewConstraints()
         setupPoweredByGiniConstraints()
     }
-    
-    private func setupListeners() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(willEnterForeground),
-                                               name: UIApplication.willEnterForegroundNotification,
-                                               object: nil)
-    }
-    
-    @objc private func willEnterForeground() {
-        viewModel.updatePaymentProvidersInstalledState()
-        paymentProvidersTableView.reloadData()
-    }
-
-    private func setupTopRectangleConstraints() {
-        NSLayoutConstraint.activate([
-            rectangleTopView.heightAnchor.constraint(equalToConstant: rectangleTopView.frame.height),
-            rectangleTopView.widthAnchor.constraint(equalToConstant: rectangleTopView.frame.width),
-            rectangleTopView.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.topAnchorTopRectangle),
-            rectangleTopView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
-        ])
-    }
 
     private func setupTitleViewConstraints() {
         NSLayoutConstraint.activate([
-            titleView.heightAnchor.constraint(equalToConstant: titleView.frame.height),
-            titleView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            self.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: Constants.viewPaddingConstraint),
-            titleView.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.topAnchorTitleView),
-            titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor),
+            titleView.heightAnchor.constraint(equalToConstant: Constants.heightTitleView),
+            titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             titleLabel.centerYAnchor.constraint(equalTo: titleView.centerYAnchor),
-            closeTitleIconImageView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor),
-            closeTitleIconImageView.heightAnchor.constraint(equalToConstant: closeTitleIconImageView.frame.height),
-            closeTitleIconImageView.widthAnchor.constraint(equalToConstant: closeTitleIconImageView.frame.width),
-            titleView.trailingAnchor.constraint(equalTo: closeTitleIconImageView.trailingAnchor)
+            closeTitleIconImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            closeTitleIconImageView.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
+            closeTitleIconImageView.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
+            closeTitleIconImageView.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            closeTitleIconImageView.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: Constants.titleViewTitleIconSpacing)
         ])
-        let titleLabelIconViewSpacingConstraint = closeTitleIconImageView.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: Constants.titleViewTitleIconSpacing)
-        titleLabelIconViewSpacingConstraint.priority = .required - 1
-        titleLabelIconViewSpacingConstraint.isActive = true
     }
 
     private func setupDescriptionConstraints() {
         NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: titleView.bottomAnchor),
-            descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            self.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor, constant: Constants.viewPaddingConstraint)
+            descriptionLabel.topAnchor.constraint(equalTo: descriptionView.topAnchor),
+            descriptionLabel.leadingAnchor.constraint(equalTo: descriptionView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            descriptionLabel.trailingAnchor.constraint(equalTo: descriptionView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            descriptionLabel.bottomAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: -Constants.viewPaddingConstraint)
         ])
     }
 
     private func setupTableViewConstraints() {
         NSLayoutConstraint.activate([
-            paymentProvidersTableView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Constants.viewPaddingConstraint),
-            paymentProvidersTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            self.trailingAnchor.constraint(equalTo: paymentProvidersTableView.trailingAnchor, constant: Constants.viewPaddingConstraint),
+            paymentProvidersTableView.topAnchor.constraint(equalTo: paymentProvidersView.topAnchor),
+            paymentProvidersTableView.leadingAnchor.constraint(equalTo: paymentProvidersView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            paymentProvidersTableView.trailingAnchor.constraint(equalTo: paymentProvidersView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            paymentProvidersTableView.bottomAnchor.constraint(equalTo: paymentProvidersView.bottomAnchor),
             paymentProvidersTableView.heightAnchor.constraint(equalToConstant: viewModel.heightTableView)
         ])
     }
 
     private func setupPoweredByGiniConstraints() {
-        let poweredByGiniBottomAnchorConstraint = poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: Constants.viewPaddingConstraint)
-        poweredByGiniBottomAnchorConstraint.priority = .required - 1
         NSLayoutConstraint.activate([
-            poweredByGiniView.topAnchor.constraint(equalTo: paymentProvidersTableView.bottomAnchor, constant: Constants.viewPaddingConstraint),
-            poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
-            poweredByGiniView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            poweredByGiniBottomAnchorConstraint
+            bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
+            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
         ])
     }
     
@@ -199,29 +192,22 @@ class BanksBottomView: UIView {
         viewModel.didTapOnClose()
     }
     
-    private func openPaymentProvidersAppStoreLink(urlString: String?) {
-        guard let urlString = urlString else {
-            print("AppStore link unavailable for this payment provider")
-            return
-        }
-        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url)
-        }
-    }
 }
 
 extension BanksBottomView {
     enum Constants {
-        static let cornerRadiusView = 12.0
-        static let cornerRadiusTopRectangle = 2.0
-        static let widthTopRectangle = 48
-        static let heightTopRectangle = 4
-        static let topAnchorTopRectangle = 16.0
         static let heightTitleView = 48.0
         static let viewPaddingConstraint = 16.0
         static let topAnchorTitleView = 32.0
         static let closeIconSize = 24.0
         static let titleViewTitleIconSpacing = 10.0
+        static let topAnchorPoweredByGiniConstraint = 5.0
+    }
+}
+
+extension BanksBottomView: MoreInformationViewProtocol {
+    func didTapOnMoreInformation() {
+        viewModel.didTapOnMoreInformation()
     }
 }
 
@@ -245,10 +231,6 @@ extension BanksBottomView: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if viewModel.paymentProviders[indexPath.row].isInstalled {
-            viewModel.viewDelegate?.didSelectPaymentProvider(paymentProvider: viewModel.paymentProviders[indexPath.row].paymentProvider)
-        } else {
-            openPaymentProvidersAppStoreLink(urlString: viewModel.paymentProviders[indexPath.row].paymentProvider.appStoreUrlIOS)
-        }
+        viewModel.viewDelegate?.didSelectPaymentProvider(paymentProvider: viewModel.paymentProviders[indexPath.row].paymentProvider)
     }
 }

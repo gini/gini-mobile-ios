@@ -1,9 +1,9 @@
 //
 //  GiniDocumentTests.swift
-//  GiniExampleTests
 //
-//  Created by Enrique del Pozo Gómez on 1/14/18.
-//  Copyright © 2018 Gini. All rights reserved.
+//
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import XCTest
@@ -11,10 +11,11 @@ import XCTest
 
 final class GiniDocumentTests: XCTestCase {
     
-    lazy var documentJson: Data = loadFile(withName: "document", ofType: "json")
-    lazy var compositeDocumentJson: Data = loadFile(withName: "compositeDocument", ofType: "json")
-    lazy var partialDocumentJson: Data = loadFile(withName: "partialDocument", ofType: "json")
-    
+    let documentJson: Data = loadFile(withName: "document", ofType: "json")
+    let compositeDocumentJson: Data = loadFile(withName: "compositeDocument", ofType: "json")
+    let partialDocumentJson: Data = loadFile(withName: "partialDocument", ofType: "json")
+    let documentWithoutExpirationDateJson: Data = loadFile(withName: "documentWithoutExpirationDate", ofType: "json")
+
     lazy var validDocument: Document = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
@@ -34,46 +35,64 @@ final class GiniDocumentTests: XCTestCase {
         XCTAssertNoThrow(try JSONDecoder().decode(Document.self, from: partialDocumentJson))
     }
     
-    func testID() {
+    func testIDDecoding() {
         XCTAssertEqual(validDocument.id,
                        "626626a0-749f-11e2-bfd6-000000000000",
                        "document ID should match")
     }
     
-    func testCreationDate() {
+    func testCreationDateDecoding() {
         XCTAssertEqual(validDocument.creationDate.timeIntervalSince1970,
                        1515932941.2839971,
                        "document creationDate should match")
     }
-    
-    func testName() {
+
+    func testExpirationDateDecoding() {
+        XCTAssertEqual(validDocument.expirationDate?.timeIntervalSince1970,
+                       1515932941.2839971,
+                       "document expirationDate should match")
+    }
+
+    func testExpirationDateMissing() {
+        lazy var documentWithoutExpirationDate: Document = {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .secondsSince1970
+            let giniDocument = try? decoder.decode(Document.self, from: documentWithoutExpirationDateJson)
+            return giniDocument!
+        }()
+        XCTAssertNil(documentWithoutExpirationDate.expirationDate,
+                     "document expirationDate should be nil")
+    }
+
+
+    func testNameDecoding() {
         XCTAssertEqual(validDocument.name, "scanned.jpg", "document name should match")
     }
     
-    func testStatus() {
+    func testStatusDecoding() {
         XCTAssertEqual(validDocument.progress, .completed, "document status should match")
     }
     
-    func testOrigin() {
+    func testOriginDecoding() {
         XCTAssertEqual(validDocument.origin, .upload, "document origin should match")
     }
     
-    func testType() {
+    func testTypeDecoding() {
         XCTAssertEqual(validDocument.sourceClassification, .scanned, "document type should match")
     }
     
-    func testPageCount() {
+    func testPageCountDecoding() {
         XCTAssertEqual(validDocument.pageCount, 1, "document pageCount should be 1")
     }
     
-    func testPages() {
+    func testPagesDecoding() {
         XCTAssertEqual(validDocument.pages?.count, validDocument.pageCount,
                        "document pageCount and pages count should match")
         XCTAssertEqual(validDocument.pages?[0].number, 1, "first page number should be 1")
         XCTAssertEqual(validDocument.pages?[0].images.count, 2, "first page images count should be 2")
     }
     
-    func testLinks() {
+    func testLinksDecoding() {
         XCTAssertEqual(validDocument.links.extractions.absoluteString,
                        "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/extractions",
                        "document extractions resource should match")
@@ -100,7 +119,7 @@ final class GiniDocumentTests: XCTestCase {
                              "document should be nil since it is not a valid JSON")
     }
     
-    func testMetadata() {
+    func testMetadataDecoding() {
         let metadata = Document.Metadata.init(branchId: "test-brand",
                                               additionalHeaders: ["additionalTest": "additionalValue"])
         

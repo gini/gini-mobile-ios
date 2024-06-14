@@ -1,0 +1,252 @@
+[
+    {
+        "id": "b09ef70a-490f-11eb-952e-9bc6f4646c57",
+        "name": "Gini-Test-Payment-Provider",
+        "appSchemeIOS": "ginipay-bank://",
+        "packageNameAndroid": "net.gini.android.bank.sdk.exampleapp",
+        "minAppVersion": {
+            "ios": "??.?",
+            "android": "??.?"
+        },
+        "colors": {
+            "background": "009EDC",
+            "text": "FFFFFF"
+        },
+        "iconLocation": "https://health-api.gini.net/paymentProviders/b09ef70a-490f-11eb-952e-9bc6f4646c57/icon",
+        "appStoreUrlIOS": "https://apps.apple.com/de/app/bank/id1234567890",
+        "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=net.gini.android.bank.insurance.mock",
+        "universalLinkIOS": "ginipay-bank://",
+        "index": 0,
+        "gpcSupportedPlatforms": [
+            "ios",
+            "android"
+        ],
+        "openWithSupportedPlatforms": []
+    },
+    {
+        "id": "dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7",
+        "name": "ING-DiBa",
+        "appSchemeIOS": "ginipay-ingdiba://",
+        "packageNameAndroid": "de.ingdiba.bankingapp",
+        "minAppVersion": {
+            "ios": "??.?",
+            "android": "??.?"
+        },
+        "colors": {
+            "background": "daa520",
+            "text": "54f1db"
+        },
+        "iconLocation": "https://health-api.gini.net/paymentProviders/dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7/icon",
+        "universalLinkIOS": "ginipay-ingdiba://",
+        "index": 6,
+        "gpcSupportedPlatforms": [
+            "ios",
+            "android"
+        ],
+        "openWithSupportedPlatforms": []
+    },
+    {
+        "id": "f7d06ee0-51fd-11ec-8216-97f0937beb16",
+        "name": "GiniBank",
+        "appSchemeIOS": "ginipay-ginibank://",
+        "packageNameAndroid": "net.gini.android.bank.sdk.ginibank",
+        "minAppVersion": {
+            "ios": "1.2.3",
+            "android": "4.5.6"
+        },
+        "colors": {
+            "background": "FFFFFF",
+            "text": "009EDC"
+        },
+        "iconLocation": "https://health-api.gini.net/paymentProviders/f7d06ee0-51fd-11ec-8216-97f0937beb16/icon",
+        "universalLinkIOS": "ginipay-ginibank://",
+        "index": 1,
+        "gpcSupportedPlatforms": [
+            "ios",
+            "android"
+        ],
+        "openWithSupportedPlatforms": []
+    },
+    {
+        "id": "0bd58eae-7ea2-11ec-8a88-8fbe75353d94",
+        "name": "ConsorsbankMock",
+        "appSchemeIOS": "ginipay-consorsbank-mock://",
+        "packageNameAndroid": "de.consorsbank.bankingapp",
+        "minAppVersion": {
+            "ios": "1.2.3",
+            "android": "4.5.6"
+        },
+        "colors": {
+            "background": "4DBED3",
+            "text": "FFFFFF"
+        },
+        "iconLocation": "https://health-api.gini.net/paymentProviders/0bd58eae-7ea2-11ec-8a88-8fbe75353d94/icon",
+        "universalLinkIOS": "ginipay-consorsbank-mock://",
+        "index": 2,
+        "gpcSupportedPlatforms": [
+            "ios",
+            "android"
+        ],
+        "openWithSupportedPlatforms": []
+    },
+    {
+        "id": "f2d2f9a6-8e4a-11ec-97e4-e372f4cd98db",
+        "name": "Consorsbank Test",
+        "appSchemeIOS": "ginipay-consorsbanktest://",
+        "packageNameAndroid": "de.consorsbank.test",
+        "minAppVersion": {
+            "ios": "1.0.0",
+            "android": "1.0.0"
+        },
+        "colors": {
+            "background": "0080A6",
+            "text": "FFFFFF"
+        },
+        "iconLocation": "https://health-api.gini.net/paymentProviders/f2d2f9a6-8e4a-11ec-97e4-e372f4cd98db/icon",
+        "universalLinkIOS": "ginipay-consorsbanktest://",
+        "index": 3,
+        "gpcSupportedPlatforms": [
+            "ios",
+            "android"
+        ],
+        "openWithSupportedPlatforms": []
+    },
+    {
+        "id": "d5a56d26-8e4c-11ec-9c27-5b350ade3856",
+        "name": "Consorsbank Dev",
+        "appSchemeIOS": "ginipay-consorsbankdebug://",
+        "packageNameAndroid": "de.consorsbank.debug",
+        "minAppVersion": {
+            "ios": "1.0.0",
+            "android": "1.0.0"
+        },
+        "colors": {
+            "background": "0080A6",
+            "text": "FFFFFF"
+        },
+        "iconLocation": "https://health-api.gini.net/paymentProviders/d5a56d26-8e4c-11ec-9c27-5b350ade3856/icon",
+        "universalLinkIOS": "ginipay-consorsbankdebug://",
+        "index": 4,
+        "gpcSupportedPlatforms": [
+            "ios",
+            "android"
+        ],
+        "openWithSupportedPlatforms": []
+    },
+    {
+        "id": "f2e66ede-57be-43d9-b483-5c746220c594",
+        "name": "Bank",
+        "appSchemeIOS": "ginipay-insurance-bank-mock://",
+        "packageNameAndroid": "net.gini.android.bank.insurance.mock",
+        "minAppVersion": {
+            "ios": "1.0.0",
+            "android": "1.0.0"
+        },
+        "colors": {
+            "background": "003FE2",
+            "text": "FFFFFF"
+        },
+        "iconLocation": "https://health-api.gini.net/paymentProviders/f2e66ede-57be-43d9-b483-5c746220c594/icon",
+        "appStoreUrlIOS": "https://testflight.apple.com/join/BTe3AH8w",
+        "playStoreUrlAndroid": "https://install.appcenter.ms/orgs/gini-team-organization/apps/bank-1/distribution_groups/internal",
+        "universalLinkIOS": "ginipay-insurance-bank-mock://",
+        "index": 5,
+        "gpcSupportedPlatforms": [
+            "ios",
+            "android"
+        ],
+        "openWithSupportedPlatforms": []
+    },
+    {
+        "id": "a65b0646-51fe-11ec-8736-c338396b2f09",
+        "name": "Consorsbank",
+        "appSchemeIOS": "ginipay-consorsbank://",
+        "packageNameAndroid": "de.consorsbank",
+        "minAppVersion": {
+            "ios": "1.0.0",
+            "android": "1.0.0"
+        },
+        "colors": {
+            "background": "0080A6",
+            "text": "FFFFFF"
+        },
+        "iconLocation": "https://health-api.gini.net/paymentProviders/a65b0646-51fe-11ec-8736-c338396b2f09/icon",
+        "appStoreUrlIOS": "https://apps.apple.com/de/app/consorsbank/id930883278",
+        "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=de.consorsbank",
+        "universalLinkIOS": "ginipay-consorsbank://",
+        "index": 7,
+        "gpcSupportedPlatforms": [
+            "ios",
+            "android"
+        ],
+        "openWithSupportedPlatforms": []
+    },
+    {
+        "id": "03e8f20c-8e4d-11ec-a97f-5f81b1fbfee4",
+        "name": "BNP Paribas myPrivateBank",
+        "appSchemeIOS": "ginipay-cbwm://",
+        "packageNameAndroid": "de.bnp.wm",
+        "minAppVersion": {
+            "ios": "1.0.0",
+            "android": "1.0.0"
+        },
+        "colors": {
+            "background": "01975E",
+            "text": "FFFFFF"
+        },
+        "iconLocation": "https://health-api.gini.net/paymentProviders/03e8f20c-8e4d-11ec-a97f-5f81b1fbfee4/icon",
+        "appStoreUrlIOS": "https://apps.apple.com/de/app/myprivatebank/id1115169520",
+        "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=de.bnp.wm",
+        "universalLinkIOS": "ginipay-cbwm://",
+        "index": 8,
+        "gpcSupportedPlatforms": [
+            "ios",
+            "android"
+        ],
+        "openWithSupportedPlatforms": []
+    },
+    {
+        "id": "43119f92-8e4d-11ec-861f-c75b8eeceadc",
+        "name": "BNP Paribas myPrivateBank Dev",
+        "appSchemeIOS": "ginipay-cbwmdebug://",
+        "packageNameAndroid": "de.bnp.wm.debug",
+        "minAppVersion": {
+            "ios": "1.0.0",
+            "android": "1.0.0"
+        },
+        "colors": {
+            "background": "01975E",
+            "text": "FFFFFF"
+        },
+        "iconLocation": "https://health-api.gini.net/paymentProviders/43119f92-8e4d-11ec-861f-c75b8eeceadc/icon",
+        "universalLinkIOS": "ginipay-cbwmdebug://",
+        "index": 9,
+        "gpcSupportedPlatforms": [
+            "ios",
+            "android"
+        ],
+        "openWithSupportedPlatforms": []
+    },
+    {
+        "id": "72e3b804-8e4d-11ec-be15-9bfa6d461196",
+        "name": "BNP Paribas myPrivateBank Test",
+        "appSchemeIOS": "ginipay-cbwmtest://",
+        "packageNameAndroid": "de.bnp.wm.test",
+        "minAppVersion": {
+            "ios": "1.0.0",
+            "android": "1.0.0"
+        },
+        "colors": {
+            "background": "01975E",
+            "text": "FFFFFF"
+        },
+        "iconLocation": "https://health-api.gini.net/paymentProviders/72e3b804-8e4d-11ec-be15-9bfa6d461196/icon",
+        "universalLinkIOS": "ginipay-cbwmtest://",
+        "index": 10,
+        "gpcSupportedPlatforms": [
+            "ios",
+            "android"
+        ],
+        "openWithSupportedPlatforms": []
+    }
+]
