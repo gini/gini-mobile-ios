@@ -14,7 +14,7 @@ import Foundation
  */
 public struct ClientConfiguration: Decodable {
     /**
-     Creates a new `Configuration` instance.
+     Creates a new `ClientConfiguration` instance.
 
      - parameter clientID: A unique identifier for the client.
      - parameter userJourneyAnalyticsEnabled: A flag indicating whether user journey analytics is enabled.
