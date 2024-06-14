@@ -73,3 +73,10 @@ func loadPaymentRequest() -> PaymentRequest {
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
         return try! JSONDecoder().decode(PaymentRequest.self, from: jsonData!)
 }
+
+func loadPayment() -> Payment {
+    let fileURLPath: String? = Bundle.module
+        .path(forResource: "payment", ofType: "json")
+    let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
+        return try! JSONDecoder().decode(Payment.self, from: jsonData!)
+}

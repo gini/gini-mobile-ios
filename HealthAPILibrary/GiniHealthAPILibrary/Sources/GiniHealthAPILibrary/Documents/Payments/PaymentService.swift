@@ -85,6 +85,18 @@ public final class PaymentService: PaymentServiceProtocol {
         self.paymentRequests(limit: limit, offset: offset, resourceHandler: sessionManager.data, completion: completion)
     }
 
+    /**
+     *  Returns a payment.
+     *
+     * - Parameter id:            The the payment request's unique identifier
+     * - Parameter completion:    A completion callback, returning the payment on success
+     */
+
+    public func payment(id: String,
+                        completion: @escaping CompletionResult<Payment>) {
+        self.payment(id: id, resourceHandler: sessionManager.data, completion: completion)
+    }
+
     let sessionManager: SessionManagerProtocol
 
     public var apiDomain: APIDomain
@@ -176,6 +188,16 @@ protocol PaymentServiceProtocol: AnyObject {
     func paymentRequests(limit: Int?,
                          offset: Int?,
                          completion: @escaping CompletionResult<PaymentRequests>)
+    
+    /**
+     *  Returns a payment.
+     *
+     * - Parameter id:            The the payment request's unique identifier
+     * - Parameter completion:    A completion callback, returning the payment on success
+     */
+
+    func payment(id: String,
+                 completion: @escaping CompletionResult<Payment>)
 
     /**
      *  Returns a list of payment requests.
@@ -315,6 +337,21 @@ extension PaymentService {
             }
             
         }
+    }
+
+    func payment(id: String,
+                 resourceHandler: ResourceDataHandler<APIResource<Payment>>,
+                 completion: @escaping CompletionResult<Payment>) {
+        let resource = APIResource<Payment>(method: .payment(id: id), apiDomain: apiDomain, httpMethod: .get)
+
+        resourceHandler(resource, { result in
+            switch result {
+            case let .success(payment):
+                completion(.success(payment))
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        })
     }
 
     func pdfWithQRCode(paymentRequestId: String,

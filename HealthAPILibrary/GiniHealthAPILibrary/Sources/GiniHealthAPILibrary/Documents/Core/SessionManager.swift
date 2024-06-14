@@ -322,7 +322,7 @@ private extension SessionManager {
                 completion(.failure(.badRequest(response: response, data: data)))
                 return
             }
-            completion(.failure(.badRequest(response: response, data: data)))
+            completion(.failure(.unauthorized(response: response, data: data)))
         case 401:
             completion(.failure(.unauthorized(response: response, data: data)))
         case 404:
