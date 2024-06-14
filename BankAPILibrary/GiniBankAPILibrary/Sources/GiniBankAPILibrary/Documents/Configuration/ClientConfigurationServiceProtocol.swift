@@ -8,7 +8,7 @@
 import Foundation
 
 /**
- Protocol for configuration service
+ Protocol for client configuration service
  */
 public protocol ClientConfigurationServiceProtocol: AnyObject {
     /**

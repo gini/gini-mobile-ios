@@ -10,7 +10,7 @@ import Foundation
 /**
  A service responsible for fetching configuration settings.
  
- This service implements the `ConfigurationServiceProtocol` and provides methods to retrieve configuration data from a specified API domain.
+ This service implements the `ClientConfigurationServiceProtocol` and provides methods to retrieve configuration data from a specified API domain.
  */
 public final class ClientConfigurationService: ClientConfigurationServiceProtocol {
     /**
@@ -31,7 +31,7 @@ public final class ClientConfigurationService: ClientConfigurationServiceProtoco
     public var apiDomain: APIDomain
 
     /**
-     Initializes a new instance of `ConfigurationService`.
+     Initializes a new instance of `ClientConfigurationService`.
      
      - Parameters:
        - sessionManager: An object conforming to `SessionManagerProtocol` responsible for managing network sessions.
