@@ -29,9 +29,17 @@ public class AnalyticsManager {
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
+        superProperties[.giniClientID] = configuration.clientID
         initializeMixpanel(with: deviceID, token: configuration.mixpanelToken)
         initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey)
-        superProperties[.giniClientID] = configuration.clientID
+    }
+
+    /// Cleans up the Analytics manager by resetting its properties and events queue.
+    public static func cleanManager() {
+        userProperties = [:]
+        superProperties = [:]
+        eventsQueue = []
+        mixpanelInstance = nil
     }
 
     // MARK: Initialization
@@ -194,7 +202,7 @@ public class AnalyticsManager {
 
     private static func handleProperties<T: RawRepresentable>(_ properties: [T: AnalyticsPropertyValue],
                                                               propertyStore: inout [T: AnalyticsPropertyValue],
-                                                              propertiesHandler: ([String: String]) -> Void) 
+                                                              propertiesHandler: ([String: String]) -> Void)
     where T.RawValue == String {
         if mixpanelInstance != nil, amplitudeInitialised {
             var propertiesToTrack: [String: String] = [:]
