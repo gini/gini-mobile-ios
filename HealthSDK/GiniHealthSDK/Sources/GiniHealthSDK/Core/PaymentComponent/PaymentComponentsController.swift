@@ -117,13 +117,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         }
         return nil
     }
-    
-    private func checkPaymentProviderIsInstalled(paymentProvider: PaymentProvider?) -> Bool {
-        if let appSchemeIOS = paymentProvider?.appSchemeIOS, let url = URL(string: appSchemeIOS) {
-            return UIApplication.shared.canOpenURL(url)
-        }
-        return false
-    }
 
     /**
      Checks if the document is payable by extracting the IBAN.
