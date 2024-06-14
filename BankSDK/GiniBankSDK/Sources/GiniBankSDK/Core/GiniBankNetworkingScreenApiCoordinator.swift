@@ -215,10 +215,10 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
 
         if let documents = documents, !documents.isEmpty, !documents.containsDifferentTypes {
-            AnalyticsManager.registerSuperProperties([.entryPoint: EntryPointAnalytics.openWith.rawValue])
+            AnalyticsManager.superProperties[.entryPoint] = EntryPointAnalytics.openWith.rawValue
         } else {
             let entryPoint = EntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
-            AnalyticsManager.registerSuperProperties([.entryPoint: entryPoint])
+            AnalyticsManager.superProperties[.entryPoint] = entryPoint
         }
 
         configurationService?.fetchConfigurations(completion: { result in
