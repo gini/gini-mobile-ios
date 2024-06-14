@@ -16,7 +16,6 @@ public class AnalyticsManager {
     }
     private static var amplitudeInitialised: Bool = false {
         didSet {
-            amplitudeSuperPropertiesToTrack = mapAmplitudeSuperProperties()
             handleAnalyticsSDKsInit()
         }
     }
@@ -149,7 +148,7 @@ public class AnalyticsManager {
                          propertyStore: &superProperties,
                          propertiesHandler: { propertiesToTrack in
             mixpanelInstance?.registerSuperProperties(propertiesToTrack)
-            // Amplitude does not offer a dedicated method for this purpose, we will attach super properties manually at each `logEvent`
+            amplitudeSuperPropertiesToTrack = mapAmplitudeSuperProperties(properties: properties)
         })
     }
 
@@ -211,8 +210,8 @@ public class AnalyticsManager {
         }
     }
 
-    private static func mapAmplitudeSuperProperties() -> [String: String] {
-        return superProperties
+    private static func mapAmplitudeSuperProperties(properties: [AnalyticsSuperProperty: AnalyticsPropertyValue]) -> [String: String] {
+        return properties
             .map { (key, value) in
                 (key.rawValue, convertPropertyValueToString(value))
             }
