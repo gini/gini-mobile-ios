@@ -6,12 +6,12 @@
 
 import Foundation
 
-enum EntryPointAnalytics: String {
+public enum EntryPointAnalytics: String {
     case button
     case field
     case openWith = "open_with"
     
-    static func makeFrom(entryPoint: GiniConfiguration.GiniEntryPoint) -> EntryPointAnalytics {
+   public static func makeFrom(entryPoint: GiniConfiguration.GiniEntryPoint) -> EntryPointAnalytics {
         switch entryPoint {
         case .button:
             return .button
