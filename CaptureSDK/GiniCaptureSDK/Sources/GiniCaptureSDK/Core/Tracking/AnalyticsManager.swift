@@ -20,19 +20,29 @@ public class AnalyticsManager {
         }
     }
     private static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
-    private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
     private static var eventsQueue: [QueuedAnalyticsEvent] = []
+    private static var amplitudeSuperPropertiesToTrack: [String: String] = [:]
+    private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
 
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
+        superProperties[.giniClientID] = configuration.clientID
         initializeMixpanel(with: deviceID, token: configuration.mixpanelToken)
         initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey)
-        superProperties[.giniClientID] = configuration.clientID
     }
 
+    /// Cleans up the Analytics manager by resetting its properties and events queue.
+    public static func cleanManager() {
+        userProperties = [:]
+        superProperties = [:]
+        eventsQueue = []
+        mixpanelInstance = nil
+    }
+
+    // MARK: Initialization
     private static func initializeMixpanel(with deviceID: String, token: String?) {
         guard let token else { return }
         mixpanelInstance = Mixpanel.initialize(token: token,
@@ -55,7 +65,6 @@ public class AnalyticsManager {
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
-        AnalyticsManager.track(event: .sdkOpened, screenName: nil)
         processEventsQueue()
     }
 
@@ -105,8 +114,23 @@ public class AnalyticsManager {
             eventProperties[property.key.rawValue] = convertPropertyValueToString(propertyValue)
         }
 
+        // Track event in Mixpanel
         mixpanelInstance.track(event: event.rawValue, properties: eventProperties)
-        Amplitude.instance().logEvent(event.rawValue, withEventProperties: eventProperties)
+
+        // Track event in Ampltitude
+        ampltitudeTrackEvent(event: event, eventProperties: eventProperties)
+    }
+
+    /// This function logs an event in Amplitude analytics with the specified event properties.
+    private static func ampltitudeTrackEvent(event: AnalyticsEvent, eventProperties: [String: Any]) {
+        // Merges the provided event properties with the super properties because Amplitude does not offer
+        // a dedicated method for this purpose.
+
+        // Merge event properties with super properties. In case of key collisions, values from eventProperties will be used.
+        let amplitudeProperties = eventProperties.merging(amplitudeSuperPropertiesToTrack) { (_, new) in new }
+
+        // Log the event with Amplitude instance
+        Amplitude.instance().logEvent(event.rawValue, withEventProperties: amplitudeProperties)
     }
 
     private static func processEventsQueue() {
@@ -132,7 +156,7 @@ public class AnalyticsManager {
                          propertyStore: &superProperties,
                          propertiesHandler: { propertiesToTrack in
             mixpanelInstance?.registerSuperProperties(propertiesToTrack)
-            // Amplitude doesn't have super properties, so it wouldn't be tracked
+            amplitudeSuperPropertiesToTrack = mapAmplitudeSuperProperties(properties: properties)
         })
     }
 
@@ -176,11 +200,10 @@ public class AnalyticsManager {
         }
     }
 
-    private static func handleProperties<T: RawRepresentable>(
-        _ properties: [T: AnalyticsPropertyValue],
-        propertyStore: inout [T: AnalyticsPropertyValue],
-        propertiesHandler: ([String: String]) -> Void
-    ) where T.RawValue == String {
+    private static func handleProperties<T: RawRepresentable>(_ properties: [T: AnalyticsPropertyValue],
+                                                              propertyStore: inout [T: AnalyticsPropertyValue],
+                                                              propertiesHandler: ([String: String]) -> Void)
+    where T.RawValue == String {
         if mixpanelInstance != nil, amplitudeInitialised {
             var propertiesToTrack: [String: String] = [:]
             for (property, value) in properties {
@@ -192,5 +215,16 @@ public class AnalyticsManager {
                 propertyStore[property] = value
             }
         }
+    }
+
+    private static func mapAmplitudeSuperProperties(properties: [AnalyticsSuperProperty: AnalyticsPropertyValue])
+    -> [String: String] {
+        return properties
+            .map { (key, value) in
+                (key.rawValue, convertPropertyValueToString(value))
+            }
+            .reduce(into: [String: String]()) { (dict, pair) in
+                dict[pair.0] = pair.1
+            }
     }
 }

@@ -219,22 +219,39 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
      SDK with the provided documents.
      */
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
+        // Clean the AnalyticsManager properties and events queue between SDK sessions.
+        /// The `cleanManager` method of `AnalyticsManager` is called to ensure that properties and events
+        /// are reset between SDK sessions. This is particularly important when the SDK is reopened using
+        /// the `openWith` flow after it has already been opened for the first time. Without this reset,
+        /// residual properties and events from the previous session could lead to incorrect analytics data.
+        AnalyticsManager.cleanManager()
+
+        var entryPointValue = EntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
+        if let documents = documents, !documents.isEmpty, !documents.containsDifferentTypes {
+            entryPointValue = EntryPointAnalytics.openWith.rawValue
+        }
+        AnalyticsManager.registerSuperProperties([.entryPoint: entryPointValue])
+
         configurationService?.fetchConfigurations(completion: { result in
             switch result {
             case .success(let configuration):
                 DispatchQueue.main.async {
                     self.initializeAnalytics(with: configuration)
                 }
-            case .failure(_):
-                break
+            case .failure(let error):
+                print("❌ configurationService with error: \(error)")
+                // There will be no retries if the endpoint fails.
+                // We will not implement any caching mechanism on our side if the request is too slow.
+                // In case of a failure, the UJ analytics will remain disabled for that session.
             }
         })
         return self.start(withDocuments: documents, animated: animated)
     }
 
     private func initializeAnalytics(with configuration: ClientConfiguration) {
+        let userJourneyAnalyticsEnabled = configuration.userJourneyAnalyticsEnabled
         let analyticsConfiguration = AnalyticsConfiguration(clientID: configuration.clientID,
-                                                            userJourneyAnalyticsEnabled: configuration.userJourneyAnalyticsEnabled,
+                                                            userJourneyAnalyticsEnabled: userJourneyAnalyticsEnabled,
                                                             mixpanelToken: configuration.mixpanelToken,
                                                             amplitudeApiKey: configuration.amplitudeApiKey)
         AnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
