@@ -79,10 +79,9 @@ class OnboardingViewController: UIViewController {
 
     private func configureBasicNavigation() {
         nextButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        nextButton.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
-                                                                         comment: "Next button")
         nextButton.configure(with: GiniConfiguration.shared.primaryButtonConfiguration)
         nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
+        configureNextButton()
 
         configureSkipButton()
     }
@@ -130,11 +129,18 @@ class OnboardingViewController: UIViewController {
         navigationItem.rightBarButtonItem = skipButton.barButton
     }
 
-    private func configureNextButton() {
+    private func configureGetStartedButton() {
         let getStartedTitle = NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
                                                                comment: "Get Started button")
         nextButton.setTitle(getStartedTitle, for: .normal)
         nextButton.accessibilityValue = getStartedTitle
+    }
+
+    private func configureNextButton() {
+        let nextButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
+                                                               comment: "Next button")
+        nextButton.accessibilityValue = nextButtonTitle
+        nextButton.setTitle(nextButtonTitle, for: .normal)
     }
 
     @objc private func skipTapped() {
@@ -228,7 +234,7 @@ extension OnboardingViewController: OnboardingScreen {
             } else {
                 navigationItem.rightBarButtonItem = nil
                 if nextButton != nil {
-                    configureNextButton()
+                    configureGetStartedButton()
                 }
             }
         default:
