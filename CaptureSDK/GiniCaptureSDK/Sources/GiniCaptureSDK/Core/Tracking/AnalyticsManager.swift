@@ -95,30 +95,15 @@ public class AnalyticsManager {
     static func track(event: AnalyticsEvent,
                       screenNameString: String? = nil,
                       properties: [AnalyticsProperty] = []) {
-        guard let mixpanelInstance, amplitudeInitialised else {
-            let queuedEvent = QueuedAnalyticsEvent(event: event,
-                                                   screenNameString: screenNameString,
-                                                   properties: properties)
-            eventsQueue.append(queuedEvent)
-            return
+        let queuedEvent = QueuedAnalyticsEvent(event: event,
+                                               screenNameString: screenNameString,
+                                               properties: properties)
+        eventsQueue.append(queuedEvent)
+
+        // Process the event queue if SDKs are initialized
+        if mixpanelInstance != nil && amplitudeInitialised {
+            processEventsQueue()
         }
-
-        var eventProperties: [String: String] = [:]
-
-        if let screenName = screenNameString {
-            eventProperties[AnalyticsPropertyKey.screenName.rawValue] = screenName
-        }
-
-        for property in properties {
-            let propertyValue = property.value.analyticsPropertyValue()
-            eventProperties[property.key.rawValue] = convertPropertyValueToString(propertyValue)
-        }
-
-        // Track event in Mixpanel
-        mixpanelInstance.track(event: event.rawValue, properties: eventProperties)
-
-        // Track event in Ampltitude
-        ampltitudeTrackEvent(event: event, eventProperties: eventProperties)
     }
 
     /// This function logs an event in Amplitude analytics with the specified event properties.
@@ -136,9 +121,22 @@ public class AnalyticsManager {
     private static func processEventsQueue() {
         while !eventsQueue.isEmpty {
             let queuedEvent = eventsQueue.removeFirst()
-            track(event: queuedEvent.event,
-                  screenNameString: queuedEvent.screenNameString,
-                  properties: queuedEvent.properties)
+            var eventProperties: [String: String] = [:]
+
+            if let screenName = queuedEvent.screenNameString {
+                eventProperties[AnalyticsPropertyKey.screenName.rawValue] = screenName
+            }
+
+            for property in queuedEvent.properties {
+                let propertyValue = property.value.analyticsPropertyValue()
+                eventProperties[property.key.rawValue] = convertPropertyValueToString(propertyValue)
+            }
+
+            // Track event in Mixpanel
+            mixpanelInstance?.track(event: queuedEvent.event.rawValue, properties: eventProperties)
+
+            // Track event in Amplitude
+            ampltitudeTrackEvent(event: queuedEvent.event, eventProperties: eventProperties)
         }
     }
 
