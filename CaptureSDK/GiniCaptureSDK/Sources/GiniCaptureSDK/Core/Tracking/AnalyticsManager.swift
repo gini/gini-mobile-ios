@@ -32,6 +32,8 @@ public class AnalyticsManager {
         superProperties[.giniClientID] = configuration.clientID
         initializeMixpanel(with: deviceID, token: configuration.mixpanelToken)
         initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey)
+
+        AnalyticsManager.track(event: .sdkOpened, screenName: nil)
     }
 
     /// Cleans up the Analytics manager by resetting its properties and events queue.
