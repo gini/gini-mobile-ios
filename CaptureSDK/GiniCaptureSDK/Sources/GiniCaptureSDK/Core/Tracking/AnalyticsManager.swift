@@ -118,26 +118,32 @@ public class AnalyticsManager {
         Amplitude.instance().logEvent(event.rawValue, withEventProperties: amplitudeProperties)
     }
 
+    /// Processes the events queue by sending each queued event to Mixpanel and Amplitude
     private static func processEventsQueue() {
         while !eventsQueue.isEmpty {
             let queuedEvent = eventsQueue.removeFirst()
-            var eventProperties: [String: String] = [:]
-
-            if let screenName = queuedEvent.screenNameString {
-                eventProperties[AnalyticsPropertyKey.screenName.rawValue] = screenName
-            }
-
-            for property in queuedEvent.properties {
-                let propertyValue = property.value.analyticsPropertyValue()
-                eventProperties[property.key.rawValue] = convertPropertyValueToString(propertyValue)
-            }
-
-            // Track event in Mixpanel
-            mixpanelInstance?.track(event: queuedEvent.event.rawValue, properties: eventProperties)
-
-            // Track event in Amplitude
-            ampltitudeTrackEvent(event: queuedEvent.event, eventProperties: eventProperties)
+            track(event: queuedEvent)
         }
+    }
+
+    /// Tracks a queued analytics event
+    private static func track(event: QueuedAnalyticsEvent) {
+        var eventProperties: [String: String] = [:]
+
+        if let screenName = event.screenNameString {
+            eventProperties[AnalyticsPropertyKey.screenName.rawValue] = screenName
+        }
+
+        for property in event.properties {
+            let propertyValue = property.value.analyticsPropertyValue()
+            eventProperties[property.key.rawValue] = convertPropertyValueToString(propertyValue)
+        }
+
+        // Track event in Mixpanel
+        mixpanelInstance?.track(event: event.event.rawValue, properties: eventProperties)
+
+        // Track event in Amplitude
+        ampltitudeTrackEvent(event: event.event, eventProperties: eventProperties)
     }
 
     public static func trackUserProperties(_ properties: [AnalyticsUserProperty: AnalyticsPropertyValue]) {
