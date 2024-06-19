@@ -2,13 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSPrivacyTracking</key>
-    <true/>
-    <key>NSPrivacyTrackingDomains</key>
-    <array>
-        <string>https://api-eu.mixpanel.com</string>
-        <string>https://api2.amplitude.com/</string>
-    </array>
+	<key>NSPrivacyTracking</key>
+	<true/>
+	<key>NSPrivacyTrackingDomains</key>
+	<array>
+		<string>https://api-eu.mixpanel.com</string>
+		<string>https://api.eu.amplitude.com/</string>
+	</array>
 	<key>NSPrivacyAccessedAPITypes</key>
 	<array>
 		<dict>
