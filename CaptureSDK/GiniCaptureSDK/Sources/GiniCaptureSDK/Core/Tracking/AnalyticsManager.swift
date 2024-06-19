@@ -56,6 +56,7 @@ public class AnalyticsManager {
     private static func initializeAmplitude(with deviceID: String, apiKey: String?) {
         guard let apiKey else { return }
         Amplitude.instance().initializeApiKey(apiKey)
+        Amplitude.instance().setServerUrl("https://api.eu.amplitude.com")
         Amplitude.instance().setDeviceId(deviceID)
         Amplitude.instance().initCompletionBlock = {
             self.amplitudeInitialised = true
