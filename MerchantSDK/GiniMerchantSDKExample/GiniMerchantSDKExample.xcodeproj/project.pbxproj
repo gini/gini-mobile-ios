@@ -1,0 +1,780 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		50D80D582C245A8900B446A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D572C245A8900B446A8 /* AppDelegate.swift */; };
+		50D80D5A2C245A8900B446A8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D592C245A8900B446A8 /* SceneDelegate.swift */; };
+		50D80D612C245A8A00B446A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50D80D602C245A8A00B446A8 /* Assets.xcassets */; };
+		50D80D642C245A8A00B446A8 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 50D80D632C245A8A00B446A8 /* Base */; };
+		50D80D6F2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D6E2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.swift */; };
+		50D80D792C245A8A00B446A8 /* GiniMerchantSDKExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D782C245A8A00B446A8 /* GiniMerchantSDKExampleUITests.swift */; };
+		50D80D7B2C245A8A00B446A8 /* GiniMerchantSDKExampleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D7A2C245A8A00B446A8 /* GiniMerchantSDKExampleUITestsLaunchTests.swift */; };
+		50D80D8B2C245D3B00B446A8 /* GiniMerchantSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 50D80D8A2C245D3B00B446A8 /* GiniMerchantSDK */; };
+		50D80D8D2C245D4A00B446A8 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D80D8C2C245D4A00B446A8 /* CloudKit.framework */; };
+		50D80D9B2C245DAF00B446A8 /* MerchantNetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D8E2C245DAF00B446A8 /* MerchantNetworkingService.swift */; };
+		50D80D9C2C245DAF00B446A8 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 50D80D8F2C245DAF00B446A8 /* Credentials.plist */; };
+		50D80D9E2C245DAF00B446A8 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D912C245DAF00B446A8 /* CredentialsManager.swift */; };
+		50D80D9F2C245DAF00B446A8 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D922C245DAF00B446A8 /* UIViewController.swift */; };
+		50D80DA02C245DAF00B446A8 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D932C245DAF00B446A8 /* AppCoordinator.swift */; };
+		50D80DA12C245DAF00B446A8 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D942C245DAF00B446A8 /* RootNavigationController.swift */; };
+		50D80DA22C245DAF00B446A8 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D952C245DAF00B446A8 /* Coordinator.swift */; };
+		50D80DA32C245DAF00B446A8 /* SelectAPIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D962C245DAF00B446A8 /* SelectAPIViewController.swift */; };
+		50D80DA42C245DAF00B446A8 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D972C245DAF00B446A8 /* UIViewController+Utils.swift */; };
+		50D80DA52C245DAF00B446A8 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */; };
+		50D80DA62C245DAF00B446A8 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */; };
+		50D80DA72C245DAF00B446A8 /* PartialDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D9A2C245DAF00B446A8 /* PartialDocument.swift */; };
+		50D80DB62C245DBC00B446A8 /* HardcodedInvoices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DA82C245DBC00B446A8 /* HardcodedInvoices.swift */; };
+		50D80DB72C245DBC00B446A8 /* health-invoice-1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DA92C245DBC00B446A8 /* health-invoice-1.jpg */; };
+		50D80DB82C245DBC00B446A8 /* health-invoice-2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAA2C245DBC00B446A8 /* health-invoice-2.jpg */; };
+		50D80DB92C245DBC00B446A8 /* health-invoice-3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAB2C245DBC00B446A8 /* health-invoice-3.jpg */; };
+		50D80DBA2C245DBC00B446A8 /* health-invoice-4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAC2C245DBC00B446A8 /* health-invoice-4.jpg */; };
+		50D80DBB2C245DBC00B446A8 /* health-invoice-5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAD2C245DBC00B446A8 /* health-invoice-5.jpg */; };
+		50D80DBC2C245DBC00B446A8 /* InvoicesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */; };
+		50D80DBD2C245DBC00B446A8 /* InvoicesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */; };
+		50D80DBE2C245DBC00B446A8 /* InvoicesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */; };
+		50D80DBF2C245DBC00B446A8 /* InvoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */; };
+		50D80DC02C245DBC00B446A8 /* InvoiceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DB32C245DBC00B446A8 /* InvoiceTableViewCell.xib */; };
+		50D80DC12C245DBC00B446A8 /* InvoiceTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */; };
+		50D80DC32C245E6100B446A8 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 50D80DC22C245E6100B446A8 /* GiniCaptureSDK */; };
+		50D80DCA2C2478D800B446A8 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DC92C2478D800B446A8 /* Localizable.xcstrings */; };
+		50D80DCC2C2479BE00B446A8 /* GiniMerchantSDK in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		50D80D6B2C245A8A00B446A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50D80D4C2C245A8900B446A8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 50D80D532C245A8900B446A8;
+			remoteInfo = GiniMerchantSDKExample;
+		};
+		50D80D752C245A8A00B446A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50D80D4C2C245A8900B446A8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 50D80D532C245A8900B446A8;
+			remoteInfo = GiniMerchantSDKExample;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		50D80D542C245A8900B446A8 /* GiniMerchantSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniMerchantSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		50D80D572C245A8900B446A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		50D80D592C245A8900B446A8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		50D80D602C245A8A00B446A8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		50D80D632C245A8A00B446A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		50D80D652C245A8A00B446A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50D80D6A2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniMerchantSDKExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		50D80D6E2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleTests.swift; sourceTree = "<group>"; };
+		50D80D742C245A8A00B446A8 /* GiniMerchantSDKExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniMerchantSDKExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		50D80D782C245A8A00B446A8 /* GiniMerchantSDKExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleUITests.swift; sourceTree = "<group>"; };
+		50D80D7A2C245A8A00B446A8 /* GiniMerchantSDKExampleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		50D80D8C2C245D4A00B446A8 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		50D80D8E2C245DAF00B446A8 /* MerchantNetworkingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerchantNetworkingService.swift; sourceTree = "<group>"; };
+		50D80D8F2C245DAF00B446A8 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
+		50D80D912C245DAF00B446A8 /* CredentialsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
+		50D80D922C245DAF00B446A8 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		50D80D932C245DAF00B446A8 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		50D80D942C245DAF00B446A8 /* RootNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
+		50D80D952C245DAF00B446A8 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		50D80D962C245DAF00B446A8 /* SelectAPIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAPIViewController.swift; sourceTree = "<group>"; };
+		50D80D972C245DAF00B446A8 /* UIViewController+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
+		50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
+		50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
+		50D80D9A2C245DAF00B446A8 /* PartialDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialDocument.swift; sourceTree = "<group>"; };
+		50D80DA82C245DBC00B446A8 /* HardcodedInvoices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HardcodedInvoices.swift; sourceTree = "<group>"; };
+		50D80DA92C245DBC00B446A8 /* health-invoice-1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-1.jpg"; sourceTree = "<group>"; };
+		50D80DAA2C245DBC00B446A8 /* health-invoice-2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-2.jpg"; sourceTree = "<group>"; };
+		50D80DAB2C245DBC00B446A8 /* health-invoice-3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-3.jpg"; sourceTree = "<group>"; };
+		50D80DAC2C245DBC00B446A8 /* health-invoice-4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-4.jpg"; sourceTree = "<group>"; };
+		50D80DAD2C245DBC00B446A8 /* health-invoice-5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-5.jpg"; sourceTree = "<group>"; };
+		50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListCoordinator.swift; sourceTree = "<group>"; };
+		50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListViewController.swift; sourceTree = "<group>"; };
+		50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListViewModel.swift; sourceTree = "<group>"; };
+		50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCell.swift; sourceTree = "<group>"; };
+		50D80DB32C245DBC00B446A8 /* InvoiceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InvoiceTableViewCell.xib; sourceTree = "<group>"; };
+		50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCellModel.swift; sourceTree = "<group>"; };
+		50D80DC92C2478D800B446A8 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniMerchantSDK; path = ../GiniMerchantSDK; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		50D80D512C245A8900B446A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50D80D8D2C245D4A00B446A8 /* CloudKit.framework in Frameworks */,
+				50D80DC32C245E6100B446A8 /* GiniCaptureSDK in Frameworks */,
+				50D80D8B2C245D3B00B446A8 /* GiniMerchantSDK in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50D80D672C245A8A00B446A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50D80D712C245A8A00B446A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		50D80D4B2C245A8900B446A8 = {
+			isa = PBXGroup;
+			children = (
+				50D80DC52C246D8300B446A8 /* Packages */,
+				50D80D562C245A8900B446A8 /* GiniMerchantSDKExample */,
+				50D80D6D2C245A8A00B446A8 /* GiniMerchantSDKExampleTests */,
+				50D80D772C245A8A00B446A8 /* GiniMerchantSDKExampleUITests */,
+				50D80D552C245A8900B446A8 /* Products */,
+				50D80D872C245D2B00B446A8 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		50D80D552C245A8900B446A8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				50D80D542C245A8900B446A8 /* GiniMerchantSDKExample.app */,
+				50D80D6A2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.xctest */,
+				50D80D742C245A8A00B446A8 /* GiniMerchantSDKExampleUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		50D80D562C245A8900B446A8 /* GiniMerchantSDKExample */ = {
+			isa = PBXGroup;
+			children = (
+				50D80DC82C24788F00B446A8 /* Sources */,
+				50D80DC72C24786500B446A8 /* Resources */,
+				50D80D652C245A8A00B446A8 /* Info.plist */,
+			);
+			path = GiniMerchantSDKExample;
+			sourceTree = "<group>";
+		};
+		50D80D6D2C245A8A00B446A8 /* GiniMerchantSDKExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				50D80D6E2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.swift */,
+			);
+			path = GiniMerchantSDKExampleTests;
+			sourceTree = "<group>";
+		};
+		50D80D772C245A8A00B446A8 /* GiniMerchantSDKExampleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				50D80D782C245A8A00B446A8 /* GiniMerchantSDKExampleUITests.swift */,
+				50D80D7A2C245A8A00B446A8 /* GiniMerchantSDKExampleUITestsLaunchTests.swift */,
+			);
+			path = GiniMerchantSDKExampleUITests;
+			sourceTree = "<group>";
+		};
+		50D80D872C245D2B00B446A8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				50D80D8C2C245D4A00B446A8 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		50D80DAE2C245DBC00B446A8 /* HardcodedInvoices */ = {
+			isa = PBXGroup;
+			children = (
+				50D80DA82C245DBC00B446A8 /* HardcodedInvoices.swift */,
+				50D80DA92C245DBC00B446A8 /* health-invoice-1.jpg */,
+				50D80DAA2C245DBC00B446A8 /* health-invoice-2.jpg */,
+				50D80DAB2C245DBC00B446A8 /* health-invoice-3.jpg */,
+				50D80DAC2C245DBC00B446A8 /* health-invoice-4.jpg */,
+				50D80DAD2C245DBC00B446A8 /* health-invoice-5.jpg */,
+			);
+			path = HardcodedInvoices;
+			sourceTree = "<group>";
+		};
+		50D80DB52C245DBC00B446A8 /* InvoicesList */ = {
+			isa = PBXGroup;
+			children = (
+				50D80DAE2C245DBC00B446A8 /* HardcodedInvoices */,
+				50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */,
+				50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */,
+				50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */,
+				50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */,
+				50D80DB32C245DBC00B446A8 /* InvoiceTableViewCell.xib */,
+				50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */,
+			);
+			path = InvoicesList;
+			sourceTree = "<group>";
+		};
+		50D80DC52C246D8300B446A8 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		50D80DC72C24786500B446A8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				50D80D8F2C245DAF00B446A8 /* Credentials.plist */,
+				50D80D622C245A8A00B446A8 /* LaunchScreen.storyboard */,
+				50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */,
+				50D80D602C245A8A00B446A8 /* Assets.xcassets */,
+				50D80DC92C2478D800B446A8 /* Localizable.xcstrings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		50D80DC82C24788F00B446A8 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				50D80DB52C245DBC00B446A8 /* InvoicesList */,
+				50D80D932C245DAF00B446A8 /* AppCoordinator.swift */,
+				50D80D952C245DAF00B446A8 /* Coordinator.swift */,
+				50D80D912C245DAF00B446A8 /* CredentialsManager.swift */,
+				50D80D8E2C245DAF00B446A8 /* MerchantNetworkingService.swift */,
+				50D80D9A2C245DAF00B446A8 /* PartialDocument.swift */,
+				50D80D942C245DAF00B446A8 /* RootNavigationController.swift */,
+				50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */,
+				50D80D962C245DAF00B446A8 /* SelectAPIViewController.swift */,
+				50D80D922C245DAF00B446A8 /* UIViewController.swift */,
+				50D80D972C245DAF00B446A8 /* UIViewController+Utils.swift */,
+				50D80D572C245A8900B446A8 /* AppDelegate.swift */,
+				50D80D592C245A8900B446A8 /* SceneDelegate.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		50D80D532C245A8900B446A8 /* GiniMerchantSDKExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50D80D7E2C245A8A00B446A8 /* Build configuration list for PBXNativeTarget "GiniMerchantSDKExample" */;
+			buildPhases = (
+				50D80D502C245A8900B446A8 /* Sources */,
+				50D80D512C245A8900B446A8 /* Frameworks */,
+				50D80D522C245A8900B446A8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GiniMerchantSDKExample;
+			packageProductDependencies = (
+				50D80D8A2C245D3B00B446A8 /* GiniMerchantSDK */,
+				50D80DC22C245E6100B446A8 /* GiniCaptureSDK */,
+			);
+			productName = GiniMerchantSDKExample;
+			productReference = 50D80D542C245A8900B446A8 /* GiniMerchantSDKExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		50D80D692C245A8A00B446A8 /* GiniMerchantSDKExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50D80D812C245A8A00B446A8 /* Build configuration list for PBXNativeTarget "GiniMerchantSDKExampleTests" */;
+			buildPhases = (
+				50D80D662C245A8A00B446A8 /* Sources */,
+				50D80D672C245A8A00B446A8 /* Frameworks */,
+				50D80D682C245A8A00B446A8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				50D80D6C2C245A8A00B446A8 /* PBXTargetDependency */,
+			);
+			name = GiniMerchantSDKExampleTests;
+			productName = GiniMerchantSDKExampleTests;
+			productReference = 50D80D6A2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		50D80D732C245A8A00B446A8 /* GiniMerchantSDKExampleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50D80D842C245A8A00B446A8 /* Build configuration list for PBXNativeTarget "GiniMerchantSDKExampleUITests" */;
+			buildPhases = (
+				50D80D702C245A8A00B446A8 /* Sources */,
+				50D80D712C245A8A00B446A8 /* Frameworks */,
+				50D80D722C245A8A00B446A8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				50D80D762C245A8A00B446A8 /* PBXTargetDependency */,
+			);
+			name = GiniMerchantSDKExampleUITests;
+			productName = GiniMerchantSDKExampleUITests;
+			productReference = 50D80D742C245A8A00B446A8 /* GiniMerchantSDKExampleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		50D80D4C2C245A8900B446A8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					50D80D532C245A8900B446A8 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					50D80D692C245A8A00B446A8 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 50D80D532C245A8900B446A8;
+					};
+					50D80D732C245A8A00B446A8 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 50D80D532C245A8900B446A8;
+					};
+				};
+			};
+			buildConfigurationList = 50D80D4F2C245A8900B446A8 /* Build configuration list for PBXProject "GiniMerchantSDKExample" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				de,
+			);
+			mainGroup = 50D80D4B2C245A8900B446A8;
+			productRefGroup = 50D80D552C245A8900B446A8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				50D80D532C245A8900B446A8 /* GiniMerchantSDKExample */,
+				50D80D692C245A8A00B446A8 /* GiniMerchantSDKExampleTests */,
+				50D80D732C245A8A00B446A8 /* GiniMerchantSDKExampleUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		50D80D522C245A8900B446A8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50D80D9C2C245DAF00B446A8 /* Credentials.plist in Resources */,
+				50D80DB82C245DBC00B446A8 /* health-invoice-2.jpg in Resources */,
+				50D80DBB2C245DBC00B446A8 /* health-invoice-5.jpg in Resources */,
+				50D80DB92C245DBC00B446A8 /* health-invoice-3.jpg in Resources */,
+				50D80D612C245A8A00B446A8 /* Assets.xcassets in Resources */,
+				50D80DCA2C2478D800B446A8 /* Localizable.xcstrings in Resources */,
+				50D80DC02C245DBC00B446A8 /* InvoiceTableViewCell.xib in Resources */,
+				50D80DA62C245DAF00B446A8 /* SelectAPIViewController.xib in Resources */,
+				50D80D642C245A8A00B446A8 /* Base in Resources */,
+				50D80DB72C245DBC00B446A8 /* health-invoice-1.jpg in Resources */,
+				50D80DCC2C2479BE00B446A8 /* GiniMerchantSDK in Resources */,
+				50D80DBA2C245DBC00B446A8 /* health-invoice-4.jpg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50D80D682C245A8A00B446A8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50D80D722C245A8A00B446A8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		50D80D502C245A8900B446A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50D80DBC2C245DBC00B446A8 /* InvoicesListCoordinator.swift in Sources */,
+				50D80DA22C245DAF00B446A8 /* Coordinator.swift in Sources */,
+				50D80DA02C245DAF00B446A8 /* AppCoordinator.swift in Sources */,
+				50D80D9E2C245DAF00B446A8 /* CredentialsManager.swift in Sources */,
+				50D80D582C245A8900B446A8 /* AppDelegate.swift in Sources */,
+				50D80DA42C245DAF00B446A8 /* UIViewController+Utils.swift in Sources */,
+				50D80D9B2C245DAF00B446A8 /* MerchantNetworkingService.swift in Sources */,
+				50D80D5A2C245A8900B446A8 /* SceneDelegate.swift in Sources */,
+				50D80DA32C245DAF00B446A8 /* SelectAPIViewController.swift in Sources */,
+				50D80DA72C245DAF00B446A8 /* PartialDocument.swift in Sources */,
+				50D80DBD2C245DBC00B446A8 /* InvoicesListViewController.swift in Sources */,
+				50D80DB62C245DBC00B446A8 /* HardcodedInvoices.swift in Sources */,
+				50D80DA52C245DAF00B446A8 /* ScreenAPICoordinator.swift in Sources */,
+				50D80DA12C245DAF00B446A8 /* RootNavigationController.swift in Sources */,
+				50D80DBE2C245DBC00B446A8 /* InvoicesListViewModel.swift in Sources */,
+				50D80DBF2C245DBC00B446A8 /* InvoiceTableViewCell.swift in Sources */,
+				50D80D9F2C245DAF00B446A8 /* UIViewController.swift in Sources */,
+				50D80DC12C245DBC00B446A8 /* InvoiceTableViewCellModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50D80D662C245A8A00B446A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50D80D6F2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50D80D702C245A8A00B446A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50D80D792C245A8A00B446A8 /* GiniMerchantSDKExampleUITests.swift in Sources */,
+				50D80D7B2C245A8A00B446A8 /* GiniMerchantSDKExampleUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		50D80D6C2C245A8A00B446A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 50D80D532C245A8900B446A8 /* GiniMerchantSDKExample */;
+			targetProxy = 50D80D6B2C245A8A00B446A8 /* PBXContainerItemProxy */;
+		};
+		50D80D762C245A8A00B446A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 50D80D532C245A8900B446A8 /* GiniMerchantSDKExample */;
+			targetProxy = 50D80D752C245A8A00B446A8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		50D80D622C245A8A00B446A8 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				50D80D632C245A8A00B446A8 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		50D80D7C2C245A8A00B446A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		50D80D7D2C245A8A00B446A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		50D80D7F2C245A8A00B446A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GiniMerchantSDKExample/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Gini Merchant";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		50D80D802C245A8A00B446A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GiniMerchantSDKExample/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Gini Merchant";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		50D80D822C245A8A00B446A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example.GiniMerchantSDKExampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniMerchantSDKExample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GiniMerchantSDKExample";
+			};
+			name = Debug;
+		};
+		50D80D832C245A8A00B446A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example.GiniMerchantSDKExampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniMerchantSDKExample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GiniMerchantSDKExample";
+			};
+			name = Release;
+		};
+		50D80D852C245A8A00B446A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example.GiniMerchantSDKExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GiniMerchantSDKExample;
+			};
+			name = Debug;
+		};
+		50D80D862C245A8A00B446A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example.GiniMerchantSDKExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GiniMerchantSDKExample;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		50D80D4F2C245A8900B446A8 /* Build configuration list for PBXProject "GiniMerchantSDKExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50D80D7C2C245A8A00B446A8 /* Debug */,
+				50D80D7D2C245A8A00B446A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		50D80D7E2C245A8A00B446A8 /* Build configuration list for PBXNativeTarget "GiniMerchantSDKExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50D80D7F2C245A8A00B446A8 /* Debug */,
+				50D80D802C245A8A00B446A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		50D80D812C245A8A00B446A8 /* Build configuration list for PBXNativeTarget "GiniMerchantSDKExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50D80D822C245A8A00B446A8 /* Debug */,
+				50D80D832C245A8A00B446A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		50D80D842C245A8A00B446A8 /* Build configuration list for PBXNativeTarget "GiniMerchantSDKExampleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50D80D852C245A8A00B446A8 /* Debug */,
+				50D80D862C245A8A00B446A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		50D80D8A2C245D3B00B446A8 /* GiniMerchantSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniMerchantSDK;
+		};
+		50D80DC22C245E6100B446A8 /* GiniCaptureSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniCaptureSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 50D80D4C2C245A8900B446A8 /* Project object */;
+}
