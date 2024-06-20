@@ -112,7 +112,7 @@ final class DigitalInvoiceViewController: UIViewController {
             navigationItem.hidesBackButton = true
         } else {
             let helpButton = GiniBarButton(ofType: .help)
-            helpButton.addAction(self, #selector(helpButtonTapped(source:)))
+            helpButton.addAction(self, #selector(helpButtonTapped))
             navigationItem.rightBarButtonItem = helpButton.barButton
 
             let cancelButton = GiniBarButton(ofType: .cancel)
@@ -190,7 +190,7 @@ final class DigitalInvoiceViewController: UIViewController {
             }
 
             navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-                self?.viewModel.didTapHelp()
+                self?.helpButtonTapped()
             }
 
             if let navigationBar = navigationBarBottomAdapter?.injectedView() {
@@ -254,7 +254,7 @@ final class DigitalInvoiceViewController: UIViewController {
         }
     }
 
-    @objc func helpButtonTapped(source: UIButton) {
+    @objc func helpButtonTapped() {
         AnalyticsManager.track(event: .helpTapped, screenName: .returnAssistant)
         viewModel.didTapHelp()
     }
