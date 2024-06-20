@@ -14,7 +14,7 @@
         <!--Payment Review View Controller-->
         <scene sceneID="ecB-N6-Pnr">
             <objects>
-                <viewController storyboardIdentifier="paymentReviewViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QI6-9C-Fdg" customClass="PaymentReviewViewController" customModule="GiniHealthSDK" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="paymentReviewViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QI6-9C-Fdg" customClass="PaymentReviewViewController" customModule="GiniMerchantSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mrS-Rt-JVN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="718"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -38,14 +38,14 @@
                                             </pageControl>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VtW-En-y6v">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="343"/>
-                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Zec-6e-m0t" customClass="CollectionFlowLayout" customModule="GiniHealthSDK">
+                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Zec-6e-m0t" customClass="CollectionFlowLayout" customModule="GiniMerchantSDK">
                                                     <size key="itemSize" width="348" height="408.66666666666669"/>
                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 </collectionViewFlowLayout>
                                                 <cells>
-                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="pageCellIdentifier" id="c1L-5D-aNE" customClass="PageCollectionViewCell" customModule="GiniHealthSDK">
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="pageCellIdentifier" id="c1L-5D-aNE" customClass="PageCollectionViewCell" customModule="GiniMerchantSDK">
                                                         <rect key="frame" x="0.0" y="-33" width="348" height="408.66666666666669"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ucj-NS-kFh">
@@ -93,7 +93,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5XG-ol-bs7">
                                                         <rect key="frame" x="0.0" y="0.0" width="343" height="68"/>
                                                         <subviews>
-                                                            <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k5O-13-8jM" userLabel="Recipient View" customClass="TextFieldWithLabelView" customModule="GiniHealthSDK">
+                                                            <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k5O-13-8jM" userLabel="Recipient View" customClass="TextFieldWithLabelView" customModule="GiniMerchantSDK">
                                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="56"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
@@ -117,11 +117,11 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="VVv-3T-au1">
                                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="56"/>
                                                                 <subviews>
-                                                                    <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LLb-wJ-3tH" customClass="TextFieldWithLabelView" customModule="GiniHealthSDK">
+                                                                    <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LLb-wJ-3tH" customClass="TextFieldWithLabelView" customModule="GiniMerchantSDK">
                                                                         <rect key="frame" x="0.0" y="0.0" width="240" height="56"/>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     </view>
-                                                                    <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fk2-ou-Ni3" customClass="TextFieldWithLabelView" customModule="GiniHealthSDK">
+                                                                    <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fk2-ou-Ni3" customClass="TextFieldWithLabelView" customModule="GiniMerchantSDK">
                                                                         <rect key="frame" x="248" y="0.0" width="95" height="56"/>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <constraints>
@@ -170,7 +170,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="g4d-M4-bf3">
                                                         <rect key="frame" x="0.0" y="152" width="343" height="68"/>
                                                         <subviews>
-                                                            <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="etw-ud-Tvt" customClass="TextFieldWithLabelView" customModule="GiniHealthSDK">
+                                                            <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="etw-ud-Tvt" customClass="TextFieldWithLabelView" customModule="GiniMerchantSDK">
                                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="56"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>

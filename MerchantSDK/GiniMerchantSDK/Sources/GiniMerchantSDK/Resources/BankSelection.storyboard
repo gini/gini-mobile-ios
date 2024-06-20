@@ -12,7 +12,7 @@
         <!--Bank Provider View Controller-->
         <scene sceneID="lsq-6K-r3n">
             <objects>
-                <viewController storyboardIdentifier="bankSelectionViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rH2-Xd-grz" customClass="BankProviderViewController" customModule="GiniHealthSDK" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="bankSelectionViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rH2-Xd-grz" customClass="BankProviderViewController" customModule="GiniMerchantSDK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3BS-bl-K1k">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -43,11 +43,11 @@
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="358" placeholderIntrinsicHeight="400" bounces="NO" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GwO-dD-6nT" customClass="SelfSizingTableView" customModule="GiniHealthSDK">
+                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="358" placeholderIntrinsicHeight="400" bounces="NO" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GwO-dD-6nT" customClass="SelfSizingTableView" customModule="GiniMerchantSDK">
                                                         <rect key="frame" x="0.0" y="61" width="396" height="400"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <prototypes>
-                                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="0.0" reuseIdentifier="bankTableViewCellIdentifier" id="pfH-rk-wwa" customClass="BankTableViewCell" customModule="GiniHealthSDK">
+                                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="0.0" reuseIdentifier="bankTableViewCellIdentifier" id="pfH-rk-wwa" customClass="BankTableViewCell" customModule="GiniMerchantSDK">
                                                                 <rect key="frame" x="0.0" y="44.666666030883789" width="396" height="30.333333969116211"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pfH-rk-wwa" id="jf8-ne-fDC">
