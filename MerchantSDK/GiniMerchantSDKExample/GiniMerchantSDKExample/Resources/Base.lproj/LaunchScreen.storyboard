@@ -24,23 +24,18 @@
                                     <constraint firstAttribute="width" constant="320" id="LVZ-Yb-aku"/>
                                 </constraints>
                             </imageView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="lJh-vB-7Ai">
-                                <rect key="frame" x="186.66666666666666" y="730" width="20" height="20"/>
-                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="VyP-yh-ooe" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="9Zv-fB-VIz"/>
-                            <constraint firstItem="lJh-vB-7Ai" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="DFN-QL-jhH"/>
-                            <constraint firstItem="lJh-vB-7Ai" firstAttribute="top" secondItem="VyP-yh-ooe" secondAttribute="bottom" constant="250" id="RiK-MN-LzE"/>
                             <constraint firstItem="VyP-yh-ooe" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="aCA-24-CPv"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
         </scene>
     </scenes>
     <resources>
