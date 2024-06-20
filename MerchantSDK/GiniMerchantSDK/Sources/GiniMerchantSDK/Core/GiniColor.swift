@@ -27,19 +27,14 @@ import UIKit
     }
     
     func uiColor() -> UIColor {
-        if #available(iOS 13, *) {
-            return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
-                if UITraitCollection.userInterfaceStyle == .dark {
-                    /// Return the color for Dark Mode
-                    return self.darkModeColor
-                } else {
-                    /// Return the color for Light Mode
-                    return self.lightModeColor
-                }
+        return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
+            if UITraitCollection.userInterfaceStyle == .dark {
+                /// Return the color for Dark Mode
+                return self.darkModeColor
+            } else {
+                /// Return the color for Light Mode
+                return self.lightModeColor
             }
-        } else {
-            /// Return a fallback color for iOS 12 and lower.
-            return self.lightModeColor
         }
     }
 }

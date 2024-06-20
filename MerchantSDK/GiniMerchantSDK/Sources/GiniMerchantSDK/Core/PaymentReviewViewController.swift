@@ -128,15 +128,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isLoading ?? false
                 if isLoading {
-                    if #available(iOS 13.0, *) {
-                        self?.view.showLoading(style: Constants.loadingIndicatorStyle,
-                                               color: UIColor.GiniMerchantColors.accent1,
-                                               scale: Constants.loadingIndicatorScale)
-                    } else {
-                        self?.view.showLoading(style: .whiteLarge,
-                                               color: UIColor.GiniMerchantColors.accent1,
-                                               scale: Constants.loadingIndicatorScale)
-                    }
+                    self?.view.showLoading(style: Constants.loadingIndicatorStyle,
+                                           color: UIColor.GiniMerchantColors.accent1,
+                                           scale: Constants.loadingIndicatorScale)
                 } else {
                     self?.view.stopLoading()
                 }
@@ -726,7 +720,6 @@ extension PaymentReviewViewController {
         static let heightToolbar = 40.0
         static let bottomPaddingPageImageView = 20.0
         static let loadingIndicatorScale = 1.0
-        @available(iOS 13.0, *)
         static let loadingIndicatorStyle = UIActivityIndicatorView.Style.large
         static let pdfExtension = ".pdf"
     }
