@@ -8,7 +8,7 @@ import UIKit
 import GiniCaptureSDK
 
 public class SkontoAppliedInfoView: UIView {
-    private let imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         // TODO: template image will be better
         imageView.image = GiniImages.icInfo.image
@@ -16,7 +16,7 @@ public class SkontoAppliedInfoView: UIView {
         return imageView
     }()
 
-    private let label: UILabel = {
+    private lazy var label: UILabel = {
         let label = UILabel()
         let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
                                                             comment: "Zahlung in 14 Tagen: 3% Skonto.")
@@ -25,12 +25,14 @@ public class SkontoAppliedInfoView: UIView {
                                       value: NSUnderlineStyle.single.rawValue,
                                       range: NSRange(location: 0, length: text.count))
         label.attributedText = attributedString
-        label.font = GiniBankConfiguration.shared.textStyleFonts[.caption1]
+        label.font = configuration.textStyleFonts[.caption1]
         label.textColor = GiniColor(light: .GiniBank.success2,
                                     dark: .GiniBank.success2).uiColor()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private let configuration = GiniBankConfiguration.shared
 
     override init(frame: CGRect) {
         super.init(frame: frame)
