@@ -66,7 +66,7 @@ final class ShareInvoiceBottomViewModel {
     // Apps View
     let appsBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark6,
                                                  darkModeColor: UIColor.GiniMerchantColors.light6).uiColor()
-    let moreIconName: String = "more_vertical"
+    let moreIconName: String = "gm.moreVertical"
     
     // Tip label
     let tipAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark2,
@@ -79,7 +79,7 @@ final class ShareInvoiceBottomViewModel {
                                                                  comment: "Text for tip actionable part from the label")
     var tipLabelFont: UIFont
     var tipLabelLinkFont: UIFont
-    let tipIconName = "info.circle"
+    let tipIconName = "gm.infoCircle"
     
     // Continue label
     let continueLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.continue.button.text",

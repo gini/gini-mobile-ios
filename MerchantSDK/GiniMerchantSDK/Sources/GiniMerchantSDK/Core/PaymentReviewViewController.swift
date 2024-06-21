@@ -115,7 +115,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isImagesLoading ?? false
                 if isLoading {
-                    self?.collectionView.showLoading(style: .whiteLarge,
+                    self?.collectionView.showLoading(style: .large,
                                                      color: UIColor.GiniMerchantColors.accent1,
                                                      scale: Constants.loadingIndicatorScale)
                 } else {
@@ -276,7 +276,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func configureCloseButton() {
         closeButton.isHidden = !giniMerchantConfiguration.showPaymentReviewCloseButton
-        closeButton.setImage(UIImageNamedPreferred(named: "paymentReviewCloseButton"), for: .normal)
+        closeButton.setImage(UIImageNamedPreferred(named: "gm.paymentReviewCloseButton"), for: .normal)
     }
     
     fileprivate func configureScreenBackgroundColor() {
