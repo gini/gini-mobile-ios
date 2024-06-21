@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  GiniMerchantSDKExample
 //
-//  Created by Maxim Backevich on 18/06/2024.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit

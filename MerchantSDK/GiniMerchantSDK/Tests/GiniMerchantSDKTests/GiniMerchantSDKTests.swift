@@ -2,7 +2,7 @@ import XCTest
 @testable import GiniMerchantSDK
 @testable import GiniHealthAPILibrary
 
-final class GiniHealthTests: XCTestCase {
+final class GiniMercantTests: XCTestCase {
     
     var giniHealthAPI: GiniHealthAPI!
     var giniMerchant: GiniMerchant!

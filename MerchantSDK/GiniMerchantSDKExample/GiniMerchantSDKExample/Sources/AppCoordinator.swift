@@ -228,7 +228,7 @@ final class AppCoordinator: Coordinator {
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
         let alertViewController = UIAlertController(title: "Importierte Datei",
                                                     message: "Möchten Sie die importierte Datei mit dem " +
-                                                    "Gini Health SDK verwenden?",
+                                                    "Gini Merchant SDK verwenden?",
                                                     preferredStyle: .alert)
         
         alertViewController.addAction(UIAlertAction(title: "Ja", style: .default) { [weak self] _ in
@@ -321,7 +321,7 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
     }
 }
 
-// MARK: GiniHealthDelegate
+// MARK: GiniMerchantDelegate
 
 extension AppCoordinator: GiniMerchantDelegate {
     func shouldHandleErrorInternally(error: GiniMerchantError) -> Bool {
@@ -333,7 +333,7 @@ extension AppCoordinator: GiniMerchantDelegate {
     }
 }
 
-// MARK: GiniHealthTrackingDelegate
+// MARK: GiniMerchantTrackingDelegate
 
 extension AppCoordinator: GiniMerchantTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
