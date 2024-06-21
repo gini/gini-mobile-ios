@@ -52,6 +52,7 @@ public class SkontoAppliedHeaderView: UIView {
     }
 
     private func setupView() {
+        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         addSubview(titleLabel)
         addSubview(statusLabel)
         addSubview(discountSwitch)
