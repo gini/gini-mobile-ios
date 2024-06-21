@@ -60,6 +60,7 @@ public class SkontoAppliedAmountView: UIView {
     }
 
     private func setupView() {
+        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(textField)
