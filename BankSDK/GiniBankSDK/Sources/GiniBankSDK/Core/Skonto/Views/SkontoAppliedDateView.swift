@@ -15,6 +15,7 @@ public class SkontoAppliedDateView: UIView {
         label.font = configuration.textStyleFonts[.footnote]
         // TODO: in some places invertive color is dark7
         label.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
+        label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -25,6 +26,7 @@ public class SkontoAppliedDateView: UIView {
         textField.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
+        textField.adjustsFontForContentSizeCategory = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -45,7 +47,7 @@ public class SkontoAppliedDateView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private let configuration = GiniBankConfiguration.shared
 
     override init(frame: CGRect) {
@@ -59,6 +61,7 @@ public class SkontoAppliedDateView: UIView {
     }
 
     private func setupView() {
+        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
@@ -66,27 +69,35 @@ public class SkontoAppliedDateView: UIView {
         containerView.addSubview(calendarImageView)
         setupConstraints()
     }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: topAnchor),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
-            
-            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
-            textField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
-            textField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
-            
+
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.padding),
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding),
+
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            textField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
+            textField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Constants.padding),
+
             calendarImageView.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
-            calendarImageView.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 10),
-            calendarImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
-            calendarImageView.widthAnchor.constraint(equalToConstant: 22),
-            calendarImageView.heightAnchor.constraint(equalToConstant: 22)
+            calendarImageView.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: Constants.imageHorizontalPadding),
+            calendarImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding),
+            calendarImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
+            calendarImageView.heightAnchor.constraint(equalToConstant: Constants.imageSize)
         ])
+    }
+}
+
+private extension SkontoAppliedDateView {
+    enum Constants {
+        static let padding: CGFloat = 12
+        static let imageHorizontalPadding: CGFloat = 10
+        static let imageSize: CGFloat = 22
     }
 }
