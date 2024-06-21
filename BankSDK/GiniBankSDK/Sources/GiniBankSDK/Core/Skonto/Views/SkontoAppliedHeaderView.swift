@@ -8,22 +8,22 @@ import UIKit
 import GiniCaptureSDK
 
 public class SkontoAppliedHeaderView: UIView {
-    private let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.title",
                                                               comment: "Mit Skonto")
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        label.font = GiniBankConfiguration.shared.textStyleFonts[.bodyBold]
+        label.font = configuration.textStyleFonts[.bodyBold]
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    private let statusLabel: UILabel = {
+    private lazy var statusLabel: UILabel = {
         let label = UILabel()
         let attributedString = NSMutableAttributedString(
             string: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
                                                              comment: "• Aktiviert"),
-            attributes: [NSAttributedString.Key.font: GiniBankConfiguration.shared.textStyleFonts[.footnoteBold]!,
+            attributes: [NSAttributedString.Key.font: configuration.textStyleFonts[.footnoteBold]!,
                          NSAttributedString.Key.foregroundColor: GiniColor(light: .GiniBank.success3,
                                                                            dark: .GiniBank.success3).uiColor()
                         ])
@@ -32,7 +32,7 @@ public class SkontoAppliedHeaderView: UIView {
         return label
     }()
 
-    private let discountSwitch: UISwitch = {
+    private lazy var discountSwitch: UISwitch = {
         let discountSwitch = UISwitch()
         discountSwitch.isOn = true
         discountSwitch.onTintColor = GiniColor(light: .GiniBank.accent1,
@@ -40,6 +40,8 @@ public class SkontoAppliedHeaderView: UIView {
         discountSwitch.translatesAutoresizingMaskIntoConstraints = false
         return discountSwitch
     }()
+    
+    private let configuration = GiniBankConfiguration.shared
 
     override init(frame: CGRect) {
         super.init(frame: frame)
