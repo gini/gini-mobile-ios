@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,10 +18,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wit-5t-C2E">
-                                <rect key="frame" x="0.0" y="44" width="428" height="882"/>
+                                <rect key="frame" x="0.0" y="47" width="428" height="879"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="elb-2h-1FG">
-                                        <rect key="frame" x="0.0" y="354" width="428" height="528"/>
+                                        <rect key="frame" x="0.0" y="351" width="428" height="528"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ljp-LW-hIA">
                                                 <rect key="frame" x="193.66666666666666" y="4" width="41" height="4"/>
@@ -46,61 +46,6 @@
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="358" placeholderIntrinsicHeight="400" bounces="NO" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GwO-dD-6nT" customClass="SelfSizingTableView" customModule="GiniMerchantSDK">
                                                         <rect key="frame" x="0.0" y="61" width="396" height="400"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <prototypes>
-                                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="0.0" reuseIdentifier="bankTableViewCellIdentifier" id="pfH-rk-wwa" customClass="BankTableViewCell" customModule="GiniMerchantSDK">
-                                                                <rect key="frame" x="0.0" y="44.666666030883789" width="396" height="30.333333969116211"/>
-                                                                <autoresizingMask key="autoresizingMask"/>
-                                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pfH-rk-wwa" id="jf8-ne-fDC">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="396" height="30.333333969116211"/>
-                                                                    <autoresizingMask key="autoresizingMask"/>
-                                                                    <subviews>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="16" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t9Q-Ab-VBL">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="396" height="30.333333333333332"/>
-                                                                            <subviews>
-                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bank" translatesAutoresizingMaskIntoConstraints="NO" id="DMv-76-Och">
-                                                                                    <rect key="frame" x="0.0" y="0.33333333333333393" width="30" height="30"/>
-                                                                                    <constraints>
-                                                                                        <constraint firstAttribute="height" constant="30" id="1yn-BQ-Q4A"/>
-                                                                                        <constraint firstAttribute="width" constant="30" id="gVq-sx-ypI"/>
-                                                                                    </constraints>
-                                                                                </imageView>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ing Diba Test Bank" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhF-2g-i8D">
-                                                                                    <rect key="frame" x="46" y="5" width="318" height="20.333333333333332"/>
-                                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                                    <nil key="textColor"/>
-                                                                                    <nil key="highlightedColor"/>
-                                                                                </label>
-                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="gyi-eb-Xjn">
-                                                                                    <rect key="frame" x="380" y="9.6666666666666643" width="16" height="12.000000000000004"/>
-                                                                                    <constraints>
-                                                                                        <constraint firstAttribute="height" constant="16" id="1SG-Jp-nA1"/>
-                                                                                        <constraint firstAttribute="width" constant="16" id="EoP-rm-ylc"/>
-                                                                                    </constraints>
-                                                                                </imageView>
-                                                                            </subviews>
-                                                                            <constraints>
-                                                                                <constraint firstItem="gyi-eb-Xjn" firstAttribute="leading" secondItem="EhF-2g-i8D" secondAttribute="trailing" constant="16" id="5dk-MQ-6tY"/>
-                                                                                <constraint firstItem="EhF-2g-i8D" firstAttribute="leading" secondItem="DMv-76-Och" secondAttribute="trailing" constant="16" id="PZz-V7-lR2"/>
-                                                                            </constraints>
-                                                                        </stackView>
-                                                                    </subviews>
-                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    <constraints>
-                                                                        <constraint firstItem="t9Q-Ab-VBL" firstAttribute="leading" secondItem="jf8-ne-fDC" secondAttribute="leading" id="2eB-Dl-kyg"/>
-                                                                        <constraint firstItem="t9Q-Ab-VBL" firstAttribute="top" secondItem="jf8-ne-fDC" secondAttribute="top" id="7Pq-GO-g2t"/>
-                                                                        <constraint firstAttribute="bottom" secondItem="t9Q-Ab-VBL" secondAttribute="bottom" id="pFw-Gz-ngC"/>
-                                                                        <constraint firstAttribute="trailing" secondItem="t9Q-Ab-VBL" secondAttribute="trailing" id="zdB-r8-8Rv"/>
-                                                                    </constraints>
-                                                                </tableViewCellContentView>
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                                <connections>
-                                                                    <outlet property="bankIcon" destination="DMv-76-Och" id="ZOP-ma-zte"/>
-                                                                    <outlet property="bankName" destination="EhF-2g-i8D" id="NDi-bC-CVb"/>
-                                                                    <outlet property="selectionIndicator" destination="gyi-eb-Xjn" id="aqg-wG-gAo"/>
-                                                                </connections>
-                                                            </tableViewCell>
-                                                        </prototypes>
                                                         <sections/>
                                                         <connections>
                                                             <outlet property="dataSource" destination="rH2-Xd-grz" id="hpg-Dy-0ek"/>
@@ -165,10 +110,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bank" width="20" height="20"/>
-        <image name="checkmark" catalog="system" width="128" height="114"/>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
