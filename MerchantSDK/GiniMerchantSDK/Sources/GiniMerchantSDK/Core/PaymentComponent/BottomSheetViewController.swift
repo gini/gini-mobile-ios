@@ -120,7 +120,8 @@ class BottomSheetViewController: UIViewController {
     }
     
     private func obtainTopAnchorMinHeightConstraint() -> CGFloat {
-        let extraBottomSafeAreaConstant = UIApplication.shared.keyWindow?.safeAreaInsets.bottom == 0 ? Constants.safeAreaBottomPadding : 0 // fix for small devices
+        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        let extraBottomSafeAreaConstant = window?.safeAreaInsets.bottom == 0 ? Constants.safeAreaBottomPadding : 0 // fix for small devices
         let topAnchorWithMinHeightConstant = view.frame.height - minHeight + extraBottomSafeAreaConstant
         return topAnchorWithMinHeightConstant
     }
