@@ -81,8 +81,8 @@ final class PaymentInfoQuestionHeaderViewModel {
     let titleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
                                             darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
     var extendedIconName: String
-    private let plusIcon = "ic_plus"
-    private let minusIcon = "ic_minus"
+    private let plusIcon = "gm.plus"
+    private let minusIcon = "gm.minus"
     
     init(title: String, isExtended: Bool) {
         self.titleText = title
