@@ -10,7 +10,7 @@ import UIKit
 final class PoweredByGiniViewModel {
     
     // powered by Gini view
-    let poweredByGiniLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.poweredByGini.label", comment: "")
+    let poweredByGiniLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.poweredByGini.label", comment: "")
     let poweredByGiniLabelFont: UIFont
     let poweredByGiniLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark4,
                                                            darkModeColor: UIColor.GiniMerchantColors.light4).uiColor()
