@@ -28,10 +28,11 @@ public class SkontoAppliedInfoView: UIView {
         label.font = configuration.textStyleFonts[.caption1]
         label.textColor = GiniColor(light: .GiniBank.success2,
                                     dark: .GiniBank.success2).uiColor()
+        label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private let configuration = GiniBankConfiguration.shared
 
     override init(frame: CGRect) {
@@ -45,6 +46,7 @@ public class SkontoAppliedInfoView: UIView {
     }
 
     private func setupView() {
+        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = GiniColor(light: .GiniBank.success5,
                                     dark: .GiniBank.success5).uiColor()
         layer.cornerRadius = 8
@@ -53,18 +55,27 @@ public class SkontoAppliedInfoView: UIView {
         addSubview(label)
         setupConstraints()
     }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            imageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            imageView.widthAnchor.constraint(equalToConstant: 24),
-            imageView.heightAnchor.constraint(equalToConstant: 24),
+            imageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.imageVerticalPadding),
+            imageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.imageVerticalPadding),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.imageHorizontalPadding),
+            imageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
+            imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize),
 
-            label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: Constants.labelHorizontalPadding),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.labelHorizontalPadding),
             label.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
         ])
+    }
+}
+
+private extension SkontoAppliedInfoView {
+    enum Constants {
+        static let imageVerticalPadding: CGFloat = 10
+        static let imageHorizontalPadding: CGFloat = 10
+        static let imageSize: CGFloat = 24
+        static let labelHorizontalPadding: CGFloat = 8
     }
 }
