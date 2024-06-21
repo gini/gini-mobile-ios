@@ -62,13 +62,13 @@ final class InstallAppBottomViewModel {
     
 
     var moreInformationLabelFont: UIFont
-    let moreInformationIconName = "gm.infoCircle"
+    let moreInformationIcon: UIImage = GiniImage.info.preferredUIImage()
     
     // Pay invoice label
     let continueLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.continue.button.text",
                                                                      comment: "Title label used for the Continue button")
     
-    var appStoreImageIconName = "gm.appStoreIcon"
+    var appStoreIcon: UIImage = GiniImage.appStore.preferredUIImage()
     let bankToReplaceString = "[BANK]"
     
     var isBankInstalled: Bool {

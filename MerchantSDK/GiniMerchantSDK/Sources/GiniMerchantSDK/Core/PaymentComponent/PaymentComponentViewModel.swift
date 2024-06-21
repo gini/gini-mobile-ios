@@ -68,7 +68,6 @@ final class PaymentComponentViewModel {
                                                                              comment: "Text for more information actionable part from the label")
     var moreInformationLabelFont: UIFont
     var moreInformationLabelLinkFont: UIFont
-    let moreInformationIconName = "gm.infoCircle"
     
     // Select bank label
     let selectYourBankLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectYourBank.label", 
@@ -90,7 +89,7 @@ final class PaymentComponentViewModel {
     let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label",
                                                                                    comment: "Placeholder text used when there isn't a payment provider app installed")
     
-    let chevronDownIconName: String = "gm.iconChevronDown"
+    let chevronDownIcon: UIImage = GiniImage.chevronDown.preferredUIImage()
     let chevronDownIconColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.light7,
                                                   darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
     

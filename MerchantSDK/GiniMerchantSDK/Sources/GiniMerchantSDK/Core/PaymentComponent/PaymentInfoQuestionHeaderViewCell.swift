@@ -55,7 +55,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
                                                               attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         titleLabel.textColor = viewModel.titleTextColor
         titleLabel.font = viewModel.titleFont
-        extendedImageView.image = UIImageNamedPreferred(named: viewModel.extendedIconName)
+        extendedImageView.image = viewModel.extendedIcon
     }
     
     private func setupConstraints() {
@@ -80,15 +80,13 @@ final class PaymentInfoQuestionHeaderViewModel {
     var titleFont: UIFont
     let titleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
                                             darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
-    var extendedIconName: String
-    private let plusIcon = "gm.plus"
-    private let minusIcon = "gm.minus"
+    var extendedIcon: UIImage
     
     init(title: String, isExtended: Bool) {
         self.titleText = title
         let giniConfiguration = GiniMerchantConfiguration.shared
         self.titleFont = giniConfiguration.textStyleFonts[.body1] ?? UIFont.systemFont(ofSize: 16)
-        self.extendedIconName = isExtended ? minusIcon : plusIcon
+        self.extendedIcon = (isExtended ? GiniImage.minus : GiniImage.plus).preferredUIImage()
     }
 }
 
