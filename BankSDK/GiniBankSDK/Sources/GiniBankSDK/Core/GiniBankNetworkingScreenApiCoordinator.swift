@@ -131,7 +131,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         GiniBank.setConfiguration(configuration)
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
-        self.trackAnalyticsProperties(configuration: configuration)
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
     }
@@ -153,7 +152,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
         GiniBank.setConfiguration(configuration)
-        self.trackAnalyticsProperties(configuration: configuration)
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
@@ -254,6 +252,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                                                             userJourneyAnalyticsEnabled: userJourneyAnalyticsEnabled,
                                                             mixpanelToken: configuration.mixpanelToken,
                                                             amplitudeApiKey: configuration.amplitudeApiKey)
+        AnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
+                                              .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons])
         AnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
     }
 }
@@ -364,11 +364,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         })
-    }
-
-    private func trackAnalyticsProperties(configuration: GiniBankConfiguration) {
-        AnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
-                                              .returnReasonsEnabled: configuration.enableReturnReasons])
     }
 }
 
