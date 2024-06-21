@@ -77,7 +77,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         }
     }
 
-    private func processDataIfNeeded(data: Data) -> Data? {
+    func processDataIfNeeded(data: Data) -> Data? {
         // Check if data received is image. Otherwise, pass back the data
         guard data.isImage() else {
             return data
