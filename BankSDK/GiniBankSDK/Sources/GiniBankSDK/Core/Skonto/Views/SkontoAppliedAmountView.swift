@@ -15,6 +15,7 @@ public class SkontoAppliedAmountView: UIView {
         label.font = configuration.textStyleFonts[.footnote]
         // TODO: in some places invertive color is dark7
         label.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
+        label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -26,6 +27,7 @@ public class SkontoAppliedAmountView: UIView {
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.keyboardType = .decimalPad
+        textField.adjustsFontForContentSizeCategory = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -36,6 +38,7 @@ public class SkontoAppliedAmountView: UIView {
         // TODO: we have dark7 but doesn't have light7 and project has no dark7 setups before Skonto
         label.textColor = GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light6).uiColor()
         label.font = configuration.textStyleFonts[.body]
+        label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -48,7 +51,7 @@ public class SkontoAppliedAmountView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private let configuration = GiniBankConfiguration.shared
 
     override init(frame: CGRect) {
@@ -62,6 +65,7 @@ public class SkontoAppliedAmountView: UIView {
     }
 
     private func setupView() {
+        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
@@ -69,25 +73,36 @@ public class SkontoAppliedAmountView: UIView {
         containerView.addSubview(currencyLabel)
         setupConstraints()
     }
-    
+
     private func setupConstraints() {
+        currencyLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        currencyLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: topAnchor),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.padding),
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding),
 
-            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
-            textField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
-            textField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            textField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
+            textField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Constants.padding),
 
             currencyLabel.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
-            currencyLabel.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 10),
-            currencyLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12)
+            currencyLabel.leadingAnchor.constraint(equalTo: textField.trailingAnchor,
+                                                   constant: Constants.currencyLabelHorizontalPadding),
+            currencyLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding)
         ])
+    }
+}
+
+private extension SkontoAppliedAmountView {
+    enum Constants {
+        static let padding: CGFloat = 12
+        static let currencyLabelHorizontalPadding: CGFloat = 10
     }
 }
