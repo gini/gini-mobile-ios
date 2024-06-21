@@ -257,7 +257,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
 }
 
 extension DefaultDocumentService {
-    public enum Constants {
-        public static let maximumImageSizeInMB = 10.0
+    enum Constants {
+        static let maximumImageSizeInMB = 10.0
     }
 }
