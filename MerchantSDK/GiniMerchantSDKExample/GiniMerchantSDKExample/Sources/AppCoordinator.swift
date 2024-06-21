@@ -46,7 +46,7 @@ final class AppCoordinator: Coordinator {
         return giniConfiguration
     }()
     
-    private lazy var client: GiniHealthAPILibrary.Client = CredentialsManager.fetchClientFromBundle()
+    private lazy var client: GiniHealthAPILibrary.Client = Credentials.exampleCredentials
     private lazy var apiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
     private lazy var merchant = GiniMerchant(with: apiLib)
     private lazy var paymentComponentsController = PaymentComponentsController(giniMerchant: merchant)
