@@ -94,7 +94,9 @@ final class InvoicesListViewModel {
                     case .success(let extractions):
                         self?.shouldRefetchExtractions = false
                         self?.documentIDToRefetch = nil
-                        self?.hardcodedInvoicesController.updateDocumentExtractions(documentID: document.id, extractions: extractions)
+                        let recipient = extractions.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
+                        let amountToPay = extractions.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
+                        self?.hardcodedInvoicesController.updateDocumentExtractions(documentID: document.id, recipient: recipient, amountToPay: amountToPay)
                         self?.invoices = self?.hardcodedInvoicesController.getInvoicesWithExtractions() ?? []
                         DispatchQueue.main.async {
                             self?.coordinator.invoicesListViewController?.hideActivityIndicator()
@@ -155,35 +157,35 @@ final class InvoicesListViewModel {
                                                 metadata: nil) { [weak self] result in
                 switch result {
                 case .success(let createdDocument):
-                    Log("Successfully created document with id: \(createdDocument.id)", event: .success)
+                    print("✅ Successfully created document with id: \(createdDocument.id)")
                     self?.documentService.extractions(for: createdDocument,
                                                       cancellationToken: CancellationToken()) { [weak self] result in
                         switch result {
                         case let .success(extractionResult):
-                            Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
+                            print("✅ Successfully fetched extractions for id: \(createdDocument.id)")
                             self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id,
                                                                           extractionResult: extractionResult))
                             self?.paymentComponentsController.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
                                 switch result {
                                 case let .success(isPayable):
-                                    Log("Successfully checked if document \(createdDocument.id) is payable", event: .success)
+                                    print("✅ Successfully checked if document \(createdDocument.id) is payable")
                                     if let indexDocument = self?.invoices.firstIndex(where: { $0.documentID == createdDocument.id }) {
                                         self?.invoices[indexDocument].isPayable = isPayable
                                     }
                                 case let .failure(error):
-                                    Log("Checking if document \(createdDocument.id) is payable failed with error: \(String(describing: error))", event: .error)
+                                    print("❌ Checking if document \(createdDocument.id) is payable failed with error: \(String(describing: error))")
                                     self?.errors.append(error.localizedDescription)
                                 }
                                 self?.dispatchGroup.leave()
                             })
                         case let .failure(error):
-                            Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))", event: .error)
+                            print("❌ Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))")
                             self?.errors.append(error.message)
                             self?.dispatchGroup.leave()
                         }
                     }
                 case .failure(let error):
-                    Log("Document creation failed: \(String(describing: error))", event: .error)
+                    print("❌ Document creation failed: \(String(describing: error))")
                     self?.errors.append(error.message)
                     self?.dispatchGroup.leave()
                 }
@@ -195,7 +197,7 @@ final class InvoicesListViewModel {
 extension InvoicesListViewModel: PaymentComponentViewProtocol {
 
     func didTapOnMoreInformation(documentId: String?) {
-        Log("Tapped on More Information", event: .success)
+        print("✅ Tapped on More Information")
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
         if let presentedViewController = self.coordinator.invoicesListViewController.presentedViewController {
             presentedViewController.dismiss(animated: true) {
@@ -208,7 +210,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
     
     func didTapOnBankPicker(documentId: String?) {
         guard let documentId else { return }
-        Log("Tapped on Bank Picker on :\(documentId)", event: .success)
+        print("✅ Tapped on Bank Picker on :\(documentId)")
         let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
         bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
         self.coordinator.invoicesListViewController.present(bankSelectionBottomSheet, animated: false)
@@ -216,7 +218,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
 
     func didTapOnPayInvoice(documentId: String?) {
         guard let documentId else { return }
-        Log("Tapped on Pay Invoice on :\(documentId)", event: .success)
+        print("✅ Tapped on Pay Invoice on :\(documentId)")
         documentIDToRefetch = documentId
         paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
             if let error {
@@ -269,12 +271,12 @@ extension InvoicesListViewModel: GiniMerchantTrackingDelegate {
         switch event.type {
         case .onToTheBankButtonClicked:
             self.shouldRefetchExtractions = true
-            Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
+            print("✅ To the banking app button was tapped,\(String(describing: event.info))")
         case .onCloseButtonClicked:
             refetchExtractions()
-            Log("Close screen was triggered", event: .success)
+            print("✅ Close screen was triggered")
         case .onCloseKeyboardButtonClicked:
-            Log("Close keyboard was triggered", event: .success)
+            print("✅ Close keyboard was triggered")
         }
     }
 }
