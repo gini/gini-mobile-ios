@@ -6,7 +6,6 @@
 
 import UIKit
 import Mixpanel
-import Amplitude
 
 public class AnalyticsManager {
     private static var mixpanelInstance: MixpanelInstance? {
