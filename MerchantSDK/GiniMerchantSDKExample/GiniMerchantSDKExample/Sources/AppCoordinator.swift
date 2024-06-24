@@ -49,10 +49,6 @@ final class AppCoordinator: Coordinator {
     private lazy var merchant = GiniMerchant(id: clientID, secret: clientPassword, domain: clientDomain)
     private lazy var paymentComponentsController = PaymentComponentsController(giniMerchant: merchant)
     
-    private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
-    private let documentMetadataBranchId = "GiniHealthExampleIOS"
-    private let documentMetadataAppFlowKey = "AppFlow"
-    
     init(window: UIWindow) {
         self.window = window
         print("------------------------------------\n\n",
@@ -108,12 +104,8 @@ final class AppCoordinator: Coordinator {
     }
     
     fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
-        let metadata = GiniHealthAPILibrary.Document.Metadata(branchId: documentMetadataBranchId,
-                                                              additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
-
         let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
                                                         importedDocuments: pages?.map { $0.document },
-                                                        documentMetadata: metadata,
                                                         hardcodedInvoicesController: HardcodedInvoicesController(),
                                                         paymentComponentController: paymentComponentsController)
         
