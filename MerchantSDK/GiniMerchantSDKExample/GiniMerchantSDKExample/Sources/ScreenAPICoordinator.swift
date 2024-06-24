@@ -8,7 +8,6 @@
 import GiniBankAPILibrary
 import GiniCaptureSDK
 import GiniMerchantSDK
-import GiniHealthAPILibrary
 import UIKit
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
@@ -73,12 +72,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     }
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-        var healthExtractions: [GiniHealthAPILibrary.Extraction] = []
-        captureExtractedResults = result.extractions.map { $0.value}
-        for extraction in captureExtractedResults {
-            healthExtractions.append(GiniHealthAPILibrary.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
-        }
-
         if let giniSDK = self.giniMerchant, let docId = result.document?.id {
             // this step needed since we've got 2 different Document structures
             giniSDK.fetchDataForReview(documentId: docId) { [weak self] resultReview in
