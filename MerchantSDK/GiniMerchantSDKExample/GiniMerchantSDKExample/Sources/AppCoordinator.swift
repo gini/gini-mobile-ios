@@ -22,7 +22,7 @@ final class AppCoordinator: Coordinator {
     lazy var selectAPIViewController: SelectAPIViewController = {
         let selectAPIViewController = SelectAPIViewController()
         selectAPIViewController.delegate = self
-        selectAPIViewController.clientId = self.client.id
+        selectAPIViewController.clientId = clientID
         return selectAPIViewController
     }()
     
@@ -46,9 +46,7 @@ final class AppCoordinator: Coordinator {
         return giniConfiguration
     }()
     
-    private lazy var client: GiniHealthAPILibrary.Client = CredentialsManager.fetchClientFromBundle()
-    private lazy var apiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
-    private lazy var merchant = GiniMerchant(with: apiLib)
+    private lazy var merchant = GiniMerchant(id: clientID, secret: clientPassword, domain: clientDomain)
     private lazy var paymentComponentsController = PaymentComponentsController(giniMerchant: merchant)
     
     private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
@@ -59,8 +57,8 @@ final class AppCoordinator: Coordinator {
         self.window = window
         print("------------------------------------\n\n",
               "📸 Gini Capture SDK for iOS (\(GiniCapture.versionString))\n\n",
-              "      - Client id:  \(client.id)\n",
-              "      - Client email domain:  \(client.domain)",
+              "      - Client id:  \(clientID)\n",
+              "      - Client email domain:  \(clientDomain)",
               "\n\n------------------------------------\n")
     }
     
@@ -115,9 +113,9 @@ final class AppCoordinator: Coordinator {
 
         let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
                                                         importedDocuments: pages?.map { $0.document },
-                                                        client: GiniHealthAPILibrary.Client(id: self.client.id,
-                                                                                            secret: self.client.secret,
-                                                                                            domain: self.client.domain),
+                                                        client: GiniHealthAPILibrary.Client(id: clientID,
+                                                                                            secret: clientPassword,
+                                                                                            domain: clientDomain),
                                                                                             documentMetadata: metadata,
                                                         hardcodedInvoicesController: HardcodedInvoicesController(),
                                                         paymentComponentController: paymentComponentsController)
@@ -127,7 +125,7 @@ final class AppCoordinator: Coordinator {
         merchant.delegate = self
         screenAPICoordinator.giniMerchant = merchant
         
-        screenAPICoordinator.start(healthAPI: apiLib)
+//        screenAPICoordinator.start(healthAPI: apiLib)
         add(childCoordinator: screenAPICoordinator)
         
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
