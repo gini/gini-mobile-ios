@@ -48,11 +48,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
         super.init()
     }
     
-    func start(healthAPI: GiniHealthAPI) {
+    func start(documentService: MerchantDocumentService) {
         let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
                                                         configuration: visionConfiguration,
                                                         resultsDelegate: self,
-                                                        networkingService: MerchantNetworkingService(lib: healthAPI))
+                                                        networkingService: MerchantNetworkingService(documentService: documentService))
         screenAPIViewController = RootNavigationController(rootViewController: viewController)
         screenAPIViewController.setNavigationBarHidden(true, animated: false)
         screenAPIViewController.delegate = self

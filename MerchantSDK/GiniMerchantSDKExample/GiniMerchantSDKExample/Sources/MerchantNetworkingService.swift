@@ -9,6 +9,7 @@ import Foundation
 import GiniHealthAPILibrary
 import GiniBankAPILibrary
 import GiniCaptureSDK
+import GiniMerchantSDK
 
 class MerchantNetworkingService: GiniCaptureNetworkService {
     typealias GiniBankAPIAnalysisCompletion = (Result<(document: GiniBankAPILibrary.Document, extractionResult: GiniBankAPILibrary.ExtractionResult), GiniBankAPILibrary.GiniError>) -> Void
@@ -98,10 +99,10 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
                                                    candidates: candidates)
     }
     
-    private var documentService: GiniHealthAPILibrary.DefaultDocumentService
+    private var documentService: MerchantDocumentService
     
-    public init(lib: GiniHealthAPI) {
-        self.documentService = lib.documentService()
+    public init(documentService: MerchantDocumentService) {
+        self.documentService = documentService
     }
     
     func delete(document: GiniBankAPILibrary.Document, completion: @escaping (Result<String, GiniBankAPILibrary.GiniError>) -> Void) {

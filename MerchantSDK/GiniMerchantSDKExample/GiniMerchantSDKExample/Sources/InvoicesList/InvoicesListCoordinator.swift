@@ -6,7 +6,6 @@
 
 
 import UIKit
-import GiniHealthAPILibrary
 import GiniMerchantSDK
 
 final class InvoicesListCoordinator: NSObject, Coordinator {
@@ -19,7 +18,7 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     var invoicesListNavigationController: UINavigationController!
     var invoicesListViewController: InvoicesListViewController!
     
-    func start(documentService: DefaultDocumentService,
+    func start(documentService: MerchantDocumentService,
                hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
                paymentComponentsController: PaymentComponentsController,
                invoices: [DocumentWithExtractions]? = nil) {
