@@ -68,6 +68,7 @@ public class SkontoAppliedDateView: UIView {
         containerView.addSubview(textField)
         containerView.addSubview(calendarImageView)
         setupConstraints()
+        configureDatePicker()
     }
 
     private func setupConstraints() {
@@ -91,6 +92,34 @@ public class SkontoAppliedDateView: UIView {
             calendarImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
             calendarImageView.heightAnchor.constraint(equalToConstant: Constants.imageSize)
         ])
+    }
+
+    private func configureDatePicker() {
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        }
+        datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+        textField.inputView = datePicker
+        let toolbar = UIToolbar()
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
+                                         target: self,
+                                         action: #selector(datePickerDoneButtonPressed))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        textField.inputAccessoryView = toolbar
+    }
+
+    @objc private func dateChanged(_ datePicker: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        textField.text = dateFormatter.string(from: datePicker.date)
+    }
+
+    @objc private func datePickerDoneButtonPressed() {
+        textField.resignFirstResponder()
     }
 }
 
