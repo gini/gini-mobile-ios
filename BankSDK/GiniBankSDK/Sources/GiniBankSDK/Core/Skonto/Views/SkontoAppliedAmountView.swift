@@ -22,6 +22,7 @@ public class SkontoAppliedAmountView: UIView {
 
     private lazy var textField: UITextField = {
         let textField = UITextField()
+        textField.delegate = self
         textField.text = "999,00"
         textField.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         textField.font = configuration.textStyleFonts[.body]
@@ -97,6 +98,13 @@ public class SkontoAppliedAmountView: UIView {
                                                    constant: Constants.currencyLabelHorizontalPadding),
             currencyLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding)
         ])
+    }
+}
+
+extension SkontoAppliedAmountView: UITextFieldDelegate {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
 
