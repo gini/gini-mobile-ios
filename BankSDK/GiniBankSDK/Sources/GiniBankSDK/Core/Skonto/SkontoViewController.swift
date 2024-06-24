@@ -10,8 +10,9 @@ import GiniCaptureSDK
 public class SkontoViewController: UIViewController {
     let headerView = SkontoAppliedHeaderView()
     let infoView = SkontoAppliedInfoView()
-    let amountView = SkontoAppliedAmountView()
+    let amountView = SkontoAmountView()
     let dateView = SkontoAppliedDateView()
+    let notAppliedView = SkontoNotAppliedView()
     let proceedView = SkontoProceedView()
 
     public override func viewDidLoad() {
@@ -25,6 +26,7 @@ public class SkontoViewController: UIViewController {
         view.addSubview(infoView)
         view.addSubview(amountView)
         view.addSubview(dateView)
+        view.addSubview(notAppliedView)
         view.addSubview(proceedView)
         setupConstraints()
     }
@@ -47,9 +49,13 @@ public class SkontoViewController: UIViewController {
             dateView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
             dateView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
 
-            proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            notAppliedView.topAnchor.constraint(equalTo: dateView.bottomAnchor, constant: Constants.verticalPadding),
+            notAppliedView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
+            notAppliedView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
+
+            proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 }

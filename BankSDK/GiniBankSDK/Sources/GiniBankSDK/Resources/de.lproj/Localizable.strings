@@ -90,3 +90,4 @@
 "ginibank.skonto.info.message" = "Zahlung in 14 Tagen: 3% Skonto.";
 "ginibank.skonto.info.amount.title" = "Betrag nach Abzug";
 "ginibank.skonto.info.date.title" = "Fälligkeitsdatum";
+"ginibank.skonto.notapplied.title" = "Ohne Skonto";

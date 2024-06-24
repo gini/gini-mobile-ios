@@ -1,5 +1,5 @@
 //
-//  SkontoAppliedAmountView.swift
+//  SkontoAmountView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-public class SkontoAppliedAmountView: UIView {
+public class SkontoAmountView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.amount.title",
@@ -101,14 +101,14 @@ public class SkontoAppliedAmountView: UIView {
     }
 }
 
-extension SkontoAppliedAmountView: UITextFieldDelegate {
+extension SkontoAmountView: UITextFieldDelegate {
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
 
-private extension SkontoAppliedAmountView {
+private extension SkontoAmountView {
     enum Constants {
         static let padding: CGFloat = 12
         static let currencyLabelHorizontalPadding: CGFloat = 10
