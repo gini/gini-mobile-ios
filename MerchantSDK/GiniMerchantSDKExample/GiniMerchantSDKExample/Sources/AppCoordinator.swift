@@ -114,7 +114,7 @@ final class AppCoordinator: Coordinator {
         merchant.delegate = self
         screenAPICoordinator.giniMerchant = merchant
         
-//        screenAPICoordinator.start(healthAPI: apiLib)
+        screenAPICoordinator.start(documentService: merchant.documentService)
         add(childCoordinator: screenAPICoordinator)
         
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
