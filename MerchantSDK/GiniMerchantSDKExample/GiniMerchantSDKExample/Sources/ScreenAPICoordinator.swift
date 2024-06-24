@@ -26,8 +26,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     
     var giniMerchant: GiniMerchant?
     var screenAPIViewController: UINavigationController!
-    
-    let client: GiniHealthAPILibrary.Client
+
     let documentMetadata: GiniHealthAPILibrary.Document.Metadata?
     weak var analysisDelegate: AnalysisDelegate?
     var visionDocuments: [GiniCaptureDocument]?
@@ -41,13 +40,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     
     init(configuration: GiniConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
-         client: GiniHealthAPILibrary.Client,
          documentMetadata: GiniHealthAPILibrary.Document.Metadata?,
          hardcodedInvoicesController: HardcodedInvoicesController,
          paymentComponentController: PaymentComponentsController) {
         visionConfiguration = configuration
         visionDocuments = documents
-        self.client = client
         self.documentMetadata = documentMetadata
         self.hardcodedInvoicesController = hardcodedInvoicesController
         self.paymentComponentController = paymentComponentController
