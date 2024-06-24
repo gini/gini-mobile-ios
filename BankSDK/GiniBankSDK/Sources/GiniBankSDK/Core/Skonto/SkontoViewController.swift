@@ -8,12 +8,37 @@ import UIKit
 import GiniCaptureSDK
 
 public class SkontoViewController: UIViewController {
-    let headerView = SkontoAppliedHeaderView()
-    let infoView = SkontoAppliedInfoView()
-    let amountView = SkontoAmountView()
-    let dateView = SkontoAppliedDateView()
-    let notAppliedView = SkontoNotAppliedView()
-    let proceedView = SkontoProceedView()
+    private lazy var headerView: SkontoAppliedHeaderView = {
+        let view = SkontoAppliedHeaderView(viewModel: viewModel)
+        return view
+    }()
+
+    private lazy var infoView: SkontoAppliedInfoView = {
+        let view = SkontoAppliedInfoView(viewModel: viewModel)
+        return view
+    }()
+
+    private lazy var amountView: SkontoAmountView = {
+        let view = SkontoAmountView(viewModel: viewModel)
+        return view
+    }()
+
+    private lazy var dateView: SkontoAppliedDateView = {
+        let view = SkontoAppliedDateView(viewModel: viewModel)
+        return view
+    }()
+
+    private lazy var notAppliedView: SkontoNotAppliedView = {
+        let view = SkontoNotAppliedView(viewModel: viewModel)
+        return view
+    }()
+
+    private lazy var proceedView: SkontoProceedView = {
+        let view = SkontoProceedView(viewModel: viewModel)
+        return view
+    }()
+
+    private let viewModel = SkontoViewModel(isSkontoApplied: true)
 
     public override func viewDidLoad() {
         super.viewDidLoad()
