@@ -69,12 +69,18 @@ public struct DataForReview {
     public weak var delegate: GiniMerchantDelegate?
     
     /**
-     Returns a GiniMerchant instance
+     Initializes a new instance of GiniMerchant.
      
-     - parameter giniApiLib: GiniHealthAPI initialized with client's credentials
+     This initializer creates a GiniMerchant instance by first constructing a Client object with the provided client credentials (id, secret, domain)
+     
+     - Parameters:
+     - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
+     - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
+     - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
      */
-    public init(with giniApiLib: GiniHealthAPI){
-        self.giniApiLib = giniApiLib
+    public init(id: String, secret: String, domain: String) {
+        let client = Client(id: id, secret: secret, domain: domain)
+        self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
         self.documentService = giniApiLib.documentService()
         self.paymentService = giniApiLib.paymentService()
     }
