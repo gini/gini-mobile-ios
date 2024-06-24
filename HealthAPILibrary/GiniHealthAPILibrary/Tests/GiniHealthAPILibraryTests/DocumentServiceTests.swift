@@ -38,6 +38,25 @@ final class DocumentServicesTests: XCTestCase {
         wait(for: [expect], timeout: 1)
     }
 
+    func testPartialDocumentCreationWithImageCompression() {
+        // Should check size of a big image
+        let range = 6635000...6636000 // We need this range because on different machines, the compression is a bit bigger or smaller
+
+        guard let imageData12MB = UIImage(named: "invoice-12MB", in: Bundle.module, compatibleWith: nil)?.pngData() else { return }
+        let imageDataProcessed = defaultDocumentService.processDataIfNeeded(data: imageData12MB)
+
+        XCTAssertTrue(range.contains(imageDataProcessed?.count ?? 0))
+    }
+
+    func testDocumentCreationWithBigPDF() {
+        // Should check size of a big PDF
+        let pdfData13MB = loadFile(withName: "invoice-13MB", ofType: "pdf")
+        let expectedSize = pdfData13MB.count
+        let imageDataProcessed = defaultDocumentService.processDataIfNeeded(data: pdfData13MB)
+
+        XCTAssertEqual(imageDataProcessed?.count ?? 0, expectedSize)
+    }
+
     func testCompositeDocumentCreation() {
         let expect = expectation(description: "it returns a composite document")
 
