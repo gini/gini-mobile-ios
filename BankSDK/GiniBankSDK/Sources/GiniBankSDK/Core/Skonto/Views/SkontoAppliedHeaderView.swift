@@ -45,14 +45,16 @@ public class SkontoAppliedHeaderView: UIView {
 
     private let configuration = GiniBankConfiguration.shared
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    private var viewModel: SkontoViewModel
+
+    public init(viewModel: SkontoViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         setupView()
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupView()
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupView() {
@@ -62,6 +64,7 @@ public class SkontoAppliedHeaderView: UIView {
         addSubview(statusLabel)
         addSubview(discountSwitch)
         setupConstraints()
+        bindViewModel()
     }
 
     private func setupConstraints() {
@@ -76,6 +79,19 @@ public class SkontoAppliedHeaderView: UIView {
             discountSwitch.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             discountSwitch.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
+    }
+    
+    private func bindViewModel() {
+        discountSwitch.isOn = viewModel.isSkontoApplied
+        discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
+        viewModel.onSkontoToggle = { [weak self] isSkontoApplied in
+            guard let self else { return }
+            self.discountSwitch.isOn = isSkontoApplied
+        }
+    }
+
+    @objc private func discountSwitchToggled(_ sender: UISwitch) {
+        viewModel.toggleDiscount()
     }
 }
 

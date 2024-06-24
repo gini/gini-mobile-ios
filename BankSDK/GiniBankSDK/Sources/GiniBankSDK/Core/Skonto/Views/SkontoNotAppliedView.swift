@@ -10,7 +10,7 @@ import GiniCaptureSDK
 class SkontoNotAppliedView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        //TODO: Localization
+        // TODO: Localization
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.notapplied.title",
                                                               comment: "Ohne Skonto")
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
@@ -36,19 +36,21 @@ class SkontoNotAppliedView: UIView {
     }()
 
     private lazy var amountView: UIView = {
-        return SkontoAmountView()
+        return SkontoAmountView(viewModel: viewModel)
     }()
 
     private let configuration = GiniBankConfiguration.shared
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    private var viewModel: SkontoViewModel
+
+    public init(viewModel: SkontoViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         setupView()
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupView()
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupView() {
