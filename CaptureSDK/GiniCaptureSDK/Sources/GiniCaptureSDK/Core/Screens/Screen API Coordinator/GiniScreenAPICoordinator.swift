@@ -204,35 +204,52 @@ extension GiniScreenAPICoordinator {
             trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
 
             if pages.type == .qrcode {
-                screenAPINavigationController.dismiss(animated: true)
+                finishWithCancellation()
             }
 
             if pages.count > 0 {
-                if screenAPINavigationController.viewControllers.count > 1 {
-                    screenAPINavigationController.popViewController(animated: true)
-                } else {
-                    screenAPINavigationController.dismiss(animated: true)
-                }
+                defaultHandleBack()
             } else {
-                closeScreenApi()
+                finishWithCancellation()
             }
         case is AnalysisViewController:
             trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
-            screenAPINavigationController.dismiss(animated: true)
+            finishWithCancellation()
         default:
-            if screenAPINavigationController.viewControllers.count > 1 {
-                screenAPINavigationController.popViewController(animated: true)
-            } else {
-                screenAPINavigationController.dismiss(animated: true)
-            }
+                defaultHandleBack()
         }
     }
 
-    @objc func closeScreenApi() {
-        self.visionDelegate?.didCancelCapturing()
+    func defaultHandleBack(){
+        if screenAPINavigationController.viewControllers.count > 1 {
+            screenAPINavigationController.popViewController(animated: true)
+        } else {
+            finishWithCancellation()
+        }
+    }
+
+    @objc func finishWithCancellation() {
+        if let delegate = self.visionDelegate {
+            delegate.didCancelCapturing()
+        } else {
+            Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+        }
+    }
+
+    @objc func finishWithEnterManually() {
+        if let delegate = self.visionDelegate {
+            delegate.didPressEnterManually()
+        } else {
+            Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+        }
     }
 
     @objc func showHelpMenuScreen() {
+        let topViewController = screenAPINavigationController.topViewController
+        guard topViewController is CameraViewController else {
+            return
+        }
+
         let helpMenuViewController = HelpMenuViewController(
             giniConfiguration: giniConfiguration
         )
@@ -247,14 +264,12 @@ extension GiniScreenAPICoordinator {
 
         // In case of 1 menu item it's better to show the item immediately without any selection
 
-        if helpMenuViewController.dataSource.items.count == 1 {
-            screenAPINavigationController
-                .pushViewController(helpItemViewController(for: helpMenuViewController.dataSource.items[0]),
-                                    animated: true)
-        } else {
-            screenAPINavigationController
-                .pushViewController(helpMenuViewController, animated: true)
-        }
+        let menuItems = helpMenuViewController.dataSource.items
+        let helpViewControllerForOneItem = helpItemViewController(for: helpMenuViewController.dataSource.items[0])
+        let helpViewControllerToPush = menuItems.count == 1 ? helpViewControllerForOneItem : helpMenuViewController
+
+        screenAPINavigationController.pushViewController(helpViewControllerToPush, animated: true)
+
     }
 
     @objc func showAnalysisScreen() {

@@ -2,7 +2,7 @@
 //  GiniHealthSDKPinningExampleTests.swift
 //  GiniHealthSDKPinningExampleTests
 //
-//  Created by Nadya Karaban on 18.05.22.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import XCTest

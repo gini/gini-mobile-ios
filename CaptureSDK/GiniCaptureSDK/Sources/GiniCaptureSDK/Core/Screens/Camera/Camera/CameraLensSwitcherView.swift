@@ -38,6 +38,7 @@ final class CameraLensSwitcherView: UIView {
         button.isHidden = true
         button.setTitleColor(.GiniCapture.light1, for: .normal)
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
+        button.isExclusiveTouch = true
         button.translatesAutoresizingMaskIntoConstraints = false
         if let font = GiniConfiguration.shared.textStyleFonts[.caption2] {
             if font.pointSize > Constants.maxFontSize {
@@ -54,6 +55,7 @@ final class CameraLensSwitcherView: UIView {
         button.isHidden = true
         button.setTitleColor(.GiniCapture.light1, for: .normal)
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
+        button.isExclusiveTouch = true
         button.translatesAutoresizingMaskIntoConstraints = false
         if let font = GiniConfiguration.shared.textStyleFonts[.caption2] {
             if font.pointSize > Constants.maxFontSize {
@@ -70,6 +72,7 @@ final class CameraLensSwitcherView: UIView {
         button.isHidden = true
         button.setTitleColor(.GiniCapture.light1, for: .normal)
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
+        button.isExclusiveTouch = true
         button.translatesAutoresizingMaskIntoConstraints = false
         if let font = GiniConfiguration.shared.textStyleFonts[.caption2] {
             if font.pointSize > Constants.maxFontSize {

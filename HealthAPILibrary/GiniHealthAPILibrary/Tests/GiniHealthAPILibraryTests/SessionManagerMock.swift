@@ -12,8 +12,8 @@ import XCTest
 final class SessionManagerMock: SessionManagerProtocol {
     
     static let v3DocumentId = "626626a0-749f-11e2-bfd6-000000000000"
-    static let partialDocumentId = "726626a0-749f-11e2-bfd6-000000000000"
-    static let compositeDocumentId = "826626a0-749f-11e2-bfd6-000000000000"
+    static let partialDocumentId = "5e06e343-9dff-4924-99ac-7d5b3abf592c"
+    static let compositeDocumentId = "8d0c628d-95e8-4cf2-b4ea-d2daf03d8a32"
     static let paymentProviderId = "b09ef70a-490f-11eb-952e-9bc6f4646c57"
     static let paymentRequestId = "118edf41-102a-4b40-8753-df2f0634cb86"
     static let paymentRequesterUri = "ginipay-test://paymentRequester"
@@ -106,6 +106,12 @@ final class SessionManagerMock: SessionManagerProtocol {
             case .feedback(_):
                 extractionFeedbackBody = resource.request.httpBody ?? nil
                 completion(.success("Feedback was sent" as! T.ResponseType))
+            case .payment(_):
+                let payment: Payment = loadPayment()
+                completion(.success(payment as! T.ResponseType))
+            case .pdfWithQRCode(_):
+                let pdfData = loadFile(withName: "pdfWithQR", ofType: "pdf")
+                    completion(.success(pdfData as! T.ResponseType))
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))

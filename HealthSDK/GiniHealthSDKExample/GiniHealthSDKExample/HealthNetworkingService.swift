@@ -2,7 +2,7 @@
 //  HealthNetworkingService.swift
 //  GiniHealthSDKExample
 //
-//  Created by Nadya Karaban on 23.05.23.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -21,7 +21,8 @@ class HealthNetworkingService: GiniCaptureNetworkService {
                                              id: doc.id,
                                              name: doc.name,
                                              links: links,
-                                             sourceClassification: sourceClassification)
+                                             sourceClassification: sourceClassification, 
+                                             expirationDate: nil)
     }
     
     private func mapDocumentToGiniBankAPI(doc: GiniHealthAPILibrary.Document) -> GiniBankAPILibrary.Document {

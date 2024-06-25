@@ -10,8 +10,8 @@ import Foundation
 /// The Gini Health API Library
 public final class GiniHealthAPI {
     
-    private let docService: DocumentService!
-    private let payService: PaymentService?
+    private var docService: DocumentService!
+    private var payService: PaymentService?
     static var logLevel: LogLevel = .none
     public var sessionDelegate: URLSessionDelegate? = nil
 
@@ -121,11 +121,6 @@ extension GiniHealthAPI {
                 }
                 return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, apiDomain: api),
                                      paymentService: PaymentService(sessionManager: sessionManager, apiDomain: api))
-            case let .gym(tokenSource):
-                let sessionManager = SessionManager(alternativeTokenSource: tokenSource,
-                                                    sessionDelegate: self.sessionDelegate)
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager),
-                                     paymentService: PaymentService(sessionManager: sessionManager))
             }
         }
         

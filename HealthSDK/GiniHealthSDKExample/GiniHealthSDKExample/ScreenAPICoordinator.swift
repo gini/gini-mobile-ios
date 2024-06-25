@@ -2,7 +2,7 @@
 //  ScreenAPICoordinator.swift
 //  GiniHealthSDKExample
 //
-//  Created by Nadya Karaban on 22.05.23.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import GiniBankAPILibrary
@@ -13,6 +13,7 @@ import UIKit
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ())
+    func presentInvoicesList(invoices: [DocumentWithExtractions]?)
 }
 
 final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDelegate, GiniCaptureResultsDelegate {
@@ -26,24 +27,30 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     var giniHealth: GiniHealth?
     var screenAPIViewController: UINavigationController!
     
-    let client: GiniBankAPILibrary.Client
-    let documentMetadata: GiniBankAPILibrary.Document.Metadata?
+    let client: GiniHealthAPILibrary.Client
+    let documentMetadata: GiniHealthAPILibrary.Document.Metadata?
     weak var analysisDelegate: AnalysisDelegate?
     var visionDocuments: [GiniCaptureDocument]?
     var visionConfiguration: GiniConfiguration
     private var captureExtractedResults: [GiniBankAPILibrary.Extraction] = []
+    private var hardcodedInvoicesController: HardcodedInvoicesController
+    private var paymentComponentController: PaymentComponentsController
     
     // {extraction name} : {entity name}
     private let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "bic" : "bic", "amountToPay" : "amount"]
     
     init(configuration: GiniConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
-         client: GiniBankAPILibrary.Client,
-         documentMetadata: GiniBankAPILibrary.Document.Metadata?) {
+         client: GiniHealthAPILibrary.Client,
+         documentMetadata: GiniHealthAPILibrary.Document.Metadata?,
+         hardcodedInvoicesController: HardcodedInvoicesController,
+         paymentComponentController: PaymentComponentsController) {
         visionConfiguration = configuration
         visionDocuments = documents
         self.client = client
         self.documentMetadata = documentMetadata
+        self.hardcodedInvoicesController = hardcodedInvoicesController
+        self.paymentComponentController = paymentComponentController
         super.init()
     }
     
@@ -77,18 +84,29 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
         for extraction in captureExtractedResults {
             healthExtractions.append(GiniHealthAPILibrary.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
         }
-        
+
         if let healthSdk = self.giniHealth, let docId = result.document?.id {
             // this step needed since we've got 2 different Document structures
-            healthSdk.fetchDataForReview(documentId: docId) { result in
-                switch result {
+            healthSdk.fetchDataForReview(documentId: docId) { [weak self] resultReview in
+                switch resultReview {
                 case .success(let data):
-                        let vc = PaymentReviewViewController.instantiate(with: healthSdk, data: data, trackingDelegate: self)
-                        vc.modalTransitionStyle = .coverVertical
-                        vc.modalPresentationStyle = .overCurrentContext
-                        self.rootViewController.present(vc, animated: true)
+                    // Store invoice/document into Invoices list
+                    self?.giniHealth?.checkIfDocumentIsPayable(docId: result.document?.id ?? "", completion: { [weak self] resultPayable in
+                        switch resultPayable {
+                        case .success(let isPayable):
+                            let invoice = DocumentWithExtractions(documentID: result.document?.id ?? "",
+                                                                  extractions: data.extractions,
+                                                                  isPayable: isPayable)
+                            self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
+                            self?.rootViewController.dismiss(animated: true, completion: {
+                                self?.delegate?.presentInvoicesList(invoices: [invoice])
+                            })
+                        case .failure(let error):
+                            print("❌ Checking if document is payable failed: \(String(describing: error))")
+                        }
+                    })
                 case .failure(let error):
-                        print("❌ Document data fetching failed: \(String(describing: error))")
+                    print("❌ Document data fetching failed: \(String(describing: error))")
                 }
             }
         }

@@ -57,11 +57,13 @@ final class SessionManager: NSObject {
     let alternativeTokenSource: AlternativeTokenSource?
     private let session: URLSession
     let userDomain: UserDomain
-    
+    var clientAccessToken: String?
+    var userAccessToken: String?
+
     enum TaskType {
         case data, download, upload(Data)
     }
-    
+
     init(keyStore: KeyStore = KeychainStore(),
          alternativeTokenSource: AlternativeTokenSource? = nil,
          urlSession: URLSession = .init(configuration: .default),
@@ -78,7 +80,7 @@ final class SessionManager: NSObject {
 // MARK: - SessionProtocol
 
 extension SessionManager: SessionProtocol {
-    
+
     func data<T: Resource >(resource: T,
                             cancellationToken: CancellationToken?,
                             completion: @escaping CompletionResult<T.ResponseType>) {
@@ -120,32 +122,31 @@ public final class CancellationToken {
 // MARK: - Private
 
 private extension SessionManager {
-    
+
     func load<T: Resource>(resource: T,
                            taskType: TaskType,
                            cancellationToken: CancellationToken?,
                            completion: @escaping CompletionResult<T.ResponseType>) {
         if let authServiceType = resource.authServiceType {
-            var value: String?
+            var accessToken: String?
             var authType: AuthType?
             switch authServiceType {
-            case .apiService:
-                value = keyStore.fetch(service: .auth, key: .userAccessToken)
-                authType = .bearer
-            case .userService(let type):
-                if case .basic = type {
-                    value = AuthHelper.encoded(client)
-                } else if case .bearer = type {
-                    value = keyStore.fetch(service: .auth, key: .clientAccessToken)
-                }
-                authType = type
+                case .apiService:
+                    accessToken = self.userAccessToken
+                    authType = .bearer
+                case .userService(let type):
+                    if case .basic = type {
+                        accessToken = AuthHelper.encoded(client)
+                    } else if case .bearer = type {
+                        accessToken = self.clientAccessToken
+                    }
+                    authType = type
             }
-            
-            if let value = value, let header = authType {
+
+            if let accessToken = accessToken, let header = authType {
                 var request = resource.request
-                let authHeader = AuthHelper.authorizationHeader(for: value, headerType: header)
+                let authHeader = AuthHelper.authorizationHeader(for: accessToken, headerType: header)
                 request.addValue(authHeader.value, forHTTPHeaderField: authHeader.key)
-                
                 dataTask(for: resource,
                          finalRequest: request,
                          type: taskType,
@@ -153,15 +154,12 @@ private extension SessionManager {
                          completion: completion).resume()
             } else {
                 Log("Stored token is no longer valid", event: .warning)
-                handleError(resource: resource,
-                            statusCode: 401,
-                            response: nil,
-                            data: nil,
-                            taskType: taskType,
-                            cancellationToken: cancellationToken,
-                            completion: completion)
+                handleLoginFlow(resource: resource,
+                                taskType: taskType,
+                                cancellationToken: cancellationToken,
+                                completion: completion)
             }
-            
+
         } else {
             dataTask(for: resource,
                      finalRequest: resource.request,
@@ -210,95 +208,80 @@ private extension SessionManager {
     }
     
     // swiftlint:disable function_body_length
-    private func taskCompletionHandler<T: Resource>(
-        for resource: T,
-        request: URLRequest,
-        taskType: TaskType,
-        cancellationToken: CancellationToken?,
-        completion: @escaping CompletionResult<T.ResponseType>) -> ((Data?, URLResponse?, Error?) -> Void) {
+    private typealias DataResponseCompletion<T> = (Data?, URLResponse?, Error?) -> Void
+
+    private func taskCompletionHandler<T: Resource>(for resource: T,
+                                            request: URLRequest,
+                                            taskType: TaskType,
+                                            cancellationToken: CancellationToken?,
+                                            completion: @escaping CompletionResult<T.ResponseType>) -> DataResponseCompletion<T> {
         return { [weak self] data, response, error in
             guard let self = self else { return }
-            guard let response = response else {
-                completion(.failure(.noResponse)); return }
-            guard !(cancellationToken?.isCancelled ?? false) else { completion(.failure(.requestCancelled)); return }
 
-            if let response = response as? HTTPURLResponse {
-                switch response.statusCode {
-                case 200..<400:
-                    if let jsonData = data {
-                        do {
-                            let result = try resource.parsed(response: response, data: jsonData)
-                            Log("Success: \(request.httpMethod!) - \(request.url!)", event: .success)
-                            completion(.success(result))
-                        } catch let error {
-                            Log("""
-                                Failure: \(request.httpMethod!) - \(request.url!)
-                                Parse error: \(error)
-                                Data content: \(String(describing: String(data: jsonData, encoding: .utf8)))
-                                """, event: .error)
-                            completion(.failure(.parseError(message: "Failed to parse response", response: response, data: jsonData)))
-                        }
-                    } else {
-                        completion(.failure(.unknown(response: response, data: nil)))
-                    }
-                case 400..<500:
-                    Log("""
-                        Failure: \(request.httpMethod!) - \(request.url!) - \(response.statusCode)
-                        Data content: \(String(describing: String(data: data ?? Data(count: 0), encoding: .utf8)))
-                        """,
-                        event: .error)
-                    self.handleError(resource: resource,
-                                     statusCode: response.statusCode,
-                                     response: response,
-                                     data: data,
-                                     taskType: taskType,
-                                     cancellationToken: cancellationToken,
-                                     completion: completion)
-                default:
-                    if let data = data {
-                        Log("""
-                            Failure: \(request.httpMethod!) - \(request.url!)
-                            Data content: \(String(describing: String(data: data, encoding: .utf8)))
-                            """,
-                            event: .error)
-                    }
-                    completion(.failure(.unknown(response: response, data: data)))
-                }
-            } else {
-                if let data = data {
-                    Log("""
-                        Failure: \(request.httpMethod!) - \(request.url!)
-                        Data content: \(String(describing: String(data: data, encoding: .utf8)))
-                        """,
-                        event: .error)
+            if let nsError = error as NSError?,
+               nsError.domain == NSURLErrorDomain,
+               nsError.code == NSURLErrorNotConnectedToInternet {
+                return completion(.failure(.noInternetConnection))
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return completion(.failure(.noResponse))
+            }
+
+            guard !(cancellationToken?.isCancelled ?? false) else {
+                completion(.failure(.requestCancelled))
+                return
+            }
+
+            switch httpResponse.statusCode {
+            case 200..<400:
+                if let jsonData = data {
+                    self.handleSuccess(resource: resource,
+                                       request: request,
+                                       response: httpResponse,
+                                       data: jsonData,
+                                       completion: completion)
                 } else {
-                    Log("""
-                        Failure: \(request.httpMethod!) - \(request.url!)
-                        """,
-                        event: .error)
+                        completion(.failure(.unknown(response: httpResponse, data: nil)))
                 }
-                completion(.failure(.parseError(message: "Response type was not HTTPURLResponse", response: nil, data: data)))
+
+            case 400...599:
+                self.handleError(resource: resource,
+                                 statusCode: httpResponse.statusCode,
+                                 response: httpResponse,
+                                 data: data,
+                                 taskType: taskType,
+                                 cancellationToken: cancellationToken,
+                                  completion: completion)
+
+            default:
+                completion(.failure(.unknown(response: httpResponse, data: data)))
             }
         }
     }
-    
-    private func downloadTaskCompletionHandler<T: Resource>(
-        for resource: T,
-        request: URLRequest,
-        taskType: TaskType,
-        cancellationToken: CancellationToken?,
-        completion: @escaping CompletionResult<T.ResponseType>) -> ((URL?, URLResponse?, Error?) -> Void) {
-        return {[weak self] url, response, error in
-            guard let self = self else { return }
-            
-            self.taskCompletionHandler(for: resource,
-                                       request: request,
-                                       taskType: taskType,
-                                       cancellationToken: cancellationToken,
-                                       completion: completion)(Data(url: url), response, error)
+
+    private func handleSuccess<T: Resource>(resource: T,
+                                            request: URLRequest,
+                                            response: HTTPURLResponse,
+                                            data: Data,
+                                            completion: @escaping CompletionResult<T.ResponseType>) {
+        do {
+            let result = try resource.parsed(response: response, data: data)
+            Log("Success: \(request.httpMethod!) - \(request.url!)", event: .success)
+            completion(.success(result))
+        } catch let error {
+            Log("""
+                Failure: \(request.httpMethod!) - \(request.url!)
+                Parse error: \(error)
+                Data content: \(String(data: data, encoding: .utf8) ?? "nil")
+                """, event: .error)
+            completion(.failure(.parseError(message: "Failed to parse response",
+                                            response: response,
+                                            data: data))
+            )
         }
     }
-    
+
     private func handleError<T: Resource>(resource: T,
                                           statusCode: Int,
                                           response: HTTPURLResponse?,
@@ -308,41 +291,66 @@ private extension SessionManager {
                                           completion: @escaping CompletionResult<T.ResponseType>) {
         switch statusCode {
         case 400:
-            completion(.failure(.badRequest(response: response, data: data)))
-        case 401:
-            if let authServiceType = resource.authServiceType, case .apiService = authServiceType {
-                do {
-                    // Remove current user
-                    try self.keyStore.remove(service: .auth, key: .userEmail)
-                    try self.keyStore.remove(service: .auth, key: .userPassword)
-                    
-                    // Log in again
-                    self.logIn { result in
-                        switch result {
-                        case .success:
-                            self.load(resource: resource,
-                                      taskType: taskType,
-                                      cancellationToken: cancellationToken,
-                                      completion: completion)
-                        case .failure:
-                            completion(.failure(.unauthorized(response: response, data: data)))
-                        }
-                    }
-                } catch {
-                    completion(.failure(.unauthorized(response: response, data: data)))
-                }
-            } else {
-                completion(.failure(.unauthorized(response: response, data: data)))
+            guard let responseData = data else {
+                completion(.failure(.badRequest(response: response, data: nil)))
+                return
             }
+
+            guard let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
+                errorInfo["error"] == "invalid_grant" else {
+                completion(.failure(.badRequest(response: response, data: data)))
+                return
+            }
+            completion(.failure(.unauthorized(response: response, data: data)))
+        case 401:
+            completion(.failure(.unauthorized(response: response, data: data)))
         case 404:
             completion(.failure(.notFound(response: response, data: data)))
         case 406:
             completion(.failure(.notAcceptable(response: response, data: data)))
         case 429:
             completion(.failure(.tooManyRequests(response: response, data: data)))
+        case 503:
+            completion(.failure(.maintenance))
+        case 500:
+            completion(.failure(.outage))
+        case 501, 502, 504...599:
+            completion(.failure(.server))
         default:
             completion(.failure(.unknown(response: response, data: data)))
         }
     }
-    
+
+    private func downloadTaskCompletionHandler<T: Resource>(for resource: T,
+                                                            request: URLRequest,
+                                                            taskType: TaskType,
+                                                            cancellationToken: CancellationToken?,
+                                                            completion: @escaping CompletionResult<T.ResponseType>) -> ((URL?, URLResponse?, Error?) -> Void) {
+        return {[weak self] url, response, error in
+            guard let self = self else { return }
+
+            self.taskCompletionHandler(for: resource,
+                                       request: request,
+                                       taskType: taskType,
+                                       cancellationToken: cancellationToken,
+                                       completion: completion)(Data(url: url), response, error)
+        }
+    }
+
+    private func handleLoginFlow<T: Resource>(resource: T,
+                                              taskType: TaskType,
+                                              cancellationToken: CancellationToken?,
+                                              completion: @escaping CompletionResult<T.ResponseType>) {
+        logIn { result in
+            switch result {
+                case .success:
+                    self.load(resource: resource,
+                              taskType: taskType,
+                              cancellationToken: cancellationToken,
+                              completion: completion)
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
 }

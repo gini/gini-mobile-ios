@@ -98,6 +98,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         let editTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.editbutton",
                                                                  comment: "Edit")
         editButton.setTitle(editTitle, for: .normal)
+        editButton.isExclusiveTouch = true
 
         separatorView.backgroundColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
         unitPriceLabel.textColor = .GiniBank.dark7

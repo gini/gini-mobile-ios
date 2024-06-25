@@ -33,6 +33,9 @@ public protocol GiniErrorProtocol {
  - requestCancelled: Error indicating that the request was cancelled.
  - tooManyRequests: Error indicating that too many requests have been made.
  - unauthorized: Error indicating that the request was unauthorized.
+ - maintenance: Error indicating that the system is under maintenance.
+ - outage: Error indicating that the service is unavailable due to outage.
+ - server: Error indicating that the server is unavailable.
  - unknown: An unknown error occurred.
  */
 
@@ -45,8 +48,12 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
     case requestCancelled
     case tooManyRequests(response: HTTPURLResponse? = nil, data: Data? = nil)
     case unauthorized(response: HTTPURLResponse? = nil, data: Data? = nil)
+    case maintenance
+    case outage
+    case server
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
-    
+    case noInternetConnection
+
     public var message: String {
         switch self {
         case .badRequest:
@@ -65,6 +72,14 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
             return "Too many requests"
         case .unauthorized:
             return "Unauthorized"
+        case .maintenance:
+            return "Maintenance is in progress"
+        case .outage:
+            return "Service is unavailable"
+        case .server:
+            return "An unexpected server error occurred"
+        case .noInternetConnection:
+            return "No internet connection"
         case .unknown:
             return "Unknown"
         }
@@ -78,7 +93,7 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
              .parseError(_, let response, _),
              .tooManyRequests(let response, _),
              .unauthorized(let response, _),
-            .unknown(let response, _):
+             .unknown(let response, _):
             return response
         default:
             return nil

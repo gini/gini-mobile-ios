@@ -2,17 +2,24 @@
 //  PaymentReviewModer.swift
 //  GiniHealth
 //
-//  Created by Nadya Karaban on 18.04.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import GiniHealthAPILibrary
 import UIKit
+
+protocol PaymentReviewViewModelDelegate: AnyObject {
+    func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
+    func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController)
+    func createPaymentRequestAndOpenBankApp()
+    func obtainPDFFromPaymentRequest()
+}
+
 /**
  View model class for review screen
   */
 public class PaymentReviewModel: NSObject {
     var onDocumentUpdated: () -> Void = {}
-    var onPaymentProvidersFetched: (_ provider: PaymentProviders) -> Void = { _ in }
 
     var onExtractionFetched: () -> Void = {}
     var onExtractionUpdated: () -> Void = {}
@@ -28,14 +35,14 @@ public class PaymentReviewModel: NSObject {
     var onCreatePaymentRequestErrorHandling: () -> Void = {}
     
     var onBankSelection: (_ provider: PaymentProvider) -> Void = { _ in }
+    
+    weak var viewModelDelegate: PaymentReviewViewModelDelegate?
 
     public var document: Document {
         didSet {
             self.onDocumentUpdated()
         }
     }
-
-    private var providers: PaymentProviders = []
 
     public var extractions: [Extraction] {
         didSet {
@@ -45,6 +52,7 @@ public class PaymentReviewModel: NSObject {
 
     public var documentId: String
     private var healthSDK: GiniHealth
+    private var selectedPaymentProvider: PaymentProvider?
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
@@ -67,12 +75,17 @@ public class PaymentReviewModel: NSObject {
             self.updateImagesLoadingStatus()
         }
     }
+    
+    // Pay invoice label
+    let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.banking.app.button.label",
+                                                                       comment: "Title label used for the pay invoice button")
 
-    public init(with giniHealth: GiniHealth, document: Document, extractions: [Extraction]) {
+    public init(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?) {
         self.healthSDK = giniHealth
         self.documentId = document.id
         self.document = document
         self.extractions = extractions
+        self.selectedPaymentProvider = selectedPaymentProvider
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> PageCollectionCellViewModel {
@@ -81,19 +94,6 @@ public class PaymentReviewModel: NSObject {
 
     private func createCellViewModel(previewImage: UIImage) -> PageCollectionCellViewModel {
         return PageCollectionCellViewModel(preview: previewImage)
-    }
-
-    func checkIfAnyPaymentProviderAvailable() {
-        healthSDK.checkIfAnyPaymentProviderAvailable {[weak self] result in
-            switch result {
-            case let .success(providers):
-                self?.onPaymentProvidersFetched(providers)
-            case let .failure(error):
-                if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
-                    self?.onNoAppsErrorHandling(error)
-                }
-            }
-        }
     }
 
     func sendFeedback(updatedExtractions: [Extraction]) {
@@ -105,24 +105,46 @@ public class PaymentReviewModel: NSObject {
         }
     }
     
-    func createPaymentRequest(paymentInfo: PaymentInfo) {
+    func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestID: String) -> ())? = nil) {
         isLoading = true
         healthSDK.createPaymentRequest(paymentInfo: paymentInfo) {[weak self] result in
+            self?.isLoading = false
             switch result {
             case let .success(requestId):
-                    self?.isLoading = false
-                    self?.openPaymentProviderApp(requestId: requestId, appScheme: paymentInfo.paymentProviderScheme)
+                completion?(requestId)
             case let .failure(error):
-                    self?.isLoading = false
                 if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
                     self?.onCreatePaymentRequestErrorHandling()
                 }
             }
         }
     }
+    
+    func openInstallAppBottomSheet() {
+        let installAppBottomSheet = installAppBottomSheet()
+        installAppBottomSheet.modalPresentationStyle = .overFullScreen
+        viewModelDelegate?.presentInstallAppBottomSheet(bottomSheet: installAppBottomSheet)
+    }
+    
+    func openOnboardingShareInvoiceBottomSheet() {
+        let shareInvoiceBottomSheet = shareInvoiceBottomSheet()
+        shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
+        viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: shareInvoiceBottomSheet)
+    }
 
-    func openPaymentProviderApp(requestId: String, appScheme: String) {
-        healthSDK.openPaymentProviderApp(requestID: requestId, appScheme: appScheme)
+    func openPaymentProviderApp(requestId: String, universalLink: String) {
+        healthSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
+    }
+    
+    func shouldShowOnboardingScreenFor(paymentProvider: PaymentProvider) -> Bool {
+        let onboardingCounts = OnboardingShareInvoiceScreenCount.load()
+        let count = onboardingCounts.presentationCount(forProvider: paymentProvider.name)
+        return count < Constants.numberOfTimesOnboardingShareScreenShouldAppear
+    }
+    
+    func incrementOnboardingCountFor(paymentProvider: PaymentProvider) {
+        var onboardingCounts = OnboardingShareInvoiceScreenCount.load()
+        onboardingCounts.incrementPresentationCount(forProvider: paymentProvider.name)
     }
     
     func fetchImages() {
@@ -161,6 +183,47 @@ public class PaymentReviewModel: NSObject {
             }
         }
     }
+    
+    func installAppBottomSheet() -> BottomSheetViewController {
+        let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
+        installAppBottomViewModel.viewDelegate = self
+        let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel)
+        return installAppBottomView
+    }
+    
+    func shareInvoiceBottomSheet() -> BottomSheetViewController {
+        let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
+        shareInvoiceBottomViewModel.viewDelegate = self
+        let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
+        return shareInvoiceBottomView
+    }
+
+    func loadPDF(paymentRequestID: String, completion: @escaping (Data) -> ()) {
+        isLoading = true
+        healthSDK.paymentService.pdfWithQRCode(paymentRequestId: paymentRequestID) { [weak self] result in
+            self?.isLoading = false
+            switch result {
+                case .success(let data):
+                    completion(data)
+                case let .failure(error):
+                    if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: .apiError(error)) {
+                        self?.onCreatePaymentRequestErrorHandling()
+                    }
+            }
+        }
+    }
+}
+
+extension PaymentReviewModel: InstallAppBottomViewProtocol {
+    func didTapOnContinue() {
+        viewModelDelegate?.createPaymentRequestAndOpenBankApp()
+    }
+}
+
+extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
+    func didTapOnContinueToShareInvoice() {
+        viewModelDelegate?.obtainPDFFromPaymentRequest()
+    }
 }
 
 /**
@@ -169,4 +232,10 @@ public class PaymentReviewModel: NSObject {
   */
 public struct PageCollectionCellViewModel {
     let preview: UIImage
+}
+
+extension PaymentReviewModel {
+    private enum Constants {
+        static let numberOfTimesOnboardingShareScreenShouldAppear = 3
+    }
 }

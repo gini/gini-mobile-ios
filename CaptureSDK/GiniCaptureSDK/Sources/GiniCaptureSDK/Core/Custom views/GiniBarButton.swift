@@ -28,6 +28,7 @@ public enum BarButtonType {
     case help
     case back(title: String)
     case done
+    case skip
 }
 
 /**
@@ -56,6 +57,7 @@ public final class GiniBarButton {
     public func addAction(_ target: Any?, _ action: Selector) {
         let tapRecognizer = UITapGestureRecognizer(target: target, action: action)
         stackView.addGestureRecognizer(tapRecognizer)
+        stackView.isExclusiveTouch = true
     }
 
     /**
@@ -150,6 +152,9 @@ public final class GiniBarButton {
             buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.imagepicker.openbutton",
                                                            comment: "Done")
             icon = UIImageNamedPreferred(named: "barButton_done")
+        case .skip:
+            buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
+                                                           comment: "Skip button")
         }
 
         let buttonTitleIsEmpty = buttonTitle == nil || buttonTitle!.isEmpty

@@ -3,69 +3,114 @@ Customization guide
 
 The Gini Health SDK components can be customized either through the `GiniHealthConfiguration`, the `Localizable.string` file or through the assets. Here you can find a complete guide with the reference to every customizable item.
 
-- [Generic components](#generic-components)
+- [Overview of the UI customization options](#overview-of-the-ui-customization-options)
+- [Payment Component](#payment-component)
+- [Bank Selection Bottom Sheet](#bank-selection-bottom-sheet)
+- [Payment Feature Info Screen](#payment-feature-info-screen)
 - [Payment Review screen](#payment-review-screen)
 
 
-## Supporting dark mode
+## Overview of the UI customization options
 
-Some background and text colors use the `GiniColor` type with which you can set colors for dark and light modes. The text colors should also be set in contrast to the background colors.
+### Colors
 
-## Generic components
+We provide a global color palette `GiniColors.xcassets` which you are free to override. 
+For example, if you want to override Accent01 color you need to create an Accent01.colorset with your wished value in your main bundle.
+The custom colors are then applied to all screens.
 
-##### 1. Gini Capture font
+Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8905-975&t=vNb6FqqGtzIAVdJl-1)).
 
-- Font &#8594;  `GiniHealthConfiguration.customFont`
+### Images
+
+Customizing of images is done via overriding of image sets. 
+If you want to override specific SDK images:
+1. Create an asset catalog for images called `GiniImages.xcassets` in your app.
+2. Add your own images to `GiniImages.xcassets` using the image names from the SDK's UI customization guide. It is important to name the images you wish to override exactly as shown in the UI customization guide, otherwise overriding won’t work.
+
+### Typography
+
+We provide global typography based on text appearance styles from UIFont.TextStyle.
+Preview our typography and find the names of the style resources (you can also view it in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8906-1104&t=vNb6FqqGtzIAVdJl-1)).
+
+In the example below you can see to override a font for `.body1`
+
+```swift
+let configuration = GiniHealthConfiguration()
+
+configuration.updateFont(UIFont(name: "Impact", size: 15)!, for: .body1)     
+health.setConfiguration(configuration)
+```
+
+### Text
+
+Text customization is done via overriding of string resources.
+For example you would like to customize pay invoice button label in the Payment Component:
+
+1. Find a string key for a text that you would like to customize.
+For the [Pay the invoice button label](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8987-2854&t=vNb6FqqGtzIAVdJl-1) in the Payment Component we use `ginihealth.paymentcomponent.payInvoice.label`. 
+2. Add the string key with a desired value to `Localizable.strings` in your app.
+
+### Supporting dark mode
+
+We support dark mode in our SDK. If you decide to customize the color palette, please ensure that the text colors are also set in contrast to the background colors.
+
+## Payment Component
+ 
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8987-2854&t=vNb6FqqGtzIAVdJl-1).
+
+For configuring the the payment component height use `paymentComponentButtonsHeight` configuration option:
+
+```swift
+let giniConfiguration = GiniHealthConfiguration()
+// Ensure the height of the payment component buttons meets the [iOS minimum standard](https://developer.apple.com/design/human-interface-guidelines/buttons).
+// If the specified height is less than 44.0 points, it will be reset to 44.0 points.
+config.paymentComponentButtonsHeight =  45.0
+healthSDK.setConfiguration(config)
+```
+
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D8987-2854%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
+
+## Bank Selection Bottom Sheet
+
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=9008-1654&t=vNb6FqqGtzIAVdJl-1).
+
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D9008-1654%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
+
+## Payment Feature Info Screen
+
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=9044-1582&t=vNb6FqqGtzIAVdJl-1).
+
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D9044-1582%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
 
 ## Payment Review screen
+ 
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=9008-1300&t=vNb6FqqGtzIAVdJl-1).
 
-<br>
-<center><img src="img/Customization guide/PaymentReview.PNG" height="500"/></center>
-</br>
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-##### 1. Background color
-- Background color &#8594; `GiniHealthConfiguration.paymentScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D9008-1300%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
 
-##### 2. Input fields container
-- Background color &#8594; `GiniHealthConfiguration.inputFieldsContainerBackgroundColor` using `GiniColor` with dark mode and light mode colors
+> **Note:** 
+> - PaymentReviewViewController contains the following configuration options:
+> - paymentReviewStatusBarStyle: Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in `Info.plist`.
+> - showPaymentReviewCloseButton: If set to true, a floating close button will be shown in the top right corner of the screen.
+Default value is false.
 
-##### 3. Input field
-- Background color &#8594; `GiniHealthConfiguration.paymentInputFieldBackgroundColor` using `GiniColor` with dark mode and light mode colors
-- Text color &#8594; `GiniHealthConfiguration.paymentInputFieldTextColor` using `GiniColor` with dark mode and light mode colors
-- Font &#8594; `GiniHealthConfiguration.paymentInputFieldFont`
-- Corner radius &#8594; `GiniHealthConfiguration.paymentInputFieldCornerRadius`
-- Border width &#8594; `GiniHealthConfiguration.paymentInputFieldBorderWidth`
+For enabling `showPaymentReviewCloseButton`:
 
-<br>
-<center><img src="img/Customization guide/SelectionStyle.jpeg" height="500"/></center>
-</br>
-- Error selection style border color and error label text color &#8594; `GiniHealthConfiguration.paymentInputFieldErrorStyleColor` using `UIColor`
-- Focus selection style border color &#8594; `GiniHealthConfiguration.paymentInputFieldSelectionStyleColor` using `UIColor`
-- Focus selection style background color &#8594; `GiniHealthConfiguration.paymentInputFieldSelectionBackgroundColor` using `UIColor`
-- Placeholder text color &#8594; `GiniHealthConfiguration.paymentInputFieldPlaceholderTextColor` using `GiniColor` with dark mode and light mode colors
-- Placeholder font &#8594; `GiniHealthConfiguration.paymentInputFieldPlaceholderFont`
-- Recipient placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.recipient.placeholder*</span> localized string
-- IBAN placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.iban.placeholder*</span> localized string
-- Amount placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.amount.placeholder*</span> localized string
-- Purpose placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.usage.placeholder*</span> localized string
+```swift
+let giniConfiguration = GiniHealthConfiguration()
+config.showPaymentReviewCloseButton =  true
+healthSDK.setConfiguration(config)
+```
 
-- Recipient error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.recipient.non.empty.check*</span> localized string
-- IBAN error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.iban.non.empty.check*</span> localized string
-- IBAN validation error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.iban.validation.check*</span> localized string
-- Amount error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.amount.non.empty.check*</span> localized string
-- Purpose error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.purpose.non.empty.check*</span> localized string
-- Default validation error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.default.textfield.validation.check*</span> localized string
-
-- Amount placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.amount.placeholder*</span> localized string
-- Purpose placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.usage.placeholder*</span> localized string
-
-##### 4. Pay button
-- Text color for disabled state &#8594; `GiniHealthConfiguration.payButtonDisabledTextColor` using `GiniColor` with dark mode and light mode colors
-- Background color for disabled state &#8594; `GiniHealthConfiguration.payButtonDisabledTextColor` using `GiniColor` with dark mode and light mode colors
-- Font &#8594; `GiniHealthConfiguration.payButtonTextFont`
-- Corner radius &#8594; `GiniHealthConfiguration.payButtonCornerRadius`
-
-##### 5. Loading indicator
-- Color &#8594; `GiniHealthConfiguration.loadingIndicatorColor` using `GiniColor` with dark mode and light mode colors
-- Indicator Style &#8594; `GiniHealthConfiguration.loadingIndicatorStyle` using `UIActivityIndicatorView.Style` 
-- Scale factor &#8594; `GiniHealthConfiguration.loadingIndicatorScale`

@@ -1,8 +1,8 @@
 //
 //  Document.swift
-//  Pods-GiniExample
 //
-//  Created by Enrique del Pozo Gómez on 1/14/18.
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -32,7 +32,9 @@ public struct Document {
     public let progress: Progress
     /// The document's source classification.
     public let sourceClassification: SourceClassification
-    
+    /// The document's expiration date.
+    public let expirationDate: Date?
+
     fileprivate enum Keys: String, CodingKey {
         case compositeDocuments
         case creationDate
@@ -45,6 +47,7 @@ public struct Document {
         case partialDocuments
         case progress
         case sourceClassification
+        case expirationDate
     }
 }
 
@@ -221,7 +224,8 @@ extension Document: Decodable {
         let progress = try container.decode(Progress.self, forKey: .progress)
         let sourceClassification = try container.decode(SourceClassification.self,
                                                         forKey: .sourceClassification)
-        
+        let expirationDate = try container.decodeIfPresent(Date.self, forKey: .expirationDate)
+
         self.init(compositeDocuments: compositeDocuments,
                   creationDate: creationDate,
                   id: id,
@@ -232,7 +236,8 @@ extension Document: Decodable {
                   links: links,
                   partialDocuments: partialDocuments,
                   progress: progress,
-                  sourceClassification: sourceClassification)
+                  sourceClassification: sourceClassification,
+                  expirationDate: expirationDate)
     }
     
     /**
@@ -243,24 +248,28 @@ extension Document: Decodable {
      - parameter name: The document's file name.
      - parameter links: Links to related resources, such as extractions, document, processed, layout or pages.
      - parameter sourceClassification: The document's source classification. We recommend to use `scanned` or `composite`.
-     
+     - parameter expirationDate: The document's expiration date.
+
      - note: Custom networking only.
      */
     public init(creationDate: Date,
                 id: String,
                 name: String,
                 links: Links,
-                sourceClassification: SourceClassification) {
+                sourceClassification: SourceClassification,
+                expirationDate: Date?) {
         self.init(compositeDocuments: [],
                   creationDate: creationDate,
-                  id: id, name: name,
+                  id: id,
+                  name: name,
                   origin: .upload,
                   pageCount: 1,
                   pages: [],
                   links: links,
                   partialDocuments: [],
                   progress: .completed,
-                  sourceClassification: sourceClassification)
+                  sourceClassification: sourceClassification,
+                  expirationDate: expirationDate)
     }
 }
 
@@ -270,4 +279,10 @@ extension Document.Links: Decodable {
 
 extension Document.Layout: Decodable {
     
+}
+
+extension Document: Equatable {
+    public static func == (lhs: Document, rhs: Document) -> Bool {
+        lhs.id == rhs.id
+    }    
 }
