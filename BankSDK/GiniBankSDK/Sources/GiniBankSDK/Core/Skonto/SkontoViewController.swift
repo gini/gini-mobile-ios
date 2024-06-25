@@ -18,8 +18,8 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var amountView: SkontoAmountView = {
-        let view = SkontoAmountView(viewModel: viewModel)
+    private lazy var amountView: SkontoAppliedAmountView = {
+        let view = SkontoAppliedAmountView(viewModel: viewModel)
         return view
     }()
 

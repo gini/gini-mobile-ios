@@ -7,13 +7,15 @@
 import UIKit
 import GiniCaptureSDK
 
+public protocol SkontoAmountViewDelegate: AnyObject {
+    func textFieldDidEndEditing(editedText: String)
+}
+
 public class SkontoAmountView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.amount.title",
-                                                              comment: "Betrag nach Abzug")
+        label.text = titleLabelText
         label.font = configuration.textStyleFonts[.footnote]
-        // TODO: in some places invertive color is dark7
         label.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -22,12 +24,12 @@ public class SkontoAmountView: UIView {
 
     private lazy var textField: UITextField = {
         let textField = UITextField()
-        textField.delegate = self
-        textField.text = "999,00"
+        textField.text = textFieldInitialText
         textField.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.keyboardType = .decimalPad
+        textField.isUserInteractionEnabled = isEditable
         textField.adjustsFontForContentSizeCategory = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -35,8 +37,7 @@ public class SkontoAmountView: UIView {
 
     private lazy var currencyLabel: UILabel = {
         let label = UILabel()
-        label.text = "EUR"
-        // TODO: we have dark7 but doesn't have light7 and project has no dark7 setups before Skonto
+        label.text = currencyLabelText
         label.textColor = GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light6).uiColor()
         label.font = configuration.textStyleFonts[.body]
         label.adjustsFontForContentSizeCategory = true
@@ -47,21 +48,30 @@ public class SkontoAmountView: UIView {
     private lazy var containerView: UIView = {
         let view = UIView()
         view.layer.borderColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor().cgColor
-        view.layer.borderWidth = 1
+        view.layer.borderWidth = isEditable ? 1 : 0
         view.layer.cornerRadius = 8
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
-    private let configuration = GiniBankConfiguration.shared
-
-    private var viewModel: SkontoViewModel
-
-    public init(viewModel: SkontoViewModel) {
-        self.viewModel = viewModel
+    public init(title: String,
+                textFieldText: String,
+                currency: String,
+                isEditable: Bool = true) {
+        self.titleLabelText = title
+        self.textFieldInitialText = textFieldText
+        self.currencyLabelText = currency
+        self.isEditable = isEditable
         super.init(frame: .zero)
         setupView()
     }
+
+    private let titleLabelText: String
+    private let textFieldInitialText: String
+    private let currencyLabelText: String
+    private var isEditable: Bool
+    private let configuration = GiniBankConfiguration.shared
+    weak var delegate: SkontoAmountViewDelegate?
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -101,12 +111,17 @@ public class SkontoAmountView: UIView {
             currencyLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding)
         ])
     }
+
+    func configure(isEditable: Bool) {
+        self.isEditable = isEditable
+        containerView.layer.borderWidth = isEditable ? 1 : 0
+        textField.isUserInteractionEnabled = isEditable
+    }
 }
 
 extension SkontoAmountView: UITextFieldDelegate {
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        self.delegate?.textFieldDidEndEditing(editedText: textField.text ?? "")
     }
 }
 
