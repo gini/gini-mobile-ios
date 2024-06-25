@@ -44,10 +44,6 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
         return healthPartialDocuments
     }
     
-    private func mapCancelationTokenToGiniHealthAPI(token: GiniBankAPILibrary.CancellationToken) -> GiniHealthAPILibrary.CancellationToken {
-        return GiniHealthAPILibrary.CancellationToken()
-    }
-    
     private func mapExtractionsToGiniBankAPI(extractions: [GiniMerchantSDK.Extraction]) -> [GiniBankAPILibrary.Extraction] {
         var bankExtractions: [GiniBankAPILibrary.Extraction] = []
         for extraction in extractions {
@@ -106,7 +102,7 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
                 case let .success(createdDocument):
                     self.documentService
                         .extractions(for: createdDocument,
-                                     cancellationToken: GiniHealthAPILibrary.CancellationToken()) { [weak self] result in
+                                     cancellationToken: CancellationToken()) { [weak self] result in
                             guard self != nil else { return }
                             switch result {
                             case let .success(extractionResult):

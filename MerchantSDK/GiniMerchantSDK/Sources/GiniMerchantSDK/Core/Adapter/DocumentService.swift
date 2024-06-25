@@ -7,7 +7,6 @@
 
 import Foundation
 import GiniHealthAPILibrary
-@testable import GiniHealthAPILibrary
 
 /// The default document service. By default interacts with the `APIDomain.default` api.
 public final class DefaultDocumentService {
@@ -114,7 +113,7 @@ public final class DefaultDocumentService {
                             cancellationToken: CancellationToken,
                             completion: @escaping CompletionResult<ExtractionResult>) {
         docService.extractions(for: document,
-                               cancellationToken: cancellationToken,
+                               cancellationToken: cancellationToken.healthToken,
                                completion: { result in
             switch result {
             case .success(let healthExtractionResult):
