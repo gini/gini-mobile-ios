@@ -47,7 +47,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
         super.init()
     }
     
-    func start(documentService: MerchantDocumentService) {
+    func start(documentService: GiniMerchantSDK.DefaultDocumentService) {
         let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
                                                         configuration: visionConfiguration,
                                                         resultsDelegate: self,

@@ -18,7 +18,7 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     var invoicesListNavigationController: UINavigationController!
     var invoicesListViewController: InvoicesListViewController!
     
-    func start(documentService: MerchantDocumentService,
+    func start(documentService: GiniMerchantSDK.DefaultDocumentService,
                hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
                paymentComponentsController: PaymentComponentsController,
                invoices: [DocumentWithExtractions]? = nil) {

@@ -62,7 +62,7 @@ public struct DataForReview {
     /// reponsible for interaction with Gini Health backend .
     public var giniApiLib: GiniHealthAPI
     /// reponsible for the whole document processing.
-    public var documentService: MerchantDocumentService
+    public var documentService: DefaultDocumentService
     /// reponsible for the payment processing.
     public var paymentService: PaymentService
     private var bankProviders: [PaymentProvider] = []
@@ -81,7 +81,7 @@ public struct DataForReview {
     public init(id: String, secret: String, domain: String) {
         let client = Client(id: id, secret: secret, domain: domain)
         self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
-        self.documentService = MerchantDocumentService(docService: giniApiLib.documentService())
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService()
     }
 
