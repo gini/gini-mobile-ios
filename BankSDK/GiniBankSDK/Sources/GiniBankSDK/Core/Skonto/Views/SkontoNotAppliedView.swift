@@ -35,7 +35,7 @@ class SkontoNotAppliedView: UIView {
         return label
     }()
 
-    private lazy var amountView: UIView = {
+    private lazy var amountView: SkontoNotAppliedAmountView = {
         return SkontoNotAppliedAmountView(viewModel: viewModel)
     }()
 
@@ -60,6 +60,7 @@ class SkontoNotAppliedView: UIView {
         addSubview(statusLabel)
         addSubview(amountView)
         setupConstraints()
+        bindViewModel()
     }
 
     private func setupConstraints() {
@@ -76,6 +77,17 @@ class SkontoNotAppliedView: UIView {
             amountView.leadingAnchor.constraint(equalTo: leadingAnchor),
             amountView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
+    }
+
+    private func bindViewModel() {
+        configure(isSkontoApplied: viewModel.isSkontoApplied)
+        viewModel.addObserver { [weak self] isSkontoApplied in
+            self?.configure(isSkontoApplied: isSkontoApplied)
+        }
+    }
+
+    private func configure(isSkontoApplied: Bool) {
+        statusLabel.isHidden = isSkontoApplied ? true : false
     }
 }
 
