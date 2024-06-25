@@ -18,7 +18,7 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var amountView: SkontoAppliedAmountView = {
+    private lazy var appliedAmountView: SkontoAppliedAmountView = {
         let view = SkontoAppliedAmountView(viewModel: viewModel)
         return view
     }()
@@ -49,7 +49,7 @@ public class SkontoViewController: UIViewController {
         view.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         view.addSubview(headerView)
         view.addSubview(infoView)
-        view.addSubview(amountView)
+        view.addSubview(appliedAmountView)
         view.addSubview(dateView)
         view.addSubview(notAppliedView)
         view.addSubview(proceedView)
@@ -66,11 +66,11 @@ public class SkontoViewController: UIViewController {
             infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
             infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
 
-            amountView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: Constants.verticalPadding),
-            amountView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
-            amountView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
+            appliedAmountView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: Constants.verticalPadding),
+            appliedAmountView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
+            appliedAmountView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
 
-            dateView.topAnchor.constraint(equalTo: amountView.bottomAnchor, constant: Constants.dateViewTopPadding),
+            dateView.topAnchor.constraint(equalTo: appliedAmountView.bottomAnchor, constant: Constants.dateViewTopPadding),
             dateView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
             dateView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
 
