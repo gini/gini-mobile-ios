@@ -113,7 +113,7 @@ public class PaymentReviewModel: NSObject {
             case let .success(requestId):
                 completion?(requestId)
             case let .failure(error):
-                if let delegate = self?.merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
+                if let delegate = self?.merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: GiniMerchantError.apiError(error)) {
                     self?.onCreatePaymentRequestErrorHandling()
                 }
             }
@@ -164,7 +164,7 @@ public class PaymentReviewModel: NSObject {
                             vms.append(cellModel)
                         }
                     case let .failure(error):
-                        if let delegate = self?.merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: .apiError(error)) {
+                        if let delegate = self?.merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: GiniMerchantError.apiError(error)) {
                             self?.onErrorHandling(.apiError(error))
                         }
                     }
