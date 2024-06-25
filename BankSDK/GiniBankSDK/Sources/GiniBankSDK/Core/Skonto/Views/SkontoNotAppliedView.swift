@@ -36,7 +36,7 @@ class SkontoNotAppliedView: UIView {
     }()
 
     private lazy var amountView: UIView = {
-        return SkontoAmountView(viewModel: viewModel)
+        return SkontoNotAppliedAmountView(viewModel: viewModel)
     }()
 
     private let configuration = GiniBankConfiguration.shared
