@@ -8,12 +8,11 @@ import UIKit
 import GiniCaptureSDK
 
 class SkontoAppliedAmountView: UIView {
-    private lazy var amountView: UIView = {
+    private lazy var amountView: SkontoAmountView = {
         let view = SkontoAmountView(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.amount.title",
                                                                                     comment: "Betrag nach Abzug"),
                                     textFieldText: "999,00",
-                                    currency: "EUR",
-                                    isEditable: viewModel.isSkontoApplied)
+                                    currency: "EUR")
         view.delegate = self
         return view
     }()
@@ -26,6 +25,7 @@ class SkontoAppliedAmountView: UIView {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupView()
+        bindViewModel()
     }
 
     required init?(coder: NSCoder) {
@@ -45,6 +45,17 @@ class SkontoAppliedAmountView: UIView {
             amountView.leadingAnchor.constraint(equalTo: leadingAnchor),
             amountView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
+    }
+
+    private func bindViewModel() {
+        configure(isSkontoApplied: viewModel.isSkontoApplied)
+        viewModel.addObserver { [weak self] isSkontoApplied in
+            self?.configure(isSkontoApplied: isSkontoApplied)
+        }
+    }
+
+    private func configure(isSkontoApplied: Bool) {
+        self.amountView.configure(isEditable: isSkontoApplied)
     }
 }
 
