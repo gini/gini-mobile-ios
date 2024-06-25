@@ -79,3 +79,108 @@ extension ProviderColors {
 //                  android: healthMinAppVersions.android)
 //    }
 //}
+
+//MARK: - Document
+
+extension Document {
+    init(healthDocument: GiniHealthAPILibrary.Document) {
+        self.init(compositeDocuments: healthDocument.compositeDocuments?.compactMap { CompositeDocument(document: $0.document) },
+                  creationDate: healthDocument.creationDate,
+                  id: healthDocument.id,
+                  name: healthDocument.name,
+                  origin: Origin(rawValue: healthDocument.origin.rawValue) ?? .unknown,
+                  pageCount: healthDocument.pageCount,
+                  pages: healthDocument.pages?.compactMap { Document.Page(healthPage: $0) },
+                  links: Links(giniAPIDocumentURL: healthDocument.links.extractions),
+                  partialDocuments: healthDocument.partialDocuments?.compactMap { PartialDocumentInfo(document: $0.document, rotationDelta: $0.rotationDelta) },
+                  progress: Progress(rawValue: healthDocument.progress.rawValue) ?? .completed,
+                  sourceClassification: SourceClassification(rawValue: healthDocument.sourceClassification.rawValue) ?? .scanned,
+                  expirationDate: healthDocument.expirationDate)
+    }
+    
+    func toHealthDocument() -> GiniHealthAPILibrary.Document {
+        GiniHealthAPILibrary.Document(creationDate: creationDate,
+                                      id: id,
+                                      name: name,
+                                      links: GiniHealthAPILibrary.Document.Links(giniAPIDocumentURL: links.extractions),
+                                      sourceClassification: GiniHealthAPILibrary.Document.SourceClassification(rawValue: sourceClassification.rawValue) ?? .scanned,
+                                      expirationDate: expirationDate)
+    }
+}
+
+extension Document.Page {
+    init(healthPage: GiniHealthAPILibrary.Document.Page) {
+        let images = healthPage.images.compactMap { (size: Document.Page.Size(healthSize: $0.size), url: $0.url) }
+        self.init(number: healthPage.number, images: images)
+    }
+}
+
+extension Document.Page.Size {
+    init(healthSize: GiniHealthAPILibrary.Document.Page.Size) {
+        self.init(rawValue: healthSize.rawValue)!
+    }
+}
+
+extension Document.Layout {
+    init(healthLayout: GiniHealthAPILibrary.Document.Layout) {
+        self.init(pages: healthLayout.pages.compactMap { Document.Layout.Page(healthPage: $0) })
+    }
+}
+
+extension Document.Layout.Page {
+    init(healthPage: GiniHealthAPILibrary.Document.Layout.Page) {
+        self.init(number: healthPage.number,
+                  sizeX: healthPage.sizeX,
+                  sizeY: healthPage.sizeY,
+                  textZones: healthPage.textZones.compactMap { Document.Layout.TextZone(healthTextZone: $0) },
+                  regions: healthPage.regions?.compactMap { Document.Layout.Region(healthRegion: $0) })
+    }
+}
+
+extension Document.Layout.Region {
+    init(healthRegion: GiniHealthAPILibrary.Document.Layout.Region) {
+        self.init(l: healthRegion.l,
+                  t: healthRegion.t,
+                  w: healthRegion.w,
+                  h: healthRegion.h,
+                  type: healthRegion.type,
+                  lines: healthRegion.lines?.compactMap { Document.Layout.Region.init(healthRegion: $0) },
+                  wds: healthRegion.wds?.compactMap { Document.Layout.Word.init(healthWord: $0) })
+    }
+}
+
+extension Document.Layout.Word {
+    init(healthWord: GiniHealthAPILibrary.Document.Layout.Word) {
+        self.init(l: healthWord.l,
+                  t: healthWord.t,
+                  w: healthWord.w,
+                  h: healthWord.h,
+                  fontSize: healthWord.fontSize,
+                  fontFamily: healthWord.fontFamily,
+                  bold: healthWord.bold,
+                  text: healthWord.text)
+    }
+}
+
+extension Document.Layout.TextZone {
+    init(healthTextZone: GiniHealthAPILibrary.Document.Layout.TextZone) {
+        self.init(paragraphs: healthTextZone.paragraphs.compactMap { Document.Layout.Region(healthRegion: $0) })
+    }
+}
+
+extension CompositeDocumentInfo {
+    func toHealthCompositeDocumentInfo() -> GiniHealthAPILibrary.CompositeDocumentInfo {
+        GiniHealthAPILibrary.CompositeDocumentInfo(partialDocuments: partialDocuments.map { GiniHealthAPILibrary.PartialDocumentInfo(document: $0.document) })
+    }
+}
+
+extension Document.TypeV2 {
+    func toHealthType() -> GiniHealthAPILibrary.Document.TypeV2 {
+        switch self {
+        case .partial(let data):
+            return .partial(data)
+        case .composite(let info):
+            return .composite(info.toHealthCompositeDocumentInfo())
+        }
+    }
+}

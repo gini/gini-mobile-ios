@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import GiniHealthAPILibrary
 import GiniBankAPILibrary
 import GiniCaptureSDK
 import GiniMerchantSDK
@@ -14,11 +13,11 @@ import GiniMerchantSDK
 class MerchantNetworkingService: GiniCaptureNetworkService {
     typealias GiniBankAPIAnalysisCompletion = (Result<(document: GiniBankAPILibrary.Document, extractionResult: GiniBankAPILibrary.ExtractionResult), GiniBankAPILibrary.GiniError>) -> Void
 
-    private func mapDocumentToGiniHealthAPI(doc: GiniBankAPILibrary.Document) -> GiniHealthAPILibrary.Document {
-        let links = GiniHealthAPILibrary.Document.Links.init(giniAPIDocumentURL: doc.links.document)
-        let sourceClassification = GiniHealthAPILibrary.Document.SourceClassification(rawValue: doc.sourceClassification.rawValue) ?? .scanned
+    private func mapDocumentToGiniHealthAPI(doc: GiniBankAPILibrary.Document) -> GiniMerchantSDK.Document {
+        let links = GiniMerchantSDK.Document.Links.init(giniAPIDocumentURL: doc.links.document)
+        let sourceClassification = GiniMerchantSDK.Document.SourceClassification(rawValue: doc.sourceClassification.rawValue) ?? .scanned
 
-        return GiniHealthAPILibrary.Document(creationDate: doc.creationDate,
+        return GiniMerchantSDK.Document(creationDate: doc.creationDate,
                                              id: doc.id,
                                              name: doc.name,
                                              links: links,
@@ -26,7 +25,7 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
                                              expirationDate: nil)
     }
     
-    private func mapDocumentToGiniBankAPI(doc: GiniHealthAPILibrary.Document) -> GiniBankAPILibrary.Document {
+    private func mapDocumentToGiniBankAPI(doc: GiniMerchantSDK.Document) -> GiniBankAPILibrary.Document {
         let links = GiniBankAPILibrary.Document.Links.init(giniAPIDocumentURL: doc.links.document)
         let sourceClassification = GiniBankAPILibrary.Document.SourceClassification(rawValue: doc.sourceClassification.rawValue) ?? .scanned
         return GiniBankAPILibrary.Document(creationDate: doc.creationDate,
@@ -36,10 +35,10 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
                                            sourceClassification: sourceClassification)
     }
     
-    private func mapPartialDocumentsInfoToGiniHealthAPI(partialDocuments: [GiniBankAPILibrary.PartialDocumentInfo]) -> [GiniHealthAPILibrary.PartialDocumentInfo] {
-        var healthPartialDocuments: [GiniHealthAPILibrary.PartialDocumentInfo] = []
+    private func mapPartialDocumentsInfoToGiniHealthAPI(partialDocuments: [GiniBankAPILibrary.PartialDocumentInfo]) -> [GiniMerchantSDK.PartialDocumentInfo] {
+        var healthPartialDocuments: [GiniMerchantSDK.PartialDocumentInfo] = []
         for doc in partialDocuments {
-            healthPartialDocuments.append(GiniHealthAPILibrary.PartialDocumentInfo(document: doc.document))
+            healthPartialDocuments.append(GiniMerchantSDK.PartialDocumentInfo(document: doc.document))
         }
         return healthPartialDocuments
     }
