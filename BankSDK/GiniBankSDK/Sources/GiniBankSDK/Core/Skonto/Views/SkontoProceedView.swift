@@ -97,6 +97,7 @@ class SkontoProceedView: UIView {
         addSubview(payButton)
 
         setupConstraints()
+        bindViewModel()
     }
 
     private func setupConstraints() {
@@ -136,6 +137,17 @@ class SkontoProceedView: UIView {
             payButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonHeight)
         ])
+    }
+
+    private func bindViewModel() {
+        configure(isSkontoApplied: viewModel.isSkontoApplied)
+        viewModel.addObserver { [weak self] isSkontoApplied in
+            self?.configure(isSkontoApplied: isSkontoApplied)
+        }
+    }
+
+    private func configure(isSkontoApplied: Bool) {
+        self.skontoBadgeView.isHidden = isSkontoApplied ? false : true
     }
 }
 
