@@ -48,26 +48,6 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
         return GiniHealthAPILibrary.CancellationToken()
     }
     
-    private func mapExtractionToGiniHealthAPI(extraction: GiniBankAPILibrary.Extraction) -> GiniHealthAPILibrary.Extraction {
-        return GiniHealthAPILibrary.Extraction(box: nil,
-                                               candidates: extraction.candidates,
-                                               entity: extraction.entity,
-                                               value: extraction.value,
-                                               name: extraction.name)
-    }
-    
-    private func mapExtractionsToGiniHealthAPI(extractions: [GiniBankAPILibrary.Extraction]) -> [GiniHealthAPILibrary.Extraction] {
-        var healthExtractions: [GiniHealthAPILibrary.Extraction] = []
-        for extraction in extractions {
-            healthExtractions.append(GiniHealthAPILibrary.Extraction(box: nil,
-                                                                     candidates: extraction.candidates,
-                                                                     entity: extraction.entity,
-                                                                     value: extraction.value,
-                                                                     name: extraction.name))
-        }
-        return healthExtractions
-    }
-    
     private func mapExtractionsToGiniBankAPI(extractions: [GiniMerchantSDK.Extraction]) -> [GiniBankAPILibrary.Extraction] {
         var bankExtractions: [GiniBankAPILibrary.Extraction] = []
         for extraction in extractions {
@@ -78,15 +58,6 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
                                                                  name: extraction.name))
         }
         return bankExtractions
-    }
-    
-    private func mapExtractionResultToGiniHealthAPI(result: GiniBankAPILibrary.ExtractionResult) -> GiniHealthAPILibrary.ExtractionResult {
-        let extractions = mapExtractionsToGiniHealthAPI(extractions: result.extractions)
-        let payment = [extractions]
-        let lineItems = [extractions]
-        return GiniHealthAPILibrary.ExtractionResult(extractions: extractions,
-                                                     payment: payment,
-                                                     lineItems: lineItems)
     }
     
     private func mapExtractionResultToGiniBankAPI(result: GiniMerchantSDK.ExtractionResult) -> GiniBankAPILibrary.ExtractionResult {
