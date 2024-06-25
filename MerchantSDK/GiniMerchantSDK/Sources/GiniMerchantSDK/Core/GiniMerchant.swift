@@ -118,7 +118,7 @@ public struct DataForReview {
                 }
             case let .failure(error):
                 DispatchQueue.main.async {
-                    completion(.failure(error))
+                    completion(.failure(GiniMerchantError.apiError(error)))
                 }
             }
         }
@@ -134,14 +134,14 @@ public struct DataForReview {
      In case of failure error provided by API.
      */
     
-    public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniMerchantError>) -> Void) {
+    public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniError>) -> Void) {
         paymentService.paymentProviders { result in
             switch result {
             case let .success(providers):
                 self.bankProviders = providers
                 completion(.success(self.bankProviders))
             case let .failure(error):
-                completion(.failure(.apiError(error)))
+                completion(.failure(GiniError.decorator(error)))
             }
         }
     }
@@ -269,7 +269,7 @@ public struct DataForReview {
         In case of failure error from the server side.
      
      */
-    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniMerchantError>) -> Void) {
+    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
         paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: paymentInfo.paymentProviderId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, bic: "", amount: paymentInfo.amount, purpose: paymentInfo.purpose) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -277,7 +277,7 @@ public struct DataForReview {
                     completion(.success(requestID))
                     self.delegate?.didCreatePaymentRequest(paymentRequestID: requestID)
                 case let .failure(error):
-                    completion(.failure(.apiError(error)))
+                    completion(.failure(GiniError.decorator(error)))
                 }
             }
         }

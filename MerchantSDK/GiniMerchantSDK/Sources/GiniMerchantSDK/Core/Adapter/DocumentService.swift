@@ -36,7 +36,14 @@ public final class DefaultDocumentService {
                                   docType: docType,
                                   type: type,
                                   metadata: metadata,
-                                  completion: completion)
+                                  completion: { result in
+            switch result {
+            case .success(let item):
+                completion(.success(item))
+            case .failure(let error):
+                completion(.failure(GiniError.decorator(error)))
+            }
+        })
         
     }
     
@@ -47,7 +54,15 @@ public final class DefaultDocumentService {
      * - Parameter completion:          A completion callback
      */
     public func delete(_ document: Document, completion: @escaping CompletionResult<String>) {
-        docService.delete(document, completion: completion)
+        docService.delete(document, 
+                          completion: { result in
+            switch result {
+            case .success(let item):
+                completion(.success(item))
+            case .failure(let error):
+                completion(.failure(GiniError.decorator(error)))
+            }
+        })
     }
     
     /**
@@ -58,7 +73,16 @@ public final class DefaultDocumentService {
      * - Parameter completion:          A completion callback, returning the document list on success
      */
     public func documents(limit: Int?, offset: Int?, completion: @escaping CompletionResult<[Document]>) {
-        docService.documents(limit: limit, offset: offset, completion: completion)
+        docService.documents(limit: limit, 
+                             offset: offset,
+                             completion: { result in
+            switch result {
+            case .success(let item):
+                completion(.success(item))
+            case .failure(let error):
+                completion(.failure(GiniError.decorator(error)))
+            }
+        })
     }
     
     /**
@@ -68,7 +92,15 @@ public final class DefaultDocumentService {
      * - Parameter completion:          A completion callback, returning the requested document on success
      */
     public func fetchDocument(with id: String, completion: @escaping CompletionResult<Document>) {
-        docService.fetchDocument(with: id, completion: completion)
+        docService.fetchDocument(with: id, 
+                                 completion: { result in
+            switch result {
+            case .success(let item):
+                completion(.success(item))
+            case .failure(let error):
+                completion(.failure(GiniError.decorator(error)))
+            }
+        })
     }
     
     /**
@@ -88,7 +120,7 @@ public final class DefaultDocumentService {
             case .success(let healthExtractionResult):
                 completion(.success(ExtractionResult(healthExtractionResult: healthExtractionResult)))
             case .failure(let error):
-                completion(.failure(error))
+                completion(.failure(GiniError.decorator(error)))
             }
         })
     }
@@ -100,7 +132,15 @@ public final class DefaultDocumentService {
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     public func layout(for document: Document, completion: @escaping CompletionResult<Document.Layout>) {
-        docService.layout(for: document, completion: completion)
+        docService.layout(for: document, 
+                          completion: { result in
+            switch result {
+            case .success(let item):
+                completion(.success(item))
+            case .failure(let error):
+                completion(.failure(GiniError.decorator(error)))
+            }
+        })
     }
     
     /**
@@ -110,7 +150,15 @@ public final class DefaultDocumentService {
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     public func pages(in document: Document, completion: @escaping CompletionResult<[Document.Page]>) {
-       docService.pages(in: document, completion: completion)
+       docService.pages(in: document, 
+                        completion: { result in
+           switch result {
+           case .success(let item):
+               completion(.success(item))
+           case .failure(let error):
+               completion(.failure(GiniError.decorator(error)))
+           }
+       })
     }
     
     /**
@@ -126,12 +174,12 @@ public final class DefaultDocumentService {
         let healthExtractions = extractions.map { $0.toHealthExtraction() }
         docService.submitFeedback(for: document,
                                   with: healthExtractions,
-                                  completion: {
-            switch $0 {
+                                  completion: { result in
+            switch result {
             case .success:
                 completion(.success(()))
             case .failure(let error):
-                completion(.failure(error))
+                completion(.failure(GiniError.decorator(error)))
             }
         })
     }
@@ -158,9 +206,8 @@ public final class DefaultDocumentService {
             case .success:
                 completion(.success(()))
             case .failure(let error):
-                completion(.failure(error))
+                completion(.failure(GiniError.decorator(error)))
             }
-
         })
     }
     
@@ -174,10 +221,27 @@ public final class DefaultDocumentService {
     public func preview(for documentId: String,
                             pageNumber: Int,
                             completion: @escaping CompletionResult<Data>) {
-        docService.preview(for: documentId, pageNumber: pageNumber, completion: completion)
+        docService.preview(for: documentId, 
+                           pageNumber: pageNumber,
+                           completion: { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(GiniError.decorator(error)))
+            }
+        })
     }
     
     public func file(urlString: String, completion: @escaping CompletionResult<Data>){
-        docService.file(urlString: urlString, completion: completion)
+        docService.file(urlString: urlString, 
+                        completion: { result in
+                switch result {
+                case .success(let data):
+                    completion(.success(data))
+                case .failure(let error):
+                    completion(.failure(GiniError.decorator(error)))
+                }
+            })
     }
 }
