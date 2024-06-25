@@ -43,3 +43,39 @@ extension ExtractionResult {
                                                      lineItems: [healthExtractions])
     }
 }
+
+//MARK: - PaymentProvider
+
+extension PaymentProvider {
+    init(healthPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
+        let openPlatforms = healthPaymentProvider.openWithSupportedPlatforms.compactMap { PlatformSupported(rawValue: $0.rawValue) }
+        let gpcPlatforms = healthPaymentProvider.gpcSupportedPlatforms.compactMap { PlatformSupported(rawValue: $0.rawValue) }
+        let colors = ProviderColors(healthProviderColors: healthPaymentProvider.colors)
+        
+        self.init(id: healthPaymentProvider.id,
+                  name: healthPaymentProvider.name,
+                  appSchemeIOS: healthPaymentProvider.appSchemeIOS,
+                  minAppVersion: nil,
+                  colors: colors,
+                  iconData: healthPaymentProvider.iconData,
+                  appStoreUrlIOS: healthPaymentProvider.appStoreUrlIOS,
+                  universalLinkIOS: healthPaymentProvider.universalLinkIOS,
+                  index: healthPaymentProvider.index,
+                  gpcSupportedPlatforms: gpcPlatforms,
+                  openWithSupportedPlatforms: openPlatforms)
+    }
+}
+
+extension ProviderColors {
+    init(healthProviderColors: GiniHealthAPILibrary.ProviderColors) {
+        self.init(background: healthProviderColors.background,
+                  text: healthProviderColors.text)
+    }
+}
+
+//extension MinAppVersions {
+//    init(healthMinAppVersions: GiniHealthAPILibrary.MinAppVersions) {
+//        self.init(ios: healthMinAppVersions.ios,
+//                  android: healthMinAppVersions.android)
+//    }
+//}
