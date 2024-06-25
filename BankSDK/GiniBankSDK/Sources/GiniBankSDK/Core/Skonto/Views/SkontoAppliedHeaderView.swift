@@ -39,6 +39,7 @@ public class SkontoAppliedHeaderView: UIView {
         discountSwitch.isOn = true
         discountSwitch.onTintColor = GiniColor(light: .GiniBank.accent1,
                                              dark: .GiniBank.accent1).uiColor()
+        discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
         discountSwitch.translatesAutoresizingMaskIntoConstraints = false
         return discountSwitch
     }()
@@ -80,14 +81,17 @@ public class SkontoAppliedHeaderView: UIView {
             discountSwitch.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
-    
+
     private func bindViewModel() {
-        discountSwitch.isOn = viewModel.isSkontoApplied
-        discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
-        viewModel.onSkontoToggle = { [weak self] isSkontoApplied in
-            guard let self else { return }
-            self.discountSwitch.isOn = isSkontoApplied
+        configure(isSkontoApplied: viewModel.isSkontoApplied)
+        viewModel.addObserver { [weak self] isSkontoApplied in
+            self?.configure(isSkontoApplied: isSkontoApplied)
         }
+    }
+
+    private func configure(isSkontoApplied: Bool) {
+        discountSwitch.isOn = isSkontoApplied
+        statusLabel.isHidden = isSkontoApplied ? false : true
     }
 
     @objc private func discountSwitchToggled(_ sender: UISwitch) {
