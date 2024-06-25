@@ -8,7 +8,6 @@
 
 import UIKit
 import GiniCaptureSDK
-import GiniHealthAPILibrary
 import GiniMerchantSDK
 
 final class AppCoordinator: Coordinator {
@@ -120,7 +119,7 @@ final class AppCoordinator: Coordinator {
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
     
-    private var testDocument: GiniHealthAPILibrary.Document?
+    private var testDocument: Document?
     private var testDocumentExtractions: [GiniMerchantSDK.Extraction]?
     
     fileprivate func showPaymentReviewWithTestDocument() {
@@ -169,7 +168,7 @@ final class AppCoordinator: Coordinator {
                                                        metadata: nil) { result in
                 switch result {
                 case .success(let createdDocument):
-                    let partialDocInfo = GiniHealthAPILibrary.PartialDocumentInfo(document: createdDocument.links.document)
+                    let partialDocInfo = GiniMerchantSDK.PartialDocumentInfo(document: createdDocument.links.document)
                     self.merchant.documentService.createDocument(fileName: nil,
                                                                docType: nil,
                                                                type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),

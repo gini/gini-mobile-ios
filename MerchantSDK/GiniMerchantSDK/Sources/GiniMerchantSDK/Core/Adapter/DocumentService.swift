@@ -32,13 +32,13 @@ public final class DefaultDocumentService {
                                metadata: Document.Metadata?,
                                completion: @escaping CompletionResult<Document>) {
         docService.createDocument(fileName: fileName,
-                                  docType: docType,
-                                  type: type,
-                                  metadata: metadata,
+                                  docType: GiniHealthAPILibrary.Document.DocType(rawValue: docType?.rawValue ?? ""),
+                                  type: type.toHealthType(),
+                                  metadata: metadata?.healthMeta,
                                   completion: { result in
             switch result {
-            case .success(let item):
-                completion(.success(item))
+            case .success(let document):
+                completion(.success(Document(healthDocument: document)))
             case .failure(let error):
                 completion(.failure(GiniError.decorator(error)))
             }
@@ -53,7 +53,7 @@ public final class DefaultDocumentService {
      * - Parameter completion:          A completion callback
      */
     public func delete(_ document: Document, completion: @escaping CompletionResult<String>) {
-        docService.delete(document, 
+        docService.delete(document.toHealthDocument(),
                           completion: { result in
             switch result {
             case .success(let item):
@@ -76,8 +76,8 @@ public final class DefaultDocumentService {
                              offset: offset,
                              completion: { result in
             switch result {
-            case .success(let item):
-                completion(.success(item))
+            case .success(let documents):
+                completion(.success(documents.compactMap { Document(healthDocument: $0) }))
             case .failure(let error):
                 completion(.failure(GiniError.decorator(error)))
             }
@@ -95,7 +95,7 @@ public final class DefaultDocumentService {
                                  completion: { result in
             switch result {
             case .success(let item):
-                completion(.success(item))
+                completion(.success(Document(healthDocument: item)))
             case .failure(let error):
                 completion(.failure(GiniError.decorator(error)))
             }
@@ -112,7 +112,7 @@ public final class DefaultDocumentService {
     public func extractions(for document: Document,
                             cancellationToken: CancellationToken,
                             completion: @escaping CompletionResult<ExtractionResult>) {
-        docService.extractions(for: document,
+        docService.extractions(for: document.toHealthDocument(),
                                cancellationToken: cancellationToken.healthToken,
                                completion: { result in
             switch result {
@@ -131,11 +131,11 @@ public final class DefaultDocumentService {
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     public func layout(for document: Document, completion: @escaping CompletionResult<Document.Layout>) {
-        docService.layout(for: document, 
+        docService.layout(for: document.toHealthDocument(),
                           completion: { result in
             switch result {
             case .success(let item):
-                completion(.success(item))
+                completion(.success(Document.Layout(healthLayout: item)))
             case .failure(let error):
                 completion(.failure(GiniError.decorator(error)))
             }
@@ -149,11 +149,11 @@ public final class DefaultDocumentService {
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     public func pages(in document: Document, completion: @escaping CompletionResult<[Document.Page]>) {
-       docService.pages(in: document, 
+        docService.pages(in: document.toHealthDocument(),
                         completion: { result in
            switch result {
-           case .success(let item):
-               completion(.success(item))
+           case .success(let pages):
+               completion(.success(pages.compactMap { Document.Page(healthPage: $0) }))
            case .failure(let error):
                completion(.failure(GiniError.decorator(error)))
            }
@@ -171,7 +171,7 @@ public final class DefaultDocumentService {
                                with extractions: [Extraction],
                                completion: @escaping CompletionResult<Void>) {
         let healthExtractions = extractions.map { $0.toHealthExtraction() }
-        docService.submitFeedback(for: document,
+        docService.submitFeedback(for: document.toHealthDocument(),
                                   with: healthExtractions,
                                   completion: { result in
             switch result {
@@ -197,7 +197,7 @@ public final class DefaultDocumentService {
                                completion: @escaping CompletionResult<Void>) {
         let healthExtractions = extractions.map { $0.toHealthExtraction() }
         let healthCompoundExtractions = compoundExtractions.mapValues { $0.map { $0.map { $0.toHealthExtraction() } } }
-        docService.submitFeedback(for: document,
+        docService.submitFeedback(for: document.toHealthDocument(),
                                   with: healthExtractions,
                                   and: healthCompoundExtractions,
                                   completion: { result in
