@@ -116,6 +116,7 @@ public class SkontoAmountView: UIView {
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
         textField.isUserInteractionEnabled = isEditable
+        currencyLabel.isHidden = isEditable ? false : true
     }
 }
 
