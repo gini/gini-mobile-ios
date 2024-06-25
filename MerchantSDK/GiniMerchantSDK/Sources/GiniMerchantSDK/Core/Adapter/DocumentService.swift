@@ -6,6 +6,7 @@
 
 import Foundation
 import GiniHealthAPILibrary
+@testable import GiniHealthAPILibrary
 
 /// The default document service. By default interacts with the `APIDomain.default` api.
 public final class MerchantDocumentService {
@@ -79,7 +80,16 @@ public final class MerchantDocumentService {
     public func extractions(for document: Document,
                             cancellationToken: CancellationToken,
                             completion: @escaping CompletionResult<ExtractionResult>) {
-        docService.extractions(for: document, cancellationToken: cancellationToken, completion: completion)
+        docService.extractions(for: document,
+                               cancellationToken: cancellationToken,
+                               completion: { result in
+            switch result {
+            case .success(let healthExtractionResult):
+                completion(.success(ExtractionResult(healthExtractionResult: healthExtractionResult)))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
     }
     
     /**
@@ -112,7 +122,17 @@ public final class MerchantDocumentService {
     public func submitFeedback(for document: Document,
                                with extractions: [Extraction],
                                completion: @escaping CompletionResult<Void>) {
-        docService.submitFeedback(for: document, with: extractions, completion: completion)
+        let healthExtractions = extractions.map { $0.toHealthExtraction() }
+        docService.submitFeedback(for: document,
+                                  with: healthExtractions,
+                                  completion: {
+            switch $0 {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
     }
     
     /**
@@ -127,7 +147,20 @@ public final class MerchantDocumentService {
                                with extractions: [Extraction],
                                and compoundExtractions: [String: [[Extraction]]],
                                completion: @escaping CompletionResult<Void>) {
-        docService.submitFeedback(for: document, with: extractions, and: compoundExtractions, completion: completion)
+        let healthExtractions = extractions.map { $0.toHealthExtraction() }
+        let healthCompoundExtractions = compoundExtractions.mapValues { $0.map { $0.map { $0.toHealthExtraction() } } }
+        docService.submitFeedback(for: document,
+                                  with: healthExtractions,
+                                  and: healthCompoundExtractions,
+                                  completion: { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+
+        })
     }
     
     /**

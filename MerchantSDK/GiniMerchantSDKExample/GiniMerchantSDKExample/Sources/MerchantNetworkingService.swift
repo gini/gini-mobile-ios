@@ -68,7 +68,7 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
         return healthExtractions
     }
     
-    private func mapExtractionsToGiniBankAPI(extractions: [GiniHealthAPILibrary.Extraction]) -> [GiniBankAPILibrary.Extraction] {
+    private func mapExtractionsToGiniBankAPI(extractions: [GiniMerchantSDK.Extraction]) -> [GiniBankAPILibrary.Extraction] {
         var bankExtractions: [GiniBankAPILibrary.Extraction] = []
         for extraction in extractions {
             bankExtractions.append(GiniBankAPILibrary.Extraction(box: nil,
@@ -89,7 +89,7 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
                                                      lineItems: lineItems)
     }
     
-    private func mapExtractionResultToGiniBankAPI(result: GiniHealthAPILibrary.ExtractionResult) -> GiniBankAPILibrary.ExtractionResult {
+    private func mapExtractionResultToGiniBankAPI(result: GiniMerchantSDK.ExtractionResult) -> GiniBankAPILibrary.ExtractionResult {
         let extractions = mapExtractionsToGiniBankAPI(extractions: result.extractions)
         let lineItems = [extractions]
         let candidates = ["" : [GiniBankAPILibrary.Extraction.Candidate.init(box: nil, entity: "", value: "")]]

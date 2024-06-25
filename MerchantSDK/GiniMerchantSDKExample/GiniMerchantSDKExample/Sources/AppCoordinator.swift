@@ -121,7 +121,7 @@ final class AppCoordinator: Coordinator {
     }
     
     private var testDocument: GiniHealthAPILibrary.Document?
-    private var testDocumentExtractions: [GiniHealthAPILibrary.Extraction]?
+    private var testDocumentExtractions: [GiniMerchantSDK.Extraction]?
     
     fileprivate func showPaymentReviewWithTestDocument() {
         let configuration = GiniMerchantConfiguration()
