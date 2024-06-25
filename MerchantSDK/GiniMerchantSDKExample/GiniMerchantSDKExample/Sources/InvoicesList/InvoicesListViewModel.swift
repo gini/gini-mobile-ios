@@ -17,14 +17,14 @@ struct DocumentWithExtractions: Codable {
     var recipient: String?
     var isPayable: Bool?
 
-    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
+    init(documentID: String, extractionResult: GiniMerchantSDK.ExtractionResult) {
         self.documentID = documentID
         self.amountToPay = extractionResult.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractionResult.extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractionResult.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
     }
     
-    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], isPayable: Bool) {
+    init(documentID: String, extractions: [GiniMerchantSDK.Extraction], isPayable: Bool) {
         self.documentID = documentID
         self.amountToPay = extractions.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
