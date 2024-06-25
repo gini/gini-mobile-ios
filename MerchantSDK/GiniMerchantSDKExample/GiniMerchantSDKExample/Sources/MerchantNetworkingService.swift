@@ -99,9 +99,9 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
                                                    candidates: candidates)
     }
     
-    private var documentService: MerchantDocumentService
+    private var documentService: GiniMerchantSDK.DefaultDocumentService
     
-    public init(documentService: MerchantDocumentService) {
+    public init(documentService: GiniMerchantSDK.DefaultDocumentService) {
         self.documentService = documentService
     }
     

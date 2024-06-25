@@ -1,5 +1,6 @@
 //
-//  File.swift
+//  DefaultDocumentService.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -9,7 +10,7 @@ import GiniHealthAPILibrary
 @testable import GiniHealthAPILibrary
 
 /// The default document service. By default interacts with the `APIDomain.default` api.
-public final class MerchantDocumentService {
+public final class DefaultDocumentService {
     
     private let docService: GiniHealthAPILibrary.DefaultDocumentService
     

@@ -36,7 +36,7 @@ struct DocumentWithExtractions: Codable {
 final class InvoicesListViewModel {
     
     private let coordinator: InvoicesListCoordinator
-    private var documentService: MerchantDocumentService
+    private var documentService: GiniMerchantSDK.DefaultDocumentService
 
     private let hardcodedInvoicesController: HardcodedInvoicesControllerProtocol
     var paymentComponentsController: PaymentComponentsController
@@ -63,7 +63,7 @@ final class InvoicesListViewModel {
 
     init(coordinator: InvoicesListCoordinator,
          invoices: [DocumentWithExtractions]? = nil,
-         documentService: MerchantDocumentService,
+         documentService: GiniMerchantSDK.DefaultDocumentService,
          hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
          paymentComponentsController: PaymentComponentsController) {
         self.coordinator = coordinator
