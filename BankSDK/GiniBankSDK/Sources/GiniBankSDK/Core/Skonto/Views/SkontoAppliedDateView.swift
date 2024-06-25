@@ -71,6 +71,7 @@ public class SkontoAppliedDateView: UIView {
         containerView.addSubview(calendarImageView)
         setupConstraints()
         configureDatePicker()
+        bindViewModel()
     }
 
     private func setupConstraints() {
@@ -94,6 +95,20 @@ public class SkontoAppliedDateView: UIView {
             calendarImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
             calendarImageView.heightAnchor.constraint(equalToConstant: Constants.imageSize)
         ])
+    }
+
+    private func bindViewModel() {
+        configure(isSkontoApplied: viewModel.isSkontoApplied)
+        viewModel.addObserver { [weak self] isSkontoApplied in
+            self?.configure(isSkontoApplied: isSkontoApplied)
+        }
+    }
+
+    private func configure(isSkontoApplied: Bool) {
+        let isSkontoApplied = viewModel.isSkontoApplied
+        containerView.layer.borderWidth = isSkontoApplied ? 1 : 0
+        textField.isUserInteractionEnabled = isSkontoApplied
+        calendarImageView.isHidden = isSkontoApplied ? false : true
     }
 
     private func configureDatePicker() {
