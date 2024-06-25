@@ -6,7 +6,6 @@
 
 
 import UIKit
-import GiniHealthAPILibrary
 import GiniCaptureSDK
 import GiniMerchantSDK
 

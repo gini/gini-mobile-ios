@@ -138,7 +138,7 @@ public struct DataForReview {
         paymentService.paymentProviders { result in
             switch result {
             case let .success(providers):
-                self.bankProviders = providers
+                self.bankProviders = providers.map { PaymentProvider(healthPaymentProvider: $0) }
                 completion(.success(self.bankProviders))
             case let .failure(error):
                 completion(.failure(GiniError.decorator(error)))
