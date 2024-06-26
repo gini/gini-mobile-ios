@@ -12,17 +12,17 @@ import GiniMerchantSDK
 
 class MerchantNetworkingService: GiniCaptureNetworkService {
     typealias GiniBankAPIAnalysisCompletion = (Result<(document: GiniBankAPILibrary.Document, extractionResult: GiniBankAPILibrary.ExtractionResult), GiniBankAPILibrary.GiniError>) -> Void
-
+    
     private func mapDocumentToGiniHealthAPI(doc: GiniBankAPILibrary.Document) -> GiniMerchantSDK.Document {
         let links = GiniMerchantSDK.Document.Links.init(giniAPIDocumentURL: doc.links.document)
         let sourceClassification = GiniMerchantSDK.Document.SourceClassification(rawValue: doc.sourceClassification.rawValue) ?? .scanned
-
+        
         return GiniMerchantSDK.Document(creationDate: doc.creationDate,
-                                             id: doc.id,
-                                             name: doc.name,
-                                             links: links,
-                                             sourceClassification: sourceClassification, 
-                                             expirationDate: nil)
+                                        id: doc.id,
+                                        name: doc.name,
+                                        links: links,
+                                        sourceClassification: sourceClassification,
+                                        expirationDate: nil)
     }
     
     private func mapDocumentToGiniBankAPI(doc: GiniMerchantSDK.Document) -> GiniBankAPILibrary.Document {
@@ -95,37 +95,37 @@ class MerchantNetworkingService: GiniCaptureNetworkService {
         documentService.createDocument(fileName: fileName,
                                        docType: nil,
                                        type: .composite(CompositeDocumentInfo(partialDocuments: partialDocs)),
-                            metadata: nil) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case let .success(createdDocument):
-                    self.documentService
-                        .extractions(for: createdDocument,
-                                     cancellationToken: CancellationToken()) { [weak self] result in
-                            guard self != nil else { return }
-                            switch result {
-                            case let .success(extractionResult):
-                                if let doc = self?.mapDocumentToGiniBankAPI(doc: createdDocument),
-                                   let result = self?.mapExtractionResultToGiniBankAPI(result: extractionResult) {
-                                    completion(.success((doc, result)))
-                                } else {
-                                    completion(.failure(.parseError(message: "Failed to parse extraction result")))
-                                 }
-                            case let .failure(error):
-                                completion(.failure(.unknown(response: error.response, data: error.data)))
+                                       metadata: nil) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .success(createdDocument):
+                self.documentService
+                    .extractions(for: createdDocument,
+                                 cancellationToken: CancellationToken()) { [weak self] result in
+                        guard self != nil else { return }
+                        switch result {
+                        case let .success(extractionResult):
+                            if let doc = self?.mapDocumentToGiniBankAPI(doc: createdDocument),
+                               let result = self?.mapExtractionResultToGiniBankAPI(result: extractionResult) {
+                                completion(.success((doc, result)))
+                            } else {
+                                completion(.failure(.parseError(message: "Failed to parse extraction result")))
                             }
+                        case let .failure(error):
+                            completion(.failure(.unknown(response: error.response, data: error.data)))
                         }
-                case let .failure(error):
-                    completion(.failure(.unknown(response: error.response, data: error.data)))
-                }
+                    }
+            case let .failure(error):
+                completion(.failure(.unknown(response: error.response, data: error.data)))
             }
+        }
     }
     
     func upload(document: GiniCaptureSDK.GiniCaptureDocument,
                 metadata: GiniBankAPILibrary.Document.Metadata?,
                 completion: @escaping GiniCaptureSDK.UploadDocumentCompletion) {
         let fileName = "Partial-\(NSDate().timeIntervalSince1970)"
-
+        
         documentService.createDocument(fileName: fileName,
                                        docType: nil,
                                        type: .partial(document.data),
