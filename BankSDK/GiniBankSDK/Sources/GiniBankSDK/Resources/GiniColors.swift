@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniCaptureSDK
 
 public enum GiniBankColors: String, CaseIterable {
     case accent01 = "Accent01"
@@ -153,5 +154,81 @@ extension UIColor {
         public static var warning5: UIColor {
             return GiniBankColors.warning05.toUIColor
         }
+    }
+}
+
+extension UIColor {
+    public struct GiniColorScheme {
+        struct Background {
+            var background: GiniColor
+            var surface: GiniColor
+            var bar: GiniColor
+            var listNormal: GiniColor
+            var buttonEnabled: GiniColor
+            var buttonFilled: GiniColor
+            var inputUnfocused: GiniColor
+            var inputFocused: GiniColor
+            var divider: GiniColor
+            var border: GiniColor
+        }
+
+        struct Text {
+            var primary: GiniColor
+            var secondary: GiniColor
+            var chipsAssistEnabled: GiniColor
+            var chipsSuggestionEnabled: GiniColor
+            var buttonEnabled: GiniColor
+            var status: GiniColor
+        }
+
+        struct Icons {
+            var standardPrimary: GiniColor
+            var standardSecondary: GiniColor
+            var standardTertiary: GiniColor
+        }
+
+        struct Chips {
+            var suggestionEnabled: GiniColor
+            var assistEnabled: GiniColor
+        }
+
+        var background: Background
+        var text: Text
+        var icons: Icons
+        var chips: Chips
+    }
+
+    public static func giniColorScheme() -> GiniColorScheme {
+        return GiniColorScheme(
+            background: GiniColorScheme.Background(
+                background: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark1),
+                surface: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2),
+                bar: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2),
+                listNormal: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
+                buttonEnabled: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
+                buttonFilled: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4),
+                inputUnfocused: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2),
+                inputFocused: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2),
+                divider: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark3),
+                border: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark3)
+            ),
+            text: GiniColorScheme.Text(
+                primary: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
+                secondary: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6),
+                chipsAssistEnabled: GiniColor(light: .GiniBank.success2, dark: .GiniBank.success2),
+                chipsSuggestionEnabled: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1),
+                buttonEnabled: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1),
+                status: GiniColor(light: .GiniBank.success1, dark: .GiniBank.success1)
+            ),
+            icons: GiniColorScheme.Icons(
+                standardPrimary: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1),
+                standardSecondary: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light2),
+                standardTertiary: GiniColor(light: .GiniBank.dark5, dark: .GiniBank.light5)
+            ),
+            chips: GiniColorScheme.Chips(
+                suggestionEnabled: GiniColor(light: .GiniBank.success1, dark: .GiniBank.success1),
+                assistEnabled: GiniColor(light: .GiniBank.success4, dark: .GiniBank.success4)
+            )
+        )
     }
 }
