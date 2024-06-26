@@ -27,6 +27,7 @@ public class SkontoViewController: UIViewController {
         view.addSubview(dateView)
         view.addSubview(proceedView)
         setupConstraints()
+        setupTapGesture()
     }
 
     private func setupConstraints() {
@@ -51,6 +52,15 @@ public class SkontoViewController: UIViewController {
             proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
+    }
+
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(endEditing))
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func endEditing() {
+        view.endEditing(true)
     }
 }
 
