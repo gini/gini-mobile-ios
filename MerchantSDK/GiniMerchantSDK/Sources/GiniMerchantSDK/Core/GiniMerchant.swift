@@ -83,8 +83,14 @@ public struct DataForReview {
         self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService()
+
     }
 
+    internal init(giniApiLib: GiniHealthAPI) {
+        self.giniApiLib = giniApiLib
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
+        self.paymentService = giniApiLib.paymentService()
+    }
     /**
      Getting a list of the installed banking apps which support Gini Pay Connect functionality.
      

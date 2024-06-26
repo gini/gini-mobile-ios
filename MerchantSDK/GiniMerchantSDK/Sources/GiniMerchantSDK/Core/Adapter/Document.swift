@@ -215,3 +215,9 @@ extension Document {
         }
     }
 }
+
+extension Document: Equatable {
+    public static func == (lhs: Document, rhs: Document) -> Bool {
+        lhs.id == rhs.id
+    }
+}
