@@ -102,24 +102,12 @@ public class SkontoAppliedDateView: UIView {
         }
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         textField.inputView = datePicker
-        let toolbar = UIToolbar()
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
-                                         target: self,
-                                         action: #selector(datePickerDoneButtonPressed))
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolbar.setItems([flexibleSpace, doneButton], animated: false)
-        toolbar.translatesAutoresizingMaskIntoConstraints = false
-        textField.inputAccessoryView = toolbar
     }
 
     @objc private func dateChanged(_ datePicker: UIDatePicker) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
         textField.text = dateFormatter.string(from: datePicker.date)
-    }
-
-    @objc private func datePickerDoneButtonPressed() {
-        textField.resignFirstResponder()
     }
 }
 
