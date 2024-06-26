@@ -39,21 +39,47 @@ public class SkontoViewController: UIViewController {
     }()
 
     private let viewModel = SkontoViewModel(isSkontoApplied: true)
+    private let configuration = GiniBankConfiguration.shared
+
+    private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
+    private var bottomNavigationBar: UIView?
 
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupConstraints()
     }
 
     private func setupView() {
-        view.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.screentitle",
+                                                         comment: "Skonto")
+        let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.help.menu.returnAssistant.backButton.title",
+                                                                       comment: "Back")
+        edgesForExtendedLayout = []
+        view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2).uiColor()
+        if configuration.bottomNavigationBarEnabled {
+            let cancelButton = GiniBarButton(ofType: .back(title: backButtonTitle))
+            cancelButton.addAction(self, #selector(backButtonTapped))
+            navigationItem.rightBarButtonItem = cancelButton.barButton
+            navigationItem.hidesBackButton = true
+        } else {
+            let helpButton = GiniBarButton(ofType: .help)
+            helpButton.addAction(self, #selector(helpButtonTapped))
+            navigationItem.rightBarButtonItem = helpButton.barButton
+
+            let cancelButton = GiniBarButton(ofType: .back(title: backButtonTitle))
+            cancelButton.addAction(self, #selector(backButtonTapped))
+            navigationItem.leftBarButtonItem = cancelButton.barButton
+        }
+
         view.addSubview(headerView)
         view.addSubview(infoView)
         view.addSubview(appliedAmountView)
         view.addSubview(dateView)
         view.addSubview(notAppliedView)
         view.addSubview(proceedView)
-        setupConstraints()
+
+        setupBottomNavigationBar()
         setupTapGesture()
     }
 
@@ -83,6 +109,51 @@ public class SkontoViewController: UIViewController {
             proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+
+    private func setupBottomNavigationBar() {
+        if configuration.bottomNavigationBarEnabled {
+            if let bottomBarAdapter = configuration.skontoNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBarAdapter
+            } else {
+                // TODO: Implement default navigation bar when design will be available
+            }
+
+            navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
+                self?.proceedButtonTapped()
+            }
+
+            navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
+                self?.helpButtonTapped()
+            }
+
+            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+                bottomNavigationBar = navigationBar
+                view.addSubview(navigationBar)
+
+                navigationBar.translatesAutoresizingMaskIntoConstraints = false
+
+                NSLayoutConstraint.activate([
+                    navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                ])
+            }
+
+            proceedView.isHidden = true
+        }
+    }
+
+    @objc private func proceedButtonTapped() {
+        viewModel.proceedButtonTapped()
+    }
+
+    @objc private func helpButtonTapped() {
+        viewModel.helpButtonTapped()
+    }
+
+    @objc private func backButtonTapped() {
+        viewModel.backButtonTapped()
     }
 
     private func setupTapGesture() {

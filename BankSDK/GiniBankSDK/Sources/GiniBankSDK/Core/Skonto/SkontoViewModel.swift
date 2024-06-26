@@ -32,4 +32,16 @@ public class SkontoViewModel {
             observer(isSkontoApplied)
         }
     }
+    
+    func proceedButtonTapped() {
+        // TODO: Handle proceed button tap
+    }
+
+    func helpButtonTapped() {
+        // TODO: Handle help button tap
+    }
+
+    func backButtonTapped() {
+        // TODO: Handle back button tap
+    }
 }
