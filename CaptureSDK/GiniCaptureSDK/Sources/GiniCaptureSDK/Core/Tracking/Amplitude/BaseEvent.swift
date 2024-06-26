@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// The `BaseEvent` class represents an event with various properties and implements encoding for serialization.
 class BaseEvent: EventOptions, Encodable {
     var eventType: String
     var eventProperties: [String: Any?]?
@@ -33,6 +34,7 @@ class BaseEvent: EventOptions, Encodable {
         case ip
     }
 
+    /// Initializes a new instance of the `BaseEvent` class.
     init(userId: String? = nil,
          deviceId: String? = nil,
          timestamp: Int64? = nil,
@@ -77,6 +79,10 @@ class BaseEvent: EventOptions, Encodable {
         return userId != nil || deviceId != nil
     }
 
+    /// Encodes the event into the provided encoder.
+    ///
+    /// - Parameter encoder: The encoder to write data to.
+    /// - Throws: An error if any values are invalid for the given encoder's format.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(eventType, forKey: .eventType)
