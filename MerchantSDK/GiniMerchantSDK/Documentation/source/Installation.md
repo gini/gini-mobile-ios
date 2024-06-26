@@ -17,6 +17,6 @@ dependencies: [
 In case that you want to use [the certificate pinning](https://www.ssl.com/blogs/what-is-certificate-pinning/#:~:text=Certificate%20pinning%20is%20a%20security,(Transport%20Layer%20Security)%20protocols.) in the library, add `GiniHealthAPILibraryPinning`:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/merchant-sdk-pinning-ios.git", .exact("4.1.0"))
+    .package(url: "https://github.com/gini/merchant-sdk-pinning-ios.git", .exact("1.0.0"))
 ]
 ```
