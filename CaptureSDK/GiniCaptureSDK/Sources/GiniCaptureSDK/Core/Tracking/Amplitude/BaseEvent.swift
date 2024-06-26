@@ -6,7 +6,7 @@
 
 import Foundation
 
-class BaseEvent: EventOptions, Codable {
+class BaseEvent: EventOptions, Encodable {
     var eventType: String
     var eventProperties: [String: Any?]?
     var userProperties: [String: Any?]?
@@ -75,30 +75,6 @@ class BaseEvent: EventOptions, Codable {
 
     func isValid() -> Bool {
         return userId != nil || deviceId != nil
-    }
-
-    required public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        eventType = try values.decode(String.self, forKey: .eventType)
-        eventProperties = try values.decodeIfPresent([String: Any].self, forKey: .eventProperties)
-        userProperties = try values.decodeIfPresent([String: Any].self, forKey: .userProperties)
-        super.init()
-        userId = try values.decodeIfPresent(String.self, forKey: .userId)
-        deviceId = try values.decodeIfPresent(String.self, forKey: .deviceId)
-        time = try values.decodeIfPresent(Int64.self, forKey: .timestamp)
-        eventId = try values.decodeIfPresent(Int64.self, forKey: .eventId)
-        sessionId = try values.decodeIfPresent(Int64.self, forKey: .sessionId)
-        insertId = try values.decodeIfPresent(String.self, forKey: .insertId)
-        appVersion = try values.decodeIfPresent(String.self, forKey: .appVersion)
-        platform = try values.decodeIfPresent(String.self, forKey: .platform)
-        osName = try values.decodeIfPresent(String.self, forKey: .osName)
-        osVersion = try values.decodeIfPresent(String.self, forKey: .osVersion)
-        deviceBrand = try values.decodeIfPresent(String.self, forKey: .deviceBrand)
-        deviceModel = try values.decodeIfPresent(String.self, forKey: .deviceModel)
-        country = try values.decodeIfPresent(String.self, forKey: .country)
-        city = try values.decodeIfPresent(String.self, forKey: .city)
-        language = try values.decodeIfPresent(String.self, forKey: .language)
-        ip = try values.decodeIfPresent(String.self, forKey: .ip)
     }
 
     public func encode(to encoder: Encoder) throws {
