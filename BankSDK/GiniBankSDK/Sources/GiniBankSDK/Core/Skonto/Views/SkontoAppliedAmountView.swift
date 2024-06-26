@@ -13,8 +13,7 @@ public class SkontoAppliedAmountView: UIView {
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.amount.title",
                                                               comment: "Betrag nach Abzug")
         label.font = configuration.textStyleFonts[.footnote]
-        // TODO: in some places invertive color is dark7
-        label.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
+        label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -23,7 +22,7 @@ public class SkontoAppliedAmountView: UIView {
     private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.text = "999,00"
-        textField.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.keyboardType = .decimalPad
@@ -35,8 +34,7 @@ public class SkontoAppliedAmountView: UIView {
     private lazy var currencyLabel: UILabel = {
         let label = UILabel()
         label.text = "EUR"
-        // TODO: we have dark7 but doesn't have light7 and project has no dark7 setups before Skonto
-        label.textColor = GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light6).uiColor()
+        label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.font = configuration.textStyleFonts[.body]
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +43,7 @@ public class SkontoAppliedAmountView: UIView {
 
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor().cgColor
+        view.layer.borderColor = UIColor.giniColorScheme().bg.border.uiColor().cgColor
         view.layer.borderWidth = 1
         view.layer.cornerRadius = 8
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +64,7 @@ public class SkontoAppliedAmountView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        backgroundColor = .giniColorScheme().bg.inputUnfocused.uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(textField)

@@ -10,8 +10,8 @@ import GiniCaptureSDK
 public class SkontoAppliedInfoView: UIView {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        // TODO: template image will be better
         imageView.image = GiniImages.icInfo.image
+        imageView.tintColor = .giniColorScheme().chips.textAssistEnabled.uiColor()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -26,8 +26,7 @@ public class SkontoAppliedInfoView: UIView {
                                       range: NSRange(location: 0, length: text.count))
         label.attributedText = attributedString
         label.font = configuration.textStyleFonts[.caption1]
-        label.textColor = GiniColor(light: .GiniBank.success2,
-                                    dark: .GiniBank.success2).uiColor()
+        label.textColor = .giniColorScheme().chips.textAssistEnabled.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -47,8 +46,7 @@ public class SkontoAppliedInfoView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = GiniColor(light: .GiniBank.success5,
-                                    dark: .GiniBank.success5).uiColor()
+        backgroundColor = .giniColorScheme().chips.assistEnabled.uiColor()
         layer.cornerRadius = 8
         layer.masksToBounds = true
         addSubview(imageView)
