@@ -5,14 +5,7 @@
 //
 
 import UIKit
-import Mixpanel
-
 public class AnalyticsManager {
-    private static var mixpanelInstance: MixpanelInstance? {
-        didSet {
-            handleAnalyticsSDKsInit()
-        }
-    }
     private static var amplitudeInitialised: Bool = false {
         didSet {
             handleAnalyticsSDKsInit()
@@ -29,7 +22,6 @@ public class AnalyticsManager {
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
         superProperties[.giniClientID] = configuration.clientID
-        initializeMixpanel(with: deviceID, token: configuration.mixpanelToken)
         initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey)
 
         AnalyticsManager.track(event: .sdkOpened, screenName: nil)
@@ -40,17 +32,9 @@ public class AnalyticsManager {
         userProperties = [:]
         superProperties = [:]
         eventsQueue = []
-        mixpanelInstance = nil
     }
 
     // MARK: Initialization
-    private static func initializeMixpanel(with deviceID: String, token: String?) {
-        guard let token else { return }
-        mixpanelInstance = Mixpanel.initialize(token: token,
-                                               trackAutomaticEvents: false,
-                                               serverURL: "https://api-eu.mixpanel.com")
-        mixpanelInstance?.identify(distinctId: deviceID)
-    }
 
     private static func initializeAmplitude(with deviceID: String, apiKey: String?) {
         guard let apiKey else { return }
@@ -63,7 +47,7 @@ public class AnalyticsManager {
     }
 
     private static func handleAnalyticsSDKsInit() {
-        guard mixpanelInstance != nil, amplitudeInitialised else { return }
+        guard amplitudeInitialised else { return }
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
@@ -103,7 +87,7 @@ public class AnalyticsManager {
         eventsQueue.append(queuedEvent)
 
         // Process the event queue if SDKs are initialized
-        if mixpanelInstance != nil && amplitudeInitialised {
+        if amplitudeInitialised {
             processEventsQueue()
         }
     }
@@ -141,9 +125,6 @@ public class AnalyticsManager {
             eventProperties[property.key.rawValue] = convertPropertyValueToString(propertyValue)
         }
 
-        // Track event in Mixpanel
-        mixpanelInstance?.track(event: event.event.rawValue, properties: eventProperties)
-
         // Track event in Amplitude
         amplitudeTrackEvent(event: event.event, eventProperties: eventProperties)
     }
@@ -152,7 +133,6 @@ public class AnalyticsManager {
         handleProperties(properties,
                          propertyStore: &userProperties,
                          propertiesHandler: { propertiesToTrack in
-            mixpanelInstance?.people.set(properties: propertiesToTrack)
             Amplitude.instance().setUserProperties(propertiesToTrack)
         })
     }
@@ -161,7 +141,6 @@ public class AnalyticsManager {
         handleProperties(properties,
                          propertyStore: &superProperties,
                          propertiesHandler: { propertiesToTrack in
-            mixpanelInstance?.registerSuperProperties(propertiesToTrack)
             amplitudeSuperPropertiesToTrack = mapAmplitudeSuperProperties(properties: properties)
         })
     }
@@ -210,7 +189,7 @@ public class AnalyticsManager {
                                                               propertyStore: inout [T: AnalyticsPropertyValue],
                                                               propertiesHandler: ([String: String]) -> Void)
     where T.RawValue == String {
-        if mixpanelInstance != nil, amplitudeInitialised {
+        if amplitudeInitialised {
             var propertiesToTrack: [String: String] = [:]
             for (property, value) in properties {
                 propertiesToTrack[property.rawValue] = convertPropertyValueToString(value)
