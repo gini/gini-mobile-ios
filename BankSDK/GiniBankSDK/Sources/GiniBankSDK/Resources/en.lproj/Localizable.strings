@@ -93,6 +93,7 @@
 "ginibank.digitalinvoice.edit.name.error" = "Please enter the article name.";
 "ginibank.digitalinvoice.edit.price.error" = "Please enter the article price.";
 
+"ginibank.skonto.screentitle" = "Skonto";
 "ginibank.skonto.info.title" = "Mit Skonto";
 "ginibank.skonto.info.status" = "• Aktiviert";
 "ginibank.skonto.info.message" = "Zahlung in 14 Tagen: 3% Skonto.";
