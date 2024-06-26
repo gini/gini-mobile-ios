@@ -16,6 +16,7 @@ public class AnalyticsManager {
     private static var amplitudeSuperPropertiesToTrack: [String: String] = [:]
     private static var amplitudeUserPropertiesToTrack: [String: String] = [:]
     private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
+    private static var sessionId: Int64 = 0
 
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
@@ -25,11 +26,13 @@ public class AnalyticsManager {
         initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey)
 
         AnalyticsManager.track(event: .sdkOpened, screenName: nil)
+        sessionId = AnalyticsSessionManager.shared.sessionId
     }
 
     public static func cleanManager() {
         userProperties = [:]
         superProperties = [:]
+        sessionId = 0
     }
 
     // MARK: Initialization
@@ -92,17 +95,18 @@ public class AnalyticsManager {
         event.eventProperties = eventProperties
         event.userProperties = mapProperties(userProperties)
         let iosSystem = IOSSystem()
+        let eventId = AnalyticsSessionManager.shared.incrementEventId()
         let eventOptions = EventOptions(userId: userID,
                                         deviceId: iosSystem.identifierForVendor,
                                         time: Date.berlinTimestamp(),
-                                        sessionId: Date.berlinTimestamp(),
+                                        sessionId: sessionId,
                                         platform: iosSystem.platform,
                                         osVersion: iosSystem.osVersion,
                                         osName: iosSystem.osName,
                                         language: iosSystem.systemLanguage,
                                         ip: "$remote",
                                         insertId: UUID().uuidString,
-                                        eventId: 1,
+                                        eventId: eventId,
                                         deviceModel: iosSystem.model,
                                         deviceBrand: iosSystem.manufacturer,
                                         country: "",
