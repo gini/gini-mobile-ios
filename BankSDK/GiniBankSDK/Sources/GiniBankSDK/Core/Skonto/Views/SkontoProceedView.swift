@@ -25,7 +25,7 @@ class SkontoProceedView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.body]
-        label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        label.textColor = .giniColorScheme().text.primary.uiColor()
         // TODO: reused from digital invoice, to doublecheck if its the same for Skonto
         let labelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
                                                                   comment: "Total")
@@ -38,7 +38,7 @@ class SkontoProceedView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title1Bold]
-        label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        label.textColor = .giniColorScheme().text.primary.uiColor()
         label.text = "999,00"
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -48,7 +48,7 @@ class SkontoProceedView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.caption1]
-        label.textColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark1).uiColor()
+        label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
         label.text = "3% Skonto"
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -56,8 +56,7 @@ class SkontoProceedView: UIView {
 
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
-        view.backgroundColor = GiniColor(light: .GiniBank.success3,
-                                    dark: .GiniBank.success3).uiColor()
+        view.backgroundColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
         view.layer.cornerRadius = 4
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -67,7 +66,7 @@ class SkontoProceedView: UIView {
 
     private lazy var dividerView: UIView = {
         let dividerView = UIView()
-        dividerView.backgroundColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
+        dividerView.backgroundColor = .giniColorScheme().bg.divider.uiColor()
         dividerView.translatesAutoresizingMaskIntoConstraints = false
         return dividerView
     }()
@@ -87,7 +86,7 @@ class SkontoProceedView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        backgroundColor = .giniColorScheme().bg.surface.uiColor()
         translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(dividerView)

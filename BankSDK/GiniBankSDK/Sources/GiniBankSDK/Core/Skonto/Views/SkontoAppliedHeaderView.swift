@@ -12,7 +12,7 @@ public class SkontoAppliedHeaderView: UIView {
         let label = UILabel()
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.title",
                                                               comment: "Mit Skonto")
-        label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        label.textColor = .giniColorScheme().text.primary.uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -25,8 +25,7 @@ public class SkontoAppliedHeaderView: UIView {
             string: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
                                                              comment: "• Aktiviert"),
             attributes: [NSAttributedString.Key.font: configuration.textStyleFonts[.footnoteBold]!,
-                         NSAttributedString.Key.foregroundColor: GiniColor(light: .GiniBank.success3,
-                                                                           dark: .GiniBank.success3).uiColor()
+                         NSAttributedString.Key.foregroundColor: UIColor.giniColorScheme().text.status.uiColor()
                         ])
         label.attributedText = attributedString
         label.adjustsFontForContentSizeCategory = true
@@ -37,8 +36,7 @@ public class SkontoAppliedHeaderView: UIView {
     private lazy var discountSwitch: UISwitch = {
         let discountSwitch = UISwitch()
         discountSwitch.isOn = true
-        discountSwitch.onTintColor = GiniColor(light: .GiniBank.accent1,
-                                             dark: .GiniBank.accent1).uiColor()
+        discountSwitch.onTintColor = UIColor.giniColorScheme().toggles.surfaceFocused.uiColor()
         discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
         discountSwitch.translatesAutoresizingMaskIntoConstraints = false
         return discountSwitch
@@ -60,7 +58,7 @@ public class SkontoAppliedHeaderView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        backgroundColor = .giniColorScheme().bg.surface.uiColor()
         addSubview(titleLabel)
         addSubview(statusLabel)
         addSubview(discountSwitch)
