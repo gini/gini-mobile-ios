@@ -159,75 +159,100 @@ extension UIColor {
 
 extension UIColor {
     public struct GiniColorScheme {
-        struct Background {
+        struct Bg {
             var background: GiniColor
             var surface: GiniColor
-            var bar: GiniColor
-            var listNormal: GiniColor
-            var buttonEnabled: GiniColor
-            var buttonFilled: GiniColor
+            var tabbar: GiniColor
+            var navbar: GiniColor
             var inputUnfocused: GiniColor
             var inputFocused: GiniColor
             var divider: GiniColor
             var border: GiniColor
         }
 
-        struct Text {
-            var primary: GiniColor
-            var secondary: GiniColor
-            var chipsAssistEnabled: GiniColor
-            var chipsSuggestionEnabled: GiniColor
-            var buttonEnabled: GiniColor
-            var status: GiniColor
+        struct Button {
+            var surfaceEnabled: GiniColor
+            var textEnabled: GiniColor
         }
 
         struct Icons {
+            var surfaceFilled: GiniColor
             var standardPrimary: GiniColor
             var standardSecondary: GiniColor
             var standardTertiary: GiniColor
+            var system: GiniColor
+        }
+
+        struct Text {
+            var system: GiniColor
+            var primary: GiniColor
+            var secondary: GiniColor
+            var tertiary: GiniColor
+            var status: GiniColor
         }
 
         struct Chips {
             var suggestionEnabled: GiniColor
+            var textSuggestionEnabled: GiniColor
             var assistEnabled: GiniColor
+            var textAssistEnabled: GiniColor
         }
 
-        var background: Background
-        var text: Text
+        struct Toggles {
+            var surfaceFocused: GiniColor
+            var surfaceUnfocused: GiniColor
+            var surfaceDisabled: GiniColor
+            var thumb: GiniColor
+        }
+
+        var bg: Bg
+        var button: Button
         var icons: Icons
+        var text: Text
         var chips: Chips
+        var toggles: Toggles
     }
 
     public static func giniColorScheme() -> GiniColorScheme {
         return GiniColorScheme(
-            background: GiniColorScheme.Background(
-                background: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark1),
-                surface: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2),
-                bar: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2),
-                listNormal: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
-                buttonEnabled: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
-                buttonFilled: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4),
-                inputUnfocused: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2),
-                inputFocused: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2),
-                divider: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark3),
-                border: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark3)
+            bg: GiniColorScheme.Bg(
+                background: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2),
+                surface: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
+                tabbar: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
+                navbar: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2),
+                inputUnfocused: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
+                inputFocused: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
+                divider: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4),
+                border: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4)
             ),
-            text: GiniColorScheme.Text(
-                primary: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
-                secondary: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6),
-                chipsAssistEnabled: GiniColor(light: .GiniBank.success2, dark: .GiniBank.success2),
-                chipsSuggestionEnabled: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1),
-                buttonEnabled: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1),
-                status: GiniColor(light: .GiniBank.success1, dark: .GiniBank.success1)
+            button: GiniColorScheme.Button(
+                surfaceEnabled: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
+                textEnabled: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
             ),
             icons: GiniColorScheme.Icons(
-                standardPrimary: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1),
-                standardSecondary: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light2),
-                standardTertiary: GiniColor(light: .GiniBank.dark5, dark: .GiniBank.light5)
+                surfaceFilled: GiniColor(light: .GiniBank.light2, dark: .GiniBank.light4),
+                standardPrimary: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light2),
+                standardSecondary: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark6),
+                standardTertiary: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light6),
+                system: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1)
             ),
+            text: GiniColorScheme.Text(
+                system: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
+                primary: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1),
+                secondary: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7),
+                tertiary: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light4),
+                status: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3)),
             chips: GiniColorScheme.Chips(
-                suggestionEnabled: GiniColor(light: .GiniBank.success1, dark: .GiniBank.success1),
-                assistEnabled: GiniColor(light: .GiniBank.success4, dark: .GiniBank.success4)
+                suggestionEnabled: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),
+                textSuggestionEnabled: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1),
+                assistEnabled: GiniColor(light: .GiniBank.success5, dark: .GiniBank.success5),
+                textAssistEnabled: GiniColor(light: .GiniBank.success2, dark: .GiniBank.success2)
+            ),
+            toggles: GiniColorScheme.Toggles(
+                surfaceFocused: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
+                surfaceUnfocused: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4),
+                surfaceDisabled: GiniColor(light: .white, dark: .white),
+                thumb: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
             )
         )
     }
