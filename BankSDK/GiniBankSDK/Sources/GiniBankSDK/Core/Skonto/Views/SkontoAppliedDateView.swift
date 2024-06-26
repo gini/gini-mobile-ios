@@ -13,8 +13,7 @@ public class SkontoAppliedDateView: UIView {
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.date.title",
                                                               comment: "Fälligkeitsdatum")
         label.font = configuration.textStyleFonts[.footnote]
-        // TODO: in some places invertive color is dark7
-        label.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
+        label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -23,7 +22,7 @@ public class SkontoAppliedDateView: UIView {
     private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.text = "11.11.1111"
-        textField.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.adjustsFontForContentSizeCategory = true
@@ -33,7 +32,7 @@ public class SkontoAppliedDateView: UIView {
 
     private lazy var calendarImageView: UIImageView = {
         let imageView = UIImageView(image: GiniImages.calendar.image)
-        // TODO: template image will be better
+        imageView.tintColor = .giniColorScheme().icons.standardTertiary.uiColor()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -41,7 +40,7 @@ public class SkontoAppliedDateView: UIView {
 
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor().cgColor
+        view.layer.borderColor = UIColor.giniColorScheme().bg.border.uiColor().cgColor
         view.layer.borderWidth = 1
         view.layer.cornerRadius = 8
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +63,7 @@ public class SkontoAppliedDateView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        backgroundColor = .giniColorScheme().bg.inputUnfocused.uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(textField)

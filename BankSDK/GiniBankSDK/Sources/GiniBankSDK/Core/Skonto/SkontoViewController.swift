@@ -56,7 +56,7 @@ public class SkontoViewController: UIViewController {
         let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.help.menu.returnAssistant.backButton.title",
                                                                        comment: "Back")
         edgesForExtendedLayout = []
-        view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2).uiColor()
+        view.backgroundColor = .giniColorScheme().bg.background.uiColor()
         if configuration.bottomNavigationBarEnabled {
             let cancelButton = GiniBarButton(ofType: .back(title: backButtonTitle))
             cancelButton.addAction(self, #selector(backButtonTapped))
@@ -71,7 +71,6 @@ public class SkontoViewController: UIViewController {
             cancelButton.addAction(self, #selector(backButtonTapped))
             navigationItem.leftBarButtonItem = cancelButton.barButton
         }
-
         view.addSubview(headerView)
         view.addSubview(infoView)
         view.addSubview(appliedAmountView)
