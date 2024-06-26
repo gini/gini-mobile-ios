@@ -16,7 +16,7 @@ public class SkontoAmountView: UIView {
         let label = UILabel()
         label.text = titleLabelText
         label.font = configuration.textStyleFonts[.footnote]
-        label.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
+        label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -25,7 +25,7 @@ public class SkontoAmountView: UIView {
     private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.text = textFieldInitialText
-        textField.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.keyboardType = .decimalPad
@@ -38,7 +38,7 @@ public class SkontoAmountView: UIView {
     private lazy var currencyLabel: UILabel = {
         let label = UILabel()
         label.text = currencyLabelText
-        label.textColor = GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light6).uiColor()
+        label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.font = configuration.textStyleFonts[.body]
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +47,7 @@ public class SkontoAmountView: UIView {
 
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor().cgColor
+        view.layer.borderColor = UIColor.giniColorScheme().bg.border.uiColor().cgColor
         view.layer.borderWidth = isEditable ? 1 : 0
         view.layer.cornerRadius = 8
         view.translatesAutoresizingMaskIntoConstraints = false
