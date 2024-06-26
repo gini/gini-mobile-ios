@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// The `EventOptions` class holds common properties for events.
 class EventOptions {
     var userId: String?
     var time: Int64?
@@ -23,7 +24,8 @@ class EventOptions {
     var country: String?
     var city: String?
     var appVersion: String?
-
+    
+    /// Initializes a new instance of the `EventOptions` class.
     init(userId: String? = nil,
          deviceId: String? = nil,
          time: Int64? = nil,
@@ -58,6 +60,9 @@ class EventOptions {
         self.appVersion = appVersion
     }
 
+    /// Merges the properties from another `EventOptions` instance.
+    ///
+    /// - Parameter eventOptions: The other `EventOptions` instance.
     func mergeEventOptions(eventOptions: EventOptions) {
         userId = eventOptions.userId ?? userId
         deviceId = eventOptions.deviceId ?? deviceId
