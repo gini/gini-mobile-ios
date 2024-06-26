@@ -8,14 +8,14 @@ import Foundation
 /**
  A struct representing the payload for batching events to be sent to the Amplitude server.
 
- This struct conforms to the `Codable` protocol to facilitate easy encoding and decoding
- to and from JSON format. It includes the API key and an array of events to be uploaded.
+ This struct conforms to the `Encodable` protocol to facilitate easy encoding
+ to JSON format. It includes the API key and an array of events to be uploaded.
 
  - Parameters:
  - apiKey: The API key for the Amplitude analytics platform.
  - events: An array of `BaseEvent` objects to be included in the batch upload.
  */
-struct EventsBatchPayload: Codable {
+struct EventsBatchPayload: Encodable {
     let apiKey: String
     let events: [BaseEvent]
 
