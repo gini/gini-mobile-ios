@@ -20,7 +20,7 @@ public class SkontoViewController: UIViewController {
     }
 
     private func setupView() {
-        view.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        view.backgroundColor = .giniColorScheme().bg.background.uiColor()
         view.addSubview(headerView)
         view.addSubview(infoView)
         view.addSubview(amountView)
