@@ -54,6 +54,24 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.contentInset = UIEdgeInsets(top: Constants.containerPadding,
+                                               left: 0,
+                                               bottom: Constants.containerPadding,
+                                               right: 0)
+        return scrollView
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = Constants.containerPadding
+        return stackView
+    }()
+
     private let viewModel = SkontoViewModel(isSkontoApplied: true,
                                             skontoValue: 3.0,
                                             date: Date(),
@@ -92,8 +110,10 @@ public class SkontoViewController: UIViewController {
             navigationItem.leftBarButtonItem = cancelButton.barButton
         }
 
-        view.addSubview(appliedContainerView)
-        view.addSubview(notAppliedContainerView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(stackView)
+        stackView.addArrangedSubview(appliedContainerView)
+        stackView.addArrangedSubview(notAppliedContainerView)
         appliedContainerView.addSubview(headerView)
         appliedContainerView.addSubview(infoView)
         appliedContainerView.addSubview(appliedAmountView)
@@ -107,12 +127,19 @@ public class SkontoViewController: UIViewController {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            appliedContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                                    constant: Constants.containerPadding),
-            appliedContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                        constant: Constants.containerPadding),
-            appliedContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                         constant: -Constants.containerPadding),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: proceedView.topAnchor),
+
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                               constant: Constants.containerPadding),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
+                                                constant: -Constants.containerPadding),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
+                                             constant: -2 * Constants.containerPadding),
 
             headerView.topAnchor.constraint(equalTo: appliedContainerView.topAnchor),
             headerView.leadingAnchor.constraint(equalTo: appliedContainerView.leadingAnchor,
