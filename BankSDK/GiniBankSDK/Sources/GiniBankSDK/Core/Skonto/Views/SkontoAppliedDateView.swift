@@ -98,8 +98,9 @@ public class SkontoAppliedDateView: UIView {
 
     private func bindViewModel() {
         configure(isSkontoApplied: viewModel.isSkontoApplied)
-        viewModel.addObserver { [weak self] isSkontoApplied in
-            self?.configure(isSkontoApplied: isSkontoApplied)
+        viewModel.addStateChangeHandler { [weak self] in
+            guard let self else { return }
+            self.configure(isSkontoApplied: self.viewModel.isSkontoApplied)
         }
     }
 
