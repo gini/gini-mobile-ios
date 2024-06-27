@@ -16,7 +16,7 @@ public class AnalyticsManager {
     private static var amplitudeSuperPropertiesToTrack: [String: String] = [:]
     private static var amplitudeUserPropertiesToTrack: [String: String] = [:]
     private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
-    private static var sessionId: Int64 = 0
+    private static var sessionId: Int64?
 
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
@@ -105,12 +105,9 @@ public class AnalyticsManager {
                                         osName: iosSystem.osName,
                                         language: iosSystem.systemLanguage,
                                         ip: "$remote",
-                                        insertId: UUID().uuidString,
                                         eventId: eventId,
                                         deviceModel: iosSystem.model,
                                         deviceBrand: iosSystem.manufacturer,
-                                        country: "",
-                                        city: "",
                                         appVersion: GiniCapture.versionString)
         event.mergeEventOptions(eventOptions: eventOptions)
         amplitudeService?.trackEvent(event)

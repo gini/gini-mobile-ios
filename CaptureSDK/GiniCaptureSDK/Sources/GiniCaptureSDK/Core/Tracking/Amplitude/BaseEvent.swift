@@ -40,15 +40,12 @@ class BaseEvent: EventOptions, Encodable {
          timestamp: Int64? = nil,
          eventId: Int64? = nil,
          sessionId: Int64? = nil,
-         insertId: String? = nil,
          appVersion: String? = nil,
          platform: String? = nil,
          osName: String? = nil,
          osVersion: String? = nil,
          deviceBrand: String? = nil,
          deviceModel: String? = nil,
-         country: String? = nil,
-         city: String? = nil,
          language: String? = nil,
          ip: String? = nil,
          eventType: String,
@@ -66,17 +63,10 @@ class BaseEvent: EventOptions, Encodable {
                    osName: osName,
                    language: language,
                    ip: ip,
-                   insertId: insertId,
                    eventId: eventId,
                    deviceModel: deviceModel,
                    deviceBrand: deviceBrand,
-                   country: country,
-                   city: city,
                    appVersion: appVersion)
-    }
-
-    func isValid() -> Bool {
-        return userId != nil || deviceId != nil
     }
 
     /// Encodes the event into the provided encoder.
@@ -93,15 +83,12 @@ class BaseEvent: EventOptions, Encodable {
         try container.encodeIfPresent(time, forKey: .timestamp)
         try container.encodeIfPresent(eventId, forKey: .eventId)
         try container.encodeIfPresent(sessionId, forKey: .sessionId)
-        try container.encodeIfPresent(insertId, forKey: .insertId)
         try container.encodeIfPresent(appVersion, forKey: .appVersion)
         try container.encodeIfPresent(platform, forKey: .platform)
         try container.encodeIfPresent(osName, forKey: .osName)
         try container.encodeIfPresent(osVersion, forKey: .osVersion)
         try container.encodeIfPresent(deviceBrand, forKey: .deviceBrand)
         try container.encodeIfPresent(deviceModel, forKey: .deviceModel)
-        try container.encodeIfPresent(country, forKey: .country)
-        try container.encodeIfPresent(city, forKey: .city)
         try container.encodeIfPresent(language, forKey: .language)
         try container.encodeIfPresent(ip, forKey: .ip)
     }
