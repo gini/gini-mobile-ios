@@ -12,7 +12,7 @@ class SkontoNotAppliedAmountView: UIView {
         let view = SkontoAmountView(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.notapplied.amount.title",
                                                                                     comment: "Full amount"),
                                     textFieldText: "1299,00",
-                                    currency: "EUR")
+                                    currency: viewModel.currency)
         view.delegate = self
         return view
     }()
