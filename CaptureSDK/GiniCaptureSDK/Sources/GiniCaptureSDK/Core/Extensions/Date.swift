@@ -25,14 +25,12 @@ extension Date {
         // Get the current date
         let currentDate = Date()
 
-        // Create a date formatter
-        let dateFormatter = DateFormatter()
+        // Create an ISO8601DateFormatter
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         dateFormatter.timeZone = TimeZone(identifier: "Europe/Berlin")
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"  // Correct the format string
-
         // Convert the current date to the Berlin timezone as a string
         let berlinDateString = dateFormatter.string(from: currentDate)
-
         // Safely convert the string back to a date
         guard let berlinDate = dateFormatter.date(from: berlinDateString) else {
             print("Failed to convert string to date")

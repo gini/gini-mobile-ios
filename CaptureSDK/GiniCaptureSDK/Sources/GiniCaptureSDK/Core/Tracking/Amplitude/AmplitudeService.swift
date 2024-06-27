@@ -15,10 +15,9 @@ import UIKit
  in case of upload failures. The service also observes application lifecycle events
  to manage background tasks appropriately.
  */
-
 final class AmplitudeService {
     private var eventQueue: [BaseEvent] = []
-    private var apiKey: String = ""
+    private (set) var apiKey: String?
     private var timer: Timer?
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private var retryAttempts: Int = 0
@@ -30,7 +29,7 @@ final class AmplitudeService {
 
      - Parameter apiKey: The API key for the Amplitude analytics platform.
      */
-    init(apiKey: String) {
+    init(apiKey: String?) {
         self.apiKey = apiKey
         setupObservers()
         startEventUploadTimer()
@@ -42,13 +41,9 @@ final class AmplitudeService {
         stopEventUploadTimer()
     }
 
-    /**
-     Tracks an event by adding it to the event queue.
-
-     - Parameter event: The event to be tracked.
-     */
-    func trackEvent(_ event: BaseEvent) {
-        eventQueue.append(event)
+    func trackEvents(_ events: [BaseEvent]) {
+        eventQueue = events
+        uploadEvents(events: events)
     }
 
     /**
@@ -57,7 +52,7 @@ final class AmplitudeService {
      - Parameter events: An array of `BaseEvent` objects to upload.
      */
     private func uploadEvents(events: [BaseEvent]) {
-        guard let url = URL(string: apiURL), !apiKey.isEmpty else { return }
+        guard let url = URL(string: apiURL), let apiKey, events.isNotEmpty else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -81,6 +76,7 @@ final class AmplitudeService {
                     if httpResponse.statusCode == 200 {
                         print("Successfully uploaded events")
                         self.retryAttempts = 0
+                        self.eventQueueCleanup()
                     } else {
                         print("Failed to upload events: \(httpResponse.statusCode)")
                         self.handleUploadFailure(events: events)
@@ -149,8 +145,11 @@ final class AmplitudeService {
     private func uploadPendingEvents() {
         guard !eventQueue.isEmpty else { return }
         let eventsToUpload = eventQueue
-        eventQueue.removeAll()
         uploadEvents(events: eventsToUpload)
+    }
+
+    private func eventQueueCleanup() {
+        eventQueue.removeAll()
     }
 
     /**

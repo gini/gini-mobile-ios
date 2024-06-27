@@ -18,27 +18,31 @@ public class AnalyticsManager {
     private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
     private static var sessionId: Int64?
 
+    private static var eventsQueue: [QueuedAnalyticsEvent] = []
+    private static let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
+    private static var eventId: Int64 = 0
+
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
-        let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
+        // Generate a new session identifier
+        sessionId = Date.berlinTimestamp()
         superProperties[.giniClientID] = configuration.clientID
-        initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey)
+        initializeAmplitude(with: configuration.amplitudeApiKey)
 
-        AnalyticsManager.track(event: .sdkOpened, screenName: nil)
-        sessionId = AnalyticsSessionManager.shared.sessionId
+        sessionId = Date.berlinTimestamp()
     }
 
     public static func cleanManager() {
         userProperties = [:]
         superProperties = [:]
-        sessionId = 0
+        eventsQueue = []
+        sessionId = nil
     }
 
     // MARK: Initialization
 
-    private static func initializeAmplitude(with deviceID: String, apiKey: String?) {
-        guard let apiKey else { return }
+    private static func initializeAmplitude(with apiKey: String?) {
         amplitudeService = AmplitudeService(apiKey: apiKey)
     }
 
@@ -47,6 +51,13 @@ public class AnalyticsManager {
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
+        processEventsQueue()
+    }
+
+    // MARK: - Event counter
+    private static func incrementEventId() -> Int64 {
+        eventId += 1
+        return eventId
     }
 
     // MARK: - Track screen shown
@@ -71,32 +82,57 @@ public class AnalyticsManager {
         track(event: event,
               screenNameString: screenName?.rawValue,
               properties: properties)
+
     }
 
     static func track(event: AnalyticsEvent,
                       screenNameString: String? = nil,
                       properties: [AnalyticsProperty] = []) {
+        let queuedEvent = QueuedAnalyticsEvent(event: event,
+                                               screenNameString: screenNameString,
+                                               properties: properties)
+        eventsQueue.append(queuedEvent)
+
+        // Process the event queue if AmplitudeService is initialized
         if amplitudeService != nil {
-            var eventProperties = properties.reduce(into: [String: String]()) {
-                $0[$1.key.rawValue] = convertPropertyValueToString($1.value.analyticsPropertyValue())
-            }
-            if let screenName = screenNameString {
-                eventProperties[AnalyticsPropertyKey.screenName.rawValue] = screenName
-            }
-            amplitudeTrackEvent(event: event, eventProperties: eventProperties)
+            processEventsQueue()
         }
     }
+    /// Processes the events queue by sending each queued event to Mixpanel and Amplitude
+    private static func processEventsQueue() {
+        var baseEvents: [BaseEvent] = []
 
-    private static func logAmplitudeEvent(userID: String,
-                                          eventType: String,
-                                          eventProperties: [String: Any],
-                                          options: EventOptions? = nil) {
-        let event = BaseEvent(eventType: eventType)
-        event.eventProperties = eventProperties
-        event.userProperties = mapProperties(userProperties)
+        while !eventsQueue.isEmpty {
+            let queuedEvent = eventsQueue.removeFirst()
+            if let baseEvent = convertToBaseEvent(event: queuedEvent) {
+                baseEvents.append(baseEvent)
+            }
+        }
+
+        amplitudeService?.trackEvents(baseEvents)
+    }
+
+    /// Converts a QueuedAnalyticsEvent to a BaseEvent
+    private static func convertToBaseEvent(event: QueuedAnalyticsEvent) -> BaseEvent? {
+        var eventProperties: [String: String] = [:]
+
+        if let screenName = event.screenNameString {
+            eventProperties[AnalyticsPropertyKey.screenName.rawValue] = screenName
+        }
+
+        for property in event.properties {
+            let propertyValue = property.value.analyticsPropertyValue()
+            eventProperties[property.key.rawValue] = convertPropertyValueToString(propertyValue)
+        }
+
+        let baseEvent = BaseEvent(eventType: event.event.rawValue)
+
+        // Merge event properties with super properties. In case of key collisions, values from eventProperties will be used.
+        baseEvent.eventProperties = eventProperties.merging(amplitudeSuperPropertiesToTrack) { (_, new) in new }
+        baseEvent.userProperties = amplitudeUserPropertiesToTrack
         let iosSystem = IOSSystem()
-        let eventId = AnalyticsSessionManager.shared.incrementEventId()
-        let eventOptions = EventOptions(userId: userID,
+        let eventId = incrementEventId()
+        let eventOptions = EventOptions(userId: deviceID,
                                         deviceId: iosSystem.identifierForVendor,
                                         time: Date.berlinTimestamp(),
                                         sessionId: sessionId,
@@ -109,14 +145,8 @@ public class AnalyticsManager {
                                         deviceModel: iosSystem.model,
                                         deviceBrand: iosSystem.manufacturer,
                                         appVersion: GiniCapture.versionString)
-        event.mergeEventOptions(eventOptions: eventOptions)
-        amplitudeService?.trackEvent(event)
-    }
-
-    private static func amplitudeTrackEvent(event: AnalyticsEvent, eventProperties: [String: Any]) {
-        let amplitudeProperties = eventProperties.merging(amplitudeSuperPropertiesToTrack) { (_, new) in new }
-        let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
-        logAmplitudeEvent(userID: deviceID, eventType: event.rawValue, eventProperties: amplitudeProperties)
+        baseEvent.mergeEventOptions(eventOptions: eventOptions)
+        return baseEvent
     }
 
     public static func trackUserProperties(_ properties: [AnalyticsUserProperty: AnalyticsPropertyValue]) {
@@ -155,16 +185,16 @@ public class AnalyticsManager {
 
     private static func convertPropertyValueToString(_ value: AnalyticsPropertyValue) -> String {
         switch value {
-            case let value as Bool:
-                return boolToString(from: value)
-            case let value as String:
-                return value
-            case let value as Int:
-                return "\(value)"
-            case let value as [String]:
-                return arrayToString(from: value)
-            default:
-                return ""
+        case let value as Bool:
+            return boolToString(from: value)
+        case let value as String:
+            return value
+        case let value as Int:
+            return "\(value)"
+        case let value as [String]:
+            return arrayToString(from: value)
+        default:
+            return ""
         }
     }
 
@@ -180,7 +210,8 @@ public class AnalyticsManager {
         }
     }
 
-    private static func mapProperties<T: RawRepresentable>(_ properties: [T: AnalyticsPropertyValue]) -> [String: String]
+    private static func mapProperties<T: RawRepresentable>(_ properties: [T: AnalyticsPropertyValue]) 
+    -> [String: String]
     where T.RawValue == String {
         return properties.reduce(into: [String: String]()) { dict, pair in
             dict[pair.key.rawValue] = convertPropertyValueToString(pair.value)
