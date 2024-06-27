@@ -226,6 +226,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         /// residual properties and events from the previous session could lead to incorrect analytics data.
         AnalyticsManager.cleanManager()
 
+        AnalyticsManager.track(event: .sdkOpened, screenName: nil)
+
         var entryPointValue = EntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
         if let documents = documents, !documents.isEmpty, !documents.containsDifferentTypes {
             entryPointValue = EntryPointAnalytics.openWith.rawValue
