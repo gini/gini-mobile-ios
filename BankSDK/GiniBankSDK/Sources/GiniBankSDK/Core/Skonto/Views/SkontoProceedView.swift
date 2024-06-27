@@ -13,7 +13,6 @@ class SkontoProceedView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        // TODO: reused from digital invoice, to doublecheck if its the same for Skonto
         let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
                                                                    comment: "Proceed")
         button.setTitle(buttonTitle, for: .normal)
@@ -26,7 +25,6 @@ class SkontoProceedView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.body]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        // TODO: reused from digital invoice, to doublecheck if its the same for Skonto
         let labelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
                                                                   comment: "Total")
         label.text = labelTitle

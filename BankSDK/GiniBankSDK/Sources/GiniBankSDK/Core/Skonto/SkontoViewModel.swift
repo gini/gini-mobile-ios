@@ -18,12 +18,14 @@ public class SkontoViewModel {
     private (set) var skontoValue: Double
     private (set) var date: Date
     private (set) var priceWithoutSkonto: Double
+    private (set) var currency: String
 
-    init(isSkontoApplied: Bool, skontoValue: Double, date: Date, priceWithoutSkonto: Double) {
+    init(isSkontoApplied: Bool, skontoValue: Double, date: Date, priceWithoutSkonto: Double, currency: String) {
         self.isSkontoApplied = isSkontoApplied
         self.skontoValue = skontoValue
         self.date = date
         self.priceWithoutSkonto = priceWithoutSkonto
+        self.currency = currency
     }
 
     func toggleDiscount() {
