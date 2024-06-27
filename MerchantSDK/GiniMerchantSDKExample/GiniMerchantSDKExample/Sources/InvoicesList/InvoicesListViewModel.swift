@@ -78,7 +78,7 @@ final class InvoicesListViewModel {
     func viewDidLoad() {
         paymentComponentsController.loadPaymentProviders()
     }
-    
+        
     func refetchExtractions() {
         guard shouldRefetchExtractions else { return }
         guard let documentIDToRefetch else { return }
@@ -88,24 +88,7 @@ final class InvoicesListViewModel {
         self.documentService.fetchDocument(with: documentIDToRefetch) { [weak self] result in
             switch result {
             case .success(let document):
-                self?.documentService.extractions(for: document, cancellationToken: CancellationToken()) { resultExtractions in
-                    switch resultExtractions {
-                    case .success(let extractions):
-                        self?.shouldRefetchExtractions = false
-                        self?.documentIDToRefetch = nil
-                        let recipient = extractions.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
-                        let amountToPay = extractions.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
-                        self?.hardcodedInvoicesController.updateDocumentExtractions(documentID: document.id, recipient: recipient, amountToPay: amountToPay)
-                        self?.invoices = self?.hardcodedInvoicesController.getInvoicesWithExtractions() ?? []
-                        DispatchQueue.main.async {
-                            self?.coordinator.invoicesListViewController?.hideActivityIndicator()
-                            self?.coordinator.invoicesListViewController?.reloadTableView()
-                        }
-                    case .failure(let error):
-                        self?.errors.append(error.localizedDescription)
-                        self?.showErrorsIfAny()
-                    }
-                }
+                self?.loadExtractions(document)
             case .failure(let error):
                 self?.errors.append(error.localizedDescription)
                 self?.showErrorsIfAny()
@@ -123,7 +106,28 @@ final class InvoicesListViewModel {
             }
         }
     }
+    fileprivate func loadExtractions(_ document: Document) {
+        documentService.extractions(for: document, cancellationToken: CancellationToken()) { [weak self] resultExtractions in
+            switch resultExtractions {
+            case .success(let extractions):
+                self?.shouldRefetchExtractions = false
+                self?.documentIDToRefetch = nil
+                let recipient = extractions.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
+                let amountToPay = extractions.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
+                self?.hardcodedInvoicesController.updateDocumentExtractions(documentID: document.id, recipient: recipient, amountToPay: amountToPay)
+                self?.invoices = self?.hardcodedInvoicesController.getInvoicesWithExtractions() ?? []
+                DispatchQueue.main.async { [weak self] in
+                    self?.coordinator.invoicesListViewController?.hideActivityIndicator()
+                    self?.coordinator.invoicesListViewController?.reloadTableView()
+                }
+            case .failure(let error):
+                self?.errors.append(error.localizedDescription)
+                self?.showErrorsIfAny()
+            }
+        }
+    }
 
+    
     private func showErrorsIfAny() {
         if !errors.isEmpty {
             let uniqueErrorMessages = Array(Set(errors))

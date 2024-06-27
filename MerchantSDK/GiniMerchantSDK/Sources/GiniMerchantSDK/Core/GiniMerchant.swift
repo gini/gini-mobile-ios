@@ -104,9 +104,9 @@ public struct DataForReview {
      */
     private func fetchInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniMerchantError>) -> Void) {
         fetchBankingApps { result in
-            switch result {
-            case .success(let providers):
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let providers):
                     for provider in providers {
                         if let url = URL(string:provider.appSchemeIOS), UIApplication.shared.canOpenURL(url) {
                             self.bankProviders.append(provider)
@@ -118,9 +118,8 @@ public struct DataForReview {
                     } else {
                         completion(.failure(.noInstalledApps))
                     }
-                }
-            case let .failure(error):
-                DispatchQueue.main.async {
+                case let .failure(error):
+                    
                     completion(.failure(GiniMerchantError.apiError(error)))
                 }
             }

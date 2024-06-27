@@ -8,14 +8,8 @@
 import UIKit
 public extension UIColor {
     static func from(giniColor: GiniColor) -> UIColor {
-        return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
-            if UITraitCollection.userInterfaceStyle == .dark {
-                /// Return the color for Dark Mode
-                return giniColor.darkModeColor
-            } else {
-                /// Return the color for Light Mode
-                return giniColor.lightModeColor
-            }
+        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            return traitCollection.userInterfaceStyle == .dark ? giniColor.darkModeColor : giniColor.lightModeColor
         }
     }
     

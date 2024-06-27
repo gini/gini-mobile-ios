@@ -157,16 +157,9 @@ public class PaymentReviewModel: NSObject {
             for page in 1 ... self.document.pageCount {
                 dispatchGroup.enter()
 
-                self.merchantSDK.documentService.preview(for: self.documentId, pageNumber: page) {[weak self] result in
-                    switch result {
-                    case let .success(dataImage):
-                        if let image = UIImage(data: dataImage), let cellModel = self?.createCellViewModel(previewImage: image) {
-                            vms.append(cellModel)
-                        }
-                    case let .failure(error):
-                        if let delegate = self?.merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: GiniMerchantError.apiError(error)) {
-                            self?.onErrorHandling(.apiError(error))
-                        }
+                self.merchantSDK.documentService.preview(for: self.documentId, pageNumber: page) { [weak self] result in
+                    if let cellModel = self?.proccessPreview(result) {
+                        vms.append(cellModel)
                     }
                     dispatchSemaphore.signal()
                     dispatchGroup.leave()
@@ -182,6 +175,20 @@ public class PaymentReviewModel: NSObject {
                 }
             }
         }
+    }
+    
+    private func proccessPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
+        switch result {
+        case let .success(dataImage):
+            if let image = UIImage(data: dataImage) {
+               return createCellViewModel(previewImage: image)
+            }
+        case let .failure(error):
+            if let delegate = merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: GiniMerchantError.apiError(error)) {
+                onErrorHandling(.apiError(error))
+            }
+        }
+        return nil
     }
     
     func installAppBottomSheet() -> BottomSheetViewController {
