@@ -38,7 +38,10 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private let viewModel = SkontoViewModel(isSkontoApplied: true)
+    private let viewModel = SkontoViewModel(isSkontoApplied: true,
+                                            skontoValue: 3.0,
+                                            date: Date(),
+                                            priceWithoutSkonto: 99.99)
     private let configuration = GiniBankConfiguration.shared
 
     private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
