@@ -6,10 +6,10 @@
 
 import Foundation
 
-class AnalyticsSessionManager {
+internal class AnalyticsSessionManager {
     static let shared = AnalyticsSessionManager()
 
-    var sessionId: Int64
+    var sessionId: Int64?
     private(set) var eventId: Int64 = 0
 
     private init() {
@@ -23,7 +23,7 @@ class AnalyticsSessionManager {
     }
 
     func resetSession() {
-        sessionId = Date.berlinTimestamp()
+        sessionId = nil
         eventId = 0
     }
 }
