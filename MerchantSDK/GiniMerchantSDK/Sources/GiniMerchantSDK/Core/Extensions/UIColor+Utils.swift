@@ -29,7 +29,10 @@ public extension UIColor {
     }
     
     convenience init?(hex: String) {
-        let r, g, b, a: CGFloat
+        let r: CGFloat
+        let g: CGFloat
+        let b: CGFloat
+        let a: CGFloat
 
         if hex.hasPrefix("#") {
             let start = hex.index(hex.startIndex, offsetBy: 1)

@@ -13,10 +13,8 @@ extension String {
     }
     
     func canOpenURLString() -> Bool {
-        if let url = URL(string: self) {
-            if UIApplication.shared.canOpenURL(url) {
-                return true
-            }
+        if let url = URL(string: self) , UIApplication.shared.canOpenURL(url) {
+            return true
         }
         return false
     }

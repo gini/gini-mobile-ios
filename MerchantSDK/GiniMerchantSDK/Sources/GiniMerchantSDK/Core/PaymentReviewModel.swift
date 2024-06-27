@@ -21,18 +21,18 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
 public class PaymentReviewModel: NSObject {
     var onDocumentUpdated: () -> Void = {}
 
-    var onExtractionFetched: () -> Void = {}
-    var onExtractionUpdated: () -> Void = {}
-    var onPreviewImagesFetched: () -> Void = {}
-    var reloadCollectionViewClosure: () -> Void = {}
-    var updateLoadingStatus: () -> Void = {}
-    var updateImagesLoadingStatus: () -> Void = {}
+    var onExtractionFetched: (() -> Void)?
+    var onExtractionUpdated: (() -> Void)?
+    var onPreviewImagesFetched: (() -> Void)?
+    var reloadCollectionViewClosure: (() -> Void)?
+    var updateLoadingStatus: (() -> Void)?
+    var updateImagesLoadingStatus: (() -> Void)?
     
     var onErrorHandling: (_ error: GiniMerchantError) -> Void = { _ in }
 
     var onNoAppsErrorHandling: (_ error: GiniMerchantError) -> Void = { _ in }
     
-    var onCreatePaymentRequestErrorHandling: () -> Void = {}
+    var onCreatePaymentRequestErrorHandling: (() -> Void)?
     
     var onBankSelection: (_ provider: PaymentProvider) -> Void = { _ in }
     
@@ -46,7 +46,7 @@ public class PaymentReviewModel: NSObject {
 
     public var extractions: [Extraction] {
         didSet {
-            self.onExtractionFetched()
+            self.onExtractionFetched?()
         }
     }
 
@@ -56,7 +56,7 @@ public class PaymentReviewModel: NSObject {
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
-            self.reloadCollectionViewClosure()
+            self.reloadCollectionViewClosure?()
         }
     }
 
@@ -66,13 +66,13 @@ public class PaymentReviewModel: NSObject {
 
     var isLoading: Bool = false {
         didSet {
-            self.updateLoadingStatus()
+            self.updateLoadingStatus?()
         }
     }
     
     var isImagesLoading: Bool = false {
         didSet {
-            self.updateImagesLoadingStatus()
+            self.updateImagesLoadingStatus?()
         }
     }
     
@@ -114,7 +114,7 @@ public class PaymentReviewModel: NSObject {
                 completion?(requestId)
             case let .failure(error):
                 if let delegate = self?.merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: GiniMerchantError.apiError(error)) {
-                    self?.onCreatePaymentRequestErrorHandling()
+                    self?.onCreatePaymentRequestErrorHandling?()
                 }
             }
         }
@@ -178,7 +178,7 @@ public class PaymentReviewModel: NSObject {
                 DispatchQueue.main.async {
                     self.isImagesLoading = false
                     self.cellViewModels.append(contentsOf: vms)
-                    self.onPreviewImagesFetched()
+                    self.onPreviewImagesFetched?()
                 }
             }
         }

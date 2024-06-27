@@ -196,7 +196,7 @@ public final class DefaultDocumentService {
                                and compoundExtractions: [String: [[Extraction]]],
                                completion: @escaping CompletionResult<Void>) {
         let healthExtractions = extractions.map { $0.toHealthExtraction() }
-        let healthCompoundExtractions = compoundExtractions.mapValues { $0.map { $0.map { $0.toHealthExtraction() } } }
+        let healthCompoundExtractions = compoundExtractions.mapValues { mapCompoundExtraction($0) }
         docService.submitFeedback(for: document.toHealthDocument(),
                                   with: healthExtractions,
                                   and: healthCompoundExtractions,
@@ -208,6 +208,10 @@ public final class DefaultDocumentService {
                 completion(.failure(GiniError.decorator(error)))
             }
         })
+    }
+    
+    private func mapCompoundExtraction(_ compoundExtraction: [[Extraction]]) -> [[GiniHealthAPILibrary.Extraction]] {
+        return compoundExtraction.map { $0.map { $0.toHealthExtraction() } }
     }
     
     /**
