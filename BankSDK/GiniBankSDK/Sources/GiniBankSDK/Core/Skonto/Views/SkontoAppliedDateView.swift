@@ -11,7 +11,7 @@ public class SkontoAppliedDateView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.date.title",
-                                                              comment: "Fälligkeitsdatum")
+                                                              comment: "Due date")
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
