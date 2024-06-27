@@ -11,7 +11,7 @@ public class SkontoAppliedAmountView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.amount.title",
-                                                              comment: "Betrag nach Abzug")
+                                                              comment: "Final amount")
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
