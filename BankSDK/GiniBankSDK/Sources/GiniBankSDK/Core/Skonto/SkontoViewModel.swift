@@ -7,32 +7,39 @@
 import Foundation
 
 public class SkontoViewModel {
-    private var observers: [(Bool) -> Void] = []
+    private var skontoStateChangeHandlers: [() -> Void] = []
 
     private (set) var isSkontoApplied: Bool {
         didSet {
-            notifyObservers()
+            notifyStateChangeHandlers()
         }
     }
 
-    init(isSkontoApplied: Bool) {
+    private (set) var skontoValue: Double
+    private (set) var date: Date
+    private (set) var priceWithoutSkonto: Double
+
+    init(isSkontoApplied: Bool, skontoValue: Double, date: Date, priceWithoutSkonto: Double) {
         self.isSkontoApplied = isSkontoApplied
+        self.skontoValue = skontoValue
+        self.date = date
+        self.priceWithoutSkonto = priceWithoutSkonto
     }
 
     func toggleDiscount() {
         isSkontoApplied.toggle()
     }
 
-    func addObserver(_ observer: @escaping (Bool) -> Void) {
-        observers.append(observer)
+    func addStateChangeHandler(_ handler: @escaping () -> Void) {
+        skontoStateChangeHandlers.append(handler)
     }
 
-    private func notifyObservers() {
-        for observer in observers {
-            observer(isSkontoApplied)
+    private func notifyStateChangeHandlers() {
+        for handler in skontoStateChangeHandlers {
+            handler()
         }
     }
-    
+
     func proceedButtonTapped() {
         // TODO: Handle proceed button tap
     }
