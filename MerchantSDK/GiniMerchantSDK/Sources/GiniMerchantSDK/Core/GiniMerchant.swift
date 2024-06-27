@@ -106,16 +106,13 @@ public struct DataForReview {
         fetchBankingApps { result in
             switch result {
             case .success(let providers):
-                for provider in providers {
-                    DispatchQueue.main.async {
-                        if let url = URL(string:provider.appSchemeIOS) {
-                            if UIApplication.shared.canOpenURL(url) {
-                                self.bankProviders.append(provider)
-                            }
+                DispatchQueue.main.async {
+                    for provider in providers {
+                        if let url = URL(string:provider.appSchemeIOS), UIApplication.shared.canOpenURL(url) {
+                            self.bankProviders.append(provider)
                         }
                     }
-                }
-                DispatchQueue.main.async {
+                    
                     if self.bankProviders.count > 0 {
                         completion(.success(self.bankProviders))
                     } else {

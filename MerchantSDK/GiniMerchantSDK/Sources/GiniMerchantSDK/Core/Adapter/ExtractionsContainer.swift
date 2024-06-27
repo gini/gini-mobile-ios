@@ -33,25 +33,24 @@ extension ExtractionsContainer: Decodable {
         let decodedCandidates = try container.decodeIfPresent([String : [Extraction.Candidate]].self,
                                                        forKey: .candidates) ?? [:]
         
-        extractions = decodedExtractions.map { (key, value) in
-            let extraction = value
-            extraction.name = key
-            return extraction
-        }
+        extractions = decodedExtractions.map(ExtractionsContainer.mapExtraction)
                 
-        compoundExtractions = decodedCompoundExtractions?.mapValues { (extractionDictionaries) in
-            
-            extractionDictionaries.map { extractionsDictionary -> [Extraction] in
-                                
-                return extractionsDictionary.map { (key, value) -> Extraction in
-                    
-                    let extraction = value
-                    extraction.name = key
-                    return extraction
-                }
-            }
-        }
+        compoundExtractions = decodedCompoundExtractions?.mapValues(ExtractionsContainer.mapCompoundExtractions)
         
         candidates = decodedCandidates.flatMap { $0.value }
+    }
+}
+
+private extension ExtractionsContainer {
+    private static func mapExtraction(key: String, value: Extraction) -> Extraction {
+        let extraction = value
+        extraction.name = key
+        return extraction
+    }
+    
+    private static func mapCompoundExtractions(extractionDictionaries: [[String : Extraction]]) -> [[Extraction]] {
+        return extractionDictionaries.map { extractionsDictionary in
+            extractionsDictionary.map(mapExtraction)
+        }
     }
 }

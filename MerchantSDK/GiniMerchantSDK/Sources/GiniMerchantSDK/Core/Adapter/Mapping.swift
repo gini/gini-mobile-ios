@@ -51,11 +51,17 @@ extension PaymentProvider {
         let openPlatforms = healthPaymentProvider.openWithSupportedPlatforms.compactMap { PlatformSupported(rawValue: $0.rawValue) }
         let gpcPlatforms = healthPaymentProvider.gpcSupportedPlatforms.compactMap { PlatformSupported(rawValue: $0.rawValue) }
         let colors = ProviderColors(healthProviderColors: healthPaymentProvider.colors)
+        let minAppVersions: MinAppVersions?
+        if let healthMinAppVersions = healthPaymentProvider.minAppVersion {
+            minAppVersions = MinAppVersions(healthMinAppVersions: healthMinAppVersions)
+        } else {
+            minAppVersions = nil
+        }
         
         self.init(id: healthPaymentProvider.id,
                   name: healthPaymentProvider.name,
                   appSchemeIOS: healthPaymentProvider.appSchemeIOS,
-                  minAppVersion: nil,
+                  minAppVersion: minAppVersions,
                   colors: colors,
                   iconData: healthPaymentProvider.iconData,
                   appStoreUrlIOS: healthPaymentProvider.appStoreUrlIOS,
@@ -73,12 +79,11 @@ extension ProviderColors {
     }
 }
 
-//extension MinAppVersions {
-//    init(healthMinAppVersions: GiniHealthAPILibrary.MinAppVersions) {
-//        self.init(ios: healthMinAppVersions.ios,
-//                  android: healthMinAppVersions.android)
-//    }
-//}
+extension MinAppVersions {
+    init(healthMinAppVersions: GiniHealthAPILibrary.MinAppVersions) {
+        self.healthMinAppVersions = healthMinAppVersions
+    }
+}
 
 //MARK: - Document
 

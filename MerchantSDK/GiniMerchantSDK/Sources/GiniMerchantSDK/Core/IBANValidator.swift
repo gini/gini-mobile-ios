@@ -56,7 +56,7 @@ final class IBANValidator {
         "\(String(iban[..<iban.index(iban.startIndex, offsetBy: 4)]))"
         
         let result = validateMod97(iban: normalizedIban)
-        if !countryIsValid && result == true {
+        if !countryIsValid && result {
             return false
         }
         

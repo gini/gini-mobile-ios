@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GiniHealthAPILibrary
 /**
  Struct for payment provider
  */
@@ -48,11 +49,10 @@ extension PaymentProvider: Equatable {
  Struct for MinAppVersions in payment provider response
  */
 public struct MinAppVersions: Codable {
-    var ios: String?
-    var android: String?
+    internal let healthMinAppVersions: GiniHealthAPILibrary.MinAppVersions
+    
     public init(ios: String?, android: String?) {
-        self.ios = ios
-        self.android = android
+        self.healthMinAppVersions = GiniHealthAPILibrary.MinAppVersions(ios: ios, android: android)
     }
 }
 
