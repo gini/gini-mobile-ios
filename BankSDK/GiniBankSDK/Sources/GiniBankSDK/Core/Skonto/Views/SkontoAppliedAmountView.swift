@@ -10,7 +10,7 @@ import GiniCaptureSDK
 class SkontoAppliedAmountView: UIView {
     private lazy var amountView: SkontoAmountView = {
         let view = SkontoAmountView(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.amount.title",
-                                                                                    comment: "Betrag nach Abzug"),
+                                                                                    comment: "Final amount"),
                                     textFieldText: "999,00",
                                     currency: "EUR")
         view.delegate = self

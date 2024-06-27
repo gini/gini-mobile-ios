@@ -12,7 +12,7 @@ class SkontoNotAppliedView: UIView {
         let label = UILabel()
         // TODO: Localization
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.notapplied.title",
-                                                              comment: "Ohne Skonto")
+                                                              comment: "Without Skonto discount")
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
@@ -24,7 +24,7 @@ class SkontoNotAppliedView: UIView {
         let label = UILabel()
         let attributedString = NSMutableAttributedString(
             string: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
-                                                             comment: "• Aktiviert"),
+                                                             comment: "• Active"),
             attributes: [NSAttributedString.Key.font: configuration.textStyleFonts[.footnoteBold]!,
                          NSAttributedString.Key.foregroundColor: GiniColor(light: .GiniBank.success3,
                                                                            dark: .GiniBank.success3).uiColor()
