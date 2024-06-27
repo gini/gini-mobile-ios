@@ -30,9 +30,9 @@ class UploadDocumentsTests: XCTestCase {
     func testFailUploadLargePDFToGiniHealthAPI() {
         let expect = expectation(description: "Upload of pdf above 10MB to HealthAPILibrary should fail. Local compression won't be done for this kind of file.")
 
-        guard let imageData12MB = FileLoader.loadFile(withName: "invoice-13MB", ofType: "pdf") else { return }
+        guard let pdfData13MB = FileLoader.loadFile(withName: "invoice-13MB", ofType: "pdf") else { return }
 
-        self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: imageData12MB, expect: expect)
+        self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: pdfData13MB, expect: expect)
 
         wait(for: [expect], timeout: 60)
     }
