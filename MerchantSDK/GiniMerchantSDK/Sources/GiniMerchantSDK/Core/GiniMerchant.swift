@@ -107,11 +107,7 @@ public struct DataForReview {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let providers):
-                    for provider in providers {
-                        if let url = URL(string:provider.appSchemeIOS), UIApplication.shared.canOpenURL(url) {
-                            self.bankProviders.append(provider)
-                        }
-                    }
+                    self.updateBankProviders(providers: providers)
                     
                     if self.bankProviders.count > 0 {
                         completion(.success(self.bankProviders))
@@ -122,6 +118,14 @@ public struct DataForReview {
                     
                     completion(.failure(GiniMerchantError.apiError(error)))
                 }
+            }
+        }
+    }
+    
+    private func updateBankProviders(providers: PaymentProviders) {
+        for provider in providers {
+            if let url = URL(string:provider.appSchemeIOS), UIApplication.shared.canOpenURL(url) {
+                self.bankProviders.append(provider)
             }
         }
     }
