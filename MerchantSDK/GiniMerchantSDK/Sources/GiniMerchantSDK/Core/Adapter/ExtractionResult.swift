@@ -29,7 +29,6 @@ import Foundation
     }
     
     convenience init(extractionsContainer: ExtractionsContainer) {
-        
         self.init(extractions: extractionsContainer.extractions,
                   payment: extractionsContainer.compoundExtractions?["payment"],
                   lineItems: extractionsContainer.compoundExtractions?["lineItems"])
