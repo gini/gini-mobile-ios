@@ -18,8 +18,12 @@ public class SkontoAppliedInfoView: UIView {
 
     private lazy var label: UILabel = {
         let label = UILabel()
-        let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
-                                                            comment: "Zahlung in 14 Tagen: 3% Skonto.")
+        let text = String.localizedStringWithFormat(
+            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
+                                                     comment: "Pay in %d days: %.1f%% Skonto discount."),
+            14,
+            3.0
+        )
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttribute(.underlineStyle,
                                       value: NSUnderlineStyle.single.rawValue,
