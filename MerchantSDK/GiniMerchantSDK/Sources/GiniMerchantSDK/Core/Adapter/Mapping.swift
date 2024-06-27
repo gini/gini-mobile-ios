@@ -30,17 +30,21 @@ extension Extraction {
 extension ExtractionResult {
     convenience init(healthExtractionResult: GiniHealthAPILibrary.ExtractionResult) {
         let extractions = healthExtractionResult.extractions.map { Extraction(healthExtraction: $0) }
+        let payment = healthExtractionResult.payment?.map { $0.map { Extraction(healthExtraction: $0) } }
+        let lineItems = healthExtractionResult.lineItems?.map { $0.map { Extraction(healthExtraction: $0) } }
         
         self.init(extractions: extractions,
-                  payment: [extractions],
-                  lineItems: [extractions])
+                  payment: payment,
+                  lineItems: lineItems)
     }
     
     func toHealthExtractionResult() -> GiniHealthAPILibrary.ExtractionResult {
         let healthExtractions = extractions.map { $0.toHealthExtraction() }
+        let healthPayment = payment?.map { $0.map { $0.toHealthExtraction() } }
+        let healthLineItems = lineItems?.map { $0.map { $0.toHealthExtraction() } }
         return GiniHealthAPILibrary.ExtractionResult(extractions: healthExtractions,
-                                                     payment: [healthExtractions],
-                                                     lineItems: [healthExtractions])
+                                                     payment: healthPayment,
+                                                     lineItems: healthLineItems)
     }
 }
 
