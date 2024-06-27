@@ -55,7 +55,7 @@ class SkontoNotAppliedView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        backgroundColor = .giniColorScheme().bg.surface.uiColor()
         addSubview(titleLabel)
         addSubview(statusLabel)
         addSubview(amountView)
