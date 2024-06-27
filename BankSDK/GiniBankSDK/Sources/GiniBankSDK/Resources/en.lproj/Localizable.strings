@@ -99,5 +99,5 @@
 "ginibank.skonto.info.message" = "Pay in %d days: %.1f%% Skonto discount.";
 "ginibank.skonto.info.amount.title" = "Final amount";
 "ginibank.skonto.info.date.title" = "Due date";
-"ginibank.skonto.notapplied.title" = "Ohne Skonto";
-"ginibank.skonto.notapplied.amount.title" = "Betrag ohne Abzug";
+"ginibank.skonto.notapplied.title" = "Without Skonto discount";
+"ginibank.skonto.notapplied.amount.title" = "Full amount";
