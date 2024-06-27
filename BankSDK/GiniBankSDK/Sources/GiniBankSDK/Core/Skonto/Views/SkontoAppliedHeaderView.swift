@@ -11,7 +11,7 @@ public class SkontoAppliedHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.title",
-                                                              comment: "Mit Skonto")
+                                                              comment: "With Skonto discount")
         label.textColor = .giniColorScheme().text.primary.uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
@@ -23,7 +23,7 @@ public class SkontoAppliedHeaderView: UIView {
         let label = UILabel()
         let attributedString = NSMutableAttributedString(
             string: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
-                                                             comment: "• Aktiviert"),
+                                                             comment: "• Active"),
             attributes: [NSAttributedString.Key.font: configuration.textStyleFonts[.footnoteBold]!,
                          NSAttributedString.Key.foregroundColor: UIColor.giniColorScheme().text.status.uiColor()
                         ])
