@@ -79,7 +79,7 @@ public class SkontoAmountView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        backgroundColor = .giniColorScheme().bg.inputUnfocused.uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(textField)

@@ -38,6 +38,22 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
+    private lazy var appliedContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        view.layer.cornerRadius = 8
+        return view
+    }()
+
+    private lazy var notAppliedContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        view.layer.cornerRadius = 8
+        return view
+    }()
+
     private let viewModel = SkontoViewModel(isSkontoApplied: true,
                                             skontoValue: 3.0,
                                             date: Date(),
@@ -75,11 +91,14 @@ public class SkontoViewController: UIViewController {
             cancelButton.addAction(self, #selector(backButtonTapped))
             navigationItem.leftBarButtonItem = cancelButton.barButton
         }
-        view.addSubview(headerView)
-        view.addSubview(infoView)
-        view.addSubview(appliedAmountView)
-        view.addSubview(dateView)
-        view.addSubview(notAppliedView)
+
+        view.addSubview(appliedContainerView)
+        view.addSubview(notAppliedContainerView)
+        appliedContainerView.addSubview(headerView)
+        appliedContainerView.addSubview(infoView)
+        appliedContainerView.addSubview(appliedAmountView)
+        appliedContainerView.addSubview(dateView)
+        notAppliedContainerView.addSubview(notAppliedView)
         view.addSubview(proceedView)
 
         setupBottomNavigationBar()
@@ -88,25 +107,56 @@ public class SkontoViewController: UIViewController {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.verticalPadding),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
+            appliedContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                                    constant: Constants.containerPadding),
+            appliedContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                        constant: Constants.containerPadding),
+            appliedContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                         constant: -Constants.containerPadding),
 
-            infoView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: Constants.verticalPadding),
-            infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
-            infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
+            headerView.topAnchor.constraint(equalTo: appliedContainerView.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: appliedContainerView.leadingAnchor,
+                                                constant: Constants.horizontalPadding),
+            headerView.trailingAnchor.constraint(equalTo: appliedContainerView.trailingAnchor,
+                                                 constant: -Constants.horizontalPadding),
 
-            appliedAmountView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: Constants.verticalPadding),
-            appliedAmountView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
-            appliedAmountView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
+            infoView.topAnchor.constraint(equalTo: headerView.bottomAnchor,
+                                          constant: Constants.horizontalPadding),
+            infoView.leadingAnchor.constraint(equalTo: appliedContainerView.leadingAnchor,
+                                              constant: Constants.horizontalPadding),
+            infoView.trailingAnchor.constraint(equalTo: appliedContainerView.trailingAnchor,
+                                               constant: -Constants.horizontalPadding),
 
-            dateView.topAnchor.constraint(equalTo: appliedAmountView.bottomAnchor, constant: Constants.dateViewTopPadding),
-            dateView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
-            dateView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
+            appliedAmountView.topAnchor.constraint(equalTo: infoView.bottomAnchor,
+                                                   constant: Constants.horizontalPadding),
+            appliedAmountView.leadingAnchor.constraint(equalTo: appliedContainerView.leadingAnchor,
+                                                       constant: Constants.horizontalPadding),
+            appliedAmountView.trailingAnchor.constraint(equalTo: appliedContainerView.trailingAnchor,
+                                                        constant: -Constants.horizontalPadding),
 
-            notAppliedView.topAnchor.constraint(equalTo: dateView.bottomAnchor, constant: Constants.verticalPadding),
-            notAppliedView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
-            notAppliedView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizontalPadding),
+            dateView.topAnchor.constraint(equalTo: appliedAmountView.bottomAnchor,
+                                          constant: Constants.dateViewTopPadding),
+            dateView.leadingAnchor.constraint(equalTo: appliedContainerView.leadingAnchor,
+                                              constant: Constants.horizontalPadding),
+            dateView.trailingAnchor.constraint(equalTo: appliedContainerView.trailingAnchor,
+                                               constant: -Constants.horizontalPadding),
+            dateView.bottomAnchor.constraint(equalTo: appliedContainerView.bottomAnchor,
+                                             constant: -Constants.horizontalPadding),
+
+            notAppliedContainerView.topAnchor.constraint(equalTo: appliedContainerView.bottomAnchor,
+                                                     constant: Constants.containerPadding),
+            notAppliedContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                         constant: Constants.containerPadding),
+            notAppliedContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                          constant: -Constants.containerPadding),
+
+            notAppliedView.topAnchor.constraint(equalTo: notAppliedContainerView.topAnchor),
+            notAppliedView.leadingAnchor.constraint(equalTo: notAppliedContainerView.leadingAnchor,
+                                                    constant: Constants.horizontalPadding),
+            notAppliedView.trailingAnchor.constraint(equalTo: notAppliedContainerView.trailingAnchor,
+                                                     constant: -Constants.horizontalPadding),
+            notAppliedView.bottomAnchor.constraint(equalTo: notAppliedContainerView.bottomAnchor,
+                                                   constant: -Constants.horizontalPadding),
 
             proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -172,7 +222,8 @@ public class SkontoViewController: UIViewController {
 private extension SkontoViewController {
     enum Constants {
         static let verticalPadding: CGFloat = 12
-        static let horizontalPadding: CGFloat = 16
+        static let horizontalPadding: CGFloat = 12
+        static let containerPadding: CGFloat = 16
         static let dateViewTopPadding: CGFloat = 8
     }
 }
