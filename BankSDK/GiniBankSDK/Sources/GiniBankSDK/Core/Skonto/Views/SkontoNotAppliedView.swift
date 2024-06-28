@@ -10,9 +10,10 @@ import GiniCaptureSDK
 class SkontoNotAppliedView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        // TODO: Localization
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.notapplied.title",
-                                                              comment: "Without Skonto discount")
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.notapplied.title",
+                                                             comment: "Without Skonto discount")
+        label.text = title
+        label.accessibilityValue = title
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
@@ -22,14 +23,16 @@ class SkontoNotAppliedView: UIView {
 
     private lazy var statusLabel: UILabel = {
         let label = UILabel()
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
+                                                             comment: "• Active")
         let attributedString = NSMutableAttributedString(
-            string: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
-                                                             comment: "• Active"),
+            string: title,
             attributes: [NSAttributedString.Key.font: configuration.textStyleFonts[.footnoteBold]!,
                          NSAttributedString.Key.foregroundColor: GiniColor(light: .GiniBank.success3,
                                                                            dark: .GiniBank.success3).uiColor()
                         ])
         label.attributedText = attributedString
+        label.accessibilityValue = title
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -80,14 +83,15 @@ class SkontoNotAppliedView: UIView {
     }
 
     private func bindViewModel() {
-        configure(isSkontoApplied: viewModel.isSkontoApplied)
+        configure()
         viewModel.addStateChangeHandler { [weak self] in
             guard let self else { return }
-            self.configure(isSkontoApplied: self.viewModel.isSkontoApplied)
+            self.configure()
         }
     }
 
-    private func configure(isSkontoApplied: Bool) {
+    private func configure() {
+        let isSkontoApplied = viewModel.isSkontoApplied
         statusLabel.isHidden = isSkontoApplied ? true : false
     }
 }

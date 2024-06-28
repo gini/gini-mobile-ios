@@ -10,8 +10,10 @@ import GiniCaptureSDK
 public class SkontoAppliedHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.title",
-                                                              comment: "With Skonto discount")
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.title",
+                                                             comment: "With Skonto discount")
+        label.text = title
+        label.accessibilityValue = title
         label.textColor = .giniColorScheme().text.primary.uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
@@ -21,13 +23,15 @@ public class SkontoAppliedHeaderView: UIView {
 
     private lazy var statusLabel: UILabel = {
         let label = UILabel()
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
+                                                             comment: "• Active")
         let attributedString = NSMutableAttributedString(
-            string: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
-                                                             comment: "• Active"),
+            string: title,
             attributes: [NSAttributedString.Key.font: configuration.textStyleFonts[.footnoteBold]!,
                          NSAttributedString.Key.foregroundColor: UIColor.giniColorScheme().text.status.uiColor()
                         ])
         label.attributedText = attributedString
+        label.accessibilityValue = title
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -35,7 +39,7 @@ public class SkontoAppliedHeaderView: UIView {
 
     private lazy var discountSwitch: UISwitch = {
         let discountSwitch = UISwitch()
-        discountSwitch.isOn = true
+        discountSwitch.isOn = viewModel.isSkontoApplied
         discountSwitch.onTintColor = UIColor.giniColorScheme().toggles.surfaceFocused.uiColor()
         discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
         discountSwitch.translatesAutoresizingMaskIntoConstraints = false
@@ -81,14 +85,15 @@ public class SkontoAppliedHeaderView: UIView {
     }
 
     private func bindViewModel() {
-        configure(isSkontoApplied: viewModel.isSkontoApplied)
+        configure()
         viewModel.addStateChangeHandler { [weak self] in
             guard let self else { return }
-            self.configure(isSkontoApplied: viewModel.isSkontoApplied)
+            self.configure()
         }
     }
 
-    private func configure(isSkontoApplied: Bool) {
+    private func configure() {
+        let isSkontoApplied = viewModel.isSkontoApplied
         discountSwitch.isOn = isSkontoApplied
         statusLabel.isHidden = isSkontoApplied ? false : true
     }

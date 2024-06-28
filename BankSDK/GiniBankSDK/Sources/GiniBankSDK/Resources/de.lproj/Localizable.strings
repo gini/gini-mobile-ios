@@ -93,3 +93,4 @@
 "ginibank.skonto.info.date.title" = "Fälligkeitsdatum";
 "ginibank.skonto.notapplied.title" = "Ohne Skonto";
 "ginibank.skonto.notapplied.amount.title" = "Betrag ohne Abzug";
+"ginibank.skonto.total.amount.skonto" = "%.1f%% Skonto";
