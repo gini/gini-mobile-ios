@@ -22,7 +22,7 @@ public class SkontoAppliedInfoView: UIView {
             NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
                                                      comment: "Pay in %d days: %.1f%% Skonto discount."),
             14,
-            3.0
+            viewModel.skontoValue
         )
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttribute(.underlineStyle,
@@ -44,6 +44,7 @@ public class SkontoAppliedInfoView: UIView {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupView()
+        bindViewModel()
     }
 
     required init?(coder: NSCoder) {
@@ -72,6 +73,25 @@ public class SkontoAppliedInfoView: UIView {
             label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.labelHorizontalPadding),
             label.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
         ])
+    }
+    
+    private func bindViewModel() {
+        configure()
+        viewModel.addStateChangeHandler { [weak self] in
+            guard let self else { return }
+            self.configure()
+        }
+    }
+
+    private func configure() {
+        // TODO: skonto period?? how to set??
+        let text = String.localizedStringWithFormat(
+            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
+                                                     comment: "Pay in %d days: %.1f%% Skonto discount."),
+            14,
+            viewModel.skontoValue
+        )
+        label.text = text
     }
 }
 

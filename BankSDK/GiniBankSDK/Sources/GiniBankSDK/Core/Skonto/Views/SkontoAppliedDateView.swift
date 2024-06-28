@@ -10,8 +10,10 @@ import GiniCaptureSDK
 public class SkontoAppliedDateView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.date.title",
-                                                              comment: "Due date")
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.date.title",
+                                                             comment: "Due date")
+        label.text = title
+        label.accessibilityValue = title
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
@@ -21,7 +23,7 @@ public class SkontoAppliedDateView: UIView {
 
     private lazy var textField: UITextField = {
         let textField = UITextField()
-        textField.text = "11.11.1111"
+        textField.text = getFormattedDate(date: viewModel.date)
         textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
@@ -97,18 +99,19 @@ public class SkontoAppliedDateView: UIView {
     }
 
     private func bindViewModel() {
-        configure(isSkontoApplied: viewModel.isSkontoApplied)
+        configure()
         viewModel.addStateChangeHandler { [weak self] in
             guard let self else { return }
-            self.configure(isSkontoApplied: self.viewModel.isSkontoApplied)
+            self.configure()
         }
     }
 
-    private func configure(isSkontoApplied: Bool) {
+    private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
         containerView.layer.borderWidth = isSkontoApplied ? 1 : 0
         textField.isUserInteractionEnabled = isSkontoApplied
         calendarImageView.isHidden = isSkontoApplied ? false : true
+        textField.text = getFormattedDate(date: viewModel.date)
     }
 
     private func configureDatePicker() {
@@ -122,9 +125,13 @@ public class SkontoAppliedDateView: UIView {
     }
 
     @objc private func dateChanged(_ datePicker: UIDatePicker) {
+        viewModel.set(date: datePicker.date)
+    }
+
+    private func getFormattedDate(date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
-        textField.text = dateFormatter.string(from: datePicker.date)
+        return dateFormatter.string(from: date)
     }
 }
 

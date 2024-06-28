@@ -101,3 +101,4 @@
 "ginibank.skonto.info.date.title" = "Due date";
 "ginibank.skonto.notapplied.title" = "Without Skonto discount";
 "ginibank.skonto.notapplied.amount.title" = "Full amount";
+"ginibank.skonto.total.amount.skonto" = "%.1f%% Skonto discount";

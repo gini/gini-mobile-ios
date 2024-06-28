@@ -24,6 +24,7 @@ public class SkontoAmountView: UIView {
 
     private lazy var textField: UITextField = {
         let textField = UITextField()
+        textField.delegate = self
         textField.text = textFieldInitialText
         textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
@@ -55,11 +56,11 @@ public class SkontoAmountView: UIView {
     }()
 
     public init(title: String,
-                textFieldText: String,
+                price: Double,
                 currency: String,
                 isEditable: Bool = true) {
         self.titleLabelText = title
-        self.textFieldInitialText = textFieldText
+        self.textFieldInitialText = String(price)
         self.currencyLabelText = currency
         self.isEditable = isEditable
         super.init(frame: .zero)
@@ -112,11 +113,12 @@ public class SkontoAmountView: UIView {
         ])
     }
 
-    func configure(isEditable: Bool) {
+    func configure(isEditable: Bool, price: Double) {
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
         textField.isUserInteractionEnabled = isEditable
         currencyLabel.isHidden = isEditable ? false : true
+        textField.text = String(price)
     }
 }
 
