@@ -226,7 +226,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         /// residual properties and events from the previous session could lead to incorrect analytics data.
         AnalyticsManager.cleanManager()
 
-        AnalyticsManager.track(event: .sdkOpened, screenName: nil)
         // Set new sessionId every time the SDK is initialized
         AnalyticsManager.setSessionId()
 
@@ -235,6 +234,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             entryPointValue = EntryPointAnalytics.openWith.rawValue
         }
         AnalyticsManager.registerSuperProperties([.entryPoint: entryPointValue])
+
+        AnalyticsManager.track(event: .sdkOpened, screenName: nil)
 
         configurationService?.fetchConfigurations(completion: { result in
             switch result {
