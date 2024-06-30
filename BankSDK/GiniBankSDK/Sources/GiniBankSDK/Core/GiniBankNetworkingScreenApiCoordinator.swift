@@ -227,6 +227,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         AnalyticsManager.cleanManager()
 
         AnalyticsManager.track(event: .sdkOpened, screenName: nil)
+        // Set new sessionId every time the SDK is initialized
+        AnalyticsManager.setSessionId()
 
         var entryPointValue = EntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
         if let documents = documents, !documents.isEmpty, !documents.containsDifferentTypes {
