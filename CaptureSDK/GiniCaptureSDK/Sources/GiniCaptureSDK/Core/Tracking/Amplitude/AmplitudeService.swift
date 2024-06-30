@@ -67,25 +67,25 @@ final class AmplitudeService {
             let task = URLSession.shared.dataTask(with: request) { [weak self] _, response, error in
                 guard let self = self else { return }
                 if let error = error {
-                    print("Error uploading events: \(error)")
+                    print("❌ Error uploading events: \(error)")
                     self.handleUploadFailure(events: events)
                     return
                 }
 
                 if let httpResponse = response as? HTTPURLResponse {
                     if httpResponse.statusCode == 200 {
-                        print("Successfully uploaded events")
+                        print("✅ Successfully uploaded events")
                         self.retryAttempts = 0
                         self.eventQueueCleanup()
                     } else {
-                        print("Failed to upload events: \(httpResponse.statusCode)")
+                        print("❌ Failed to upload events: \(httpResponse.statusCode)")
                         self.handleUploadFailure(events: events)
                     }
                 }
             }
             task.resume()
         } catch {
-            print("Error encoding events: \(error)")
+            print("❌ Error encoding events: \(error)")
             handleUploadFailure(events: events)
         }
     }
