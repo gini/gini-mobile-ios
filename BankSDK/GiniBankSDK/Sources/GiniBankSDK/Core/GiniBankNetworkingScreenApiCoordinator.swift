@@ -131,7 +131,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         GiniBank.setConfiguration(configuration)
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
-        self.trackAnalyticsProperties(configuration: configuration)
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
     }
@@ -153,7 +152,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
         GiniBank.setConfiguration(configuration)
-        self.trackAnalyticsProperties(configuration: configuration)
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
@@ -219,6 +217,24 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
      SDK with the provided documents.
      */
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
+        setupAnalytics(withDocuments: documents)
+        configurationService?.fetchConfigurations(completion: { result in
+            switch result {
+            case .success(let configuration):
+                DispatchQueue.main.async {
+                    self.initializeAnalytics(with: configuration)
+                }
+            case .failure(let error):
+                print("❌ configurationService with error: \(error)")
+                // There will be no retries if the endpoint fails.
+                // We will not implement any caching mechanism on our side if the request is too slow.
+                // In case of a failure, the UJ analytics will remain disabled for that session.
+            }
+        })
+        return self.start(withDocuments: documents, animated: animated)
+    }
+
+    private func setupAnalytics(withDocuments documents: [GiniCaptureDocument]?) {
         // Clean the AnalyticsManager properties and events queue between SDK sessions.
         /// The `cleanManager` method of `AnalyticsManager` is called to ensure that properties and events
         /// are reset between SDK sessions. This is particularly important when the SDK is reopened using
@@ -234,23 +250,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             entryPointValue = EntryPointAnalytics.openWith.rawValue
         }
         AnalyticsManager.registerSuperProperties([.entryPoint: entryPointValue])
-
+        AnalyticsManager.trackUserProperties([.returnAssistantEnabled: giniBankConfiguration.returnAssistantEnabled,
+                                              .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons])
         AnalyticsManager.track(event: .sdkOpened, screenName: nil)
-
-        configurationService?.fetchConfigurations(completion: { result in
-            switch result {
-            case .success(let configuration):
-                DispatchQueue.main.async {
-                    self.initializeAnalytics(with: configuration)
-                }
-            case .failure(let error):
-                print("❌ configurationService with error: \(error)")
-                // There will be no retries if the endpoint fails.
-                // We will not implement any caching mechanism on our side if the request is too slow.
-                // In case of a failure, the UJ analytics will remain disabled for that session.
-            }
-        })
-        return self.start(withDocuments: documents, animated: animated)
     }
 
     private func initializeAnalytics(with configuration: ClientConfiguration) {
@@ -368,11 +370,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         })
-    }
-
-    private func trackAnalyticsProperties(configuration: GiniBankConfiguration) {
-        AnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
-                                              .returnReasonsEnabled: configuration.enableReturnReasons])
     }
 }
 
