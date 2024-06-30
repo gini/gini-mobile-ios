@@ -163,7 +163,8 @@ public class AnalyticsManager {
     }
 
     public static func registerSuperProperties(_ properties: [AnalyticsSuperProperty: AnalyticsPropertyValue]) {
-        handleProperties(properties, propertyStore: &superProperties) {
+        handleProperties(properties,
+                         propertyStore: &superProperties) {
             amplitudeSuperPropertiesToTrack = $0
         }
     }
@@ -187,7 +188,10 @@ public class AnalyticsManager {
     }
 
     private static func arrayToString(from original: [String]) -> String {
-        return "[\(original.map { "\"\($0)\"" }.joined(separator: ", "))]"
+        var result = "["
+        result += original.map { "\"\($0)\"" }.joined(separator: ", ")
+        result += "]"
+        return result
     }
 
     private static func convertPropertyValueToString(_ value: AnalyticsPropertyValue) -> String {
@@ -210,18 +214,38 @@ public class AnalyticsManager {
                                                               propertiesHandler: ([String: String]) -> Void)
     where T.RawValue == String {
         if amplitudeService != nil {
-            let propertiesToTrack = mapProperties(properties)
+            var propertiesToTrack: [String: String] = [:]
+            for (property, value) in properties {
+                propertiesToTrack[property.rawValue] = convertPropertyValueToString(value)
+            }
             propertiesHandler(propertiesToTrack)
         } else {
-            propertyStore.merge(properties) { (_, new) in new }
+            for (property, value) in properties {
+                propertyStore[property] = value
+            }
         }
+
     }
 
-    private static func mapProperties<T: RawRepresentable>(_ properties: [T: AnalyticsPropertyValue]) 
-    -> [String: String]
-    where T.RawValue == String {
-        return properties.reduce(into: [String: String]()) { dict, pair in
-            dict[pair.key.rawValue] = convertPropertyValueToString(pair.value)
-        }
+    private static func mapAmplitudeSuperProperties(properties: [AnalyticsSuperProperty: AnalyticsPropertyValue])
+    -> [String: String] {
+        return properties
+            .map { (key, value) in
+                (key.rawValue, convertPropertyValueToString(value))
+            }
+            .reduce(into: [String: String]()) { (dict, pair) in
+                dict[pair.0] = pair.1
+            }
+    }
+
+    private static func mapAmplitudeUserProperties(properties: [AnalyticsUserProperty: AnalyticsPropertyValue])
+    -> [String: String] {
+        return properties
+            .map { (key, value) in
+                (key.rawValue, convertPropertyValueToString(value))
+            }
+            .reduce(into: [String: String]()) { (dict, pair) in
+                dict[pair.0] = pair.1
+            }
     }
 }
