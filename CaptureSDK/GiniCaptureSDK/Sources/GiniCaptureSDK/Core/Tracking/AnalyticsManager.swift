@@ -13,22 +13,19 @@ public class AnalyticsManager {
         }
     }
     private static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
-    private static var amplitudeSuperPropertiesToTrack: [String: String] = [:]
-    private static var amplitudeUserPropertiesToTrack: [String: String] = [:]
     private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
     private static var sessionId: Int64?
 
     private static var eventsQueue: [QueuedAnalyticsEvent] = []
     private static let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
-    private static var giniClientID: [String: String]?
+    private static var giniClientID: String?
     private static var eventId: Int64 = 0
 
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
 
-        giniClientID = [AnalyticsSuperProperty.giniClientID.rawValue: configuration.clientID]
-        superProperties[.giniClientID] = configuration.clientID
+        giniClientID = configuration.clientID
         initializeAmplitude(with: configuration.amplitudeApiKey)
     }
 
@@ -130,12 +127,16 @@ public class AnalyticsManager {
             eventProperties[property.key.rawValue] = convertPropertyValueToString(propertyValue)
         }
 
+        superProperties[.giniClientID] = giniClientID
+
         let baseEvent = BaseEvent(eventType: event.event.rawValue)
         // Merge event properties with super properties. In case of key collisions, values from eventProperties will be used.
-        baseEvent.eventProperties = eventProperties.merging(amplitudeSuperPropertiesToTrack) { (_, new) in new }
+        baseEvent.eventProperties = eventProperties
+            .merging(mapAmplitudeSuperProperties(properties: superProperties)) { (_, new) in new }
 
         // Add `giniClientID` to `userProperties`
-        let userProperties = amplitudeUserPropertiesToTrack.merging(giniClientID ?? [:]) { (_, new) in new }
+        var userProperties = mapAmplitudeUserProperties(properties: userProperties)
+        userProperties[AnalyticsSuperProperty.giniClientID.rawValue] = giniClientID
         baseEvent.userProperties = userProperties
         let iosSystem = IOSSystem()
         let eventId = incrementEventId()
@@ -157,15 +158,14 @@ public class AnalyticsManager {
     }
 
     public static func trackUserProperties(_ properties: [AnalyticsUserProperty: AnalyticsPropertyValue]) {
-        handleProperties(properties, propertyStore: &userProperties) {
-            amplitudeUserPropertiesToTrack = $0
+        for (key, value) in properties {
+            userProperties[key] = value
         }
     }
 
     public static func registerSuperProperties(_ properties: [AnalyticsSuperProperty: AnalyticsPropertyValue]) {
-        handleProperties(properties,
-                         propertyStore: &superProperties) {
-            amplitudeSuperPropertiesToTrack = $0
+        for (key, value) in properties {
+            superProperties[key] = value
         }
     }
 
@@ -207,24 +207,6 @@ public class AnalyticsManager {
         default:
             return ""
         }
-    }
-
-    private static func handleProperties<T: RawRepresentable>(_ properties: [T: AnalyticsPropertyValue],
-                                                              propertyStore: inout [T: AnalyticsPropertyValue],
-                                                              propertiesHandler: ([String: String]) -> Void)
-    where T.RawValue == String {
-        if amplitudeService != nil {
-            var propertiesToTrack: [String: String] = [:]
-            for (property, value) in properties {
-                propertiesToTrack[property.rawValue] = convertPropertyValueToString(value)
-            }
-            propertiesHandler(propertiesToTrack)
-        } else {
-            for (property, value) in properties {
-                propertyStore[property] = value
-            }
-        }
-
     }
 
     private static func mapAmplitudeSuperProperties(properties: [AnalyticsSuperProperty: AnalyticsPropertyValue])
