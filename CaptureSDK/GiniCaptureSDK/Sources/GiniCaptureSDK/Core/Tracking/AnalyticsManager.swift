@@ -20,11 +20,14 @@ public class AnalyticsManager {
 
     private static var eventsQueue: [QueuedAnalyticsEvent] = []
     private static let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
+    private static var giniClientID: [String: String]?
     private static var eventId: Int64 = 0
 
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
+
+        giniClientID = [AnalyticsSuperProperty.giniClientID.rawValue: configuration.clientID]
         superProperties[.giniClientID] = configuration.clientID
         initializeAmplitude(with: configuration.amplitudeApiKey)
     }
@@ -127,7 +130,10 @@ public class AnalyticsManager {
         let baseEvent = BaseEvent(eventType: event.event.rawValue)
         // Merge event properties with super properties. In case of key collisions, values from eventProperties will be used.
         baseEvent.eventProperties = eventProperties.merging(amplitudeSuperPropertiesToTrack) { (_, new) in new }
-        baseEvent.userProperties = amplitudeUserPropertiesToTrack
+
+        // Add `giniClientID` to `userProperties`
+        let userProperties = amplitudeUserPropertiesToTrack.merging(giniClientID ?? [:]) { (_, new) in new }
+        baseEvent.userProperties = userProperties
         let iosSystem = IOSSystem()
         let eventId = incrementEventId()
         let eventOptions = EventOptions(userId: deviceID,
