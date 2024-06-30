@@ -37,6 +37,9 @@ public class AnalyticsManager {
         superProperties = [:]
         eventsQueue = []
         sessionId = nil
+        eventId = 0
+    }
+
     public static func setSessionId() {
         // Generate a new session identifier
         sessionId = Date.berlinTimestamp()
