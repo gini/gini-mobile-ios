@@ -254,7 +254,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         let userJourneyAnalyticsEnabled = configuration.userJourneyAnalyticsEnabled
         let analyticsConfiguration = AnalyticsConfiguration(clientID: configuration.clientID,
                                                             userJourneyAnalyticsEnabled: userJourneyAnalyticsEnabled,
-                                                            mixpanelToken: configuration.mixpanelToken,
                                                             amplitudeApiKey: configuration.amplitudeApiKey)
         AnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
     }
