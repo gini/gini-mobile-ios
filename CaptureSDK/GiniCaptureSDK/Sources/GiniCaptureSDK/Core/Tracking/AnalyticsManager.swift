@@ -25,12 +25,8 @@ public class AnalyticsManager {
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
-        // Generate a new session identifier
-        sessionId = Date.berlinTimestamp()
         superProperties[.giniClientID] = configuration.clientID
         initializeAmplitude(with: configuration.amplitudeApiKey)
-
-        sessionId = Date.berlinTimestamp()
     }
 
     public static func cleanManager() {
@@ -38,6 +34,9 @@ public class AnalyticsManager {
         superProperties = [:]
         eventsQueue = []
         sessionId = nil
+    public static func setSessionId() {
+        // Generate a new session identifier
+        sessionId = Date.berlinTimestamp()
     }
 
     // MARK: Initialization
