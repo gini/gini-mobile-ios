@@ -125,7 +125,6 @@ public class AnalyticsManager {
         }
 
         let baseEvent = BaseEvent(eventType: event.event.rawValue)
-
         // Merge event properties with super properties. In case of key collisions, values from eventProperties will be used.
         baseEvent.eventProperties = eventProperties.merging(amplitudeSuperPropertiesToTrack) { (_, new) in new }
         baseEvent.userProperties = amplitudeUserPropertiesToTrack

@@ -17,7 +17,7 @@ import UIKit
  */
 final class AmplitudeService {
     private var eventQueue: [BaseEvent] = []
-    private (set) var apiKey: String?
+    private var apiKey: String?
     private var timer: Timer?
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private var retryAttempts: Int = 0

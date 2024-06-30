@@ -9,8 +9,8 @@ import Foundation
 /// The `BaseEvent` class represents an event with various properties and implements encoding for serialization.
 class BaseEvent: EventOptions, Encodable {
     var eventType: String
-    var eventProperties: [String: Any?]?
-    var userProperties: [String: Any?]?
+    var eventProperties: [String: Any]?
+    var userProperties: [String: Any]?
 
     enum CodingKeys: String, CodingKey {
         case eventType = "event_type"
@@ -49,8 +49,8 @@ class BaseEvent: EventOptions, Encodable {
          language: String? = nil,
          ip: String? = nil,
          eventType: String,
-         eventProperties: [String: Any?]? = nil,
-         userProperties: [String: Any?]? = nil) {
+         eventProperties: [String: Any]? = nil,
+         userProperties: [String: Any]? = nil) {
         self.eventType = eventType
         self.eventProperties = eventProperties
         self.userProperties = userProperties
