@@ -15,8 +15,8 @@ func loadProviders(fileName: String) -> GiniMerchantSDK.PaymentProviders? {
     guard let providersResponse else { return nil }
     for providerResponse in providersResponse {
         let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
-        let openPlatforms = providerResponse.openWithSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
-        let gpcPlatforms = providerResponse.gpcSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
+        let openWithPlatforms = providerResponse.openWithSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
+        let gpcSupportedPlatforms = providerResponse.gpcSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
         let colors = GiniMerchantSDK.ProviderColors(background: providerResponse.colors.background,
                                                     text: providerResponse.colors.text)
         
@@ -29,8 +29,8 @@ func loadProviders(fileName: String) -> GiniMerchantSDK.PaymentProviders? {
                                                        appStoreUrlIOS: providerResponse.appStoreUrlIOS,
                                                        universalLinkIOS: providerResponse.universalLinkIOS,
                                                        index: providerResponse.index,
-                                                       gpcSupportedPlatforms: gpcPlatforms,
-                                                       openWithSupportedPlatforms: openPlatforms)
+                                                       gpcSupportedPlatforms: gpcSupportedPlatforms,
+                                                       openWithSupportedPlatforms: openWithPlatforms)
             providers.append(provider)
     }
     return providers
