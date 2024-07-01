@@ -158,6 +158,8 @@ extension UIColor {
 }
 
 extension UIColor {
+    // MARK: Development scheme
+    // TODO: Need to update scheme when designer will finish it
     public struct GiniColorScheme {
         struct Bg {
             var background: GiniColor
