@@ -86,7 +86,7 @@ final class PaymentInfoQuestionHeaderViewModel {
         self.titleText = title
         let giniConfiguration = GiniMerchantConfiguration.shared
         self.titleFont = giniConfiguration.textStyleFonts[.body1] ?? UIFont.systemFont(ofSize: 16)
-        self.extendedIcon = (isExtended ? GiniImage.minus : GiniImage.plus).preferredUIImage()
+        self.extendedIcon = (isExtended ? GiniMerchantImage.minus : GiniMerchantImage.plus).preferredUIImage()
     }
 }
 
