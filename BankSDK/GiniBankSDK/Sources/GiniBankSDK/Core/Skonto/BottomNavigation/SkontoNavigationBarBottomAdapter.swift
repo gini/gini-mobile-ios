@@ -28,6 +28,13 @@ public protocol SkontoNavigationBarBottomAdapter: InjectedViewAdapter {
     func setHelpButtonClickedActionCallback(_ callback: @escaping  () -> Void)
 
     /**
+     *  Set the callback for the back button action.
+     *
+     * - Parameter callback: An  action callback, which should be retained and called in back button action method
+     */
+    func setBackButtonClickedActionCallback(_ callback: @escaping  () -> Void)
+
+    /**
      *  Set the total price on the bottom navigation bar. Called when the total price changes
      *
      * - Parameter price: A string which contains the currency and the price
@@ -40,14 +47,14 @@ public protocol SkontoNavigationBarBottomAdapter: InjectedViewAdapter {
      * - Parameter enabled: A bool value to reflect the state of the button
      */
     func updateProceedButtonState(enabled: Bool)
-    
+
     /**
      *  Set the discount value on the bottom navigation bar. Called when Skonto applies
      *
      * - Parameter discount: A string which contains the value of discount
      */
     func updateDiscountValue(with discount: String?)
-    
+
     /**
      *  Set the discount badge state. Called when Skonto applies
      *
