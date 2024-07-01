@@ -15,7 +15,7 @@ import Foundation
  
  - returns: String resource for the given key.
  */
-public func NSLocalizedStringPreferredFormat(_ key: String,
+func NSLocalizedStringPreferredFormat(_ key: String,
                                       fallbackKey: String = "",
                                       comment: String,
                                       isCustomizable: Bool = true) -> String {
@@ -35,7 +35,7 @@ public enum GiniLocalization: String {
 /**
  A utility for retrieving localized strings from the client's bundle or SDK bundle.
  */
-public enum Localized {
+enum Localized {
     
     /**
      Retrieves a localized string for the given key. According localization GiniHealthConfiguration localization field and with check for client app locallizaton
@@ -47,7 +47,7 @@ public enum Localized {
      
      - Returns: The localized string for the given key.
      */
-    public static func string(_ key: String, fallbackKey: String? = nil, comment: String) -> String {
+    static func string(_ key: String, fallbackKey: String? = nil, comment: String) -> String {
         let locale = GiniHealthConfiguration.shared.localization?.rawValue
         let clientAppBundle = Bundle.main
         
