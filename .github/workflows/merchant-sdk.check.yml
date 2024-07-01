@@ -3,13 +3,11 @@ on:
   push:
     paths:
       - 'MerchantSDK/**'
-      - 'HealthAPILibrary/**'
     tags-ignore:
       - '**'
   pull_request:
     paths:
       - 'MerchantSDK/**'
-      - 'HealthAPILibrary/**'
   workflow_call:
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:
