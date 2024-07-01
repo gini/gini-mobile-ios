@@ -19,7 +19,7 @@ func NSLocalizedStringPreferredFormat(_ key: String,
                                       fallbackKey: String = "",
                                       comment: String,
                                       isCustomizable: Bool = true) -> String {
-    Localized.string(key, fallbackKey: fallbackKey, comment: comment)
+    GiniLocalized.string(key, fallbackKey: fallbackKey, comment: comment)
 }
 
 // MARK: - Updated Localization
@@ -35,7 +35,7 @@ public enum GiniLocalization: String {
 /**
  A utility for retrieving localized strings from the client's bundle or SDK bundle.
  */
-enum Localized {
+enum GiniLocalized {
     
     /**
      Retrieves a localized string for the given key. According localization GiniHealthConfiguration localization field and with check for client app locallizaton
