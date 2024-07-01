@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,10 +18,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wit-5t-C2E">
-                                <rect key="frame" x="0.0" y="44" width="428" height="882"/>
+                                <rect key="frame" x="0.0" y="47" width="428" height="879"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="elb-2h-1FG">
-                                        <rect key="frame" x="0.0" y="354" width="428" height="528"/>
+                                        <rect key="frame" x="0.0" y="351" width="428" height="528"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ljp-LW-hIA">
                                                 <rect key="frame" x="193.66666666666666" y="4" width="41" height="4"/>
@@ -48,7 +48,7 @@
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <prototypes>
                                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="0.0" reuseIdentifier="bankTableViewCellIdentifier" id="pfH-rk-wwa" customClass="BankTableViewCell" customModule="GiniHealthSDK">
-                                                                <rect key="frame" x="0.0" y="44.666666030883789" width="396" height="30.333333969116211"/>
+                                                                <rect key="frame" x="0.0" y="50" width="396" height="30.333333969116211"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pfH-rk-wwa" id="jf8-ne-fDC">
                                                                     <rect key="frame" x="0.0" y="0.0" width="396" height="30.333333969116211"/>
@@ -84,7 +84,7 @@
                                                                             </constraints>
                                                                         </stackView>
                                                                     </subviews>
-                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <color key="backgroundColor" systemColor="systemYellowColor"/>
                                                                     <constraints>
                                                                         <constraint firstItem="t9Q-Ab-VBL" firstAttribute="leading" secondItem="jf8-ne-fDC" secondAttribute="leading" id="2eB-Dl-kyg"/>
                                                                         <constraint firstItem="t9Q-Ab-VBL" firstAttribute="top" secondItem="jf8-ne-fDC" secondAttribute="top" id="7Pq-GO-g2t"/>
@@ -92,7 +92,7 @@
                                                                         <constraint firstAttribute="trailing" secondItem="t9Q-Ab-VBL" secondAttribute="trailing" id="zdB-r8-8Rv"/>
                                                                     </constraints>
                                                                 </tableViewCellContentView>
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <color key="backgroundColor" systemColor="systemYellowColor"/>
                                                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                 <connections>
                                                                     <outlet property="bankIcon" destination="DMv-76-Och" id="ZOP-ma-zte"/>
@@ -168,7 +168,10 @@
         <image name="bank" width="20" height="20"/>
         <image name="checkmark" catalog="system" width="128" height="114"/>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
