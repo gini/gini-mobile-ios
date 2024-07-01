@@ -1,5 +1,5 @@
 //
-//  SkontoAppliedAmountView.swift
+//  SkontoNotAppliedAmountView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,11 +7,11 @@
 import UIKit
 import GiniCaptureSDK
 
-class SkontoAppliedAmountView: UIView {
+class SkontoNotAppliedAmountView: UIView {
     private lazy var amountView: SkontoAmountView = {
-        let view = SkontoAmountView(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.amount.title",
-                                                                                    comment: "Final amount"),
-                                    price: viewModel.priceWithSkonto)
+        let view = SkontoAmountView(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.notapplied.amount.title",
+                                                                                    comment: "Full amount"),
+                                    price: viewModel.priceWithoutSkonto)
         view.delegate = self
         return view
     }()
@@ -48,19 +48,20 @@ class SkontoAppliedAmountView: UIView {
     }
 
     private func bindViewModel() {
-        configure(isSkontoApplied: viewModel.isSkontoApplied)
+        configure()
         viewModel.addStateChangeHandler { [weak self] in
             guard let self else { return }
-            self.configure(isSkontoApplied: self.viewModel.isSkontoApplied)
+            self.configure()
         }
     }
 
-    private func configure(isSkontoApplied: Bool) {
-        self.amountView.configure(isEditable: isSkontoApplied, price: viewModel.priceWithSkonto)
+    private func configure() {
+        let isSkontoApplied = viewModel.isSkontoApplied
+        self.amountView.configure(isEditable: !isSkontoApplied, price: viewModel.priceWithoutSkonto)
     }
 }
 
-extension SkontoAppliedAmountView: SkontoAmountViewDelegate {
+extension SkontoNotAppliedAmountView: SkontoAmountViewDelegate {
     func textFieldDidEndEditing(editedText: String) {
         self.viewModel.set(price: editedText)
     }

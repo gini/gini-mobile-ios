@@ -1,5 +1,5 @@
 //
-//  SkontoAppliedHeaderView.swift
+//  SkontoNotAppliedView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,14 +7,14 @@
 import UIKit
 import GiniCaptureSDK
 
-class SkontoAppliedHeaderView: UIView {
+class SkontoNotAppliedView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.title",
-                                                             comment: "With Skonto discount")
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.notapplied.title",
+                                                             comment: "Without Skonto discount")
         label.text = title
         label.accessibilityValue = title
-        label.textColor = .giniColorScheme().text.primary.uiColor()
+        label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -28,7 +28,8 @@ class SkontoAppliedHeaderView: UIView {
         let attributedString = NSMutableAttributedString(
             string: title,
             attributes: [NSAttributedString.Key.font: configuration.textStyleFonts[.footnoteBold]!,
-                         NSAttributedString.Key.foregroundColor: UIColor.giniColorScheme().text.status.uiColor()
+                         NSAttributedString.Key.foregroundColor: GiniColor(light: .GiniBank.success3,
+                                                                           dark: .GiniBank.success3).uiColor()
                         ])
         label.attributedText = attributedString
         label.accessibilityValue = title
@@ -37,13 +38,8 @@ class SkontoAppliedHeaderView: UIView {
         return label
     }()
 
-    private lazy var discountSwitch: UISwitch = {
-        let discountSwitch = UISwitch()
-        discountSwitch.isOn = viewModel.isSkontoApplied
-        discountSwitch.onTintColor = UIColor.giniColorScheme().toggles.surfaceFocused.uiColor()
-        discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
-        discountSwitch.translatesAutoresizingMaskIntoConstraints = false
-        return discountSwitch
+    private lazy var amountView: SkontoNotAppliedAmountView = {
+        return SkontoNotAppliedAmountView(viewModel: viewModel)
     }()
 
     private let configuration = GiniBankConfiguration.shared
@@ -65,22 +61,24 @@ class SkontoAppliedHeaderView: UIView {
         backgroundColor = .giniColorScheme().bg.surface.uiColor()
         addSubview(titleLabel)
         addSubview(statusLabel)
-        addSubview(discountSwitch)
+        addSubview(amountView)
         setupConstraints()
         bindViewModel()
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
 
             statusLabel.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            statusLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: Constants.statusLabelHorizontalPadding),
+            statusLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor,
+                                                 constant: Constants.statusLabelHorizontalPadding),
 
-            discountSwitch.topAnchor.constraint(equalTo: topAnchor, constant: Constants.discountSwitchTopPadding),
-            discountSwitch.bottomAnchor.constraint(equalTo: bottomAnchor),
-            discountSwitch.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            discountSwitch.trailingAnchor.constraint(equalTo: trailingAnchor)
+            amountView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.verticalPadding),
+            amountView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            amountView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            amountView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
 
@@ -94,18 +92,13 @@ class SkontoAppliedHeaderView: UIView {
 
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
-        discountSwitch.isOn = isSkontoApplied
-        statusLabel.isHidden = isSkontoApplied ? false : true
-    }
-
-    @objc private func discountSwitchToggled(_ sender: UISwitch) {
-        viewModel.toggleDiscount()
+        statusLabel.isHidden = isSkontoApplied ? true : false
     }
 }
 
-private extension SkontoAppliedHeaderView {
+private extension SkontoNotAppliedView {
     enum Constants {
         static let statusLabelHorizontalPadding: CGFloat = 4
-        static let discountSwitchTopPadding: CGFloat = 12
+        static let verticalPadding: CGFloat = 12
     }
 }
