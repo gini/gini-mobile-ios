@@ -19,36 +19,20 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
  View model class for review screen
   */
 public class PaymentReviewModel: NSObject {
-    var onDocumentUpdated: () -> Void = {}
-
-    var onExtractionFetched: (() -> Void)?
-    var onExtractionUpdated: (() -> Void)?
     var onPreviewImagesFetched: (() -> Void)?
     var reloadCollectionViewClosure: (() -> Void)?
     var updateLoadingStatus: (() -> Void)?
     var updateImagesLoadingStatus: (() -> Void)?
     
     var onErrorHandling: (_ error: GiniMerchantError) -> Void = { _ in }
-
-    var onNoAppsErrorHandling: (_ error: GiniMerchantError) -> Void = { _ in }
     
     var onCreatePaymentRequestErrorHandling: (() -> Void)?
     
-    var onBankSelection: (_ provider: PaymentProvider) -> Void = { _ in }
-    
     weak var viewModelDelegate: PaymentReviewViewModelDelegate?
 
-    public var document: Document {
-        didSet {
-            self.onDocumentUpdated()
-        }
-    }
+    public var document: Document
 
-    public var extractions: [Extraction] {
-        didSet {
-            self.onExtractionFetched?()
-        }
-    }
+    public var extractions: [Extraction]
 
     public var documentId: String
     private var merchantSDK: GiniMerchant
@@ -75,10 +59,6 @@ public class PaymentReviewModel: NSObject {
             self.updateImagesLoadingStatus?()
         }
     }
-    
-    // Pay invoice label
-    let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.banking.app.button.label",
-                                                                       comment: "Title label used for the pay invoice button")
 
     public init(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?) {
         self.merchantSDK = giniMerchant
