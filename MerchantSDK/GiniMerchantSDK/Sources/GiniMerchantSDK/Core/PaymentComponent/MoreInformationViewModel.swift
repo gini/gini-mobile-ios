@@ -22,7 +22,7 @@ final class MoreInformationViewModel {
     let moreInformationActionablePartText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.moreInformation.underlined.part",
                                                                              comment: "Text for more information actionable part from the label")
     var moreInformationLabelLinkFont: UIFont
-    let moreInformationIcon: UIImage = GiniImage.info.preferredUIImage()
+    let moreInformationIcon: UIImage = GiniMerchantImage.info.preferredUIImage()
     
     init() {
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 12, weight: .regular)

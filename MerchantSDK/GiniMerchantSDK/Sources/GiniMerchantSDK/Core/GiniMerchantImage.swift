@@ -13,7 +13,7 @@ import UIKit
  - Note: The raw values for each case correspond to the image asset names in the asset catalog.
  */
 
-public enum GiniImage: String {
+public enum GiniMerchantImage: String {
     case logo = "gm.giniLogo"
     case info = "gm.infoCircle"
     case close = "gm.close"
@@ -36,7 +36,7 @@ public enum GiniImage: String {
 }
 
 //MARK: - Private
-private extension GiniImage {
+private extension GiniMerchantImage {
     func defaultImage() -> UIImage {
         guard let image = UIImage(named: self.rawValue, in: giniMerchantBundle(), compatibleWith: nil) else {
             fatalError("Merchant SDK: Image \(self.rawValue) not found")

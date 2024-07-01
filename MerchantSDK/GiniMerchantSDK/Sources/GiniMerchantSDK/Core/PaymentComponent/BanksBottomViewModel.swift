@@ -45,7 +45,7 @@ final class BanksBottomViewModel {
                                                         darkModeColor: UIColor.GiniMerchantColors.light2).uiColor()
     var selectBankLabelFont: UIFont
 
-    let closeTitleIcon: UIImage = GiniImage.close.preferredUIImage()
+    let closeTitleIcon: UIImage = GiniMerchantImage.close.preferredUIImage()
     let closeIconAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark2,
                                                   darkModeColor: UIColor.GiniMerchantColors.light2).uiColor()
 

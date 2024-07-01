@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "more-vertical (1).pdf",
+      "filename" : "gm.more.black.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "more-vertical.pdf",
+      "filename" : "gm.more.white.pdf",
       "idiom" : "universal"
     }
   ],

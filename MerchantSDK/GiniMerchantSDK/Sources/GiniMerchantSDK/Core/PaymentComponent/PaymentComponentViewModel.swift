@@ -89,7 +89,7 @@ final class PaymentComponentViewModel {
     let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label",
                                                                                    comment: "Placeholder text used when there isn't a payment provider app installed")
     
-    let chevronDownIcon: UIImage = GiniImage.chevronDown.preferredUIImage()
+    let chevronDownIcon: UIImage = GiniMerchantImage.chevronDown.preferredUIImage()
     let chevronDownIconColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.light7,
                                                   darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
     
