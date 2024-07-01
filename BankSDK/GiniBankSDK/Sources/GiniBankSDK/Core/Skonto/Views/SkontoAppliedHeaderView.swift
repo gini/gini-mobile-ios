@@ -7,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-public class SkontoAppliedHeaderView: UIView {
+class SkontoAppliedHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.title",
@@ -50,7 +50,7 @@ public class SkontoAppliedHeaderView: UIView {
 
     private var viewModel: SkontoViewModel
 
-    public init(viewModel: SkontoViewModel) {
+    init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupView()

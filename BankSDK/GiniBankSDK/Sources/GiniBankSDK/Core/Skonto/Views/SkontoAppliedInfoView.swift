@@ -7,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-public class SkontoAppliedInfoView: UIView {
+class SkontoAppliedInfoView: UIView {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = GiniImages.icInfo.image
@@ -40,7 +40,7 @@ public class SkontoAppliedInfoView: UIView {
 
     private var viewModel: SkontoViewModel
 
-    public init(viewModel: SkontoViewModel) {
+    init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupView()
