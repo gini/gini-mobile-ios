@@ -1,8 +1,15 @@
+//
+//  GiniMercantSDKTests.swift
+//  GiniMerchantSDK
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
+//
+
 import XCTest
 @testable import GiniMerchantSDK
 @testable import GiniHealthAPILibrary
 
-final class GiniMercantTests: XCTestCase {
+final class GiniMercantSDKTests: XCTestCase {
     
     var giniHealthAPI: GiniHealthAPI!
     var giniMerchant: GiniMerchant!
