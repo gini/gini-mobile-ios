@@ -1,0 +1,67 @@
+name: Release Merchant SDK
+on:
+  push:
+    tags:
+      - 'GiniMerchantSDK;[0-9]+.[0-9]+.[0-9]+'
+  
+jobs:
+  check:
+    uses: gini/gini-mobile-ios/.github/workflows/merchant-sdk.check.yml@main
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+
+  release:
+    needs: check
+    runs-on: macos-latest    
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1.5.1
+      with:
+        xcode-version: '14.3.1'
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: setup ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.0'
+        bundler-cache: true
+
+    - name: Publish GiniMerchantSDK package to the release repo
+      uses: maierj/fastlane-action@v3.0.0
+      with:
+        lane: 'publish_swift_package'
+        options: >
+          { 
+            "project_folder": "MerchantSDK",
+            "package_folder": "GiniMerchantSDK",
+            "version_file_path": "MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/GiniMerchantSDKVersion.swift",
+            "git_tag": "${{ github.ref }}", 
+            "repo_url": "https://github.com/gini/merchant-sdk-ios.git", 
+            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
+            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
+            "ci": "true"
+          }
+
+    - name: Publish GiniMerchantSDKPinning package to the release repo
+      uses: maierj/fastlane-action@v3.0.0
+      with:
+        lane: 'publish_swift_package'
+        options: >
+          { 
+            "project_folder": "MerchantSDK",
+            "package_folder": "GiniMerchantSDKPinning",
+            "version_file_path": "MerchantSDK/GiniMerchantSDKPinning/Sources/GiniMerchantSDKPinning/GiniMerchantSDKPinningVersion.swift",
+            "git_tag": "${{ github.ref }}", 
+            "repo_url": "https://github.com/gini/merchant-sdk-pinning-ios.git", 
+            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
+            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
+            "ci": "true"
+          }      
+
+  release-documentation:
+    needs: release
+    uses: gini/gini-mobile-ios/.github/workflows/merchant-sdk.publish.docs.yml@main
+    secrets:
+      RELEASE_GITHUB_USER: ${{ secrets.RELEASE_GITHUB_USER }}
+      RELEASE_GITHUB_PASSWORD: ${{ secrets.RELEASE_GITHUB_PASSWORD }}
