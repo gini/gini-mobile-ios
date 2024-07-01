@@ -1,0 +1,78 @@
+name: Check Merchant SDK
+on:
+  push:
+    paths:
+      - 'MerchantSDK/**'
+      - 'HealthAPILibrary/**'
+    tags-ignore:
+      - '**'
+  pull_request:
+    paths:
+      - 'MerchantSDK/**'
+      - 'HealthAPILibrary/**'
+  workflow_call:
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET:
+        required: true
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        target: [GiniMerchantSDK, GiniMerchantSDKPinning]
+        destination: ['platform=iOS Simulator,OS=16.4,name=iPhone SE (3rd generation)', 'platform=iOS Simulator,OS=17.2,name=iPhone 14']
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1.5.1
+      with:
+        xcode-version: '14.3.1'
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Check package GiniMerchantSDK
+      run: |
+           cd MerchantSDK/GiniMerchantSDK
+           swift package update
+
+    - name: Check package GiniMerchantSDKPinning
+      run: |
+           cd MerchantSDK/GiniMerchantSDKPinning
+           swift package update
+
+    - name: Build sdk targets
+      run: |
+        xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+
+    - name: Run unit tests
+      run: |
+        xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+   
+    - name: Build example app
+      run: |
+        xcodebuild -project MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample.xcodeproj -scheme "GiniMerchantSDKPinningExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
+
+    - name: Build pinning example app and run integration tests
+      run: >
+        xcodebuild clean test
+        -project MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample.xcodeproj
+        -scheme "GiniMerchantSDKPinningExampleTests"
+        -destination "${{ matrix.destination }}"
+        -skip-testing:GiniMerchantSDKPinningExampleTests/GiniMerchantSDKPinningExampleWrongCertificatesTests
+        CODE_SIGN_IDENTITY=""
+        CODE_SIGNING_REQUIRED=NO
+        ONLY_ACTIVE_ARCH=NO
+        CLIENT_ID="gini-mobile-test"
+        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+        &&
+        xcodebuild clean test
+        -project MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample.xcodeproj
+        -scheme "GiniMerchantSDKPinningExampleTests"
+        -destination "${{ matrix.destination }}"
+        -only-testing:GiniMerchantSDKPinningExampleTests/GiniMerchantSDKPinningExampleWrongCertificatesTests
+        CODE_SIGN_IDENTITY=""
+        CODE_SIGNING_REQUIRED=NO
+        ONLY_ACTIVE_ARCH=NO
+        CLIENT_ID="gini-mobile-test"
+        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
