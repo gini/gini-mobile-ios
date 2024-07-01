@@ -5,8 +5,6 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-import UIKit
-
 import Foundation
 
 /**
@@ -17,7 +15,7 @@ import Foundation
  
  - returns: String resource for the given key.
  */
-func NSLocalizedStringPreferredFormat(_ key: String,
+public func NSLocalizedStringPreferredFormat(_ key: String,
                                       fallbackKey: String = "",
                                       comment: String,
                                       isCustomizable: Bool = true) -> String {
@@ -49,18 +47,19 @@ public enum Localized {
      
      - Returns: The localized string for the given key.
      */
-    public static func string(_ key: String, fallbackKey: String = "", comment: String) -> String {
+    public static func string(_ key: String, fallbackKey: String? = nil, comment: String) -> String {
         let locale = GiniHealthConfiguration.shared.localization?.rawValue
         let clientAppBundle = Bundle.main
-        print(key)
-        if let clientString = overridedString(key, locale: locale, bundle: clientAppBundle) {
+        
+        if let clientString = overridedString(key, locale: locale, comment: comment, bundle: clientAppBundle) {
             return clientString
-        } else if let fallbackClientString = overridedString(fallbackKey, locale: locale, bundle: clientAppBundle) {
+        } else if let fallbackKey = fallbackKey,
+                    let fallbackClientString = overridedString(fallbackKey, locale: locale, comment: comment, bundle: clientAppBundle) {
             return fallbackClientString
-        } else if let sdkString = overridedString(key, locale: locale, bundle: giniHealthBundle()) {
+        } else if let sdkString = overridedString(key, locale: locale, comment: comment, bundle: giniHealthBundle()) {
             return sdkString
         }
-        return localizationString(fallbackKey, locale: locale, bundle: giniHealthBundle())
+        return localizationString(fallbackKey ?? "", locale: locale, comment: comment, bundle: giniHealthBundle())
     }
     
     /**
@@ -73,8 +72,8 @@ public enum Localized {
      
      - Returns: The localized string if it exists, otherwise nil.
      */
-    private static func overridedString(_ key: String, locale: String?, bundle: Bundle) -> String? {
-        let value = localizationString(key, locale: locale, bundle: bundle)
+    private static func overridedString(_ key: String, locale: String?, comment: String, bundle: Bundle) -> String? {
+        let value = localizationString(key, locale: locale, comment: comment, bundle: bundle)
         return value.lowercased() == key.lowercased() ? nil : value
     }
     
@@ -88,9 +87,9 @@ public enum Localized {
      
      - Returns: The localized string for the given key.
      */
-    private static func localizationString(_ key: String, locale: String?, bundle: Bundle) -> String {
+    private static func localizationString(_ key: String, locale: String?, comment: String, bundle: Bundle) -> String {
         let localizedBundle = localizedBundle(parentBundle: bundle, localeKey: locale)
-        return NSLocalizedString(key, tableName: nil, bundle: localizedBundle ?? bundle, value: "", comment: "")
+        return NSLocalizedString(key, tableName: nil, bundle: localizedBundle ?? bundle, value: "", comment: comment)
     }
     
     /**
