@@ -52,8 +52,8 @@ extension ExtractionResult {
 
 extension PaymentProvider {
     init(healthPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
-        let openPlatforms = healthPaymentProvider.openWithSupportedPlatforms.compactMap { PlatformSupported(rawValue: $0.rawValue) }
-        let gpcPlatforms = healthPaymentProvider.gpcSupportedPlatforms.compactMap { PlatformSupported(rawValue: $0.rawValue) }
+        let openWithPlatforms = healthPaymentProvider.openWithSupportedPlatforms.compactMap { PlatformSupported(rawValue: $0.rawValue) }
+        let gpcSupportedPlatforms = healthPaymentProvider.gpcSupportedPlatforms.compactMap { PlatformSupported(rawValue: $0.rawValue) }
         let colors = ProviderColors(healthProviderColors: healthPaymentProvider.colors)
         let minAppVersions: MinAppVersions?
         if let healthMinAppVersions = healthPaymentProvider.minAppVersion {
@@ -71,8 +71,8 @@ extension PaymentProvider {
                   appStoreUrlIOS: healthPaymentProvider.appStoreUrlIOS,
                   universalLinkIOS: healthPaymentProvider.universalLinkIOS,
                   index: healthPaymentProvider.index,
-                  gpcSupportedPlatforms: gpcPlatforms,
-                  openWithSupportedPlatforms: openPlatforms)
+                  gpcSupportedPlatforms: gpcSupportedPlatforms,
+                  openWithSupportedPlatforms: openWithPlatforms)
     }
 }
 

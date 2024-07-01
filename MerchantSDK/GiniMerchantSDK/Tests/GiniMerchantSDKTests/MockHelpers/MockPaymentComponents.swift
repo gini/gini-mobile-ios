@@ -29,8 +29,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
             return
         }
         if let iconData = Data(url: URL(string: paymentProviderResponse.iconLocation)) {
-            let openPlatforms = paymentProviderResponse.openWithSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
-            let gpcPlatforms = paymentProviderResponse.gpcSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
+            let openWithPlatforms = paymentProviderResponse.openWithSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
+            let gpcSupportedPlatforms = paymentProviderResponse.gpcSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
             let colors = GiniMerchantSDK.ProviderColors(background: paymentProviderResponse.colors.background,
                                                         text: paymentProviderResponse.colors.text)
             
@@ -43,8 +43,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                            appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS,
                                                            universalLinkIOS: paymentProviderResponse.universalLinkIOS,
                                                            index: paymentProviderResponse.index,
-                                                           gpcSupportedPlatforms: gpcPlatforms,
-                                                           openWithSupportedPlatforms: openPlatforms)
+                                                           gpcSupportedPlatforms: gpcSupportedPlatforms,
+                                                           openWithSupportedPlatforms: openWithPlatforms)
             
             selectedPaymentProvider = provider
         }
