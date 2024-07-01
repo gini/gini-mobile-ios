@@ -55,13 +55,12 @@ public class SkontoAmountView: UIView {
         return view
     }()
 
-    public init(title: String,
-                price: Double,
-                currency: String,
-                isEditable: Bool = true) {
+    init(title: String,
+         price: Price,
+         isEditable: Bool = true) {
         self.titleLabelText = title
-        self.textFieldInitialText = String(price)
-        self.currencyLabelText = currency
+        self.textFieldInitialText = price.stringWithoutSymbol ?? ""
+        self.currencyLabelText = price.currencySymbol ?? ""
         self.isEditable = isEditable
         super.init(frame: .zero)
         setupView()
@@ -113,18 +112,65 @@ public class SkontoAmountView: UIView {
         ])
     }
 
-    func configure(isEditable: Bool, price: Double) {
+    func configure(isEditable: Bool, price: Price) {
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
         textField.isUserInteractionEnabled = isEditable
         currencyLabel.isHidden = isEditable ? false : true
-        textField.text = String(price)
+        textField.text = price.stringWithoutSymbol ?? ""
     }
 }
 
 extension SkontoAmountView: UITextFieldDelegate {
     public func textFieldDidEndEditing(_ textField: UITextField) {
         self.delegate?.textFieldDidEndEditing(editedText: textField.text ?? "")
+    }
+
+    public func textField(_ textField: UITextField,
+                          shouldChangeCharactersIn range: NSRange,
+                          replacementString string: String) -> Bool {
+
+        guard let text = textField.text, let textRange = Range(range, in: text) else {
+            return true
+        }
+
+        let updatedText = text.replacingCharacters(in: textRange, with: string)
+        let sanitizedText = sanitizeInput(updatedText)
+
+        guard let decimal = Decimal(string: sanitizedText) else {
+            return false
+        }
+
+        let formattedText = formatDecimal(decimal)
+        updateTextField(textField, with: formattedText, originalText: text)
+
+        return false
+    }
+
+    private func sanitizeInput(_ text: String) -> String {
+        return String(text.trimmingCharacters(in: .whitespaces).filter { $0.isNumber }.prefix(6))
+    }
+
+    private func formatDecimal(_ decimal: Decimal) -> String? {
+        let decimalWithFraction = decimal / 100
+        return Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces)
+    }
+
+    private func updateTextField(_ textField: UITextField, with newText: String?, originalText: String) {
+        guard let newText = newText else { return }
+        let selectedRange = textField.selectedTextRange
+        textField.text = newText
+        adjustCursorPosition(textField, newText: newText, originalText: originalText, selectedRange: selectedRange)
+    }
+
+    private func adjustCursorPosition(_ textField: UITextField,
+                                      newText: String,
+                                      originalText: String,
+                                      selectedRange: UITextRange?) {
+        guard let selectedRange = selectedRange else { return }
+        let countDelta = newText.count - originalText.count
+        let offset = countDelta == 0 ? 1 : countDelta
+        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
     }
 }
 

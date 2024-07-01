@@ -75,8 +75,7 @@ public class SkontoViewController: UIViewController {
     private let viewModel = SkontoViewModel(isSkontoApplied: true,
                                             skontoValue: 3.0,
                                             date: Date(),
-                                            priceWithoutSkonto: 99.99,
-                                            currency: "EUR")
+                                            priceWithoutSkonto: .init(value: 99.99, currencyCode: "EUR"))
     private let configuration = GiniBankConfiguration.shared
 
     private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?

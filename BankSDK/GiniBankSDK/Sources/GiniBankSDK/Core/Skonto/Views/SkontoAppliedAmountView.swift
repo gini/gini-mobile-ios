@@ -11,8 +11,7 @@ class SkontoAppliedAmountView: UIView {
     private lazy var amountView: SkontoAmountView = {
         let view = SkontoAmountView(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.amount.title",
                                                                                     comment: "Final amount"),
-                                    price: viewModel.priceWithSkonto,
-                                    currency: viewModel.currency)
+                                    price: viewModel.priceWithSkonto)
         view.delegate = self
         return view
     }()
@@ -63,6 +62,6 @@ class SkontoAppliedAmountView: UIView {
 
 extension SkontoAppliedAmountView: SkontoAmountViewDelegate {
     func textFieldDidEndEditing(editedText: String) {
-        self.viewModel.set(price: Double(editedText) ?? 0.0)
+        self.viewModel.set(price: editedText)
     }
 }
