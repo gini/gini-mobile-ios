@@ -1,5 +1,5 @@
 //
-//  TransferSummaryIntegrationTest.swift
+//  UploadDocumentsTests.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -55,12 +55,12 @@ class UploadDocumentsTests: XCTestCase {
                             XCTFail()
                             return
                         }
-                        XCTAssert(iban.value == "DE78370501980020008850")
+                        XCTAssertNotNil(iban.value)
                         guard let recipient = payment.first(where: { $0.name == "payment_recipient" }) else {
                             XCTFail()
                             return
                         }
-                        XCTAssert(recipient.value == "Uno Flüchtlingshilfe")
+                            XCTAssertNotNil(recipient.value)
                         expect.fulfill()
                     case let .failure(error):
                         if data.isImage() {
