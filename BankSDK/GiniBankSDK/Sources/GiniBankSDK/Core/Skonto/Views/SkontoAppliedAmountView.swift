@@ -20,7 +20,7 @@ class SkontoAppliedAmountView: UIView {
 
     private var viewModel: SkontoViewModel
 
-    public init(viewModel: SkontoViewModel) {
+    init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupView()

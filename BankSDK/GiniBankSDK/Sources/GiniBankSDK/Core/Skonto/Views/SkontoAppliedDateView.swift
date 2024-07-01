@@ -7,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-public class SkontoAppliedDateView: UIView {
+class SkontoAppliedDateView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.date.title",
@@ -53,7 +53,7 @@ public class SkontoAppliedDateView: UIView {
 
     private var viewModel: SkontoViewModel
 
-    public init(viewModel: SkontoViewModel) {
+    init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupView()

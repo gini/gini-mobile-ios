@@ -6,7 +6,7 @@
 
 import Foundation
 
-public class SkontoViewModel {
+class SkontoViewModel {
     private var skontoStateChangeHandlers: [() -> Void] = []
 
     private (set) var isSkontoApplied: Bool {

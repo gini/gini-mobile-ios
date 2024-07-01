@@ -7,11 +7,11 @@
 import UIKit
 import GiniCaptureSDK
 
-public protocol SkontoAmountViewDelegate: AnyObject {
+protocol SkontoAmountViewDelegate: AnyObject {
     func textFieldDidEndEditing(editedText: String)
 }
 
-public class SkontoAmountView: UIView {
+class SkontoAmountView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = titleLabelText
@@ -122,13 +122,13 @@ public class SkontoAmountView: UIView {
 }
 
 extension SkontoAmountView: UITextFieldDelegate {
-    public func textFieldDidEndEditing(_ textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         self.delegate?.textFieldDidEndEditing(editedText: textField.text ?? "")
     }
 
-    public func textField(_ textField: UITextField,
-                          shouldChangeCharactersIn range: NSRange,
-                          replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
 
         guard let text = textField.text, let textRange = Range(range, in: text) else {
             return true
