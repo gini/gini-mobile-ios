@@ -15,19 +15,19 @@ public class SkontoViewModel {
         }
     }
 
-    private (set) var priceWithoutSkonto: Double {
+    private (set) var priceWithoutSkonto: Price {
         didSet {
             notifyStateChangeHandlers()
         }
     }
 
-    private (set) var priceWithSkonto: Double {
+    private (set) var priceWithSkonto: Price {
         didSet {
             notifyStateChangeHandlers()
         }
     }
 
-    var totalPrice: Double {
+    var totalPrice: Price {
         return isSkontoApplied ? priceWithSkonto : priceWithoutSkonto
     }
 
@@ -38,19 +38,18 @@ public class SkontoViewModel {
     }
 
     private (set) var skontoValue: Double
-    private (set) var currency: String
+    private (set) var currencyCode: String
 
     init(isSkontoApplied: Bool,
          skontoValue: Double,
          date: Date,
-         priceWithoutSkonto: Double,
-         currency: String) {
+         priceWithoutSkonto: Price) {
         self.isSkontoApplied = isSkontoApplied
         self.skontoValue = skontoValue
         self.date = date
         self.priceWithoutSkonto = priceWithoutSkonto
-        self.currency = currency
-        self.priceWithSkonto = 0
+        self.currencyCode = priceWithoutSkonto.currencyCode
+        self.priceWithSkonto = priceWithoutSkonto // Placeholder, will be recalculated
         self.recalculatePriceWithSkonto()
     }
 
@@ -58,7 +57,11 @@ public class SkontoViewModel {
         isSkontoApplied.toggle()
     }
 
-    func set(price: Double) {
+    func set(price: String) {
+        guard let priceValue = Price.convertStringToDecimal(price) else {
+            return
+        }
+        let price = Price(value: priceValue, currencyCode: currencyCode)
         if isSkontoApplied {
             self.priceWithSkonto = price
             recalculatePriceWithoutSkonto()
@@ -103,16 +106,12 @@ public class SkontoViewModel {
     }
 
     private func recalculatePriceWithSkonto() {
-        let calculatedPrice = priceWithoutSkonto * (1 - skontoValue / 100)
-        priceWithSkonto = roundToTwoDecimalPlaces(calculatedPrice)
+        let calculatedPrice = priceWithoutSkonto.value * (1 - Decimal(skontoValue) / 100)
+        priceWithSkonto = Price(value: calculatedPrice, currencyCode: currencyCode)
     }
 
     private func recalculatePriceWithoutSkonto() {
-        let calculatedPrice = priceWithSkonto / (1 - skontoValue / 100)
-        priceWithoutSkonto = roundToTwoDecimalPlaces(calculatedPrice)
-    }
-
-    private func roundToTwoDecimalPlaces(_ value: Double) -> Double {
-        return Double(String(format: "%.2f", value)) ?? value
+        let calculatedPrice = priceWithSkonto.value / (1 - Decimal(skontoValue) / 100)
+        priceWithoutSkonto = Price(value: calculatedPrice, currencyCode: currencyCode)
     }
 }

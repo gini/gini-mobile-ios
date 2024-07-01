@@ -38,7 +38,7 @@ class SkontoProceedView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        label.text = String(viewModel.priceWithSkonto)
+        label.text = viewModel.totalPrice.string
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
@@ -157,7 +157,7 @@ class SkontoProceedView: UIView {
                                                      comment: "%.1f%% Skonto discount"),
             viewModel.skontoValue
         )
-        self.totalValueLabel.text = String(viewModel.totalPrice)
+        self.totalValueLabel.text = viewModel.totalPrice.string
     }
 }
 
