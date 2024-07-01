@@ -85,8 +85,12 @@
 "ginibank.digitalinvoice.edit.name.error" = "Bitte geben Sie den Artikelnamen ein.";
 "ginibank.digitalinvoice.edit.price.error" = "Bitte geben Sie den Artikelpreis ein.";
 
+"ginibank.skonto.screentitle" = "Skonto";
 "ginibank.skonto.info.title" = "Mit Skonto";
 "ginibank.skonto.info.status" = "• Aktiviert";
 "ginibank.skonto.info.message" = "Zahlung in %d Tagen: %.1f%% Skonto.";
 "ginibank.skonto.info.amount.title" = "Betrag nach Abzug";
 "ginibank.skonto.info.date.title" = "Fälligkeitsdatum";
+"ginibank.skonto.notapplied.title" = "Ohne Skonto";
+"ginibank.skonto.notapplied.amount.title" = "Betrag ohne Abzug";
+"ginibank.skonto.total.amount.skonto" = "%.1f%% Skonto";

@@ -93,8 +93,12 @@
 "ginibank.digitalinvoice.edit.name.error" = "Please enter the article name.";
 "ginibank.digitalinvoice.edit.price.error" = "Please enter the article price.";
 
+"ginibank.skonto.screentitle" = "Skonto";
 "ginibank.skonto.info.title" = "With Skonto discount";
 "ginibank.skonto.info.status" = "• Active";
 "ginibank.skonto.info.message" = "Pay in %d days: %.1f%% Skonto discount.";
 "ginibank.skonto.info.amount.title" = "Final amount";
 "ginibank.skonto.info.date.title" = "Due date";
+"ginibank.skonto.notapplied.title" = "Without Skonto discount";
+"ginibank.skonto.notapplied.amount.title" = "Full amount";
+"ginibank.skonto.total.amount.skonto" = "%.1f%% Skonto discount";
