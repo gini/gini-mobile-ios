@@ -80,6 +80,12 @@ struct Price {
         }
         return nil
     }
+
+    static func convertStringToDecimal(_ priceString: String) -> Decimal? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.number(from: priceString.trimmingCharacters(in: .whitespaces))?.decimalValue
+    }
 }
 
 extension Price: Equatable {}
