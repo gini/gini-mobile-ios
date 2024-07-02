@@ -9,26 +9,29 @@ import UIKit
 internal class IOSSystem {
     private let device = UIDevice.current
     let manufacturer: String = "Apple"
-    let platform: String = "iOS"
 
     var model: String {
-        return deviceModel()
+        deviceModel()
     }
 
     var identifierForVendor: String? {
-        return device.identifierForVendor?.uuidString
+        device.identifierForVendor?.uuidString
     }
 
     var osName: String {
-        return device.systemName.lowercased()
+        device.systemName.lowercased()
     }
 
     var osVersion: String {
-        return device.systemVersion
+        device.systemVersion
     }
 
     var systemLanguage: String? {
-        return Locale.preferredLanguages.first
+        Locale.preferredLanguages.first
+    }
+
+    var platform: String {
+        device.userInterfaceIdiom == .pad  ? "iPadOS" : "iOS"
     }
 
     // MARK: - Private methods
