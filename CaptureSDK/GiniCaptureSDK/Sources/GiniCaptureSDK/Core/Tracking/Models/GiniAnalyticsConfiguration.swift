@@ -1,5 +1,5 @@
 //
-//  AnalyticsConfiguration.swift
+//  GiniAnalyticsConfiguration.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,9 +7,9 @@
 /**
  Struct for analytics configuration settings
  */
-public struct AnalyticsConfiguration {
+public struct GiniAnalyticsConfiguration {
     /**
-     An initializer for an `AnalyticsConfiguration` structure
+     An initializer for an `GiniAnalyticsConfiguration` structure
      
      - parameter clientID: A unique identifier for the client.
      - parameter userJourneyAnalyticsEnabled: A flag indicating whether user journey analytics is enabled.

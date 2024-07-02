@@ -320,7 +320,7 @@ fileprivate extension Camera {
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 GiniAnalyticsManager.track(event: .cameraPermissionShown, screenName: .cameraPermissionView)
-                let permissionStatus: CameraPermissionStatusAnalytics = granted ? .allowed : .notAllowed
+                let permissionStatus: GiniCameraPermissionStatusAnalytics = granted ? .allowed : .notAllowed
                 let eventProperties = [GiniAnalyticsProperty(key: .permissionStatus, value: permissionStatus.rawValue)]
                 GiniAnalyticsManager.track(event: .cameraPermissionTapped,
                                            screenName: .cameraPermissionView,
