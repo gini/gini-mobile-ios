@@ -47,10 +47,6 @@ internal class IOSSystem {
         return getDeviceModel(platform: platform)
     }
 
-    private var isRunningInAppExtension: Bool {
-        return Bundle.main.bundlePath.hasSuffix(".appex")
-    }
-
     private func getDeviceModel(platform: String) -> String {
         // use server device mapping except for the following exceptions
 
