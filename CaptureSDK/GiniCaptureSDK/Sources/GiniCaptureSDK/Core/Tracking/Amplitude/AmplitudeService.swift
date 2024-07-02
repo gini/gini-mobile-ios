@@ -22,6 +22,7 @@ final class AmplitudeService {
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private var retryAttempts: Int = 0
     private let maxRetryAttempts = 3
+    private let eventUploadInterval: TimeInterval = 5.0
     private let apiURL = "https://api.eu.amplitude.com/batch"
 
     /**
@@ -126,7 +127,8 @@ final class AmplitudeService {
      Starts a timer to periodically upload pending events.
      */
     private func startEventUploadTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: eventUploadInterval, 
+                                     repeats: true) { [weak self] _ in
             self?.uploadPendingEvents()
         }
     }
