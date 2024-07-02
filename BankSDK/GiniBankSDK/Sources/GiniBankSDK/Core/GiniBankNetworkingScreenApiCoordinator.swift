@@ -245,9 +245,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         // Set new sessionId every time the SDK is initialized
         GiniAnalyticsManager.setSessionId()
 
-        var entryPointValue = EntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
+        var entryPointValue = GiniEntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
         if let documents = documents, !documents.isEmpty, !documents.containsDifferentTypes {
-            entryPointValue = EntryPointAnalytics.openWith.rawValue
+            entryPointValue = GiniEntryPointAnalytics.openWith.rawValue
         }
         GiniAnalyticsManager.registerSuperProperties([.entryPoint: entryPointValue])
         GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: giniBankConfiguration.returnAssistantEnabled,
@@ -257,9 +257,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
     private func initializeAnalytics(with configuration: ClientConfiguration) {
         let userJourneyAnalyticsEnabled = configuration.userJourneyAnalyticsEnabled
-        let analyticsConfiguration = AnalyticsConfiguration(clientID: configuration.clientID,
-                                                            userJourneyAnalyticsEnabled: userJourneyAnalyticsEnabled,
-                                                            amplitudeApiKey: configuration.amplitudeApiKey)
+        let analyticsConfiguration = GiniAnalyticsConfiguration(clientID: configuration.clientID,
+                                                                userJourneyAnalyticsEnabled: userJourneyAnalyticsEnabled,
+                                                                amplitudeApiKey: configuration.amplitudeApiKey)
         GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
     }
 }
