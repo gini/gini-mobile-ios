@@ -17,9 +17,8 @@ import Foundation
  */
 func NSLocalizedStringPreferredFormat(_ key: String,
                                       fallbackKey: String = "",
-                                      comment: String,
-                                      isCustomizable: Bool = true) -> String {
-    GiniLocalized.string(key, fallbackKey: fallbackKey, comment: comment)
+                                      comment: String) -> String {
+    GiniLocalized.customLocalization(key, fallbackKey: fallbackKey, comment: comment)
 }
 
 // MARK: - Updated Localization
@@ -47,7 +46,7 @@ enum GiniLocalized {
      
      - Returns: The localized string for the given key.
      */
-    static func string(_ key: String, fallbackKey: String? = nil, comment: String) -> String {
+    static func customLocalization(_ key: String, fallbackKey: String? = nil, comment: String) -> String {
         let locale = GiniHealthConfiguration.shared.localization?.rawValue
         let clientAppBundle = Bundle.main
         
