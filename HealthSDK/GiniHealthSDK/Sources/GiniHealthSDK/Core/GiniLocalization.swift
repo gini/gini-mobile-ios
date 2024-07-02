@@ -8,21 +8,6 @@
 import Foundation
 
 /**
- Returns a localized string resource preferably from the client's bundle.
- 
- - parameter key:     The key to search for in the strings file.
- - parameter comment: The corresponding comment.
- 
- - returns: String resource for the given key.
- */
-func NSLocalizedStringPreferredFormat(_ key: String,
-                                      fallbackKey: String = "",
-                                      comment: String) -> String {
-    GiniLocalized.customLocalization(key, fallbackKey: fallbackKey, comment: comment)
-}
-
-// MARK: - Updated Localization
-/**
  A utility for handling localized strings in the application.
  */
 
