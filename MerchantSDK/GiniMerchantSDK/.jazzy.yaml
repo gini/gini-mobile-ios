@@ -1,0 +1,39 @@
+---
+xcodebuild_arguments:
+- "-workspace"
+- GiniMobile.xcworkspace
+- "-scheme"
+- GiniMerchantSDK
+- "-destination"
+- platform=iOS Simulator,OS=17.2,name=iPhone 14
+author: Gini GmbH
+author_url: https://gini.net
+module: GiniMerchantSDK
+readme: Documentation/Sections/Documentation.md
+theme: Documentation/jazzy-theme/
+output: Documentation/Api
+github_url: https://github.com/gini/gini-mobile-ios.git
+hide_documentation_coverage: 'true'
+documentation: MerchantSDK/GiniMerchantSDK/Documentation/source/*.md
+abstract: MerchantSDK/GiniMerchantSDK/Documentation/Sections/*.md
+custom_categories:
+- name: Documentation
+  children:
+  - Installation
+  - Integration
+  - Customization guide
+  - Migration guide
+  - Event tracking guide
+  - Testing
+  - License
+- name: Classes
+  children: []
+- name: Enums
+  children: []
+- name: Protocols
+  children: []
+- name: Structs
+  children: []
+- name: Typealiases
+  children: []
+
