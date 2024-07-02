@@ -6,14 +6,13 @@
 
 
 import Foundation
-import GiniHealthAPILibrary
 
 protocol HardcodedInvoicesControllerProtocol: AnyObject {
     func obtainInvoicePhotosHardcoded(completion: @escaping (([Data]) -> Void))
     func storeInvoicesWithExtractions(invoices: [DocumentWithExtractions])
     func getInvoicesWithExtractions() -> [DocumentWithExtractions]
     func appendInvoiceWithExtractions(invoice: DocumentWithExtractions)
-    func updateDocumentExtractions(documentID: String, extractions: ExtractionResult)
+    func updateDocumentExtractions(documentID: String, recipient: String?, amountToPay: String?)
 }
 
 final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
@@ -26,13 +25,13 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
                     let invoiceData = try Data(contentsOf: fileURL)
                     invoicesData.append(invoiceData)
                 } catch {
-                    Log("Couldn't load data from \(invoiceTitle). Error: \(error.localizedDescription)", event: .error)
+                    print("❌ Couldn't load data from \(invoiceTitle). Error: \(error.localizedDescription)")
                 }
             } else {
-                Log("Invoice with name \(invoiceTitle) doesn't exist.", event: .warning)
+                print("⚠️ Invoice with name \(invoiceTitle) doesn't exist.")
             }
         }
-        Log("Successfully obtained \(invoicesData.count) invoices data", event: .success)
+        print("✅Successfully obtained \(invoicesData.count) invoices data")
         completion(invoicesData)
     }
     
@@ -42,9 +41,9 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
             let encoder = JSONEncoder()
             let data = try encoder.encode(invoices)
             UserDefaults.standard.set(data, forKey: Constants.storedInvoicesKey)
-            Log("Successfully stored invoices in UserDefaults", event: .success)
+            print("✅ Successfully stored invoices in UserDefaults")
         } catch {
-            Log("Unable to Encode Invoices: (\(error))", event: .error)
+            print("❌ Unable to Encode Invoices: (\(error))")
         }
     }
     
@@ -53,10 +52,10 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
             do {
                 let decoder = JSONDecoder()
                 let invoices = try decoder.decode([DocumentWithExtractions].self, from: data)
-                Log("Successfully obtained invoices from UserDefaults", event: .success)
+                print("✅ Successfully obtained invoices from UserDefaults")
                 return invoices
             } catch {
-                Log("Unable to Decode Notes (\(error))", event: .error)
+                print("❌ Unable to Decode Notes (\(error))")
             }
         }
         return []
@@ -68,11 +67,11 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
         storeInvoicesWithExtractions(invoices: storedInvoices)
     }
     
-    func updateDocumentExtractions(documentID: String, extractions: ExtractionResult) {
+    func updateDocumentExtractions(documentID: String, recipient: String?, amountToPay: String?) {
         var invoices = getInvoicesWithExtractions()
         if let index = invoices.firstIndex(where: { $0.documentID == documentID }) {
-            invoices[index].recipient = extractions.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
-            invoices[index].amountToPay = extractions.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
+            invoices[index].recipient = recipient
+            invoices[index].amountToPay = amountToPay
         }
         storeInvoicesWithExtractions(invoices: invoices)
     }

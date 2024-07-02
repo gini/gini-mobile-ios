@@ -8,7 +8,6 @@
 
 import UIKit
 import GiniCaptureSDK
-import GiniHealthAPILibrary
 import GiniMerchantSDK
 
 final class AppCoordinator: Coordinator {
@@ -22,7 +21,7 @@ final class AppCoordinator: Coordinator {
     lazy var selectAPIViewController: SelectAPIViewController = {
         let selectAPIViewController = SelectAPIViewController()
         selectAPIViewController.delegate = self
-        selectAPIViewController.clientId = self.client.id
+        selectAPIViewController.clientId = clientID
         return selectAPIViewController
     }()
     
@@ -46,21 +45,15 @@ final class AppCoordinator: Coordinator {
         return giniConfiguration
     }()
     
-    private lazy var client: GiniHealthAPILibrary.Client = CredentialsManager.fetchClientFromBundle()
-    private lazy var apiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
-    private lazy var merchant = GiniMerchant(with: apiLib)
+    private lazy var merchant = GiniMerchant(id: clientID, secret: clientPassword, domain: clientDomain)
     private lazy var paymentComponentsController = PaymentComponentsController(giniMerchant: merchant)
-    
-    private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
-    private let documentMetadataBranchId = "GiniHealthExampleIOS"
-    private let documentMetadataAppFlowKey = "AppFlow"
     
     init(window: UIWindow) {
         self.window = window
         print("------------------------------------\n\n",
               "📸 Gini Capture SDK for iOS (\(GiniCapture.versionString))\n\n",
-              "      - Client id:  \(client.id)\n",
-              "      - Client email domain:  \(client.domain)",
+              "      - Client id:  \(clientID)\n",
+              "      - Client email domain:  \(clientDomain)",
               "\n\n------------------------------------\n")
     }
     
@@ -110,15 +103,8 @@ final class AppCoordinator: Coordinator {
     }
     
     fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
-        let metadata = GiniHealthAPILibrary.Document.Metadata(branchId: documentMetadataBranchId,
-                                                              additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
-
         let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
                                                         importedDocuments: pages?.map { $0.document },
-                                                        client: GiniHealthAPILibrary.Client(id: self.client.id,
-                                                                                            secret: self.client.secret,
-                                                                                            domain: self.client.domain),
-                                                                                            documentMetadata: metadata,
                                                         hardcodedInvoicesController: HardcodedInvoicesController(),
                                                         paymentComponentController: paymentComponentsController)
         
@@ -127,14 +113,14 @@ final class AppCoordinator: Coordinator {
         merchant.delegate = self
         screenAPICoordinator.giniMerchant = merchant
         
-        screenAPICoordinator.start(healthAPI: apiLib)
+        screenAPICoordinator.start(documentService: merchant.documentService)
         add(childCoordinator: screenAPICoordinator)
         
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
     
-    private var testDocument: GiniHealthAPILibrary.Document?
-    private var testDocumentExtractions: [GiniHealthAPILibrary.Extraction]?
+    private var testDocument: Document?
+    private var testDocumentExtractions: [GiniMerchantSDK.Extraction]?
     
     fileprivate func showPaymentReviewWithTestDocument() {
         let configuration = GiniMerchantConfiguration()
@@ -182,7 +168,7 @@ final class AppCoordinator: Coordinator {
                                                        metadata: nil) { result in
                 switch result {
                 case .success(let createdDocument):
-                    let partialDocInfo = GiniHealthAPILibrary.PartialDocumentInfo(document: createdDocument.links.document)
+                    let partialDocInfo = GiniMerchantSDK.PartialDocumentInfo(document: createdDocument.links.document)
                     self.merchant.documentService.createDocument(fileName: nil,
                                                                docType: nil,
                                                                type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),

@@ -69,16 +69,28 @@ public struct DataForReview {
     public weak var delegate: GiniMerchantDelegate?
     
     /**
-     Returns a GiniMerchant instance
+     Initializes a new instance of GiniMerchant.
      
-     - parameter giniApiLib: GiniHealthAPI initialized with client's credentials
+     This initializer creates a GiniMerchant instance by first constructing a Client object with the provided client credentials (id, secret, domain)
+     
+     - Parameters:
+     - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
+     - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
+     - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
      */
-    public init(with giniApiLib: GiniHealthAPI){
-        self.giniApiLib = giniApiLib
-        self.documentService = giniApiLib.documentService()
+    public init(id: String, secret: String, domain: String) {
+        let client = Client(id: id, secret: secret, domain: domain)
+        self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService()
+
     }
 
+    internal init(giniApiLib: GiniHealthAPI) {
+        self.giniApiLib = giniApiLib
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
+        self.paymentService = giniApiLib.paymentService()
+    }
     /**
      Getting a list of the installed banking apps which support Gini Pay Connect functionality.
      
@@ -92,28 +104,28 @@ public struct DataForReview {
      */
     private func fetchInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniMerchantError>) -> Void) {
         fetchBankingApps { result in
-            switch result {
-            case .success(let providers):
-                for provider in providers {
-                    DispatchQueue.main.async {
-                        if let url = URL(string:provider.appSchemeIOS) {
-                            if UIApplication.shared.canOpenURL(url) {
-                                self.bankProviders.append(provider)
-                            }
-                        }
-                    }
-                }
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let providers):
+                    self.updateBankProviders(providers: providers)
+                    
                     if self.bankProviders.count > 0 {
                         completion(.success(self.bankProviders))
                     } else {
                         completion(.failure(.noInstalledApps))
                     }
+                case let .failure(error):
+                    
+                    completion(.failure(GiniMerchantError.apiError(error)))
                 }
-            case let .failure(error):
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
+            }
+        }
+    }
+    
+    private func updateBankProviders(providers: PaymentProviders) {
+        for provider in providers {
+            if let url = URL(string:provider.appSchemeIOS), UIApplication.shared.canOpenURL(url) {
+                self.bankProviders.append(provider)
             }
         }
     }
@@ -128,14 +140,14 @@ public struct DataForReview {
      In case of failure error provided by API.
      */
     
-    public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniMerchantError>) -> Void) {
+    public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniError>) -> Void) {
         paymentService.paymentProviders { result in
             switch result {
             case let .success(providers):
-                self.bankProviders = providers
+                self.bankProviders = providers.map { PaymentProvider(healthPaymentProvider: $0) }
                 completion(.success(self.bankProviders))
             case let .failure(error):
-                completion(.failure(.apiError(error)))
+                completion(.failure(GiniError.decorator(error)))
             }
         }
     }
@@ -263,7 +275,7 @@ public struct DataForReview {
         In case of failure error from the server side.
      
      */
-    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniMerchantError>) -> Void) {
+    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
         paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: paymentInfo.paymentProviderId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, bic: "", amount: paymentInfo.amount, purpose: paymentInfo.purpose) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -271,7 +283,7 @@ public struct DataForReview {
                     completion(.success(requestID))
                     self.delegate?.didCreatePaymentRequest(paymentRequestID: requestID)
                 case let .failure(error):
-                    completion(.failure(.apiError(error)))
+                    completion(.failure(GiniError.decorator(error)))
                 }
             }
         }

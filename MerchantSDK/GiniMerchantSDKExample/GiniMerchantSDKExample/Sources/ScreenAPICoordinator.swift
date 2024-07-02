@@ -8,7 +8,6 @@
 import GiniBankAPILibrary
 import GiniCaptureSDK
 import GiniMerchantSDK
-import GiniHealthAPILibrary
 import UIKit
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
@@ -26,9 +25,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     
     var giniMerchant: GiniMerchant?
     var screenAPIViewController: UINavigationController!
-    
-    let client: GiniHealthAPILibrary.Client
-    let documentMetadata: GiniHealthAPILibrary.Document.Metadata?
+
     weak var analysisDelegate: AnalysisDelegate?
     var visionDocuments: [GiniCaptureDocument]?
     var visionConfiguration: GiniConfiguration
@@ -41,24 +38,20 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     
     init(configuration: GiniConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
-         client: GiniHealthAPILibrary.Client,
-         documentMetadata: GiniHealthAPILibrary.Document.Metadata?,
          hardcodedInvoicesController: HardcodedInvoicesController,
          paymentComponentController: PaymentComponentsController) {
         visionConfiguration = configuration
         visionDocuments = documents
-        self.client = client
-        self.documentMetadata = documentMetadata
         self.hardcodedInvoicesController = hardcodedInvoicesController
         self.paymentComponentController = paymentComponentController
         super.init()
     }
     
-    func start(healthAPI: GiniHealthAPI) {
+    func start(documentService: GiniMerchantSDK.DefaultDocumentService) {
         let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
                                                         configuration: visionConfiguration,
                                                         resultsDelegate: self,
-                                                        networkingService: MerchantNetworkingService(lib: healthAPI))
+                                                        networkingService: MerchantNetworkingService(documentService: documentService))
         screenAPIViewController = RootNavigationController(rootViewController: viewController)
         screenAPIViewController.setNavigationBarHidden(true, animated: false)
         screenAPIViewController.delegate = self
@@ -79,12 +72,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     }
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-        var healthExtractions: [GiniHealthAPILibrary.Extraction] = []
-        captureExtractedResults = result.extractions.map { $0.value}
-        for extraction in captureExtractedResults {
-            healthExtractions.append(GiniHealthAPILibrary.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
-        }
-
         if let giniSDK = self.giniMerchant, let docId = result.document?.id {
             // this step needed since we've got 2 different Document structures
             giniSDK.fetchDataForReview(documentId: docId) { [weak self] resultReview in

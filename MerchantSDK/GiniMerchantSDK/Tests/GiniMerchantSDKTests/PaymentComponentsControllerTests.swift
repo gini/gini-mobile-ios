@@ -1,9 +1,9 @@
 //
 //  PaymentComponentsControllerTests.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
-
 
 import XCTest
 @testable import GiniMerchantSDK
@@ -20,7 +20,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let documentService = DefaultDocumentService(sessionManager: sessionManagerMock)
         let paymentService = PaymentService(sessionManager: sessionManagerMock)
         giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService)
-        let giniMerchant = GiniMerchant(with: giniHealthAPI)
+        let giniMerchant = GiniMerchant(giniApiLib: giniHealthAPI)
         mockPaymentComponentsController = MockPaymentComponents(giniMerchant: giniMerchant)
     }
 
@@ -64,7 +64,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
     }
     
     func testCheckIfDocumentIsPayable_Failure() {
-        let expectedResult: Result<Bool, GiniMerchantError> = .failure(.apiError(.noResponse))
+        let expectedResult: Result<Bool, GiniMerchantError> = .failure(.apiError(GiniError.decorator(.noResponse)))
         // When
         var receivedResult: Result<Bool, GiniMerchantError>?
         mockPaymentComponentsController.checkIfDocumentIsPayable(docId: MockSessionManager.missingDocumentID) { result in
@@ -140,7 +140,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // Then
         XCTAssertNotNil(receivedError)
         XCTAssertNil(receivedViewController)
-        XCTAssertEqual(receivedError, .apiError(.noResponse))
+        XCTAssertEqual(receivedError, .apiError(GiniError.decorator(.noResponse)))
     }
     
     func testPaymentInfoViewController_ReturnsCorrectViewController() {
