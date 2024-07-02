@@ -235,24 +235,24 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     private func setupAnalytics(withDocuments documents: [GiniCaptureDocument]?) {
-        // Clean the AnalyticsManager properties and events queue between SDK sessions.
-        /// The `cleanManager` method of `AnalyticsManager` is called to ensure that properties and events
+        // Clean the GiniAnalyticsManager properties and events queue between SDK sessions.
+        /// The `cleanManager` method of `GiniAnalyticsManager` is called to ensure that properties and events
         /// are reset between SDK sessions. This is particularly important when the SDK is reopened using
         /// the `openWith` flow after it has already been opened for the first time. Without this reset,
         /// residual properties and events from the previous session could lead to incorrect analytics data.
-        AnalyticsManager.cleanManager()
+        GiniAnalyticsManager.cleanManager()
 
         // Set new sessionId every time the SDK is initialized
-        AnalyticsManager.setSessionId()
+        GiniAnalyticsManager.setSessionId()
 
         var entryPointValue = EntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
         if let documents = documents, !documents.isEmpty, !documents.containsDifferentTypes {
             entryPointValue = EntryPointAnalytics.openWith.rawValue
         }
-        AnalyticsManager.registerSuperProperties([.entryPoint: entryPointValue])
-        AnalyticsManager.trackUserProperties([.returnAssistantEnabled: giniBankConfiguration.returnAssistantEnabled,
+        GiniAnalyticsManager.registerSuperProperties([.entryPoint: entryPointValue])
+        GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: giniBankConfiguration.returnAssistantEnabled,
                                               .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons])
-        AnalyticsManager.track(event: .sdkOpened, screenName: nil)
+        GiniAnalyticsManager.track(event: .sdkOpened, screenName: nil)
     }
 
     private func initializeAnalytics(with configuration: ClientConfiguration) {
@@ -260,7 +260,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         let analyticsConfiguration = AnalyticsConfiguration(clientID: configuration.clientID,
                                                             userJourneyAnalyticsEnabled: userJourneyAnalyticsEnabled,
                                                             amplitudeApiKey: configuration.amplitudeApiKey)
-        AnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
+        GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
     }
 }
 
@@ -297,8 +297,8 @@ extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     private func sendAnalyticsEventSDKClose() {
-        AnalyticsManager.track(event: .sdkClosed,
-                               properties: [AnalyticsProperty(key: .status, value: "successful")])
+        GiniAnalyticsManager.track(event: .sdkClosed,
+                                   properties: [GiniAnalyticsProperty(key: .status, value: "successful")])
     }
 
     public func showDigitalInvoiceScreen(digitalInvoice: DigitalInvoice, analysisDelegate: AnalysisDelegate) {

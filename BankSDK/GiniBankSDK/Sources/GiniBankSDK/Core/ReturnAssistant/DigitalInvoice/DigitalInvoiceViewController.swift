@@ -230,7 +230,7 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func payButtonTapped() {
-        AnalyticsManager.track(event: .proceedTapped, screenName: .returnAssistant)
+        GiniAnalyticsManager.track(event: .proceedTapped, screenName: .returnAssistant)
         viewModel.didTapPay()
     }
 
@@ -255,21 +255,21 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func helpButtonTapped() {
-        AnalyticsManager.track(event: .helpTapped, screenName: .returnAssistant)
+        GiniAnalyticsManager.track(event: .helpTapped, screenName: .returnAssistant)
         viewModel.didTapHelp()
     }
 
     @objc func closeReturnAssistantOverview() {
-        AnalyticsManager.track(event: .closeTapped, screenName: .returnAssistant)
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .returnAssistant)
         viewModel.didTapCancel()
     }
 
     func sendAnalyticsScreenShown() {
-        var eventProperties: [AnalyticsProperty] = []
+        var eventProperties: [GiniAnalyticsProperty] = []
         if let documentId = configuration.documentService?.document?.id {
-            eventProperties.append(AnalyticsProperty(key: .documentId, value: documentId))
+            eventProperties.append(GiniAnalyticsProperty(key: .documentId, value: documentId))
         }
-        AnalyticsManager.trackScreenShown(screenName: .returnAssistant, properties: eventProperties)
+        GiniAnalyticsManager.trackScreenShown(screenName: .returnAssistant, properties: eventProperties)
     }
 }
 
@@ -359,14 +359,14 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
 
         }
 
-        AnalyticsManager.track(event: .itemSwitchTapped,
-                               screenName: .returnAssistant,
-                               properties: [AnalyticsProperty(key: .switchActive, value: isLineItemSelected)])
+        GiniAnalyticsManager.track(event: .itemSwitchTapped,
+                                   screenName: .returnAssistant,
+                                   properties: [GiniAnalyticsProperty(key: .switchActive, value: isLineItemSelected)])
         updateValues()
     }
 
     func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
-        AnalyticsManager.track(event: .editTapped, screenName: .returnAssistant)
+        GiniAnalyticsManager.track(event: .editTapped, screenName: .returnAssistant)
         viewModel.didTapEdit(on: lineItemViewModel)
     }
 }

@@ -57,7 +57,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        AnalyticsManager.trackScreenShown(screenName: .onboardingReturnAssistant)
+        GiniAnalyticsManager.trackScreenShown(screenName: .onboardingReturnAssistant)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -77,9 +77,9 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         // can be dismissed by dragging the screen from top to bottom.
 
         if doneButtonTapped {
-            AnalyticsManager.track(event: .getStartedTapped, screenName: .onboardingReturnAssistant)
+            GiniAnalyticsManager.track(event: .getStartedTapped, screenName: .onboardingReturnAssistant)
         } else {
-            AnalyticsManager.track(event: .dismissed, screenName: .onboardingReturnAssistant)
+            GiniAnalyticsManager.track(event: .dismissed, screenName: .onboardingReturnAssistant)
         }
     }
 
