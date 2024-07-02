@@ -15,7 +15,7 @@ protocol EditLineItemViewModelDelegate: AnyObject {
 final class EditLineItemViewModel {
     weak var delegate: EditLineItemViewModelDelegate?
     private var lineItem: DigitalInvoice.LineItem
-    private (set) var itemsChanged: [LineItemAnalytics] = []
+    private (set) var itemsChanged: [GiniLineItemAnalytics] = []
 
     var name: String? {
         return lineItem.name
@@ -42,16 +42,16 @@ final class EditLineItemViewModel {
 
     func didTapSave(name: String?, price: Decimal, currency: String, quantity: Int) {
         if name != lineItem.name {
-            itemsChanged.append(LineItemAnalytics.name)
+            itemsChanged.append(GiniLineItemAnalytics.name)
         }
         lineItem.name = name
 
         if price != lineItem.price.value {
-            itemsChanged.append(LineItemAnalytics.price)
+            itemsChanged.append(GiniLineItemAnalytics.price)
         }
         lineItem.price = Price(value: price, currencyCode: currency)
         if quantity != lineItem.quantity {
-            itemsChanged.append(LineItemAnalytics.quantity)
+            itemsChanged.append(GiniLineItemAnalytics.quantity)
         }
         lineItem.quantity = quantity
         delegate?.didSave(lineItem: lineItem, on: self)

@@ -222,7 +222,7 @@ extension GiniScreenAPICoordinator {
 
     private func navigateBackFromCameraViewController() {
         trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
-        AnalyticsManager.track(event: .closeTapped, screenName: screenName())
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: screenName())
         guard pages.type != .qrcode else {
             finishWithCancellation()
             return
@@ -237,7 +237,7 @@ extension GiniScreenAPICoordinator {
 
     private func navigateBackFromAnalysisViewController() {
         trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
-        AnalyticsManager.track(event: .closeTapped, screenName: .analysis)
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .analysis)
         finishWithCancellation()
     }
 
@@ -250,7 +250,7 @@ extension GiniScreenAPICoordinator {
     }
 
     // Determine the screen name based on the top view controller
-    private func screenName() -> AnalyticsScreen {
+    private func screenName() -> GiniAnalyticsScreen {
         if let topViewController = screenAPINavigationController.topViewController as? CameraViewController,
            !topViewController.cameraPreviewViewController.isAuthorized {
             return .cameraAccess
@@ -265,7 +265,7 @@ extension GiniScreenAPICoordinator {
             return
         }
 
-        AnalyticsManager.track(event: .helpTapped, screenName: screenName())
+        GiniAnalyticsManager.track(event: .helpTapped, screenName: screenName())
 
         let helpMenuViewController = HelpMenuViewController(giniConfiguration: giniConfiguration)
 
@@ -289,7 +289,7 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func backToCameraTapped() {
-        AnalyticsManager.track(event: .closeTapped, screenName: .help)
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .help)
         back()
     }
 

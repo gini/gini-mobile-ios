@@ -25,7 +25,7 @@ extension CameraViewController {
                                                                           comment: "Photos action")
             let photosAlertAction = UIAlertAction(title: photosAlertActionTitle,
                                                   style: .default) { [unowned self] _ in
-                AnalyticsManager.track(event: .uploadPhotosTapped, screenName: .camera)
+                GiniAnalyticsManager.track(event: .uploadPhotosTapped, screenName: .camera)
                 self.delegate?.camera(self, didSelect: .gallery)
             }
             alertViewController.addAction(photosAlertAction)
@@ -36,7 +36,7 @@ extension CameraViewController {
                                                                      comment: "files action")
         let filesAlertAction = UIAlertAction(title: filesAlertActionTitle,
                                              style: .default) { [unowned self] _ in
-            AnalyticsManager.track(event: .uploadDocumentsTapped, screenName: .camera)
+            GiniAnalyticsManager.track(event: .uploadDocumentsTapped, screenName: .camera)
             self.delegate?.camera(self, didSelect: .explorer)
         }
         alertViewController.addAction(filesAlertAction)

@@ -319,12 +319,12 @@ fileprivate extension Camera {
             completion(.success(videoDevice))
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
-                AnalyticsManager.track(event: .cameraPermissionShown, screenName: .cameraPermissionView)
-                let permissionStatus: CameraPermissionStatusAnalytics = granted ? .allowed : .notAllowed
-                let eventProperties = [AnalyticsProperty(key: .permissionStatus, value: permissionStatus.rawValue)]
-                AnalyticsManager.track(event: .cameraPermissionTapped,
-                                       screenName: .cameraPermissionView,
-                                       properties: eventProperties)
+                GiniAnalyticsManager.track(event: .cameraPermissionShown, screenName: .cameraPermissionView)
+                let permissionStatus: GiniCameraPermissionStatusAnalytics = granted ? .allowed : .notAllowed
+                let eventProperties = [GiniAnalyticsProperty(key: .permissionStatus, value: permissionStatus.rawValue)]
+                GiniAnalyticsManager.track(event: .cameraPermissionTapped,
+                                           screenName: .cameraPermissionView,
+                                           properties: eventProperties)
                 DispatchQueue.main.async {
                     completion(granted ? .success(videoDevice) : .failure(.notAuthorizedToUseDevice))
                 }

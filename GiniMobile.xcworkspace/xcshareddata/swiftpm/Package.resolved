@@ -2,38 +2,11 @@
   "object": {
     "pins": [
       {
-        "package": "Amplitude",
-        "repositoryURL": "https://github.com/amplitude/Amplitude-iOS",
-        "state": {
-          "branch": null,
-          "revision": "879629ac8c33a35ac8893d81794059c718a073e9",
-          "version": "8.18.1"
-        }
-      },
-      {
-        "package": "analytics-connector-ios",
-        "repositoryURL": "https://github.com/amplitude/analytics-connector-ios.git",
-        "state": {
-          "branch": null,
-          "revision": "e2ca17ac735bcbc48b13062484541702ef45153d",
-          "version": "1.0.3"
-        }
-      },
-      {
         "package": "Lottie",
         "repositoryURL": "https://github.com/airbnb/lottie-ios.git",
         "state": {
           "branch": null,
           "revision": "d6feea26a370019b4d3a85f5984cb95a2734776f",
-          "version": "4.2.0"
-        }
-      },
-      {
-        "package": "Mixpanel",
-        "repositoryURL": "https://github.com/mixpanel/mixpanel-swift.git",
-        "state": {
-          "branch": null,
-          "revision": "ecd44ed6af66d45a50e62401228430c54c60dd26",
           "version": "4.2.0"
         }
       },

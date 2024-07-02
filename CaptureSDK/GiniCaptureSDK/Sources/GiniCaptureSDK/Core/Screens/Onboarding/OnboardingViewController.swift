@@ -179,16 +179,16 @@ class OnboardingViewController: UIViewController {
         close()
     }
 
-    private func track(event: AnalyticsEvent, for pageIndex: Int) {
+    private func track(event: GiniAnalyticsEvent, for pageIndex: Int) {
         let pageModel = dataSource.pageModels[pageIndex]
         let currentPageScreenName = pageModel.analyticsScreen
-        var eventProperties = [AnalyticsProperty]()
+        var eventProperties = [GiniAnalyticsProperty]()
         if pageModel.isCustom {
             eventProperties.append(.init(key: .customOnboardingTitle, value: pageModel.page.title))
         }
-        AnalyticsManager.track(event: event,
-                               screenNameString: currentPageScreenName,
-                               properties: eventProperties)
+        GiniAnalyticsManager.track(event: event,
+                                   screenNameString: currentPageScreenName,
+                                   properties: eventProperties)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -210,12 +210,12 @@ extension OnboardingViewController: OnboardingScreen {
     func didScroll(pageIndex: Int) {
         guard pageControl.currentPage != pageIndex else { return }
 
-        sendAnalyticsEventPageSwiped()
+        sendGiniAnalyticsEventPageSwiped()
         configureNavigationButtons(for: pageIndex)
         pageControl.currentPage = pageIndex
     }
 
-    private func sendAnalyticsEventPageSwiped() {
+    private func sendGiniAnalyticsEventPageSwiped() {
         // Ignore events triggered by programmatic scrolling.
         guard !dataSource.isProgrammaticScroll else { return }
 

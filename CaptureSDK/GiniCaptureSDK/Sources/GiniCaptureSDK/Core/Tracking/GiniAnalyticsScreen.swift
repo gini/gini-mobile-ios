@@ -6,7 +6,7 @@
 
 import Foundation
 
-public enum AnalyticsScreen: String {
+public enum GiniAnalyticsScreen: String {
     case camera
     case review
     case reviewZoom = "review_zoom"

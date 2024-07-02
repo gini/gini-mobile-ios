@@ -1,12 +1,12 @@
 //
-//  AnalyticsEvent.swift
+//  GiniAnalyticsEvent.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 
-public enum AnalyticsEvent: String {
+public enum GiniAnalyticsEvent: String {
     case screenShown = "screen_shown"
     case closeTapped = "close_tapped"
     case sdkOpened = "sdk_opened"

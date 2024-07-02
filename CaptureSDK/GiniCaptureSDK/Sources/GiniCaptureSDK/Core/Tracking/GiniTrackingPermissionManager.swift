@@ -22,7 +22,7 @@ class GiniTrackingPermissionManager {
     //   concept of tracking authorization did not exist in those versions.
     func trackingAuthorized() -> Bool {
         if #available(iOS 14, *) {
-            return ATTrackingManager.trackingAuthorizationStatus == .authorized 
+            return ATTrackingManager.trackingAuthorizationStatus == .authorized
             || ATTrackingManager.trackingAuthorizationStatus == .notDetermined
         } else {
             return true // Tracking is enabled by default on earlier iOS versions

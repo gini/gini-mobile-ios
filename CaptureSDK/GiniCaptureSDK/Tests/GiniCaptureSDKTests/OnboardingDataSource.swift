@@ -29,14 +29,14 @@ final class OnboardingDataSourceTests: XCTestCase {
                                            description: DefaultOnboardingPage.flatPaper.description)
         let flatPaperPageModel = OnboardingPageModel(page: flatPaperPage,
                                                      illustrationAdapter: giniConfiguration.onboardingAlignCornersIllustrationAdapter,
-                                                     analyticsScreen: AnalyticsScreen.onboardingFlatPaper.rawValue)
+                                                     analyticsScreen: GiniAnalyticsScreen.onboardingFlatPaper.rawValue)
 
         let goodLightingPage = OnboardingPage(imageName: DefaultOnboardingPage.lighting.imageName,
                                               title: DefaultOnboardingPage.lighting.title,
                                               description: DefaultOnboardingPage.lighting.description)
         let goodLightingPageModel = OnboardingPageModel(page: goodLightingPage,
                                                         illustrationAdapter: giniConfiguration.onboardingLightingIllustrationAdapter,
-                                                        analyticsScreen: AnalyticsScreen.onboardingLighting.rawValue)
+                                                        analyticsScreen: GiniAnalyticsScreen.onboardingLighting.rawValue)
 
         pages = [flatPaperPageModel, goodLightingPageModel]
 
@@ -46,7 +46,7 @@ final class OnboardingDataSourceTests: XCTestCase {
                                            description: DefaultOnboardingPage.multipage.description)
             let multiPageModel = OnboardingPageModel(page: multiPage,
                                                      illustrationAdapter: giniConfiguration.onboardingMultiPageIllustrationAdapter,
-                                                     analyticsScreen: AnalyticsScreen.onboardingMultipage.rawValue)
+                                                     analyticsScreen: GiniAnalyticsScreen.onboardingMultipage.rawValue)
             pages.append(multiPageModel)
         }
 
@@ -56,7 +56,7 @@ final class OnboardingDataSourceTests: XCTestCase {
                                             description: DefaultOnboardingPage.qrcode.description)
             let qrCodePageModel = OnboardingPageModel(page: qrCodePage,
                                                       illustrationAdapter: giniConfiguration.onboardingQRCodeIllustrationAdapter,
-                                                      analyticsScreen: AnalyticsScreen.onboardingQRcode.rawValue)
+                                                      analyticsScreen: GiniAnalyticsScreen.onboardingQRcode.rawValue)
             pages.append(qrCodePageModel)
         }
 
@@ -65,7 +65,7 @@ final class OnboardingDataSourceTests: XCTestCase {
     private func setCustomOnboardingPages() {
         guard let customPages = giniConfiguration.customOnboardingPages else { return }
         pages =  customPages.enumerated().map { index, page in
-            let analyticsScreen = "\(AnalyticsScreen.onboardingCustom.rawValue)\(index + 1)"
+            let analyticsScreen = "\(GiniAnalyticsScreen.onboardingCustom.rawValue)\(index + 1)"
             return OnboardingPageModel(page: page,
                                        analyticsScreen: analyticsScreen,
                                        isCustom: true)

@@ -101,7 +101,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                     self?.cameraDidTapReviewButton(cameraViewController)
                 }
             } else {
-                AnalyticsManager.track(event: .closeTapped, screenName: .camera)
+                GiniAnalyticsManager.track(event: .closeTapped, screenName: .camera)
                 self?.finishWithCancellation()
             }
         }

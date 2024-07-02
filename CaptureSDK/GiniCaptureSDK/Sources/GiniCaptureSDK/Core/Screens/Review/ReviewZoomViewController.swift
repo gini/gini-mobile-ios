@@ -43,7 +43,7 @@ final class ReviewZoomViewController: UIViewController {
         setupView()
         setupLayout()
         setupImage(page.document.previewImage)
-        AnalyticsManager.trackScreenShown(screenName: .reviewZoom)
+        GiniAnalyticsManager.trackScreenShown(screenName: .reviewZoom)
     }
 
     override func viewWillLayoutSubviews() {
@@ -123,7 +123,7 @@ final class ReviewZoomViewController: UIViewController {
 
     @objc
     private func didTapCloseButton() {
-        AnalyticsManager.track(event: .closeTapped, screenName: .reviewZoom)
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .reviewZoom)
         dismiss(animated: true)
     }
 
@@ -169,7 +169,7 @@ extension ReviewZoomViewController: UIScrollViewDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         if !zoomAnalyticsEventSent {
             zoomAnalyticsEventSent = true
-            AnalyticsManager.track(event: .previewZoomed, screenName: .reviewZoom)
+            GiniAnalyticsManager.track(event: .previewZoomed, screenName: .reviewZoom)
         }
         adjustImageToCenter()
     }

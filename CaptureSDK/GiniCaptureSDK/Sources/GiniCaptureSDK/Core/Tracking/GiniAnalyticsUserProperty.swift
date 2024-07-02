@@ -1,12 +1,12 @@
 //
-//  AnalyticsUserProperty.swift
+//  GiniAnalyticsUserProperty.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 
-public enum AnalyticsUserProperty: String {
+public enum GiniAnalyticsUserProperty: String {
     case voiceOverEnabled = "voice_over_enabled"
     case guidedAccessEnabled = "guided_access_enabled"
     case boldTextEnabled = "bold_text_enabled"

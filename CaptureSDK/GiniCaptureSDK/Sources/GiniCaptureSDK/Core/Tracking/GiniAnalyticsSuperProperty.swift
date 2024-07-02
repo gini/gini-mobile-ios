@@ -1,12 +1,12 @@
 //
-//  AnalyticsSuperProperty.swift
+//  GiniAnalyticsSuperProperty.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 
-public enum AnalyticsSuperProperty: String {
+public enum GiniAnalyticsSuperProperty: String {
     case entryPoint = "entry_point"
     case giniClientID = "gini_client_id"
 }
