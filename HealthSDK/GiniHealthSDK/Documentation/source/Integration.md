@@ -127,6 +127,17 @@ Please follow the steps below for the payment component integration.
 let paymentComponentsController = PaymentComponentsController(giniHealth: health)
 ```
 
+> **Note:** 
+> - Payment component view has the following configuration options:
+> - isPaymentComponentBranded: Sets the visibility of the branded Gini view. Please contact a Gini representative before changing this configuration option.
+
+For hidding "Powered by Gini" view from the Payment Component View add following code after paymentComponentsController initialization:
+
+```swift
+let paymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: false)
+paymentComponentsController.paymentComponentConfiguration = paymentComponentConfiguration
+```
+
 ### 2. Load the payment providers
 
 You will load the list of the payment providers by calling the `loadPaymentProviders` function from the `PaymentComponentsController` and conform to the `PaymentComponentsControllerProtocol`.
