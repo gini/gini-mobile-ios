@@ -251,7 +251,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         }
         GiniAnalyticsManager.registerSuperProperties([.entryPoint: entryPointValue])
         GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: giniBankConfiguration.returnAssistantEnabled,
-                                              .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons])
+                                                  .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons])
         GiniAnalyticsManager.track(event: .sdkOpened, screenName: nil)
     }
 
