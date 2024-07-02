@@ -103,7 +103,9 @@ final class PaymentComponentView: UIView {
         
         bottomStackView.addArrangedSubview(moreInformationView)
         bottomStackView.addArrangedSubview(UIView())
-        bottomStackView.addArrangedSubview(poweredByGiniView)
+        if viewModel.shouldShowBrandedView {
+            bottomStackView.addArrangedSubview(poweredByGiniView)
+        }
         bottomView.addSubview(bottomStackView)
         contentStackView.addArrangedSubview(bottomView)
         

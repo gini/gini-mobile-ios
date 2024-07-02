@@ -110,8 +110,14 @@ final class PaymentComponentViewModel {
     var minimumButtonsHeight: CGFloat
     
     var hasBankSelected: Bool
-    
-    init(paymentProvider: PaymentProvider?, giniHealthConfiguration: GiniHealthConfiguration) {
+
+    var paymentComponentConfiguration: PaymentComponentConfiguration?
+
+    var shouldShowBrandedView: Bool {
+        paymentComponentConfiguration?.isPaymentComponentBranded ?? true
+    }
+
+    init(paymentProvider: PaymentProvider?, giniHealthConfiguration: GiniHealthConfiguration, paymentComponentConfiguration: PaymentComponentConfiguration?) {
         self.giniHealthConfiguration = giniHealthConfiguration
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
@@ -126,6 +132,8 @@ final class PaymentComponentViewModel {
         self.paymentProviderScheme = paymentProvider?.appSchemeIOS
         
         self.minimumButtonsHeight = giniHealthConfiguration.paymentComponentButtonsHeight
+
+        self.paymentComponentConfiguration = paymentComponentConfiguration
     }
     
     func tapOnMoreInformation() {
