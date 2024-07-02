@@ -157,14 +157,14 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         
         model?.onErrorHandling = {[weak self] error in
             DispatchQueue.main.async {
-                self?.showError(message: GiniLocalized.customLocalization("ginihealth.errors.default",
+                self?.showError(message: GiniLocalized.string("ginihealth.errors.default",
                                                                          comment: "default error message") )
             }
         }
         
         model?.onCreatePaymentRequestErrorHandling = {[weak self] () in
             DispatchQueue.main.async {
-                self?.showError(message: GiniLocalized.customLocalization("ginihealth.errors.failed.payment.request.creation",
+                self?.showError(message: GiniLocalized.string("ginihealth.errors.failed.payment.request.creation",
                                                                       comment: "error for creating payment request"))
             }
         }
@@ -210,7 +210,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         infoBarLabel.textColor = UIColor.GiniHealthColors.dark7
         infoBarLabel.font = giniHealthConfiguration.textStyleFonts[.caption1]
         infoBarLabel.adjustsFontForContentSizeCategory = true
-        infoBarLabel.text = GiniLocalized.customLocalization("ginihealth.reviewscreen.infobar.message",
+        infoBarLabel.text = GiniLocalized.string("ginihealth.reviewscreen.infobar.message",
                                                              comment: "info bar message")
     }
     
@@ -357,16 +357,16 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if let fieldIdentifier = TextFieldType(rawValue: textFieldView.tag) {
             switch fieldIdentifier {
             case .recipientFieldTag:
-                return GiniLocalized.customLocalization("ginihealth.reviewscreen.recipient.placeholder",
+                return GiniLocalized.string("ginihealth.reviewscreen.recipient.placeholder",
                                                         comment: "placeholder text for recipient input field")
             case .ibanFieldTag:
-                return GiniLocalized.customLocalization("ginihealth.reviewscreen.iban.placeholder",
+                return GiniLocalized.string("ginihealth.reviewscreen.iban.placeholder",
                                                         comment: "placeholder text for iban input field")
             case .amountFieldTag:
-                return GiniLocalized.customLocalization("ginihealth.reviewscreen.amount.placeholder",
+                return GiniLocalized.string("ginihealth.reviewscreen.amount.placeholder",
                                                         comment: "placeholder text for amount input field")
             case .usageFieldTag:
-                return GiniLocalized.customLocalization("ginihealth.reviewscreen.usage.placeholder",
+                return GiniLocalized.string("ginihealth.reviewscreen.usage.placeholder",
                                                         comment: "placeholder text for usage input field")
             }
         }
@@ -476,19 +476,19 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         switch textFieldTag {
         case .recipientFieldTag:
             errorLabel = recipientErrorLabel
-            errorMessage = GiniLocalized.customLocalization("ginihealth.errors.failed.recipient.non.empty.check",
+            errorMessage = GiniLocalized.string("ginihealth.errors.failed.recipient.non.empty.check",
                                                             comment: " recipient failed non empty check")
         case .ibanFieldTag:
             errorLabel = ibanErrorLabel
-            errorMessage = GiniLocalized.customLocalization("ginihealth.errors.failed.iban.non.empty.check",
+            errorMessage = GiniLocalized.string("ginihealth.errors.failed.iban.non.empty.check",
                                                             comment: "iban failed non empty check")
         case .amountFieldTag:
             errorLabel = amountErrorLabel
-            errorMessage = GiniLocalized.customLocalization("ginihealth.errors.failed.amount.non.empty.check",
+            errorMessage = GiniLocalized.string("ginihealth.errors.failed.amount.non.empty.check",
                                                             comment: "amount failed non empty check")
         case .usageFieldTag:
             errorLabel = usageErrorLabel
-            errorMessage = GiniLocalized.customLocalization("ginihealth.errors.failed.purpose.non.empty.check",
+            errorMessage = GiniLocalized.string("ginihealth.errors.failed.purpose.non.empty.check",
                                                             comment: "purpose failed non empty check")
         }
         if errorLabel.isHidden {
@@ -500,14 +500,14 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func showValidationErrorLabel(textFieldTag: TextFieldType) {
         var errorLabel = UILabel()
-        var errorMessage = GiniLocalized.customLocalization("ginihealth.errors.failed.default.textfield.validation.check",
+        var errorMessage = GiniLocalized.string("ginihealth.errors.failed.default.textfield.validation.check",
                                                             comment: "the field failed non empty check")
         switch textFieldTag {
         case .recipientFieldTag:
             errorLabel = recipientErrorLabel
         case .ibanFieldTag:
             errorLabel = ibanErrorLabel
-            errorMessage = GiniLocalized.customLocalization("ginihealth.errors.failed.iban.validation.check",
+            errorMessage = GiniLocalized.string("ginihealth.errors.failed.iban.validation.check",
                                                             comment: "iban failed validation check")
         case .amountFieldTag:
             errorLabel = amountErrorLabel
@@ -707,7 +707,7 @@ extension PaymentReviewViewController {
         let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
-        let OKAction = UIAlertAction(title: GiniLocalized.customLocalization("ginihealth.alert.ok.title",
+        let OKAction = UIAlertAction(title: GiniLocalized.string("ginihealth.alert.ok.title",
                                                                              comment: "ok title for action"), style: .default, handler: nil)
         alertController.addAction(OKAction)
         present(alertController, animated: true, completion: nil)

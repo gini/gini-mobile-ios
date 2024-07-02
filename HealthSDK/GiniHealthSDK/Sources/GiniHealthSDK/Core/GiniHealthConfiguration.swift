@@ -126,9 +126,9 @@ public final class GiniHealthConfiguration: NSObject {
                                                                                                                            darkModeColor: UIColor.GiniHealthColors.light4).uiColor())
     
     /**
-     Localization configuration
+     Custom localization configuration for localizable strings.
      */
-    public var localization: GiniLocalization?
+    public var customLocalization: GiniLocalization?
     
     // MARK: - Update to custom font
     /**
