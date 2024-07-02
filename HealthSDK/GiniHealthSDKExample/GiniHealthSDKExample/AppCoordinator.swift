@@ -282,6 +282,8 @@ final class AppCoordinator: Coordinator {
 
         let invoicesListCoordinator = InvoicesListCoordinator()
         paymentComponentsController = PaymentComponentsController(giniHealth: health)
+        let paymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true)
+        paymentComponentsController.paymentComponentConfiguration = paymentComponentConfiguration
         invoicesListCoordinator.start(documentService: health.documentService,
                                       hardcodedInvoicesController: HardcodedInvoicesController(),
                                       paymentComponentsController: paymentComponentsController,
