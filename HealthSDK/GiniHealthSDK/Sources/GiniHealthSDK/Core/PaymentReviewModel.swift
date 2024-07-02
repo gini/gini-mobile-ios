@@ -51,7 +51,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     public var documentId: String
-    private var healthSDK: GiniHealth
+    var healthSDK: GiniHealth
     private var selectedPaymentProvider: PaymentProvider?
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {

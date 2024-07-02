@@ -578,6 +578,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if !amountTextFieldView.textField.isReallyEmpty {
             let paymentInfo = obtainPaymentInfo()
             model?.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
+                // Publish the payment request id before launching the payment provider app
+                self?.model?.healthSDK.delegate?.didCreatePaymentRequest(paymentRequestID: requestId)
+                
                 self?.model?.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)
             })
             sendFeedback(paymentInfo: paymentInfo)
