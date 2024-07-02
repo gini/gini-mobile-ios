@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "gm.infoCircle.imageset.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "analysisFailedErrorMessage" : {
+      "comment" : "analysis failed error message"
+    },
+    "example.cancel.button.title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "example.invoicesList.error" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
+    },
+    "example.invoicesList.missingInvoices.text" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Rechnungen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No invoices"
+          }
+        }
+      }
+    },
+    "example.invoicesList.title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechnungsliste"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invoices List"
+          }
+        }
+      }
+    },
+    "example.uploadInvoices.button.title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "↑ Rechnungen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "↑ Invoices"
+          }
+        }
+      }
+    },
+    "ginicapture.analysis.error.actionTitle" : {
+      "comment" : "Retry analysis"
+    },
+    "ginicapture.camera.errorPopup.cancelButton" : {
+      "comment" : "cancel button title"
+    },
+    "ginicapture.camera.errorPopup.pickanotherfileButton" : {
+      "comment" : "pick another file button title"
+    },
+    "ginicapture.camera.errorPopup.reviewPages" : {
+      "comment" : "review pages button title"
+    },
+    "ginicapture.camera.filepicker.errorPopup.cancelButton" : {
+      "comment" : "cancel button title"
+    },
+    "ginicapture.camera.filepicker.errorPopup.grantAccessButton" : {
+      "comment" : "cancel button title"
+    },
+    "ginicapture.camera.mixedarrayspopup.cancel" : {
+      "comment" : "cancel button text for popup"
+    },
+    "ginicapture.camera.mixedarrayspopup.usePhotos" : {
+      "comment" : "use photos button text in popup"
+    }
+  },
+  "version" : "1.0"
+}
