@@ -142,6 +142,11 @@ import UIKit
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         didShowAnalysis?()
+
+        let eventProperties = [AnalyticsProperty(key: .documentType,
+                                                 value: AnalyticsMapper.documentTypeAnalytics(from: document.type))]
+        AnalyticsManager.trackScreenShown(screenName: .analysis,
+                                          properties: eventProperties)
     }
 
     // MARK: Toggle animation

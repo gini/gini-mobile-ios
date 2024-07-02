@@ -48,9 +48,9 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
     case requestCancelled
     case tooManyRequests(response: HTTPURLResponse? = nil, data: Data? = nil)
     case unauthorized(response: HTTPURLResponse? = nil, data: Data? = nil)
-    case maintenance
-    case outage
-    case server
+    case maintenance(errorCode: Int)
+    case outage(errorCode: Int)
+    case server(errorCode: Int)
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
     case noInternetConnection
 

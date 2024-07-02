@@ -1,8 +1,8 @@
 //
 //  GiniPayBankNetworkingScreenApiCoordinator.swift
-// GiniBank
+//  GiniBank
 //
-//  Created by Nadya Karaban on 03.03.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -112,6 +112,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
+    private var configurationService: ClientConfigurationServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
     public init(client: Client,
@@ -121,10 +122,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 api: APIDomain,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 lib: GiniBankAPI) {
-        documentService = GiniBankNetworkingScreenApiCoordinator.documentService(with: lib,
-                                                               documentMetadata: documentMetadata,
-                                                               configuration: configuration,
-                                                               for: api)
+        documentService = DocumentService(lib: lib, metadata: documentMetadata)
+        configurationService = lib.configurationService()
         let captureConfiguration = configuration.captureConfiguration()
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
 
@@ -140,10 +139,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 configuration: GiniBankConfiguration,
                 documentMetadata: Document.Metadata?,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
-                captureNetworkService: GiniCaptureNetworkService) {
+                captureNetworkService: GiniCaptureNetworkService,
+                configurationService: ClientConfigurationServiceProtocol?) {
 
         documentService = DocumentService(giniCaptureNetworkService: captureNetworkService,
                                           metadata: documentMetadata)
+        self.configurationService = configurationService
         let captureConfiguration = configuration.captureConfiguration()
 
         super.init(withDelegate: nil,
@@ -151,7 +152,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
         GiniBank.setConfiguration(configuration)
-
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
@@ -175,16 +175,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                   api: api,
                   trackingDelegate: trackingDelegate,
                   lib: lib)
-    }
-
-    private static func documentService(with lib: GiniBankAPI,
-                                        documentMetadata: Document.Metadata?,
-                                        configuration: GiniBankConfiguration,
-                                        for api: APIDomain) -> DocumentServiceProtocol {
-        switch api {
-        case .default, .gym, .custom:
-            return DocumentService(lib: lib, metadata: documentMetadata)
-        }
     }
 
     private func deliver(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
@@ -219,6 +209,53 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     public func didPressEnterManually() {
         self.resultsDelegate?.giniCaptureDidEnterManually()
     }
+
+    /**
+     This method first attempts to fetch configuration settings using the `configurationService`.
+     If the configurations are successfully fetched, it initializes the analytics with the fetched configuration
+     on the main thread. Regardless of the result of fetching configurations, it then proceeds to start the
+     SDK with the provided documents.
+     */
+    public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
+        // Clean the AnalyticsManager properties and events queue between SDK sessions.
+        /// The `cleanManager` method of `AnalyticsManager` is called to ensure that properties and events
+        /// are reset between SDK sessions. This is particularly important when the SDK is reopened using
+        /// the `openWith` flow after it has already been opened for the first time. Without this reset,
+        /// residual properties and events from the previous session could lead to incorrect analytics data.
+        AnalyticsManager.cleanManager()
+
+        var entryPointValue = EntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
+        if let documents = documents, !documents.isEmpty, !documents.containsDifferentTypes {
+            entryPointValue = EntryPointAnalytics.openWith.rawValue
+        }
+        AnalyticsManager.registerSuperProperties([.entryPoint: entryPointValue])
+
+        configurationService?.fetchConfigurations(completion: { result in
+            switch result {
+            case .success(let configuration):
+                DispatchQueue.main.async {
+                    self.initializeAnalytics(with: configuration)
+                }
+            case .failure(let error):
+                print("❌ configurationService with error: \(error)")
+                // There will be no retries if the endpoint fails.
+                // We will not implement any caching mechanism on our side if the request is too slow.
+                // In case of a failure, the UJ analytics will remain disabled for that session.
+            }
+        })
+        return self.start(withDocuments: documents, animated: animated)
+    }
+
+    private func initializeAnalytics(with configuration: ClientConfiguration) {
+        let userJourneyAnalyticsEnabled = configuration.userJourneyAnalyticsEnabled
+        let analyticsConfiguration = AnalyticsConfiguration(clientID: configuration.clientID,
+                                                            userJourneyAnalyticsEnabled: userJourneyAnalyticsEnabled,
+                                                            mixpanelToken: configuration.mixpanelToken,
+                                                            amplitudeApiKey: configuration.amplitudeApiKey)
+        AnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
+                                              .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons])
+        AnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
+    }
 }
 
 extension GiniBankNetworkingScreenApiCoordinator {
@@ -242,6 +279,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                             images: images,
                                             document: documentService.document,
                                             candidates: result.candidates)
+                sendAnalyticsEventSDKClose()
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
                 self.giniBankConfiguration.lineItems = result.lineItems
@@ -250,6 +288,11 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 self.documentService.resetToInitialState()
             }
         }
+    }
+
+    private func sendAnalyticsEventSDKClose() {
+        AnalyticsManager.track(event: .sdkClosed,
+                               properties: [AnalyticsProperty(key: .status, value: "successful")])
     }
 
     public func showDigitalInvoiceScreen(digitalInvoice: DigitalInvoice, analysisDelegate: AnalysisDelegate) {

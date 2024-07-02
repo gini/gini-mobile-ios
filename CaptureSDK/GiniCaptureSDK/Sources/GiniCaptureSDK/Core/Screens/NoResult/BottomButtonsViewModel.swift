@@ -9,14 +9,13 @@
 import Foundation
 
 final class BottomButtonsViewModel {
-    let retakePressed: (() -> Void)?
-    let enterManuallyPressed: (() -> Void)?
-    let cancelPressed: (() -> Void)
+    private let retakePressed: (() -> Void)?
+    private let enterManuallyPressed: (() -> Void)?
+    private let cancelPressed: (() -> Void)
 
-    init(
-        retakeBlock: (() -> Void)? = nil,
-        manuallyPressed: (() -> Void)? = nil,
-        cancelPressed: @escaping(() -> Void)) {
+    init(retakeBlock: (() -> Void)? = nil,
+         manuallyPressed: (() -> Void)? = nil,
+         cancelPressed: @escaping(() -> Void)) {
         self.retakePressed = retakeBlock
         self.enterManuallyPressed = manuallyPressed
         self.cancelPressed = cancelPressed
@@ -32,7 +31,7 @@ final class BottomButtonsViewModel {
         enterManuallyPressed?()
     }
 
-    @objc func didPressCancell() {
+    @objc func didPressCancel() {
         errorOccurred = false
         cancelPressed()
     }

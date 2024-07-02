@@ -1,6 +1,5 @@
 //
 //  GiniScreenAPICoordinator+Analysis.swift
-//  GiniCapture
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -82,10 +81,7 @@ extension GiniScreenAPICoordinator {
 
 extension GiniScreenAPICoordinator: AnalysisDelegate {
 
-    public func displayError(
-        errorType: ErrorType,
-        animated: Bool
-    ) {
+    public func displayError(errorType: ErrorType, animated: Bool) {
         let viewModel: BottomButtonsViewModel
         switch pages.type {
         case .image:

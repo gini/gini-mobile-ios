@@ -319,12 +319,14 @@ fileprivate extension Camera {
             completion(.success(videoDevice))
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
+                AnalyticsManager.track(event: .cameraPermissionShown, screenName: .cameraPermissionView)
+                let permissionStatus: CameraPermissionStatusAnalytics = granted ? .allowed : .notAllowed
+                let eventProperties = [AnalyticsProperty(key: .permissionStatus, value: permissionStatus.rawValue)]
+                AnalyticsManager.track(event: .cameraPermissionTapped,
+                                       screenName: .cameraPermissionView,
+                                       properties: eventProperties)
                 DispatchQueue.main.async {
-                    if granted {
-                        completion(.success(videoDevice))
-                    } else {
-                        completion(.failure(.notAuthorizedToUseDevice))
-                    }
+                    completion(granted ? .success(videoDevice) : .failure(.notAuthorizedToUseDevice))
                 }
             }
         case .denied, .restricted:

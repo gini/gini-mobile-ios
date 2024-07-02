@@ -1,8 +1,7 @@
 //
 //  CurrencyPickerCell.swift
-//  
 //
-//  Created by David Vizaknai on 09.03.2023.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit

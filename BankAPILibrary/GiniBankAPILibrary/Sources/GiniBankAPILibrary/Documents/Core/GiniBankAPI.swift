@@ -12,12 +12,15 @@ public final class GiniBankAPI {
     
     private let docService: DocumentService!
     private let payService: PaymentService?
+    private let configService: ClientConfigurationServiceProtocol?
     static var logLevel: LogLevel = .none
 
-    init<T: DocumentService>(documentService: T, paymentService: PaymentService? )
-    {
+    init<T: DocumentService>(documentService: T,
+                             paymentService: PaymentService?,
+                             configurationService: ClientConfigurationServiceProtocol?) {
         self.docService = documentService
         self.payService = paymentService
+        self.configService = configurationService
     }
     
     /**
@@ -41,6 +44,10 @@ public final class GiniBankAPI {
         return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: .default)
     }
     
+    public func configurationService() -> ClientConfigurationServiceProtocol? {
+        return configService
+    }
+
     /// Removes the user stored credentials. Recommended when logging a different user in your app.
     public func removeStoredCredentials() throws {
         let keychainStore: KeyStore = KeychainStore()
@@ -103,25 +110,29 @@ extension GiniBankAPI {
             GiniBankAPI.logLevel = logLevel
 
             // Initialize GiniBankAPI
+            let sessionManager = createSessionManager()
+            let documentService = DefaultDocumentService(sessionManager: sessionManager, apiDomain: api)
+            let paymentService = PaymentService(sessionManager: sessionManager, apiDomain: api)
+            let configurationService = ClientConfigurationService(sessionManager: sessionManager, apiDomain: api)
+
+            return GiniBankAPI(documentService: documentService, 
+                               paymentService: paymentService,
+                               configurationService: configurationService)
+        }
+        
+        private func createSessionManager() -> SessionManager {
             switch api {
             case .default:
-                let sessionManager = SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
-                return GiniBankAPI(documentService: DefaultDocumentService(sessionManager: sessionManager), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
+                return SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
             case .custom(_, _, let tokenSource):
-                var sessionManager : SessionManager
                 if let tokenSource = tokenSource {
-                    sessionManager = SessionManager(alternativeTokenSource: tokenSource, sessionDelegate: self.sessionDelegate)
+                    return SessionManager(alternativeTokenSource: tokenSource, sessionDelegate: self.sessionDelegate)
                 } else {
-                    sessionManager = SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
+                    return SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
                 }
-                return GiniBankAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, apiDomain: api), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: api))
-            case let .gym(tokenSource):
-                let sessionManager = SessionManager(alternativeTokenSource: tokenSource, sessionDelegate: self.sessionDelegate)
-                return GiniBankAPI(documentService: DefaultDocumentService(sessionManager:
-                                                                            sessionManager), paymentService: PaymentService(sessionManager: sessionManager))
             }
         }
-                
+        
         private func save(_ client: Client) {
             do {
                 try KeychainStore().save(item: KeychainManagerItem(key: .clientId,

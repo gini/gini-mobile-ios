@@ -49,6 +49,9 @@ extension UIViewController {
                                  confirmActionTitle: confirmActionTitle,
                                  confirmAction: positiveAction)
 
+        AnalyticsManager.track(event: .errorDialogShown,
+                               screenName: .camera,
+                               properties: [AnalyticsProperty(key: .errorMessage, value: message)])
         present(dialog, animated: true, completion: nil)
     }
 
