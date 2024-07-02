@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "img_button_app_store_english.pdf",
+      "filename" : "gm.appStoreIcon.black.en 1.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,11 +11,11 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Download_on_the_App_Store_Badge_US-UK_RGB_wht_092917 1.pdf",
+      "filename" : "gm.appStoreIcon.white.en 1.pdf",
       "idiom" : "universal"
     },
     {
-      "filename" : "img_button_app_store_german.pdf",
+      "filename" : "gm.appStoreIcon.black.de.pdf",
       "idiom" : "universal",
       "locale" : "de"
     },
@@ -26,12 +26,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Download_on_the_App_Store_Badge_DE_RGB_wht_092917 1.pdf",
+      "filename" : "gm.appStoreIcon.white.de.pdf",
       "idiom" : "universal",
       "locale" : "de"
     },
     {
-      "filename" : "img_button_app_store_english 1.pdf",
+      "filename" : "gm.appStoreIcon.black.en.pdf",
       "idiom" : "universal",
       "locale" : "en"
     },
@@ -42,7 +42,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Download_on_the_App_Store_Badge_US-UK_RGB_wht_092917.pdf",
+      "filename" : "gm.appStoreIcon.white.en.pdf",
       "idiom" : "universal",
       "locale" : "en"
     }
