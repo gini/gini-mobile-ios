@@ -31,8 +31,8 @@ enum GiniLocalized {
      
      - Returns: The localized string for the given key.
      */
-    static func customLocalization(_ key: String, fallbackKey: String? = nil, comment: String) -> String {
-        let locale = GiniHealthConfiguration.shared.localization?.rawValue
+    static func string(_ key: String, fallbackKey: String? = nil, comment: String) -> String {
+        let locale = GiniHealthConfiguration.shared.customLocalization?.rawValue
         let clientAppBundle = Bundle.main
         
         if let clientString = overridedString(key, locale: locale, comment: comment, bundle: clientAppBundle) {
