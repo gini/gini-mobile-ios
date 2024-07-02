@@ -1,50 +1,50 @@
 //
-//  AnalyticsProperties.swift
+//  GiniAnalyticsProperties.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 
-public struct AnalyticsProperty {
-    public let key: AnalyticsPropertyKey
-    public var value: AnalyticsPropertyValue
+public struct GiniAnalyticsProperty {
+    public let key: GiniAnalyticsPropertyKey
+    public var value: GiniAnalyticsPropertyValue
 
-    public init(key: AnalyticsPropertyKey, value: AnalyticsPropertyValue) {
+    public init(key: GiniAnalyticsPropertyKey, value: GiniAnalyticsPropertyValue) {
         self.key = key
         self.value = value
     }
 }
 
-public protocol AnalyticsPropertyValue {
+public protocol GiniAnalyticsPropertyValue {
     func analyticsPropertyValue() -> Self
 }
 
-extension String: AnalyticsPropertyValue {
+extension String: GiniAnalyticsPropertyValue {
     public func analyticsPropertyValue() -> String {
         return self
     }
 }
 
-extension Int: AnalyticsPropertyValue {
+extension Int: GiniAnalyticsPropertyValue {
     public func analyticsPropertyValue() -> Int {
         return self
     }
 }
 
-extension Bool: AnalyticsPropertyValue {
+extension Bool: GiniAnalyticsPropertyValue {
     public func analyticsPropertyValue() -> Bool {
         return self
     }
 }
 
-extension Array: AnalyticsPropertyValue where Element == String {
+extension Array: GiniAnalyticsPropertyValue where Element == String {
     public func analyticsPropertyValue() -> [String] {
         return self
     }
 }
 
-public enum AnalyticsPropertyKey: String {
+public enum GiniAnalyticsPropertyKey: String {
     case screenName = "screen"
 
     case flashActive = "flash_active"

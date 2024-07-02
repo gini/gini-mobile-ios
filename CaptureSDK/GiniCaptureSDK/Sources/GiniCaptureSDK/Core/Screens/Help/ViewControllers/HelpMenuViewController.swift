@@ -59,17 +59,17 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        sendAnalyticsEventScreenShown()
+        sendGiniAnalyticsEventScreenShown()
     }
 
-    private func sendAnalyticsEventScreenShown() {
+    private func sendGiniAnalyticsEventScreenShown() {
         guard dataSource.helpItemsAnalyticsValues.isNotEmpty else { return }
-        var eventProperties = [AnalyticsProperty(key: .hasCustomItems,
+        var eventProperties = [GiniAnalyticsProperty(key: .hasCustomItems,
                                                  value: giniConfiguration.customMenuItems.isNotEmpty)]
 
-        eventProperties.append(AnalyticsProperty(key: .helpItems,
+        eventProperties.append(GiniAnalyticsProperty(key: .helpItems,
                                                  value: dataSource.helpItemsAnalyticsValues))
-        AnalyticsManager.trackScreenShown(screenName: .help,
+        GiniAnalyticsManager.trackScreenShown(screenName: .help,
                                           properties: eventProperties)
     }
 
@@ -152,10 +152,10 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
 extension HelpMenuViewController: HelpMenuDataSourceDelegate {
     func didSelectHelpItem(at index: Int) {
         let item = dataSource.items[index]
-        AnalyticsManager.track(event: .helpItemTapped,
-                               screenName: .help,
-                               properties: [AnalyticsProperty(key: .itemTapped,
-                                                             value: item.title)])
+        GiniAnalyticsManager.track(event: .helpItemTapped,
+                                   screenName: .help,
+                                   properties: [GiniAnalyticsProperty(key: .itemTapped,
+                                                                      value: item.title)])
         delegate?.help(self, didSelect: item)
     }
 }

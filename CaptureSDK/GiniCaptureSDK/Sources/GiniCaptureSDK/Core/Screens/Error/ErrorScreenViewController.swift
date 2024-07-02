@@ -94,20 +94,20 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func sendAnalyticsScreenShown() {
-        var eventProperties = [AnalyticsProperty(key: .documentType,
-                                                 value: AnalyticsMapper.documentTypeAnalytics(from: documentType))]
+        var eventProperties = [GiniAnalyticsProperty(key: .documentType,
+                                                 value: GiniAnalyticsMapper.documentTypeAnalytics(from: documentType))]
 
         let errorAnalytics = errorType.errorAnalytics()
-        eventProperties.append(AnalyticsProperty(key: .errorType, value: errorAnalytics.type))
+        eventProperties.append(GiniAnalyticsProperty(key: .errorType, value: errorAnalytics.type))
         if let code = errorAnalytics.code {
-            eventProperties.append(AnalyticsProperty(key: .errorCode, value: code))
+            eventProperties.append(GiniAnalyticsProperty(key: .errorCode, value: code))
         }
 
         if let reason = errorAnalytics.reason {
-            eventProperties.append(AnalyticsProperty(key: .errorMessage, value: reason))
+            eventProperties.append(GiniAnalyticsProperty(key: .errorMessage, value: reason))
         }
 
-        AnalyticsManager.trackScreenShown(screenName: .error,
+        GiniAnalyticsManager.trackScreenShown(screenName: .error,
                                           properties: eventProperties)
     }
 
@@ -174,17 +174,17 @@ class ErrorScreenViewController: UIViewController {
     }
 
     @objc func didPressEnterManually() {
-        AnalyticsManager.track(event: .enterManuallyTapped, screenName: .error)
+        GiniAnalyticsManager.track(event: .enterManuallyTapped, screenName: .error)
         viewModel.didPressEnterManually()
     }
 
     @objc func didPressRetake() {
-        AnalyticsManager.track(event: .backToCameraTapped, screenName: .error)
+        GiniAnalyticsManager.track(event: .backToCameraTapped, screenName: .error)
         viewModel.didPressRetake()
     }
 
     @objc func didPressCancel() {
-        AnalyticsManager.track(event: .closeTapped, screenName: .error)
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .error)
         viewModel.didPressCancel()
     }
 

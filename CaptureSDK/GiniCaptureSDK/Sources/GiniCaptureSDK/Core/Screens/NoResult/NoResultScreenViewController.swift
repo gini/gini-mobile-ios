@@ -112,9 +112,9 @@ final class NoResultScreenViewController: UIViewController {
         super.viewDidLoad()
         self.setupView()
 
-        let eventProperties = [AnalyticsProperty(key: .documentType,
-                                                 value: AnalyticsMapper.documentTypeAnalytics(from: type))]
-        AnalyticsManager.trackScreenShown(screenName: .noResults,
+        let eventProperties = [GiniAnalyticsProperty(key: .documentType,
+                                                 value: GiniAnalyticsMapper.documentTypeAnalytics(from: type))]
+        GiniAnalyticsManager.trackScreenShown(screenName: .noResults,
                                           properties: eventProperties)
     }
 
@@ -247,17 +247,17 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     @objc func didPressEnterManually() {
-        AnalyticsManager.track(event: .enterManuallyTapped, screenName: .noResults)
+        GiniAnalyticsManager.track(event: .enterManuallyTapped, screenName: .noResults)
         viewModel.didPressEnterManually()
     }
 
     @objc func didPressRetake() {
-        AnalyticsManager.track(event: .retakeImagesTapped, screenName: .noResults)
+        GiniAnalyticsManager.track(event: .retakeImagesTapped, screenName: .noResults)
         viewModel.didPressRetake()
     }
 
     @objc func didPressCancel() {
-        AnalyticsManager.track(event: .closeTapped, screenName: .noResults)
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .noResults)
         viewModel.didPressCancel()
     }
 

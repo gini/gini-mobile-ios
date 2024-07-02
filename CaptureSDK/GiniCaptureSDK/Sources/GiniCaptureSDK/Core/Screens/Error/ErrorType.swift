@@ -60,8 +60,8 @@ import GiniBankAPILibrary
             self = .unexpected
         }
 
-        // Generate error analytics using AnalyticsMapper
-        let errorAnalytics = AnalyticsMapper.errorAnalytics(from: error)
+        // Generate error analytics using GiniAnalyticsMapper
+        let errorAnalytics = GiniAnalyticsMapper.errorAnalytics(from: error)
         // Store error analytics in the dictionary
         ErrorType.errorAnalyticsDictionary[self] = errorAnalytics
     }

@@ -40,25 +40,25 @@ public final class CameraButtonsViewModel {
         isFlashOn = !isFlashOn
         flashAction?(isFlashOn)
 
-        AnalyticsManager.track(event: .flashTapped,
-                               screenName: .camera,
-                               properties: [AnalyticsProperty(key: .flashActive, value: isFlashOn)])
+        GiniAnalyticsManager.track(event: .flashTapped,
+                                   screenName: .camera,
+                                   properties: [GiniAnalyticsProperty(key: .flashActive, value: isFlashOn)])
     }
-
+    
     @objc func importPressed() {
-        AnalyticsManager.track(event: .importFilesTapped, screenName: .camera)
+        GiniAnalyticsManager.track(event: .importFilesTapped, screenName: .camera)
         importAction?()
     }
-
+    
     @objc func thumbnailPressed() {
-        AnalyticsManager.track(event: .multiplePagesCapturedTapped,
-                               screenName: .camera,
-                               properties: [AnalyticsProperty(key: .numberOfPagesScanned, value: images.count)])
+        GiniAnalyticsManager.track(event: .multiplePagesCapturedTapped,
+                                   screenName: .camera,
+                                   properties: [GiniAnalyticsProperty(key: .numberOfPagesScanned, value: images.count)])
         imageStackAction?()
     }
-
+    
     @objc func cancelPressed() {
-        AnalyticsManager.track(event: .closeTapped, screenName: .camera)
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .camera)
         cancelAction?()
     }
 

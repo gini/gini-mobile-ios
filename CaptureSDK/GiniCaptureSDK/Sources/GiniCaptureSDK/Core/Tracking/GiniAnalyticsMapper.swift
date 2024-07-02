@@ -1,5 +1,5 @@
 //
-//  AnalyticsMapper.swift
+//  GiniAnalyticsMapper.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -10,7 +10,7 @@ import GiniBankAPILibrary
 /**
  A utility class for mapping different types to their respective analytics representations.
  */
-class AnalyticsMapper {
+class GiniAnalyticsMapper {
 
     /**
      Converts a `NoResultScreenViewController.NoResultType` to its analytics string representation.
