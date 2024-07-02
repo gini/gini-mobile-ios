@@ -9,6 +9,7 @@ import UIKit
 internal class IOSSystem {
     private let device = UIDevice.current
     let manufacturer: String = "Apple"
+    let platform: String = "iOS"
 
     var model: String {
         return deviceModel()
@@ -26,7 +27,6 @@ internal class IOSSystem {
         return device.systemVersion
     }
 
-   let platform: String = "iOS"
 
     var systemLanguage: String? {
         return Locale.preferredLanguages.first
