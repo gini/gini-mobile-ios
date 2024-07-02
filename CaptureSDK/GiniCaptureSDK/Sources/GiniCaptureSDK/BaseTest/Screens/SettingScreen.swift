@@ -8,7 +8,7 @@
 import Foundation
 import XCTest
 
-public class ConfigurationScreen {
+public class SettingScreen {
     
     let app: XCUIApplication
     let closeButton: XCUIElement

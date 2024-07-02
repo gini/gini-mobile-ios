@@ -6,7 +6,7 @@
 
 
 import Foundation
-enum HelpScreenAccessibilityIdentifier:String {
+enum HelpScreenAccessibilityIdentifier: String {
     case cameraBackButton = "cameraBackButtonIdentifier"
     case tipsForBestResultLabel = "tipsForBestResultLabelIdentifier"
     case supportedFormatsLabel = "supportedFormatsLabelIdentifier"

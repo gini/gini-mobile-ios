@@ -6,7 +6,7 @@
 
 
 import Foundation
-public enum MainScreenAccessibilityIdentifier:String{
+public enum MainScreenAccessibilityIdentifier: String {
     case photoPaymentButton = "photoPaymentButtonIdentifier"
     case cameraIconButton = "cameraIconButtonIdentifier"
     case ibanTextField = "ibanTextFieldIdentifier"

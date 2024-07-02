@@ -74,8 +74,8 @@
 		83D02CD7290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */; };
 		83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */; };
 		83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CDA290AC86300DA97F7 /* NibLoading.swift */; };
+		D75720A72C33DE8600086EC3 /* GiniMainScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75720A62C33DE8600086EC3 /* GiniMainScreenUITests.swift */; };
 		D7E50A622C32D0AD004C1CBF /* GiniBankSDKExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E50A612C32D0AD004C1CBF /* GiniBankSDKExampleUITests.swift */; };
-		D7E50A6B2C32D0D6004C1CBF /* MainScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E50A6A2C32D0D6004C1CBF /* MainScreenUITests.swift */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
 		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
 		F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F426ABF0289AB1D7007F4EB6 /* Colors.xcassets */; };
@@ -233,9 +233,9 @@
 		83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomOnboardingBottomNavigationBar.xib; sourceTree = "<group>"; };
 		83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingBottomNavigationBar.swift; sourceTree = "<group>"; };
 		83D02CDA290AC86300DA97F7 /* NibLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoading.swift; sourceTree = "<group>"; };
+		D75720A62C33DE8600086EC3 /* GiniMainScreenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMainScreenUITests.swift; sourceTree = "<group>"; };
 		D7E50A5F2C32D0AD004C1CBF /* GiniBankSDKExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7E50A612C32D0AD004C1CBF /* GiniBankSDKExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankSDKExampleUITests.swift; sourceTree = "<group>"; };
-		D7E50A6A2C32D0D6004C1CBF /* MainScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainScreenUITests.swift; path = ../../../../../../GiniBankSDKExampleUITests/MainScreenUITests.swift; sourceTree = "<group>"; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAnalysisHelper.swift; sourceTree = "<group>"; };
@@ -448,8 +448,8 @@
 		D7E50A602C32D0AD004C1CBF /* GiniBankSDKExampleUITests */ = {
 			isa = PBXGroup;
 			children = (
-				D7E50A6A2C32D0D6004C1CBF /* MainScreenUITests.swift */,
 				D7E50A612C32D0AD004C1CBF /* GiniBankSDKExampleUITests.swift */,
+				D75720A62C33DE8600086EC3 /* GiniMainScreenUITests.swift */,
 			);
 			path = GiniBankSDKExampleUITests;
 			sourceTree = "<group>";
@@ -923,7 +923,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7E50A6B2C32D0D6004C1CBF /* MainScreenUITests.swift in Sources */,
+				D75720A72C33DE8600086EC3 /* GiniMainScreenUITests.swift in Sources */,
 				D7E50A622C32D0AD004C1CBF /* GiniBankSDKExampleUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1143,7 +1143,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = gini.net.GiniBankSDKExampleUITests;
@@ -1167,7 +1167,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = gini.net.GiniBankSDKExampleUITests;
