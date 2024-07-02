@@ -6,7 +6,7 @@
 
 
 import Foundation
-enum CaptureScreenAccessibilityIdentifier:String {
+enum CaptureScreenAccessibilityIdentifier: String {
     case captureButton = "captureButtonIdentifier"
     case flashButton = "flashButtonIdentifier"
     case filesUploadButton = "filesIconButtonIdentifier"

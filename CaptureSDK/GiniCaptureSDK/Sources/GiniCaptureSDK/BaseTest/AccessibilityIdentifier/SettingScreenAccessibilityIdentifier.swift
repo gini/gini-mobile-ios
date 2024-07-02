@@ -6,7 +6,7 @@
 
 
 import Foundation
-enum ConfigurationScreenAccessibilityIdentifier:String{
+enum SettingScreenAccessibilityIdentifier: String {
     case closeButton = "closeButtonIdentifier"
     case qrCodeScanSwitch = "qrCodeScanSwitchIdentifier"
     case qrCodeScanOnlySwitch = "qrCodeScanOnlySwitchIdentifier"

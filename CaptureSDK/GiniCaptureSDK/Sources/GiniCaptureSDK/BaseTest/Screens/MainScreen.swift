@@ -8,7 +8,7 @@
 import Foundation
 import XCTest
 
-public class MainScreen{
+public class MainScreen {
     let app: XCUIApplication
     let photoPaymentButton: XCUIElement
     let cameraIconButton: XCUIElement

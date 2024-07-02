@@ -19,7 +19,6 @@ class GiniBankSDKExampleUITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments = ["testing"]
         app.launch()
-        print("we launch app")
     }
     
     override func tearDown() {
@@ -35,15 +34,15 @@ class GiniBankSDKExampleUITests: XCTestCase {
         return MainScreen(app: app)
     }
     
-    func initializeConfigurationScreen() -> ConfigurationScreen {
-        return ConfigurationScreen(app: app)
+    func initializeSettingScreen() -> SettingScreen {
+        return SettingScreen(app: app)
     }
     
     func initializeCaptureScreen() -> CaptureScreen {
         return CaptureScreen(app: app)
     }
     
-    func initializeHelpScreenz() -> HelpScreen {
+    func initializeHelpScreen() -> HelpScreen {
         return HelpScreen(app: app)
     }
 }
