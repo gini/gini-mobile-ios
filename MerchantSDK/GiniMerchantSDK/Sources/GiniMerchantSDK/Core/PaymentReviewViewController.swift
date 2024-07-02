@@ -11,17 +11,6 @@ import GiniHealthAPILibrary
 public final class PaymentReviewViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var pageControl: UIPageControl!
     @IBOutlet weak var pageControlHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var recipientTextFieldView: TextFieldWithLabelView!
-    @IBOutlet weak var ibanTextFieldView: TextFieldWithLabelView!
-    @IBOutlet weak var amountTextFieldView: TextFieldWithLabelView!
-    @IBOutlet weak var usageTextFieldView: TextFieldWithLabelView!
-    @IBOutlet weak var payButtonStackView: UIStackView!
-    @IBOutlet var paymentInputFieldsErrorLabels: [UILabel]!
-    @IBOutlet var usageErrorLabel: UILabel!
-    @IBOutlet var amountErrorLabel: UILabel!
-    @IBOutlet var ibanErrorLabel: UILabel!
-    @IBOutlet var recipientErrorLabel: UILabel!
-    @IBOutlet var paymentInputFields: [TextFieldWithLabelView]!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet var inputContainer: UIView!
     @IBOutlet var containerCollectionView: UIView!
@@ -31,34 +20,20 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet weak var infoBar: UIView!
     @IBOutlet weak var infoBarLabel: UILabel!
     @IBOutlet weak var bottomView: UIView!
+
     var model: PaymentReviewModel?
-    var amountToPay = Price(value: 0, currencyCode: "€")
-    var lastValidatedIBAN = ""
     private var showInfoBarOnce = true
-    
-    private lazy var payInvoiceButton: PaymentPrimaryButton = {
-        let button = PaymentPrimaryButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.buttonViewHeight)
-        return button
-    }()
-    
-    private lazy var poweredByGiniView: PoweredByGiniView = {
-        let view = PoweredByGiniView()
-        view.viewModel = PoweredByGiniViewModel()
+
+    lazy var paymentInfoContainerView: PaymentReviewContainerView = {
+        let view = PaymentReviewContainerView()
+        view.frame = inputContainer.bounds
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     var selectedPaymentProvider: PaymentProvider!
-    
+
     public weak var trackingDelegate: GiniMerchantTrackingDelegate?
-    
-    enum TextFieldType: Int {
-        case recipientFieldTag = 1
-        case ibanFieldTag
-        case amountFieldTag
-        case usageFieldTag
-    }
     
     public static func instantiate(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniMerchantTrackingDelegate? = nil) -> PaymentReviewViewController {
         let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniMerchantBundle())
@@ -92,8 +67,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         super.viewDidLoad()
         subscribeOnNotifications()
         dismissKeyboardOnTap()
-        configureUI()
         setupViewModel()
+        configureUI()
+
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -105,13 +81,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func setupViewModel() {
-        model?.onExtractionFetched = { [weak self] () in
-            DispatchQueue.main.async {
-                self?.fillInInputFields()
-            }
-        }
-        
-        model?.updateImagesLoadingStatus = { [weak self] () in
+            model?.updateImagesLoadingStatus = { [weak self] () in
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isImagesLoading ?? false
                 if isLoading {
@@ -166,6 +136,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         model?.fetchImages()
         
         model?.viewModelDelegate = self
+
+        paymentInfoContainerView.model = PaymentReviewContainerViewModel(extractions: model?.extractions ?? [], selectedPaymentProvider: selectedPaymentProvider)
     }
 
     override public func viewDidDisappear(_ animated: Bool) {
@@ -186,14 +158,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     fileprivate func configureUI() {
         configureScreenBackgroundColor()
         configureCollectionView()
-        configurePaymentInputFields()
         configurePageControl()
         configureCloseButton()
-        configurePayButtonInitialState()
-        configurePoweredByGiniView()
-        hideErrorLabels()
-        fillInInputFields()
-        addDoneButtonForNumPad(amountTextFieldView)
+        configurePaymentInfoContainerView()
     }
     
     // MARK: - Info bar
@@ -235,25 +202,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                        })
     }
     
-    fileprivate func configurePayButtonInitialState() {
-        payButtonStackView.addArrangedSubview(payInvoiceButton)
-        guard let model else { return }
-        payInvoiceButton.configure(with: giniMerchantConfiguration.primaryButtonConfiguration)
-        payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider.colors,
-                                         text: model.payInvoiceLabelText,
-                                         leftImageData: selectedPaymentProvider.iconData)
-        disablePayButtonIfNeeded()
-        payInvoiceButton.didTapButton = { [weak self] in
-            self?.payButtonClicked()
-        }
-    }
-    
-    fileprivate func configurePaymentInputFields() {
-        for field in paymentInputFields {
-            applyDefaultStyle(field)
-        }
-    }
-    
     fileprivate func configureCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -288,250 +236,22 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         inputContainer.backgroundColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark7,
                                                    darkModeColor: UIColor.GiniMerchantColors.light7).uiColor()
     }
-    
-    fileprivate func configurePoweredByGiniView() {
-        bottomView.addSubview(poweredByGiniView)
-        setupPoweredByGiniConstraints()
-    }
-    
-    private func setupPoweredByGiniConstraints() {
+
+    fileprivate func configurePaymentInfoContainerView() {
+        inputContainer.addSubview(paymentInfoContainerView)
+
+        paymentInfoContainerView.onPayButtonClicked = {
+            self.payButtonClicked()
+        }
+
         NSLayoutConstraint.activate([
-            poweredByGiniView.topAnchor.constraint(equalTo: bottomView.topAnchor),
-            poweredByGiniView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor),
-            poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor)
+            paymentInfoContainerView.topAnchor.constraint(equalTo: inputContainer.topAnchor),
+            paymentInfoContainerView.leadingAnchor.constraint(equalTo: inputContainer.leadingAnchor),
+            paymentInfoContainerView.bottomAnchor.constraint(equalTo: inputContainer.bottomAnchor),
+            paymentInfoContainerView.trailingAnchor.constraint(equalTo: inputContainer.trailingAnchor)
         ])
     }
-    
-    // MARK: - Input fields configuration
 
-    fileprivate func applyDefaultStyle(_ textFieldView: TextFieldWithLabelView) {
-        textFieldView.configure(configuration: giniMerchantConfiguration.defaultStyleInputFieldConfiguration)
-        textFieldView.customConfigure(labelTitle: inputFieldPlaceholderText(textFieldView))
-        textFieldView.textField.delegate = self
-        textFieldView.textField.tag = textFieldView.tag
-        textFieldView.layer.masksToBounds = true
-    }
-
-    fileprivate func applyErrorStyle(_ textFieldView: TextFieldWithLabelView) {
-        UIView.animate(withDuration: Constants.animationDuration) {
-            textFieldView.configure(configuration: self.giniMerchantConfiguration.errorStyleInputFieldConfiguration)
-            textFieldView.layer.masksToBounds = true
-        }
-    }
-
-    func applySelectionStyle(_ textFieldView: TextFieldWithLabelView) {
-        UIView.animate(withDuration: Constants.animationDuration) { [self] in
-            textFieldView.configure(configuration: self.giniMerchantConfiguration.selectionStyleInputFieldConfiguration)
-            textFieldView.layer.masksToBounds = true
-        }
-    }
-
-    @objc fileprivate func doneWithAmountInputButtonTapped() {
-        amountTextFieldView.textField.endEditing(true)
-        amountTextFieldView.textField.resignFirstResponder()
-        
-        if amountTextFieldView.textField.hasText && !amountTextFieldView.textField.isReallyEmpty {
-            updateAmoutToPayWithCurrencyFormat()
-        }
-    }
-
-     func addDoneButtonForNumPad(_ textFieldView: TextFieldWithLabelView) {
-         let toolbarDone = UIToolbar(frame:CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.heightToolbar))
-         toolbarDone.sizeToFit()
-         let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-         let barBtnDone = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonItem.SystemItem.done,
-                                               target: self, 
-                                               action: #selector(PaymentReviewViewController.doneWithAmountInputButtonTapped))
-        
-         toolbarDone.items = [flexBarButton, barBtnDone]
-         textFieldView.textField.inputAccessoryView = toolbarDone
-    }
-    
-    fileprivate func inputFieldPlaceholderText(_ textFieldView: TextFieldWithLabelView) -> String {
-        if let fieldIdentifier = TextFieldType(rawValue: textFieldView.tag) {
-            switch fieldIdentifier {
-            case .recipientFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder",
-                                                        comment: "placeholder text for recipient input field")
-            case .ibanFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder",
-                                                        comment: "placeholder text for iban input field")
-            case .amountFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder",
-                                                        comment: "placeholder text for amount input field")
-            case .usageFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
-                                                        comment: "placeholder text for usage input field")
-            }
-        }
-        return ""
-    }
-    
-    // MARK: - Input fields validation
-    
-    @IBAction func textFieldChanged(_ sender: UITextField) {
-        disablePayButtonIfNeeded()
-    }
-    
-    func validateTextField(_ textFieldViewTag: Int) {
-        let textFieldView = textFieldViewWithTag(tag: textFieldViewTag)
-        if let fieldIdentifier = TextFieldType(rawValue: textFieldViewTag) {
-            switch fieldIdentifier {
-            case .amountFieldTag:
-                if amountTextFieldView.textField.hasText && !amountTextFieldView.textField.isReallyEmpty  {
-                    let decimalPart = amountToPay.value
-                    if decimalPart > 0 {
-                        applyDefaultStyle(textFieldView)
-                        hideErrorLabel(textFieldTag: fieldIdentifier)
-                    } else {
-                        amountTextFieldView.text = ""
-                        applyErrorStyle(textFieldView)
-                        showErrorLabel(textFieldTag: fieldIdentifier)
-                    }
-                } else {
-                    applyErrorStyle(textFieldView)
-                    showErrorLabel(textFieldTag: fieldIdentifier)
-                }
-            case .ibanFieldTag, .recipientFieldTag, .usageFieldTag:
-                if textFieldView.textField.hasText && !textFieldView.textField.isReallyEmpty {
-                    applyDefaultStyle(textFieldView)
-                    hideErrorLabel(textFieldTag: fieldIdentifier)
-                } else {
-                    applyErrorStyle(textFieldView)
-                    showErrorLabel(textFieldTag: fieldIdentifier)
-                }
-            }
-        }
-    }
-    
-    func textFieldViewWithTag(tag: Int) -> TextFieldWithLabelView {
-        paymentInputFields.first(where: { $0.tag == tag }) ?? TextFieldWithLabelView()
-    }
-    
-    fileprivate func validateIBANTextField(){
-        if let ibanText = ibanTextFieldView.textField.text, ibanTextFieldView.textField.hasText {
-            if IBANValidator().isValid(iban: ibanText) {
-                applyDefaultStyle(ibanTextFieldView)
-                hideErrorLabel(textFieldTag: .ibanFieldTag)
-            } else {
-                applyErrorStyle(ibanTextFieldView)
-                showValidationErrorLabel(textFieldTag: .ibanFieldTag)
-            }
-        } else {
-            applyErrorStyle(ibanTextFieldView)
-            showErrorLabel(textFieldTag: .ibanFieldTag)
-        }
-    }
-    
-    func showIBANValidationErrorIfNeeded(){
-        if IBANValidator().isValid(iban: lastValidatedIBAN) {
-            applyDefaultStyle(ibanTextFieldView)
-            hideErrorLabel(textFieldTag: .ibanFieldTag)
-        } else {
-            applyErrorStyle(ibanTextFieldView)
-            showValidationErrorLabel(textFieldTag: .ibanFieldTag)
-        }
-    }
-
-    fileprivate func validateAllInputFields() {
-        for textField in paymentInputFields {
-            validateTextField(textField.tag)
-        }
-    }
-    
-    fileprivate func hideErrorLabels() {
-        for errorLabel in paymentInputFieldsErrorLabels {
-            errorLabel.isHidden = true
-        }
-    }
-    
-    fileprivate func fillInInputFields() {
-        guard let model else { return }
-        recipientTextFieldView.text = model.extractions.first(where: {$0.name == "payment_recipient"})?.value
-        ibanTextFieldView.text = model.extractions.first(where: {$0.name == "iban"})?.value
-        usageTextFieldView.text = model.extractions.first(where: {$0.name == "payment_purpose"})?.value
-        if let amountString = model.extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
-            self.amountToPay = amountToPay
-            let amountToPayText = amountToPay.string
-            amountTextFieldView.text = amountToPayText
-        }
-        validateAllInputFields()
-        disablePayButtonIfNeeded()
-    }
-    
-    func disablePayButtonIfNeeded() {
-        payInvoiceButton.superview?.alpha = paymentInputFields.allSatisfy({ !$0.textField.isReallyEmpty }) && amountToPay.value > 0 ? 1 : 0.4
-    }
-
-
-    fileprivate func showErrorLabel(textFieldTag: TextFieldType) {
-        var errorLabel = UILabel()
-        var errorMessage = ""
-        switch textFieldTag {
-        case .recipientFieldTag:
-            errorLabel = recipientErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.recipient.non.empty.check",
-                                                            comment: " recipient failed non empty check")
-        case .ibanFieldTag:
-            errorLabel = ibanErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.non.empty.check",
-                                                            comment: "iban failed non empty check")
-        case .amountFieldTag:
-            errorLabel = amountErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.amount.non.empty.check",
-                                                            comment: "amount failed non empty check")
-        case .usageFieldTag:
-            errorLabel = usageErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.purpose.non.empty.check",
-                                                            comment: "purpose failed non empty check")
-        }
-        if errorLabel.isHidden {
-            errorLabel.isHidden = false
-            errorLabel.textColor = UIColor.GiniMerchantColors.feedback1
-            errorLabel.text = errorMessage
-        }
-    }
-    
-    fileprivate func showValidationErrorLabel(textFieldTag: TextFieldType) {
-        var errorLabel = UILabel()
-        var errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.default.textfield.validation.check",
-                                                            comment: "the field failed non empty check")
-        switch textFieldTag {
-        case .recipientFieldTag:
-            errorLabel = recipientErrorLabel
-        case .ibanFieldTag:
-            errorLabel = ibanErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.validation.check",
-                                                            comment: "iban failed validation check")
-        case .amountFieldTag:
-            errorLabel = amountErrorLabel
-        case .usageFieldTag:
-            errorLabel = usageErrorLabel
-        }
-        if errorLabel.isHidden {
-            errorLabel.isHidden = false
-            errorLabel.textColor = UIColor.GiniMerchantColors.feedback1
-            errorLabel.text = errorMessage
-        }
-    }
-
-    func hideErrorLabel(textFieldTag: TextFieldType) {
-        var errorLabel = UILabel()
-        switch textFieldTag {
-        case .recipientFieldTag:
-            errorLabel = recipientErrorLabel
-        case .ibanFieldTag:
-            errorLabel = ibanErrorLabel
-        case .amountFieldTag:
-            errorLabel = amountErrorLabel
-        case .usageFieldTag:
-            errorLabel = usageErrorLabel
-        }
-        if !errorLabel.isHidden {
-            errorLabel.isHidden = true
-        }
-        disablePayButtonIfNeeded()
-    }
     
     // MARK: - Pay Button Action
     func payButtonClicked() {
@@ -539,11 +259,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         event.info = ["paymentProvider": selectedPaymentProvider.name]
         trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         view.endEditing(true)
-        validateAllInputFields()
-        validateIBANTextField()
-        if let iban = ibanTextFieldView.text {
-            lastValidatedIBAN = iban
-        }
         
         if selectedPaymentProvider.gpcSupportedPlatforms.contains(.ios) {
             guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
@@ -551,7 +266,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                 return
             }
 
-            checkForErrors()
+            if paymentInfoContainerView.noErrorsFound() {
+                createPaymentRequest()
+            }
         } else if selectedPaymentProvider.openWithSupportedPlatforms.contains(.ios) {
             if model?.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
                 model?.openOnboardingShareInvoiceBottomSheet()
@@ -560,40 +277,22 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             }
         }
     }
-    
-    func checkForErrors() {
-        // check if no errors labels are shown
-        if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
-            createPaymentRequest()
-        }
-    }
-    
+
     private func createPaymentRequest() {
-        if !amountTextFieldView.textField.isReallyEmpty {
-            let paymentInfo = obtainPaymentInfo()
+        if !paymentInfoContainerView.isTextFieldEmpty(texFieldType: .amountFieldTag) {
+            let paymentInfo = paymentInfoContainerView.obtainPaymentInfo()
             model?.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
                 self?.model?.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)
             })
             sendFeedback(paymentInfo: paymentInfo)
         }
     }
-    
-    func obtainPaymentInfo() -> PaymentInfo {
-        let amountText = amountToPay.extractionString
-        let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "",
-                                      iban: ibanTextFieldView.text ?? "",
-                                      bic: "", amount: amountText,
-                                      purpose: usageTextFieldView.text ?? "",
-                                      paymentUniversalLink: selectedPaymentProvider.universalLinkIOS,
-                                      paymentProviderId: selectedPaymentProvider.id)
-        return paymentInfo
-    }
-    
+
     private func sendFeedback(paymentInfo: PaymentInfo) {
         let paymentRecipientExtraction = Extraction(box: nil,
                                                     candidates: "",
                                                     entity: "text",
-                                                    value: recipientTextFieldView.text ?? "",
+                                                    value: paymentInfoContainerView.textFieldText(texFieldType: .recipientFieldTag) ?? "",
                                                     name: "payment_recipient")
         let ibanExtraction = Extraction(box: nil,
                                         candidates: "",
