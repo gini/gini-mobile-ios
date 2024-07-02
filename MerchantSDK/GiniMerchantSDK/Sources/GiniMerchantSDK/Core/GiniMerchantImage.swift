@@ -8,7 +8,7 @@
 import UIKit
 
 /**
- The GiniImage enumeration provides a convenient way to manage image assets within the Gini SDK, supporting customization for both light and dark modes. Each case in the enumeration represents a specific image asset used by the SDK.
+ The GiniMerchantImage enumeration provides a convenient way to manage image assets within the Gini SDK, supporting customization for both light and dark modes. Each case in the enumeration represents a specific image asset used by the SDK.
 
  - Note: The raw values for each case correspond to the image asset names in the asset catalog.
  */
