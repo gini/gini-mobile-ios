@@ -6,8 +6,8 @@
 
 import Foundation
 
-/// The `EventOptions` class holds common properties for events.
-class EventOptions {
+/// The `EventOptions` struct holds common properties for events.
+struct EventOptions {
     var userId: String?
     var time: Int64?
     var sessionId: Int64?
@@ -22,7 +22,7 @@ class EventOptions {
     var deviceBrand: String?
     var appVersion: String?
 
-    /// Initializes a new instance of the `EventOptions` class.
+    /// Initializes a new instance of the `EventOptions` struct.
     init(userId: String? = nil,
          deviceId: String? = nil,
          time: Int64? = nil,
@@ -49,24 +49,5 @@ class EventOptions {
         self.deviceModel = deviceModel
         self.deviceBrand = deviceBrand
         self.appVersion = appVersion
-    }
-
-    /// Merges the properties from another `EventOptions` instance.
-    ///
-    /// - Parameter eventOptions: The other `EventOptions` instance.
-    func mergeEventOptions(eventOptions: EventOptions) {
-        userId = eventOptions.userId ?? userId
-        deviceId = eventOptions.deviceId ?? deviceId
-        time = eventOptions.time ?? time
-        eventId = eventOptions.eventId ?? eventId
-        sessionId = eventOptions.sessionId ?? sessionId
-        appVersion = eventOptions.appVersion ?? appVersion
-        platform = eventOptions.platform ?? platform
-        osName = eventOptions.osName ?? osName
-        osVersion = eventOptions.osVersion ?? osVersion
-        deviceBrand = eventOptions.deviceBrand ?? deviceBrand
-        deviceModel = eventOptions.deviceModel ?? deviceModel
-        language = eventOptions.language ?? language
-        ip = eventOptions.ip ?? ip
     }
 }

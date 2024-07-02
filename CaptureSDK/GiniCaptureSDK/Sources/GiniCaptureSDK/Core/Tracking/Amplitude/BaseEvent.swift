@@ -6,11 +6,12 @@
 
 import Foundation
 
-/// The `BaseEvent` class represents an event with various properties and implements encoding for serialization.
-class BaseEvent: EventOptions, Encodable {
+/// The `BaseEvent` struct represents an event with various properties and implements encoding for serialization.
+struct BaseEvent: Encodable {
     var eventType: String
     var eventProperties: [String: Any]?
     var userProperties: [String: Any]?
+    var eventOptions: EventOptions
 
     enum CodingKeys: String, CodingKey {
         case eventType = "event_type"
@@ -34,62 +35,38 @@ class BaseEvent: EventOptions, Encodable {
         case ip
     }
 
-    /// Initializes a new instance of the `BaseEvent` class.
-    init(userId: String? = nil,
-         deviceId: String? = nil,
-         timestamp: Int64? = nil,
-         eventId: Int64? = nil,
-         sessionId: Int64? = nil,
-         appVersion: String? = nil,
-         platform: String? = nil,
-         osName: String? = nil,
-         osVersion: String? = nil,
-         deviceBrand: String? = nil,
-         deviceModel: String? = nil,
-         language: String? = nil,
-         ip: String? = nil,
-         eventType: String,
+    /// Initializes a new instance of the `BaseEvent` struct.
+    init(eventType: String,
          eventProperties: [String: Any]? = nil,
-         userProperties: [String: Any]? = nil) {
+         userProperties: [String: Any]? = nil,
+         eventOptions: EventOptions) {
         self.eventType = eventType
         self.eventProperties = eventProperties
         self.userProperties = userProperties
-        super.init(userId: userId,
-                   deviceId: deviceId,
-                   time: timestamp,
-                   sessionId: sessionId,
-                   platform: platform,
-                   osVersion: osVersion,
-                   osName: osName,
-                   language: language,
-                   ip: ip,
-                   eventId: eventId,
-                   deviceModel: deviceModel,
-                   deviceBrand: deviceBrand,
-                   appVersion: appVersion)
+        self.eventOptions = eventOptions
     }
 
     /// Encodes the event into the provided encoder.
     ///
     /// - Parameter encoder: The encoder to write data to.
     /// - Throws: An error if any values are invalid for the given encoder's format.
-    public func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(eventType, forKey: .eventType)
         try container.encodeIfPresent(eventProperties, forKey: .eventProperties)
         try container.encodeIfPresent(userProperties, forKey: .userProperties)
-        try container.encodeIfPresent(userId, forKey: .userId)
-        try container.encodeIfPresent(deviceId, forKey: .deviceId)
-        try container.encodeIfPresent(time, forKey: .timestamp)
-        try container.encodeIfPresent(eventId, forKey: .eventId)
-        try container.encodeIfPresent(sessionId, forKey: .sessionId)
-        try container.encodeIfPresent(appVersion, forKey: .appVersion)
-        try container.encodeIfPresent(platform, forKey: .platform)
-        try container.encodeIfPresent(osName, forKey: .osName)
-        try container.encodeIfPresent(osVersion, forKey: .osVersion)
-        try container.encodeIfPresent(deviceBrand, forKey: .deviceBrand)
-        try container.encodeIfPresent(deviceModel, forKey: .deviceModel)
-        try container.encodeIfPresent(language, forKey: .language)
-        try container.encodeIfPresent(ip, forKey: .ip)
+        try container.encodeIfPresent(eventOptions.userId, forKey: .userId)
+        try container.encodeIfPresent(eventOptions.deviceId, forKey: .deviceId)
+        try container.encodeIfPresent(eventOptions.time, forKey: .timestamp)
+        try container.encodeIfPresent(eventOptions.eventId, forKey: .eventId)
+        try container.encodeIfPresent(eventOptions.sessionId, forKey: .sessionId)
+        try container.encodeIfPresent(eventOptions.appVersion, forKey: .appVersion)
+        try container.encodeIfPresent(eventOptions.platform, forKey: .platform)
+        try container.encodeIfPresent(eventOptions.osName, forKey: .osName)
+        try container.encodeIfPresent(eventOptions.osVersion, forKey: .osVersion)
+        try container.encodeIfPresent(eventOptions.deviceBrand, forKey: .deviceBrand)
+        try container.encodeIfPresent(eventOptions.deviceModel, forKey: .deviceModel)
+        try container.encodeIfPresent(eventOptions.language, forKey: .language)
+        try container.encodeIfPresent(eventOptions.ip, forKey: .ip)
     }
 }
