@@ -1,13 +1,13 @@
 //
-//  EventOptions.swift
+//  AmplitudeEventOptions.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 
-/// The `EventOptions` struct holds common properties for events.
-struct EventOptions {
+/// The `AmplitudeEventOptions` struct holds common properties for events.
+struct AmplitudeEventOptions {
     var userId: String?
     var time: Int64?
     var sessionId: Int64?
@@ -22,7 +22,7 @@ struct EventOptions {
     var deviceBrand: String?
     var appVersion: String?
 
-    /// Initializes a new instance of the `EventOptions` struct.
+    /// Initializes a new instance of the `AmplitudeEventOptions` struct.
     init(userId: String? = nil,
          deviceId: String? = nil,
          time: Int64? = nil,

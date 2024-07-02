@@ -16,7 +16,7 @@ import UIKit
  to manage background tasks appropriately.
  */
 final class AmplitudeService {
-    private var eventQueue: [BaseEvent] = []
+    private var eventQueue: [AmplitudeBaseEvent] = []
     private var apiKey: String?
     private var timer: Timer?
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
@@ -42,7 +42,7 @@ final class AmplitudeService {
         stopEventUploadTimer()
     }
 
-    func trackEvents(_ events: [BaseEvent]) {
+    func trackEvents(_ events: [AmplitudeBaseEvent]) {
         eventQueue = events
         uploadEvents(events: events)
     }
@@ -50,16 +50,16 @@ final class AmplitudeService {
     /**
      Uploads events to the Amplitude server.
 
-     - Parameter events: An array of `BaseEvent` objects to upload.
+     - Parameter events: An array of `AmplitudeBaseEvent` objects to upload.
      */
-    private func uploadEvents(events: [BaseEvent]) {
+    private func uploadEvents(events: [AmplitudeBaseEvent]) {
         guard let url = URL(string: apiURL), let apiKey, events.isNotEmpty else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        let payload = EventsBatchPayload(apiKey: apiKey, events: events)
+        let payload = AmplitudeEventsBatchPayload(apiKey: apiKey, events: events)
 
         do {
             let jsonData = try JSONEncoder().encode(payload)
@@ -94,7 +94,7 @@ final class AmplitudeService {
     /**
      Handles the failure of an event upload by implementing an exponential backoff retry strategy.
 
-     - Parameter events: An array of `BaseEvent` objects that failed to upload.
+     - Parameter events: An array of `AmplitudeBaseEvent` objects that failed to upload.
 
      This method increments the retry attempt counter and checks if it has exceeded the maximum allowed retry attempts.
      If the maximum retries have not been reached, the method re-adds the failed events back to the event queue and
@@ -107,7 +107,7 @@ final class AmplitudeService {
      and allows it time to recover between retries.
      */
 
-    private func handleUploadFailure(events: [BaseEvent]) {
+    private func handleUploadFailure(events: [AmplitudeBaseEvent]) {
         retryAttempts += 1
         if retryAttempts <= maxRetryAttempts {
             eventQueue.append(contentsOf: events)
@@ -127,7 +127,7 @@ final class AmplitudeService {
      Starts a timer to periodically upload pending events.
      */
     private func startEventUploadTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: eventUploadInterval, 
+        timer = Timer.scheduledTimer(withTimeInterval: eventUploadInterval,
                                      repeats: true) { [weak self] _ in
             self?.uploadPendingEvents()
         }

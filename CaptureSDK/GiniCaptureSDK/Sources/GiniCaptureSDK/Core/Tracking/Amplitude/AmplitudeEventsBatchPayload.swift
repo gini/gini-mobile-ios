@@ -1,5 +1,5 @@
 //
-//  EventsBatchPayload.swift
+//  AmplitudeEventsBatchPayload.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -13,14 +13,14 @@ import Foundation
 
  - Parameters:
  - apiKey: The API key for the Amplitude analytics platform.
- - events: An array of `BaseEvent` objects to be included in the batch upload.
+ - events: An array of `AmplitudeBaseEvent` objects to be included in the batch upload.
  */
-struct EventsBatchPayload: Encodable {
+struct AmplitudeEventsBatchPayload: Encodable {
     let apiKey: String
-    let events: [BaseEvent]
+    let events: [AmplitudeBaseEvent]
 
     /**
-     Customizes the coding keys for the `EventsBatchPayload` struct to match the expected JSON format.
+     Customizes the coding keys for the `AmplitudeEventsBatchPayload` struct to match the expected JSON format.
 
      - apiKey: Encoded as "api_key" in the JSON payload.
      - events: Encoded as "events" in the JSON payload.
