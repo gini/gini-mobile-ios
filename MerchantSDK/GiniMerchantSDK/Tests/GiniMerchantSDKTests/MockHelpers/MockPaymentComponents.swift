@@ -1,9 +1,9 @@
 //
-//  MockPaymentComponentsController.swift
+//  MockPaymentComponents.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
-
 
 import UIKit
 @testable import GiniMerchantSDK
@@ -12,11 +12,11 @@ import UIKit
 class MockPaymentComponents: PaymentComponentsProtocol {
 
     var isLoading: Bool = false
-    var selectedPaymentProvider: PaymentProvider?
+    var selectedPaymentProvider: GiniMerchantSDK.PaymentProvider?
     
     private var giniMerchant: GiniMerchant
-    private var paymentProviders: PaymentProviders = []
-    private var installedPaymentProviders: PaymentProviders = []
+    private var paymentProviders: GiniMerchantSDK.PaymentProviders = []
+    private var installedPaymentProviders: GiniMerchantSDK.PaymentProviders = []
     private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
     
     init(giniMerchant: GiniMerchant) {
@@ -29,7 +29,24 @@ class MockPaymentComponents: PaymentComponentsProtocol {
             return
         }
         if let iconData = Data(url: URL(string: paymentProviderResponse.iconLocation)) {
-            selectedPaymentProvider = PaymentProvider(id: paymentProviderResponse.id, name: paymentProviderResponse.name, appSchemeIOS: paymentProviderResponse.appSchemeIOS, minAppVersion: paymentProviderResponse.minAppVersion, colors: paymentProviderResponse.colors, iconData: iconData, appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS, universalLinkIOS: paymentProviderResponse.universalLinkIOS, index: paymentProviderResponse.index, gpcSupportedPlatforms: paymentProviderResponse.gpcSupportedPlatforms, openWithSupportedPlatforms: paymentProviderResponse.openWithSupportedPlatforms)
+            let openWithPlatforms = paymentProviderResponse.openWithSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
+            let gpcSupportedPlatforms = paymentProviderResponse.gpcSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
+            let colors = GiniMerchantSDK.ProviderColors(background: paymentProviderResponse.colors.background,
+                                                        text: paymentProviderResponse.colors.text)
+            
+            let provider = GiniMerchantSDK.PaymentProvider(id: paymentProviderResponse.id,
+                                                           name: paymentProviderResponse.name,
+                                                           appSchemeIOS: paymentProviderResponse.appSchemeIOS,
+                                                           minAppVersion: nil,
+                                                           colors: colors,
+                                                           iconData: iconData,
+                                                           appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS,
+                                                           universalLinkIOS: paymentProviderResponse.universalLinkIOS,
+                                                           index: paymentProviderResponse.index,
+                                                           gpcSupportedPlatforms: gpcSupportedPlatforms,
+                                                           openWithSupportedPlatforms: openWithPlatforms)
+            
+            selectedPaymentProvider = provider
         }
     }
     
@@ -40,7 +57,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         case MockSessionManager.notPayableDocumentID:
             completion(.success(false))
         case MockSessionManager.missingDocumentID:
-            completion(.failure(.apiError(.noResponse)))
+            completion(.failure(.apiError(GiniError.decorator(.noResponse))))
         default:
             fatalError("Document id not handled in tests")
         }
@@ -66,7 +83,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         case MockSessionManager.payableDocumentID:
             completion(PaymentReviewViewController(), nil)
         case MockSessionManager.missingDocumentID:
-            completion(nil, .apiError(.noResponse))
+            completion(nil, .apiError(GiniError.decorator(.noResponse)))
         default:
             fatalError("Document id not handled in tests")
         }

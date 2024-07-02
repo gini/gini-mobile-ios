@@ -1,21 +1,36 @@
 //
 //  Utils.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-
 import UIKit
 import GiniHealthAPILibrary
+import GiniMerchantSDK
 
-
-func loadProviders(fileName: String) -> PaymentProviders? {
-    var providers: PaymentProviders = []
+func loadProviders(fileName: String) -> GiniMerchantSDK.PaymentProviders? {
+    var providers: GiniMerchantSDK.PaymentProviders = []
     let providersResponse: [PaymentProviderResponse]? = load(fromFile: fileName)
     guard let providersResponse else { return nil }
     for providerResponse in providersResponse {
         let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
-        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData ?? Data(), appStoreUrlIOS: providerResponse.appStoreUrlIOS, universalLinkIOS: providerResponse.universalLinkIOS, index: providerResponse.index, gpcSupportedPlatforms: providerResponse.gpcSupportedPlatforms, openWithSupportedPlatforms: providerResponse.openWithSupportedPlatforms)
+        let openWithPlatforms = providerResponse.openWithSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
+        let gpcSupportedPlatforms = providerResponse.gpcSupportedPlatforms.compactMap { GiniMerchantSDK.PlatformSupported(rawValue: $0.rawValue) }
+        let colors = GiniMerchantSDK.ProviderColors(background: providerResponse.colors.background,
+                                                    text: providerResponse.colors.text)
+        
+        let provider = GiniMerchantSDK.PaymentProvider(id: providerResponse.id,
+                                                       name: providerResponse.name,
+                                                       appSchemeIOS: providerResponse.appSchemeIOS,
+                                                       minAppVersion: nil,
+                                                       colors: colors,
+                                                       iconData: imageData ?? Data(),
+                                                       appStoreUrlIOS: providerResponse.appStoreUrlIOS,
+                                                       universalLinkIOS: providerResponse.universalLinkIOS,
+                                                       index: providerResponse.index,
+                                                       gpcSupportedPlatforms: gpcSupportedPlatforms,
+                                                       openWithSupportedPlatforms: openWithPlatforms)
             providers.append(provider)
     }
     return providers

@@ -17,7 +17,6 @@
 		50D80D8B2C245D3B00B446A8 /* GiniMerchantSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 50D80D8A2C245D3B00B446A8 /* GiniMerchantSDK */; };
 		50D80D8D2C245D4A00B446A8 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D80D8C2C245D4A00B446A8 /* CloudKit.framework */; };
 		50D80D9B2C245DAF00B446A8 /* MerchantNetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D8E2C245DAF00B446A8 /* MerchantNetworkingService.swift */; };
-		50D80D9C2C245DAF00B446A8 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 50D80D8F2C245DAF00B446A8 /* Credentials.plist */; };
 		50D80D9E2C245DAF00B446A8 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D912C245DAF00B446A8 /* CredentialsManager.swift */; };
 		50D80D9F2C245DAF00B446A8 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D922C245DAF00B446A8 /* UIViewController.swift */; };
 		50D80DA02C245DAF00B446A8 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D932C245DAF00B446A8 /* AppCoordinator.swift */; };
@@ -27,7 +26,6 @@
 		50D80DA42C245DAF00B446A8 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D972C245DAF00B446A8 /* UIViewController+Utils.swift */; };
 		50D80DA52C245DAF00B446A8 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */; };
 		50D80DA62C245DAF00B446A8 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */; };
-		50D80DA72C245DAF00B446A8 /* PartialDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D9A2C245DAF00B446A8 /* PartialDocument.swift */; };
 		50D80DB62C245DBC00B446A8 /* HardcodedInvoices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DA82C245DBC00B446A8 /* HardcodedInvoices.swift */; };
 		50D80DB72C245DBC00B446A8 /* health-invoice-1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DA92C245DBC00B446A8 /* health-invoice-1.jpg */; };
 		50D80DB82C245DBC00B446A8 /* health-invoice-2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAA2C245DBC00B446A8 /* health-invoice-2.jpg */; };
@@ -76,7 +74,6 @@
 		50D80D7A2C245A8A00B446A8 /* GiniMerchantSDKExampleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		50D80D8C2C245D4A00B446A8 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		50D80D8E2C245DAF00B446A8 /* MerchantNetworkingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerchantNetworkingService.swift; sourceTree = "<group>"; };
-		50D80D8F2C245DAF00B446A8 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		50D80D912C245DAF00B446A8 /* CredentialsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		50D80D922C245DAF00B446A8 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		50D80D932C245DAF00B446A8 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -86,7 +83,6 @@
 		50D80D972C245DAF00B446A8 /* UIViewController+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
 		50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
-		50D80D9A2C245DAF00B446A8 /* PartialDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartialDocument.swift; sourceTree = "<group>"; };
 		50D80DA82C245DBC00B446A8 /* HardcodedInvoices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HardcodedInvoices.swift; sourceTree = "<group>"; };
 		50D80DA92C245DBC00B446A8 /* health-invoice-1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-1.jpg"; sourceTree = "<group>"; };
 		50D80DAA2C245DBC00B446A8 /* health-invoice-2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-2.jpg"; sourceTree = "<group>"; };
@@ -226,7 +222,6 @@
 		50D80DC72C24786500B446A8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				50D80D8F2C245DAF00B446A8 /* Credentials.plist */,
 				50D80D622C245A8A00B446A8 /* LaunchScreen.storyboard */,
 				50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */,
 				50D80D602C245A8A00B446A8 /* Assets.xcassets */,
@@ -243,7 +238,6 @@
 				50D80D952C245DAF00B446A8 /* Coordinator.swift */,
 				50D80D912C245DAF00B446A8 /* CredentialsManager.swift */,
 				50D80D8E2C245DAF00B446A8 /* MerchantNetworkingService.swift */,
-				50D80D9A2C245DAF00B446A8 /* PartialDocument.swift */,
 				50D80D942C245DAF00B446A8 /* RootNavigationController.swift */,
 				50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */,
 				50D80D962C245DAF00B446A8 /* SelectAPIViewController.swift */,
@@ -364,7 +358,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50D80D9C2C245DAF00B446A8 /* Credentials.plist in Resources */,
 				50D80DB82C245DBC00B446A8 /* health-invoice-2.jpg in Resources */,
 				50D80DBB2C245DBC00B446A8 /* health-invoice-5.jpg in Resources */,
 				50D80DB92C245DBC00B446A8 /* health-invoice-3.jpg in Resources */,
@@ -409,7 +402,6 @@
 				50D80D9B2C245DAF00B446A8 /* MerchantNetworkingService.swift in Sources */,
 				50D80D5A2C245A8900B446A8 /* SceneDelegate.swift in Sources */,
 				50D80DA32C245DAF00B446A8 /* SelectAPIViewController.swift in Sources */,
-				50D80DA72C245DAF00B446A8 /* PartialDocument.swift in Sources */,
 				50D80DBD2C245DBC00B446A8 /* InvoicesListViewController.swift in Sources */,
 				50D80DB62C245DBC00B446A8 /* HardcodedInvoices.swift in Sources */,
 				50D80DA52C245DAF00B446A8 /* ScreenAPICoordinator.swift in Sources */,

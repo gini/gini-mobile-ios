@@ -41,13 +41,13 @@ open class ZoomedImageView: UIScrollView {
     
     override open var frame: CGRect {
         willSet {
-            if frame.equalTo(newValue) == false && newValue.equalTo(CGRect.zero) == false && imageSize.equalTo(CGSize.zero) == false {
+            if !frame.equalTo(newValue) && !newValue.equalTo(CGRect.zero) && !imageSize.equalTo(CGSize.zero) {
                 prepareToResize()
             }
         }
         
         didSet {
-            if frame.equalTo(oldValue) == false && frame.equalTo(CGRect.zero) == false && imageSize.equalTo(CGSize.zero) == false {
+            if !frame.equalTo(oldValue) && !frame.equalTo(CGRect.zero) && !imageSize.equalTo(CGSize.zero) {
                 recoverFromResizing()
             }
         }

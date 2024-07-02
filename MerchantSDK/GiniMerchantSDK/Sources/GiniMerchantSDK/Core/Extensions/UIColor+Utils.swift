@@ -8,14 +8,8 @@
 import UIKit
 public extension UIColor {
     static func from(giniColor: GiniColor) -> UIColor {
-        return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
-            if UITraitCollection.userInterfaceStyle == .dark {
-                /// Return the color for Dark Mode
-                return giniColor.darkModeColor
-            } else {
-                /// Return the color for Light Mode
-                return giniColor.lightModeColor
-            }
+        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            return traitCollection.userInterfaceStyle == .dark ? giniColor.darkModeColor : giniColor.lightModeColor
         }
     }
     
@@ -29,7 +23,10 @@ public extension UIColor {
     }
     
     convenience init?(hex: String) {
-        let r, g, b, a: CGFloat
+        let r: CGFloat
+        let g: CGFloat
+        let b: CGFloat
+        let a: CGFloat
 
         if hex.hasPrefix("#") {
             let start = hex.index(hex.startIndex, offsetBy: 1)
