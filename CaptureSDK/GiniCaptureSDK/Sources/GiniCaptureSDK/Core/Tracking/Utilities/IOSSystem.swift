@@ -28,9 +28,8 @@ internal class IOSSystem {
 
    let platform: String = "iOS"
 
-    var systemLanguage: String {
-        //TODO: check default
-        return Locale.preferredLanguages.first ?? "en"
+    var systemLanguage: String? {
+        return Locale.preferredLanguages.first
     }
 
     private func getPlatformString() -> String {
