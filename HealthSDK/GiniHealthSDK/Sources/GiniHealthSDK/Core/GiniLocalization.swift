@@ -11,7 +11,7 @@ import Foundation
  A utility for handling localized strings in the application.
  */
 
-public enum GiniLocalization: String {
+public enum GiniLocalization: String, CaseIterable {
     case en = "en"
     case de = "de"
 }
