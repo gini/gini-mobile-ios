@@ -21,18 +21,18 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
 public class PaymentReviewModel: NSObject {
     var onDocumentUpdated: () -> Void = {}
 
-    var onExtractionFetched: () -> Void = {}
-    var onExtractionUpdated: () -> Void = {}
-    var onPreviewImagesFetched: () -> Void = {}
-    var reloadCollectionViewClosure: () -> Void = {}
-    var updateLoadingStatus: () -> Void = {}
-    var updateImagesLoadingStatus: () -> Void = {}
+    var onExtractionFetched: (() -> Void)?
+    var onExtractionUpdated: (() -> Void)?
+    var onPreviewImagesFetched: (() -> Void)?
+    var reloadCollectionViewClosure: (() -> Void)?
+    var updateLoadingStatus: (() -> Void)?
+    var updateImagesLoadingStatus: (() -> Void)?
     
     var onErrorHandling: (_ error: GiniMerchantError) -> Void = { _ in }
 
     var onNoAppsErrorHandling: (_ error: GiniMerchantError) -> Void = { _ in }
     
-    var onCreatePaymentRequestErrorHandling: () -> Void = {}
+    var onCreatePaymentRequestErrorHandling: (() -> Void)?
     
     var onBankSelection: (_ provider: PaymentProvider) -> Void = { _ in }
     
@@ -46,7 +46,7 @@ public class PaymentReviewModel: NSObject {
 
     public var extractions: [Extraction] {
         didSet {
-            self.onExtractionFetched()
+            self.onExtractionFetched?()
         }
     }
 
@@ -56,7 +56,7 @@ public class PaymentReviewModel: NSObject {
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
-            self.reloadCollectionViewClosure()
+            self.reloadCollectionViewClosure?()
         }
     }
 
@@ -66,13 +66,13 @@ public class PaymentReviewModel: NSObject {
 
     var isLoading: Bool = false {
         didSet {
-            self.updateLoadingStatus()
+            self.updateLoadingStatus?()
         }
     }
     
     var isImagesLoading: Bool = false {
         didSet {
-            self.updateImagesLoadingStatus()
+            self.updateImagesLoadingStatus?()
         }
     }
     
@@ -113,8 +113,8 @@ public class PaymentReviewModel: NSObject {
             case let .success(requestId):
                 completion?(requestId)
             case let .failure(error):
-                if let delegate = self?.merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
-                    self?.onCreatePaymentRequestErrorHandling()
+                if let delegate = self?.merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: GiniMerchantError.apiError(error)) {
+                    self?.onCreatePaymentRequestErrorHandling?()
                 }
             }
         }
@@ -157,16 +157,9 @@ public class PaymentReviewModel: NSObject {
             for page in 1 ... self.document.pageCount {
                 dispatchGroup.enter()
 
-                self.merchantSDK.documentService.preview(for: self.documentId, pageNumber: page) {[weak self] result in
-                    switch result {
-                    case let .success(dataImage):
-                        if let image = UIImage(data: dataImage), let cellModel = self?.createCellViewModel(previewImage: image) {
-                            vms.append(cellModel)
-                        }
-                    case let .failure(error):
-                        if let delegate = self?.merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: .apiError(error)) {
-                            self?.onErrorHandling(.apiError(error))
-                        }
+                self.merchantSDK.documentService.preview(for: self.documentId, pageNumber: page) { [weak self] result in
+                    if let cellModel = self?.proccessPreview(result) {
+                        vms.append(cellModel)
                     }
                     dispatchSemaphore.signal()
                     dispatchGroup.leave()
@@ -178,10 +171,24 @@ public class PaymentReviewModel: NSObject {
                 DispatchQueue.main.async {
                     self.isImagesLoading = false
                     self.cellViewModels.append(contentsOf: vms)
-                    self.onPreviewImagesFetched()
+                    self.onPreviewImagesFetched?()
                 }
             }
         }
+    }
+    
+    private func proccessPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
+        switch result {
+        case let .success(dataImage):
+            if let image = UIImage(data: dataImage) {
+               return createCellViewModel(previewImage: image)
+            }
+        case let .failure(error):
+            if let delegate = merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: GiniMerchantError.apiError(error)) {
+                onErrorHandling(.apiError(error))
+            }
+        }
+        return nil
     }
     
     func installAppBottomSheet() -> BottomSheetViewController {
