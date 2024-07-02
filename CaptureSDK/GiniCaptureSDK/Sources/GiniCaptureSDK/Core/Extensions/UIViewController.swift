@@ -48,7 +48,7 @@ extension UIViewController {
                                  cancelActionTitle: cancelActionTitle,
                                  confirmActionTitle: confirmActionTitle,
                                  confirmAction: positiveAction)
-        
+       
         GiniAnalyticsManager.track(event: .errorDialogShown,
                                    screenName: .camera,
                                    properties: [GiniAnalyticsProperty(key: .errorMessage, value: message)])

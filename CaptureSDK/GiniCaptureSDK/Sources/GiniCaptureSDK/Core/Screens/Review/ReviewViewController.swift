@@ -544,7 +544,7 @@ extension ReviewViewController {
     @objc
     private func didTapProcessDocument() {
         let eventProperties = [GiniAnalyticsProperty(key: .numberOfPagesScanned,
-                                                 value: pages.count)]
+                                                     value: pages.count)]
 
         GiniAnalyticsManager.track(event: .processTapped,
                                    screenName: .review,

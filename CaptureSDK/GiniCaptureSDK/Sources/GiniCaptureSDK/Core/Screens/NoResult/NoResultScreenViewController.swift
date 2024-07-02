@@ -113,11 +113,11 @@ final class NoResultScreenViewController: UIViewController {
         self.setupView()
 
         let eventProperties = [GiniAnalyticsProperty(key: .documentType,
-                                                 value: GiniAnalyticsMapper.documentTypeAnalytics(from: type))]
+                                                     value: GiniAnalyticsMapper.documentTypeAnalytics(from: type))]
         GiniAnalyticsManager.trackScreenShown(screenName: .noResults,
-                                          properties: eventProperties)
+                                              properties: eventProperties)
     }
-
+   
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if numberOfButtons > 0 {

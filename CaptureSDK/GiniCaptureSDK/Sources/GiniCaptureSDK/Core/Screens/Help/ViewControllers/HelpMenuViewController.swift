@@ -65,12 +65,12 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
     private func sendGiniAnalyticsEventScreenShown() {
         guard dataSource.helpItemsAnalyticsValues.isNotEmpty else { return }
         var eventProperties = [GiniAnalyticsProperty(key: .hasCustomItems,
-                                                 value: giniConfiguration.customMenuItems.isNotEmpty)]
+                                                     value: giniConfiguration.customMenuItems.isNotEmpty)]
 
         eventProperties.append(GiniAnalyticsProperty(key: .helpItems,
-                                                 value: dataSource.helpItemsAnalyticsValues))
+                                                     value: dataSource.helpItemsAnalyticsValues))
         GiniAnalyticsManager.trackScreenShown(screenName: .help,
-                                          properties: eventProperties)
+                                              properties: eventProperties)
     }
 
     private func setupView() {
