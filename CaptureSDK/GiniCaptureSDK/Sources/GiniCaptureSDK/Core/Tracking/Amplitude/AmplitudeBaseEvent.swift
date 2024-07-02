@@ -1,17 +1,17 @@
 //
-//  BaseEvent.swift
+//  AmplitudeBaseEvent.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 
-/// The `BaseEvent` struct represents an event with various properties and implements encoding for serialization.
-struct BaseEvent: Encodable {
+/// The `AmplitudeBaseEvent` struct represents an event with various properties and implements encoding for serialization.
+struct AmplitudeBaseEvent: Encodable {
     var eventType: String
     var eventProperties: [String: Any]?
     var userProperties: [String: Any]?
-    var eventOptions: EventOptions
+    var eventOptions: AmplitudeEventOptions
 
     enum CodingKeys: String, CodingKey {
         case eventType = "event_type"
@@ -35,11 +35,11 @@ struct BaseEvent: Encodable {
         case ip
     }
 
-    /// Initializes a new instance of the `BaseEvent` struct.
+    /// Initializes a new instance of the `AmplitudeBaseEvent` struct.
     init(eventType: String,
          eventProperties: [String: Any]? = nil,
          userProperties: [String: Any]? = nil,
-         eventOptions: EventOptions) {
+         eventOptions: AmplitudeEventOptions) {
         self.eventType = eventType
         self.eventProperties = eventProperties
         self.userProperties = userProperties

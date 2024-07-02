@@ -103,7 +103,7 @@ public final class GiniAnalyticsManager {
 
     /// Processes the events queue by sending each queued event to Mixpanel and Amplitude
     private static func processEventsQueue() {
-        var baseEvents: [BaseEvent] = []
+        var baseEvents: [AmplitudeBaseEvent] = []
 
         while !eventsQueue.isEmpty {
             let queuedEvent = eventsQueue.removeFirst()
@@ -115,8 +115,8 @@ public final class GiniAnalyticsManager {
         amplitudeService?.trackEvents(baseEvents)
     }
 
-    /// Converts a GiniQueuedAnalyticsEvent to a BaseEvent
-    private static func convertToBaseEvent(event: GiniQueuedAnalyticsEvent) -> BaseEvent? {
+    /// Converts a `GiniQueuedAnalyticsEvent` to a `AmplitudeBaseEvent`
+    private static func convertToBaseEvent(event: GiniQueuedAnalyticsEvent) -> AmplitudeBaseEvent? {
         var eventProperties: [String: String] = [:]
 
         if let screenName = event.screenNameString {
@@ -140,24 +140,24 @@ public final class GiniAnalyticsManager {
 
         let iosSystem = IOSSystem()
         let eventId = incrementEventId()
-        let eventOptions = EventOptions(userId: deviceID,
-                                        deviceId: iosSystem.identifierForVendor,
-                                        time: Date.berlinTimestamp(),
-                                        sessionId: sessionId,
-                                        platform: iosSystem.platform,
-                                        osVersion: iosSystem.osVersion,
-                                        osName: iosSystem.osName,
-                                        language: iosSystem.systemLanguage,
-                                        ip: "$remote",
-                                        eventId: eventId,
-                                        deviceModel: iosSystem.model,
-                                        deviceBrand: iosSystem.manufacturer,
-                                        appVersion: GiniCapture.versionString)
+        let eventOptions = AmplitudeEventOptions(userId: deviceID,
+                                                 deviceId: iosSystem.identifierForVendor,
+                                                 time: Date.berlinTimestamp(),
+                                                 sessionId: sessionId,
+                                                 platform: iosSystem.platform,
+                                                 osVersion: iosSystem.osVersion,
+                                                 osName: iosSystem.osName,
+                                                 language: iosSystem.systemLanguage,
+                                                 ip: "$remote",
+                                                 eventId: eventId,
+                                                 deviceModel: iosSystem.model,
+                                                 deviceBrand: iosSystem.manufacturer,
+                                                 appVersion: GiniCapture.versionString)
 
-        return BaseEvent(eventType: event.event.rawValue,
-                         eventProperties: eventProperties,
-                         userProperties: userProperties,
-                         eventOptions: eventOptions)
+        return AmplitudeBaseEvent(eventType: event.event.rawValue,
+                                  eventProperties: eventProperties,
+                                  userProperties: userProperties,
+                                  eventOptions: eventOptions)
     }
 
     public static func trackUserProperties(_ properties: [GiniAnalyticsUserProperty: GiniAnalyticsPropertyValue]) {
