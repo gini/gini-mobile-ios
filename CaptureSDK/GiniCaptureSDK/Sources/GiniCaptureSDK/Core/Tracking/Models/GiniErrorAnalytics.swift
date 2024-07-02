@@ -1,12 +1,12 @@
 //
-//  ErrorAnalytics.swift
+//  GiniErrorAnalytics.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 
-public struct ErrorAnalytics {
+public struct GiniErrorAnalytics {
     let type: String
     let code: Int?
     let reason: String?

@@ -6,7 +6,7 @@
 
 import UIKit
 
-public class GiniAnalyticsManager {
+public final class GiniAnalyticsManager {
     private static var amplitudeService: AmplitudeService? {
         didSet {
             handleAnalyticsSDKsInit()
@@ -21,7 +21,7 @@ public class GiniAnalyticsManager {
     private static var giniClientID: String?
     private static var eventId: Int64 = 0
 
-    public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
+    public static func initializeAnalytics(with configuration: GiniAnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
 

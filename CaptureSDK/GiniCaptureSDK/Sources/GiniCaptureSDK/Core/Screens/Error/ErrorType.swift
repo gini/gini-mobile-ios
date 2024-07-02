@@ -30,7 +30,7 @@ import GiniBankAPILibrary
     case outage
 
     // Dictionary to store ErrorAnalytics for each case
-    private static var errorAnalyticsDictionary: [ErrorType: ErrorAnalytics] = [:]
+    private static var errorAnalyticsDictionary: [ErrorType: GiniErrorAnalytics] = [:]
 
     /**
      Initializes a new instance of the `ErrorType` enum based on the given `GiniError`.
@@ -152,12 +152,12 @@ import GiniBankAPILibrary
     /**
      Get the error analytics for the current `ErrorType`.
 
-     - Returns: An `ErrorAnalytics` object representing the error for the analytics
+     - Returns: An `GiniErrorAnalytics` object representing the error for the analytics
      */
-    func errorAnalytics() -> ErrorAnalytics {
+    func errorAnalytics() -> GiniErrorAnalytics {
         // Define a default unknown error
-        let unknownError = ErrorAnalytics(type: "Unknown", code: nil,
-                                          reason: "Error analytics not found for \(self)")
+        let unknownError = GiniErrorAnalytics(type: "Unknown", code: nil,
+                                              reason: "Error analytics not found for \(self)")
         // Attempt to retrieve the error analytics from the dictionary
         return ErrorType.errorAnalyticsDictionary[self] ?? unknownError
     }
