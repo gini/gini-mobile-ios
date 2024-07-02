@@ -143,9 +143,9 @@ import UIKit
         super.viewDidAppear(animated)
         didShowAnalysis?()
 
-        let eventProperties = [AnalyticsProperty(key: .documentType,
-                                                 value: AnalyticsMapper.documentTypeAnalytics(from: document.type))]
-        AnalyticsManager.trackScreenShown(screenName: .analysis,
+        let eventProperties = [GiniAnalyticsProperty(key: .documentType,
+                                                 value: GiniAnalyticsMapper.documentTypeAnalytics(from: document.type))]
+        GiniAnalyticsManager.trackScreenShown(screenName: .analysis,
                                           properties: eventProperties)
     }
 

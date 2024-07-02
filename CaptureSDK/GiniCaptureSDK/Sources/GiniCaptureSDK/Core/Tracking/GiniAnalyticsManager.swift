@@ -1,22 +1,22 @@
 //
-//  AnalyticsManager.swift
+//  GiniAnalyticsManager.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-public class AnalyticsManager {
+public class GiniAnalyticsManager {
     private static var amplitudeService: AmplitudeService? {
         didSet {
             handleAnalyticsSDKsInit()
         }
     }
-    private static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
-    private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
+    private static var userProperties: [GiniAnalyticsUserProperty: GiniAnalyticsPropertyValue] = [:]
+    private static var superProperties: [GiniAnalyticsSuperProperty: GiniAnalyticsPropertyValue] = [:]
     private static var sessionId: Int64?
 
-    private static var eventsQueue: [QueuedAnalyticsEvent] = []
+    private static var eventsQueue: [GiniQueuedAnalyticsEvent] = []
     private static let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
     private static var giniClientID: String?
     private static var eventId: Int64 = 0
@@ -63,34 +63,34 @@ public class AnalyticsManager {
     }
 
     // MARK: - Track screen shown
-    public static func trackScreenShown(screenName: AnalyticsScreen,
-                                        properties: [AnalyticsProperty] = []) {
-        track(event: AnalyticsEvent.screenShown,
+    public static func trackScreenShown(screenName: GiniAnalyticsScreen,
+                                        properties: [GiniAnalyticsProperty] = []) {
+        track(event: GiniAnalyticsEvent.screenShown,
               screenName: screenName,
               properties: properties)
     }
 
     static func trackScreenShown(screenNameString: String,
-                                 properties: [AnalyticsProperty] = []) {
-        track(event: AnalyticsEvent.screenShown,
+                                 properties: [GiniAnalyticsProperty] = []) {
+        track(event: GiniAnalyticsEvent.screenShown,
               screenNameString: screenNameString,
               properties: properties)
     }
 
     // MARK: - Track event on screen
-    public static func track(event: AnalyticsEvent,
-                             screenName: AnalyticsScreen? = nil,
-                             properties: [AnalyticsProperty] = []) {
+    public static func track(event: GiniAnalyticsEvent,
+                             screenName: GiniAnalyticsScreen? = nil,
+                             properties: [GiniAnalyticsProperty] = []) {
         track(event: event,
               screenNameString: screenName?.rawValue,
               properties: properties)
 
     }
 
-    static func track(event: AnalyticsEvent,
+    static func track(event: GiniAnalyticsEvent,
                       screenNameString: String? = nil,
-                      properties: [AnalyticsProperty] = []) {
-        let queuedEvent = QueuedAnalyticsEvent(event: event,
+                      properties: [GiniAnalyticsProperty] = []) {
+        let queuedEvent = GiniQueuedAnalyticsEvent(event: event,
                                                screenNameString: screenNameString,
                                                properties: properties)
         eventsQueue.append(queuedEvent)
@@ -115,12 +115,12 @@ public class AnalyticsManager {
         amplitudeService?.trackEvents(baseEvents)
     }
 
-    /// Converts a QueuedAnalyticsEvent to a BaseEvent
-    private static func convertToBaseEvent(event: QueuedAnalyticsEvent) -> BaseEvent? {
+    /// Converts a GiniQueuedAnalyticsEvent to a BaseEvent
+    private static func convertToBaseEvent(event: GiniQueuedAnalyticsEvent) -> BaseEvent? {
         var eventProperties: [String: String] = [:]
 
         if let screenName = event.screenNameString {
-            eventProperties[AnalyticsPropertyKey.screenName.rawValue] = screenName
+            eventProperties[GiniAnalyticsPropertyKey.screenName.rawValue] = screenName
         }
 
         for property in event.properties {
@@ -136,7 +136,7 @@ public class AnalyticsManager {
 
         // Add `giniClientID` to `userProperties`
         var userProperties = mapAmplitudeUserProperties(properties: userProperties)
-        userProperties[AnalyticsSuperProperty.giniClientID.rawValue] = giniClientID
+        userProperties[GiniAnalyticsSuperProperty.giniClientID.rawValue] = giniClientID
 
         let iosSystem = IOSSystem()
         let eventId = incrementEventId()
@@ -160,20 +160,20 @@ public class AnalyticsManager {
                          eventOptions: eventOptions)
     }
 
-    public static func trackUserProperties(_ properties: [AnalyticsUserProperty: AnalyticsPropertyValue]) {
+    public static func trackUserProperties(_ properties: [GiniAnalyticsUserProperty: GiniAnalyticsPropertyValue]) {
         for (key, value) in properties {
             userProperties[key] = value
         }
     }
 
-    public static func registerSuperProperties(_ properties: [AnalyticsSuperProperty: AnalyticsPropertyValue]) {
+    public static func registerSuperProperties(_ properties: [GiniAnalyticsSuperProperty: GiniAnalyticsPropertyValue]) {
         for (key, value) in properties {
             superProperties[key] = value
         }
     }
 
     private static func trackAccessibilityUserPropertiesAtInitialization() {
-        let accessibilityProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [
+        let accessibilityProperties: [GiniAnalyticsUserProperty: GiniAnalyticsPropertyValue] = [
             .voiceOverEnabled: UIAccessibility.isVoiceOverRunning,
             .guidedAccessEnabled: UIAccessibility.isGuidedAccessEnabled,
             .boldTextEnabled: UIAccessibility.isBoldTextEnabled,
@@ -197,7 +197,7 @@ public class AnalyticsManager {
         return result
     }
 
-    private static func convertPropertyValueToString(_ value: AnalyticsPropertyValue) -> String {
+    private static func convertPropertyValueToString(_ value: GiniAnalyticsPropertyValue) -> String {
         switch value {
         case let value as Bool:
             return boolToString(from: value)
@@ -212,7 +212,7 @@ public class AnalyticsManager {
         }
     }
 
-    private static func mapAmplitudeSuperProperties(properties: [AnalyticsSuperProperty: AnalyticsPropertyValue])
+    private static func mapAmplitudeSuperProperties(properties: [GiniAnalyticsSuperProperty: GiniAnalyticsPropertyValue])
     -> [String: String] {
         return properties
             .map { (key, value) in
@@ -223,7 +223,7 @@ public class AnalyticsManager {
             }
     }
 
-    private static func mapAmplitudeUserProperties(properties: [AnalyticsUserProperty: AnalyticsPropertyValue])
+    private static func mapAmplitudeUserProperties(properties: [GiniAnalyticsUserProperty: GiniAnalyticsPropertyValue])
     -> [String: String] {
         return properties
             .map { (key, value) in

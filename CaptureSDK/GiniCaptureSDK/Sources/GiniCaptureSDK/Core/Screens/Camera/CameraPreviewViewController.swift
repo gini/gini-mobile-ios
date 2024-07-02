@@ -413,7 +413,7 @@ final class CameraPreviewViewController: UIViewController {
 extension CameraPreviewViewController {
     private func addNotAuthorizedView() {
         // Send the 'screen_shown' event every time the user returns to this screen.
-        AnalyticsManager.trackScreenShown(screenName: .cameraAccess)
+        GiniAnalyticsManager.trackScreenShown(screenName: .cameraAccess)
 
         guard notAuthorizedView == nil else { return }
         let notAuthorizedView = CameraNotAuthorizedView()
