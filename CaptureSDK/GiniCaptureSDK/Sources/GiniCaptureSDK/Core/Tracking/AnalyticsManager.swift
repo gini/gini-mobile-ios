@@ -100,6 +100,7 @@ public class AnalyticsManager {
             processEventsQueue()
         }
     }
+
     /// Processes the events queue by sending each queued event to Mixpanel and Amplitude
     private static func processEventsQueue() {
         var baseEvents: [BaseEvent] = []
@@ -129,15 +130,14 @@ public class AnalyticsManager {
 
         superProperties[.giniClientID] = giniClientID
 
-        let baseEvent = BaseEvent(eventType: event.event.rawValue)
         // Merge event properties with super properties. In case of key collisions, values from eventProperties will be used.
-        baseEvent.eventProperties = eventProperties
+        eventProperties = eventProperties
             .merging(mapAmplitudeSuperProperties(properties: superProperties)) { (_, new) in new }
 
         // Add `giniClientID` to `userProperties`
         var userProperties = mapAmplitudeUserProperties(properties: userProperties)
         userProperties[AnalyticsSuperProperty.giniClientID.rawValue] = giniClientID
-        baseEvent.userProperties = userProperties
+
         let iosSystem = IOSSystem()
         let eventId = incrementEventId()
         let eventOptions = EventOptions(userId: deviceID,
@@ -153,8 +153,11 @@ public class AnalyticsManager {
                                         deviceModel: iosSystem.model,
                                         deviceBrand: iosSystem.manufacturer,
                                         appVersion: GiniCapture.versionString)
-        baseEvent.mergeEventOptions(eventOptions: eventOptions)
-        return baseEvent
+
+        return BaseEvent(eventType: event.event.rawValue,
+                         eventProperties: eventProperties,
+                         userProperties: userProperties,
+                         eventOptions: eventOptions)
     }
 
     public static func trackUserProperties(_ properties: [AnalyticsUserProperty: AnalyticsPropertyValue]) {
