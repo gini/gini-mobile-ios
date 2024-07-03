@@ -345,3 +345,15 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
     }
 }
 
+extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
+    func didCancelAnalysis(_ coordinator: SkontoCoordinator) {
+        childCoordinators = childCoordinators.filter { $0 !== coordinator }
+        resultsDelegate?.giniCaptureDidCancelAnalysis()
+    }
+
+    func didFinishAnalysis(_ coordinator: SkontoCoordinator) {
+        // TODO: needs to be implemented accordingly
+        childCoordinators = childCoordinators.filter { $0 !== coordinator }
+        resultsDelegate?.giniCaptureDidCancelAnalysis()
+    }
+}
