@@ -94,21 +94,15 @@ public class SkontoViewController: UIViewController {
                                                                        comment: "Back")
         edgesForExtendedLayout = []
         view.backgroundColor = .giniColorScheme().bg.background.uiColor()
-        if configuration.bottomNavigationBarEnabled {
-            let cancelButton = GiniBarButton(ofType: .back(title: backButtonTitle))
-            cancelButton.addAction(self, #selector(backButtonTapped))
-            navigationItem.rightBarButtonItem = cancelButton.barButton
-            navigationItem.hidesBackButton = true
-        } else {
+        if !configuration.bottomNavigationBarEnabled {
             let helpButton = GiniBarButton(ofType: .help)
             helpButton.addAction(self, #selector(helpButtonTapped))
             navigationItem.rightBarButtonItem = helpButton.barButton
 
-            let cancelButton = GiniBarButton(ofType: .back(title: backButtonTitle))
-            cancelButton.addAction(self, #selector(backButtonTapped))
-            navigationItem.leftBarButtonItem = cancelButton.barButton
+            let backButton = GiniBarButton(ofType: .back(title: backButtonTitle))
+            backButton.addAction(self, #selector(backButtonTapped))
+            navigationItem.leftBarButtonItem = backButton.barButton
         }
-
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubview(appliedContainerView)
@@ -122,6 +116,7 @@ public class SkontoViewController: UIViewController {
 
         setupBottomNavigationBar()
         setupTapGesture()
+        bindViewModel()
     }
 
     private func setupConstraints() {
@@ -195,7 +190,7 @@ public class SkontoViewController: UIViewController {
             if let bottomBarAdapter = configuration.skontoNavigationBarBottomAdapter {
                 navigationBarBottomAdapter = bottomBarAdapter
             } else {
-                // TODO: Implement default navigation bar when design will be available
+                navigationBarBottomAdapter = DefaultSkontoNavigationBarBottomAdapter()
             }
 
             navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
@@ -204,6 +199,10 @@ public class SkontoViewController: UIViewController {
 
             navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
                 self?.helpButtonTapped()
+            }
+
+            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+                self?.backButtonTapped()
             }
 
             if let navigationBar = navigationBarBottomAdapter?.injectedView() {
@@ -221,6 +220,26 @@ public class SkontoViewController: UIViewController {
 
             proceedView.isHidden = true
         }
+    }
+
+    private func bindViewModel() {
+        configure()
+        viewModel.addStateChangeHandler { [weak self] in
+            guard let self else { return }
+            self.configure()
+        }
+    }
+
+    private func configure() {
+        let isSkontoApplied = viewModel.isSkontoApplied
+        let discountString = String.localizedStringWithFormat(
+            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
+                                                     comment: "%.1f%% Skonto discount"),
+            viewModel.skontoValue
+        )
+        navigationBarBottomAdapter?.updateDiscountBadge(enabled: isSkontoApplied)
+        navigationBarBottomAdapter?.updateDiscountValue(with: discountString)
+        navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencySymbol: viewModel.totalPrice.string)
     }
 
     @objc private func proceedButtonTapped() {
