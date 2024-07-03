@@ -707,9 +707,9 @@ extension PaymentReviewViewController {
         let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
-        let OKAction = UIAlertAction(title: GiniLocalized.string("ginihealth.alert.ok.title",
+        let action = UIAlertAction(title: GiniLocalized.string("ginihealth.alert.ok.title",
                                                                              comment: "ok title for action"), style: .default, handler: nil)
-        alertController.addAction(OKAction)
+        alertController.addAction(action)
         present(alertController, animated: true, completion: nil)
     }
 }
