@@ -22,12 +22,7 @@ class DebugMenuViewController: UIViewController {
         return label
     }()
 
-    private lazy var localizationTitleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Localization"
-        return label
-    }()
+    private lazy var localizationTitleLabel: UILabel = rowTitle("Localization")
     
     private lazy var localizationPicker: UIPickerView = {
         let picker = UIPickerView()
@@ -37,13 +32,7 @@ class DebugMenuViewController: UIViewController {
         return picker
     }()
     
-    private lazy var localizationRow: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [localizationTitleLabel, localizationPicker])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.spacing = spacing
-        return stackView
-    }()
+    private lazy var localizationRow: UIStackView = stackView(axis: .horizontal, subviews: [localizationTitleLabel, localizationPicker])
     
     init(giniHealth: GiniHealth, giniHealthConfiguration: GiniHealthConfiguration) {
         self.giniHealth = giniHealth
@@ -72,10 +61,8 @@ class DebugMenuViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         
-        let mainStackView = UIStackView(arrangedSubviews: [titleLabel, localizationRow, UIView()])
-        mainStackView.translatesAutoresizingMaskIntoConstraints = false
-        mainStackView.axis = .vertical
-        mainStackView.spacing = spacing
+        let spacer = UIView()
+        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, spacer])
         view.addSubview(mainStackView)
         
         NSLayoutConstraint.activate([
@@ -86,6 +73,23 @@ class DebugMenuViewController: UIViewController {
             
             localizationRow.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
+    }
+}
+
+private extension DebugMenuViewController {
+    func rowTitle(_ title: String) -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = title
+        return label
+    }
+    
+    func stackView(axis: NSLayoutConstraint.Axis, subviews: [UIView]) -> UIStackView {
+        let stackView = UIStackView(arrangedSubviews: subviews)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = axis
+        stackView.spacing = spacing
+        return stackView
     }
 }
 
