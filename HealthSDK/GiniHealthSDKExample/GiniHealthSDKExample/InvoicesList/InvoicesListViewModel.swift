@@ -22,14 +22,7 @@ struct DocumentWithExtractions: Codable {
         self.amountToPay = extractionResult.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractionResult.extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractionResult.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
-    }
-    
-    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], isPayable: Bool) {
-        self.documentID = documentID
-        self.amountToPay = extractions.first(where: {$0.name == "amount_to_pay"})?.value
-        self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
-        self.recipient = extractions.first(where: {$0.name == "payment_recipient"})?.value
-        self.isPayable = isPayable
+        self.isPayable = extractionResult.isPayable
     }
 }
 
@@ -163,19 +156,6 @@ final class InvoicesListViewModel {
                             Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
                             self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id,
                                                                           extractionResult: extractionResult))
-                            self?.paymentComponentsController.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
-                                switch result {
-                                case let .success(isPayable):
-                                    Log("Successfully checked if document \(createdDocument.id) is payable", event: .success)
-                                    if let indexDocument = self?.invoices.firstIndex(where: { $0.documentID == createdDocument.id }) {
-                                        self?.invoices[indexDocument].isPayable = isPayable
-                                    }
-                                case let .failure(error):
-                                    Log("Checking if document \(createdDocument.id) is payable failed with error: \(String(describing: error))", event: .error)
-                                    self?.errors.append(error.localizedDescription)
-                                }
-                                self?.dispatchGroup.leave()
-                            })
                         case let .failure(error):
                             Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))", event: .error)
                             self?.errors.append(error.message)

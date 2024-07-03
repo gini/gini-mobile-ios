@@ -33,19 +33,6 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         }
     }
     
-    func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
-        switch docId {
-        case MockSessionManager.payableDocumentID:
-            completion(.success(true))
-        case MockSessionManager.notPayableDocumentID:
-            completion(.success(false))
-        case MockSessionManager.missingDocumentID:
-            completion(.failure(.apiError(.noResponse)))
-        default:
-            fatalError("Document id not handled in tests")
-        }
-    }
-    
     func paymentView(documentId: String) -> UIView {
         let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniHealthConfiguration: giniHealthConfiguration)
         viewModel.documentId = documentId

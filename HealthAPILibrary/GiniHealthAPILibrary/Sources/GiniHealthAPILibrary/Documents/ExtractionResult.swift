@@ -7,6 +7,11 @@
 
 import Foundation
 
+enum PaymentState: String {
+    case payable = "Payable"
+    case other = "Other"
+}
+
 /**
 * Data model for a document extraction result.
 */
@@ -20,7 +25,11 @@ import Foundation
     
     /// The line item compound extractions.
     public var lineItems: [[Extraction]]?
-        
+
+    public var isPayable: Bool {
+        extractions.first(where: {$0.name == "payment_state"})?.value == PaymentState.payable.rawValue
+    }
+
     public init(extractions: [Extraction], payment:  [[Extraction]]?,  lineItems: [[Extraction]]?) {
         self.extractions = extractions
         self.payment = payment
