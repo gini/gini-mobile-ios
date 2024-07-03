@@ -77,6 +77,7 @@
 		507A25EE2C355DAA00A7106E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		507A25F32C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniMerchantSDKPinningExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		507A25F72C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKPinningExampleTests.swift; sourceTree = "<group>"; };
+		507A26102C35700F00A7106E /* GiniMerchantSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniMerchantSDKPinning; path = ../GiniMerchantSDKPinning; sourceTree = "<group>"; };
 		50D80D542C245A8900B446A8 /* GiniMerchantSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniMerchantSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D80D572C245A8900B446A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		50D80D592C245A8900B446A8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -250,6 +251,7 @@
 		50D80DC52C246D8300B446A8 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				507A26102C35700F00A7106E /* GiniMerchantSDKPinning */,
 				50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */,
 			);
 			name = Packages;
