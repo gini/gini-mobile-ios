@@ -261,6 +261,13 @@ extension GiniBankNetworkingScreenApiCoordinator {
         coordinator.start()
     }
 
+    public func showSkontoScreen() {
+        let coordinator = SkontoCoordinator(navigationController: screenAPINavigationController)
+        coordinator.delegate = self
+        childCoordinators.append(coordinator)
+        coordinator.start()
+    }
+
     public func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
         documentService.startAnalysis { result in
 
@@ -337,3 +344,4 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
         resultsDelegate?.giniCaptureDidCancelAnalysis()
     }
 }
+
