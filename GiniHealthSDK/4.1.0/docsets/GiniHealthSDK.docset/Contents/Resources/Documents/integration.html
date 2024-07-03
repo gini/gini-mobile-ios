@@ -400,14 +400,13 @@ It requires a <code><a href="Classes/PaymentComponentsController.html">PaymentCo
 <p>⚠️  <strong>Important:</strong></p>
 
 <ul>
-<li>The <code>PaymentInfoViewController</code> presentation should happen in <code>func didTapOnMoreInformation(documentId: String?)</code> inside
-<code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code> implementation.(<code>Integrate the Payment component</code> step 3).</li>
+<li>The <code>PaymentInfoViewController</code> presentation should happen in <code>func didTapOnMoreInformation(documentId: String?)</code> inside <code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code> implementation without animation since SDK handles the animation  during the presentation.(<code>Integrate the Payment component</code> step 3).</li>
 </ul>
 </blockquote>
 <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didTapOnMoreInformation</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span> <span class="p">{</span>
     <span class="k">let</span> <span class="nv">paymentInfoViewController</span> <span class="o">=</span> <span class="n">paymentComponentsController</span><span class="o">.</span><span class="nf">paymentInfoViewController</span><span class="p">()</span>
     <span class="k">self</span><span class="o">.</span><span class="n">yourInvoicesListViewController</span><span class="o">.</span><span class="n">navigationController</span><span class="p">?</span><span class="o">.</span><span class="nf">pushViewController</span><span class="p">(</span><span class="n">paymentInfoViewController</span><span class="p">,</span>
-                                                                                 <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+                                                                                 <span class="nv">animated</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre>
 <h2 id='show-bankselectionbottomsheet' class='heading'>Show BankSelectionBottomSheet</h2>
@@ -427,14 +426,14 @@ The <code>BankSelectionBottomSheet</code> presentation requires a <code><a href=
 
 <ul>
 <li>The <code>BankSelectionBottomSheet</code> presentation should happen in <code>func didTapOnBankPicker(documentId: String?)</code> inside
-<code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code> implementation (see <code>Integrate the Payment component</code> step 3).</li>
+<code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code> implementation without animation since SDK handles the animation during the presentation (see <code>Integrate the Payment component</code> step 3).</li>
 </ul>
 </blockquote>
 <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didTapOnBankPicker</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span> <span class="p">{</span>
     <span class="k">let</span> <span class="nv">bankSelectionBottomSheet</span> <span class="o">=</span> <span class="n">paymentComponentsController</span><span class="o">.</span><span class="nf">bankSelectionBottomSheet</span><span class="p">()</span>
     <span class="n">bankSelectionBottomSheet</span><span class="o">.</span><span class="n">modalPresentationStyle</span> <span class="o">=</span> <span class="o">.</span><span class="n">overFullScreen</span>
     <span class="k">self</span><span class="o">.</span><span class="n">yourInvoicesListViewController</span><span class="o">.</span><span class="nf">present</span><span class="p">(</span><span class="n">bankSelectionBottomSheet</span><span class="p">,</span>
-                                                <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+                                                <span class="nv">animated</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
     <span class="p">}</span>
 </code></pre>
 <h2 id='show-paymentreviewviewcontroller' class='heading'>Show PaymentReviewViewController</h2>
@@ -454,7 +453,7 @@ The <code>BankSelectionBottomSheet</code> presentation requires a <code><a href=
 
 <ul>
 <li>The <code><a href="Classes/PaymentReviewViewController.html">PaymentReviewViewController</a></code> presentation should happen in <code>func didTapOnBankPicker(documentId: String?)</code> inside
-<code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code> implementation (see <code>Integrate the Payment component</code> step 3).</li>
+<code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code> implementation without animation since SDK handles the animation during the presentation (see <code>Integrate the Payment component</code> step 3).</li>
 </ul>
 </blockquote>
 <pre class="highlight swift"><code>    <span class="kd">func</span> <span class="nf">didTapOnPayInvoice</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span> <span class="p">{</span>
@@ -465,7 +464,7 @@ The <code>BankSelectionBottomSheet</code> presentation requires a <code><a href=
             <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="k">let</span> <span class="nv">viewController</span> <span class="p">{</span>
                 <span class="n">viewController</span><span class="o">.</span><span class="n">modalTransitionStyle</span> <span class="o">=</span> <span class="o">.</span><span class="n">coverVertical</span>
                 <span class="n">viewController</span><span class="o">.</span><span class="n">modalPresentationStyle</span> <span class="o">=</span> <span class="o">.</span><span class="n">overCurrentContext</span>
-                <span class="k">self</span><span class="p">?</span><span class="o">.</span><span class="n">yourInvoicesListViewController</span><span class="o">.</span><span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+                <span class="k">self</span><span class="p">?</span><span class="o">.</span><span class="n">yourInvoicesListViewController</span><span class="o">.</span><span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -498,7 +497,7 @@ Default value is false.</li>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2024 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2024-06-14)</p>
+      <p>&copy; 2024 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2024-07-03)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
