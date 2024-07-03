@@ -72,14 +72,20 @@ public class SkontoViewController: UIViewController {
         return stackView
     }()
 
-    private let viewModel = SkontoViewModel(isSkontoApplied: true,
-                                            skontoValue: 3.0,
-                                            date: Date(),
-                                            priceWithoutSkonto: .init(value: 99.99, currencyCode: "EUR"))
+    private let viewModel: SkontoViewModel
     private let configuration = GiniBankConfiguration.shared
 
     private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
+    
+    init(viewModel: SkontoViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -224,15 +230,15 @@ public class SkontoViewController: UIViewController {
     }
 
     @objc private func proceedButtonTapped() {
-        viewModel.proceedButtonTapped()
+        viewModel.didTapProceed()
     }
 
     @objc private func helpButtonTapped() {
-        viewModel.helpButtonTapped()
+        viewModel.didTapHelp()
     }
 
     @objc private func backButtonTapped() {
-        viewModel.backButtonTapped()
+        viewModel.didTapCancel()
     }
 
     private func setupTapGesture() {
