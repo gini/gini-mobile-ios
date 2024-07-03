@@ -129,11 +129,11 @@ class PaymentReviewContainerView: UIView {
         return view
     }()
 
-    var amountToPay = Price(value: 0, currencyCode: "€")
-    var lastValidatedIBAN = ""
+    private var amountToPay = Price(value: 0, currencyCode: "€")
+    private var lastValidatedIBAN = ""
 
-    var paymentInputFields: [TextFieldWithLabelView] = []
-    var paymentInputFieldsErrorLabels: [UILabel] = []
+    private var paymentInputFields: [TextFieldWithLabelView] = []
+    private var paymentInputFieldsErrorLabels: [UILabel] = []
     var model: PaymentReviewContainerViewModel! {
         didSet {
             configureUI()
@@ -297,7 +297,7 @@ class PaymentReviewContainerView: UIView {
         }
     }
 
-    func applySelectionStyle(_ textFieldView: TextFieldWithLabelView) {
+    fileprivate func applySelectionStyle(_ textFieldView: TextFieldWithLabelView) {
         UIView.animate(withDuration: Constants.animationDuration) { [self] in
             textFieldView.configure(configuration: self.giniMerchantConfiguration.selectionStyleInputFieldConfiguration)
             textFieldView.layer.masksToBounds = true
@@ -324,7 +324,7 @@ class PaymentReviewContainerView: UIView {
         return ""
     }
 
-    func validateTextField(_ textFieldViewTag: Int) {
+    fileprivate func validateTextField(_ textFieldViewTag: Int) {
         let textFieldView = textFieldViewWithTag(tag: textFieldViewTag)
         if let fieldIdentifier = TextFieldType(rawValue: textFieldViewTag) {
             switch fieldIdentifier {
@@ -355,7 +355,7 @@ class PaymentReviewContainerView: UIView {
         }
     }
 
-    func textFieldViewWithTag(tag: Int) -> TextFieldWithLabelView {
+    fileprivate func textFieldViewWithTag(tag: Int) -> TextFieldWithLabelView {
         paymentInputFields.first(where: { $0.tag == tag }) ?? TextFieldWithLabelView()
     }
 
@@ -374,7 +374,7 @@ class PaymentReviewContainerView: UIView {
         }
     }
 
-    func showIBANValidationErrorIfNeeded(){
+    fileprivate func showIBANValidationErrorIfNeeded(){
         if IBANValidator().isValid(iban: lastValidatedIBAN) {
             applyDefaultStyle(ibanTextFieldView)
             hideErrorLabel(textFieldTag: .ibanFieldTag)
@@ -438,8 +438,7 @@ class PaymentReviewContainerView: UIView {
         }
     }
 
-
-    func hideErrorLabel(textFieldTag: TextFieldType) {
+    fileprivate func hideErrorLabel(textFieldTag: TextFieldType) {
         var errorLabel = UILabel()
         switch textFieldTag {
         case .recipientFieldTag:
@@ -459,8 +458,8 @@ class PaymentReviewContainerView: UIView {
 
     // MARK: - Pay button
 
-    func disablePayButtonIfNeeded() {
-        payInvoiceButton.superview?.alpha = paymentInputFields.allSatisfy({ !$0.textField.isReallyEmpty }) && amountToPay.value > 0 ? 1 : 0.4
+    fileprivate func disablePayButtonIfNeeded() {
+        payInvoiceButton.superview?.alpha = paymentInputFields.allSatisfy({ !$0.textField.isReallyEmpty }) && amountToPay.value > 0 ? 1 : Constants.payInvoiceInactiveAlpha
     }
 
     fileprivate func showValidationErrorLabel(textFieldTag: TextFieldType) {
@@ -520,7 +519,7 @@ class PaymentReviewContainerView: UIView {
     }
 
     // MARK: - Pay Button Action
-    func payButtonClicked() {
+    fileprivate func payButtonClicked() {
         self.endEditing(true)
         validateAllInputFields()
         validateIBANTextField()
@@ -533,7 +532,6 @@ class PaymentReviewContainerView: UIView {
 
     // MARK: - Helping functions
 
-    @discardableResult
     func noErrorsFound() -> Bool {
         // check if no errors labels are shown
         if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
@@ -588,7 +586,7 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
     /**
      Dissmiss the keyboard when return key pressed
      */
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
@@ -609,7 +607,7 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
             }
         }
     }
-    public func textFieldDidBeginEditing(_ textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         applySelectionStyle(textFieldViewWithTag(tag: textField.tag))
 
         // remove currency symbol and whitespaces for edit mode
@@ -623,7 +621,7 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
         }
     }
 
-    public func textFieldDidEndEditing(_ textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         // add currency format when edit is finished
         if TextFieldType(rawValue: textField.tag) == .amountFieldTag {
             updateAmoutToPayWithCurrencyFormat()
@@ -637,7 +635,7 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
         disablePayButtonIfNeeded()
     }
 
-    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if TextFieldType(rawValue: textField.tag) == .amountFieldTag,
            let text = textField.text,
            let textRange = Range(range, in: text) {
@@ -690,5 +688,6 @@ extension PaymentReviewContainerView {
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let heightToolbar = 40.0
         static let stackViewSpacing = 10.0
+        static let payInvoiceInactiveAlpha = 0.4
     }
 }

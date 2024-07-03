@@ -278,7 +278,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
     }
 
-    private func createPaymentRequest() {
+    func createPaymentRequest() {
         if !paymentInfoContainerView.isTextFieldEmpty(texFieldType: .amountFieldTag) {
             let paymentInfo = paymentInfoContainerView.obtainPaymentInfo()
             model?.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
