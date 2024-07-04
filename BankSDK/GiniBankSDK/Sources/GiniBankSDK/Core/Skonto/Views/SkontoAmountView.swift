@@ -28,7 +28,7 @@ class SkontoAmountView: UIView {
         textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
-        textField.keyboardType = .decimalPad
+        textField.keyboardType = .numberPad
         textField.isUserInteractionEnabled = isEditable
         textField.adjustsFontForContentSizeCategory = true
         textField.translatesAutoresizingMaskIntoConstraints = false
