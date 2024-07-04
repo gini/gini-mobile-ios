@@ -31,26 +31,43 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     
     private func loadPDFData(paymentRequestID: String) {
         self.model?.loadPDF(paymentRequestID: paymentRequestID, completion: { [weak self] pdfData in
-            self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestID)
+            let pdfPath = self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestID)
+            
+            guard let pdfPath else {
+                print("Error while write pdf file to location: missing pdf path")
+                return
+            }
+            
+            self?.sharePDF(pdfURL: pdfPath, paymentRequestID: paymentRequestID) { [weak self] (activity, _, _, _) in
+                guard activity != nil else {
+                    return
+                }
+                
+                // Publish the payment request id only after a user has picked an activity (app)
+                self?.model?.healthSDK.delegate?.didCreatePaymentRequest(paymentRequestID: paymentRequestID)
+            }
         })
     }
     
-    private func writePDFDataToFile(data: Data, fileName: String) {
+    private func writePDFDataToFile(data: Data, fileName: String) -> URL? {
         do {
             let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-            guard let docDirectoryPath = paths.first else { return }
+            guard let docDirectoryPath = paths.first else { return nil }
             let pdfFileName = fileName + Constants.pdfExtension
             let pdfPath = docDirectoryPath.appendingPathComponent(pdfFileName)
             try data.write(to: pdfPath)
-            self.sharePDF(pdfURL: pdfPath)
+            return pdfPath
         } catch {
             print("Error while write pdf file to location: \(error.localizedDescription)")
+            return nil
         }
     }
 
-    private func sharePDF(pdfURL: URL) {
+    private func sharePDF(pdfURL: URL, paymentRequestID: String, 
+                          completionWithItemsHandler: @escaping UIActivityViewController.CompletionWithItemsHandler) {
         // Create UIActivityViewController with the PDF file
         let activityViewController = UIActivityViewController(activityItems: [pdfURL], applicationActivities: nil)
+        activityViewController.completionWithItemsHandler = completionWithItemsHandler
 
         // Exclude some activities if needed
         activityViewController.excludedActivityTypes = [

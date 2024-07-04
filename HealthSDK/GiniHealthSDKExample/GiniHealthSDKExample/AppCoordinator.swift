@@ -22,6 +22,7 @@ final class AppCoordinator: Coordinator {
     lazy var selectAPIViewController: SelectAPIViewController = {
         let selectAPIViewController = SelectAPIViewController()
         selectAPIViewController.delegate = self
+        selectAPIViewController.debugMenuPresenter = self
         selectAPIViewController.clientId = self.client.id
         return selectAPIViewController
     }()
@@ -50,6 +51,15 @@ final class AppCoordinator: Coordinator {
     private lazy var apiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
     private lazy var health = GiniHealth(with: apiLib)
     private lazy var paymentComponentsController = PaymentComponentsController(giniHealth: health)
+    private lazy var giniHealthConfiguration: GiniHealthConfiguration = {
+        let configuration = GiniHealthConfiguration()
+        // Show the close button to dismiss the payment review screen
+        configuration.showPaymentReviewCloseButton = true
+        configuration.paymentReviewStatusBarStyle = .lightContent
+        return configuration
+    }()
+    
+
     
     private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
@@ -137,14 +147,8 @@ final class AppCoordinator: Coordinator {
     private var testDocumentExtractions: [GiniHealthAPILibrary.Extraction]?
     
     fileprivate func showPaymentReviewWithTestDocument() {
-        let configuration = GiniHealthConfiguration()
-        
-        // Show the close button to dismiss the payment review screen
-        configuration.showPaymentReviewCloseButton = true
-        configuration.paymentReviewStatusBarStyle = .lightContent
-        
         health.delegate = self
-        health.setConfiguration(configuration)
+        health.setConfiguration(giniHealthConfiguration)
 
         if let document = self.testDocument {
             self.selectAPIViewController.showActivityIndicator()
@@ -273,11 +277,7 @@ final class AppCoordinator: Coordinator {
         }
         let configuration = GiniHealthConfiguration()
         
-        // Show the close button to dismiss the payment review screen
-        configuration.showPaymentReviewCloseButton = true
-        configuration.paymentReviewStatusBarStyle = .lightContent
-        
-        health.setConfiguration(configuration)
+        health.setConfiguration(giniHealthConfiguration)
         health.delegate = self
 
         let invoicesListCoordinator = InvoicesListCoordinator()
@@ -333,6 +333,12 @@ extension AppCoordinator: GiniHealthDelegate {
     
     func didCreatePaymentRequest(paymentRequestID: String) {
         print("✅ Created payment request with id \(paymentRequestID)")
+        DispatchQueue.main.async {
+            guard let invoicesListCoordinator = self.childCoordinators.first as? InvoicesListCoordinator else {
+                return
+            }
+            invoicesListCoordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
+        }
     }
 }
 
@@ -364,5 +370,14 @@ extension AppCoordinator: PaymentComponentsControllerProtocol {
     
     func didFetchedPaymentProviders() {
         //
+    }
+}
+
+//MARK: - DebugMenuPresenterDelegate
+
+extension AppCoordinator: DebugMenuPresenter {
+    func presentDebugMenu() {
+        let debugMenuViewController = DebugMenuViewController(giniHealth: health, giniHealthConfiguration: giniHealthConfiguration)
+        rootViewController.present(debugMenuViewController, animated: true)
     }
 }

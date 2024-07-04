@@ -230,7 +230,6 @@ public struct DataForReview {
                 switch result {
                 case let .success(requestID):
                     completion(.success(requestID))
-                    self.delegate?.didCreatePaymentRequest(paymentRequestID: requestID)
                 case let .failure(error):
                     completion(.failure(.apiError(error)))
                 }
