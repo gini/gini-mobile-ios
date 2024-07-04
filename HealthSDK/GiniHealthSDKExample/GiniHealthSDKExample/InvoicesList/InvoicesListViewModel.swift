@@ -19,9 +19,9 @@ struct DocumentWithExtractions: Codable {
 
     init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
         self.documentID = documentID
-        self.amountToPay = extractionResult.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
-        self.paymentDueDate = extractionResult.extractions.first(where: {$0.name == "payment_due_date"})?.value
-        self.recipient = extractionResult.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
+        self.amountToPay = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.amountToPay.rawValue })?.value
+        self.paymentDueDate = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentDueDate.rawValue })?.value
+        self.recipient = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.paymentRecipient.rawValue })?.value
         self.isPayable = extractionResult.isPayable
     }
 }
@@ -159,8 +159,8 @@ final class InvoicesListViewModel {
                         case let .failure(error):
                             Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))", event: .error)
                             self?.errors.append(error.message)
-                            self?.dispatchGroup.leave()
                         }
+                        self?.dispatchGroup.leave()
                     }
                 case .failure(let error):
                     Log("Document creation failed: \(String(describing: error))", event: .error)
