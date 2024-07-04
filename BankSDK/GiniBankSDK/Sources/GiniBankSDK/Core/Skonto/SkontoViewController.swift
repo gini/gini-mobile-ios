@@ -125,12 +125,24 @@ public class SkontoViewController: UIViewController {
     }
 
     private func setupConstraints() {
+        setupScrollViewConstraints()
+        setupStackViewConstraints()
+        setupAppliedGroupViewConstraints()
+        setupNotAppliedGroupViewConstraints()
+        setupProceedViewConstraints()
+    }
+
+    private func setupScrollViewConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: proceedView.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: proceedView.topAnchor)
+        ])
+    }
 
+    private func setupStackViewConstraints() {
+        NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                constant: Constants.containerPadding),
@@ -138,8 +150,12 @@ public class SkontoViewController: UIViewController {
                                                 constant: -Constants.containerPadding),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
-                                             constant: -2 * Constants.containerPadding),
+                                             constant: -2 * Constants.containerPadding)
+        ])
+    }
 
+    private func setupAppliedGroupViewConstraints() {
+        NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: appliedGroupView.topAnchor),
             headerView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
                                                 constant: Constants.horizontalPadding),
@@ -167,8 +183,12 @@ public class SkontoViewController: UIViewController {
             dateView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
                                                constant: -Constants.horizontalPadding),
             dateView.bottomAnchor.constraint(equalTo: appliedGroupView.bottomAnchor,
-                                             constant: -Constants.horizontalPadding),
+                                             constant: -Constants.horizontalPadding)
+        ])
+    }
 
+    private func setupNotAppliedGroupViewConstraints() {
+        NSLayoutConstraint.activate([
             notAppliedGroupView.topAnchor.constraint(equalTo: appliedGroupView.bottomAnchor,
                                                      constant: Constants.containerPadding),
             notAppliedGroupView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
@@ -182,8 +202,12 @@ public class SkontoViewController: UIViewController {
             notAppliedView.trailingAnchor.constraint(equalTo: notAppliedGroupView.trailingAnchor,
                                                      constant: -Constants.horizontalPadding),
             notAppliedView.bottomAnchor.constraint(equalTo: notAppliedGroupView.bottomAnchor,
-                                                   constant: -Constants.horizontalPadding),
+                                                   constant: -Constants.horizontalPadding)
+        ])
+    }
 
+    private func setupProceedViewConstraints() {
+        NSLayoutConstraint.activate([
             proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
