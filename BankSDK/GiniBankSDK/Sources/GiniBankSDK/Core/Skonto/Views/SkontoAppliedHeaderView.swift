@@ -40,7 +40,7 @@ class SkontoAppliedHeaderView: UIView {
     private lazy var discountSwitch: UISwitch = {
         let discountSwitch = UISwitch()
         discountSwitch.isOn = viewModel.isSkontoApplied
-        discountSwitch.onTintColor = UIColor.giniColorScheme().toggles.surfaceFocused.uiColor()
+        discountSwitch.onTintColor = .giniColorScheme().toggles.surfaceFocused.uiColor()
         discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
         discountSwitch.translatesAutoresizingMaskIntoConstraints = false
         return discountSwitch
