@@ -93,7 +93,7 @@
 "ginibank.digitalinvoice.edit.name.error" = "Please enter the article name.";
 "ginibank.digitalinvoice.edit.price.error" = "Please enter the article price.";
 
-"ginibank.skonto.screentitle" = "Skonto";
+"ginibank.skonto.screen.title" = "Skonto";
 "ginibank.skonto.backButton.title" = "Back";
 "ginibank.skonto.info.title" = "With Skonto discount";
 "ginibank.skonto.info.status" = "• Active";
