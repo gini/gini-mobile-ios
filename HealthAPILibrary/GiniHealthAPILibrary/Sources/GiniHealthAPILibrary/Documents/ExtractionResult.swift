@@ -12,6 +12,15 @@ enum PaymentState: String {
     case other = "Other"
 }
 
+public enum ExtractionType: String {
+    case paymentState = "payment_state"
+    case paymentDueDate = "payment_due_date"
+    case amountToPay = "amount_to_pay"
+    case paymentRecipient = "payment_recipient"
+    case iban = "iban"
+    case paymentPurpose = "payment_purpose"
+}
+
 /**
 * Data model for a document extraction result.
 */
@@ -27,7 +36,7 @@ enum PaymentState: String {
     public var lineItems: [[Extraction]]?
 
     public var isPayable: Bool {
-        extractions.first(where: {$0.name == "payment_state"})?.value == PaymentState.payable.rawValue
+        extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
     }
 
     public init(extractions: [Extraction], payment:  [[Extraction]]?,  lineItems: [[Extraction]]?) {
