@@ -16,6 +16,20 @@
             <AutocreatedTestPlanReference>
             </AutocreatedTestPlanReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "507A25DD2C355DA900A7106E"
+               BuildableName = "GiniMerchantSDKPinningExample.app"
+               BlueprintName = "GiniMerchantSDKPinningExample"
+               ReferencedContainer = "container:GiniMerchantSDKExample.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -30,9 +44,9 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "50D80D692C245A8A00B446A8"
-               BuildableName = "GiniMerchantSDKExampleTests.xctest"
-               BlueprintName = "GiniMerchantSDKExampleTests"
+               BlueprintIdentifier = "507A25F22C355DAA00A7106E"
+               BuildableName = "GiniMerchantSDKPinningExampleTests.xctest"
+               BlueprintName = "GiniMerchantSDKPinningExampleTests"
                ReferencedContainer = "container:GiniMerchantSDKExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -55,15 +69,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "50D80D692C245A8A00B446A8"
-            BuildableName = "GiniMerchantSDKExampleTests.xctest"
-            BlueprintName = "GiniMerchantSDKExampleTests"
-            ReferencedContainer = "container:GiniMerchantSDKExample.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
