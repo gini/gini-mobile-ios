@@ -7,11 +7,16 @@
 
 import Foundation
 
-enum PaymentState: String {
+/**
+ Payment State types from payment state from extraction result
+ */
+public enum PaymentState: String {
     case payable = "Payable"
     case other = "Other"
 }
-
+/**
+ Extraction Types for extraction result
+ */
 public enum ExtractionType: String {
     case paymentState = "payment_state"
     case paymentDueDate = "payment_due_date"
