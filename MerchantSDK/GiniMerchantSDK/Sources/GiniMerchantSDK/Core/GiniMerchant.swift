@@ -192,7 +192,6 @@ public struct DataForReview {
                             }
                         case .failure(let error):
                             completion(.failure(.apiError(error)))
-                            break
                         }
                     }
                 }

@@ -31,7 +31,9 @@ public final class GiniMerchantConfiguration: NSObject {
      
      - returns: Instance of `GiniMerchantConfiguration`.
      */
-    public override init() {}
+    public override init() {
+        super.init()
+    }
     
     // MARK: - Payment review screen
 
