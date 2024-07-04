@@ -7,7 +7,7 @@
 import UIKit
 
 protocol SkontoAmountViewDelegate: AnyObject {
-    func textFieldDidEndEditing(editedText: String)
+    func textFieldPriceChanged(editedText: String)
 }
 
 class SkontoAmountView: UIView {
@@ -112,19 +112,15 @@ class SkontoAmountView: UIView {
     }
 
     func configure(isEditable: Bool, price: Price) {
+        textField.text = price.stringWithoutSymbol ?? ""
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
         textField.isUserInteractionEnabled = isEditable
         currencyLabel.isHidden = isEditable ? false : true
-        textField.text = price.stringWithoutSymbol ?? ""
     }
 }
 
 extension SkontoAmountView: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        self.delegate?.textFieldDidEndEditing(editedText: textField.text ?? "")
-    }
-
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
@@ -159,6 +155,7 @@ extension SkontoAmountView: UITextFieldDelegate {
         guard let newText = newText else { return }
         let selectedRange = textField.selectedTextRange
         textField.text = newText
+        self.delegate?.textFieldPriceChanged(editedText: textField.text ?? "")
         adjustCursorPosition(textField, newText: newText, originalText: originalText, selectedRange: selectedRange)
     }
 
