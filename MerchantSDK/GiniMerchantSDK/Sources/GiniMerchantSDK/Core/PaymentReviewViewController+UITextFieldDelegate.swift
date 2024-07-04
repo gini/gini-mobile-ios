@@ -51,10 +51,8 @@ extension PaymentReviewViewController: UITextFieldDelegate {
             updateAmoutToPayWithCurrencyFormat()
         }
         validateTextField(textField.tag)
-        if TextFieldType(rawValue: textField.tag) == .ibanFieldTag {
-            if textField.text == lastValidatedIBAN {
-                showIBANValidationErrorIfNeeded()
-            }
+        if TextFieldType(rawValue: textField.tag) == .ibanFieldTag, textField.text == lastValidatedIBAN {
+            showIBANValidationErrorIfNeeded()
         }
         disablePayButtonIfNeeded()
     }

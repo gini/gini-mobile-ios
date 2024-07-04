@@ -261,7 +261,7 @@ final class GiniMerchantTests: XCTestCase {
 
         giniMerchant.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
             waitForWebsiteOpen.fulfill()
-            XCTAssert(open == true, "testOpenLink - FAILED to open link")
+            XCTAssert(open, "testOpenLink - FAILED to open link")
         })
 
         waitForExpectations(timeout: 0.1, handler: nil)

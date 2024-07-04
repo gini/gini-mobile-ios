@@ -19,7 +19,7 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
  View model class for review screen
   */
 public class PaymentReviewModel: NSObject {
-    var onDocumentUpdated: () -> Void = {}
+    var onDocumentUpdated: (() -> Void)?
 
     var onExtractionFetched: (() -> Void)?
     var onExtractionUpdated: (() -> Void)?
@@ -37,7 +37,7 @@ public class PaymentReviewModel: NSObject {
 
     public var document: Document {
         didSet {
-            self.onDocumentUpdated()
+            self.onDocumentUpdated?()
         }
     }
 
