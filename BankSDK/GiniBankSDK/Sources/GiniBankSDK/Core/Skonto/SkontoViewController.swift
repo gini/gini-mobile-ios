@@ -215,36 +215,36 @@ public class SkontoViewController: UIViewController {
     }
 
     private func setupBottomNavigationBar() {
-        if configuration.bottomNavigationBarEnabled {
-            if let bottomBarAdapter = configuration.skontoNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBarAdapter
-            } else {
-                // TODO: Implement default navigation bar when design will be available
-            }
-
-            navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
-                self?.proceedButtonTapped()
-            }
-
-            navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-                self?.helpButtonTapped()
-            }
-
-            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
-                bottomNavigationBar = navigationBar
-                view.addSubview(navigationBar)
-
-                navigationBar.translatesAutoresizingMaskIntoConstraints = false
-
-                NSLayoutConstraint.activate([
-                    navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                    navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                    navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-                ])
-            }
-
-            proceedView.isHidden = true
+        guard configuration.bottomNavigationBarEnabled else { return }
+        
+        if let bottomBarAdapter = configuration.skontoNavigationBarBottomAdapter {
+            navigationBarBottomAdapter = bottomBarAdapter
+        } else {
+            // TODO: Implement default navigation bar when design will be available
         }
+
+        navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
+            self?.proceedButtonTapped()
+        }
+
+        navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
+            self?.helpButtonTapped()
+        }
+
+        if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+            bottomNavigationBar = navigationBar
+            view.addSubview(navigationBar)
+
+            navigationBar.translatesAutoresizingMaskIntoConstraints = false
+
+            NSLayoutConstraint.activate([
+                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+        }
+
+        proceedView.isHidden = true
     }
 
     @objc private func proceedButtonTapped() {
