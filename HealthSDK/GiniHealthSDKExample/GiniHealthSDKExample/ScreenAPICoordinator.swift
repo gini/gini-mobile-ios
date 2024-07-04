@@ -93,7 +93,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
                     healthSdk.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
                         switch result {
                         case let .success(extractionResult):
-                            Log("Successfully fetched extractions for id: \(docId)", event: .success)
+                            print("✅Successfully fetched extractions for id: \(docId)")
                             // Store invoice/document into Invoices list
                             let invoice = DocumentWithExtractions(documentID: docId,
                                                                   extractionResult: extractionResult)
@@ -104,7 +104,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
                                 })
                             }
                         case let .failure(error):
-                            Log("Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))", event: .error)
+                            print("❌Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))")
                         }
                     }
                 case .failure(let error):
