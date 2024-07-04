@@ -38,19 +38,19 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var appliedContainerView: UIView = {
+    private lazy var appliedGroupView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()
 
-    private lazy var notAppliedContainerView: UIView = {
+    private lazy var notAppliedGroupView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()
 
@@ -111,13 +111,13 @@ public class SkontoViewController: UIViewController {
 
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
-        stackView.addArrangedSubview(appliedContainerView)
-        stackView.addArrangedSubview(notAppliedContainerView)
-        appliedContainerView.addSubview(headerView)
-        appliedContainerView.addSubview(infoView)
-        appliedContainerView.addSubview(appliedAmountView)
-        appliedContainerView.addSubview(dateView)
-        notAppliedContainerView.addSubview(notAppliedView)
+        stackView.addArrangedSubview(appliedGroupView)
+        stackView.addArrangedSubview(notAppliedGroupView)
+        appliedGroupView.addSubview(headerView)
+        appliedGroupView.addSubview(infoView)
+        appliedGroupView.addSubview(appliedAmountView)
+        appliedGroupView.addSubview(dateView)
+        notAppliedGroupView.addSubview(notAppliedView)
         view.addSubview(proceedView)
 
         setupBottomNavigationBar()
@@ -140,48 +140,48 @@ public class SkontoViewController: UIViewController {
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
                                              constant: -2 * Constants.containerPadding),
 
-            headerView.topAnchor.constraint(equalTo: appliedContainerView.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: appliedContainerView.leadingAnchor,
+            headerView.topAnchor.constraint(equalTo: appliedGroupView.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
                                                 constant: Constants.horizontalPadding),
-            headerView.trailingAnchor.constraint(equalTo: appliedContainerView.trailingAnchor,
+            headerView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
                                                  constant: -Constants.horizontalPadding),
 
             infoView.topAnchor.constraint(equalTo: headerView.bottomAnchor,
                                           constant: Constants.horizontalPadding),
-            infoView.leadingAnchor.constraint(equalTo: appliedContainerView.leadingAnchor,
+            infoView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
                                               constant: Constants.horizontalPadding),
-            infoView.trailingAnchor.constraint(equalTo: appliedContainerView.trailingAnchor,
+            infoView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
                                                constant: -Constants.horizontalPadding),
 
             appliedAmountView.topAnchor.constraint(equalTo: infoView.bottomAnchor,
                                                    constant: Constants.horizontalPadding),
-            appliedAmountView.leadingAnchor.constraint(equalTo: appliedContainerView.leadingAnchor,
+            appliedAmountView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
                                                        constant: Constants.horizontalPadding),
-            appliedAmountView.trailingAnchor.constraint(equalTo: appliedContainerView.trailingAnchor,
+            appliedAmountView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
                                                         constant: -Constants.horizontalPadding),
 
             dateView.topAnchor.constraint(equalTo: appliedAmountView.bottomAnchor,
                                           constant: Constants.dateViewTopPadding),
-            dateView.leadingAnchor.constraint(equalTo: appliedContainerView.leadingAnchor,
+            dateView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
                                               constant: Constants.horizontalPadding),
-            dateView.trailingAnchor.constraint(equalTo: appliedContainerView.trailingAnchor,
+            dateView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
                                                constant: -Constants.horizontalPadding),
-            dateView.bottomAnchor.constraint(equalTo: appliedContainerView.bottomAnchor,
+            dateView.bottomAnchor.constraint(equalTo: appliedGroupView.bottomAnchor,
                                              constant: -Constants.horizontalPadding),
 
-            notAppliedContainerView.topAnchor.constraint(equalTo: appliedContainerView.bottomAnchor,
+            notAppliedGroupView.topAnchor.constraint(equalTo: appliedGroupView.bottomAnchor,
                                                      constant: Constants.containerPadding),
-            notAppliedContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+            notAppliedGroupView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
                                                          constant: Constants.containerPadding),
-            notAppliedContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+            notAppliedGroupView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                           constant: -Constants.containerPadding),
 
-            notAppliedView.topAnchor.constraint(equalTo: notAppliedContainerView.topAnchor),
-            notAppliedView.leadingAnchor.constraint(equalTo: notAppliedContainerView.leadingAnchor,
+            notAppliedView.topAnchor.constraint(equalTo: notAppliedGroupView.topAnchor),
+            notAppliedView.leadingAnchor.constraint(equalTo: notAppliedGroupView.leadingAnchor,
                                                     constant: Constants.horizontalPadding),
-            notAppliedView.trailingAnchor.constraint(equalTo: notAppliedContainerView.trailingAnchor,
+            notAppliedView.trailingAnchor.constraint(equalTo: notAppliedGroupView.trailingAnchor,
                                                      constant: -Constants.horizontalPadding),
-            notAppliedView.bottomAnchor.constraint(equalTo: notAppliedContainerView.bottomAnchor,
+            notAppliedView.bottomAnchor.constraint(equalTo: notAppliedGroupView.bottomAnchor,
                                                    constant: -Constants.horizontalPadding),
 
             proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -252,5 +252,6 @@ private extension SkontoViewController {
         static let containerPadding: CGFloat = 16
         static let dateViewTopPadding: CGFloat = 8
         static let scrollViewSideInset: CGFloat = 0
+        static let groupCornerRadius: CGFloat = 8
     }
 }
