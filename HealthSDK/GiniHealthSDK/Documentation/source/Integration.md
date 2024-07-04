@@ -90,8 +90,34 @@ self.healthSDK.documentService
 
 ## Check which documents/invoices are payable
 
-GiniHealth provides a variable for checking if the document is payable or not. `ExtractionResult` contains `isPayable`. This variable checks from extraction the `payment_state` of the document/invoice. 
+We provide 2 ways of doing this.
+1. GiniHealth provides a variable for checking if the document is payable or not. `ExtractionResult` contains `isPayable`. This variable checks from extraction the `payment_state` of the document/invoice. 
 
+2. GiniHealth provides a method for checking if the document is payable or not.
+
+```swift
+healthSDK.checkIfDocumentIsPayable(docId: String,
+                                   completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
+```
+
+The method returns success and `true` value if `payment_state` was extracted.
+
+> - We recommend using a `DispatchGroup` for these requests, waiting till all of them are ready, and then, reloading the list.
+
+```swift
+for giniDocument in dataDocuments {
+   dispatchGroup.enter()
+   self.paymentComponentsController.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
+       switch result {
+       // ...
+       }
+       self?.dispatchGroup.leave()
+   })
+}
+dispatchGroup.notify(queue: .main) {
+    // Reload List
+}
+```
 
 ## Integrate the Payment component
 
