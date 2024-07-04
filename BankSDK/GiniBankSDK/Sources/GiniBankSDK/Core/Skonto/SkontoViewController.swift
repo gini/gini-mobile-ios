@@ -88,7 +88,7 @@ public class SkontoViewController: UIViewController {
     }
 
     private func setupView() {
-        title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.screentitle",
+        title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.screen.title",
                                                          comment: "Skonto")
         let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backButton.title",
                                                                        comment: "Back")
