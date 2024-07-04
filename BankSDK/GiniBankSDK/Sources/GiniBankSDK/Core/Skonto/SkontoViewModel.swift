@@ -9,34 +9,15 @@ import Foundation
 class SkontoViewModel {
     private var skontoStateChangeHandlers: [() -> Void] = []
 
-    private (set) var isSkontoApplied: Bool {
-        didSet {
-            notifyStateChangeHandlers()
-        }
-    }
-
-    private (set) var priceWithoutSkonto: Price {
-        didSet {
-            notifyStateChangeHandlers()
-        }
-    }
-
-    private (set) var priceWithSkonto: Price {
-        didSet {
-            notifyStateChangeHandlers()
-        }
-    }
+    private (set) var isSkontoApplied: Bool
+    private (set) var priceWithoutSkonto: Price
+    private (set) var priceWithSkonto: Price
 
     var totalPrice: Price {
         return isSkontoApplied ? priceWithSkonto : priceWithoutSkonto
     }
 
-    private (set) var date: Date {
-        didSet {
-            notifyStateChangeHandlers()
-        }
-    }
-
+    private (set) var date: Date
     private (set) var skontoValue: Double
     private (set) var currencyCode: String
 
@@ -55,24 +36,33 @@ class SkontoViewModel {
 
     func toggleDiscount() {
         isSkontoApplied.toggle()
+        notifyStateChangeHandlers()
     }
 
-    func set(price: String) {
+    func setSkontoPrice(price: String) {
+        guard let price = convertPriceStringToPrice(price: price) else { return }
+        priceWithSkonto = price
+        recalculatePriceWithoutSkonto()
+        notifyStateChangeHandlers()
+    }
+
+    func setDefaultPrice(price: String) {
+        guard let price = convertPriceStringToPrice(price: price) else { return }
+        priceWithoutSkonto = price
+        recalculatePriceWithSkonto()
+        notifyStateChangeHandlers()
+    }
+
+    private func convertPriceStringToPrice(price: String) -> Price? {
         guard let priceValue = Price.convertStringToDecimal(price) else {
-            return
+            return nil
         }
-        let price = Price(value: priceValue, currencyCode: currencyCode)
-        if isSkontoApplied {
-            self.priceWithSkonto = price
-            recalculatePriceWithoutSkonto()
-        } else {
-            self.priceWithoutSkonto = price
-            recalculatePriceWithSkonto()
-        }
+        return Price(value: priceValue, currencyCode: currencyCode)
     }
 
     func set(date: Date) {
         self.date = date
+        notifyStateChangeHandlers()
     }
 
     func addStateChangeHandler(_ handler: @escaping () -> Void) {
@@ -95,14 +85,6 @@ class SkontoViewModel {
 
     func backButtonTapped() {
         // TODO: Handle back button tap
-    }
-
-    private func recalculatePrices() {
-        if isSkontoApplied {
-            recalculatePriceWithSkonto()
-        } else {
-            recalculatePriceWithoutSkonto()
-        }
     }
 
     private func recalculatePriceWithSkonto() {

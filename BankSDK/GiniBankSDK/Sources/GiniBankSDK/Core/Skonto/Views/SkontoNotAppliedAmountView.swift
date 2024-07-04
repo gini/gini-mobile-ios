@@ -61,7 +61,7 @@ class SkontoNotAppliedAmountView: UIView {
 }
 
 extension SkontoNotAppliedAmountView: SkontoAmountViewDelegate {
-    func textFieldDidEndEditing(editedText: String) {
-        self.viewModel.set(price: editedText)
+    func textFieldPriceChanged(editedText: String) {
+        self.viewModel.setDefaultPrice(price: editedText)
     }
 }
