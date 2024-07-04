@@ -48,10 +48,8 @@ class BottomSheetViewController: UIViewController {
         return view
     }()
     
-    let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark7,
-                                             darkModeColor: UIColor.GiniMerchantColors.light7).uiColor()
-    let rectangleColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                            darkModeColor: UIColor.GiniMerchantColors.light5).uiColor()
+    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
+    let rectangleColor: UIColor = GiniColor.standard5.uiColor()
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
                                                     darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
     var minHeight: CGFloat = 0
