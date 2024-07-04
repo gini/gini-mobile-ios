@@ -125,6 +125,11 @@ public final class GiniHealthConfiguration: NSObject {
                                                                                      placeholderForegroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
                                                                                                                            darkModeColor: UIColor.GiniHealthColors.light4).uiColor())
     
+    /**
+     Custom localization configuration for localizable strings.
+     */
+    public var customLocalization: GiniLocalization?
+    
     // MARK: - Update to custom font
     /**
      Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.

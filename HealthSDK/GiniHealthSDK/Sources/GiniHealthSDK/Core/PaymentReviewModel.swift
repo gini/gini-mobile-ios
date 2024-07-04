@@ -77,7 +77,7 @@ public class PaymentReviewModel: NSObject {
     }
     
     // Pay invoice label
-    let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.banking.app.button.label",
+    let payInvoiceLabelText: String = GiniLocalized.string("ginihealth.reviewscreen.banking.app.button.label",
                                                                        comment: "Title label used for the pay invoice button")
 
     public init(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?) {
