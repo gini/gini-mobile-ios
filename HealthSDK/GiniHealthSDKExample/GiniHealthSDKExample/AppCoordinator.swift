@@ -331,6 +331,12 @@ extension AppCoordinator: GiniHealthDelegate {
     
     func didCreatePaymentRequest(paymentRequestID: String) {
         print("✅ Created payment request with id \(paymentRequestID)")
+        DispatchQueue.main.async {
+            guard let invoicesListCoordinator = self.childCoordinators.first as? InvoicesListCoordinator else {
+                return
+            }
+            invoicesListCoordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
+        }
     }
 }
 
