@@ -68,13 +68,13 @@ When clicking the `To the banking app` button on the payment review you should b
 You should be redirected to the example banking app where the final extractions are shown:
 
 <br>
-<center><img src="img/Integration guide/ReviewScreenBeforeResolvingPayment.png" height="500"/></center>
+<center><img src="img/Integration guide/ReviewScreenBeforeResolvingPayment.PNG" height="500"/></center>
 </br>
 
 After you press the `Pay` button the Gini Bank SDK resolves the payment and allows you to return to your app:
 
 <br>
-<center><img src="img/Integration guide/ReviewScreenAfterResolvingPayment.png" height="500"/></center>
+<center><img src="img/Integration guide/ReviewScreenAfterResolvingPayment.PNG" height="500"/></center>
 </br>
 
 #### Return to your app

@@ -1,0 +1,45 @@
+name: Builds docs for Merchant SDK
+
+on:
+  push:
+    paths:
+      - 'MerchantSDK/**'
+  workflow_dispatch:
+    tags-ignore:
+      - '**'
+  pull_request:
+    paths:
+      - 'MerchantSDK/**'
+  
+jobs:
+  documentation:
+    runs-on: macos-latest    
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1.5.1
+      with:
+        xcode-version: '14.3.1'
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: setup ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.0'
+        bundler-cache: true
+
+    - name: Build GiniMerchantSDK documentation
+      uses: maierj/fastlane-action@v3.0.0
+      with:
+        lane: 'build_docs'
+        options: >
+          { 
+            "project_folder": "MerchantSDK",
+            "package_folder": "GiniMerchantSDK"
+          }
+
+    - name: archive documentation
+      uses: actions/upload-artifact@v3
+      with:
+        name: GiniMerchantSDKDocumentation
+        path: MerchantSDK/GiniMerchantSDK/Documentation/Api
