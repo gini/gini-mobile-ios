@@ -70,8 +70,8 @@ class SkontoViewModel {
     }
 
     private func notifyStateChangeHandlers() {
-        for handler in skontoStateChangeHandlers {
-            handler()
+        for stateHandler in skontoStateChangeHandlers {
+            stateHandler()
         }
     }
 
