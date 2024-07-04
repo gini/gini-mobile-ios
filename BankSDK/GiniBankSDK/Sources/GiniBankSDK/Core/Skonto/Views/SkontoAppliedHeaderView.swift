@@ -75,9 +75,11 @@ class SkontoAppliedHeaderView: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
 
             statusLabel.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            statusLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: Constants.statusLabelHorizontalPadding),
+            statusLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor,
+                                                 constant: Constants.statusLabelHorizontalPadding),
 
-            discountSwitch.topAnchor.constraint(equalTo: topAnchor, constant: Constants.discountSwitchTopPadding),
+            discountSwitch.topAnchor.constraint(equalTo: topAnchor,
+                                                constant: Constants.discountSwitchTopPadding),
             discountSwitch.bottomAnchor.constraint(equalTo: bottomAnchor),
             discountSwitch.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             discountSwitch.trailingAnchor.constraint(equalTo: trailingAnchor)
