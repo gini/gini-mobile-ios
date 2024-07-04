@@ -58,9 +58,9 @@ public class SkontoViewController: UIViewController {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.contentInset = UIEdgeInsets(top: Constants.containerPadding,
-                                               left: 0,
+                                               left: Constants.scrollViewSideInset,
                                                bottom: Constants.containerPadding,
-                                               right: 0)
+                                               right: Constants.scrollViewSideInset)
         return scrollView
     }()
 
@@ -251,5 +251,6 @@ private extension SkontoViewController {
         static let horizontalPadding: CGFloat = 12
         static let containerPadding: CGFloat = 16
         static let dateViewTopPadding: CGFloat = 8
+        static let scrollViewSideInset: CGFloat = 0
     }
 }
