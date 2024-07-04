@@ -8,7 +8,7 @@
 import UIKit
 
 final class PaymentInfoQuestionHeaderViewCell: UIView {
-    var didTapSelectButton: (() -> Void) = {}
+    var didTapSelectButton: (() -> Void)?
     
     var headerViewModel: PaymentInfoQuestionHeaderViewModel? {
         didSet {
@@ -71,7 +71,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
     }
     
     @objc private func tappedOnView() {
-        didTapSelectButton()
+        didTapSelectButton?()
     }
 }
 

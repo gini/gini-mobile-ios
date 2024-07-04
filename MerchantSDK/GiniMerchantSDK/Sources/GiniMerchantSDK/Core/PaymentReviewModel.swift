@@ -28,13 +28,10 @@ public class PaymentReviewModel: NSObject {
     var updateLoadingStatus: (() -> Void)?
     var updateImagesLoadingStatus: (() -> Void)?
     
-    var onErrorHandling: (_ error: GiniMerchantError) -> Void = { _ in }
-
-    var onNoAppsErrorHandling: (_ error: GiniMerchantError) -> Void = { _ in }
-    
+    var onErrorHandling: ((_ error: GiniMerchantError) -> Void)?
+    var onNoAppsErrorHandling: ((_ error: GiniMerchantError) -> Void)?
     var onCreatePaymentRequestErrorHandling: (() -> Void)?
-    
-    var onBankSelection: (_ provider: PaymentProvider) -> Void = { _ in }
+    var onBankSelection: ((_ provider: PaymentProvider) -> Void)?
     
     weak var viewModelDelegate: PaymentReviewViewModelDelegate?
 
@@ -185,7 +182,7 @@ public class PaymentReviewModel: NSObject {
             }
         case let .failure(error):
             if let delegate = merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: GiniMerchantError.apiError(error)) {
-                onErrorHandling(.apiError(error))
+                onErrorHandling?(.apiError(error))
             }
         }
         return nil
