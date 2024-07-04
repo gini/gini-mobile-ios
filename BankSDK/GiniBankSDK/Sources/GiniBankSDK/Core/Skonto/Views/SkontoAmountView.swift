@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 protocol SkontoAmountViewDelegate: AnyObject {
     func textFieldDidEndEditing(editedText: String)
