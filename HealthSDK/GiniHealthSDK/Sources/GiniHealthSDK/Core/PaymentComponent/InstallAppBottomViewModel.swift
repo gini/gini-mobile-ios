@@ -29,7 +29,7 @@ final class InstallAppBottomViewModel {
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
                                                     darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
 
-    var titleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.installAppBottomSheet.title",
+    var titleText: String = GiniLocalized.string("ginihealth.paymentcomponent.installAppBottomSheet.title",
                                                              comment: "Install App Bottom sheet title")
     let titleLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
                                                    darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
@@ -52,10 +52,10 @@ final class InstallAppBottomViewModel {
                                                         darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
     var moreInformationLabelText: String {
         isBankInstalled ? 
-        NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.installAppBottomSheet.tip.description",
+        GiniLocalized.string("ginihealth.paymentcomponent.installAppBottomSheet.tip.description",
                                          comment: "Text for tip information label").replacingOccurrences(of: bankToReplaceString,
                                                                                                          with: selectedPaymentProvider?.name ?? "") :
-        NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.installAppBottomSheet.notes.description",
+        GiniLocalized.string("ginihealth.paymentcomponent.installAppBottomSheet.notes.description",
                                          comment: "Text for notes information label").replacingOccurrences(of: bankToReplaceString,
                                                                                                            with: selectedPaymentProvider?.name ?? "")
     }
@@ -65,7 +65,7 @@ final class InstallAppBottomViewModel {
     let moreInformationIconName = "info.circle"
     
     // Pay invoice label
-    let continueLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.installAppBottomSheet.continue.button.text",
+    let continueLabelText: String = GiniLocalized.string("ginihealth.paymentcomponent.installAppBottomSheet.continue.button.text",
                                                                      comment: "Title label used for the Continue button")
     
     var appStoreImageIconName = "appStoreIcon"
