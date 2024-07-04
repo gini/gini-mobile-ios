@@ -59,10 +59,8 @@ final class PaymentInfoAnswerTableViewCell: UITableViewCell {
 
 struct PaymentInfoAnswerTableViewModel {
     let answerAttributedText: NSAttributedString
-    let answerTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                             darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
-    let answerLinkColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.accent1,
-                                             darkModeColor: UIColor.GiniMerchantColors.accent1).uiColor()
+    let answerTextColor: UIColor = GiniColor.standard1.uiColor()
+    let answerLinkColor: UIColor = GiniColor.accent1.uiColor()
     let answerLinkAttributes: [NSAttributedString.Key: Any]
 
     init(answerAttributedText: NSAttributedString) {

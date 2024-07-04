@@ -136,29 +136,6 @@ public struct Price {
     }
 }
 
-/**
- Returns an optional `UIColor` instance with the given `name` preferably from the client's bundle.
- 
- - parameter name: The name of the UIColor from `GiniColors` asset catalog.
- 
- - returns: color if found with name.
- */
-func UIColorPreferred(named name: String) -> UIColor {
-    if let mainBundleColor = UIColor(named: name,
-                                     in: Bundle.main,
-                                     compatibleWith: nil) {
-        return mainBundleColor
-    }
-
-    if let color = UIColor(named: name,
-                           in: giniMerchantBundleResource(),
-                           compatibleWith: nil) {
-        return color
-    } else {
-        fatalError("The color named '\(name)' does not exist.")
-    }
-}
-
 func giniMerchantBundleResource() -> Bundle {
     Bundle.resource
 }

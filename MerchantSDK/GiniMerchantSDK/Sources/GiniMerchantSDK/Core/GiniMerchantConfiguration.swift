@@ -62,7 +62,7 @@ public final class GiniMerchantConfiguration: NSObject {
     /**
      A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View, Payment Review Screen.
      */
-    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniMerchantColors.accent1.withAlphaComponent(0.4),
+    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniMerchantColorPalette.accent1.preferredColor().withAlphaComponent(0.4),
                                                                      borderColor: .clear,
                                                                      titleColor: .white,
                                                                      shadowColor: .clear,
@@ -73,12 +73,9 @@ public final class GiniMerchantConfiguration: NSObject {
     /**
      A configuration that defines the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View.
      */
-    public lazy var secondaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark6,
-                                                                                                  darkModeColor: UIColor.GiniMerchantColors.light6).uiColor(),
-                                                                       borderColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                                                                              darkModeColor: UIColor.GiniMerchantColors.light5).uiColor(),
-                                                                       titleColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                                                                             darkModeColor: UIColor.GiniMerchantColors.light1).uiColor(),
+    public lazy var secondaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+                                                                       borderColor: GiniColor.standard5.uiColor(),
+                                                                       titleColor: GiniColor.standard1.uiColor(),
                                                                        shadowColor: .clear,
                                                                        cornerRadius: 12,
                                                                        borderWidth: 1,
@@ -90,42 +87,30 @@ public final class GiniMerchantConfiguration: NSObject {
     /**
      A default style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var defaultStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark6,
-                                                                                                            darkModeColor: UIColor.GiniMerchantColors.light6).uiColor(),
-                                                                                 borderColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                                                                                        darkModeColor: UIColor.GiniMerchantColors.light5).uiColor(),
-                                                                                 textColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                                                                                      darkModeColor: UIColor.GiniMerchantColors.light1).uiColor(),
+    public lazy var defaultStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+                                                                                 borderColor: GiniColor.standard5.uiColor(),
+                                                                                 textColor: GiniColor.standard1.uiColor(),
                                                                                  cornerRadius: 12.0,
                                                                                  borderWidth: 1.0,
-                                                                                 placeholderForegroundColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark4,
-                                                                                                                       darkModeColor: UIColor.GiniMerchantColors.light4).uiColor())
+                                                                                 placeholderForegroundColor: GiniColor.standard4.uiColor())
     /**
      A error style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var errorStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark6,
-                                                                                                          darkModeColor: UIColor.GiniMerchantColors.light6).uiColor(),
-                                                                                     borderColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.feedback1,
-                                                                                                            darkModeColor: UIColor.GiniMerchantColors.feedback1).uiColor(),
-                                                                                     textColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                                                                                          darkModeColor: UIColor.GiniMerchantColors.light1).uiColor(),
+    public lazy var errorStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+                                                                                     borderColor: GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1).uiColor(),
+                                                                                     textColor: GiniColor.standard1.uiColor(),
                                                                                      cornerRadius: 12.0,
                                                                                      borderWidth: 1.0,
-                                                                                     placeholderForegroundColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark4,
-                                                                                                                           darkModeColor: UIColor.GiniMerchantColors.light4).uiColor())
+                                                                                     placeholderForegroundColor: GiniColor.standard4.uiColor())
     /**
      A selection style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var selectionStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark6,
-                                                                                                              darkModeColor: UIColor.GiniMerchantColors.light6).uiColor(),
-                                                                                     borderColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.accent1,
-                                                                                                            darkModeColor: UIColor.GiniMerchantColors.accent1).uiColor(),
-                                                                                     textColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                                                                                          darkModeColor: UIColor.GiniMerchantColors.light1).uiColor(),
+    public lazy var selectionStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+                                                                                   borderColor: GiniColor.accent1.uiColor(),
+                                                                                     textColor: GiniColor.standard1.uiColor(),
                                                                                      cornerRadius: 12.0,
                                                                                      borderWidth: 1.0,
-                                                                                     placeholderForegroundColor: GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark4,
-                                                                                                                           darkModeColor: UIColor.GiniMerchantColors.light4).uiColor())
+                                                                                     placeholderForegroundColor: GiniColor.standard4.uiColor())
     
     // MARK: - Update to custom font
     /**
