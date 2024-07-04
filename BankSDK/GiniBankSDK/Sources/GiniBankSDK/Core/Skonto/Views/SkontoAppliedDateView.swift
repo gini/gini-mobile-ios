@@ -116,7 +116,7 @@ class SkontoAppliedDateView: UIView {
         let isSkontoApplied = viewModel.isSkontoApplied
         containerView.layer.borderWidth = isSkontoApplied ? 1 : 0
         textField.isUserInteractionEnabled = isSkontoApplied
-        calendarImageView.isHidden = isSkontoApplied ? false : true
+        calendarImageView.isHidden = !isSkontoApplied
         textField.text = getFormattedDate(date: viewModel.date)
     }
 
