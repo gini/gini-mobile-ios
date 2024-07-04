@@ -54,6 +54,13 @@ class SkontoAmountView: UIView {
         return view
     }()
 
+    private let titleLabelText: String
+    private let textFieldInitialText: String
+    private let currencyLabelText: String
+    private var isEditable: Bool
+    private let configuration = GiniBankConfiguration.shared
+    weak var delegate: SkontoAmountViewDelegate?
+
     init(title: String,
          price: Price,
          isEditable: Bool = true) {
@@ -64,13 +71,6 @@ class SkontoAmountView: UIView {
         super.init(frame: .zero)
         setupView()
     }
-
-    private let titleLabelText: String
-    private let textFieldInitialText: String
-    private let currencyLabelText: String
-    private var isEditable: Bool
-    private let configuration = GiniBankConfiguration.shared
-    weak var delegate: SkontoAmountViewDelegate?
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
