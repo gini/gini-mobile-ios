@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 class SkontoNotAppliedAmountView: UIView {
     private lazy var amountView: SkontoAmountView = {

@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 class SkontoAppliedInfoView: UIView {
     private lazy var imageView: UIImageView = {

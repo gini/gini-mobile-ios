@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 class SkontoAppliedHeaderView: UIView {
     private lazy var titleLabel: UILabel = {

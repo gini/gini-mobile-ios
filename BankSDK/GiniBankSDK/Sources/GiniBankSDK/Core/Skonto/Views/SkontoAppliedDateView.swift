@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 class SkontoAppliedDateView: UIView {
     private lazy var titleLabel: UILabel = {
