@@ -17,12 +17,10 @@ class SkontoAppliedInfoView: UIView {
 
     private lazy var label: UILabel = {
         let label = UILabel()
-        let text = String.localizedStringWithFormat(
-            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
-                                                     comment: "Pay in %d days: %.1f%% Skonto discount."),
-            14,
-            viewModel.skontoValue
-        )
+        let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
+                                                                     comment: "Pay in %d days: %.1f%% Skonto discount.")
+        // TODO: Right now days amount is hardcoded, need to specify it after backend integration
+        let text = String.localizedStringWithFormat(localizedText, 14, viewModel.skontoValue)
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttribute(.underlineStyle,
                                       value: NSUnderlineStyle.single.rawValue,
@@ -62,14 +60,19 @@ class SkontoAppliedInfoView: UIView {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.imageVerticalPadding),
-            imageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.imageVerticalPadding),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.imageHorizontalPadding),
+            imageView.topAnchor.constraint(equalTo: topAnchor,
+                                           constant: Constants.imageVerticalPadding),
+            imageView.bottomAnchor.constraint(equalTo: bottomAnchor,
+                                              constant: -Constants.imageVerticalPadding),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                               constant: Constants.imageHorizontalPadding),
             imageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
             imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize),
 
-            label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: Constants.labelHorizontalPadding),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.labelHorizontalPadding),
+            label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor,
+                                           constant: Constants.labelHorizontalPadding),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                            constant: -Constants.labelHorizontalPadding),
             label.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
         ])
     }
