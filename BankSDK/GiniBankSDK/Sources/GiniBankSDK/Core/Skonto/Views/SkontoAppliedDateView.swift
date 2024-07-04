@@ -81,17 +81,24 @@ class SkontoAppliedDateView: UIView {
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.padding),
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor,
+                                            constant: Constants.padding),
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
+                                                constant: Constants.padding),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
+                                                 constant: -Constants.padding),
 
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            textField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
-            textField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Constants.padding),
+            textField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
+                                               constant: Constants.padding),
+            textField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor,
+                                              constant: -Constants.padding),
 
             calendarImageView.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
-            calendarImageView.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: Constants.imageHorizontalPadding),
-            calendarImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding),
+            calendarImageView.leadingAnchor.constraint(equalTo: textField.trailingAnchor,
+                                                       constant: Constants.imageHorizontalPadding),
+            calendarImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
+                                                        constant: -Constants.padding),
             calendarImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
             calendarImageView.heightAnchor.constraint(equalToConstant: Constants.imageSize)
         ])
