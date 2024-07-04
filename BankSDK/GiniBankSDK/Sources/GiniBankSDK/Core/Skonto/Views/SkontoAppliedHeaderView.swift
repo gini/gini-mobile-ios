@@ -97,7 +97,7 @@ class SkontoAppliedHeaderView: UIView {
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
         discountSwitch.isOn = isSkontoApplied
-        statusLabel.isHidden = isSkontoApplied ? false : true
+        statusLabel.isHidden = !isSkontoApplied
     }
 
     @objc private func discountSwitchToggled(_ sender: UISwitch) {
