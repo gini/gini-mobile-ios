@@ -38,7 +38,7 @@ final class ShareInvoiceBottomViewModel {
                                                          darkModeColor: UIColor.GiniHealthColors.light6).uiColor()
     
     // Title label
-    var titleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.title",
+    var titleText: String = GiniLocalized.string("ginihealth.paymentcomponent.shareInvoiceBottomSheet.title",
                                                              comment: "Share Invoice Bottom sheet title")
     let titleLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
                                                    darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
@@ -59,7 +59,7 @@ final class ShareInvoiceBottomViewModel {
                                                        darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
     let descriptionAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark3,
                                                     darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
-    var descriptionLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.description",
+    var descriptionLabelText: String = GiniLocalized.string("ginihealth.paymentcomponent.shareInvoiceBottomSheet.description",
                                                                         comment: "Text description for share bottom sheet")
     var descriptionLabelFont: UIFont
     
@@ -73,16 +73,16 @@ final class ShareInvoiceBottomViewModel {
                                             darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
     let tipLabelTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
                                                darkModeColor: UIColor.GiniHealthColors.light4).uiColor()
-    var tipLabelText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.description",
+    var tipLabelText = GiniLocalized.string("ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.description",
                                                         comment: "Text for tip label")
-    let tipActionablePartText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.underlined.part",
+    let tipActionablePartText = GiniLocalized.string("ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.underlined.part",
                                                                  comment: "Text for tip actionable part from the label")
     var tipLabelFont: UIFont
     var tipLabelLinkFont: UIFont
     let tipIconName = "info.circle"
     
     // Continue label
-    let continueLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.continue.button.text",
+    let continueLabelText: String = GiniLocalized.string("ginihealth.paymentcomponent.shareInvoiceBottomSheet.continue.button.text",
                                                                      comment: "Title label used for the Continue button")
 
     let bankToReplaceString = "[BANK]"
@@ -111,11 +111,11 @@ final class ShareInvoiceBottomViewModel {
     
     private func generateAppMockedElements() {
         for _ in 0..<2 {
-            self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.app", comment: ""), isMoreButton: false))
+            self.appsMocked.append(SingleApp(title: GiniLocalized.string("ginihealth.paymentcomponent.shareInvoiceBottomSheet.app", comment: ""), isMoreButton: false))
         }
         self.appsMocked.append(SingleApp(title: selectedPaymentProvider?.name ?? "", image: bankImageIcon, isMoreButton: false))
-        self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.app", comment: ""), isMoreButton: false))
-        self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.more", comment: ""), image: UIImageNamedPreferred(named: moreIconName), isMoreButton: true))
+        self.appsMocked.append(SingleApp(title: GiniLocalized.string("ginihealth.paymentcomponent.shareInvoiceBottomSheet.app", comment: ""), isMoreButton: false))
+        self.appsMocked.append(SingleApp(title: GiniLocalized.string("ginihealth.paymentcomponent.shareInvoiceBottomSheet.more", comment: ""), image: UIImageNamedPreferred(named: moreIconName), isMoreButton: true))
         
     }
     

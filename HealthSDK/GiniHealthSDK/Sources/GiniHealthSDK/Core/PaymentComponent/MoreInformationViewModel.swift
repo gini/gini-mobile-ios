@@ -19,7 +19,7 @@ final class MoreInformationViewModel {
                                                         darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
     let moreInformationLabelTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
                                                         darkModeColor: UIColor.GiniHealthColors.light4).uiColor()
-    let moreInformationActionablePartText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.moreInformation.underlined.part",
+    let moreInformationActionablePartText = GiniLocalized.string("ginihealth.paymentcomponent.moreInformation.underlined.part",
                                                                              comment: "Text for more information actionable part from the label")
     var moreInformationLabelLinkFont: UIFont
     let moreInformationIconName = "info.circle"
