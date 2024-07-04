@@ -24,9 +24,10 @@ class SkontoAppliedHeaderView: UIView {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
                                                              comment: "• Active")
+        let font = configuration.textStyleFonts[.footnoteBold] ?? .systemFont(ofSize: 17)
         let attributedString = NSMutableAttributedString(
             string: title,
-            attributes: [NSAttributedString.Key.font: configuration.textStyleFonts[.footnoteBold]!,
+            attributes: [NSAttributedString.Key.font: font,
                          NSAttributedString.Key.foregroundColor: UIColor.giniColorScheme().text.status.uiColor()
                         ])
         label.attributedText = attributedString
