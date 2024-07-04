@@ -119,6 +119,12 @@ class SkontoAppliedDateView: UIView {
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
         }
+        let currentDate = Date()
+        var dateComponent = DateComponents()
+        dateComponent.month = 6
+        let endDate = Calendar.current.date(byAdding: dateComponent, to: currentDate)
+        datePicker.minimumDate = currentDate
+        datePicker.maximumDate = endDate
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         textField.inputView = datePicker
     }
