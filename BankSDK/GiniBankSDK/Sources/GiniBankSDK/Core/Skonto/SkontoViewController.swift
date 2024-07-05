@@ -230,15 +230,15 @@ public class SkontoViewController: UIViewController {
     }
 
     @objc private func proceedButtonTapped() {
-        viewModel.didTapProceed()
+        viewModel.proceedButtonTapped()
     }
 
     @objc private func helpButtonTapped() {
-        viewModel.didTapHelp()
+        viewModel.helpButtonTapped()
     }
 
     @objc private func backButtonTapped() {
-        viewModel.didTapCancel()
+        viewModel.backButtonTapped()
     }
 
     private func setupTapGesture() {
