@@ -15,20 +15,38 @@ import UIKit
  in case of upload failures. The service also observes application lifecycle events
  to manage background tasks appropriately.
  */
+
 final class AmplitudeService {
-    private var eventQueue: [AmplitudeBaseEvent] = []
+    /**
+     * The state of an event in the queue.
+     */
+    private enum EventState {
+        case pending
+        case inProgress
+        case sent
+    }
+
+    /**
+     * A wrapper for an event, including its state and retry count.
+     */
+    private struct EventWrapper {
+        var event: AmplitudeBaseEvent
+        var state: EventState
+        var retryCount: Int = 0
+    }
+
+    private var eventQueue: [EventWrapper] = []
     private var apiKey: String?
     private var timer: Timer?
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
-    private var retryAttempts: Int = 0
     private let maxRetryAttempts = 3
     private let eventUploadInterval: TimeInterval = 5.0
     private let apiURL = "https://api.eu.amplitude.com/batch"
+    private let queue = DispatchQueue(label: "com.amplitude.service.queue")
 
     /**
-     Initializes the AmplitudeService with the provided API key.
-
-     - Parameter apiKey: The API key for the Amplitude analytics platform.
+     * Initializes the AmplitudeService with an optional API key.
+     * - Parameter apiKey: The API key for Amplitude.
      */
     init(apiKey: String?) {
         self.apiKey = apiKey
@@ -41,24 +59,30 @@ final class AmplitudeService {
         stopEventUploadTimer()
     }
 
+    /**
+     * Tracks a list of events by adding them to the event queue.
+     * - Parameter events: The events to be tracked.
+     */
     func trackEvents(_ events: [AmplitudeBaseEvent]) {
-        eventQueue = events
-        uploadEvents(events: events)
+        let newEvents = events.map { EventWrapper(event: $0, state: .pending) }
+        queue.async {
+            self.eventQueue.append(contentsOf: newEvents)
+            self.uploadPendingEvents()
+        }
     }
 
     /**
-     Uploads events to the Amplitude server.
-
-     - Parameter events: An array of `AmplitudeBaseEvent` objects to upload.
+     * Uploads a list of events to the Amplitude server.
+     * - Parameter events: The events to be uploaded.
      */
-    private func uploadEvents(events: [AmplitudeBaseEvent]) {
-        guard let url = URL(string: apiURL), let apiKey, events.isNotEmpty else { return }
+    private func uploadEvents(events: [EventWrapper]) {
+        guard let url = URL(string: apiURL), let apiKey, !events.isEmpty else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        let payload = AmplitudeEventsBatchPayload(apiKey: apiKey, events: events)
+        let payload = AmplitudeEventsBatchPayload(apiKey: apiKey, events: events.map { $0.event })
 
         do {
             let jsonData = try JSONEncoder().encode(payload)
@@ -75,8 +99,8 @@ final class AmplitudeService {
                 if let httpResponse = response as? HTTPURLResponse {
                     if httpResponse.statusCode == 200 {
                         print("✅ Successfully uploaded events")
-                        self.retryAttempts = 0
-                        self.eventQueueCleanup()
+                        self.markEventsAsSent(events: events)
+                        self.resetAndCleanup()
                     } else {
                         print("❌ Failed to upload events: \(httpResponse.statusCode)")
                         self.handleUploadFailure(events: events)
@@ -91,39 +115,33 @@ final class AmplitudeService {
     }
 
     /**
-     Handles the failure of an event upload by implementing an exponential backoff retry strategy.
-
-     - Parameter events: An array of `AmplitudeBaseEvent` objects that failed to upload.
-
-     This method increments the retry attempt counter and checks if it has exceeded the maximum allowed retry attempts.
-     If the maximum retries have not been reached, the method re-adds the failed events back to the event queue and
-     schedules a retry using an exponential backoff strategy. The retry delay is calculated as `2^retryAttempts` seconds.
-
-     The method uses `DispatchQueue.global().asyncAfter` to schedule the `uploadPendingEvents` method after the calculated delay.
-     If the maximum number of retry attempts is reached, it logs a message and resets the retry attempt counter.
-
-     - Note: The exponential backoff strategy helps prevent overwhelming the server with repeated requests
-     and allows it time to recover between retries.
+     * Handles the failure of an event upload by retrying the upload if the maximum retry attempts have not been reached.
+     * - Parameter events: The events that failed to upload.
      */
+    private func handleUploadFailure(events: [EventWrapper]) {
+        guard !events.isEmpty else { return }
 
-    private func handleUploadFailure(events: [AmplitudeBaseEvent]) {
-        retryAttempts += 1
-        if retryAttempts <= maxRetryAttempts {
-            eventQueue.append(contentsOf: events)
-            // Calculate the delay before retrying an event upload after a failure.
-            // It employs an exponential backoff strategy.
-            let retryDelay = pow(2.0, Double(retryAttempts)) // Exponential backoff
+        queue.async {
+            for event in events {
+                if let index = self.eventQueue.firstIndex(where: { $0.event == event.event }) {
+                    self.eventQueue[index].retryCount += 1
+                    if self.eventQueue[index].retryCount > self.maxRetryAttempts {
+                        self.eventQueue.remove(at: index)
+                    } else {
+                        self.eventQueue[index].state = .pending
+                    }
+                }
+            }
+
+            let retryDelay = pow(2.0, Double(events.first?.retryCount ?? 0))
             DispatchQueue.global().asyncAfter(deadline: .now() + retryDelay) { [weak self] in
                 self?.uploadPendingEvents()
             }
-        } else {
-            print("Max retry attempts reached. Failed to upload events.")
-            retryAttempts = 0
         }
     }
 
     /**
-     Starts a timer to periodically upload pending events.
+     * Starts the timer that periodically attempts to upload pending events.
      */
     private func startEventUploadTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: eventUploadInterval,
@@ -133,28 +151,54 @@ final class AmplitudeService {
     }
 
     /**
-    Stops the event upload timer.
-    */
+     * Stops the event upload timer.
+     */
     private func stopEventUploadTimer() {
         timer?.invalidate()
         timer = nil
     }
 
     /**
-     Uploads pending events from the event queue.
+     * Uploads all pending events by changing their state to inProgress and attempting to send them.
      */
     private func uploadPendingEvents() {
-        guard !eventQueue.isEmpty else { return }
-        let eventsToUpload = eventQueue
-        uploadEvents(events: eventsToUpload)
-    }
-
-    private func eventQueueCleanup() {
-        eventQueue.removeAll()
+        queue.async {
+            let pendingEvents = self.eventQueue.filter { $0.state == .pending }
+            guard !pendingEvents.isEmpty else { return }
+            for event in pendingEvents {
+                if let index = self.eventQueue.firstIndex(where: { $0.event == event.event }) {
+                    self.eventQueue[index].state = .inProgress
+                }
+            }
+            self.uploadEvents(events: pendingEvents)
+        }
     }
 
     /**
-     Sets up observers for application lifecycle events.
+     * Resets the retry attempts and removes all sent events from the queue.
+     */
+    private func resetAndCleanup() {
+        queue.async {
+            self.eventQueue.removeAll { $0.state == .sent }
+        }
+    }
+
+    /**
+     * Marks the specified events as sent by updating their state in the queue.
+     * - Parameter events: The events to mark as sent.
+     */
+    private func markEventsAsSent(events: [EventWrapper]) {
+        queue.async {
+            for event in events {
+                if let index = self.eventQueue.firstIndex(where: { $0.event == event.event }) {
+                    self.eventQueue[index].state = .sent
+                }
+            }
+        }
+    }
+
+    /**
+     * Sets up the observers for application lifecycle events.
      */
     private func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground),
@@ -168,21 +212,33 @@ final class AmplitudeService {
                                                object: nil)
     }
 
+    /**
+     * Called when the application enters the background.
+     */
     @objc private func appDidEnterBackground() {
         stopEventUploadTimer()
         startBackgroundTask()
     }
 
+    /**
+     * Called when the application will enter the foreground.
+     */
     @objc private func appWillEnterForeground() {
         endBackgroundTask()
         startEventUploadTimer()
     }
 
+    /**
+     * Called when the application will terminate.
+     */
     @objc private func appWillTerminate() {
         stopEventUploadTimer()
         uploadPendingEvents()
     }
 
+    /**
+     * Starts a background task to continue uploading events when the app enters the background.
+     */
     private func startBackgroundTask() {
         backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
             self?.endBackgroundTask()
@@ -190,6 +246,9 @@ final class AmplitudeService {
         uploadPendingEvents()
     }
 
+    /**
+     * Ends the background task.
+     */
     private func endBackgroundTask() {
         if backgroundTask != .invalid {
             UIApplication.shared.endBackgroundTask(backgroundTask)

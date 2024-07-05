@@ -7,7 +7,7 @@
 import Foundation
 
 /// The `AmplitudeBaseEvent` struct represents an event with various properties and implements encoding for serialization.
-struct AmplitudeBaseEvent: Encodable {
+struct AmplitudeBaseEvent: Encodable, Equatable {
     var eventType: String
     var eventProperties: [String: Any]?
     var userProperties: [String: Any]?
@@ -68,5 +68,9 @@ struct AmplitudeBaseEvent: Encodable {
         try container.encodeIfPresent(eventOptions.deviceModel, forKey: .deviceModel)
         try container.encodeIfPresent(eventOptions.language, forKey: .language)
         try container.encodeIfPresent(eventOptions.ip, forKey: .ip)
+    }
+
+    static func == (lhs: AmplitudeBaseEvent, rhs: AmplitudeBaseEvent) -> Bool {
+        return lhs.eventType == rhs.eventType && lhs.eventOptions.eventId == rhs.eventOptions.eventId
     }
 }
