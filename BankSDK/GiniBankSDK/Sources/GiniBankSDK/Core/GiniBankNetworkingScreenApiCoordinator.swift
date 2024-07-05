@@ -359,7 +359,8 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
 extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     func didCancelAnalysis(_ coordinator: SkontoCoordinator) {
         childCoordinators = childCoordinators.filter { $0 !== coordinator }
-        resultsDelegate?.giniCaptureDidCancelAnalysis()
+        pages = []
+        _ = start(withDocuments: nil, animated: true)
     }
 
     func didFinishAnalysis(_ coordinator: SkontoCoordinator) {
