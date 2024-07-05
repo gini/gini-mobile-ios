@@ -6,6 +6,7 @@
 
 import UIKit
 import GiniHealthSDK
+import GiniCaptureSDK
 
 protocol DebugMenuDelegate: AnyObject {
     func didChangeBrandedSwitchValue(isOn: Bool)
@@ -79,7 +80,7 @@ class DebugMenuViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = UIColor(resource: .background)
+        view.backgroundColor = GiniColor(light: .white, dark: .black).uiColor()
 
         let spacer = UIView()
         let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, brandedRow, spacer])
