@@ -43,7 +43,7 @@ class PriceTextField: UITextField, UITextFieldDelegate {
     }
 
     private func filterAndTrimInput(_ text: String) -> String {
-        return String(text.trimmingCharacters(in: .whitespaces).filter { $0.isNumber }.prefix(6))
+        return String(text.trimmingCharacters(in: .whitespaces).filter { $0.isNumber }.prefix(8))
     }
 
     private func formatDecimal(_ decimal: Decimal) -> String? {
