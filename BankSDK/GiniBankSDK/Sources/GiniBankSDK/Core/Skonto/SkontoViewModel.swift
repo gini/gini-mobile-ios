@@ -8,7 +8,7 @@ import Foundation
 
 protocol SkontoViewModelDelegate: AnyObject {
     func didTapHelp()
-    func didTapCancel()
+    func didTapBack()
     func didTapProceed(on viewModel: SkontoViewModel)
 }
 
@@ -93,15 +93,15 @@ class SkontoViewModel {
         }
     }
 
-    func didTapHelp() {
+    func helpButtonTapped() {
         delegate?.didTapHelp()
     }
 
-    func didTapCancel() {
-        delegate?.didTapCancel()
+    func backButtonTapped() {
+        delegate?.didTapBack()
     }
 
-    func didTapProceed() {
+    func proceedButtonTapped() {
         delegate?.didTapProceed(on: self)
     }
 
