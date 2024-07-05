@@ -16,6 +16,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
+        .package(name: "TrustKit", url: "https://github.com/datatheorem/TrustKit.git" , from: "2.0.0"),
         .package(name: "GiniHealthAPILibraryPinning", path: "../../HealthAPILibrary/GiniHealthAPILibraryPinning"),
         .package(name: "GiniMerchantSDK", path: "../GiniMerchantSDK"),
     ],
@@ -24,7 +25,7 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "GiniMerchantSDKPinning",
-            dependencies: ["GiniHealthAPILibraryPinning", "GiniMerchantSDK"]),
+            dependencies: ["GiniHealthAPILibraryPinning", "GiniMerchantSDK", "TrustKit"]),
         .testTarget(
             name: "GiniMerchantSDKPinningTests",
             dependencies: ["GiniMerchantSDKPinning"]),
