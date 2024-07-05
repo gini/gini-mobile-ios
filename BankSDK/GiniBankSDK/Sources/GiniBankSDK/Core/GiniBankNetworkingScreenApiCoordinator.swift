@@ -275,18 +275,29 @@ extension GiniBankNetworkingScreenApiCoordinator {
             case let .success(extractionResult):
 
                 DispatchQueue.main.async {
+
                     if GiniBankConfiguration.shared.returnAssistantEnabled {
                         do {
                             let digitalInvoice = try DigitalInvoice(extractionResult: extractionResult)
                             self.showDigitalInvoiceScreen(digitalInvoice: digitalInvoice,
                                                           analysisDelegate: networkDelegate)
                         } catch {
-                            self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                            // TODO: Please revisit this when the backend is in place
+                            // Shows the Skonto screen in the flow
+
+                            extractionResult.lineItems = nil
+                            self.showSkontoScreen()
+
+                            // self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
                         }
 
                     } else {
+                        // TODO: Please revisit this when the backend is in place
+                        // Shows the Skonto screen in the flow
+
                         extractionResult.lineItems = nil
-                        self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                        self.showSkontoScreen()
+//                        self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
                     }
                 }
 
