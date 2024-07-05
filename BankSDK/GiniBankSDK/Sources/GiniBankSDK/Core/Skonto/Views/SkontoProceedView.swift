@@ -38,7 +38,7 @@ class SkontoProceedView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        let labelText = viewModel.totalPrice.string
+        let labelText = viewModel.totalPrice.germanStringWithCurrencyCode
         label.text = labelText
         label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
@@ -158,7 +158,7 @@ class SkontoProceedView: UIView {
         self.skontoBadgeView.isHidden = !isSkontoApplied
         self.skontoBadgeLabel.text = String.localizedStringWithFormat(skontoTitle,
                                                                       viewModel.skontoFormattedPercentageDiscounted)
-        self.totalValueLabel.text = viewModel.totalPrice.string
+        self.totalValueLabel.text = viewModel.totalPrice.germanStringWithCurrencyCode
     }
 }
 

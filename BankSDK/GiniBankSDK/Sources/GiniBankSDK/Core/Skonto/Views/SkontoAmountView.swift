@@ -65,8 +65,8 @@ class SkontoAmountView: UIView {
          price: Price,
          isEditable: Bool = true) {
         self.titleLabelText = title
-        self.textFieldInitialText = price.stringWithoutSymbol ?? ""
-        self.currencyLabelText = price.currencySymbol ?? ""
+        self.textFieldInitialText = price.germanStringWithoutCurrencyCode ?? ""
+        self.currencyLabelText = price.currencyCode
         self.isEditable = isEditable
         super.init(frame: .zero)
         setupView()
@@ -112,7 +112,11 @@ class SkontoAmountView: UIView {
     }
 
     func configure(isEditable: Bool, price: Price) {
-        textField.text = price.stringWithoutSymbol ?? ""
+        if isEditable {
+            textField.text = price.germanStringWithoutCurrencyCode ?? ""
+        } else {
+            textField.text = price.germanStringWithCurrencyCode ?? ""
+        }
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
         textField.isUserInteractionEnabled = isEditable
