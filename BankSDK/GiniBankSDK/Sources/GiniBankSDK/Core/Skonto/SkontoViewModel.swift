@@ -21,6 +21,19 @@ class SkontoViewModel {
     private (set) var skontoValue: Double
     private (set) var currencyCode: String
 
+    // TODO: recalculate with backend entity: skontoDuePeriod
+    var skontoFormattedDuePeriod: String {
+        return "14 days"
+    }
+
+    var skontoFormattedPercentageDiscounted: String {
+        if skontoValue.truncatingRemainder(dividingBy: 1) == 0 {
+            return "\(Int(skontoValue))%"
+        } else {
+            return String(format: "%.1f%%", skontoValue)
+        }
+    }
+
     init(isSkontoApplied: Bool,
          skontoValue: Double,
          date: Date,

@@ -17,10 +17,9 @@ class SkontoAppliedInfoView: UIView {
 
     private lazy var label: UILabel = {
         let label = UILabel()
-        let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
-                                                                     comment: "Pay in %d days: %.1f%% Skonto discount.")
-        // TODO: Right now days amount is hardcoded, need to specify it after backend integration
-        let text = String.localizedStringWithFormat(localizedText, 14, viewModel.skontoValue)
+        let text = String.localizedStringWithFormat(skontoTitle,
+                                                    viewModel.skontoFormattedDuePeriod,
+                                                    viewModel.skontoFormattedPercentageDiscounted)
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttribute(.underlineStyle,
                                       value: NSUnderlineStyle.single.rawValue,
@@ -36,6 +35,9 @@ class SkontoAppliedInfoView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
+
+    private let skontoTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
+                                                                       comment: "Pay in %@ days: %@ Skonto discount.")
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -76,7 +78,7 @@ class SkontoAppliedInfoView: UIView {
             label.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
         ])
     }
-    
+
     private func bindViewModel() {
         configure()
         viewModel.addStateChangeHandler { [weak self] in
@@ -86,13 +88,9 @@ class SkontoAppliedInfoView: UIView {
     }
 
     private func configure() {
-        // TODO: skonto period?? how to set??
-        let text = String.localizedStringWithFormat(
-            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
-                                                     comment: "Pay in %d days: %.1f%% Skonto discount."),
-            14,
-            viewModel.skontoValue
-        )
+        let text = String.localizedStringWithFormat(skontoTitle,
+                                                    viewModel.skontoFormattedDuePeriod,
+                                                    viewModel.skontoFormattedPercentageDiscounted)
         label.text = text
     }
 }

@@ -89,7 +89,7 @@
 "ginibank.skonto.backButton.title" = "Zurück";
 "ginibank.skonto.info.title" = "Mit Skonto";
 "ginibank.skonto.info.status" = "• Aktiviert";
-"ginibank.skonto.info.message" = "Zahlung in %d Tagen: %.1f%% Skonto.";
+"ginibank.skonto.info.message" = "Zahlung in %@: %@ Skonto.";
 "ginibank.skonto.info.amount.title" = "Betrag nach Abzug";
 "ginibank.skonto.info.date.title" = "Fälligkeitsdatum";
 "ginibank.skonto.notapplied.title" = "Ohne Skonto";
