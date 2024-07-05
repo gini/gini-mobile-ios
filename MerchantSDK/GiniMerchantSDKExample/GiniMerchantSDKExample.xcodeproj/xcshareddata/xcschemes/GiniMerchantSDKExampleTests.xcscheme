@@ -16,6 +16,20 @@
             <AutocreatedTestPlanReference>
             </AutocreatedTestPlanReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "50D80D532C245A8900B446A8"
+               BuildableName = "GiniMerchantSDKExample.app"
+               BlueprintName = "GiniMerchantSDKExample"
+               ReferencedContainer = "container:GiniMerchantSDKExample.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -55,15 +69,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "50D80D692C245A8A00B446A8"
-            BuildableName = "GiniMerchantSDKExampleTests.xctest"
-            BlueprintName = "GiniMerchantSDKExampleTests"
-            ReferencedContainer = "container:GiniMerchantSDKExample.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
