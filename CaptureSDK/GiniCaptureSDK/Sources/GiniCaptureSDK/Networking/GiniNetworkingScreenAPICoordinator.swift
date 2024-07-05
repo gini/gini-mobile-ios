@@ -35,13 +35,13 @@ import GiniBankAPILibrary
     public weak var resultsDelegate: GiniCaptureResultsDelegate?
     public let documentService: DocumentServiceProtocol
 
-    public init(client: Client,
-         resultsDelegate: GiniCaptureResultsDelegate,
-         giniConfiguration: GiniConfiguration,
-         documentMetadata: Document.Metadata?,
-         api: APIDomain,
-         trackingDelegate: GiniCaptureTrackingDelegate?,
-         lib : GiniBankAPI) {
+     public init(client: Client,
+                 resultsDelegate: GiniCaptureResultsDelegate,
+                 giniConfiguration: GiniConfiguration,
+                 documentMetadata: Document.Metadata?,
+                 api: APIDomain,
+                 trackingDelegate: GiniCaptureTrackingDelegate?,
+                 lib : GiniBankAPI) {
 
         self.documentService = GiniNetworkingScreenAPICoordinator.documentService(with: lib,
                                                                                   documentMetadata: documentMetadata,
@@ -57,10 +57,10 @@ import GiniBankAPILibrary
     }
      
      public init(resultsDelegate: GiniCaptureResultsDelegate,
-          giniConfiguration: GiniConfiguration,
-          documentMetadata: Document.Metadata?,
-          trackingDelegate: GiniCaptureTrackingDelegate?,
-          captureNetworkService: GiniCaptureNetworkService) {
+                 giniConfiguration: GiniConfiguration,
+                 documentMetadata: Document.Metadata?,
+                 trackingDelegate: GiniCaptureTrackingDelegate?,
+                 captureNetworkService: GiniCaptureNetworkService) {
 
          self.documentService = DocumentService(giniCaptureNetworkService: captureNetworkService, metadata: documentMetadata)
          
@@ -159,10 +159,9 @@ extension GiniNetworkingScreenAPICoordinator {
         }
     }
 
-    fileprivate func uploadAndStartAnalysis(
-        document: GiniCaptureDocument,
-        networkDelegate: GiniCaptureNetworkDelegate,
-        uploadDidFail: @escaping () -> Void) {
+    fileprivate func uploadAndStartAnalysis(document: GiniCaptureDocument,
+                                            networkDelegate: GiniCaptureNetworkDelegate,
+                                            uploadDidFail: @escaping () -> Void) {
         self.upload(document: document, didComplete: { _ in
             self.startAnalysis(networkDelegate: networkDelegate)
         }, didFail: { _, error in
