@@ -34,7 +34,6 @@ final class AmplitudeService {
         self.apiKey = apiKey
         setupObservers()
         startEventUploadTimer()
-        uploadPendingEvents() // Immediate upload on initialization
     }
 
     deinit {
