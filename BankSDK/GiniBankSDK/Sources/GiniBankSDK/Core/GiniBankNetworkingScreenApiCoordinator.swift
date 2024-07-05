@@ -250,8 +250,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             entryPointValue = GiniEntryPointAnalytics.openWith.rawValue
         }
         GiniAnalyticsManager.registerSuperProperties([.entryPoint: entryPointValue])
-        GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: giniBankConfiguration.returnAssistantEnabled,
-                                                  .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons])
         GiniAnalyticsManager.track(event: .sdkOpened, screenName: nil)
     }
 
@@ -260,6 +258,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         let analyticsConfiguration = GiniAnalyticsConfiguration(clientID: configuration.clientID,
                                                                 userJourneyAnalyticsEnabled: userJourneyAnalyticsEnabled,
                                                                 amplitudeApiKey: configuration.amplitudeApiKey)
+
+        GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
+                                                  .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons])
         GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
     }
 }
