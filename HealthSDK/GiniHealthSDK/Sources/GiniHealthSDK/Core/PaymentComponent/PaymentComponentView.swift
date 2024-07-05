@@ -101,7 +101,9 @@ final class PaymentComponentView: UIView {
         buttonsView.addSubview(buttonsStackView)
         contentStackView.addArrangedSubview(buttonsView)
         
-        bottomStackView.addArrangedSubview(moreInformationView)
+        if !viewModel.isPaymentComponentUsed() {
+            bottomStackView.addArrangedSubview(moreInformationView)
+        }
         bottomStackView.addArrangedSubview(UIView())
         if viewModel.shouldShowBrandedView {
             bottomStackView.addArrangedSubview(poweredByGiniView)
@@ -135,7 +137,6 @@ final class PaymentComponentView: UIView {
     private func updateAvailableViews() {
         let isPaymentComponentUsed = viewModel.isPaymentComponentUsed()
         selectYourBankView.isHidden = isPaymentComponentUsed
-        moreInformationView.isHidden = isPaymentComponentUsed
     }
     
     private func updateButtonsViews() {
