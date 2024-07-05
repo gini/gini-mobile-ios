@@ -85,6 +85,11 @@ public class SkontoViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupConstraints()
+        setupKeyboardObservers()
+    }
+
+    deinit {
+        removeKeyboardObservers()
     }
 
     private func setupView() {
@@ -269,6 +274,54 @@ public class SkontoViewController: UIViewController {
     }
 }
 
+extension SkontoViewController {
+    private func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    private func removeKeyboardObservers() {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIResponder.keyboardWillShowNotification,
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIResponder.keyboardWillHideNotification,
+                                                  object: nil)
+    }
+
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+              let animationDuration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
+            return
+        }
+
+        let contentOffset = keyboardFrame.height - self.proceedView.frame.height + Constants.containerPadding
+        UIView.animate(withDuration: animationDuration) {
+            self.scrollView.contentInset.bottom = contentOffset
+            self.scrollView.scrollIndicatorInsets.bottom = contentOffset
+        }
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+              let animationDuration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
+            return
+        }
+
+        UIView.animate(withDuration: animationDuration) {
+            self.scrollView.contentInset.bottom = Constants.containerPadding
+            self.scrollView.scrollIndicatorInsets.bottom = Constants.scrollIndicatorInset
+        }
+    }
+}
+
 private extension SkontoViewController {
     enum Constants {
         static let verticalPadding: CGFloat = 12
@@ -277,5 +330,6 @@ private extension SkontoViewController {
         static let dateViewTopPadding: CGFloat = 8
         static let scrollViewSideInset: CGFloat = 0
         static let groupCornerRadius: CGFloat = 8
+        static let scrollIndicatorInset: CGFloat = 0
     }
 }
