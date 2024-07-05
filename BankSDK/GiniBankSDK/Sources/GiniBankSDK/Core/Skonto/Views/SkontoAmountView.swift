@@ -21,9 +21,9 @@ class SkontoAmountView: UIView {
         return label
     }()
 
-    private lazy var textField: UITextField = {
-        let textField = UITextField()
-        textField.delegate = self
+    private lazy var textField: PriceTextField = {
+        let textField = PriceTextField()
+        textField.priceDelegate = self
         textField.text = textFieldInitialText
         textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
@@ -120,53 +120,9 @@ class SkontoAmountView: UIView {
     }
 }
 
-extension SkontoAmountView: UITextFieldDelegate {
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
-
-        guard let text = textField.text, let textRange = Range(range, in: text) else {
-            return true
-        }
-
-        let updatedText = text.replacingCharacters(in: textRange, with: string)
-        let sanitizedText = sanitizeInput(updatedText)
-
-        guard let decimal = Decimal(string: sanitizedText) else {
-            return false
-        }
-
-        let formattedText = formatDecimal(decimal)
-        updateTextField(textField, with: formattedText, originalText: text)
-
-        return false
-    }
-
-    private func sanitizeInput(_ text: String) -> String {
-        return String(text.trimmingCharacters(in: .whitespaces).filter { $0.isNumber }.prefix(6))
-    }
-
-    private func formatDecimal(_ decimal: Decimal) -> String? {
-        let decimalWithFraction = decimal / 100
-        return Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces)
-    }
-
-    private func updateTextField(_ textField: UITextField, with newText: String?, originalText: String) {
-        guard let newText = newText else { return }
-        let selectedRange = textField.selectedTextRange
-        textField.text = newText
-        self.delegate?.textFieldPriceChanged(editedText: textField.text ?? "")
-        adjustCursorPosition(textField, newText: newText, originalText: originalText, selectedRange: selectedRange)
-    }
-
-    private func adjustCursorPosition(_ textField: UITextField,
-                                      newText: String,
-                                      originalText: String,
-                                      selectedRange: UITextRange?) {
-        guard let selectedRange = selectedRange else { return }
-        let countDelta = newText.count - originalText.count
-        let offset = countDelta == 0 ? 1 : countDelta
-        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
+extension SkontoAmountView: PriceTextFieldDelegate {
+    func priceTextField(_ textField: PriceTextField, didChangePrice editedText: String) {
+        self.delegate?.textFieldPriceChanged(editedText: editedText)
     }
 }
 
