@@ -9,7 +9,7 @@ import UIKit
 class SkontoAppliedInfoView: UIView {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = GiniImages.icInfo.image
+        imageView.image = GiniImages.infoMessageIcon.image
         imageView.tintColor = .giniColorScheme().chips.textAssistEnabled.uiColor()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
