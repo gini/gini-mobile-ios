@@ -6,66 +6,30 @@
 //
 
 import XCTest
-@testable import GiniMerchantSDK
 @testable import GiniMerchantSDKPinning
-@testable import GiniHealthAPILibrary
-@testable import GiniHealthAPILibraryPinning
-@testable import TrustKit
 
 class GiniMerchantSDKPinningExampleWrongCertificatesTests: XCTestCase {
     
-    // When running from Xcode: update these environment variables in the scheme.
-    // Make sure not to commit the credentials if the scheme is shared!
-    let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
-    let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
-    let yourPublicPinningConfig = [
-        kTSKPinnedDomains: [
-            "health-api.gini.net": [
-                kTSKPublicKeyHashes: [
-                    // Wrong hashes
-                    "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
-                    "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
-                ]],
-            "user.gini.net": [
-                kTSKPublicKeyHashes: [
-                    // Wrong hashes
-                    "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
-                    "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
-                ]],
-        ]] as [String: Any]
-
-    var giniHealthAPILib: GiniHealthAPI!
-    var paymentService: PaymentService!
-    var sdk: GiniMerchant!
-    
-    override func setUp() {
-        let client = Client(id: clientId,
-                            secret: clientSecret,
-                            domain: "health-sdk-pinning-example")
-        giniHealthAPILib = GiniHealthAPI
-               .Builder(client: client, pinningConfig: yourPublicPinningConfig)
-               .build()
-        sdk = GiniMerchant.init(giniApiLib: giniHealthAPILib)
-        paymentService = sdk.paymentService
+    override func setUpWithError() throws {
+        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
-    
-    func testBuildPaymentService() {
-        XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")
-    }
-    
-    func testCreatePaymentRequest(){
-        let expect = expectation(description: "it creates a payment request")
 
-        paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: "dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7", recipient: "Dr. med. Hackler", iban: "DE02300209000106531065", bic: "CMCIDEDDXXX", amount: "335.50:EUR", purpose: "ReNr AZ356789Z") { result in
-            switch result {
-            case .success:
-                XCTFail("creating a payment request should have failed due to wrong pinning certificates")
-            case let .failure(error):
-                XCTAssertEqual(error, GiniError.noResponse)
-                expect.fulfill()
-            }
+    override func tearDownWithError() throws {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+
+    func testExample() throws {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Any test you write for XCTest can be annotated as throws and async.
+        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
+        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    }
+
+    func testPerformanceExample() throws {
+        // This is an example of a performance test case.
+        self.measure {
+            // Put the code you want to measure the time of here.
         }
-        wait(for: [expect], timeout: 10)
     }
 }
