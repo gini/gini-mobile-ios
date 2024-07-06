@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 typealias DefaultDocumentServiceProtocol = DocumentService & V2DocumentService
 
@@ -68,11 +69,44 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                                                     apiDomain: apiDomain,
                                                     httpMethod: .post,
                                                     additionalHeaders: metadata?.headers ?? [:])
-            sessionManager.upload(resource: resource, data: data, completion: completionResult)
+            guard let processedData = processDataIfNeeded(data: data) else {
+                completion(.failure(.parseError(message: "Couldn't process data received.", response: nil, data: nil)))
+                return
+            }
+            sessionManager.upload(resource: resource, data: processedData, completion: completionResult)
         }
-        
     }
-    
+
+    func processDataIfNeeded(data: Data) -> Data? {
+        // Check if data received is image. Otherwise, pass back the data
+        guard data.isImage() else {
+            return data
+        }
+        // Check if image should be compressed
+        guard data.isImageSizeBiggerThan(maximumSizeInMB: Constants.maximumImageSizeInMB) else {
+            return data
+        }
+        // Compress image to needed size
+        guard let compressedData = compressImageToMax(imageData: data, mb: Constants.maximumImageSizeInMB) else {
+            return data
+        }
+        return compressedData
+    }
+
+    private func compressImageToMax(imageData: Data, mb: Double) -> Data? {
+        let maxFileSize: Double = mb * 1024 * 1024 // 10 MB in bytes
+        let image = UIImage(data: imageData)
+        guard let initialData = image?.jpegData(compressionQuality: 1.0) else { return nil }
+        let initialSize = Double(initialData.count)
+        if initialSize <= maxFileSize {
+            return initialData // Already below given MB
+        }
+        // Calculate the required compression quality so that image size will be under given MB
+        let compressionQuality: CGFloat = CGFloat(maxFileSize / initialSize)
+        let compressedImageData = image?.jpegData(compressionQuality: compressionQuality)
+        return compressedImageData
+    }
+
     /**
      *  Deletes a document
      *
@@ -219,5 +253,11 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     
     public func file(urlString: String, completion: @escaping CompletionResult<Data>){
         file(urlString: urlString, resourceHandler: sessionManager.download, completion: completion)
+    }
+}
+
+extension DefaultDocumentService {
+    enum Constants {
+        static let maximumImageSizeInMB = 10.0
     }
 }

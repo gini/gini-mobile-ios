@@ -51,7 +51,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     public var documentId: String
-    private var healthSDK: GiniHealth
+    var healthSDK: GiniHealth
     private var selectedPaymentProvider: PaymentProvider?
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
@@ -77,7 +77,7 @@ public class PaymentReviewModel: NSObject {
     }
     
     // Pay invoice label
-    let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.banking.app.button.label",
+    let payInvoiceLabelText: String = GiniLocalized.string("ginihealth.reviewscreen.banking.app.button.label",
                                                                        comment: "Title label used for the pay invoice button")
 
     public init(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?) {
@@ -205,8 +205,10 @@ public class PaymentReviewModel: NSObject {
             switch result {
                 case .success(let data):
                     completion(data)
-                case .failure:
-                    break
+                case let .failure(error):
+                    if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: .apiError(error)) {
+                        self?.onCreatePaymentRequestErrorHandling()
+                    }
             }
         }
     }
