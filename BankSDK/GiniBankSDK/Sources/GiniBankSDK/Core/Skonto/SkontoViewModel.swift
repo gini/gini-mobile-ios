@@ -67,7 +67,7 @@ class SkontoViewModel {
     }
 
     private func convertPriceStringToPrice(price: String) -> Price? {
-        guard let priceValue = Price.convertGermanStringToDecimal(price) else {
+        guard let priceValue = Price.convertLocalizedStringToDecimal(price) else {
             return nil
         }
         return Price(value: priceValue, currencyCode: currencyCode)

@@ -115,7 +115,7 @@ class SkontoAmountView: UIView {
         if isEditable {
             textField.text = price.germanStringWithoutCurrencyCode ?? ""
         } else {
-            textField.text = price.germanStringWithCurrencyCode ?? ""
+            textField.text = price.localizedStringWithCurrencyCode ?? ""
         }
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0

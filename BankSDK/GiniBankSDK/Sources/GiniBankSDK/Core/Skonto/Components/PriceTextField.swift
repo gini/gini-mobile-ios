@@ -48,7 +48,7 @@ class PriceTextField: UITextField, UITextFieldDelegate {
 
     private func formatDecimal(_ decimal: Decimal) -> String? {
         let decimalWithFraction = decimal / 100
-        return Price.germanStringWithoutCurrencyCode(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces)
+        return Price.localizedStringWithoutCurrencyCode(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces)
     }
 
     private func updateTextField(with newText: String?, originalText: String) {
