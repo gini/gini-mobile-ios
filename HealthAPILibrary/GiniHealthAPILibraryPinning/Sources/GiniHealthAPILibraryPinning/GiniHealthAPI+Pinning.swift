@@ -26,7 +26,17 @@ public extension GiniHealthAPI.Builder {
          pinningConfig: [String: Any],
          logLevel: LogLevel = .none) {
         self.init(client: client, api: api, userApi: userApi, logLevel: logLevel, sessionDelegate: SessionDelegate())
-        TrustKit.initSharedInstance(withConfiguration: pinningConfig)
+        
+        if let pinnedDomains = pinningConfig[kTSKPinnedDomains] as? [String: Any] {
+            var keys: [String] = []
+            for domainConfig in pinnedDomains.values {
+                if let domainConfig = domainConfig as? [String: Any],
+                   let keyHashes = domainConfig[kTSKPublicKeyHashes] as? [String] {
+                    keys.append(contentsOf: keyHashes)
+                }
+            }
+            SSLPinningManager.shared.pinnedKeyHashes = keys
+        }
     }
     
     /**
@@ -39,11 +49,22 @@ public extension GiniHealthAPI.Builder {
      */
     init(customApiDomain: String,
          alternativeTokenSource: AlternativeTokenSource,
-         apiVersion: Int,
          pinningConfig: [String: Any],
          logLevel: LogLevel = .none) {
-        self.init(customApiDomain: customApiDomain, alternativeTokenSource: alternativeTokenSource, apiVersion: apiVersion, logLevel: logLevel, sessionDelegate: SessionDelegate())
-        TrustKit.initSharedInstance(withConfiguration: pinningConfig)
+        self.init(customApiDomain: customApiDomain, alternativeTokenSource: alternativeTokenSource, logLevel: logLevel, sessionDelegate: SessionDelegate())
+//        TrustKit.initSharedInstance(withConfiguration: pinningConfig)
+        
+        // Extract and set pinnedKeyHashes from the configuration
+        if let pinnedDomains = pinningConfig[kTSKPinnedDomains] as? [String: Any] {
+            var keys: [String] = []
+            for domainConfig in pinnedDomains.values {
+                if let domainConfig = domainConfig as? [String: Any],
+                   let keyHashes = domainConfig[kTSKPublicKeyHashes] as? [String] {
+                    keys.append(contentsOf: keyHashes)
+                }
+            }
+            SSLPinningManager.shared.pinnedKeyHashes = keys
+        }
     }
 }
 
@@ -51,8 +72,9 @@ class SessionDelegate: NSObject, URLSessionDelegate {
     public func urlSession(_ session: URLSession,
                     didReceive challenge: URLAuthenticationChallenge,
                     completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        if TrustKit.sharedInstance().pinningValidator.handle(challenge, completionHandler: completionHandler) == false {
-            completionHandler(.performDefaultHandling, nil)
-        }
+        SSLPinningManager.shared.validate(challenge: challenge, completionHandler: completionHandler)
+//        if TrustKit.sharedInstance().pinningValidator.handle(challenge, completionHandler: completionHandler) == false {
+//            completionHandler(.performDefaultHandling, nil)
+//        }
     }
 }
