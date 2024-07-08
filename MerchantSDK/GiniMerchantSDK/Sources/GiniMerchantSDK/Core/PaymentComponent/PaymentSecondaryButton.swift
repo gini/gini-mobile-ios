@@ -110,7 +110,7 @@ extension PaymentSecondaryButton {
         }
     }
     
-    func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: String?, rightImageTintColor: UIColor, shouldShowLabel: Bool) {
+    func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: UIImage?, rightImageTintColor: UIColor, shouldShowLabel: Bool) {
         if let leftImageIcon {
             leftImageView.image = leftImageIcon
             leftImageView.isHidden = false
@@ -118,7 +118,7 @@ extension PaymentSecondaryButton {
             leftImageView.isHidden = true
         }
         if let rightImageIcon {
-            rightImageView.image = UIImageNamedPreferred(named: rightImageIcon)?.withRenderingMode(.alwaysTemplate)
+            rightImageView.image = rightImageIcon.withRenderingMode(.alwaysTemplate)
             rightImageView.tintColor = rightImageTintColor
             rightImageView.isHidden = false
         } else {
