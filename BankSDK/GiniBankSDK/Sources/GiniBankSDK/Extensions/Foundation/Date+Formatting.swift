@@ -9,7 +9,8 @@ import Foundation
 extension Date {
     func formattedDateString() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.locale = Locale.current
+        dateFormatter.dateStyle = .short
         return dateFormatter.string(from: self)
     }
 }
