@@ -30,7 +30,7 @@ class SkontoViewModel {
         if skontoValue.truncatingRemainder(dividingBy: 1) == 0 {
             return "\(Int(skontoValue))%"
         } else {
-            return String(format: "%.1f%%", skontoValue)
+            return String(format: "%.2f%%", skontoValue)
         }
     }
 
@@ -53,7 +53,10 @@ class SkontoViewModel {
     }
 
     func setSkontoPrice(price: String) {
-        guard let price = convertPriceStringToPrice(price: price) else { return }
+        guard let price = convertPriceStringToPrice(price: price), price.value <= priceWithoutSkonto.value else {
+            notifyStateChangeHandlers()
+            return
+        }
         priceWithSkonto = price
         recalculateSkontoValue()
         notifyStateChangeHandlers()
