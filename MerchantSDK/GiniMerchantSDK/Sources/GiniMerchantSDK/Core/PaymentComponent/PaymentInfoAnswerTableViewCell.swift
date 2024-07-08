@@ -7,9 +7,7 @@
 
 import UIKit
 
-final class PaymentInfoAnswerTableViewCell: UITableViewCell {
-    static let identifier = "PaymentInfoAnswerTableViewCell"
-    
+final class PaymentInfoAnswerTableViewCell: UITableViewCell, ReusableView {
     private lazy var textView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +28,7 @@ final class PaymentInfoAnswerTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.backgroundColor = .clear
+        backgroundColor = .clear
         contentView.addSubview(textView)
         setupConstraints()
     }
