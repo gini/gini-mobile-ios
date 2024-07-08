@@ -111,8 +111,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     private lazy var tipButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImageNamedPreferred(named: viewModel.tipIconName)
-        button.setImage(image, for: .normal)
+        button.setImage(viewModel.tipIcon, for: .normal)
         button.tintColor = viewModel.tipAccentColor
         button.isUserInteractionEnabled = false
         button.imageView?.contentMode = .scaleAspectFit

@@ -15,20 +15,6 @@ public func giniMerchantBundle() -> Bundle {
 }
 
 /**
- Returns an optional `UIImage` instance with the given `name` preferably from the client's bundle.
- 
- - parameter name: The name of the image file without file extension.
- 
- - returns: Image if found with name.
- */
-func UIImageNamedPreferred(named name: String) -> UIImage? {
-    if let clientImage = UIImage(named: name) {
-        return clientImage
-    }
-    return UIImage(named: name, in: giniMerchantBundle(), compatibleWith: nil)
-}
-
-/**
  Returns a localized string resource preferably from the client's bundle.
  
  - parameter key:     The key to search for in the strings file.
@@ -131,13 +117,10 @@ public struct Price {
     
     // Formatted string with currency symbol
     public var string: String? {
-        
         let result = (Price.stringWithoutSymbol(from: value) ?? "") + " " + (currencySymbol ?? "")
-        
-        if result.isEmpty { return nil }
-        
-        return result
+        return result.isEmpty ? nil : result
     }
+    
     // Formatted string without currency symbol
     var stringWithoutSymbol: String? {
         return Price.stringWithoutSymbol(from: value)

@@ -19,11 +19,12 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
  View model class for review screen
   */
 public class PaymentReviewModel: NSObject {
+
     var onPreviewImagesFetched: (() -> Void)?
     var reloadCollectionViewClosure: (() -> Void)?
     var updateLoadingStatus: (() -> Void)?
     var updateImagesLoadingStatus: (() -> Void)?
-    
+
     var onErrorHandling: (_ error: GiniMerchantError) -> Void = { _ in }
     
     var onCreatePaymentRequestErrorHandling: (() -> Void)?
@@ -165,7 +166,7 @@ public class PaymentReviewModel: NSObject {
             }
         case let .failure(error):
             if let delegate = merchantSDK.delegate, delegate.shouldHandleErrorInternally(error: GiniMerchantError.apiError(error)) {
-                onErrorHandling(.apiError(error))
+                onErrorHandling?(.apiError(error))
             }
         }
         return nil

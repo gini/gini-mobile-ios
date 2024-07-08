@@ -31,8 +31,7 @@ final class PoweredByGiniView: UIView {
     }()
     
     private lazy var giniImageView: UIImageView = {
-        let image = UIImageNamedPreferred(named: viewModel.giniIconName)
-        let imageView = UIImageView(image: image)
+        let imageView = UIImageView(image: viewModel.giniIcon)
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.widthGiniLogo, height: Constants.heightGiniLogo)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView

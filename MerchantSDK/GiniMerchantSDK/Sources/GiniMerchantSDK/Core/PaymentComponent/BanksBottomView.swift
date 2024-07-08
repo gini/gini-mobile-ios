@@ -64,9 +64,7 @@ class BanksBottomView: BottomSheetViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UINib(nibName: BankSelectionTableViewCell.identifier,
-                                 bundle: Bundle.resource),
-                           forCellReuseIdentifier: BankSelectionTableViewCell.identifier)
+        tableView.register(BankSelectionTableViewCell.self, forCellReuseIdentifier: BankSelectionTableViewCell.identifier)
         tableView.estimatedRowHeight = viewModel.rowHeight
         tableView.rowHeight = viewModel.rowHeight
         tableView.separatorStyle = .none
@@ -217,7 +215,7 @@ extension BanksBottomView: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: BankSelectionTableViewCell.identifier, 
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BankSelectionTableViewCell.identifier,
                                                        for: indexPath) as? BankSelectionTableViewCell else {
             return UITableViewCell()
         }

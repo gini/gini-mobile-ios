@@ -67,8 +67,7 @@ class InstallAppBottomView: BottomSheetViewController {
     private lazy var moreInformationButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImageNamedPreferred(named: viewModel.moreInformationIconName)
-        button.setImage(image, for: .normal)
+        button.setImage(viewModel.moreInformationIcon, for: .normal)
         button.tintColor = viewModel.moreInformationAccentColor
         button.isUserInteractionEnabled = false
         return button
@@ -86,8 +85,7 @@ class InstallAppBottomView: BottomSheetViewController {
     private lazy var appStoreImageView: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImageNamedPreferred(named: viewModel.appStoreImageIconName)
-        button.setImage(image, for: .normal)
+        button.setImage(viewModel.appStoreIcon, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(tapOnAppStoreButton), for: .touchUpInside)
         return button

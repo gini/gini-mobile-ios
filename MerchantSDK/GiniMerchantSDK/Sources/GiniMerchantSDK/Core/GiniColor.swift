@@ -27,14 +27,8 @@ import UIKit
     }
     
     func uiColor() -> UIColor {
-        return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
-            if UITraitCollection.userInterfaceStyle == .dark {
-                /// Return the color for Dark Mode
-                return self.darkModeColor
-            } else {
-                /// Return the color for Light Mode
-                return self.lightModeColor
-            }
+        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            return traitCollection.userInterfaceStyle == .dark ? self.darkModeColor : self.lightModeColor
         }
     }
 }
