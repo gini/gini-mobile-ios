@@ -45,8 +45,22 @@ private class MyAlternativeTokenSource: AlternativeTokenSource {
 
 ## Certificate pinning (optional)
 
-If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information)
+If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration as follows:
 ```swift
+    let yourPublicPinningConfig = [
+        "health-api.gini.net": [
+            // old *.gini.net public key
+            "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+            // new *.gini.net public key, active from around June 2020
+            "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+        ],
+        "user.gini.net": [
+            // old *.gini.net public key
+            "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+            // new *.gini.net public key, active from around June 2020
+            "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+        ],
+    ]
     let apiLib = GiniHealthAPI
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
