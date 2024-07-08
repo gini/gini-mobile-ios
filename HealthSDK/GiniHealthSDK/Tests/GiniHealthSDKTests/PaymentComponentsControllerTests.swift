@@ -78,7 +78,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
     func testPaymentView_ReturnsView() {
         // Given
         let documentId = "123456"
-        let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil, giniHealthConfiguration: giniHealthConfiguration)
+        let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil, giniHealthConfiguration: giniHealthConfiguration, paymentComponentConfiguration: PaymentComponentConfiguration(isPaymentComponentBranded: true))
         let expectedView = PaymentComponentView()
         expectedView.viewModel = expectedViewModel
 
