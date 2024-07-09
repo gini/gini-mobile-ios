@@ -131,6 +131,7 @@ public class SkontoViewController: UIViewController {
         notAppliedGroupView.addSubview(notAppliedView)
         view.addSubview(proceedView)
 
+        proceedView.proceedButton.addTarget(self, action: #selector(proceedButtonTapped), for: .touchUpInside)
         setupBottomNavigationBar()
         setupTapGesture()
         bindViewModel()
@@ -258,7 +259,7 @@ public class SkontoViewController: UIViewController {
 
         proceedView.isHidden = true
     }
-    
+
     private func bindViewModel() {
         viewModel.endEditingAction = {
             self.endEditing()

@@ -8,7 +8,7 @@ import UIKit
 import GiniCaptureSDK
 
 class SkontoProceedView: UIView {
-    private lazy var payButton: MultilineTitleButton = {
+    lazy var proceedButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
@@ -100,7 +100,7 @@ class SkontoProceedView: UIView {
         addSubview(totalLabel)
         addSubview(totalValueLabel)
         addSubview(skontoBadgeView)
-        addSubview(payButton)
+        addSubview(proceedButton)
 
         setupConstraints()
         bindViewModel()
@@ -135,13 +135,13 @@ class SkontoProceedView: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            payButton.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: Constants.verticalPadding),
+            proceedButton.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: Constants.verticalPadding),
             // TODO: no safe area bottom padding in design
-            payButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
+            proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                               constant: -Constants.verticalPadding),
-            payButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            payButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonHeight)
+            proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            proceedButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonHeight)
         ])
     }
 
