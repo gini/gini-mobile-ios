@@ -27,9 +27,6 @@
          location = "container:HealthAPILibrary/GiniHealthAPILibraryExample/GiniHealthAPILibraryExample.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:HealthAPILibrary/GiniHealthAPILibraryPinning">
-      </FileRef>
-      <FileRef
          location = "group:HealthAPILibrary/GiniHealthAPILibrary">
       </FileRef>
    </Group>

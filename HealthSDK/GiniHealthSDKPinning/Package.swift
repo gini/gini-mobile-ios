@@ -15,7 +15,6 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(name: "GiniHealthAPILibraryPinning", path: "../../HealthAPILibrary/GiniHealthAPILibraryPinning"),
         .package(name: "GiniHealthSDK", path: "../GiniHealthSDK"),
     ],
     targets: [
@@ -23,7 +22,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "GiniHealthSDKPinning",
-            dependencies: ["GiniHealthAPILibraryPinning", "GiniHealthSDK"]),
+            dependencies: ["GiniHealthSDK"]),
         .testTarget(
             name: "GiniHealthSDKPinningTests",
             dependencies: ["GiniHealthSDKPinning"]),
