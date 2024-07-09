@@ -14,7 +14,7 @@ public final class GiniHealthAPI {
     private var payService: PaymentService?
     static var logLevel: LogLevel = .none
     public var sessionDelegate: URLSessionDelegate? = nil
-
+    
     init<T: DocumentService>(documentService: T, paymentService: PaymentService? )
     {
         self.docService = documentService
@@ -28,7 +28,7 @@ public final class GiniHealthAPI {
     public func documentService<T: DocumentService>() -> T {
         guard docService is T else {
             preconditionFailure("In order to use a \(T.self), you have to specify its corresponding api " +
-                "domain when building the GiniHealthAPILib")
+                                "domain when building the GiniHealthAPILib")
         }
         //swiftlint:disable force_cast
         return docService as! T
@@ -95,14 +95,60 @@ extension GiniHealthAPI {
             self.logLevel = logLevel
             self.sessionDelegate = sessionDelegate
         }
-
+        
+        /**
+         *  Creates a Gini Health API Library with certificate pinning configuration.
+         *
+         * - Parameter client:            The Gini Health API client credentials
+         * - Parameter api:               The Gini Health API that the library interacts with. `APIDomain.default` by default
+         * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
+         * - Parameter pinningConfig:     Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+         * - Parameter logLevel:          The log level. `LogLevel.none` by default.
+         */
+        
+        init(client: Client,
+             api: APIDomain = .default,
+             userApi: UserDomain = .default,
+             pinningConfig: [String: [String]],
+             logLevel: LogLevel = .none) {
+            // Extract and set pinnedKeyHashes from the configuration
+            let sessionDelegate = GiniSessionDelegate(pinnedKeyHashes: pinningConfig.values.flatMap { $0 })
+            
+            self.init(client: client,
+                      api: api,
+                      userApi: userApi,
+                      logLevel: logLevel,
+                      sessionDelegate: sessionDelegate)
+        }
+        
+        /**
+         * Creates a Gini Health API Library to be used with a transparent proxy and a custom api access token source and certificate pinning configuration.
+         *
+         * - Parameter customApiDomain:        A custom api domain string.
+         * - Parameter alternativeTokenSource: A protocol for using custom api access token
+         * - Parameter pinningConfig:     Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+         * - Parameter logLevel:               The log level. `LogLevel.none` by default.
+         */
+        init(customApiDomain: String,
+             alternativeTokenSource: AlternativeTokenSource,
+             pinningConfig: [String: [String]],
+             logLevel: LogLevel = .none) {
+            // Extract and set pinnedKeyHashes from the configuration
+            let sessionDelegate = GiniSessionDelegate(pinnedKeyHashes: pinningConfig.values.flatMap { $0 })
+            
+            self.init(customApiDomain: customApiDomain,
+                      alternativeTokenSource: alternativeTokenSource,
+                      logLevel: logLevel,
+                      sessionDelegate: sessionDelegate)
+        }
+        
         public func build() -> GiniHealthAPI {
             // Save client information
             save(client)
-
+            
             // Initialize logger
             GiniHealthAPI.logLevel = logLevel
-
+            
             // Initialize GiniHealthAPILib
             switch api {
             case .default:
@@ -137,7 +183,7 @@ extension GiniHealthAPI {
                                                                    service: .auth))
             } catch {
                 assertionFailure("There was an error using the Keychain. " +
-                    "Check that the Keychain capability is enabled in your project")
+                                 "Check that the Keychain capability is enabled in your project")
             }
         }
     }

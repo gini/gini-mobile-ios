@@ -1,5 +1,5 @@
 import XCTest
-@testable import GiniHealthAPILibraryPinning
+@testable import GiniHealthAPILibrary
 
 final class GiniHealthAPILibraryPinningTests: XCTestCase {
     func testExample() throws {

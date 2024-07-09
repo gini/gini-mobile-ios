@@ -7,7 +7,6 @@
 
 import XCTest
 @testable import GiniHealthAPILibrary
-@testable import GiniHealthAPILibraryPinning
 // swiftlint:disable force_cast
 
 final class GiniHealthAPILibraryPinningTests: XCTestCase {

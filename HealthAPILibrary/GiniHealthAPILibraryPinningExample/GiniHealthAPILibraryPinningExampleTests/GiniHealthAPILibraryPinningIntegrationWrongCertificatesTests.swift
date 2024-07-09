@@ -6,7 +6,6 @@
 //
 
 import XCTest
-@testable import GiniHealthAPILibraryPinning
 @testable import GiniHealthAPILibrary
 
 class HealthAPILibraryPinningWrongCertificatesTests: XCTestCase {

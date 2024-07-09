@@ -8,7 +8,6 @@
 import UIKit
 import GiniHealthSDK
 import GiniHealthAPILibrary
-import GiniHealthAPILibraryPinning
 
 class ViewController: UIViewController {
     override func viewDidLoad() {

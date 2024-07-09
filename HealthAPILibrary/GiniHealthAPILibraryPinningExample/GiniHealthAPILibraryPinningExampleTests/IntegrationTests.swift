@@ -9,7 +9,6 @@ import Foundation
 
 import XCTest
 @testable import GiniHealthAPILibrary
-@testable import GiniHealthAPILibraryPinning
 
 class IntegrationTests: XCTestCase {
     
