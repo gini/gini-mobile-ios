@@ -6,9 +6,7 @@
 
 
 import UIKit
-import TrustKit
-import GiniMerchantSDKPinning
-import GiniHealthAPILibraryPinning
+import GiniMerchantSDK
 
 class ViewController: UIViewController {
     override func viewDidLoad() {

@@ -7,10 +7,7 @@
 
 import XCTest
 @testable import GiniMerchantSDK
-@testable import GiniMerchantSDKPinning
 @testable import GiniHealthAPILibrary
-@testable import GiniHealthAPILibraryPinning
-@testable import TrustKit
 
 class GiniMerchantSDKPinningExampleWrongCertificatesTests: XCTestCase {
     
@@ -19,20 +16,17 @@ class GiniMerchantSDKPinningExampleWrongCertificatesTests: XCTestCase {
     let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
     let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
     let yourPublicPinningConfig = [
-        kTSKPinnedDomains: [
-            "health-api.gini.net": [
-                kTSKPublicKeyHashes: [
-                    // Wrong hashes
-                    "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
-                    "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
-                ]],
-            "user.gini.net": [
-                kTSKPublicKeyHashes: [
-                    // Wrong hashes
-                    "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
-                    "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
-                ]],
-        ]] as [String: Any]
+        "health-api.gini.net": [
+            // Wrong hashes
+            "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
+            "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
+        ],
+        "user.gini.net": [
+            // Wrong hashes
+            "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
+            "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
+        ],
+    ]
 
     var giniHealthAPILib: GiniHealthAPI!
     var paymentService: PaymentService!
@@ -42,13 +36,9 @@ class GiniMerchantSDKPinningExampleWrongCertificatesTests: XCTestCase {
         let client = Client(id: clientId,
                             secret: clientSecret,
                             domain: "health-sdk-pinning-example")
-        giniHealthAPILib = GiniHealthAPI
-               .Builder(client: client, pinningConfig: yourPublicPinningConfig)
-               .build()
-        sdk = GiniMerchant.init(giniApiLib: giniHealthAPILib)
+        sdk = GiniMerchant.init(id: clientId, secret: clientSecret, domain: "health-sdk-pinning-example", pinningConfig: yourPublicPinningConfig)
         paymentService = sdk.paymentService
     }
-    
     
     func testBuildPaymentService() {
         XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")

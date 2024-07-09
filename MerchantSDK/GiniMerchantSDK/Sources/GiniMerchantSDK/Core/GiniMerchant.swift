@@ -83,14 +83,34 @@ public struct DataForReview {
         self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService()
-
+    }
+    
+    /**
+     Initializes a new instance of GiniMerchant.
+     
+     This initializer creates a GiniMerchant instance by first constructing a Client object with the provided client credentials (id, secret, domain)
+     
+     - Parameters:
+     - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
+     - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
+     - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
+     - pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+     */
+    public init(id: String, secret: String, domain: String, pinningConfig: [String: [String]]) {
+        let delegate = GiniSessionDelegate(pinnedKeyHashes: pinningConfig.values.flatMap { $0 })
+        let client = Client(id: id, secret: secret, domain: domain)
+        self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug, sessionDelegate: delegate).build()
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
+        self.paymentService = giniApiLib.paymentService()
     }
 
+    //For Testing
     internal init(giniApiLib: GiniHealthAPI) {
         self.giniApiLib = giniApiLib
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService()
     }
+    
     /**
      Getting a list of the installed banking apps which support Gini Pay Connect functionality.
      
