@@ -140,7 +140,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         let invoice = viewModel.invoices[indexPath.row]
 
         // Instantiate InvoiceViewController with the Invoice instance
-        let invoiceViewController = InvoiceDetailViewController(invoice: invoice)
+        let invoiceViewController = InvoiceDetailViewController(invoice: invoice, paymentComponentsController: viewModel.paymentComponentsController)
 
         // Present InvoiceViewController
         self.navigationController?.pushViewController(invoiceViewController, animated: true)

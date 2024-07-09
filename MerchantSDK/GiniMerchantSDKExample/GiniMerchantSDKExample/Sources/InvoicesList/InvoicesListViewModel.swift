@@ -71,8 +71,8 @@ final class InvoicesListViewModel {
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
         self.paymentComponentsController.delegate = self
-        self.paymentComponentsController.viewDelegate = self
-        self.paymentComponentsController.bottomViewDelegate = self
+//        self.paymentComponentsController.viewDelegate = self
+//        self.paymentComponentsController.bottomViewDelegate = self
     }
     
     func viewDidLoad() {
@@ -197,45 +197,6 @@ final class InvoicesListViewModel {
     }
 }
 
-extension InvoicesListViewModel: PaymentComponentViewProtocol {
-
-    func didTapOnMoreInformation(documentId: String?) {
-        print("✅ Tapped on More Information")
-        let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
-        if let presentedViewController = self.coordinator.invoicesListViewController.presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
-            }
-        } else {
-            self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
-        }
-    }
-    
-    func didTapOnBankPicker(documentId: String?) {
-        guard let documentId else { return }
-        print("✅ Tapped on Bank Picker on :\(documentId)")
-        let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
-        bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
-        self.coordinator.invoicesListViewController.present(bankSelectionBottomSheet, animated: false)
-    }
-
-    func didTapOnPayInvoice(documentId: String?) {
-        guard let documentId else { return }
-        print("✅ Tapped on Pay Invoice on :\(documentId)")
-        documentIDToRefetch = documentId
-        paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
-            if let error {
-                self?.errors.append(error.localizedDescription)
-                self?.showErrorsIfAny()
-            } else if let viewController {
-                viewController.modalTransitionStyle = .coverVertical
-                viewController.modalPresentationStyle = .overCurrentContext
-                self?.coordinator.invoicesListViewController.present(viewController, animated: true)
-            }
-        }
-    }
-}
-
 extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
     func didFetchedPaymentProviders() {
         DispatchQueue.main.async {
@@ -254,20 +215,7 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
     }
 }
 
-extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
-    func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
-        DispatchQueue.main.async {
-            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
-            self.coordinator.invoicesListViewController.reloadTableView()
-        }
-    }
-    
-    func didTapOnClose() {
-        DispatchQueue.main.async {
-            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
-        }
-    }
-}
+
 
 extension InvoicesListViewModel: GiniMerchantTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
