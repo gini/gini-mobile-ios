@@ -19,8 +19,7 @@ class ShareInvoiceSingleAppView: UIView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark3,
-                                    darkModeColor: UIColor.GiniMerchantColors.light3).uiColor()
+        label.textColor = GiniColor.standard3.uiColor()
         label.font = GiniMerchantConfiguration.shared.textStyleFonts[.caption2] ?? UIFont.systemFont(ofSize: 14, weight: .regular)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -60,11 +59,11 @@ class ShareInvoiceSingleAppView: UIView {
     func configure(image: UIImage?, title: String?, isMoreButton: Bool) {
         imageView.image = image
         titleLabel.text = title
-        imageView.layer.borderColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark3,
-                                                darkModeColor: UIColor.GiniMerchantColors.light3).uiColor().cgColor
+        imageView.layer.borderColor = GiniColor.standard3.uiColor().cgColor
         imageView.layer.borderWidth = isMoreButton ? 1 : 0
-        imageView.backgroundColor = isMoreButton ? .clear : GiniColor(lightModeColor: .white,
-                                                                      darkModeColor: UIColor.GiniMerchantColors.light3).uiColor()
+        let giniColor = GiniColor(lightModeColor: .white,
+                                  darkModeColor: GiniMerchantColorPalette.light3.preferredColor())
+        imageView.backgroundColor = isMoreButton ? .clear : giniColor.uiColor()
         imageView.contentMode = isMoreButton ? .center : .scaleAspectFit
     }
 }

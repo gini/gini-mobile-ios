@@ -7,38 +7,51 @@
 
 import UIKit
 
-extension UIColor {
-    struct GiniMerchantColors {
-        static let accent1 = UIColorPreferred(named: "Accent01")
-        static let accent2 = UIColorPreferred(named: "Accent02")
-        static let accent3 = UIColorPreferred(named: "Accent03")
-        static let accent4 = UIColorPreferred(named: "Accent04")
-        static let accent5 = UIColorPreferred(named: "Accent05")
+enum GiniMerchantColorPalette: String {
+    case accent1 = "Accent01"
+    case accent2 = "Accent02"
+    case accent3 = "Accent03"
+    case accent4 = "Accent04"
+    case accent5 = "Accent05"
+    
+    case dark1 = "Dark01"
+    case dark2 = "Dark02"
+    case dark3 = "Dark03"
+    case dark4 = "Dark04"
+    case dark5 = "Dark05"
+    case dark6 = "Dark06"
+    case dark7 = "Dark07"
+    
+    case light1 = "Light01"
+    case light2 = "Light02"
+    case light3 = "Light03"
+    case light4 = "Light04"
+    case light5 = "Light05"
+    case light6 = "Light06"
+    case light7 = "Light07"
+    
+    case feedback1 = "Feedback01"
+    case feedback2 = "Feedback02"
+    case feedback3 = "Feedback03"
+    case feedback4 = "Feedback04"
+    
+    case success1 = "Success01"
+    case success2 = "Success02"
+    case success3 = "Success03"
+    case success4 = "Success04"
+}
 
-        static let dark1 = UIColorPreferred(named: "Dark01")
-        static let dark2 = UIColorPreferred(named: "Dark02")
-        static let dark3 = UIColorPreferred(named: "Dark03")
-        static let dark4 = UIColorPreferred(named: "Dark04")
-        static let dark5 = UIColorPreferred(named: "Dark05")
-        static let dark6 = UIColorPreferred(named: "Dark06")
-        static let dark7 = UIColorPreferred(named: "Dark07")
+extension GiniMerchantColorPalette {
+    func preferredColor() -> UIColor {
+        let name = self.rawValue
+        if let mainBundleColor = UIColor(named: name, in: Bundle.main, compatibleWith: nil) {
+            return mainBundleColor
+        }
 
-        static let light1 = UIColorPreferred(named: "Light01")
-        static let light2 = UIColorPreferred(named: "Light02")
-        static let light3 = UIColorPreferred(named: "Light03")
-        static let light4 = UIColorPreferred(named: "Light04")
-        static let light5 = UIColorPreferred(named: "Light05")
-        static let light6 = UIColorPreferred(named: "Light06")
-        static let light7 = UIColorPreferred(named: "Light07")
-
-        static let feedback1 = UIColorPreferred(named: "Feedback01")
-        static let feedback2 = UIColorPreferred(named: "Feedback02")
-        static let feedback3 = UIColorPreferred(named: "Feedback03")
-        static let feedback4 = UIColorPreferred(named: "Feedback04")
-
-        static let success1 = UIColorPreferred(named: "Success01")
-        static let success2 = UIColorPreferred(named: "Success02")
-        static let success3 = UIColorPreferred(named: "Success03")
-        static let success4 = UIColorPreferred(named: "Success04")
+        guard let color = UIColor(named: name, in: giniMerchantBundleResource(), compatibleWith: nil) else {
+            fatalError("The color named '\(name)' does not exist.")
+        }
+        
+        return color
     }
 }
