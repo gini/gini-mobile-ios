@@ -58,10 +58,8 @@ final class PaymentComponentViewModel {
                                                                      darkModeColor: .clear))
 
     // More information part
-    let moreInformationAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark2,
-                                                        darkModeColor: UIColor.GiniMerchantColors.light2).uiColor()
-    let moreInformationLabelTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark4,
-                                                        darkModeColor: UIColor.GiniMerchantColors.light4).uiColor()
+    let moreInformationAccentColor: UIColor = GiniColor.standard2.uiColor()
+    let moreInformationLabelTextColor: UIColor = GiniColor.standard4.uiColor()
     let moreInformationLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.moreInformation.label",
                                                                     comment: "Text for more information label")
     let moreInformationActionablePartText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.moreInformation.underlined.part",
@@ -73,8 +71,7 @@ final class PaymentComponentViewModel {
     let selectYourBankLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectYourBank.label", 
                                                                    comment: "Text for the select your bank label that's above the payment provider picker")
     let selectYourBankLabelFont: UIFont
-    let selectYourBankAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                                       darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
+    let selectYourBankAccentColor: UIColor = GiniColor.standard1.uiColor()
     
     // Bank image icon
     private var bankImageIconData: Data?
@@ -84,14 +81,12 @@ final class PaymentComponentViewModel {
     }
 
     // Primary button
-    let notInstalledBankTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark4,
-                                                       darkModeColor: UIColor.GiniMerchantColors.light4).uiColor()
+    let notInstalledBankTextColor: UIColor = GiniColor.standard4.uiColor()
     let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label",
                                                                                    comment: "Placeholder text used when there isn't a payment provider app installed")
     
     let chevronDownIcon: UIImage = GiniMerchantImage.chevronDown.preferredUIImage()
-    let chevronDownIconColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.light7,
-                                                  darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
+    let chevronDownIconColor: UIColor = GiniColor(lightModeColorName: .light7, darkModeColorName: .light1).uiColor()
     
     // Payment provider colors
     var paymentProviderColors: ProviderColors?
