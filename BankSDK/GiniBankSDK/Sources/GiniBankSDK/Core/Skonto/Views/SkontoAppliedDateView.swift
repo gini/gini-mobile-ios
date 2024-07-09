@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 class SkontoAppliedDateView: UIView {
     private lazy var titleLabel: UILabel = {
@@ -23,7 +22,7 @@ class SkontoAppliedDateView: UIView {
 
     private lazy var textField: UITextField = {
         let textField = UITextField()
-        textField.text = getFormattedDate(date: viewModel.date)
+        textField.text = viewModel.date.formattedDateString()
         textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
@@ -82,17 +81,24 @@ class SkontoAppliedDateView: UIView {
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.padding),
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor,
+                                            constant: Constants.padding),
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
+                                                constant: Constants.padding),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
+                                                 constant: -Constants.padding),
 
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            textField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
-            textField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Constants.padding),
+            textField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
+                                               constant: Constants.padding),
+            textField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor,
+                                              constant: -Constants.padding),
 
             calendarImageView.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
-            calendarImageView.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: Constants.imageHorizontalPadding),
-            calendarImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding),
+            calendarImageView.leadingAnchor.constraint(equalTo: textField.trailingAnchor,
+                                                       constant: Constants.imageHorizontalPadding),
+            calendarImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
+                                                        constant: -Constants.padding),
             calendarImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
             calendarImageView.heightAnchor.constraint(equalToConstant: Constants.imageSize)
         ])
@@ -110,8 +116,8 @@ class SkontoAppliedDateView: UIView {
         let isSkontoApplied = viewModel.isSkontoApplied
         containerView.layer.borderWidth = isSkontoApplied ? 1 : 0
         textField.isUserInteractionEnabled = isSkontoApplied
-        calendarImageView.isHidden = isSkontoApplied ? false : true
-        textField.text = getFormattedDate(date: viewModel.date)
+        calendarImageView.isHidden = !isSkontoApplied
+        textField.text = viewModel.date.formattedDateString()
     }
 
     private func configureDatePicker() {
@@ -120,18 +126,18 @@ class SkontoAppliedDateView: UIView {
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
         }
+        let currentDate = Date()
+        var dateComponent = DateComponents()
+        dateComponent.month = 6
+        let endDate = Calendar.current.date(byAdding: dateComponent, to: currentDate)
+        datePicker.minimumDate = currentDate
+        datePicker.maximumDate = endDate
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         textField.inputView = datePicker
     }
 
     @objc private func dateChanged(_ datePicker: UIDatePicker) {
         viewModel.set(date: datePicker.date)
-    }
-
-    private func getFormattedDate(date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        return dateFormatter.string(from: date)
     }
 }
 
