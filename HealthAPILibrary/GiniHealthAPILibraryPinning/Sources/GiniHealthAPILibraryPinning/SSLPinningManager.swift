@@ -27,6 +27,10 @@ struct SSLPinningManager {
     // Dictionary mapping domain names to their expected public key hashes
     private let pinningConfig: [String: [String]]
 
+    init(pinningConfig: [String: [String]]) {
+        self.pinningConfig = pinningConfig
+    }
+    
     // Function to validate the server's certificate
     func validate(challenge: URLAuthenticationChallenge,
                   completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {

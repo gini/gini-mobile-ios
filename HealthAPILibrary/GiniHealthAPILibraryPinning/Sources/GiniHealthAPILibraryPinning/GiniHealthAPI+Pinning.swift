@@ -24,10 +24,11 @@ public extension GiniHealthAPI.Builder {
          userApi: UserDomain = .default,
          pinningConfig: [String: [String]],
          logLevel: LogLevel = .none) {
-        // Extract and set pinnedKeyHashes from the configuration
-        let delegate = GiniSessionDelegate(pinnedKeyHashes: pinningConfig.values.flatMap { $0 })
-        
-        self.init(client: client, api: api, userApi: userApi, logLevel: logLevel, sessionDelegate: delegate)
+        self.init(client: client, 
+                  api: api,
+                  userApi: userApi,
+                  logLevel: logLevel,
+                  sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
     }
     
     /**
@@ -35,16 +36,16 @@ public extension GiniHealthAPI.Builder {
      *
      * - Parameter customApiDomain:        A custom api domain string.
      * - Parameter alternativeTokenSource: A protocol for using custom api access token
-     * - Parameter pinningConfig:     Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+     * - Parameter pinningConfig:          Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
      * - Parameter logLevel:               The log level. `LogLevel.none` by default.
      */
     init(customApiDomain: String,
          alternativeTokenSource: AlternativeTokenSource,
          pinningConfig: [String: [String]],
          logLevel: LogLevel = .none) {
-        // Extract and set pinnedKeyHashes from the configuration
-        let delegate = GiniSessionDelegate(pinnedKeyHashes: pinningConfig.values.flatMap { $0 })
-        
-        self.init(customApiDomain: customApiDomain, alternativeTokenSource: alternativeTokenSource, logLevel: logLevel, sessionDelegate: delegate)
+        self.init(customApiDomain: customApiDomain,
+                  alternativeTokenSource: alternativeTokenSource,
+                  logLevel: logLevel,
+                  sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
     }
 }
