@@ -73,7 +73,7 @@ class DebugMenuViewController: UIViewController {
     }
 
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "background")
 
         let spacer = UIView()
         let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, reviewScreenRow, amountEditableRow, spacer])
