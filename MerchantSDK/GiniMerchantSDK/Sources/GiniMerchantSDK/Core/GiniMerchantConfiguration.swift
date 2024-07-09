@@ -66,7 +66,7 @@ public final class GiniMerchantConfiguration: NSObject {
     /**
      Set to `true` to make amount field editable in the payment review screen
      */
-    @objc public var isAmountEditable = false
+    @objc public var isAmountFieldEditable = false
 
     // MARK: - Button configuration options
     /**

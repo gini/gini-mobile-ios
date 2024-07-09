@@ -6,13 +6,19 @@
 
 
 import UIKit
+import GiniMerchantSDK
 
 final class InvoiceDetailViewController: UIViewController {
 
     private let invoice: DocumentWithExtractions
+    private let paymentComponentsController: PaymentComponentsController
 
-    init(invoice: DocumentWithExtractions) {
+    private var errors: [String] = []
+    private let errorTitleText = NSLocalizedString("example.invoicesList.error", comment: "")
+
+    init(invoice: DocumentWithExtractions, paymentComponentsController: PaymentComponentsController) {
         self.invoice = invoice
+        self.paymentComponentsController = paymentComponentsController
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -64,6 +70,11 @@ final class InvoiceDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        paymentComponentsController.viewDelegate = self
+        paymentComponentsController.bottomViewDelegate = self
+
+        self.title = "Invoice details"
+
         view.backgroundColor = .white
 
         view.addSubview(invoiceNumberLabel)
@@ -100,7 +111,95 @@ final class InvoiceDetailViewController: UIViewController {
     }
 
     @objc private func payNowButtonTapped() {
-        // Handle the button tap event
-        print("Pay now button tapped")
+        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: invoice.documentID)
+        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
+        self.present(paymentViewBottomSheet, animated: false)
+    }
+}
+
+extension InvoiceDetailViewController: PaymentComponentViewProtocol {
+    func didTapOnMoreInformation(documentId: String?) {
+        print("✅ Tapped on More Information")
+        let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
+        if let presentedViewController = self.presentedViewController {
+            presentedViewController.dismiss(animated: true) {
+                self.navigationController?.pushViewController(paymentInfoViewController, animated: true)
+            }
+        } else {
+            self.navigationController?.pushViewController(paymentInfoViewController, animated: true)
+        }
+    }
+
+    func didTapOnBankPicker(documentId: String?) {
+        guard let documentId else { return }
+        print("✅ Tapped on Bank Picker on :\(documentId)")
+        let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
+        bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
+        self.dismissAndPresent(viewController: bankSelectionBottomSheet, animated: false)
+    }
+
+    func didTapOnPayInvoice(documentId: String?) {
+        guard let documentId else { return }
+        print("✅ Tapped on Pay Invoice on :\(documentId)")
+        paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
+            if let error {
+                self?.errors.append(error.localizedDescription)
+                self?.showErrorsIfAny()
+            } else if let viewController {
+                viewController.modalTransitionStyle = .coverVertical
+                viewController.modalPresentationStyle = .overCurrentContext
+                self?.dismissAndPresent(viewController: viewController, animated: true)
+            }
+        }
+    }
+
+    private func showErrorsIfAny() {
+        if !errors.isEmpty {
+            let uniqueErrorMessages = Array(Set(errors))
+            DispatchQueue.main.async {
+                self.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
+            }
+            errors = []
+        }
+    }
+
+    private func showErrorAlertView(error: String) {
+        let alertController = UIAlertController(title: errorTitleText,
+                                                message: error,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default))
+        self.present(alertController, animated: true)
+    }
+
+    private func dismissAndPresent(viewController: UIViewController, animated: Bool) {
+        if let presentedViewController = self.presentedViewController {
+            presentedViewController.dismiss(animated: true) {
+                self.present(viewController, animated: animated)
+            }
+        } else {
+            self.present(viewController, animated: animated)
+        }
+    }
+}
+
+extension InvoiceDetailViewController: GiniMerchantTrackingDelegate {
+    func onPaymentReviewScreenEvent(event: GiniMerchantSDK.TrackingEvent<GiniMerchantSDK.PaymentReviewScreenEventType>) {
+        //
+    }
+}
+
+extension InvoiceDetailViewController: PaymentProvidersBottomViewProtocol {
+    func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
+        DispatchQueue.main.async {
+            self.presentedViewController?.dismiss(animated: true, completion: {
+                self.payNowButtonTapped()
+            })
+        }
+    }
+
+    func didTapOnClose() {
+        DispatchQueue.main.async {
+            self.presentedViewController?.dismiss(animated: true)
+        }
     }
 }

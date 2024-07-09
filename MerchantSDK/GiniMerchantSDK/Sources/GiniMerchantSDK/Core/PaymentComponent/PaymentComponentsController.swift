@@ -25,6 +25,7 @@ protocol PaymentComponentsProtocol {
     func bankSelectionBottomSheet() -> UIViewController
     func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void)
     func paymentInfoViewController() -> UIViewController
+    func paymentViewBottomSheet(documentID: String) -> UIViewController
 }
 
 /**
@@ -143,6 +144,11 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         paymentComponentViewModel.documentId = documentId
         paymentComponentView.viewModel = paymentComponentViewModel
         return paymentComponentView
+    }
+
+    public func paymentViewBottomSheet(documentID: String) -> UIViewController {
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID))
+        return paymentComponentBottomView
     }
 
     public func bankSelectionBottomSheet() -> UIViewController {

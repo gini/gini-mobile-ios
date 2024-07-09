@@ -121,7 +121,10 @@ final class AppCoordinator: Coordinator {
     
     private var testDocument: Document?
     private var testDocumentExtractions: [GiniMerchantSDK.Extraction]?
-    
+
+    private var showPaymentReviewScreen = true
+    private var isAmountFieldEditable = false
+
     fileprivate func showPaymentReviewWithTestDocument() {
         let configuration = GiniMerchantConfiguration()
         
@@ -262,7 +265,9 @@ final class AppCoordinator: Coordinator {
         // Show the close button to dismiss the payment review screen
         configuration.showPaymentReviewCloseButton = true
         configuration.paymentReviewStatusBarStyle = .lightContent
-        
+        configuration.showPaymentReviewScreen = showPaymentReviewScreen
+        configuration.isAmountFieldEditable = isAmountFieldEditable
+
         merchant.setConfiguration(configuration)
         merchant.delegate = self
 
@@ -354,7 +359,18 @@ extension AppCoordinator: PaymentComponentsControllerProtocol {
 
 extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
-        let debugMenuViewController = DebugMenuViewController(showReviewScreen: true, isAmountFieldEditable: true)
+        let debugMenuViewController = DebugMenuViewController(showReviewScreen: showPaymentReviewScreen, isAmountFieldEditable: isAmountFieldEditable)
+        debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
+    }
+}
+
+extension AppCoordinator: DebugMenuDelegate {
+    func didChangeReviewScreenSwitchValue(isOn: Bool) {
+        self.showPaymentReviewScreen = isOn
+    }
+    
+    func didChangeAmountEditableSwitchValue(isOn: Bool) {
+        self.isAmountFieldEditable = isOn
     }
 }
