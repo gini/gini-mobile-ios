@@ -8,6 +8,7 @@ import Foundation
 
 class SkontoViewModel {
     private var skontoStateChangeHandlers: [() -> Void] = []
+    var endEditingAction: (() -> Void)?
 
     private (set) var isSkontoApplied: Bool
     private (set) var priceWithoutSkonto: Price
@@ -49,6 +50,7 @@ class SkontoViewModel {
 
     func toggleDiscount() {
         isSkontoApplied.toggle()
+        endEditingAction?()
         notifyStateChangeHandlers()
     }
 
