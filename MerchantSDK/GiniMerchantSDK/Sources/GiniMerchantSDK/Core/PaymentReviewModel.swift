@@ -25,8 +25,8 @@ public class PaymentReviewModel: NSObject {
     var updateLoadingStatus: (() -> Void)?
     var updateImagesLoadingStatus: (() -> Void)?
 
-    var onErrorHandling: (_ error: GiniMerchantError) -> Void = { _ in }
-    
+    var onErrorHandling: ((_ error: GiniMerchantError) -> Void)?
+
     var onCreatePaymentRequestErrorHandling: (() -> Void)?
     
     weak var viewModelDelegate: PaymentReviewViewModelDelegate?

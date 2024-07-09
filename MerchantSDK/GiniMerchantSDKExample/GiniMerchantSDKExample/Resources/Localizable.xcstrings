@@ -100,7 +100,7 @@
       "comment" : "cancel button title"
     },
     "ginicapture.camera.filepicker.errorPopup.grantAccessButton" : {
-      "comment" : "cancel button title"
+      "comment" : "grant access button title"
     },
     "ginicapture.camera.mixedarrayspopup.cancel" : {
       "comment" : "cancel button text for popup"
