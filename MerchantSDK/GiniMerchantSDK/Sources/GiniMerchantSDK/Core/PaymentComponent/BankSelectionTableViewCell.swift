@@ -7,9 +7,7 @@
 
 import UIKit
 
-class BankSelectionTableViewCell: UITableViewCell {
-    static let identifier = "BankSelectionTableViewCell"
-    
+class BankSelectionTableViewCell: UITableViewCell, ReusableView {
     private let cellView = UIView()
     private let bankNameLabel = UILabel()
     private let bankImageView = UIImageView()
