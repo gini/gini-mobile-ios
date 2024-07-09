@@ -49,6 +49,7 @@
 		50D80DCA2C2478D800B446A8 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DC92C2478D800B446A8 /* Localizable.xcstrings */; };
 		50D80DCC2C2479BE00B446A8 /* GiniMerchantSDK in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */; };
 		8A1651202C3D37FA003A1130 /* InvoiceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A16511F2C3D37FA003A1130 /* InvoiceDetailViewController.swift */; };
+		8A1651222C3D45C2003A1130 /* DebugMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1651212C3D45C2003A1130 /* DebugMenuViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 		50D80DC92C2478D800B446A8 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniMerchantSDK; path = ../GiniMerchantSDK; sourceTree = "<group>"; };
 		8A16511F2C3D37FA003A1130 /* InvoiceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailViewController.swift; sourceTree = "<group>"; };
+		8A1651212C3D45C2003A1130 /* DebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -282,6 +284,7 @@
 				50D80D952C245DAF00B446A8 /* Coordinator.swift */,
 				50D80D912C245DAF00B446A8 /* CredentialsManager.swift */,
 				50D80D8E2C245DAF00B446A8 /* MerchantNetworkingService.swift */,
+				8A1651212C3D45C2003A1130 /* DebugMenuViewController.swift */,
 				50D80D942C245DAF00B446A8 /* RootNavigationController.swift */,
 				50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */,
 				50D80D962C245DAF00B446A8 /* SelectAPIViewController.swift */,
@@ -506,6 +509,7 @@
 				50D80DA12C245DAF00B446A8 /* RootNavigationController.swift in Sources */,
 				50D80DBE2C245DBC00B446A8 /* InvoicesListViewModel.swift in Sources */,
 				50D80DBF2C245DBC00B446A8 /* InvoiceTableViewCell.swift in Sources */,
+				8A1651222C3D45C2003A1130 /* DebugMenuViewController.swift in Sources */,
 				50D80D9F2C245DAF00B446A8 /* UIViewController.swift in Sources */,
 				50D80DC12C245DBC00B446A8 /* InvoiceTableViewCellModel.swift in Sources */,
 			);

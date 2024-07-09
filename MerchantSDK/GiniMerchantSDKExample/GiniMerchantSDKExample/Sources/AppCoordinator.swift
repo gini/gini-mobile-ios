@@ -21,6 +21,7 @@ final class AppCoordinator: Coordinator {
     lazy var selectAPIViewController: SelectAPIViewController = {
         let selectAPIViewController = SelectAPIViewController()
         selectAPIViewController.delegate = self
+        selectAPIViewController.debugMenuPresenter = self
         selectAPIViewController.clientId = clientID
         return selectAPIViewController
     }()
@@ -346,5 +347,14 @@ extension AppCoordinator: PaymentComponentsControllerProtocol {
     
     func didFetchedPaymentProviders() {
         //
+    }
+}
+
+//MARK: - DebugMenuPresenterDelegate
+
+extension AppCoordinator: DebugMenuPresenter {
+    func presentDebugMenu() {
+        let debugMenuViewController = DebugMenuViewController(showReviewScreen: true, isAmountFieldEditable: true)
+        rootViewController.present(debugMenuViewController, animated: true)
     }
 }
