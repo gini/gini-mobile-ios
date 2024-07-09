@@ -127,6 +127,7 @@ public class SkontoViewController: UIViewController {
 
         setupBottomNavigationBar()
         setupTapGesture()
+        bindViewModel()
     }
 
     private func setupConstraints() {
@@ -250,6 +251,12 @@ public class SkontoViewController: UIViewController {
         }
 
         proceedView.isHidden = true
+    }
+    
+    private func bindViewModel() {
+        viewModel.endEditingAction = {
+            self.endEditing()
+        }
     }
 
     @objc private func proceedButtonTapped() {
