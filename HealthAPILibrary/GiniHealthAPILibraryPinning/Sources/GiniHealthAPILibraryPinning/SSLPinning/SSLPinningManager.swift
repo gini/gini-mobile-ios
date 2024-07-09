@@ -22,10 +22,7 @@ struct SSLPinningManager {
         0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00, 0x03, 0x82, 0x01, 0x0F, 0x00
     ]
 
-    //TODO: Provide proper initialization
-    var pinnedKeyHashes: [String]
-
-    public static var shared = SSLPinningManager(pinnedKeyHashes: [])
+    private let pinnedKeyHashes: [String]
     
     init(pinnedKeyHashes: [String]) {
         self.pinnedKeyHashes = pinnedKeyHashes
