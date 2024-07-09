@@ -78,8 +78,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
 final class PaymentInfoQuestionHeaderViewModel {
     var titleText: String
     var titleFont: UIFont
-    let titleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                            darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
+    let titleTextColor: UIColor = GiniColor.standard1.uiColor()
     var extendedIcon: UIImage
     
     init(title: String, isExtended: Bool) {
