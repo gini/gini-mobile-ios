@@ -90,13 +90,71 @@ public struct DataForReview {
         self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: logLevel.toHealthLogLevel()).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService()
-
+    }
+    
+    /**
+     Initializes a new instance of GiniMerchant.
+     
+     This initializer creates a GiniMerchant instance by first constructing a Client object with the provided client credentials (id, secret, domain)
+     
+     - Parameters:
+     - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
+     - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
+     - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
+     - pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+     */
+    public init(id: String, secret: String, domain: String, pinningConfig: [String: [String]]) {
+        let delegate = GiniSessionDelegate(pinnedKeyHashes: pinningConfig.values.flatMap { $0 })
+        let client = Client(id: id, secret: secret, domain: domain)
+        self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug, sessionDelegate: delegate).build()
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
+        self.paymentService = giniApiLib.paymentService()
     }
 
+    //For Testing
     internal init(giniApiLib: GiniHealthAPI) {
         self.giniApiLib = giniApiLib
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService()
+    }
+    
+    /**
+     Getting a list of the installed banking apps which support Gini Pay Connect functionality.
+     
+     - Parameters:
+        - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
+     Result is a value that represents either a success or a failure, including an associated value in each case.
+     Completion block called on main thread.
+     In success case it includes array of payment providers, which are represebt the installed on the phone apps.
+     In case of failure error that there are no supported banking apps installed.
+     
+     */
+    private func fetchInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniMerchantError>) -> Void) {
+        fetchBankingApps { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let providers):
+                    self.updateBankProviders(providers: providers)
+                    
+                    if self.bankProviders.count > 0 {
+                        completion(.success(self.bankProviders))
+                    } else {
+                        completion(.failure(.noInstalledApps))
+                    }
+                case let .failure(error):
+                    
+                    completion(.failure(GiniMerchantError.apiError(error)))
+                }
+            }
+        }
+    }
+    
+    private func updateBankProviders(providers: PaymentProviders) {
+        for provider in providers {
+            if let url = URL(string:provider.appSchemeIOS), UIApplication.shared.canOpenURL(url) {
+                self.bankProviders.append(provider)
+            }
+        }
     }
     
     /**
