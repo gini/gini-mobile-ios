@@ -42,19 +42,11 @@ final class DefaultSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAd
     }
 
     func injectedView() -> UIView {
-        let navigationBar = DefaultSkontoBottomNavigationBar()
-        navigationBar.payButton.addTarget(self, action: #selector(proceedButtonClicked), for: .touchUpInside)
-        navigationBar.helpButton.addAction(self, #selector(helpButtonClicked))
+        let navigationBar = DefaultSkontoBottomNavigationBar(proceedAction: proceedButtonCallback,
+                                                             helpAction: helpButtonCallback,
+                                                             backAction: backButtonCallback)
         view = navigationBar
         return navigationBar
-    }
-
-    @objc func proceedButtonClicked() {
-        proceedButtonCallback?()
-    }
-
-    @objc func helpButtonClicked() {
-        helpButtonCallback?()
     }
 
     func onDeinit() {
