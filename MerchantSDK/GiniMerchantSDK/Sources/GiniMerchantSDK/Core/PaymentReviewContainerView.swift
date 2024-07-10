@@ -38,7 +38,9 @@ class PaymentReviewContainerView: UIView {
     }()
 
     private lazy var recipientErrorLabel: UILabel = {
-        UILabel()
+        let label = UILabel()
+        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
+        return label
     }()
 
     private lazy var ibanAmountContainerStackView: UIStackView = {
@@ -74,11 +76,13 @@ class PaymentReviewContainerView: UIView {
 
     private lazy var ibanErrorLabel: UILabel = {
         let label = UILabel()
+        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
         return label
     }()
 
     private lazy var amountErrorLabel: UILabel = {
         let label = UILabel()
+        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
         return label
     }()
 
@@ -96,6 +100,7 @@ class PaymentReviewContainerView: UIView {
 
     private lazy var usageErrorLabel: UILabel = {
         let label = UILabel()
+        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
         return label
     }()
 
@@ -416,19 +421,19 @@ class PaymentReviewContainerView: UIView {
         switch textFieldTag {
         case .recipientFieldTag:
             errorLabel = recipientErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.recipient.non.empty.check",
+            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.recipient.non.empty.check",
                                                             comment: " recipient failed non empty check")
         case .ibanFieldTag:
             errorLabel = ibanErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.iban.non.empty.check",
+            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.non.empty.check",
                                                             comment: "iban failed non empty check")
         case .amountFieldTag:
             errorLabel = amountErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.amount.non.empty.check",
+            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.amount.non.empty.check",
                                                             comment: "amount failed non empty check")
         case .usageFieldTag:
             errorLabel = usageErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.purpose.non.empty.check",
+            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.purpose.non.empty.check",
                                                             comment: "purpose failed non empty check")
         }
         if errorLabel.isHidden {
@@ -464,14 +469,14 @@ class PaymentReviewContainerView: UIView {
 
     fileprivate func showValidationErrorLabel(textFieldTag: TextFieldType) {
         var errorLabel = UILabel()
-        var errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.default.textfield.validation.check",
+        var errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.default.textfield.validation.check",
                                                             comment: "the field failed non empty check")
         switch textFieldTag {
         case .recipientFieldTag:
             errorLabel = recipientErrorLabel
         case .ibanFieldTag:
             errorLabel = ibanErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.iban.validation.check",
+            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.validation.check",
                                                             comment: "iban failed validation check")
         case .amountFieldTag:
             errorLabel = amountErrorLabel
