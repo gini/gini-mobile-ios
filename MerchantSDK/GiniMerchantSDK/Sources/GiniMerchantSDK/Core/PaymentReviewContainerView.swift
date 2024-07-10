@@ -74,10 +74,22 @@ class PaymentReviewContainerView: UIView {
         return stackView
     }()
 
+    private lazy var ibanErrorStackView: UIStackView = {
+        let stackView = EmptyStackView(orientation: .vertical)
+        stackView.distribution = .fill
+        return stackView
+    }()
+
     private lazy var ibanErrorLabel: UILabel = {
         let label = UILabel()
         label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
         return label
+    }()
+
+    private lazy var amountErrorStackView: UIStackView = {
+        let stackView = EmptyStackView(orientation: .vertical)
+        stackView.distribution = .fill
+        return stackView
     }()
 
     private lazy var amountErrorLabel: UILabel = {
@@ -166,8 +178,10 @@ class PaymentReviewContainerView: UIView {
         ibanAmountHorizontalStackView.addArrangedSubview(ibanTextFieldView)
         ibanAmountHorizontalStackView.addArrangedSubview(amountTextFieldView)
 
-        ibanAmountErrorsHorizontalStackView.addArrangedSubview(ibanErrorLabel)
-        ibanAmountErrorsHorizontalStackView.addArrangedSubview(amountErrorLabel)
+        ibanErrorStackView.addArrangedSubview(ibanErrorLabel)
+        amountErrorStackView.addArrangedSubview(amountErrorLabel)
+        ibanAmountErrorsHorizontalStackView.addArrangedSubview(ibanErrorStackView)
+        ibanAmountErrorsHorizontalStackView.addArrangedSubview(amountErrorStackView)
 
         ibanAmountContainerStackView.addArrangedSubview(ibanAmountHorizontalStackView)
         ibanAmountContainerStackView.addArrangedSubview(ibanAmountErrorsHorizontalStackView)
