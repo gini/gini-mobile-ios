@@ -34,6 +34,7 @@ class PaymentReviewContainerView: UIView {
     private lazy var recipientTextFieldView: TextFieldWithLabelView = {
         let textFieldView = TextFieldWithLabelView()
         textFieldView.tag = TextFieldType.recipientFieldTag.rawValue
+        textFieldView.isUserInteractionEnabled = false
         return textFieldView
     }()
 
@@ -59,12 +60,14 @@ class PaymentReviewContainerView: UIView {
     private lazy var ibanTextFieldView: TextFieldWithLabelView = {
         let textFieldView = TextFieldWithLabelView()
         textFieldView.tag = TextFieldType.ibanFieldTag.rawValue
+        textFieldView.isUserInteractionEnabled = false
         return textFieldView
     }()
 
     private lazy var amountTextFieldView: TextFieldWithLabelView = {
         let textFieldView = TextFieldWithLabelView()
         textFieldView.tag = TextFieldType.amountFieldTag.rawValue
+        textFieldView.isUserInteractionEnabled = giniMerchantConfiguration.isAmountFieldEditable
         return textFieldView
     }()
 
@@ -107,6 +110,7 @@ class PaymentReviewContainerView: UIView {
     private lazy var usageTextFieldView: TextFieldWithLabelView = {
         let textFieldView = TextFieldWithLabelView()
         textFieldView.tag = TextFieldType.usageFieldTag.rawValue
+        textFieldView.isUserInteractionEnabled = false
         return textFieldView
     }()
 
