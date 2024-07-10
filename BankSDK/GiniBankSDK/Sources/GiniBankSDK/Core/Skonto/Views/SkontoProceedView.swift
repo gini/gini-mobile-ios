@@ -136,8 +136,8 @@ class SkontoProceedView: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            proceedButton.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: Constants.verticalPadding),
-            // TODO: no safe area bottom padding in design
+            proceedButton.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
+                                               constant: Constants.verticalPadding),
             proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                               constant: -Constants.verticalPadding),
             proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
