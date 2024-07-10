@@ -39,7 +39,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return button
     }()
-    
+
     private lazy var buttonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [backButton.buttonView, payButton, helpButton.buttonView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
