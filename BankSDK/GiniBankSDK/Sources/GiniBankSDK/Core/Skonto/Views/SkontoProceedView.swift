@@ -13,7 +13,7 @@ class SkontoProceedView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
+        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.paybutton.title",
                                                                    comment: "Proceed")
         button.accessibilityValue = buttonTitle
         button.setTitle(buttonTitle, for: .normal)
@@ -26,10 +26,10 @@ class SkontoProceedView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.body]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        let labelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
+        let labelText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                                   comment: "Total")
-        label.text = labelTitle
-        label.accessibilityValue = labelTitle
+        label.text = labelText
+        label.accessibilityValue = labelText
         return label
     }()
 
@@ -38,7 +38,9 @@ class SkontoProceedView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        label.text = viewModel.totalPrice.string
+        let labelText = viewModel.totalPrice.localizedStringWithCurrencyCode
+        label.text = labelText
+        label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
@@ -48,11 +50,10 @@ class SkontoProceedView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.caption1]
         label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
-        label.text = String.localizedStringWithFormat(
-            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
-                                                     comment: "%.1f%% Skonto discount"),
-            viewModel.skontoValue
-        )
+        let labelText = String.localizedStringWithFormat(skontoTitle,
+                                                         viewModel.skontoFormattedPercentageDiscounted)
+        label.text = labelText
+        label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
@@ -77,6 +78,9 @@ class SkontoProceedView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
+
+    private let skontoTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
+                                                                      comment: "%@ Skonto discount")
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -113,7 +117,7 @@ class SkontoProceedView: UIView {
             totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             totalLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
 
-            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor, constant: 0),
+            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor),
             totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalValueLabel.centerYAnchor),
@@ -151,13 +155,10 @@ class SkontoProceedView: UIView {
 
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
-        self.skontoBadgeView.isHidden = isSkontoApplied ? false : true
-        self.skontoBadgeLabel.text = String.localizedStringWithFormat(
-            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
-                                                     comment: "%.1f%% Skonto discount"),
-            viewModel.skontoValue
-        )
-        self.totalValueLabel.text = viewModel.totalPrice.string
+        self.skontoBadgeView.isHidden = !isSkontoApplied
+        self.skontoBadgeLabel.text = String.localizedStringWithFormat(skontoTitle,
+                                                                      viewModel.skontoFormattedPercentageDiscounted)
+        self.totalValueLabel.text = viewModel.totalPrice.localizedStringWithCurrencyCode
     }
 }
 

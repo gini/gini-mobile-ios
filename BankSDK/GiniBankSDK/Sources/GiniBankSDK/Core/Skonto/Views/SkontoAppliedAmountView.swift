@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 class SkontoAppliedAmountView: UIView {
     private lazy var amountView: SkontoAmountView = {
@@ -48,20 +47,21 @@ class SkontoAppliedAmountView: UIView {
     }
 
     private func bindViewModel() {
-        configure(isSkontoApplied: viewModel.isSkontoApplied)
+        configure()
         viewModel.addStateChangeHandler { [weak self] in
             guard let self else { return }
-            self.configure(isSkontoApplied: self.viewModel.isSkontoApplied)
+            self.configure()
         }
     }
 
-    private func configure(isSkontoApplied: Bool) {
+    private func configure() {
+        let isSkontoApplied = viewModel.isSkontoApplied
         self.amountView.configure(isEditable: isSkontoApplied, price: viewModel.priceWithSkonto)
     }
 }
 
 extension SkontoAppliedAmountView: SkontoAmountViewDelegate {
-    func textFieldDidEndEditing(editedText: String) {
-        self.viewModel.set(price: editedText)
+    func textFieldPriceChanged(editedText: String) {
+        self.viewModel.setSkontoPrice(price: editedText)
     }
 }
