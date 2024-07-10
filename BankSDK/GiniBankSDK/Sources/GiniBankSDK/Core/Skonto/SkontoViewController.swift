@@ -266,8 +266,8 @@ public class SkontoViewController: UIViewController {
         let isSkontoApplied = viewModel.isSkontoApplied
         let discountString = String.localizedStringWithFormat(
             NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
-                                                     comment: "%.1f%% Skonto discount"),
-            viewModel.skontoValue
+                                                     comment: "%@ Skonto discount"),
+            viewModel.skontoFormattedPercentageDiscounted
         )
         navigationBarBottomAdapter?.updateDiscountBadge(enabled: isSkontoApplied)
         navigationBarBottomAdapter?.updateDiscountValue(with: discountString)
