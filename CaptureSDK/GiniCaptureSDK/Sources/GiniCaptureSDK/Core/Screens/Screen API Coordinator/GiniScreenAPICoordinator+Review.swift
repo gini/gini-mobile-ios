@@ -50,7 +50,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
 
     @objc fileprivate func closeScreen() {
         trackingDelegate?.onReviewScreenEvent(event: Event(type: .back))
-        AnalyticsManager.track(event: .closeTapped, screenName: .review)
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .review)
         screenAPINavigationController.dismiss(animated: true)
     }
 

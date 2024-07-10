@@ -91,7 +91,7 @@ final class CameraNotAuthorizedView: UIView {
 
     @objc
     private func openSettings() {
-        AnalyticsManager.track(event: .giveAccessTapped, screenName: .cameraAccess)
+        GiniAnalyticsManager.track(event: .giveAccessTapped, screenName: .cameraAccess)
         UIApplication.shared.openAppSettings()
     }
 

@@ -310,7 +310,7 @@ extension ReviewViewController {
             }
             navigationBarBottomAdapter?.setSecondaryButtonClickedActionCallback { [weak self] in
                 guard let self = self else { return }
-                AnalyticsManager.track(event: .addPagesTapped, screenName: .review)
+                GiniAnalyticsManager.track(event: .addPagesTapped, screenName: .review)
                 self.setCellStatus(for: self.currentPage, isActive: false)
                 self.delegate?.reviewDidTapAddImage(self)
             }
@@ -362,7 +362,7 @@ extension ReviewViewController {
         }
         collectionView.reloadData()
 
-        AnalyticsManager.trackScreenShown(screenName: .review)
+        GiniAnalyticsManager.trackScreenShown(screenName: .review)
     }
 
     public override func viewWillLayoutSubviews() {
@@ -543,12 +543,12 @@ extension ReviewViewController {
 
     @objc
     private func didTapProcessDocument() {
-        let eventProperties = [AnalyticsProperty(key: .numberOfPagesScanned,
-                                                 value: pages.count)]
+        let eventProperties = [GiniAnalyticsProperty(key: .numberOfPagesScanned,
+                                                     value: pages.count)]
 
-        AnalyticsManager.track(event: .processTapped,
-                               screenName: .review,
-                               properties: eventProperties)
+        GiniAnalyticsManager.track(event: .processTapped,
+                                   screenName: .review,
+                                   properties: eventProperties)
         delegate?.reviewDidTapProcess(self)
     }
 
@@ -560,7 +560,7 @@ extension ReviewViewController {
     }
 
     private func didTapAddPages() {
-        AnalyticsManager.track(event: .addPagesTapped, screenName: .review)
+        GiniAnalyticsManager.track(event: .addPagesTapped, screenName: .review)
         setCellStatus(for: currentPage, isActive: false)
         delegate?.reviewDidTapAddImage(self)
     }
@@ -576,7 +576,7 @@ extension ReviewViewController {
                                         at: .centeredHorizontally, animated: true)
             pageControl.currentPage = currentPage
 
-            AnalyticsManager.track(event: .pageSwiped, screenName: .review)
+            GiniAnalyticsManager.track(event: .pageSwiped, screenName: .review)
 
         } else if sender.direction == .right {
             guard currentPage > 0 else { return }
@@ -586,7 +586,7 @@ extension ReviewViewController {
                                         at: .centeredHorizontally, animated: true)
             pageControl.currentPage = currentPage
 
-            AnalyticsManager.track(event: .pageSwiped, screenName: .review)
+            GiniAnalyticsManager.track(event: .pageSwiped, screenName: .review)
         }
     }
 
@@ -673,7 +673,7 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let page = pages[indexPath.row]
-        AnalyticsManager.track(event: .fullScreenPageTapped, screenName: .review)
+        GiniAnalyticsManager.track(event: .fullScreenPageTapped, screenName: .review)
         delegate?.review(self, didSelectPage: page)
     }
 
@@ -701,7 +701,7 @@ extension ReviewViewController: ReviewCollectionViewDelegate {
     func didTapDelete(on cell: ReviewCollectionCell) {
         guard let indexpath = collectionView.indexPath(for: cell) else { return }
         deleteItem(at: indexpath)
-        AnalyticsManager.track(event: .deletePagesTapped, screenName: .review)
+        GiniAnalyticsManager.track(event: .deletePagesTapped, screenName: .review)
         setCurrentPage(basedOn: collectionView)
     }
 }
