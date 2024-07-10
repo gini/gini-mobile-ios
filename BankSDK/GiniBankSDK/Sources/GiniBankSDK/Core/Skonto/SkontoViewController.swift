@@ -72,14 +72,20 @@ public class SkontoViewController: UIViewController {
         return stackView
     }()
 
-    private let viewModel = SkontoViewModel(isSkontoApplied: true,
-                                            skontoValue: 3.0,
-                                            date: Date(),
-                                            priceWithoutSkonto: .init(value: 99.99, currencyCode: "EUR"))
+    private let viewModel: SkontoViewModel
     private let configuration = GiniBankConfiguration.shared
 
     private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
+
+    init(viewModel: SkontoViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -215,40 +221,39 @@ public class SkontoViewController: UIViewController {
     }
 
     private func setupBottomNavigationBar() {
-        if configuration.bottomNavigationBarEnabled {
-            if let bottomBarAdapter = configuration.skontoNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBarAdapter
-            } else {
-                navigationBarBottomAdapter = DefaultSkontoNavigationBarBottomAdapter()
-            }
-
-            navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
-                self?.proceedButtonTapped()
-            }
-
-            navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-                self?.helpButtonTapped()
-            }
-
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                self?.backButtonTapped()
-            }
-
-            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
-                bottomNavigationBar = navigationBar
-                view.addSubview(navigationBar)
-
-                navigationBar.translatesAutoresizingMaskIntoConstraints = false
-
-                NSLayoutConstraint.activate([
-                    navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                    navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                    navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-                ])
-            }
-
-            proceedView.isHidden = true
+        guard configuration.bottomNavigationBarEnabled else { return }
+        if let bottomBarAdapter = configuration.skontoNavigationBarBottomAdapter {
+            navigationBarBottomAdapter = bottomBarAdapter
+        } else {
+            navigationBarBottomAdapter = DefaultSkontoNavigationBarBottomAdapter()
         }
+
+        navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
+            self?.viewModel.proceedButtonTapped()
+        }
+
+        navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
+            self?.helpButtonTapped()
+        }
+
+        navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+            self?.backButtonTapped()
+        }
+
+        if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+            bottomNavigationBar = navigationBar
+            view.addSubview(navigationBar)
+
+            navigationBar.translatesAutoresizingMaskIntoConstraints = false
+
+            NSLayoutConstraint.activate([
+                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+        }
+
+        proceedView.isHidden = true
     }
 
     private func bindViewModel() {
@@ -272,10 +277,6 @@ public class SkontoViewController: UIViewController {
         navigationBarBottomAdapter?.updateDiscountBadge(enabled: isSkontoApplied)
         navigationBarBottomAdapter?.updateDiscountValue(with: discountString)
         navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencySymbol: viewModel.totalPrice.string)
-    }
-
-    @objc private func proceedButtonTapped() {
-        viewModel.proceedButtonTapped()
     }
 
     @objc private func helpButtonTapped() {

@@ -6,9 +6,16 @@
 
 import Foundation
 
+protocol SkontoViewModelDelegate: AnyObject {
+    func didTapHelp()
+    func didTapBack()
+    func didTapProceed(on viewModel: SkontoViewModel)
+}
+
 class SkontoViewModel {
     private var skontoStateChangeHandlers: [() -> Void] = []
     var endEditingAction: (() -> Void)?
+    var proceedAction: (() -> Void)?
 
     private (set) var isSkontoApplied: Bool
     private (set) var priceWithoutSkonto: Price
@@ -39,6 +46,8 @@ class SkontoViewModel {
             return "\(skontoValue)%"
         }
     }
+
+    weak var delegate: SkontoViewModelDelegate?
 
     init(isSkontoApplied: Bool,
          skontoValue: Double,
@@ -98,16 +107,16 @@ class SkontoViewModel {
         }
     }
 
-    func proceedButtonTapped() {
-        // TODO: Handle proceed button tap
-    }
-
     func helpButtonTapped() {
-        // TODO: Handle help button tap
+        delegate?.didTapHelp()
     }
 
     func backButtonTapped() {
-        // TODO: Handle back button tap
+        delegate?.didTapBack()
+    }
+
+    func proceedButtonTapped() {
+        delegate?.didTapProceed(on: self)
     }
 
     private func recalculatePriceWithSkonto() {
