@@ -84,10 +84,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
                             let invoice = DocumentWithExtractions(documentID: result.document?.id ?? "",
                                                                   extractions: data.extractions,
                                                                   isPayable: isPayable)
-                            self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
-                            self?.rootViewController.dismiss(animated: true, completion: {
-                                self?.delegate?.presentInvoicesList(invoices: [invoice])
-                            })
+                            self?.handlePayableInvoice(invoice: invoice)
                         case .failure(let error):
                             print("❌ Checking if document is payable failed: \(String(describing: error))")
                         }
@@ -97,6 +94,13 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
                 }
             }
         }
+    }
+    
+    private func handlePayableInvoice(invoice: DocumentWithExtractions) {
+        hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
+        rootViewController.dismiss(animated: true, completion: { [weak self] in
+            self?.delegate?.presentInvoicesList(invoices: [invoice])
+        })
     }
 }
 // MARK: - UINavigationControllerDelegate
