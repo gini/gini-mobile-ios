@@ -8,37 +8,37 @@ import Foundation
 
 class SkontoViewModel {
     private var skontoStateChangeHandlers: [() -> Void] = []
+    var endEditingAction: (() -> Void)?
 
-    private (set) var isSkontoApplied: Bool {
-        didSet {
-            notifyStateChangeHandlers()
-        }
-    }
-
-    private (set) var priceWithoutSkonto: Price {
-        didSet {
-            notifyStateChangeHandlers()
-        }
-    }
-
-    private (set) var priceWithSkonto: Price {
-        didSet {
-            notifyStateChangeHandlers()
-        }
-    }
+    private (set) var isSkontoApplied: Bool
+    private (set) var priceWithoutSkonto: Price
+    private (set) var priceWithSkonto: Price
 
     var totalPrice: Price {
         return isSkontoApplied ? priceWithSkonto : priceWithoutSkonto
     }
 
-    private (set) var date: Date {
-        didSet {
-            notifyStateChangeHandlers()
-        }
-    }
-
+    private (set) var date: Date
     private (set) var skontoValue: Double
     private (set) var currencyCode: String
+
+    // TODO: recalculate with backend entity: skontoDuePeriod
+    var skontoFormattedDuePeriod: String {
+        return "14 days"
+    }
+
+    var skontoFormattedPercentageDiscounted: String {
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        formatter.numberStyle = .decimal
+        formatter.roundingMode = .floor
+        if let formattedValue = formatter.string(from: NSNumber(value: skontoValue)) {
+            return "\(formattedValue)%"
+        } else {
+            return "\(skontoValue)%"
+        }
+    }
 
     init(isSkontoApplied: Bool,
          skontoValue: Double,
@@ -55,24 +55,37 @@ class SkontoViewModel {
 
     func toggleDiscount() {
         isSkontoApplied.toggle()
+        endEditingAction?()
+        notifyStateChangeHandlers()
     }
 
-    func set(price: String) {
-        guard let priceValue = Price.convertStringToDecimal(price) else {
+    func setSkontoPrice(price: String) {
+        guard let price = convertPriceStringToPrice(price: price), price.value <= priceWithoutSkonto.value else {
+            notifyStateChangeHandlers()
             return
         }
-        let price = Price(value: priceValue, currencyCode: currencyCode)
-        if isSkontoApplied {
-            self.priceWithSkonto = price
-            recalculatePriceWithoutSkonto()
-        } else {
-            self.priceWithoutSkonto = price
-            recalculatePriceWithSkonto()
+        priceWithSkonto = price
+        recalculateSkontoValue()
+        notifyStateChangeHandlers()
+    }
+
+    func setDefaultPrice(price: String) {
+        guard let price = convertPriceStringToPrice(price: price) else { return }
+        priceWithoutSkonto = price
+        recalculatePriceWithSkonto()
+        notifyStateChangeHandlers()
+    }
+
+    private func convertPriceStringToPrice(price: String) -> Price? {
+        guard let priceValue = Price.convertLocalizedStringToDecimal(price) else {
+            return nil
         }
+        return Price(value: priceValue, currencyCode: currencyCode)
     }
 
     func set(date: Date) {
         self.date = date
+        notifyStateChangeHandlers()
     }
 
     func addStateChangeHandler(_ handler: @escaping () -> Void) {
@@ -80,8 +93,8 @@ class SkontoViewModel {
     }
 
     private func notifyStateChangeHandlers() {
-        for handler in skontoStateChangeHandlers {
-            handler()
+        for stateHandler in skontoStateChangeHandlers {
+            stateHandler()
         }
     }
 
@@ -97,14 +110,6 @@ class SkontoViewModel {
         // TODO: Handle back button tap
     }
 
-    private func recalculatePrices() {
-        if isSkontoApplied {
-            recalculatePriceWithSkonto()
-        } else {
-            recalculatePriceWithoutSkonto()
-        }
-    }
-
     private func recalculatePriceWithSkonto() {
         let calculatedPrice = priceWithoutSkonto.value * (1 - Decimal(skontoValue) / 100)
         priceWithSkonto = Price(value: calculatedPrice, currencyCode: currencyCode)
@@ -113,5 +118,10 @@ class SkontoViewModel {
     private func recalculatePriceWithoutSkonto() {
         let calculatedPrice = priceWithSkonto.value / (1 - Decimal(skontoValue) / 100)
         priceWithoutSkonto = Price(value: calculatedPrice, currencyCode: currencyCode)
+    }
+
+    private func recalculateSkontoValue() {
+        let skontoPercentage = ((priceWithoutSkonto.value - priceWithSkonto.value) / priceWithoutSkonto.value) * 100
+        skontoValue = Double(truncating: skontoPercentage as NSNumber)
     }
 }

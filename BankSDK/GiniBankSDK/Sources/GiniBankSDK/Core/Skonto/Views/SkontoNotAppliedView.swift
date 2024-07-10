@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 class SkontoNotAppliedView: UIView {
     private lazy var titleLabel: UILabel = {
@@ -14,7 +13,7 @@ class SkontoNotAppliedView: UIView {
                                                              comment: "Without Skonto discount")
         label.text = title
         label.accessibilityValue = title
-        label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        label.textColor = .giniColorScheme().text.primary.uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -25,11 +24,11 @@ class SkontoNotAppliedView: UIView {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
                                                              comment: "• Active")
+        let font = configuration.textStyleFonts[.footnoteBold] ?? .systemFont(ofSize: 17)
         let attributedString = NSMutableAttributedString(
             string: title,
-            attributes: [NSAttributedString.Key.font: configuration.textStyleFonts[.footnoteBold]!,
-                         NSAttributedString.Key.foregroundColor: GiniColor(light: .GiniBank.success3,
-                                                                           dark: .GiniBank.success3).uiColor()
+            attributes: [NSAttributedString.Key.font: font,
+                         NSAttributedString.Key.foregroundColor: UIColor.giniColorScheme().text.status.uiColor()
                         ])
         label.attributedText = attributedString
         label.accessibilityValue = title
@@ -91,8 +90,7 @@ class SkontoNotAppliedView: UIView {
     }
 
     private func configure() {
-        let isSkontoApplied = viewModel.isSkontoApplied
-        statusLabel.isHidden = isSkontoApplied ? true : false
+        statusLabel.isHidden = viewModel.isSkontoApplied
     }
 }
 
