@@ -550,7 +550,9 @@ class PaymentReviewContainerView: UIView {
             lastValidatedIBAN = iban
         }
 
-        onPayButtonClicked?()
+        if noErrorsFound() {
+            onPayButtonClicked?()
+        }
     }
 
     // MARK: - Helping functions
