@@ -8,7 +8,7 @@ import UIKit
 import GiniCaptureSDK
 
 class SkontoProceedView: UIView {
-    lazy var proceedButton: MultilineTitleButton = {
+    private lazy var proceedButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
@@ -17,6 +17,7 @@ class SkontoProceedView: UIView {
                                                                    comment: "Proceed")
         button.accessibilityValue = buttonTitle
         button.setTitle(buttonTitle, for: .normal)
+        button.addTarget(self, action: #selector(proceedButtonTapped), for: .touchUpInside)
         return button
     }()
 
@@ -159,6 +160,10 @@ class SkontoProceedView: UIView {
         self.skontoBadgeLabel.text = String.localizedStringWithFormat(skontoTitle,
                                                                       viewModel.skontoFormattedPercentageDiscounted)
         self.totalValueLabel.text = viewModel.totalPrice.localizedStringWithCurrencyCode
+    }
+
+    @objc private func proceedButtonTapped() {
+        self.viewModel.proceedButtonTapped()
     }
 }
 
