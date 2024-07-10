@@ -19,13 +19,36 @@ final class DefaultSkontoBottomNavigationBar: UIView {
                                                              comment: "Proceed")
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
-        button.setContentHuggingPriority(.required, for: .vertical)
+        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        button.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return button
     }()
 
-    lazy var helpButton = GiniBarButton(ofType: .help)
+    lazy var helpButton: GiniBarButton = {
+        let button = GiniBarButton(ofType: .help)
+        button.buttonView.translatesAutoresizingMaskIntoConstraints = false
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        return button
+    }()
 
-    lazy var backButton = GiniBarButton(ofType: .back(title: ""))
+    lazy var backButton: GiniBarButton = {
+        let button = GiniBarButton(ofType: .back(title: ""))
+        button.buttonView.translatesAutoresizingMaskIntoConstraints = false
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        return button
+    }()
+    
+    private lazy var buttonsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [backButton.buttonView, payButton, helpButton.buttonView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.spacing = Constants.padding
+        return stackView
+    }()
 
     private lazy var totalLabel: UILabel = {
         let label = UILabel()
@@ -109,25 +132,17 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         addSubview(totalLabel)
         addSubview(totalValueLabel)
         addSubview(skontoBadgeView)
-        addSubview(helpButton.buttonView)
-        addSubview(backButton.buttonView)
-        helpButton.buttonView.translatesAutoresizingMaskIntoConstraints = false
-        backButton.buttonView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(buttonsStackView)
+        skontoBadgeView.addSubview(skontoBadgeLabel)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            payButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.labelPadding),
-            payButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.payButtonHeight),
-
-            totalLabel.topAnchor.constraint(equalTo: topAnchor,
-                                            constant: Constants.padding / 2),
+            totalLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding / 2),
             totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.padding / 2),
-            totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.padding),
             totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalValueLabel.centerYAnchor),
@@ -145,11 +160,11 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            helpButton.buttonView.centerYAnchor.constraint(equalTo: payButton.centerYAnchor),
-            helpButton.buttonView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
-
-            backButton.buttonView.centerYAnchor.constraint(equalTo: payButton.centerYAnchor),
-            backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding)
+            buttonsStackView.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: Constants.padding),
+            buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+            buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
+            payButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
         ])
     }
 }
