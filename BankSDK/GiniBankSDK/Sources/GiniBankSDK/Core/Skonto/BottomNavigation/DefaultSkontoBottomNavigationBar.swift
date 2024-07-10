@@ -10,7 +10,7 @@ import GiniCaptureSDK
 final class DefaultSkontoBottomNavigationBar: UIView {
     private lazy var configuration = GiniBankConfiguration.shared
 
-    lazy var payButton: MultilineTitleButton = {
+    private lazy var proceedButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
@@ -21,27 +21,30 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         button.accessibilityValue = title
         button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         button.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        button.addTarget(self, action: #selector(proceedButtonClicked), for: .touchUpInside)
         return button
     }()
 
-    lazy var helpButton: GiniBarButton = {
+    private lazy var helpButton: GiniBarButton = {
         let button = GiniBarButton(ofType: .help)
         button.buttonView.translatesAutoresizingMaskIntoConstraints = false
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        button.addAction(self, #selector(helpButtonClicked))
         return button
     }()
 
-    lazy var backButton: GiniBarButton = {
+    private lazy var backButton: GiniBarButton = {
         let button = GiniBarButton(ofType: .back(title: ""))
         button.buttonView.translatesAutoresizingMaskIntoConstraints = false
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        button.addAction(self, #selector(backButtonClicked))
         return button
     }()
 
     private lazy var buttonsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [backButton.buttonView, payButton, helpButton.buttonView])
+        let stackView = UIStackView(arrangedSubviews: [backButton.buttonView, proceedButton, helpButton.buttonView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .fill
@@ -91,10 +94,18 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         view.addSubview(skontoBadgeLabel)
         return view
     }()
+    
+    private var proceedAction: (() -> Void)?
+    private var helpAction: (() -> Void)?
+    private var backAction: (() -> Void)?
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
+    init(proceedAction: (() -> Void)?,
+         helpAction: (() -> Void)?,
+         backAction: (() -> Void)?) {
+        self.proceedAction = proceedAction
+        self.helpAction = helpAction
+        self.backAction = backAction
+        super.init(frame: .zero)
         setupView()
         setupConstraints()
     }
@@ -108,12 +119,12 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     }
 
     func setProceedButtonState(enabled: Bool) {
-        payButton.isEnabled = enabled
+        proceedButton.isEnabled = enabled
 
         if enabled {
-            payButton.configure(with: configuration.primaryButtonConfiguration)
+            proceedButton.configure(with: configuration.primaryButtonConfiguration)
         } else {
-            payButton.configure(with: configuration.secondaryButtonConfiguration)
+            proceedButton.configure(with: configuration.secondaryButtonConfiguration)
         }
     }
 
@@ -128,7 +139,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     private func setupView() {
         backgroundColor = .giniColorScheme().bg.surface.uiColor()
 
-        addSubview(payButton)
+        addSubview(proceedButton)
         addSubview(totalLabel)
         addSubview(totalValueLabel)
         addSubview(skontoBadgeView)
@@ -164,8 +175,20 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
             buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
-            payButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
+            proceedButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
         ])
+    }
+    
+    @objc private func proceedButtonClicked() {
+        proceedAction?()
+    }
+
+    @objc private func helpButtonClicked() {
+        helpAction?()
+    }
+    
+    @objc private func backButtonClicked() {
+        backAction?()
     }
 }
 
