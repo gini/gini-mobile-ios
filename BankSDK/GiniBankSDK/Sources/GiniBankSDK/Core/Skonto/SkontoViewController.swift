@@ -77,7 +77,7 @@ public class SkontoViewController: UIViewController {
 
     private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
-    
+
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -131,7 +131,6 @@ public class SkontoViewController: UIViewController {
         notAppliedGroupView.addSubview(notAppliedView)
         view.addSubview(proceedView)
 
-        proceedView.proceedButton.addTarget(self, action: #selector(proceedButtonTapped), for: .touchUpInside)
         setupBottomNavigationBar()
         setupTapGesture()
         bindViewModel()
@@ -229,7 +228,7 @@ public class SkontoViewController: UIViewController {
 
     private func setupBottomNavigationBar() {
         guard configuration.bottomNavigationBarEnabled else { return }
-        
+    
         if let bottomBarAdapter = configuration.skontoNavigationBarBottomAdapter {
             navigationBarBottomAdapter = bottomBarAdapter
         } else {
@@ -237,7 +236,7 @@ public class SkontoViewController: UIViewController {
         }
 
         navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
-            self?.proceedButtonTapped()
+            self?.viewModel.proceedButtonTapped()
         }
 
         navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
@@ -264,10 +263,6 @@ public class SkontoViewController: UIViewController {
         viewModel.endEditingAction = {
             self.endEditing()
         }
-    }
-
-    @objc private func proceedButtonTapped() {
-        viewModel.proceedButtonTapped()
     }
 
     @objc private func helpButtonTapped() {

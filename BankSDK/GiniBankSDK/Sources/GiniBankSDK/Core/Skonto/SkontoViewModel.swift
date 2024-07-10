@@ -15,6 +15,7 @@ protocol SkontoViewModelDelegate: AnyObject {
 class SkontoViewModel {
     private var skontoStateChangeHandlers: [() -> Void] = []
     var endEditingAction: (() -> Void)?
+    var proceedAction: (() -> Void)?
 
     private (set) var isSkontoApplied: Bool
     private (set) var priceWithoutSkonto: Price
