@@ -72,14 +72,20 @@ public class SkontoViewController: UIViewController {
         return stackView
     }()
 
-    private let viewModel = SkontoViewModel(isSkontoApplied: true,
-                                            skontoValue: 3.0,
-                                            date: Date(),
-                                            priceWithoutSkonto: .init(value: 99.99, currencyCode: "EUR"))
+    private let viewModel: SkontoViewModel
     private let configuration = GiniBankConfiguration.shared
 
     private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
+
+    init(viewModel: SkontoViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -222,7 +228,7 @@ public class SkontoViewController: UIViewController {
 
     private func setupBottomNavigationBar() {
         guard configuration.bottomNavigationBarEnabled else { return }
-        
+    
         if let bottomBarAdapter = configuration.skontoNavigationBarBottomAdapter {
             navigationBarBottomAdapter = bottomBarAdapter
         } else {
@@ -230,7 +236,7 @@ public class SkontoViewController: UIViewController {
         }
 
         navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
-            self?.proceedButtonTapped()
+            self?.viewModel.proceedButtonTapped()
         }
 
         navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
@@ -252,15 +258,11 @@ public class SkontoViewController: UIViewController {
 
         proceedView.isHidden = true
     }
-    
+
     private func bindViewModel() {
         viewModel.endEditingAction = {
             self.endEditing()
         }
-    }
-
-    @objc private func proceedButtonTapped() {
-        viewModel.proceedButtonTapped()
     }
 
     @objc private func helpButtonTapped() {
