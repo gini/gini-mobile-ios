@@ -106,11 +106,11 @@ extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
         digitalInvoiceViewModel?.invoice?.lineItems[viewModel.index] = lineItem
         if !viewModel.itemsChanged.isEmpty {
             let itemRawValues = viewModel.itemsChanged.map { return $0.rawValue }
-            let eventProperties = [AnalyticsProperty(key: .itemsChanged,
-                                                     value: itemRawValues)]
-            AnalyticsManager.track(event: .saveTapped,
-                                   screenName: .editReturnAssistant,
-                                   properties: eventProperties)
+            let eventProperties = [GiniAnalyticsProperty(key: .itemsChanged,
+                                                         value: itemRawValues)]
+            GiniAnalyticsManager.track(event: .saveTapped,
+                                       screenName: .editReturnAssistant,
+                                       properties: eventProperties)
         }
 
         digitalInvoiceViewController?.updateValues()
@@ -120,7 +120,7 @@ extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
     }
 
     func didCancel(on viewModel: EditLineItemViewModel) {
-        AnalyticsManager.track(event: .closeTapped, screenName: .editReturnAssistant)
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .editReturnAssistant)
         navigationController.dismiss(animated: true) { [weak self] in
             self?.digitalInvoiceViewController?.sendAnalyticsScreenShown()
         }
