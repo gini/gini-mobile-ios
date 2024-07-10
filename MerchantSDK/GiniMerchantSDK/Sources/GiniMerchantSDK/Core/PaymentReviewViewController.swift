@@ -292,7 +292,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         let paymentRecipientExtraction = Extraction(box: nil,
                                                     candidates: "",
                                                     entity: "text",
-                                                    value: paymentInfoContainerView.textFieldText(texFieldType: .recipientFieldTag) ?? "",
+                                                    value: paymentInfo.recipient,
                                                     name: "payment_recipient")
         let ibanExtraction = Extraction(box: nil,
                                         candidates: "",
