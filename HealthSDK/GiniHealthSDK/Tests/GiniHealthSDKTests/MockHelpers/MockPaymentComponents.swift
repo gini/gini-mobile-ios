@@ -47,7 +47,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     }
 
     func paymentView(documentId: String) -> UIView {
-        let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniHealthConfiguration: giniHealthConfiguration)
+        let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniHealthConfiguration: giniHealthConfiguration, paymentComponentConfiguration: PaymentComponentConfiguration(isPaymentComponentBranded: true))
         viewModel.documentId = documentId
         let view = PaymentComponentView()
         view.viewModel = viewModel

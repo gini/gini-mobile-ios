@@ -80,7 +80,9 @@ final class MoreInformationView: UIView {
             moreInformationView.leadingAnchor.constraint(equalTo: leadingAnchor),
             moreInformationView.trailingAnchor.constraint(equalTo: trailingAnchor),
             moreInformationView.topAnchor.constraint(equalTo: topAnchor),
-            moreInformationView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            moreInformationView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            moreInformationView.heightAnchor.constraint(equalToConstant: Constants.infoIconSize),
+            moreInformationView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
     }
     
