@@ -7,13 +7,28 @@
 import Foundation
 
 extension NumberFormatter {
-    static var localizedDecimal: NumberFormatter {
+    private static func makeLocalizedDecimalFormatter(locale: Locale = .current,
+                                                      numberStyle: NumberFormatter.Style = .decimal,
+                                                      usesGroupingSeparator: Bool = true) -> NumberFormatter {
         let formatter = NumberFormatter()
-        formatter.locale = Locale.current
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
+        formatter.locale = locale
+        formatter.numberStyle = numberStyle
+        formatter.usesGroupingSeparator = usesGroupingSeparator
+        return formatter
+    }
+
+    static var skontoPriceFormatter: NumberFormatter {
+        let formatter = makeLocalizedDecimalFormatter()
         formatter.minimumFractionDigits = 2
-        formatter.usesGroupingSeparator = true
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }
+
+    static var skontoDiscountFormatter: NumberFormatter {
+        let formatter = makeLocalizedDecimalFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        formatter.roundingMode = .floor
         return formatter
     }
 }
