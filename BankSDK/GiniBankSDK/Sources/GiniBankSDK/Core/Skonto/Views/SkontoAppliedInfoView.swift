@@ -37,7 +37,7 @@ class SkontoAppliedInfoView: UIView {
     private var viewModel: SkontoViewModel
 
     private let skontoTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
-                                                                       comment: "Pay in %@ days: %@ Skonto discount.")
+                                                                       comment: "Pay in %d days: %@ Skonto discount.")
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
