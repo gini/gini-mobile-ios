@@ -59,8 +59,8 @@ final class AppCoordinator: Coordinator {
         return configuration
     }()
     
+    var isBrandedPaymentComponent = true
 
-    
     private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
@@ -282,7 +282,8 @@ final class AppCoordinator: Coordinator {
 
         let invoicesListCoordinator = InvoicesListCoordinator()
         paymentComponentsController = PaymentComponentsController(giniHealth: health)
-
+        let paymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: isBrandedPaymentComponent)
+        paymentComponentsController.paymentComponentConfiguration = paymentComponentConfiguration
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
                                           hardcodedInvoicesController: HardcodedInvoicesController(),
@@ -377,7 +378,17 @@ extension AppCoordinator: PaymentComponentsControllerProtocol {
 
 extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
-        let debugMenuViewController = DebugMenuViewController(giniHealth: health, giniHealthConfiguration: giniHealthConfiguration)
+        let debugMenuViewController = DebugMenuViewController(giniHealth: health,
+                                                              giniHealthConfiguration: giniHealthConfiguration,
+                                                              isBrandedPaymentComponent: isBrandedPaymentComponent)
+        debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
+    }
+}
+
+//MARK: - DebugMenuDelegate
+extension AppCoordinator: DebugMenuDelegate {
+    func didChangeBrandedSwitchValue(isOn: Bool) {
+        isBrandedPaymentComponent = isOn
     }
 }

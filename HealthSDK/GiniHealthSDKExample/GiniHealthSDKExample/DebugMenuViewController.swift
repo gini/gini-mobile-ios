@@ -7,6 +7,10 @@
 import UIKit
 import GiniHealthSDK
 
+protocol DebugMenuDelegate: AnyObject {
+    func didChangeBrandedSwitchValue(isOn: Bool)
+}
+
 class DebugMenuViewController: UIViewController {
     private let giniHealth: GiniHealth
     private let giniHealthConfiguration: GiniHealthConfiguration
@@ -33,10 +37,26 @@ class DebugMenuViewController: UIViewController {
     }()
     
     private lazy var localizationRow: UIStackView = stackView(axis: .horizontal, subviews: [localizationTitleLabel, localizationPicker])
-    
-    init(giniHealth: GiniHealth, giniHealthConfiguration: GiniHealthConfiguration) {
+
+    private lazy var brandedOptionLabel: UILabel = rowTitle("Show Branded View")
+
+    private lazy var brandedSwitch: UISwitch = {
+        let mySwitch = UISwitch()
+        mySwitch.translatesAutoresizingMaskIntoConstraints = false
+        mySwitch.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
+        mySwitch.isOn = isBrandedPaymentComponent
+        return mySwitch
+    }()
+
+    private lazy var brandedRow: UIStackView = stackView(axis: .horizontal, subviews: [brandedOptionLabel, brandedSwitch])
+
+    private var isBrandedPaymentComponent: Bool
+    weak var delegate: DebugMenuDelegate?
+
+    init(giniHealth: GiniHealth, giniHealthConfiguration: GiniHealthConfiguration, isBrandedPaymentComponent: Bool) {
         self.giniHealth = giniHealth
         self.giniHealthConfiguration = giniHealthConfiguration
+        self.isBrandedPaymentComponent = isBrandedPaymentComponent
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,10 +79,10 @@ class DebugMenuViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
-        
+        view.backgroundColor = UIColor(named: "background")
+
         let spacer = UIView()
-        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, spacer])
+        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, brandedRow, spacer])
         view.addSubview(mainStackView)
         
         NSLayoutConstraint.activate([
@@ -71,7 +91,8 @@ class DebugMenuViewController: UIViewController {
             mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: spacing),
             mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -spacing),
             
-            localizationRow.heightAnchor.constraint(equalToConstant: rowHeight)
+            localizationRow.heightAnchor.constraint(equalToConstant: rowHeight),
+            brandedRow.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
     }
 }
@@ -109,5 +130,12 @@ extension DebugMenuViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         giniHealthConfiguration.customLocalization = GiniLocalization.allCases[row]
         giniHealth.setConfiguration(giniHealthConfiguration)
+    }
+}
+
+// MARK: Branded Switch functions
+private extension DebugMenuViewController {
+    @objc private func switchValueChanged(_ sender: UISwitch) {
+        delegate?.didChangeBrandedSwitchValue(isOn: sender.isOn)
     }
 }
