@@ -311,7 +311,7 @@ extension SkontoViewController {
             return
         }
 
-        let contentOffset = keyboardFrame.height - self.proceedView.frame.height + Constants.containerPadding
+        let contentOffset = keyboardFrame.height - proceedView.frame.height + Constants.containerPadding
         UIView.animate(withDuration: animationDuration) {
             self.scrollView.contentInset.bottom = contentOffset
             self.scrollView.scrollIndicatorInsets.bottom = contentOffset
