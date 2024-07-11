@@ -40,10 +40,6 @@ public enum ExtractionType: String {
     /// The line item compound extractions.
     public var lineItems: [[Extraction]]?
 
-    public var isPayable: Bool {
-        extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
-    }
-
     public init(extractions: [Extraction], payment:  [[Extraction]]?,  lineItems: [[Extraction]]?) {
         self.extractions = extractions
         self.payment = payment
