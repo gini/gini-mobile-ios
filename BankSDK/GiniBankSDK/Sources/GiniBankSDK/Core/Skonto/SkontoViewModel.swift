@@ -124,11 +124,6 @@ class SkontoViewModel {
         priceWithSkonto = Price(value: calculatedPrice, currencyCode: currencyCode)
     }
 
-    private func recalculatePriceWithoutSkonto() {
-        let calculatedPrice = priceWithSkonto.value / (1 - Decimal(skontoValue) / 100)
-        priceWithoutSkonto = Price(value: calculatedPrice, currencyCode: currencyCode)
-    }
-
     private func recalculateSkontoValue() {
         let skontoPercentage = ((priceWithoutSkonto.value - priceWithSkonto.value) / priceWithoutSkonto.value) * 100
         skontoValue = Double(truncating: skontoPercentage as NSNumber)
