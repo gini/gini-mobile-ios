@@ -55,7 +55,7 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertEqual(receivedProviders, expectedProviders)
     }
 
-    func testDcumentIsPayable() {
+    func testDocumentIsPayable() {
         // When
         let fileName = "extractionResultWithIBAN"
         let extractions: ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
