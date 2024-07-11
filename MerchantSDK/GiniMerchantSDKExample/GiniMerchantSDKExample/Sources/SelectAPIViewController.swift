@@ -35,8 +35,16 @@ final class SelectAPIViewController: UIViewController {
     
     @IBOutlet private weak var metaInformationButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet private weak var startWithTestDocumentButton: UIButton!
-    @IBOutlet private weak var startWithGiniCaptureButton: UIButton!
+    @IBOutlet private weak var startWithTestDocumentButton: UIButton! {
+        didSet {
+            startWithTestDocumentButton.isHidden = true
+        }
+    }
+    @IBOutlet private weak var startWithGiniCaptureButton: UIButton! {
+        didSet {
+            startWithGiniCaptureButton.isHidden = true
+        }
+    }
     @IBOutlet private weak var invoicesListButton: UIButton!
     
     weak var delegate: SelectAPIViewControllerDelegate?
