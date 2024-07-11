@@ -113,6 +113,8 @@ public class SkontoViewController: UIViewController {
             let backButton = GiniBarButton(ofType: .back(title: backButtonTitle))
             backButton.addAction(self, #selector(backButtonTapped))
             navigationItem.leftBarButtonItem = backButton.barButton
+        } else {
+            navigationItem.hidesBackButton = true
         }
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
