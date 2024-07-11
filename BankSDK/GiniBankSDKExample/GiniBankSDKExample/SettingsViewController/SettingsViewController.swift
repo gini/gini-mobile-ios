@@ -108,7 +108,10 @@ final class SettingsViewController: UIViewController {
 		
 		contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isSwitchOn: giniConfiguration.bottomNavigationBarEnabled)))
-		
+
+        contentData.append(.switchOption(data: .init(type: .skontoBottomNavigationBarAdapter,
+                                                     isSwitchOn: giniConfiguration.skontoNavigationBarBottomAdapter != nil)))
+
 		contentData.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
 													 isSwitchOn: giniConfiguration.helpNavigationBarBottomAdapter != nil)))
 		contentData.append(.switchOption(data: .init(type: .cameraNavigationBarBottomAdapter,
@@ -449,7 +452,10 @@ final class SettingsViewController: UIViewController {
 				}
 				return CustomDocumentValidationResult.success()
 			}
-		}
+        case .skontoBottomNavigationBarAdapter:
+            let customAdapter = CustomSkontoNavigationBarBottomAdapter()
+            giniConfiguration.skontoNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+        }
 	}
 	
 	private func getSwitchOptionCell(at row: Int) -> UITableViewCell? {
