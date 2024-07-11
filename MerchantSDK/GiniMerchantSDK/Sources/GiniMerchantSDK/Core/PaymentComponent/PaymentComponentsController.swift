@@ -177,7 +177,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                 let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
                                                                  data: data,
                                                                  selectedPaymentProvider: selectedPaymentProvider,
-                                                                 trackingDelegate: trackingDelegate)
+                                                                 trackingDelegate: trackingDelegate,
+                                                                 paymentComponentsController: self)
                 completion(vc, nil)
             case .failure(let error):
                 completion(nil, error)
@@ -197,7 +198,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     public func canOpenPaymentProviderApp() -> Bool {
-        if selectedPaymentProvider?.gpcSupportedPlatforms.contains(.ios) ?? false {
+        if supportsGPC() {
             if selectedPaymentProvider?.appSchemeIOS.canOpenURLString() ?? false {
                 return true
             }
@@ -205,9 +206,24 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         return false
     }
 
+    public func supportsOpenWith() -> Bool {
+        if selectedPaymentProvider?.openWithSupportedPlatforms.contains(.ios) ?? false {
+            return true
+        }
+        return false
+    }
+
+    public func supportsGPC() -> Bool {
+        if selectedPaymentProvider?.gpcSupportedPlatforms.contains(.ios) ?? false {
+            return true
+        }
+        return false
+    }
+
     public func openPaymentProviderApp(requestId: String, universalLink: String) {
         giniMerchant.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
     }
+    
 
     public func paymentInfoViewController() -> UIViewController {
         let paymentInfoViewController = PaymentInfoViewController()
@@ -232,6 +248,14 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
 }
 
 extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
+    public func didTapForwardOnInstallBottomSheet() {
+        print("Tapped Forward on Install Bottom Sheet")
+    }
+    
+    public func didTapOnContinueOnShareBottomSheet() {
+        print("Tapped Continue on Share Bottom Sheet")
+    }
+    
     public func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
         selectedPaymentProvider = paymentProvider
         storeDefaultPaymentProvider(paymentProvider: paymentProvider)
@@ -248,7 +272,168 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
 }
 
 extension PaymentComponentsController {
+    func shouldShowOnboardingScreenFor(paymentProvider: PaymentProvider) -> Bool {
+        let onboardingCounts = OnboardingShareInvoiceScreenCount.load()
+        let count = onboardingCounts.presentationCount(forProvider: paymentProvider.name)
+        return count < 3
+    }
+
+    public func installAppBottomSheet() -> UIViewController {
+        let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
+        installAppBottomViewModel.viewDelegate = self
+        let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel)
+        return installAppBottomView
+    }
+
+    public func shareInvoiceBottomSheet() -> UIViewController {
+        let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
+        shareInvoiceBottomViewModel.viewDelegate = self
+        let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
+        incrementOnboardingCountFor(paymentProvider: selectedPaymentProvider)
+        return shareInvoiceBottomView
+    }
+
+    private func incrementOnboardingCountFor(paymentProvider: PaymentProvider?) {
+        var onboardingCounts = OnboardingShareInvoiceScreenCount.load()
+        onboardingCounts.incrementPresentationCount(forProvider: paymentProvider?.name)
+    }
+
+    public func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController) {
+        createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] paymentRequestID, error in
+            if let paymentRequestID {
+                self?.loadPDFData(paymentRequestID: paymentRequestID, viewController: viewController)
+            }
+        })
+    }
+
+    func loadPDFData(paymentRequestID: String, viewController: UIViewController) {
+        self.loadPDF(paymentRequestID: paymentRequestID, completion: { [weak self] pdfData in
+            let pdfPath = self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestID)
+
+            guard let pdfPath else {
+                print("Couldn't retrieve pdf URL")
+                return
+            }
+
+            self?.sharePDF(pdfURL: pdfPath, paymentRequestID: paymentRequestID, viewController: viewController) { [weak self] (activity, _, _, _) in
+                guard activity != nil else {
+                    return
+                }
+
+                // Publish the payment request id only after a user has picked an activity (app)
+                self?.giniMerchant.delegate?.didCreatePaymentRequest(paymentRequestID: paymentRequestID)
+            }
+        })
+    }
+
+    func writePDFDataToFile(data: Data, fileName: String) -> URL? {
+        do {
+            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            guard let docDirectoryPath = paths.first else { return  nil}
+            let pdfFileName = fileName + Constants.pdfExtension
+            let pdfPath = docDirectoryPath.appendingPathComponent(pdfFileName)
+            try data.write(to: pdfPath)
+            return pdfPath
+        } catch {
+            print("Error while write pdf file to location: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
+    private func sharePDF(pdfURL: URL, paymentRequestID: String, viewController: UIViewController,
+                          completionWithItemsHandler: @escaping UIActivityViewController.CompletionWithItemsHandler) {
+        // Create UIActivityViewController with the PDF file
+        let activityViewController = UIActivityViewController(activityItems: [pdfURL], applicationActivities: nil)
+        activityViewController.completionWithItemsHandler = completionWithItemsHandler
+
+        // Exclude some activities if needed
+        activityViewController.excludedActivityTypes = [
+            .addToReadingList,
+            .assignToContact,
+            .airDrop,
+            .mail,
+            .message,
+            .postToFacebook,
+            .postToVimeo,
+            .postToWeibo,
+            .postToFlickr,
+            .postToTwitter,
+            .postToTencentWeibo,
+            .copyToPasteboard,
+            .markupAsPDF,
+            .openInIBooks,
+            .print,
+            .saveToCameraRoll
+        ]
+
+        // Present the UIActivityViewController
+        DispatchQueue.main.async {
+            if let popoverController = activityViewController.popoverPresentationController {
+                popoverController.sourceView = viewController.view
+                popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
+            }
+
+            if (viewController.presentedViewController != nil) {
+                viewController.presentedViewController?.dismiss(animated: true, completion: {
+                    viewController.present(activityViewController, animated: true, completion: nil)
+                })
+            } else {
+                viewController.present(activityViewController, animated: true, completion: nil)
+            }
+        }
+    }
+
+
+    func loadPDF(paymentRequestID: String, completion: @escaping (Data) -> ()) {
+        isLoading = true
+        giniMerchant.paymentService.pdfWithQRCode(paymentRequestId: paymentRequestID) { [weak self] result in
+            self?.isLoading = false
+            switch result {
+                case .success(let data):
+                    completion(data)
+                case .failure:
+                    break
+            }
+        }
+    }
+
+//    private func loadPDFData(paymentRequestID: String) {
+//        self.model?.loadPDF(paymentRequestID: paymentRequestID, completion: { [weak self] pdfData in
+//            let pdfPath = self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestID)
+//
+//            guard let pdfPath else {
+//                print("Error while write pdf file to location: missing pdf path")
+//                return
+//            }
+//
+//            self?.sharePDF(pdfURL: pdfPath, paymentRequestID: paymentRequestID) { [weak self] (activity, _, _, _) in
+//                guard activity != nil else {
+//                    return
+//                }
+//
+//                // Publish the payment request id only after a user has picked an activity (app)
+//                self?.model?.healthSDK.delegate?.didCreatePaymentRequest(paymentRequestID: paymentRequestID)
+//            }
+//        })
+//    }
+}
+
+extension PaymentComponentsController: ShareInvoiceBottomViewProtocol {
+    func didTapOnContinueToShareInvoice() {
+        bottomViewDelegate?.didTapOnContinueOnShareBottomSheet()
+    }
+}
+
+extension PaymentComponentsController: InstallAppBottomViewProtocol {
+    func didTapOnContinue() {
+        bottomViewDelegate?.didTapForwardOnInstallBottomSheet()
+    }
+}
+
+extension PaymentComponentsController {
     private enum Constants {
         static let kDefaultPaymentProvider = "defaultPaymentProvider"
+        static let pdfExtension = ".pdf"
     }
 }

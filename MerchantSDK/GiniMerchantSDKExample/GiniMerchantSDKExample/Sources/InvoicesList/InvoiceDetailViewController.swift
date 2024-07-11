@@ -154,43 +154,26 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
                 }
             }
         } else {
-            if paymentComponentsController.canOpenPaymentProviderApp() {
-                paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] paymentRequestID, error in
-                    if let error {
-                        self?.errors.append(error.localizedDescription)
-                        self?.showErrorsIfAny()
-                    } else if let paymentRequestID {
-                        self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+            if paymentComponentsController.supportsOpenWith() {
+                let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet()
+                shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
+                self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
+            } else if paymentComponentsController.supportsGPC() {
+                if paymentComponentsController.canOpenPaymentProviderApp() {
+                    paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] paymentRequestID, error in
+                        if let error {
+                            self?.errors.append(error.localizedDescription)
+                            self?.showErrorsIfAny()
+                        } else if let paymentRequestID {
+                            self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                        }
                     }
+                } else {
+                    let installAppBottomSheet = paymentComponentsController.installAppBottomSheet()
+                    installAppBottomSheet.modalPresentationStyle = .overFullScreen
+                    self.dismissAndPresent(viewController: installAppBottomSheet, animated: false)
                 }
-            } else {
-
             }
-//            guard let selectedPaymentProvider = paymentComponentsController.selectedPaymentProvider else { return }
-//            if selectedPaymentProvider.gpcSupportedPlatforms.contains(.ios) {
-//                guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
-//                    paymentComponentsController.openInstallAppBottomSheet()
-//                    return
-//                }
-//
-//                if paymentInfoContainerView.noErrorsFound() {
-//                    createPaymentRequest()
-//                }
-//            } else if selectedPaymentProvider.openWithSupportedPlatforms.contains(.ios) {
-//                if model?.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
-//                    model?.openOnboardingShareInvoiceBottomSheet()
-//                } else {
-//                    obtainPDFFromPaymentRequest()
-//                }
-//            }
-//            paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] paymentRequestID, error in
-//                if let error {
-//                    self?.errors.append(error.localizedDescription)
-//                    self?.showErrorsIfAny()
-//                } else if let paymentRequestID {
-//                    
-//                }
-//            }
         }
     }
 
@@ -245,6 +228,23 @@ extension InvoiceDetailViewController: PaymentProvidersBottomViewProtocol {
     func didTapOnClose() {
         DispatchQueue.main.async {
             self.presentedViewController?.dismiss(animated: true)
+        }
+    }
+
+    func didTapOnContinueOnShareBottomSheet() {
+        paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(), viewController: self)
+    }
+
+    func didTapForwardOnInstallBottomSheet() {
+        paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] paymentRequestID, error in
+            if let error {
+                self?.errors.append(error.localizedDescription)
+                self?.showErrorsIfAny()
+            } else if let paymentRequestID {
+                self?.dismiss(animated: true, completion: {
+                    self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                })
+            }
         }
     }
 }

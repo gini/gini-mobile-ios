@@ -34,27 +34,29 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     var selectedPaymentProvider: PaymentProvider!
 
     public weak var trackingDelegate: GiniMerchantTrackingDelegate?
-    
-    public static func instantiate(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniMerchantTrackingDelegate? = nil) -> PaymentReviewViewController {
+
+    public static func instantiate(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniMerchantTrackingDelegate? = nil, paymentComponentsController: PaymentComponentsController) -> PaymentReviewViewController {
         let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniMerchantBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
         let viewModel = PaymentReviewModel(with: giniMerchant,
                                            document: document,
                                            extractions: extractions,
-                                           selectedPaymentProvider: selectedPaymentProvider)
+                                           selectedPaymentProvider: selectedPaymentProvider,
+                                           paymentComponentsController: paymentComponentsController)
         viewController.model = viewModel
         viewController.trackingDelegate = trackingDelegate
         viewController.selectedPaymentProvider = selectedPaymentProvider
         return viewController
     }
     
-    public static func instantiate(with giniMerchant: GiniMerchant, data: DataForReview, selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniMerchantTrackingDelegate? = nil) -> PaymentReviewViewController {
+    public static func instantiate(with giniMerchant: GiniMerchant, data: DataForReview, selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniMerchantTrackingDelegate? = nil, paymentComponentsController: PaymentComponentsController) -> PaymentReviewViewController {
         let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniMerchantBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
         let viewModel = PaymentReviewModel(with: giniMerchant,
                                            document: data.document,
                                            extractions: data.extractions,
-                                           selectedPaymentProvider: selectedPaymentProvider)
+                                           selectedPaymentProvider: selectedPaymentProvider,
+                                           paymentComponentsController: paymentComponentsController)
         viewController.model = viewModel
         viewController.trackingDelegate = trackingDelegate
         viewController.selectedPaymentProvider = selectedPaymentProvider
@@ -260,7 +262,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         view.endEditing(true)
         
-        if selectedPaymentProvider.gpcSupportedPlatforms.contains(.ios) {
+        if model?.paymentComponentsController.supportsGPC() ?? false {
             guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
                 model?.openInstallAppBottomSheet()
                 return
@@ -269,8 +271,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             if paymentInfoContainerView.noErrorsFound() {
                 createPaymentRequest()
             }
-        } else if selectedPaymentProvider.openWithSupportedPlatforms.contains(.ios) {
-            if model?.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
+        } else if model?.paymentComponentsController.supportsOpenWith() ?? false {
+            if model?.paymentComponentsController.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
                 model?.openOnboardingShareInvoiceBottomSheet()
             } else {
                 obtainPDFFromPaymentRequest()
@@ -420,6 +422,5 @@ extension PaymentReviewViewController {
         static let bottomPaddingPageImageView = 20.0
         static let loadingIndicatorScale = 1.0
         static let loadingIndicatorStyle = UIActivityIndicatorView.Style.large
-        static let pdfExtension = ".pdf"
     }
 }

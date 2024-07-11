@@ -37,7 +37,8 @@ extension OnboardingShareInvoiceScreenCount {
     }
 
     // Increment presentation count for a specific provider
-    mutating func incrementPresentationCount(forProvider providerID: String) {
+    mutating func incrementPresentationCount(forProvider providerID: String?) {
+        guard let providerID else { return }
         if let count = providerCounts[providerID] {
             providerCounts[providerID] = count + 1
         } else {
