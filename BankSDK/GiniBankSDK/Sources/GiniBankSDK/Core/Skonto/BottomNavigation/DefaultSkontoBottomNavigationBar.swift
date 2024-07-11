@@ -15,7 +15,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.paybutton.title",
                                                              comment: "Proceed")
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
@@ -60,7 +60,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.textColor = .giniColorScheme().text.primary.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.required, for: .vertical)
-        let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
+        let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                             comment: "Total")
         label.text = text
         return label
