@@ -89,6 +89,7 @@
 "ginibank.skonto.backButton.title" = "Zurück";
 "ginibank.skonto.info.title" = "Mit Skonto";
 "ginibank.skonto.info.status" = "• Aktiviert";
+// TODO: check skontoDuePeriod how will be applied for localizable string after backend integration
 "ginibank.skonto.info.message" = "Zahlung in %@: %@ Skonto.";
 "ginibank.skonto.info.amount.title" = "Betrag nach Abzug";
 "ginibank.skonto.info.date.title" = "Fälligkeitsdatum";
