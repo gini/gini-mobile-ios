@@ -64,7 +64,7 @@ final class GiniHealthTests: XCTestCase {
             return
         }
         let extractionsResult = ExtractionResult(extractionsContainer: extractions)
-        let isPayable = extractionsResult.isPayable
+        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
         // Then
         XCTAssertEqual(isPayable, true)
     }
@@ -78,7 +78,7 @@ final class GiniHealthTests: XCTestCase {
             return
         }
         let extractionsResult = ExtractionResult(extractionsContainer: extractions)
-        let isPayable = extractionsResult.isPayable
+        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
         // Then
         XCTAssertEqual(isPayable, false)
     }
