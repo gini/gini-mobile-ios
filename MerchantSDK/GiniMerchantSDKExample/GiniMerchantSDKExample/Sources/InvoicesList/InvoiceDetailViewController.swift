@@ -154,9 +154,9 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
                 }
             }
         } else {
-            paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { paymentRequestID, error in
-                <#code#>
-            }
+//            paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { paymentRequestID, error in
+//                <#code#>
+//            }
         }
     }
 
