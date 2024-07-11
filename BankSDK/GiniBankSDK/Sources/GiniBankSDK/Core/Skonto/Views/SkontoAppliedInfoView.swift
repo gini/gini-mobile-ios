@@ -53,7 +53,7 @@ class SkontoAppliedInfoView: UIView {
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .giniColorScheme().chips.assistEnabled.uiColor()
-        layer.cornerRadius = 8
+        layer.cornerRadius = Constants.cornerRadius
         layer.masksToBounds = true
         addSubview(imageView)
         addSubview(label)
@@ -101,5 +101,6 @@ private extension SkontoAppliedInfoView {
         static let imageHorizontalPadding: CGFloat = 10
         static let imageSize: CGFloat = 24
         static let labelHorizontalPadding: CGFloat = 8
+        static let cornerRadius: CGFloat = 8
     }
 }

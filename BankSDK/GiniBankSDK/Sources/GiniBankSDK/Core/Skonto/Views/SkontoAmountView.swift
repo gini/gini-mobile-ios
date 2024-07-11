@@ -49,7 +49,7 @@ class SkontoAmountView: UIView {
         let view = UIView()
         view.layer.borderColor = UIColor.giniColorScheme().bg.border.uiColor().cgColor
         view.layer.borderWidth = isEditable ? 1 : 0
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = Constants.cornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -134,5 +134,6 @@ private extension SkontoAmountView {
     enum Constants {
         static let padding: CGFloat = 12
         static let currencyLabelHorizontalPadding: CGFloat = 10
+        static let cornerRadius: CGFloat = 8
     }
 }
