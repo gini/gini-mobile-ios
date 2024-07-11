@@ -18,7 +18,7 @@ class SkontoAppliedInfoView: UIView {
     private lazy var label: UILabel = {
         let label = UILabel()
         let text = String.localizedStringWithFormat(skontoTitle,
-                                                    viewModel.skontoFormattedDuePeriod,
+                                                    viewModel.skontoDaysDuePeriod,
                                                     viewModel.skontoFormattedPercentageDiscounted)
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttribute(.underlineStyle,
@@ -89,7 +89,7 @@ class SkontoAppliedInfoView: UIView {
 
     private func configure() {
         let text = String.localizedStringWithFormat(skontoTitle,
-                                                    viewModel.skontoFormattedDuePeriod,
+                                                    viewModel.skontoDaysDuePeriod,
                                                     viewModel.skontoFormattedPercentageDiscounted)
         label.text = text
     }

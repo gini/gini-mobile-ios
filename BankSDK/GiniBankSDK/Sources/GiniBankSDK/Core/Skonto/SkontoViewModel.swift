@@ -35,11 +35,7 @@ class SkontoViewModel {
     }
 
     var skontoFormattedPercentageDiscounted: String {
-        let formatter = NumberFormatter()
-        formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 2
-        formatter.numberStyle = .decimal
-        formatter.roundingMode = .floor
+        let formatter = NumberFormatter.skontoDiscountFormatter
         if let formattedValue = formatter.string(from: NSNumber(value: skontoValue)) {
             return "\(formattedValue)%"
         } else {
