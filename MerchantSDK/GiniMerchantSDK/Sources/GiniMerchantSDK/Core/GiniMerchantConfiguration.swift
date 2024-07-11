@@ -23,7 +23,7 @@ public final class GiniMerchantConfiguration: NSObject {
     /**
      Singleton to make configuration internally accessible in all classes of the Gini Merchant SDK.
      */
-    static var shared = GiniMerchantConfiguration()
+    public static var shared = GiniMerchantConfiguration()
     
     /**
      Returns a `GiniMerchantConfiguration` instance which allows to set individual configurations

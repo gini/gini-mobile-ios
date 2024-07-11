@@ -12,6 +12,7 @@ final class InvoiceDetailViewController: UIViewController {
 
     private let invoice: DocumentWithExtractions
     private let paymentComponentsController: PaymentComponentsController
+    private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
 
     private var errors: [String] = []
     private let errorTitleText = NSLocalizedString("example.invoicesList.error", comment: "")
@@ -141,16 +142,26 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
     func didTapOnPayInvoice(documentId: String?) {
         guard let documentId else { return }
         print("✅ Tapped on Pay Invoice on :\(documentId)")
-        paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
-            if let error {
-                self?.errors.append(error.localizedDescription)
-                self?.showErrorsIfAny()
-            } else if let viewController {
-                viewController.modalTransitionStyle = .coverVertical
-                viewController.modalPresentationStyle = .overCurrentContext
-                self?.dismissAndPresent(viewController: viewController, animated: true)
+        if giniMerchantConfiguration.showPaymentReviewScreen {
+            paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
+                if let error {
+                    self?.errors.append(error.localizedDescription)
+                    self?.showErrorsIfAny()
+                } else if let viewController {
+                    viewController.modalTransitionStyle = .coverVertical
+                    viewController.modalPresentationStyle = .overCurrentContext
+                    self?.dismissAndPresent(viewController: viewController, animated: true)
+                }
+            }
+        } else {
+            paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { paymentRequestID, error in
+                <#code#>
             }
         }
+    }
+
+    private func obtainPaymentInfo() -> PaymentInfo {
+        PaymentInfo(recipient: invoice.recipient ?? "", iban: invoice.iban ?? "", bic: "", amount: invoice.amountToPay ?? "", purpose: invoice.purpose ?? "", paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "", paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
 
     private func showErrorsIfAny() {

@@ -184,7 +184,19 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
             }
         }
     }
-    
+
+    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (_ paymentRequestID: String?, _ error: GiniMerchantError?) -> Void) {
+        giniMerchant.createPaymentRequest(paymentInfo: paymentInfo) { result in
+            switch result {
+            case let .success(requestId):
+                completion(requestId, nil)
+            case let .failure(error):
+                completion(nil, GiniMerchantError.apiError(error))
+            }
+        }
+        
+    }
+
     public func paymentInfoViewController() -> UIViewController {
         let paymentInfoViewController = PaymentInfoViewController()
         let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders)
