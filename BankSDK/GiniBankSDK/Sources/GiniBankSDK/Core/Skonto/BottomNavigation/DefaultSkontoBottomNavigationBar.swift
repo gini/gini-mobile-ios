@@ -174,11 +174,12 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             buttonsStackView.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: Constants.padding),
             buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
-            buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
+            buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
+                                                     constant: -Constants.padding),
             proceedButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
         ])
     }
-    
+
     @objc private func proceedButtonClicked() {
         proceedAction?()
     }
