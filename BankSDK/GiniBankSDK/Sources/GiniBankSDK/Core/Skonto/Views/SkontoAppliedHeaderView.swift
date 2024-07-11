@@ -24,7 +24,9 @@ class SkontoAppliedHeaderView: UIView {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
                                                              comment: "• Active")
-        let font = configuration.textStyleFonts[.footnoteBold] ?? .systemFont(ofSize: 17)
+        guard let font = configuration.textStyleFonts[.footnoteBold] else {
+            fatalError("Font for .footnoteBold is not configured.")
+        }
         let attributedString = NSMutableAttributedString(
             string: title,
             attributes: [NSAttributedString.Key.font: font,
