@@ -194,7 +194,19 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                 completion(nil, GiniMerchantError.apiError(error))
             }
         }
-        
+    }
+
+    public func canOpenPaymentProviderApp() -> Bool {
+        if selectedPaymentProvider?.gpcSupportedPlatforms.contains(.ios) ?? false {
+            if selectedPaymentProvider?.appSchemeIOS.canOpenURLString() ?? false {
+                return true
+            }
+        }
+        return false
+    }
+
+    public func openPaymentProviderApp(requestId: String, universalLink: String) {
+        giniMerchant.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
     }
 
     public func paymentInfoViewController() -> UIViewController {
