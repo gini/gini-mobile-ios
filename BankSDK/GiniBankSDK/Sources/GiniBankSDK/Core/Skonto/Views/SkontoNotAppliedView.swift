@@ -24,16 +24,10 @@ class SkontoNotAppliedView: UIView {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
                                                              comment: "• Active")
-        guard let font = configuration.textStyleFonts[.footnoteBold] else {
-            fatalError("Font for .footnoteBold is not configured.")
-        }
-        let attributedString = NSMutableAttributedString(
-            string: title,
-            attributes: [NSAttributedString.Key.font: font,
-                         NSAttributedString.Key.foregroundColor: UIColor.giniColorScheme().text.status.uiColor()
-                        ])
-        label.attributedText = attributedString
+        label.text = title
         label.accessibilityValue = title
+        label.font = configuration.textStyleFonts[.footnoteBold]
+        label.textColor = UIColor.giniColorScheme().text.status.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

@@ -20,11 +20,8 @@ class SkontoAppliedInfoView: UIView {
         let text = String.localizedStringWithFormat(skontoTitle,
                                                     viewModel.skontoDaysDuePeriod,
                                                     viewModel.skontoFormattedPercentageDiscounted)
-        let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(.underlineStyle,
-                                      value: NSUnderlineStyle.single.rawValue,
-                                      range: NSRange(location: 0, length: text.count))
-        label.attributedText = attributedString
+        label.text = text
+        label.accessibilityValue = text
         label.font = configuration.textStyleFonts[.caption1]
         label.textColor = .giniColorScheme().chips.textAssistEnabled.uiColor()
         label.adjustsFontForContentSizeCategory = true
