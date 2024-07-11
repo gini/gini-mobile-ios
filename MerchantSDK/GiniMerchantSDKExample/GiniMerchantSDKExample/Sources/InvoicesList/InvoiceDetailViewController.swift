@@ -154,8 +154,42 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
                 }
             }
         } else {
-//            paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { paymentRequestID, error in
-//                <#code#>
+            if paymentComponentsController.canOpenPaymentProviderApp() {
+                paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] paymentRequestID, error in
+                    if let error {
+                        self?.errors.append(error.localizedDescription)
+                        self?.showErrorsIfAny()
+                    } else if let paymentRequestID {
+                        self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                    }
+                }
+            } else {
+
+            }
+//            guard let selectedPaymentProvider = paymentComponentsController.selectedPaymentProvider else { return }
+//            if selectedPaymentProvider.gpcSupportedPlatforms.contains(.ios) {
+//                guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
+//                    paymentComponentsController.openInstallAppBottomSheet()
+//                    return
+//                }
+//
+//                if paymentInfoContainerView.noErrorsFound() {
+//                    createPaymentRequest()
+//                }
+//            } else if selectedPaymentProvider.openWithSupportedPlatforms.contains(.ios) {
+//                if model?.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
+//                    model?.openOnboardingShareInvoiceBottomSheet()
+//                } else {
+//                    obtainPDFFromPaymentRequest()
+//                }
+//            }
+//            paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] paymentRequestID, error in
+//                if let error {
+//                    self?.errors.append(error.localizedDescription)
+//                    self?.showErrorsIfAny()
+//                } else if let paymentRequestID {
+//                    
+//                }
 //            }
         }
     }
