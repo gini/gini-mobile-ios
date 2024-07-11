@@ -43,7 +43,7 @@ class SkontoAppliedDateView: UIView {
         let view = UIView()
         view.layer.borderColor = UIColor.giniColorScheme().bg.border.uiColor().cgColor
         view.layer.borderWidth = 1
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = Constants.cornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -146,5 +146,6 @@ private extension SkontoAppliedDateView {
         static let padding: CGFloat = 12
         static let imageHorizontalPadding: CGFloat = 10
         static let imageSize: CGFloat = 22
+        static let cornerRadius: CGFloat = 8
     }
 }
