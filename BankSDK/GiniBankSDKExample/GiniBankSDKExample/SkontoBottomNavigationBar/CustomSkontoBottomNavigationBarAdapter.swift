@@ -28,10 +28,6 @@ final class CustomSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAda
         backButtonCallback = callback
     }
 
-    func updateProceedButtonState(enabled: Bool) {
-        view?.setProceedButtonState(enabled: enabled)
-    }
-
     func updateTotalPrice(priceWithCurrencySymbol price: String?) {
         view?.updatePrice(with: price)
     }
