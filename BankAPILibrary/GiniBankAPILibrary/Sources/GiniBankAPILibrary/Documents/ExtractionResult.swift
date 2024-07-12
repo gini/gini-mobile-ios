@@ -38,9 +38,11 @@ import Foundation
     
     convenience init(extractionsContainer: ExtractionsContainer) {
         
+
         self.init(extractions: extractionsContainer.extractions,
-                  lineItems: extractionsContainer.compoundExtractions?["lineItems"],
+                  lineItems: extractionsContainer.compoundExtractions?.lineItems,
                   returnReasons: extractionsContainer.returnReasons,
+                  skontoDiscounts: extractionsContainer.compoundExtractions?.skontoDiscounts,
                   candidates: extractionsContainer.candidates)
     }
 }
