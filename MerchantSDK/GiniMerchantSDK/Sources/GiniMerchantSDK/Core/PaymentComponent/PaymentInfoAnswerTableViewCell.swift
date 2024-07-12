@@ -7,9 +7,7 @@
 
 import UIKit
 
-final class PaymentInfoAnswerTableViewCell: UITableViewCell {
-    static let identifier = "PaymentInfoAnswerTableViewCell"
-    
+final class PaymentInfoAnswerTableViewCell: UITableViewCell, ReusableView {
     private lazy var textView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +28,7 @@ final class PaymentInfoAnswerTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.backgroundColor = .clear
+        backgroundColor = .clear
         contentView.addSubview(textView)
         setupConstraints()
     }
@@ -59,10 +57,8 @@ final class PaymentInfoAnswerTableViewCell: UITableViewCell {
 
 struct PaymentInfoAnswerTableViewModel {
     let answerAttributedText: NSAttributedString
-    let answerTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                             darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
-    let answerLinkColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.accent1,
-                                             darkModeColor: UIColor.GiniMerchantColors.accent1).uiColor()
+    let answerTextColor: UIColor = GiniColor.standard1.uiColor()
+    let answerLinkColor: UIColor = GiniColor.accent1.uiColor()
     let answerLinkAttributes: [NSAttributedString.Key: Any]
 
     init(answerAttributedText: NSAttributedString) {

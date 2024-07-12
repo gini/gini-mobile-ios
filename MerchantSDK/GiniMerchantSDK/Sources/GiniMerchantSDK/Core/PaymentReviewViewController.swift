@@ -86,7 +86,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                 let isLoading = self?.model?.isImagesLoading ?? false
                 if isLoading {
                     self?.collectionView.showLoading(style: .large,
-                                                     color: UIColor.GiniMerchantColors.accent1,
+                                                     color: GiniMerchantColorPalette.accent1.preferredColor(),
                                                      scale: Constants.loadingIndicatorScale)
                 } else {
                     self?.collectionView.stopLoading()
@@ -99,7 +99,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                 let isLoading = self?.model?.isLoading ?? false
                 if isLoading {
                     self?.view.showLoading(style: Constants.loadingIndicatorStyle,
-                                           color: UIColor.GiniMerchantColors.accent1,
+                                           color: GiniMerchantColorPalette.accent1.preferredColor(),
                                            scale: Constants.loadingIndicatorScale)
                 } else {
                     self?.view.stopLoading()
@@ -167,8 +167,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
     fileprivate func configureInfoBar() {
         infoBar.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusInfoBar)
-        infoBar.backgroundColor = UIColor.GiniMerchantColors.success1
-        infoBarLabel.textColor = UIColor.GiniMerchantColors.dark7
+        infoBar.backgroundColor = GiniMerchantColorPalette.success1.preferredColor()
+        infoBarLabel.textColor = GiniMerchantColorPalette.dark7.preferredColor()
         infoBarLabel.font = giniMerchantConfiguration.textStyleFonts[.caption1]
         infoBarLabel.adjustsFontForContentSizeCategory = true
         infoBarLabel.text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.infobar.message",
@@ -209,10 +209,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func configurePageControl() {
         pageControl.layer.zPosition = Constants.zPositionPageControl
-        pageControl.pageIndicatorTintColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark4,
-                                                       darkModeColor: UIColor.GiniMerchantColors.light4).uiColor()
-        pageControl.currentPageIndicatorTintColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark2,
-                                                              darkModeColor: UIColor.GiniMerchantColors.light5).uiColor()
+        pageControl.pageIndicatorTintColor = GiniColor.standard4.uiColor()
+        pageControl.currentPageIndicatorTintColor = GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor()
         pageControl.hidesForSinglePage = true
         pageControl.numberOfPages = model?.document.pageCount ?? 1
         if pageControl.numberOfPages == 1 {
@@ -228,13 +226,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func configureScreenBackgroundColor() {
-        let screenBackgroundColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.light7,
-                                               darkModeColor: UIColor.GiniMerchantColors.light7).uiColor()
+        let screenBackgroundColor = GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor()
         mainView.backgroundColor = screenBackgroundColor
         collectionView.backgroundColor = screenBackgroundColor
         pageControl.backgroundColor = screenBackgroundColor
-        inputContainer.backgroundColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark7,
-                                                   darkModeColor: UIColor.GiniMerchantColors.light7).uiColor()
+        inputContainer.backgroundColor = GiniColor.standard7.uiColor()
     }
 
     fileprivate func configurePaymentInfoContainerView() {
@@ -251,7 +247,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             paymentInfoContainerView.trailingAnchor.constraint(equalTo: inputContainer.trailingAnchor)
         ])
     }
-
     
     // MARK: - Pay Button Action
     func payButtonClicked() {
