@@ -59,8 +59,7 @@ final class PaymentInfoBankCollectionViewCellModel {
         return UIImage()
     }
     
-    var borderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                         darkModeColor: UIColor.GiniMerchantColors.light5).uiColor()
+    var borderColor: UIColor = GiniColor.standard5.uiColor()
     
     init(bankImageIconData: Data?) {
         self.bankImageIconData = bankImageIconData

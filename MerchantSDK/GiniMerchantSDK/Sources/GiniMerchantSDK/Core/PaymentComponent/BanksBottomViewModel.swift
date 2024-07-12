@@ -33,27 +33,22 @@ final class BanksBottomViewModel {
     var bottomViewHeight: CGFloat = 0
     var heightTableView: CGFloat = 0
 
-    let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark7,
-                                             darkModeColor: UIColor.GiniMerchantColors.light7).uiColor()
-    let rectangleColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                            darkModeColor: UIColor.GiniMerchantColors.light5).uiColor()
+    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
+    let rectangleColor: UIColor = GiniColor.standard5.uiColor()
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
                                                     darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
 
     let selectBankTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label", 
                                                                        comment: "Select bank text from the top label on payment providers bottom sheet")
-    let selectBankLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark2,
-                                                        darkModeColor: UIColor.GiniMerchantColors.light2).uiColor()
+    let selectBankLabelAccentColor: UIColor = GiniColor.standard2.uiColor()
     var selectBankLabelFont: UIFont
 
     let closeTitleIcon: UIImage = GiniMerchantImage.close.preferredUIImage()
-    let closeIconAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark2,
-                                                  darkModeColor: UIColor.GiniMerchantColors.light2).uiColor()
+    let closeIconAccentColor: UIColor = GiniColor.standard2.uiColor()
 
     let descriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentproviderslist.description", 
                                                                    comment: "Top description text on payment providers bottom sheet")
-    let descriptionLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark3,
-                                                         darkModeColor: UIColor.GiniMerchantColors.light3).uiColor()
+    let descriptionLabelAccentColor: UIColor = GiniColor.standard3.uiColor()
     var descriptionLabelFont: UIFont
     
     private var urlOpener: URLOpener

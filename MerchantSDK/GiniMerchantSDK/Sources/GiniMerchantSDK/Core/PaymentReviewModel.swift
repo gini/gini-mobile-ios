@@ -81,12 +81,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     func sendFeedback(updatedExtractions: [Extraction]) {
-        merchantSDK.documentService.submitFeedback(for: document, with: [], and: ["payment": [updatedExtractions]]){ result in
-            switch result {
-            case .success: break
-            case .failure: break
-            }
-        }
+        merchantSDK.documentService.submitFeedback(for: document, with: [], and: ["payment": [updatedExtractions]], completion: { _ in })
     }
     
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestID: String) -> ())? = nil) {

@@ -22,17 +22,14 @@ final class InstallAppBottomViewModel {
     
     weak var viewDelegate: InstallAppBottomViewProtocol?
 
-    let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark7,
-                                             darkModeColor: UIColor.GiniMerchantColors.light7).uiColor()
-    let rectangleColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                            darkModeColor: UIColor.GiniMerchantColors.light5).uiColor()
+    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
+    let rectangleColor: UIColor = GiniColor.standard5.uiColor()
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
                                                     darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
 
     var titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.title",
                                                              comment: "Install App Bottom sheet title")
-    let titleLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark2,
-                                                   darkModeColor: UIColor.GiniMerchantColors.light2).uiColor()
+    let titleLabelAccentColor: UIColor = GiniColor.standard2.uiColor()
     var titleLabelFont: UIFont
 
     private var bankImageIconData: Data?
@@ -42,14 +39,11 @@ final class InstallAppBottomViewModel {
         }
         return UIImage()
     }
-    var bankIconBorderColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                        darkModeColor: UIColor.GiniMerchantColors.light5).uiColor()
+    var bankIconBorderColor = GiniColor.standard5.uiColor()
 
     // More information part
-    let moreInformationLabelTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark3,
-                                                           darkModeColor: UIColor.GiniMerchantColors.light3).uiColor()
-    let moreInformationAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark3,
-                                                        darkModeColor: UIColor.GiniMerchantColors.light3).uiColor()
+    let moreInformationLabelTextColor: UIColor = GiniColor.standard3.uiColor()
+    let moreInformationAccentColor: UIColor = GiniColor.standard3.uiColor()
     var moreInformationLabelText: String {
         isBankInstalled ? 
         NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.tip.description",

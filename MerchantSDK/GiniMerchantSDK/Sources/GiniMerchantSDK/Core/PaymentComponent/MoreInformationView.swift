@@ -14,7 +14,7 @@ final class MoreInformationView: UIView {
         }
     }
     
-    private lazy var moreInformationView: UIView = {
+    private lazy var mainContainer: UIView = {
         EmptyView()
     }()
     
@@ -60,26 +60,26 @@ final class MoreInformationView: UIView {
     private func setupView() {
         self.translatesAutoresizingMaskIntoConstraints = false
         
-        moreInformationView.addSubview(moreInformationButton)
-        moreInformationView.addSubview(moreInformationLabel)
-        self.addSubview(moreInformationView)
+        mainContainer.addSubview(moreInformationButton)
+        mainContainer.addSubview(moreInformationLabel)
+        self.addSubview(mainContainer)
         
         setupConstraints()
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            moreInformationButton.leadingAnchor.constraint(equalTo: moreInformationView.leadingAnchor),
-            moreInformationButton.centerYAnchor.constraint(equalTo: moreInformationView.centerYAnchor),
+            moreInformationButton.leadingAnchor.constraint(equalTo: mainContainer.leadingAnchor),
+            moreInformationButton.centerYAnchor.constraint(equalTo: mainContainer.centerYAnchor),
             moreInformationButton.widthAnchor.constraint(equalToConstant: Constants.infoIconSize),
             moreInformationButton.heightAnchor.constraint(equalToConstant: Constants.infoIconSize),
             moreInformationLabel.leadingAnchor.constraint(equalTo: moreInformationButton.trailingAnchor, constant: Constants.spacingPadding),
             moreInformationLabel.centerYAnchor.constraint(equalTo: moreInformationButton.centerYAnchor),
-            moreInformationLabel.trailingAnchor.constraint(greaterThanOrEqualTo: moreInformationView.trailingAnchor),
-            moreInformationView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            moreInformationView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            moreInformationView.topAnchor.constraint(equalTo: topAnchor),
-            moreInformationView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            moreInformationLabel.trailingAnchor.constraint(greaterThanOrEqualTo: mainContainer.trailingAnchor),
+            mainContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainContainer.topAnchor.constraint(equalTo: topAnchor),
+            mainContainer.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
     

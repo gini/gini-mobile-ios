@@ -45,6 +45,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     /// storing the current selected payment provider
     public var selectedPaymentProvider: PaymentProvider?
 
+    /// Payment Component View Configuration
+    public var paymentComponentConfiguration: PaymentComponentConfiguration?
+
     /// reponsible for storing the loading state of the controller and passing it to the delegate listeners
     var isLoading: Bool = false {
         didSet {
@@ -138,7 +141,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      */
     public func paymentView(documentId: String) -> UIView {
         paymentComponentView = PaymentComponentView()
-        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniHealthConfiguration: giniHealthConfiguration)
+        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniHealthConfiguration: giniHealthConfiguration, paymentComponentConfiguration: paymentComponentConfiguration)
         paymentComponentViewModel.delegate = viewDelegate
         paymentComponentViewModel.documentId = documentId
         paymentComponentView.viewModel = paymentComponentViewModel

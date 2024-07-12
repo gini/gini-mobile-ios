@@ -15,9 +15,7 @@ final class PoweredByGiniView: UIView {
         }
     }
     
-    private lazy var poweredByGiniView: UIView = {
-        EmptyView()
-    }()
+    private lazy var mainContainer: UIView = EmptyView()
     
     private lazy var poweredByGiniLabel: UILabel = {
         let label = UILabel()
@@ -48,25 +46,25 @@ final class PoweredByGiniView: UIView {
     private func setupView() {
         self.translatesAutoresizingMaskIntoConstraints = false
         
-        poweredByGiniView.addSubview(poweredByGiniLabel)
-        poweredByGiniView.addSubview(giniImageView)
-        self.addSubview(poweredByGiniView)
+        mainContainer.addSubview(poweredByGiniLabel)
+        mainContainer.addSubview(giniImageView)
+        self.addSubview(mainContainer)
         
         NSLayoutConstraint.activate([
-            poweredByGiniView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            poweredByGiniView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            poweredByGiniView.topAnchor.constraint(equalTo: topAnchor),
-            poweredByGiniView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            poweredByGiniView.trailingAnchor.constraint(equalTo: giniImageView.trailingAnchor),
+            mainContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainContainer.topAnchor.constraint(equalTo: topAnchor),
+            mainContainer.bottomAnchor.constraint(equalTo: bottomAnchor),
+            mainContainer.trailingAnchor.constraint(equalTo: giniImageView.trailingAnchor),
             giniImageView.leadingAnchor.constraint(equalTo: poweredByGiniLabel.trailingAnchor, constant: Constants.spacingImageText),
             poweredByGiniLabel.centerYAnchor.constraint(equalTo: giniImageView.centerYAnchor),
-            poweredByGiniLabel.leadingAnchor.constraint(equalTo: poweredByGiniView.leadingAnchor),
-            poweredByGiniLabel.topAnchor.constraint(equalTo: poweredByGiniView.topAnchor),
-            poweredByGiniLabel.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor),
+            poweredByGiniLabel.leadingAnchor.constraint(equalTo: mainContainer.leadingAnchor),
+            poweredByGiniLabel.topAnchor.constraint(equalTo: mainContainer.topAnchor),
+            poweredByGiniLabel.bottomAnchor.constraint(equalTo: mainContainer.bottomAnchor),
             giniImageView.heightAnchor.constraint(equalToConstant: giniImageView.frame.height),
             giniImageView.widthAnchor.constraint(equalToConstant: giniImageView.frame.width),
-            giniImageView.topAnchor.constraint(equalTo: poweredByGiniView.topAnchor, constant: Constants.imageTopBottomPadding),
-            giniImageView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: -Constants.imageTopBottomPadding)
+            giniImageView.topAnchor.constraint(equalTo: mainContainer.topAnchor, constant: Constants.imageTopBottomPadding),
+            giniImageView.bottomAnchor.constraint(equalTo: mainContainer.bottomAnchor, constant: -Constants.imageTopBottomPadding)
         ])
     }
 }
