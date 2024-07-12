@@ -14,7 +14,7 @@ class SkontoProceedView: UIView {
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.paybutton.title",
-                                                                   comment: "Proceed")
+                                                                   comment: "Continue to pay")
         button.accessibilityValue = buttonTitle
         button.setTitle(buttonTitle, for: .normal)
         button.addTarget(self, action: #selector(proceedButtonTapped), for: .touchUpInside)
