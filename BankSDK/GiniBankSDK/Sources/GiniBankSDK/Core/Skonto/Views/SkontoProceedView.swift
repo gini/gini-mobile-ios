@@ -54,6 +54,7 @@ class SkontoProceedView: UIView {
         let labelText = String.localizedStringWithFormat(skontoTitle,
                                                          viewModel.skontoFormattedPercentageDiscounted)
         label.text = labelText
+        label.numberOfLines = 0
         label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         return label
