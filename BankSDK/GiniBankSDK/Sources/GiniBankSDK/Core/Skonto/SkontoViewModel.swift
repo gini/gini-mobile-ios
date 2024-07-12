@@ -30,7 +30,7 @@ class SkontoViewModel {
     private (set) var currencyCode: String
 
     // TODO: recalculate with backend entity: skontoDuePeriod
-    var skontoFormattedDuePeriod: String {
+    var skontoFormattedDaysDuePeriod: String {
         return "14 days"
     }
 
