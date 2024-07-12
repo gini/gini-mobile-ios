@@ -16,6 +16,8 @@ final class CustomSkontoBottomNavigationBar: UIView {
         let title = "Proceed"
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
+        button.backgroundColor = .gray
+        button.layer.cornerRadius = Constants.cornerRadius
         button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         button.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         button.addTarget(self, action: #selector(proceedButtonClicked), for: .touchUpInside)
@@ -35,7 +37,11 @@ final class CustomSkontoBottomNavigationBar: UIView {
 
     private lazy var backButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Back", for: .normal)
+        let title = "Back"
+        button.setTitle(title, for: .normal)
+        button.accessibilityValue = title
+        button.backgroundColor = .gray
+        button.layer.cornerRadius = Constants.cornerRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -179,6 +185,7 @@ extension CustomSkontoBottomNavigationBar {
         static let badgeHorizontalPadding: CGFloat = 6
         static let badgeVerticalPadding: CGFloat = 2
         static let badgeSpacing: CGFloat = 12
+        static let cornerRadius: CGFloat = 8
     }
 }
 
