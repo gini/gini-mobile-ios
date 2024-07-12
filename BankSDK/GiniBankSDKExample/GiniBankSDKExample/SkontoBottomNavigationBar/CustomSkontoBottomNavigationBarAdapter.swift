@@ -10,7 +10,8 @@ import GiniBankSDK
 final class CustomSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter {
 
     private var proceedButtonCallback: (() -> Void)?
-    private var helpButtonCallback: (() -> Void)?
+    // MARK: Temporary remove help action
+//    private var helpButtonCallback: (() -> Void)?
     private var backButtonCallback: (() -> Void)?
     private var view: CustomSkontoBottomNavigationBar?
 
@@ -18,9 +19,10 @@ final class CustomSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAda
         proceedButtonCallback = callback
     }
 
-    func setHelpButtonClickedActionCallback(_ callback: @escaping  () -> Void) {
-        helpButtonCallback = callback
-    }
+    // MARK: Temporary remove help action
+//    func setHelpButtonClickedActionCallback(_ callback: @escaping  () -> Void) {
+//        helpButtonCallback = callback
+//    }
 
     func setBackButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         backButtonCallback = callback
@@ -44,7 +46,6 @@ final class CustomSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAda
 
     func injectedView() -> UIView {
         let navigationBar = CustomSkontoBottomNavigationBar(proceedAction: proceedButtonCallback,
-                                                             helpAction: helpButtonCallback,
                                                              backAction: backButtonCallback)
         view = navigationBar
         return navigationBar
