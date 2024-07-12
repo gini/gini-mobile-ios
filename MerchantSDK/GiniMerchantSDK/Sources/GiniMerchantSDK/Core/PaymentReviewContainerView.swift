@@ -452,7 +452,7 @@ class PaymentReviewContainerView: UIView {
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = UIColor.GiniMerchantColors.feedback1
+            errorLabel.textColor = GiniColor.feedback1.uiColor()
             errorLabel.text = errorMessage
         }
     }
@@ -499,7 +499,7 @@ class PaymentReviewContainerView: UIView {
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = UIColor.GiniMerchantColors.feedback1
+            errorLabel.textColor = GiniColor.feedback1.uiColor()
             errorLabel.text = errorMessage
         }
     }

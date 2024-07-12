@@ -60,4 +60,6 @@ extension GiniColor {
     static let standard7 = GiniColor(lightModeColorName: .dark7, darkModeColorName: .light7)
     
     static let accent1 = GiniColor(lightModeColorName: .accent1, darkModeColorName: .accent1)
+
+    static let feedback1 = GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1)
 }
