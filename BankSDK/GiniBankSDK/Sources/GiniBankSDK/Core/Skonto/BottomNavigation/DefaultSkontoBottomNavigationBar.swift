@@ -95,7 +95,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         view.addSubview(skontoBadgeLabel)
         return view
     }()
-    
+
     private var proceedAction: (() -> Void)?
     // MARK: Temporary remove help action
 //    private var helpAction: (() -> Void)?
