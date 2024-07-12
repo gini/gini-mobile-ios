@@ -8,15 +8,16 @@ import UIKit
 import GiniCaptureSDK
 
 class SkontoProceedView: UIView {
-    private lazy var payButton: MultilineTitleButton = {
+    private lazy var proceedButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
+        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.paybutton.title",
                                                                    comment: "Proceed")
         button.accessibilityValue = buttonTitle
         button.setTitle(buttonTitle, for: .normal)
+        button.addTarget(self, action: #selector(proceedButtonTapped), for: .touchUpInside)
         return button
     }()
 
@@ -26,10 +27,10 @@ class SkontoProceedView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.body]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        let labelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
+        let labelText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                                   comment: "Total")
-        label.text = labelTitle
-        label.accessibilityValue = labelTitle
+        label.text = labelText
+        label.accessibilityValue = labelText
         return label
     }()
 
@@ -38,7 +39,9 @@ class SkontoProceedView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        label.text = viewModel.totalPrice.string
+        let labelText = viewModel.totalPrice.localizedStringWithCurrencyCode
+        label.text = labelText
+        label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
@@ -48,11 +51,10 @@ class SkontoProceedView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.caption1]
         label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
-        label.text = String.localizedStringWithFormat(
-            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
-                                                     comment: "%.1f%% Skonto discount"),
-            viewModel.skontoValue
-        )
+        let labelText = String.localizedStringWithFormat(skontoTitle,
+                                                         viewModel.skontoFormattedPercentageDiscounted)
+        label.text = labelText
+        label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
@@ -60,7 +62,7 @@ class SkontoProceedView: UIView {
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
         view.backgroundColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
-        view.layer.cornerRadius = 4
+        view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(skontoBadgeLabel)
@@ -77,6 +79,9 @@ class SkontoProceedView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
+
+    private let skontoTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
+                                                                      comment: "%@ Skonto discount")
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -96,7 +101,7 @@ class SkontoProceedView: UIView {
         addSubview(totalLabel)
         addSubview(totalValueLabel)
         addSubview(skontoBadgeView)
-        addSubview(payButton)
+        addSubview(proceedButton)
 
         setupConstraints()
         bindViewModel()
@@ -113,7 +118,7 @@ class SkontoProceedView: UIView {
             totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             totalLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
 
-            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor, constant: 0),
+            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor),
             totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalValueLabel.centerYAnchor),
@@ -131,13 +136,13 @@ class SkontoProceedView: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            payButton.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: Constants.verticalPadding),
-            // TODO: no safe area bottom padding in design
-            payButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
+            proceedButton.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
+                                               constant: Constants.verticalPadding),
+            proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                               constant: -Constants.verticalPadding),
-            payButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            payButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonHeight)
+            proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            proceedButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonHeight)
         ])
     }
 
@@ -151,13 +156,14 @@ class SkontoProceedView: UIView {
 
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
-        self.skontoBadgeView.isHidden = isSkontoApplied ? false : true
-        self.skontoBadgeLabel.text = String.localizedStringWithFormat(
-            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
-                                                     comment: "%.1f%% Skonto discount"),
-            viewModel.skontoValue
-        )
-        self.totalValueLabel.text = viewModel.totalPrice.string
+        self.skontoBadgeView.isHidden = !isSkontoApplied
+        self.skontoBadgeLabel.text = String.localizedStringWithFormat(skontoTitle,
+                                                                      viewModel.skontoFormattedPercentageDiscounted)
+        self.totalValueLabel.text = viewModel.totalPrice.localizedStringWithCurrencyCode
+    }
+
+    @objc private func proceedButtonTapped() {
+        self.viewModel.proceedButtonTapped()
     }
 }
 
@@ -170,5 +176,6 @@ private extension SkontoProceedView {
         static let badgeHorizontalPadding: CGFloat = 6
         static let badgeVerticalPadding: CGFloat = 2
         static let badgeSpacing: CGFloat = 12
+        static let cornerRadius: CGFloat = 4
     }
 }

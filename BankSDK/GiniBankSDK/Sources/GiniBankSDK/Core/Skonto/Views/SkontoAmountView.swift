@@ -5,10 +5,9 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 protocol SkontoAmountViewDelegate: AnyObject {
-    func textFieldDidEndEditing(editedText: String)
+    func textFieldPriceChanged(editedText: String)
 }
 
 class SkontoAmountView: UIView {
@@ -22,14 +21,14 @@ class SkontoAmountView: UIView {
         return label
     }()
 
-    private lazy var textField: UITextField = {
-        let textField = UITextField()
-        textField.delegate = self
+    private lazy var textField: PriceTextField = {
+        let textField = PriceTextField()
+        textField.priceDelegate = self
         textField.text = textFieldInitialText
         textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
-        textField.keyboardType = .decimalPad
+        textField.keyboardType = .numberPad
         textField.isUserInteractionEnabled = isEditable
         textField.adjustsFontForContentSizeCategory = true
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -50,21 +49,10 @@ class SkontoAmountView: UIView {
         let view = UIView()
         view.layer.borderColor = UIColor.giniColorScheme().bg.border.uiColor().cgColor
         view.layer.borderWidth = isEditable ? 1 : 0
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = Constants.cornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
-    init(title: String,
-         price: Price,
-         isEditable: Bool = true) {
-        self.titleLabelText = title
-        self.textFieldInitialText = price.stringWithoutSymbol ?? ""
-        self.currencyLabelText = price.currencySymbol ?? ""
-        self.isEditable = isEditable
-        super.init(frame: .zero)
-        setupView()
-    }
 
     private let titleLabelText: String
     private let textFieldInitialText: String
@@ -72,6 +60,17 @@ class SkontoAmountView: UIView {
     private var isEditable: Bool
     private let configuration = GiniBankConfiguration.shared
     weak var delegate: SkontoAmountViewDelegate?
+
+    init(title: String,
+         price: Price,
+         isEditable: Bool = true) {
+        self.titleLabelText = title
+        self.textFieldInitialText = price.germanStringWithoutCurrencyCode ?? ""
+        self.currencyLabelText = price.currencyCode
+        self.isEditable = isEditable
+        super.init(frame: .zero)
+        setupView()
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -113,64 +112,21 @@ class SkontoAmountView: UIView {
     }
 
     func configure(isEditable: Bool, price: Price) {
+        if isEditable {
+            textField.text = price.germanStringWithoutCurrencyCode ?? ""
+        } else {
+            textField.text = price.localizedStringWithCurrencyCode ?? ""
+        }
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
         textField.isUserInteractionEnabled = isEditable
-        currencyLabel.isHidden = isEditable ? false : true
-        textField.text = price.stringWithoutSymbol ?? ""
+        currencyLabel.isHidden = !isEditable
     }
 }
 
-extension SkontoAmountView: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        self.delegate?.textFieldDidEndEditing(editedText: textField.text ?? "")
-    }
-
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
-
-        guard let text = textField.text, let textRange = Range(range, in: text) else {
-            return true
-        }
-
-        let updatedText = text.replacingCharacters(in: textRange, with: string)
-        let sanitizedText = sanitizeInput(updatedText)
-
-        guard let decimal = Decimal(string: sanitizedText) else {
-            return false
-        }
-
-        let formattedText = formatDecimal(decimal)
-        updateTextField(textField, with: formattedText, originalText: text)
-
-        return false
-    }
-
-    private func sanitizeInput(_ text: String) -> String {
-        return String(text.trimmingCharacters(in: .whitespaces).filter { $0.isNumber }.prefix(6))
-    }
-
-    private func formatDecimal(_ decimal: Decimal) -> String? {
-        let decimalWithFraction = decimal / 100
-        return Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces)
-    }
-
-    private func updateTextField(_ textField: UITextField, with newText: String?, originalText: String) {
-        guard let newText = newText else { return }
-        let selectedRange = textField.selectedTextRange
-        textField.text = newText
-        adjustCursorPosition(textField, newText: newText, originalText: originalText, selectedRange: selectedRange)
-    }
-
-    private func adjustCursorPosition(_ textField: UITextField,
-                                      newText: String,
-                                      originalText: String,
-                                      selectedRange: UITextRange?) {
-        guard let selectedRange = selectedRange else { return }
-        let countDelta = newText.count - originalText.count
-        let offset = countDelta == 0 ? 1 : countDelta
-        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
+extension SkontoAmountView: PriceTextFieldDelegate {
+    func priceTextField(_ textField: PriceTextField, didChangePrice editedText: String) {
+        self.delegate?.textFieldPriceChanged(editedText: editedText)
     }
 }
 
@@ -178,5 +134,6 @@ private extension SkontoAmountView {
     enum Constants {
         static let padding: CGFloat = 12
         static let currencyLabelHorizontalPadding: CGFloat = 10
+        static let cornerRadius: CGFloat = 8
     }
 }

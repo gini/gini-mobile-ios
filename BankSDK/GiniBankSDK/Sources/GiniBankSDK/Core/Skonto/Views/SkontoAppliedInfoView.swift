@@ -5,12 +5,11 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 class SkontoAppliedInfoView: UIView {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = GiniImages.icInfo.image
+        imageView.image = GiniImages.infoMessageIcon.image
         imageView.tintColor = .giniColorScheme().chips.textAssistEnabled.uiColor()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -18,17 +17,11 @@ class SkontoAppliedInfoView: UIView {
 
     private lazy var label: UILabel = {
         let label = UILabel()
-        let text = String.localizedStringWithFormat(
-            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
-                                                     comment: "Pay in %d days: %.1f%% Skonto discount."),
-            14,
-            viewModel.skontoValue
-        )
-        let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(.underlineStyle,
-                                      value: NSUnderlineStyle.single.rawValue,
-                                      range: NSRange(location: 0, length: text.count))
-        label.attributedText = attributedString
+        let text = String.localizedStringWithFormat(skontoTitle,
+                                                    viewModel.skontoDaysDuePeriod,
+                                                    viewModel.skontoFormattedPercentageDiscounted)
+        label.text = text
+        label.accessibilityValue = text
         label.font = configuration.textStyleFonts[.caption1]
         label.textColor = .giniColorScheme().chips.textAssistEnabled.uiColor()
         label.adjustsFontForContentSizeCategory = true
@@ -39,6 +32,9 @@ class SkontoAppliedInfoView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
+
+    private let skontoTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
+                                                                       comment: "Pay in %d days: %@ Skonto discount.")
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -54,7 +50,7 @@ class SkontoAppliedInfoView: UIView {
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .giniColorScheme().chips.assistEnabled.uiColor()
-        layer.cornerRadius = 8
+        layer.cornerRadius = Constants.cornerRadius
         layer.masksToBounds = true
         addSubview(imageView)
         addSubview(label)
@@ -63,18 +59,23 @@ class SkontoAppliedInfoView: UIView {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.imageVerticalPadding),
-            imageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.imageVerticalPadding),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.imageHorizontalPadding),
+            imageView.topAnchor.constraint(equalTo: topAnchor,
+                                           constant: Constants.imageVerticalPadding),
+            imageView.bottomAnchor.constraint(equalTo: bottomAnchor,
+                                              constant: -Constants.imageVerticalPadding),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                               constant: Constants.imageHorizontalPadding),
             imageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
             imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize),
 
-            label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: Constants.labelHorizontalPadding),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.labelHorizontalPadding),
+            label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor,
+                                           constant: Constants.labelHorizontalPadding),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                            constant: -Constants.labelHorizontalPadding),
             label.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
         ])
     }
-    
+
     private func bindViewModel() {
         configure()
         viewModel.addStateChangeHandler { [weak self] in
@@ -84,13 +85,9 @@ class SkontoAppliedInfoView: UIView {
     }
 
     private func configure() {
-        // TODO: skonto period?? how to set??
-        let text = String.localizedStringWithFormat(
-            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
-                                                     comment: "Pay in %d days: %.1f%% Skonto discount."),
-            14,
-            viewModel.skontoValue
-        )
+        let text = String.localizedStringWithFormat(skontoTitle,
+                                                    viewModel.skontoDaysDuePeriod,
+                                                    viewModel.skontoFormattedPercentageDiscounted)
         label.text = text
     }
 }
@@ -101,5 +98,6 @@ private extension SkontoAppliedInfoView {
         static let imageHorizontalPadding: CGFloat = 10
         static let imageSize: CGFloat = 24
         static let labelHorizontalPadding: CGFloat = 8
+        static let cornerRadius: CGFloat = 8
     }
 }

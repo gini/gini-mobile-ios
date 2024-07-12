@@ -13,7 +13,7 @@ enum GiniImages: String {
     case helpIcon1 = "help_icon_1"
     case helpIcon2 = "help_icon_2"
     case helpIcon3 = "help_icon_3"
-    case icInfo = "ic_info"
+    case infoMessageIcon = "info_message_icon"
     case quantityMinusIcon = "quantity_minus_icon"
     case quantityPlusIcon = "quantity_plus_icon"
 
