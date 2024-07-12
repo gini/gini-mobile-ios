@@ -159,8 +159,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
             totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
-            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
-                                                 constant: Constants.padding / 2),
+            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor),
             totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalValueLabel.centerYAnchor),
@@ -178,11 +177,12 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            buttonsStackView.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: Constants.padding),
+            buttonsStackView.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
+                                                  constant: Constants.verticalPadding),
             buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
             buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
-                                                     constant: -Constants.padding),
+                                                     constant: -Constants.verticalPadding),
             proceedButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
         ])
     }
@@ -203,8 +203,8 @@ final class DefaultSkontoBottomNavigationBar: UIView {
 
 extension DefaultSkontoBottomNavigationBar {
     private enum Constants {
-        static let padding: CGFloat = 16
-        static let labelPadding: CGFloat = 24
+        static let padding: CGFloat = 24
+        static let verticalPadding: CGFloat = 16
         static let payButtonHeight: CGFloat = 50
         static let dividerViewHeight: CGFloat = 1
         static let badgeHorizontalPadding: CGFloat = 6
