@@ -111,9 +111,10 @@ public class SkontoViewController: UIViewController {
             navigationItem.rightBarButtonItem = cancelButton.barButton
             navigationItem.hidesBackButton = true
         } else {
-            let helpButton = GiniBarButton(ofType: .help)
-            helpButton.addAction(self, #selector(helpButtonTapped))
-            navigationItem.rightBarButtonItem = helpButton.barButton
+            // MARK: Temporary remove help button
+//            let helpButton = GiniBarButton(ofType: .help)
+//            helpButton.addAction(self, #selector(helpButtonTapped))
+//            navigationItem.rightBarButtonItem = helpButton.barButton
 
             let cancelButton = GiniBarButton(ofType: .back(title: backButtonTitle))
             cancelButton.addAction(self, #selector(backButtonTapped))
@@ -239,9 +240,10 @@ public class SkontoViewController: UIViewController {
             self?.viewModel.proceedButtonTapped()
         }
 
-        navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-            self?.helpButtonTapped()
-        }
+        // MARK: Temporary remove help action
+//        navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
+//            self?.helpButtonTapped()
+//        }
 
         if let navigationBar = navigationBarBottomAdapter?.injectedView() {
             bottomNavigationBar = navigationBar
@@ -265,9 +267,10 @@ public class SkontoViewController: UIViewController {
         }
     }
 
-    @objc private func helpButtonTapped() {
-        viewModel.helpButtonTapped()
-    }
+    // MARK: Temporary remove help action
+//    @objc private func helpButtonTapped() {
+//        viewModel.helpButtonTapped()
+//    }
 
     @objc private func backButtonTapped() {
         viewModel.backButtonTapped()
