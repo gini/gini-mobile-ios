@@ -16,7 +16,7 @@ final class SkontoCoordinator: Coordinator {
 
     var childCoordinators: [Coordinator] = []
     private var skontoViewController: SkontoViewController?
-  
+
     weak var delegate: SkontoCoordinatorDelegate?
 
     var rootViewController: UIViewController {

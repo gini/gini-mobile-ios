@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 class SkontoAppliedHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
@@ -25,13 +24,10 @@ class SkontoAppliedHeaderView: UIView {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
                                                              comment: "• Active")
-        let attributedString = NSMutableAttributedString(
-            string: title,
-            attributes: [NSAttributedString.Key.font: configuration.textStyleFonts[.footnoteBold]!,
-                         NSAttributedString.Key.foregroundColor: UIColor.giniColorScheme().text.status.uiColor()
-                        ])
-        label.attributedText = attributedString
+        label.text = title
         label.accessibilityValue = title
+        label.font = configuration.textStyleFonts[.footnoteBold]
+        label.textColor = UIColor.giniColorScheme().text.status.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -40,7 +36,7 @@ class SkontoAppliedHeaderView: UIView {
     private lazy var discountSwitch: UISwitch = {
         let discountSwitch = UISwitch()
         discountSwitch.isOn = viewModel.isSkontoApplied
-        discountSwitch.onTintColor = UIColor.giniColorScheme().toggles.surfaceFocused.uiColor()
+        discountSwitch.onTintColor = .giniColorScheme().toggles.surfaceFocused.uiColor()
         discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
         discountSwitch.translatesAutoresizingMaskIntoConstraints = false
         return discountSwitch
@@ -75,9 +71,11 @@ class SkontoAppliedHeaderView: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
 
             statusLabel.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            statusLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: Constants.statusLabelHorizontalPadding),
+            statusLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor,
+                                                 constant: Constants.statusLabelHorizontalPadding),
 
-            discountSwitch.topAnchor.constraint(equalTo: topAnchor, constant: Constants.discountSwitchTopPadding),
+            discountSwitch.topAnchor.constraint(equalTo: topAnchor,
+                                                constant: Constants.discountSwitchTopPadding),
             discountSwitch.bottomAnchor.constraint(equalTo: bottomAnchor),
             discountSwitch.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             discountSwitch.trailingAnchor.constraint(equalTo: trailingAnchor)
@@ -95,7 +93,7 @@ class SkontoAppliedHeaderView: UIView {
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
         discountSwitch.isOn = isSkontoApplied
-        statusLabel.isHidden = isSkontoApplied ? false : true
+        statusLabel.isHidden = !isSkontoApplied
     }
 
     @objc private func discountSwitchToggled(_ sender: UISwitch) {
