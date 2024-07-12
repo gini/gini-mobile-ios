@@ -102,7 +102,8 @@ final class SettingsViewControllerTests: XCTestCase {
 		}
 		contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isSwitchOn: configuration.bottomNavigationBarEnabled)))
-		
+        contentData.append(.switchOption(data: .init(type: .skontoNavigationBarBottomAdapter,
+                                                     isSwitchOn: configuration.skontoNavigationBarBottomAdapter != nil)))
 		contentData.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
 													 isSwitchOn: configuration.helpNavigationBarBottomAdapter != nil)))
 		contentData.append(.switchOption(data: .init(type: .cameraNavigationBarBottomAdapter,
@@ -1486,6 +1487,47 @@ extension SettingsViewControllerTests {
 						   "digitalInvoiceNavigationBarBottomAdapter should not be enabled in the gini configuration")
 		}
 	}
+    
+    // MARK: - SkontoNavigationBarBottomAdapter
+    
+    func testSkontoNavigationBarBottomSwitchOn() {
+        guard let index = getSwitchOptionIndex(for: .skontoNavigationBarBottomAdapter) else {
+            XCTFail("`skontoNavigationBarBottomAdapter` option not found in sectionData")
+            return
+        }
+        
+        if case .switchOption(var data) = contentData[index] {
+            guard data.type == .skontoNavigationBarBottomAdapter else {
+                XCTFail("Expected type `skontoNavigationBarBottomAdapter`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = true
+            let customAdapter = CustomSkontoNavigationBarBottomAdapter()
+            configuration.skontoNavigationBarBottomAdapter = customAdapter
+            
+            XCTAssertTrue(configuration.skontoNavigationBarBottomAdapter != nil,
+                          "skontoNavigationBarBottomAdapter should be enabled in the gini configuration")
+        }
+    }
+    
+    func testSkontoNavigationBarBottomSwitchOff() {
+        guard let index = getSwitchOptionIndex(for: .skontoNavigationBarBottomAdapter) else {
+            XCTFail("`skontoNavigationBarBottomAdapter` option not found in sectionData")
+            return
+        }
+        
+        if case .switchOption(var data) = contentData[index] {
+            guard data.type == .skontoNavigationBarBottomAdapter else {
+                XCTFail("Expected type `skontoNavigationBarBottomAdapter`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = false
+            configuration.skontoNavigationBarBottomAdapter = nil
+            
+            XCTAssertFalse(configuration.skontoNavigationBarBottomAdapter != nil,
+                           "skontoNavigationBarBottomAdapter should not be enabled in the gini configuration")
+        }
+    }
 	
 	// MARK: - PrimaryButtonConfiguration
 	

@@ -51,7 +51,7 @@ struct SwitchOptionModel {
 		case giniErrorLoggerIsOn
 		case customGiniErrorLogger
 		case debugModeOn
-        case skontoBottomNavigationBarAdapter
+        case skontoNavigationBarBottomAdapter
 		
 		var title: String {
 			switch self {
@@ -137,7 +137,7 @@ struct SwitchOptionModel {
 				return "Custom Gini error logger"
 			case .debugModeOn:
 				return "Debug mode"
-            case .skontoBottomNavigationBarAdapter:
+            case .skontoNavigationBarBottomAdapter:
                 return "Skonto bottom navigation bar"
             }
 		}
@@ -204,7 +204,7 @@ struct SwitchOptionModel {
 				return "Custom document validations that can be done apart from the default ones (file size, file type...)"
 			case .customGiniErrorLogger:
 				return "This will work if the `Gini error logger` is also enabled."
-            case .skontoBottomNavigationBarAdapter:
+            case .skontoNavigationBarBottomAdapter:
                 return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			default:
 				return nil
