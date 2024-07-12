@@ -9,7 +9,8 @@ import UIKit
 final class DefaultSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter {
 
     private var proceedButtonCallback: (() -> Void)?
-    private var helpButtonCallback: (() -> Void)?
+    // MARK: Temporary remove help action
+//    private var helpButtonCallback: (() -> Void)?
     private var backButtonCallback: (() -> Void)?
     private var view: DefaultSkontoBottomNavigationBar?
 
@@ -17,9 +18,10 @@ final class DefaultSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAd
         proceedButtonCallback = callback
     }
 
-    func setHelpButtonClickedActionCallback(_ callback: @escaping  () -> Void) {
-        helpButtonCallback = callback
-    }
+    // MARK: Temporary remove help action
+//    func setHelpButtonClickedActionCallback(_ callback: @escaping  () -> Void) {
+//        helpButtonCallback = callback
+//    }
 
     func setBackButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         backButtonCallback = callback
@@ -43,7 +45,6 @@ final class DefaultSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAd
 
     func injectedView() -> UIView {
         let navigationBar = DefaultSkontoBottomNavigationBar(proceedAction: proceedButtonCallback,
-                                                             helpAction: helpButtonCallback,
                                                              backAction: backButtonCallback)
         view = navigationBar
         return navigationBar
