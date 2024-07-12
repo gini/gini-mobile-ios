@@ -13,11 +13,6 @@ import GiniHealthAPILibraryPinning
 class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.initializeSDK()
-    }
-
-    func initializeSDK() {
-        
     }
 }
 
