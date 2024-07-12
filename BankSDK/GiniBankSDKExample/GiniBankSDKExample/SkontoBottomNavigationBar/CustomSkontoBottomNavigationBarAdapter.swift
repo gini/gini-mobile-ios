@@ -28,7 +28,7 @@ final class CustomSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAda
         backButtonCallback = callback
     }
 
-    func updateTotalPrice(priceWithCurrencySymbol price: String?) {
+    func updateTotalPrice(priceWithCurrencyCode price: String?) {
         view?.updatePrice(with: price)
     }
 
