@@ -90,11 +90,18 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
         view.backgroundColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
-        view.layer.cornerRadius = 4
+        view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(skontoBadgeLabel)
         return view
+    }()
+    
+    private lazy var dividerView: UIView = {
+        let dividerView = UIView()
+        dividerView.backgroundColor = .giniColorScheme().bg.divider.uiColor()
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        return dividerView
     }()
 
     private var proceedAction: (() -> Void)?
@@ -145,12 +152,18 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         addSubview(totalValueLabel)
         addSubview(skontoBadgeView)
         addSubview(buttonsStackView)
+        addSubview(dividerView)
         skontoBadgeView.addSubview(skontoBadgeLabel)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            totalLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding / 2),
+            dividerView.topAnchor.constraint(equalTo: topAnchor),
+            dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
+
+            totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
             totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
@@ -200,8 +213,10 @@ extension DefaultSkontoBottomNavigationBar {
         static let padding: CGFloat = 16
         static let labelPadding: CGFloat = 24
         static let payButtonHeight: CGFloat = 50
+        static let dividerViewHeight: CGFloat = 1
         static let badgeHorizontalPadding: CGFloat = 6
         static let badgeVerticalPadding: CGFloat = 2
         static let badgeSpacing: CGFloat = 12
+        static let cornerRadius: CGFloat = 4
     }
 }
