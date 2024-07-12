@@ -118,8 +118,12 @@ import GiniBankAPILibrary
                 })
                 
                 
-                let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images, document: document, candidates: result.candidates)
-                                
+                let result = AnalysisResult(extractions: extractions, 
+                                            lineItems: result.lineItems,
+                                            images: images,
+                                            document: document,
+                                            candidates: result.candidates)
+
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
