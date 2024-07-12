@@ -27,10 +27,6 @@ final class DefaultSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAd
         backButtonCallback = callback
     }
 
-    func updateProceedButtonState(enabled: Bool) {
-        view?.setProceedButtonState(enabled: enabled)
-    }
-
     func updateTotalPrice(priceWithCurrencyCode price: String?) {
         view?.updatePrice(with: price)
     }
