@@ -18,13 +18,10 @@ class SkontoAppliedInfoView: UIView {
     private lazy var label: UILabel = {
         let label = UILabel()
         let text = String.localizedStringWithFormat(skontoTitle,
-                                                    viewModel.skontoFormattedDuePeriod,
+                                                    viewModel.skontoFormattedDaysDuePeriod,
                                                     viewModel.skontoFormattedPercentageDiscounted)
-        let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(.underlineStyle,
-                                      value: NSUnderlineStyle.single.rawValue,
-                                      range: NSRange(location: 0, length: text.count))
-        label.attributedText = attributedString
+        label.text = text
+        label.accessibilityValue = text
         label.font = configuration.textStyleFonts[.caption1]
         label.textColor = .giniColorScheme().chips.textAssistEnabled.uiColor()
         label.adjustsFontForContentSizeCategory = true
@@ -53,7 +50,7 @@ class SkontoAppliedInfoView: UIView {
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .giniColorScheme().chips.assistEnabled.uiColor()
-        layer.cornerRadius = 8
+        layer.cornerRadius = Constants.cornerRadius
         layer.masksToBounds = true
         addSubview(imageView)
         addSubview(label)
@@ -89,7 +86,7 @@ class SkontoAppliedInfoView: UIView {
 
     private func configure() {
         let text = String.localizedStringWithFormat(skontoTitle,
-                                                    viewModel.skontoFormattedDuePeriod,
+                                                    viewModel.skontoFormattedDaysDuePeriod,
                                                     viewModel.skontoFormattedPercentageDiscounted)
         label.text = text
     }
@@ -101,5 +98,6 @@ private extension SkontoAppliedInfoView {
         static let imageHorizontalPadding: CGFloat = 10
         static let imageSize: CGFloat = 24
         static let labelHorizontalPadding: CGFloat = 8
+        static let cornerRadius: CGFloat = 8
     }
 }

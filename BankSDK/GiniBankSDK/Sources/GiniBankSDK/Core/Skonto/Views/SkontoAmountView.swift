@@ -49,7 +49,7 @@ class SkontoAmountView: UIView {
         let view = UIView()
         view.layer.borderColor = UIColor.giniColorScheme().bg.border.uiColor().cgColor
         view.layer.borderWidth = isEditable ? 1 : 0
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = Constants.cornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -84,6 +84,7 @@ class SkontoAmountView: UIView {
         containerView.addSubview(textField)
         containerView.addSubview(currencyLabel)
         setupConstraints()
+        addTapGestureRecognizer()
     }
 
     private func setupConstraints() {
@@ -111,6 +112,16 @@ class SkontoAmountView: UIView {
         ])
     }
 
+    private func addTapGestureRecognizer() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc private func handleTap() {
+        guard isEditable else { return }
+        textField.becomeFirstResponder()
+    }
+
     func configure(isEditable: Bool, price: Price) {
         if isEditable {
             textField.text = price.germanStringWithoutCurrencyCode ?? ""
@@ -134,5 +145,6 @@ private extension SkontoAmountView {
     enum Constants {
         static let padding: CGFloat = 12
         static let currencyLabelHorizontalPadding: CGFloat = 10
+        static let cornerRadius: CGFloat = 8
     }
 }

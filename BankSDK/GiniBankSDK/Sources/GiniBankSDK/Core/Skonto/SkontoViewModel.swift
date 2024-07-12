@@ -7,7 +7,8 @@
 import Foundation
 
 protocol SkontoViewModelDelegate: AnyObject {
-    func didTapHelp()
+    // MARK: Temporary remove help action
+//    func didTapHelp()
     func didTapBack()
     func didTapProceed(on viewModel: SkontoViewModel)
 }
@@ -30,16 +31,12 @@ class SkontoViewModel {
     private (set) var currencyCode: String
 
     // TODO: recalculate with backend entity: skontoDuePeriod
-    var skontoFormattedDuePeriod: String {
+    var skontoFormattedDaysDuePeriod: String {
         return "14 days"
     }
 
     var skontoFormattedPercentageDiscounted: String {
-        let formatter = NumberFormatter()
-        formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 2
-        formatter.numberStyle = .decimal
-        formatter.roundingMode = .floor
+        let formatter = NumberFormatter.skontoDiscountFormatter
         if let formattedValue = formatter.string(from: NSNumber(value: skontoValue)) {
             return "\(formattedValue)%"
         } else {
@@ -107,9 +104,10 @@ class SkontoViewModel {
         }
     }
 
-    func helpButtonTapped() {
-        delegate?.didTapHelp()
-    }
+    // MARK: Temporary remove help action
+//    func helpButtonTapped() {
+//        delegate?.didTapHelp()
+//    }
 
     func backButtonTapped() {
         delegate?.didTapBack()
@@ -122,11 +120,6 @@ class SkontoViewModel {
     private func recalculatePriceWithSkonto() {
         let calculatedPrice = priceWithoutSkonto.value * (1 - Decimal(skontoValue) / 100)
         priceWithSkonto = Price(value: calculatedPrice, currencyCode: currencyCode)
-    }
-
-    private func recalculatePriceWithoutSkonto() {
-        let calculatedPrice = priceWithSkonto.value / (1 - Decimal(skontoValue) / 100)
-        priceWithoutSkonto = Price(value: calculatedPrice, currencyCode: currencyCode)
     }
 
     private func recalculateSkontoValue() {

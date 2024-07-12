@@ -97,11 +97,12 @@
 "ginibank.skonto.backButton.title" = "Back";
 "ginibank.skonto.info.title" = "With Skonto discount";
 "ginibank.skonto.info.status" = "• Active";
+// TODO: check skontoDuePeriod how will be applied for localizable string after backend integration
 "ginibank.skonto.info.message" = "Pay in %@: %@ Skonto discount.";
 "ginibank.skonto.info.amount.title" = "Final amount";
 "ginibank.skonto.info.date.title" = "Due date";
 "ginibank.skonto.notapplied.title" = "Without Skonto discount";
 "ginibank.skonto.notapplied.amount.title" = "Full amount";
 "ginibank.skonto.total.amount.skonto" = "%@ Skonto discount";
-"ginibank.skonto.paybutton.title" = "Proceed";
+"ginibank.skonto.paybutton.title" = "Continue to pay";
 "ginibank.skonto.total.title" = "Total";
