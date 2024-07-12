@@ -70,6 +70,7 @@ final class CustomSkontoBottomNavigationBar: UIView {
 
     private lazy var skontoBadgeLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
