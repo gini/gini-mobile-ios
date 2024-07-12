@@ -146,20 +146,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         return paymentComponentView
     }
 
-    public func paymentViewBottomSheet(documentID: String) -> UIViewController {
-        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID))
-        return paymentComponentBottomView
-    }
-
-    public func bankSelectionBottomSheet() -> UIViewController {
-        let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
-                                                                   selectedPaymentProvider: selectedPaymentProvider)
-        let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel)
-        paymentProvidersBottomViewModel.viewDelegate = self
-        paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
-        return paymentProvidersBottomView
-    }
-    
     public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
         self.isLoading = true
         self.giniMerchant.fetchDataForReview(documentId: documentID) { [weak self] result in
@@ -186,17 +172,45 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         }
     }
 
-    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (_ paymentRequestID: String?, _ error: GiniMerchantError?) -> Void) {
-        giniMerchant.createPaymentRequest(paymentInfo: paymentInfo) { result in
-            switch result {
-            case let .success(requestId):
-                completion(requestId, nil)
-            case let .failure(error):
-                completion(nil, GiniMerchantError.apiError(error))
-            }
-        }
+    // MARK: - Bottom Sheets
+
+    public func paymentViewBottomSheet(documentID: String) -> UIViewController {
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID))
+        return paymentComponentBottomView
     }
 
+    public func bankSelectionBottomSheet() -> UIViewController {
+        let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
+                                                                   selectedPaymentProvider: selectedPaymentProvider)
+        let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel)
+        paymentProvidersBottomViewModel.viewDelegate = self
+        paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
+        return paymentProvidersBottomView
+    }
+
+    public func paymentInfoViewController() -> UIViewController {
+        let paymentInfoViewController = PaymentInfoViewController()
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders)
+        paymentInfoViewController.viewModel = paymentInfoViewModel
+        return paymentInfoViewController
+    }
+
+    public func installAppBottomSheet() -> UIViewController {
+        let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
+        installAppBottomViewModel.viewDelegate = self
+        let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel)
+        return installAppBottomView
+    }
+
+    public func shareInvoiceBottomSheet() -> UIViewController {
+        let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
+        shareInvoiceBottomViewModel.viewDelegate = self
+        let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
+        incrementOnboardingCountFor(paymentProvider: selectedPaymentProvider)
+        return shareInvoiceBottomView
+    }
+
+    // MARK: - Helping functions
     public func canOpenPaymentProviderApp() -> Bool {
         if supportsGPC() {
             if selectedPaymentProvider?.appSchemeIOS.canOpenURLString() ?? false {
@@ -220,16 +234,33 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         return false
     }
 
+    public func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController) {
+        createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] paymentRequestID, error in
+            if let paymentRequestID {
+                self?.loadPDFData(paymentRequestID: paymentRequestID, viewController: viewController)
+            }
+        })
+    }
+
+    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (_ paymentRequestID: String?, _ error: GiniMerchantError?) -> Void) {
+        giniMerchant.createPaymentRequest(paymentInfo: paymentInfo) { result in
+            switch result {
+            case let .success(requestId):
+                completion(requestId, nil)
+            case let .failure(error):
+                completion(nil, GiniMerchantError.apiError(error))
+            }
+        }
+    }
+
     public func openPaymentProviderApp(requestId: String, universalLink: String) {
         giniMerchant.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
     }
-    
 
-    public func paymentInfoViewController() -> UIViewController {
-        let paymentInfoViewController = PaymentInfoViewController()
-        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders)
-        paymentInfoViewController.viewModel = paymentInfoViewModel
-        return paymentInfoViewController
+    public func shouldShowOnboardingScreenFor() -> Bool {
+        let onboardingCounts = OnboardingShareInvoiceScreenCount.load()
+        let count = onboardingCounts.presentationCount(forProvider: selectedPaymentProvider?.name)
+        return count < Constants.numberOfTimesOnboardingShareScreenShouldAppear
     }
 }
 
@@ -272,41 +303,13 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
 }
 
 extension PaymentComponentsController {
-    func shouldShowOnboardingScreenFor(paymentProvider: PaymentProvider) -> Bool {
-        let onboardingCounts = OnboardingShareInvoiceScreenCount.load()
-        let count = onboardingCounts.presentationCount(forProvider: paymentProvider.name)
-        return count < 3
-    }
-
-    public func installAppBottomSheet() -> UIViewController {
-        let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
-        installAppBottomViewModel.viewDelegate = self
-        let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel)
-        return installAppBottomView
-    }
-
-    public func shareInvoiceBottomSheet() -> UIViewController {
-        let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
-        shareInvoiceBottomViewModel.viewDelegate = self
-        let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
-        incrementOnboardingCountFor(paymentProvider: selectedPaymentProvider)
-        return shareInvoiceBottomView
-    }
 
     private func incrementOnboardingCountFor(paymentProvider: PaymentProvider?) {
         var onboardingCounts = OnboardingShareInvoiceScreenCount.load()
         onboardingCounts.incrementPresentationCount(forProvider: paymentProvider?.name)
     }
 
-    public func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController) {
-        createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] paymentRequestID, error in
-            if let paymentRequestID {
-                self?.loadPDFData(paymentRequestID: paymentRequestID, viewController: viewController)
-            }
-        })
-    }
-
-    func loadPDFData(paymentRequestID: String, viewController: UIViewController) {
+    private func loadPDFData(paymentRequestID: String, viewController: UIViewController) {
         self.loadPDF(paymentRequestID: paymentRequestID, completion: { [weak self] pdfData in
             let pdfPath = self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestID)
 
@@ -326,7 +329,7 @@ extension PaymentComponentsController {
         })
     }
 
-    func writePDFDataToFile(data: Data, fileName: String) -> URL? {
+    private func writePDFDataToFile(data: Data, fileName: String) -> URL? {
         do {
             let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             guard let docDirectoryPath = paths.first else { return  nil}
@@ -384,8 +387,7 @@ extension PaymentComponentsController {
         }
     }
 
-
-    func loadPDF(paymentRequestID: String, completion: @escaping (Data) -> ()) {
+    private func loadPDF(paymentRequestID: String, completion: @escaping (Data) -> ()) {
         isLoading = true
         giniMerchant.paymentService.pdfWithQRCode(paymentRequestId: paymentRequestID) { [weak self] result in
             self?.isLoading = false
@@ -397,26 +399,6 @@ extension PaymentComponentsController {
             }
         }
     }
-
-//    private func loadPDFData(paymentRequestID: String) {
-//        self.model?.loadPDF(paymentRequestID: paymentRequestID, completion: { [weak self] pdfData in
-//            let pdfPath = self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestID)
-//
-//            guard let pdfPath else {
-//                print("Error while write pdf file to location: missing pdf path")
-//                return
-//            }
-//
-//            self?.sharePDF(pdfURL: pdfPath, paymentRequestID: paymentRequestID) { [weak self] (activity, _, _, _) in
-//                guard activity != nil else {
-//                    return
-//                }
-//
-//                // Publish the payment request id only after a user has picked an activity (app)
-//                self?.model?.healthSDK.delegate?.didCreatePaymentRequest(paymentRequestID: paymentRequestID)
-//            }
-//        })
-//    }
 }
 
 extension PaymentComponentsController: ShareInvoiceBottomViewProtocol {
@@ -435,5 +417,6 @@ extension PaymentComponentsController {
     private enum Constants {
         static let kDefaultPaymentProvider = "defaultPaymentProvider"
         static let pdfExtension = ".pdf"
+        static let numberOfTimesOnboardingShareScreenShouldAppear = 3
     }
 }

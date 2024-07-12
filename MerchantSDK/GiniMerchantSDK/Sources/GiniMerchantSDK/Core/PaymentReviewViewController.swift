@@ -272,7 +272,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                 createPaymentRequest()
             }
         } else if model?.paymentComponentsController.supportsOpenWith() ?? false {
-            if model?.paymentComponentsController.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
+            if model?.paymentComponentsController.shouldShowOnboardingScreenFor() ?? false {
                 model?.openOnboardingShareInvoiceBottomSheet()
             } else {
                 obtainPDFFromPaymentRequest()

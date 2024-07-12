@@ -155,9 +155,13 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
             }
         } else {
             if paymentComponentsController.supportsOpenWith() {
-                let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet()
-                shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
-                self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
+                if paymentComponentsController.shouldShowOnboardingScreenFor() {
+                    let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet()
+                    shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
+                    self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
+                } else {
+                    paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(), viewController: self)
+                }
             } else if paymentComponentsController.supportsGPC() {
                 if paymentComponentsController.canOpenPaymentProviderApp() {
                     paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] paymentRequestID, error in
