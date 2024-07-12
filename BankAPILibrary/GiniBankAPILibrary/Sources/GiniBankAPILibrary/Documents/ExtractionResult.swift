@@ -20,16 +20,22 @@ import Foundation
     // Return reasons from which users can pick one when deselecting line items.
     public var returnReasons: [ReturnReason]?
     
+
+    // The Skonto information extractions.
+    public var skontoDiscounts: [[Extraction]]?
+
     /// The extraction candidates.
     public let candidates: [String: [Extraction.Candidate]]
     
     public init(extractions: [Extraction],
-                lineItems: [[Extraction]]?,
-                returnReasons: [ReturnReason]?,
+                lineItems: [[Extraction]]? = nil,
+                returnReasons: [ReturnReason]? = nil,
+                skontoDiscounts: [[Extraction]]? = nil,
                 candidates: [String: [Extraction.Candidate]]) {
         self.extractions = extractions
         self.lineItems = lineItems
         self.returnReasons = returnReasons
+        self.skontoDiscounts = skontoDiscounts
         self.candidates = candidates
         
         super.init()
