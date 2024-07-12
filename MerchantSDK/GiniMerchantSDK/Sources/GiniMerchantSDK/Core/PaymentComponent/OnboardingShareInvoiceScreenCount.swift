@@ -32,7 +32,8 @@ extension OnboardingShareInvoiceScreenCount {
     }
 
     // Get presentation count for a specific provider
-    func presentationCount(forProvider providerID: String) -> Int {
+    func presentationCount(forProvider providerID: String?) -> Int {
+        guard let providerID else { return 0 }
         return providerCounts[providerID] ?? 0
     }
 

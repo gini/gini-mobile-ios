@@ -184,9 +184,3 @@ extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
 public struct PageCollectionCellViewModel {
     let preview: UIImage
 }
-
-extension PaymentReviewModel {
-    private enum Constants {
-        static let numberOfTimesOnboardingShareScreenShouldAppear = 3
-    }
-}
