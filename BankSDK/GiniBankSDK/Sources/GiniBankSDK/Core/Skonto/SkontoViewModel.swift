@@ -7,7 +7,8 @@
 import Foundation
 
 protocol SkontoViewModelDelegate: AnyObject {
-    func didTapHelp()
+    // MARK: Temporary remove help action
+//    func didTapHelp()
     func didTapBack()
     func didTapProceed(on viewModel: SkontoViewModel)
 }
@@ -103,9 +104,10 @@ class SkontoViewModel {
         }
     }
 
-    func helpButtonTapped() {
-        delegate?.didTapHelp()
-    }
+    // MARK: Temporary remove help action
+//    func helpButtonTapped() {
+//        delegate?.didTapHelp()
+//    }
 
     func backButtonTapped() {
         delegate?.didTapBack()
