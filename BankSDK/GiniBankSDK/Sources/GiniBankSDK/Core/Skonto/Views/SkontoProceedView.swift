@@ -62,7 +62,7 @@ class SkontoProceedView: UIView {
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
         view.backgroundColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
-        view.layer.cornerRadius = 4
+        view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(skontoBadgeLabel)
@@ -176,5 +176,6 @@ private extension SkontoProceedView {
         static let badgeHorizontalPadding: CGFloat = 6
         static let badgeVerticalPadding: CGFloat = 2
         static let badgeSpacing: CGFloat = 12
+        static let cornerRadius: CGFloat = 4
     }
 }
