@@ -62,8 +62,9 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.required, for: .vertical)
         let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
-                                                            comment: "Total")
+                                                                  comment: "Total")
         label.text = text
+        label.accessibilityValue = text
         return label
     }()
 
@@ -96,7 +97,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         view.addSubview(skontoBadgeLabel)
         return view
     }()
-    
+
     private lazy var dividerView: UIView = {
         let dividerView = UIView()
         dividerView.backgroundColor = .giniColorScheme().bg.divider.uiColor()
@@ -124,10 +125,12 @@ final class DefaultSkontoBottomNavigationBar: UIView {
 
     func updatePrice(with price: String?) {
         totalValueLabel.text = price
+        totalValueLabel.accessibilityValue = price
     }
 
     func updateDiscountValue(with discount: String?) {
         skontoBadgeLabel.text = discount
+        skontoBadgeLabel.accessibilityValue = discount
     }
 
     func updateDiscountBadge(enabled: Bool) {
