@@ -280,7 +280,8 @@ public class SkontoViewController: UIViewController {
         )
         navigationBarBottomAdapter?.updateDiscountBadge(enabled: isSkontoApplied)
         navigationBarBottomAdapter?.updateDiscountValue(with: discountString)
-        navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencySymbol: viewModel.totalPrice.string)
+        let localizedStringWithCurrencyCode = viewModel.totalPrice.localizedStringWithCurrencyCode
+        navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
     }
 
     // MARK: Temporary remove help action
