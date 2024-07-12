@@ -109,7 +109,7 @@ final class SettingsViewController: UIViewController {
 		contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isSwitchOn: giniConfiguration.bottomNavigationBarEnabled)))
 
-        contentData.append(.switchOption(data: .init(type: .skontoBottomNavigationBarAdapter,
+        contentData.append(.switchOption(data: .init(type: .skontoNavigationBarBottomAdapter,
                                                      isSwitchOn: giniConfiguration.skontoNavigationBarBottomAdapter != nil)))
 
 		contentData.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
@@ -452,7 +452,7 @@ final class SettingsViewController: UIViewController {
 				}
 				return CustomDocumentValidationResult.success()
 			}
-        case .skontoBottomNavigationBarAdapter:
+        case .skontoNavigationBarBottomAdapter:
             let customAdapter = CustomSkontoNavigationBarBottomAdapter()
             giniConfiguration.skontoNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
         }
