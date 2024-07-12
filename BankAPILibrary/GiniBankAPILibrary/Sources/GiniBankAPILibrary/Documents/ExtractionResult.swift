@@ -1,8 +1,7 @@
 //
 //  ExtractionResult.swift
-//  GiniBankAPI
 //
-//  Created by Maciej Trybilo on 13.02.20.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
