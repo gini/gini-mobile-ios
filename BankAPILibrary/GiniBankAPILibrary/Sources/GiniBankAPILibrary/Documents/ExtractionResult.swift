@@ -5,28 +5,27 @@
 //
 
 import Foundation
-
 /**
-* Data model for a document extraction result.
-*/
-@objcMembers final public class ExtractionResult: NSObject {
+ * Data model for a document extraction result.
+ */
+@objcMembers
+final public class ExtractionResult: NSObject {
 
     /// The specific extractions.
     public let extractions: [Extraction]
-    
+
     /// The line item compound extractions.
     public var lineItems: [[Extraction]]?
-    
+
     // Return reasons from which users can pick one when deselecting line items.
     public var returnReasons: [ReturnReason]?
-    
 
     // The Skonto information extractions.
     public var skontoDiscounts: [[Extraction]]?
 
     /// The extraction candidates.
     public let candidates: [String: [Extraction.Candidate]]
-    
+
     public init(extractions: [Extraction],
                 lineItems: [[Extraction]]? = nil,
                 returnReasons: [ReturnReason]? = nil,
@@ -37,12 +36,11 @@ import Foundation
         self.returnReasons = returnReasons
         self.skontoDiscounts = skontoDiscounts
         self.candidates = candidates
-        
+
         super.init()
     }
-    
+
     convenience init(extractionsContainer: ExtractionsContainer) {
-        
 
         self.init(extractions: extractionsContainer.extractions,
                   lineItems: extractionsContainer.compoundExtractions?.lineItems,
