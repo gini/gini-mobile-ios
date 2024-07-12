@@ -35,13 +35,6 @@ public protocol SkontoNavigationBarBottomAdapter: InjectedViewAdapter {
     func updateTotalPrice(priceWithCurrencySymbol price: String?)
 
     /**
-     *  Set the proceed button state. Called when state of the button should be changed
-     *
-     * - Parameter enabled: A bool value to reflect the state of the button
-     */
-    func updateProceedButtonState(enabled: Bool)
-
-    /**
      *  Set the discount value on the bottom navigation bar. Called when Skonto applies
      *
      * - Parameter discount: A string which contains the value of discount
