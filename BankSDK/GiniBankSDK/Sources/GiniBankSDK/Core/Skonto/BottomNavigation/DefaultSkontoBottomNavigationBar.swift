@@ -16,7 +16,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.paybutton.title",
-                                                             comment: "Proceed")
+                                                             comment: "Continue to pay")
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
         button.setContentHuggingPriority(.defaultLow, for: .horizontal)
