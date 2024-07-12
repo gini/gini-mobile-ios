@@ -103,8 +103,7 @@ class PaymentInfoViewController: UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(PaymentInfoAnswerTableViewCell.self,
-                           forCellReuseIdentifier: PaymentInfoAnswerTableViewCell.identifier)
+        tableView.register(cellType: PaymentInfoAnswerTableViewCell.self)
         tableView.separatorStyle = .singleLine
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
@@ -280,10 +279,7 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: PaymentInfoAnswerTableViewCell.identifier,
-                                                       for: indexPath) as? PaymentInfoAnswerTableViewCell else {
-            return UITableViewCell()
-        }
+        let cell: PaymentInfoAnswerTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         let answerTableViewCellModel = PaymentInfoAnswerTableViewModel(answerAttributedText: viewModel.questions[indexPath.section].description)
         cell.cellViewModel = answerTableViewCellModel
         return cell

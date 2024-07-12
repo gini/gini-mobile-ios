@@ -16,8 +16,7 @@ final class BankSelectionTableViewCellModel {
         isSelected
     }
 
-    let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark7,
-                                             darkModeColor: UIColor.GiniMerchantColors.light7).uiColor()
+    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
 
     private var bankImageIconData: Data?
     var bankImageIcon: UIImage {
@@ -26,18 +25,14 @@ final class BankSelectionTableViewCellModel {
         }
         return UIImage()
     }
-    var bankIconBorderColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                        darkModeColor: UIColor.GiniMerchantColors.light5).uiColor()
+    var bankIconBorderColor = GiniColor.standard5.uiColor()
 
     var bankName: String
     var bankNameLabelFont: UIFont
-    let bankNameLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                                      darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
+    let bankNameLabelAccentColor: UIColor = GiniColor.standard1.uiColor()
 
-    let selectedBankBorderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.accent1,
-                                                     darkModeColor: UIColor.GiniMerchantColors.accent1).uiColor()
-    let notSelectedBankBorderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                                        darkModeColor: UIColor.GiniMerchantColors.light5).uiColor()
+    let selectedBankBorderColor: UIColor = GiniColor.accent1.uiColor()
+    let notSelectedBankBorderColor: UIColor = GiniColor.standard5.uiColor()
     
     let selectionIndicatorImage: UIImage = GiniMerchantImage.selectionIndicator.preferredUIImage()
 
