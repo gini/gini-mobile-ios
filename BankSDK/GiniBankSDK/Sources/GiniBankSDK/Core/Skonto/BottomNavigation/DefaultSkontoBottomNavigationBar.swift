@@ -126,16 +126,6 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         totalValueLabel.text = price
     }
 
-    func setProceedButtonState(enabled: Bool) {
-        proceedButton.isEnabled = enabled
-
-        if enabled {
-            proceedButton.configure(with: configuration.primaryButtonConfiguration)
-        } else {
-            proceedButton.configure(with: configuration.secondaryButtonConfiguration)
-        }
-    }
-
     func updateDiscountValue(with discount: String?) {
         skontoBadgeLabel.text = discount
     }
