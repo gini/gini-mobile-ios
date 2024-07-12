@@ -82,6 +82,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.caption1]
         label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
+        label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
