@@ -10,8 +10,8 @@ import Foundation
 class GiniSessionDelegate: NSObject, URLSessionDelegate {
     private let pinningManager: SSLPinningManager
     
-    init(pinnedKeyHashes: [String]) {
-        self.pinningManager = SSLPinningManager(pinnedKeyHashes: pinnedKeyHashes)
+    internal init(pinningConfig: [String: [String]]) {
+        self.pinningManager = SSLPinningManager(pinningConfig: pinningConfig)
     }
     
     func urlSession(_ session: URLSession,

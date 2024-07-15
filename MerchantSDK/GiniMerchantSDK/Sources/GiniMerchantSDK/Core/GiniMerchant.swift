@@ -80,7 +80,7 @@ public struct DataForReview {
      */
     public init(id: String, secret: String, domain: String) {
         let client = Client(id: id, secret: secret, domain: domain)
-        self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
+        self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: .none).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService()
     }
@@ -96,10 +96,14 @@ public struct DataForReview {
      - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
      - pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
      */
-    public init(id: String, secret: String, domain: String, pinningConfig: [String: [String]]) {
-        let delegate = GiniSessionDelegate(pinnedKeyHashes: pinningConfig.values.flatMap { $0 })
+    public init(id: String, 
+                secret: String,
+                domain: String,
+                pinningConfig: [String: [String]]) {
         let client = Client(id: id, secret: secret, domain: domain)
-        self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug, sessionDelegate: delegate).build()
+        self.giniApiLib = GiniHealthAPI.Builder(client: client, 
+                                                logLevel: .none,
+                                                sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig)).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService()
     }
