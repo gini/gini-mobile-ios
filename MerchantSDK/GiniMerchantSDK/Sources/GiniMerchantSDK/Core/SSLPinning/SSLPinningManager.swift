@@ -10,6 +10,7 @@ import Foundation
 import CommonCrypto
 
 struct SSLPinningManager {
+    // Custom error types for SSL pinning
     private enum PinningError: Error {
         case noCertificatesFromServer
         case failedToGetPublicKey
@@ -17,17 +18,20 @@ struct SSLPinningManager {
         case receivedWrongCertificate
     }
     
+    // ASN.1 header for RSA 2048-bit keys. The same for all keys
     private static let rsa2048ASN1Header: [UInt8] = [
         0x30, 0x82, 0x01, 0x22, 0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86,
         0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00, 0x03, 0x82, 0x01, 0x0F, 0x00
     ]
 
-    private let pinnedKeyHashes: [String]
-    
-    init(pinnedKeyHashes: [String]) {
-        self.pinnedKeyHashes = pinnedKeyHashes
-    }
+    // Dictionary mapping domain names to their expected public key hashes
+    private let pinningConfig: [String: [String]]
 
+    init(pinningConfig: [String: [String]]) {
+        self.pinningConfig = pinningConfig
+    }
+    
+    // Function to validate the server's certificate
     func validate(challenge: URLAuthenticationChallenge,
                   completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         do {
@@ -42,17 +46,31 @@ struct SSLPinningManager {
 //MARK: - private methods
 
 private extension SSLPinningManager {
+    // Validate the server's certificate and return the trust object if valid
     func validateAndGetTrust(with challenge: URLAuthenticationChallenge) throws -> SecTrust {
+        // Step 1: Retrieve the server's trust object and its certificate chain
         guard let trust = challenge.protectionSpace.serverTrust,
               let trustCertificateChain = trustCopyCertificateChain(trust),
               !trustCertificateChain.isEmpty else {
             throw PinningError.noCertificatesFromServer
         }
+        
+        // Step 2: Get the domain from the challenge and check if it has a pinning configuration
+        guard let domain = challenge.protectionSpace.host.lowercased() as String? else {
+            throw PinningError.receivedWrongCertificate
+        }
 
+        // Step 3: Retrieve the pinned key hashes from pinning config for the domain
+        guard let pinnedKeyHashes = pinningConfig[domain] else {
+            throw PinningError.receivedWrongCertificate
+        }
+
+        // Step 4: Iterate over the server's certificates to find a matching public key hash
         for serverCertificate in trustCertificateChain {
             let publicKey = try getPublicKey(for: serverCertificate)
             let publicKeyHash = try getKeyHash(of: publicKey)
 
+            // If a matching hash is found, the certificate is valid
             if pinnedKeyHashes.contains(publicKeyHash) {
                 return trust
             }
@@ -60,6 +78,7 @@ private extension SSLPinningManager {
         throw PinningError.receivedWrongCertificate
     }
     
+    // Extract the public key from the server's certificate
     func getPublicKey(for certificate: SecCertificate) throws -> SecKey {
         let policy = SecPolicyCreateBasicX509()
         var trust: SecTrust?
@@ -72,6 +91,7 @@ private extension SSLPinningManager {
         return publicKey
     }
     
+    // Generate a SHA-256 hash of the public key
     func getKeyHash(of publicKey: SecKey) throws -> String {
         guard let publicKeyCFData = SecKeyCopyExternalRepresentation(publicKey, nil) else {
             throw PinningError.failedToGetDataFromPublicKey
