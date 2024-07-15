@@ -1,5 +1,6 @@
 //
 //  URLOpener.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
