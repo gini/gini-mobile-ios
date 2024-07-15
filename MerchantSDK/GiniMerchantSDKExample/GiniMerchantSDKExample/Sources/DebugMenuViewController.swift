@@ -26,25 +26,13 @@ class DebugMenuViewController: UIViewController {
 
     private lazy var reviewScreenOptionLabel: UILabel = rowTitle("Show Review Screen")
 
-    private lazy var reviewScreenSwitch: UISwitch = {
-        let mySwitch = UISwitch()
-        mySwitch.translatesAutoresizingMaskIntoConstraints = false
-        mySwitch.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
-        mySwitch.isOn = showReviewScreen
-        return mySwitch
-    }()
+    private lazy var reviewScreenSwitch: UISwitch = switchView(isOn: showReviewScreen)
 
     private lazy var reviewScreenRow: UIStackView = stackView(axis: .horizontal, subviews: [reviewScreenOptionLabel, reviewScreenSwitch])
 
     private lazy var amountEditableOptionLabel: UILabel = rowTitle("Amount field is editable")
 
-    private lazy var amountEditableSwitch: UISwitch = {
-        let mySwitch = UISwitch()
-        mySwitch.translatesAutoresizingMaskIntoConstraints = false
-        mySwitch.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
-        mySwitch.isOn = isAmountFieldEditable
-        return mySwitch
-    }()
+    private lazy var amountEditableSwitch: UISwitch = switchView(isOn: isAmountFieldEditable)
 
     private lazy var amountEditableRow: UIStackView = stackView(axis: .horizontal, subviews: [amountEditableOptionLabel, amountEditableSwitch])
 
@@ -105,6 +93,14 @@ private extension DebugMenuViewController {
         stackView.axis = axis
         stackView.spacing = spacing
         return stackView
+    }
+
+    func switchView(isOn: Bool) -> UISwitch {
+        let mySwitch = UISwitch()
+        mySwitch.translatesAutoresizingMaskIntoConstraints = false
+        mySwitch.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
+        mySwitch.isOn = isOn
+        return mySwitch
     }
 }
 
