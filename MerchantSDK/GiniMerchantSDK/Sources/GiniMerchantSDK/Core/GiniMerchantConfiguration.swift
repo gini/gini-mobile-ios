@@ -61,12 +61,12 @@ public final class GiniMerchantConfiguration: NSObject {
     /**
      Set to `false` to hide the payment review screen and jump straight to payment
      */
-    @objc public var showPaymentReviewScreen = true
+    public var showPaymentReviewScreen = true
 
     /**
      Set to `true` to make amount field editable in the payment review screen
      */
-    @objc public var isAmountFieldEditable = false
+    public var isAmountFieldEditable = false
 
     // MARK: - Button configuration options
     /**

@@ -15,8 +15,8 @@ final class PoweredByGiniView: UIView {
         }
     }
     
-    private lazy var mainContainer: UIView = EmptyView()
-    
+    private let mainContainer = EmptyView()
+
     private lazy var poweredByGiniLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
