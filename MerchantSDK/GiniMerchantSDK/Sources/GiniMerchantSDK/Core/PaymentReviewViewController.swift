@@ -257,7 +257,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         view.endEditing(true)
         
-        if model?.paymentComponentsController.supportsGPC() ?? false {
+        if model?.paymentComponentsController.supportsGPC() == true {
             guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
                 model?.openInstallAppBottomSheet()
                 return
@@ -266,8 +266,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             if paymentInfoContainerView.noErrorsFound() {
                 createPaymentRequest()
             }
-        } else if model?.paymentComponentsController.supportsOpenWith() ?? false {
-            if model?.paymentComponentsController.shouldShowOnboardingScreenFor() ?? false {
+        } else if model?.paymentComponentsController.supportsOpenWith() == true {
+            if model?.paymentComponentsController.shouldShowOnboardingScreenFor() == true {
                 model?.openOnboardingShareInvoiceBottomSheet()
             } else {
                 obtainPDFFromPaymentRequest()

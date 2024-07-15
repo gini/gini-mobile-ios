@@ -67,7 +67,7 @@ final class InstallAppBottomViewModel {
     let bankToReplaceString = "[BANK]"
     
     var isBankInstalled: Bool {
-        selectedPaymentProvider?.appSchemeIOS.canOpenURLString() ?? false
+        selectedPaymentProvider?.appSchemeIOS.canOpenURLString() == true
     }
 
     init(selectedPaymentProvider: PaymentProvider?) {
