@@ -122,12 +122,10 @@ final class AppCoordinator: Coordinator {
     private var testDocument: Document?
     private var testDocumentExtractions: [GiniMerchantSDK.Extraction]?
 
-    private var showPaymentReviewScreen = true
-    private var isAmountFieldEditable = false
+    private let configuration = GiniMerchantConfiguration()
 
     fileprivate func showPaymentReviewWithTestDocument() {
         merchant.delegate = self
-        let configuration = GiniMerchantConfiguration()
         merchant.setConfiguration(configuration)
 
         if let document = self.testDocument {
@@ -253,13 +251,10 @@ final class AppCoordinator: Coordinator {
     
     fileprivate func showInvoicesList(invoices: [DocumentWithExtractions]? = nil) {
         self.selectAPIViewController.hideActivityIndicator()
-        let configuration = GiniMerchantConfiguration()
         
         // Show the close button to dismiss the payment review screen
         configuration.showPaymentReviewCloseButton = true
         configuration.paymentReviewStatusBarStyle = .lightContent
-        configuration.showPaymentReviewScreen = showPaymentReviewScreen
-        configuration.isAmountFieldEditable = isAmountFieldEditable
 
         merchant.setConfiguration(configuration)
         merchant.delegate = self
@@ -352,7 +347,7 @@ extension AppCoordinator: PaymentComponentsControllerProtocol {
 
 extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
-        let debugMenuViewController = DebugMenuViewController(showReviewScreen: showPaymentReviewScreen, isAmountFieldEditable: isAmountFieldEditable)
+        let debugMenuViewController = DebugMenuViewController(showReviewScreen: configuration.showPaymentReviewScreen, isAmountFieldEditable: configuration.isAmountFieldEditable)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -360,10 +355,10 @@ extension AppCoordinator: DebugMenuPresenter {
 
 extension AppCoordinator: DebugMenuDelegate {
     func didChangeReviewScreenSwitchValue(isOn: Bool) {
-        self.showPaymentReviewScreen = isOn
+        configuration.showPaymentReviewScreen = isOn
     }
     
     func didChangeAmountEditableSwitchValue(isOn: Bool) {
-        self.isAmountFieldEditable = isOn
+        configuration.isAmountFieldEditable = isOn
     }
 }
