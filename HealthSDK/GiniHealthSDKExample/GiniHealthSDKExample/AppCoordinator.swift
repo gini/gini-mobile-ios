@@ -156,18 +156,17 @@ final class AppCoordinator: Coordinator {
             self.health.fetchDataForReview(documentId: document.id) { result in
                 switch result {
                 case .success(let data):
-                    self.health.checkIfDocumentIsPayable(docId: document.id, completion: { [weak self] resultPayable in
-                        switch resultPayable {
-                        case .success(let isPayable):
+                    self.health.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
+                        switch result {
+                        case let .success(extractionResult):
+                            print("✅Successfully fetched extractions for id: \(document.id)")
                             let invoice = DocumentWithExtractions(documentID: document.id,
-                                                                  extractions: data.extractions,
-                                                                  isPayable: isPayable)
+                                                                  extractionResult: extractionResult)
                             self?.showInvoicesList(invoices: [invoice])
-                        case .failure(let error):
-                            print("❌ Checking if document is payable failed: \(String(describing: error))")
+                        case let .failure(error):
+                            print("❌Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))")
                         }
-                        self?.selectAPIViewController.hideActivityIndicator()
-                    })
+                    }
                 case .failure(let error):
                     print("❌ Document data fetching failed: \(String(describing: error))")
                     self.selectAPIViewController.hideActivityIndicator()
@@ -190,35 +189,34 @@ final class AppCoordinator: Coordinator {
                     self.health.documentService.createDocument(fileName: nil,
                                                                docType: nil,
                                                                type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
-                                                               metadata: nil) { result in
+                                                               metadata: nil) { [weak self] result in
                         switch result {
                         case .success(let compositeDocument):
-                            self.health.setDocumentForReview(documentId: compositeDocument.id) { result in
+                            self?.health.setDocumentForReview(documentId: compositeDocument.id) { [weak self] result in
                                 switch result {
                                 case .success(let extractions):
-                                    self.testDocument = compositeDocument
-                                    self.testDocumentExtractions = extractions
-                                    
-                                    self.health.checkIfDocumentIsPayable(docId: compositeDocument.id, completion: { [weak self] resultPayable in
-                                        switch resultPayable {
-                                        case .success(let isPayable):
+                                    self?.testDocument = compositeDocument
+                                    self?.testDocumentExtractions = extractions
+
+                                    self?.health.documentService.extractions(for: compositeDocument, cancellationToken: CancellationToken()) { [weak self] result in
+                                        switch result {
+                                        case let .success(extractionResult):
+                                            print("✅Successfully fetched extractions for id: \(compositeDocument.id)")
                                             let invoice = DocumentWithExtractions(documentID: compositeDocument.id,
-                                                                                  extractions: extractions,
-                                                                                  isPayable: isPayable)
+                                                                                  extractionResult: extractionResult)
                                             self?.showInvoicesList(invoices: [invoice])
-                                        case .failure(let error):
-                                            print("❌ Checking if document is payable failed: \(String(describing: error))")
+                                        case let .failure(error):
+                                            print("❌Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))")
                                         }
-                                        self?.selectAPIViewController.hideActivityIndicator()
-                                    })
+                                    }
                                 case .failure(let error):
                                     print("❌ Setting document for review failed: \(String(describing: error))")
-                                    self.selectAPIViewController.hideActivityIndicator()
+                                    self?.selectAPIViewController.hideActivityIndicator()
                                 }
                             }
                         case .failure(let error):
                             print("❌ Document creation failed: \(String(describing: error))")
-                            self.selectAPIViewController.hideActivityIndicator()
+                            self?.selectAPIViewController.hideActivityIndicator()
                         }
                     }
                 case .failure(let error):
@@ -274,7 +272,10 @@ final class AppCoordinator: Coordinator {
     }
     
     fileprivate func showInvoicesList(invoices: [DocumentWithExtractions]? = nil) {
-        self.selectAPIViewController.hideActivityIndicator()
+        DispatchQueue.main.async {
+            self.selectAPIViewController.hideActivityIndicator()
+        }
+        let configuration = GiniHealthConfiguration()
         
         health.setConfiguration(giniHealthConfiguration)
         health.delegate = self
@@ -283,12 +284,14 @@ final class AppCoordinator: Coordinator {
         paymentComponentsController = PaymentComponentsController(giniHealth: health)
         let paymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: isBrandedPaymentComponent)
         paymentComponentsController.paymentComponentConfiguration = paymentComponentConfiguration
-        invoicesListCoordinator.start(documentService: health.documentService,
-                                      hardcodedInvoicesController: HardcodedInvoicesController(),
-                                      paymentComponentsController: paymentComponentsController,
-                                      invoices: invoices)
-        add(childCoordinator: invoicesListCoordinator)
-        rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
+        DispatchQueue.main.async {
+            invoicesListCoordinator.start(documentService: self.health.documentService,
+                                          hardcodedInvoicesController: HardcodedInvoicesController(),
+                                          paymentComponentsController: self.paymentComponentsController,
+                                          invoices: invoices)
+            self.add(childCoordinator: invoicesListCoordinator)
+            self.rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
+        }
     }
 }
 

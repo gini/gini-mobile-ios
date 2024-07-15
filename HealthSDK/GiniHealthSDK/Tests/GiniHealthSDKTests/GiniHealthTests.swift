@@ -55,6 +55,34 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertEqual(receivedProviders, expectedProviders)
     }
 
+    func testDocumentIsPayable() {
+        // When
+        let fileName = "extractionResultWithIBAN"
+        let extractions: ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
+        guard let extractions else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
+        let extractionsResult = ExtractionResult(extractionsContainer: extractions)
+        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
+        // Then
+        XCTAssertEqual(isPayable, true)
+    }
+    
+    func testDocumentIsNotPayable_Success() {
+        // When
+        let fileName = "extractionResultWithoutIBAN"
+        let extractions: ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
+        guard let extractions else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
+        let extractionsResult = ExtractionResult(extractionsContainer: extractions)
+        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
+        // Then
+        XCTAssertEqual(isPayable, false)
+    }
+
     func testCheckIfDocumentIsPayable_Success() {
         // Given
         let fileName = "extractionResultWithIBAN"
@@ -65,7 +93,7 @@ final class GiniHealthTests: XCTestCase {
         }
         let expectedExtractionsResult = ExtractionResult(extractionsContainer: expectedExtractions)
         let expectedIsPayable = expectedExtractionsResult.extractions.first(where: { $0.name == "iban" })?.value.isNotEmpty
-        
+
         // When
         let expectation = self.expectation(description: "Checking if document is payable")
         var isDocumentPayable: Bool?
@@ -83,7 +111,7 @@ final class GiniHealthTests: XCTestCase {
         // Then
         XCTAssertEqual(expectedIsPayable, isDocumentPayable)
     }
-    
+
     func testCheckIfDocumentIsNotPayable_Success() {
         // Given
         let fileName = "extractionResultWithIBAN"
@@ -94,7 +122,7 @@ final class GiniHealthTests: XCTestCase {
         }
         let expectedExtractionsResult = ExtractionResult(extractionsContainer: expectedExtractions)
         let expectedIsPayable = expectedExtractionsResult.extractions.first(where: { $0.name == "iban" })?.value.isEmpty
-        
+
         // When
         let expectation = self.expectation(description: "Checking if document is not payable")
         var isDocumentPayable: Bool?
@@ -112,7 +140,7 @@ final class GiniHealthTests: XCTestCase {
         // Then
         XCTAssertEqual(expectedIsPayable, isDocumentPayable)
     }
-    
+
     func testCheckIfDocumentIsPayable_Failure() {
         // When
         let expectation = self.expectation(description: "Checking if request fails")
@@ -131,7 +159,7 @@ final class GiniHealthTests: XCTestCase {
         // Then
         XCTAssertNil(isDocumentPayable)
     }
-    
+
     func testPollDocument_Success() {
         // Given
         let expectedDocument: Document? = GiniHealthSDKTests.load(fromFile: "document1")
