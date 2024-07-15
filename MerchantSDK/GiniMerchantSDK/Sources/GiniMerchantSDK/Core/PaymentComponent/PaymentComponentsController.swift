@@ -214,7 +214,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     // MARK: - Helping functions
     public func canOpenPaymentProviderApp() -> Bool {
         if supportsGPC() {
-            if selectedPaymentProvider?.appSchemeIOS.canOpenURLString() ?? false {
+            if selectedPaymentProvider?.appSchemeIOS.canOpenURLString() == true {
                 return true
             }
         }
@@ -222,14 +222,14 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     public func supportsOpenWith() -> Bool {
-        if selectedPaymentProvider?.openWithSupportedPlatforms.contains(.ios) ?? false {
+        if selectedPaymentProvider?.openWithSupportedPlatforms.contains(.ios) == true {
             return true
         }
         return false
     }
 
     public func supportsGPC() -> Bool {
-        if selectedPaymentProvider?.gpcSupportedPlatforms.contains(.ios) ?? false {
+        if selectedPaymentProvider?.gpcSupportedPlatforms.contains(.ios) == true {
             return true
         }
         return false
