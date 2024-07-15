@@ -309,6 +309,13 @@ public final class GiniBankConfiguration: NSObject {
     public var enableReturnReasons: Bool = false
 
     /**
+     Indicates whether the Skonto feature is enabled or not. In the case of `true`,
+     the user will be presented with a screen where they can see choose to pay the invoice
+     applying Skonto or not.
+     */
+    public var skontoEnabled = true
+
+    /**
      Set the entry point used for launching the Gini Bank SDK.
      Default value is `GiniEntryPoint.button`.
      */
