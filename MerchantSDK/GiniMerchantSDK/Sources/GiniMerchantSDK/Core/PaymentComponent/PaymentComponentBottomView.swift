@@ -11,9 +11,7 @@ class PaymentComponentBottomView: BottomSheetViewController {
 
     private var paymentView: UIView
 
-    private lazy var contentView: UIView = {
-        EmptyView()
-    }()
+    private let contentView = EmptyView()
 
     override func viewDidLoad() {
         super.viewDidLoad()

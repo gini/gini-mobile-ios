@@ -14,9 +14,7 @@ final class MoreInformationView: UIView {
         }
     }
     
-    private lazy var mainContainer: UIView = {
-        EmptyView()
-    }()
+    private let mainContainer = EmptyView()
     
     private lazy var moreInformationLabel: UILabel = {
         let label = UILabel()

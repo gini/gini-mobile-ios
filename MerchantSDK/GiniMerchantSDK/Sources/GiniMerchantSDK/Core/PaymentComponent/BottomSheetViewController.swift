@@ -21,15 +21,11 @@ class BottomSheetViewController: UIViewController {
     }()
     
     /// View to hold dynamic content
-    private lazy var contentView: UIView = {
-        EmptyView()
-    }()
-    
+    private let contentView = EmptyView()
+
     /// Top bar view that draggable to dismiss
-    private lazy var topBarView: UIView = {
-        EmptyView()
-    }()
-    
+    private let topBarView = EmptyView()
+
     /// Top view bar
     private lazy var barLineView: UIView = {
         let view = UIView()

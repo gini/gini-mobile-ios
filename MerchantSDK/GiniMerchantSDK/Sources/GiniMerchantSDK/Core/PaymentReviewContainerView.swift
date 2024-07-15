@@ -120,13 +120,9 @@ class PaymentReviewContainerView: UIView {
         return label
     }()
 
-    private lazy var buttonsView: UIView = {
-        EmptyView()
-    }()
+    private let buttonsView = EmptyView()
 
-    private lazy var buttonsStackView: UIStackView = {
-        EmptyStackView(orientation: .horizontal)
-    }()
+    private let buttonsStackView = EmptyStackView(orientation: .horizontal)
 
     private lazy var payInvoiceButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
@@ -135,13 +131,9 @@ class PaymentReviewContainerView: UIView {
         return button
     }()
 
-    private lazy var bottomView: UIView = {
-        EmptyView()
-    }()
+    private let bottomView = EmptyView()
 
-    private lazy var bottomStackView: UIStackView = {
-        EmptyStackView(orientation: .horizontal)
-    }()
+    private let bottomStackView = EmptyStackView(orientation: .horizontal)
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
         let view = PoweredByGiniView()
