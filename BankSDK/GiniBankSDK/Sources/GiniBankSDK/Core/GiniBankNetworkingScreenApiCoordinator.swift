@@ -261,8 +261,9 @@ extension GiniBankNetworkingScreenApiCoordinator {
         coordinator.start()
     }
 
-    public func showSkontoScreen() {
-        let coordinator = SkontoCoordinator(navigationController: screenAPINavigationController)
+    func showSkontoScreen(skontoDiscounts: SkontoDiscounts) {
+        let coordinator = SkontoCoordinator(screenAPINavigationController,
+                                            skontoDiscounts)
         coordinator.delegate = self
         childCoordinators.append(coordinator)
         coordinator.start()
@@ -276,28 +277,13 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
                 DispatchQueue.main.async {
 
-                    if GiniBankConfiguration.shared.returnAssistantEnabled {
-                        do {
-                            let digitalInvoice = try DigitalInvoice(extractionResult: extractionResult)
-                            self.showDigitalInvoiceScreen(digitalInvoice: digitalInvoice,
-                                                          analysisDelegate: networkDelegate)
-                        } catch {
-                            // TODO: Please revisit this when the backend is in place
-                            // Shows the Skonto screen in the flow
-
-                            extractionResult.lineItems = nil
-                            self.showSkontoScreen()
-
-                            // self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
-                        }
-
+//                    if GiniBankConfiguration.shared.returnAssistantEnabled {
+//                        self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
+//                    } else 
+                    if GiniBankConfiguration.shared.skontoEnabled {
+                        self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
-                        // TODO: Please revisit this when the backend is in place
-                        // Shows the Skonto screen in the flow
-
-                        extractionResult.lineItems = nil
-                        self.showSkontoScreen()
-//                        self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                        self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
                     }
                 }
 
@@ -312,6 +298,30 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
                 }
             }
+        }
+    }
+
+    private func handleReturnAssistantScreenDisplay(_ extractionResult: ExtractionResult,
+                                                    _ networkDelegate: GiniCaptureNetworkDelegate) {
+        do {
+            let digitalInvoice = try DigitalInvoice(extractionResult: extractionResult)
+            showDigitalInvoiceScreen(digitalInvoice: digitalInvoice,
+                                     analysisDelegate: networkDelegate)
+        } catch {
+            deliverWithReturnAssistant(result: extractionResult,
+                                       analysisDelegate: networkDelegate)
+        }
+    }
+
+    private func handleSkontoScreenDisplay(_ extractionResult: ExtractionResult,
+                                           _ networkDelegate: GiniCaptureNetworkDelegate) {
+        do {
+            let skontoDiscounts = try SkontoDiscounts(extractions: extractionResult)
+            extractionResult.lineItems = nil
+            showSkontoScreen(skontoDiscounts: skontoDiscounts)
+        } catch {
+            deliverWithReturnAssistant(result: extractionResult,
+                                       analysisDelegate: networkDelegate)
         }
     }
 
