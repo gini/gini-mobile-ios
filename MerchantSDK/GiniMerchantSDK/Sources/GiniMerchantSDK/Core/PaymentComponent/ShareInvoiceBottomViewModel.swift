@@ -28,20 +28,16 @@ final class ShareInvoiceBottomViewModel {
     
     weak var viewDelegate: ShareInvoiceBottomViewProtocol?
 
-    let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark7,
-                                             darkModeColor: UIColor.GiniMerchantColors.light7).uiColor()
-    let rectangleColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                            darkModeColor: UIColor.GiniMerchantColors.light5).uiColor()
+    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
+    let rectangleColor: UIColor = GiniColor.standard5.uiColor()
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
                                                     darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
-    let appRectangleBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark6,
-                                                         darkModeColor: UIColor.GiniMerchantColors.light6).uiColor()
+    let appRectangleBackgroundColor: UIColor = GiniColor.standard6.uiColor()
     
     // Title label
     var titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.title",
                                                              comment: "Share Invoice Bottom sheet title")
-    let titleLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark2,
-                                                   darkModeColor: UIColor.GiniMerchantColors.light2).uiColor()
+    let titleLabelAccentColor: UIColor = GiniColor.standard2.uiColor()
     var titleLabelFont: UIFont
 
     private var bankImageIconData: Data?
@@ -51,28 +47,22 @@ final class ShareInvoiceBottomViewModel {
         }
         return UIImage()
     }
-    var bankIconBorderColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                        darkModeColor: UIColor.GiniMerchantColors.light5).uiColor()
+    var bankIconBorderColor = GiniColor.standard5.uiColor()
 
     // Description label
-    let descriptionLabelTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark3,
-                                                       darkModeColor: UIColor.GiniMerchantColors.light3).uiColor()
-    let descriptionAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark3,
-                                                    darkModeColor: UIColor.GiniMerchantColors.light3).uiColor()
+    let descriptionLabelTextColor: UIColor = GiniColor.standard3.uiColor()
+    let descriptionAccentColor: UIColor = GiniColor.standard3.uiColor()
     var descriptionLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.description",
                                                                         comment: "Text description for share bottom sheet")
     var descriptionLabelFont: UIFont
     
     // Apps View
-    let appsBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark6,
-                                                 darkModeColor: UIColor.GiniMerchantColors.light6).uiColor()
+    let appsBackgroundColor: UIColor = GiniColor.standard6.uiColor()
     let moreIcon: UIImage = GiniMerchantImage.more.preferredUIImage()
     
     // Tip label
-    let tipAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark2,
-                                            darkModeColor: UIColor.GiniMerchantColors.light2).uiColor()
-    let tipLabelTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark4,
-                                               darkModeColor: UIColor.GiniMerchantColors.light4).uiColor()
+    let tipAccentColor: UIColor = GiniColor.standard2.uiColor()
+    let tipLabelTextColor: UIColor = GiniColor.standard4.uiColor()
     var tipLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.tip.description",
                                                         comment: "Text for tip label")
     let tipActionablePartText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.tip.underlined.part",

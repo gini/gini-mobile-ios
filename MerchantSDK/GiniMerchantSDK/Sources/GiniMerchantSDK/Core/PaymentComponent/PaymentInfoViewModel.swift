@@ -18,8 +18,7 @@ final class PaymentInfoViewModel {
     
     var paymentProviders: PaymentProviders
     
-    let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark7,
-                                             darkModeColor: UIColor.GiniMerchantColors.light7).uiColor()
+    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
     
     let titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.title.label", 
                                                              comment: "Payment Info title label text")
@@ -27,16 +26,14 @@ final class PaymentInfoViewModel {
     let payBillsTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.title.label", 
                                                                      comment: "Payment Info pay bills title label text")
     let payBillsTitleFont: UIFont
-    let payBillsTitleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                                    darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
+    let payBillsTitleTextColor: UIColor = GiniColor.standard1.uiColor()
     
     private let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.label",
                                                                                    comment: "Payment Info pay bills description text")
     var payBillsDescriptionAttributedText: NSMutableAttributedString = NSMutableAttributedString()
     var payBillsDescriptionLinkAttributes: [NSAttributedString.Key: Any]
     private let payBillsDescriptionFont: UIFont
-    private let payBillsDescriptionTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                                                  darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
+    private let payBillsDescriptionTextColor: UIColor = GiniColor.standard1.uiColor()
     private let giniWebsiteText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.clickable.text",
                                                                    comment: "Word range that's clickable in pay bills description")
     private let giniFont: UIFont
@@ -46,8 +43,7 @@ final class PaymentInfoViewModel {
     let questionsTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.title.label",
                                                                       comment: "Payment Info questions title label text")
     let questionsTitleFont: UIFont
-    let questionsTitleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark1,
-                                                     darkModeColor: UIColor.GiniMerchantColors.light1).uiColor()
+    let questionsTitleTextColor: UIColor = GiniColor.standard1.uiColor()
     
     private var answersFont: UIFont
     private let answerPrivacyPolicyText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.clickable.text",
@@ -55,11 +51,9 @@ final class PaymentInfoViewModel {
     private let privacyPolicyURLText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.gini.privacypolicy.link",
                                                                         comment: "Gini privacy policy link url")
     private var linksFont: UIFont
-    private let linksTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.accent1,
-                                                       darkModeColor: UIColor.GiniMerchantColors.accent1).uiColor()
+    private let linksTextColor: UIColor = GiniColor.accent1.uiColor()
     
-    let separatorColor: UIColor = GiniColor(lightModeColor: UIColor.GiniMerchantColors.dark5,
-                                            darkModeColor: UIColor.GiniMerchantColors.light5).uiColor()
+    let separatorColor: UIColor = GiniColor.standard5.uiColor()
     
     var questions: [FAQSection] = []
     
