@@ -10,7 +10,7 @@ class SkontoNotAppliedAmountView: UIView {
     private lazy var amountView: SkontoAmountView = {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.notapplied.amount.title",
                                                              comment: "Full amount")
-        let view = SkontoAmountView(title: title, price: viewModel.priceWithoutSkonto)
+        let view = SkontoAmountView(title: title, price: viewModel.amountToPay)
         view.delegate = self
         return view
     }()
@@ -56,7 +56,8 @@ class SkontoNotAppliedAmountView: UIView {
 
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
-        self.amountView.configure(isEditable: !isSkontoApplied, price: viewModel.priceWithoutSkonto)
+        amountView.configure(isEditable: !isSkontoApplied,
+                             price: viewModel.amountToPay)
     }
 }
 

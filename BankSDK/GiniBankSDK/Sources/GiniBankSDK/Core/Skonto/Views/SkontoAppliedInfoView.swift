@@ -18,7 +18,7 @@ class SkontoAppliedInfoView: UIView {
     private lazy var label: UILabel = {
         let label = UILabel()
         let text = String.localizedStringWithFormat(skontoTitle,
-                                                    viewModel.skontoDaysDuePeriod,
+                                                    viewModel.skontoRemainingDays,
                                                     viewModel.skontoFormattedPercentageDiscounted)
         label.text = text
         label.accessibilityValue = text
@@ -86,7 +86,7 @@ class SkontoAppliedInfoView: UIView {
 
     private func configure() {
         let text = String.localizedStringWithFormat(skontoTitle,
-                                                    viewModel.skontoDaysDuePeriod,
+                                                    viewModel.skontoRemainingDays,
                                                     viewModel.skontoFormattedPercentageDiscounted)
         label.text = text
     }
