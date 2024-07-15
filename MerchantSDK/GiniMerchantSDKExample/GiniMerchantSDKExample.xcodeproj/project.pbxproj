@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5024D0472C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5024D0462C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift */; };
+		5076CDC92C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5076CDC82C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift */; };
 		507A25E12C355DA900A7106E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E02C355DA900A7106E /* AppDelegate.swift */; };
 		507A25E32C355DA900A7106E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E22C355DA900A7106E /* SceneDelegate.swift */; };
 		507A25E52C355DA900A7106E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E42C355DA900A7106E /* ViewController.swift */; };
@@ -68,6 +70,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5024D0462C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleWrongCertificatesTests.swift; sourceTree = "<group>"; };
+		5076CDC82C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleIntegrationTests.swift; sourceTree = "<group>"; };
 		507A25DE2C355DA900A7106E /* GiniMerchantSDKPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniMerchantSDKPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		507A25E02C355DA900A7106E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		507A25E22C355DA900A7106E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -211,6 +215,8 @@
 		50D80D6D2C245A8A00B446A8 /* GiniMerchantSDKExampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				5024D0462C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift */,
+				5076CDC82C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift */,
 				50D80D6E2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.swift */,
 			);
 			path = GiniMerchantSDKExampleTests;
@@ -512,6 +518,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				50D80D6F2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.swift in Sources */,
+				5024D0472C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift in Sources */,
+				5076CDC92C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
