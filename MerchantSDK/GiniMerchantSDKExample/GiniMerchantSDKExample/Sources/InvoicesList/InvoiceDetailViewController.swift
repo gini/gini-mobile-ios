@@ -28,33 +28,15 @@ final class InvoiceDetailViewController: UIViewController {
     }
 
     private lazy var invoiceNumberLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Invoice number: \n\(invoice.documentID)"
-        label.textColor = .black
-        label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+        labelTitle("Invoice number: \n\(invoice.documentID)")
     }()
 
     private lazy var dueDateLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Due date: \n\(invoice.paymentDueDate ?? "")"
-        label.textColor = .black
-        label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+        labelTitle("Due date: \n\(invoice.paymentDueDate ?? "")")
     }()
 
     private lazy var amountLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Amount: \n\(invoice.amountToPay ?? "")"
-        label.textColor = .black
-        label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+        labelTitle("Amount: \n\(invoice.amountToPay ?? "")")
     }()
 
     private lazy var payNowButton: UIButton = {
@@ -211,6 +193,18 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
         } else {
             self.present(viewController, animated: animated)
         }
+    }
+}
+
+private extension InvoiceDetailViewController {
+    func labelTitle(_ title: String) -> UILabel {
+        let label = UILabel()
+        label.text = title
+        label.textColor = .black
+        label.numberOfLines = 2
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }
 }
 
