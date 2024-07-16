@@ -26,24 +26,22 @@ class DebugMenuViewController: UIViewController {
 
     private lazy var reviewScreenOptionLabel: UILabel = rowTitle("Show Review Screen")
 
-    private lazy var reviewScreenSwitch: UISwitch = switchView(isOn: showReviewScreen)
+    private var reviewScreenSwitch: UISwitch!
 
     private lazy var reviewScreenRow: UIStackView = stackView(axis: .horizontal, subviews: [reviewScreenOptionLabel, reviewScreenSwitch])
 
     private lazy var amountEditableOptionLabel: UILabel = rowTitle("Amount field is editable")
 
-    private lazy var amountEditableSwitch: UISwitch = switchView(isOn: isAmountFieldEditable)
+    private var amountEditableSwitch: UISwitch!
 
     private lazy var amountEditableRow: UIStackView = stackView(axis: .horizontal, subviews: [amountEditableOptionLabel, amountEditableSwitch])
 
     weak var delegate: DebugMenuDelegate?
-    private var showReviewScreen: Bool
-    private var isAmountFieldEditable: Bool
 
     init(showReviewScreen: Bool, isAmountFieldEditable: Bool) {
-        self.showReviewScreen = showReviewScreen
-        self.isAmountFieldEditable = isAmountFieldEditable
         super.init(nibName: nil, bundle: nil)
+        self.reviewScreenSwitch = self.switchView(isOn: showReviewScreen)
+        self.amountEditableSwitch = self.switchView(isOn: isAmountFieldEditable)
     }
 
     required init?(coder: NSCoder) {
