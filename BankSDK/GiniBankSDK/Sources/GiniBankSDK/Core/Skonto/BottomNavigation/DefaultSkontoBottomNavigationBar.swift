@@ -44,16 +44,6 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         return button
     }()
 
-    private lazy var buttonsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [backButton.buttonView, proceedButton])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = Constants.padding
-        return stackView
-    }()
-
     private lazy var totalLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -144,7 +134,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         addSubview(totalLabel)
         addSubview(totalValueLabel)
         addSubview(skontoBadgeView)
-        addSubview(buttonsStackView)
+        addSubview(backButton.buttonView)
         addSubview(dividerView)
         skontoBadgeView.addSubview(skontoBadgeLabel)
     }
@@ -177,12 +167,15 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            buttonsStackView.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
-                                                  constant: Constants.verticalPadding),
-            buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
-            buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
-                                                     constant: -Constants.verticalPadding),
+            backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            backButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
+
+            proceedButton.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
+                                               constant: Constants.verticalPadding),
+            proceedButton.leadingAnchor.constraint(equalTo: backButton.buttonView.trailingAnchor),
+            proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
+                                                  constant: -Constants.verticalPadding),
             proceedButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
         ])
     }
