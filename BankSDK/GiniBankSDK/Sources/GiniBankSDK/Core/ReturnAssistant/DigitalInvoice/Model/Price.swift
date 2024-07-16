@@ -58,6 +58,16 @@ struct Price {
         return Price.stringWithoutSymbol(from: value)
     }
 
+    var germanStringWithoutCurrencyCode: String? {
+        return Price.localizedStringWithoutCurrencyCode(from: value)
+    }
+
+    var localizedStringWithCurrencyCode: String? {
+        let formatter = NumberFormatter.twoDecimalPriceFormatter
+        guard let formattedValue = formatter.string(from: NSDecimalNumber(decimal: value)) else { return nil }
+        return "\(formattedValue) \(currencyCode.uppercased())"
+    }
+
     static func stringWithoutSymbol(from value: Decimal) -> String? {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
@@ -79,6 +89,15 @@ struct Price {
             )?.trimmingCharacters(in: .whitespaces)
         }
         return nil
+    }
+
+    static func convertLocalizedStringToDecimal(_ priceString: String) -> Decimal? {
+        return NumberFormatter.twoDecimalPriceFormatter.number(from: priceString.trimmingCharacters(in: .whitespaces))?.decimalValue
+    }
+
+    static func localizedStringWithoutCurrencyCode(from decimal: Decimal) -> String? {
+        let formatter = NumberFormatter.twoDecimalPriceFormatter
+        return formatter.string(from: NSDecimalNumber(decimal: decimal))
     }
 }
 
