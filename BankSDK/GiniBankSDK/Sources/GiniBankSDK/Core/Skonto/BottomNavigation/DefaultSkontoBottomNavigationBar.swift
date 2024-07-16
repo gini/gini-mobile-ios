@@ -62,7 +62,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.required, for: .vertical)
         let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
-                                                                  comment: "Total")
+                                                            comment: "Total")
         label.text = text
         label.accessibilityValue = text
         return label
