@@ -9,11 +9,10 @@ import GiniCaptureSDK
 
 public class SkontoViewController: UIViewController {
     private lazy var invoicePreviewView: SkontoInvoicePreviewView = {
-        let iconImage = GiniImages.invoicePlaceholderIcon.image
         let view = SkontoInvoicePreviewView(viewModel: viewModel)
         return view
     }()
-    
+
     private lazy var invoiceGroupView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
