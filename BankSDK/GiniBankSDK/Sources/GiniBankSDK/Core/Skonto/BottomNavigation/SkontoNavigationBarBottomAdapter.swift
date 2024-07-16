@@ -34,6 +34,7 @@ public protocol SkontoNavigationBarBottomAdapter: InjectedViewAdapter {
      */
     func updateTotalPrice(priceWithCurrencyCode price: String?)
 
+    // TODO: To specify what we exactly need to expose
     /**
      *  Set the discount value on the bottom navigation bar. Called when Skonto applies
      *
