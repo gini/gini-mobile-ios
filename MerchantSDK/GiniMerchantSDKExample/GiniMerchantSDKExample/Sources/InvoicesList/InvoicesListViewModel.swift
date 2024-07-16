@@ -68,8 +68,6 @@ final class InvoicesListViewModel {
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
         self.paymentComponentsController.delegate = self
-//        self.paymentComponentsController.viewDelegate = self
-//        self.paymentComponentsController.bottomViewDelegate = self
     }
     
     func viewDidLoad() {

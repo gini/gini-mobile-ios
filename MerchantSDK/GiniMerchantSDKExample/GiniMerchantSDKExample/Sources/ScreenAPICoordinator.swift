@@ -73,7 +73,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
             var healthExtractions: [GiniMerchantSDK.Extraction] = []
-            captureExtractedResults = result.extractions.map { $0.value}
+            captureExtractedResults = result.extractions.map { $0.value }
             for extraction in captureExtractedResults {
                 healthExtractions.append(GiniMerchantSDK.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
             }
@@ -86,7 +86,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
                         giniMerchant.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
                             switch result {
                             case let .success(extractionResult):
-                                print("✅Successfully fetched extractions for id: \(docId)")
+                                print("✅ Successfully fetched extractions for id: \(docId)")
                                 // Store invoice/document into Invoices list
                                 let invoice = DocumentWithExtractions(documentID: docId,
                                                                       extractionResult: extractionResult)
@@ -97,7 +97,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
                                     })
                                 }
                             case let .failure(error):
-                                print("❌Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))")
+                                print("❌ Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))")
                             }
                         }
                     case .failure(let error):
