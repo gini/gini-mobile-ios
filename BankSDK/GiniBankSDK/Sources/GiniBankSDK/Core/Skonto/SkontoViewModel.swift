@@ -7,7 +7,8 @@
 import Foundation
 
 protocol SkontoViewModelDelegate: AnyObject {
-    func didTapHelp()
+    // MARK: Temporary remove help action
+//    func didTapHelp()
     func didTapBack()
     func didTapProceed(on viewModel: SkontoViewModel)
 }
@@ -29,13 +30,12 @@ class SkontoViewModel {
     private (set) var currencyCode: String
     private (set) var skontoRemainingDays: Int
 
-    var totalPrice: Price {
+    var finalAmountToPay: Price {
         return isSkontoApplied ? skontoAmountToPay : amountToPay
     }
 
-
     var skontoFormattedPercentageDiscounted: String {
-        let formatter = NumberFormatter.skontoDiscountFormatter
+        let formatter = NumberFormatter.floorRoundingFormatter
         if let formattedValue = formatter.string(from: NSNumber(value: skontoPercentage)) {
             return "\(formattedValue)%"
         } else {
@@ -57,7 +57,7 @@ class SkontoViewModel {
         self.skontoPercentage = skontoDiscountDetails.percentageDiscounted
         skontoRemainingDays = skontoDiscountDetails.remainingDays
 
-        self.recalculatePriceWithSkonto()
+        self.recalculateAmountToPayWithSkonto()
     }
 
     func toggleDiscount() {
@@ -72,14 +72,14 @@ class SkontoViewModel {
             return
         }
         skontoAmountToPay = price
-        recalculateSkontoValue()
+        recalculateSkontoPercentage()
         notifyStateChangeHandlers()
     }
 
     func setDefaultPrice(price: String) {
         guard let price = convertPriceStringToPrice(price: price) else { return }
         amountToPay = price
-        recalculatePriceWithSkonto()
+        recalculateAmountToPayWithSkonto()
         notifyStateChangeHandlers()
     }
 
@@ -105,9 +105,10 @@ class SkontoViewModel {
         }
     }
 
-    func helpButtonTapped() {
-        delegate?.didTapHelp()
-    }
+    // MARK: Temporary remove help action
+//    func helpButtonTapped() {
+//        delegate?.didTapHelp()
+//    }
 
     func backButtonTapped() {
         delegate?.didTapBack()
@@ -117,12 +118,16 @@ class SkontoViewModel {
         delegate?.didTapProceed(on: self)
     }
 
-    private func recalculatePriceWithSkonto() {
+    private func recalculateAmountToPayWithSkonto() {
         let calculatedPrice = amountToPay.value * (1 - Decimal(skontoPercentage) / 100)
         skontoAmountToPay = Price(value: calculatedPrice, currencyCode: currencyCode)
     }
 
-    private func recalculateSkontoValue() {
+    private func recalculateSkontoPercentage() {
+        guard amountToPay.value > 0 else {
+            return
+        }
+
         let skontoPercentage = ((amountToPay.value - skontoAmountToPay.value) / amountToPay.value) * 100
         self.skontoPercentage = Double(truncating: skontoPercentage as NSNumber)
     }

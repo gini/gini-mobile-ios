@@ -2,10 +2,10 @@
 //  Data.swift
 //  GiniHealthAPI
 //
-//  Created by Enrique del Pozo Gómez on 3/21/19.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension Data {
     private static let mimeTypeSignatures: [UInt8: String] = [
@@ -43,5 +43,15 @@ extension Data {
         } else {
             return nil
         }
+    }
+
+    func isImage() -> Bool {
+        return UIImage(data: self) != nil
+    }
+
+    func isImageSizeBiggerThan(maximumSizeInMB: Double) -> Bool {
+        let sizeInBytes = self.count
+        let sizeInMB = Double(sizeInBytes) / (1024.0 * 1024.0)
+        return sizeInMB > maximumSizeInMB
     }
 }
