@@ -106,5 +106,5 @@
 "ginibank.skonto.total.amount.skonto" = "%@ Skonto discount";
 "ginibank.skonto.paybutton.title" = "Continue to pay";
 "ginibank.skonto.total.title" = "Total";
-"ginibank.skonto.invoice.title" = "Invoice";
+"ginibank.skonto.invoice.title" = "Your invoice";
 "ginibank.skonto.invoice.subtitle" = "Tap to view";
