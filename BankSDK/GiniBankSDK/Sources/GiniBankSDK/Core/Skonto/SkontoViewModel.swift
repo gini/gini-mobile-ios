@@ -26,15 +26,15 @@ class SkontoViewModel {
     private (set) var skontoAmountToPay: Price
 
     private (set) var dueDate: Date
-    private (set) var skontoAmountDiscounted: Price
+    private (set) var amountToPayDiscounted: Price
     private (set) var currencyCode: String
-    private (set) var skontoRemainingDays: Int
+    private (set) var remainingDays: Int
 
     var finalAmountToPay: Price {
         return isSkontoApplied ? skontoAmountToPay : amountToPay
     }
 
-    var skontoFormattedPercentageDiscounted: String {
+    var formattedPercentageDiscounted: String {
         let formatter = NumberFormatter.floorRoundingFormatter
         if let formattedValue = formatter.string(from: NSNumber(value: skontoPercentage)) {
             return "\(formattedValue)%"
@@ -50,14 +50,14 @@ class SkontoViewModel {
         self.skontoDiscountDetails = skontoDiscountDetails
         isSkontoApplied = true
         self.amountToPay = amountToPay
-        self.skontoAmountToPay = skontoDiscountDetails.amountToPay
-        self.dueDate = skontoDiscountDetails.dueDate
-        skontoAmountDiscounted = skontoDiscountDetails.amountDiscounted
-        self.currencyCode = amountToPay.currencyCode
-        self.skontoPercentage = skontoDiscountDetails.percentageDiscounted
-        skontoRemainingDays = skontoDiscountDetails.remainingDays
+        skontoAmountToPay = skontoDiscountDetails.amountToPay
+        dueDate = skontoDiscountDetails.dueDate
+        amountToPayDiscounted = skontoDiscountDetails.amountDiscounted
+        currencyCode = amountToPay.currencyCode
+        skontoPercentage = skontoDiscountDetails.percentageDiscounted
+        remainingDays = skontoDiscountDetails.remainingDays
 
-        self.recalculateAmountToPayWithSkonto()
+       recalculateAmountToPayWithSkonto()
     }
 
     func toggleDiscount() {
