@@ -52,7 +52,7 @@ class SkontoProceedView: UIView {
         label.font = configuration.textStyleFonts[.caption1]
         label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
         let labelText = String.localizedStringWithFormat(skontoTitle,
-                                                         viewModel.skontoFormattedPercentageDiscounted)
+                                                         viewModel.formattedPercentageDiscounted)
         label.text = labelText
         label.numberOfLines = 0
         label.accessibilityValue = labelText
@@ -159,7 +159,7 @@ class SkontoProceedView: UIView {
         let isSkontoApplied = viewModel.isSkontoApplied
         skontoBadgeView.isHidden = !isSkontoApplied
         skontoBadgeLabel.text = String.localizedStringWithFormat(skontoTitle,
-                                                                 viewModel.skontoFormattedPercentageDiscounted)
+                                                                 viewModel.formattedPercentageDiscounted)
         totalValueLabel.text = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
     }
 
