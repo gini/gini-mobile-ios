@@ -90,7 +90,7 @@ class SkontoInvoicePreviewView: UIView {
             textStackView.trailingAnchor.constraint(lessThanOrEqualTo: chevronImageView.leadingAnchor),
             textStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
-            chevronImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constants.chevronTrailing),
+            chevronImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.chevronTrailing),
             chevronImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
@@ -104,6 +104,6 @@ private extension SkontoInvoicePreviewView {
         static let imageViewSize: CGFloat = 40
         static let imageViewLeading: CGFloat = 0
         static let stackViewLeading: CGFloat = 12
-        static let chevronTrailing: CGFloat = 0
+        static let chevronTrailing: CGFloat = 8
     }
 }
