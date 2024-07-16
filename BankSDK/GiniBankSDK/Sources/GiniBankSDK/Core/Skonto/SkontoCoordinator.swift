@@ -46,9 +46,10 @@ final class SkontoCoordinator: Coordinator {
 }
 
 extension SkontoCoordinator: SkontoViewModelDelegate {
-    func didTapHelp() {
-        // Should display Help screen
-    }
+    // MARK: Temporary remove help action
+//    func didTapHelp() {
+//        // Should display Help screen
+//    }
 
     func didTapBack() {
         delegate?.didCancelAnalysis(self)

@@ -70,6 +70,7 @@ class SkontoAppliedDateView: UIView {
         containerView.addSubview(textField)
         containerView.addSubview(calendarImageView)
         setupConstraints()
+        addTapGestureRecognizer()
         configureDatePicker()
         bindViewModel()
     }
@@ -102,6 +103,16 @@ class SkontoAppliedDateView: UIView {
             calendarImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
             calendarImageView.heightAnchor.constraint(equalToConstant: Constants.imageSize)
         ])
+    }
+
+    private func addTapGestureRecognizer() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc private func handleTap() {
+        guard viewModel.isSkontoApplied  else { return }
+        textField.becomeFirstResponder()
     }
 
     private func bindViewModel() {

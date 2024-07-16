@@ -14,7 +14,7 @@ class SkontoProceedView: UIView {
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.paybutton.title",
-                                                                   comment: "Proceed")
+                                                                   comment: "Continue to pay")
         button.accessibilityValue = buttonTitle
         button.setTitle(buttonTitle, for: .normal)
         button.addTarget(self, action: #selector(proceedButtonTapped), for: .touchUpInside)
@@ -39,7 +39,7 @@ class SkontoProceedView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        let labelText = viewModel.totalPrice.localizedStringWithCurrencyCode
+        let labelText = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
         label.text = labelText
         label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
@@ -54,6 +54,7 @@ class SkontoProceedView: UIView {
         let labelText = String.localizedStringWithFormat(skontoTitle,
                                                          viewModel.skontoFormattedPercentageDiscounted)
         label.text = labelText
+        label.numberOfLines = 0
         label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -156,14 +157,14 @@ class SkontoProceedView: UIView {
 
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
-        self.skontoBadgeView.isHidden = !isSkontoApplied
-        self.skontoBadgeLabel.text = String.localizedStringWithFormat(skontoTitle,
-                                                                      viewModel.skontoFormattedPercentageDiscounted)
-        self.totalValueLabel.text = viewModel.totalPrice.localizedStringWithCurrencyCode
+        skontoBadgeView.isHidden = !isSkontoApplied
+        skontoBadgeLabel.text = String.localizedStringWithFormat(skontoTitle,
+                                                                 viewModel.skontoFormattedPercentageDiscounted)
+        totalValueLabel.text = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
     }
 
     @objc private func proceedButtonTapped() {
-        self.viewModel.proceedButtonTapped()
+        viewModel.proceedButtonTapped()
     }
 }
 

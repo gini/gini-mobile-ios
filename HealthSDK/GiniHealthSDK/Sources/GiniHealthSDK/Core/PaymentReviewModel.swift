@@ -205,8 +205,10 @@ public class PaymentReviewModel: NSObject {
             switch result {
                 case .success(let data):
                     completion(data)
-                case .failure:
-                    break
+                case let .failure(error):
+                    if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: .apiError(error)) {
+                        self?.onCreatePaymentRequestErrorHandling()
+                    }
             }
         }
     }

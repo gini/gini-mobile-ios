@@ -21,13 +21,6 @@ public protocol SkontoNavigationBarBottomAdapter: InjectedViewAdapter {
     func setProceedButtonClickedActionCallback(_ callback: @escaping  () -> Void)
 
     /**
-     *  Set the callback for the help button action.
-     *
-     * - Parameter callback: An  action callback, which should be retained and called in help button action method
-     */
-    func setHelpButtonClickedActionCallback(_ callback: @escaping  () -> Void)
-
-    /**
      *  Set the callback for the back button action.
      *
      * - Parameter callback: An  action callback, which should be retained and called in back button action method

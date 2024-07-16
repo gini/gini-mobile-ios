@@ -84,6 +84,7 @@ class SkontoAmountView: UIView {
         containerView.addSubview(textField)
         containerView.addSubview(currencyLabel)
         setupConstraints()
+        addTapGestureRecognizer()
     }
 
     private func setupConstraints() {
@@ -109,6 +110,16 @@ class SkontoAmountView: UIView {
                                                    constant: Constants.currencyLabelHorizontalPadding),
             currencyLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding)
         ])
+    }
+
+    private func addTapGestureRecognizer() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc private func handleTap() {
+        guard isEditable else { return }
+        textField.becomeFirstResponder()
     }
 
     func configure(isEditable: Bool, price: Price) {
