@@ -277,10 +277,9 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
                 DispatchQueue.main.async {
 
-//                    if GiniBankConfiguration.shared.returnAssistantEnabled {
-//                        self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
-//                    } else 
-                    if GiniBankConfiguration.shared.skontoEnabled {
+                    if GiniBankConfiguration.shared.returnAssistantEnabled {
+                        self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
+                    } else if GiniBankConfiguration.shared.skontoEnabled {
                         self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
                         self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
