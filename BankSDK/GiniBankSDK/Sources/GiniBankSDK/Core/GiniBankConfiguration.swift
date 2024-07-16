@@ -296,7 +296,16 @@ public final class GiniBankConfiguration: NSObject {
      Set an adapter implementation to show a custom bottom navigation bar on the digital invoice overview screen.
      */
     public var digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
-    
+
+    // MARK: - Skonto feature
+
+    /**
+     Indicates whether the Skonto feature is enabled or not. In the case of `true`,
+     the user will be presented with a screen where they can see choose to pay the invoice
+     applying Skonto or not.
+     */
+    public var skontoEnabled = true
+
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the Skonto screen.
      */
@@ -307,13 +316,6 @@ public final class GiniBankConfiguration: NSObject {
      the users will be asked to select from a predefined list of reasons why they decided to return an item.
      */
     public var enableReturnReasons: Bool = false
-
-    /**
-     Indicates whether the Skonto feature is enabled or not. In the case of `true`,
-     the user will be presented with a screen where they can see choose to pay the invoice
-     applying Skonto or not.
-     */
-    public var skontoEnabled = true
 
     /**
      Set the entry point used for launching the Gini Bank SDK.
