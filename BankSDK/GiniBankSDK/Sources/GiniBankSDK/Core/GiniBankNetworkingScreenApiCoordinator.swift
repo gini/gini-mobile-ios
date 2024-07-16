@@ -122,9 +122,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 lib: GiniBankAPI) {
         documentService = GiniBankNetworkingScreenApiCoordinator.documentService(with: lib,
-                                                               documentMetadata: documentMetadata,
-                                                               configuration: configuration,
-                                                               for: api)
+                                                                                 documentMetadata: documentMetadata,
+                                                                                 configuration: configuration,
+                                                                                 for: api)
         let captureConfiguration = configuration.captureConfiguration()
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
 
@@ -261,6 +261,13 @@ extension GiniBankNetworkingScreenApiCoordinator {
         coordinator.start()
     }
 
+    public func showSkontoScreen() {
+        let coordinator = SkontoCoordinator(navigationController: screenAPINavigationController)
+        coordinator.delegate = self
+        childCoordinators.append(coordinator)
+        coordinator.start()
+    }
+
     public func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
         documentService.startAnalysis { result in
 
@@ -268,18 +275,29 @@ extension GiniBankNetworkingScreenApiCoordinator {
             case let .success(extractionResult):
 
                 DispatchQueue.main.async {
+
                     if GiniBankConfiguration.shared.returnAssistantEnabled {
                         do {
                             let digitalInvoice = try DigitalInvoice(extractionResult: extractionResult)
                             self.showDigitalInvoiceScreen(digitalInvoice: digitalInvoice,
                                                           analysisDelegate: networkDelegate)
                         } catch {
-                            self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                            // TODO: Please revisit this when the backend is in place
+                            // Shows the Skonto screen in the flow
+
+                            extractionResult.lineItems = nil
+                            self.showSkontoScreen()
+
+                            // self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
                         }
 
                     } else {
+                        // TODO: Please revisit this when the backend is in place
+                        // Shows the Skonto screen in the flow
+
                         extractionResult.lineItems = nil
-                        self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                        self.showSkontoScreen()
+//                        self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
                     }
                 }
 
@@ -333,6 +351,20 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
     }
 
     func didCancelAnalysis(_ coordinator: DigitalInvoiceCoordinator) {
+        childCoordinators = childCoordinators.filter { $0 !== coordinator }
+        resultsDelegate?.giniCaptureDidCancelAnalysis()
+    }
+}
+
+extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
+    func didCancelAnalysis(_ coordinator: SkontoCoordinator) {
+        childCoordinators = childCoordinators.filter { $0 !== coordinator }
+        pages = []
+        _ = start(withDocuments: nil, animated: true)
+    }
+
+    func didFinishAnalysis(_ coordinator: SkontoCoordinator) {
+        // TODO: needs to be implemented accordingly
         childCoordinators = childCoordinators.filter { $0 !== coordinator }
         resultsDelegate?.giniCaptureDidCancelAnalysis()
     }
