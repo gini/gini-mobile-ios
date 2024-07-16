@@ -33,14 +33,13 @@ final class SkontoCoordinator: Coordinator {
         navigationController.pushViewController(rootViewController, animated: true)
     }
 
-    init(navigationController: UINavigationController) {
+    init(_ navigationController: UINavigationController,
+         _ skontoDiscounts: SkontoDiscounts) {
         self.navigationController = navigationController
 
-        let skontoViewModel = SkontoViewModel(isSkontoApplied: true,
-                                              skontoValue: 3.0,
-                                              date: Date(),
-                                              priceWithoutSkonto: .init(value: 99.99, currencyCode: "EUR"))
-
+        let skontoDiscount = skontoDiscounts.discounts[0]
+        let skontoViewModel = SkontoViewModel(skontoDiscountDetails: skontoDiscount,
+                                              amountToPay: skontoDiscounts.totalAmountToPay)
         skontoViewModel.delegate = self
         skontoViewController = SkontoViewController(viewModel: skontoViewModel)
     }
