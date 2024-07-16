@@ -7,7 +7,7 @@
 import Foundation
 
 extension Date {
-    func formattedDateString() -> String {
+    var dateString: String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
         dateFormatter.dateStyle = .short

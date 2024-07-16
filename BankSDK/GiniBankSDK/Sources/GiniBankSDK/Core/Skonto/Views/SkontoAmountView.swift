@@ -66,7 +66,7 @@ class SkontoAmountView: UIView {
          isEditable: Bool = true) {
         self.titleLabelText = title
         self.textFieldInitialText = price.germanStringWithoutCurrencyCode ?? ""
-        self.currencyLabelText = price.currencyCode
+        self.currencyLabelText = price.currencyCode.uppercased()
         self.isEditable = isEditable
         super.init(frame: .zero)
         setupView()

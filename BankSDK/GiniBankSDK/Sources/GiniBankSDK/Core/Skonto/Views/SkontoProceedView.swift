@@ -39,7 +39,7 @@ class SkontoProceedView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        let labelText = viewModel.totalPrice.localizedStringWithCurrencyCode
+        let labelText = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
         label.text = labelText
         label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
@@ -52,7 +52,7 @@ class SkontoProceedView: UIView {
         label.font = configuration.textStyleFonts[.caption1]
         label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
         let labelText = String.localizedStringWithFormat(skontoTitle,
-                                                         viewModel.skontoFormattedPercentageDiscounted)
+                                                         viewModel.formattedPercentageDiscounted)
         label.text = labelText
         label.numberOfLines = 0
         label.accessibilityValue = labelText
@@ -157,14 +157,14 @@ class SkontoProceedView: UIView {
 
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
-        self.skontoBadgeView.isHidden = !isSkontoApplied
-        self.skontoBadgeLabel.text = String.localizedStringWithFormat(skontoTitle,
-                                                                      viewModel.skontoFormattedPercentageDiscounted)
-        self.totalValueLabel.text = viewModel.totalPrice.localizedStringWithCurrencyCode
+        skontoBadgeView.isHidden = !isSkontoApplied
+        skontoBadgeLabel.text = String.localizedStringWithFormat(skontoTitle,
+                                                                 viewModel.formattedPercentageDiscounted)
+        totalValueLabel.text = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
     }
 
     @objc private func proceedButtonTapped() {
-        self.viewModel.proceedButtonTapped()
+        viewModel.proceedButtonTapped()
     }
 }
 
