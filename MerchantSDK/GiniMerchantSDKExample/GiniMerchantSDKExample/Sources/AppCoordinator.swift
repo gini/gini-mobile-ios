@@ -137,12 +137,12 @@ final class AppCoordinator: Coordinator {
                     self.merchant.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
                         switch result {
                         case let .success(extractionResult):
-                            print("✅Successfully fetched extractions for id: \(document.id)")
+                            print("✅ Successfully fetched extractions for id: \(document.id)")
                             let invoice = DocumentWithExtractions(documentID: document.id,
                                                                   extractionResult: extractionResult)
                             self?.showInvoicesList(invoices: [invoice])
                         case let .failure(error):
-                            print("❌Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))")
+                            print("❌ Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))")
                         }
                     }
                 case .failure(let error):
@@ -179,12 +179,12 @@ final class AppCoordinator: Coordinator {
                                     self?.merchant.documentService.extractions(for: compositeDocument, cancellationToken: CancellationToken()) { [weak self] result in
                                         switch result {
                                         case let .success(extractionResult):
-                                            print("✅Successfully fetched extractions for id: \(compositeDocument.id)")
+                                            print("✅ Successfully fetched extractions for id: \(compositeDocument.id)")
                                             let invoice = DocumentWithExtractions(documentID: compositeDocument.id,
                                                                                   extractionResult: extractionResult)
                                             self?.showInvoicesList(invoices: [invoice])
                                         case let .failure(error):
-                                            print("❌Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))")
+                                            print("❌ Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))")
                                         }
                                     }
                                 case .failure(let error):

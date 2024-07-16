@@ -31,7 +31,7 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
                 print("⚠️ Invoice with name \(invoiceTitle) doesn't exist.")
             }
         }
-        print("✅Successfully obtained \(invoicesData.count) invoices data")
+        print("✅ Successfully obtained \(invoicesData.count) invoices data")
         completion(invoicesData)
     }
     
