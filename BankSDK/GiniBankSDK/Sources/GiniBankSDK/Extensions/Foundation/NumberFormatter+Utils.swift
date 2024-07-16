@@ -17,7 +17,7 @@ extension NumberFormatter {
         return formatter
     }
 
-    static var skontoPriceFormatter: NumberFormatter {
+    static var twoDecimalPriceFormatter: NumberFormatter {
         let formatter = makeLocalizedDecimalFormatter()
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
