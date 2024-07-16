@@ -92,3 +92,17 @@
 
 "ginibank.digitalinvoice.edit.name.error" = "Please enter the article name.";
 "ginibank.digitalinvoice.edit.price.error" = "Please enter the article price.";
+
+"ginibank.skonto.screen.title" = "Skonto";
+"ginibank.skonto.backButton.title" = "Back";
+"ginibank.skonto.info.title" = "With Skonto discount";
+"ginibank.skonto.info.status" = "• Active";
+// TODO: check skontoDuePeriod how will be applied for localizable string after backend integration
+"ginibank.skonto.info.message" = "Pay in %@: %@ Skonto discount.";
+"ginibank.skonto.info.amount.title" = "Final amount";
+"ginibank.skonto.info.date.title" = "Due date";
+"ginibank.skonto.notapplied.title" = "Without Skonto discount";
+"ginibank.skonto.notapplied.amount.title" = "Full amount";
+"ginibank.skonto.total.amount.skonto" = "%@ Skonto discount";
+"ginibank.skonto.paybutton.title" = "Continue to pay";
+"ginibank.skonto.total.title" = "Total";
