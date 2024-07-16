@@ -296,6 +296,11 @@ public final class GiniBankConfiguration: NSObject {
      Set an adapter implementation to show a custom bottom navigation bar on the digital invoice overview screen.
      */
     public var digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
+    
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the Skonto screen.
+     */
+    public var skontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
 
     /**
      Indicates whether the Return reasons feature is enabled or not. In the case of `true`,
