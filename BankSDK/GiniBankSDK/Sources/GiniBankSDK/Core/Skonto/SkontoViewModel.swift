@@ -43,6 +43,13 @@ class SkontoViewModel {
         }
     }
 
+    var localizedRemainingDays: String {
+        let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.day",
+                                                            comment: "%@ days")
+        return String.localizedStringWithFormat(text,
+                                                remainingDays)
+    }
+
     weak var delegate: SkontoViewModelDelegate?
 
     init(skontoDiscountDetails: SkontoDiscountDetails,
