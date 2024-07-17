@@ -151,10 +151,4 @@ struct SkontoDiscountDetails {
         }
         return Int(extractedRemainingDays) ?? 0
     }
-
-//    private static func skontoRemainingDaysInt(from extractionString: String) -> Int? {
-//        let components = extractionString.components(separatedBy: ":")
-//        guard components.count == 2 else { return nil }
-//        return Int(components[0])
-//    }
 }
