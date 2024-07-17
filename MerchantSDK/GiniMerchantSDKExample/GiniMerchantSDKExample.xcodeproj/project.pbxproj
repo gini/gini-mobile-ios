@@ -80,6 +80,7 @@
 		507A25F72C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKPinningExampleTests.swift; sourceTree = "<group>"; };
 		507A26102C35700F00A7106E /* GiniMerchantSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniMerchantSDKPinning; path = ../GiniMerchantSDKPinning; sourceTree = "<group>"; };
 		507A26112C35B5C200A7106E /* GiniMerchantSDKPinningExampleWrongCertificatesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKPinningExampleWrongCertificatesTests.swift; sourceTree = "<group>"; };
+		5087AF392C46E27D008B3403 /* GiniMerchantSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniMerchantSDKExample.entitlements; sourceTree = "<group>"; };
 		50D80D542C245A8900B446A8 /* GiniMerchantSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniMerchantSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D80D572C245A8900B446A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		50D80D592C245A8900B446A8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -201,6 +202,7 @@
 		50D80D562C245A8900B446A8 /* GiniMerchantSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				5087AF392C46E27D008B3403 /* GiniMerchantSDKExample.entitlements */,
 				50D80DC82C24788F00B446A8 /* Sources */,
 				50D80DC72C24786500B446A8 /* Resources */,
 				50D80D652C245A8A00B446A8 /* Info.plist */,
@@ -798,7 +800,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
@@ -832,7 +834,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
