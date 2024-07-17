@@ -193,3 +193,16 @@ extension Document.TypeV2 {
         }
     }
 }
+
+//MARK: - Log
+
+extension LogLevel {
+    func toHealthLogLevel() -> GiniHealthAPILibrary.LogLevel {
+        switch self {
+        case .debug:
+            return .debug
+        case .none:
+            return .none
+        }
+    }
+}
