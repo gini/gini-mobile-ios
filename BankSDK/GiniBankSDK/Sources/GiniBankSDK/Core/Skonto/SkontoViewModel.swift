@@ -29,6 +29,7 @@ class SkontoViewModel {
     private (set) var amountToPayDiscounted: Price
     private (set) var currencyCode: String
     private (set) var remainingDays: Int
+    private (set) var edgeCase: SkontoEdgeCase?
 
     var finalAmountToPay: Price {
         return isSkontoApplied ? skontoAmountToPay : amountToPay
@@ -63,8 +64,8 @@ class SkontoViewModel {
         currencyCode = amountToPay.currencyCode
         skontoPercentage = skontoDiscountDetails.percentageDiscounted
         remainingDays = skontoDiscountDetails.remainingDays
-
-       recalculateAmountToPayWithSkonto()
+        recalculateAmountToPayWithSkonto()
+        determineSkontoEdgeCase()
     }
 
     func toggleDiscount() {
@@ -99,6 +100,7 @@ class SkontoViewModel {
 
     func set(date: Date) {
         self.dueDate = date
+        determineSkontoEdgeCase()
         notifyStateChangeHandlers()
     }
 
@@ -137,5 +139,19 @@ class SkontoViewModel {
 
         let skontoPercentage = ((amountToPay.value - skontoAmountToPay.value) / amountToPay.value) * 100
         self.skontoPercentage = Double(truncating: skontoPercentage as NSNumber)
+    }
+
+    private func determineSkontoEdgeCase() {
+        if remainingDays < 0 {
+            edgeCase = .expired
+            isSkontoApplied = false
+        } else if skontoDiscountDetails.paymentMethod == .cash {
+            edgeCase = .payByCash
+            isSkontoApplied = false
+        } else if remainingDays == 0 {
+            edgeCase = .oneDayLeft
+        } else {
+            edgeCase = nil
+        }
     }
 }
