@@ -655,12 +655,14 @@ public final class GiniBankConfiguration: NSObject {
         guard let documentService = documentService else { return }
         documentService.resetToInitialState()
         self.documentService = nil
-        self.lineItems = nil
+        lineItems = nil
+        skontoDiscounts = nil
     }
 
     // MARK: - Internal usage
     var documentService: DocumentServiceProtocol?
     var lineItems: [[Extraction]]?
+    var skontoDiscounts: [[Extraction]]?
 
     /**
      Set dictionary of fonts for available text styles. Used internally.
