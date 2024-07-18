@@ -15,6 +15,8 @@ public class SkontoViewController: UIViewController {
 
     private lazy var infoView: SkontoAppliedInfoView = {
         let view = SkontoAppliedInfoView(viewModel: viewModel)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showAlertIfNeeded))
+        view.addGestureRecognizer(tapGesture)
         return view
     }()
 
@@ -92,6 +94,11 @@ public class SkontoViewController: UIViewController {
         setupView()
         setupConstraints()
         setupKeyboardObservers()
+    }
+
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showAlertIfNeeded()
     }
 
     deinit {
@@ -283,6 +290,23 @@ public class SkontoViewController: UIViewController {
 
     @objc private func endEditing() {
         view.endEditing(true)
+    }
+
+    private func showAlert(with message: String) {
+        let alert = UIAlertController(title: "",
+                                      message: message,
+                                      preferredStyle: .alert)
+        let okAction = UIAlertAction(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.alert.ok",
+                                                                                     comment: "OK"),
+                                     style: .default)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    @objc private func showAlertIfNeeded() {
+        if let alertMessage = viewModel.alertMessage {
+            showAlert(with: alertMessage)
+        }
     }
 }
 
