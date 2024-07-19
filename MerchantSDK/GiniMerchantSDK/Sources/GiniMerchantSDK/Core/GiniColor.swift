@@ -63,3 +63,11 @@ extension GiniColor {
 
     static let feedback1 = GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1)
 }
+
+public extension UIColor {
+    static func from(giniColor: GiniColor) -> UIColor {
+        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            return traitCollection.userInterfaceStyle == .dark ? giniColor.darkModeColor : giniColor.lightModeColor
+        }
+    }
+}

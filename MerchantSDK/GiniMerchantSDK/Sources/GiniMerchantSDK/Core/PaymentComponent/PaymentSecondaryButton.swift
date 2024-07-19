@@ -106,9 +106,7 @@ extension PaymentSecondaryButton {
         leftImageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
         
         titleLabel.textColor = configuration.titleColor
-        if let inputFont = giniMerchantConfiguration.textStyleFonts[.input] {
-            titleLabel.font = inputFont
-        }
+        titleLabel.font = giniMerchantConfiguration.font(for: .input)
     }
     
     func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: UIImage?, rightImageTintColor: UIColor, shouldShowLabel: Bool) {
