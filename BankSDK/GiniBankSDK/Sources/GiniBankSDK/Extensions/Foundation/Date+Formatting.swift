@@ -13,4 +13,10 @@ extension Date {
         dateFormatter.dateStyle = .short
         return dateFormatter.string(from: self)
     }
+
+    var backendFormatString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.string(from: self)
+    }
 }
