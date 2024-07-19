@@ -22,7 +22,7 @@ class SkontoViewModel {
     private (set) var skontoDiscounts: SkontoDiscounts
     private var skontoPercentage: Double
 
-    private (set) var isSkontoApplied: Bool
+    private (set) var isSkontoApplied: Bool = true
     private (set) var amountToPay: Price
     private (set) var skontoAmountToPay: Price
 
