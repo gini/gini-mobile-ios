@@ -19,7 +19,7 @@ class SkontoViewModel {
     var endEditingAction: (() -> Void)?
     var proceedAction: (() -> Void)?
 
-    private var skontoDiscountDetails: SkontoDiscountDetails
+    private (set) var skontoDiscounts: SkontoDiscounts
     private var skontoPercentage: Double
 
     private (set) var isSkontoApplied: Bool
@@ -30,6 +30,7 @@ class SkontoViewModel {
     private (set) var amountToPayDiscounted: Price
     private (set) var currencyCode: String
     private (set) var remainingDays: Int
+    private (set) var paymentMethod: SkontoDiscountDetails.PaymentMethod
     private (set) var edgeCase: SkontoEdgeCase?
 
     var finalAmountToPay: Price {
@@ -89,6 +90,7 @@ class SkontoViewModel {
         currencyCode = amountToPay.currencyCode
         skontoPercentage = skontoDiscountDetails.percentageDiscounted
         remainingDays = skontoDiscountDetails.remainingDays
+        paymentMethod = skontoDiscountDetails.paymentMethod
         recalculateAmountToPayWithSkonto()
         determineSkontoEdgeCase()
     }
@@ -203,7 +205,7 @@ class SkontoViewModel {
         if remainingDays < 0 {
             edgeCase = .expired
             isSkontoApplied = false
-        } else if skontoDiscountDetails.paymentMethod == .cash {
+        } else if paymentMethod == .cash {
             edgeCase = .payByCash
             isSkontoApplied = false
         } else if remainingDays == 0 {
