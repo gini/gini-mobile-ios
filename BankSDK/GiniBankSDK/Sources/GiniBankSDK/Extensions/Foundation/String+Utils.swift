@@ -21,8 +21,8 @@ extension String {
 }
 
 extension String {
-    private static let dateFormatter: Foundation.DateFormatter = {
-        let formatter = Foundation.DateFormatter()
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()

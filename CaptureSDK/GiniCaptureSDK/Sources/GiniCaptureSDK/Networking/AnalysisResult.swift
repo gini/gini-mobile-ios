@@ -27,7 +27,12 @@ import GiniBankAPILibrary
      *  Line item compound extractions obtained in the analysis.
      */
     public let lineItems: [[Extraction]]?
-    
+
+    /**
+     *  Skonto extractions obtained in the analysis.
+     */
+    public let skontoDiscounts: [[Extraction]]?
+
     /**
      *  The analyzed Gini Bank API document.
      *
@@ -45,12 +50,14 @@ import GiniBankAPILibrary
     
     public init(extractions: [String: Extraction],
                 lineItems: [[Extraction]]? = nil,
+                skontoDiscounts: [[Extraction]]? = nil,
                 images: [UIImage],
                 document: Document? = nil,
                 candidates: [String: [Extraction.Candidate]]) {
         self.images = images
         self.extractions = extractions
         self.lineItems = lineItems
+        self.skontoDiscounts = skontoDiscounts
         self.document = document
         self.candidates = candidates
     }
