@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 final class PaymentInfoAnswerTableViewCell: UITableViewCell, ReusableView {
     private lazy var textView: UITextView = {

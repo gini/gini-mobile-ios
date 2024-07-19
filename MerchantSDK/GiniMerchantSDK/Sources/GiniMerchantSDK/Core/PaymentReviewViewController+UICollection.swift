@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniUtilites
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 

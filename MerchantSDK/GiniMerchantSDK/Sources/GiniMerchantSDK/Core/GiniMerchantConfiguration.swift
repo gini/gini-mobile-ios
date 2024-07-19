@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniUtilites
 
 /**
  The `GiniMerchantConfiguration` class allows customizations to the look of the Gini Merchant SDK.
@@ -19,7 +20,8 @@ import UIKit
          in project bundle, asset file in `GiniMerchant` bundle. See the avalible images for overriding in `GiniImages.xcassets`.
  */
 public final class GiniMerchantConfiguration: NSObject {
-    
+    private let fontProvider = FontProvider()
+
     /**
      Singleton to make configuration internally accessible in all classes of the Gini Merchant SDK.
      */
@@ -130,26 +132,12 @@ public final class GiniMerchantConfiguration: NSObject {
      - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
      */
     public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
-        textStyleFonts[textStyle] = font
+        fontProvider.updateFont(font, for: textStyle)
     }
-    
-    /**
-     Set dictionary of fonts for available text styles. Used internally.
-     */
-    var textStyleFonts: [UIFont.TextStyle: UIFont] = [
-        .headline1: UIFontMetrics(forTextStyle: .headline1).scaledFont(for: UIFont.systemFont(ofSize: 26, weight: .regular)),
-        .headline2: UIFontMetrics(forTextStyle: .headline2).scaledFont(for: UIFont.systemFont(ofSize: 20, weight: .bold)),
-        .headline3: UIFontMetrics(forTextStyle: .headline3).scaledFont(for: UIFont.systemFont(ofSize: 18, weight: .bold)),
-        .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 13, weight: .regular)),
-        .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 12, weight: .regular)),
-        .linkBold: UIFontMetrics(forTextStyle: .linkBold).scaledFont(for: UIFont.systemFont(ofSize: 14, weight: .bold)),
-        .subtitle1: UIFontMetrics(forTextStyle: .subtitle1).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .bold)),
-        .subtitle2: UIFontMetrics(forTextStyle: .subtitle2).scaledFont(for: UIFont.systemFont(ofSize: 14, weight: .medium)),
-        .input: UIFontMetrics(forTextStyle: .input).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .medium)),
-        .button: UIFontMetrics(forTextStyle: .button).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .bold)),
-        .body1: UIFontMetrics(forTextStyle: .body1).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .regular)),
-        .body2: UIFontMetrics(forTextStyle: .body2).scaledFont(for: UIFont.systemFont(ofSize: 14, weight: .regular)),
-    ]
+
+    public func font(for textStyle: UIFont.TextStyle) -> UIFont {
+        return fontProvider.font(for: textStyle)
+    }
 }
 
 extension GiniMerchantConfiguration {

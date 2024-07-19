@@ -41,7 +41,7 @@ class PaymentReviewContainerView: UIView {
 
     private lazy var recipientErrorLabel: UILabel = {
         let label = UILabel()
-        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
+        label.font = giniMerchantConfiguration.font(for: .captions2)
         return label
     }()
 
@@ -86,7 +86,7 @@ class PaymentReviewContainerView: UIView {
 
     private lazy var ibanErrorLabel: UILabel = {
         let label = UILabel()
-        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
+        label.font = giniMerchantConfiguration.font(for: .captions2)
         return label
     }()
 
@@ -98,7 +98,7 @@ class PaymentReviewContainerView: UIView {
 
     private lazy var amountErrorLabel: UILabel = {
         let label = UILabel()
-        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
+        label.font = giniMerchantConfiguration.font(for: .captions2)
         return label
     }()
 
@@ -117,7 +117,7 @@ class PaymentReviewContainerView: UIView {
 
     private lazy var usageErrorLabel: UILabel = {
         let label = UILabel()
-        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
+        label.font = giniMerchantConfiguration.font(for: .captions2)
         return label
     }()
 

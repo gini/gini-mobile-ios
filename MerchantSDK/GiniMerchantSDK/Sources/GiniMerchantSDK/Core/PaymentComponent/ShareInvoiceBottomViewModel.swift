@@ -88,14 +88,10 @@ final class ShareInvoiceBottomViewModel {
         titleText = titleText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
         descriptionLabelText = descriptionLabelText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
         tipLabelText = tipLabelText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
-        
-        let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
-        let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
-
-        self.titleLabelFont = giniMerchantConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
-        self.descriptionLabelFont = giniMerchantConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
-        self.tipLabelFont = giniMerchantConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
-        self.tipLabelLinkFont = giniMerchantConfiguration.textStyleFonts[.linkBold] ?? defaultBoldFont
+        self.titleLabelFont = giniMerchantConfiguration.font(for: .subtitle1)
+        self.descriptionLabelFont = giniMerchantConfiguration.font(for: .captions1)
+        self.tipLabelFont = giniMerchantConfiguration.font(for: .captions1)
+        self.tipLabelLinkFont = giniMerchantConfiguration.font(for: .linkBold)
         
         self.generateAppMockedElements()
     }

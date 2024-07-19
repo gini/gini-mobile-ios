@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniUtilites
 
 class PageCollectionViewCell: UICollectionViewCell, ReusableView {
 

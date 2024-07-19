@@ -57,14 +57,9 @@ final class BanksBottomViewModel {
     init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?, urlOpener: URLOpener = URLOpener(UIApplication.shared)) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.urlOpener = urlOpener
-        
-        let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
-        let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
-        
-        let giniMerchantConfiguration = GiniMerchantConfiguration.shared
 
-        self.selectBankLabelFont = giniMerchantConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
-        self.descriptionLabelFont = giniMerchantConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
+        self.selectBankLabelFont = GiniMerchantConfiguration.shared.font(for: .subtitle1)
+        self.descriptionLabelFont = GiniMerchantConfiguration.shared.font(for: .captions1)
 
         self.paymentProviders = paymentProviders
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,
