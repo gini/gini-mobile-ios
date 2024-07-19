@@ -7,9 +7,9 @@
 
 import Foundation
 import GiniHealthAPILibrary
-final class CredentialsManager {
+public final class CredentialsManager {
 
-    class func fetchClientFromBundle() -> Client {
+    public class func fetchClientFromBundle() -> Client {
         let clientID = "client_id"
         let clientPassword = "client_password"
         let clientEmailDomain = "client_domain"
