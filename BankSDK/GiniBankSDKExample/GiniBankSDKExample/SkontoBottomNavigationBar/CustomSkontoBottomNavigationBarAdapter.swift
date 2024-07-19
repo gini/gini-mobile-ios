@@ -40,6 +40,14 @@ final class CustomSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAda
         view?.updateDiscountBadge(enabled: enabled)
     }
 
+    func updateSavedAmount(with text: String?) {
+        view?.updateSavedAmount(with: text)
+    }
+
+    func updateSavedAmount(enabled: Bool) {
+        view?.updateSavedAmount(enabled: enabled)
+    }
+
     func injectedView() -> UIView {
         let navigationBar = CustomSkontoBottomNavigationBar(proceedAction: proceedButtonCallback,
                                                              backAction: backButtonCallback)
