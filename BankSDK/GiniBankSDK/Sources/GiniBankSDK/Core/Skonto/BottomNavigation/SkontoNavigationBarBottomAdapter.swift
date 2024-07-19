@@ -49,9 +49,17 @@ public protocol SkontoNavigationBarBottomAdapter: InjectedViewAdapter {
      */
     func updateDiscountBadge(enabled: Bool)
 
-    // TODO: Add documentation here
+    /**
+     *  Set the saved amount text on the bottom navigation bar. Called when the saved amount needs to be displayed.
+     *
+     * - Parameter text: A string which contains the value of the saved amount.
+     */
     func updateSavedAmount(with text: String?)
 
-    // TODO: Add documentation here
+    /**
+     *  Set the saved amount badge state. Called when the saved amount needs to be displayed.
+     *
+     * - Parameter enabled: A bool value to reflect the state of the saved amount badge.
+     */
     func updateSavedAmount(enabled: Bool)
 }
