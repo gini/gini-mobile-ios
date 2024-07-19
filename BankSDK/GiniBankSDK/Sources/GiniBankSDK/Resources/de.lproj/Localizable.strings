@@ -98,3 +98,4 @@
 "ginibank.skonto.total.amount.skonto" = "%@ Skonto";
 "ginibank.skonto.paybutton.title" = "Zahlung fortsetzen";
 "ginibank.skonto.total.title" = "Gesamtpreis";
+"ginibank.skonto.total.saved" = "%@ sparen ";
