@@ -188,8 +188,7 @@ class SkontoViewModel {
             if extraction.name == "skontoAmountToPay" {
                 extraction.value = "\(skontoAmountToPay.value)"
             } else if extraction.name == "skontoDueDate" {
-                // TODO: send the modified due date
-                extraction.value = "22-07-2024"
+                extraction.value = dueDate.backendFormatString
             }
             return extraction
         }
