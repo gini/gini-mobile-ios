@@ -79,10 +79,6 @@ class SkontoViewModel {
 
         // For now we don't handle multiple Skonto discounts
         let skontoDiscountDetails = skontoDiscounts.discounts[0]
-
-        // TODO: set `isSkontoApplied` based on each Skonto edgecases
-        isSkontoApplied = true
-
         self.amountToPay = amountToPay
         skontoAmountToPay = skontoDiscountDetails.amountToPay
         dueDate = skontoDiscountDetails.dueDate
@@ -218,8 +214,10 @@ class SkontoViewModel {
             isSkontoApplied = false
         } else if remainingDays == 0 {
             edgeCase = .oneDayLeft
+            isSkontoApplied = true
         } else {
             edgeCase = nil
+            isSkontoApplied = true
         }
     }
 }
