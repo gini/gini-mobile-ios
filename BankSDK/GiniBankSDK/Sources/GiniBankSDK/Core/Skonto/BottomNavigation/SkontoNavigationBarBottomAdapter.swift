@@ -48,4 +48,10 @@ public protocol SkontoNavigationBarBottomAdapter: InjectedViewAdapter {
      * - Parameter enabled: A bool value to reflect the state of the badge
      */
     func updateDiscountBadge(enabled: Bool)
+
+    // TODO: Add documentation here
+    func updateSavedAmount(with text: String?)
+
+    // TODO: Add documentation here
+    func updateSavedAmount(enabled: Bool)
 }

@@ -52,6 +52,11 @@ class SkontoViewModel {
         )
     }
 
+    var savedAmountString: String {
+        // TODO: add calculated amount string
+        return "savedAmountString"
+    }
+
     weak var delegate: SkontoViewModelDelegate?
 
     init(isSkontoApplied: Bool,
