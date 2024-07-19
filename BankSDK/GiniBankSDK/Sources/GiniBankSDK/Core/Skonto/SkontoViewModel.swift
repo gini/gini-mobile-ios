@@ -127,8 +127,17 @@ class SkontoViewModel {
 
     func set(date: Date) {
         self.dueDate = date
+        recalculateRemainingDays()
         determineSkontoEdgeCase()
         notifyStateChangeHandlers()
+    }
+
+    private func recalculateRemainingDays() {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let dueDate = calendar.startOfDay(for: self.dueDate)
+        let components = calendar.dateComponents([.day], from: today, to: dueDate)
+        remainingDays = components.day ?? 0
     }
 
     func addStateChangeHandler(_ handler: @escaping () -> Void) {
