@@ -157,7 +157,7 @@ class SkontoProceedView: UIView {
                                               constant: -Constants.verticalPadding),
             proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             proceedButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonHeight)
+            proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.proceedButtonHeight)
         ])
     }
 
@@ -187,7 +187,8 @@ private extension SkontoProceedView {
     enum Constants {
         static let padding: CGFloat = 16
         static let verticalPadding: CGFloat = 16
-        static let buttonHeight: CGFloat = 50
+        static let proceedButtonTopPadding: CGFloat = 20
+        static let proceedButtonHeight: CGFloat = 50
         static let dividerViewHeight: CGFloat = 1
         static let badgeHorizontalPadding: CGFloat = 6
         static let badgeVerticalPadding: CGFloat = 2

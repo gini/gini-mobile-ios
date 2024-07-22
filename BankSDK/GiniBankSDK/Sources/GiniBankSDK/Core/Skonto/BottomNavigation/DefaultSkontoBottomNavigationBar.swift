@@ -196,12 +196,12 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             backButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
 
             proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
-                                               constant: Constants.verticalPadding),
+                                               constant: Constants.proceedButtonTopPadding),
             proceedButton.leadingAnchor.constraint(equalTo: backButton.buttonView.trailingAnchor),
             proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
-            proceedButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
+            proceedButton.heightAnchor.constraint(equalToConstant: Constants.proceedButtonHeight)
         ])
     }
 
@@ -223,7 +223,8 @@ extension DefaultSkontoBottomNavigationBar {
     private enum Constants {
         static let padding: CGFloat = 16
         static let verticalPadding: CGFloat = 16
-        static let payButtonHeight: CGFloat = 50
+        static let proceedButtonTopPadding: CGFloat = 20
+        static let proceedButtonHeight: CGFloat = 50
         static let dividerViewHeight: CGFloat = 1
         static let badgeHorizontalPadding: CGFloat = 6
         static let badgeVerticalPadding: CGFloat = 2
