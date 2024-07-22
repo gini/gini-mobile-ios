@@ -17,8 +17,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet var paymentInfoStackView: UIStackView!
     @IBOutlet var collectionView: UICollectionView!
     private let closeButton = UIButton()
-    @IBOutlet weak var infoBar: UIView!
-    @IBOutlet weak var infoBarLabel: UILabel!
+    private let infoBar = UIView()
+    private let infoBarLabel = UILabel()
 
     var model: PaymentReviewModel?
     private var showInfoBarOnce = true
@@ -162,9 +162,30 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         configurePageControl()
         configureCloseButton()
         configurePaymentInfoContainerView()
+
+        layoutInfoBar()
+        layoutCloseButton()
     }
     
     // MARK: - Info bar
+
+    fileprivate func layoutInfoBar() {
+        infoBar.translatesAutoresizingMaskIntoConstraints = false
+        infoBarLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        mainView.insertSubview(infoBar, belowSubview: inputContainer)
+        infoBar.addSubview(infoBarLabel)
+        
+        NSLayoutConstraint.activate([
+            infoBar.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            infoBar.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
+            infoBar.bottomAnchor.constraint(equalTo: inputContainer.topAnchor, constant: Constants.infoBarHeight),
+            infoBar.heightAnchor.constraint(equalToConstant: Constants.infoBarHeight),
+
+            infoBarLabel.centerXAnchor.constraint(equalTo: infoBar.centerXAnchor),
+            infoBarLabel.topAnchor.constraint(equalTo: infoBar.topAnchor, constant: Constants.infoBarLabelPadding)
+        ])
+    }
 
     fileprivate func configureInfoBar() {
         infoBar.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusInfoBar)
@@ -222,8 +243,15 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func configureCloseButton() {
-        view.addSubview(closeButton)
+        closeButton.isHidden = !giniMerchantConfiguration.showPaymentReviewCloseButton
+        closeButton.setImage(GiniMerchantImage.paymentReviewClose.preferredUIImage(), for: .normal)
+        closeButton.addTarget(self, action: #selector(closeButtonClicked), for: .touchUpInside)
+    }
+    
+    fileprivate func layoutCloseButton() {
         closeButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(closeButton)
+
         NSLayoutConstraint.activate([
             closeButton.heightAnchor.constraint(equalToConstant: Constants.closeButtonSide),
             closeButton.widthAnchor.constraint(equalToConstant: Constants.closeButtonSide),
@@ -231,11 +259,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             closeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.closeButtonPadding)
         ])
 
-        closeButton.isHidden = !giniMerchantConfiguration.showPaymentReviewCloseButton
-        closeButton.setImage(GiniMerchantImage.paymentReviewClose.preferredUIImage(), for: .normal)
-        closeButton.addTarget(self, action: #selector(closeButtonClicked), for: .touchUpInside)
     }
-    
+
     fileprivate func configureScreenBackgroundColor() {
         let screenBackgroundColor = GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor()
         mainView.backgroundColor = screenBackgroundColor
@@ -427,6 +452,8 @@ extension PaymentReviewViewController {
         static let loadingIndicatorScale = 1.0
         static let loadingIndicatorStyle = UIActivityIndicatorView.Style.large
         static let closeButtonSide = 48.0
-        static let closeButtonPadding = 14.0
+        static let closeButtonPadding = 16.0
+        static let infoBarHeight = 60.0
+        static let infoBarLabelPadding = 8.0
     }
 }
