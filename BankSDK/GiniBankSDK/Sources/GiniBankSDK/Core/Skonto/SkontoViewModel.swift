@@ -150,7 +150,6 @@ class SkontoViewModel {
     /**
      The edited `ExtractionResult` data.
      */
-    public var editiedExtractionResult: ExtractionResult {
 
         let modifiedSkontoExtractions = skontoDiscounts.initialExtractionResult.skontoDiscounts?[0]
             .map { extraction -> Extraction in
@@ -160,6 +159,7 @@ class SkontoViewModel {
             } else if extraction.name == "skontoDueDate" {
                 // TODO: send the modified due date
                 extraction.value = "22-07-2024"
+    public var editedExtractionResult: ExtractionResult {
             }
             return extraction
         }

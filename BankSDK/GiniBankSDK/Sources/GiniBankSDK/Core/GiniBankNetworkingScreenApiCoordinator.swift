@@ -402,9 +402,9 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
 
 extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
-                           _ editiedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
-        guard let editiedExtractionResult else { return }
-        deliverWithSkonto(result: editiedExtractionResult,
+                           _ editedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
+        guard let editedExtractionResult else { return }
+        deliverWithSkonto(result: editedExtractionResult,
                           analysisDelegate: nil)
     }
 
