@@ -111,7 +111,7 @@ struct SkontoDiscountDetails {
             $0.name == CodingKeys.skontoDueDate.rawValue
         })?.value ?? extractions.first(where: {
             $0.name == CodingKeys.skontoDueDateCalculated.rawValue
-        })?.value, let dueDate = extractedDueDateString.date {
+        })?.value, let dueDate = extractedDueDateString.backendDate {
             return dueDate
         } else {
             throw SkontoDiscountParsingException.skontoDueDateMissing
