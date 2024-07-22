@@ -265,8 +265,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                            _ networkDelegate: GiniCaptureNetworkDelegate) {
         do {
             let skontoDiscounts = try SkontoDiscounts(extractions: extractionResult)
-            extractionResult.lineItems = nil
-            // TODO: I don't know if we need "analysisDelegate: networkDelegate" like in RA
+            extractionResult.skontoDiscounts = nil
             showSkontoScreen(skontoDiscounts: skontoDiscounts)
         } catch {
             deliverWithSkonto(result: extractionResult,
@@ -411,6 +410,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     func didCancelAnalysis(_ coordinator: SkontoCoordinator) {
         childCoordinators = childCoordinators.filter { $0 !== coordinator }
         pages = []
+        didCancelAnalysis()
         _ = start(withDocuments: nil, animated: true)
     }
 }
