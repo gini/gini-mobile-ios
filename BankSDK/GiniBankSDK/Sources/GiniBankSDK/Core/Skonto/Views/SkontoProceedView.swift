@@ -49,8 +49,7 @@ class SkontoProceedView: UIView {
     private lazy var skontoBadgeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        // TODO: for should be caption1 bold
-        label.font = configuration.textStyleFonts[.caption1]
+        label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
         let labelText = viewModel.localizedDiscountString
         label.text = labelText
@@ -73,8 +72,7 @@ class SkontoProceedView: UIView {
     private lazy var savingsAmountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        // TODO: for should be caption2 bold
-        label.font = configuration.textStyleFonts[.caption2]
+        label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
         let labelText = viewModel.savingsAmountString
         label.text = labelText
