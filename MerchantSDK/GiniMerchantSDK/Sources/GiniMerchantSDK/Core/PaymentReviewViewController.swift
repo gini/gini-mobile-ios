@@ -16,10 +16,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet var containerCollectionView: UIView!
     @IBOutlet var paymentInfoStackView: UIStackView!
     @IBOutlet var collectionView: UICollectionView!
-    @IBOutlet weak var closeButton: UIButton!
+    private let closeButton = UIButton()
     @IBOutlet weak var infoBar: UIView!
     @IBOutlet weak var infoBarLabel: UILabel!
-    @IBOutlet weak var bottomView: UIView!
 
     var model: PaymentReviewModel?
     private var showInfoBarOnce = true
@@ -223,8 +222,18 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func configureCloseButton() {
+        view.addSubview(closeButton)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeButtonSide),
+            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeButtonSide),
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.closeButtonPadding),
+            closeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.closeButtonPadding)
+        ])
+
         closeButton.isHidden = !giniMerchantConfiguration.showPaymentReviewCloseButton
         closeButton.setImage(GiniMerchantImage.paymentReviewClose.preferredUIImage(), for: .normal)
+        closeButton.addTarget(self, action: #selector(closeButtonClicked), for: .touchUpInside)
     }
     
     fileprivate func configureScreenBackgroundColor() {
@@ -310,7 +319,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         model?.sendFeedback(updatedExtractions: updatedExtractions)
     }
     
-    @IBAction func closeButtonClicked(_ sender: UIButton) {
+    @objc private func closeButtonClicked(_ sender: UIButton) {
         if (keyboardWillShowCalled) {
             trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseKeyboardButtonClicked))
             view.endEditing(true)
@@ -417,5 +426,7 @@ extension PaymentReviewViewController {
         static let bottomPaddingPageImageView = 20.0
         static let loadingIndicatorScale = 1.0
         static let loadingIndicatorStyle = UIActivityIndicatorView.Style.large
+        static let closeButtonSide = 48.0
+        static let closeButtonPadding = 14.0
     }
 }
