@@ -11,22 +11,15 @@ import GiniHealthAPILibrary
 public final class PaymentReviewViewController: UIViewController, UIGestureRecognizerDelegate {
     let pageControl = UIPageControl()
     @IBOutlet weak var mainView: UIView!
-    @IBOutlet var inputContainer: UIView!
-    @IBOutlet var containerCollectionView: UIView!
+    lazy var containerCollectionView = buildContainerCollectionView()
     lazy var collectionView = buildCollectionView()
+    lazy var paymentInfoContainerView = PaymentReviewContainerView()
     private let closeButton = UIButton()
     private let infoBar = UIView()
     private let infoBarLabel = UILabel()
 
     var model: PaymentReviewModel?
     private var showInfoBarOnce = true
-
-    lazy var paymentInfoContainerView: PaymentReviewContainerView = {
-        let view = PaymentReviewContainerView()
-        view.frame = inputContainer.bounds
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
 
     var selectedPaymentProvider: PaymentProvider!
 
@@ -68,7 +61,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         dismissKeyboardOnTap()
         setupViewModel()
         configureUI()
-
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -145,7 +137,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     override public func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        inputContainer.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusInputContainer)
+        paymentInfoContainerView.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusInputContainer)
     }
     
     public override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -160,8 +152,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         configureCloseButton()
         configurePaymentInfoContainerView()
 
-        layoutCollectionView()
-        layoutPageControl()
+        layoutContainerCollectionView()
         layoutInfoBar()
         layoutCloseButton()
     }
@@ -171,21 +162,22 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         mainView.backgroundColor = screenBackgroundColor
         collectionView.backgroundColor = screenBackgroundColor
         pageControl.backgroundColor = screenBackgroundColor
-        inputContainer.backgroundColor = GiniColor.standard7.uiColor()
+        paymentInfoContainerView.backgroundColor = GiniColor.standard7.uiColor()
     }
 
     fileprivate func configurePaymentInfoContainerView() {
-        inputContainer.addSubview(paymentInfoContainerView)
+        paymentInfoContainerView.translatesAutoresizingMaskIntoConstraints = false
+        mainView.addSubview(paymentInfoContainerView)
 
         paymentInfoContainerView.onPayButtonClicked = {
             self.payButtonClicked()
         }
 
         NSLayoutConstraint.activate([
-            paymentInfoContainerView.topAnchor.constraint(equalTo: inputContainer.topAnchor),
-            paymentInfoContainerView.leadingAnchor.constraint(equalTo: inputContainer.leadingAnchor),
-            paymentInfoContainerView.bottomAnchor.constraint(equalTo: inputContainer.bottomAnchor),
-            paymentInfoContainerView.trailingAnchor.constraint(equalTo: inputContainer.trailingAnchor)
+            paymentInfoContainerView.heightAnchor.constraint(equalToConstant: Constants.inputContainerHeight),
+            paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor),
+            paymentInfoContainerView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            paymentInfoContainerView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor)
         ])
     }
     
@@ -324,8 +316,30 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 fileprivate extension PaymentReviewViewController {
 }
 
-//MARK -
+//MARK: -
 fileprivate extension PaymentReviewViewController {
+    func buildContainerCollectionView() -> UIStackView {
+        let container = UIStackView(arrangedSubviews: [collectionView, pageControl])
+        container.spacing = 0
+        container.axis = .vertical
+        container.distribution = .fill
+        return container
+    }
+
+    func layoutContainerCollectionView() {
+        containerCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        mainView.addSubview(containerCollectionView)
+        NSLayoutConstraint.activate([
+            containerCollectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            containerCollectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
+            containerCollectionView.topAnchor.constraint(equalTo: mainView.topAnchor),
+            containerCollectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor),
+
+            pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight),
+            collectionView.widthAnchor.constraint(equalTo: containerCollectionView.widthAnchor),
+            collectionView.heightAnchor.constraint(equalTo: containerCollectionView.heightAnchor),
+        ])
+    }
 }
 
 //MARK: - Collection View
@@ -340,19 +354,6 @@ fileprivate extension PaymentReviewViewController {
         collection.dataSource = self
         collection.register(cellType: PageCollectionViewCell.self)
         return collection
-    }
-
-    func layoutCollectionView() {
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        containerCollectionView.addSubview(collectionView)
-        NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: containerCollectionView.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: containerCollectionView.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: containerCollectionView.topAnchor),
-            collectionView.widthAnchor.constraint(equalTo: containerCollectionView.widthAnchor),
-            collectionView.heightAnchor.constraint(equalTo: containerCollectionView.heightAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: containerCollectionView.bottomAnchor)
-        ])
     }
 }
 
@@ -380,23 +381,11 @@ fileprivate extension PaymentReviewViewController {
 
 //MARK: - Page Control
 fileprivate extension PaymentReviewViewController {
-    func layoutPageControl() {
-        pageControl.translatesAutoresizingMaskIntoConstraints = false
-        containerCollectionView.insertSubview(pageControl, aboveSubview: collectionView)
-
-        NSLayoutConstraint.activate([
-            pageControl.bottomAnchor.constraint(equalTo: containerCollectionView.bottomAnchor),
-            pageControl.leadingAnchor.constraint(equalTo: containerCollectionView.leadingAnchor),
-            pageControl.trailingAnchor.constraint(equalTo: containerCollectionView.trailingAnchor),
-            pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight)
-        ])
-    }
-
     func configurePageControl() {
         pageControl.pageIndicatorTintColor = GiniColor.standard4.uiColor()
         pageControl.currentPageIndicatorTintColor = GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor()
         pageControl.hidesForSinglePage = true
-        pageControl.backgroundColor = .clear
+        pageControl.backgroundColor = .orange
         pageControl.numberOfPages = model?.document.pageCount ?? 1
     }
 
@@ -417,13 +406,13 @@ fileprivate extension PaymentReviewViewController {
         infoBar.translatesAutoresizingMaskIntoConstraints = false
         infoBarLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        mainView.insertSubview(infoBar, belowSubview: inputContainer)
+        mainView.insertSubview(infoBar, belowSubview: paymentInfoContainerView)
         infoBar.addSubview(infoBarLabel)
 
         NSLayoutConstraint.activate([
             infoBar.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
             infoBar.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
-            infoBar.bottomAnchor.constraint(equalTo: inputContainer.topAnchor, constant: Constants.infoBarHeight),
+            infoBar.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.infoBarHeight),
             infoBar.heightAnchor.constraint(equalToConstant: Constants.infoBarHeight),
 
             infoBarLabel.centerXAnchor.constraint(equalTo: infoBar.centerXAnchor),
@@ -449,7 +438,7 @@ fileprivate extension PaymentReviewViewController {
                        delay: 0, usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 1.0,
                        options: [], animations: {
-            self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY + Constants.moveHeightInfoBar - self.infoBar.frame.height, width: screenSize.width, height: self.infoBar.frame.height)
+            self.infoBar.frame = CGRect(x: 0, y: self.paymentInfoContainerView.frame.minY + Constants.moveHeightInfoBar - self.infoBar.frame.height, width: screenSize.width, height: self.infoBar.frame.height)
         }, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             self.animateSlideDownInfoBar()
@@ -462,7 +451,7 @@ fileprivate extension PaymentReviewViewController {
                        delay: 0, usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 1.0,
                        options: [], animations: {
-            self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY, width: screenSize.width, height: self.infoBar.frame.height)
+            self.infoBar.frame = CGRect(x: 0, y: self.paymentInfoContainerView.frame.minY, width: screenSize.width, height: self.infoBar.frame.height)
         }, completion: { _ in
             self.infoBar.isHidden = true
         })
@@ -498,5 +487,6 @@ extension PaymentReviewViewController {
         static let infoBarLabelPadding = 8.0
         static let pageControlHeight = 20.0
         static let collectionViewPadding = 10.0
+        static let inputContainerHeight = 375.0
     }
 }
