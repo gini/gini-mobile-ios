@@ -7,16 +7,11 @@
 import Foundation
 
 extension Date {
-    var dateString: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale.current
-        dateFormatter.dateStyle = .short
-        return dateFormatter.string(from: self)
+    var shortString: String {
+        return DateFormatter.short.string(from: self)
     }
 
-    var backendFormatString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: self)
+    var backendString: String {
+        return DateFormatter.backend.string(from: self)
     }
 }

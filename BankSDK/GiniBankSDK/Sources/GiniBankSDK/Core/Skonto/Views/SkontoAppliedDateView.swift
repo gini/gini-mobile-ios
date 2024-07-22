@@ -22,7 +22,7 @@ class SkontoAppliedDateView: UIView {
 
     private lazy var textField: UITextField = {
         let textField = UITextField()
-        textField.text = viewModel.dueDate.dateString
+        textField.text = viewModel.dueDate.shortString
         textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
@@ -128,7 +128,7 @@ class SkontoAppliedDateView: UIView {
         containerView.layer.borderWidth = isSkontoApplied ? 1 : 0
         textField.isUserInteractionEnabled = isSkontoApplied
         calendarImageView.isHidden = !isSkontoApplied
-        textField.text = viewModel.dueDate.dateString
+        textField.text = viewModel.dueDate.shortString
     }
 
     private func configureDatePicker() {
