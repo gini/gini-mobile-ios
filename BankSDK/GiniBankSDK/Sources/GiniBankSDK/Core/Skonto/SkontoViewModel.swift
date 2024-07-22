@@ -149,8 +149,8 @@ class SkontoViewModel {
         skontoValue = Double(truncating: skontoPercentage as NSNumber)
     }
 
-    private func calculateSavingsAmount() -> Price {
-        let savingsAmountValue = priceWithoutSkonto.value - priceWithSkonto.value
-        return Price(value: savingsAmountValue, currencyCode: currencyCode)
+    private func calculateSkontoSavingsAmount() -> Price {
+        let skontoSavingsValue = priceWithoutSkonto.value - priceWithSkonto.value
+        return Price(value: skontoSavingsValue, currencyCode: currencyCode)
     }
 }
