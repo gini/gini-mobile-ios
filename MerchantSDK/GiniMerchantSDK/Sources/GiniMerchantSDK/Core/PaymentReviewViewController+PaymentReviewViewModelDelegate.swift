@@ -9,7 +9,7 @@ import UIKit
 
 extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController) {
-        bottomSheet.minHeight = inputContainer.frame.height
+        bottomSheet.minHeight = Constants.inputContainerHeight
         presentBottomSheet(viewController: bottomSheet)
     }
 
@@ -21,7 +21,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
 
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController) {
-        bottomSheet.minHeight = inputContainer.frame.height
+        bottomSheet.minHeight = Constants.inputContainerHeight
         presentBottomSheet(viewController: bottomSheet)
     }
 
