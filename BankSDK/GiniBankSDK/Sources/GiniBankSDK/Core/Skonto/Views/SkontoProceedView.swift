@@ -70,13 +70,13 @@ class SkontoProceedView: UIView {
         return view
     }()
 
-    private lazy var savedAmountLabel: UILabel = {
+    private lazy var savingsAmountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         // TODO: for should be caption2 bold
         label.font = configuration.textStyleFonts[.caption2]
         label.textColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
-        let labelText = viewModel.savedAmountString
+        let labelText = viewModel.savingsAmountString
         label.text = labelText
         label.numberOfLines = 0
         label.accessibilityValue = labelText
@@ -113,7 +113,7 @@ class SkontoProceedView: UIView {
         addSubview(totalLabel)
         addSubview(totalValueLabel)
         addSubview(skontoBadgeView)
-        addSubview(savedAmountLabel)
+        addSubview(savingsAmountLabel)
         addSubview(proceedButton)
 
         setupConstraints()
@@ -135,8 +135,8 @@ class SkontoProceedView: UIView {
                                                  constant: Constants.totalValueLabelTopPadding),
             totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
-            savedAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
-                                                  constant: Constants.savedAmountLabelTopPadding),
+            savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
+                                                  constant: Constants.savingsAmountLabelTopPadding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
             skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor,
@@ -151,7 +151,7 @@ class SkontoProceedView: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            proceedButton.topAnchor.constraint(equalTo: savedAmountLabel.bottomAnchor,
+            proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
                                                constant: Constants.verticalPadding),
             proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                               constant: -Constants.verticalPadding),
@@ -172,10 +172,10 @@ class SkontoProceedView: UIView {
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
         skontoBadgeView.isHidden = !isSkontoApplied
-        savedAmountLabel.isHidden = !isSkontoApplied
+        savingsAmountLabel.isHidden = !isSkontoApplied
         skontoBadgeLabel.text = viewModel.localizedDiscountString
         totalValueLabel.text = viewModel.totalPrice.localizedStringWithCurrencyCode
-        savedAmountLabel.text = viewModel.savedAmountString
+        savingsAmountLabel.text = viewModel.savingsAmountString
     }
 
     @objc private func proceedButtonTapped() {
@@ -194,6 +194,6 @@ private extension SkontoProceedView {
         static let badgeSpacing: CGFloat = 12
         static let cornerRadius: CGFloat = 4
         static let totalValueLabelTopPadding: CGFloat = 4
-        static let savedAmountLabelTopPadding: CGFloat = 2
+        static let savingsAmountLabelTopPadding: CGFloat = 2
     }
 }
