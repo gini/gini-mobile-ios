@@ -11,7 +11,7 @@ import GiniBankAPILibrary
 protocol SkontoCoordinatorDelegate: AnyObject {
     func didCancelAnalysis(_ coordinator: SkontoCoordinator)
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
-                           _ editiedExtractionResult: ExtractionResult?)
+                           _ editedExtractionResult: ExtractionResult?)
 }
 
 final class SkontoCoordinator: Coordinator {
@@ -57,6 +57,6 @@ extension SkontoCoordinator: SkontoViewModelDelegate {
     }
 
     func didTapProceed(on viewModel: SkontoViewModel) {
-        delegate?.didFinishAnalysis(self, viewModel.editiedExtractionResult)
+        delegate?.didFinishAnalysis(self, viewModel.editedExtractionResult)
     }
 }
