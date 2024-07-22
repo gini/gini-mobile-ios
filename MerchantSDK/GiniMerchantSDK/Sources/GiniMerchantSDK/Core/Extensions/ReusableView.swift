@@ -31,3 +31,18 @@ extension UITableView {
         return cell
     }
 }
+
+extension UICollectionView {
+    // Register a cell conforming to ReusableView
+    func register<T: UICollectionViewCell & ReusableView>(cellType: T.Type) {
+        register(cellType, forCellWithReuseIdentifier: cellType.reuseIdentifier)
+    }
+
+    // Dequeue a reusable cell
+    func dequeueReusableCell<T: UICollectionViewCell & ReusableView>(for indexPath: IndexPath) -> T {
+        guard let cell = dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T else {
+            fatalError("Unable to dequeue a cell with identifier \(T.reuseIdentifier)")
+        }
+        return cell
+    }
+}
