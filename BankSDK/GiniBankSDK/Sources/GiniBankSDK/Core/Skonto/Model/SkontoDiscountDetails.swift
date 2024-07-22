@@ -15,7 +15,6 @@ struct SkontoDiscountDetails {
     var remainingDays: Int
     var amountDiscounted: Price
     var paymentMethod: PaymentMethod
-    var boundingBox: BoundingBox?
 
     enum PaymentMethod {
         case cash
@@ -45,7 +44,6 @@ struct SkontoDiscountDetails {
         case skontoAmountDiscountedCalculated
         case skontoRemainingDays
         case skontoPaymentMethod
-        case box
     }
 
     private enum SkontoDiscountParsingException: Error {
@@ -55,7 +53,6 @@ struct SkontoDiscountDetails {
         case skontoAmountDiscountedMissing
         case skontoRemainingDaysMissing
         case skontoPaymentMethodMissing
-        case skontoExtractionBoxMissing
     }
 
     init(extractions: [Extraction]) throws {
@@ -65,7 +62,6 @@ struct SkontoDiscountDetails {
         self.amountDiscounted = try Self.extractAmountDiscounted(from: extractions)
         self.dueDate = try Self.extractDueDate(from: extractions)
         self.percentageDiscounted = try Self.extractPercentageDiscounted(from: extractions)
-        self.boundingBox = try Self.extractBoundingBox(from: extractions)
         self.remainingDays = try Self.extractRemainingDays(from: extractions)
     }
 
@@ -128,19 +124,6 @@ struct SkontoDiscountDetails {
         } else {
             throw SkontoDiscountParsingException.skontoPercentageDiscountedMissing
         }
-    }
-
-    private static func extractBoundingBox(from extractions: [Extraction]) throws -> BoundingBox? {
-        if let extractedBoundingBox = extractions.first(where: {
-            $0.name == CodingKeys.box.rawValue
-        })?.box {
-            return BoundingBox(top: extractedBoundingBox.top,
-                               left: extractedBoundingBox.left,
-                               width: extractedBoundingBox.width,
-                               height: extractedBoundingBox.height,
-                               page: extractedBoundingBox.page)
-        }
-        return nil
     }
 
     private static func extractRemainingDays(from extractions: [Extraction]) throws -> Int {
