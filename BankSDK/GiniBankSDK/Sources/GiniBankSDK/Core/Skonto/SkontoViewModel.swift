@@ -53,7 +53,7 @@ class SkontoViewModel {
     }
 
     var savingsAmountString: String {
-        let savingsAmount = calculateSavingsAmount()
+        let savingsAmount = calculateSkontoSavingsAmount()
         guard let priceString = savingsAmount.localizedStringWithCurrencyCode else { return "" }
         return String.localizedStringWithFormat(
             NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.savings",
