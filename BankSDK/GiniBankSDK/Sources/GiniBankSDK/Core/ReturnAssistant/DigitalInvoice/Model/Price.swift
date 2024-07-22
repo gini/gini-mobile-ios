@@ -58,7 +58,7 @@ struct Price {
         return Price.stringWithoutSymbol(from: value)
     }
 
-    var germanStringWithoutCurrencyCode: String? {
+    var localizedStringWithoutCurrencyCode: String? {
         return Price.localizedStringWithoutCurrencyCode(from: value)
     }
 
