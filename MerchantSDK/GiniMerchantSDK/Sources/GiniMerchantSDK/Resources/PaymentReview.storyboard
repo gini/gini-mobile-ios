@@ -5,8 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -23,48 +21,6 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="47Q-Qq-7ja">
                                         <rect key="frame" x="0.0" y="8" width="375" height="343"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="336-lO-5Qn">
-                                                <rect key="frame" x="67" y="160" width="240" height="128"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                            </view>
-                                            <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="iQ0-i0-82S">
-                                                <rect key="frame" x="0.0" y="323" width="375" height="20"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="rHy-jF-qFa"/>
-                                                </constraints>
-                                            </pageControl>
-                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VtW-En-y6v">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="343"/>
-                                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Zec-6e-m0t" customClass="CollectionFlowLayout" customModule="GiniMerchantSDK">
-                                                    <size key="itemSize" width="348" height="408.66666666666669"/>
-                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                </collectionViewFlowLayout>
-                                                <cells>
-                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="pageCellIdentifier" id="c1L-5D-aNE" customClass="PageCollectionViewCell" customModule="GiniMerchantSDK">
-                                                        <rect key="frame" x="0.0" y="-33" width="348" height="408.66666666666669"/>
-                                                        <autoresizingMask key="autoresizingMask"/>
-                                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ucj-NS-kFh">
-                                                            <rect key="frame" x="0.0" y="0.0" width="348" height="408.66666666666669"/>
-                                                            <autoresizingMask key="autoresizingMask"/>
-                                                        </collectionViewCellContentView>
-                                                    </collectionViewCell>
-                                                </cells>
-                                            </collectionView>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="iQ0-i0-82S" firstAttribute="leading" secondItem="47Q-Qq-7ja" secondAttribute="leading" id="2Bu-N7-gLa"/>
-                                            <constraint firstItem="VtW-En-y6v" firstAttribute="width" secondItem="47Q-Qq-7ja" secondAttribute="width" id="9KV-zG-ibk"/>
-                                            <constraint firstAttribute="bottom" secondItem="iQ0-i0-82S" secondAttribute="bottom" id="Q1f-Le-idM"/>
-                                            <constraint firstAttribute="trailing" secondItem="iQ0-i0-82S" secondAttribute="trailing" id="Q2z-BM-tp4"/>
-                                            <constraint firstItem="iQ0-i0-82S" firstAttribute="top" secondItem="VtW-En-y6v" secondAttribute="bottom" constant="-20" id="Tnd-Gm-fFO"/>
-                                            <constraint firstItem="VtW-En-y6v" firstAttribute="topMargin" secondItem="47Q-Qq-7ja" secondAttribute="topMargin" id="aan-nw-0UF"/>
-                                            <constraint firstItem="iQ0-i0-82S" firstAttribute="centerX" secondItem="47Q-Qq-7ja" secondAttribute="centerX" id="vwc-zA-1pw"/>
-                                            <constraint firstItem="VtW-En-y6v" firstAttribute="centerX" secondItem="47Q-Qq-7ja" secondAttribute="centerX" id="xF5-Z0-zi2"/>
-                                        </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="ekk-cJ-hxZ">
                                         <rect key="frame" x="0.0" y="351" width="375" height="375"/>
@@ -99,12 +55,9 @@
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO"/>
                     <connections>
-                        <outlet property="collectionView" destination="VtW-En-y6v" id="Ax4-fE-dDV"/>
                         <outlet property="containerCollectionView" destination="47Q-Qq-7ja" id="wB1-BT-kZG"/>
                         <outlet property="inputContainer" destination="ekk-cJ-hxZ" id="u67-4P-g7n"/>
                         <outlet property="mainView" destination="X5k-EE-UQ6" id="zmB-Eu-v9s"/>
-                        <outlet property="pageControl" destination="iQ0-i0-82S" id="fMQ-TQ-oje"/>
-                        <outlet property="pageControlHeightConstraint" destination="rHy-jF-qFa" id="7d0-Yl-tNo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="veK-zc-MaM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -112,9 +65,4 @@
             <point key="canvasLocation" x="-375.36231884057975" y="-11.383928571428571"/>
         </scene>
     </scenes>
-    <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-    </resources>
 </document>

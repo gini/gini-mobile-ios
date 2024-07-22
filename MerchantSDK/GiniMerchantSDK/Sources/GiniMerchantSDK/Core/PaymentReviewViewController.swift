@@ -9,13 +9,11 @@ import UIKit
 import GiniHealthAPILibrary
 
 public final class PaymentReviewViewController: UIViewController, UIGestureRecognizerDelegate {
-    @IBOutlet var pageControl: UIPageControl!
-    @IBOutlet weak var pageControlHeightConstraint: NSLayoutConstraint!
+    let pageControl = UIPageControl()
     @IBOutlet weak var mainView: UIView!
     @IBOutlet var inputContainer: UIView!
     @IBOutlet var containerCollectionView: UIView!
-    @IBOutlet var paymentInfoStackView: UIStackView!
-    @IBOutlet var collectionView: UICollectionView!
+    lazy var collectionView = buildCollectionView()
     private let closeButton = UIButton()
     private let infoBar = UIView()
     private let infoBarLabel = UILabel()
@@ -158,107 +156,14 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
     fileprivate func configureUI() {
         configureScreenBackgroundColor()
-        configureCollectionView()
         configurePageControl()
         configureCloseButton()
         configurePaymentInfoContainerView()
 
+        layoutCollectionView()
+        layoutPageControl()
         layoutInfoBar()
         layoutCloseButton()
-    }
-    
-    // MARK: - Info bar
-
-    fileprivate func layoutInfoBar() {
-        infoBar.translatesAutoresizingMaskIntoConstraints = false
-        infoBarLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        mainView.insertSubview(infoBar, belowSubview: inputContainer)
-        infoBar.addSubview(infoBarLabel)
-        
-        NSLayoutConstraint.activate([
-            infoBar.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
-            infoBar.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
-            infoBar.bottomAnchor.constraint(equalTo: inputContainer.topAnchor, constant: Constants.infoBarHeight),
-            infoBar.heightAnchor.constraint(equalToConstant: Constants.infoBarHeight),
-
-            infoBarLabel.centerXAnchor.constraint(equalTo: infoBar.centerXAnchor),
-            infoBarLabel.topAnchor.constraint(equalTo: infoBar.topAnchor, constant: Constants.infoBarLabelPadding)
-        ])
-    }
-
-    fileprivate func configureInfoBar() {
-        infoBar.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusInfoBar)
-        infoBar.backgroundColor = GiniMerchantColorPalette.success1.preferredColor()
-        infoBarLabel.textColor = GiniMerchantColorPalette.dark7.preferredColor()
-        infoBarLabel.font = giniMerchantConfiguration.textStyleFonts[.caption1]
-        infoBarLabel.adjustsFontForContentSizeCategory = true
-        infoBarLabel.text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.infobar.message",
-                                                             comment: "info bar message")
-    }
-    
-    fileprivate func showInfoBar() {
-        configureInfoBar()
-        infoBar.isHidden = false
-        let screenSize = UIScreen.main.bounds.size
-        UIView.animate(withDuration: Constants.animationDuration,
-                       delay: 0, usingSpringWithDamping: 1.0,
-                       initialSpringVelocity: 1.0,
-                       options: [], animations: {
-            self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY + Constants.moveHeightInfoBar - self.infoBar.frame.height, width: screenSize.width, height: self.infoBar.frame.height)
-                       }, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.animateSlideDownInfoBar()
-        }
-    }
-    
-    fileprivate func animateSlideDownInfoBar() {
-        let screenSize = UIScreen.main.bounds.size
-        UIView.animate(withDuration: Constants.animationDuration,
-                       delay: 0, usingSpringWithDamping: 1.0,
-                       initialSpringVelocity: 1.0,
-                       options: [], animations: {
-                           self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY, width: screenSize.width, height: self.infoBar.frame.height)
-                       }, completion: { _ in
-                           self.infoBar.isHidden = true
-                       })
-    }
-    
-    fileprivate func configureCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-    }
-    
-    fileprivate func configurePageControl() {
-        pageControl.layer.zPosition = Constants.zPositionPageControl
-        pageControl.pageIndicatorTintColor = GiniColor.standard4.uiColor()
-        pageControl.currentPageIndicatorTintColor = GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor()
-        pageControl.hidesForSinglePage = true
-        pageControl.numberOfPages = model?.document.pageCount ?? 1
-        if pageControl.numberOfPages == 1 {
-            pageControlHeightConstraint.constant = 0
-        } else {
-            pageControlHeightConstraint.constant = Constants.heightPageControl
-        }
-    }
-    
-    fileprivate func configureCloseButton() {
-        closeButton.isHidden = !giniMerchantConfiguration.showPaymentReviewCloseButton
-        closeButton.setImage(GiniMerchantImage.paymentReviewClose.preferredUIImage(), for: .normal)
-        closeButton.addTarget(self, action: #selector(closeButtonClicked), for: .touchUpInside)
-    }
-    
-    fileprivate func layoutCloseButton() {
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(closeButton)
-
-        NSLayoutConstraint.activate([
-            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeButtonSide),
-            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeButtonSide),
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.closeButtonPadding),
-            closeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.closeButtonPadding)
-        ])
-
     }
 
     fileprivate func configureScreenBackgroundColor() {
@@ -344,16 +249,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         model?.sendFeedback(updatedExtractions: updatedExtractions)
     }
     
-    @objc private func closeButtonClicked(_ sender: UIButton) {
-        if (keyboardWillShowCalled) {
-            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseKeyboardButtonClicked))
-            view.endEditing(true)
-        } else {
-            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseButtonClicked))
-            dismiss(animated: true, completion: nil)
-        }
-    }
-    
     // MARK: - Keyboard handling
     
     private var keyboardWillShowCalled = false
@@ -425,6 +320,154 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         mainView.addGestureRecognizer(tap)
     }
 }
+//MARK -
+fileprivate extension PaymentReviewViewController {
+}
+
+//MARK -
+fileprivate extension PaymentReviewViewController {
+}
+
+//MARK: - Collection View
+fileprivate extension PaymentReviewViewController {
+    func buildCollectionView() -> UICollectionView {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumInteritemSpacing = Constants.collectionViewPadding
+        flowLayout.minimumLineSpacing = Constants.collectionViewPadding
+
+        let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
+        collection.delegate = self
+        collection.dataSource = self
+        collection.register(cellType: PageCollectionViewCell.self)
+        return collection
+    }
+
+    func layoutCollectionView() {
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        containerCollectionView.addSubview(collectionView)
+        NSLayoutConstraint.activate([
+            collectionView.leadingAnchor.constraint(equalTo: containerCollectionView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: containerCollectionView.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: containerCollectionView.topAnchor),
+            collectionView.widthAnchor.constraint(equalTo: containerCollectionView.widthAnchor),
+            collectionView.heightAnchor.constraint(equalTo: containerCollectionView.heightAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: containerCollectionView.bottomAnchor)
+        ])
+    }
+}
+
+//MARK: - Close Button
+fileprivate extension PaymentReviewViewController {
+    func configureCloseButton() {
+        closeButton.isHidden = !giniMerchantConfiguration.showPaymentReviewCloseButton
+        closeButton.setImage(GiniMerchantImage.paymentReviewClose.preferredUIImage(), for: .normal)
+        closeButton.addTarget(self, action: #selector(closeButtonClicked), for: .touchUpInside)
+    }
+
+    func layoutCloseButton() {
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(closeButton)
+
+        NSLayoutConstraint.activate([
+            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeButtonSide),
+            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeButtonSide),
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.closeButtonPadding),
+            closeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.closeButtonPadding)
+        ])
+
+    }
+}
+
+//MARK: - Page Control
+fileprivate extension PaymentReviewViewController {
+    func layoutPageControl() {
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        containerCollectionView.insertSubview(pageControl, aboveSubview: collectionView)
+
+        NSLayoutConstraint.activate([
+            pageControl.bottomAnchor.constraint(equalTo: containerCollectionView.bottomAnchor),
+            pageControl.leadingAnchor.constraint(equalTo: containerCollectionView.leadingAnchor),
+            pageControl.trailingAnchor.constraint(equalTo: containerCollectionView.trailingAnchor),
+            pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight)
+        ])
+    }
+
+    func configurePageControl() {
+        pageControl.pageIndicatorTintColor = GiniColor.standard4.uiColor()
+        pageControl.currentPageIndicatorTintColor = GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor()
+        pageControl.hidesForSinglePage = true
+        pageControl.backgroundColor = .clear
+        pageControl.numberOfPages = model?.document.pageCount ?? 1
+    }
+
+    @objc func closeButtonClicked(_ sender: UIButton) {
+        if (keyboardWillShowCalled) {
+            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseKeyboardButtonClicked))
+            view.endEditing(true)
+        } else {
+            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseButtonClicked))
+            dismiss(animated: true, completion: nil)
+        }
+    }
+}
+
+// MARK: - Info Bar
+fileprivate extension PaymentReviewViewController {
+    func layoutInfoBar() {
+        infoBar.translatesAutoresizingMaskIntoConstraints = false
+        infoBarLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        mainView.insertSubview(infoBar, belowSubview: inputContainer)
+        infoBar.addSubview(infoBarLabel)
+
+        NSLayoutConstraint.activate([
+            infoBar.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            infoBar.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
+            infoBar.bottomAnchor.constraint(equalTo: inputContainer.topAnchor, constant: Constants.infoBarHeight),
+            infoBar.heightAnchor.constraint(equalToConstant: Constants.infoBarHeight),
+
+            infoBarLabel.centerXAnchor.constraint(equalTo: infoBar.centerXAnchor),
+            infoBarLabel.topAnchor.constraint(equalTo: infoBar.topAnchor, constant: Constants.infoBarLabelPadding)
+        ])
+    }
+
+    func configureInfoBar() {
+        infoBar.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusInfoBar)
+        infoBar.backgroundColor = GiniMerchantColorPalette.success1.preferredColor()
+        infoBarLabel.textColor = GiniMerchantColorPalette.dark7.preferredColor()
+        infoBarLabel.font = giniMerchantConfiguration.textStyleFonts[.caption1]
+        infoBarLabel.adjustsFontForContentSizeCategory = true
+        infoBarLabel.text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.infobar.message",
+                                                             comment: "info bar message")
+    }
+
+    func showInfoBar() {
+        configureInfoBar()
+        infoBar.isHidden = false
+        let screenSize = UIScreen.main.bounds.size
+        UIView.animate(withDuration: Constants.animationDuration,
+                       delay: 0, usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: 1.0,
+                       options: [], animations: {
+            self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY + Constants.moveHeightInfoBar - self.infoBar.frame.height, width: screenSize.width, height: self.infoBar.frame.height)
+        }, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.animateSlideDownInfoBar()
+        }
+    }
+
+    func animateSlideDownInfoBar() {
+        let screenSize = UIScreen.main.bounds.size
+        UIView.animate(withDuration: Constants.animationDuration,
+                       delay: 0, usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: 1.0,
+                       options: [], animations: {
+            self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY, width: screenSize.width, height: self.infoBar.frame.height)
+        }, completion: { _ in
+            self.infoBar.isHidden = true
+        })
+    }
+}
 
 extension PaymentReviewViewController {
     func showError(_ title: String? = nil, message: String) {
@@ -445,15 +488,15 @@ extension PaymentReviewViewController {
         static let cornerRadiusInputContainer = 12.0
         static let cornerRadiusInfoBar = 12.0
         static let moveHeightInfoBar = 32.0
-        static let zPositionPageControl = 10.0
-        static let heightPageControl = 20.0
-        static let heightToolbar = 40.0
         static let bottomPaddingPageImageView = 20.0
         static let loadingIndicatorScale = 1.0
         static let loadingIndicatorStyle = UIActivityIndicatorView.Style.large
+
         static let closeButtonSide = 48.0
         static let closeButtonPadding = 16.0
         static let infoBarHeight = 60.0
         static let infoBarLabelPadding = 8.0
+        static let pageControlHeight = 20.0
+        static let collectionViewPadding = 10.0
     }
 }
