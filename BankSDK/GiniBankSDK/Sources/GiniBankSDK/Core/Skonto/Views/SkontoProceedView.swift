@@ -131,11 +131,12 @@ class SkontoProceedView: UIView {
             totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             totalLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
 
-            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor),
+            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
+                                                 constant: Constants.totalValueLabelTopPadding),
             totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
-            savedAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor),
-            savedAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
+            savedAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
+                                                  constant: Constants.savedAmountLabelTopPadding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
             skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor,
@@ -192,5 +193,7 @@ private extension SkontoProceedView {
         static let badgeVerticalPadding: CGFloat = 2
         static let badgeSpacing: CGFloat = 12
         static let cornerRadius: CGFloat = 4
+        static let totalValueLabelTopPadding: CGFloat = 4
+        static let savedAmountLabelTopPadding: CGFloat = 2
     }
 }
