@@ -139,13 +139,13 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         skontoBadgeView.isHidden = !enabled
     }
 
-    func updateSavedAmount(with text: String?) {
+    func updateInvoiceSkontoSavings(with text: String?) {
         savedAmountLabel.text = text
         savedAmountLabel.accessibilityValue = text
     }
 
-    func updateSavedAmount(enabled: Bool) {
-        savedAmountLabel.isHidden = !enabled
+    func displayInvoiceSkontoSavingsBadge(hidden: Bool) {
+        savedAmountLabel.isHidden = hidden
     }
 
     private func setupView() {
@@ -171,10 +171,12 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
             totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
-            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor),
+            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
+                                                 constant: Constants.totalValueLabelTopPadding),
             totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
-            savedAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor),
+            savedAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
+                                                  constant: Constants.savedAmountLabelTopPadding),
             savedAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
@@ -227,5 +229,7 @@ extension DefaultSkontoBottomNavigationBar {
         static let badgeVerticalPadding: CGFloat = 2
         static let badgeSpacing: CGFloat = 12
         static let cornerRadius: CGFloat = 4
+        static let totalValueLabelTopPadding: CGFloat = 4
+        static let savedAmountLabelTopPadding: CGFloat = 2
     }
 }
