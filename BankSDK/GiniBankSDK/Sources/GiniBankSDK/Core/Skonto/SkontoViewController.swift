@@ -75,6 +75,7 @@ public class SkontoViewController: UIViewController {
     }()
 
     private let viewModel: SkontoViewModel
+    private let alertFactory: SkontoAlertFactory
     private let configuration = GiniBankConfiguration.shared
 
     private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
@@ -82,6 +83,7 @@ public class SkontoViewController: UIViewController {
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
+        self.alertFactory = SkontoAlertFactory(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -292,20 +294,9 @@ public class SkontoViewController: UIViewController {
         view.endEditing(true)
     }
 
-    private func showAlert(with message: String) {
-        let alert = UIAlertController(title: message,
-                                      message: "",
-                                      preferredStyle: .alert)
-        let okAction = UIAlertAction(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.alert.ok",
-                                                                                     comment: "OK"),
-                                     style: .default)
-        alert.addAction(okAction)
-        present(alert, animated: true, completion: nil)
-    }
-
     @objc private func showAlertIfNeeded() {
-        guard let alertMessage = viewModel.alertMessage else { return }
-        showAlert(with: alertMessage)
+        guard let alert = alertFactory.createEdgeCaseAlert() else { return }
+        present(alert, animated: true, completion: nil)
     }
 }
 
