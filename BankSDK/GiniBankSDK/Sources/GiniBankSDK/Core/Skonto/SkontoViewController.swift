@@ -293,8 +293,8 @@ public class SkontoViewController: UIViewController {
     }
 
     private func showAlert(with message: String) {
-        let alert = UIAlertController(title: "",
-                                      message: message,
+        let alert = UIAlertController(title: message,
+                                      message: "",
                                       preferredStyle: .alert)
         let okAction = UIAlertAction(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.alert.ok",
                                                                                      comment: "OK"),

@@ -91,17 +91,17 @@ class SkontoAppliedInfoView: UIView {
 
         switch edgeCase {
         case .expired:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.expired.message",
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.expired.message",
                                                                          comment: "The %@ discount has expired.")
             text = String.localizedStringWithFormat(localizedText,
                                                     viewModel.formattedPercentageDiscounted)
         case .oneDayLeft:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.today.message",
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.today.message",
                                                                          comment: "Pay today: %@ discount.")
             text = String.localizedStringWithFormat(localizedText,
                                                     viewModel.formattedPercentageDiscounted)
         case .payByCash:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.cash.message",
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.cash.message",
                                                                          comment: "A %@ discount is available...")
             text = String.localizedStringWithFormat(localizedText,
                                                     viewModel.formattedPercentageDiscounted,
