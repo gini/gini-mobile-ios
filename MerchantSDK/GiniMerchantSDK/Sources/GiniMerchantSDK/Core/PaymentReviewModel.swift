@@ -62,14 +62,16 @@ public class PaymentReviewModel: NSObject {
     }
 
     var paymentComponentsController: PaymentComponentsController
+    let showPaymentReviewCloseButton: Bool
 
-    public init(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?, paymentComponentsController: PaymentComponentsController) {
+    public init(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?, paymentComponentsController: PaymentComponentsController, showPaymentReviewCloseButton: Bool) {
         self.merchantSDK = giniMerchant
         self.documentId = document.id
         self.document = document
         self.extractions = extractions
         self.selectedPaymentProvider = selectedPaymentProvider
         self.paymentComponentsController = paymentComponentsController
+        self.showPaymentReviewCloseButton = showPaymentReviewCloseButton
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> PageCollectionCellViewModel {

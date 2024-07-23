@@ -26,6 +26,6 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
 
     func obtainPDFFromPaymentRequest() {
-        model?.paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: paymentInfoContainerView.obtainPaymentInfo(), viewController: self)
+        model.paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: paymentInfoContainerView.obtainPaymentInfo(), viewController: self)
     }
 }
