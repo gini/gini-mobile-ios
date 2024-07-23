@@ -302,11 +302,10 @@ public class SkontoViewController: UIViewController {
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
-    
+
     @objc private func showAlertIfNeeded() {
-        if let alertMessage = viewModel.alertMessage {
-            showAlert(with: alertMessage)
-        }
+        guard let alertMessage = viewModel.alertMessage else { return }
+        showAlert(with: alertMessage)
     }
 }
 
