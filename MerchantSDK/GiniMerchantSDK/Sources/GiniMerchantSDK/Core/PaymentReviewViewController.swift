@@ -112,7 +112,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
         model.fetchImages()
         model.viewModelDelegate = self
-        paymentInfoContainerView.model = PaymentReviewContainerViewModel(extractions: model.extractions, selectedPaymentProvider: selectedPaymentProvider)
+        paymentInfoContainerView.model = model.paymentReviewContainerViewModel()
     }
 
     override public func viewDidDisappear(_ animated: Bool) {
@@ -200,6 +200,7 @@ extension PaymentReviewViewController {
                                    selectedPaymentProvider: PaymentProvider,
                                    trackingDelegate: GiniMerchantTrackingDelegate? = nil,
                                    paymentComponentsController: PaymentComponentsController,
+                                   isAmountFieldEditable: Bool,
                                    showPaymentReviewCloseButton: Bool,
                                    statusBarStyle: UIStatusBarStyle,
                                    infoBarLabelFont: UIFont) -> PaymentReviewViewController {
@@ -208,7 +209,8 @@ extension PaymentReviewViewController {
                                            extractions: extractions,
                                            selectedPaymentProvider: selectedPaymentProvider,
                                            paymentComponentsController: paymentComponentsController, 
-                                           showPaymentReviewCloseButton: showPaymentReviewCloseButton)
+                                           showPaymentReviewCloseButton: showPaymentReviewCloseButton, 
+                                           isAmountFieldEditable: isAmountFieldEditable)
         let viewController = PaymentReviewViewController(viewModel: viewModel,
                                                          selectedPaymentProvider: selectedPaymentProvider,
                                                          trackingDelegate: trackingDelegate,
@@ -223,6 +225,7 @@ extension PaymentReviewViewController {
                                    trackingDelegate: GiniMerchantTrackingDelegate? = nil,
                                    paymentComponentsController: PaymentComponentsController,
                                    showPaymentReviewCloseButton: Bool,
+                                   isAmountFieldEditable: Bool,
                                    statusBarStyle: UIStatusBarStyle,
                                    infoBarLabelFont: UIFont) -> PaymentReviewViewController {
         instantiate(with: giniMerchant,
@@ -230,7 +233,8 @@ extension PaymentReviewViewController {
                     extractions: data.extractions,
                     selectedPaymentProvider: selectedPaymentProvider,
                     trackingDelegate: trackingDelegate,
-                    paymentComponentsController: paymentComponentsController,
+                    paymentComponentsController: paymentComponentsController, 
+                    isAmountFieldEditable: isAmountFieldEditable,
                     showPaymentReviewCloseButton: showPaymentReviewCloseButton,
                     statusBarStyle: statusBarStyle, 
                     infoBarLabelFont: infoBarLabelFont)
@@ -332,7 +336,7 @@ fileprivate extension PaymentReviewViewController {
 fileprivate extension PaymentReviewViewController {
     func buildPaymentInfoContainerView() -> PaymentReviewContainerView {
         let containerView = PaymentReviewContainerView()
-        containerView.backgroundColor = GiniColor.standard7.uiColor()
+        containerView.backgroundColor = Constants.infoContainerViewBackgroundColor
         containerView.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadius)
         containerView.onPayButtonClicked = { [weak self] in
             self?.payButtonClicked()
@@ -525,6 +529,7 @@ extension PaymentReviewViewController {
         static let infoBarLabelTextColor = GiniMerchantColorPalette.dark7.preferredColor()
         static let infoBarBackgroundColor = GiniMerchantColorPalette.success1.preferredColor()
         static let mainViewBackgroundColor = GiniColor.standard7.uiColor()
+        static let infoContainerViewBackgroundColor = GiniColor.standard7.uiColor()
         static let backgroundColor = GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor()
 
         static let alertOkButtonTitle = NSLocalizedStringPreferredFormat("gini.merchant.alert.ok.title", comment: "ok title for action")

@@ -37,7 +37,7 @@ public class PaymentReviewModel: NSObject {
 
     public var documentId: String
     private var merchantSDK: GiniMerchant
-    private var selectedPaymentProvider: PaymentProvider?
+    private var selectedPaymentProvider: PaymentProvider
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
@@ -63,8 +63,9 @@ public class PaymentReviewModel: NSObject {
 
     var paymentComponentsController: PaymentComponentsController
     let showPaymentReviewCloseButton: Bool
+    let isAmountFieldEditable: Bool
 
-    public init(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?, paymentComponentsController: PaymentComponentsController, showPaymentReviewCloseButton: Bool) {
+    public init(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider, paymentComponentsController: PaymentComponentsController, showPaymentReviewCloseButton: Bool, isAmountFieldEditable: Bool) {
         self.merchantSDK = giniMerchant
         self.documentId = document.id
         self.document = document
@@ -72,6 +73,7 @@ public class PaymentReviewModel: NSObject {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.paymentComponentsController = paymentComponentsController
         self.showPaymentReviewCloseButton = showPaymentReviewCloseButton
+        self.isAmountFieldEditable = isAmountFieldEditable
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> PageCollectionCellViewModel {
@@ -159,6 +161,12 @@ public class PaymentReviewModel: NSObject {
             }
         }
         return nil
+    }
+
+    func paymentReviewContainerViewModel() -> PaymentReviewContainerViewModel {
+        PaymentReviewContainerViewModel(extractions: extractions,
+                                        selectedPaymentProvider: selectedPaymentProvider,
+                                        isAmountFieldEditable: isAmountFieldEditable)
     }
 }
 
