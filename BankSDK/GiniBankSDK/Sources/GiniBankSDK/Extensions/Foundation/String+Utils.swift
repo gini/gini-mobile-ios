@@ -21,7 +21,7 @@ extension String {
 }
 
 extension String {
-    var backendDate: Date? {
-        return DateFormatter.backend.date(from: self)
+    var yearMonthDayDate: Date? {
+        return DateFormatter.yearMonthDay.date(from: self)
     }
 }

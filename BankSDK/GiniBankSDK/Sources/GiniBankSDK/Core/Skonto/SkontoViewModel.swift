@@ -166,7 +166,7 @@ class SkontoViewModel {
             if extraction.name == "skontoAmountToPay" {
                 extraction.value = "\(skontoAmountToPay.value)"
             } else if extraction.name == "skontoDueDate" {
-                extraction.value = dueDate.backendString
+                extraction.value = dueDate.yearMonthDayString
             }
             return extraction
         }
