@@ -4,8 +4,8 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-import GiniCaptureSDK
 import UIKit
+import GiniCaptureSDK
 import GiniBankAPILibrary
 
 protocol SkontoCoordinatorDelegate: AnyObject {
@@ -39,8 +39,7 @@ final class SkontoCoordinator: Coordinator {
          _ skontoDiscounts: SkontoDiscounts) {
         self.navigationController = navigationController
 
-        let skontoViewModel = SkontoViewModel(skontoDiscounts: skontoDiscounts,
-                                              amountToPay: skontoDiscounts.totalAmountToPay)
+        let skontoViewModel = SkontoViewModel(skontoDiscounts: skontoDiscounts)
         skontoViewModel.delegate = self
         skontoViewController = SkontoViewController(viewModel: skontoViewModel)
     }
