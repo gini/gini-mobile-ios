@@ -19,7 +19,7 @@ class SkontoViewModel {
     var endEditingAction: (() -> Void)?
     var proceedAction: (() -> Void)?
 
-    private (set) var skontoDiscounts: SkontoDiscounts
+    private let skontoDiscounts: SkontoDiscounts
     private var skontoPercentage: Double
 
     private (set) var isSkontoApplied: Bool

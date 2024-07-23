@@ -10,8 +10,8 @@ import GiniBankAPILibrary
 public struct SkontoDiscounts {
 
     let initialExtractionResult: ExtractionResult
-    var discounts: [SkontoDiscountDetails]
-    var totalAmountToPay: Price
+    let discounts: [SkontoDiscountDetails]
+    let totalAmountToPay: Price
 }
 
 extension SkontoDiscounts {
