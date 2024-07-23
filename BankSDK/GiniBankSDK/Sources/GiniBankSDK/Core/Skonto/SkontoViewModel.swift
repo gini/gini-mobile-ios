@@ -112,9 +112,9 @@ class SkontoViewModel {
 
     private func recalculateRemainingDays() {
         let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
+        let currentDate = calendar.startOfDay(for: Date().inBerlinTimeZone)
         let dueDate = calendar.startOfDay(for: self.dueDate)
-        let components = calendar.dateComponents([.day], from: today, to: dueDate)
+        let components = calendar.dateComponents([.day], from: currentDate, to: dueDate)
         remainingDays = components.day ?? 0
     }
 

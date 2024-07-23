@@ -137,7 +137,7 @@ class SkontoAppliedDateView: UIView {
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
         }
-        let currentDate = Date()
+        let currentDate = Date().inBerlinTimeZone
         var dateComponent = DateComponents()
         dateComponent.month = 6
         let endDate = Calendar.current.date(byAdding: dateComponent, to: currentDate)
