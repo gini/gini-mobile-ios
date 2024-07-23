@@ -7,11 +7,11 @@
 import Foundation
 
 extension Date {
-    var shortString: String {
-        return DateFormatter.short.string(from: self)
+    var currentShortString: String {
+        return DateFormatter.currentShort.string(from: self)
     }
 
-    var backendString: String {
-        return DateFormatter.backend.string(from: self)
+    var yearMonthDayString: String {
+        return DateFormatter.yearMonthDay.string(from: self)
     }
 }

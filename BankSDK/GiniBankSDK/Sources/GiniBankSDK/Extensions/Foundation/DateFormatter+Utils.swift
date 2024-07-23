@@ -7,13 +7,13 @@
 import Foundation
 
 extension DateFormatter {
-    static let backend: DateFormatter = {
+    static let yearMonthDay: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
 
-    static let short: DateFormatter = {
+    static let currentShort: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale.current
         formatter.dateStyle = .short
