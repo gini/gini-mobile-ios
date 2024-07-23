@@ -10,7 +10,7 @@ import Foundation
   Helper class for IBAN validation.
  
  */
-final class IBANValidator {
+public struct IBANValidator {
     private var countryIbanDictionary: [String: Int] {
         return [
             "AL": 28, "AD": 24, "AT": 20, "AZ": 28, "BH": 22, "BE": 16,
@@ -30,8 +30,12 @@ final class IBANValidator {
     private var validationSet: CharacterSet {
         return CharacterSet(charactersIn: "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ").inverted
     }
-    
-    func isValid(iban: String) -> Bool {
+
+    public init() {
+        //Empty init for public constructor
+    }
+
+    public func isValid(iban: String) -> Bool {
         let iban = iban.replacingOccurrences(of: " ", with: "")
         let ibanLength = iban.count
         guard let minValues = countryIbanDictionary.values.min(), ibanLength >= minValues else {
@@ -63,7 +67,7 @@ final class IBANValidator {
         return result
     }
     
-    func checkSum(iban: String) -> UInt32 {
+    public func checkSum(iban: String) -> UInt32 {
         var checkSum = UInt32(0)
         var letterNumberMapping: [Character: Int] {
             var dict = [Character: Int]()
@@ -85,7 +89,7 @@ final class IBANValidator {
         return checkSum % 97
     }
     
-    func validateMod97(iban: String) -> Bool {
+    public func validateMod97(iban: String) -> Bool {
         return checkSum(iban: iban) == 1
     }
 }
