@@ -107,6 +107,8 @@ private extension DebugMenuViewController {
     @objc private func switchValueChanged(_ sender: UISwitch) {
         if sender == reviewScreenSwitch {
             delegate?.didChangeReviewScreenSwitchValue(isOn: sender.isOn)
+            amountEditableSwitch.isOn = sender.isOn
+            delegate?.didChangeAmountEditableSwitchValue(isOn: sender.isOn)
         } else if sender == amountEditableSwitch {
             delegate?.didChangeAmountEditableSwitchValue(isOn: sender.isOn)
         }
