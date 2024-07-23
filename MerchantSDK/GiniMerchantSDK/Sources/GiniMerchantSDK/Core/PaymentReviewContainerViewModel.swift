@@ -10,7 +10,8 @@ import Foundation
 
 class PaymentReviewContainerViewModel {
     var onExtractionFetched: (() -> Void)?
-    var selectedPaymentProvider: PaymentProvider
+    let selectedPaymentProvider: PaymentProvider
+    let isAmountFieldEditable: Bool
 
     // Pay invoice label
     let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.banking.app.button.label",
@@ -22,8 +23,9 @@ class PaymentReviewContainerViewModel {
         }
     }
 
-    init(extractions: [Extraction], selectedPaymentProvider: PaymentProvider) {
+    init(extractions: [Extraction], selectedPaymentProvider: PaymentProvider, isAmountFieldEditable: Bool) {
         self.extractions = extractions
         self.selectedPaymentProvider = selectedPaymentProvider
+        self.isAmountFieldEditable = isAmountFieldEditable
     }
 }

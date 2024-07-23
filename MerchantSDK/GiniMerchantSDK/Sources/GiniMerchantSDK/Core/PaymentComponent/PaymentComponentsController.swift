@@ -166,8 +166,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                                                                  selectedPaymentProvider: selectedPaymentProvider,
                                                                  trackingDelegate: trackingDelegate,
                                                                  paymentComponentsController: self,
-                                                                 showPaymentReviewCloseButton: giniMerchantConfiguration.showPaymentReviewCloseButton,
-                                                                 statusBarStyle: giniMerchantConfiguration.paymentReviewStatusBarStyle, 
+                                                                 showPaymentReviewCloseButton: giniMerchantConfiguration.showPaymentReviewCloseButton, 
+                                                                 isAmountFieldEditable: giniMerchantConfiguration.isAmountFieldEditable,
+                                                                 statusBarStyle: giniMerchantConfiguration.paymentReviewStatusBarStyle,
                                                                  infoBarLabelFont: giniMerchantConfiguration.font(for: .captions1))
                 completion(vc, nil)
             case .failure(let error):

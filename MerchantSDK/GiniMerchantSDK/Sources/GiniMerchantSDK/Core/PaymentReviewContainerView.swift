@@ -17,114 +17,29 @@ enum TextFieldType: Int {
 }
 
 class PaymentReviewContainerView: UIView {
-    let ibanValidator = IBANValidator()
-    let giniMerchantConfiguration = GiniMerchantConfiguration.shared
+    private let ibanValidator = IBANValidator()
 
-    private lazy var paymentInfoStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .vertical)
-        stackView.distribution = .fill
-        stackView.spacing = Constants.stackViewSpacing
-        return stackView
-    }()
+    private lazy var recipientErrorLabel = buildErrorLabel()
+    private lazy var usageErrorLabel = buildErrorLabel()
+    private lazy var ibanErrorLabel = buildErrorLabel()
+    private lazy var amountErrorLabel = buildErrorLabel()
 
-    private lazy var recipientStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .vertical)
-        stackView.distribution = .fill
-        return stackView
-    }()
+    private let paymentInfoStackView = EmptyStackView(orientation: .vertical, distribution: .fill, spacing: Constants.stackViewSpacing)
+    private let recipientStackView = EmptyStackView(orientation: .vertical, distribution: .fill)
+    private let ibanAmountContainerStackView = EmptyStackView(orientation: .vertical, distribution: .fill)
+    private let ibanAmountHorizontalStackView =  EmptyStackView(orientation: .horizontal, distribution: .fill, spacing: Constants.stackViewSpacing)
 
-    private lazy var recipientTextFieldView: TextFieldWithLabelView = {
-        let textFieldView = TextFieldWithLabelView()
-        textFieldView.tag = TextFieldType.recipientFieldTag.rawValue
-        textFieldView.isUserInteractionEnabled = false
-        return textFieldView
-    }()
+    private let ibanAmountErrorsHorizontalStackView = EmptyStackView(orientation: .horizontal, distribution: .fill)
+    private let ibanErrorStackView = EmptyStackView(orientation: .vertical, distribution: .fill)
+    private let amountErrorStackView = EmptyStackView(orientation: .vertical, distribution: .fill)
+    private let usageStackView = EmptyStackView(orientation: .vertical, distribution: .fill)
 
-    private lazy var recipientErrorLabel: UILabel = {
-        let label = UILabel()
-        label.font = giniMerchantConfiguration.font(for: .captions2)
-        return label
-    }()
-
-    private lazy var ibanAmountContainerStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .vertical)
-        stackView.distribution = .fill
-        return stackView
-    }()
-
-    private lazy var ibanAmountHorizontalStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .horizontal)
-        stackView.distribution = .fill
-        stackView.spacing = Constants.stackViewSpacing
-        return stackView
-    }()
-
-    private lazy var ibanTextFieldView: TextFieldWithLabelView = {
-        let textFieldView = TextFieldWithLabelView()
-        textFieldView.tag = TextFieldType.ibanFieldTag.rawValue
-        textFieldView.isUserInteractionEnabled = false
-        return textFieldView
-    }()
-
-    private lazy var amountTextFieldView: TextFieldWithLabelView = {
-        let textFieldView = TextFieldWithLabelView()
-        textFieldView.tag = TextFieldType.amountFieldTag.rawValue
-        textFieldView.isUserInteractionEnabled = giniMerchantConfiguration.isAmountFieldEditable
-        return textFieldView
-    }()
-
-    private lazy var ibanAmountErrorsHorizontalStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .horizontal)
-        stackView.distribution = .fill
-        return stackView
-    }()
-
-    private lazy var ibanErrorStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .vertical)
-        stackView.distribution = .fill
-        return stackView
-    }()
-
-    private lazy var ibanErrorLabel: UILabel = {
-        let label = UILabel()
-        label.font = giniMerchantConfiguration.font(for: .captions2)
-        return label
-    }()
-
-    private lazy var amountErrorStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .vertical)
-        stackView.distribution = .fill
-        return stackView
-    }()
-
-    private lazy var amountErrorLabel: UILabel = {
-        let label = UILabel()
-        label.font = giniMerchantConfiguration.font(for: .captions2)
-        return label
-    }()
-
-    private lazy var usageStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .vertical)
-        stackView.distribution = .fill
-        return stackView
-    }()
-
-    private lazy var usageTextFieldView: TextFieldWithLabelView = {
-        let textFieldView = TextFieldWithLabelView()
-        textFieldView.tag = TextFieldType.usageFieldTag.rawValue
-        textFieldView.isUserInteractionEnabled = false
-        return textFieldView
-    }()
-
-    private lazy var usageErrorLabel: UILabel = {
-        let label = UILabel()
-        label.font = giniMerchantConfiguration.font(for: .captions2)
-        return label
-    }()
+    private lazy var recipientTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.recipientFieldTag.rawValue, isEditable: false)
+    private lazy var ibanTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.ibanFieldTag.rawValue, isEditable: false)
+    private lazy var amountTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.amountFieldTag.rawValue, isEditable: model.isAmountFieldEditable)
+    private lazy var usageTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.usageFieldTag.rawValue, isEditable: false)
 
     private let buttonsView = EmptyView()
-
-    private let buttonsStackView = EmptyStackView(orientation: .horizontal)
 
     private lazy var payInvoiceButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
@@ -134,7 +49,7 @@ class PaymentReviewContainerView: UIView {
     }()
 
     private let bottomView = EmptyView()
-
+    private let buttonsStackView = EmptyStackView(orientation: .horizontal)
     private let bottomStackView = EmptyStackView(orientation: .horizontal)
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
@@ -149,19 +64,17 @@ class PaymentReviewContainerView: UIView {
 
     private var paymentInputFields: [TextFieldWithLabelView] = []
     private var paymentInputFieldsErrorLabels: [UILabel] = []
-    var model: PaymentReviewContainerViewModel! {
-        didSet {
-            configureUI()
-        }
-    }
+    private let model: PaymentReviewContainerViewModel
     var onPayButtonClicked: (() -> Void)?
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    
+    init(viewModel: PaymentReviewContainerViewModel) {
+        self.model = viewModel
+        super.init(frame: .zero)
         setupViewHierarchy()
         setupLayout()
+        configureUI()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -286,7 +199,7 @@ class PaymentReviewContainerView: UIView {
     // MARK: - Input fields configuration
 
     fileprivate func setupViewModel() {
-        model?.onExtractionFetched = { [weak self] () in
+        model.onExtractionFetched = { [weak self] () in
             DispatchQueue.main.async {
                 self?.fillInInputFields()
             }
@@ -300,7 +213,7 @@ class PaymentReviewContainerView: UIView {
     }
 
     fileprivate func applyDefaultStyle(_ textFieldView: TextFieldWithLabelView) {
-        textFieldView.configure(configuration: giniMerchantConfiguration.defaultStyleInputFieldConfiguration)
+        textFieldView.configure(configuration: Constants.defaultStyleInputFieldConfiguration)
         textFieldView.customConfigure(labelTitle: inputFieldPlaceholderText(textFieldView))
         textFieldView.textField.delegate = self
         textFieldView.textField.tag = textFieldView.tag
@@ -309,14 +222,14 @@ class PaymentReviewContainerView: UIView {
 
     fileprivate func applyErrorStyle(_ textFieldView: TextFieldWithLabelView) {
         UIView.animate(withDuration: Constants.animationDuration) {
-            textFieldView.configure(configuration: self.giniMerchantConfiguration.errorStyleInputFieldConfiguration)
+            textFieldView.configure(configuration: Constants.errorStyleInputFieldConfiguration)
             textFieldView.layer.masksToBounds = true
         }
     }
 
     fileprivate func applySelectionStyle(_ textFieldView: TextFieldWithLabelView) {
-        UIView.animate(withDuration: Constants.animationDuration) { [self] in
-            textFieldView.configure(configuration: self.giniMerchantConfiguration.selectionStyleInputFieldConfiguration)
+        UIView.animate(withDuration: Constants.animationDuration) {
+            textFieldView.configure(configuration: Constants.selectionStyleInputFieldConfiguration)
             textFieldView.layer.masksToBounds = true
         }
     }
@@ -325,17 +238,13 @@ class PaymentReviewContainerView: UIView {
         if let fieldIdentifier = TextFieldType(rawValue: textFieldView.tag) {
             switch fieldIdentifier {
             case .recipientFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder",
-                                                        comment: "placeholder text for recipient input field")
+                return Constants.recipientFieldPlaceholder
             case .ibanFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder",
-                                                        comment: "placeholder text for iban input field")
+                return Constants.ibanFieldPlaceholder
             case .amountFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder",
-                                                        comment: "placeholder text for amount input field")
+                return Constants.amountFieldPlaceholder
             case .usageFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
-                                                        comment: "placeholder text for usage input field")
+                return Constants.usageFieldPlaceholder
             }
         }
         return ""
@@ -414,7 +323,6 @@ class PaymentReviewContainerView: UIView {
     }
 
     fileprivate func fillInInputFields() {
-        guard let model else { return }
         recipientTextFieldView.text = model.extractions.first(where: {$0.name == "payment_recipient"})?.value
         ibanTextFieldView.text = model.extractions.first(where: {$0.name == "iban"})?.value
         usageTextFieldView.text = model.extractions.first(where: {$0.name == "payment_purpose"})?.value
@@ -433,24 +341,19 @@ class PaymentReviewContainerView: UIView {
         switch textFieldTag {
         case .recipientFieldTag:
             errorLabel = recipientErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.recipient.non.empty.check",
-                                                            comment: " recipient failed non empty check")
+            errorMessage = Constants.recipientErrorMessage
         case .ibanFieldTag:
             errorLabel = ibanErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.non.empty.check",
-                                                            comment: "iban failed non empty check")
+            errorMessage = Constants.ibanErrorMessage
         case .amountFieldTag:
             errorLabel = amountErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.amount.non.empty.check",
-                                                            comment: "amount failed non empty check")
+            errorMessage = Constants.amountErrorMessage
         case .usageFieldTag:
             errorLabel = usageErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.purpose.non.empty.check",
-                                                            comment: "purpose failed non empty check")
+            errorMessage = Constants.purposeErrorMessage
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = GiniColor.feedback1.uiColor()
             errorLabel.text = errorMessage
         }
     }
@@ -481,15 +384,13 @@ class PaymentReviewContainerView: UIView {
 
     fileprivate func showValidationErrorLabel(textFieldTag: TextFieldType) {
         var errorLabel = UILabel()
-        var errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.default.textfield.validation.check",
-                                                            comment: "the field failed non empty check")
+        var errorMessage = Constants.emptyCheckErrorMessage
         switch textFieldTag {
         case .recipientFieldTag:
             errorLabel = recipientErrorLabel
         case .ibanFieldTag:
             errorLabel = ibanErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.validation.check",
-                                                            comment: "iban failed validation check")
+            errorMessage = Constants.ibanCheckErrorMessage
         case .amountFieldTag:
             errorLabel = amountErrorLabel
         case .usageFieldTag:
@@ -497,14 +398,13 @@ class PaymentReviewContainerView: UIView {
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = GiniColor.feedback1.uiColor()
+
             errorLabel.text = errorMessage
         }
     }
 
     fileprivate func configurePayButtonInitialState() {
-        guard let model else { return }
-        payInvoiceButton.configure(with: giniMerchantConfiguration.primaryButtonConfiguration)
+        payInvoiceButton.configure(with: Constants.primaryButtonConfiguration)
         payInvoiceButton.customConfigure(paymentProviderColors: model.selectedPaymentProvider.colors,
                                          text: model.payInvoiceLabelText,
                                          leftImageData: model.selectedPaymentProvider.iconData)
@@ -595,6 +495,20 @@ class PaymentReviewContainerView: UIView {
         case .usageFieldTag:
             return usageTextFieldView.textField.text
         }
+    }
+
+    private func buildErrorLabel() -> UILabel {
+        let label = UILabel()
+        label.font = Constants.errorLabelFont
+        label.textColor = Constants.errorLabelTextColor
+        return label
+    }
+
+    private func buildTextFieldWithLabelView(tag: Int, isEditable: Bool) -> TextFieldWithLabelView {
+        let textFieldView = TextFieldWithLabelView()
+        textFieldView.tag = tag
+        textFieldView.isUserInteractionEnabled = isEditable
+        return textFieldView
     }
 
 }
@@ -708,5 +622,25 @@ extension PaymentReviewContainerView {
         static let heightToolbar = 40.0
         static let stackViewSpacing = 10.0
         static let payInvoiceInactiveAlpha = 0.4
+
+        static let errorLabelTextColor = GiniColor.feedback1.uiColor()
+
+        static let emptyCheckErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.default.textfield.validation.check", comment: "the field failed non empty check")
+        static let ibanCheckErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.validation.check", comment: "iban failed validation check")
+        static let recipientFieldPlaceholder = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder", comment: "placeholder text for recipient input field")
+        static let ibanFieldPlaceholder = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder", comment: "placeholder text for iban input field")
+        static let amountFieldPlaceholder = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder", comment: "placeholder text for amount input field")
+        static let usageFieldPlaceholder = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder", comment: "placeholder text for usage input field")
+        static let recipientErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.recipient.non.empty.check", comment: "recipient failed non empty check")
+        static let ibanErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.non.empty.check", comment: "iban failed non empty check")
+        static let amountErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.amount.non.empty.check", comment: "amount failed non empty check")
+        static let purposeErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.purpose.non.empty.check", comment: "purpose failed non empty check")
+
+        static let errorLabelFont = GiniMerchantConfiguration.shared.font(for: .captions2)
+
+        static let primaryButtonConfiguration = GiniMerchantConfiguration.shared.primaryButtonConfiguration
+        static let defaultStyleInputFieldConfiguration = GiniMerchantConfiguration.shared.defaultStyleInputFieldConfiguration
+        static let errorStyleInputFieldConfiguration = GiniMerchantConfiguration.shared.errorStyleInputFieldConfiguration
+        static let selectionStyleInputFieldConfiguration = GiniMerchantConfiguration.shared.selectionStyleInputFieldConfiguration
     }
 }
