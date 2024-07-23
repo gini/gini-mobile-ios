@@ -162,12 +162,8 @@ class BottomSheetViewController: UIViewController {
 
     private func animatePresent() {
         dimmedView.alpha = 0
-        mainContainerView.transform = CGAffineTransform(translationX: 0, y: view.frame.height)
-        UIView.animate(withDuration: 0.2) { [weak self] in
-            self?.mainContainerView.transform = .identity
-        }
         // add more animation duration for smoothness
-        UIView.animate(withDuration: 0.4) { [weak self] in
+        UIView.animate(withDuration: 0.2) { [weak self] in
             self?.dimmedView.alpha = Constants.maxDimmedAlpha
         }
     }
