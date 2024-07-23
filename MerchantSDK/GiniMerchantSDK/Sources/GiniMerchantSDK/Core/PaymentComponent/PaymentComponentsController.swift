@@ -165,7 +165,10 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                                                                  data: data,
                                                                  selectedPaymentProvider: selectedPaymentProvider,
                                                                  trackingDelegate: trackingDelegate,
-                                                                 paymentComponentsController: self)
+                                                                 paymentComponentsController: self,
+                                                                 showPaymentReviewCloseButton: giniMerchantConfiguration.showPaymentReviewCloseButton,
+                                                                 statusBarStyle: giniMerchantConfiguration.paymentReviewStatusBarStyle, 
+                                                                 infoBarLabelFont: giniMerchantConfiguration.font(for: .captions1))
                 completion(vc, nil)
             case .failure(let error):
                 completion(nil, error)
