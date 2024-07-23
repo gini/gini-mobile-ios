@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 enum TextFieldType: Int {
     case recipientFieldTag = 1
@@ -16,7 +17,7 @@ enum TextFieldType: Int {
 }
 
 class PaymentReviewContainerView: UIView {
-
+    let ibanValidator = IBANValidator()
     let giniMerchantConfiguration = GiniMerchantConfiguration.shared
 
     private lazy var paymentInfoStackView: UIStackView = {
@@ -377,7 +378,7 @@ class PaymentReviewContainerView: UIView {
 
     fileprivate func validateIBANTextField(){
         if let ibanText = ibanTextFieldView.textField.text, ibanTextFieldView.textField.hasText {
-            if IBANValidator().isValid(iban: ibanText) {
+            if ibanValidator.isValid(iban: ibanText) {
                 applyDefaultStyle(ibanTextFieldView)
                 hideErrorLabel(textFieldTag: .ibanFieldTag)
             } else {
@@ -391,7 +392,7 @@ class PaymentReviewContainerView: UIView {
     }
 
     fileprivate func showIBANValidationErrorIfNeeded(){
-        if IBANValidator().isValid(iban: lastValidatedIBAN) {
+        if ibanValidator.isValid(iban: lastValidatedIBAN) {
             applyDefaultStyle(ibanTextFieldView)
             hideErrorLabel(textFieldTag: .ibanFieldTag)
         } else {
