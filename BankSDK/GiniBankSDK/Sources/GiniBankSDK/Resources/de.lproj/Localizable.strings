@@ -97,10 +97,10 @@
 "ginibank.skonto.total.amount.skonto" = "%@ Skonto";
 "ginibank.skonto.paybutton.title" = "Zahlung fortsetzen";
 "ginibank.skonto.total.title" = "Gesamtpreis";
-"ginibank.skonto.info.today.message" = "Zahlung heute: %@ Skonto.";
-"ginibank.skonto.info.today.alert" = "In dieser Rechnung ist ein Skonto enthalten – die Frist läuft heute ab.";
-"ginibank.skonto.info.cash.message" = "%@ Skonto sind bei Barzahlung innerhalb von %@ verfügbar.";
-"ginibank.skonto.info.cash.alert" = "In dieser Rechnung ist ein Skonto angegeben, das jedoch nur bei Bareinzahlung über einen Bankterminal gültig ist.";
-"ginibank.skonto.info.expired.message" = "Die %@ Skonto sind abgelaufen.";
-"ginibank.skonto.info.expired.alert" = "Diese Rechnung hätten Sie mit %@ Skonto bezahlen können, die Skontofrist ist jedoch bereits abgelaufen.";
+"ginibank.skonto.info.edgecase.today.message" = "Zahlung heute: %@ Skonto.";
+"ginibank.skonto.info.edgecase.today.alert.title" = "In dieser Rechnung ist ein Skonto enthalten – die Frist läuft heute ab.";
+"ginibank.skonto.info.edgecase.cash.message" = "%@ Skonto sind bei Barzahlung innerhalb von %@ verfügbar.";
+"ginibank.skonto.info.edgecase.cash.alert.title" = "In dieser Rechnung ist ein Skonto angegeben, das jedoch nur bei Bareinzahlung über einen Bankterminal gültig ist.";
+"ginibank.skonto.info.edgecase.expired.message" = "Die %@ Skonto sind abgelaufen.";
+"ginibank.skonto.info.edgecase.expired.alert.title" = "Diese Rechnung hätten Sie mit %@ Skonto bezahlen können, die Skontofrist ist jedoch bereits abgelaufen.";
 "ginibank.skonto.alert.ok" = "Verstanden";

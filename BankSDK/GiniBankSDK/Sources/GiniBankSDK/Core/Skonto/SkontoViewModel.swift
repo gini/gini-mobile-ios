@@ -56,15 +56,15 @@ class SkontoViewModel {
     var alertMessage: String? {
         switch edgeCase {
         case .expired:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.expired.alert",
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.edgecase.skonto.info.expired.alert.title",
                                                                          comment: "You could have paid this...")
             return String.localizedStringWithFormat(localizedText,
                                                     formattedPercentageDiscounted)
         case .oneDayLeft:
-            return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.today.alert",
+            return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.today.alert.title",
                                                             comment: "A discount is indicated on this invoice...")
         case .payByCash:
-            return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.cash.alert",
+            return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.cash.alert.title",
                                                             comment: "A discount is indicated on this invoice...")
         default:
             return nil
