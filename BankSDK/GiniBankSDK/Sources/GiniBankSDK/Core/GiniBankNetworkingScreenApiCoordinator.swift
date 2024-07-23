@@ -223,7 +223,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
 extension GiniBankNetworkingScreenApiCoordinator {
     // MARK: - Deliver with Skonto
-    public func deliverWithSkonto(result: ExtractionResult, analysisDelegate: AnalysisDelegate?) {
+    public func deliverWithSkonto(result: ExtractionResult, analysisDelegate: AnalysisDelegate? = nil) {
         let hasExtractions = result.extractions.count > 0
 
         DispatchQueue.main.async { [weak self] in
@@ -265,7 +265,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                            _ networkDelegate: GiniCaptureNetworkDelegate) {
         do {
             let skontoDiscounts = try SkontoDiscounts(extractions: extractionResult)
-            extractionResult.skontoDiscounts = nil
             showSkontoScreen(skontoDiscounts: skontoDiscounts)
         } catch {
             deliverWithSkonto(result: extractionResult,
@@ -403,8 +402,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
                            _ editedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
         guard let editedExtractionResult else { return }
-        deliverWithSkonto(result: editedExtractionResult,
-                          analysisDelegate: nil)
+        deliverWithSkonto(result: editedExtractionResult)
     }
 
     func didCancelAnalysis(_ coordinator: SkontoCoordinator) {

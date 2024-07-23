@@ -27,7 +27,7 @@ class SkontoViewModel {
     private (set) var skontoAmountToPay: Price
 
     private (set) var dueDate: Date
-    private (set) var amountToPayDiscounted: Price
+    private (set) var amountDiscounted: Price
     private (set) var currencyCode: String
     private (set) var remainingDays: Int
 
@@ -54,8 +54,7 @@ class SkontoViewModel {
 
     weak var delegate: SkontoViewModelDelegate?
 
-    init(skontoDiscounts: SkontoDiscounts,
-         amountToPay: Price) {
+    init(skontoDiscounts: SkontoDiscounts) {
         self.skontoDiscounts = skontoDiscounts
 
         // For now we don't handle multiple Skonto discounts
@@ -64,15 +63,13 @@ class SkontoViewModel {
         // TODO: set `isSkontoApplied` based on each Skonto edgecases
         isSkontoApplied = true
 
-        self.amountToPay = amountToPay
+        amountToPay = skontoDiscounts.totalAmountToPay
         skontoAmountToPay = skontoDiscountDetails.amountToPay
         dueDate = skontoDiscountDetails.dueDate
-        amountToPayDiscounted = skontoDiscountDetails.amountDiscounted
+        amountDiscounted = skontoDiscountDetails.amountDiscounted
         currencyCode = amountToPay.currencyCode
         skontoPercentage = skontoDiscountDetails.percentageDiscounted
         remainingDays = skontoDiscountDetails.remainingDays
-
-        recalculateAmountToPayWithSkonto()
     }
 
     func toggleDiscount() {
@@ -150,33 +147,48 @@ class SkontoViewModel {
     /**
      The edited `ExtractionResult` data.
      */
-
-        let modifiedSkontoExtractions = skontoDiscounts.initialExtractionResult.skontoDiscounts?[0]
-            .map { extraction -> Extraction in
-
-            if extraction.name == "skontoAmountToPay" {
-                extraction.value = "\(skontoAmountToPay.value)"
-            } else if extraction.name == "skontoDueDate" {
-                // TODO: send the modified due date
-                extraction.value = "22-07-2024"
     public var editedExtractionResult: ExtractionResult {
+        var modifiedSkontoExtractions: [Extraction]?
+        // For now we don't handle multiple Skonto discounts
+        if let skontoDiscountExtraction = skontoDiscounts.initialExtractionResult.skontoDiscounts?.first {
+            modifiedSkontoExtractions = skontoDiscountExtraction.map { extraction -> Extraction in
+                let modifiedExtraction = extraction
+                if modifiedExtraction.name == "skontoAmountToPay" {
+                    modifiedExtraction.value = "\(skontoAmountToPay.value)"
+                } else  if modifiedExtraction.name == "skontoAmountToPayCalculated" {
+                    modifiedExtraction.value = "\(skontoAmountToPay.value)"
+                } else if modifiedExtraction.name == "skontoDueDate" {
+                    modifiedExtraction.value = dueDate.dateString
+                } else if modifiedExtraction.name == "skontoDueDateCalculated" {
+                    modifiedExtraction.value = dueDate.dateString
+                } else if modifiedExtraction.name == "skontoPercentageDiscounted" {
+                    modifiedExtraction.value = "\(skontoPercentage)"
+                } else if modifiedExtraction.name == "skontoPercentageDiscountedCalculated" {
+                    modifiedExtraction.value = "\(skontoPercentage)"
+                } else if modifiedExtraction.name == "skontoAmountDiscounted" {
+                    modifiedExtraction.value = "\(amountDiscounted)"
+                } else if modifiedExtraction.name == "skontoAmountDiscountedCalculated" {
+                    modifiedExtraction.value = "\(amountDiscounted)"
+                } else if modifiedExtraction.name == "skontoRemainingDays" {
+                    modifiedExtraction.value = "\(remainingDays)"
+                }
+                return modifiedExtraction
             }
-            return extraction
         }
 
         let modifiedExtractions = skontoDiscounts.initialExtractionResult.extractions
             .map { extraction -> Extraction in
-
-                if extraction.name == "amountToPay" {
-                    extraction.value = "\(finalAmountToPay.value)"
+                let modifiedExtraction = extraction
+                if modifiedExtraction.name == "amountToPay" {
+                    modifiedExtraction.value = "\(finalAmountToPay.value)"
                 }
-
-                return extraction
+                return modifiedExtraction
             }
 
-        // TODO: skontoDiscounts should be [[Extraction]]?
+        let modifiedSkontoDiscounts = [modifiedSkontoExtractions].compactMap { $0 }
         return ExtractionResult(extractions: modifiedExtractions,
-                                skontoDiscounts: nil,
+                                skontoDiscounts: modifiedSkontoDiscounts,
                                 candidates: skontoDiscounts.initialExtractionResult.candidates)
     }
+
 }
