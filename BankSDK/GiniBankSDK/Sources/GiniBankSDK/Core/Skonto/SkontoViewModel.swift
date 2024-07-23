@@ -60,7 +60,7 @@ class SkontoViewModel {
                                                                          comment: "You could have paid this...")
             return String.localizedStringWithFormat(localizedText,
                                                     formattedPercentageDiscounted)
-        case .oneDayLeft:
+        case .paymentToday:
             return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.today.alert.title",
                                                             comment: "A discount is indicated on this invoice...")
         case .payByCash:
@@ -213,7 +213,7 @@ class SkontoViewModel {
             edgeCase = .payByCash
             isSkontoApplied = false
         } else if remainingDays == 0 {
-            edgeCase = .oneDayLeft
+            edgeCase = .paymentToday
             isSkontoApplied = true
         } else {
             edgeCase = nil

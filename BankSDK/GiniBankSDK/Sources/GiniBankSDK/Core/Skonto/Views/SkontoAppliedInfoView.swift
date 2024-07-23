@@ -95,7 +95,7 @@ class SkontoAppliedInfoView: UIView {
                                                                          comment: "The %@ discount has expired.")
             text = String.localizedStringWithFormat(localizedText,
                                                     viewModel.formattedPercentageDiscounted)
-        case .oneDayLeft:
+        case .paymentToday:
             let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.today.message",
                                                                          comment: "Pay today: %@ discount.")
             text = String.localizedStringWithFormat(localizedText,
@@ -127,7 +127,7 @@ class SkontoAppliedInfoView: UIView {
         case .expired:
             tintColor = GiniColor(light: .GiniBank.error2, dark: .GiniBank.error2).uiColor()
             backgroundColor = GiniColor(light: .GiniBank.error5, dark: .GiniBank.error5).uiColor()
-        case .oneDayLeft, .payByCash:
+        case .paymentToday, .payByCash:
             tintColor = GiniColor(light: .GiniBank.warning2, dark: .GiniBank.warning2).uiColor()
             backgroundColor = GiniColor(light: .GiniBank.warning5, dark: .GiniBank.warning5).uiColor()
         default:

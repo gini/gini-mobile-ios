@@ -8,6 +8,6 @@ import Foundation
 
 enum SkontoEdgeCase {
     case expired
-    case oneDayLeft
+    case paymentToday
     case payByCash
 }
