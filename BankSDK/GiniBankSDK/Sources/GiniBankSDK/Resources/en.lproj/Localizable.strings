@@ -105,6 +105,7 @@
 "ginibank.skonto.total.amount.skonto" = "%@ Skonto discount";
 "ginibank.skonto.paybutton.title" = "Continue to pay";
 "ginibank.skonto.total.title" = "Total";
+"ginibank.skonto.total.savings" = "Save %@";
 "ginibank.skonto.info.edgecase.today.message" = "Pay today: %@ discount.";
 "ginibank.skonto.info.edgecase.today.alert.title" = "A discount is indicated on this invoice, it will expire after today.";
 "ginibank.skonto.info.edgecase.cash.message" = "A %@ discount is available for cash payment within %@.";
