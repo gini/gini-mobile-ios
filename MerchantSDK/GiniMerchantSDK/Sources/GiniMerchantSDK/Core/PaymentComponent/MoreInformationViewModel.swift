@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 protocol MoreInformationViewProtocol: AnyObject {
     func didTapOnMoreInformation()

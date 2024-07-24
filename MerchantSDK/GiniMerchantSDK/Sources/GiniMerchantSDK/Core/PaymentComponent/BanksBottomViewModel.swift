@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 public protocol PaymentProvidersBottomViewProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider)

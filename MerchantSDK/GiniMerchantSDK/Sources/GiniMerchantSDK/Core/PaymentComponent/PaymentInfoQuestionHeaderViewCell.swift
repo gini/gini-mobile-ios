@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 final class PaymentInfoQuestionHeaderViewCell: UIView {
     var didTapSelectButton: (() -> Void)?
