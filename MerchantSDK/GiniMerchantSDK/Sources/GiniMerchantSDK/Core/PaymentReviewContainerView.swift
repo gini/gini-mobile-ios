@@ -404,8 +404,9 @@ class PaymentReviewContainerView: UIView {
 
     fileprivate func configurePayButtonInitialState() {
         payInvoiceButton.configure(with: Constants.primaryButtonConfiguration)
-        payInvoiceButton.customConfigure(paymentProviderColors: model.selectedPaymentProvider.colors,
-                                         text: model.payInvoiceLabelText,
+        payInvoiceButton.customConfigure(text: model.payInvoiceLabelText,
+                                         textColor: model.selectedPaymentProvider.colors.text.toColor(),
+                                         backgroundColor: model.selectedPaymentProvider.colors.background.toColor(),
                                          leftImageData: model.selectedPaymentProvider.iconData)
         disablePayButtonIfNeeded()
         payInvoiceButton.didTapButton = { [weak self] in

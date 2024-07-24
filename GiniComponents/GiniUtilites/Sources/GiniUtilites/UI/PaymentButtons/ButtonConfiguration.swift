@@ -16,6 +16,7 @@ public struct ButtonConfiguration {
     let borderWidth: CGFloat
     let shadowRadius: CGFloat
     let withBlurEffect: Bool
+    let titleLabelFont: UIFont
 
     /// Button configuration initalizer
     /// - Parameters:
@@ -34,7 +35,8 @@ public struct ButtonConfiguration {
                 cornerRadius: CGFloat,
                 borderWidth: CGFloat,
                 shadowRadius: CGFloat,
-                withBlurEffect: Bool) {
+                withBlurEffect: Bool,
+                titleLabelFont: UIFont) {
         self.backgroundColor = backgroundColor
         self.borderColor = borderColor
         self.titleColor = titleColor
@@ -43,5 +45,6 @@ public struct ButtonConfiguration {
         self.borderWidth = borderWidth
         self.shadowRadius = shadowRadius
         self.withBlurEffect = withBlurEffect
+        self.titleLabelFont = titleLabelFont
     }
 }

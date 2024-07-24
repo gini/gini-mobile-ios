@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 class ShareInvoiceBottomView: BottomSheetViewController {
 
@@ -117,8 +118,9 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: viewModel.giniMerchantConfiguration.primaryButtonConfiguration)
-        button.customConfigure(paymentProviderColors: viewModel.paymentProviderColors,
-                               text: viewModel.continueLabelText)
+        button.customConfigure(text: viewModel.continueLabelText,
+                               textColor: viewModel.paymentProviderColors?.text.toColor(),
+                               backgroundColor: viewModel.paymentProviderColors?.background.toColor())
         return button
     }()
 

@@ -8,11 +8,8 @@
 
 import UIKit
 
-final class PaymentSecondaryButton: UIView {
-    
-    private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
-    
-    var didTapButton: (() -> Void)?
+final public class PaymentSecondaryButton: UIView {
+    public var didTapButton: (() -> Void)?
     
     private lazy var contentView: UIView = {
         let view = EmptyView()
@@ -42,7 +39,7 @@ final class PaymentSecondaryButton: UIView {
         return imageView
     }()
     
-    init() {
+    public init() {
         super.init(frame: .zero)
         addSubview(contentView)
         contentView.addSubview(leftImageView)
@@ -94,7 +91,7 @@ final class PaymentSecondaryButton: UIView {
     }
 }
 
-extension PaymentSecondaryButton {
+public extension PaymentSecondaryButton {
     func configure(with configuration: ButtonConfiguration) {
         contentView.layer.cornerRadius = configuration.cornerRadius
         contentView.layer.borderWidth = configuration.borderWidth
@@ -106,7 +103,7 @@ extension PaymentSecondaryButton {
         leftImageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
         
         titleLabel.textColor = configuration.titleColor
-        titleLabel.font = giniMerchantConfiguration.font(for: .input)
+        titleLabel.font = configuration.titleLabelFont
     }
     
     func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: UIImage?, rightImageTintColor: UIColor, shouldShowLabel: Bool) {

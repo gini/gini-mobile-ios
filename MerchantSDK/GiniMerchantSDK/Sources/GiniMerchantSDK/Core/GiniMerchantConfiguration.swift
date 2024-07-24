@@ -81,7 +81,8 @@ public final class GiniMerchantConfiguration: NSObject {
                                                                      cornerRadius: 12,
                                                                      borderWidth: 0,
                                                                      shadowRadius: 0,
-                                                                     withBlurEffect: false)
+                                                                     withBlurEffect: false, 
+                                                                     titleLabelFont: font(for: .button))
     /**
      A configuration that defines the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View.
      */
@@ -92,8 +93,9 @@ public final class GiniMerchantConfiguration: NSObject {
                                                                        cornerRadius: 12,
                                                                        borderWidth: 1,
                                                                        shadowRadius: 0,
-                                                                       withBlurEffect: true)
-    
+                                                                       withBlurEffect: true, 
+                                                                       titleLabelFont: font(for: .input))
+
     // MARK: - Shared properties
 
     /**
