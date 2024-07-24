@@ -187,6 +187,11 @@ class SkontoViewModel {
                                 candidates: skontoDiscounts.initialExtractionResult.candidates)
     }
 
+    /**
+     Sets `edgeCase` and `isSkontoApplied` based on the following priorities:
+     1) expired discount, 2) cash payment, 3) payment due today, 4) no edge case.
+     - Note: If both `paymentMethod` and `remainingDays` conditions apply, `paymentMethod` is considered the major case.
+    */
     private func determineSkontoEdgeCase() {
         if remainingDays < 0 {
             edgeCase = .expired
