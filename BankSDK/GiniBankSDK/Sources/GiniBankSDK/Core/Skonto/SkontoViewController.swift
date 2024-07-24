@@ -275,6 +275,8 @@ public class SkontoViewController: UIViewController {
         let isSkontoApplied = viewModel.isSkontoApplied
         navigationBarBottomAdapter?.updateDiscountBadge(enabled: isSkontoApplied)
         navigationBarBottomAdapter?.updateDiscountValue(with: viewModel.localizedDiscountString)
+        navigationBarBottomAdapter?.updateInvoiceSkontoSavings(with: viewModel.savingsAmountString)
+        navigationBarBottomAdapter?.displayInvoiceSkontoSavingsBadge(hidden: !isSkontoApplied)
         let localizedStringWithCurrencyCode = viewModel.amountToPay.localizedStringWithCurrencyCode
         navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
     }
