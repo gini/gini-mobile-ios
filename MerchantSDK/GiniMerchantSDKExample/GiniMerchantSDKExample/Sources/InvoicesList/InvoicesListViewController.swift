@@ -135,6 +135,16 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
             return 1
         }
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let invoice = viewModel.invoices[indexPath.row]
+
+        // Instantiate InvoiceViewController with the Invoice instance
+        let invoiceViewController = InvoiceDetailViewController(invoice: invoice, paymentComponentsController: viewModel.paymentComponentsController)
+
+        // Present InvoiceViewController
+        self.navigationController?.pushViewController(invoiceViewController, animated: true)
+    }
 }
 
 extension InvoicesListViewController: InvoicesListViewControllerProtocol {

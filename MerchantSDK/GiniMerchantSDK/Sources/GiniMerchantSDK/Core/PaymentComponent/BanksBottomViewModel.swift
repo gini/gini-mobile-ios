@@ -1,5 +1,6 @@
 //
 //  BanksBottomViewModel.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -11,6 +12,8 @@ public protocol PaymentProvidersBottomViewProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider)
     func didTapOnClose()
     func didTapOnMoreInformation()
+    func didTapOnContinueOnShareBottomSheet()
+    func didTapForwardOnInstallBottomSheet()
 }
 
 struct PaymentProviderAdditionalInfo {

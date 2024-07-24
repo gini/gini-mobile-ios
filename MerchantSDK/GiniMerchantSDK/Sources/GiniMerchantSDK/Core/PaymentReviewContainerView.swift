@@ -1,5 +1,6 @@
 //
 //  PaymentReviewContainerView.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -34,6 +35,7 @@ class PaymentReviewContainerView: UIView {
     private lazy var recipientTextFieldView: TextFieldWithLabelView = {
         let textFieldView = TextFieldWithLabelView()
         textFieldView.tag = TextFieldType.recipientFieldTag.rawValue
+        textFieldView.isUserInteractionEnabled = false
         return textFieldView
     }()
 
@@ -59,12 +61,14 @@ class PaymentReviewContainerView: UIView {
     private lazy var ibanTextFieldView: TextFieldWithLabelView = {
         let textFieldView = TextFieldWithLabelView()
         textFieldView.tag = TextFieldType.ibanFieldTag.rawValue
+        textFieldView.isUserInteractionEnabled = false
         return textFieldView
     }()
 
     private lazy var amountTextFieldView: TextFieldWithLabelView = {
         let textFieldView = TextFieldWithLabelView()
         textFieldView.tag = TextFieldType.amountFieldTag.rawValue
+        textFieldView.isUserInteractionEnabled = giniMerchantConfiguration.isAmountFieldEditable
         return textFieldView
     }()
 
@@ -107,6 +111,7 @@ class PaymentReviewContainerView: UIView {
     private lazy var usageTextFieldView: TextFieldWithLabelView = {
         let textFieldView = TextFieldWithLabelView()
         textFieldView.tag = TextFieldType.usageFieldTag.rawValue
+        textFieldView.isUserInteractionEnabled = false
         return textFieldView
     }()
 
@@ -116,13 +121,9 @@ class PaymentReviewContainerView: UIView {
         return label
     }()
 
-    private lazy var buttonsView: UIView = {
-        EmptyView()
-    }()
+    private let buttonsView = EmptyView()
 
-    private lazy var buttonsStackView: UIStackView = {
-        EmptyStackView(orientation: .horizontal)
-    }()
+    private let buttonsStackView = EmptyStackView(orientation: .horizontal)
 
     private lazy var payInvoiceButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
@@ -131,13 +132,9 @@ class PaymentReviewContainerView: UIView {
         return button
     }()
 
-    private lazy var bottomView: UIView = {
-        EmptyView()
-    }()
+    private let bottomView = EmptyView()
 
-    private lazy var bottomStackView: UIStackView = {
-        EmptyStackView(orientation: .horizontal)
-    }()
+    private let bottomStackView = EmptyStackView(orientation: .horizontal)
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
         let view = PoweredByGiniView()

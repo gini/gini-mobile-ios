@@ -1,5 +1,6 @@
 //
 //  InstallAppBottomView.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -11,13 +12,9 @@ class InstallAppBottomView: BottomSheetViewController {
 
     var viewModel: InstallAppBottomViewModel
     
-    private lazy var contentStackView: UIStackView = {
-        EmptyStackView(orientation: .vertical)
-    }()
+    private let contentStackView = EmptyStackView(orientation: .vertical)
 
-    private lazy var titleView: UIView = {
-        EmptyView()
-    }()
+    private let titleView = EmptyView()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -30,9 +27,7 @@ class InstallAppBottomView: BottomSheetViewController {
         return label
     }()
     
-    private lazy var bankView: UIView = {
-        EmptyView()
-    }()
+    private let bankView = EmptyView()
     
     private lazy var bankIconImageView: UIImageView = {
         let imageView = UIImageView(image: viewModel.bankImageIcon)
@@ -43,9 +38,7 @@ class InstallAppBottomView: BottomSheetViewController {
         return imageView
     }()
     
-    private lazy var moreInformationView: UIView = {
-        EmptyView()
-    }()
+    private let moreInformationView = EmptyView()
     
     private lazy var moreInformationStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .horizontal)
@@ -91,17 +84,11 @@ class InstallAppBottomView: BottomSheetViewController {
         return button
     }()
     
-    private lazy var buttonsView: UIView = {
-        EmptyView()
-    }()
+    private let buttonsView: UIView = EmptyView()
     
-    private lazy var bottomView: UIView = {
-        EmptyView()
-    }()
+    private let bottomView = EmptyView()
     
-    private lazy var bottomStackView: UIStackView = {
-        EmptyStackView(orientation: .horizontal)
-    }()
+    private let bottomStackView = EmptyStackView(orientation: .horizontal)
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
         let view = PoweredByGiniView()

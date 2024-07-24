@@ -1,6 +1,6 @@
 //
 //  PaymentReviewModer.swift
-//  GiniMerchant
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -61,12 +61,15 @@ public class PaymentReviewModel: NSObject {
         }
     }
 
-    public init(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?) {
+    var paymentComponentsController: PaymentComponentsController
+
+    public init(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?, paymentComponentsController: PaymentComponentsController) {
         self.merchantSDK = giniMerchant
         self.documentId = document.id
         self.document = document
         self.extractions = extractions
         self.selectedPaymentProvider = selectedPaymentProvider
+        self.paymentComponentsController = paymentComponentsController
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> PageCollectionCellViewModel {
@@ -97,30 +100,19 @@ public class PaymentReviewModel: NSObject {
     }
     
     func openInstallAppBottomSheet() {
-        let installAppBottomSheet = installAppBottomSheet()
+        guard let installAppBottomSheet = paymentComponentsController.installAppBottomSheet() as? BottomSheetViewController else { return }
         installAppBottomSheet.modalPresentationStyle = .overFullScreen
         viewModelDelegate?.presentInstallAppBottomSheet(bottomSheet: installAppBottomSheet)
     }
     
     func openOnboardingShareInvoiceBottomSheet() {
-        let shareInvoiceBottomSheet = shareInvoiceBottomSheet()
+        guard let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet() as? BottomSheetViewController else { return }
         shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
         viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: shareInvoiceBottomSheet)
     }
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
         merchantSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
-    }
-    
-    func shouldShowOnboardingScreenFor(paymentProvider: PaymentProvider) -> Bool {
-        let onboardingCounts = OnboardingShareInvoiceScreenCount.load()
-        let count = onboardingCounts.presentationCount(forProvider: paymentProvider.name)
-        return count < Constants.numberOfTimesOnboardingShareScreenShouldAppear
-    }
-    
-    func incrementOnboardingCountFor(paymentProvider: PaymentProvider) {
-        var onboardingCounts = OnboardingShareInvoiceScreenCount.load()
-        onboardingCounts.incrementPresentationCount(forProvider: paymentProvider.name)
     }
     
     func fetchImages() {
@@ -166,33 +158,6 @@ public class PaymentReviewModel: NSObject {
         }
         return nil
     }
-    
-    func installAppBottomSheet() -> BottomSheetViewController {
-        let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
-        installAppBottomViewModel.viewDelegate = self
-        let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel)
-        return installAppBottomView
-    }
-    
-    func shareInvoiceBottomSheet() -> BottomSheetViewController {
-        let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
-        shareInvoiceBottomViewModel.viewDelegate = self
-        let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
-        return shareInvoiceBottomView
-    }
-
-    func loadPDF(paymentRequestID: String, completion: @escaping (Data) -> ()) {
-        isLoading = true
-        merchantSDK.paymentService.pdfWithQRCode(paymentRequestId: paymentRequestID) { [weak self] result in
-            self?.isLoading = false
-            switch result {
-                case .success(let data):
-                    completion(data)
-                case .failure:
-                    break
-            }
-        }
-    }
 }
 
 extension PaymentReviewModel: InstallAppBottomViewProtocol {
@@ -213,10 +178,4 @@ extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
   */
 public struct PageCollectionCellViewModel {
     let preview: UIImage
-}
-
-extension PaymentReviewModel {
-    private enum Constants {
-        static let numberOfTimesOnboardingShareScreenShouldAppear = 3
-    }
 }

@@ -1,5 +1,6 @@
 //
 //  PaymentComponentView.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -15,13 +16,9 @@ final class PaymentComponentView: UIView {
         }
     }
     
-    private lazy var contentStackView: UIStackView = {
-        EmptyStackView(orientation: .vertical)
-    }()
+    private let contentStackView = EmptyStackView(orientation: .vertical)
     
-    private lazy var selectYourBankView: UIView = {
-        EmptyView()
-    }()
+    private let selectYourBankView = EmptyView()
     
     private lazy var selectYourBankLabel: UILabel = {
         let label = UILabel()
@@ -33,9 +30,7 @@ final class PaymentComponentView: UIView {
         return label
     }()
     
-    private lazy var buttonsView: UIView = {
-        EmptyView()
-    }()
+    private let buttonsView = EmptyView()
     
     private lazy var buttonsStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .horizontal)
@@ -59,13 +54,9 @@ final class PaymentComponentView: UIView {
         return button
     }()
     
-    private lazy var bottomView: UIView = {
-        EmptyView()
-    }()
+    private let bottomView = EmptyView()
     
-    private lazy var bottomStackView: UIStackView = {
-        EmptyStackView(orientation: .horizontal)
-    }()
+    private let bottomStackView = EmptyStackView(orientation: .horizontal)
     
     private lazy var moreInformationView: MoreInformationView = {
         let view = MoreInformationView()
