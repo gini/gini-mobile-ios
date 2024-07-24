@@ -91,6 +91,15 @@ final class CustomSkontoBottomNavigationBar: UIView {
         return view
     }()
     
+    private lazy var savedAmountLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .green
+        label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+        return label
+    }()
+    
     private var proceedAction: (() -> Void)?
     // MARK: Temporary remove help action
 //    private var helpAction: (() -> Void)?
@@ -121,12 +130,22 @@ final class CustomSkontoBottomNavigationBar: UIView {
         skontoBadgeView.isHidden = !enabled
     }
 
+    func updateInvoiceSkontoSavings(with text: String?) {
+        savedAmountLabel.text = text
+    }
+
+    func displayInvoiceSkontoSavingsBadge(hidden: Bool) {
+        savedAmountLabel.isHidden = hidden
+    }
+
+
     private func setupView() {
         addSubview(proceedButton)
         addSubview(totalLabel)
         addSubview(totalValueLabel)
         addSubview(skontoBadgeView)
         addSubview(buttonsStackView)
+        addSubview(savedAmountLabel)
         skontoBadgeView.addSubview(skontoBadgeLabel)
     }
 
@@ -139,10 +158,11 @@ final class CustomSkontoBottomNavigationBar: UIView {
                                                  constant: Constants.padding / 2),
             totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
 
-            skontoBadgeView.centerYAnchor.constraint(equalTo: totalValueLabel.centerYAnchor),
-            skontoBadgeView.leadingAnchor.constraint(equalTo: totalValueLabel.trailingAnchor,
-                                                     constant: Constants.badgeSpacing),
-            skontoBadgeView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
+            savedAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor),
+            savedAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
+
+            skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
+            skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                      constant: -Constants.padding),
 
             skontoBadgeLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
@@ -154,7 +174,7 @@ final class CustomSkontoBottomNavigationBar: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            buttonsStackView.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: Constants.padding),
+            buttonsStackView.topAnchor.constraint(equalTo: savedAmountLabel.bottomAnchor, constant: Constants.padding),
             buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
             buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
