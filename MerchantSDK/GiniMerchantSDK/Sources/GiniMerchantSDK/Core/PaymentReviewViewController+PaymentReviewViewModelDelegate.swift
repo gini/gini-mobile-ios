@@ -14,7 +14,9 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
 
     func createPaymentRequestAndOpenBankApp() {
         self.presentedViewController?.dismiss(animated: true)
-        checkForErrors()
+        if paymentInfoContainerView.noErrorsFound() {
+            createPaymentRequest()
+        }
     }
 
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController) {
@@ -24,7 +26,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
 
     func obtainPDFFromPaymentRequest() {
-        model?.createPaymentRequest(paymentInfo: obtainPaymentInfo(), completion: { [weak self] paymentRequestID in
+        model?.createPaymentRequest(paymentInfo: paymentInfoContainerView.obtainPaymentInfo(), completion: { [weak self] paymentRequestID in
             self?.loadPDFData(paymentRequestID: paymentRequestID)
         })
     }
