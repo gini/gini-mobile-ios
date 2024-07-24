@@ -76,23 +76,23 @@ struct Price {
     }
 
     static func formatAmountString(newText: String) -> String? {
-        let onlyDigits = String(
-            newText.trimmingCharacters(
-                in: .whitespaces
-            ).filter { c in c != "," && c != "."}
+        let onlyDigits = String(newText.trimmingCharacters(in: .whitespaces)
+            .filter { c in c != "," && c != "."}
             .prefix(7)
         )
         if let decimal = Decimal(string: onlyDigits) {
             let decimalWithFraction = decimal / 100
-            return  Price.stringWithoutSymbol(
-               from: decimalWithFraction
-            )?.trimmingCharacters(in: .whitespaces)
+            return Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces)
         }
         return nil
     }
 
     static func convertLocalizedStringToDecimal(_ priceString: String) -> Decimal? {
-        return NumberFormatter.twoDecimalPriceFormatter.number(from: priceString.trimmingCharacters(in: .whitespaces))?.decimalValue
+        let trimmedString = priceString.trimmingCharacters(in: .whitespaces)
+        guard let number = NumberFormatter.twoDecimalPriceFormatter.number(from: trimmedString) else {
+            return nil
+        }
+        return number.decimalValue
     }
 
     static func localizedStringWithoutCurrencyCode(from decimal: Decimal) -> String? {

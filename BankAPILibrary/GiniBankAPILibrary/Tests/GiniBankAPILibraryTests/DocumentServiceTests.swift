@@ -130,7 +130,7 @@ final class DocumentServicesTests: XCTestCase {
             let amountToPay = amountToPayExtraction?.value ?? ""
 
             if let compoundExtractions = extractionResult.compoundExtractions {
-                if let lineItems = compoundExtractions["lineItems"] {
+                if let lineItems = compoundExtractions.lineItems {
                     let filteredCompoundExtractions = ["lineItems": [lineItems.first!]]
 
                     let pay4Keys = ["amountToPay", "iban", "reference", "paymentRecipient"]
