@@ -15,6 +15,8 @@ public class SkontoViewController: UIViewController {
 
     private lazy var infoView: SkontoAppliedInfoView = {
         let view = SkontoAppliedInfoView(viewModel: viewModel)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showAlertIfNeeded))
+        view.addGestureRecognizer(tapGesture)
         return view
     }()
 
@@ -73,6 +75,7 @@ public class SkontoViewController: UIViewController {
     }()
 
     private let viewModel: SkontoViewModel
+    private let alertFactory: SkontoAlertFactory
     private let configuration = GiniBankConfiguration.shared
 
     private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
@@ -80,6 +83,7 @@ public class SkontoViewController: UIViewController {
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
+        self.alertFactory = SkontoAlertFactory(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -92,6 +96,11 @@ public class SkontoViewController: UIViewController {
         setupView()
         setupConstraints()
         setupKeyboardObservers()
+    }
+
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showAlertIfNeeded()
     }
 
     deinit {
@@ -297,6 +306,11 @@ public class SkontoViewController: UIViewController {
 
     @objc private func endEditing() {
         view.endEditing(true)
+    }
+
+    @objc private func showAlertIfNeeded() {
+        guard let alert = alertFactory.createEdgeCaseAlert() else { return }
+        present(alert, animated: true, completion: nil)
     }
 }
 
