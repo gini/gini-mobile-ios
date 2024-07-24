@@ -153,24 +153,19 @@ class SkontoViewModel {
         if let skontoDiscountExtraction = skontoDiscounts.initialExtractionResult.skontoDiscounts?.first {
             modifiedSkontoExtractions = skontoDiscountExtraction.map { extraction -> Extraction in
                 let modifiedExtraction = extraction
-                if modifiedExtraction.name == "skontoAmountToPay" {
+                switch modifiedExtraction.name {
+                case "skontoAmountToPay", "skontoAmountToPayCalculated":
                     modifiedExtraction.value = "\(skontoAmountToPay.value)"
-                } else  if modifiedExtraction.name == "skontoAmountToPayCalculated" {
-                    modifiedExtraction.value = "\(skontoAmountToPay.value)"
-                } else if modifiedExtraction.name == "skontoDueDate" {
+                case "skontoDueDate", "skontoDueDateCalculated":
                     modifiedExtraction.value = dueDate.dateString
-                } else if modifiedExtraction.name == "skontoDueDateCalculated" {
-                    modifiedExtraction.value = dueDate.dateString
-                } else if modifiedExtraction.name == "skontoPercentageDiscounted" {
+                case "skontoPercentageDiscounted", "skontoPercentageDiscountedCalculated":
                     modifiedExtraction.value = "\(skontoPercentage)"
-                } else if modifiedExtraction.name == "skontoPercentageDiscountedCalculated" {
-                    modifiedExtraction.value = "\(skontoPercentage)"
-                } else if modifiedExtraction.name == "skontoAmountDiscounted" {
+                case "skontoAmountDiscounted", "skontoAmountDiscountedCalculated":
                     modifiedExtraction.value = "\(amountDiscounted)"
-                } else if modifiedExtraction.name == "skontoAmountDiscountedCalculated" {
-                    modifiedExtraction.value = "\(amountDiscounted)"
-                } else if modifiedExtraction.name == "skontoRemainingDays" {
+                case "skontoRemainingDays":
                     modifiedExtraction.value = "\(remainingDays)"
+                default:
+                    break
                 }
                 return modifiedExtraction
             }
