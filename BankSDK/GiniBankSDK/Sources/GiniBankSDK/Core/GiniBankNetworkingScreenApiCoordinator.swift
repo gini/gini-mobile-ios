@@ -223,7 +223,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
 extension GiniBankNetworkingScreenApiCoordinator {
     // MARK: - Deliver with Skonto
-    public func deliverWithSkonto(result: ExtractionResult, analysisDelegate: AnalysisDelegate?) {
+    public func deliverWithSkonto(result: ExtractionResult, analysisDelegate: AnalysisDelegate? = nil) {
         let hasExtractions = result.extractions.count > 0
 
         DispatchQueue.main.async { [weak self] in
@@ -265,8 +265,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                            _ networkDelegate: GiniCaptureNetworkDelegate) {
         do {
             let skontoDiscounts = try SkontoDiscounts(extractions: extractionResult)
-            extractionResult.lineItems = nil
-            // TODO: I don't know if we need "analysisDelegate: networkDelegate" like in RA
             showSkontoScreen(skontoDiscounts: skontoDiscounts)
         } catch {
             deliverWithSkonto(result: extractionResult,
@@ -324,9 +322,9 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
                 DispatchQueue.main.async {
 
-                    if GiniBankConfiguration.shared.returnAssistantEnabled {
+                    if GiniBankConfiguration.shared.returnAssistantEnabled && extractionResult.lineItems != nil {
                         self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
-                    } else if GiniBankConfiguration.shared.skontoEnabled {
+                    } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
                         self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
                         self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
@@ -402,15 +400,15 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
 
 extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
-                           _ editiedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
-        guard let editiedExtractionResult else { return }
-        deliverWithSkonto(result: editiedExtractionResult,
-                          analysisDelegate: nil)
+                           _ editedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
+        guard let editedExtractionResult else { return }
+        deliverWithSkonto(result: editedExtractionResult)
     }
 
     func didCancelAnalysis(_ coordinator: SkontoCoordinator) {
         childCoordinators = childCoordinators.filter { $0 !== coordinator }
         pages = []
+        didCancelAnalysis()
         _ = start(withDocuments: nil, animated: true)
     }
 }

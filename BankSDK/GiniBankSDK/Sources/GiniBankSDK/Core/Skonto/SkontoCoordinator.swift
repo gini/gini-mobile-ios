@@ -4,14 +4,14 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-import GiniCaptureSDK
 import UIKit
+import GiniCaptureSDK
 import GiniBankAPILibrary
 
 protocol SkontoCoordinatorDelegate: AnyObject {
     func didCancelAnalysis(_ coordinator: SkontoCoordinator)
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
-                           _ editiedExtractionResult: ExtractionResult?)
+                           _ editedExtractionResult: ExtractionResult?)
 }
 
 final class SkontoCoordinator: Coordinator {
@@ -39,8 +39,7 @@ final class SkontoCoordinator: Coordinator {
          _ skontoDiscounts: SkontoDiscounts) {
         self.navigationController = navigationController
 
-        let skontoViewModel = SkontoViewModel(skontoDiscounts: skontoDiscounts,
-                                              amountToPay: skontoDiscounts.totalAmountToPay)
+        let skontoViewModel = SkontoViewModel(skontoDiscounts: skontoDiscounts)
         skontoViewModel.delegate = self
         skontoViewController = SkontoViewController(viewModel: skontoViewModel)
     }
@@ -57,6 +56,6 @@ extension SkontoCoordinator: SkontoViewModelDelegate {
     }
 
     func didTapProceed(on viewModel: SkontoViewModel) {
-        delegate?.didFinishAnalysis(self, viewModel.editiedExtractionResult)
+        delegate?.didFinishAnalysis(self, viewModel.editedExtractionResult)
     }
 }
