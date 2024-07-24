@@ -112,7 +112,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
         model.fetchImages()
         model.viewModelDelegate = self
-        paymentInfoContainerView.model = model.paymentReviewContainerViewModel()
     }
 
     override public func viewDidDisappear(_ animated: Bool) {
@@ -335,7 +334,7 @@ fileprivate extension PaymentReviewViewController {
 //MARK: - PaymentReviewContainerView
 fileprivate extension PaymentReviewViewController {
     func buildPaymentInfoContainerView() -> PaymentReviewContainerView {
-        let containerView = PaymentReviewContainerView()
+        let containerView = PaymentReviewContainerView(viewModel: model.paymentReviewContainerViewModel())
         containerView.backgroundColor = Constants.infoContainerViewBackgroundColor
         containerView.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadius)
         containerView.onPayButtonClicked = { [weak self] in

@@ -7,7 +7,6 @@
 
 
 import UIKit
-import GiniHealthAPILibrary
 
 final class PaymentPrimaryButton: UIView {
     

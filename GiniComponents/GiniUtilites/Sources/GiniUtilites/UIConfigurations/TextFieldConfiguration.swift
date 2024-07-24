@@ -14,7 +14,7 @@ public struct TextFieldConfiguration {
     public let cornerRadius: CGFloat
     public let borderWidth: CGFloat
     public let placeholderForegroundColor: UIColor
-
+    public let placeholderFont: UIFont
 
     /// Text Field configuration initalizer
     /// - Parameters:
@@ -24,18 +24,21 @@ public struct TextFieldConfiguration {
     ///   - cornerRadius: the textField's corner radius
     ///   - borderWidth: the textField's border width
     ///   - placeholderForegroundColor:the textField's placeholder foreground color
+    ///   - placeholderFont: the textField's title label font
 
     public init(backgroundColor: UIColor,
                 borderColor: UIColor,
                 textColor: UIColor,
                 cornerRadius: CGFloat,
                 borderWidth: CGFloat,
-                placeholderForegroundColor: UIColor) {
+                placeholderForegroundColor: UIColor,
+                placeholderFont: UIFont) {
         self.backgroundColor = backgroundColor
         self.borderColor = borderColor
         self.textColor = textColor
         self.cornerRadius = cornerRadius
         self.borderWidth = borderWidth
         self.placeholderForegroundColor = placeholderForegroundColor
+        self.placeholderFont = placeholderFont
     }
 }

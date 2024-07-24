@@ -15,7 +15,6 @@ public struct ButtonConfiguration {
     let cornerRadius: CGFloat
     let borderWidth: CGFloat
     let shadowRadius: CGFloat
-
     let withBlurEffect: Bool
 
     /// Button configuration initalizer

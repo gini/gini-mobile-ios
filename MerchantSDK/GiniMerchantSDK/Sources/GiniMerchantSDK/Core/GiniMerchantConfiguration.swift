@@ -104,26 +104,27 @@ public final class GiniMerchantConfiguration: NSObject {
                                                                                  textColor: GiniColor.standard1.uiColor(),
                                                                                  cornerRadius: 12.0,
                                                                                  borderWidth: 1.0,
-                                                                                 placeholderForegroundColor: GiniColor.standard4.uiColor())
+                                                                                 placeholderForegroundColor: GiniColor.standard4.uiColor(), 
+                                                                                 placeholderFont: fontProvider.font(for: .captions2))
     /**
      A error style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
     public lazy var errorStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
-                                                                                     borderColor: GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1).uiColor(),
-                                                                                     textColor: GiniColor.standard1.uiColor(),
-                                                                                     cornerRadius: 12.0,
-                                                                                     borderWidth: 1.0,
-                                                                                     placeholderForegroundColor: GiniColor.standard4.uiColor())
+                                                                               borderColor: GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1).uiColor(),
+                                                                               textColor: GiniColor.standard1.uiColor(),
+                                                                               cornerRadius: 12.0,
+                                                                               borderWidth: 1.0,
+                                                                               placeholderForegroundColor: GiniColor.standard4.uiColor(), placeholderFont: fontProvider.font(for: .captions2))
     /**
      A selection style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
     public lazy var selectionStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
                                                                                    borderColor: GiniColor.accent1.uiColor(),
-                                                                                     textColor: GiniColor.standard1.uiColor(),
-                                                                                     cornerRadius: 12.0,
-                                                                                     borderWidth: 1.0,
-                                                                                     placeholderForegroundColor: GiniColor.standard4.uiColor())
-    
+                                                                                   textColor: GiniColor.standard1.uiColor(),
+                                                                                   cornerRadius: 12.0,
+                                                                                   borderWidth: 1.0,
+                                                                                   placeholderForegroundColor: GiniColor.standard4.uiColor(), placeholderFont: fontProvider.font(for: .captions2))
+
     // MARK: - Update to custom font
     /**
      Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
