@@ -20,7 +20,6 @@ struct AmplitudeEventOptions {
     var deviceModel: String?
     var deviceId: String?
     var deviceBrand: String?
-    var appVersion: String?
 
     /// Initializes a new instance of the `AmplitudeEventOptions` struct.
     init(userId: String? = nil,
@@ -34,8 +33,7 @@ struct AmplitudeEventOptions {
          ip: String? = nil,
          eventId: Int64? = nil,
          deviceModel: String? = nil,
-         deviceBrand: String? = nil,
-         appVersion: String? = nil) {
+         deviceBrand: String? = nil) {
         self.userId = userId
         self.deviceId = deviceId
         self.time = time
@@ -48,6 +46,5 @@ struct AmplitudeEventOptions {
         self.eventId = eventId
         self.deviceModel = deviceModel
         self.deviceBrand = deviceBrand
-        self.appVersion = appVersion
     }
 }
