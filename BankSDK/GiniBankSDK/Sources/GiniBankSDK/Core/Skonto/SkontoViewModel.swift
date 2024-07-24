@@ -22,7 +22,7 @@ class SkontoViewModel {
     private let skontoDiscounts: SkontoDiscounts
     private var skontoPercentage: Double
 
-    private (set) var isSkontoApplied: Bool
+    private (set) var isSkontoApplied: Bool = true
     private (set) var amountToPay: Price
     private (set) var skontoAmountToPay: Price
 
@@ -30,6 +30,8 @@ class SkontoViewModel {
     private (set) var amountDiscounted: Price
     private (set) var currencyCode: String
     private (set) var remainingDays: Int
+    private (set) var paymentMethod: SkontoDiscountDetails.PaymentMethod
+    private (set) var edgeCase: SkontoEdgeCase?
 
     var finalAmountToPay: Price {
         return isSkontoApplied ? skontoAmountToPay : amountToPay
@@ -42,6 +44,13 @@ class SkontoViewModel {
         } else {
             return "\(skontoPercentage)%"
         }
+    }
+
+    var localizedRemainingDays: String {
+        let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.day",
+                                                            comment: "%@ days")
+        return String.localizedStringWithFormat(text,
+                                                remainingDays)
     }
 
     var localizedDiscountString: String {
@@ -69,17 +78,15 @@ class SkontoViewModel {
 
         // For now we don't handle multiple Skonto discounts
         let skontoDiscountDetails = skontoDiscounts.discounts[0]
-
-        // TODO: set `isSkontoApplied` based on each Skonto edgecases
-        isSkontoApplied = true
-
-        amountToPay = skontoDiscounts.totalAmountToPay
+        self.amountToPay = skontoDiscounts.totalAmountToPay
         skontoAmountToPay = skontoDiscountDetails.amountToPay
         dueDate = skontoDiscountDetails.dueDate
         amountDiscounted = skontoDiscountDetails.amountDiscounted
         currencyCode = amountToPay.currencyCode
         skontoPercentage = skontoDiscountDetails.percentageDiscounted
         remainingDays = skontoDiscountDetails.remainingDays
+        paymentMethod = skontoDiscountDetails.paymentMethod
+        determineSkontoEdgeCase()
     }
 
     func toggleDiscount() {
@@ -114,7 +121,17 @@ class SkontoViewModel {
 
     func set(date: Date) {
         self.dueDate = date
+        recalculateRemainingDays()
+        determineSkontoEdgeCase()
         notifyStateChangeHandlers()
+    }
+
+    private func recalculateRemainingDays() {
+        let calendar = Calendar.current
+        let currentDate = calendar.startOfDay(for: Date().inBerlinTimeZone)
+        let dueDate = calendar.startOfDay(for: self.dueDate)
+        let components = calendar.dateComponents([.day], from: currentDate, to: dueDate)
+        remainingDays = components.day ?? 0
     }
 
     func addStateChangeHandler(_ handler: @escaping () -> Void) {
@@ -171,7 +188,7 @@ class SkontoViewModel {
                 case "skontoAmountToPay", "skontoAmountToPayCalculated":
                     modifiedExtraction.value = "\(skontoAmountToPay.value)"
                 case "skontoDueDate", "skontoDueDateCalculated":
-                    modifiedExtraction.value = dueDate.dateString
+                    modifiedExtraction.value = dueDate.yearMonthDayString
                 case "skontoPercentageDiscounted", "skontoPercentageDiscountedCalculated":
                     modifiedExtraction.value = "\(skontoPercentage)"
                 case "skontoAmountDiscounted", "skontoAmountDiscountedCalculated":
@@ -200,4 +217,24 @@ class SkontoViewModel {
                                 candidates: skontoDiscounts.initialExtractionResult.candidates)
     }
 
+    /**
+     Sets `edgeCase` and `isSkontoApplied` based on the following priorities:
+     1) expired discount, 2) cash payment, 3) payment due today, 4) no edge case.
+     - Note: If both `paymentMethod` and `remainingDays` conditions apply, `paymentMethod` is considered the major case.
+    */
+    private func determineSkontoEdgeCase() {
+        if remainingDays < 0 {
+            edgeCase = .expired
+            isSkontoApplied = false
+        } else if paymentMethod == .cash {
+            edgeCase = .payByCash
+            isSkontoApplied = false
+        } else if remainingDays == 0 {
+            edgeCase = .paymentToday
+            isSkontoApplied = true
+        } else {
+            edgeCase = nil
+            isSkontoApplied = true
+        }
+    }
 }
