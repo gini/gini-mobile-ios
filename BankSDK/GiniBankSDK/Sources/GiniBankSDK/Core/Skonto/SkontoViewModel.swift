@@ -140,8 +140,8 @@ class SkontoViewModel {
             return
         }
 
-        let skontoPercentage = ((amountToPay.value - skontoAmountToPay.value) / amountToPay.value) * 100
-        self.skontoPercentage = Double(truncating: skontoPercentage as NSNumber)
+        let skontoPercentageValue = ((amountToPay.value - skontoAmountToPay.value) / amountToPay.value) * 100
+        self.skontoPercentage = Double(truncating: skontoPercentageValue as NSNumber)
     }
 
     /**
