@@ -50,6 +50,7 @@ public final class GiniAnalyticsManager {
 
     private static func handleAnalyticsSDKsInit() {
         guard amplitudeService != nil else { return }
+        userProperties[.captureSDKVersion] = GiniCapture.versionString
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
