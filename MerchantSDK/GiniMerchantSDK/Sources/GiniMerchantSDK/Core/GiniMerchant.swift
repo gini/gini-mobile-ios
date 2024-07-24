@@ -80,6 +80,7 @@ public struct DataForReview {
      - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
      - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
      - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
+     - logLevel: The log level. `LogLevel.none` by default.
      */
     public init(id: String, 
                 secret: String,
@@ -102,14 +103,16 @@ public struct DataForReview {
      - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
      - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
      - pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+     - logLevel: The log level. `LogLevel.none` by default.
      */
     public init(id: String, 
                 secret: String,
                 domain: String,
-                pinningConfig: [String: [String]]) {
+                pinningConfig: [String: [String]],
+                logLevel: LogLevel = .none) {
         let client = Client(id: id, secret: secret, domain: domain)
         self.giniApiLib = GiniHealthAPI.Builder(client: client, 
-                                                logLevel: .none,
+                                                logLevel: logLevel.toHealthLogLevel(),
                                                 sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig)).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService()
