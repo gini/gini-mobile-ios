@@ -137,6 +137,7 @@ class SkontoAppliedDateView: UIView {
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
         }
+        datePicker.date = viewModel.dueDate
         let currentDate = Date()
         var dateComponent = DateComponents()
         dateComponent.month = 6
