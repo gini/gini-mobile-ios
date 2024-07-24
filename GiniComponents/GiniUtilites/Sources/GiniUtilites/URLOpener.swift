@@ -23,7 +23,7 @@ public struct URLOpener {
     ///                 param is true if website was opened successfully
     ///                 param is false if opening failed
 
-    func openLink(url: URL, completion: ((Bool) -> Void)?) {
+    public func openLink(url: URL, completion: ((Bool) -> Void)?) {
         if application.canOpenURL(url) {
             application.open(url, options: [:], completionHandler: completion)
         } else {
@@ -31,7 +31,7 @@ public struct URLOpener {
         }
     }
     
-    func canOpenLink(url: URL) -> Bool {
+    public func canOpenLink(url: URL) -> Bool {
         application.canOpenURL(url)
     }
 }

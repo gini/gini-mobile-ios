@@ -8,6 +8,7 @@
 
 import UIKit
 import GiniHealthAPILibrary
+import GiniUtilites
 
 /**
  Delegate to inform about the current status of the Gini Merchant SDK.
