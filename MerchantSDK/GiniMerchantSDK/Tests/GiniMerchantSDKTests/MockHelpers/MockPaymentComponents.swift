@@ -95,4 +95,9 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         paymentInfoViewController.viewModel = paymentInfoViewModel
         return paymentInfoViewController
     }
+
+    func paymentViewBottomSheet(documentID: String) -> UIViewController {
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID))
+        return paymentComponentBottomView
+    }
 }

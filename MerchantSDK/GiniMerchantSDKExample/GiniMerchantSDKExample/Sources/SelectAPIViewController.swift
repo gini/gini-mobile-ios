@@ -13,6 +13,10 @@ protocol SelectAPIViewControllerDelegate: AnyObject {
     func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniCaptureAPIType)
 }
 
+protocol DebugMenuPresenter: AnyObject {
+    func presentDebugMenu()
+}
+
 /**
  Integration options for Gini Capture SDK.
  */
@@ -31,12 +35,21 @@ final class SelectAPIViewController: UIViewController {
     
     @IBOutlet private weak var metaInformationButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet private weak var startWithTestDocumentButton: UIButton!
-    @IBOutlet private weak var startWithGiniCaptureButton: UIButton!
+    @IBOutlet private weak var startWithTestDocumentButton: UIButton! {
+        didSet {
+            startWithTestDocumentButton.isHidden = true
+        }
+    }
+    @IBOutlet private weak var startWithGiniCaptureButton: UIButton! {
+        didSet {
+            startWithGiniCaptureButton.isHidden = true
+        }
+    }
     @IBOutlet private weak var invoicesListButton: UIButton!
     
     weak var delegate: SelectAPIViewControllerDelegate?
-        
+    weak var debugMenuPresenter: DebugMenuPresenter?
+
     var clientId: String?
     
     // MARK: View life cycle
@@ -45,7 +58,8 @@ final class SelectAPIViewController: UIViewController {
                 
         let metaTitle = "Gini Capture SDK: (\(GiniCapture.versionString)) / Client id: \(self.clientId ?? "")"
         metaInformationButton.setTitle(metaTitle, for: .normal)
-        
+        metaInformationButton.addTarget(self, action: #selector(showDebugMenu), for: .touchUpInside)
+
         if #available(iOS 13.0, *) {
             activityIndicator.style = .large
         } else {
@@ -66,7 +80,11 @@ final class SelectAPIViewController: UIViewController {
     @IBAction func launchInvoicesList(_ sender: Any) {
         delegate?.selectAPI(viewController: self, didSelectApi: .invoicesList)
     }
-    
+
+    @objc private func showDebugMenu() {
+        debugMenuPresenter?.presentDebugMenu()
+    }
+
     func showActivityIndicator() {
         DispatchQueue.main.async {
             self.activityIndicator.startAnimating()

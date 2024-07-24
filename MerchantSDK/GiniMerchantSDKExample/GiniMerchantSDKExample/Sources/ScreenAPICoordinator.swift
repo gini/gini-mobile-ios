@@ -72,36 +72,40 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     }
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-        if let giniSDK = self.giniMerchant, let docId = result.document?.id {
-            // this step needed since we've got 2 different Document structures
-            giniSDK.fetchDataForReview(documentId: docId) { [weak self] resultReview in
-                switch resultReview {
-                case .success(let data):
-                    // Store invoice/document into Invoices list
-                    self?.giniMerchant?.checkIfDocumentIsPayable(docId: result.document?.id ?? "", completion: { [weak self] resultPayable in
-                        switch resultPayable {
-                        case .success(let isPayable):
-                            let invoice = DocumentWithExtractions(documentID: result.document?.id ?? "",
-                                                                  extractions: data.extractions,
-                                                                  isPayable: isPayable)
-                            self?.handlePayableInvoice(invoice: invoice)
-                        case .failure(let error):
-                            print("❌ Checking if document is payable failed: \(String(describing: error))")
+            var healthExtractions: [GiniMerchantSDK.Extraction] = []
+            captureExtractedResults = result.extractions.map { $0.value }
+            for extraction in captureExtractedResults {
+                healthExtractions.append(GiniMerchantSDK.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
+            }
+
+            if let giniMerchant = self.giniMerchant, let docId = result.document?.id {
+                // this step needed since we've got 2 different Document structures
+                giniMerchant.fetchDataForReview(documentId: docId) { [weak self] resultReview in
+                    switch resultReview {
+                    case .success(let data):
+                        giniMerchant.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
+                            switch result {
+                            case let .success(extractionResult):
+                                print("✅ Successfully fetched extractions for id: \(docId)")
+                                // Store invoice/document into Invoices list
+                                let invoice = DocumentWithExtractions(documentID: docId,
+                                                                      extractionResult: extractionResult)
+                                self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
+                                DispatchQueue.main.async {
+                                    self?.rootViewController.dismiss(animated: true, completion: {
+                                        self?.delegate?.presentInvoicesList(invoices: [invoice])
+                                    })
+                                }
+                            case let .failure(error):
+                                print("❌ Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))")
+                            }
                         }
-                    })
-                case .failure(let error):
-                    print("❌ Document data fetching failed: \(String(describing: error))")
+                    case .failure(let error):
+                        print("❌ Document data fetching failed: \(String(describing: error))")
+                    }
                 }
             }
         }
-    }
-    
-    private func handlePayableInvoice(invoice: DocumentWithExtractions) {
-        hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
-        rootViewController.dismiss(animated: true, completion: { [weak self] in
-            self?.delegate?.presentInvoicesList(invoices: [invoice])
-        })
-    }
 }
 // MARK: - UINavigationControllerDelegate
 

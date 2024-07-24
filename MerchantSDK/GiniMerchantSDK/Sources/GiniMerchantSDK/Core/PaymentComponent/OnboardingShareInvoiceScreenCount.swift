@@ -1,5 +1,6 @@
 //
 //  OnboardingShareInvoiceScreenCount.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -32,12 +33,14 @@ extension OnboardingShareInvoiceScreenCount {
     }
 
     // Get presentation count for a specific provider
-    func presentationCount(forProvider providerID: String) -> Int {
+    func presentationCount(forProvider providerID: String?) -> Int {
+        guard let providerID else { return 0 }
         return providerCounts[providerID] ?? 0
     }
 
     // Increment presentation count for a specific provider
-    mutating func incrementPresentationCount(forProvider providerID: String) {
+    mutating func incrementPresentationCount(forProvider providerID: String?) {
+        guard let providerID else { return }
         if let count = providerCounts[providerID] {
             providerCounts[providerID] = count + 1
         } else {

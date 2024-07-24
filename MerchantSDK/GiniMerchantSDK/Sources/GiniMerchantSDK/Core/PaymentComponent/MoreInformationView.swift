@@ -1,5 +1,6 @@
 //
 //  MoreInformationView.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -14,9 +15,7 @@ final class MoreInformationView: UIView {
         }
     }
     
-    private lazy var mainContainer: UIView = {
-        EmptyView()
-    }()
+    private let mainContainer = EmptyView()
     
     private lazy var moreInformationLabel: UILabel = {
         let label = UILabel()

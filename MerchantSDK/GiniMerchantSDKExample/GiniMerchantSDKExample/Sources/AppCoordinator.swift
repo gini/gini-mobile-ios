@@ -21,6 +21,7 @@ final class AppCoordinator: Coordinator {
     lazy var selectAPIViewController: SelectAPIViewController = {
         let selectAPIViewController = SelectAPIViewController()
         selectAPIViewController.delegate = self
+        selectAPIViewController.debugMenuPresenter = self
         selectAPIViewController.clientId = clientID
         return selectAPIViewController
     }()
@@ -61,7 +62,6 @@ final class AppCoordinator: Coordinator {
         self.showSelectAPIScreen()
         paymentComponentsController.delegate = self
         paymentComponentsController.loadPaymentProviders()
-//        try! apiLib.removeStoredCredentials()
     }
     
     func processExternalDocument(withUrl url: URL, sourceApplication: String?) {
@@ -121,35 +121,30 @@ final class AppCoordinator: Coordinator {
     
     private var testDocument: Document?
     private var testDocumentExtractions: [GiniMerchantSDK.Extraction]?
-    
+
+    private let configuration = GiniMerchantConfiguration()
+
     fileprivate func showPaymentReviewWithTestDocument() {
-        let configuration = GiniMerchantConfiguration()
-        
-        // Show the close button to dismiss the payment review screen
-        configuration.showPaymentReviewCloseButton = true
-        configuration.paymentReviewStatusBarStyle = .lightContent
-        
         merchant.delegate = self
         merchant.setConfiguration(configuration)
 
         if let document = self.testDocument {
             self.selectAPIViewController.showActivityIndicator()
-            
+
             self.merchant.fetchDataForReview(documentId: document.id) { result in
                 switch result {
                 case .success(let data):
-                    self.merchant.checkIfDocumentIsPayable(docId: document.id, completion: { [weak self] resultPayable in
-                        switch resultPayable {
-                        case .success(let isPayable):
+                    self.merchant.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
+                        switch result {
+                        case let .success(extractionResult):
+                            print("✅ Successfully fetched extractions for id: \(document.id)")
                             let invoice = DocumentWithExtractions(documentID: document.id,
-                                                                  extractions: data.extractions,
-                                                                  isPayable: isPayable)
+                                                                  extractionResult: extractionResult)
                             self?.showInvoicesList(invoices: [invoice])
-                        case .failure(let error):
-                            print("❌ Checking if document is payable failed: \(String(describing: error))")
+                        case let .failure(error):
+                            print("❌ Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))")
                         }
-                        self?.selectAPIViewController.hideActivityIndicator()
-                    })
+                    }
                 case .failure(let error):
                     print("❌ Document data fetching failed: \(String(describing: error))")
                     self.selectAPIViewController.hideActivityIndicator()
@@ -159,9 +154,9 @@ final class AppCoordinator: Coordinator {
             // Upload the test document image
             let testDocumentImage = UIImage(named: "testDocument")!
             let testDocumentData = testDocumentImage.jpegData(compressionQuality: 1)!
-            
+
             self.selectAPIViewController.showActivityIndicator()
-            
+
             self.merchant.documentService.createDocument(fileName: nil,
                                                        docType: nil,
                                                        type: .partial(testDocumentData),
@@ -172,35 +167,34 @@ final class AppCoordinator: Coordinator {
                     self.merchant.documentService.createDocument(fileName: nil,
                                                                docType: nil,
                                                                type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
-                                                               metadata: nil) { result in
+                                                               metadata: nil) { [weak self] result in
                         switch result {
                         case .success(let compositeDocument):
-                            self.merchant.setDocumentForReview(documentId: compositeDocument.id) { result in
+                            self?.merchant.setDocumentForReview(documentId: compositeDocument.id) { [weak self] result in
                                 switch result {
                                 case .success(let extractions):
-                                    self.testDocument = compositeDocument
-                                    self.testDocumentExtractions = extractions
-                                    
-                                    self.merchant.checkIfDocumentIsPayable(docId: compositeDocument.id, completion: { [weak self] resultPayable in
-                                        switch resultPayable {
-                                        case .success(let isPayable):
+                                    self?.testDocument = compositeDocument
+                                    self?.testDocumentExtractions = extractions
+
+                                    self?.merchant.documentService.extractions(for: compositeDocument, cancellationToken: CancellationToken()) { [weak self] result in
+                                        switch result {
+                                        case let .success(extractionResult):
+                                            print("✅ Successfully fetched extractions for id: \(compositeDocument.id)")
                                             let invoice = DocumentWithExtractions(documentID: compositeDocument.id,
-                                                                                  extractions: extractions,
-                                                                                  isPayable: isPayable)
+                                                                                  extractionResult: extractionResult)
                                             self?.showInvoicesList(invoices: [invoice])
-                                        case .failure(let error):
-                                            print("❌ Checking if document is payable failed: \(String(describing: error))")
+                                        case let .failure(error):
+                                            print("❌ Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))")
                                         }
-                                        self?.selectAPIViewController.hideActivityIndicator()
-                                    })
+                                    }
                                 case .failure(let error):
                                     print("❌ Setting document for review failed: \(String(describing: error))")
-                                    self.selectAPIViewController.hideActivityIndicator()
+                                    self?.selectAPIViewController.hideActivityIndicator()
                                 }
                             }
                         case .failure(let error):
                             print("❌ Document creation failed: \(String(describing: error))")
-                            self.selectAPIViewController.hideActivityIndicator()
+                            self?.selectAPIViewController.hideActivityIndicator()
                         }
                     }
                 case .failure(let error):
@@ -210,7 +204,7 @@ final class AppCoordinator: Coordinator {
             }
         }
     }
-    
+
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
         let alertViewController = UIAlertController(title: "Importierte Datei",
                                                     message: "Möchten Sie die importierte Datei mit dem " +
@@ -257,12 +251,11 @@ final class AppCoordinator: Coordinator {
     
     fileprivate func showInvoicesList(invoices: [DocumentWithExtractions]? = nil) {
         self.selectAPIViewController.hideActivityIndicator()
-        let configuration = GiniMerchantConfiguration()
         
         // Show the close button to dismiss the payment review screen
         configuration.showPaymentReviewCloseButton = true
         configuration.paymentReviewStatusBarStyle = .lightContent
-        
+
         merchant.setConfiguration(configuration)
         merchant.delegate = self
 
@@ -347,5 +340,25 @@ extension AppCoordinator: PaymentComponentsControllerProtocol {
     
     func didFetchedPaymentProviders() {
         //
+    }
+}
+
+//MARK: - DebugMenuPresenterDelegate
+
+extension AppCoordinator: DebugMenuPresenter {
+    func presentDebugMenu() {
+        let debugMenuViewController = DebugMenuViewController(showReviewScreen: configuration.showPaymentReviewScreen, isAmountFieldEditable: configuration.isAmountFieldEditable)
+        debugMenuViewController.delegate = self
+        rootViewController.present(debugMenuViewController, animated: true)
+    }
+}
+
+extension AppCoordinator: DebugMenuDelegate {
+    func didChangeReviewScreenSwitchValue(isOn: Bool) {
+        configuration.showPaymentReviewScreen = isOn
+    }
+    
+    func didChangeAmountEditableSwitchValue(isOn: Bool) {
+        configuration.isAmountFieldEditable = isOn
     }
 }

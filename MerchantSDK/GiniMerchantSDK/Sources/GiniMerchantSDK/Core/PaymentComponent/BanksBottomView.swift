@@ -1,5 +1,6 @@
 //
 //  PaymentProvidersBottomView.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -11,9 +12,7 @@ class BanksBottomView: BottomSheetViewController {
 
     var viewModel: BanksBottomViewModel
     
-    private lazy var contentStackView: UIStackView = {
-        EmptyStackView(orientation: .vertical)
-    }()
+    private let contentStackView = EmptyStackView(orientation: .vertical)
 
     private lazy var titleView: UIView = {
         let view = EmptyView()
@@ -41,9 +40,7 @@ class BanksBottomView: BottomSheetViewController {
         return imageView
     }()
     
-    private lazy var descriptionView: UIView = {
-        EmptyView()
-    }()
+    private let descriptionView = EmptyView()
 
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
@@ -55,9 +52,7 @@ class BanksBottomView: BottomSheetViewController {
         return label
     }()
     
-    private lazy var paymentProvidersView: UIView = {
-        EmptyView()
-    }()
+    private let paymentProvidersView = EmptyView()
 
     private lazy var paymentProvidersTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -74,13 +69,9 @@ class BanksBottomView: BottomSheetViewController {
         return tableView
     }()
     
-    private lazy var bottomView: UIView = {
-        EmptyView()
-    }()
+    private let bottomView = EmptyView()
     
-    private lazy var bottomStackView: UIStackView = {
-        EmptyStackView(orientation: .horizontal)
-    }()
+    private let bottomStackView = EmptyStackView(orientation: .horizontal)
     
     private lazy var moreInformationView: MoreInformationView = {
         let view = MoreInformationView()

@@ -1,5 +1,6 @@
 //
 //  ShareInvoiceBottomView.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -11,13 +12,9 @@ class ShareInvoiceBottomView: BottomSheetViewController {
 
     var viewModel: ShareInvoiceBottomViewModel
     
-    private lazy var contentStackView: UIStackView = {
-        EmptyStackView(orientation: .vertical)
-    }()
+    private let contentStackView = EmptyStackView(orientation: .vertical)
 
-    private lazy var titleView: UIView = {
-        EmptyView()
-    }()
+    private let titleView = EmptyView()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -30,9 +27,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         return label
     }()
     
-    private lazy var descriptionView: UIView = {
-        EmptyView()
-    }()
+    private let descriptionView = EmptyView()
 
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
@@ -69,9 +64,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         return imageView
     }()
     
-    private lazy var tipView: UIView = {
-        EmptyView()
-    }()
+    private let tipView = EmptyView()
     
     private lazy var tipStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .horizontal)
@@ -118,9 +111,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         return button
     }()
     
-    private lazy var continueView: UIView = {
-        EmptyView()
-    }()
+    private let continueView = EmptyView()
     
     private lazy var continueButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
@@ -131,13 +122,9 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         return button
     }()
 
-    private lazy var bottomView: UIView = {
-        EmptyView()
-    }()
+    private let bottomView = EmptyView()
     
-    private lazy var bottomStackView: UIStackView = {
-        EmptyStackView(orientation: .horizontal)
-    }()
+    private let bottomStackView = EmptyStackView(orientation: .horizontal)
     
     private lazy var poweredByGiniView: PoweredByGiniView = {
         let view = PoweredByGiniView()

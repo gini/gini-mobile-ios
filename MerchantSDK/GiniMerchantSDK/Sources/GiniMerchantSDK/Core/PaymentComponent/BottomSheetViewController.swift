@@ -1,5 +1,6 @@
 //
 //  BottomSheetViewController.swift
+//  GiniMerchantSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -21,15 +22,11 @@ class BottomSheetViewController: UIViewController {
     }()
     
     /// View to hold dynamic content
-    private lazy var contentView: UIView = {
-        EmptyView()
-    }()
-    
+    private let contentView = EmptyView()
+
     /// Top bar view that draggable to dismiss
-    private lazy var topBarView: UIView = {
-        EmptyView()
-    }()
-    
+    private let topBarView = EmptyView()
+
     /// Top view bar
     private lazy var barLineView: UIView = {
         let view = UIView()
@@ -165,12 +162,8 @@ class BottomSheetViewController: UIViewController {
 
     private func animatePresent() {
         dimmedView.alpha = 0
-        mainContainerView.transform = CGAffineTransform(translationX: 0, y: view.frame.height)
-        UIView.animate(withDuration: 0.2) { [weak self] in
-            self?.mainContainerView.transform = .identity
-        }
         // add more animation duration for smoothness
-        UIView.animate(withDuration: 0.4) { [weak self] in
+        UIView.animate(withDuration: 0.2) { [weak self] in
             self?.dimmedView.alpha = Constants.maxDimmedAlpha
         }
     }
