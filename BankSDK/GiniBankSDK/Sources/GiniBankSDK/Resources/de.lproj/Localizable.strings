@@ -97,6 +97,7 @@
 "ginibank.skonto.total.amount.skonto" = "%@ Skonto";
 "ginibank.skonto.paybutton.title" = "Zahlung fortsetzen";
 "ginibank.skonto.total.title" = "Gesamtpreis";
+"ginibank.skonto.total.savings" = "%@ sparen ";
 "ginibank.skonto.info.edgecase.today.message" = "Zahlung heute: %@ Skonto.";
 "ginibank.skonto.info.edgecase.today.alert.title" = "In dieser Rechnung ist ein Skonto enthalten – die Frist läuft heute ab.";
 "ginibank.skonto.info.edgecase.cash.message" = "%@ Skonto sind bei Barzahlung innerhalb von %@ verfügbar.";

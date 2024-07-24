@@ -61,6 +61,16 @@ class SkontoViewModel {
         )
     }
 
+    var savingsAmountString: String {
+        let savingsAmount = calculateSkontoSavingsAmount()
+        guard let priceString = savingsAmount.localizedStringWithCurrencyCode else { return "" }
+        return String.localizedStringWithFormat(
+            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.savings",
+                                                     comment: "Save %@"),
+            priceString
+        )
+    }
+
     weak var delegate: SkontoViewModelDelegate?
 
     init(skontoDiscounts: SkontoDiscounts) {
@@ -161,6 +171,10 @@ class SkontoViewModel {
         self.skontoPercentage = Double(truncating: skontoPercentageValue as NSNumber)
     }
 
+    private func calculateSkontoSavingsAmount() -> Price {
+        let skontoSavingsValue = amountToPay.value - skontoAmountToPay.value
+        return Price(value: skontoSavingsValue, currencyCode: currencyCode)
+    }
     /**
      The edited `ExtractionResult` data.
      */
