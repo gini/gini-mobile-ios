@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import GiniBankAPILibrary
 
 protocol SkontoViewModelDelegate: AnyObject {
     // MARK: Temporary remove help action
@@ -18,29 +19,28 @@ class SkontoViewModel {
     var endEditingAction: (() -> Void)?
     var proceedAction: (() -> Void)?
 
+    private let skontoDiscounts: SkontoDiscounts
+    private var skontoPercentage: Double
+
     private (set) var isSkontoApplied: Bool
-    private (set) var priceWithoutSkonto: Price
-    private (set) var priceWithSkonto: Price
+    private (set) var amountToPay: Price
+    private (set) var skontoAmountToPay: Price
 
-    var totalPrice: Price {
-        return isSkontoApplied ? priceWithSkonto : priceWithoutSkonto
-    }
-
-    private (set) var date: Date
-    private (set) var skontoValue: Double
+    private (set) var dueDate: Date
+    private (set) var amountDiscounted: Price
     private (set) var currencyCode: String
+    private (set) var remainingDays: Int
 
-    // TODO: recalculate with backend entity: skontoDuePeriod
-    var skontoFormattedDaysDuePeriod: String {
-        return "14 days"
+    var finalAmountToPay: Price {
+        return isSkontoApplied ? skontoAmountToPay : amountToPay
     }
 
-    var skontoFormattedPercentageDiscounted: String {
+    var formattedPercentageDiscounted: String {
         let formatter = NumberFormatter.floorRoundingFormatter
-        if let formattedValue = formatter.string(from: NSNumber(value: skontoValue)) {
+        if let formattedValue = formatter.string(from: NSNumber(value: skontoPercentage)) {
             return "\(formattedValue)%"
         } else {
-            return "\(skontoValue)%"
+            return "\(skontoPercentage)%"
         }
     }
 
@@ -48,7 +48,7 @@ class SkontoViewModel {
         return String.localizedStringWithFormat(
             NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
                                                      comment: "%@ Skonto discount"),
-            skontoFormattedPercentageDiscounted
+            formattedPercentageDiscounted
         )
     }
 
@@ -64,17 +64,22 @@ class SkontoViewModel {
 
     weak var delegate: SkontoViewModelDelegate?
 
-    init(isSkontoApplied: Bool,
-         skontoValue: Double,
-         date: Date,
-         priceWithoutSkonto: Price) {
-        self.isSkontoApplied = isSkontoApplied
-        self.skontoValue = skontoValue
-        self.date = date
-        self.priceWithoutSkonto = priceWithoutSkonto
-        self.currencyCode = priceWithoutSkonto.currencyCode
-        self.priceWithSkonto = priceWithoutSkonto // Placeholder, will be recalculated
-        self.recalculatePriceWithSkonto()
+    init(skontoDiscounts: SkontoDiscounts) {
+        self.skontoDiscounts = skontoDiscounts
+
+        // For now we don't handle multiple Skonto discounts
+        let skontoDiscountDetails = skontoDiscounts.discounts[0]
+
+        // TODO: set `isSkontoApplied` based on each Skonto edgecases
+        isSkontoApplied = true
+
+        amountToPay = skontoDiscounts.totalAmountToPay
+        skontoAmountToPay = skontoDiscountDetails.amountToPay
+        dueDate = skontoDiscountDetails.dueDate
+        amountDiscounted = skontoDiscountDetails.amountDiscounted
+        currencyCode = amountToPay.currencyCode
+        skontoPercentage = skontoDiscountDetails.percentageDiscounted
+        remainingDays = skontoDiscountDetails.remainingDays
     }
 
     func toggleDiscount() {
@@ -84,19 +89,19 @@ class SkontoViewModel {
     }
 
     func setSkontoPrice(price: String) {
-        guard let price = convertPriceStringToPrice(price: price), price.value <= priceWithoutSkonto.value else {
+        guard let price = convertPriceStringToPrice(price: price), price.value <= amountToPay.value else {
             notifyStateChangeHandlers()
             return
         }
-        priceWithSkonto = price
-        recalculateSkontoValue()
+        skontoAmountToPay = price
+        recalculateSkontoPercentage()
         notifyStateChangeHandlers()
     }
 
     func setDefaultPrice(price: String) {
         guard let price = convertPriceStringToPrice(price: price) else { return }
-        priceWithoutSkonto = price
-        recalculatePriceWithSkonto()
+        amountToPay = price
+        recalculateAmountToPayWithSkonto()
         notifyStateChangeHandlers()
     }
 
@@ -108,7 +113,7 @@ class SkontoViewModel {
     }
 
     func set(date: Date) {
-        self.date = date
+        self.dueDate = date
         notifyStateChangeHandlers()
     }
 
@@ -135,22 +140,64 @@ class SkontoViewModel {
         delegate?.didTapProceed(on: self)
     }
 
-    private func recalculatePriceWithSkonto() {
-        let calculatedPrice = priceWithoutSkonto.value * (1 - Decimal(skontoValue) / 100)
-        priceWithSkonto = Price(value: calculatedPrice, currencyCode: currencyCode)
+    private func recalculateAmountToPayWithSkonto() {
+        let calculatedPrice = amountToPay.value * (1 - Decimal(skontoPercentage) / 100)
+        skontoAmountToPay = Price(value: calculatedPrice, currencyCode: currencyCode)
     }
 
-    private func recalculateSkontoValue() {
-        guard priceWithoutSkonto.value > 0 else {
+    private func recalculateSkontoPercentage() {
+        guard amountToPay.value > 0 else {
             return
         }
 
-        let skontoPercentage = ((priceWithoutSkonto.value - priceWithSkonto.value) / priceWithoutSkonto.value) * 100
-        skontoValue = Double(truncating: skontoPercentage as NSNumber)
+        let skontoPercentageValue = ((amountToPay.value - skontoAmountToPay.value) / amountToPay.value) * 100
+        self.skontoPercentage = Double(truncating: skontoPercentageValue as NSNumber)
     }
 
     private func calculateSkontoSavingsAmount() -> Price {
-        let skontoSavingsValue = priceWithoutSkonto.value - priceWithSkonto.value
+        let skontoSavingsValue = amountToPay.value - skontoAmountToPay.value
         return Price(value: skontoSavingsValue, currencyCode: currencyCode)
     }
+    /**
+     The edited `ExtractionResult` data.
+     */
+    public var editedExtractionResult: ExtractionResult {
+        var modifiedSkontoExtractions: [Extraction]?
+        // For now we don't handle multiple Skonto discounts
+        if let skontoDiscountExtraction = skontoDiscounts.initialExtractionResult.skontoDiscounts?.first {
+            modifiedSkontoExtractions = skontoDiscountExtraction.map { extraction -> Extraction in
+                let modifiedExtraction = extraction
+                switch modifiedExtraction.name {
+                case "skontoAmountToPay", "skontoAmountToPayCalculated":
+                    modifiedExtraction.value = "\(skontoAmountToPay.value)"
+                case "skontoDueDate", "skontoDueDateCalculated":
+                    modifiedExtraction.value = dueDate.dateString
+                case "skontoPercentageDiscounted", "skontoPercentageDiscountedCalculated":
+                    modifiedExtraction.value = "\(skontoPercentage)"
+                case "skontoAmountDiscounted", "skontoAmountDiscountedCalculated":
+                    modifiedExtraction.value = "\(amountDiscounted)"
+                case "skontoRemainingDays":
+                    modifiedExtraction.value = "\(remainingDays)"
+                default:
+                    break
+                }
+                return modifiedExtraction
+            }
+        }
+
+        let modifiedExtractions = skontoDiscounts.initialExtractionResult.extractions
+            .map { extraction -> Extraction in
+                let modifiedExtraction = extraction
+                if modifiedExtraction.name == "amountToPay" {
+                    modifiedExtraction.value = "\(finalAmountToPay.value)"
+                }
+                return modifiedExtraction
+            }
+
+        let modifiedSkontoDiscounts = [modifiedSkontoExtractions].compactMap { $0 }
+        return ExtractionResult(extractions: modifiedExtractions,
+                                skontoDiscounts: modifiedSkontoDiscounts,
+                                candidates: skontoDiscounts.initialExtractionResult.candidates)
+    }
+
 }

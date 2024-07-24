@@ -19,3 +19,15 @@ extension String {
         }
     }
 }
+
+extension String {
+    private static let dateFormatter: Foundation.DateFormatter = {
+        let formatter = Foundation.DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
+
+    var date: Date? {
+        return String.dateFormatter.date(from: self)
+    }
+}
