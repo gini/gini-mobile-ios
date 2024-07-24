@@ -56,7 +56,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4CF9C0D82C46C60E00AED223 /* GiniMerchantSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniMerchantSDKExample.entitlements; sourceTree = "<group>"; };
 		5024D0462C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleWrongCertificatesTests.swift; sourceTree = "<group>"; };
 		5076CDC82C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleIntegrationTests.swift; sourceTree = "<group>"; };
 		50D80D542C245A8900B446A8 /* GiniMerchantSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniMerchantSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,7 +139,6 @@
 		50D80D562C245A8900B446A8 /* GiniMerchantSDKExample */ = {
 			isa = PBXGroup;
 			children = (
-				4CF9C0D82C46C60E00AED223 /* GiniMerchantSDKExample.entitlements */,
 				50D80DC82C24788F00B446A8 /* Sources */,
 				50D80DC72C24786500B446A8 /* Resources */,
 				50D80D652C245A8A00B446A8 /* Info.plist */,
