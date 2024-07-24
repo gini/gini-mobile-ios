@@ -45,7 +45,10 @@ final class AppCoordinator: Coordinator {
         return giniConfiguration
     }()
     
-    private lazy var merchant = GiniMerchant(id: clientID, secret: clientPassword, domain: clientDomain)
+    private lazy var merchant = GiniMerchant(id: clientID,
+                                             secret: clientPassword,
+                                             domain: clientDomain,
+                                             apiVersion: clientApiVersion)
     private lazy var paymentComponentsController = PaymentComponentsController(giniMerchant: merchant)
     
     init(window: UIWindow) {

@@ -41,11 +41,7 @@ struct APIResource<T: Decodable>: Resource {
         return .https
     }
     
-    var apiVersion: Int {
-        switch domain {
-        case .default, .custom: return 4
-        }
-    }
+    var apiVersion: Int
     
     var queryItems: [URLQueryItem?]? {
         switch method {
@@ -143,11 +139,13 @@ struct APIResource<T: Decodable>: Resource {
     
     init(method: APIMethod,
          apiDomain: APIDomain,
+         apiVersion: Int,
          httpMethod: HTTPMethod,
          additionalHeaders: HTTPHeaders = [:],
          body: Data? = nil) {
         self.method = method
         self.domain = apiDomain
+        self.apiVersion = apiVersion
         self.params = RequestParameters(method: httpMethod,
                                         body: body)
         self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }

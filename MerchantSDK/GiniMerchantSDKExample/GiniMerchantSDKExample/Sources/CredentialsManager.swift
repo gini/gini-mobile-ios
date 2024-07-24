@@ -10,3 +10,4 @@ import Foundation
 let clientID = "client_id"
 let clientPassword = "client_password"
 let clientDomain = "client_domain"
+let clientApiVersion = 4

@@ -39,7 +39,9 @@ public final class GiniHealthAPI {
      *
      */
     public func paymentService() -> PaymentService {
-        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: .default)
+        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), 
+                                            apiDomain: .default,
+                                            apiVersion: 4)
     }
     
     /// Removes the user stored credentials. Recommended when logging a different user in your app.
@@ -58,6 +60,7 @@ extension GiniHealthAPI {
     public struct Builder {
         var client: Client
         var api: APIDomain = .default
+        var apiVersion: Int
         var userApi: UserDomain = .default
         var logLevel: LogLevel
         public var sessionDelegate: URLSessionDelegate? = nil
@@ -78,6 +81,7 @@ extension GiniHealthAPI {
                     sessionDelegate: URLSessionDelegate? = nil) {
             self.client = client
             self.api = api
+            self.apiVersion = client.apiVersion
             self.userApi = userApi
             self.logLevel = logLevel
             self.sessionDelegate = sessionDelegate
@@ -87,11 +91,13 @@ extension GiniHealthAPI {
          * Creates a Gini Health API Library to be used with a transparent proxy and a custom api access token source.
          */
         public init(customApiDomain: String,
+                    apiVersion: Int,
                     alternativeTokenSource: AlternativeTokenSource,
                     logLevel: LogLevel = .none,
                     sessionDelegate: URLSessionDelegate? = nil) {
             self.client = Client(id: "", secret: "", domain: "")
             self.api = .custom(domain: customApiDomain, tokenSource: alternativeTokenSource)
+            self.apiVersion = apiVersion
             self.logLevel = logLevel
             self.sessionDelegate = sessionDelegate
         }
@@ -108,8 +114,11 @@ extension GiniHealthAPI {
             case .default:
                 let sessionManager = SessionManager(userDomain: userApi,
                                                     sessionDelegate: self.sessionDelegate)
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager),
-                                     paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
+                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, 
+                                                                             apiVersion: apiVersion),
+                                     paymentService: PaymentService(sessionManager: sessionManager, 
+                                                                    apiDomain: .default,
+                                                                    apiVersion: apiVersion))
             case let .custom(_, tokenSource):
                 var sessionManager: SessionManager
                 if let tokenSource = tokenSource {
@@ -119,8 +128,12 @@ extension GiniHealthAPI {
                     sessionManager = SessionManager(userDomain: userApi,
                                                     sessionDelegate: self.sessionDelegate)
                 }
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, apiDomain: api),
-                                     paymentService: PaymentService(sessionManager: sessionManager, apiDomain: api))
+                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, 
+                                                                             apiDomain: api,
+                                                                             apiVersion: apiVersion),
+                                     paymentService: PaymentService(sessionManager: sessionManager, 
+                                                                    apiDomain: api,
+                                                                    apiVersion: apiVersion))
             }
         }
         

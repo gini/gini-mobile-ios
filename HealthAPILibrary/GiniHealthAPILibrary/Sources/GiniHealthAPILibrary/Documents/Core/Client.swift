@@ -17,10 +17,13 @@ public struct Client {
     
     /// Client secret
     public var secret: String
-    
-    public init(id: String, secret: String, domain: String) {
+
+    public var apiVersion: Int
+
+    public init(id: String, secret: String, domain: String, apiVersion: Int = 4) {
         self.id = id
         self.secret = secret
         self.domain = domain
+        self.apiVersion = apiVersion
     }
 }
