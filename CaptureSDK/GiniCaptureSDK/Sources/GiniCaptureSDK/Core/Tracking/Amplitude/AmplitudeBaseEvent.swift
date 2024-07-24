@@ -60,7 +60,6 @@ struct AmplitudeBaseEvent: Encodable, Equatable {
         try container.encodeIfPresent(eventOptions.time, forKey: .timestamp)
         try container.encodeIfPresent(eventOptions.eventId, forKey: .eventId)
         try container.encodeIfPresent(eventOptions.sessionId, forKey: .sessionId)
-        try container.encodeIfPresent(eventOptions.appVersion, forKey: .appVersion)
         try container.encodeIfPresent(eventOptions.platform, forKey: .platform)
         try container.encodeIfPresent(eventOptions.osName, forKey: .osName)
         try container.encodeIfPresent(eventOptions.osVersion, forKey: .osVersion)
