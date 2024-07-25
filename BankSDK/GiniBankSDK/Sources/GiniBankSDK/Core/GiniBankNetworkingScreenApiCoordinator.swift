@@ -259,9 +259,9 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     private func initializeAnalytics(with configuration: ClientConfiguration) {
-        let userJourneyAnalyticsEnabled = configuration.userJourneyAnalyticsEnabled
+        let analyticsEnabled = configuration.userJourneyAnalyticsEnabled
         let analyticsConfiguration = GiniAnalyticsConfiguration(clientID: configuration.clientID,
-                                                                userJourneyAnalyticsEnabled: userJourneyAnalyticsEnabled,
+                                                                userJourneyAnalyticsEnabled: analyticsEnabled,
                                                                 amplitudeApiKey: configuration.amplitudeApiKey)
 
         GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
