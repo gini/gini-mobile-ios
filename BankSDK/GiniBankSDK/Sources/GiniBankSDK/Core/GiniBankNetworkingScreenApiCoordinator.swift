@@ -122,7 +122,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 api: APIDomain,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 lib: GiniBankAPI) {
-        documentService = DocumentService(lib: lib, metadata: documentMetadata, for: api)
+        documentService = DocumentService(lib: lib, metadata: documentMetadata)
         configurationService = lib.configurationService()
         let captureConfiguration = configuration.captureConfiguration()
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
