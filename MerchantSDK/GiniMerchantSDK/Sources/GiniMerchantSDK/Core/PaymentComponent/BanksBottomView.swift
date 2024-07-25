@@ -172,7 +172,8 @@ class BanksBottomView: BottomSheetViewController {
             bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
-            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
+            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
+            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
     }
     
@@ -191,6 +192,7 @@ extension BanksBottomView {
         static let closeIconSize = 24.0
         static let titleViewTitleIconSpacing = 10.0
         static let topAnchorPoweredByGiniConstraint = 5.0
+        static let bottomViewHeight = 44.0
     }
 }
 

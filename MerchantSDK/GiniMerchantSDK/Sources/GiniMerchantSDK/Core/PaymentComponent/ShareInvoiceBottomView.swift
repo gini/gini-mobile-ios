@@ -243,7 +243,8 @@ class ShareInvoiceBottomView: BottomSheetViewController {
             bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
-            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
+            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
+            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
     }
     
@@ -302,5 +303,6 @@ extension ShareInvoiceBottomView {
         static let topAnchorTipViewConstraint = 5.0
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let tipIconSize = 24.0
+        static let bottomViewHeight = 44.0
     }
 }
