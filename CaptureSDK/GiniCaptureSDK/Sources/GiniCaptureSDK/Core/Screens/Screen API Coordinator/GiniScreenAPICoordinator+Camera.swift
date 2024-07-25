@@ -1,6 +1,5 @@
 //
 //  GiniScreenAPICoordinator+Camera.swift
-//  GiniCapture
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -61,7 +60,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     }
 
     func cameraDidAppear(_ viewController: CameraViewController) {
-        if shouldShowOnBoarding() {
+        if shouldShowOnboarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
                 viewController.setupCamera()
             })
@@ -102,6 +101,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                     self?.cameraDidTapReviewButton(cameraViewController)
                 }
             } else {
+                GiniAnalyticsManager.track(event: .closeTapped, screenName: .camera)
                 self?.finishWithCancellation()
             }
         }
@@ -138,7 +138,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         visionDelegate?.didCapture(document: document, networkDelegate: self)
     }
 
-    private func shouldShowOnBoarding() -> Bool {
+    private func shouldShowOnboarding() -> Bool {
         if giniConfiguration.onboardingShowAtFirstLaunch &&
             !UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed") {
             UserDefaults.standard.set(true, forKey: "ginicapture.defaults.onboardingShowed")
@@ -236,7 +236,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
                 }
                 if coordinator.currentPickerDismissesAutomatically {
                     self.cameraScreen?.showErrorDialog(for: error,
-                                                               positiveAction: positiveAction)
+                                                       positiveAction: positiveAction)
                 } else {
                     coordinator.currentPickerViewController?.showErrorDialog(for: error,
                                                                              positiveAction: positiveAction)
@@ -245,16 +245,16 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
         }
     }
 
-    public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
-        let error = FilePickerError.failedToOpenDocument
-        if coordinator.currentPickerDismissesAutomatically {
-            self.cameraScreen?.showErrorDialog(for: error,
-                                                       positiveAction: nil)
-        } else {
-            coordinator.currentPickerViewController?.showErrorDialog(for: error,
-                                                                     positiveAction: nil)
+        public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
+            let error = FilePickerError.failedToOpenDocument
+            if coordinator.currentPickerDismissesAutomatically {
+                self.cameraScreen?.showErrorDialog(for: error,
+                                                   positiveAction: nil)
+            } else {
+                coordinator.currentPickerViewController?.showErrorDialog(for: error,
+                                                                         positiveAction: nil)
+            }
         }
-    }
 
     fileprivate func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
         let dropInteraction = UIDropInteraction(delegate: delegate)

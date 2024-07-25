@@ -142,6 +142,11 @@ import UIKit
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         didShowAnalysis?()
+
+        let eventProperties = [GiniAnalyticsProperty(key: .documentType,
+                                                     value: GiniAnalyticsMapper.documentTypeAnalytics(from: document.type))]
+        GiniAnalyticsManager.trackScreenShown(screenName: .analysis,
+                                              properties: eventProperties)
     }
 
     // MARK: Toggle animation

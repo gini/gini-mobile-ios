@@ -1,8 +1,7 @@
 //
 //  EditLineItemViewModel.swift
-//  
 //
-//  Created by David Vizaknai on 08.03.2023.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import GiniCaptureSDK
@@ -16,6 +15,7 @@ protocol EditLineItemViewModelDelegate: AnyObject {
 final class EditLineItemViewModel {
     weak var delegate: EditLineItemViewModelDelegate?
     private var lineItem: DigitalInvoice.LineItem
+    private (set) var itemsChanged: [GiniLineItemAnalytics] = []
 
     var name: String? {
         return lineItem.name
@@ -41,8 +41,18 @@ final class EditLineItemViewModel {
     }
 
     func didTapSave(name: String?, price: Decimal, currency: String, quantity: Int) {
+        if name != lineItem.name {
+            itemsChanged.append(GiniLineItemAnalytics.name)
+        }
         lineItem.name = name
+
+        if price != lineItem.price.value {
+            itemsChanged.append(GiniLineItemAnalytics.price)
+        }
         lineItem.price = Price(value: price, currencyCode: currency)
+        if quantity != lineItem.quantity {
+            itemsChanged.append(GiniLineItemAnalytics.quantity)
+        }
         lineItem.quantity = quantity
         delegate?.didSave(lineItem: lineItem, on: self)
     }
