@@ -134,7 +134,7 @@ final class InvoicesListViewModel {
     }
 
     @objc
-    func uploadInvoices() {
+    func createOrder() {
         coordinator.invoicesListViewController?.showActivityIndicator()
         hardcodedInvoicesController.obtainInvoicePhotosHardcoded { [weak self] invoicesData in
             if !invoicesData.isEmpty {
