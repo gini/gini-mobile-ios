@@ -21,38 +21,38 @@ final class PaymentInfoViewModel {
     let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark7,
                                              darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
     
-    let titleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.title.label", 
+    let titleText: String = GiniLocalized.string("ginihealth.paymentcomponent.paymentinfo.title.label", 
                                                              comment: "Payment Info title label text")
     
-    let payBillsTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.payBills.title.label", 
+    let payBillsTitleText: String = GiniLocalized.string("ginihealth.paymentcomponent.paymentinfo.payBills.title.label", 
                                                                      comment: "Payment Info pay bills title label text")
     let payBillsTitleFont: UIFont
     let payBillsTitleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
                                                     darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
     
-    private let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.payBills.description.label",
+    private let payBillsDescriptionText: String = GiniLocalized.string("ginihealth.paymentcomponent.paymentinfo.payBills.description.label",
                                                                                    comment: "Payment Info pay bills description text")
     var payBillsDescriptionAttributedText: NSMutableAttributedString = NSMutableAttributedString()
     var payBillsDescriptionLinkAttributes: [NSAttributedString.Key: Any]
     private let payBillsDescriptionFont: UIFont
     private let payBillsDescriptionTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
                                                                   darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
-    private let giniWebsiteText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.payBills.description.clickable.text",
+    private let giniWebsiteText = GiniLocalized.string("ginihealth.paymentcomponent.paymentinfo.payBills.description.clickable.text",
                                                                    comment: "Word range that's clickable in pay bills description")
     private let giniFont: UIFont
-    private let giniURLText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.gini.link", 
+    private let giniURLText = GiniLocalized.string("ginihealth.paymentcomponent.paymentinfo.gini.link", 
                                                                comment: "Gini website link url")
     
-    let questionsTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.title.label",
+    let questionsTitleText: String = GiniLocalized.string("ginihealth.paymentcomponent.paymentinfo.questions.title.label",
                                                                       comment: "Payment Info questions title label text")
     let questionsTitleFont: UIFont
     let questionsTitleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
                                                      darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
     
     private var answersFont: UIFont
-    private let answerPrivacyPolicyText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text",
+    private let answerPrivacyPolicyText = GiniLocalized.string("ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text",
                                                                            comment: "Payment info answers clickable privacy policy")
-    private let privacyPolicyURLText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link",
+    private let privacyPolicyURLText = GiniLocalized.string("ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link",
                                                                         comment: "Gini privacy policy link url")
     private var linksFont: UIFont
     private let linksTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.accent1,
@@ -86,9 +86,9 @@ final class PaymentInfoViewModel {
     
     private func setupQuestions() {
         for index in 1 ... Constants.numberOfQuestions {
-            let answerAttributedString = answerWithAttributes(answer: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.answer.\(index)",
+            let answerAttributedString = answerWithAttributes(answer: GiniLocalized.string("ginihealth.paymentcomponent.paymentinfo.questions.answer.\(index)",
                                                                                                        comment: "Answers description"))
-            let questionSection = FAQSection(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.question.\(index)",
+            let questionSection = FAQSection(title: GiniLocalized.string("ginihealth.paymentcomponent.paymentinfo.questions.question.\(index)",
                                                                                           comment: "Questions titles"),
                                                   description: textWithLinks(linkFont: linksFont, 
                                                                              attributedString: answerAttributedString),

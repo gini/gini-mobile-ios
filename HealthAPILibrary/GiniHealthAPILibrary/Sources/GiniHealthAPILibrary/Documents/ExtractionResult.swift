@@ -8,6 +8,25 @@
 import Foundation
 
 /**
+ Payment State types from payment state from extraction result
+ */
+public enum PaymentState: String {
+    case payable = "Payable"
+    case other = "Other"
+}
+/**
+ Extraction Types for extraction result
+ */
+public enum ExtractionType: String {
+    case paymentState = "payment_state"
+    case paymentDueDate = "payment_due_date"
+    case amountToPay = "amount_to_pay"
+    case paymentRecipient = "payment_recipient"
+    case iban = "iban"
+    case paymentPurpose = "payment_purpose"
+}
+
+/**
 * Data model for a document extraction result.
 */
 @objcMembers final public class ExtractionResult: NSObject {
@@ -20,7 +39,7 @@ import Foundation
     
     /// The line item compound extractions.
     public var lineItems: [[Extraction]]?
-        
+
     public init(extractions: [Extraction], payment:  [[Extraction]]?,  lineItems: [[Extraction]]?) {
         self.extractions = extractions
         self.payment = payment

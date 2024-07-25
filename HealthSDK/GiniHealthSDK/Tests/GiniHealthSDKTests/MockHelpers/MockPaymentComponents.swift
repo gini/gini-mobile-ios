@@ -32,7 +32,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
             selectedPaymentProvider = PaymentProvider(id: paymentProviderResponse.id, name: paymentProviderResponse.name, appSchemeIOS: paymentProviderResponse.appSchemeIOS, minAppVersion: paymentProviderResponse.minAppVersion, colors: paymentProviderResponse.colors, iconData: iconData, appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS, universalLinkIOS: paymentProviderResponse.universalLinkIOS, index: paymentProviderResponse.index, gpcSupportedPlatforms: paymentProviderResponse.gpcSupportedPlatforms, openWithSupportedPlatforms: paymentProviderResponse.openWithSupportedPlatforms)
         }
     }
-    
+
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
         switch docId {
         case MockSessionManager.payableDocumentID:
@@ -45,9 +45,9 @@ class MockPaymentComponents: PaymentComponentsProtocol {
             fatalError("Document id not handled in tests")
         }
     }
-    
+
     func paymentView(documentId: String) -> UIView {
-        let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniHealthConfiguration: giniHealthConfiguration)
+        let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniHealthConfiguration: giniHealthConfiguration, paymentComponentConfiguration: PaymentComponentConfiguration(isPaymentComponentBranded: true))
         viewModel.documentId = documentId
         let view = PaymentComponentView()
         view.viewModel = viewModel

@@ -29,7 +29,7 @@ class OnboardingPageCell: UICollectionViewCell {
 
         descriptionLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
                                                dark: UIColor.GiniCapture.dark7).uiColor()
-        descriptionLabel.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]
+        descriptionLabel.font = GiniConfiguration.shared.textStyleFonts[.subheadline]
         descriptionLabel.isAccessibilityElement = true
 
     }
