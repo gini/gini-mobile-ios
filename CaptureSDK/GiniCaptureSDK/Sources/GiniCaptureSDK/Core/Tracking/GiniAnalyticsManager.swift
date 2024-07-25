@@ -50,6 +50,7 @@ public final class GiniAnalyticsManager {
 
     private static func handleAnalyticsSDKsInit() {
         guard amplitudeService != nil else { return }
+        userProperties[.captureSDKVersion] = GiniCapture.versionString
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
@@ -151,8 +152,7 @@ public final class GiniAnalyticsManager {
                                                  ip: "$remote",
                                                  eventId: eventId,
                                                  deviceModel: iosSystem.model,
-                                                 deviceBrand: iosSystem.manufacturer,
-                                                 appVersion: GiniCapture.versionString)
+                                                 deviceBrand: iosSystem.manufacturer)
 
         return AmplitudeBaseEvent(eventType: event.event.rawValue,
                                   eventProperties: eventProperties,

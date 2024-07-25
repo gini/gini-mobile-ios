@@ -260,7 +260,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                                                                 amplitudeApiKey: configuration.amplitudeApiKey)
 
         GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
-                                                  .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons])
+                                                  .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons,
+                                                  .bankSDKVersion: GiniBankSDKVersion])
         GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
     }
 }

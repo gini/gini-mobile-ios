@@ -16,4 +16,6 @@ public enum GiniAnalyticsUserProperty: String {
     case assistiveTouchEnabled = "assistive_touch_enabled"
     case returnReasonsEnabled = "return_reasons_enabled"
     case returnAssistantEnabled = "return_assistant_enabled"
+    case bankSDKVersion = "bank_sdk_version"
+    case captureSDKVersion = "capture_sdk_version"
 }
