@@ -9,37 +9,87 @@ import UIKit
 
 final class InvoiceTableViewCell: UITableViewCell {
     
-    static let identifier = "InvoiceTableViewCell"
-    
-    var cellViewModel: InvoiceTableViewCellModel? {
+    static let identifier = String(describing: InvoiceTableViewCell.self)
+
+    private let recipientLabel = UILabel()
+    private let dueDateLabel = UILabel()
+    private let amountLabel = UILabel()
+
+    private lazy var horizontalStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [verticalStackView, amountLabel])
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .fill
+        stackView.spacing = Constants.horizontalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private lazy var verticalStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [recipientLabel, dueDateLabel])
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.alignment = .leading
+        stackView.spacing = Constants.verticalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    var viewModel: InvoiceTableViewCellModel? {
         didSet {
-            recipientLabel.text = cellViewModel?.recipientNameText
-            dueDateLabel.text = cellViewModel?.dueDateText
-            amountLabel.text = cellViewModel?.amountToPayText
-            
-            recipientLabel.isHidden = cellViewModel?.isRecipientLabelHidden ?? false
-            dueDateLabel.isHidden = cellViewModel?.isDueDataLabelHidden ?? false
-            
-            if cellViewModel?.shouldShowPaymentComponent ?? false, let paymentComponentView = cellViewModel?.paymentComponentView {
-                mainStackView.addArrangedSubview(paymentComponentView)
+            guard let viewModel = viewModel else { return }
+
+            recipientLabel.text = viewModel.recipientNameText
+            recipientLabel.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
+            recipientLabel.isHidden = viewModel.isRecipientLabelHidden
+
+            dueDateLabel.text = viewModel.dueDateText
+            dueDateLabel.isHidden = viewModel.isDueDataLabelHidden
+
+            amountLabel.text = viewModel.amountToPayText
+            amountLabel.textColor = Constants.amountLabelTextColor
+
+            if viewModel.shouldShowPaymentComponent {
+                verticalStackView.addArrangedSubview(viewModel.paymentComponentView)
             }
         }
     }
 
-    @IBOutlet private weak var mainStackView: UIStackView!
-    @IBOutlet private weak var recipientLabel: UILabel!
-    @IBOutlet private weak var dueDateLabel: UILabel!
-    @IBOutlet private weak var amountLabel: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        selectionStyle = .none
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        setupSubViews()
     }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        if mainStackView.arrangedSubviews.count > 1 {
-            mainStackView.arrangedSubviews.last?.removeFromSuperview()
-        }
+
+    private func setupSubViews() {
+        selectionStyle = .none
+
+        recipientLabel.translatesAutoresizingMaskIntoConstraints = false
+        dueDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        amountLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        amountLabel.textAlignment = .right
+
+        contentView.addSubview(horizontalStackView)
+
+        NSLayoutConstraint.activate([
+            horizontalStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
+            horizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
+            horizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.padding),
+            horizontalStackView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.padding)
+        ])
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension InvoiceTableViewCell {
+    enum Constants {
+        static let amountLabelTextColor = UIColor(red: 0.0, green: 158.0 / 255.0, blue: 220.0 / 255.0, alpha: 1.0)
+        static let padding = 16.0
+        static let horizontalSpacing = 10.0
+        static let verticalSpacing = 0.0
     }
 }
