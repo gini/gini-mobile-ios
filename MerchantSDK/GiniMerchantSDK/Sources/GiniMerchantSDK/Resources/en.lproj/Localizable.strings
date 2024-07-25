@@ -26,6 +26,8 @@
 "gini.merchant.paymentcomponent.moreInformation.underlined.part" = "More information.";
 "gini.merchant.paymentcomponent.selectYourBank.label" = "Select your bank to pay";
 "gini.merchant.paymentcomponent.payInvoice.label" = "Pay the invoice";
+"gini.merchant.paymentcomponent.toTheBankingApp.label" = "To the banking app";
+"gini.merchant.paymentcomponent.continueToOverview.label" = "Continue to overview";
 "gini.merchant.paymentcomponent.poweredByGini.label" = "Powered by";
 "gini.merchant.paymentcomponent.selectBank.label" = "Your bank";
 "gini.merchant.paymentcomponent.paymentproviderslist.description" = "You can only pay the bill if you have an account with one of the banks listed below.";

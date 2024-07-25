@@ -55,7 +55,7 @@ extension PaymentComponentViewProtocol {
 final class PaymentComponentViewModel {
     let giniMerchantConfiguration: GiniMerchantConfiguration
 
-    let backgroundColor: UIColor = UIColor.from(giniColor: GiniColor(lightModeColor: .clear, 
+    let backgroundColor: UIColor = UIColor.from(giniColor: GiniColor(lightModeColor: .clear,
                                                                      darkModeColor: .clear))
 
     // More information part
@@ -67,13 +67,13 @@ final class PaymentComponentViewModel {
                                                                              comment: "Text for more information actionable part from the label")
     var moreInformationLabelFont: UIFont
     var moreInformationLabelLinkFont: UIFont
-    
+
     // Select bank label
-    let selectYourBankLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectYourBank.label", 
+    let selectYourBankLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectYourBank.label",
                                                                    comment: "Text for the select your bank label that's above the payment provider picker")
     let selectYourBankLabelFont: UIFont
     let selectYourBankAccentColor: UIColor = GiniColor.standard1.uiColor()
-    
+
     // Bank image icon
     private var bankImageIconData: Data?
     var bankImageIcon: UIImage? {
@@ -83,18 +83,27 @@ final class PaymentComponentViewModel {
 
     // Primary button
     let notInstalledBankTextColor: UIColor = GiniColor.standard4.uiColor()
-    let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label",
+    private let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label",
                                                                                    comment: "Placeholder text used when there isn't a payment provider app installed")
-    
+    var selectBankButtonText: String {
+        showPaymentComponentInOneRow ? placeholderBankNameText : bankName ?? placeholderBankNameText
+    }
+
     let chevronDownIcon: UIImage = GiniMerchantImage.chevronDown.preferredUIImage()
     let chevronDownIconColor: UIColor = GiniColor(lightModeColorName: .light7, darkModeColorName: .light1).uiColor()
-    
+
     // Payment provider colors
     var paymentProviderColors: ProviderColors?
 
-    // Pay invoice label
-    let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payInvoice.label", 
-                                                                       comment: "Title label used for the pay invoice button")
+    // CTA button
+    private let goToBankingAppLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.toTheBankingApp.label",
+                                                                                   comment: "Title label used for the cta button when review screen is not present")
+    private let continueToOverviewLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.continueToOverview.label",
+                                                                                       comment: "Title label used for the cta button when review screen is present")
+
+    var ctaButtonText: String {
+        isReviewScreenOn ? continueToOverviewLabelText : goToBankingAppLabelText
+    }
 
     private var paymentProviderScheme: String?
 
@@ -105,8 +114,24 @@ final class PaymentComponentViewModel {
     var minimumButtonsHeight: CGFloat
     
     var hasBankSelected: Bool
+
+    private var bankName: String?
+    private var isReviewScreenOn: Bool
     
-    init(paymentProvider: PaymentProvider?, giniMerchantConfiguration: GiniMerchantConfiguration) {
+    private var paymentComponentConfiguration: PaymentComponentConfiguration?
+    var shouldShowBrandedView: Bool {
+        paymentComponentConfiguration?.isPaymentComponentBranded ?? true
+    }
+    var showPaymentComponentInOneRow: Bool {
+        paymentComponentConfiguration?.showPaymentComponentInOneRow ?? false
+    }
+    var hideInfoForReturningUser: Bool {
+        paymentComponentConfiguration?.hideInfoForReturningUser ?? false
+    }
+    
+    init(paymentProvider: PaymentProvider?,
+         giniMerchantConfiguration: GiniMerchantConfiguration,
+         paymentComponentConfiguration: PaymentComponentConfiguration?) {
         self.giniMerchantConfiguration = giniMerchantConfiguration
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
@@ -119,8 +144,12 @@ final class PaymentComponentViewModel {
         self.bankImageIconData = paymentProvider?.iconData
         self.paymentProviderColors = paymentProvider?.colors
         self.paymentProviderScheme = paymentProvider?.appSchemeIOS
-        
+        self.bankName = paymentProvider?.name
+        self.isReviewScreenOn = giniMerchantConfiguration.showPaymentReviewScreen
+
         self.minimumButtonsHeight = giniMerchantConfiguration.paymentComponentButtonsHeight
+
+        self.paymentComponentConfiguration = paymentComponentConfiguration
     }
     
     func tapOnMoreInformation() {
