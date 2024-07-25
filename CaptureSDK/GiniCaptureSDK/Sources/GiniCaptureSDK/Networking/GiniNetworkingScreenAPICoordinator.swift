@@ -43,7 +43,7 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
                  trackingDelegate: GiniCaptureTrackingDelegate?,
                  lib : GiniBankAPI) {
          
-         self.documentService = DocumentService(lib: lib, metadata: documentMetadata, for: api)
+         self.documentService = DocumentService(lib: lib, metadata: documentMetadata)
          super.init(withDelegate: nil,
                     giniConfiguration: giniConfiguration)
          
