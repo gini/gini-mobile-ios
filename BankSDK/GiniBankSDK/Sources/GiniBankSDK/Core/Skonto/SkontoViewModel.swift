@@ -87,6 +87,7 @@ class SkontoViewModel {
         remainingDays = skontoDiscountDetails.remainingDays
         paymentMethod = skontoDiscountDetails.paymentMethod
         determineSkontoEdgeCase()
+        determineSkontoInitialState()
     }
 
     func toggleDiscount() {
@@ -225,15 +226,23 @@ class SkontoViewModel {
     private func determineSkontoEdgeCase() {
         if remainingDays < 0 {
             edgeCase = .expired
-            isSkontoApplied = false
         } else if paymentMethod == .cash {
             edgeCase = .payByCash
-            isSkontoApplied = false
         } else if remainingDays == 0 {
             edgeCase = .paymentToday
-            isSkontoApplied = true
         } else {
             edgeCase = nil
+        }
+    }
+
+    /**
+     This method determines whether the 'Skonto' should be applied based on the current edge case.
+     */
+    private func determineSkontoInitialState() {
+        switch edgeCase {
+        case .expired, .payByCash:
+            isSkontoApplied = false
+        default:
             isSkontoApplied = true
         }
     }
