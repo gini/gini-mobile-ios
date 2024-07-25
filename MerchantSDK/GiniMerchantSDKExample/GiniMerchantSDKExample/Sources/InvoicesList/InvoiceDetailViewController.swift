@@ -8,9 +8,35 @@
 import UIKit
 import GiniMerchantSDK
 
+fileprivate enum Fields: String, CaseIterable {
+    case recipient = "Recipient"
+    case iban = "IBAN"
+    case amountToPay = "Amount"
+    case purpose = "Purpose"
+
+    static func all(from document: DocumentWithExtractions) ->  [(String, String)] {
+        var array = [(String, String)]()
+
+        if let recipient = document.recipient {
+            array.append((Self.recipient.rawValue, recipient))
+        }
+        if let iban = document.iban {
+            array.append((Self.iban.rawValue, iban))
+        }
+        if let amountToPay = document.amountToPay {
+            array.append((Self.amountToPay.rawValue, amountToPay))
+        }
+        if let purpose = document.purpose {
+            array.append((Self.purpose.rawValue, purpose))
+        }
+
+        return array
+    }
+}
+
 final class InvoiceDetailViewController: UIViewController {
 
-    private let invoice: DocumentWithExtractions
+    private var invoice: DocumentWithExtractions
     private let paymentComponentsController: PaymentComponentsController
     private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
 
@@ -21,22 +47,16 @@ final class InvoiceDetailViewController: UIViewController {
         self.invoice = invoice
         self.paymentComponentsController = paymentComponentsController
         super.init(nibName: nil, bundle: nil)
+
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnView)))
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private lazy var invoiceNumberLabel: UILabel = {
-        labelTitle("Invoice number: \n\(invoice.documentID)")
-    }()
-
-    private lazy var dueDateLabel: UILabel = {
-        labelTitle("Due date: \n\(invoice.paymentDueDate ?? "")")
-    }()
-
-    private lazy var amountLabel: UILabel = {
-        labelTitle("Amount: \n\(invoice.amountToPay ?? "")")
+    private lazy var detailView: InvoiceDetailView = {
+        InvoiceDetailView(Fields.all(from: invoice))
     }()
 
     private lazy var payNowButton: UIButton = {
@@ -58,11 +78,9 @@ final class InvoiceDetailViewController: UIViewController {
 
         self.title = "Invoice details"
 
-        view.backgroundColor = .white
+        view.backgroundColor = .white.withAlphaComponent(0.9)
 
-        view.addSubview(invoiceNumberLabel)
-        view.addSubview(dueDateLabel)
-        view.addSubview(amountLabel)
+        view.addSubview(detailView)
         view.addSubview(payNowButton)
 
         setupConstraints()
@@ -70,20 +88,9 @@ final class InvoiceDetailViewController: UIViewController {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            // Invoice number label constraints
-            invoiceNumberLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            invoiceNumberLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            invoiceNumberLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
-            // Due date label constraints
-            dueDateLabel.topAnchor.constraint(equalTo: invoiceNumberLabel.bottomAnchor, constant: 20),
-            dueDateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            dueDateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
-            // Amount label constraints
-            amountLabel.topAnchor.constraint(equalTo: dueDateLabel.bottomAnchor, constant: 20),
-            amountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            amountLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.paddingTop),
+            detailView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
+            detailView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.paddingLeadingTrailing),
 
             // Pay now button constraints
             payNowButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
@@ -97,6 +104,10 @@ final class InvoiceDetailViewController: UIViewController {
         let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: invoice.documentID)
         paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
         self.present(paymentViewBottomSheet, animated: false)
+    }
+
+    @objc private func didTapOnView() {
+        view.endEditing(true)
     }
 }
 
@@ -164,7 +175,12 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
     }
 
     private func obtainPaymentInfo() -> PaymentInfo {
-        PaymentInfo(recipient: invoice.recipient ?? "", iban: invoice.iban ?? "", bic: "", amount: invoice.amountToPay ?? "", purpose: invoice.purpose ?? "", paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "", paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
+        let textFields = InvoiceDetailView.textFields
+        invoice.recipient = textFields[Fields.recipient.rawValue]?.text
+        invoice.amountToPay = textFields[Fields.amountToPay.rawValue]?.text
+        invoice.purpose = textFields[Fields.purpose.rawValue]?.text
+
+        return PaymentInfo(recipient: invoice.recipient ?? "", iban: invoice.iban ?? "", bic: "", amount: invoice.amountToPay ?? "", purpose: invoice.purpose ?? "", paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "", paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
 
     private func showErrorsIfAny() {
@@ -193,18 +209,6 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
         } else {
             self.present(viewController, animated: animated)
         }
-    }
-}
-
-private extension InvoiceDetailViewController {
-    func labelTitle(_ title: String) -> UILabel {
-        let label = UILabel()
-        label.text = title
-        label.textColor = .black
-        label.numberOfLines = 2
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
     }
 }
 
@@ -244,5 +248,12 @@ extension InvoiceDetailViewController: PaymentProvidersBottomViewProtocol {
                 })
             }
         }
+    }
+}
+
+extension InvoiceDetailViewController {
+    enum Constants {
+        static let paddingTop = 8.0
+        static let paddingLeadingTrailing = 16.0
     }
 }
