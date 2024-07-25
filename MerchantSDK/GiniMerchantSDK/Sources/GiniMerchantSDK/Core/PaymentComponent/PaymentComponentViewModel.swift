@@ -131,7 +131,7 @@ final class PaymentComponentViewModel {
     
     init(paymentProvider: PaymentProvider?,
          giniMerchantConfiguration: GiniMerchantConfiguration,
-         paymentComponentConfiguration: PaymentComponentConfiguration?) {
+         paymentComponentConfiguration: PaymentComponentConfiguration? = nil) {
         self.giniMerchantConfiguration = giniMerchantConfiguration
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
