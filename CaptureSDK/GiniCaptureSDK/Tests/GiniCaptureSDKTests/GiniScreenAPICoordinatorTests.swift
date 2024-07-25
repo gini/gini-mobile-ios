@@ -174,7 +174,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
 
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
-        let errorType = ErrorType(error: .server)
+        let errorType = ErrorType(error: .server(errorCode: 502))
         coordinator.displayError(errorType: errorType, animated: false)
         let screenNavigator = rootViewController.children.first as? UINavigationController
         let errorScreen = screenNavigator?.viewControllers.last as? ErrorScreenViewController
@@ -193,7 +193,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
 
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
-        let errorType = ErrorType(error: .maintenance)
+        let errorType = ErrorType(error: .maintenance(errorCode: 503))
         coordinator.displayError(errorType: errorType, animated: false)
         let screenNavigator = rootViewController.children.first as? UINavigationController
         let errorScreen = screenNavigator?.viewControllers.last as? ErrorScreenViewController
@@ -212,7 +212,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
 
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
-        let errorType = ErrorType(error: .outage)
+        let errorType = ErrorType(error: .outage(errorCode: 500))
         coordinator.displayError(errorType: errorType, animated: false)
         let screenNavigator = rootViewController.children.first as? UINavigationController
         let errorScreen = screenNavigator?.viewControllers.last as? ErrorScreenViewController

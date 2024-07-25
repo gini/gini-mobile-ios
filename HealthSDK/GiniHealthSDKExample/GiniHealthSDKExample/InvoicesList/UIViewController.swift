@@ -47,7 +47,7 @@ extension UIViewController {
                                                       comment: "cancel button title")
                 confirmActionTitle = NSLocalizedString("ginicapture.camera.filepicker.errorPopup.grantAccessButton",
                                                        bundle: Bundle(for: GiniCapture.self),
-                                                       comment: "cancel button title")
+                                                       comment: "grant access button title")
             case .mixedDocumentsUnsupported:
                 cancelActionTitle = NSLocalizedString("ginicapture.camera.mixedarrayspopup.cancel",
                                                       bundle: Bundle(for: GiniCapture.self),

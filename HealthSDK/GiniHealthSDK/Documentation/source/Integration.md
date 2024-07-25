@@ -90,14 +90,17 @@ self.healthSDK.documentService
 
 ## Check which documents/invoices are payable
 
-GiniHealth provides a method for checking if the document is payable or not.
+We provide 2 ways of doing this.
+1. GiniHealth provides a variable for checking if the document is payable or not. You can look for `payment_state` of the document/invoice. The document/invoice is payable if `payment_state` is `Payable` 
+
+2. GiniHealth provides a method for checking if the document is payable or not.
 
 ```swift
 healthSDK.checkIfDocumentIsPayable(docId: String,
                                    completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
 ```
 
-The method returns success and `true` value if Iban was extracted.
+The method returns success and `true` value if `payment_state` was extracted.
 
 > - We recommend using a `DispatchGroup` for these requests, waiting till all of them are ready, and then, reloading the list.
 
@@ -173,14 +176,13 @@ It requires a `PaymentComponentsController` instance (see `Integrate the Payment
 > - The `PaymentInfoViewController` can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigation around the provided views.
 
 > ⚠️  **Important:**
-> - The `PaymentInfoViewController` presentation should happen in `func didTapOnMoreInformation(documentId: String?)` inside
-`PaymentComponentViewProtocol` implementation.(`Integrate the Payment component` step 3).
+> - The `PaymentInfoViewController` presentation should happen in `func didTapOnMoreInformation(documentId: String?)` inside `PaymentComponentViewProtocol` implementation without animation since SDK handles the animation  during the presentation.(`Integrate the Payment component` step 3).
 
 ```swift
 func didTapOnMoreInformation(documentId: String?) {
     let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
     self.yourInvoicesListViewController.navigationController?.pushViewController(paymentInfoViewController,
-                                                                                 animated: true)
+                                                                                 animated: false)
 }
  ```
 
@@ -195,14 +197,14 @@ The `BankSelectionBottomSheet` presentation requires a `PaymentComponentsControl
 
 > ⚠️  **Important:**
 > - The `BankSelectionBottomSheet` presentation should happen in `func didTapOnBankPicker(documentId: String?)` inside
-`PaymentComponentViewProtocol` implementation (see `Integrate the Payment component` step 3).
+`PaymentComponentViewProtocol` implementation without animation since SDK handles the animation during the presentation (see `Integrate the Payment component` step 3).
 
 ```swift
 func didTapOnBankPicker(documentId: String?) {
     let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
     bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
     self.yourInvoicesListViewController.present(bankSelectionBottomSheet,
-                                                animated: true)
+                                                animated: false)
     }
  ```
 
@@ -217,7 +219,7 @@ The `PaymentReviewViewController` presentation requires a `PaymentComponentsCont
 
 > ⚠️  **Important:**
 > - The `PaymentReviewViewController` presentation should happen in `func didTapOnBankPicker(documentId: String?)` inside
-`PaymentComponentViewProtocol` implementation (see `Integrate the Payment component` step 3).
+`PaymentComponentViewProtocol` implementation without animation since SDK handles the animation during the presentation (see `Integrate the Payment component` step 3).
 
 ```swift
     func didTapOnPayInvoice(documentId: String?) {
@@ -228,7 +230,7 @@ The `PaymentReviewViewController` presentation requires a `PaymentComponentsCont
             } else if let viewController {
                 viewController.modalTransitionStyle = .coverVertical
                 viewController.modalPresentationStyle = .overCurrentContext
-                self?.yourInvoicesListViewController.present(viewController, animated: true)
+                self?.yourInvoicesListViewController.present(viewController, animated: false)
             }
         }
     }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284A534F2A86493100183EA7 /* SelectAPIViewController.xib */; };
+		50ED3DA52C34A16D004FC25C /* DebugMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ED3DA42C34A16D004FC25C /* DebugMenuViewController.swift */; };
 		7D6161C62BE1327E0091000B /* test_pdf.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 7D6161C52BE1327E0091000B /* test_pdf.pdf */; };
 		7DB661832B554622004537AA /* InvoicesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661822B554622004537AA /* InvoicesListCoordinator.swift */; };
 		7DB661862B554A6F004537AA /* InvoicesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661842B554A6F004537AA /* InvoicesListViewController.swift */; };
@@ -79,6 +80,7 @@
 
 /* Begin PBXFileReference section */
 		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
+		50ED3DA42C34A16D004FC25C /* DebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuViewController.swift; sourceTree = "<group>"; };
 		7D6161C52BE1327E0091000B /* test_pdf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = test_pdf.pdf; sourceTree = "<group>"; };
 		7DB661822B554622004537AA /* InvoicesListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListCoordinator.swift; sourceTree = "<group>"; };
 		7DB661842B554A6F004537AA /* InvoicesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListViewController.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 		7DB661882B554A79004537AA /* InvoicesList */ = {
 			isa = PBXGroup;
 			children = (
+				F4EC3908273C2622007045DC /* UIViewController.swift */,
 				7DB661822B554622004537AA /* InvoicesListCoordinator.swift */,
 				7DB661842B554A6F004537AA /* InvoicesListViewController.swift */,
 				7DB6619A2B56AE80004537AA /* InvoicesListViewModel.swift */,
@@ -291,10 +294,10 @@
 				F4EC3903273C2621007045DC /* AppCoordinator.swift */,
 				F4EC3906273C2621007045DC /* Coordinator.swift */,
 				F4EC3904273C2621007045DC /* PartialDocument.swift */,
-				F4EC3907273C2621007045DC /* SelectAPIViewController.swift */,
+				50ED3DA42C34A16D004FC25C /* DebugMenuViewController.swift */,
 				284A534F2A86493100183EA7 /* SelectAPIViewController.xib */,
+				F4EC3907273C2621007045DC /* SelectAPIViewController.swift */,
 				7DB661882B554A79004537AA /* InvoicesList */,
-				F4EC3908273C2622007045DC /* UIViewController.swift */,
 				F4EC38F4273C2311007045DC /* Base.lproj */,
 				F4EC38F3273C2311007045DC /* Credentials.plist */,
 				F4EC38F2273C2311007045DC /* CredentialsManager.swift */,
@@ -537,6 +540,7 @@
 				F4EC38C2273C21E4007045DC /* AppDelegate.swift in Sources */,
 				7DB661862B554A6F004537AA /* InvoicesListViewController.swift in Sources */,
 				F4EC38C4273C21E4007045DC /* SceneDelegate.swift in Sources */,
+				50ED3DA52C34A16D004FC25C /* DebugMenuViewController.swift in Sources */,
 				F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */,
 				F4EC390A273C2622007045DC /* AppCoordinator.swift in Sources */,
 				F4EC390E273C2622007045DC /* PartialDocument.swift in Sources */,
