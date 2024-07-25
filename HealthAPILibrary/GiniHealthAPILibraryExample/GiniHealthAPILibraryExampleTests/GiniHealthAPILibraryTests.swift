@@ -10,7 +10,8 @@ import XCTest
 // swiftlint:disable force_cast
 
 final class GiniApiLibTests: XCTestCase {
-    
+    let versionAPI = 4
+
     func testBuildWithCustomApiDomain() {
         let giniHealthAPILib = GiniHealthAPI.Builder(client: Client(id: "", secret: "", domain: ""),
                                                api: .custom(domain: "custom-api.domain.com", tokenSource: nil),
@@ -50,8 +51,9 @@ final class GiniApiLibTests: XCTestCase {
     func testWithCustomApiDomainAndAlternativeTokenSource() {
         let tokenSource = TokenSource()
         let giniHealthAPILib = GiniHealthAPI.Builder(customApiDomain: "custom-api.domain.com",
-                                      alternativeTokenSource: tokenSource,
-                                      logLevel: .none)
+                                                     alternativeTokenSource: tokenSource, 
+                                                     apiVersion: versionAPI,
+                                                     logLevel: .none)
             .build()
         
         let documentService: DefaultDocumentService = giniHealthAPILib.documentService()
