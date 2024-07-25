@@ -87,7 +87,7 @@ class SkontoViewModel {
         remainingDays = skontoDiscountDetails.remainingDays
         paymentMethod = skontoDiscountDetails.paymentMethod
         determineSkontoEdgeCase()
-        determineIsSkontoApplied()
+        determineIsSkontoAppliedInitialState()
     }
 
     func toggleDiscount() {
@@ -236,9 +236,9 @@ class SkontoViewModel {
     }
 
     /**
-     This method determines whether the 'Skonto' should be applied based on the current edge case. Should be called only at screen launch
+     This method determines whether the 'Skonto' should be applied based on the current edge case.
      */
-    private func determineIsSkontoApplied() {
+    private func determineIsSkontoAppliedInitialState() {
         switch edgeCase {
         case .expired, .payByCash:
             isSkontoApplied = false
