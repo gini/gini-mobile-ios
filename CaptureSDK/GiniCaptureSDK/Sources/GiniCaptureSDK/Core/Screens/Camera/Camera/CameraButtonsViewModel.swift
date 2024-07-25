@@ -39,17 +39,26 @@ public final class CameraButtonsViewModel {
     @objc func toggleFlash() {
         isFlashOn = !isFlashOn
         flashAction?(isFlashOn)
+
+        GiniAnalyticsManager.track(event: .flashTapped,
+                                   screenName: .camera,
+                                   properties: [GiniAnalyticsProperty(key: .flashActive, value: isFlashOn)])
     }
 
     @objc func importPressed() {
+        GiniAnalyticsManager.track(event: .importFilesTapped, screenName: .camera)
         importAction?()
     }
 
     @objc func thumbnailPressed() {
+        GiniAnalyticsManager.track(event: .multiplePagesCapturedTapped,
+                                   screenName: .camera,
+                                   properties: [GiniAnalyticsProperty(key: .numberOfPagesScanned, value: images.count)])
         imageStackAction?()
     }
 
     @objc func cancelPressed() {
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .camera)
         cancelAction?()
     }
 
