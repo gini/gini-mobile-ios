@@ -23,16 +23,10 @@ final class InvoicesListViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UINib(nibName: InvoiceTableViewCell.identifier, 
-                                 bundle: nil), 
-                           forCellReuseIdentifier: InvoiceTableViewCell.identifier)
-        tableView.contentInset = UIEdgeInsets(top: Constants.padding,
-                                              left: 0,
-                                              bottom: Constants.padding,
-                                              right: 0)
+        tableView.register(InvoiceTableViewCell.self, forCellReuseIdentifier: InvoiceTableViewCell.identifier)
         tableView.separatorColor = viewModel.tableViewSeparatorColor
-        tableView.estimatedRowHeight = Constants.rowHeight
-        tableView.rowHeight = UITableView.automaticDimension
+        tableView.separatorInset = .zero
+        tableView.rowHeight = Constants.rowHeight
         tableView.tableFooterView = UIView()
         return tableView
     }()
@@ -72,14 +66,10 @@ final class InvoicesListViewController: UIViewController {
         view.addSubview(invoicesTableView)
 
         NSLayoutConstraint.activate([
-            invoicesTableView.topAnchor.constraint(equalTo: view.topAnchor, 
-                                                   constant: Constants.padding * 2),
-            invoicesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, 
-                                                       constant: Constants.padding * 2),
-            invoicesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, 
-                                                        constant: -Constants.padding * 2),
-            invoicesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                      constant: -Constants.padding * 2)
+            invoicesTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
+            invoicesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
+            invoicesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
+            invoicesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.padding)
         ])
     }
     
@@ -117,7 +107,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         }
         let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
                                                                                            paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
-        cell.cellViewModel = invoiceTableViewCellModel
+        cell.viewModel = invoiceTableViewCellModel
         return cell
     }
     
@@ -172,8 +162,7 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
 
 extension InvoicesListViewController {
     private enum Constants {
-        static let padding: CGFloat = 8
-        static let cornerRadius: CGFloat = 16
-        static let rowHeight: CGFloat = 40
+        static let padding: CGFloat = 0
+        static let rowHeight: CGFloat = 80
     }
 }
