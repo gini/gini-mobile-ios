@@ -413,6 +413,10 @@ public struct DataForReview {
             }
         }
     }
+
+    public static var versionString: String {
+        return GiniMerchantSDKVersion
+    }
 }
 
 extension GiniMerchant {
