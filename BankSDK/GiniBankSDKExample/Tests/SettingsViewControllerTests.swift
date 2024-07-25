@@ -172,7 +172,8 @@ final class SettingsViewControllerTests: XCTestCase {
 													 isSwitchOn: settingsButtonStates.addPageButtonState.isSwitchOn)))
 		contentData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
 													 isSwitchOn: configuration.returnAssistantEnabled)))
-		
+        contentData.append(.switchOption(data: .init(type: .skontoEnabled,
+                                                     isSwitchOn: configuration.skontoEnabled)))
 		contentData.append(.switchOption(data: .init(type: .enableReturnReasons,
 													 isSwitchOn: configuration.enableReturnReasons)))
 		contentData.append(.switchOption(data: .init(type: .customDocumentValidations,
@@ -1819,6 +1820,46 @@ extension SettingsViewControllerTests {
 						   "returnAssistantEnabled should not be enabled in the gini configuration")
 		}
 	}
+    
+    // MARK: - Skonto
+    
+    func testSkontoSwitchOn() {
+        guard let index = getSwitchOptionIndex(for: .skontoEnabled) else {
+            XCTFail("`skontoEnabled` option not found in sectionData")
+            return
+        }
+        
+        if case .switchOption(var data) = contentData[index] {
+            guard data.type == .skontoEnabled else {
+                XCTFail("Expected type `skontoEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = true
+            configuration.skontoEnabled = data.isSwitchOn
+            
+            XCTAssertTrue(configuration.skontoEnabled,
+                          "skontoEnabled should be enabled in the gini configuration")
+        }
+    }
+    
+    func testSkontoSwitchOff() {
+        guard let index = getSwitchOptionIndex(for: .skontoEnabled) else {
+            XCTFail("`skontoEnabled` option not found in sectionData")
+            return
+        }
+        
+        if case .switchOption(var data) = contentData[index] {
+            guard data.type == .skontoEnabled else {
+                XCTFail("Expected type `skontoEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = false
+            configuration.skontoEnabled = data.isSwitchOn
+            
+            XCTAssertFalse(configuration.skontoEnabled,
+                           "skontoEnabled should not be enabled in the gini configuration")
+        }
+    }
 	
 	// MARK: - ReturnReasonsDigitalInvoiceDialog
 	
