@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A41C7642C50F9FB00EEDCA2 /* InvoiceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41C7632C50F9FB00EEDCA2 /* InvoiceDetailView.swift */; };
 		507A25E12C355DA900A7106E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E02C355DA900A7106E /* AppDelegate.swift */; };
 		507A25E32C355DA900A7106E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E22C355DA900A7106E /* SceneDelegate.swift */; };
 		507A25E52C355DA900A7106E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E42C355DA900A7106E /* ViewController.swift */; };
@@ -43,7 +44,6 @@
 		50D80DBD2C245DBC00B446A8 /* InvoicesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */; };
 		50D80DBE2C245DBC00B446A8 /* InvoicesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */; };
 		50D80DBF2C245DBC00B446A8 /* InvoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */; };
-		50D80DC02C245DBC00B446A8 /* InvoiceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DB32C245DBC00B446A8 /* InvoiceTableViewCell.xib */; };
 		50D80DC12C245DBC00B446A8 /* InvoiceTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */; };
 		50D80DC32C245E6100B446A8 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 50D80DC22C245E6100B446A8 /* GiniCaptureSDK */; };
 		50D80DCA2C2478D800B446A8 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DC92C2478D800B446A8 /* Localizable.xcstrings */; };
@@ -70,6 +70,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A41C7632C50F9FB00EEDCA2 /* InvoiceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailView.swift; sourceTree = "<group>"; };
 		4CF9C0D82C46C60E00AED223 /* GiniMerchantSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniMerchantSDKExample.entitlements; sourceTree = "<group>"; };
 		507A25DE2C355DA900A7106E /* GiniMerchantSDKPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniMerchantSDKPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		507A25E02C355DA900A7106E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -112,7 +113,6 @@
 		50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListViewController.swift; sourceTree = "<group>"; };
 		50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListViewModel.swift; sourceTree = "<group>"; };
 		50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCell.swift; sourceTree = "<group>"; };
-		50D80DB32C245DBC00B446A8 /* InvoiceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InvoiceTableViewCell.xib; sourceTree = "<group>"; };
 		50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCellModel.swift; sourceTree = "<group>"; };
 		50D80DC92C2478D800B446A8 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniMerchantSDK; path = ../GiniMerchantSDK; sourceTree = "<group>"; };
@@ -250,10 +250,10 @@
 				50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */,
 				50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */,
 				50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */,
-				8A16511F2C3D37FA003A1130 /* InvoiceDetailViewController.swift */,
 				50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */,
-				50D80DB32C245DBC00B446A8 /* InvoiceTableViewCell.xib */,
 				50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */,
+				8A16511F2C3D37FA003A1130 /* InvoiceDetailViewController.swift */,
+				3A41C7632C50F9FB00EEDCA2 /* InvoiceDetailView.swift */,
 			);
 			path = InvoicesList;
 			sourceTree = "<group>";
@@ -453,7 +453,6 @@
 				50D80DB92C245DBC00B446A8 /* health-invoice-3.jpg in Resources */,
 				50D80D612C245A8A00B446A8 /* Assets.xcassets in Resources */,
 				50D80DCA2C2478D800B446A8 /* Localizable.xcstrings in Resources */,
-				50D80DC02C245DBC00B446A8 /* InvoiceTableViewCell.xib in Resources */,
 				50D80DA62C245DAF00B446A8 /* SelectAPIViewController.xib in Resources */,
 				50D80D642C245A8A00B446A8 /* Base in Resources */,
 				50D80DB72C245DBC00B446A8 /* health-invoice-1.jpg in Resources */,
@@ -512,6 +511,7 @@
 				50D80DBE2C245DBC00B446A8 /* InvoicesListViewModel.swift in Sources */,
 				50D80DBF2C245DBC00B446A8 /* InvoiceTableViewCell.swift in Sources */,
 				8A1651222C3D45C2003A1130 /* DebugMenuViewController.swift in Sources */,
+				3A41C7642C50F9FB00EEDCA2 /* InvoiceDetailView.swift in Sources */,
 				50D80D9F2C245DAF00B446A8 /* UIViewController.swift in Sources */,
 				50D80DC12C245DBC00B446A8 /* InvoiceTableViewCellModel.swift in Sources */,
 			);
