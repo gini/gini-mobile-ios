@@ -13,7 +13,7 @@ class SkontoProceedView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.paybutton.title",
+        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.proceedbutton.title",
                                                                    comment: "Continue to pay")
         button.accessibilityValue = buttonTitle
         button.setTitle(buttonTitle, for: .normal)
@@ -94,7 +94,7 @@ class SkontoProceedView: UIView {
 
     private var viewModel: SkontoViewModel
 
-    private let skontoTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
+    private let skontoTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
                                                                       comment: "%@ Skonto discount")
 
     init(viewModel: SkontoViewModel) {

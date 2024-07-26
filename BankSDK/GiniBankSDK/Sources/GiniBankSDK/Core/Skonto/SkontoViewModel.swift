@@ -55,7 +55,7 @@ class SkontoViewModel {
 
     var localizedDiscountString: String {
         return String.localizedStringWithFormat(
-            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
+            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
                                                      comment: "%@ Skonto discount"),
             formattedPercentageDiscounted
         )

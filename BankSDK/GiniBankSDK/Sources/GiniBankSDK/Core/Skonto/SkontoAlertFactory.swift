@@ -16,14 +16,14 @@ class SkontoAlertFactory {
     private var edgeCaseMessage: String? {
         switch viewModel.edgeCase {
         case .expired:
-            let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.expired.alert.title",
+            let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.expired.alert.title",
                                                                          comment: "You could have paid this...")
             return String.localizedStringWithFormat(text, viewModel.formattedPercentageDiscounted)
         case .paymentToday:
-            return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.today.alert.title",
+            return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.today.alert.title",
                                                             comment: "A discount is indicated on this invoice...")
         case .payByCash:
-            return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.cash.alert.title",
+            return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.alert.title",
                                                             comment: "A discount is indicated on this invoice...")
         default:
             return nil
