@@ -13,12 +13,13 @@ final class PaymentComponentsControllerTests: XCTestCase {
     private var giniHealthAPI: GiniHealthAPI!
     private var mockPaymentComponentsController: PaymentComponentsProtocol!
     private let giniHealthConfiguration = GiniHealthConfiguration.shared
+    private let versionAPI = 4
 
     override func setUp() {
         super.setUp()
         let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock)
+        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
+        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
         giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService)
         let giniHealth = GiniHealth(with: giniHealthAPI)
         mockPaymentComponentsController = MockPaymentComponents(giniHealthSDK: giniHealth)

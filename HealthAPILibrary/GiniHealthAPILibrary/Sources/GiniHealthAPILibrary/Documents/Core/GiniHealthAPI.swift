@@ -39,7 +39,7 @@ public final class GiniHealthAPI {
      *
      */
     public func paymentService() -> PaymentService {
-        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: .default)
+        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: .default, apiVersion: Constants.defaultVersionAPI)
     }
     
     /// Removes the user stored credentials. Recommended when logging a different user in your app.
@@ -58,6 +58,7 @@ extension GiniHealthAPI {
     public struct Builder {
         var client: Client
         var api: APIDomain = .default
+        let apiVersion: Int
         var userApi: UserDomain = .default
         var logLevel: LogLevel
         public var sessionDelegate: URLSessionDelegate? = nil
@@ -81,6 +82,7 @@ extension GiniHealthAPI {
             self.userApi = userApi
             self.logLevel = logLevel
             self.sessionDelegate = sessionDelegate
+            self.apiVersion = client.apiVersion
         }
         
         /**
@@ -88,10 +90,12 @@ extension GiniHealthAPI {
          */
         public init(customApiDomain: String,
                     alternativeTokenSource: AlternativeTokenSource,
+                    apiVersion: Int,
                     logLevel: LogLevel = .none,
                     sessionDelegate: URLSessionDelegate? = nil) {
             self.client = Client(id: "", secret: "", domain: "")
             self.api = .custom(domain: customApiDomain, tokenSource: alternativeTokenSource)
+            self.apiVersion = apiVersion
             self.logLevel = logLevel
             self.sessionDelegate = sessionDelegate
         }
@@ -108,8 +112,11 @@ extension GiniHealthAPI {
             case .default:
                 let sessionManager = SessionManager(userDomain: userApi,
                                                     sessionDelegate: self.sessionDelegate)
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager),
-                                     paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
+                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, 
+                                                                             apiVersion: apiVersion),
+                                     paymentService: PaymentService(sessionManager: sessionManager,
+                                                                    apiDomain: .default,
+                                                                    apiVersion: apiVersion))
             case let .custom(_, tokenSource):
                 var sessionManager: SessionManager
                 if let tokenSource = tokenSource {
@@ -119,8 +126,12 @@ extension GiniHealthAPI {
                     sessionManager = SessionManager(userDomain: userApi,
                                                     sessionDelegate: self.sessionDelegate)
                 }
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, apiDomain: api),
-                                     paymentService: PaymentService(sessionManager: sessionManager, apiDomain: api))
+                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, 
+                                                                             apiDomain: api,
+                                                                             apiVersion: apiVersion),
+                                     paymentService: PaymentService(sessionManager: sessionManager,
+                                                                    apiDomain: api,
+                                                                    apiVersion: apiVersion))
             }
         }
         
@@ -140,5 +151,11 @@ extension GiniHealthAPI {
                     "Check that the Keychain capability is enabled in your project")
             }
         }
+    }
+}
+
+extension GiniHealthAPI {
+    public enum Constants {
+        public static let defaultVersionAPI = 4
     }
 }

@@ -100,10 +100,12 @@ public final class PaymentService: PaymentServiceProtocol {
     let sessionManager: SessionManagerProtocol
 
     public var apiDomain: APIDomain
+    public var apiVersion: Int
 
-    init(sessionManager: SessionManagerProtocol, apiDomain: APIDomain = .default) {
+    init(sessionManager: SessionManagerProtocol, apiDomain: APIDomain = .default, apiVersion: Int) {
         self.sessionManager = sessionManager
         self.apiDomain = apiDomain
+        self.apiVersion = apiVersion
     }
     
     func file(urlString: String, completion: @escaping CompletionResult<Data>){
@@ -214,7 +216,7 @@ extension PaymentService {
     
     func paymentProviders(resourceHandler: ResourceDataHandler<APIResource<[PaymentProviderResponse]>>,
                           completion: @escaping CompletionResult<PaymentProviders>) {
-        let resource = APIResource<[PaymentProviderResponse]>(method: .paymentProviders, apiDomain: apiDomain, httpMethod: .get)
+        let resource = APIResource<[PaymentProviderResponse]>(method: .paymentProviders, apiDomain: apiDomain, apiVersion: apiVersion, httpMethod: .get)
         var providers = [PaymentProvider]()
         resourceHandler(resource, { result in
             switch result {
@@ -247,7 +249,7 @@ extension PaymentService {
 
     func paymentProvider(id: String, resourceHandler: ResourceDataHandler<APIResource<PaymentProviderResponse>>,
                          completion: @escaping CompletionResult<PaymentProvider>) {
-        let resource = APIResource<PaymentProviderResponse>(method: .paymentProvider(id: id), apiDomain: apiDomain, httpMethod: .get)
+        let resource = APIResource<PaymentProviderResponse>(method: .paymentProvider(id: id), apiDomain: apiDomain, apiVersion: apiVersion, httpMethod: .get)
 
         resourceHandler(resource, { result in
             switch result {
@@ -278,6 +280,7 @@ extension PaymentService {
         }
         let resource = APIResource<String>(method: .createPaymentRequest,
                                            apiDomain: apiDomain,
+                                           apiVersion: apiVersion,
                                            httpMethod: .post,
                                            body: jsonData)
         resourceHandler(resource, { result in
@@ -296,7 +299,7 @@ extension PaymentService {
 
     func paymentRequest(id: String, resourceHandler: ResourceDataHandler<APIResource<PaymentRequest>>,
                         completion: @escaping CompletionResult<PaymentRequest>) {
-        let resource = APIResource<PaymentRequest>(method: .paymentRequest(id: id), apiDomain: apiDomain, httpMethod: .get)
+        let resource = APIResource<PaymentRequest>(method: .paymentRequest(id: id), apiDomain: apiDomain, apiVersion: apiVersion, httpMethod: .get)
 
         resourceHandler(resource, { result in
             switch result {
@@ -311,7 +314,7 @@ extension PaymentService {
     func paymentRequests(limit: Int?,
                          offset: Int?, resourceHandler: ResourceDataHandler<APIResource<PaymentRequests>>,
                          completion: @escaping CompletionResult<PaymentRequests>) {
-        let resource = APIResource<PaymentRequests>(method: .paymentRequests(limit: limit, offset: offset), apiDomain: apiDomain, httpMethod: .get)
+        let resource = APIResource<PaymentRequests>(method: .paymentRequests(limit: limit, offset: offset), apiDomain: apiDomain, apiVersion: apiVersion, httpMethod: .get)
 
         resourceHandler(resource, { result in
             switch result {
@@ -326,7 +329,7 @@ extension PaymentService {
     private func file(urlString: String,
                  resourceHandler: ResourceDataHandler<APIResource<Data>>,
                  completion: @escaping CompletionResult<Data>) {
-        var resource = APIResource<Data>(method: .file(urlString: urlString), apiDomain: apiDomain, httpMethod: .get)
+        var resource = APIResource<Data>(method: .file(urlString: urlString), apiDomain: apiDomain, apiVersion: apiVersion, httpMethod: .get)
         resource.fullUrlString = urlString
         resourceHandler(resource) { result in
             switch result {
@@ -342,7 +345,7 @@ extension PaymentService {
     func payment(id: String,
                  resourceHandler: ResourceDataHandler<APIResource<Payment>>,
                  completion: @escaping CompletionResult<Payment>) {
-        let resource = APIResource<Payment>(method: .payment(id: id), apiDomain: apiDomain, httpMethod: .get)
+        let resource = APIResource<Payment>(method: .payment(id: id), apiDomain: apiDomain, apiVersion: apiVersion, httpMethod: .get)
 
         resourceHandler(resource, { result in
             switch result {
@@ -358,7 +361,8 @@ extension PaymentService {
                        resourceHandler: ResourceDataHandler<APIResource<Data>>,
                        completion: @escaping CompletionResult<Data>) {
         let resource = APIResource<Data>(method: .pdfWithQRCode(paymentRequestId: paymentRequestId),
-                                         apiDomain: apiDomain,
+                                         apiDomain: apiDomain, 
+                                         apiVersion: apiVersion,
                                          httpMethod: .get)
         resourceHandler(resource, { result in
             switch result {
