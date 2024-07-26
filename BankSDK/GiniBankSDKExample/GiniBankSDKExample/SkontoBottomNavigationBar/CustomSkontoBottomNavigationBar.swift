@@ -122,22 +122,21 @@ final class CustomSkontoBottomNavigationBar: UIView {
         totalValueLabel.text = price
     }
 
-    func updateDiscountValue(with discount: String?) {
+    func updateSkontoPercentageBadge(with discount: String?) {
         skontoBadgeLabel.text = discount
     }
 
-    func updateDiscountBadge(enabled: Bool) {
-        skontoBadgeView.isHidden = !enabled
+    func updateSkontoPercentageBadgeVisibility(hidden: Bool) {
+        skontoBadgeView.isHidden = hidden
     }
 
-    func updateInvoiceSkontoSavings(with text: String?) {
+    func updateSkontoSavingsInfo(with text: String?) {
         savedAmountLabel.text = text
     }
 
-    func displayInvoiceSkontoSavingsBadge(hidden: Bool) {
+    func updateSkontoSavingsInfoVisibility(hidden: Bool) {
         savedAmountLabel.isHidden = hidden
     }
-
 
     private func setupView() {
         addSubview(proceedButton)

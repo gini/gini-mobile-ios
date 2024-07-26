@@ -133,8 +133,8 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         skontoBadgeLabel.accessibilityValue = discount
     }
 
-    func updateDiscountBadge(enabled: Bool) {
-        skontoBadgeView.isHidden = !enabled
+    func updateDiscountBadge(hidden: Bool) {
+        skontoBadgeView.isHidden = hidden
     }
 
     func updateInvoiceSkontoSavings(with text: String?) {
