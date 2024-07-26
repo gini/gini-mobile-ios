@@ -8,7 +8,6 @@ import UIKit
 import GiniBankSDK
 
 final class CustomSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter {
-
     private var proceedButtonCallback: (() -> Void)?
     // MARK: Temporary remove help action
 //    private var helpButtonCallback: (() -> Void)?
@@ -19,33 +18,32 @@ final class CustomSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAda
         proceedButtonCallback = callback
     }
 
-    // MARK: Temporary remove help action
-//    func setHelpButtonClickedActionCallback(_ callback: @escaping  () -> Void) {
-//        helpButtonCallback = callback
-//    }
-
     func setBackButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         backButtonCallback = callback
+    }
+    
+    func setHelpButtonClickedActionCallback(_ callback: @escaping  () -> Void) {
+        // empty for now
     }
 
     func updateTotalPrice(priceWithCurrencyCode price: String?) {
         view?.updatePrice(with: price)
     }
 
-    func updateDiscountValue(with discount: String?) {
-        view?.updateDiscountValue(with: discount)
+    func updateSkontoPercentageBadge(with text: String?) {
+        view?.updateSkontoPercentageBadge(with: text)
     }
 
-    func updateDiscountBadge(enabled: Bool) {
-        view?.updateDiscountBadge(enabled: enabled)
+    func updateSkontoPercentageBadgeVisibility(hidden: Bool) {
+        view?.updateSkontoPercentageBadgeVisibility(hidden: hidden)
     }
 
-    func updateInvoiceSkontoSavings(with text: String?) {
-        view?.updateInvoiceSkontoSavings(with: text)
+    func updateSkontoSavingsInfo(with text: String?) {
+        view?.updateSkontoSavingsInfo(with: text)
     }
 
-    func displayInvoiceSkontoSavingsBadge(hidden: Bool) {
-        view?.displayInvoiceSkontoSavingsBadge(hidden: hidden)
+    func updateSkontoSavingsInfoVisibility(hidden: Bool) {
+        view?.updateSkontoSavingsInfoVisibility(hidden: hidden)
     }
 
     func injectedView() -> UIView {
