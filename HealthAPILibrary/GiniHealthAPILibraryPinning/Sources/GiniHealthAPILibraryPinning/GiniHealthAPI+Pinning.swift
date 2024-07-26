@@ -39,9 +39,10 @@ public extension GiniHealthAPI.Builder {
      */
     init(customApiDomain: String,
          alternativeTokenSource: AlternativeTokenSource,
+         apiVersion: Int,
          pinningConfig: [String: Any],
          logLevel: LogLevel = .none) {
-        self.init(customApiDomain: customApiDomain, alternativeTokenSource: alternativeTokenSource, logLevel: logLevel, sessionDelegate: SessionDelegate())
+        self.init(customApiDomain: customApiDomain, alternativeTokenSource: alternativeTokenSource, apiVersion: apiVersion, logLevel: logLevel, sessionDelegate: SessionDelegate())
         TrustKit.initSharedInstance(withConfiguration: pinningConfig)
     }
 }

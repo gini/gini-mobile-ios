@@ -11,10 +11,11 @@ import UIKit
 final class DocumentServicesTests: XCTestCase {
     var sessionManagerMock: SessionManagerMock!
     var defaultDocumentService: DefaultDocumentService!
+    let versionAPI = 4
 
     override func setUp() {
         sessionManagerMock = SessionManagerMock()
-        defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock)
+        defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
     }
 
     func testPartialDocumentCreation() {
