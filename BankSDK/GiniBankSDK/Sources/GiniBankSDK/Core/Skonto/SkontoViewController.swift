@@ -110,7 +110,7 @@ public class SkontoViewController: UIViewController {
     private func setupView() {
         title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.screen.title",
                                                          comment: "Skonto")
-        let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backButton.title",
+        let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
                                                                        comment: "Back")
         edgesForExtendedLayout = []
         view.backgroundColor = .giniColorScheme().bg.background.uiColor()
