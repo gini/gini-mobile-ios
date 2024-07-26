@@ -11,17 +11,17 @@ public struct PaymentComponentConfiguration {
     /**
       * Please contact a Gini representative before changing this configuration option.
       */
-    public var isPaymentComponentBranded: Bool = true
+    public var isPaymentComponentBranded: Bool
 
     /**
      Set to `true` to make see payment component in 1 row instead of 2
      */
-    public var showPaymentComponentInOneRow = false
+    public var showPaymentComponentInOneRow: Bool
 
     /**
      Set to `true` to hide information like select your bank title label and more information view if user is returning and used component multiple times
      */
-    public var hideInfoForReturningUser = false
+    public var hideInfoForReturningUser: Bool
 
     public init(isPaymentComponentBranded: Bool = true, showPaymentComponentInOneRow: Bool = false, hideInfoForReturningUser: Bool = false) {
         self.isPaymentComponentBranded = isPaymentComponentBranded
