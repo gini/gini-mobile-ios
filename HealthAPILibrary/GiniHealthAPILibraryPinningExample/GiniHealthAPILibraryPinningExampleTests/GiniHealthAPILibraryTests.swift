@@ -30,7 +30,7 @@ final class GiniHealthAPILibraryPinningTests: XCTestCase {
                 ]],
         ]] as [String: Any]
     let client = Client(id: "", secret: "", domain: "")
-    let versionAPI = 4
+    private let versionAPI = 4
 
     func testBuildWithCustomApiDomain() {
         let giniHealthAPILib = GiniHealthAPI.Builder(client: client,

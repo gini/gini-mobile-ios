@@ -65,9 +65,11 @@ public struct DataForReview {
     public var documentService: DefaultDocumentService
     /// reponsible for the payment processing.
     public var paymentService: PaymentService
-    private var bankProviders: [PaymentProvider] = []
+    /// delegate to inform about the current status of the Gini Merchant SDK.
     public weak var delegate: GiniMerchantDelegate?
-    
+   
+    private var bankProviders: [PaymentProvider] = []
+
     /**
      Initializes a new instance of GiniMerchant.
      
@@ -78,7 +80,11 @@ public struct DataForReview {
      - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
      - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
      */
-    public init(id: String, secret: String, domain: String, apiVersion: Int = 4, logLevel: LogLevel = .none) {
+    public init(id: String, 
+                secret: String,
+                domain: String,
+                apiVersion: Int = Constants.defaultVersionAPI,
+                logLevel: LogLevel = .none) {
         let client = Client(id: id, secret: secret, domain: domain, apiVersion: apiVersion)
         self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: logLevel.toHealthLogLevel()).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
@@ -343,3 +349,8 @@ public struct DataForReview {
     }
 }
 
+extension GiniMerchant {
+    public enum Constants {
+        public static let defaultVersionAPI = 4
+    }
+}

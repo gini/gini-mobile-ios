@@ -20,7 +20,7 @@ public struct Client {
     /// Client secret
     public var secret: String
     
-    public init(id: String, secret: String, domain: String, apiVersion: Int = 4) {
+    public init(id: String, secret: String, domain: String, apiVersion: Int = GiniHealthAPI.Constants.defaultVersionAPI) {
         self.id = id
         self.secret = secret
         self.domain = domain

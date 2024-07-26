@@ -10,7 +10,7 @@ import XCTest
 // swiftlint:disable force_cast
 
 final class GiniApiLibTests: XCTestCase {
-    let versionAPI = 4
+    private let versionAPI = 4
 
     func testBuildWithCustomApiDomain() {
         let giniHealthAPILib = GiniHealthAPI.Builder(client: Client(id: "", secret: "", domain: ""),

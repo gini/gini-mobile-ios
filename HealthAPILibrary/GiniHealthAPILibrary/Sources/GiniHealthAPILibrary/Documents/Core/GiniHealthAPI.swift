@@ -39,7 +39,7 @@ public final class GiniHealthAPI {
      *
      */
     public func paymentService() -> PaymentService {
-        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: .default, apiVersion: 4)
+        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: .default, apiVersion: Constants.defaultVersionAPI)
     }
     
     /// Removes the user stored credentials. Recommended when logging a different user in your app.
@@ -151,5 +151,11 @@ extension GiniHealthAPI {
                     "Check that the Keychain capability is enabled in your project")
             }
         }
+    }
+}
+
+extension GiniHealthAPI {
+    public enum Constants {
+        public static let defaultVersionAPI = 4
     }
 }
