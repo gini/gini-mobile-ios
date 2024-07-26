@@ -8,6 +8,7 @@
 
 import UIKit
 import GiniUtilites
+import GiniPaymentComponents
 
 class InstallAppBottomView: BottomSheetViewController {
 
@@ -71,8 +72,9 @@ class InstallAppBottomView: BottomSheetViewController {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: viewModel.giniMerchantConfiguration.primaryButtonConfiguration)
-        button.customConfigure(paymentProviderColors: viewModel.paymentProviderColors,
-                               text: viewModel.continueLabelText)
+        button.customConfigure(text: viewModel.continueLabelText,
+                               textColor: viewModel.paymentProviderColors?.text.toColor(),
+                               backgroundColor: viewModel.paymentProviderColors?.background.toColor())
         return button
     }()
     

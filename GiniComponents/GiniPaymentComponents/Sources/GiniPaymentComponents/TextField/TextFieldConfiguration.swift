@@ -11,10 +11,10 @@ public struct TextFieldConfiguration {
     public let backgroundColor: UIColor
     public let borderColor: UIColor
     public let textColor: UIColor
+    public let textFont: UIFont
     public let cornerRadius: CGFloat
     public let borderWidth: CGFloat
     public let placeholderForegroundColor: UIColor
-
 
     /// Text Field configuration initalizer
     /// - Parameters:
@@ -28,12 +28,14 @@ public struct TextFieldConfiguration {
     public init(backgroundColor: UIColor,
                 borderColor: UIColor,
                 textColor: UIColor,
+                textFont: UIFont,
                 cornerRadius: CGFloat,
                 borderWidth: CGFloat,
                 placeholderForegroundColor: UIColor) {
         self.backgroundColor = backgroundColor
         self.borderColor = borderColor
         self.textColor = textColor
+        self.textFont = textFont
         self.cornerRadius = cornerRadius
         self.borderWidth = borderWidth
         self.placeholderForegroundColor = placeholderForegroundColor

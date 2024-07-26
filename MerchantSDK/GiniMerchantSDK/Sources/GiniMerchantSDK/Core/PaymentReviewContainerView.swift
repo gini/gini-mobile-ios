@@ -8,6 +8,7 @@
 
 import UIKit
 import GiniUtilites
+import GiniPaymentComponents
 
 enum TextFieldType: Int {
     case recipientFieldTag = 1
@@ -215,8 +216,7 @@ class PaymentReviewContainerView: UIView {
     fileprivate func applyDefaultStyle(_ textFieldView: TextFieldWithLabelView) {
         textFieldView.configure(configuration: Constants.defaultStyleInputFieldConfiguration)
         textFieldView.customConfigure(labelTitle: inputFieldPlaceholderText(textFieldView))
-        textFieldView.textField.delegate = self
-        textFieldView.textField.tag = textFieldView.tag
+        textFieldView.delegate = self
         textFieldView.layer.masksToBounds = true
     }
 
@@ -255,7 +255,7 @@ class PaymentReviewContainerView: UIView {
         if let fieldIdentifier = TextFieldType(rawValue: textFieldViewTag) {
             switch fieldIdentifier {
             case .amountFieldTag:
-                if amountTextFieldView.textField.hasText && !amountTextFieldView.textField.isReallyEmpty  {
+                if !amountTextFieldView.isReallyEmpty  {
                     let decimalPart = amountToPay.value
                     if decimalPart > 0 {
                         applyDefaultStyle(textFieldView)
@@ -270,7 +270,7 @@ class PaymentReviewContainerView: UIView {
                     showErrorLabel(textFieldTag: fieldIdentifier)
                 }
             case .ibanFieldTag, .recipientFieldTag, .usageFieldTag:
-                if textFieldView.textField.hasText && !textFieldView.textField.isReallyEmpty {
+                if !textFieldView.isReallyEmpty {
                     applyDefaultStyle(textFieldView)
                     hideErrorLabel(textFieldTag: fieldIdentifier)
                 } else {
@@ -286,7 +286,7 @@ class PaymentReviewContainerView: UIView {
     }
 
     fileprivate func validateIBANTextField(){
-        if let ibanText = ibanTextFieldView.textField.text, ibanTextFieldView.textField.hasText {
+        if let ibanText = ibanTextFieldView.text {
             if ibanValidator.isValid(iban: ibanText) {
                 applyDefaultStyle(ibanTextFieldView)
                 hideErrorLabel(textFieldTag: .ibanFieldTag)
@@ -379,7 +379,7 @@ class PaymentReviewContainerView: UIView {
     // MARK: - Pay button
 
     fileprivate func disablePayButtonIfNeeded() {
-        payInvoiceButton.superview?.alpha = paymentInputFields.allSatisfy({ !$0.textField.isReallyEmpty }) && amountToPay.value > 0 ? 1 : Constants.payInvoiceInactiveAlpha
+        payInvoiceButton.superview?.alpha = paymentInputFields.allSatisfy({ !$0.isReallyEmpty }) && amountToPay.value > 0 ? 1 : Constants.payInvoiceInactiveAlpha
     }
 
     fileprivate func showValidationErrorLabel(textFieldTag: TextFieldType) {
@@ -405,8 +405,9 @@ class PaymentReviewContainerView: UIView {
 
     fileprivate func configurePayButtonInitialState() {
         payInvoiceButton.configure(with: Constants.primaryButtonConfiguration)
-        payInvoiceButton.customConfigure(paymentProviderColors: model.selectedPaymentProvider.colors,
-                                         text: model.payInvoiceLabelText,
+        payInvoiceButton.customConfigure(text: model.payInvoiceLabelText,
+                                         textColor: model.selectedPaymentProvider.colors.text.toColor(),
+                                         backgroundColor: model.selectedPaymentProvider.colors.background.toColor(),
                                          leftImageData: model.selectedPaymentProvider.iconData)
         disablePayButtonIfNeeded()
         payInvoiceButton.didTapButton = { [weak self] in
@@ -423,14 +424,14 @@ class PaymentReviewContainerView: UIView {
                                               action: #selector(doneWithAmountInputButtonTapped))
 
         toolbarDone.items = [flexBarButton, barBtnDone]
-        textFieldView.textField.inputAccessoryView = toolbarDone
+        textFieldView.inputAccessoryView = toolbarDone
     }
 
     @objc fileprivate func doneWithAmountInputButtonTapped() {
-        amountTextFieldView.textField.endEditing(true)
-        amountTextFieldView.textField.resignFirstResponder()
+        _ = amountTextFieldView.endEditing(true)
+        _ = amountTextFieldView.resignFirstResponder()
 
-        if amountTextFieldView.textField.hasText && !amountTextFieldView.textField.isReallyEmpty {
+        if !amountTextFieldView.isReallyEmpty {
             updateAmoutToPayWithCurrencyFormat()
         }
     }
@@ -463,13 +464,13 @@ class PaymentReviewContainerView: UIView {
     func isTextFieldEmpty(texFieldType: TextFieldType) -> Bool {
         switch texFieldType {
         case .recipientFieldTag:
-            return recipientTextFieldView.textField.isReallyEmpty
+            return recipientTextFieldView.isReallyEmpty
         case .ibanFieldTag:
-            return ibanTextFieldView.textField.isReallyEmpty
+            return ibanTextFieldView.isReallyEmpty
         case .amountFieldTag:
-            return amountTextFieldView.textField.isReallyEmpty
+            return amountTextFieldView.isReallyEmpty
         case .usageFieldTag:
-            return usageTextFieldView.textField.isReallyEmpty
+            return usageTextFieldView.isReallyEmpty
         }
     }
 
@@ -487,13 +488,13 @@ class PaymentReviewContainerView: UIView {
     func textFieldText(texFieldType: TextFieldType) -> String? {
         switch texFieldType {
         case .recipientFieldTag:
-            return recipientTextFieldView.textField.text
+            return recipientTextFieldView.text
         case .ibanFieldTag:
-            return ibanTextFieldView.textField.text
+            return ibanTextFieldView.text
         case .amountFieldTag:
-            return amountTextFieldView.textField.text
+            return amountTextFieldView.text
         case .usageFieldTag:
-            return usageTextFieldView.textField.text
+            return usageTextFieldView.text
         }
     }
 
@@ -528,7 +529,7 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
      Updates amoutToPay, formated string with a currency and removes "0.00" value
      */
     func updateAmoutToPayWithCurrencyFormat() {
-        if amountTextFieldView.textField.hasText, let amountFieldText = amountTextFieldView.text {
+        if let amountFieldText = amountTextFieldView.text {
             if let priceValue = decimal(from: amountFieldText ) {
                 amountToPay.value = priceValue
                 if priceValue > 0 {

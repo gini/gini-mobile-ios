@@ -9,25 +9,22 @@
 import UIKit
 import GiniUtilites
 
-final class PaymentSecondaryButton: UIView {
-    
-    private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
-    
-    var didTapButton: (() -> Void)?
-    
+public final class PaymentSecondaryButton: UIView {
+    public var didTapButton: (() -> Void)?
+
     private lazy var contentView: UIView = {
         let view = EmptyView()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnBankPicker)))
         return view
     }()
-    
+
     private lazy var leftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.bankIconSize, height: Constants.bankIconSize)
         return imageView
     }()
-    
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -35,15 +32,15 @@ final class PaymentSecondaryButton: UIView {
         label.lineBreakMode = .byTruncatingTail
         return label
     }()
-    
+
     private lazy var rightImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.chevronIconSize, height: Constants.chevronIconSize)
         return imageView
     }()
-    
-    init() {
+
+    public init() {
         super.init(frame: .zero)
         addSubview(contentView)
         contentView.addSubview(leftImageView)
@@ -51,11 +48,11 @@ final class PaymentSecondaryButton: UIView {
         contentView.addSubview(rightImageView)
         setupConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -68,14 +65,14 @@ final class PaymentSecondaryButton: UIView {
             rightImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }
-    
+
     private func activateImagesViewConstraints() {
         if !leftImageView.isHidden {
             leftImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentPadding).isActive = true
             leftImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
             leftImageView.widthAnchor.constraint(equalToConstant: leftImageView.frame.width).isActive = true
             leftImageView.heightAnchor.constraint(equalToConstant: leftImageView.frame.height).isActive = true
-            
+
             titleLabel.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor, constant: Constants.contentPadding).isActive = true
             leftImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor).isActive = true
         } else {
@@ -88,28 +85,28 @@ final class PaymentSecondaryButton: UIView {
             rightImageView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
         }
     }
-    
+
     @objc
     private func tapOnBankPicker() {
         didTapButton?()
     }
 }
 
-extension PaymentSecondaryButton {
+public extension PaymentSecondaryButton {
     func configure(with configuration: ButtonConfiguration) {
         contentView.layer.cornerRadius = configuration.cornerRadius
         contentView.layer.borderWidth = configuration.borderWidth
         contentView.layer.borderColor = configuration.borderColor.cgColor
         contentView.backgroundColor = configuration.backgroundColor
-        
+
         leftImageView.layer.borderColor = configuration.borderColor.cgColor
         leftImageView.layer.borderWidth = configuration.borderWidth
         leftImageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
-        
+
         titleLabel.textColor = configuration.titleColor
-        titleLabel.font = giniMerchantConfiguration.font(for: .input)
+        titleLabel.font = configuration.titleFont
     }
-    
+
     func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: UIImage?, rightImageTintColor: UIColor, shouldShowLabel: Bool) {
         if let leftImageIcon {
             leftImageView.image = leftImageIcon

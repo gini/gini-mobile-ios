@@ -8,13 +8,9 @@
 
 import UIKit
 import GiniUtilites
-import GiniHealthAPILibrary
 
-final class PaymentPrimaryButton: UIView {
-    
-    private let giniConfiguration = GiniMerchantConfiguration.shared
-    
-    var didTapButton: (() -> Void)?
+public final class PaymentPrimaryButton: UIView {
+    public var didTapButton: (() -> Void)?
     
     private lazy var contentView: UIView = {
         let view = EmptyView()
@@ -38,7 +34,7 @@ final class PaymentPrimaryButton: UIView {
         return imageView
     }()
     
-    init() {
+    public init() {
         super.init(frame: .zero)
         addSubview(contentView)
         contentView.addSubview(titleLabel)
@@ -73,7 +69,7 @@ final class PaymentPrimaryButton: UIView {
     }
 }
 
-extension PaymentPrimaryButton {
+public extension PaymentPrimaryButton {
     func configure(with configuration: ButtonConfiguration) {
         self.contentView.backgroundColor = configuration.backgroundColor
         self.contentView.layer.cornerRadius = configuration.cornerRadius
@@ -81,19 +77,15 @@ extension PaymentPrimaryButton {
         self.contentView.layer.shadowColor = configuration.shadowColor.cgColor
 
         self.titleLabel.textColor = configuration.titleColor
-        self.titleLabel.font = giniConfiguration.font(for: .button)
+        self.titleLabel.font = configuration.titleFont
     }
     
-    func customConfigure(paymentProviderColors: ProviderColors?, text: String, leftImageData: Data? = nil) {
-        if let backgroundHexColor = paymentProviderColors?.background.toColor() {
-            contentView.backgroundColor = backgroundHexColor
-        }
+    func customConfigure(text: String, textColor: UIColor?, backgroundColor: UIColor?, leftImageData: Data? = nil) {
+        contentView.backgroundColor = backgroundColor
         contentView.isUserInteractionEnabled = true
         
         titleLabel.text = text
-        if let textHexColor = paymentProviderColors?.text.toColor() {
-            titleLabel.textColor = textHexColor
-        }
+        titleLabel.textColor = textColor
         // Left image appears only on Payment Review Screen
         if let leftImageData {
             contentView.addSubview(leftImageView)
