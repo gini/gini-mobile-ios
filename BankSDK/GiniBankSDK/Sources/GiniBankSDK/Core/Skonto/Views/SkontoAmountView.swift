@@ -31,6 +31,8 @@ class SkontoAmountView: UIView {
         textField.keyboardType = .numberPad
         textField.isUserInteractionEnabled = isEditable
         textField.adjustsFontForContentSizeCategory = true
+        textField.adjustsFontSizeToFitWidth = true
+        textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
