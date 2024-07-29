@@ -7,6 +7,7 @@
 
 import UIKit
 import GiniUtilites
+import GiniPaymentComponents
 
 class PageCollectionViewCell: UICollectionViewCell, ReusableView {
 
