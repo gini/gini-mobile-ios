@@ -129,11 +129,9 @@ extension DigitalInvoice {
     }
 }
 
-// swiftlint:disable implicit_getter
 extension ReturnReason {
     var labelInLocalLanguageOrGerman: String {
-        get {
-            localizedLabels[Locale.current.languageCode ?? "de"] ?? localizedLabels["de"] ?? ""
-        }
+        let currentLanguageCode = Locale.current.languageCode ?? "de"
+        return localizedLabels[currentLanguageCode] ?? localizedLabels["de"] ?? ""
     }
 }
