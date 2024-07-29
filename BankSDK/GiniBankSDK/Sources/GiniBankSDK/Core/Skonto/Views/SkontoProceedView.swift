@@ -43,6 +43,7 @@ class SkontoProceedView: UIView {
         label.text = labelText
         label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
 
@@ -136,6 +137,7 @@ class SkontoProceedView: UIView {
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.totalValueLabelTopPadding),
             totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            totalValueLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
                                                   constant: Constants.savingsAmountLabelTopPadding),
