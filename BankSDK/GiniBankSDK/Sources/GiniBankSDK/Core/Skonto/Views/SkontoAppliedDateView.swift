@@ -9,7 +9,7 @@ import UIKit
 class SkontoAppliedDateView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.date.title",
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.expirydate.title",
                                                              comment: "Due date")
         label.text = title
         label.accessibilityValue = title

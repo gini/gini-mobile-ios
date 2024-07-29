@@ -8,7 +8,7 @@ import UIKit
 
 class SkontoAppliedAmountView: UIView {
     private lazy var amountView: SkontoAmountView = {
-        let view = SkontoAmountView(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.amount.title",
+        let view = SkontoAmountView(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.price.title",
                                                                                     comment: "Skonto amount to pay"),
                                     price: viewModel.skontoAmountToPay)
         view.delegate = self

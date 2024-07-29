@@ -91,23 +91,23 @@ class SkontoAppliedInfoView: UIView {
 
         switch edgeCase {
         case .expired:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.expired.message",
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.expired.message",
                                                                          comment: "The %@ discount has expired.")
             text = String.localizedStringWithFormat(localizedText,
                                                     viewModel.formattedPercentageDiscounted)
         case .paymentToday:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.today.message",
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.today.message",
                                                                          comment: "Pay today: %@ discount.")
             text = String.localizedStringWithFormat(localizedText,
                                                     viewModel.formattedPercentageDiscounted)
         case .payByCash:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.edgecase.cash.message",
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.message",
                                                                          comment: "A %@ discount is available...")
             text = String.localizedStringWithFormat(localizedText,
                                                     viewModel.formattedPercentageDiscounted,
                                                     viewModel.localizedRemainingDays)
         default:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.message",
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.default.message",
                                                                          comment: "Pay in %@: %@ Skonto discount.")
             text = String.localizedStringWithFormat(localizedText,
                                                     viewModel.localizedRemainingDays,

@@ -40,9 +40,9 @@ class SkontoViewModel {
     var formattedPercentageDiscounted: String {
         let formatter = NumberFormatter.floorRoundingFormatter
         if let formattedValue = formatter.string(from: NSNumber(value: skontoPercentage)) {
-            return "\(formattedValue)%"
+            return "\(formattedValue) %"
         } else {
-            return "\(skontoPercentage)%"
+            return "\(skontoPercentage) %"
         }
     }
 
@@ -55,7 +55,7 @@ class SkontoViewModel {
 
     var localizedDiscountString: String {
         return String.localizedStringWithFormat(
-            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.amount.skonto",
+            NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
                                                      comment: "%@ Skonto discount"),
             formattedPercentageDiscounted
         )
