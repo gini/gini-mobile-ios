@@ -124,6 +124,11 @@ class SkontoProceedView: UIView {
     }
 
     private func setupConstraints() {
+        var horizontalPadding: CGFloat = Constants.padding
+        if UIDevice.current.isIpad {
+            horizontalPadding += UIScreen.main.bounds.width * (1 - Constants.tabletWidthMultiplier) / 2
+        }
+
         NSLayoutConstraint.activate([
             dividerView.topAnchor.constraint(equalTo: topAnchor),
             dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -131,21 +136,20 @@ class SkontoProceedView: UIView {
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
             totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
-            totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            totalLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+            totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
+            totalLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -horizontalPadding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.totalValueLabelTopPadding),
-            totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            totalValueLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+            totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
+            totalValueLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -horizontalPadding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
-                                                  constant: Constants.savingsAmountLabelTopPadding),
+                                                    constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
-            skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                     constant: -Constants.padding),
+            skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -horizontalPadding),
 
             skontoBadgeLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
                                                   constant: Constants.badgeVerticalPadding),
@@ -159,9 +163,9 @@ class SkontoProceedView: UIView {
             proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
                                                constant: Constants.verticalPadding),
             proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
-                                              constant: -Constants.verticalPadding),
+                                                  constant: -Constants.verticalPadding),
             proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            proceedButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            proceedButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
             proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.proceedButtonHeight)
         ])
     }
@@ -203,5 +207,6 @@ private extension SkontoProceedView {
         static let cornerRadius: CGFloat = 4
         static let totalValueLabelTopPadding: CGFloat = 4
         static let savingsAmountLabelTopPadding: CGFloat = 2
+        static let tabletWidthMultiplier: CGFloat = 0.7
     }
 }

@@ -151,10 +151,15 @@ public class SkontoViewController: UIViewController {
     }
 
     private func setupScrollViewConstraints() {
+        var horizontalPadding: CGFloat = Constants.scrollViewSideInset
+        if UIDevice.current.isIpad {
+            horizontalPadding += UIScreen.main.bounds.width * (1 - Constants.tabletWidthMultiplier) / 2
+        }
+
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
             scrollView.bottomAnchor.constraint(equalTo: proceedView.topAnchor)
         ])
     }
@@ -207,13 +212,6 @@ public class SkontoViewController: UIViewController {
 
     private func setupNotAppliedGroupViewConstraints() {
         NSLayoutConstraint.activate([
-            notAppliedGroupView.topAnchor.constraint(equalTo: appliedGroupView.bottomAnchor,
-                                                     constant: Constants.containerPadding),
-            notAppliedGroupView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                         constant: Constants.containerPadding),
-            notAppliedGroupView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                          constant: -Constants.containerPadding),
-
             notAppliedView.topAnchor.constraint(equalTo: notAppliedGroupView.topAnchor),
             notAppliedView.leadingAnchor.constraint(equalTo: notAppliedGroupView.leadingAnchor,
                                                     constant: Constants.horizontalPadding),
@@ -371,5 +369,6 @@ private extension SkontoViewController {
         static let scrollViewSideInset: CGFloat = 0
         static let groupCornerRadius: CGFloat = 8
         static let scrollIndicatorInset: CGFloat = 0
+        static let tabletWidthMultiplier: CGFloat = 0.7
     }
 }
