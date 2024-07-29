@@ -7,7 +7,7 @@
 
 
 import UIKit
-import GiniUtilites
+import GiniPaymentComponents
 import GiniHealthAPILibrary
 
 protocol ShareInvoiceBottomViewProtocol: AnyObject {
@@ -21,9 +21,9 @@ struct SingleApp {
 }
 
 final class ShareInvoiceBottomViewModel {
-    
-    var giniMerchantConfiguration = GiniMerchantConfiguration.shared
-    
+    let configuration: ShareInvoiceConfiguration
+    let primaryButtonConfiguration: ButtonConfiguration
+
     var selectedPaymentProvider: PaymentProvider?
     // Payment provider colors
     var paymentProviderColors: ProviderColors?
@@ -33,9 +33,6 @@ final class ShareInvoiceBottomViewModel {
     // Title label
     var titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.title",
                                                              comment: "Share Invoice Bottom sheet title")
-    let titleLabelAccentColor: UIColor = GiniColor.standard2.uiColor()
-    var titleLabelFont: UIFont
-
     private var bankImageIconData: Data?
     var bankImageIcon: UIImage {
         if let bankImageIconData {
@@ -43,50 +40,29 @@ final class ShareInvoiceBottomViewModel {
         }
         return UIImage()
     }
-    var bankIconBorderColor = GiniColor.standard5.uiColor()
 
-    // Description label
-    let descriptionLabelTextColor: UIColor = GiniColor.standard3.uiColor()
-    let descriptionAccentColor: UIColor = GiniColor.standard3.uiColor()
     var descriptionLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.description",
                                                                         comment: "Text description for share bottom sheet")
-    var descriptionLabelFont: UIFont
-    
-    // Apps View
-    let appsBackgroundColor: UIColor = GiniColor.standard6.uiColor()
-    let moreIcon: UIImage = GiniMerchantImage.more.preferredUIImage()
-    
-    // Tip label
-    let tipAccentColor: UIColor = GiniColor.standard2.uiColor()
-    let tipLabelTextColor: UIColor = GiniColor.standard4.uiColor()
     var tipLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.tip.description",
                                                         comment: "Text for tip label")
     let tipActionablePartText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.tip.underlined.part",
                                                                  comment: "Text for tip actionable part from the label")
-    var tipLabelFont: UIFont
-    var tipLabelLinkFont: UIFont
-    let tipIcon: UIImage = GiniMerchantImage.info.preferredUIImage()
-    
-    // Continue label
     let continueLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.continue.button.text",
                                                                      comment: "Title label used for the Continue button")
-
     let bankToReplaceString = "[BANK]"
     
     var appsMocked: [SingleApp] = []
 
-    init(selectedPaymentProvider: PaymentProvider?) {
+    init(selectedPaymentProvider: PaymentProvider?, configuration: ShareInvoiceConfiguration, primaryButtonConfiguration: ButtonConfiguration) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.bankImageIconData = selectedPaymentProvider?.iconData
         self.paymentProviderColors = selectedPaymentProvider?.colors
-        
+        self.configuration = configuration
+        self.primaryButtonConfiguration = primaryButtonConfiguration
+
         titleText = titleText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
         descriptionLabelText = descriptionLabelText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
         tipLabelText = tipLabelText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
-        self.titleLabelFont = giniMerchantConfiguration.font(for: .subtitle1)
-        self.descriptionLabelFont = giniMerchantConfiguration.font(for: .captions1)
-        self.tipLabelFont = giniMerchantConfiguration.font(for: .captions1)
-        self.tipLabelLinkFont = giniMerchantConfiguration.font(for: .linkBold)
         
         self.generateAppMockedElements()
     }
@@ -97,7 +73,7 @@ final class ShareInvoiceBottomViewModel {
         }
         self.appsMocked.append(SingleApp(title: selectedPaymentProvider?.name ?? "", image: bankImageIcon, isMoreButton: false))
         self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.app", comment: ""), isMoreButton: false))
-        self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.more", comment: ""), image: moreIcon, isMoreButton: true))
+        self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.more", comment: ""), image: configuration.moreIcon, isMoreButton: true))
         
     }
     

@@ -55,7 +55,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         paragraphStyle.lineHeightMultiple = Constants.titleLineHeight
         titleLabel.attributedText = NSMutableAttributedString(string: viewModel.titleText,
                                                               attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
-        titleLabel.textColor = viewModel.titleTextColor
+        titleLabel.textColor = viewModel.titleColor
         titleLabel.font = viewModel.titleFont
         extendedImageView.image = viewModel.extendedIcon
     }
@@ -77,17 +77,17 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
     }
 }
 
-final class PaymentInfoQuestionHeaderViewModel {
-    var titleText: String
-    var titleFont: UIFont
-    let titleTextColor: UIColor = GiniColor.standard1.uiColor()
-    var extendedIcon: UIImage
-    
-    init(title: String, isExtended: Bool) {
-        self.titleText = title
-        let giniConfiguration = GiniMerchantConfiguration.shared
-        self.titleFont = giniConfiguration.font(for: .body1)
-        self.extendedIcon = (isExtended ? GiniMerchantImage.minus : GiniMerchantImage.plus).preferredUIImage()
+struct PaymentInfoQuestionHeaderViewModel {
+    let titleText: String
+    let titleFont: UIFont
+    let titleColor: UIColor
+    let extendedIcon: UIImage
+
+    init(titleText: String, titleFont: UIFont, titleColor: UIColor, extendedIcon: UIImage) {
+        self.titleText = titleText
+        self.titleFont = titleFont
+        self.titleColor = titleColor
+        self.extendedIcon = extendedIcon
     }
 }
 

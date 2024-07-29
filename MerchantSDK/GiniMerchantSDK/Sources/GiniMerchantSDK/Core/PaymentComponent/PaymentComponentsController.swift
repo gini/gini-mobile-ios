@@ -51,6 +51,75 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
                                                     darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
 
+    //Share Invoice
+    private let shareInvoiceConfiguration = ShareInvoiceConfiguration(
+        titleFont: GiniMerchantConfiguration.shared.font(for: .subtitle1),
+        titleAccentColor: GiniColor.standard2.uiColor(),
+        descriptionFont: GiniMerchantConfiguration.shared.font(for: .captions1),
+        descriptionTextColor: GiniColor.standard3.uiColor(),
+        descriptionAccentColor: GiniColor.standard3.uiColor(),
+        tipIcon: GiniMerchantImage.info.preferredUIImage(),
+        tipFont: GiniMerchantConfiguration.shared.font(for: .captions1),
+        tipLinkFont: GiniMerchantConfiguration.shared.font(for: .linkBold),
+        tipAccentColor: GiniColor.standard2.uiColor(),
+        tipTextColor: GiniColor.standard4.uiColor(), 
+        moreIcon: GiniMerchantImage.more.preferredUIImage(),
+        bankIconBorderColor: GiniColor.standard5.uiColor(),
+        appsBackgroundColor: GiniColor.standard6.uiColor(),
+        singleAppTitleFont: GiniMerchantConfiguration.shared.font(for: .captions2),
+        singleAppTitleColor: GiniColor.standard3.uiColor(),
+        singleAppIconBorderColor: GiniColor.standard3.uiColor(),
+        singleAppIconBackgroundColor: GiniColor(lightModeColor: .white, darkModeColor: GiniMerchantColorPalette.light3.preferredColor()).uiColor()
+    )
+
+    private let installAppConfiguration = InstallAppConfiguration(
+        titleAccentColor: GiniColor.standard2.uiColor(), 
+        titleFont: GiniMerchantConfiguration.shared.font(for: .subtitle1), 
+        moreInformationFont: GiniMerchantConfiguration.shared.font(for: .captions1),
+        moreInformationTextColor: GiniColor.standard3.uiColor(),
+        moreInformationAccentColor: GiniColor.standard3.uiColor(),
+        moreInformationIcon: GiniMerchantImage.info.preferredUIImage(),
+        appStoreIcon: GiniMerchantImage.appStore.preferredUIImage(),
+        bankIconBorderColor: GiniColor.standard5.uiColor()
+    )
+
+    private let paymentInfoConfiguration = PaymentInfoConfiguration(
+        giniFont: GiniMerchantConfiguration.shared.font(for: .button),
+        answersFont: GiniMerchantConfiguration.shared.font(for: .body2),
+        answerCellTextColor: GiniColor.standard1.uiColor(),
+        answerCellLinkColor: GiniColor.accent1.uiColor(), 
+        questionsTitleFont: GiniMerchantConfiguration.shared.font(for: .subtitle1), 
+        questionsTitleColor: GiniColor.standard1.uiColor(),
+        questionHeaderFont: GiniMerchantConfiguration.shared.font(for: .body1),
+        questionHeaderTitleColor: GiniColor.standard1.uiColor(),
+        questionHeaderMinusIcon: GiniMerchantImage.minus.preferredUIImage(),
+        questionHeaderPlusIcon: GiniMerchantImage.plus.preferredUIImage(),
+        bankCellBorderColor: GiniColor.standard5.uiColor(),
+        payBillsTitleFont: GiniMerchantConfiguration.shared.font(for: .subtitle1), 
+        payBillsTitleColor: GiniColor.standard1.uiColor(),
+        payBillsDescriptionFont: GiniMerchantConfiguration.shared.font(for: .body2),
+        linksFont: GiniMerchantConfiguration.shared.font(for: .linkBold),
+        linksColor: GiniColor.accent1.uiColor(),
+        separatorColor: GiniColor.standard5.uiColor(), 
+        backgroundColor: GiniColor.standard7.uiColor()
+    )
+
+    private let banksBottomConfiguration = BanksBottomConfiguration(
+        descriptionAccentColor: GiniColor.standard3.uiColor(),
+        descriptionFont: GiniMerchantConfiguration.shared.font(for: .captions1),
+        selectBankAccentColor: GiniColor.standard2.uiColor(),
+        selectBankFont: GiniMerchantConfiguration.shared.font(for: .subtitle1),
+        closeTitleIcon: GiniMerchantImage.close.preferredUIImage(),
+        closeIconAccentColor: GiniColor.standard2.uiColor(),
+        bankCellBackgroundColor: GiniColor.standard7.uiColor(),
+        bankCellIconBorderColor: GiniColor.standard5.uiColor(),
+        bankCellNameFont: GiniMerchantConfiguration.shared.font(for: .body1),
+        bankCellNameAccentColor: GiniColor.standard1.uiColor(),
+        bankCellSelectedBorderColor: GiniColor.accent1.uiColor(),
+        bankCellNotSelectedBorderColor: GiniColor.standard5.uiColor(),
+        bankCellSelectionIndicatorImage: GiniMerchantImage.selectionIndicator.preferredUIImage()
+    )
+
     /// storing the current selected payment provider
     public var selectedPaymentProvider: PaymentProvider?
 
@@ -193,7 +262,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
 
     public func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
-                                                                   selectedPaymentProvider: selectedPaymentProvider)
+                                                                   selectedPaymentProvider: selectedPaymentProvider, 
+                                                                   configuration: banksBottomConfiguration)
         let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
 
         paymentProvidersBottomViewModel.viewDelegate = self
@@ -203,20 +273,22 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
 
     public func paymentInfoViewController() -> UIViewController {
         let paymentInfoViewController = PaymentInfoViewController()
-        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders)
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders, configuration: paymentInfoConfiguration)
         paymentInfoViewController.viewModel = paymentInfoViewModel
         return paymentInfoViewController
     }
 
     public func installAppBottomSheet() -> UIViewController {
-        let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
+        let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider,
+                                                                  installAppConfiguration: installAppConfiguration,
+                                                                  primaryButtonConfiguration: giniMerchantConfiguration.primaryButtonConfiguration)
         installAppBottomViewModel.viewDelegate = self
         let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
         return installAppBottomView
     }
 
     public func shareInvoiceBottomSheet() -> UIViewController {
-        let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
+        let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider, configuration: shareInvoiceConfiguration, primaryButtonConfiguration: giniMerchantConfiguration.primaryButtonConfiguration)
         shareInvoiceBottomViewModel.viewDelegate = self
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
         incrementOnboardingCountFor(paymentProvider: selectedPaymentProvider)

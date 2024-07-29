@@ -59,8 +59,8 @@ class PaymentInfoViewController: UIViewController {
     private lazy var payBillsTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = viewModel.payBillsTitleFont
-        label.textColor = viewModel.payBillsTitleTextColor
+        label.font = viewModel.configuration.payBillsTitleFont
+        label.textColor = viewModel.configuration.payBillsTitleColor
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.textAlignment = .left
@@ -88,8 +88,8 @@ class PaymentInfoViewController: UIViewController {
     private lazy var questionsTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = viewModel.questionsTitleFont
-        label.textColor = viewModel.questionsTitleTextColor
+        label.font = viewModel.configuration.questionsTitleFont
+        label.textColor = viewModel.configuration.questionsTitleColor
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.textAlignment = .left
@@ -145,7 +145,7 @@ class PaymentInfoViewController: UIViewController {
     }
     
     private func setupViewAttributes() {
-        view.backgroundColor = viewModel.backgroundColor
+        view.backgroundColor = viewModel.configuration.backgroundColor
     }
     
     private func setupViewConstraints() {
@@ -232,7 +232,7 @@ extension PaymentInfoViewController: UICollectionViewDataSource {
                                                             for: indexPath) as? PaymentInfoBankCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.cellViewModel = PaymentInfoBankCollectionViewCellModel(bankImageIconData: viewModel.paymentProviders[indexPath.row].iconData)
+        cell.cellViewModel = viewModel.infoBankCellModel(at: indexPath.row)
         return cell
     }
 
@@ -281,18 +281,17 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: PaymentInfoAnswerTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-        let answerTableViewCellModel = PaymentInfoAnswerTableViewModel(answerAttributedText: viewModel.questions[indexPath.section].description)
-        cell.cellViewModel = answerTableViewCellModel
+        cell.cellViewModel = viewModel.infoAnswerCellModel(at: indexPath.section)
         return cell
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         viewModel.questions.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let viewHeader = PaymentInfoQuestionHeaderViewCell(frame: CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.questionTitleHeight))
-        viewHeader.headerViewModel = PaymentInfoQuestionHeaderViewModel(title: viewModel.questions[section].title, isExtended: viewModel.questions[section].isExtended)
+        viewHeader.headerViewModel = viewModel.infoQuestionHeaderViewModel(at: section)
         viewHeader.didTapSelectButton = { [weak self] in
             self?.extended(section: section)
         }
@@ -306,7 +305,7 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section < viewModel.questions.count - 1 else { return UIView() }
         let separatorView = UIView(frame: CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.questionSectionSeparatorHeight))
-        separatorView.backgroundColor = viewModel.separatorColor
+        separatorView.backgroundColor = viewModel.configuration.separatorColor
         return separatorView
     }
     

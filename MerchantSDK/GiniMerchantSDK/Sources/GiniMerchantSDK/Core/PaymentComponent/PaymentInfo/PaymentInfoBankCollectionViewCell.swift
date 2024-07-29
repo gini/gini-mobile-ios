@@ -7,7 +7,6 @@
 
 
 import UIKit
-import GiniUtilites
 
 final class PaymentInfoBankCollectionViewCell: UICollectionViewCell {
     
@@ -60,10 +59,11 @@ final class PaymentInfoBankCollectionViewCellModel {
         }
         return UIImage()
     }
-    
-    var borderColor: UIColor = GiniColor.standard5.uiColor()
-    
-    init(bankImageIconData: Data?) {
+
+    let borderColor: UIColor
+
+    init(bankImageIconData: Data?, borderColor: UIColor) {
+        self.borderColor = borderColor
         self.bankImageIconData = bankImageIconData
     }
 }

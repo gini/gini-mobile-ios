@@ -99,8 +99,8 @@ private extension BankSelectionTableViewCell {
         bankImageView.layer.borderColor = cellViewModel.bankIconBorderColor.cgColor
         
         bankNameLabel.text = cellViewModel.bankName
-        bankNameLabel.font = cellViewModel.bankNameLabelFont
-        bankNameLabel.textColor = cellViewModel.bankNameLabelAccentColor
+        bankNameLabel.font = cellViewModel.bankNameFont
+        bankNameLabel.textColor = cellViewModel.bankNameAccentColor
         
         cellView.backgroundColor = cellViewModel.backgroundColor
         cellView.layer.borderWidth = isSelected ? Constants.selectedBorderWidth : Constants.notSelectedBorderWidth

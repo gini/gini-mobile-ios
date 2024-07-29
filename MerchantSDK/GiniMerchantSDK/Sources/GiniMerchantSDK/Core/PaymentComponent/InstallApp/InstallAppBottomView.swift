@@ -22,8 +22,8 @@ class InstallAppBottomView: BottomSheetViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.titleText
-        label.textColor = viewModel.titleLabelAccentColor
-        label.font = viewModel.titleLabelFont
+        label.textColor = viewModel.configuration.titleAccentColor
+        label.font = viewModel.configuration.titleFont
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         return label
@@ -36,7 +36,7 @@ class InstallAppBottomView: BottomSheetViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
         imageView.layer.borderWidth = Constants.bankIconBorderWidth
-        imageView.layer.borderColor = viewModel.bankIconBorderColor.cgColor
+        imageView.layer.borderColor = viewModel.configuration.bankIconBorderColor.cgColor
         return imageView
     }()
     
@@ -52,8 +52,8 @@ class InstallAppBottomView: BottomSheetViewController {
     private lazy var moreInformationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = viewModel.moreInformationLabelTextColor
-        label.font = viewModel.moreInformationLabelFont
+        label.textColor = viewModel.configuration.moreInformationTextColor
+        label.font = viewModel.configuration.moreInformationFont
         label.numberOfLines = 0
         label.text = viewModel.moreInformationLabelText
         return label
@@ -62,8 +62,8 @@ class InstallAppBottomView: BottomSheetViewController {
     private lazy var moreInformationButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(viewModel.moreInformationIcon, for: .normal)
-        button.tintColor = viewModel.moreInformationAccentColor
+        button.setImage(viewModel.configuration.moreInformationIcon, for: .normal)
+        button.tintColor = viewModel.configuration.moreInformationAccentColor
         button.isUserInteractionEnabled = false
         return button
     }()
@@ -71,7 +71,7 @@ class InstallAppBottomView: BottomSheetViewController {
     private lazy var continueButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.configure(with: viewModel.giniMerchantConfiguration.primaryButtonConfiguration)
+        button.configure(with: viewModel.primaryButtonConfiguration)
         button.customConfigure(text: viewModel.continueLabelText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
@@ -81,7 +81,7 @@ class InstallAppBottomView: BottomSheetViewController {
     private lazy var appStoreImageView: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(viewModel.appStoreIcon, for: .normal)
+        button.setImage(viewModel.configuration.appStoreIcon, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(tapOnAppStoreButton), for: .touchUpInside)
         return button

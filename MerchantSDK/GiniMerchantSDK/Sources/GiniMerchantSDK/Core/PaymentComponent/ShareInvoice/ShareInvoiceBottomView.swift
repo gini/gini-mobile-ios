@@ -22,8 +22,8 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.titleText
-        label.textColor = viewModel.titleLabelAccentColor
-        label.font = viewModel.titleLabelFont
+        label.textColor = viewModel.configuration.titleAccentColor
+        label.font = viewModel.configuration.titleFont
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         return label
@@ -35,8 +35,8 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.descriptionLabelText
-        label.textColor = viewModel.descriptionAccentColor
-        label.font = viewModel.descriptionLabelFont
+        label.textColor = viewModel.configuration.descriptionAccentColor
+        label.font = viewModel.configuration.descriptionFont
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         return label
@@ -45,7 +45,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     private lazy var appsView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = viewModel.appsBackgroundColor
+        view.backgroundColor = viewModel.configuration.appsBackgroundColor
         return view
     }()
     
@@ -62,7 +62,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.bankIconSize, height: Constants.bankIconSize)
         imageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
         imageView.layer.borderWidth = Constants.bankIconBorderWidth
-        imageView.layer.borderColor = viewModel.bankIconBorderColor.cgColor
+        imageView.layer.borderColor = viewModel.configuration.bankIconBorderColor.cgColor
         return imageView
     }()
     
@@ -79,21 +79,21 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     private lazy var tipLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = viewModel.tipAccentColor
-        label.font = viewModel.tipLabelFont
+        label.textColor = viewModel.configuration.tipAccentColor
+        label.font = viewModel.configuration.tipFont
         label.numberOfLines = 0
         label.text = viewModel.tipLabelText
         
         let tipActionableAttributtedString = NSMutableAttributedString(string: viewModel.tipLabelText)
         let tipPartString = (viewModel.tipLabelText as NSString).range(of: viewModel.tipActionablePartText)
         tipActionableAttributtedString.addAttribute(.foregroundColor,
-                                                    value: viewModel.tipAccentColor,
+                                                    value: viewModel.configuration.tipAccentColor,
                                                     range: tipPartString)
         tipActionableAttributtedString.addAttribute(NSAttributedString.Key.underlineStyle,
                                                     value: NSUnderlineStyle.single.rawValue,
                                                     range: tipPartString)
         tipActionableAttributtedString.addAttribute(NSAttributedString.Key.font,
-                                                    value: viewModel.tipLabelLinkFont,
+                                                    value: viewModel.configuration.tipLinkFont,
                                                     range: tipPartString)
         let tapOnMoreInformation = UITapGestureRecognizer(target: self,
                                                           action: #selector(tapOnLabelAction(gesture:)))
@@ -106,8 +106,8 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     private lazy var tipButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(viewModel.tipIcon, for: .normal)
-        button.tintColor = viewModel.tipAccentColor
+        button.setImage(viewModel.configuration.tipIcon, for: .normal)
+        button.tintColor = viewModel.configuration.tipAccentColor
         button.isUserInteractionEnabled = false
         button.imageView?.contentMode = .scaleAspectFit
         return button
@@ -118,7 +118,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     private lazy var continueButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.configure(with: viewModel.giniMerchantConfiguration.primaryButtonConfiguration)
+        button.configure(with: viewModel.primaryButtonConfiguration)
         button.customConfigure(text: viewModel.continueLabelText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
@@ -126,7 +126,6 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     }()
 
     private let bottomView = EmptyView()
-    
     private let bottomStackView = EmptyStackView(orientation: .horizontal)
     
     private lazy var poweredByGiniView: PoweredByGiniView = {
@@ -283,11 +282,11 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         viewModel.appsMocked.forEach { singleApp in
             let view = ShareInvoiceSingleAppView()
             view.configure(image: singleApp.image,
-                           imageBorderColor: Constants.imageBorderColor,
-                           imageBackgroundColor: Constants.imageBackgroundColor,
+                           imageBorderColor: viewModel.configuration.singleAppIconBorderColor,
+                           imageBackgroundColor: viewModel.configuration.singleAppIconBackgroundColor,
                            title: singleApp.title,
-                           titleColor: Constants.titleColor,
-                           titleFont: Constants.titleFont,
+                           titleColor: viewModel.configuration.singleAppTitleColor,
+                           titleFont: viewModel.configuration.singleAppTitleFont,
                            isMoreButton: singleApp.isMoreButton)
             viewsToReturn.append(view)
         }
@@ -311,11 +310,5 @@ extension ShareInvoiceBottomView {
         static let topAnchorTipViewConstraint = 5.0
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let tipIconSize = 24.0
-
-        // TODO: - REMOVE
-        static let titleColor = GiniColor.standard3.uiColor()
-        static let titleFont = GiniMerchantConfiguration.shared.font(for: .captions2)
-        static let imageBorderColor = GiniColor.standard3.uiColor()
-        static let imageBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: GiniMerchantColorPalette.light3.preferredColor()).uiColor()
     }
 }

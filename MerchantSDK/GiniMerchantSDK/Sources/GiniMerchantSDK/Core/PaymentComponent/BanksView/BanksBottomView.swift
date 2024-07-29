@@ -25,17 +25,17 @@ class BanksBottomView: BottomSheetViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.selectBankTitleText
-        label.textColor = viewModel.selectBankLabelAccentColor
-        label.font = viewModel.selectBankLabelFont
+        label.textColor = viewModel.configuration.selectBankAccentColor
+        label.font = viewModel.configuration.selectBankFont
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
         return label
     }()
 
     private lazy var closeTitleIconImageView: UIImageView = {
-        let imageView = UIImageView(image: viewModel.closeTitleIcon.withRenderingMode(.alwaysTemplate))
+        let imageView = UIImageView(image: viewModel.configuration.closeTitleIcon.withRenderingMode(.alwaysTemplate))
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = viewModel.closeIconAccentColor
+        imageView.tintColor = viewModel.configuration.closeIconAccentColor
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnCloseIcon)))
         return imageView
@@ -47,8 +47,8 @@ class BanksBottomView: BottomSheetViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.descriptionText
-        label.textColor = viewModel.descriptionLabelAccentColor
-        label.font = viewModel.descriptionLabelFont
+        label.textColor = viewModel.configuration.descriptionAccentColor
+        label.font = viewModel.configuration.descriptionFont
         label.numberOfLines = 0
         return label
     }()

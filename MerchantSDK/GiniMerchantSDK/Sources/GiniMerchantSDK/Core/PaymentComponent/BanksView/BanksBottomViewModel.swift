@@ -24,7 +24,7 @@ struct PaymentProviderAdditionalInfo {
 }
 
 final class BanksBottomViewModel {
-    
+    let configuration: BanksBottomConfiguration
     weak var viewDelegate: PaymentProvidersBottomViewProtocol?
 
     var paymentProviders: [PaymentProviderAdditionalInfo] = []
@@ -37,26 +37,16 @@ final class BanksBottomViewModel {
 
     let selectBankTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label", 
                                                                        comment: "Select bank text from the top label on payment providers bottom sheet")
-    let selectBankLabelAccentColor: UIColor = GiniColor.standard2.uiColor()
-    var selectBankLabelFont: UIFont
-
-    let closeTitleIcon: UIImage = GiniMerchantImage.close.preferredUIImage()
-    let closeIconAccentColor: UIColor = GiniColor.standard2.uiColor()
-
     let descriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentproviderslist.description", 
                                                                    comment: "Top description text on payment providers bottom sheet")
-    let descriptionLabelAccentColor: UIColor = GiniColor.standard3.uiColor()
-    var descriptionLabelFont: UIFont
+
     
     private var urlOpener: URLOpener
 
-    init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?, urlOpener: URLOpener = URLOpener(UIApplication.shared)) {
+    init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?, configuration: BanksBottomConfiguration, urlOpener: URLOpener = URLOpener(UIApplication.shared)) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.urlOpener = urlOpener
-
-        self.selectBankLabelFont = GiniMerchantConfiguration.shared.font(for: .subtitle1)
-        self.descriptionLabelFont = GiniMerchantConfiguration.shared.font(for: .captions1)
-
+        self.configuration = configuration
         self.paymentProviders = paymentProviders
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
@@ -80,7 +70,16 @@ final class BanksBottomViewModel {
     }
 
     func paymentProvidersViewModel(paymentProvider: PaymentProviderAdditionalInfo) -> BankSelectionTableViewCellModel {
-        BankSelectionTableViewCellModel(paymentProvider: paymentProvider)
+        BankSelectionTableViewCellModel(
+            paymentProvider: paymentProvider,
+            backgroundColor: configuration.bankCellBackgroundColor,
+            bankNameFont: configuration.bankCellNameFont,
+            bankNameAccentColor: configuration.bankCellNameAccentColor,
+            bankIconBorderColor: configuration.bankCellIconBorderColor,
+            selectedBankBorderColor: configuration.bankCellSelectedBorderColor,
+            notSelectedBankBorderColor: configuration.bankCellNotSelectedBorderColor,
+            selectionIndicatorImage: configuration.bankCellSelectionIndicatorImage
+        )
     }
     
     func didTapOnClose() {

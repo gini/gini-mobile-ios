@@ -17,62 +17,36 @@ struct FAQSection {
 }
 
 final class PaymentInfoViewModel {
-    
+    let configuration: PaymentInfoConfiguration
     var paymentProviders: PaymentProviders
-    
-    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
-    
+
     let titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.title.label", 
                                                              comment: "Payment Info title label text")
-    
     let payBillsTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.title.label", 
                                                                      comment: "Payment Info pay bills title label text")
-    let payBillsTitleFont: UIFont
-    let payBillsTitleTextColor: UIColor = GiniColor.standard1.uiColor()
-    
     private let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.label",
                                                                                    comment: "Payment Info pay bills description text")
     var payBillsDescriptionAttributedText: NSMutableAttributedString = NSMutableAttributedString()
     var payBillsDescriptionLinkAttributes: [NSAttributedString.Key: Any]
-    private let payBillsDescriptionFont: UIFont
-    private let payBillsDescriptionTextColor: UIColor = GiniColor.standard1.uiColor()
     private let giniWebsiteText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.clickable.text",
                                                                    comment: "Word range that's clickable in pay bills description")
-    private let giniFont: UIFont
     private let giniURLText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.gini.link", 
                                                                comment: "Gini website link url")
     
     let questionsTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.title.label",
                                                                       comment: "Payment Info questions title label text")
-    let questionsTitleFont: UIFont
-    let questionsTitleTextColor: UIColor = GiniColor.standard1.uiColor()
-    
-    private var answersFont: UIFont
     private let answerPrivacyPolicyText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.clickable.text",
                                                                            comment: "Payment info answers clickable privacy policy")
     private let privacyPolicyURLText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.gini.privacypolicy.link",
                                                                         comment: "Gini privacy policy link url")
-    private var linksFont: UIFont
-    private let linksTextColor: UIColor = GiniColor.accent1.uiColor()
-    
-    let separatorColor: UIColor = GiniColor.standard5.uiColor()
-    
     var questions: [FAQSection] = []
     
-    init(paymentProviders: PaymentProviders) {
+    init(paymentProviders: PaymentProviders, configuration: PaymentInfoConfiguration) {
         self.paymentProviders = paymentProviders
-        
-        let giniConfiguration = GiniMerchantConfiguration.shared
-        
-        payBillsTitleFont = giniConfiguration.font(for: .subtitle1)
-        payBillsDescriptionFont = giniConfiguration.font(for: .body2)
-        questionsTitleFont = giniConfiguration.font(for: .subtitle1)
-        giniFont = giniConfiguration.font(for: .button)
-        answersFont = giniConfiguration.font(for: .body2)
-        linksFont = giniConfiguration.font(for: .linkBold)
+        self.configuration = configuration
 
-        payBillsDescriptionLinkAttributes = [.foregroundColor: linksTextColor]
-        
+        payBillsDescriptionLinkAttributes = [.foregroundColor: configuration.linksFont]
+
         configurePayBillsGiniLink()
         setupQuestions()
     }
@@ -83,7 +57,7 @@ final class PaymentInfoViewModel {
                                                                                                        comment: "Answers description"))
             let questionSection = FAQSection(title: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.question.\(index)",
                                                                                           comment: "Questions titles"),
-                                                  description: textWithLinks(linkFont: linksFont, 
+                                             description: textWithLinks(linkFont: configuration.linksFont,
                                                                              attributedString: answerAttributedString),
                                                   isExtended: false)
             questions.append(questionSection)
@@ -96,9 +70,9 @@ final class PaymentInfoViewModel {
         paragraphStyle.paragraphSpacing = Constants.payBillsParagraphSpacing
         payBillsDescriptionAttributedText = NSMutableAttributedString(string: payBillsDescriptionText,
                                                                       attributes: [.paragraphStyle: paragraphStyle,
-                                                                                   .font: payBillsDescriptionFont,
-                                                                                   .foregroundColor: payBillsTitleTextColor])
-        payBillsDescriptionAttributedText = textWithLinks(linkFont: giniFont, 
+                                                                                   .font: configuration.payBillsDescriptionFont,
+                                                                                   .foregroundColor: configuration.payBillsTitleColor])
+        payBillsDescriptionAttributedText = textWithLinks(linkFont: configuration.giniFont,
                                                           attributedString: payBillsDescriptionAttributedText)
     }
     
@@ -107,7 +81,7 @@ final class PaymentInfoViewModel {
         paragraphStyle.lineHeightMultiple = Constants.answersLineHeight
         paragraphStyle.paragraphSpacing = Constants.answersParagraphSpacing
         let answerAttributedText = NSMutableAttributedString(string: answer,
-                                                             attributes: [.font: answersFont, .paragraphStyle: paragraphStyle])
+                                                             attributes: [.font: configuration.answersFont, .paragraphStyle: paragraphStyle])
         return answerAttributedText
     }
     
@@ -124,6 +98,24 @@ final class PaymentInfoViewModel {
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)
         return attributedString
+    }
+
+    func infoAnswerCellModel(at index: Int) -> PaymentInfoAnswerTableViewModel {
+        PaymentInfoAnswerTableViewModel(answerAttributedText: questions[index].description, 
+                                        answerTextColor: configuration.answerCellTextColor,
+                                        answerLinkColor: configuration.answerCellLinkColor)
+    }
+
+    func infoQuestionHeaderViewModel(at index: Int) -> PaymentInfoQuestionHeaderViewModel {
+        PaymentInfoQuestionHeaderViewModel(titleText: questions[index].title, 
+                                           titleFont: configuration.questionHeaderFont,
+                                           titleColor: configuration.questionHeaderTitleColor,
+                                           extendedIcon: questions[index].isExtended ? configuration.questionHeaderMinusIcon : configuration.questionHeaderPlusIcon)
+    }
+
+    func infoBankCellModel(at index: Int) -> PaymentInfoBankCollectionViewCellModel {
+        PaymentInfoBankCollectionViewCellModel(bankImageIconData: paymentProviders[index].iconData,
+                                               borderColor: configuration.bankCellBorderColor)
     }
 }
 

@@ -59,12 +59,12 @@ final class PaymentInfoAnswerTableViewCell: UITableViewCell, ReusableView {
 
 struct PaymentInfoAnswerTableViewModel {
     let answerAttributedText: NSAttributedString
-    let answerTextColor: UIColor = GiniColor.standard1.uiColor()
-    let answerLinkColor: UIColor = GiniColor.accent1.uiColor()
+    let answerTextColor: UIColor
     let answerLinkAttributes: [NSAttributedString.Key: Any]
 
-    init(answerAttributedText: NSAttributedString) {
+    init(answerAttributedText: NSAttributedString, answerTextColor: UIColor, answerLinkColor: UIColor) {
         self.answerAttributedText = answerAttributedText
+        self.answerTextColor = answerTextColor
         self.answerLinkAttributes = [.foregroundColor: answerLinkColor]
     }
 }
