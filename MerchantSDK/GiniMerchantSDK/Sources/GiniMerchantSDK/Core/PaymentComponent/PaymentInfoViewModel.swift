@@ -24,18 +24,18 @@ final class PaymentInfoViewModel {
     let titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.title.label", 
                                                              comment: "Payment Info title label text")
     
-    let payBillsTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.title.label", 
+    let payBillsTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.pay.bills.title.label", 
                                                                      comment: "Payment Info pay bills title label text")
     let payBillsTitleFont: UIFont
     let payBillsTitleTextColor: UIColor = GiniColor.standard1.uiColor()
     
-    private let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.label",
+    private let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.pay.bills.description.label",
                                                                                    comment: "Payment Info pay bills description text")
     var payBillsDescriptionAttributedText: NSMutableAttributedString = NSMutableAttributedString()
     var payBillsDescriptionLinkAttributes: [NSAttributedString.Key: Any]
     private let payBillsDescriptionFont: UIFont
     private let payBillsDescriptionTextColor: UIColor = GiniColor.standard1.uiColor()
-    private let giniWebsiteText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.clickable.text",
+    private let giniWebsiteText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.pay.bills.description.clickable.text",
                                                                    comment: "Word range that's clickable in pay bills description")
     private let giniFont: UIFont
     private let giniURLText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.gini.link", 

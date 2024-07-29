@@ -47,7 +47,7 @@ Text customization is done via overriding of string resources.
 For example you would like to customize pay invoice button label in the Payment Component:
 
 1. Find a string key for a text that you would like to customize.
-For the [Pay the invoice button label](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8987-2854&t=vNb6FqqGtzIAVdJl-1) in the Payment Component we use `gini.merchant.paymentcomponent.payInvoice.label`. 
+For the [Pay the invoice button label](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8987-2854&t=vNb6FqqGtzIAVdJl-1) in the Payment Component we use `gini.merchant.paymentcomponent.pay.invoice.label`. 
 2. Add the string key with a desired value to `Localizable.strings` in your app.
 
 ### Supporting dark mode
