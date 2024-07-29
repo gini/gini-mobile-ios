@@ -21,8 +21,6 @@ class ShareInvoiceSingleAppView: UIView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = GiniColor.standard3.uiColor()
-        label.font = GiniMerchantConfiguration.shared.font(for: .captions2)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -58,14 +56,21 @@ class ShareInvoiceSingleAppView: UIView {
     }
 
     // Function to configure view
-    func configure(image: UIImage?, title: String?, isMoreButton: Bool) {
-        imageView.image = image
+    func configure(image: UIImage?,
+                   imageBorderColor: UIColor,
+                   imageBackgroundColor: UIColor,
+                   title: String?,
+                   titleColor: UIColor,
+                   titleFont: UIFont,
+                   isMoreButton: Bool) {
         titleLabel.text = title
-        imageView.layer.borderColor = GiniColor.standard3.uiColor().cgColor
+        titleLabel.textColor = titleColor
+        titleLabel.font = titleFont
+
+        imageView.image = image
+        imageView.layer.borderColor = imageBorderColor.cgColor
         imageView.layer.borderWidth = isMoreButton ? 1 : 0
-        let giniColor = GiniColor(lightModeColor: .white,
-                                  darkModeColor: GiniMerchantColorPalette.light3.preferredColor())
-        imageView.backgroundColor = isMoreButton ? .clear : giniColor.uiColor()
+        imageView.backgroundColor = isMoreButton ? .clear : imageBackgroundColor
         imageView.contentMode = isMoreButton ? .center : .scaleAspectFit
     }
 }

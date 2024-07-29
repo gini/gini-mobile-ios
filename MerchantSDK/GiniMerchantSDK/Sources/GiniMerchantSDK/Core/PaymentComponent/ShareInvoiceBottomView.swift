@@ -140,9 +140,9 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         setupView()
     }
     
-    init(viewModel: ShareInvoiceBottomViewModel) {
+    init(viewModel: ShareInvoiceBottomViewModel, backgroundColor: UIColor, rectangleColor: UIColor, dimmingBackgroundColor: UIColor) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init(backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
     }
     
     required init?(coder: NSCoder) {
@@ -282,7 +282,13 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         var viewsToReturn: [ShareInvoiceSingleAppView] = []
         viewModel.appsMocked.forEach { singleApp in
             let view = ShareInvoiceSingleAppView()
-            view.configure(image: singleApp.image, title: singleApp.title, isMoreButton: singleApp.isMoreButton)
+            view.configure(image: singleApp.image,
+                           imageBorderColor: Constants.imageBorderColor,
+                           imageBackgroundColor: Constants.imageBackgroundColor,
+                           title: singleApp.title,
+                           titleColor: Constants.titleColor,
+                           titleFont: Constants.titleFont,
+                           isMoreButton: singleApp.isMoreButton)
             viewsToReturn.append(view)
         }
         return viewsToReturn
@@ -305,5 +311,11 @@ extension ShareInvoiceBottomView {
         static let topAnchorTipViewConstraint = 5.0
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let tipIconSize = 24.0
+
+        // TODO: - REMOVE
+        static let titleColor = GiniColor.standard3.uiColor()
+        static let titleFont = GiniMerchantConfiguration.shared.font(for: .captions2)
+        static let imageBorderColor = GiniColor.standard3.uiColor()
+        static let imageBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: GiniMerchantColorPalette.light3.preferredColor()).uiColor()
     }
 }

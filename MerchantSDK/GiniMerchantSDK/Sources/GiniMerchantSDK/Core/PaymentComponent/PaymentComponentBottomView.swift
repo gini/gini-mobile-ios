@@ -19,9 +19,9 @@ class PaymentComponentBottomView: BottomSheetViewController {
         setupView()
     }
 
-    init(paymentView: UIView) {
+    init(paymentView: UIView, backgroundColor: UIColor, rectangleColor: UIColor, dimmingBackgroundColor: UIColor) {
         self.paymentView = paymentView
-        super.init(nibName: nil, bundle: nil)
+        super.init(backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
     }
 
     required init?(coder: NSCoder) {

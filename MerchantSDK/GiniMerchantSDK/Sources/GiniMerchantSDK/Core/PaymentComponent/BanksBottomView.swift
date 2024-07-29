@@ -93,9 +93,9 @@ class BanksBottomView: BottomSheetViewController {
         setupView()
     }
 
-    init(viewModel: BanksBottomViewModel) {
+    init(viewModel: BanksBottomViewModel, backgroundColor: UIColor, rectangleColor: UIColor, dimmingBackgroundColor: UIColor) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init(backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
     }
     
     required init?(coder: NSCoder) {

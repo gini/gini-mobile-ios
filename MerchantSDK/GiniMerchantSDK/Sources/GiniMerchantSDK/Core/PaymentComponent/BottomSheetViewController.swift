@@ -46,11 +46,22 @@ class BottomSheetViewController: UIViewController {
         return view
     }()
     
-    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
-    let rectangleColor: UIColor = GiniColor.standard5.uiColor()
-    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
-                                                    darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
+    let backgroundColor: UIColor
+    let rectangleColor: UIColor
+    let dimmingBackgroundColor: UIColor
     var minHeight: CGFloat = 0
+    
+    // MARK: - Init
+    init(backgroundColor: UIColor, rectangleColor: UIColor, dimmingBackgroundColor: UIColor) {
+        self.backgroundColor = backgroundColor
+        self.rectangleColor = rectangleColor
+        self.dimmingBackgroundColor = dimmingBackgroundColor
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - View Setup
     override func viewDidLoad() {

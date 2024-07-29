@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 import GiniHealthAPILibrary
 /**
  Protocol used to provide updates on the current status of the Payment Components Controller.
@@ -43,7 +44,13 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     private var giniMerchant: GiniMerchant
     private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
     private var paymentProviders: PaymentProviders = []
-    
+
+    // Bottom sheets colors
+    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
+    let rectangleColor: UIColor = GiniColor.standard5.uiColor()
+    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
+                                                    darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
+
     /// storing the current selected payment provider
     public var selectedPaymentProvider: PaymentProvider?
 
@@ -180,14 +187,15 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     // MARK: - Bottom Sheets
 
     public func paymentViewBottomSheet(documentID: String) -> UIViewController {
-        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID))
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID), backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
         return paymentComponentBottomView
     }
 
     public func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: selectedPaymentProvider)
-        let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel)
+        let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
+
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
         return paymentProvidersBottomView
@@ -203,14 +211,14 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     public func installAppBottomSheet() -> UIViewController {
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
         installAppBottomViewModel.viewDelegate = self
-        let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel)
+        let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
         return installAppBottomView
     }
 
     public func shareInvoiceBottomSheet() -> UIViewController {
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
         shareInvoiceBottomViewModel.viewDelegate = self
-        let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
+        let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
         incrementOnboardingCountFor(paymentProvider: selectedPaymentProvider)
         return shareInvoiceBottomView
     }

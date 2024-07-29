@@ -35,11 +35,6 @@ final class BanksBottomViewModel {
     var bottomViewHeight: CGFloat = 0
     var heightTableView: CGFloat = 0
 
-    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
-    let rectangleColor: UIColor = GiniColor.standard5.uiColor()
-    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
-                                                    darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
-
     let selectBankTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label", 
                                                                        comment: "Select bank text from the top label on payment providers bottom sheet")
     let selectBankLabelAccentColor: UIColor = GiniColor.standard2.uiColor()

@@ -104,11 +104,11 @@ class InstallAppBottomView: BottomSheetViewController {
         setupView()
     }
     
-    init(viewModel: InstallAppBottomViewModel) {
+    init(viewModel: InstallAppBottomViewModel, backgroundColor: UIColor, rectangleColor: UIColor, dimmingBackgroundColor: UIColor) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init(backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

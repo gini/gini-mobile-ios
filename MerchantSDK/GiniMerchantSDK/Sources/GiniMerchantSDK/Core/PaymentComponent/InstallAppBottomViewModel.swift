@@ -24,11 +24,6 @@ final class InstallAppBottomViewModel {
     
     weak var viewDelegate: InstallAppBottomViewProtocol?
 
-    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
-    let rectangleColor: UIColor = GiniColor.standard5.uiColor()
-    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
-                                                    darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
-
     var titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.title",
                                                              comment: "Install App Bottom sheet title")
     let titleLabelAccentColor: UIColor = GiniColor.standard2.uiColor()

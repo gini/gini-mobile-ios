@@ -29,12 +29,6 @@ final class ShareInvoiceBottomViewModel {
     var paymentProviderColors: ProviderColors?
     
     weak var viewDelegate: ShareInvoiceBottomViewProtocol?
-
-    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
-    let rectangleColor: UIColor = GiniColor.standard5.uiColor()
-    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
-                                                    darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
-    let appRectangleBackgroundColor: UIColor = GiniColor.standard6.uiColor()
     
     // Title label
     var titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.title",
