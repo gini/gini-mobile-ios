@@ -61,15 +61,15 @@ final class PaymentComponentViewModel {
     // More information part
     let moreInformationAccentColor: UIColor = GiniColor.standard2.uiColor()
     let moreInformationLabelTextColor: UIColor = GiniColor.standard4.uiColor()
-    let moreInformationLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.moreInformation.label",
+    let moreInformationLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.more.information.label",
                                                                     comment: "Text for more information label")
-    let moreInformationActionablePartText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.moreInformation.underlined.part",
+    let moreInformationActionablePartText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.more.information.underlined.part",
                                                                              comment: "Text for more information actionable part from the label")
     var moreInformationLabelFont: UIFont
     var moreInformationLabelLinkFont: UIFont
 
     // Select bank label
-    let selectYourBankLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectYourBank.label",
+    let selectYourBankLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.your.bank.label",
                                                                    comment: "Text for the select your bank label that's above the payment provider picker")
     let selectYourBankLabelFont: UIFont
     let selectYourBankAccentColor: UIColor = GiniColor.standard1.uiColor()
@@ -83,7 +83,7 @@ final class PaymentComponentViewModel {
 
     // Primary button
     let notInstalledBankTextColor: UIColor = GiniColor.standard4.uiColor()
-    private let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label",
+    private let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label",
                                                                                    comment: "Placeholder text used when there isn't a payment provider app installed")
     var selectBankButtonText: String {
         showPaymentComponentInOneRow ? placeholderBankNameText : bankName ?? placeholderBankNameText
@@ -96,9 +96,9 @@ final class PaymentComponentViewModel {
     var paymentProviderColors: ProviderColors?
 
     // CTA button
-    private let goToBankingAppLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.toTheBankingApp.label",
+    private let goToBankingAppLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.to.banking.app.label",
                                                                                    comment: "Title label used for the cta button when review screen is not present")
-    private let continueToOverviewLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.continueToOverview.label",
+    private let continueToOverviewLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.continue.to.overview.label",
                                                                                        comment: "Title label used for the cta button when review screen is present")
 
     var ctaButtonText: String {
