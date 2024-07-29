@@ -89,7 +89,7 @@
 "ginibank.skonto.backbutton.title" = "Zurück";
 "ginibank.skonto.withdiscount.title" = "Mit Skonto";
 "ginibank.skonto.active" = "• Aktiviert";
-"ginibank.skonto.infobanner.normal.message" = "Zahlung in %@: %@ Skonto.";
+"ginibank.skonto.infobanner.default.message" = "Zahlung in %@: %@ Skonto.";
 "ginibank.skonto.withdiscount.price.title" = "Betrag nach Abzug";
 "ginibank.skonto.withdiscount.expirydate.title" = "Ablaufdatum Skonto";
 "ginibank.skonto.withoutdiscount.title" = "Ohne Skonto";
