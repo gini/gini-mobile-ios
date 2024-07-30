@@ -615,7 +615,7 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
      */
     func updateAmoutToPayWithCurrencyFormat() {
         if amountTextFieldView.textField.hasText, let amountFieldText = amountTextFieldView.text {
-            if let priceValue = decimal(from: amountFieldText ) {
+            if let priceValue = amountFieldText.toDecimal() {
                 amountToPay.value = priceValue
                 if priceValue > 0 {
                     let amountToPayText = amountToPay.string
