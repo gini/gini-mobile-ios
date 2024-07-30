@@ -10,35 +10,31 @@ import UIKit
 import GiniUtilites
 
 final class PoweredByGiniView: UIView {
-    
-    var viewModel: PoweredByGiniViewModel! {
-        didSet {
-            setupView()
-        }
-    }
-    
+    private let viewModel: PoweredByGiniViewModel
     private let mainContainer = EmptyView()
 
     private lazy var poweredByGiniLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.poweredByGiniLabelText
-        label.textColor = viewModel.poweredByGiniLabelAccentColor
-        label.font = viewModel.poweredByGiniLabelFont
+        label.textColor = viewModel.configuration.poweredByGiniLabelAccentColor
+        label.font = viewModel.configuration.poweredByGiniLabelFont
         label.numberOfLines = Constants.textNumberOfLines
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
     private lazy var giniImageView: UIImageView = {
-        let imageView = UIImageView(image: viewModel.giniIcon)
+        let imageView = UIImageView(image: viewModel.configuration.giniIcon)
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.widthGiniLogo, height: Constants.heightGiniLogo)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: PoweredByGiniViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
+        setupView()
     }
     
     required init?(coder: NSCoder) {

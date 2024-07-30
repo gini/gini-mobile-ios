@@ -26,8 +26,8 @@ final class PaymentComponentView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.selectYourBankLabelText
-        label.textColor = viewModel.selectYourBankAccentColor
-        label.font = viewModel.selectYourBankLabelFont
+        label.textColor = viewModel.configuration.selectYourBankAccentColor
+        label.font = viewModel.configuration.selectYourBankLabelFont
         label.numberOfLines = 0
         return label
     }()
@@ -43,14 +43,14 @@ final class PaymentComponentView: UIView {
     private lazy var selectBankButton: PaymentSecondaryButton = {
         let button = PaymentSecondaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.configure(with: viewModel.giniMerchantConfiguration.secondaryButtonConfiguration)
+        button.configure(with: viewModel.secondaryButtonConfiguration)
         return button
     }()
     
     private lazy var payInvoiceButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.configure(with: viewModel.giniMerchantConfiguration.primaryButtonConfiguration)
+        button.configure(with: viewModel.primaryButtonConfiguration)
         button.customConfigure(text: viewModel.payInvoiceLabelText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
@@ -62,17 +62,13 @@ final class PaymentComponentView: UIView {
     private let bottomStackView = EmptyStackView(orientation: .horizontal)
     
     private lazy var moreInformationView: MoreInformationView = {
-        let view = MoreInformationView()
-        let viewModel = MoreInformationViewModel()
+        let viewModel = viewModel.moreInformationViewModel
         viewModel.delegate = self
-        view.viewModel = viewModel
-        return view
+        return MoreInformationView(viewModel: viewModel)
     }()
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
-        let view = PoweredByGiniView()
-        view.viewModel = PoweredByGiniViewModel()
-        return view
+        PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
     }()
 
     override init(frame: CGRect) {
@@ -85,8 +81,8 @@ final class PaymentComponentView: UIView {
     
     private func setupView() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = viewModel.backgroundColor
-        
+        self.backgroundColor = .clear
+
         selectYourBankView.addSubview(selectYourBankLabel)
         contentStackView.addArrangedSubview(selectYourBankView)
         
@@ -133,8 +129,8 @@ final class PaymentComponentView: UIView {
     private func updateButtonsViews() {
         selectBankButton.customConfigure(labelText: viewModel.placeholderBankNameText,
                                          leftImageIcon: viewModel.bankImageIcon,
-                                         rightImageIcon: viewModel.chevronDownIcon,
-                                         rightImageTintColor: viewModel.chevronDownIconColor,
+                                         rightImageIcon: viewModel.configuration.chevronDownIcon,
+                                         rightImageTintColor: viewModel.configuration.chevronDownIconColor,
                                          shouldShowLabel: !viewModel.hasBankSelected)
         payInvoiceButton.isHidden = !viewModel.hasBankSelected
     }

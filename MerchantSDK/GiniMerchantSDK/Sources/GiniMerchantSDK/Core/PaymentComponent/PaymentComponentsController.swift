@@ -120,6 +120,27 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         bankCellSelectionIndicatorImage: GiniMerchantImage.selectionIndicator.preferredUIImage()
     )
 
+    private let paymentComponentsConfiguration = PaymentComponentsConfiguration(
+        selectYourBankLabelFont: GiniMerchantConfiguration.shared.font(for: .subtitle2),
+        selectYourBankAccentColor: GiniColor.standard1.uiColor(),
+        chevronDownIcon: GiniMerchantImage.chevronDown.preferredUIImage(),
+        chevronDownIconColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light1).uiColor(),
+        notInstalledBankTextColor: GiniColor.standard4.uiColor()
+    )
+
+    private let poweredByGiniConfiguration = PoweredByGiniConfiguration(
+        poweredByGiniLabelFont: GiniMerchantConfiguration.shared.font(for: .captions2), 
+        poweredByGiniLabelAccentColor: GiniColor.standard4.uiColor(),
+        giniIcon: GiniMerchantImage.logo.preferredUIImage()
+    )
+
+    private let moreInformationConfiguration = MoreInformationConfiguration(
+        moreInformationAccentColor: GiniColor.standard2.uiColor(),
+        moreInformationTextColor: GiniColor.standard4.uiColor(),
+        moreInformationLinkFont: GiniMerchantConfiguration.shared.font(for: .captions2),
+        moreInformationIcon: GiniMerchantImage.info.preferredUIImage()
+    )
+
     /// storing the current selected payment provider
     public var selectedPaymentProvider: PaymentProvider?
 
@@ -216,7 +237,15 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      */
     public func paymentView(documentId: String) -> UIView {
         paymentComponentView = PaymentComponentView()
-        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniMerchantConfiguration: giniMerchantConfiguration)
+        let paymentComponentViewModel = PaymentComponentViewModel(
+            paymentProvider: selectedPaymentProvider,
+            primaryButtonConfiguration: GiniMerchantConfiguration.shared.primaryButtonConfiguration,
+            secondaryButtonConfiguration: GiniMerchantConfiguration.shared.secondaryButtonConfiguration, 
+            configuration: paymentComponentsConfiguration, 
+            poweredByGiniConfiguration: poweredByGiniConfiguration, 
+            moreInformationConfiguration: moreInformationConfiguration,
+            minimumButtonsHeight: GiniMerchantConfiguration.shared.paymentComponentButtonsHeight
+        )
         paymentComponentViewModel.delegate = viewDelegate
         paymentComponentViewModel.documentId = documentId
         paymentComponentView.viewModel = paymentComponentViewModel
@@ -239,7 +268,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                 }
                 let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
                                                                  data: data,
-                                                                 selectedPaymentProvider: selectedPaymentProvider,
+                                                                 selectedPaymentProvider: selectedPaymentProvider, 
+                                                                 poweredByGiniConfiguration: poweredByGiniConfiguration,
                                                                  trackingDelegate: trackingDelegate,
                                                                  paymentComponentsController: self,
                                                                  showPaymentReviewCloseButton: giniMerchantConfiguration.showPaymentReviewCloseButton, 
@@ -263,7 +293,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     public func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: selectedPaymentProvider, 
-                                                                   configuration: banksBottomConfiguration)
+                                                                   configuration: banksBottomConfiguration, 
+                                                                   poweredByGiniConfiguration: poweredByGiniConfiguration,
+                                                                   moreInformationConfiguration: moreInformationConfiguration)
         let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
 
         paymentProvidersBottomViewModel.viewDelegate = self
@@ -273,7 +305,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
 
     public func paymentInfoViewController() -> UIViewController {
         let paymentInfoViewController = PaymentInfoViewController()
-        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders, configuration: paymentInfoConfiguration)
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders, 
+                                                        configuration: paymentInfoConfiguration,
+                                                        poweredByGiniConfiguration: poweredByGiniConfiguration)
         paymentInfoViewController.viewModel = paymentInfoViewModel
         return paymentInfoViewController
     }
@@ -281,14 +315,18 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     public func installAppBottomSheet() -> UIViewController {
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider,
                                                                   installAppConfiguration: installAppConfiguration,
-                                                                  primaryButtonConfiguration: giniMerchantConfiguration.primaryButtonConfiguration)
+                                                                  primaryButtonConfiguration: giniMerchantConfiguration.primaryButtonConfiguration,
+                                                                  poweredByGiniConfiguration: poweredByGiniConfiguration)
         installAppBottomViewModel.viewDelegate = self
         let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
         return installAppBottomView
     }
 
     public func shareInvoiceBottomSheet() -> UIViewController {
-        let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider, configuration: shareInvoiceConfiguration, primaryButtonConfiguration: giniMerchantConfiguration.primaryButtonConfiguration)
+        let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider,
+                                                                      configuration: shareInvoiceConfiguration,
+                                                                      primaryButtonConfiguration: giniMerchantConfiguration.primaryButtonConfiguration,
+                                                                      poweredByGiniConfiguration: poweredByGiniConfiguration)
         shareInvoiceBottomViewModel.viewDelegate = self
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
         incrementOnboardingCountFor(paymentProvider: selectedPaymentProvider)

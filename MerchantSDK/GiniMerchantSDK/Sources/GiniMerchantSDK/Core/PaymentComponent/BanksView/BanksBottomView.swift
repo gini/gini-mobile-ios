@@ -75,17 +75,13 @@ class BanksBottomView: BottomSheetViewController {
     private let bottomStackView = EmptyStackView(orientation: .horizontal)
     
     private lazy var moreInformationView: MoreInformationView = {
-        let view = MoreInformationView()
-        let viewModel = MoreInformationViewModel()
+        let viewModel = viewModel.moreInformationViewModel
         viewModel.delegate = self
-        view.viewModel = viewModel
-        return view
+        return MoreInformationView(viewModel: viewModel)
     }()
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
-        let view = PoweredByGiniView()
-        view.viewModel = PoweredByGiniViewModel()
-        return view
+        PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
     }()
     
     override func viewDidLoad() {

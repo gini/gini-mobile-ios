@@ -19,6 +19,7 @@ struct FAQSection {
 final class PaymentInfoViewModel {
     let configuration: PaymentInfoConfiguration
     var paymentProviders: PaymentProviders
+    let poweredByGiniViewModel: PoweredByGiniViewModel
 
     let titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.title.label", 
                                                              comment: "Payment Info title label text")
@@ -41,9 +42,10 @@ final class PaymentInfoViewModel {
                                                                         comment: "Gini privacy policy link url")
     var questions: [FAQSection] = []
     
-    init(paymentProviders: PaymentProviders, configuration: PaymentInfoConfiguration) {
+    init(paymentProviders: PaymentProviders, configuration: PaymentInfoConfiguration, poweredByGiniConfiguration: PoweredByGiniConfiguration) {
         self.paymentProviders = paymentProviders
         self.configuration = configuration
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration)
 
         payBillsDescriptionLinkAttributes = [.foregroundColor: configuration.linksFont]
 

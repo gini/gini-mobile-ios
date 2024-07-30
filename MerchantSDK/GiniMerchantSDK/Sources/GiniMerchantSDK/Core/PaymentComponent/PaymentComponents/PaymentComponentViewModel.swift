@@ -7,7 +7,7 @@
 
 
 import UIKit
-import GiniUtilites
+import GiniPaymentComponents
 import GiniHealthAPILibrary
 
 /**
@@ -54,27 +54,13 @@ extension PaymentComponentViewProtocol {
 }
 
 final class PaymentComponentViewModel {
-    let giniMerchantConfiguration: GiniMerchantConfiguration
+    let primaryButtonConfiguration: ButtonConfiguration
+    let secondaryButtonConfiguration: ButtonConfiguration
+    let configuration: PaymentComponentsConfiguration
+    let poweredByGiniViewModel: PoweredByGiniViewModel
+    let moreInformationViewModel: MoreInformationViewModel
+    let paymentProviderColors: ProviderColors?
 
-    let backgroundColor: UIColor = UIColor.from(giniColor: GiniColor(lightModeColor: .clear, 
-                                                                     darkModeColor: .clear))
-
-    // More information part
-    let moreInformationAccentColor: UIColor = GiniColor.standard2.uiColor()
-    let moreInformationLabelTextColor: UIColor = GiniColor.standard4.uiColor()
-    let moreInformationLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.moreInformation.label",
-                                                                    comment: "Text for more information label")
-    let moreInformationActionablePartText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.moreInformation.underlined.part",
-                                                                             comment: "Text for more information actionable part from the label")
-    var moreInformationLabelFont: UIFont
-    var moreInformationLabelLinkFont: UIFont
-    
-    // Select bank label
-    let selectYourBankLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectYourBank.label", 
-                                                                   comment: "Text for the select your bank label that's above the payment provider picker")
-    let selectYourBankLabelFont: UIFont
-    let selectYourBankAccentColor: UIColor = GiniColor.standard1.uiColor()
-    
     // Bank image icon
     private var bankImageIconData: Data?
     var bankImageIcon: UIImage? {
@@ -82,18 +68,10 @@ final class PaymentComponentViewModel {
         return UIImage(data: bankImageIconData)
     }
 
-    // Primary button
-    let notInstalledBankTextColor: UIColor = GiniColor.standard4.uiColor()
+    let selectYourBankLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectYourBank.label",
+                                                                   comment: "Text for the select your bank label that's above the payment provider picker")
     let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label",
                                                                                    comment: "Placeholder text used when there isn't a payment provider app installed")
-    
-    let chevronDownIcon: UIImage = GiniMerchantImage.chevronDown.preferredUIImage()
-    let chevronDownIconColor: UIColor = GiniColor(lightModeColorName: .light7, darkModeColorName: .light1).uiColor()
-    
-    // Payment provider colors
-    var paymentProviderColors: ProviderColors?
-
-    // Pay invoice label
     let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payInvoice.label", 
                                                                        comment: "Title label used for the pay invoice button")
 
@@ -107,19 +85,26 @@ final class PaymentComponentViewModel {
     
     var hasBankSelected: Bool
     
-    init(paymentProvider: PaymentProvider?, giniMerchantConfiguration: GiniMerchantConfiguration) {
-        self.giniMerchantConfiguration = giniMerchantConfiguration
-
-        self.moreInformationLabelFont = giniMerchantConfiguration.font(for: .captions1)
-        self.moreInformationLabelLinkFont = giniMerchantConfiguration.font(for: .linkBold)
-        self.selectYourBankLabelFont = giniMerchantConfiguration.font(for: .subtitle2)
+    init(paymentProvider: PaymentProvider?,
+         primaryButtonConfiguration: ButtonConfiguration,
+         secondaryButtonConfiguration: ButtonConfiguration,
+         configuration: PaymentComponentsConfiguration,
+         poweredByGiniConfiguration: PoweredByGiniConfiguration,
+         moreInformationConfiguration: MoreInformationConfiguration,
+         minimumButtonsHeight: CGFloat) {
+        self.configuration = configuration
+        self.primaryButtonConfiguration = primaryButtonConfiguration
+        self.secondaryButtonConfiguration = secondaryButtonConfiguration
 
         self.hasBankSelected = paymentProvider != nil
         self.bankImageIconData = paymentProvider?.iconData
         self.paymentProviderColors = paymentProvider?.colors
         self.paymentProviderScheme = paymentProvider?.appSchemeIOS
         
-        self.minimumButtonsHeight = giniMerchantConfiguration.paymentComponentButtonsHeight
+        self.minimumButtonsHeight = minimumButtonsHeight
+
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration)
+        self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration)
     }
     
     func tapOnMoreInformation() {

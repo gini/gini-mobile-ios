@@ -14,18 +14,13 @@ protocol MoreInformationViewProtocol: AnyObject {
 }
 
 final class MoreInformationViewModel {
-    
-    weak var delegate: MoreInformationViewProtocol?
-    // More information part
-    let moreInformationAccentColor: UIColor = GiniColor.standard2.uiColor()
-    let moreInformationLabelTextColor: UIColor = GiniColor.standard4.uiColor()
+    let configuration: MoreInformationConfiguration
     let moreInformationActionablePartText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.moreInformation.underlined.part",
                                                                              comment: "Text for more information actionable part from the label")
-    var moreInformationLabelLinkFont: UIFont
-    let moreInformationIcon: UIImage = GiniMerchantImage.info.preferredUIImage()
-    
-    init() {
-        moreInformationLabelLinkFont = GiniMerchantConfiguration.shared.font(for: .captions2)
+    weak var delegate: MoreInformationViewProtocol?
+
+    init(configuration: MoreInformationConfiguration) {
+        self.configuration = configuration
     }
     
     func tapOnMoreInformation() {

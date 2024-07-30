@@ -62,15 +62,24 @@ public class PaymentReviewModel: NSObject {
     }
 
     var paymentComponentsController: PaymentComponentsController
+    let poweredByGiniConfiguration: PoweredByGiniConfiguration
     let showPaymentReviewCloseButton: Bool
     let isAmountFieldEditable: Bool
 
-    public init(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider, paymentComponentsController: PaymentComponentsController, showPaymentReviewCloseButton: Bool, isAmountFieldEditable: Bool) {
+    public init(with giniMerchant: GiniMerchant,
+                document: Document,
+                extractions: [Extraction],
+                selectedPaymentProvider: PaymentProvider,
+                poweredByGiniConfiguration: PoweredByGiniConfiguration,
+                paymentComponentsController: PaymentComponentsController,
+                showPaymentReviewCloseButton: Bool,
+                isAmountFieldEditable: Bool) {
         self.merchantSDK = giniMerchant
         self.documentId = document.id
         self.document = document
         self.extractions = extractions
         self.selectedPaymentProvider = selectedPaymentProvider
+        self.poweredByGiniConfiguration = poweredByGiniConfiguration
         self.paymentComponentsController = paymentComponentsController
         self.showPaymentReviewCloseButton = showPaymentReviewCloseButton
         self.isAmountFieldEditable = isAmountFieldEditable
@@ -165,7 +174,8 @@ public class PaymentReviewModel: NSObject {
 
     func paymentReviewContainerViewModel() -> PaymentReviewContainerViewModel {
         PaymentReviewContainerViewModel(extractions: extractions,
-                                        selectedPaymentProvider: selectedPaymentProvider,
+                                        selectedPaymentProvider: selectedPaymentProvider, 
+                                        poweredByGiniConfiguration: poweredByGiniConfiguration,
                                         isAmountFieldEditable: isAmountFieldEditable)
     }
 }

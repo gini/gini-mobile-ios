@@ -51,9 +51,7 @@ class PaymentInfoViewController: UIViewController {
     }()
     
     private lazy var poweredByGiniView: PoweredByGiniView = {
-        let view = PoweredByGiniView()
-        view.viewModel = PoweredByGiniViewModel()
-        return view
+        PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
     }()
     
     private lazy var payBillsTitleLabel: UILabel = {

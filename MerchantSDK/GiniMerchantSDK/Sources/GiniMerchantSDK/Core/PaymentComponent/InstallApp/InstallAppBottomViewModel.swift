@@ -18,6 +18,7 @@ protocol InstallAppBottomViewProtocol: AnyObject {
 final class InstallAppBottomViewModel {
     let primaryButtonConfiguration: ButtonConfiguration
     let configuration: InstallAppConfiguration
+    let poweredByGiniViewModel: PoweredByGiniViewModel
 
     var selectedPaymentProvider: PaymentProvider?
     // Payment provider colors
@@ -54,13 +55,17 @@ final class InstallAppBottomViewModel {
         selectedPaymentProvider?.appSchemeIOS.canOpenURLString() == true
     }
 
-    init(selectedPaymentProvider: PaymentProvider?, installAppConfiguration: InstallAppConfiguration, primaryButtonConfiguration: ButtonConfiguration) {
+    init(selectedPaymentProvider: PaymentProvider?,
+         installAppConfiguration: InstallAppConfiguration,
+         primaryButtonConfiguration: ButtonConfiguration,
+         poweredByGiniConfiguration: PoweredByGiniConfiguration) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.bankImageIconData = selectedPaymentProvider?.iconData
         self.paymentProviderColors = selectedPaymentProvider?.colors
         self.configuration = installAppConfiguration
         self.primaryButtonConfiguration = primaryButtonConfiguration
-
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration)
+        
         titleText = titleText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
     }
     

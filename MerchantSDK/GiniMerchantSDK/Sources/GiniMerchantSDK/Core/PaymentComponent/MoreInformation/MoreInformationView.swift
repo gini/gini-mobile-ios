@@ -10,12 +10,7 @@ import UIKit
 import GiniUtilites
 
 final class MoreInformationView: UIView {
-    var viewModel: MoreInformationViewModel! {
-        didSet {
-            setupView()
-        }
-    }
-    
+    private let viewModel: MoreInformationViewModel
     private let mainContainer = EmptyView()
     
     private lazy var moreInformationLabel: UILabel = {
@@ -24,9 +19,9 @@ final class MoreInformationView: UIView {
         label.numberOfLines = 0
         
         let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: viewModel.moreInformationLabelTextColor,
+            .foregroundColor: viewModel.configuration.moreInformationTextColor,
             .underlineStyle: NSUnderlineStyle.single.rawValue,
-            .font: viewModel.moreInformationLabelLinkFont
+            .font: viewModel.configuration.moreInformationLinkFont
         ]
         let moreInformationActionableAttributtedString = NSMutableAttributedString(string: viewModel.moreInformationActionablePartText, attributes: attributes)
         label.attributedText = moreInformationActionableAttributtedString
@@ -43,16 +38,18 @@ final class MoreInformationView: UIView {
     private lazy var moreInformationButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(viewModel.moreInformationIcon, for: .normal)
-        button.tintColor = viewModel.moreInformationAccentColor
+        button.setImage(viewModel.configuration.moreInformationIcon, for: .normal)
+        button.tintColor = viewModel.configuration.moreInformationAccentColor
         button.addTarget(self, action: #selector(tapOnMoreInformationButtonAction), for: .touchUpInside)
         return button
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: MoreInformationViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
+        setupView()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

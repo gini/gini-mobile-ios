@@ -23,6 +23,7 @@ struct SingleApp {
 final class ShareInvoiceBottomViewModel {
     let configuration: ShareInvoiceConfiguration
     let primaryButtonConfiguration: ButtonConfiguration
+    let poweredByGiniViewModel: PoweredByGiniViewModel
 
     var selectedPaymentProvider: PaymentProvider?
     // Payment provider colors
@@ -53,12 +54,16 @@ final class ShareInvoiceBottomViewModel {
     
     var appsMocked: [SingleApp] = []
 
-    init(selectedPaymentProvider: PaymentProvider?, configuration: ShareInvoiceConfiguration, primaryButtonConfiguration: ButtonConfiguration) {
+    init(selectedPaymentProvider: PaymentProvider?, 
+         configuration: ShareInvoiceConfiguration,
+         primaryButtonConfiguration: ButtonConfiguration,
+         poweredByGiniConfiguration: PoweredByGiniConfiguration) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.bankImageIconData = selectedPaymentProvider?.iconData
         self.paymentProviderColors = selectedPaymentProvider?.colors
         self.configuration = configuration
         self.primaryButtonConfiguration = primaryButtonConfiguration
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration)
 
         titleText = titleText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
         descriptionLabelText = descriptionLabelText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")

@@ -129,9 +129,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     private let bottomStackView = EmptyStackView(orientation: .horizontal)
     
     private lazy var poweredByGiniView: PoweredByGiniView = {
-        let view = PoweredByGiniView()
-        view.viewModel = PoweredByGiniViewModel()
-        return view
+        PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
     }()
     
     override func viewDidLoad() {

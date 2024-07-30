@@ -25,6 +25,8 @@ struct PaymentProviderAdditionalInfo {
 
 final class BanksBottomViewModel {
     let configuration: BanksBottomConfiguration
+    let poweredByGiniViewModel: PoweredByGiniViewModel
+    let moreInformationViewModel: MoreInformationViewModel
     weak var viewDelegate: PaymentProvidersBottomViewProtocol?
 
     var paymentProviders: [PaymentProviderAdditionalInfo] = []
@@ -43,10 +45,17 @@ final class BanksBottomViewModel {
     
     private var urlOpener: URLOpener
 
-    init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?, configuration: BanksBottomConfiguration, urlOpener: URLOpener = URLOpener(UIApplication.shared)) {
+    init(paymentProviders: PaymentProviders,
+         selectedPaymentProvider: PaymentProvider?,
+         configuration: BanksBottomConfiguration,
+         poweredByGiniConfiguration: PoweredByGiniConfiguration,
+         moreInformationConfiguration: MoreInformationConfiguration,
+         urlOpener: URLOpener = URLOpener(UIApplication.shared)) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.urlOpener = urlOpener
         self.configuration = configuration
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration)
+        self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration)
         self.paymentProviders = paymentProviders
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),

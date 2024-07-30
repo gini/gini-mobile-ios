@@ -54,8 +54,7 @@ class PaymentReviewContainerView: UIView {
     private let bottomStackView = EmptyStackView(orientation: .horizontal)
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
-        let view = PoweredByGiniView()
-        view.viewModel = PoweredByGiniViewModel()
+        let view = PoweredByGiniView(viewModel: model.poweredByGiniViewModel)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
