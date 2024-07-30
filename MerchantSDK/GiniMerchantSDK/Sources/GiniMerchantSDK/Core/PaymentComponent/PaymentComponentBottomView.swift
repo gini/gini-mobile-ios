@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniUtilites
 
 class PaymentComponentBottomView: BottomSheetViewController {
 

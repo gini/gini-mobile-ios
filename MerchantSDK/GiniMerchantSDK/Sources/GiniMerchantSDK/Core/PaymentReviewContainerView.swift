@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 enum TextFieldType: Int {
     case recipientFieldTag = 1
@@ -16,7 +17,7 @@ enum TextFieldType: Int {
 }
 
 class PaymentReviewContainerView: UIView {
-
+    let ibanValidator = IBANValidator()
     let giniMerchantConfiguration = GiniMerchantConfiguration.shared
 
     private lazy var paymentInfoStackView: UIStackView = {
@@ -41,7 +42,7 @@ class PaymentReviewContainerView: UIView {
 
     private lazy var recipientErrorLabel: UILabel = {
         let label = UILabel()
-        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
+        label.font = giniMerchantConfiguration.font(for: .captions2)
         return label
     }()
 
@@ -86,7 +87,7 @@ class PaymentReviewContainerView: UIView {
 
     private lazy var ibanErrorLabel: UILabel = {
         let label = UILabel()
-        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
+        label.font = giniMerchantConfiguration.font(for: .captions2)
         return label
     }()
 
@@ -98,7 +99,7 @@ class PaymentReviewContainerView: UIView {
 
     private lazy var amountErrorLabel: UILabel = {
         let label = UILabel()
-        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
+        label.font = giniMerchantConfiguration.font(for: .captions2)
         return label
     }()
 
@@ -117,7 +118,7 @@ class PaymentReviewContainerView: UIView {
 
     private lazy var usageErrorLabel: UILabel = {
         let label = UILabel()
-        label.font = giniMerchantConfiguration.textStyleFonts[.caption2]
+        label.font = giniMerchantConfiguration.font(for: .captions2)
         return label
     }()
 
@@ -377,7 +378,7 @@ class PaymentReviewContainerView: UIView {
 
     fileprivate func validateIBANTextField(){
         if let ibanText = ibanTextFieldView.textField.text, ibanTextFieldView.textField.hasText {
-            if IBANValidator().isValid(iban: ibanText) {
+            if ibanValidator.isValid(iban: ibanText) {
                 applyDefaultStyle(ibanTextFieldView)
                 hideErrorLabel(textFieldTag: .ibanFieldTag)
             } else {
@@ -391,7 +392,7 @@ class PaymentReviewContainerView: UIView {
     }
 
     fileprivate func showIBANValidationErrorIfNeeded(){
-        if IBANValidator().isValid(iban: lastValidatedIBAN) {
+        if ibanValidator.isValid(iban: lastValidatedIBAN) {
             applyDefaultStyle(ibanTextFieldView)
             hideErrorLabel(textFieldTag: .ibanFieldTag)
         } else {
@@ -614,7 +615,7 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
      */
     func updateAmoutToPayWithCurrencyFormat() {
         if amountTextFieldView.textField.hasText, let amountFieldText = amountTextFieldView.text {
-            if let priceValue = decimal(from: amountFieldText ) {
+            if let priceValue = amountFieldText.toDecimal() {
                 amountToPay.value = priceValue
                 if priceValue > 0 {
                     let amountToPayText = amountToPay.string

@@ -1,6 +1,6 @@
 //
 //  UIView+Utils.swift
-//  GiniMerchantSDK
+//  GiniUtilites
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -9,8 +9,8 @@ import UIKit
 
 // MARK: - Adds round corners to any UIView, configurable with UIRectCorner, radius
 
-public extension UIView {
-    func roundCorners(corners: UIRectCorner, radius: CGFloat) {
+extension UIView {
+    public func roundCorners(corners: UIRectCorner, radius: CGFloat) {
         self.clipsToBounds = true
         self.layer.cornerRadius = radius
         var masked = CACornerMask()
@@ -57,25 +57,6 @@ public extension UIView {
         activityIndicators?.forEach { activityIndicator in
             activityIndicator.stopAnimating()
             activityIndicator.removeFromSuperview()
-        }
-    }
-}
-
-// MARK: - Adds Blur effect to any UIView, configurable with UIBlurEffect.Style
-
-public extension UIView {
-    func applyBlurEffect(style: UIBlurEffect.Style? = .regular) {
-        let blurEffect = UIBlurEffect(style: style ?? .regular)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        addSubview(blurEffectView)
-    }
-
-    func removeBlurEffect() {
-        let blurredEffectViews = subviews.filter { $0 is UIVisualEffectView }
-        blurredEffectViews.forEach { blurView in
-            blurView.removeFromSuperview()
         }
     }
 }

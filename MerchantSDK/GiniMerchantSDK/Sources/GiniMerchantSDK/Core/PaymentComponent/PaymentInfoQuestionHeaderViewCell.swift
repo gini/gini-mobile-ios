@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 final class PaymentInfoQuestionHeaderViewCell: UIView {
     var didTapSelectButton: (() -> Void)?
@@ -85,7 +86,7 @@ final class PaymentInfoQuestionHeaderViewModel {
     init(title: String, isExtended: Bool) {
         self.titleText = title
         let giniConfiguration = GiniMerchantConfiguration.shared
-        self.titleFont = giniConfiguration.textStyleFonts[.body1] ?? UIFont.systemFont(ofSize: 16)
+        self.titleFont = giniConfiguration.font(for: .body1)
         self.extendedIcon = (isExtended ? GiniMerchantImage.minus : GiniMerchantImage.plus).preferredUIImage()
     }
 }

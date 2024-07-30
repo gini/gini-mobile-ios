@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniUtilites
 import GiniHealthAPILibrary
 
 public final class PaymentReviewViewController: UIViewController, UIGestureRecognizerDelegate {
@@ -417,7 +418,7 @@ fileprivate extension PaymentReviewViewController {
     func buildInfoBarLabel() -> UILabel {
         let label = UILabel()
         label.textColor = GiniMerchantColorPalette.dark7.preferredColor()
-        label.font = giniMerchantConfiguration.textStyleFonts[.caption1]
+        label.font = GiniMerchantConfiguration.shared.font(for: .captions1)
         label.adjustsFontForContentSizeCategory = true
         label.text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.infobar.message", comment: "info bar message")
         label.textAlignment = .center

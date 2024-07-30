@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 class BottomSheetViewController: UIViewController {
     // MARK: - UI

@@ -1,11 +1,12 @@
 //
 //  UITextField+Utils.swift
-//  GiniMerchantSDK
+//  GiniUtilites
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
+
 public extension UITextField {
     var isReallyEmpty: Bool {
         return text?.trimmingCharacters(in: .whitespaces).isEmpty ?? true

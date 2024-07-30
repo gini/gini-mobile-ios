@@ -1,18 +1,12 @@
 //
 //  UIColor+Utils.swift
-//  GiniMerchantSDK
+//  GiniUtilites
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 public extension UIColor {
-    static func from(giniColor: GiniColor) -> UIColor {
-        return UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            return traitCollection.userInterfaceStyle == .dark ? giniColor.darkModeColor : giniColor.lightModeColor
-        }
-    }
-    
      static func from(hex: UInt) -> UIColor {
         return UIColor(
             red: CGFloat((hex & 0xFF0000) >> 16) / 255.0,
