@@ -16,16 +16,16 @@ public struct PaymentComponentConfiguration {
     /**
      Set to `true` to make see payment component in 1 row instead of 2
      */
-    public var showPaymentComponentInOneRow: Bool
+    var showPaymentComponentInOneRow: Bool
 
     /**
      Set to `true` to hide information like select your bank title label and more information view if user is returning and used component multiple times
      */
-    public var hideInfoForReturningUser: Bool
+    var hideInfoForReturningUser: Bool
 
-    public init(isPaymentComponentBranded: Bool = true, showPaymentComponentInOneRow: Bool = false, hideInfoForReturningUser: Bool = false) {
+    public init(isPaymentComponentBranded: Bool = true) {
         self.isPaymentComponentBranded = isPaymentComponentBranded
-        self.showPaymentComponentInOneRow = showPaymentComponentInOneRow
-        self.hideInfoForReturningUser = hideInfoForReturningUser
+        self.showPaymentComponentInOneRow = false
+        self.hideInfoForReturningUser = false
     }
 }
