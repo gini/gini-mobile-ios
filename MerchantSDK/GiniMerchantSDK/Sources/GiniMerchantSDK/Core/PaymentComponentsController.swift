@@ -9,6 +9,7 @@
 import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
+import GiniPaymentComponents
 /**
  Protocol used to provide updates on the current status of the Payment Components Controller.
  Uses a callback mechanism to handle payment provider requests.
@@ -42,7 +43,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     public weak var bottomViewDelegate: PaymentProvidersBottomViewProtocol?
 
     private var giniMerchant: GiniMerchant
-    private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
     private var paymentProviders: PaymentProviders = []
 
     // Bottom sheets colors
@@ -50,12 +50,18 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     let rectangleColor: UIColor = GiniColor.standard5.uiColor()
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
                                                     darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
+    private let primaryButtonConfiguration: ButtonConfiguration
+    private let secondaryButtonConfiguration: ButtonConfiguration
+    private let showPaymentReviewCloseButton: Bool
+    private let isAmountFieldEditable: Bool
+    private let paymentComponentButtonsHeight: CGFloat
 
     private lazy var shareInvoiceConfiguration = generateShareInvoiceConfiguration()
     private lazy var installAppConfiguration = generateInstallAppConfiguration()
     private lazy var paymentInfoConfiguration = generatePaymentInfoConfiguration()
     private lazy var banksBottomConfiguration = generateBanksBottomConfiguration()
     private lazy var paymentComponentsConfiguration = generatePaymentComponentsConfiguration()
+    private lazy var paymentReviewConfiguration = generatePaymentReviewConfiguration()
     private lazy var poweredByGiniConfiguration = generatePoweredByGiniConfiguration()
     private lazy var moreInformationConfiguration = generateMoreInformationConfiguration()
 
@@ -64,6 +70,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     private lazy var paymentInfoStrings = generatePaymentInfoStrings()
     private lazy var banksBottomStrings = generateBanksBottomStrings()
     private lazy var paymentComponentsStrings = generatePaymentComponentsStrings()
+    private lazy var paymentReviewStrings = generatePaymentReviewStrings()
     private lazy var poweredByGiniStrings = generatePoweredByGiniStrings()
     private lazy var moreInformationStrings = generateMoreInformationStrings()
 
@@ -89,8 +96,13 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      */
     public init(giniMerchant: GiniMerchant) {
         self.giniMerchant = giniMerchant
+        self.primaryButtonConfiguration = GiniMerchantConfiguration.shared.primaryButtonConfiguration
+        self.secondaryButtonConfiguration = GiniMerchantConfiguration.shared.secondaryButtonConfiguration
+        self.showPaymentReviewCloseButton = GiniMerchantConfiguration.shared.showPaymentReviewCloseButton
+        self.isAmountFieldEditable = GiniMerchantConfiguration.shared.isAmountFieldEditable
+        self.paymentComponentButtonsHeight = GiniMerchantConfiguration.shared.paymentComponentButtonsHeight
     }
-    
+
     /**
      Retrieves the default installed payment provider, if available.
      - Returns: a Payment Provider object.
@@ -165,15 +177,15 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         paymentComponentView = PaymentComponentView()
         let paymentComponentViewModel = PaymentComponentViewModel(
             paymentProvider: selectedPaymentProvider,
-            primaryButtonConfiguration: GiniMerchantConfiguration.shared.primaryButtonConfiguration,
-            secondaryButtonConfiguration: GiniMerchantConfiguration.shared.secondaryButtonConfiguration, 
-            configuration: paymentComponentsConfiguration, 
+            primaryButtonConfiguration: primaryButtonConfiguration,
+            secondaryButtonConfiguration: secondaryButtonConfiguration,
+            configuration: paymentComponentsConfiguration,
             strings: paymentComponentsStrings, 
             poweredByGiniConfiguration: poweredByGiniConfiguration,
             poweredByGiniStrings: poweredByGiniStrings, 
             moreInformationConfiguration: moreInformationConfiguration,
             moreInformationStrings: moreInformationStrings,
-            minimumButtonsHeight: GiniMerchantConfiguration.shared.paymentComponentButtonsHeight
+            minimumButtonsHeight: paymentComponentButtonsHeight
         )
         paymentComponentViewModel.delegate = viewDelegate
         paymentComponentViewModel.documentId = documentId
@@ -198,14 +210,14 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                 let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
                                                                  data: data,
                                                                  selectedPaymentProvider: selectedPaymentProvider, 
-                                                                 poweredByGiniConfiguration: poweredByGiniConfiguration, 
+                                                                 configuration: paymentReviewConfiguration,
+                                                                 strings: paymentReviewStrings,
+                                                                 poweredByGiniConfiguration: poweredByGiniConfiguration,
                                                                  poweredByGiniStrings: poweredByGiniStrings,
                                                                  trackingDelegate: trackingDelegate,
                                                                  paymentComponentsController: self,
-                                                                 showPaymentReviewCloseButton: giniMerchantConfiguration.showPaymentReviewCloseButton, 
-                                                                 isAmountFieldEditable: giniMerchantConfiguration.isAmountFieldEditable,
-                                                                 statusBarStyle: giniMerchantConfiguration.paymentReviewStatusBarStyle,
-                                                                 infoBarLabelFont: giniMerchantConfiguration.font(for: .captions1))
+                                                                 showPaymentReviewCloseButton: showPaymentReviewCloseButton,
+                                                                 isAmountFieldEditable: isAmountFieldEditable)
                 completion(vc, nil)
             case .failure(let error):
                 completion(nil, error)
@@ -251,7 +263,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider,
                                                                   installAppConfiguration: installAppConfiguration, 
                                                                   strings: installAppStrings,
-                                                                  primaryButtonConfiguration: giniMerchantConfiguration.primaryButtonConfiguration,
+                                                                  primaryButtonConfiguration: primaryButtonConfiguration,
                                                                   poweredByGiniConfiguration: poweredByGiniConfiguration,
                                                                   poweredByGiniStrings: poweredByGiniStrings)
         installAppBottomViewModel.viewDelegate = self
@@ -263,7 +275,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider,
                                                                       configuration: shareInvoiceConfiguration, 
                                                                       strings: shareInvoiceStrings,
-                                                                      primaryButtonConfiguration: giniMerchantConfiguration.primaryButtonConfiguration,
+                                                                      primaryButtonConfiguration: primaryButtonConfiguration,
                                                                       poweredByGiniConfiguration: poweredByGiniConfiguration,
                                                                       poweredByGiniStrings: poweredByGiniStrings)
         shareInvoiceBottomViewModel.viewDelegate = self

@@ -62,6 +62,8 @@ public class PaymentReviewModel: NSObject {
     }
 
     var paymentComponentsController: PaymentComponentsController
+    let configuration: PaymentReviewConfiguration
+    let strings: PaymentReviewStrings
     let poweredByGiniConfiguration: PoweredByGiniConfiguration
     let poweredByGiniStrings: PoweredByGiniStrings
     let showPaymentReviewCloseButton: Bool
@@ -71,11 +73,15 @@ public class PaymentReviewModel: NSObject {
                 document: Document,
                 extractions: [Extraction],
                 selectedPaymentProvider: PaymentProvider,
+                configuration: PaymentReviewConfiguration,
+                strings: PaymentReviewStrings,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
                 paymentComponentsController: PaymentComponentsController,
                 showPaymentReviewCloseButton: Bool,
                 isAmountFieldEditable: Bool) {
+        self.configuration = configuration
+        self.strings = strings
         self.merchantSDK = giniMerchant
         self.documentId = document.id
         self.document = document

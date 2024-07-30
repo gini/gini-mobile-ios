@@ -8,11 +8,20 @@
 import Foundation
 
 extension PaymentComponentsController {
+    func generatePaymentReviewStrings() -> PaymentReviewStrings {
+        PaymentReviewStrings(
+            alertOkButtonTitle: NSLocalizedStringPreferredFormat("gini.merchant.alert.ok.title", comment: "ok title for action"),
+            infoBarMessage: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.infobar.message", comment: "info bar message"),
+            defaultErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.default", comment: "default error message"),
+            createPaymentErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.payment.request.creation", comment: "error for creating payment request")
+        )
+    }
+
     func generateInstallAppStrings() -> InstallAppStrings {
         InstallAppStrings(
             titlePattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.title", comment: "Install App Bottom sheet title"),
             moreInformationTipPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.tip.description",
-                                                                     comment: "Text for tip information label"),
+                                                                        comment: "Text for tip information label"),
             moreInformationNotePattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.notes.description",
                                                                          comment: "Text for notes information label"),
             continueLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.continue.button.text",

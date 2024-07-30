@@ -8,6 +8,20 @@ import UIKit
 import GiniUtilites
 
 extension PaymentComponentsController {
+    func generatePaymentReviewConfiguration() -> PaymentReviewConfiguration {
+        PaymentReviewConfiguration(
+            loadingIndicatorStyle: UIActivityIndicatorView.Style.large,
+            loadingIndicatorColor: GiniMerchantColorPalette.accent1.preferredColor(),
+            infoBarLabelTextColor: GiniMerchantColorPalette.dark7.preferredColor(),
+            infoBarBackgroundColor: GiniMerchantColorPalette.success1.preferredColor(),
+            mainViewBackgroundColor: GiniColor.standard7.uiColor(),
+            infoContainerViewBackgroundColor: GiniColor.standard7.uiColor(),
+            backgroundColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor(), 
+            infoBarLabelFont: GiniMerchantConfiguration.shared.font(for: .captions1), 
+            statusBarStyle: GiniMerchantConfiguration.shared.paymentReviewStatusBarStyle
+        )
+    }
+
     func generateBanksBottomConfiguration() -> BanksBottomConfiguration {
         BanksBottomConfiguration(
             descriptionAccentColor: GiniColor.standard3.uiColor(),

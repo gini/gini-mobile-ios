@@ -20,8 +20,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     lazy var pageControl = buildPageControl()
 
     private var infoBarBottomConstraint: NSLayoutConstraint?
-    private let statusBarStyle: UIStatusBarStyle
-    private let infoBarLabelFont: UIFont
 
     private var showInfoBarOnce = true
     private var keyboardWillShowCalled = false
@@ -32,14 +30,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
     private init(viewModel: PaymentReviewModel,
                  selectedPaymentProvider: PaymentProvider,
-                 trackingDelegate: GiniMerchantTrackingDelegate? = nil,
-                 statusBarStyle: UIStatusBarStyle,
-                 infoBarLabelFont: UIFont) {
+                 trackingDelegate: GiniMerchantTrackingDelegate? = nil) {
         self.model = viewModel
         self.selectedPaymentProvider = selectedPaymentProvider
         self.trackingDelegate = trackingDelegate
-        self.statusBarStyle = statusBarStyle
-        self.infoBarLabelFont = infoBarLabelFont
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -66,26 +60,28 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     fileprivate func setupViewModel() {
         model.updateImagesLoadingStatus = { [weak self] () in
             DispatchQueue.main.async { [weak self] in
-                let isLoading = self?.model.isImagesLoading ?? false
+                guard let self = self else { return }
+                let isLoading = self.model.isImagesLoading
                 if isLoading {
-                    self?.collectionView.showLoading(style: Constants.loadingIndicatorStyle,
-                                                     color: Constants.loadingIndicatorColor,
-                                                     scale: Constants.loadingIndicatorScale)
+                    self.collectionView.showLoading(style: self.model.configuration.loadingIndicatorStyle,
+                                                    color: self.model.configuration.loadingIndicatorColor,
+                                                    scale: Constants.loadingIndicatorScale)
                 } else {
-                    self?.collectionView.stopLoading()
+                    self.collectionView.stopLoading()
                 }
             }
         }
 
         model.updateLoadingStatus = { [weak self] () in
             DispatchQueue.main.async { [weak self] in
-                let isLoading = self?.model.isLoading ?? false
+                guard let self = self else { return }
+                let isLoading = self.model.isLoading
                 if isLoading {
-                    self?.view.showLoading(style: Constants.loadingIndicatorStyle,
-                                           color: Constants.loadingIndicatorColor,
-                                           scale: Constants.loadingIndicatorScale)
+                    self.view.showLoading(style: self.model.configuration.loadingIndicatorStyle,
+                                          color: self.model.configuration.loadingIndicatorColor,
+                                          scale: Constants.loadingIndicatorScale)
                 } else {
-                    self?.view.stopLoading()
+                    self.view.stopLoading()
                 }
             }
         }
@@ -103,11 +99,13 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
 
         model.onErrorHandling = { [weak self] error in
-            self?.showError(message: Constants.defaultErrorMessage)
+            guard let self = self else { return }
+            self.showError(message: self.model.strings.defaultErrorMessage)
         }
 
         model.onCreatePaymentRequestErrorHandling = { [weak self] () in
-            self?.showError(message: Constants.createPaymentErrorMessage)
+            guard let self = self else { return }
+            self.showError(message: self.model.strings.createPaymentErrorMessage)
         }
 
         model.fetchImages()
@@ -119,7 +117,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 
     public override var preferredStatusBarStyle: UIStatusBarStyle {
-        return statusBarStyle
+        return model.configuration.statusBarStyle
     }
 
     fileprivate func layoutUI() {
@@ -197,54 +195,54 @@ extension PaymentReviewViewController {
                                    document: Document,
                                    extractions: [Extraction],
                                    selectedPaymentProvider: PaymentProvider,
+                                   configuration: PaymentReviewConfiguration,
+                                   strings: PaymentReviewStrings,
                                    poweredByGiniConfiguration: PoweredByGiniConfiguration,
                                    poweredByGiniStrings: PoweredByGiniStrings,
                                    trackingDelegate: GiniMerchantTrackingDelegate? = nil,
                                    paymentComponentsController: PaymentComponentsController,
                                    isAmountFieldEditable: Bool,
-                                   showPaymentReviewCloseButton: Bool,
-                                   statusBarStyle: UIStatusBarStyle,
-                                   infoBarLabelFont: UIFont) -> PaymentReviewViewController {
+                                   showPaymentReviewCloseButton: Bool) -> PaymentReviewViewController {
         let viewModel = PaymentReviewModel(with: giniMerchant,
                                            document: document,
                                            extractions: extractions,
                                            selectedPaymentProvider: selectedPaymentProvider, 
-                                           poweredByGiniConfiguration: poweredByGiniConfiguration, 
+                                           configuration: configuration, 
+                                           strings: strings,
+                                           poweredByGiniConfiguration: poweredByGiniConfiguration,
                                            poweredByGiniStrings: poweredByGiniStrings,
                                            paymentComponentsController: paymentComponentsController,
                                            showPaymentReviewCloseButton: showPaymentReviewCloseButton, 
                                            isAmountFieldEditable: isAmountFieldEditable)
         let viewController = PaymentReviewViewController(viewModel: viewModel,
                                                          selectedPaymentProvider: selectedPaymentProvider,
-                                                         trackingDelegate: trackingDelegate,
-                                                         statusBarStyle: statusBarStyle,
-                                                         infoBarLabelFont: infoBarLabelFont)
+                                                         trackingDelegate: trackingDelegate)
         return viewController
     }
 
     public static func instantiate(with giniMerchant: GiniMerchant,
                                    data: DataForReview,
                                    selectedPaymentProvider: PaymentProvider,
+                                   configuration: PaymentReviewConfiguration,
+                                   strings: PaymentReviewStrings,
                                    poweredByGiniConfiguration: PoweredByGiniConfiguration,
                                    poweredByGiniStrings: PoweredByGiniStrings,
                                    trackingDelegate: GiniMerchantTrackingDelegate? = nil,
                                    paymentComponentsController: PaymentComponentsController,
                                    showPaymentReviewCloseButton: Bool,
-                                   isAmountFieldEditable: Bool,
-                                   statusBarStyle: UIStatusBarStyle,
-                                   infoBarLabelFont: UIFont) -> PaymentReviewViewController {
+                                   isAmountFieldEditable: Bool) -> PaymentReviewViewController {
         instantiate(with: giniMerchant,
                     document: data.document,
                     extractions: data.extractions,
                     selectedPaymentProvider: selectedPaymentProvider, 
+                    configuration: configuration,
+                    strings: strings,
                     poweredByGiniConfiguration: poweredByGiniConfiguration,
                     poweredByGiniStrings: poweredByGiniStrings,
                     trackingDelegate: trackingDelegate,
                     paymentComponentsController: paymentComponentsController, 
                     isAmountFieldEditable: isAmountFieldEditable,
-                    showPaymentReviewCloseButton: showPaymentReviewCloseButton,
-                    statusBarStyle: statusBarStyle, 
-                    infoBarLabelFont: infoBarLabelFont)
+                    showPaymentReviewCloseButton: showPaymentReviewCloseButton)
     }
 }
 
@@ -322,14 +320,14 @@ extension PaymentReviewViewController {
 fileprivate extension PaymentReviewViewController {
     func buildMainView() -> UIView {
         let view = UIView()
-        view.backgroundColor = Constants.mainViewBackgroundColor
+        view.backgroundColor = model.configuration.mainViewBackgroundColor
         return view
     }
 
     func layoutMainView() {
         mainView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mainView)
-        mainView.backgroundColor = Constants.backgroundColor
+        mainView.backgroundColor = model.configuration.backgroundColor
         NSLayoutConstraint.activate([
             mainView.topAnchor.constraint(equalTo: view.topAnchor),
             mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -343,7 +341,7 @@ fileprivate extension PaymentReviewViewController {
 fileprivate extension PaymentReviewViewController {
     func buildPaymentInfoContainerView() -> PaymentReviewContainerView {
         let containerView = PaymentReviewContainerView(viewModel: model.paymentReviewContainerViewModel())
-        containerView.backgroundColor = Constants.infoContainerViewBackgroundColor
+        containerView.backgroundColor = model.configuration.infoContainerViewBackgroundColor
         containerView.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadius)
         containerView.onPayButtonClicked = { [weak self] in
             self?.payButtonClicked()
@@ -380,7 +378,7 @@ fileprivate extension PaymentReviewViewController {
         flowLayout.minimumLineSpacing = Constants.collectionViewPadding
 
         let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
-        collection.backgroundColor = Constants.backgroundColor
+        collection.backgroundColor = model.configuration.backgroundColor
         collection.delegate = self
         collection.dataSource = self
         collection.register(cellType: PageCollectionViewCell.self)
@@ -391,7 +389,7 @@ fileprivate extension PaymentReviewViewController {
         let control = UIPageControl()
         control.pageIndicatorTintColor = GiniColor.standard4.uiColor()
         control.currentPageIndicatorTintColor = GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor()
-        control.backgroundColor = Constants.backgroundColor
+        control.backgroundColor = model.configuration.backgroundColor
         control.hidesForSinglePage = true
         control.numberOfPages = model.document.pageCount
         return control
@@ -460,10 +458,10 @@ fileprivate extension PaymentReviewViewController {
 
     func buildInfoBarLabel() -> UILabel {
         let label = UILabel()
-        label.textColor = Constants.infoBarLabelTextColor
-        label.font = infoBarLabelFont
+        label.textColor = model.configuration.infoBarLabelTextColor
+        label.font = model.configuration.infoBarLabelFont
         label.adjustsFontForContentSizeCategory = true
-        label.text = Constants.infoBarMessage
+        label.text = model.strings.infoBarMessage
         label.textAlignment = .center
         label.numberOfLines = 0
         return label
@@ -521,7 +519,7 @@ extension PaymentReviewViewController {
         let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
-        let okAction = UIAlertAction(title: Constants.alertOkButtonTitle, style: .default, handler: nil)
+        let okAction = UIAlertAction(title: model.strings.alertOkButtonTitle, style: .default, handler: nil)
         alertController.addAction(okAction)
         DispatchQueue.main.async { [weak self] in
             self?.present(alertController, animated: true, completion: nil)
@@ -531,19 +529,6 @@ extension PaymentReviewViewController {
 
 extension PaymentReviewViewController {
     enum Constants {
-        static let loadingIndicatorStyle = UIActivityIndicatorView.Style.large
-        static let loadingIndicatorColor = GiniMerchantColorPalette.accent1.preferredColor()
-        static let infoBarLabelTextColor = GiniMerchantColorPalette.dark7.preferredColor()
-        static let infoBarBackgroundColor = GiniMerchantColorPalette.success1.preferredColor()
-        static let mainViewBackgroundColor = GiniColor.standard7.uiColor()
-        static let infoContainerViewBackgroundColor = GiniColor.standard7.uiColor()
-        static let backgroundColor = GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor()
-
-        static let alertOkButtonTitle = NSLocalizedStringPreferredFormat("gini.merchant.alert.ok.title", comment: "ok title for action")
-        static let infoBarMessage = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.infobar.message", comment: "info bar message")
-        static let defaultErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.default", comment: "default error message")
-        static let createPaymentErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.payment.request.creation", comment: "error for creating payment request")
-
         static let animationDuration = 0.3
         static let bottomPaddingPageImageView = 20.0
         static let loadingIndicatorScale = 1.0
