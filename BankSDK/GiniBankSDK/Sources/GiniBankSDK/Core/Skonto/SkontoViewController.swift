@@ -286,7 +286,7 @@ public class SkontoViewController: UIViewController {
         navigationBarBottomAdapter?.updateSkontoPercentageBadge(with: viewModel.localizedDiscountString)
         navigationBarBottomAdapter?.updateSkontoSavingsInfo(with: viewModel.savingsAmountString)
         navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
-        let localizedStringWithCurrencyCode = viewModel.amountToPay.localizedStringWithCurrencyCode
+        let localizedStringWithCurrencyCode = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
         navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
     }
 
