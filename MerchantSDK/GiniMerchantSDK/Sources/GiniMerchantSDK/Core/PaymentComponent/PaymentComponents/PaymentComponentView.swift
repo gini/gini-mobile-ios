@@ -25,7 +25,7 @@ final class PaymentComponentView: UIView {
     private lazy var selectYourBankLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.selectYourBankLabelText
+        label.text = viewModel.strings.selectYourBankLabelText
         label.textColor = viewModel.configuration.selectYourBankAccentColor
         label.font = viewModel.configuration.selectYourBankLabelFont
         label.numberOfLines = 0
@@ -51,7 +51,7 @@ final class PaymentComponentView: UIView {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: viewModel.primaryButtonConfiguration)
-        button.customConfigure(text: viewModel.payInvoiceLabelText,
+        button.customConfigure(text: viewModel.strings.payInvoiceLabelText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
         return button
@@ -127,7 +127,7 @@ final class PaymentComponentView: UIView {
     }
     
     private func updateButtonsViews() {
-        selectBankButton.customConfigure(labelText: viewModel.placeholderBankNameText,
+        selectBankButton.customConfigure(labelText: viewModel.strings.placeholderBankNameText,
                                          leftImageIcon: viewModel.bankImageIcon,
                                          rightImageIcon: viewModel.configuration.chevronDownIcon,
                                          rightImageTintColor: viewModel.configuration.chevronDownIconColor,

@@ -9,10 +9,11 @@
 import UIKit
 
 final class PoweredByGiniViewModel {
-    let poweredByGiniLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.poweredByGini.label", comment: "")
+    let strings: PoweredByGiniStrings
     let configuration: PoweredByGiniConfiguration
 
-    init(configuration: PoweredByGiniConfiguration) {
+    init(configuration: PoweredByGiniConfiguration, strings: PoweredByGiniStrings) {
+        self.strings = strings
         self.configuration = configuration
     }
 }

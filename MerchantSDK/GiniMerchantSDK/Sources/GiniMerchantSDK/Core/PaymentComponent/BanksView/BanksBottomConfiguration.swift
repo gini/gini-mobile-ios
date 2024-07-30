@@ -22,3 +22,8 @@ public struct BanksBottomConfiguration {
     let bankCellNotSelectedBorderColor: UIColor
     let bankCellSelectionIndicatorImage: UIImage
 }
+
+public struct BanksBottomStrings {
+    let selectBankTitleText: String
+    let descriptionText: String
+}

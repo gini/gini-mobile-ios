@@ -57,6 +57,7 @@ final class PaymentComponentViewModel {
     let primaryButtonConfiguration: ButtonConfiguration
     let secondaryButtonConfiguration: ButtonConfiguration
     let configuration: PaymentComponentsConfiguration
+    let strings: PaymentComponentsStrings
     let poweredByGiniViewModel: PoweredByGiniViewModel
     let moreInformationViewModel: MoreInformationViewModel
     let paymentProviderColors: ProviderColors?
@@ -67,13 +68,6 @@ final class PaymentComponentViewModel {
         guard let bankImageIconData else { return nil }
         return UIImage(data: bankImageIconData)
     }
-
-    let selectYourBankLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectYourBank.label",
-                                                                   comment: "Text for the select your bank label that's above the payment provider picker")
-    let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label",
-                                                                                   comment: "Placeholder text used when there isn't a payment provider app installed")
-    let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payInvoice.label", 
-                                                                       comment: "Title label used for the pay invoice button")
 
     private var paymentProviderScheme: String?
 
@@ -89,10 +83,14 @@ final class PaymentComponentViewModel {
          primaryButtonConfiguration: ButtonConfiguration,
          secondaryButtonConfiguration: ButtonConfiguration,
          configuration: PaymentComponentsConfiguration,
+         strings: PaymentComponentsStrings,
          poweredByGiniConfiguration: PoweredByGiniConfiguration,
+         poweredByGiniStrings: PoweredByGiniStrings,
          moreInformationConfiguration: MoreInformationConfiguration,
+         moreInformationStrings: MoreInformationStrings,
          minimumButtonsHeight: CGFloat) {
         self.configuration = configuration
+        self.strings = strings
         self.primaryButtonConfiguration = primaryButtonConfiguration
         self.secondaryButtonConfiguration = secondaryButtonConfiguration
 
@@ -103,8 +101,8 @@ final class PaymentComponentViewModel {
         
         self.minimumButtonsHeight = minimumButtonsHeight
 
-        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration)
-        self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration)
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
+        self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration, strings: moreInformationStrings)
     }
     
     func tapOnMoreInformation() {

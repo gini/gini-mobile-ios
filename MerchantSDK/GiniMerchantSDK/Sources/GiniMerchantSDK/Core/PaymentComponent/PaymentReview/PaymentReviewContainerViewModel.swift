@@ -7,6 +7,7 @@
 
 
 import Foundation
+import GiniHealthAPILibrary
 
 class PaymentReviewContainerViewModel {
     var onExtractionFetched: (() -> Void)?
@@ -27,10 +28,11 @@ class PaymentReviewContainerViewModel {
     init(extractions: [Extraction],
          selectedPaymentProvider: PaymentProvider,
          poweredByGiniConfiguration: PoweredByGiniConfiguration,
+         poweredByGiniStrings: PoweredByGiniStrings,
          isAmountFieldEditable: Bool) {
         self.extractions = extractions
         self.selectedPaymentProvider = selectedPaymentProvider
         self.isAmountFieldEditable = isAmountFieldEditable
-        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration)
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
     }
 }

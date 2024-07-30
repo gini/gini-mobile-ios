@@ -16,3 +16,10 @@ public struct InstallAppConfiguration {
     let appStoreIcon: UIImage
     let bankIconBorderColor: UIColor
 }
+
+public struct InstallAppStrings {
+    let titlePattern: String
+    let moreInformationTipPattern: String
+    let moreInformationNotePattern: String
+    let continueLabelText: String
+}

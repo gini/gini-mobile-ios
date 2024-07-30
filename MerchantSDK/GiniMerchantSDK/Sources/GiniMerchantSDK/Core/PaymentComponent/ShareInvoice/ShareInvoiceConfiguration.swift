@@ -26,3 +26,15 @@ public struct ShareInvoiceConfiguration {
     public let singleAppIconBorderColor: UIColor
     public let singleAppIconBackgroundColor: UIColor
 }
+
+public struct ShareInvoiceStrings {
+    let tipActionablePartText: String
+    let continueLabelText: String
+    let singleAppTitle: String
+    let singleAppMore: String
+    let titleTextPattern: String
+    let descriptionTextPattern: String
+    let tipLabelPattern: String
+}
+
+

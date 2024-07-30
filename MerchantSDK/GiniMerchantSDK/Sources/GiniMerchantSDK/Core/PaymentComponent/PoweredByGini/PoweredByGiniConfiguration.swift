@@ -11,3 +11,7 @@ public struct PoweredByGiniConfiguration {
     let poweredByGiniLabelAccentColor: UIColor
     let giniIcon: UIImage
 }
+
+public struct PoweredByGiniStrings {
+    let poweredByGiniText: String
+}

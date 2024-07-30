@@ -18,16 +18,13 @@ protocol InstallAppBottomViewProtocol: AnyObject {
 final class InstallAppBottomViewModel {
     let primaryButtonConfiguration: ButtonConfiguration
     let configuration: InstallAppConfiguration
+    let strings: InstallAppStrings
     let poweredByGiniViewModel: PoweredByGiniViewModel
 
     var selectedPaymentProvider: PaymentProvider?
-    // Payment provider colors
     var paymentProviderColors: ProviderColors?
     
     weak var viewDelegate: InstallAppBottomViewProtocol?
-
-    var titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.title",
-                                                             comment: "Install App Bottom sheet title")
 
     private var bankImageIconData: Data?
     var bankImageIcon: UIImage {
@@ -38,17 +35,12 @@ final class InstallAppBottomViewModel {
     }
 
     var moreInformationLabelText: String {
-        isBankInstalled ? 
-        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.tip.description",
-                                         comment: "Text for tip information label").replacingOccurrences(of: bankToReplaceString,
-                                                                                                         with: selectedPaymentProvider?.name ?? "") :
-        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.notes.description",
-                                         comment: "Text for notes information label").replacingOccurrences(of: bankToReplaceString,
-                                                                                                           with: selectedPaymentProvider?.name ?? "")
+        isBankInstalled ?
+        strings.moreInformationTipPattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "") :
+        strings.moreInformationNotePattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
     }
 
-    let continueLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.continue.button.text",
-                                                                     comment: "Title label used for the Continue button")
+    let titleText: String
     let bankToReplaceString = "[BANK]"
     
     var isBankInstalled: Bool {
@@ -57,16 +49,19 @@ final class InstallAppBottomViewModel {
 
     init(selectedPaymentProvider: PaymentProvider?,
          installAppConfiguration: InstallAppConfiguration,
+         strings: InstallAppStrings,
          primaryButtonConfiguration: ButtonConfiguration,
-         poweredByGiniConfiguration: PoweredByGiniConfiguration) {
+         poweredByGiniConfiguration: PoweredByGiniConfiguration,
+         poweredByGiniStrings: PoweredByGiniStrings) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.bankImageIconData = selectedPaymentProvider?.iconData
         self.paymentProviderColors = selectedPaymentProvider?.colors
         self.configuration = installAppConfiguration
+        self.strings = strings
         self.primaryButtonConfiguration = primaryButtonConfiguration
-        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration)
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         
-        titleText = titleText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
+        titleText = strings.titlePattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
     }
     
     func didTapOnContinue() {

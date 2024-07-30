@@ -16,7 +16,7 @@ final class PoweredByGiniView: UIView {
     private lazy var poweredByGiniLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.poweredByGiniLabelText
+        label.text = viewModel.strings.poweredByGiniText
         label.textColor = viewModel.configuration.poweredByGiniLabelAccentColor
         label.font = viewModel.configuration.poweredByGiniLabelFont
         label.numberOfLines = Constants.textNumberOfLines

@@ -22,18 +22,20 @@ struct SingleApp {
 
 final class ShareInvoiceBottomViewModel {
     let configuration: ShareInvoiceConfiguration
+    let strings: ShareInvoiceStrings
     let primaryButtonConfiguration: ButtonConfiguration
     let poweredByGiniViewModel: PoweredByGiniViewModel
 
     var selectedPaymentProvider: PaymentProvider?
-    // Payment provider colors
     var paymentProviderColors: ProviderColors?
     
     weak var viewDelegate: ShareInvoiceBottomViewProtocol?
     
-    // Title label
-    var titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.title",
-                                                             comment: "Share Invoice Bottom sheet title")
+    let bankToReplaceString = "[BANK]"
+    let titleText: String
+    let descriptionLabelText: String
+    let tipLabelText: String
+
     private var bankImageIconData: Data?
     var bankImageIcon: UIImage {
         if let bankImageIconData {
@@ -41,45 +43,38 @@ final class ShareInvoiceBottomViewModel {
         }
         return UIImage()
     }
-
-    var descriptionLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.description",
-                                                                        comment: "Text description for share bottom sheet")
-    var tipLabelText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.tip.description",
-                                                        comment: "Text for tip label")
-    let tipActionablePartText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.tip.underlined.part",
-                                                                 comment: "Text for tip actionable part from the label")
-    let continueLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.continue.button.text",
-                                                                     comment: "Title label used for the Continue button")
-    let bankToReplaceString = "[BANK]"
     
     var appsMocked: [SingleApp] = []
 
     init(selectedPaymentProvider: PaymentProvider?, 
          configuration: ShareInvoiceConfiguration,
+         strings: ShareInvoiceStrings,
          primaryButtonConfiguration: ButtonConfiguration,
-         poweredByGiniConfiguration: PoweredByGiniConfiguration) {
+         poweredByGiniConfiguration: PoweredByGiniConfiguration,
+         poweredByGiniStrings: PoweredByGiniStrings) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.bankImageIconData = selectedPaymentProvider?.iconData
         self.paymentProviderColors = selectedPaymentProvider?.colors
         self.configuration = configuration
+        self.strings = strings
         self.primaryButtonConfiguration = primaryButtonConfiguration
-        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration)
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
 
-        titleText = titleText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
-        descriptionLabelText = descriptionLabelText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
-        tipLabelText = tipLabelText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
-        
+        titleText = strings.titleTextPattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
+        descriptionLabelText = strings.descriptionTextPattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
+        tipLabelText = strings.tipLabelPattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
+
         self.generateAppMockedElements()
     }
     
     private func generateAppMockedElements() {
         for _ in 0..<2 {
-            self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.app", comment: ""), isMoreButton: false))
+            self.appsMocked.append(SingleApp(title: strings.singleAppTitle, isMoreButton: false))
         }
         self.appsMocked.append(SingleApp(title: selectedPaymentProvider?.name ?? "", image: bankImageIcon, isMoreButton: false))
-        self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.app", comment: ""), isMoreButton: false))
-        self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.more", comment: ""), image: configuration.moreIcon, isMoreButton: true))
-        
+        self.appsMocked.append(SingleApp(title: strings.singleAppTitle, isMoreButton: false))
+        self.appsMocked.append(SingleApp(title: strings.singleAppMore, image: configuration.moreIcon, isMoreButton: true))
+
     }
     
     func didTapOnContinue() {

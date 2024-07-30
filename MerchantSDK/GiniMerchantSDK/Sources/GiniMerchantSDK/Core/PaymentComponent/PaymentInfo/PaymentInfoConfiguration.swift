@@ -26,3 +26,15 @@ public struct PaymentInfoConfiguration {
     let separatorColor: UIColor
     let backgroundColor: UIColor
 }
+
+public struct PaymentInfoStrings {
+    let giniWebsiteText : String
+    let giniURLText: String
+
+    let questionsTitleText: String
+    let answerPrivacyPolicyText: String
+    let privacyPolicyURLText: String
+    let titleText: String
+    let payBillsTitleText: String
+    let payBillsDescriptionText: String
+}

@@ -18,34 +18,23 @@ struct FAQSection {
 
 final class PaymentInfoViewModel {
     let configuration: PaymentInfoConfiguration
+    let strings: PaymentInfoStrings
     var paymentProviders: PaymentProviders
     let poweredByGiniViewModel: PoweredByGiniViewModel
 
-    let titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.title.label", 
-                                                             comment: "Payment Info title label text")
-    let payBillsTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.title.label", 
-                                                                     comment: "Payment Info pay bills title label text")
-    private let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.label",
-                                                                                   comment: "Payment Info pay bills description text")
     var payBillsDescriptionAttributedText: NSMutableAttributedString = NSMutableAttributedString()
     var payBillsDescriptionLinkAttributes: [NSAttributedString.Key: Any]
-    private let giniWebsiteText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.clickable.text",
-                                                                   comment: "Word range that's clickable in pay bills description")
-    private let giniURLText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.gini.link", 
-                                                               comment: "Gini website link url")
-    
-    let questionsTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.title.label",
-                                                                      comment: "Payment Info questions title label text")
-    private let answerPrivacyPolicyText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.clickable.text",
-                                                                           comment: "Payment info answers clickable privacy policy")
-    private let privacyPolicyURLText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.gini.privacypolicy.link",
-                                                                        comment: "Gini privacy policy link url")
     var questions: [FAQSection] = []
     
-    init(paymentProviders: PaymentProviders, configuration: PaymentInfoConfiguration, poweredByGiniConfiguration: PoweredByGiniConfiguration) {
+    init(paymentProviders: PaymentProviders, 
+         configuration: PaymentInfoConfiguration,
+         strings: PaymentInfoStrings,
+         poweredByGiniConfiguration: PoweredByGiniConfiguration,
+         poweredByGiniStrings: PoweredByGiniStrings) {
         self.paymentProviders = paymentProviders
         self.configuration = configuration
-        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration)
+        self.strings = strings
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
 
         payBillsDescriptionLinkAttributes = [.foregroundColor: configuration.linksFont]
 
@@ -70,7 +59,7 @@ final class PaymentInfoViewModel {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.payBillsDescriptionLineHeight
         paragraphStyle.paragraphSpacing = Constants.payBillsParagraphSpacing
-        payBillsDescriptionAttributedText = NSMutableAttributedString(string: payBillsDescriptionText,
+        payBillsDescriptionAttributedText = NSMutableAttributedString(string: strings.payBillsDescriptionText,
                                                                       attributes: [.paragraphStyle: paragraphStyle,
                                                                                    .font: configuration.payBillsDescriptionFont,
                                                                                    .foregroundColor: configuration.payBillsTitleColor])
@@ -89,13 +78,13 @@ final class PaymentInfoViewModel {
     
     private func textWithLinks(linkFont: UIFont, attributedString: NSMutableAttributedString) -> NSMutableAttributedString {
         let attributedString = attributedString
-        let giniRange = (attributedString.string as NSString).range(of: giniWebsiteText)
-        attributedString.addLinkToRange(link: giniURLText,
+        let giniRange = (attributedString.string as NSString).range(of: strings.giniWebsiteText)
+        attributedString.addLinkToRange(link: strings.giniURLText,
                                         range: giniRange,
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)
-        let privacyPolicyRange = (attributedString.string as NSString).range(of: answerPrivacyPolicyText)
-        attributedString.addLinkToRange(link: privacyPolicyURLText,
+        let privacyPolicyRange = (attributedString.string as NSString).range(of: strings.answerPrivacyPolicyText)
+        attributedString.addLinkToRange(link: strings.privacyPolicyURLText,
                                         range: privacyPolicyRange,
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)

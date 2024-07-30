@@ -64,7 +64,7 @@ class PaymentInfoViewController: UIViewController {
         label.textAlignment = .left
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.payBillsTitleLineHeight
-        label.attributedText = NSMutableAttributedString(string: viewModel.payBillsTitleText,
+        label.attributedText = NSMutableAttributedString(string: viewModel.strings.payBillsTitleText,
                                                          attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         return label
     }()
@@ -93,7 +93,7 @@ class PaymentInfoViewController: UIViewController {
         label.textAlignment = .left
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.questionsTitleLineHeight
-        label.attributedText = NSMutableAttributedString(string: viewModel.questionsTitleText,
+        label.attributedText = NSMutableAttributedString(string: viewModel.strings.questionsTitleText,
                                                          attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         return label
     }()
@@ -122,7 +122,7 @@ class PaymentInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = viewModel.titleText
+        self.title = viewModel.strings.titleText
     }
     
     private func setupView() {

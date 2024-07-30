@@ -63,6 +63,7 @@ public class PaymentReviewModel: NSObject {
 
     var paymentComponentsController: PaymentComponentsController
     let poweredByGiniConfiguration: PoweredByGiniConfiguration
+    let poweredByGiniStrings: PoweredByGiniStrings
     let showPaymentReviewCloseButton: Bool
     let isAmountFieldEditable: Bool
 
@@ -71,6 +72,7 @@ public class PaymentReviewModel: NSObject {
                 extractions: [Extraction],
                 selectedPaymentProvider: PaymentProvider,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
+                poweredByGiniStrings: PoweredByGiniStrings,
                 paymentComponentsController: PaymentComponentsController,
                 showPaymentReviewCloseButton: Bool,
                 isAmountFieldEditable: Bool) {
@@ -80,6 +82,7 @@ public class PaymentReviewModel: NSObject {
         self.extractions = extractions
         self.selectedPaymentProvider = selectedPaymentProvider
         self.poweredByGiniConfiguration = poweredByGiniConfiguration
+        self.poweredByGiniStrings = poweredByGiniStrings
         self.paymentComponentsController = paymentComponentsController
         self.showPaymentReviewCloseButton = showPaymentReviewCloseButton
         self.isAmountFieldEditable = isAmountFieldEditable
@@ -175,7 +178,8 @@ public class PaymentReviewModel: NSObject {
     func paymentReviewContainerViewModel() -> PaymentReviewContainerViewModel {
         PaymentReviewContainerViewModel(extractions: extractions,
                                         selectedPaymentProvider: selectedPaymentProvider, 
-                                        poweredByGiniConfiguration: poweredByGiniConfiguration,
+                                        poweredByGiniConfiguration: poweredByGiniConfiguration, 
+                                        poweredByGiniStrings: poweredByGiniStrings,
                                         isAmountFieldEditable: isAmountFieldEditable)
     }
 }

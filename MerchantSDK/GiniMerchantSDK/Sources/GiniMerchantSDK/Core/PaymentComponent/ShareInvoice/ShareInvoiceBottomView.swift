@@ -85,7 +85,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         label.text = viewModel.tipLabelText
         
         let tipActionableAttributtedString = NSMutableAttributedString(string: viewModel.tipLabelText)
-        let tipPartString = (viewModel.tipLabelText as NSString).range(of: viewModel.tipActionablePartText)
+        let tipPartString = (viewModel.tipLabelText as NSString).range(of: viewModel.strings.tipActionablePartText)
         tipActionableAttributtedString.addAttribute(.foregroundColor,
                                                     value: viewModel.configuration.tipAccentColor,
                                                     range: tipPartString)
@@ -119,7 +119,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: viewModel.primaryButtonConfiguration)
-        button.customConfigure(text: viewModel.continueLabelText,
+        button.customConfigure(text: viewModel.strings.continueLabelText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
         return button
@@ -260,7 +260,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     @objc
     private func tapOnLabelAction(gesture: UITapGestureRecognizer) {
         if gesture.didTapAttributedTextInLabel(label: tipLabel,
-                                               targetText: viewModel.tipActionablePartText) {
+                                               targetText: viewModel.strings.tipActionablePartText) {
             tapOnAppStoreButton()
         }
     }

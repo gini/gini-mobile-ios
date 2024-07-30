@@ -24,7 +24,7 @@ class BanksBottomView: BottomSheetViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.selectBankTitleText
+        label.text = viewModel.strings.selectBankTitleText
         label.textColor = viewModel.configuration.selectBankAccentColor
         label.font = viewModel.configuration.selectBankFont
         label.numberOfLines = 1
@@ -46,7 +46,7 @@ class BanksBottomView: BottomSheetViewController {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.descriptionText
+        label.text = viewModel.strings.descriptionText
         label.textColor = viewModel.configuration.descriptionAccentColor
         label.font = viewModel.configuration.descriptionFont
         label.numberOfLines = 0

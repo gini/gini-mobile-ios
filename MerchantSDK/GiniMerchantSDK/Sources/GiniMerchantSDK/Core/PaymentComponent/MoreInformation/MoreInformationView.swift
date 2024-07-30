@@ -23,11 +23,11 @@ final class MoreInformationView: UIView {
             .underlineStyle: NSUnderlineStyle.single.rawValue,
             .font: viewModel.configuration.moreInformationLinkFont
         ]
-        let moreInformationActionableAttributtedString = NSMutableAttributedString(string: viewModel.moreInformationActionablePartText, attributes: attributes)
+        let moreInformationActionableAttributtedString = NSMutableAttributedString(string: viewModel.strings.moreInformationActionablePartText, attributes: attributes)
         label.attributedText = moreInformationActionableAttributtedString
         
         let tapOnMoreInformation = UITapGestureRecognizer(target: self,
-                                                          action: #selector(tapOnMoreInformationLabelAction(gesture:)))
+                                                          action: #selector(self.tapOnMoreInformationLabelAction(gesture:)))
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(tapOnMoreInformation)
         
@@ -83,7 +83,7 @@ final class MoreInformationView: UIView {
     @objc
     private func tapOnMoreInformationLabelAction(gesture: UITapGestureRecognizer) {
         if gesture.didTapAttributedTextInLabel(label: moreInformationLabel,
-                                               targetText: viewModel.moreInformationActionablePartText) {
+                                               targetText: viewModel.strings.moreInformationActionablePartText) {
             viewModel.tapOnMoreInformation()
         }
     }

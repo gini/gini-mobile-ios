@@ -15,12 +15,13 @@ protocol MoreInformationViewProtocol: AnyObject {
 
 final class MoreInformationViewModel {
     let configuration: MoreInformationConfiguration
-    let moreInformationActionablePartText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.moreInformation.underlined.part",
-                                                                             comment: "Text for more information actionable part from the label")
+    let strings: MoreInformationStrings
+
     weak var delegate: MoreInformationViewProtocol?
 
-    init(configuration: MoreInformationConfiguration) {
+    init(configuration: MoreInformationConfiguration, strings: MoreInformationStrings) {
         self.configuration = configuration
+        self.strings = strings
     }
     
     func tapOnMoreInformation() {

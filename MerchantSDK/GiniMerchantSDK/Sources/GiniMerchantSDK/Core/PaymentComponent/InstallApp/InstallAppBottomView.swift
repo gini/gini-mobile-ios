@@ -72,7 +72,7 @@ class InstallAppBottomView: BottomSheetViewController {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: viewModel.primaryButtonConfiguration)
-        button.customConfigure(text: viewModel.continueLabelText,
+        button.customConfigure(text: viewModel.strings.continueLabelText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
         return button

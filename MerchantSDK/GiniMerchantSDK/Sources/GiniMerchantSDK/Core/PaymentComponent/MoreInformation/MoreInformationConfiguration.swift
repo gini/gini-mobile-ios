@@ -12,3 +12,7 @@ public struct MoreInformationConfiguration {
     let moreInformationLinkFont: UIFont
     let moreInformationIcon: UIImage
 }
+
+public struct MoreInformationStrings {
+    let moreInformationActionablePartText: String
+}

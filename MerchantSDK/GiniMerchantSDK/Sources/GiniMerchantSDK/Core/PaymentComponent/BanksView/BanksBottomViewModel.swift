@@ -25,6 +25,7 @@ struct PaymentProviderAdditionalInfo {
 
 final class BanksBottomViewModel {
     let configuration: BanksBottomConfiguration
+    let strings: BanksBottomStrings
     let poweredByGiniViewModel: PoweredByGiniViewModel
     let moreInformationViewModel: MoreInformationViewModel
     weak var viewDelegate: PaymentProvidersBottomViewProtocol?
@@ -36,26 +37,24 @@ final class BanksBottomViewModel {
     let rowHeight: CGFloat = Constants.cellSizeHeight
     var bottomViewHeight: CGFloat = 0
     var heightTableView: CGFloat = 0
-
-    let selectBankTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label", 
-                                                                       comment: "Select bank text from the top label on payment providers bottom sheet")
-    let descriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentproviderslist.description", 
-                                                                   comment: "Top description text on payment providers bottom sheet")
-
     
     private var urlOpener: URLOpener
 
     init(paymentProviders: PaymentProviders,
          selectedPaymentProvider: PaymentProvider?,
          configuration: BanksBottomConfiguration,
+         strings: BanksBottomStrings,
          poweredByGiniConfiguration: PoweredByGiniConfiguration,
+         poweredByGiniStrings: PoweredByGiniStrings,
          moreInformationConfiguration: MoreInformationConfiguration,
+         moreInformationStrings: MoreInformationStrings,
          urlOpener: URLOpener = URLOpener(UIApplication.shared)) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.urlOpener = urlOpener
         self.configuration = configuration
-        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration)
-        self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration)
+        self.strings = strings
+        self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
+        self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration, strings: moreInformationStrings)
         self.paymentProviders = paymentProviders
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
