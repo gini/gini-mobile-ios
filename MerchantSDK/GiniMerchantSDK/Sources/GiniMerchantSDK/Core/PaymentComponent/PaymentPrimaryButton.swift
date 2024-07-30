@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 import GiniHealthAPILibrary
 
 final class PaymentPrimaryButton: UIView {
@@ -80,10 +81,7 @@ extension PaymentPrimaryButton {
         self.contentView.layer.shadowColor = configuration.shadowColor.cgColor
 
         self.titleLabel.textColor = configuration.titleColor
-        
-        if let buttonFont = giniConfiguration.textStyleFonts[.button] {
-            self.titleLabel.font = buttonFont
-        }
+        self.titleLabel.font = giniConfiguration.font(for: .button)
     }
     
     func customConfigure(paymentProviderColors: ProviderColors?, text: String, leftImageData: Data? = nil) {

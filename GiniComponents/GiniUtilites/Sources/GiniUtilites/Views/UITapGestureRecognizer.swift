@@ -1,13 +1,13 @@
 //
 //  UITapGestureRecognizer.swift
-//  GiniMerchantSDK
+//  GiniUtilites
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-extension UITapGestureRecognizer {
+public extension UITapGestureRecognizer {
     func didTapAttributedTextInLabel(label: UILabel, targetText: String) -> Bool {
         guard let attributedString = label.attributedText, let lblText = label.text else { return false }
         let targetRange = (lblText as NSString).range(of: targetText)
@@ -38,7 +38,7 @@ extension UITapGestureRecognizer {
         let textBoundingBox = layoutManager.usedRect(for: textContainer)
         let textContainerOffset = CGPoint(x: (labelSize.width - textBoundingBox.size.width) * 0.5 - textBoundingBox.origin.x,
                                           y: (labelSize.height - textBoundingBox.size.height) * 0.5 - textBoundingBox.origin.y)
-        let locationOfTouchInTextContainer = CGPoint(x: locationOfTouchInLabel.x - textContainerOffset.x, 
+        let locationOfTouchInTextContainer = CGPoint(x: locationOfTouchInLabel.x - textContainerOffset.x,
                                                      y: locationOfTouchInLabel.y - textContainerOffset.y)
         let indexOfCharacter = layoutManager.characterIndex(for: locationOfTouchInTextContainer,
                                                             in: textContainer,

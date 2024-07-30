@@ -1,19 +1,19 @@
 //
 //  TextFieldConfiguration.swift
-//  GiniMerchantSDK
+//  GiniUtilites
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-
 import UIKit
+
 public struct TextFieldConfiguration {
-    let backgroundColor: UIColor
-    let borderColor: UIColor
-    let textColor: UIColor
-    let cornerRadius: CGFloat
-    let borderWidth: CGFloat
-    let placeholderForegroundColor: UIColor
+    public let backgroundColor: UIColor
+    public let borderColor: UIColor
+    public let textColor: UIColor
+    public let cornerRadius: CGFloat
+    public let borderWidth: CGFloat
+    public let placeholderForegroundColor: UIColor
 
 
     /// Text Field configuration initalizer

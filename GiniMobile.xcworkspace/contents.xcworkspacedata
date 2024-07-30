@@ -3,6 +3,13 @@
    version = "1.0">
    <Group
       location = "container:"
+      name = "GiniComponents">
+      <FileRef
+         location = "group:GiniComponents/GiniUtilites">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
       name = "GiniMerchantSDK">
       <FileRef
          location = "group:MerchantSDK/GiniMerchantSDKPinning">
