@@ -9,13 +9,8 @@
 import UIKit
 
 class PaymentInfoViewController: UIViewController {
-    
-    var viewModel: PaymentInfoViewModel! {
-        didSet {
-            setupView()
-        }
-    }
-    
+    private let viewModel: PaymentInfoViewModel
+
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -120,7 +115,16 @@ class PaymentInfoViewController: UIViewController {
     
     private var heightsQuestionsTableView: [NSLayoutConstraint] = []
     
-    override func viewDidLoad() {
+    init(viewModel: PaymentInfoViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    public override func viewDidLoad() {
         super.viewDidLoad()
         self.title = viewModel.strings.titleText
     }

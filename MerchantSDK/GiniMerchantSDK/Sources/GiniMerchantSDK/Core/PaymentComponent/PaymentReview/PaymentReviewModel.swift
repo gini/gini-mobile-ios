@@ -5,8 +5,8 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-import GiniHealthAPILibrary
 import UIKit
+import GiniPaymentComponents
 
 protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)

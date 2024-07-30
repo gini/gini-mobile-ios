@@ -12,10 +12,30 @@ public struct PaymentComponentsConfiguration {
     let chevronDownIcon: UIImage
     let chevronDownIconColor: UIColor
     let notInstalledBankTextColor: UIColor
+
+    public init(selectYourBankLabelFont: UIFont,
+                selectYourBankAccentColor: UIColor,
+                chevronDownIcon: UIImage,
+                chevronDownIconColor: UIColor,
+                notInstalledBankTextColor: UIColor) {
+        self.selectYourBankLabelFont = selectYourBankLabelFont
+        self.selectYourBankAccentColor = selectYourBankAccentColor
+        self.chevronDownIcon = chevronDownIcon
+        self.chevronDownIconColor = chevronDownIconColor
+        self.notInstalledBankTextColor = notInstalledBankTextColor
+    }
 }
 
 public struct PaymentComponentsStrings {
     let selectYourBankLabelText: String
     let placeholderBankNameText: String
     let payInvoiceLabelText: String
+
+    public init(selectYourBankLabelText: String,
+                placeholderBankNameText: String,
+                payInvoiceLabelText: String) {
+        self.selectYourBankLabelText = selectYourBankLabelText
+        self.placeholderBankNameText = placeholderBankNameText
+        self.payInvoiceLabelText = payInvoiceLabelText
+    }
 }

@@ -7,6 +7,7 @@
 
 
 import Foundation
+import GiniPaymentComponents
 import GiniHealthAPILibrary
 
 class PaymentReviewContainerViewModel {

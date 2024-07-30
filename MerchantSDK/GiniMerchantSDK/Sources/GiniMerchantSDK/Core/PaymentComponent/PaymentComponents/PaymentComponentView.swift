@@ -10,16 +10,10 @@ import UIKit
 import GiniUtilites
 import GiniPaymentComponents
 
-final class PaymentComponentView: UIView {
-    
-    var viewModel: PaymentComponentViewModel! {
-        didSet {
-            setupView()
-        }
-    }
-    
+public final class PaymentComponentView: UIView {
+    private let viewModel: PaymentComponentViewModel
+
     private let contentStackView = EmptyStackView(orientation: .vertical)
-    
     private let selectYourBankView = EmptyView()
     
     private lazy var selectYourBankLabel: UILabel = {
@@ -71,8 +65,10 @@ final class PaymentComponentView: UIView {
         PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
     }()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: PaymentComponentViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
+        setupView()
     }
     
     required init?(coder: NSCoder) {

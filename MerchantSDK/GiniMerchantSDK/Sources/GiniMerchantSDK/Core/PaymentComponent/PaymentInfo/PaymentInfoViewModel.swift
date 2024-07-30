@@ -43,14 +43,11 @@ final class PaymentInfoViewModel {
     }
     
     private func setupQuestions() {
-        for index in 1 ... Constants.numberOfQuestions {
-            let answerAttributedString = answerWithAttributes(answer: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.\(index)",
-                                                                                                       comment: "Answers description"))
-            let questionSection = FAQSection(title: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.question.\(index)",
-                                                                                          comment: "Questions titles"),
-                                             description: textWithLinks(linkFont: configuration.linksFont,
-                                                                             attributedString: answerAttributedString),
-                                                  isExtended: false)
+        for index in 0 ... strings.questions.count {
+            let answerAttributedString = answerWithAttributes(answer: strings.answers[index])
+            let questionSection = FAQSection(title: strings.questions[index],
+                                             description: textWithLinks(linkFont: configuration.linksFont, attributedString: answerAttributedString),
+                                             isExtended: false)
             questions.append(questionSection)
         }
     }
@@ -112,8 +109,6 @@ final class PaymentInfoViewModel {
 
 extension PaymentInfoViewModel {
     private enum Constants {
-        static let numberOfQuestions = 6
-        
         static let payBillsDescriptionLineHeight = 1.32
         static let payBillsParagraphSpacing = 10.0
         

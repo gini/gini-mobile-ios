@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import GiniUtilites
+import GiniPaymentComponents
 import GiniHealthAPILibrary
 
 public final class PaymentReviewViewController: UIViewController, UIGestureRecognizerDelegate {
@@ -387,8 +387,8 @@ fileprivate extension PaymentReviewViewController {
 
     func buildPageControl() -> UIPageControl {
         let control = UIPageControl()
-        control.pageIndicatorTintColor = GiniColor.standard4.uiColor()
-        control.currentPageIndicatorTintColor = GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor()
+        control.pageIndicatorTintColor = model.configuration.pageIndicatorTintColor
+        control.currentPageIndicatorTintColor = model.configuration.currentPageIndicatorTintColor
         control.backgroundColor = model.configuration.backgroundColor
         control.hidesForSinglePage = true
         control.numberOfPages = model.document.pageCount

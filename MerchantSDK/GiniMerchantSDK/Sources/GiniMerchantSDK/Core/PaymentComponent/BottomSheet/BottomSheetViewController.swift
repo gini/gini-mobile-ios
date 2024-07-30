@@ -15,7 +15,7 @@ class BottomSheetViewController: UIViewController {
     private lazy var mainContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = backgroundColor
+        view.backgroundColor = configuration.backgroundColor
         view.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusView)
         view.layer.cornerRadius = Constants.cornerRadiusView
         view.clipsToBounds = true
@@ -31,7 +31,7 @@ class BottomSheetViewController: UIViewController {
     /// Top view bar
     private lazy var barLineView: UIView = {
         let view = UIView()
-        view.backgroundColor = rectangleColor
+        view.backgroundColor = configuration.rectangleColor
         view.layer.cornerRadius = Constants.cornerRadiusTopRectangle
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -41,21 +41,17 @@ class BottomSheetViewController: UIViewController {
     private lazy var dimmedView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = dimmingBackgroundColor
+        view.backgroundColor = configuration.dimmingBackgroundColor
         view.alpha = 0
         return view
     }()
     
-    let backgroundColor: UIColor
-    let rectangleColor: UIColor
-    let dimmingBackgroundColor: UIColor
-    var minHeight: CGFloat = 0
+    let configuration: BottomSheetConfiguration
+    public var minHeight: CGFloat = 0
     
     // MARK: - Init
-    init(backgroundColor: UIColor, rectangleColor: UIColor, dimmingBackgroundColor: UIColor) {
-        self.backgroundColor = backgroundColor
-        self.rectangleColor = rectangleColor
-        self.dimmingBackgroundColor = dimmingBackgroundColor
+    init(configuration: BottomSheetConfiguration) {
+        self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -64,13 +60,13 @@ class BottomSheetViewController: UIViewController {
     }
     
     // MARK: - View Setup
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupGestures()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         animatePresent()
     }

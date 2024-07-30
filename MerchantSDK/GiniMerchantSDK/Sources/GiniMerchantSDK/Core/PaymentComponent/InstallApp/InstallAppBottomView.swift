@@ -102,9 +102,9 @@ class InstallAppBottomView: BottomSheetViewController {
         setupView()
     }
     
-    init(viewModel: InstallAppBottomViewModel, backgroundColor: UIColor, rectangleColor: UIColor, dimmingBackgroundColor: UIColor) {
+    init(viewModel: InstallAppBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
         self.viewModel = viewModel
-        super.init(backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
+        super.init(configuration: bottomSheetConfiguration)
     }
 
     required init?(coder: NSCoder) {

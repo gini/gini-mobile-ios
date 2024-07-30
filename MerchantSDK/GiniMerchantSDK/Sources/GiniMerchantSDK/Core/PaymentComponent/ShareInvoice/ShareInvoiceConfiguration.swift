@@ -25,6 +25,42 @@ public struct ShareInvoiceConfiguration {
     public let singleAppTitleColor: UIColor
     public let singleAppIconBorderColor: UIColor
     public let singleAppIconBackgroundColor: UIColor
+
+    public init(titleFont: UIFont,
+                titleAccentColor: UIColor,
+                descriptionFont: UIFont,
+                descriptionTextColor: UIColor,
+                descriptionAccentColor: UIColor,
+                tipIcon: UIImage,
+                tipFont: UIFont,
+                tipLinkFont: UIFont,
+                tipAccentColor: UIColor,
+                tipTextColor: UIColor,
+                moreIcon: UIImage,
+                bankIconBorderColor: UIColor,
+                appsBackgroundColor: UIColor,
+                singleAppTitleFont: UIFont,
+                singleAppTitleColor: UIColor,
+                singleAppIconBorderColor: UIColor,
+                singleAppIconBackgroundColor: UIColor) {
+        self.titleFont = titleFont
+        self.titleAccentColor = titleAccentColor
+        self.descriptionFont = descriptionFont
+        self.descriptionTextColor = descriptionTextColor
+        self.descriptionAccentColor = descriptionAccentColor
+        self.tipIcon = tipIcon
+        self.tipFont = tipFont
+        self.tipLinkFont = tipLinkFont
+        self.tipAccentColor = tipAccentColor
+        self.tipTextColor = tipTextColor
+        self.moreIcon = moreIcon
+        self.bankIconBorderColor = bankIconBorderColor
+        self.appsBackgroundColor = appsBackgroundColor
+        self.singleAppTitleFont = singleAppTitleFont
+        self.singleAppTitleColor = singleAppTitleColor
+        self.singleAppIconBorderColor = singleAppIconBorderColor
+        self.singleAppIconBackgroundColor = singleAppIconBackgroundColor
+    }
 }
 
 public struct ShareInvoiceStrings {
@@ -35,6 +71,22 @@ public struct ShareInvoiceStrings {
     let titleTextPattern: String
     let descriptionTextPattern: String
     let tipLabelPattern: String
+
+    public init(tipActionablePartText: String,
+                continueLabelText: String,
+                singleAppTitle: String,
+                singleAppMore: String,
+                titleTextPattern: String,
+                descriptionTextPattern: String,
+                tipLabelPattern: String) {
+        self.tipActionablePartText = tipActionablePartText
+        self.continueLabelText = continueLabelText
+        self.singleAppTitle = singleAppTitle
+        self.singleAppMore = singleAppMore
+        self.titleTextPattern = titleTextPattern
+        self.descriptionTextPattern = descriptionTextPattern
+        self.tipLabelPattern = tipLabelPattern
+    }
 }
 
 

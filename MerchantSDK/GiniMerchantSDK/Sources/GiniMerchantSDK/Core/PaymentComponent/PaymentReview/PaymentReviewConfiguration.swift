@@ -16,6 +16,8 @@ public struct PaymentReviewConfiguration {
     let backgroundColor: UIColor
     let infoBarLabelFont: UIFont
     let statusBarStyle: UIStatusBarStyle
+    let pageIndicatorTintColor: UIColor
+    let currentPageIndicatorTintColor: UIColor
 }
 
 public struct PaymentReviewStrings {

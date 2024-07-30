@@ -7,8 +7,6 @@
 
 
 import UIKit
-import GiniUtilites
-import GiniHealthAPILibrary
 import GiniPaymentComponents
 /**
  Protocol used to provide updates on the current status of the Payment Components Controller.
@@ -17,6 +15,37 @@ import GiniPaymentComponents
 public protocol PaymentComponentsControllerProtocol: AnyObject {
     func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine
     func didFetchedPaymentProviders()
+}
+
+public protocol PaymentComponentsConfigurationProvider {
+    var installAppConfiguration: InstallAppConfiguration { get }
+    var bottomSheetConfiguration: BottomSheetConfiguration { get }
+    var shareInvoiceConfiguration: ShareInvoiceConfiguration { get }
+    var paymentInfoConfiguration: PaymentInfoConfiguration { get }
+    var banksBottomConfiguration: BanksBottomConfiguration { get }
+    var paymentComponentsConfiguration: PaymentComponentsConfiguration { get }
+    var paymentReviewConfiguration: PaymentReviewConfiguration { get }
+    var poweredByGiniConfiguration: PoweredByGiniConfiguration { get }
+    var moreInformationConfiguration: MoreInformationConfiguration { get }
+    var primaryButtonConfiguration: ButtonConfiguration { get }
+    var secondaryButtonConfiguration: ButtonConfiguration { get }
+
+    var showPaymentReviewCloseButton: Bool { get }
+    var isAmountFieldEditable: Bool { get }
+    var paymentComponentButtonsHeight: CGFloat { get }
+}
+
+
+
+public protocol PaymentComponentsStringsProvider {
+    var paymentComponentsStrings: PaymentComponentsStrings { get }
+    var installAppStrings: InstallAppStrings { get }
+    var shareInvoiceStrings: ShareInvoiceStrings { get }
+    var paymentInfoStrings: PaymentInfoStrings { get }
+    var banksBottomStrings: BanksBottomStrings { get }
+    var paymentReviewStrings: PaymentReviewStrings { get }
+    var poweredByGiniStrings: PoweredByGiniStrings { get }
+    var moreInformationStrings: MoreInformationStrings { get }
 }
 
 protocol PaymentComponentsProtocol {
@@ -45,34 +74,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     private var giniMerchant: GiniMerchant
     private var paymentProviders: PaymentProviders = []
 
-    // Bottom sheets colors
-    let backgroundColor: UIColor = GiniColor.standard7.uiColor()
-    let rectangleColor: UIColor = GiniColor.standard5.uiColor()
-    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
-                                                    darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
-    private let primaryButtonConfiguration: ButtonConfiguration
-    private let secondaryButtonConfiguration: ButtonConfiguration
-    private let showPaymentReviewCloseButton: Bool
-    private let isAmountFieldEditable: Bool
-    private let paymentComponentButtonsHeight: CGFloat
-
-    private lazy var shareInvoiceConfiguration = generateShareInvoiceConfiguration()
-    private lazy var installAppConfiguration = generateInstallAppConfiguration()
-    private lazy var paymentInfoConfiguration = generatePaymentInfoConfiguration()
-    private lazy var banksBottomConfiguration = generateBanksBottomConfiguration()
-    private lazy var paymentComponentsConfiguration = generatePaymentComponentsConfiguration()
-    private lazy var paymentReviewConfiguration = generatePaymentReviewConfiguration()
-    private lazy var poweredByGiniConfiguration = generatePoweredByGiniConfiguration()
-    private lazy var moreInformationConfiguration = generateMoreInformationConfiguration()
-
-    private lazy var shareInvoiceStrings = generateShareInvoiceStrings()
-    private lazy var installAppStrings = generateInstallAppStrings()
-    private lazy var paymentInfoStrings = generatePaymentInfoStrings()
-    private lazy var banksBottomStrings = generateBanksBottomStrings()
-    private lazy var paymentComponentsStrings = generatePaymentComponentsStrings()
-    private lazy var paymentReviewStrings = generatePaymentReviewStrings()
-    private lazy var poweredByGiniStrings = generatePoweredByGiniStrings()
-    private lazy var moreInformationStrings = generateMoreInformationStrings()
+    private let configurationProvider: PaymentComponentsConfigurationProvider
+    private let stringsProvider: PaymentComponentsStringsProvider
 
     /// storing the current selected payment provider
     public var selectedPaymentProvider: PaymentProvider?
@@ -94,13 +97,10 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      - Returns:
         - instance of the payment component controller class
      */
-    public init(giniMerchant: GiniMerchant) {
+    public init(giniMerchant: GiniMerchant & PaymentComponentsConfigurationProvider & PaymentComponentsStringsProvider) {
         self.giniMerchant = giniMerchant
-        self.primaryButtonConfiguration = GiniMerchantConfiguration.shared.primaryButtonConfiguration
-        self.secondaryButtonConfiguration = GiniMerchantConfiguration.shared.secondaryButtonConfiguration
-        self.showPaymentReviewCloseButton = GiniMerchantConfiguration.shared.showPaymentReviewCloseButton
-        self.isAmountFieldEditable = GiniMerchantConfiguration.shared.isAmountFieldEditable
-        self.paymentComponentButtonsHeight = GiniMerchantConfiguration.shared.paymentComponentButtonsHeight
+        self.configurationProvider = giniMerchant
+        self.stringsProvider = giniMerchant
     }
 
     /**
@@ -174,23 +174,21 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      - Returns: a custom view
      */
     public func paymentView(documentId: String) -> UIView {
-        paymentComponentView = PaymentComponentView()
         let paymentComponentViewModel = PaymentComponentViewModel(
             paymentProvider: selectedPaymentProvider,
-            primaryButtonConfiguration: primaryButtonConfiguration,
-            secondaryButtonConfiguration: secondaryButtonConfiguration,
-            configuration: paymentComponentsConfiguration,
-            strings: paymentComponentsStrings, 
-            poweredByGiniConfiguration: poweredByGiniConfiguration,
-            poweredByGiniStrings: poweredByGiniStrings, 
-            moreInformationConfiguration: moreInformationConfiguration,
-            moreInformationStrings: moreInformationStrings,
-            minimumButtonsHeight: paymentComponentButtonsHeight
+            primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
+            secondaryButtonConfiguration: configurationProvider.secondaryButtonConfiguration,
+            configuration: configurationProvider.paymentComponentsConfiguration,
+            strings: stringsProvider.paymentComponentsStrings,
+            poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+            moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
+            moreInformationStrings: stringsProvider.moreInformationStrings,
+            minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight
         )
         paymentComponentViewModel.delegate = viewDelegate
         paymentComponentViewModel.documentId = documentId
-        paymentComponentView.viewModel = paymentComponentViewModel
-        return paymentComponentView
+        return PaymentComponentView(viewModel: paymentComponentViewModel)
     }
 
     public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
@@ -210,14 +208,14 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                 let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
                                                                  data: data,
                                                                  selectedPaymentProvider: selectedPaymentProvider, 
-                                                                 configuration: paymentReviewConfiguration,
-                                                                 strings: paymentReviewStrings,
-                                                                 poweredByGiniConfiguration: poweredByGiniConfiguration,
-                                                                 poweredByGiniStrings: poweredByGiniStrings,
+                                                                 configuration: configurationProvider.paymentReviewConfiguration,
+                                                                 strings: stringsProvider.paymentReviewStrings,
+                                                                 poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+                                                                 poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                  trackingDelegate: trackingDelegate,
                                                                  paymentComponentsController: self,
-                                                                 showPaymentReviewCloseButton: showPaymentReviewCloseButton,
-                                                                 isAmountFieldEditable: isAmountFieldEditable)
+                                                                 showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
+                                                                 isAmountFieldEditable: configurationProvider.isAmountFieldEditable)
                 completion(vc, nil)
             case .failure(let error):
                 completion(nil, error)
@@ -228,20 +226,20 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     // MARK: - Bottom Sheets
 
     public func paymentViewBottomSheet(documentID: String) -> UIViewController {
-        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID), backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return paymentComponentBottomView
     }
 
     public func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: selectedPaymentProvider, 
-                                                                   configuration: banksBottomConfiguration, 
-                                                                   strings: banksBottomStrings,
-                                                                   poweredByGiniConfiguration: poweredByGiniConfiguration,
-                                                                   poweredByGiniStrings: poweredByGiniStrings,
-                                                                   moreInformationConfiguration: moreInformationConfiguration,
-                                                                   moreInformationStrings: moreInformationStrings)
-        let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
+                                                                   configuration: configurationProvider.banksBottomConfiguration,
+                                                                   strings: stringsProvider.banksBottomStrings,
+                                                                   poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+                                                                   poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                                   moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
+                                                                   moreInformationStrings: stringsProvider.moreInformationStrings)
+        let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
 
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
@@ -249,37 +247,35 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     public func paymentInfoViewController() -> UIViewController {
-        let paymentInfoViewController = PaymentInfoViewController()
         let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders, 
-                                                        configuration: paymentInfoConfiguration, 
-                                                        strings: paymentInfoStrings,
-                                                        poweredByGiniConfiguration: poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: poweredByGiniStrings)
-        paymentInfoViewController.viewModel = paymentInfoViewModel
-        return paymentInfoViewController
+                                                        configuration: configurationProvider.paymentInfoConfiguration,
+                                                        strings: stringsProvider.paymentInfoStrings,
+                                                        poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+        return PaymentInfoViewController(viewModel: paymentInfoViewModel)
     }
 
     public func installAppBottomSheet() -> UIViewController {
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider,
-                                                                  installAppConfiguration: installAppConfiguration, 
-                                                                  strings: installAppStrings,
-                                                                  primaryButtonConfiguration: primaryButtonConfiguration,
-                                                                  poweredByGiniConfiguration: poweredByGiniConfiguration,
-                                                                  poweredByGiniStrings: poweredByGiniStrings)
+                                                                  installAppConfiguration: giniMerchant.installAppConfiguration,
+                                                                  strings: stringsProvider.installAppStrings,
+                                                                  primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
+                                                                  poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+                                                                  poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
         installAppBottomViewModel.viewDelegate = self
-        let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
+        let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return installAppBottomView
     }
 
     public func shareInvoiceBottomSheet() -> UIViewController {
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider,
-                                                                      configuration: shareInvoiceConfiguration, 
-                                                                      strings: shareInvoiceStrings,
-                                                                      primaryButtonConfiguration: primaryButtonConfiguration,
-                                                                      poweredByGiniConfiguration: poweredByGiniConfiguration,
-                                                                      poweredByGiniStrings: poweredByGiniStrings)
+                                                                      configuration: configurationProvider.shareInvoiceConfiguration,
+                                                                      strings: stringsProvider.shareInvoiceStrings,
+                                                                      primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
+                                                                      poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+                                                                      poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
         shareInvoiceBottomViewModel.viewDelegate = self
-        let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
+        let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         incrementOnboardingCountFor(paymentProvider: selectedPaymentProvider)
         return shareInvoiceBottomView
     }

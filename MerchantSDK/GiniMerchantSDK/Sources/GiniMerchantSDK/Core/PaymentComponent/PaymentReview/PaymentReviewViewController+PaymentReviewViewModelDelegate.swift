@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniPaymentComponents
 
 extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController) {

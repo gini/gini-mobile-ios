@@ -137,9 +137,9 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         setupView()
     }
     
-    init(viewModel: ShareInvoiceBottomViewModel, backgroundColor: UIColor, rectangleColor: UIColor, dimmingBackgroundColor: UIColor) {
+    init(viewModel: ShareInvoiceBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
         self.viewModel = viewModel
-        super.init(backgroundColor: backgroundColor, rectangleColor: rectangleColor, dimmingBackgroundColor: dimmingBackgroundColor)
+        super.init(configuration: bottomSheetConfiguration)
     }
     
     required init?(coder: NSCoder) {
