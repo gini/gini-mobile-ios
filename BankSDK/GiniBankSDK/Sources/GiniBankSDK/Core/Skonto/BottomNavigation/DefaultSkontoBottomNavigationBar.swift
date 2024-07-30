@@ -160,6 +160,11 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     }
 
     private func setupConstraints() {
+        var horizontalPadding: CGFloat = Constants.padding
+        if UIDevice.current.isIpad {
+            horizontalPadding += UIScreen.main.bounds.width * (1 - Constants.tabletWidthMultiplier) / 2
+        }
+
         NSLayoutConstraint.activate([
             dividerView.topAnchor.constraint(equalTo: topAnchor),
             dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -167,11 +172,13 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
             totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
-            totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                constant: horizontalPadding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.totalValueLabelTopPadding),
-            totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                     constant: horizontalPadding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
                                                   constant: Constants.savingsAmountLabelTopPadding),
@@ -179,7 +186,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
             skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                     constant: -Constants.padding),
+                                                      constant: -horizontalPadding),
 
             skontoBadgeLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
                                                   constant: Constants.badgeVerticalPadding),
@@ -190,7 +197,8 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                           constant: horizontalPadding),
             backButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
 
             proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
@@ -230,5 +238,6 @@ extension DefaultSkontoBottomNavigationBar {
         static let cornerRadius: CGFloat = 4
         static let totalValueLabelTopPadding: CGFloat = 4
         static let savingsAmountLabelTopPadding: CGFloat = 2
+        static let tabletWidthMultiplier: CGFloat = 0.7
     }
 }
