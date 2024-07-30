@@ -109,7 +109,7 @@ private extension SSLPinningManager {
 
 private extension SSLPinningManager {
     func trustCopyPublicKey(_ trust: SecTrust) -> SecKey? {
-        if #available(iOS 14, macOS 11, tvOS 14, watchOS 7, visionOS 1, *) {
+        if #available(iOS 14, *) {
             return SecTrustCopyKey(trust)
         } else {
             return SecTrustCopyPublicKey(trust)
@@ -117,7 +117,7 @@ private extension SSLPinningManager {
     }
     
     func trustCopyCertificateChain(_ trust: SecTrust) -> [SecCertificate]? {
-        if #available(iOS 15, macOS 11, tvOS 14, watchOS 7, visionOS 1, *) {
+        if #available(iOS 15, *) {
             return (SecTrustCopyCertificateChain(trust) as? [SecCertificate])
         } else {
             return (0..<SecTrustGetCertificateCount(trust)).compactMap { index in
@@ -127,9 +127,10 @@ private extension SSLPinningManager {
     }
 
     func sha256(data: Data) -> Data {
-        if #available(iOS 13.0, macOS 10.15, watchOS 6.0, tvOS 13.0, *) {
+        if #available(iOS 13.0, *) {
             return Data(SHA256.hash(data: data))
         } else {
+            //code to support ios < 13, import CommonCrypto should be removed with this code
             var hash = [UInt8](repeating: 0,  count: Int(CC_SHA256_DIGEST_LENGTH))
             data.withUnsafeBytes { buffer in
                 _ = CC_SHA256(buffer.baseAddress!, CC_LONG(buffer.count), &hash)

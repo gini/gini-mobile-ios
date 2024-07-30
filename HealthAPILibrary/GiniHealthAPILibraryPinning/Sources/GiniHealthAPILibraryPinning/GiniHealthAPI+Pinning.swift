@@ -41,10 +41,12 @@ public extension GiniHealthAPI.Builder {
      */
     init(customApiDomain: String,
          alternativeTokenSource: AlternativeTokenSource,
+         apiVersion: Int,
          pinningConfig: [String: [String]],
          logLevel: LogLevel = .none) {
         self.init(customApiDomain: customApiDomain,
-                  alternativeTokenSource: alternativeTokenSource,
+                  alternativeTokenSource: alternativeTokenSource, 
+                  apiVersion: apiVersion,
                   logLevel: logLevel,
                   sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
     }
