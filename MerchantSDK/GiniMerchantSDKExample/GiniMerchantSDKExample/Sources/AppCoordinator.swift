@@ -350,7 +350,7 @@ extension AppCoordinator: PaymentComponentsControllerProtocol {
 
 extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
-        let debugMenuViewController = DebugMenuViewController(showReviewScreen: configuration.showPaymentReviewScreen, isAmountFieldEditable: configuration.isAmountFieldEditable, paymentComponentConfiguration: paymentComponentConfiguration)
+        let debugMenuViewController = DebugMenuViewController(showReviewScreen: configuration.showPaymentReviewScreen, paymentComponentConfiguration: paymentComponentConfiguration)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -361,14 +361,8 @@ extension AppCoordinator: DebugMenuDelegate {
         switch type {
         case .showReviewScreen:
             configuration.showPaymentReviewScreen = isOn
-        case .amountEditable:
-            configuration.isAmountFieldEditable = isOn
         case .showBrandedView:
             paymentComponentConfiguration.isPaymentComponentBranded = isOn
-        case .showPaymentComponentInOneRow:
-            paymentComponentConfiguration.showPaymentComponentInOneRow = isOn
-        case .hideInfoForReturningUser:
-            paymentComponentConfiguration.hideInfoForReturningUser = isOn
         }
     }
 }
