@@ -44,6 +44,8 @@ class SkontoProceedView: UIView {
         label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
+        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return label
     }()
 
@@ -55,9 +57,11 @@ class SkontoProceedView: UIView {
         let labelText = String.localizedStringWithFormat(skontoTitle,
                                                          viewModel.formattedPercentageDiscounted)
         label.text = labelText
-        label.numberOfLines = 0
         label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return label
     }()
 
@@ -78,9 +82,9 @@ class SkontoProceedView: UIView {
         label.textColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
         let labelText = viewModel.savingsAmountString
         label.text = labelText
-        label.numberOfLines = 0
         label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
 
@@ -137,7 +141,8 @@ class SkontoProceedView: UIView {
 
             totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
             totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
-            totalLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -horizontalPadding),
+            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
+                                                 constant: -Constants.badgeHorizontalPadding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.totalValueLabelTopPadding),
@@ -147,6 +152,8 @@ class SkontoProceedView: UIView {
             savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
                                                     constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
+            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
+                                                         constant: -horizontalPadding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
             skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -horizontalPadding),
