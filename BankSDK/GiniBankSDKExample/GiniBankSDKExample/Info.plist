@@ -79,6 +79,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Um Dokumente auf deinem Gerät zu importieren, erlaube den Zugriff auf deine Fotos  🏞 -&gt; 📄 -&gt; 🎉</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Your activity will be used to provide a better user experience.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

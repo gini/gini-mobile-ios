@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 import GiniHealthAPILibrary
 
 /**
@@ -133,13 +134,11 @@ final class PaymentComponentViewModel {
          giniMerchantConfiguration: GiniMerchantConfiguration,
          paymentComponentConfiguration: PaymentComponentConfiguration? = nil) {
         self.giniMerchantConfiguration = giniMerchantConfiguration
-        let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
-        let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
-        let defaultMediumFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .medium)
-        self.moreInformationLabelFont = giniMerchantConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
-        self.moreInformationLabelLinkFont = giniMerchantConfiguration.textStyleFonts[.linkBold] ?? defaultBoldFont
-        self.selectYourBankLabelFont = giniMerchantConfiguration.textStyleFonts[.subtitle2] ?? defaultMediumFont
-        
+
+        self.moreInformationLabelFont = giniMerchantConfiguration.font(for: .captions1)
+        self.moreInformationLabelLinkFont = giniMerchantConfiguration.font(for: .linkBold)
+        self.selectYourBankLabelFont = giniMerchantConfiguration.font(for: .subtitle2)
+
         self.hasBankSelected = paymentProvider != nil
         self.bankImageIconData = paymentProvider?.iconData
         self.paymentProviderColors = paymentProvider?.colors

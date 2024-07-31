@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 import GiniHealthAPILibrary
 
 struct FAQSection {
@@ -63,16 +64,13 @@ final class PaymentInfoViewModel {
         
         let giniConfiguration = GiniMerchantConfiguration.shared
         
-        let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
-        let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .bold)
-        
-        payBillsTitleFont = giniConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
-        payBillsDescriptionFont = giniConfiguration.textStyleFonts[.body2] ?? defaultRegularFont
-        questionsTitleFont = giniConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
-        giniFont = giniConfiguration.textStyleFonts[.button] ?? defaultBoldFont
-        answersFont = giniConfiguration.textStyleFonts[.body2] ?? defaultRegularFont
-        linksFont = giniConfiguration.textStyleFonts[.linkBold] ?? defaultBoldFont
-        
+        payBillsTitleFont = giniConfiguration.font(for: .subtitle1)
+        payBillsDescriptionFont = giniConfiguration.font(for: .body2)
+        questionsTitleFont = giniConfiguration.font(for: .subtitle1)
+        giniFont = giniConfiguration.font(for: .button)
+        answersFont = giniConfiguration.font(for: .body2)
+        linksFont = giniConfiguration.font(for: .linkBold)
+
         payBillsDescriptionLinkAttributes = [.foregroundColor: linksTextColor]
         
         configurePayBillsGiniLink()

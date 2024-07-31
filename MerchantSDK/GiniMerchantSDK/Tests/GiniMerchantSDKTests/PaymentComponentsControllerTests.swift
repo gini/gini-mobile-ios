@@ -6,6 +6,7 @@
 //
 
 import XCTest
+@testable import GiniUtilites
 @testable import GiniMerchantSDK
 @testable import GiniHealthAPILibrary
 
