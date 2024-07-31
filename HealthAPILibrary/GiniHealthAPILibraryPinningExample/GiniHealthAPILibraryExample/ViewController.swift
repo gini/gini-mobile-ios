@@ -8,7 +8,6 @@
 import UIKit
 import GiniHealthAPILibrary
 import GiniHealthAPILibraryPinning
-import TrustKit
 
 class ViewController: UIViewController {
     override func viewDidLoad() {
