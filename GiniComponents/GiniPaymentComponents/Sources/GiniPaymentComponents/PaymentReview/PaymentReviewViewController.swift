@@ -27,8 +27,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     let model: PaymentReviewModel
     private let selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
 
-    private init(viewModel: PaymentReviewModel,
-                 selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
+    init(viewModel: PaymentReviewModel,
+         selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
         self.model = viewModel
         self.selectedPaymentProvider = selectedPaymentProvider
         super.init(nibName: nil, bundle: nil)

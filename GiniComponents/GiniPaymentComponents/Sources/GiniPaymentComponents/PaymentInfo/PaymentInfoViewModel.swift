@@ -42,7 +42,7 @@ public final class PaymentInfoViewModel {
     }
     
     private func setupQuestions() {
-        for index in 0 ... strings.questions.count {
+        for index in 0 ... strings.questions.count-1 {
             let answerAttributedString = answerWithAttributes(answer: strings.answers[index])
             let questionSection = FAQSection(title: strings.questions[index],
                                              description: textWithLinks(linkFont: configuration.linksFont, attributedString: answerAttributedString),
