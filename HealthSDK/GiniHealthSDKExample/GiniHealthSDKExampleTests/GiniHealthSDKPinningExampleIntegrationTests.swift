@@ -8,8 +8,6 @@
 import XCTest
 @testable import GiniHealthSDK
 @testable import GiniHealthAPILibrary
-@testable import GiniHealthAPILibraryPinning
-@testable import GiniHealthSDKPinning
 
 class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
     

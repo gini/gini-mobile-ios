@@ -100,6 +100,47 @@ extension GiniHealthAPI {
             self.sessionDelegate = sessionDelegate
         }
 
+        /**
+         *  Creates a Gini Health API Library with certificate pinning configuration.
+         *
+         * - Parameter client:            The Gini Health API client credentials
+         * - Parameter api:               The Gini Health API that the library interacts with. `APIDomain.default` by default
+         * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
+         * - Parameter pinningConfig:     Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+         * - Parameter logLevel:          The log level. `LogLevel.none` by default.
+         */
+        public init(client: Client,
+                    api: APIDomain = .default,
+                    userApi: UserDomain = .default,
+                    pinningConfig: [String: [String]],
+                    logLevel: LogLevel = .none) {
+            self.init(client: client,
+                      api: api,
+                      userApi: userApi,
+                      logLevel: logLevel,
+                      sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
+        }
+        
+        /**
+         * Creates a Gini Health API Library to be used with a transparent proxy and a custom api access token source and certificate pinning configuration.
+         *
+         * - Parameter customApiDomain:        A custom api domain string.
+         * - Parameter alternativeTokenSource: A protocol for using custom api access token
+         * - Parameter pinningConfig:          Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+         * - Parameter logLevel:               The log level. `LogLevel.none` by default.
+         */
+        public init(customApiDomain: String,
+                    alternativeTokenSource: AlternativeTokenSource,
+                    apiVersion: Int,
+                    pinningConfig: [String: [String]],
+                    logLevel: LogLevel = .none) {
+            self.init(customApiDomain: customApiDomain,
+                      alternativeTokenSource: alternativeTokenSource,
+                      apiVersion: apiVersion,
+                      logLevel: logLevel,
+                      sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig))
+        }
+
         public func build() -> GiniHealthAPI {
             // Save client information
             save(client)
