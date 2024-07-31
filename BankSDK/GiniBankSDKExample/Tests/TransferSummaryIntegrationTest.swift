@@ -96,7 +96,7 @@ class TransferSummaryIntegrationTest: XCTestCase {
                                 XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                                                extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
 
-                                let fixtureLineItems = fixtureExtractionsAfterFeedbackContainer.compoundExtractions?["lineItems"]
+                                let fixtureLineItems = fixtureExtractionsAfterFeedbackContainer.compoundExtractions?.lineItems
 
                                 if let firstLineItemAfterFeedback = extractionResult.lineItems?.first, let fixtureLineItem = fixtureLineItems?.first {
                                     XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "baseGross" })?.value,

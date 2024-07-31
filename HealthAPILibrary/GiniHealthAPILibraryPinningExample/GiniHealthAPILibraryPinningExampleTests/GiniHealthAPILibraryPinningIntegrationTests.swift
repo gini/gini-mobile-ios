@@ -8,7 +8,6 @@
 import XCTest
 @testable import GiniHealthAPILibraryPinning
 @testable import GiniHealthAPILibrary
-@testable import TrustKit
 
 class GiniHealthAPILibraryPinningIntegrationTests: XCTestCase {
     // When running from Xcode: update these environment variables in the scheme.
@@ -21,22 +20,19 @@ class GiniHealthAPILibraryPinningIntegrationTests: XCTestCase {
 
     override func setUp() {
         let yourPublicPinningConfig = [
-            kTSKPinnedDomains: [
-                "pay-api.gini.net": [
-                    kTSKPublicKeyHashes: [
-                        // old *.gini.net public key
-                        "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
-                        // new *.gini.net public key, active from around June 2020
-                        "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
-                    ]],
-                "user.gini.net": [
-                    kTSKPublicKeyHashes: [
-                        // old *.gini.net public key
-                        "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
-                        // new *.gini.net public key, active from around June 2020
-                        "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
-                    ]],
-            ]] as [String: Any]
+            "health-api.gini.net": [
+                // old *.gini.net public key
+                "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                // new *.gini.net public key, active from around June 2020
+                "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+            ],
+            "user.gini.net": [
+                // old *.gini.net public key
+                "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                // new *.gini.net public key, active from around June 2020
+                "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+            ],
+        ]
         let client = Client(id: clientId, secret: clientSecret, domain: "health-api.gini.net")
         giniHealthAPILib = GiniHealthAPI.Builder(client: client, pinningConfig: yourPublicPinningConfig).build()
         documentService = giniHealthAPILib.documentService()

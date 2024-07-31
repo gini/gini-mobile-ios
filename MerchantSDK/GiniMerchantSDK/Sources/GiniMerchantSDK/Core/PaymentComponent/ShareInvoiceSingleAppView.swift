@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 class ShareInvoiceSingleAppView: UIView {
     // Subviews
@@ -21,7 +22,7 @@ class ShareInvoiceSingleAppView: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = GiniColor.standard3.uiColor()
-        label.font = GiniMerchantConfiguration.shared.textStyleFonts[.caption2] ?? UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = GiniMerchantConfiguration.shared.font(for: .captions2)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

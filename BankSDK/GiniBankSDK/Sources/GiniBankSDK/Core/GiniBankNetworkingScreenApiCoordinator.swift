@@ -1,8 +1,8 @@
 //
 //  GiniPayBankNetworkingScreenApiCoordinator.swift
-// GiniBank
+//  GiniBank
 //
-//  Created by Nadya Karaban on 03.03.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -112,6 +112,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
+    private var configurationService: ClientConfigurationServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
     public init(client: Client,
@@ -121,10 +122,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 api: APIDomain,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 lib: GiniBankAPI) {
-        documentService = GiniBankNetworkingScreenApiCoordinator.documentService(with: lib,
-                                                               documentMetadata: documentMetadata,
-                                                               configuration: configuration,
-                                                               for: api)
+        documentService = DocumentService(lib: lib, metadata: documentMetadata)
+        configurationService = lib.configurationService()
         let captureConfiguration = configuration.captureConfiguration()
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
 
@@ -140,10 +139,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 configuration: GiniBankConfiguration,
                 documentMetadata: Document.Metadata?,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
-                captureNetworkService: GiniCaptureNetworkService) {
+                captureNetworkService: GiniCaptureNetworkService,
+                configurationService: ClientConfigurationServiceProtocol?) {
 
         documentService = DocumentService(giniCaptureNetworkService: captureNetworkService,
                                           metadata: documentMetadata)
+        self.configurationService = configurationService
         let captureConfiguration = configuration.captureConfiguration()
 
         super.init(withDelegate: nil,
@@ -151,7 +152,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
         GiniBank.setConfiguration(configuration)
-
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
@@ -175,16 +175,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                   api: api,
                   trackingDelegate: trackingDelegate,
                   lib: lib)
-    }
-
-    private static func documentService(with lib: GiniBankAPI,
-                                        documentMetadata: Document.Metadata?,
-                                        configuration: GiniBankConfiguration,
-                                        for api: APIDomain) -> DocumentServiceProtocol {
-        switch api {
-        case .default, .gym, .custom:
-            return DocumentService(lib: lib, metadata: documentMetadata)
-        }
     }
 
     private func deliver(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
@@ -219,10 +209,121 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     public func didPressEnterManually() {
         self.resultsDelegate?.giniCaptureDidEnterManually()
     }
+
+    /**
+     This method first attempts to fetch configuration settings using the `configurationService`.
+     If the configurations are successfully fetched, it initializes the analytics with the fetched configuration
+     on the main thread. Regardless of the result of fetching configurations, it then proceeds to start the
+     SDK with the provided documents.
+     */
+    public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
+        setupAnalytics(withDocuments: documents)
+        configurationService?.fetchConfigurations(completion: { result in
+            switch result {
+            case .success(let configuration):
+                DispatchQueue.main.async {
+                    self.initializeAnalytics(with: configuration)
+                }
+            case .failure(let error):
+                print("❌ configurationService with error: \(error)")
+                // There will be no retries if the endpoint fails.
+                // We will not implement any caching mechanism on our side if the request is too slow.
+                // In case of a failure, the UJ analytics will remain disabled for that session.
+            }
+        })
+        return self.start(withDocuments: documents, animated: animated)
+    }
 }
 
-extension GiniBankNetworkingScreenApiCoordinator {
-    public func deliverWithReturnAssistant(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
+// MARK: - Analytics Handling Extension
+
+private extension GiniBankNetworkingScreenApiCoordinator {
+
+    private func setupAnalytics(withDocuments documents: [GiniCaptureDocument]?) {
+        // Clean the GiniAnalyticsManager properties and events queue between SDK sessions.
+        /// The `cleanManager` method of `GiniAnalyticsManager` is called to ensure that properties and events
+        /// are reset between SDK sessions. This is particularly important when the SDK is reopened using
+        /// the `openWith` flow after it has already been opened for the first time. Without this reset,
+        /// residual properties and events from the previous session could lead to incorrect analytics data.
+        GiniAnalyticsManager.cleanManager()
+
+        // Set new sessionId every time the SDK is initialized
+        GiniAnalyticsManager.setSessionId()
+
+        var entryPointValue = GiniEntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
+        if let documents = documents, !documents.isEmpty, !documents.containsDifferentTypes {
+            entryPointValue = GiniEntryPointAnalytics.openWith.rawValue
+        }
+        GiniAnalyticsManager.registerSuperProperties([.entryPoint: entryPointValue])
+        GiniAnalyticsManager.track(event: .sdkOpened, screenName: nil)
+    }
+
+    private func initializeAnalytics(with configuration: ClientConfiguration) {
+        let analyticsEnabled = configuration.userJourneyAnalyticsEnabled
+        let analyticsConfiguration = GiniAnalyticsConfiguration(clientID: configuration.clientID,
+                                                                userJourneyAnalyticsEnabled: analyticsEnabled,
+                                                                amplitudeApiKey: configuration.amplitudeApiKey)
+
+        GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
+                                                  .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons,
+                                                  .bankSDKVersion: GiniBankSDKVersion])
+        GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
+    }
+}
+
+private extension GiniBankNetworkingScreenApiCoordinator {
+    // MARK: - Deliver with Skonto
+    private func deliverWithSkonto(result: ExtractionResult, analysisDelegate: AnalysisDelegate? = nil) {
+        let hasExtractions = result.extractions.count > 0
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            if hasExtractions {
+                let images = self.pages.compactMap { $0.document.previewImage }
+                let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: result.extractions.compactMap {
+                    guard let name = $0.name else { return nil }
+
+                    return (name, $0)
+                })
+
+                let documentService = self.documentService
+
+                let result = AnalysisResult(extractions: extractions,
+                                            skontoDiscounts: result.skontoDiscounts,
+                                            images: images,
+                                            document: documentService.document,
+                                            candidates: result.candidates)
+                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+
+                self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
+            } else {
+                analysisDelegate?.tryDisplayNoResultsScreen()
+                self.documentService.resetToInitialState()
+            }
+        }
+    }
+
+    private func showSkontoScreen(skontoDiscounts: SkontoDiscounts) {
+        let coordinator = SkontoCoordinator(screenAPINavigationController,
+                                            skontoDiscounts)
+        coordinator.delegate = self
+        childCoordinators.append(coordinator)
+        coordinator.start()
+    }
+
+    private func handleSkontoScreenDisplay(_ extractionResult: ExtractionResult,
+                                           _ networkDelegate: GiniCaptureNetworkDelegate) {
+        do {
+            let skontoDiscounts = try SkontoDiscounts(extractions: extractionResult)
+            showSkontoScreen(skontoDiscounts: skontoDiscounts)
+        } catch {
+            deliverWithSkonto(result: extractionResult,
+                              analysisDelegate: networkDelegate)
+        }
+    }
+
+    // MARK: Deliver with Return Assistant
+    private func deliverWithReturnAssistant(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
         let hasExtractions = result.extractions.count > 0
 
         DispatchQueue.main.async { [weak self] in
@@ -242,6 +343,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                             images: images,
                                             document: documentService.document,
                                             candidates: result.candidates)
+                sendAnalyticsEventSDKClose()
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
                 self.giniBankConfiguration.lineItems = result.lineItems
@@ -252,7 +354,12 @@ extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
-    public func showDigitalInvoiceScreen(digitalInvoice: DigitalInvoice, analysisDelegate: AnalysisDelegate) {
+    private func sendAnalyticsEventSDKClose() {
+        GiniAnalyticsManager.track(event: .sdkClosed,
+                                   properties: [GiniAnalyticsProperty(key: .status, value: "successful")])
+    }
+
+    private func showDigitalInvoiceScreen(digitalInvoice: DigitalInvoice, analysisDelegate: AnalysisDelegate) {
         let coordinator = DigitalInvoiceCoordinator(navigationController: screenAPINavigationController,
                                                     digitalInvoice: digitalInvoice,
                                                     analysisDelegate: analysisDelegate)
@@ -261,24 +368,21 @@ extension GiniBankNetworkingScreenApiCoordinator {
         coordinator.start()
     }
 
-    public func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
+    // MARK: - Start Analysis with Return Assistant or Skonto
+
+    private func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
         documentService.startAnalysis { result in
 
             switch result {
             case let .success(extractionResult):
 
                 DispatchQueue.main.async {
-                    if GiniBankConfiguration.shared.returnAssistantEnabled {
-                        do {
-                            let digitalInvoice = try DigitalInvoice(extractionResult: extractionResult)
-                            self.showDigitalInvoiceScreen(digitalInvoice: digitalInvoice,
-                                                          analysisDelegate: networkDelegate)
-                        } catch {
-                            self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
-                        }
 
+                    if GiniBankConfiguration.shared.returnAssistantEnabled && extractionResult.lineItems != nil {
+                        self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
+                    } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
+                        self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
-                        extractionResult.lineItems = nil
                         self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
                     }
                 }
@@ -297,9 +401,21 @@ extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
-    func uploadWithReturnAssistant(document: GiniCaptureDocument,
-                                   didComplete: @escaping (GiniCaptureDocument) -> Void,
-                                   didFail: @escaping (GiniCaptureDocument, GiniError) -> Void) {
+    private func handleReturnAssistantScreenDisplay(_ extractionResult: ExtractionResult,
+                                                    _ networkDelegate: GiniCaptureNetworkDelegate) {
+        do {
+            let digitalInvoice = try DigitalInvoice(extractionResult: extractionResult)
+            showDigitalInvoiceScreen(digitalInvoice: digitalInvoice,
+                                     analysisDelegate: networkDelegate)
+        } catch {
+            deliverWithReturnAssistant(result: extractionResult,
+                                       analysisDelegate: networkDelegate)
+        }
+    }
+
+    private func uploadWithReturnAssistant(document: GiniCaptureDocument,
+                                           didComplete: @escaping (GiniCaptureDocument) -> Void,
+                                           didFail: @escaping (GiniCaptureDocument, GiniError) -> Void) {
         documentService.upload(document: document) { result in
             switch result {
             case .success:
@@ -310,9 +426,9 @@ extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
-    func uploadAndStartAnalysisWithReturnAssistant(document: GiniCaptureDocument,
-                                                   networkDelegate: GiniCaptureNetworkDelegate,
-                                                   uploadDidFail: @escaping () -> Void) {
+    private func uploadAndStartAnalysisWithReturnAssistant(document: GiniCaptureDocument,
+                                                           networkDelegate: GiniCaptureNetworkDelegate,
+                                                           uploadDidFail: @escaping () -> Void) {
         uploadWithReturnAssistant(document: document, didComplete: { _ in
             self.startAnalysisWithReturnAssistant(networkDelegate: networkDelegate)
         }, didFail: { _, error in
@@ -335,5 +451,20 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
     func didCancelAnalysis(_ coordinator: DigitalInvoiceCoordinator) {
         childCoordinators = childCoordinators.filter { $0 !== coordinator }
         resultsDelegate?.giniCaptureDidCancelAnalysis()
+    }
+}
+
+extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
+    func didFinishAnalysis(_ coordinator: SkontoCoordinator,
+                           _ editedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
+        guard let editedExtractionResult else { return }
+        deliverWithSkonto(result: editedExtractionResult)
+    }
+
+    func didCancelAnalysis(_ coordinator: SkontoCoordinator) {
+        childCoordinators = childCoordinators.filter { $0 !== coordinator }
+        pages = []
+        didCancelAnalysis()
+        _ = start(withDocuments: nil, animated: true)
     }
 }

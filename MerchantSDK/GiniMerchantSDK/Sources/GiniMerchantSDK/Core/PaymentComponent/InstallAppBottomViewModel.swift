@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 import GiniHealthAPILibrary
 
 protocol InstallAppBottomViewProtocol: AnyObject {
@@ -76,12 +77,9 @@ final class InstallAppBottomViewModel {
         self.paymentProviderColors = selectedPaymentProvider?.colors
         
         titleText = titleText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
-        
-        let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
-        let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
 
-        self.titleLabelFont = giniMerchantConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
-        self.moreInformationLabelFont = giniMerchantConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
+        self.titleLabelFont = giniMerchantConfiguration.font(for: .subtitle1)
+        self.moreInformationLabelFont = giniMerchantConfiguration.font(for: .captions1)
     }
     
     func didTapOnContinue() {

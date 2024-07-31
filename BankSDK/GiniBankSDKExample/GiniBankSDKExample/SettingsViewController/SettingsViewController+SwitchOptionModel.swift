@@ -51,6 +51,8 @@ struct SwitchOptionModel {
 		case giniErrorLoggerIsOn
 		case customGiniErrorLogger
 		case debugModeOn
+        case skontoNavigationBarBottomAdapter
+        case skontoEnabled
 		
 		var title: String {
 			switch self {
@@ -126,6 +128,8 @@ struct SwitchOptionModel {
 				return "Custom configuration for the add page button"
 			case .returnAssistantEnabled:
 				return "Return Assistant feature"
+            case .skontoEnabled:
+                return "Skonto feature"
 			case .enableReturnReasons:
 				return "Return reasons dialog"
 			case .customDocumentValidations:
@@ -136,7 +140,9 @@ struct SwitchOptionModel {
 				return "Custom Gini error logger"
 			case .debugModeOn:
 				return "Debug mode"
-			}
+            case .skontoNavigationBarBottomAdapter:
+                return "Skonto bottom navigation bar"
+            }
 		}
 		
 		var message: String? {
@@ -197,10 +203,14 @@ struct SwitchOptionModel {
 				return "Add page button used on `Review `screen."
 			case .returnAssistantEnabled:
 				return "Present a digital representation of the invoice"
+            case .skontoEnabled:
+                return "Present Skonto"
 			case .customDocumentValidations:
 				return "Custom document validations that can be done apart from the default ones (file size, file type...)"
 			case .customGiniErrorLogger:
 				return "This will work if the `Gini error logger` is also enabled."
+            case .skontoNavigationBarBottomAdapter:
+                return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			default:
 				return nil
 			}

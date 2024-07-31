@@ -6,7 +6,7 @@
 //
 
 import UIKit
-@testable import GiniMerchantSDK
+@testable import GiniUtilites
 
 struct MockUIApplication: URLOpenerProtocol {
     var canOpen: Bool

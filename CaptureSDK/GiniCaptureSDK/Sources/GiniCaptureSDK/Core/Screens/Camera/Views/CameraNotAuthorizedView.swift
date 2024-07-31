@@ -1,13 +1,10 @@
 //
 //  CameraNotAuthorizedView.swift
-//  GiniCapture
 //
-//  Created by Peter Pult on 06/07/16.
-//  Copyright © 2016 Gini GmbH. All rights reserved.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
-import AVFoundation
 
 final class CameraNotAuthorizedView: UIView {
     // User interface
@@ -94,6 +91,7 @@ final class CameraNotAuthorizedView: UIView {
 
     @objc
     private func openSettings() {
+        GiniAnalyticsManager.track(event: .giveAccessTapped, screenName: .cameraAccess)
         UIApplication.shared.openAppSettings()
     }
 

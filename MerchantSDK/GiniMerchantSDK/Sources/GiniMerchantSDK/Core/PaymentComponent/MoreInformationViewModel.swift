@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 protocol MoreInformationViewProtocol: AnyObject {
     func didTapOnMoreInformation()
@@ -24,8 +25,7 @@ final class MoreInformationViewModel {
     let moreInformationIcon: UIImage = GiniMerchantImage.info.preferredUIImage()
     
     init() {
-        let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 12, weight: .regular)
-        self.moreInformationLabelLinkFont = GiniMerchantConfiguration.shared.textStyleFonts[.caption2] ?? defaultBoldFont
+        moreInformationLabelLinkFont = GiniMerchantConfiguration.shared.font(for: .captions2)
     }
     
     func tapOnMoreInformation() {
