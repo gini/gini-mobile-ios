@@ -10,7 +10,6 @@ import XCTest
 @testable import GiniMerchantSDKPinning
 @testable import GiniHealthAPILibrary
 @testable import GiniHealthAPILibraryPinning
-@testable import TrustKit
 
 class GiniMerchantSDKPinningExampleWrongCertificatesTests: XCTestCase {
     
@@ -19,20 +18,17 @@ class GiniMerchantSDKPinningExampleWrongCertificatesTests: XCTestCase {
     let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
     let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
     let yourPublicPinningConfig = [
-        kTSKPinnedDomains: [
             "health-api.gini.net": [
-                kTSKPublicKeyHashes: [
-                    // Wrong hashes
-                    "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
-                    "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
-                ]],
+                // Wrong hashes
+                "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
+                "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
+            ],
             "user.gini.net": [
-                kTSKPublicKeyHashes: [
-                    // Wrong hashes
-                    "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
-                    "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
-                ]],
-        ]] as [String: Any]
+                // Wrong hashes
+                "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
+                "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
+            ],
+        ]
 
     var giniHealthAPILib: GiniHealthAPI!
     var paymentService: PaymentService!
