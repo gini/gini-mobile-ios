@@ -147,7 +147,8 @@ class SkontoProceedView: UIView {
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.totalValueLabelTopPadding),
             totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
-            totalValueLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -horizontalPadding),
+            totalValueLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
+                                                      constant: -horizontalPadding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
                                                     constant: Constants.savingsAmountLabelTopPadding),

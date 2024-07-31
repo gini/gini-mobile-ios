@@ -50,7 +50,6 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.font = configuration.textStyleFonts[.subheadline]
         label.textColor = .giniColorScheme().text.primary.uiColor()
         label.adjustsFontForContentSizeCategory = true
-        label.setContentHuggingPriority(.required, for: .vertical)
         let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                             comment: "Total")
         label.text = text
@@ -61,10 +60,12 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     private lazy var totalValueLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.title2Bold]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        label.setContentHuggingPriority(.required, for: .vertical)
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return label
     }()
 
@@ -73,8 +74,10 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
-        label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return label
     }()
 
@@ -93,8 +96,8 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
-        label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
 
@@ -174,15 +177,21 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
             totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
                                                 constant: horizontalPadding),
+            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
+                                                 constant: -Constants.badgeHorizontalPadding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.totalValueLabelTopPadding),
             totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
                                                      constant: horizontalPadding),
+            totalValueLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
+                                                      constant: -horizontalPadding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
                                                   constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
+            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
+                                                         constant: -horizontalPadding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
             skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor,
