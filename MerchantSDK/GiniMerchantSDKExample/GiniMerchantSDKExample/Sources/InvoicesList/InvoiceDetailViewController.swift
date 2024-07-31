@@ -44,12 +44,11 @@ final class InvoiceDetailViewController: UIViewController {
     private let errorTitleText = NSLocalizedString("example.invoicesList.error", comment: "")
     
     private var items: [(String, String)] {
-        var items = [(FieldTitle.documentID.rawValue, invoice.documentID)]
-        if let recipient = invoice.recipient { items.append((FieldTitle.recipient.rawValue, recipient)) }
-        if let iban = invoice.iban { items.append((FieldTitle.iban.rawValue, iban)) }
-        if let amountToPay = invoice.amountToPay { items.append((FieldTitle.amountToPay.rawValue, amountToPay)) }
-        if let purpose = invoice.purpose { items.append((FieldTitle.purpose.rawValue, purpose)) }
-        if let dueDate = invoice.paymentDueDate { items.append((FieldTitle.paymentDueDate.rawValue, dueDate)) }
+        var items: [(String, String)] = []
+        if let recipient = invoice.recipient { items.append((Fields.recipient.rawValue, recipient)) }
+        if let iban = invoice.iban { items.append((Fields.iban.rawValue, iban)) }
+        if let amountToPay = invoice.amountToPay { items.append((Fields.amountToPay.rawValue, amountToPay)) }
+        if let purpose = invoice.purpose { items.append((Fields.purpose.rawValue, purpose)) }
 
         return items
     }
@@ -121,10 +120,6 @@ final class InvoiceDetailViewController: UIViewController {
 //        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: invoice.documentID)
 //        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
 //        self.present(paymentViewBottomSheet, animated: false)
-    }
-
-    @objc private func didTapOnView() {
-        view.endEditing(true)
     }
 
     @objc private func didTapOnView() {
