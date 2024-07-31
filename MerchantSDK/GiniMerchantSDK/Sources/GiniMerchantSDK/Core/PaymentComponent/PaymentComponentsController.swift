@@ -22,11 +22,11 @@ protocol PaymentComponentsProtocol {
     var selectedPaymentProvider: PaymentProvider? { get set }
     func loadPaymentProviders()
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniMerchantError>) -> Void)
-    func paymentView(documentId: String) -> UIView
+    func paymentView(documentId: String?) -> UIView
     func bankSelectionBottomSheet() -> UIViewController
     func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void)
     func paymentInfoViewController() -> UIViewController
-    func paymentViewBottomSheet(documentID: String) -> UIViewController
+    func paymentViewBottomSheet(documentID: String?) -> UIViewController
 }
 
 /**
@@ -138,7 +138,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      - Parameters:
      - Returns: a custom view
      */
-    public func paymentView(documentId: String) -> UIView {
+    public func paymentView(documentId: String?) -> UIView {
         paymentComponentView = PaymentComponentView()
         let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniMerchantConfiguration: giniMerchantConfiguration)
         paymentComponentViewModel.delegate = viewDelegate
@@ -175,7 +175,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
 
     // MARK: - Bottom Sheets
 
-    public func paymentViewBottomSheet(documentID: String) -> UIViewController {
+    public func paymentViewBottomSheet(documentID: String?) -> UIViewController {
         let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID))
         return paymentComponentBottomView
     }

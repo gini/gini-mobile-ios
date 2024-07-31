@@ -49,9 +49,9 @@
 "ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text" = "privacy policy[LINK]";
 "ginihealth.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/en/";
 "ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
-"ginihealth.paymentcomponent.installAppBottomSheet.title" = "Billing data ready to share with the [BANK] bank";
+"ginihealth.paymentcomponent.installAppBottomSheet.title" = "Invoice data ready to share with the [BANK] bank";
 "ginihealth.paymentcomponent.installAppBottomSheet.notes.description" = "Note: You must first update or install the [BANK] app from the App store";
-"ginihealth.paymentcomponent.installAppBottomSheet.tip.description" = "Tip: Tap 'Forward' to complete the payment. The [BANK] app will open automatically, for you to confirm the transaction. Thank you!";
+"ginihealth.paymentcomponent.installAppBottomSheet.tip.description" = "Tip: Tap 'Forward' to complete the payment in the [BANK] app.";
 "ginihealth.paymentcomponent.installAppBottomSheet.continue.button.text" = "Forward";
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.title" = "Invoice data ready to share";
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.description" = "In the next step, select the [BANK] app to open and complete your payment in the banking app.";

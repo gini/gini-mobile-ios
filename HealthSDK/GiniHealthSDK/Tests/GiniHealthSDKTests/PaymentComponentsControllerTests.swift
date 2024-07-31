@@ -38,7 +38,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertFalse(mockPaymentComponentsController.isLoading)
         XCTAssertNil(mockPaymentComponentsController.selectedPaymentProvider)
     }
-    
+
     func testCheckIfDocumentIsPayable_Success() {
         let expectedResult: Result<Bool, GiniHealthError> = .success(true)
         // When
@@ -50,7 +50,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // Then
         XCTAssertEqual(receivedResult, expectedResult)
     }
-    
+
     func testCheckIfDocumentIsPayable_NotPayable() {
         let expectedResult: Result<Bool, GiniHealthError> = .success(false)
         // When
@@ -62,7 +62,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // Then
         XCTAssertEqual(receivedResult, expectedResult)
     }
-    
+
     func testCheckIfDocumentIsPayable_Failure() {
         let expectedResult: Result<Bool, GiniHealthError> = .failure(.apiError(.noResponse))
         // When
@@ -74,7 +74,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // Then
         XCTAssertEqual(receivedResult, expectedResult)
     }
-    
+
     func testPaymentView_ReturnsView() {
         // Given
         let documentId = "123456"

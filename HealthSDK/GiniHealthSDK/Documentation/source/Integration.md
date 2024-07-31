@@ -90,14 +90,17 @@ self.healthSDK.documentService
 
 ## Check which documents/invoices are payable
 
-GiniHealth provides a method for checking if the document is payable or not.
+We provide 2 ways of doing this.
+1. GiniHealth provides a variable for checking if the document is payable or not. You can look for `payment_state` of the document/invoice. The document/invoice is payable if `payment_state` is `Payable` 
+
+2. GiniHealth provides a method for checking if the document is payable or not.
 
 ```swift
 healthSDK.checkIfDocumentIsPayable(docId: String,
                                    completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
 ```
 
-The method returns success and `true` value if Iban was extracted.
+The method returns success and `true` value if `payment_state` was extracted.
 
 > - We recommend using a `DispatchGroup` for these requests, waiting till all of them are ready, and then, reloading the list.
 

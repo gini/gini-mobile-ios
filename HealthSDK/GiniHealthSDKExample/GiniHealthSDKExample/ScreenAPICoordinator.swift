@@ -90,21 +90,23 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
             healthSdk.fetchDataForReview(documentId: docId) { [weak self] resultReview in
                 switch resultReview {
                 case .success(let data):
-                    // Store invoice/document into Invoices list
-                    self?.giniHealth?.checkIfDocumentIsPayable(docId: result.document?.id ?? "", completion: { [weak self] resultPayable in
-                        switch resultPayable {
-                        case .success(let isPayable):
-                            let invoice = DocumentWithExtractions(documentID: result.document?.id ?? "",
-                                                                  extractions: data.extractions,
-                                                                  isPayable: isPayable)
+                    healthSdk.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
+                        switch result {
+                        case let .success(extractionResult):
+                            print("✅Successfully fetched extractions for id: \(docId)")
+                            // Store invoice/document into Invoices list
+                            let invoice = DocumentWithExtractions(documentID: docId,
+                                                                  extractionResult: extractionResult)
                             self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
-                            self?.rootViewController.dismiss(animated: true, completion: {
-                                self?.delegate?.presentInvoicesList(invoices: [invoice])
-                            })
-                        case .failure(let error):
-                            print("❌ Checking if document is payable failed: \(String(describing: error))")
+                            DispatchQueue.main.async {
+                                self?.rootViewController.dismiss(animated: true, completion: {
+                                    self?.delegate?.presentInvoicesList(invoices: [invoice])
+                                })
+                            }
+                        case let .failure(error):
+                            print("❌Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))")
                         }
-                    })
+                    }
                 case .failure(let error):
                     print("❌ Document data fetching failed: \(String(describing: error))")
                 }
