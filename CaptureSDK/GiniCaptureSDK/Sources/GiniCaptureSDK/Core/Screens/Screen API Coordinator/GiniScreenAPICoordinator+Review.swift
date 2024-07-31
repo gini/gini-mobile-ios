@@ -1,8 +1,7 @@
 //
 //  GiniScreenAPICoordinator+Review.swift
-//  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 4/4/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -51,6 +50,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
 
     @objc fileprivate func closeScreen() {
         trackingDelegate?.onReviewScreenEvent(event: Event(type: .back))
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .review)
         screenAPINavigationController.dismiss(animated: true)
     }
 

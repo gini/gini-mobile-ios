@@ -2,7 +2,7 @@
 //  GiniBankSDKVersion.swift
 //  
 //
-//  Created by Nadya Karaban on 04.11.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-public let GiniBankSDKVersion = "3.8.0"
+public let GiniBankSDKVersion = "3.9.0"
