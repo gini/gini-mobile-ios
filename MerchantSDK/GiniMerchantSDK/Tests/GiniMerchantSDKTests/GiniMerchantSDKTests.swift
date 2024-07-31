@@ -6,6 +6,7 @@
 //
 
 import XCTest
+@testable import GiniUtilites
 @testable import GiniMerchantSDK
 @testable import GiniHealthAPILibrary
 
@@ -13,11 +14,12 @@ final class GiniMerchantTests: XCTestCase {
     
     var giniHealthAPI: GiniHealthAPI!
     var giniMerchant: GiniMerchant!
-    
+    private let versionAPI = 4
+
     override func setUp() {
         let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock)
+        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
+        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
         giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService)
         giniMerchant = GiniMerchant(giniApiLib: giniHealthAPI)
     }

@@ -2,7 +2,7 @@
 //  GiniNetworkingScreenAPICoordinator.swift
 //  GiniCapture
 //
-//  Created by Alpár Szotyori on 25.06.19.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -31,36 +31,33 @@ import GiniBankAPILibrary
     func giniCaptureDidEnterManually()
 }
 
- public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
+public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
     public weak var resultsDelegate: GiniCaptureResultsDelegate?
     public let documentService: DocumentServiceProtocol
 
-    public init(client: Client,
-         resultsDelegate: GiniCaptureResultsDelegate,
-         giniConfiguration: GiniConfiguration,
-         documentMetadata: Document.Metadata?,
-         api: APIDomain,
-         trackingDelegate: GiniCaptureTrackingDelegate?,
-         lib : GiniBankAPI) {
-
-        self.documentService = GiniNetworkingScreenAPICoordinator.documentService(with: lib,
-                                                                                  documentMetadata: documentMetadata,
-                                                                                  giniConfiguration: giniConfiguration,
-                                                                                  for: api)
-        super.init(withDelegate: nil,
-                   giniConfiguration: giniConfiguration)
-
-        self.giniConfiguration.documentService = documentService
-        self.visionDelegate = self
-        self.resultsDelegate = resultsDelegate
-        self.trackingDelegate = trackingDelegate
+     public init(client: Client,
+                 resultsDelegate: GiniCaptureResultsDelegate,
+                 giniConfiguration: GiniConfiguration,
+                 documentMetadata: Document.Metadata?,
+                 api: APIDomain,
+                 trackingDelegate: GiniCaptureTrackingDelegate?,
+                 lib : GiniBankAPI) {
+         
+         self.documentService = DocumentService(lib: lib, metadata: documentMetadata)
+         super.init(withDelegate: nil,
+                    giniConfiguration: giniConfiguration)
+         
+         self.giniConfiguration.documentService = documentService
+         self.visionDelegate = self
+         self.resultsDelegate = resultsDelegate
+         self.trackingDelegate = trackingDelegate
     }
      
      public init(resultsDelegate: GiniCaptureResultsDelegate,
-          giniConfiguration: GiniConfiguration,
-          documentMetadata: Document.Metadata?,
-          trackingDelegate: GiniCaptureTrackingDelegate?,
-          captureNetworkService: GiniCaptureNetworkService) {
+                 giniConfiguration: GiniConfiguration,
+                 documentMetadata: Document.Metadata?,
+                 trackingDelegate: GiniCaptureTrackingDelegate?,
+                 captureNetworkService: GiniCaptureNetworkService) {
 
          self.documentService = DocumentService(giniCaptureNetworkService: captureNetworkService, metadata: documentMetadata)
          
@@ -94,16 +91,6 @@ import GiniBankAPILibrary
                   lib: lib)
     }
     
-    private static func documentService(with lib: GiniBankAPI,
-                                        documentMetadata: Document.Metadata?,
-                                        giniConfiguration: GiniConfiguration,
-                                        for api: APIDomain) -> DocumentServiceProtocol {
-        switch api {
-        case .default, .gym, .custom:
-            return DocumentService(lib: lib, metadata: documentMetadata)
-        }
-    }
-    
     public func deliver(result: ExtractionResult, and document: Document? = nil, to analysisDelegate: AnalysisDelegate) {
         let hasExtactions = result.extractions.count > 0
         
@@ -118,8 +105,12 @@ import GiniBankAPILibrary
                 })
                 
                 
-                let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images, document: document, candidates: result.candidates)
-                                
+                let result = AnalysisResult(extractions: extractions, 
+                                            lineItems: result.lineItems,
+                                            images: images,
+                                            document: document,
+                                            candidates: result.candidates)
+
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
@@ -159,10 +150,9 @@ extension GiniNetworkingScreenAPICoordinator {
         }
     }
 
-    fileprivate func uploadAndStartAnalysis(
-        document: GiniCaptureDocument,
-        networkDelegate: GiniCaptureNetworkDelegate,
-        uploadDidFail: @escaping () -> Void) {
+    fileprivate func uploadAndStartAnalysis(document: GiniCaptureDocument,
+                                            networkDelegate: GiniCaptureNetworkDelegate,
+                                            uploadDidFail: @escaping () -> Void) {
         self.upload(document: document, didComplete: { _ in
             self.startAnalysis(networkDelegate: networkDelegate)
         }, didFail: { _, error in

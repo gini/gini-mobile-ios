@@ -7,6 +7,7 @@
 
 import Foundation
 import GiniMerchantSDK
+import GiniUtilites
 import UIKit
 
 final class InvoiceTableViewCellModel {

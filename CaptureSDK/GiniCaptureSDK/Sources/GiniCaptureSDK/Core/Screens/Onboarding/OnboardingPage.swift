@@ -1,8 +1,7 @@
 //
 //  OnboardingPage.swift
-//  
 //
-//  Created by Nadya Karaban on 15.09.22.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -15,7 +14,6 @@ public struct OnboardingPage {
     let imageName: String
     let title: String
     let description: String
-
     /**
      *  Creates an `OnboardingPage` instance.
      *

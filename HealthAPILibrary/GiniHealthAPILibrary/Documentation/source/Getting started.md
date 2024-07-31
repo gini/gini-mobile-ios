@@ -21,26 +21,23 @@ To initialize the library, you just need to provide the API credentials:
 
 ## Public Key Pinning
 
-If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information (the [Gini Health API](https://health-api.gini.net/documentation/v3/#gini-health-api-documentation-v3-0) is used by default) as follows:
+If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration, the metadata information (the [Gini Health API](https://health-api.gini.net/documentation/v3/#gini-health-api-documentation-v3-0) is used by default) as follows:
 
 ```swift
     let yourPublicPinningConfig = [
-            kTSKPinnedDomains: [
-            "health-api.gini.net": [
-                kTSKPublicKeyHashes: [
-                // old *.gini.net public key
-                "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
-                // new *.gini.net public key, active from around June 2020
-                "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
-            ]],
-            "user.gini.net": [
-                kTSKPublicKeyHashes: [
-                // old *.gini.net public key
-                "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
-                // new *.gini.net public key, active from around June 2020
-                "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
-            ]],
-        ]] as [String: Any]
+        "health-api.gini.net": [
+            // old *.gini.net public key
+            "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+            // new *.gini.net public key, active from around June 2020
+            "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+        ],
+        "user.gini.net": [
+            // old *.gini.net public key
+            "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+            // new *.gini.net public key, active from around June 2020
+            "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+        ],
+    ]
     let giniHealthAPI = GiniHealthAPI
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",

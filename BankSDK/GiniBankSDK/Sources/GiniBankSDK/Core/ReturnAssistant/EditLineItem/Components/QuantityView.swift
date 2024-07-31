@@ -1,8 +1,7 @@
 //
 //  QuantityView.swift
-//  
 //
-//  Created by David Vizaknai on 07.03.2023.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import GiniCaptureSDK

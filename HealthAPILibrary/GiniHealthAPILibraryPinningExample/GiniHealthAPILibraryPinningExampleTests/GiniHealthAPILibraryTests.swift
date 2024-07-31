@@ -8,28 +8,25 @@
 import XCTest
 @testable import GiniHealthAPILibrary
 @testable import GiniHealthAPILibraryPinning
-@testable import TrustKit
 // swiftlint:disable force_cast
 
 final class GiniHealthAPILibraryPinningTests: XCTestCase {
     let yourPublicPinningConfig = [
-        kTSKPinnedDomains: [
-            "pay-api.gini.net": [
-                kTSKPublicKeyHashes: [
-                    // old *.gini.net public key
-                    "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
-                    // new *.gini.net public key, active from around June 2020
-                    "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
-                ]],
-            "user.gini.net": [
-                kTSKPublicKeyHashes: [
-                    // old *.gini.net public key
-                    "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
-                    // new *.gini.net public key, active from around June 2020
-                    "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
-                ]],
-        ]] as [String: Any]
+        "health-api.gini.net": [
+            // old *.gini.net public key
+            "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+            // new *.gini.net public key, active from around June 2020
+            "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+        ],
+        "user.gini.net": [
+            // old *.gini.net public key
+            "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+            // new *.gini.net public key, active from around June 2020
+            "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+        ],
+    ]
     let client = Client(id: "", secret: "", domain: "")
+    private let versionAPI = 4
 
     func testBuildWithCustomApiDomain() {
         let giniHealthAPILib = GiniHealthAPI.Builder(client: client,
@@ -72,7 +69,8 @@ final class GiniHealthAPILibraryPinningTests: XCTestCase {
     func testWithCustomApiDomainAndAlternativeTokenSource() {
         let tokenSource = TokenSource()
         let giniHealthAPILib = GiniHealthAPI.Builder(customApiDomain: "custom-api.domain.com",
-                                                     alternativeTokenSource: tokenSource,
+                                                     alternativeTokenSource: tokenSource, 
+                                                     apiVersion: versionAPI,
                                                      pinningConfig: yourPublicPinningConfig,
                                                      logLevel: .none)
             .build()

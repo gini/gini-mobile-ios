@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 import GiniHealthAPILibrary
 
 final class BankSelectionTableViewCellModel {
@@ -41,8 +42,6 @@ final class BankSelectionTableViewCellModel {
         self.isSelected = paymentProvider.isSelected
         self.bankImageIconData = paymentProvider.paymentProvider.iconData
         self.bankName = paymentProvider.paymentProvider.name
-
-        let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .regular)
-        self.bankNameLabelFont = GiniMerchantConfiguration.shared.textStyleFonts[.body1] ?? defaultRegularFont
+        self.bankNameLabelFont = GiniMerchantConfiguration.shared.font(for: .body1)
     }
 }

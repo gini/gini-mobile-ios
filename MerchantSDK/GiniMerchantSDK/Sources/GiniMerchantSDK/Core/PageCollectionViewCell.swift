@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import GiniUtilites
 
-class PageCollectionViewCell: UICollectionViewCell {
+class PageCollectionViewCell: UICollectionViewCell, ReusableView {
 
     var pageImageView: ZoomedImageView = {
         let iv = ZoomedImageView()
