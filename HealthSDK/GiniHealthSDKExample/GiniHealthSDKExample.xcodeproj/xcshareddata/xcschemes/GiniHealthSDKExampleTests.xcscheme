@@ -1,41 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1300"
-   version = "1.3">
+   LastUpgradeVersion = "1540"
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
-      buildImplicitDependencies = "YES">
-      <BuildActionEntries>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "GiniHealthSDKPinningTests"
-               BuildableName = "GiniHealthSDKPinningTests"
-               BlueprintName = "GiniHealthSDKPinningTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-      </BuildActionEntries>
+      buildImplicitDependencies = "YES"
+      buildArchitectures = "Automatic">
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "GiniHealthSDKPinningTests"
-               BuildableName = "GiniHealthSDKPinningTests"
-               BlueprintName = "GiniHealthSDKPinningTests"
-               ReferencedContainer = "container:">
+               BlueprintIdentifier = "F4EC38D3273C21E6007045DC"
+               BuildableName = "GiniHealthSDKExampleTests.xctest"
+               BlueprintName = "GiniHealthSDKExampleTests"
+               ReferencedContainer = "container:GiniHealthSDKExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,15 +43,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "GiniHealthSDKPinningTests"
-            BuildableName = "GiniHealthSDKPinningTests"
-            BlueprintName = "GiniHealthSDKPinningTests"
-            ReferencedContainer = "container:">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

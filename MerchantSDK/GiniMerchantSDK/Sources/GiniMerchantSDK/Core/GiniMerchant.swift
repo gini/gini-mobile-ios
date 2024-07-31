@@ -113,8 +113,8 @@ public struct DataForReview {
                 logLevel: LogLevel = .none) {
         let client = Client(id: id, secret: secret, domain: domain, apiVersion: apiVersion)
         self.giniApiLib = GiniHealthAPI.Builder(client: client,
-                                                logLevel: logLevel.toHealthLogLevel(),
-                                                sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig)).build()
+                                                pinningConfig: pinningConfig,
+                                                logLevel: logLevel.toHealthLogLevel()).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.merchant, apiVersion: apiVersion)
     }
