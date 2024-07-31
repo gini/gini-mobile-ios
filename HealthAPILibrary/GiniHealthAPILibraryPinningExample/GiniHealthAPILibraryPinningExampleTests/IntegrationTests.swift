@@ -10,7 +10,6 @@ import Foundation
 import XCTest
 @testable import GiniHealthAPILibrary
 @testable import GiniHealthAPILibraryPinning
-@testable import TrustKit
 
 class IntegrationTests: XCTestCase {
     
@@ -19,22 +18,19 @@ class IntegrationTests: XCTestCase {
     let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
     let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
     let yourPublicPinningConfig = [
-        kTSKPinnedDomains: [
-            "health-api.gini.net": [
-                kTSKPublicKeyHashes: [
-                    // old *.gini.net public key
-                    "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
-                    // new *.gini.net public key, active from around June 2020
-                    "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
-                ]],
-            "user.gini.net": [
-                kTSKPublicKeyHashes: [
-                    // old *.gini.net public key
-                    "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
-                    // new *.gini.net public key, active from around June 2020
-                    "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
-                ]],
-        ]] as [String: Any]
+        "health-api.gini.net": [
+            // old *.gini.net public key
+            "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+            // new *.gini.net public key, active from around June 2020
+            "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+        ],
+        "user.gini.net": [
+            // old *.gini.net public key
+            "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+            // new *.gini.net public key, active from around June 2020
+            "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+        ],
+    ]
     
     var giniHealthAPILib: GiniHealthAPI!
     var documentService: DefaultDocumentService!

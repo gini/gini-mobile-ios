@@ -130,7 +130,7 @@ final class DocumentServicesTests: XCTestCase {
             let amountToPay = amountToPayExtraction?.value ?? ""
 
             if let compoundExtractions = extractionResult.compoundExtractions {
-                if let lineItems = compoundExtractions["lineItems"] {
+                if let lineItems = compoundExtractions.lineItems {
                     let filteredCompoundExtractions = ["lineItems": [lineItems.first!]]
 
                     let pay4Keys = ["amountToPay", "iban", "reference", "paymentRecipient"]
@@ -179,7 +179,7 @@ final class DocumentServicesTests: XCTestCase {
                                     osName: UIDevice.current.systemName,
                                     osVersion: UIDevice.current.systemVersion,
                                     captureSdkVersion: "Not available",
-                                    apiLibVersion: "3.1.3",
+                                    apiLibVersion: "3.2.0",
                                     description: "Error logging test",
                                     documentId: "1234",
                                     originalRequestId: "5678")

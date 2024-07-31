@@ -108,7 +108,10 @@ final class SettingsViewController: UIViewController {
 		
 		contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isSwitchOn: giniConfiguration.bottomNavigationBarEnabled)))
-		
+
+        contentData.append(.switchOption(data: .init(type: .skontoNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.skontoNavigationBarBottomAdapter != nil)))
+
 		contentData.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
 													 isSwitchOn: giniConfiguration.helpNavigationBarBottomAdapter != nil)))
 		contentData.append(.switchOption(data: .init(type: .cameraNavigationBarBottomAdapter,
@@ -155,6 +158,8 @@ final class SettingsViewController: UIViewController {
 		
 		contentData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
 													 isSwitchOn: giniConfiguration.returnAssistantEnabled)))
+        contentData.append(.switchOption(data: .init(type: .skontoEnabled,
+                                                     isSwitchOn: giniConfiguration.skontoEnabled)))
 		contentData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingIllustrationAdapter,
 													 isSwitchOn: giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter != nil)))
 		contentData.append(.switchOption(data: .init(type: .digitalInvoiceHelpNavigationBarBottomAdapter,
@@ -332,6 +337,8 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.shouldShowDragAndDropTutorial = data.isSwitchOn
 		case .returnAssistantEnabled:
 			giniConfiguration.returnAssistantEnabled = data.isSwitchOn
+        case .skontoEnabled:
+            giniConfiguration.skontoEnabled = data.isSwitchOn
 		case .enableReturnReasons:
 			giniConfiguration.enableReturnReasons = data.isSwitchOn
 		case .giniErrorLoggerIsOn:
@@ -449,7 +456,10 @@ final class SettingsViewController: UIViewController {
 				}
 				return CustomDocumentValidationResult.success()
 			}
-		}
+        case .skontoNavigationBarBottomAdapter:
+            let customAdapter = CustomSkontoNavigationBarBottomAdapter()
+            giniConfiguration.skontoNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+        }
 	}
 	
 	private func getSwitchOptionCell(at row: Int) -> UITableViewCell? {

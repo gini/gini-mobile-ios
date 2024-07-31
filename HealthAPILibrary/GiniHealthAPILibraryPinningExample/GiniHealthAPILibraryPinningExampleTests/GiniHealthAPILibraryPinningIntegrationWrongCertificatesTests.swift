@@ -8,7 +8,6 @@
 import XCTest
 @testable import GiniHealthAPILibraryPinning
 @testable import GiniHealthAPILibrary
-@testable import TrustKit
 
 class HealthAPILibraryPinningWrongCertificatesTests: XCTestCase {
 
@@ -20,20 +19,17 @@ class HealthAPILibraryPinningWrongCertificatesTests: XCTestCase {
 
     override func setUp() {
         let yourPublicPinningConfig = [
-            kTSKPinnedDomains: [
-                "health-api.gini.net": [
-                    kTSKPublicKeyHashes: [
-                        // Wrong hashes
-                        "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
-                        "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
-                    ]],
-                "user.gini.net": [
-                    kTSKPublicKeyHashes: [
-                        // Wrong hashes
-                        "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
-                        "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
-                    ]],
-            ]] as [String: Any]
+            "health-api.gini.net": [
+                // Wrong hashes
+                "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
+                "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
+            ],
+            "user.gini.net": [
+                // Wrong hashes
+                "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
+                "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
+            ],
+        ]
         let client = Client(id: clientId, secret: clientSecret, domain: "health-api.gini.net")
         giniHealthAPILib = GiniHealthAPI.Builder(client: client, pinningConfig: yourPublicPinningConfig).build()
     }
