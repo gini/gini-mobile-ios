@@ -8,13 +8,30 @@
 import UIKit
 import GiniMerchantSDK
 
-fileprivate enum FieldTitle: String, CaseIterable {
-    case documentID = "Invoice number"
+fileprivate enum Fields: String, CaseIterable {
     case recipient = "Recipient"
     case iban = "IBAN"
     case amountToPay = "Amount"
     case purpose = "Purpose"
-    case paymentDueDate = "Due"
+
+    static func all(from document: DocumentWithExtractions) ->  [(String, String)] {
+        var array = [(String, String)]()
+
+        if let recipient = document.recipient {
+            array.append((Self.recipient.rawValue, recipient))
+        }
+        if let iban = document.iban {
+            array.append((Self.iban.rawValue, iban))
+        }
+        if let amountToPay = document.amountToPay {
+            array.append((Self.amountToPay.rawValue, amountToPay))
+        }
+        if let purpose = document.purpose {
+            array.append((Self.purpose.rawValue, purpose))
+        }
+
+        return array
+    }
 }
 
 final class InvoiceDetailViewController: UIViewController {
@@ -49,7 +66,10 @@ final class InvoiceDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private lazy var detailView: InvoiceDetailView = { InvoiceDetailView(items) }()
+    private lazy var detailView: InvoiceDetailView = {
+        InvoiceDetailView(Fields.all(from: invoice))
+    }()
+
     private lazy var payNowButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Pay now", for: .normal)
@@ -101,6 +121,10 @@ final class InvoiceDetailViewController: UIViewController {
 //        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: invoice.documentID)
 //        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
 //        self.present(paymentViewBottomSheet, animated: false)
+    }
+
+    @objc private func didTapOnView() {
+        view.endEditing(true)
     }
 
     @objc private func didTapOnView() {
@@ -172,10 +196,10 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
     }
 
     private func obtainPaymentInfo() -> PaymentInfo {
-        let textViews = InvoiceDetailView.textViews
-        invoice.recipient = textViews[FieldTitle.recipient.rawValue]?.text
-        invoice.amountToPay = textViews[FieldTitle.amountToPay.rawValue]?.text
-        invoice.purpose = textViews[FieldTitle.purpose.rawValue]?.text
+        let textFields = InvoiceDetailView.textFields
+        invoice.recipient = textFields[Fields.recipient.rawValue]?.text
+        invoice.amountToPay = textFields[Fields.amountToPay.rawValue]?.text
+        invoice.purpose = textFields[Fields.purpose.rawValue]?.text
 
         return PaymentInfo(recipient: invoice.recipient ?? "", iban: invoice.iban ?? "", bic: "", amount: invoice.amountToPay ?? "", purpose: invoice.purpose ?? "", paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "", paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
