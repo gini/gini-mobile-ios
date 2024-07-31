@@ -108,10 +108,11 @@ public struct DataForReview {
     public init(id: String, 
                 secret: String,
                 domain: String,
+                apiVersion: Int = Constants.defaultVersionAPI,
                 pinningConfig: [String: [String]],
                 logLevel: LogLevel = .none) {
-        let client = Client(id: id, secret: secret, domain: domain)
-        self.giniApiLib = GiniHealthAPI.Builder(client: client, 
+        let client = Client(id: id, secret: secret, domain: domain, apiVersion: apiVersion)
+        self.giniApiLib = GiniHealthAPI.Builder(client: client,
                                                 logLevel: logLevel.toHealthLogLevel(),
                                                 sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig)).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
