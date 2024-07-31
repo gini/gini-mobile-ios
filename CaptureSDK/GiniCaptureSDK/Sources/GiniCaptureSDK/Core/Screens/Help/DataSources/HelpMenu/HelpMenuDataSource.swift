@@ -9,7 +9,7 @@
 import UIKit
 
 protocol HelpMenuDataSourceDelegate: UIViewController {
-    func didSelectHelpItem(didSelect item: HelpMenuItem)
+    func didSelectHelpItem(at index: Int)
 }
 
 final class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem, HelpMenuCell> {
@@ -26,14 +26,17 @@ final class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem, HelpM
         return defaultItems
     }()
 
+    var helpItemsAnalyticsValues = [String]()
     weak var delegate: HelpMenuDataSourceDelegate?
 
-    required init(
-        configuration: GiniConfiguration
-    ) {
+    required init(configuration: GiniConfiguration) {
         super.init()
         self.items.append(contentsOf: defaultItems)
         self.items.append(contentsOf: configuration.customMenuItems)
+
+        items.forEach { item in
+            helpItemsAnalyticsValues.append(item.title)
+        }
     }
 
     override func configureCell(cell: HelpMenuCell, indexPath: IndexPath) {
@@ -63,8 +66,7 @@ final class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem, HelpM
 
     // MARK: - UITableViewDelegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = items[indexPath.row]
-        self.delegate?.didSelectHelpItem(didSelect: item)
+        self.delegate?.didSelectHelpItem(at: indexPath.row)
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

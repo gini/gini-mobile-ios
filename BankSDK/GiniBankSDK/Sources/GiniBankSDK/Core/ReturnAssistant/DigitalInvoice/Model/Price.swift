@@ -58,6 +58,16 @@ struct Price {
         return Price.stringWithoutSymbol(from: value)
     }
 
+    var localizedStringWithoutCurrencyCode: String? {
+        return Price.localizedStringWithoutCurrencyCode(from: value)
+    }
+
+    var localizedStringWithCurrencyCode: String? {
+        let formatter = NumberFormatter.twoDecimalPriceFormatter
+        guard let formattedValue = formatter.string(from: NSDecimalNumber(decimal: value)) else { return nil }
+        return "\(formattedValue) \(currencyCode.uppercased())"
+    }
+
     static func stringWithoutSymbol(from value: Decimal) -> String? {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
@@ -66,19 +76,28 @@ struct Price {
     }
 
     static func formatAmountString(newText: String) -> String? {
-        let onlyDigits = String(
-            newText.trimmingCharacters(
-                in: .whitespaces
-            ).filter { c in c != "," && c != "."}
+        let onlyDigits = String(newText.trimmingCharacters(in: .whitespaces)
+            .filter { c in c != "," && c != "."}
             .prefix(7)
         )
         if let decimal = Decimal(string: onlyDigits) {
             let decimalWithFraction = decimal / 100
-            return  Price.stringWithoutSymbol(
-               from: decimalWithFraction
-            )?.trimmingCharacters(in: .whitespaces)
+            return Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces)
         }
         return nil
+    }
+
+    static func convertLocalizedStringToDecimal(_ priceString: String) -> Decimal? {
+        let trimmedString = priceString.trimmingCharacters(in: .whitespaces)
+        guard let number = NumberFormatter.twoDecimalPriceFormatter.number(from: trimmedString) else {
+            return nil
+        }
+        return number.decimalValue
+    }
+
+    static func localizedStringWithoutCurrencyCode(from decimal: Decimal) -> String? {
+        let formatter = NumberFormatter.twoDecimalPriceFormatter
+        return formatter.string(from: NSDecimalNumber(decimal: decimal))
     }
 }
 

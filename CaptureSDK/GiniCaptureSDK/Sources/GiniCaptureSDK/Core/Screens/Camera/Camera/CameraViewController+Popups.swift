@@ -1,6 +1,6 @@
 //
-//  Camera2ViewController+Extension.swift
-//  
+//  CameraViewController+Extension.swift
+//
 //
 //  Created by Krzysztof Kryniecki on 14/09/2022.
 //  Copyright © 2022 Gini GmbH. All rights reserved.
@@ -13,36 +13,40 @@ import UIKit
 extension CameraViewController {
 
     @objc func showImportFileSheet() {
-        let alertViewController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let alertViewControllerMessage: String = NSLocalizedStringPreferredFormat(
-            "ginicapture.camera.popupTitleImportPDForPhotos",
-            comment: "Info label")
+        let alertMessage = NSLocalizedStringPreferredFormat("ginicapture.camera.popupTitleImportPDForPhotos",
+                                                            comment: "Info label")
+        let message = alertMessage.isEmpty ? nil : alertMessage
+        let alertViewController = UIAlertController(title: nil,
+                                                    message: message,
+                                                    preferredStyle: .actionSheet)
+
         if giniConfiguration.fileImportSupportedTypes == .pdf_and_images {
-            alertViewController.addAction(UIAlertAction(title: NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.popupOptionPhotos",
-                comment: "Photos action"),
-                                                        style: .default) { [unowned self] _ in
+            let photosAlertActionTitle = NSLocalizedStringPreferredFormat("ginicapture.camera.popupOptionPhotos",
+                                                                          comment: "Photos action")
+            let photosAlertAction = UIAlertAction(title: photosAlertActionTitle,
+                                                  style: .default) { [unowned self] _ in
+                GiniAnalyticsManager.track(event: .uploadPhotosTapped, screenName: .camera)
                 self.delegate?.camera(self, didSelect: .gallery)
-            })
+            }
+            alertViewController.addAction(photosAlertAction)
         }
 
         alertViewController.view.tintColor = .GiniCapture.accent1
-
-        alertViewController.addAction(UIAlertAction(title: NSLocalizedStringPreferredFormat(
-            "ginicapture.camera.popupOptionFiles",
-            comment: "files action"),
-                                                    style: .default) { [unowned self] _ in
+        let filesAlertActionTitle = NSLocalizedStringPreferredFormat("ginicapture.camera.popupOptionFiles",
+                                                                     comment: "files action")
+        let filesAlertAction = UIAlertAction(title: filesAlertActionTitle,
+                                             style: .default) { [unowned self] _ in
+            GiniAnalyticsManager.track(event: .uploadDocumentsTapped, screenName: .camera)
             self.delegate?.camera(self, didSelect: .explorer)
-        })
-        alertViewController.addAction(UIAlertAction(title: NSLocalizedStringPreferredFormat(
-            "ginicapture.camera.popupCancel",
-            comment: "cancel action"),
-                                                    style: .cancel, handler: nil))
-        if alertViewControllerMessage.count > 0 {
-            alertViewController.message = alertViewControllerMessage
-        } else {
-            alertViewController.message = nil
         }
+        alertViewController.addAction(filesAlertAction)
+
+        let cancelAlertActionTitle = NSLocalizedStringPreferredFormat("ginicapture.camera.popupCancel",
+                                                                      comment: "cancel action")
+        let cancelAlertAction = UIAlertAction(title: cancelAlertActionTitle,
+                                              style: .cancel, handler: nil)
+        alertViewController.addAction(cancelAlertAction)
+
         alertViewController.popoverPresentationController?.sourceView = cameraPane.fileUploadButton
         self.present(alertViewController, animated: true, completion: nil)
     }

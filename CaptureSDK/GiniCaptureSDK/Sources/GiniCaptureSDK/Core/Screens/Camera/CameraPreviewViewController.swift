@@ -86,7 +86,8 @@ final class CameraPreviewViewController: UIViewController {
             return UIImageNamedPreferred(named: "cameraDefaultDocumentImage")
         }
     }
-    private var isAuthorized = false
+
+    var isAuthorized = false
 
     lazy var previewView: CameraPreviewView = {
         let previewView = CameraPreviewView()
@@ -290,13 +291,6 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     func setupCamera() {
-        if AVCaptureDevice.authorizationStatus(for: .video) != .authorized {
-            #if !targetEnvironment(simulator)
-            self.addNotAuthorizedView()
-            self.delegate?.notAuthorized()
-            #endif
-        }
-
         camera.setup { error in
             if let error = error {
                 switch error {
@@ -418,6 +412,10 @@ final class CameraPreviewViewController: UIViewController {
 
 extension CameraPreviewViewController {
     private func addNotAuthorizedView() {
+        // Send the 'screen_shown' event every time the user returns to this screen.
+        GiniAnalyticsManager.trackScreenShown(screenName: .cameraAccess)
+
+        guard notAuthorizedView == nil else { return }
         let notAuthorizedView = CameraNotAuthorizedView()
         self.notAuthorizedView = notAuthorizedView
         super.view.addSubview(notAuthorizedView)

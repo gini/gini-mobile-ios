@@ -92,3 +92,30 @@
 
 "ginibank.digitalinvoice.edit.name.error" = "Please enter the article name.";
 "ginibank.digitalinvoice.edit.price.error" = "Please enter the article price.";
+
+// MARK: - Skonto
+"ginibank.skonto.screen.title" = "Discount";
+"ginibank.skonto.backbutton.title" = "Back";
+"ginibank.skonto.active" = "• Active";
+"ginibank.skonto.proceedbutton.title" = "Proceed";
+
+"ginibank.skonto.withdiscount.title" = "With discount";
+"ginibank.skonto.withdiscount.price.title" = "Final amount";
+"ginibank.skonto.withdiscount.expirydate.title" = "Expiry date";
+
+"ginibank.skonto.withoutdiscount.title" = "Without discount";
+"ginibank.skonto.withoutdiscount.price.title" = "Full amount";
+
+"ginibank.skonto.total.title" = "Total";
+"ginibank.skonto.total.savings" = "Save %@";
+"ginibank.skonto.total.skontopercentage" = "%@ discount";
+
+"ginibank.skonto.infobanner.default.message" = "Pay in %@: %@ discount";
+"ginibank.skonto.infobanner.edgecase.today.message" = "Pay today: %@ discount";
+"ginibank.skonto.infobanner.edgecase.cash.message" = "A %@ discount is possible for cash payment within %@";
+"ginibank.skonto.infobanner.edgecase.expired.message" = "The %@ discount has expired";
+
+"ginibank.skonto.infobanner.edgecase.today.alert.title" = "A discount is indicated on this invoice, it will expire after today.";
+"ginibank.skonto.infobanner.edgecase.cash.alert.title" = "A discount is indicated on this invoice, but it can only be used for cash deposit through a bank terminal.";
+"ginibank.skonto.infobanner.edgecase.expired.alert.title" = "You could have paid this invoice with a %@ discount, but the discount period has already expired.";
+"ginibank.skonto.alert.ok" = "Got it";

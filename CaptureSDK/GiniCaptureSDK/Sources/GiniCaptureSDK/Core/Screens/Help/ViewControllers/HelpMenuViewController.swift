@@ -1,9 +1,7 @@
 //
 //  HelpMenuViewController.swift
-//  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 10/18/17.
-//  Copyright © 2017 Gini GmbH. All rights reserved.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -56,6 +54,23 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
         super.viewDidLoad()
         self.dataSource.delegate = self
         setupView()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        sendGiniAnalyticsEventScreenShown()
+    }
+
+    private func sendGiniAnalyticsEventScreenShown() {
+        guard dataSource.helpItemsAnalyticsValues.isNotEmpty else { return }
+        var eventProperties = [GiniAnalyticsProperty(key: .hasCustomItems,
+                                                     value: giniConfiguration.customMenuItems.isNotEmpty)]
+
+        eventProperties.append(GiniAnalyticsProperty(key: .helpItems,
+                                                     value: dataSource.helpItemsAnalyticsValues))
+        GiniAnalyticsManager.trackScreenShown(screenName: .help,
+                                              properties: eventProperties)
     }
 
     private func setupView() {
@@ -135,7 +150,12 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
 // MARK: - HelpMenuDataSourceDelegate
 
 extension HelpMenuViewController: HelpMenuDataSourceDelegate {
-    func didSelectHelpItem(didSelect item: HelpMenuItem) {
+    func didSelectHelpItem(at index: Int) {
+        let item = dataSource.items[index]
+        GiniAnalyticsManager.track(event: .helpItemTapped,
+                                   screenName: .help,
+                                   properties: [GiniAnalyticsProperty(key: .itemTapped,
+                                                                      value: item.title)])
         delegate?.help(self, didSelect: item)
     }
 }
