@@ -19,3 +19,9 @@ extension String {
         }
     }
 }
+
+extension String {
+    var yearMonthDayDate: Date? {
+        return DateFormatter.yearMonthDay.date(from: self)
+    }
+}

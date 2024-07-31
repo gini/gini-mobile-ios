@@ -51,11 +51,10 @@ final class ExtractionsContainerTest: XCTestCase {
                                             value: "1",
                                             name: "quantity")
         
-        XCTAssertEqual(container.compoundExtractions!.count, 1)
-        XCTAssertEqual(container.compoundExtractions!["lineItems"]!.count, 3)
-        XCTAssertEqual(container.compoundExtractions!["lineItems"]!.first!.count, 4)
-        XCTAssertTrue(container.compoundExtractions!["lineItems"]!.first!.contains(lineItemExtraction))
-        
+        XCTAssertEqual(container.compoundExtractions!.lineItems!.count, 3)
+        XCTAssertEqual(container.compoundExtractions!.lineItems!.first!.count, 4)
+        XCTAssertTrue(container.compoundExtractions!.lineItems!.first!.contains(lineItemExtraction))
+
         let candidate = Extraction.Candidate(box: Extraction.Box(height: 9.0,
                                                                  left: 521.48,
                                                                  page: 1,

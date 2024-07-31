@@ -1,8 +1,7 @@
 //
 //  DigitalInvoiceViewController.swift
-// GiniBank
 //
-//  Created by Maciej Trybilo on 20.11.19.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -113,7 +112,7 @@ final class DigitalInvoiceViewController: UIViewController {
             navigationItem.hidesBackButton = true
         } else {
             let helpButton = GiniBarButton(ofType: .help)
-            helpButton.addAction(self, #selector(helpButtonTapped(source:)))
+            helpButton.addAction(self, #selector(helpButtonTapped))
             navigationItem.rightBarButtonItem = helpButton.barButton
 
             let cancelButton = GiniBarButton(ofType: .cancel)
@@ -191,7 +190,7 @@ final class DigitalInvoiceViewController: UIViewController {
             }
 
             navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-                self?.viewModel.didTapHelp()
+                self?.helpButtonTapped()
             }
 
             if let navigationBar = navigationBarBottomAdapter?.injectedView() {
@@ -221,7 +220,17 @@ final class DigitalInvoiceViewController: UIViewController {
         viewModel.shouldShowOnboarding()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if presentedViewController == nil {
+            // Send a 'screenShown' event when returning back from `Help` screen.
+            // This is not called initially due to the onboarding screen being displayed as a modal view on top.
+            sendAnalyticsScreenShown()
+        }
+    }
+
     @objc func payButtonTapped() {
+        GiniAnalyticsManager.track(event: .proceedTapped, screenName: .returnAssistant)
         viewModel.didTapPay()
     }
 
@@ -245,12 +254,22 @@ final class DigitalInvoiceViewController: UIViewController {
         }
     }
 
-    @objc func helpButtonTapped(source: UIButton) {
+    @objc func helpButtonTapped() {
+        GiniAnalyticsManager.track(event: .helpTapped, screenName: .returnAssistant)
         viewModel.didTapHelp()
     }
 
     @objc func closeReturnAssistantOverview() {
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .returnAssistant)
         viewModel.didTapCancel()
+    }
+
+    func sendAnalyticsScreenShown() {
+        var eventProperties: [GiniAnalyticsProperty] = []
+        if let documentId = configuration.documentService?.document?.id {
+            eventProperties.append(GiniAnalyticsProperty(key: .documentId, value: documentId))
+        }
+        GiniAnalyticsManager.trackScreenShown(screenName: .returnAssistant, properties: eventProperties)
     }
 }
 
@@ -321,28 +340,43 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
                                 lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
 
         guard let invoice = viewModel.invoice else { return }
-        switch invoice.lineItems[lineItemViewModel.index].selectedState {
+        let selectedLineItem = invoice.lineItems[lineItemViewModel.index]
+        var isLineItemSelected = true
+        switch selectedLineItem.selectedState {
         case .selected:
             if let returnReasons = self.viewModel.invoice?.returnReasons, configuration.enableReturnReasons {
                 presentReturnReasonActionSheet(for: lineItemViewModel.index,
                                                source: cell.modeSwitch,
-                                               with: returnReasons)
+                                               with: returnReasons,
+                                               isLineItemSelected: &isLineItemSelected)
             } else {
                 self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .deselected(reason: nil)
+                isLineItemSelected = false
             }
         case .deselected:
             self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .selected
+            isLineItemSelected = true
+
         }
+
+        GiniAnalyticsManager.track(event: .itemSwitchTapped,
+                                   screenName: .returnAssistant,
+                                   properties: [GiniAnalyticsProperty(key: .switchActive, value: isLineItemSelected)])
         updateValues()
     }
 
     func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
+        GiniAnalyticsManager.track(event: .editTapped, screenName: .returnAssistant)
         viewModel.didTapEdit(on: lineItemViewModel)
     }
 }
 
 extension DigitalInvoiceViewController {
-    private func presentReturnReasonActionSheet(for index: Int, source: UIView, with returnReasons: [ReturnReason]) {
+    private func presentReturnReasonActionSheet(for index: Int,
+                                                source: UIView,
+                                                with returnReasons: [ReturnReason],
+                                                isLineItemSelected: inout Bool) {
+        var isSelected = isLineItemSelected
         DeselectLineItemActionSheet().present(from: self,
                                               source: source,
                                               returnReasons: returnReasons) { [weak self] selectedState in
@@ -350,14 +384,23 @@ extension DigitalInvoiceViewController {
             switch selectedState {
             case .selected:
                 self.viewModel.invoice?.lineItems[index].selectedState = .selected
+                isSelected = true
             case .deselected(let reason):
                 self.viewModel.invoice?.lineItems[index].selectedState = .deselected(reason: reason)
+                isSelected = false
             }
-
             DispatchQueue.main.async {
                 self.updateValues()
             }
         }
+        isLineItemSelected = isSelected
+    }
+}
+
+extension DigitalInvoiceViewController: DigitalInvoiceOnboardingViewControllerDelegate {
+    func dismissViewController() {
+        // after dismissing the oboarding screen, screen_shown event can be sent
+        sendAnalyticsScreenShown()
     }
 }
 

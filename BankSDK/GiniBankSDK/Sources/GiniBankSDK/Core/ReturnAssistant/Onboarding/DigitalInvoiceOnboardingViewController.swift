@@ -1,32 +1,33 @@
 //
 //  OnboardingDigitalInvoiceViewController.swift
-// GiniBank
 //
-//  Created by Nadya Karaban on 21.10.20.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 import GiniCaptureSDK
 
-// swiftlint:disable implicit_getter
-final class DigitalInvoiceOnboardingViewController: UIViewController {
-    @IBOutlet var contentView: UIView!
-    @IBOutlet var topImageView: OnboardingImageView!
-    @IBOutlet var firstLabel: UILabel!
-    @IBOutlet var secondLabel: UILabel!
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet var doneButton: MultilineTitleButton!
-    @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var scrollViewBottomAnchor: NSLayoutConstraint!
+protocol DigitalInvoiceOnboardingViewControllerDelegate: AnyObject {
+    func dismissViewController()
+}
 
+final class DigitalInvoiceOnboardingViewController: UIViewController {
+    @IBOutlet private weak var contentView: UIView!
+    @IBOutlet private weak var topImageView: OnboardingImageView!
+    @IBOutlet private weak var firstLabel: UILabel!
+    @IBOutlet private weak var secondLabel: UILabel!
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var doneButton: MultilineTitleButton!
+    @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
+
+    weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
     private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
 
     private var widthMultiplier: CGFloat = 0.6
 
     private var topPadding: CGFloat {
-        get {
-            return view.frame.width > view.frame.height ? 40 : 104
-        }
+        return view.frame.width > view.frame.height ? 40 : 104
     }
 
     private var navigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
@@ -51,9 +52,12 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                                                         comment: "title for digital invoice onboarding screen")
     }
 
+    private var doneButtonTapped: Bool = false
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        GiniAnalyticsManager.trackScreenShown(screenName: .onboardingReturnAssistant)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -68,15 +72,32 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
         let configuration = GiniBankConfiguration.shared
         configuration.digitalInvoiceOnboardingIllustrationAdapter?.pageDidDisappear()
+
+        // this screen can be dismissed by tapping on the getStarted button or
+        // can be dismissed by dragging the screen from top to bottom.
+
+        if doneButtonTapped {
+            GiniAnalyticsManager.track(event: .getStartedTapped, screenName: .onboardingReturnAssistant)
+        } else {
+            GiniAnalyticsManager.track(event: .dismissed, screenName: .onboardingReturnAssistant)
+        }
     }
 
-    // swiftlint:disable function_body_length
     private func configureUI() {
         let configuration = GiniBankConfiguration.shared
 
         view.backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
         contentView.backgroundColor = .clear
 
+        setupTopImageView(with: configuration)
+        setupFirstLabel(with: configuration)
+        setupSecondLabel(with: configuration)
+        setupDoneButton(with: configuration)
+
+        configureConstraints()
+    }
+
+    private func setupTopImageView(with configuration: GiniBankConfiguration) {
         if let adapter = configuration.digitalInvoiceOnboardingIllustrationAdapter {
             topImageView.illustrationAdapter = adapter
         } else {
@@ -86,17 +107,23 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         topImageView.isAccessibilityElement = true
         topImageView.accessibilityValue = firstLabelText
         topImageView.setupView()
+    }
 
+    private func setupFirstLabel(with configuration: GiniBankConfiguration) {
         firstLabel.text = firstLabelText
         firstLabel.font = configuration.textStyleFonts[.title2Bold]
         firstLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         firstLabel.adjustsFontForContentSizeCategory = true
+    }
 
+    private func setupSecondLabel(with configuration: GiniBankConfiguration) {
         secondLabel.text = secondLabelText
         secondLabel.font = configuration.textStyleFonts[.subheadline]
         secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7).uiColor()
         secondLabel.adjustsFontForContentSizeCategory = true
+    }
 
+    private func setupDoneButton(with configuration: GiniBankConfiguration) {
         doneButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
         doneButton.setTitle(doneButtonTitle, for: .normal)
         doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
@@ -115,6 +142,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
             }
 
             navigationBarBottomAdapter?.setGetStartedButtonClickedActionCallback { [weak self] in
+                self?.doneButtonTapped = true
                 self?.dismissViewController()
             }
 
@@ -128,15 +156,13 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                     navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                     navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                     navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                    navigationBar.heightAnchor.constraint(equalToConstant: 114),
+                    navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight),
                     navigationBar.topAnchor.constraint(equalTo: scrollView.bottomAnchor)
                 ])
             }
         }
 
-        configureConstraints()
     }
-    // swiftlint:enable function_body_length
 
     private func configureConstraints() {
         if UIDevice.current.isIpad {
@@ -163,10 +189,19 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     }
 
     @objc func doneAction(_ sender: UIButton!) {
+        doneButtonTapped = true
         dismissViewController()
     }
 
     private func dismissViewController() {
-        dismiss(animated: true)
+        dismiss(animated: true) {
+            self.delegate?.dismissViewController()
+        }
+    }
+}
+
+extension DigitalInvoiceOnboardingViewController {
+    private enum Constants {
+        static let navigationBarHeight: CGFloat = 114
     }
 }
