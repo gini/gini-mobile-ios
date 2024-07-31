@@ -78,9 +78,9 @@ public struct DataForReview {
      - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
      - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
      */
-    public init(id: String, secret: String, domain: String) {
+    public init(id: String, secret: String, domain: String, logLevel: LogLevel = .none) {
         let client = Client(id: id, secret: secret, domain: domain)
-        self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
+        self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: logLevel.toHealthLogLevel()).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService()
 

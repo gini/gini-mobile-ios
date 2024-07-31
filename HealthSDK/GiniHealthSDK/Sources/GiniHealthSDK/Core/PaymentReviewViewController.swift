@@ -453,10 +453,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func fillInInputFields() {
         guard let model else { return }
-        recipientTextFieldView.text = model.extractions.first(where: {$0.name == "payment_recipient"})?.value
-        ibanTextFieldView.text = model.extractions.first(where: {$0.name == "iban"})?.value
-        usageTextFieldView.text = model.extractions.first(where: {$0.name == "payment_purpose"})?.value
-        if let amountString = model.extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
+        recipientTextFieldView.text = model.extractions.first(where: {$0.name == ExtractionType.paymentRecipient.rawValue})?.value
+        ibanTextFieldView.text = model.extractions.first(where: {$0.name == ExtractionType.iban.rawValue})?.value
+        usageTextFieldView.text = model.extractions.first(where: {$0.name == ExtractionType.paymentPurpose.rawValue})?.value
+        if let amountString = model.extractions.first(where: {$0.name == ExtractionType.amountToPay.rawValue})?.value, let amountToPay = Price(extractionString: amountString) {
             self.amountToPay = amountToPay
             let amountToPayText = amountToPay.string
             amountTextFieldView.text = amountToPayText

@@ -88,7 +88,7 @@ final class InvoicesListViewController: UIViewController {
     }
     
     @objc func uploadInvoicesButtonTapped() {
-        viewModel.uploadInvoices()
+//        viewModel.uploadInvoices()
     }
 
     @objc func dismissViewControllerTapped() {

@@ -49,9 +49,9 @@
 "gini.merchant.paymentcomponent.paymentinfo.questions.answer.clickable.text" = "privacy policy[LINK]";
 "gini.merchant.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/en/";
 "gini.merchant.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
-"gini.merchant.paymentcomponent.installAppBottomSheet.title" = "Billing data ready to share with the [BANK] bank";
+"gini.merchant.paymentcomponent.installAppBottomSheet.title" = "Invoice data ready to share with the [BANK] bank";
 "gini.merchant.paymentcomponent.installAppBottomSheet.notes.description" = "Note: You must first update or install the [BANK] app from the App store";
-"gini.merchant.paymentcomponent.installAppBottomSheet.tip.description" = "Tip: Tap 'Forward' to complete the payment. The [BANK] app will open automatically, for you to confirm the transaction. Thank you!";
+"gini.merchant.paymentcomponent.installAppBottomSheet.tip.description" = "Tip: Tap 'Forward' to complete the payment in the [BANK] app.";
 "gini.merchant.paymentcomponent.installAppBottomSheet.continue.button.text" = "Forward";
 "gini.merchant.paymentcomponent.shareInvoiceBottomSheet.title" = "Invoice data ready to share";
 "gini.merchant.paymentcomponent.shareInvoiceBottomSheet.description" = "In the next step, select the [BANK] app to open and complete your payment in the banking app.";
