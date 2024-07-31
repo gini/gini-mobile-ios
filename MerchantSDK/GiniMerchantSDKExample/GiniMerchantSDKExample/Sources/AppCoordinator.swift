@@ -124,6 +124,7 @@ final class AppCoordinator: Coordinator {
 
     private let configuration = GiniMerchantConfiguration()
 
+    // TODO: Remove this flows
     fileprivate func showPaymentReviewWithTestDocument() {
         merchant.delegate = self
         merchant.setConfiguration(configuration)
@@ -138,9 +139,9 @@ final class AppCoordinator: Coordinator {
                         switch result {
                         case let .success(extractionResult):
                             print("✅ Successfully fetched extractions for id: \(document.id)")
-                            let invoice = DocumentWithExtractions(documentID: document.id,
-                                                                  extractionResult: extractionResult)
-                            self?.showInvoicesList(invoices: [invoice])
+//                            let invoice = DocumentWithExtractions(documentID: document.id,
+//                                                                  extractionResult: extractionResult)
+//                            self?.showInvoicesList(invoices: [invoice])
                         case let .failure(error):
                             print("❌ Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))")
                         }
@@ -180,9 +181,9 @@ final class AppCoordinator: Coordinator {
                                         switch result {
                                         case let .success(extractionResult):
                                             print("✅ Successfully fetched extractions for id: \(compositeDocument.id)")
-                                            let invoice = DocumentWithExtractions(documentID: compositeDocument.id,
-                                                                                  extractionResult: extractionResult)
-                                            self?.showInvoicesList(invoices: [invoice])
+//                                            let invoice = DocumentWithExtractions(documentID: compositeDocument.id,
+//                                                                                  extractionResult: extractionResult)
+//                                            self?.showInvoicesList(invoices: [invoice])
                                         case let .failure(error):
                                             print("❌ Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))")
                                         }
@@ -249,7 +250,7 @@ final class AppCoordinator: Coordinator {
         }
     }
     
-    fileprivate func showInvoicesList(invoices: [DocumentWithExtractions]? = nil) {
+    fileprivate func showInvoicesList(invoices: [InvoiceItem]? = nil) {
         self.selectAPIViewController.hideActivityIndicator()
         
         // Show the close button to dismiss the payment review screen
@@ -295,7 +296,7 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
         self.remove(childCoordinator: coordinator)
     }
     
-    func presentInvoicesList(invoices: [DocumentWithExtractions]?) {
+    func presentInvoicesList(invoices: [InvoiceItem]?) {
         self.showInvoicesList(invoices: invoices)
     }
 }

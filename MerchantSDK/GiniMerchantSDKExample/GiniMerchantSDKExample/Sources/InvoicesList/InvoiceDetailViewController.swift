@@ -14,7 +14,7 @@ fileprivate enum Fields: String, CaseIterable {
     case amountToPay = "Amount"
     case purpose = "Purpose"
 
-    static func all(from document: DocumentWithExtractions) ->  [(String, String)] {
+    static func all(from document: InvoiceItem) ->  [(String, String)] {
         var array = [(String, String)]()
 
         if let recipient = document.recipient {
@@ -36,7 +36,7 @@ fileprivate enum Fields: String, CaseIterable {
 
 final class InvoiceDetailViewController: UIViewController {
 
-    private var invoice: DocumentWithExtractions
+    private var invoice: InvoiceItem
     private let paymentComponentsController: PaymentComponentsController
     private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
 
@@ -53,7 +53,7 @@ final class InvoiceDetailViewController: UIViewController {
         return items
     }
 
-    init(invoice: DocumentWithExtractions, paymentComponentsController: PaymentComponentsController) {
+    init(invoice: InvoiceItem, paymentComponentsController: PaymentComponentsController) {
         self.invoice = invoice
         self.paymentComponentsController = paymentComponentsController
         super.init(nibName: nil, bundle: nil)

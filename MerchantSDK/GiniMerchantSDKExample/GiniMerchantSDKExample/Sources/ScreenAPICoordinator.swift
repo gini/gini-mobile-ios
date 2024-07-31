@@ -12,7 +12,7 @@ import UIKit
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ())
-    func presentInvoicesList(invoices: [DocumentWithExtractions]?)
+    func presentInvoicesList(invoices: [InvoiceItem]?)
 }
 
 final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDelegate, GiniCaptureResultsDelegate {
@@ -71,6 +71,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
         screenAPIViewController.dismiss(animated: true)
     }
     
+    // TODO: remove this flows
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
             var healthExtractions: [GiniMerchantSDK.Extraction] = []
             captureExtractedResults = result.extractions.map { $0.value }
@@ -87,15 +88,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
                             switch result {
                             case let .success(extractionResult):
                                 print("✅ Successfully fetched extractions for id: \(docId)")
-                                // Store invoice/document into Invoices list
-                                let invoice = DocumentWithExtractions(documentID: docId,
-                                                                      extractionResult: extractionResult)
-                                self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
-                                DispatchQueue.main.async {
-                                    self?.rootViewController.dismiss(animated: true, completion: {
-                                        self?.delegate?.presentInvoicesList(invoices: [invoice])
-                                    })
-                                }
+
                             case let .failure(error):
                                 print("❌ Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))")
                             }
