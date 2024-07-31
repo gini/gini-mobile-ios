@@ -10,6 +10,18 @@ import GiniUtilites
 import GiniPaymentComponents
 
 extension GiniMerchant: PaymentComponentsConfigurationProvider {
+    public var defaultStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration {
+        GiniMerchantConfiguration.shared.defaultStyleInputFieldConfiguration
+    }
+    
+    public var errorStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration {
+        GiniMerchantConfiguration.shared.errorStyleInputFieldConfiguration
+    }
+    
+    public var selectionStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration {
+        GiniMerchantConfiguration.shared.selectionStyleInputFieldConfiguration
+    }
+    
     public var showPaymentReviewCloseButton: Bool {
         GiniMerchantConfiguration.shared.showPaymentReviewCloseButton
     }
@@ -20,6 +32,13 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
     
     public var paymentComponentButtonsHeight: CGFloat {
         GiniMerchantConfiguration.shared.paymentComponentButtonsHeight
+    }
+    
+    public var paymentReviewContainerConfiguration: PaymentReviewContainerConfiguration {
+        PaymentReviewContainerConfiguration(
+            errorLabelTextColor: GiniColor.feedback1.uiColor(),
+            errorLabelFont: GiniMerchantConfiguration.shared.font(for: .captions2)
+        )
     }
     
     public var installAppConfiguration: InstallAppConfiguration {

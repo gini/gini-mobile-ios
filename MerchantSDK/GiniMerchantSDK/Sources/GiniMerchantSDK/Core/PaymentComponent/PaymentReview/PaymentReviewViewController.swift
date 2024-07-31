@@ -191,58 +191,13 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
 // MARK: - Instantiation
 extension PaymentReviewViewController {
-    public static func instantiate(with giniMerchant: GiniMerchant,
-                                   document: Document,
-                                   extractions: [Extraction],
+    public static func instantiate(viewModel: PaymentReviewModel,
                                    selectedPaymentProvider: PaymentProvider,
-                                   configuration: PaymentReviewConfiguration,
-                                   strings: PaymentReviewStrings,
-                                   poweredByGiniConfiguration: PoweredByGiniConfiguration,
-                                   poweredByGiniStrings: PoweredByGiniStrings,
-                                   trackingDelegate: GiniMerchantTrackingDelegate? = nil,
-                                   paymentComponentsController: PaymentComponentsController,
-                                   isAmountFieldEditable: Bool,
-                                   showPaymentReviewCloseButton: Bool) -> PaymentReviewViewController {
-        let viewModel = PaymentReviewModel(with: giniMerchant,
-                                           document: document,
-                                           extractions: extractions,
-                                           selectedPaymentProvider: selectedPaymentProvider, 
-                                           configuration: configuration, 
-                                           strings: strings,
-                                           poweredByGiniConfiguration: poweredByGiniConfiguration,
-                                           poweredByGiniStrings: poweredByGiniStrings,
-                                           paymentComponentsController: paymentComponentsController,
-                                           showPaymentReviewCloseButton: showPaymentReviewCloseButton, 
-                                           isAmountFieldEditable: isAmountFieldEditable)
+                                   trackingDelegate: GiniMerchantTrackingDelegate? = nil) -> PaymentReviewViewController {
         let viewController = PaymentReviewViewController(viewModel: viewModel,
                                                          selectedPaymentProvider: selectedPaymentProvider,
                                                          trackingDelegate: trackingDelegate)
         return viewController
-    }
-
-    public static func instantiate(with giniMerchant: GiniMerchant,
-                                   data: DataForReview,
-                                   selectedPaymentProvider: PaymentProvider,
-                                   configuration: PaymentReviewConfiguration,
-                                   strings: PaymentReviewStrings,
-                                   poweredByGiniConfiguration: PoweredByGiniConfiguration,
-                                   poweredByGiniStrings: PoweredByGiniStrings,
-                                   trackingDelegate: GiniMerchantTrackingDelegate? = nil,
-                                   paymentComponentsController: PaymentComponentsController,
-                                   showPaymentReviewCloseButton: Bool,
-                                   isAmountFieldEditable: Bool) -> PaymentReviewViewController {
-        instantiate(with: giniMerchant,
-                    document: data.document,
-                    extractions: data.extractions,
-                    selectedPaymentProvider: selectedPaymentProvider, 
-                    configuration: configuration,
-                    strings: strings,
-                    poweredByGiniConfiguration: poweredByGiniConfiguration,
-                    poweredByGiniStrings: poweredByGiniStrings,
-                    trackingDelegate: trackingDelegate,
-                    paymentComponentsController: paymentComponentsController, 
-                    isAmountFieldEditable: isAmountFieldEditable,
-                    showPaymentReviewCloseButton: showPaymentReviewCloseButton)
     }
 }
 

@@ -64,6 +64,12 @@ public class PaymentReviewModel: NSObject {
     var paymentComponentsController: PaymentComponentsController
     let configuration: PaymentReviewConfiguration
     let strings: PaymentReviewStrings
+    let containerConfiguration: PaymentReviewContainerConfiguration
+    let containerStrings: PaymentReviewContainerStrings
+    let defaultStyleInputFieldConfiguration: TextFieldConfiguration
+    let errorStyleInputFieldConfiguration: TextFieldConfiguration
+    let selectionStyleInputFieldConfiguration: TextFieldConfiguration
+    let primaryButtonConfiguration: ButtonConfiguration
     let poweredByGiniConfiguration: PoweredByGiniConfiguration
     let poweredByGiniStrings: PoweredByGiniStrings
     let showPaymentReviewCloseButton: Bool
@@ -75,6 +81,12 @@ public class PaymentReviewModel: NSObject {
                 selectedPaymentProvider: PaymentProvider,
                 configuration: PaymentReviewConfiguration,
                 strings: PaymentReviewStrings,
+                containerConfiguration: PaymentReviewContainerConfiguration,
+                containerStrings: PaymentReviewContainerStrings,
+                defaultStyleInputFieldConfiguration: TextFieldConfiguration,
+                errorStyleInputFieldConfiguration: TextFieldConfiguration,
+                selectionStyleInputFieldConfiguration: TextFieldConfiguration,
+                primaryButtonConfiguration: ButtonConfiguration,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
                 paymentComponentsController: PaymentComponentsController,
@@ -92,6 +104,12 @@ public class PaymentReviewModel: NSObject {
         self.paymentComponentsController = paymentComponentsController
         self.showPaymentReviewCloseButton = showPaymentReviewCloseButton
         self.isAmountFieldEditable = isAmountFieldEditable
+        self.containerConfiguration = containerConfiguration
+        self.containerStrings = containerStrings
+        self.primaryButtonConfiguration = primaryButtonConfiguration
+        self.defaultStyleInputFieldConfiguration = defaultStyleInputFieldConfiguration
+        self.errorStyleInputFieldConfiguration = errorStyleInputFieldConfiguration
+        self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> PageCollectionCellViewModel {
@@ -183,8 +201,14 @@ public class PaymentReviewModel: NSObject {
 
     func paymentReviewContainerViewModel() -> PaymentReviewContainerViewModel {
         PaymentReviewContainerViewModel(extractions: extractions,
-                                        selectedPaymentProvider: selectedPaymentProvider, 
-                                        poweredByGiniConfiguration: poweredByGiniConfiguration, 
+                                        selectedPaymentProvider: selectedPaymentProvider,
+                                        configuration: containerConfiguration,
+                                        strings: containerStrings, 
+                                        primaryButtonConfiguration: primaryButtonConfiguration,
+                                        defaultStyleInputFieldConfiguration: defaultStyleInputFieldConfiguration,
+                                        errorStyleInputFieldConfiguration: errorStyleInputFieldConfiguration,
+                                        selectionStyleInputFieldConfiguration: selectionStyleInputFieldConfiguration,
+                                        poweredByGiniConfiguration: poweredByGiniConfiguration,
                                         poweredByGiniStrings: poweredByGiniStrings,
                                         isAmountFieldEditable: isAmountFieldEditable)
     }

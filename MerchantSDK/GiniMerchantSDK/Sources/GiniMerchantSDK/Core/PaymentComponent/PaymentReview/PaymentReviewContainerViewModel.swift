@@ -14,11 +14,13 @@ class PaymentReviewContainerViewModel {
     var onExtractionFetched: (() -> Void)?
     let selectedPaymentProvider: PaymentProvider
     let isAmountFieldEditable: Bool
+    let configuration: PaymentReviewContainerConfiguration
+    let strings: PaymentReviewContainerStrings
+    let primaryButtonConfiguration: ButtonConfiguration
+    let defaultStyleInputFieldConfiguration: TextFieldConfiguration
+    let errorStyleInputFieldConfiguration: TextFieldConfiguration
+    let selectionStyleInputFieldConfiguration: TextFieldConfiguration
     let poweredByGiniViewModel: PoweredByGiniViewModel
-
-    // Pay invoice label
-    let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.banking.app.button.label",
-                                                                       comment: "Title label used for the pay invoice button")
 
     public var extractions: [Extraction] {
         didSet {
@@ -28,12 +30,24 @@ class PaymentReviewContainerViewModel {
 
     init(extractions: [Extraction],
          selectedPaymentProvider: PaymentProvider,
+         configuration: PaymentReviewContainerConfiguration,
+         strings: PaymentReviewContainerStrings,
+         primaryButtonConfiguration: ButtonConfiguration,
+         defaultStyleInputFieldConfiguration: TextFieldConfiguration,
+         errorStyleInputFieldConfiguration: TextFieldConfiguration,
+         selectionStyleInputFieldConfiguration: TextFieldConfiguration,
          poweredByGiniConfiguration: PoweredByGiniConfiguration,
          poweredByGiniStrings: PoweredByGiniStrings,
          isAmountFieldEditable: Bool) {
         self.extractions = extractions
         self.selectedPaymentProvider = selectedPaymentProvider
         self.isAmountFieldEditable = isAmountFieldEditable
+        self.configuration = configuration
+        self.strings = strings
+        self.primaryButtonConfiguration = primaryButtonConfiguration
+        self.defaultStyleInputFieldConfiguration = defaultStyleInputFieldConfiguration
+        self.errorStyleInputFieldConfiguration = errorStyleInputFieldConfiguration
+        self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
     }
 }

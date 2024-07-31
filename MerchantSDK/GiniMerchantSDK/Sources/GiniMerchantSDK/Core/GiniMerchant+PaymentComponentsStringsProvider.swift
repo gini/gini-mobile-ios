@@ -6,6 +6,22 @@
 //
 
 extension GiniMerchant: PaymentComponentsStringsProvider {
+    public var paymentReviewContainerStrings: PaymentReviewContainerStrings {
+        PaymentReviewContainerStrings(
+            emptyCheckErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.default.textfield.validation.check", comment: "the field failed non empty check"),
+            ibanCheckErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.validation.check", comment: "iban failed validation check"),
+            recipientFieldPlaceholder: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder", comment: "placeholder text for recipient input field"),
+            ibanFieldPlaceholder: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder", comment: "placeholder text for iban input field"),
+            amountFieldPlaceholder: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder", comment: "placeholder text for amount input field"),
+            usageFieldPlaceholder: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder", comment: "placeholder text for usage input field"),
+            recipientErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.recipient.non.empty.check", comment: "recipient failed non empty check"),
+            ibanErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.non.empty.check", comment: "iban failed non empty check"),
+            amountErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.amount.non.empty.check", comment: "amount failed non empty check"),
+            purposeErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.purpose.non.empty.check", comment: "purpose failed non empty check"), 
+            payInvoiceLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.banking.app.button.label", comment: "Title label used for the pay invoice button")
+        )
+    }
+
     public var paymentComponentsStrings: PaymentComponentsStrings {
         PaymentComponentsStrings(
             selectYourBankLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectYourBank.label",

@@ -18,6 +18,7 @@ public protocol PaymentComponentsControllerProtocol: AnyObject {
 }
 
 public protocol PaymentComponentsConfigurationProvider {
+    var paymentReviewContainerConfiguration: PaymentReviewContainerConfiguration { get }
     var installAppConfiguration: InstallAppConfiguration { get }
     var bottomSheetConfiguration: BottomSheetConfiguration { get }
     var shareInvoiceConfiguration: ShareInvoiceConfiguration { get }
@@ -27,8 +28,12 @@ public protocol PaymentComponentsConfigurationProvider {
     var paymentReviewConfiguration: PaymentReviewConfiguration { get }
     var poweredByGiniConfiguration: PoweredByGiniConfiguration { get }
     var moreInformationConfiguration: MoreInformationConfiguration { get }
+    
     var primaryButtonConfiguration: ButtonConfiguration { get }
     var secondaryButtonConfiguration: ButtonConfiguration { get }
+    var defaultStyleInputFieldConfiguration: TextFieldConfiguration { get }
+    var errorStyleInputFieldConfiguration: TextFieldConfiguration { get }
+    var selectionStyleInputFieldConfiguration: TextFieldConfiguration { get }
 
     var showPaymentReviewCloseButton: Bool { get }
     var isAmountFieldEditable: Bool { get }
@@ -38,6 +43,7 @@ public protocol PaymentComponentsConfigurationProvider {
 
 
 public protocol PaymentComponentsStringsProvider {
+    var paymentReviewContainerStrings: PaymentReviewContainerStrings { get }
     var paymentComponentsStrings: PaymentComponentsStrings { get }
     var installAppStrings: InstallAppStrings { get }
     var shareInvoiceStrings: ShareInvoiceStrings { get }
@@ -205,17 +211,27 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                     completion(nil, nil)
                     return
                 }
-                let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
-                                                                 data: data,
-                                                                 selectedPaymentProvider: selectedPaymentProvider, 
-                                                                 configuration: configurationProvider.paymentReviewConfiguration,
-                                                                 strings: stringsProvider.paymentReviewStrings,
-                                                                 poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                                 poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
-                                                                 trackingDelegate: trackingDelegate,
-                                                                 paymentComponentsController: self,
-                                                                 showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
-                                                                 isAmountFieldEditable: configurationProvider.isAmountFieldEditable)
+                let viewModel = PaymentReviewModel(with: giniMerchant,
+                                                   document: data.document,
+                                                   extractions: data.extractions,
+                                                   selectedPaymentProvider: selectedPaymentProvider,
+                                                   configuration: configurationProvider.paymentReviewConfiguration,
+                                                   strings: stringsProvider.paymentReviewStrings,
+                                                   containerConfiguration: configurationProvider.paymentReviewContainerConfiguration,
+                                                   containerStrings: stringsProvider.paymentReviewContainerStrings,
+                                                   defaultStyleInputFieldConfiguration: configurationProvider.defaultStyleInputFieldConfiguration,
+                                                   errorStyleInputFieldConfiguration: configurationProvider.errorStyleInputFieldConfiguration,
+                                                   selectionStyleInputFieldConfiguration: configurationProvider.selectionStyleInputFieldConfiguration,
+                                                   primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
+                                                   poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+                                                   poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                   paymentComponentsController: self,
+                                                   showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
+                                                   isAmountFieldEditable: configurationProvider.isAmountFieldEditable)
+
+                let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
+                                                                 selectedPaymentProvider: selectedPaymentProvider,
+                                                                 trackingDelegate: trackingDelegate)
                 completion(vc, nil)
             case .failure(let error):
                 completion(nil, error)

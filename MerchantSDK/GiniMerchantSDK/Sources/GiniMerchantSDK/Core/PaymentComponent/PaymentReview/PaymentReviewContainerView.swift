@@ -37,7 +37,7 @@ class PaymentReviewContainerView: UIView {
 
     private lazy var recipientTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.recipientFieldTag.rawValue, isEditable: false)
     private lazy var ibanTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.ibanFieldTag.rawValue, isEditable: false)
-    private lazy var amountTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.amountFieldTag.rawValue, isEditable: model.isAmountFieldEditable)
+    private lazy var amountTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.amountFieldTag.rawValue, isEditable: viewModel.isAmountFieldEditable)
     private lazy var usageTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.usageFieldTag.rawValue, isEditable: false)
 
     private let buttonsView = EmptyView()
@@ -54,7 +54,7 @@ class PaymentReviewContainerView: UIView {
     private let bottomStackView = EmptyStackView(orientation: .horizontal)
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
-        let view = PoweredByGiniView(viewModel: model.poweredByGiniViewModel)
+        let view = PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -64,11 +64,11 @@ class PaymentReviewContainerView: UIView {
 
     private var paymentInputFields: [TextFieldWithLabelView] = []
     private var paymentInputFieldsErrorLabels: [UILabel] = []
-    private let model: PaymentReviewContainerViewModel
+    private let viewModel: PaymentReviewContainerViewModel
     var onPayButtonClicked: (() -> Void)?
     
     init(viewModel: PaymentReviewContainerViewModel) {
-        self.model = viewModel
+        self.viewModel = viewModel
         super.init(frame: .zero)
         setupViewHierarchy()
         setupLayout()
@@ -199,7 +199,7 @@ class PaymentReviewContainerView: UIView {
     // MARK: - Input fields configuration
 
     fileprivate func setupViewModel() {
-        model.onExtractionFetched = { [weak self] () in
+        viewModel.onExtractionFetched = { [weak self] () in
             DispatchQueue.main.async {
                 self?.fillInInputFields()
             }
@@ -213,7 +213,7 @@ class PaymentReviewContainerView: UIView {
     }
 
     fileprivate func applyDefaultStyle(_ textFieldView: TextFieldWithLabelView) {
-        textFieldView.configure(configuration: Constants.defaultStyleInputFieldConfiguration)
+        textFieldView.configure(configuration: viewModel.defaultStyleInputFieldConfiguration)
         textFieldView.customConfigure(labelTitle: inputFieldPlaceholderText(textFieldView))
         textFieldView.delegate = self
         textFieldView.layer.masksToBounds = true
@@ -221,14 +221,14 @@ class PaymentReviewContainerView: UIView {
 
     fileprivate func applyErrorStyle(_ textFieldView: TextFieldWithLabelView) {
         UIView.animate(withDuration: Constants.animationDuration) {
-            textFieldView.configure(configuration: Constants.errorStyleInputFieldConfiguration)
+            textFieldView.configure(configuration: self.viewModel.errorStyleInputFieldConfiguration)
             textFieldView.layer.masksToBounds = true
         }
     }
 
     fileprivate func applySelectionStyle(_ textFieldView: TextFieldWithLabelView) {
         UIView.animate(withDuration: Constants.animationDuration) {
-            textFieldView.configure(configuration: Constants.selectionStyleInputFieldConfiguration)
+            textFieldView.configure(configuration: self.viewModel.selectionStyleInputFieldConfiguration)
             textFieldView.layer.masksToBounds = true
         }
     }
@@ -237,13 +237,13 @@ class PaymentReviewContainerView: UIView {
         if let fieldIdentifier = TextFieldType(rawValue: textFieldView.tag) {
             switch fieldIdentifier {
             case .recipientFieldTag:
-                return Constants.recipientFieldPlaceholder
+                return viewModel.strings.recipientFieldPlaceholder
             case .ibanFieldTag:
-                return Constants.ibanFieldPlaceholder
+                return viewModel.strings.ibanFieldPlaceholder
             case .amountFieldTag:
-                return Constants.amountFieldPlaceholder
+                return viewModel.strings.amountFieldPlaceholder
             case .usageFieldTag:
-                return Constants.usageFieldPlaceholder
+                return viewModel.strings.usageFieldPlaceholder
             }
         }
         return ""
@@ -322,10 +322,10 @@ class PaymentReviewContainerView: UIView {
     }
 
     fileprivate func fillInInputFields() {
-        recipientTextFieldView.text = model.extractions.first(where: {$0.name == "payment_recipient"})?.value
-        ibanTextFieldView.text = model.extractions.first(where: {$0.name == "iban"})?.value
-        usageTextFieldView.text = model.extractions.first(where: {$0.name == "payment_purpose"})?.value
-        if let amountString = model.extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
+        recipientTextFieldView.text = viewModel.extractions.first(where: {$0.name == "payment_recipient"})?.value
+        ibanTextFieldView.text = viewModel.extractions.first(where: {$0.name == "iban"})?.value
+        usageTextFieldView.text = viewModel.extractions.first(where: {$0.name == "payment_purpose"})?.value
+        if let amountString = viewModel.extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
             self.amountToPay = amountToPay
             let amountToPayText = amountToPay.string
             amountTextFieldView.text = amountToPayText
@@ -340,16 +340,16 @@ class PaymentReviewContainerView: UIView {
         switch textFieldTag {
         case .recipientFieldTag:
             errorLabel = recipientErrorLabel
-            errorMessage = Constants.recipientErrorMessage
+            errorMessage = viewModel.strings.recipientErrorMessage
         case .ibanFieldTag:
             errorLabel = ibanErrorLabel
-            errorMessage = Constants.ibanErrorMessage
+            errorMessage = viewModel.strings.ibanErrorMessage
         case .amountFieldTag:
             errorLabel = amountErrorLabel
-            errorMessage = Constants.amountErrorMessage
+            errorMessage = viewModel.strings.amountErrorMessage
         case .usageFieldTag:
             errorLabel = usageErrorLabel
-            errorMessage = Constants.purposeErrorMessage
+            errorMessage = viewModel.strings.purposeErrorMessage
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
@@ -383,13 +383,13 @@ class PaymentReviewContainerView: UIView {
 
     fileprivate func showValidationErrorLabel(textFieldTag: TextFieldType) {
         var errorLabel = UILabel()
-        var errorMessage = Constants.emptyCheckErrorMessage
+        var errorMessage = viewModel.strings.emptyCheckErrorMessage
         switch textFieldTag {
         case .recipientFieldTag:
             errorLabel = recipientErrorLabel
         case .ibanFieldTag:
             errorLabel = ibanErrorLabel
-            errorMessage = Constants.ibanCheckErrorMessage
+            errorMessage = viewModel.strings.ibanCheckErrorMessage
         case .amountFieldTag:
             errorLabel = amountErrorLabel
         case .usageFieldTag:
@@ -403,11 +403,11 @@ class PaymentReviewContainerView: UIView {
     }
 
     fileprivate func configurePayButtonInitialState() {
-        payInvoiceButton.configure(with: Constants.primaryButtonConfiguration)
-        payInvoiceButton.customConfigure(text: model.payInvoiceLabelText,
-                                         textColor: model.selectedPaymentProvider.colors.text.toColor(),
-                                         backgroundColor: model.selectedPaymentProvider.colors.background.toColor(),
-                                         leftImageData: model.selectedPaymentProvider.iconData)
+        payInvoiceButton.configure(with: viewModel.primaryButtonConfiguration)
+        payInvoiceButton.customConfigure(text: viewModel.strings.payInvoiceLabelText,
+                                         textColor: viewModel.selectedPaymentProvider.colors.text.toColor(),
+                                         backgroundColor: viewModel.selectedPaymentProvider.colors.background.toColor(),
+                                         leftImageData: viewModel.selectedPaymentProvider.iconData)
         disablePayButtonIfNeeded()
         payInvoiceButton.didTapButton = { [weak self] in
             self?.payButtonClicked()
@@ -479,8 +479,8 @@ class PaymentReviewContainerView: UIView {
                                       iban: ibanTextFieldView.text ?? "",
                                       bic: "", amount: amountText,
                                       purpose: usageTextFieldView.text ?? "",
-                                      paymentUniversalLink: model.selectedPaymentProvider.universalLinkIOS,
-                                      paymentProviderId: model.selectedPaymentProvider.id)
+                                      paymentUniversalLink: viewModel.selectedPaymentProvider.universalLinkIOS,
+                                      paymentProviderId: viewModel.selectedPaymentProvider.id)
         return paymentInfo
     }
 
@@ -499,8 +499,8 @@ class PaymentReviewContainerView: UIView {
 
     private func buildErrorLabel() -> UILabel {
         let label = UILabel()
-        label.font = Constants.errorLabelFont
-        label.textColor = Constants.errorLabelTextColor
+        label.font = viewModel.configuration.errorLabelFont
+        label.textColor = viewModel.configuration.errorLabelTextColor
         return label
     }
 
@@ -622,25 +622,5 @@ extension PaymentReviewContainerView {
         static let heightToolbar = 40.0
         static let stackViewSpacing = 10.0
         static let payInvoiceInactiveAlpha = 0.4
-
-        static let errorLabelTextColor = GiniColor.feedback1.uiColor()
-
-        static let emptyCheckErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.default.textfield.validation.check", comment: "the field failed non empty check")
-        static let ibanCheckErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.validation.check", comment: "iban failed validation check")
-        static let recipientFieldPlaceholder = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder", comment: "placeholder text for recipient input field")
-        static let ibanFieldPlaceholder = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder", comment: "placeholder text for iban input field")
-        static let amountFieldPlaceholder = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder", comment: "placeholder text for amount input field")
-        static let usageFieldPlaceholder = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder", comment: "placeholder text for usage input field")
-        static let recipientErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.recipient.non.empty.check", comment: "recipient failed non empty check")
-        static let ibanErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.iban.non.empty.check", comment: "iban failed non empty check")
-        static let amountErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.amount.non.empty.check", comment: "amount failed non empty check")
-        static let purposeErrorMessage = NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.purpose.non.empty.check", comment: "purpose failed non empty check")
-
-        static let errorLabelFont = GiniMerchantConfiguration.shared.font(for: .captions2)
-
-        static let primaryButtonConfiguration = GiniMerchantConfiguration.shared.primaryButtonConfiguration
-        static let defaultStyleInputFieldConfiguration = GiniMerchantConfiguration.shared.defaultStyleInputFieldConfiguration
-        static let errorStyleInputFieldConfiguration = GiniMerchantConfiguration.shared.errorStyleInputFieldConfiguration
-        static let selectionStyleInputFieldConfiguration = GiniMerchantConfiguration.shared.selectionStyleInputFieldConfiguration
     }
 }
