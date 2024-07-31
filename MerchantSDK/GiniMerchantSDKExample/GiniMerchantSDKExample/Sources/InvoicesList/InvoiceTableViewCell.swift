@@ -12,7 +12,7 @@ final class InvoiceTableViewCell: UITableViewCell {
     static let identifier = String(describing: InvoiceTableViewCell.self)
 
     private let recipientLabel = UILabel()
-    private let dueDateLabel = UILabel()
+    private let ibanLabel = UILabel()
     private let amountLabel = UILabel()
 
     private lazy var horizontalStackView: UIStackView = {
@@ -26,7 +26,7 @@ final class InvoiceTableViewCell: UITableViewCell {
     }()
 
     private lazy var verticalStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [recipientLabel, dueDateLabel])
+        let stackView = UIStackView(arrangedSubviews: [recipientLabel, ibanLabel])
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         stackView.alignment = .leading
@@ -43,8 +43,8 @@ final class InvoiceTableViewCell: UITableViewCell {
             recipientLabel.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
             recipientLabel.isHidden = viewModel.isRecipientLabelHidden
 
-            dueDateLabel.text = viewModel.dueDateText
-            dueDateLabel.isHidden = viewModel.isDueDataLabelHidden
+            ibanLabel.text = viewModel.ibanText
+            ibanLabel.isHidden = viewModel.isDueDataLabelHidden
 
             amountLabel.text = viewModel.amountToPayText
             amountLabel.textColor = Constants.amountLabelTextColor
@@ -65,7 +65,7 @@ final class InvoiceTableViewCell: UITableViewCell {
         selectionStyle = .none
 
         recipientLabel.translatesAutoresizingMaskIntoConstraints = false
-        dueDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        ibanLabel.translatesAutoresizingMaskIntoConstraints = false
         amountLabel.translatesAutoresizingMaskIntoConstraints = false
 
         amountLabel.textAlignment = .right

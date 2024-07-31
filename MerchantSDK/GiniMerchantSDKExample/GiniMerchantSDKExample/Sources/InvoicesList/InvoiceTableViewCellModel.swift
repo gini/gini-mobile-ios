@@ -10,11 +10,12 @@ import GiniMerchantSDK
 import GiniUtilites
 import UIKit
 
+// TODO: Remove tableviewcell
 final class InvoiceTableViewCellModel {
-    private var invoice: DocumentWithExtractions
+    private var invoice: InvoiceItem
     private var paymentComponentsController: PaymentComponentsController
 
-    init(invoice: DocumentWithExtractions,
+    init(invoice: InvoiceItem,
          paymentComponentsController: PaymentComponentsController) {
         self.invoice = invoice
         self.paymentComponentsController = paymentComponentsController
@@ -31,12 +32,12 @@ final class InvoiceTableViewCellModel {
         return ""
     }
     
-    var dueDateText: String {
-        invoice.paymentDueDate ?? ""
+    var ibanText: String {
+        invoice.iban ?? ""
     }
     
     var isDueDataLabelHidden: Bool {
-        dueDateText.isEmpty
+        ibanText.isEmpty
     }
     
     var isRecipientLabelHidden: Bool {
@@ -48,6 +49,6 @@ final class InvoiceTableViewCellModel {
     }
     
     var paymentComponentView: UIView {
-        return paymentComponentsController.paymentView(documentId: invoice.documentID)
+        return paymentComponentsController.paymentView(documentId: nil)
     }
 }
