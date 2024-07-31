@@ -151,7 +151,7 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
                             self?.errors.append(error.localizedDescription)
                             self?.showErrorsIfAny()
                         } else if let paymentRequestID {
-                            self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                            self?.paymentComponentsController.openPaymentProviderApp(requestID: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
                         }
                     }
                 } else {
@@ -215,6 +215,10 @@ extension InvoiceDetailViewController: GiniMerchantTrackingDelegate {
 }
 
 extension InvoiceDetailViewController: PaymentProvidersBottomViewProtocol {
+    func didTapOnMoreInformation() {
+        didTapOnMoreInformation(documentId: nil)
+    }
+    
     func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
         DispatchQueue.main.async {
             self.presentedViewController?.dismiss(animated: true, completion: {
@@ -240,7 +244,7 @@ extension InvoiceDetailViewController: PaymentProvidersBottomViewProtocol {
                 self?.showErrorsIfAny()
             } else if let paymentRequestID {
                 self?.dismiss(animated: true, completion: {
-                    self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                    self?.paymentComponentsController.openPaymentProviderApp(requestID: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
                 })
             }
         }

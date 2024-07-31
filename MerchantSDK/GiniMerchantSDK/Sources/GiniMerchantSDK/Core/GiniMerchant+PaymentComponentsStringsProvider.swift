@@ -5,6 +5,8 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
+import GiniPaymentComponents
+
 extension GiniMerchant: PaymentComponentsStringsProvider {
     public var paymentReviewContainerStrings: PaymentReviewContainerStrings {
         PaymentReviewContainerStrings(
