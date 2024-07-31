@@ -12,7 +12,7 @@ final class OnboardingDataSourceTests: XCTestCase {
 
     private let giniConfiguration = GiniConfiguration.shared
     
-    private var pages = [OnboardingDataSource.OnboardingPageModel]()
+    private var pages = [OnboardingPageModel]()
     
     override func setUp() {
         super.setUp()
@@ -22,34 +22,53 @@ final class OnboardingDataSourceTests: XCTestCase {
     }
     
     private func setDefaultOnboardingPages() {
-        pages = [(page: OnboardingPage(imageName: DefaultOnboardingPage.flatPaper.imageName,
-                                       title: DefaultOnboardingPage.flatPaper.title,
-                                       description: DefaultOnboardingPage.flatPaper.description),
-                  illustrationAdapter: giniConfiguration.onboardingAlignCornersIllustrationAdapter),
-                 (page: OnboardingPage(imageName: DefaultOnboardingPage.lighting.imageName,
-                                       title: DefaultOnboardingPage.lighting.title,
-                                       description: DefaultOnboardingPage.lighting.description),
-                  illustrationAdapter: giniConfiguration.onboardingLightingIllustrationAdapter)]
-        
+
+
+        let flatPaperPage = OnboardingPage(imageName: DefaultOnboardingPage.flatPaper.imageName,
+                                           title: DefaultOnboardingPage.flatPaper.title,
+                                           description: DefaultOnboardingPage.flatPaper.description)
+        let flatPaperPageModel = OnboardingPageModel(page: flatPaperPage,
+                                                     illustrationAdapter: giniConfiguration.onboardingAlignCornersIllustrationAdapter,
+                                                     analyticsScreen: GiniAnalyticsScreen.onboardingFlatPaper.rawValue)
+
+        let goodLightingPage = OnboardingPage(imageName: DefaultOnboardingPage.lighting.imageName,
+                                              title: DefaultOnboardingPage.lighting.title,
+                                              description: DefaultOnboardingPage.lighting.description)
+        let goodLightingPageModel = OnboardingPageModel(page: goodLightingPage,
+                                                        illustrationAdapter: giniConfiguration.onboardingLightingIllustrationAdapter,
+                                                        analyticsScreen: GiniAnalyticsScreen.onboardingLighting.rawValue)
+
+        pages = [flatPaperPageModel, goodLightingPageModel]
+
         if giniConfiguration.multipageEnabled {
-            pages.append((page: OnboardingPage(imageName: DefaultOnboardingPage.multipage.imageName,
-                                               title: DefaultOnboardingPage.multipage.title,
-                                               description: DefaultOnboardingPage.multipage.description),
-                          illustrationAdapter: giniConfiguration.onboardingMultiPageIllustrationAdapter))
+            let multiPage = OnboardingPage(imageName: DefaultOnboardingPage.multipage.imageName,
+                                           title: DefaultOnboardingPage.multipage.title,
+                                           description: DefaultOnboardingPage.multipage.description)
+            let multiPageModel = OnboardingPageModel(page: multiPage,
+                                                     illustrationAdapter: giniConfiguration.onboardingMultiPageIllustrationAdapter,
+                                                     analyticsScreen: GiniAnalyticsScreen.onboardingMultipage.rawValue)
+            pages.append(multiPageModel)
         }
-        
+
         if giniConfiguration.qrCodeScanningEnabled {
-            pages.append((page: OnboardingPage(imageName: DefaultOnboardingPage.qrcode.imageName,
-                                               title: DefaultOnboardingPage.qrcode.title,
-                                               description: DefaultOnboardingPage.qrcode.description),
-                          illustrationAdapter: giniConfiguration.onboardingQRCodeIllustrationAdapter))
+            let qrCodePage = OnboardingPage(imageName: DefaultOnboardingPage.qrcode.imageName,
+                                            title: DefaultOnboardingPage.qrcode.title,
+                                            description: DefaultOnboardingPage.qrcode.description)
+            let qrCodePageModel = OnboardingPageModel(page: qrCodePage,
+                                                      illustrationAdapter: giniConfiguration.onboardingQRCodeIllustrationAdapter,
+                                                      analyticsScreen: GiniAnalyticsScreen.onboardingQRcode.rawValue)
+            pages.append(qrCodePageModel)
         }
+
     }
     
     private func setCustomOnboardingPages() {
         guard let customPages = giniConfiguration.customOnboardingPages else { return }
-        pages =  customPages.map { page in
-            return (page: page, illustrationAdapter: nil)
+        pages =  customPages.enumerated().map { index, page in
+            let analyticsScreen = "\(GiniAnalyticsScreen.onboardingCustom.rawValue)\(index + 1)"
+            return OnboardingPageModel(page: page,
+                                       analyticsScreen: analyticsScreen,
+                                       isCustom: true)
         }
     }
     

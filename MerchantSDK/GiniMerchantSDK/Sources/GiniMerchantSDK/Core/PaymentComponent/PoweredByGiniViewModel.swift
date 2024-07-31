@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 final class PoweredByGiniViewModel {
     
@@ -17,6 +18,6 @@ final class PoweredByGiniViewModel {
     let giniIcon: UIImage = GiniMerchantImage.logo.preferredUIImage()
 
     init() {
-        self.poweredByGiniLabelFont = GiniMerchantConfiguration.shared.textStyleFonts[.caption2] ?? UIFont.systemFont(ofSize: 12, weight: .regular)
+        self.poweredByGiniLabelFont = GiniMerchantConfiguration.shared.font(for: .captions2)
     }
 }

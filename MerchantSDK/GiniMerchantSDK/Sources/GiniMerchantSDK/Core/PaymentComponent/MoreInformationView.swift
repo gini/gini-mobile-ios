@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 final class MoreInformationView: UIView {
     var viewModel: MoreInformationViewModel! {

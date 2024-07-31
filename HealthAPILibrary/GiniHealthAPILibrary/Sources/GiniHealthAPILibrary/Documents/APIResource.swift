@@ -29,6 +29,7 @@ struct APIResource<T: Decodable>: Resource {
     typealias ResponseType = T
     
     var domain: APIDomain
+    let apiVersion: Int
     var params: RequestParameters
     var method: APIMethod
     var authServiceType: AuthServiceType? = .apiService
@@ -39,12 +40,6 @@ struct APIResource<T: Decodable>: Resource {
     
     var scheme: URLScheme {
         return .https
-    }
-    
-    var apiVersion: Int {
-        switch domain {
-        case .default, .custom: return 4
-        }
     }
     
     var queryItems: [URLQueryItem?]? {
@@ -143,11 +138,13 @@ struct APIResource<T: Decodable>: Resource {
     
     init(method: APIMethod,
          apiDomain: APIDomain,
+         apiVersion: Int,
          httpMethod: HTTPMethod,
          additionalHeaders: HTTPHeaders = [:],
          body: Data? = nil) {
         self.method = method
         self.domain = apiDomain
+        self.apiVersion = apiVersion
         self.params = RequestParameters(method: httpMethod,
                                         body: body)
         self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }

@@ -2,7 +2,7 @@
 //  GiniBankAPILibraryPinningVersion.swift
 //  
 //
-//  Created by Nadya Karaban on 15.10.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-public let GiniBankAPILibraryPinningVersion = "3.1.3"
+public let GiniBankAPILibraryPinningVersion = "3.2.0"

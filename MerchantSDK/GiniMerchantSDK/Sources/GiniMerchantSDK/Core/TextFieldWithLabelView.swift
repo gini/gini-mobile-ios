@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniUtilites
 
 final class TextFieldWithLabelView: UIView {
     private lazy var configuration = GiniMerchantConfiguration.shared
@@ -23,7 +24,7 @@ final class TextFieldWithLabelView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = configuration.textStyleFonts[.caption2]
+        label.font = configuration.font(for: .caption2)
         label.adjustsFontForContentSizeCategory = true
         return label
     }()

@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 class BankSelectionTableViewCell: UITableViewCell, ReusableView {
     private let cellView = UIView()
