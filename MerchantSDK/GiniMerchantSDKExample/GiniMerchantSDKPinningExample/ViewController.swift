@@ -6,7 +6,6 @@
 
 
 import UIKit
-import TrustKit
 import GiniMerchantSDKPinning
 import GiniHealthAPILibraryPinning
 
