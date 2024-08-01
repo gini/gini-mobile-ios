@@ -22,24 +22,24 @@ final class PaymentInfoViewModel {
     
     let backgroundColor: UIColor = GiniColor.standard7.uiColor()
     
-    let titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.title.label", 
+    let titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.title.label", 
                                                              comment: "Payment Info title label text")
     
-    let payBillsTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.title.label", 
+    let payBillsTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.pay.bills.title.label", 
                                                                      comment: "Payment Info pay bills title label text")
     let payBillsTitleFont: UIFont
     let payBillsTitleTextColor: UIColor = GiniColor.standard1.uiColor()
     
-    private let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.label",
+    private let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.pay.bills.description.label",
                                                                                    comment: "Payment Info pay bills description text")
     var payBillsDescriptionAttributedText: NSMutableAttributedString = NSMutableAttributedString()
     var payBillsDescriptionLinkAttributes: [NSAttributedString.Key: Any]
     private let payBillsDescriptionFont: UIFont
     private let payBillsDescriptionTextColor: UIColor = GiniColor.standard1.uiColor()
-    private let giniWebsiteText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.clickable.text",
+    private let giniWebsiteText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.pay.bills.description.clickable.text",
                                                                    comment: "Word range that's clickable in pay bills description")
     private let giniFont: UIFont
-    private let giniURLText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.gini.link", 
+    private let giniURLText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.gini.link", 
                                                                comment: "Gini website link url")
     
     let questionsTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.title.label",
@@ -48,9 +48,9 @@ final class PaymentInfoViewModel {
     let questionsTitleTextColor: UIColor = GiniColor.standard1.uiColor()
     
     private var answersFont: UIFont
-    private let answerPrivacyPolicyText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.clickable.text",
+    private let answerPrivacyPolicyText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.clickable.text",
                                                                            comment: "Payment info answers clickable privacy policy")
-    private let privacyPolicyURLText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.gini.privacypolicy.link",
+    private let privacyPolicyURLText = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.gini.privacypolicy.link",
                                                                         comment: "Gini privacy policy link url")
     private var linksFont: UIFont
     private let linksTextColor: UIColor = GiniColor.accent1.uiColor()
@@ -79,9 +79,9 @@ final class PaymentInfoViewModel {
     
     private func setupQuestions() {
         for index in 1 ... Constants.numberOfQuestions {
-            let answerAttributedString = answerWithAttributes(answer: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.\(index)",
+            let answerAttributedString = answerWithAttributes(answer: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.\(index)",
                                                                                                        comment: "Answers description"))
-            let questionSection = FAQSection(title: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.question.\(index)",
+            let questionSection = FAQSection(title: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.\(index)",
                                                                                           comment: "Questions titles"),
                                                   description: textWithLinks(linkFont: linksFont, 
                                                                              attributedString: answerAttributedString),
