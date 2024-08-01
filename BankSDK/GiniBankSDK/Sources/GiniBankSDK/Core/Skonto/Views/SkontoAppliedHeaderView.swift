@@ -51,7 +51,7 @@ class SkontoAppliedHeaderView: UIView {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, statusLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = Constants.stackviewSpacing
+        stackView.spacing = Constants.stackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -83,7 +83,7 @@ class SkontoAppliedHeaderView: UIView {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor,
-                                           constant: Constants.stackviewVerticalPadding),
+                                           constant: Constants.stackViewVerticalPadding),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
 
             discountSwitch.topAnchor.constraint(greaterThanOrEqualTo: topAnchor,
@@ -117,8 +117,8 @@ class SkontoAppliedHeaderView: UIView {
 
 private extension SkontoAppliedHeaderView {
     enum Constants {
-        static let stackviewSpacing: CGFloat = 4
-        static let stackviewVerticalPadding: CGFloat = 16
+        static let stackViewSpacing: CGFloat = 4
+        static let stackViewVerticalPadding: CGFloat = 16
         static let discountSwitchLeadingPadding: CGFloat = 4
         static let discountSwitchTopPadding: CGFloat = 12
     }
