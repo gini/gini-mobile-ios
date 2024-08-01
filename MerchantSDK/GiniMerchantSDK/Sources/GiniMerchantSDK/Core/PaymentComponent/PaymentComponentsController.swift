@@ -24,7 +24,7 @@ protocol PaymentComponentsProtocol {
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniMerchantError>) -> Void)
     func paymentView(documentId: String?) -> UIView
     func bankSelectionBottomSheet() -> UIViewController
-    func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void)
+    func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void)
     func paymentInfoViewController() -> UIViewController
     func paymentViewBottomSheet(documentID: String?) -> UIViewController
 }
@@ -66,6 +66,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      */
     public init(giniMerchant: GiniMerchant) {
         self.giniMerchant = giniMerchant
+        giniMerchantConfiguration.useInvoiceWithoutDocument = true
     }
     
     /**
@@ -147,29 +148,49 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         return paymentComponentView
     }
 
-    public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
-        self.isLoading = true
-        self.giniMerchant.fetchDataForReview(documentId: documentID) { [weak self] result in
-            self?.isLoading = false
-            switch result {
-            case .success(let data):
-                guard let self else {
-                    completion(nil, nil)
-                    return
-                }
-                guard let selectedPaymentProvider else {
-                    completion(nil, nil)
-                    return
-                }
-                let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
-                                                                 data: data,
-                                                                 selectedPaymentProvider: selectedPaymentProvider,
-                                                                 trackingDelegate: trackingDelegate,
-                                                                 paymentComponentsController: self)
-                completion(vc, nil)
-            case .failure(let error):
-                completion(nil, error)
+    public func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+        if !giniMerchantConfiguration.useInvoiceWithoutDocument {
+            guard let documentID else {
+                completion(nil, nil)
+                return
             }
+            self.isLoading = true
+            self.giniMerchant.fetchDataForReview(documentId: documentID) { [weak self] result in
+                self?.isLoading = false
+                switch result {
+                    case .success(let data):
+                        guard let self else {
+                            completion(nil, nil)
+                            return
+                        }
+                        guard let selectedPaymentProvider else {
+                            completion(nil, nil)
+                            return
+                        }
+                        let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
+                                                                         data: data,
+                                                                         paymentInfo: nil,
+                                                                         selectedPaymentProvider: selectedPaymentProvider,
+                                                                         trackingDelegate: trackingDelegate,
+                                                                         paymentComponentsController: self)
+                        completion(vc, nil)
+                    case .failure(let error):
+                        completion(nil, error)
+                }
+            }
+        }
+        else {
+            guard let selectedPaymentProvider else {
+                completion(nil, nil)
+                return
+            }
+            let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
+                                                             data: nil,
+                                                             paymentInfo: paymentInfo,
+                                                             selectedPaymentProvider: selectedPaymentProvider,
+                                                             trackingDelegate: trackingDelegate,
+                                                             paymentComponentsController: self)
+            completion(vc, nil)
         }
     }
 
