@@ -21,7 +21,7 @@ final class InvoicesListViewModel {
 
     let noInvoicesText = NSLocalizedString("example.invoicesList.missingInvoices.text", comment: "")
     let titleText = NSLocalizedString("example.invoicesList.title", comment: "")
-    let uploadInvoicesText = NSLocalizedString("example.uploadInvoices.button.title", comment: "")
+    let customOrderText = NSLocalizedString("example.uploadInvoices.button.title", comment: "")
     let cancelText = NSLocalizedString("example.cancel.button.title", comment: "")
     let errorTitleText = NSLocalizedString("example.invoicesList.error", comment: "")
 

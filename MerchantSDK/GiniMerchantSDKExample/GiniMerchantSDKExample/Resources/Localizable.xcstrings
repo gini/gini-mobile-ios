@@ -73,13 +73,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "↑ Rechnungen"
+            "value" : "Kunden Bestellung"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "↑ Invoices"
+            "value" : "Custom Order"
           }
         }
       }

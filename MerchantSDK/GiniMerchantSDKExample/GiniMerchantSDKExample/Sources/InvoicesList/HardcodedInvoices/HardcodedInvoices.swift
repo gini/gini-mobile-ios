@@ -14,12 +14,20 @@ protocol HardcodedInvoicesControllerProtocol: AnyObject {
     func updateInvoice(uuid: UUID, recipient: String?, amountToPay: String?)
 }
 
-struct InvoiceItem: Codable {
+class InvoiceItem: Codable {
     var uuid = UUID()
     var amountToPay: String?
     var recipient: String?
     var iban: String?
     var purpose: String?
+
+    convenience init(amountToPay: String?, recipient: String?, iban: String?, purpose: String?) {
+        self.init()
+        self.amountToPay = amountToPay
+        self.recipient = recipient
+        self.iban = iban
+        self.purpose = purpose
+    }
 }
 
 final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
