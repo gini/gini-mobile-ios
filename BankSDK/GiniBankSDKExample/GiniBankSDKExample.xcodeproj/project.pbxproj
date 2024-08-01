@@ -45,6 +45,7 @@
 		28F62FA92AB319A000D47866 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA82AB319A000D47866 /* TextField.swift */; };
 		3E7839CE29C9DBB700B42216 /* ResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7839CD29C9DBB700B42216 /* ResultTableViewCell.swift */; };
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
+		502B63FA2C3FED5D00B5D5EA /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 502B63F92C3FED5D00B5D5EA /* PhotosUI.framework */; };
 		764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 764E0AD428CF274A00F96503 /* InfoPlist.strings */; };
 		76610BE6298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76610BE5298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib */; };
 		76610BE9298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610BE8298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift */; };
@@ -74,6 +75,8 @@
 		83D02CD7290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */; };
 		83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */; };
 		83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CDA290AC86300DA97F7 /* NibLoading.swift */; };
+		847B68CA2C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */; };
+		847B68CC2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
 		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
 		F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F426ABF0289AB1D7007F4EB6 /* Colors.xcassets */; };
@@ -198,6 +201,7 @@
 		3E7839CD29C9DBB700B42216 /* ResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableViewCell.swift; sourceTree = "<group>"; };
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
+		502B63F92C3FED5D00B5D5EA /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
 		764E0AD528CF275000F96503 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		76610BE5298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomReviewScreenBottomNavigationBar.xib; sourceTree = "<group>"; };
 		76610BE7298D5447004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReviewScreenBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
@@ -224,6 +228,8 @@
 		83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomOnboardingBottomNavigationBar.xib; sourceTree = "<group>"; };
 		83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingBottomNavigationBar.swift; sourceTree = "<group>"; };
 		83D02CDA290AC86300DA97F7 /* NibLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoading.swift; sourceTree = "<group>"; };
+		847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
+		847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAnalysisHelper.swift; sourceTree = "<group>"; };
@@ -297,6 +303,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F439C21B27355C310010D77D /* GiniBankSDK in Frameworks */,
+				502B63FA2C3FED5D00B5D5EA /* PhotosUI.framework in Frameworks */,
 				F439C21D27355C3A0010D77D /* GiniCaptureSDK in Frameworks */,
 				F439C21F27355C430010D77D /* GiniBankAPILibrary in Frameworks */,
 				F4BC984E2ADEA1B600E9E2D0 /* Lottie in Frameworks */,
@@ -426,6 +433,15 @@
 			path = OnboardingBottomNavigationBar;
 			sourceTree = "<group>";
 		};
+		847B68C82C4009D700544050 /* SkontoBottomNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */,
+				847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */,
+			);
+			path = SkontoBottomNavigationBar;
+			sourceTree = "<group>";
+		};
 		F439C210273555B60010D77D /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -437,6 +453,7 @@
 		F439C21927355C310010D77D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				502B63F92C3FED5D00B5D5EA /* PhotosUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -576,6 +593,7 @@
 		F490C7E325DE873900D8CA6F /* GiniBankSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				847B68C82C4009D700544050 /* SkontoBottomNavigationBar */,
 				76EFD4D229B0C4B300C26279 /* DigitalInvoiceOverviewBottomNavigationBar */,
 				768100352996951E00C52F87 /* DigitalInvoiceOnboardingBottomNavigationBar */,
 				76610BE4298D5403004C1ECB /* ReviewBottomNavigationBar */,
@@ -881,6 +899,7 @@
 				83D02CD3290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
 				768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */,
+				847B68CC2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift in Sources */,
 				83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */,
 				28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */,
 				83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */,
@@ -909,6 +928,7 @@
 				28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */,
 				76EFD4D429B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift in Sources */,
 				F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */,
+				847B68CA2C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift in Sources */,
 				F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */,
 				837EEFB3291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift in Sources */,
 				28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */,

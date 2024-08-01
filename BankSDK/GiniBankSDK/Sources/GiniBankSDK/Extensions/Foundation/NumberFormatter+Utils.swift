@@ -17,14 +17,14 @@ extension NumberFormatter {
         return formatter
     }
 
-    static var skontoPriceFormatter: NumberFormatter {
+    static var twoDecimalPriceFormatter: NumberFormatter {
         let formatter = makeLocalizedDecimalFormatter()
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
         return formatter
     }
 
-    static var skontoDiscountFormatter: NumberFormatter {
+    static var floorRoundingFormatter: NumberFormatter {
         let formatter = makeLocalizedDecimalFormatter()
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = 2

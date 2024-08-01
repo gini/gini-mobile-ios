@@ -9,6 +9,8 @@ import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
 import GiniBankSDK
+import AppTrackingTransparency
+import AdSupport
 
 final class AppCoordinator: Coordinator {
         
@@ -198,6 +200,10 @@ final class AppCoordinator: Coordinator {
 	}
 	
     fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
+        // Uncomment this to test the tracking permission view and
+        // simulate scenario when the user denieds the permissions and Gini analytics is not enabled
+        // requestTrackingPermission()
+
         documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
                                              additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
         let screenAPICoordinator = ScreenAPICoordinator(configuration: configuration,
@@ -213,6 +219,35 @@ final class AppCoordinator: Coordinator {
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
     
+    fileprivate func requestTrackingPermission () {
+        // Request tracking permission when the view loads
+        requestTrackingPermission { isTrackingEnabled in
+            if isTrackingEnabled {
+                print("Tracking is enabled")
+            } else {
+                print("Tracking is disabled")
+            }
+        }
+    }
+
+    fileprivate func requestTrackingPermission(completion: @escaping (Bool) -> Void) {
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                switch status {
+                    case .authorized:
+                        completion(true)
+                    case .denied, .restricted, .notDetermined:
+                        completion(false)
+                    @unknown default:
+                        completion(false)
+                }
+            }
+        } else {
+            // Tracking is enabled by default on earlier iOS versions
+            completion(true)
+        }
+    }
+
     fileprivate func showSettings() {
 		guard let settingsButtonStates = settingsButtonStates,
 			  let documentValidationsState = documentValidationsState else { return }

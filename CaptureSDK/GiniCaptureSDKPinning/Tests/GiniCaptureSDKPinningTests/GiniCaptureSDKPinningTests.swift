@@ -1,8 +1,8 @@
 //
-//  File.swift
+//  GiniCaptureSDKPinningTests.swift
 //  
 //
-//  Created by Nadya Karaban on 02.11.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation

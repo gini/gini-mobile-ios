@@ -58,7 +58,7 @@ class DigitalInvoiceIntegrationTests: XCTestCase {
                            result.extractions["amountToPay"]?.value)
             
 
-            let fixtureLineItems = fixtureExtractionsContainer?.compoundExtractions?["lineItems"]
+            let fixtureLineItems = fixtureExtractionsContainer?.compoundExtractions?.lineItems
 
             // Ensure both arrays are of the same length and not empty
             guard let fixtureLineItems = fixtureLineItems,

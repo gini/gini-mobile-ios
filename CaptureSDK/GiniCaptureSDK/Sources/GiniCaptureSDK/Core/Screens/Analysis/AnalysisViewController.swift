@@ -18,9 +18,8 @@ import UIKit
      
      - parameter message: The error type to be displayed.
      */
-    func displayError(
-        errorType: ErrorType,
-        animated: Bool
+    func displayError(errorType: ErrorType,
+                      animated: Bool
     )
 
     /**
@@ -142,6 +141,11 @@ import UIKit
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         didShowAnalysis?()
+
+        let eventProperties = [GiniAnalyticsProperty(key: .documentType,
+                                                     value: GiniAnalyticsMapper.documentTypeAnalytics(from: document.type))]
+        GiniAnalyticsManager.trackScreenShown(screenName: .analysis,
+                                              properties: eventProperties)
     }
 
     // MARK: Toggle animation

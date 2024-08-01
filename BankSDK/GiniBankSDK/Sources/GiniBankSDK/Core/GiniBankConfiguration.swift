@@ -296,7 +296,16 @@ public final class GiniBankConfiguration: NSObject {
      Set an adapter implementation to show a custom bottom navigation bar on the digital invoice overview screen.
      */
     public var digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
-    
+
+    // MARK: - Skonto feature
+
+    /**
+     Indicates whether the Skonto feature is enabled or not. In the case of `true`,
+     the user will be presented with a screen where they can see choose to pay the invoice
+     applying Skonto or not.
+     */
+    public var skontoEnabled = true
+
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the Skonto screen.
      */
@@ -646,12 +655,14 @@ public final class GiniBankConfiguration: NSObject {
         guard let documentService = documentService else { return }
         documentService.resetToInitialState()
         self.documentService = nil
-        self.lineItems = nil
+        lineItems = nil
+        skontoDiscounts = nil
     }
 
     // MARK: - Internal usage
     var documentService: DocumentServiceProtocol?
     var lineItems: [[Extraction]]?
+    var skontoDiscounts: [[Extraction]]?
 
     /**
      Set dictionary of fonts for available text styles. Used internally.

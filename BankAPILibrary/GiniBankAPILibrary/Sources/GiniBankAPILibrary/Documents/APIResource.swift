@@ -10,15 +10,12 @@ import Foundation
 public enum APIDomain {
     /// The default one, which points to https://pay-api.gini.net
     case `default`
-    /// The GYM API, which points to https://gym.gini.net/
-    case gym(tokenSource: AlternativeTokenSource)
     /// A custom domain with optional path and custom token source
     case custom(domain: String, path: String? = nil, tokenSource: AlternativeTokenSource?)
     
     var domainString: String {
         switch self {
         case .default: return "pay-api.gini.net"
-        case .gym: return "gym.gini.net"
         case .custom(let domain, _, _): return domain
         }
     }
@@ -51,7 +48,7 @@ struct APIResource<T: Decodable>: Resource {
     
     var apiVersion: Int {
         switch domain {
-        case .default, .gym, .custom: return 2
+        case .default, .custom: return 2
         }
     }
     
@@ -122,6 +119,8 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests/\(id)/payment"
         case .logErrorEvent:
             return "/events/error"
+        case .configurations:
+            return "/configurations"
         }
     }
     
