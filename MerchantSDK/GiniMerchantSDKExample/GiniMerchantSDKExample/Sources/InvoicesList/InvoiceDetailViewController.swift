@@ -97,6 +97,12 @@ final class InvoiceDetailViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        saveTextFieldData()
+    }
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.paddingTop),
@@ -183,11 +189,16 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
         }
     }
 
-    private func obtainPaymentInfo() -> PaymentInfo {
+    private func saveTextFieldData() {
         let textFields = InvoiceDetailView.textFields
+        invoice.iban = textFields[Fields.iban.rawValue]?.text
         invoice.recipient = textFields[Fields.recipient.rawValue]?.text
         invoice.amountToPay = textFields[Fields.amountToPay.rawValue]?.text
         invoice.purpose = textFields[Fields.purpose.rawValue]?.text
+    }
+
+    private func obtainPaymentInfo() -> PaymentInfo {
+        saveTextFieldData()
 
         return PaymentInfo(recipient: invoice.recipient ?? "", iban: invoice.iban ?? "", bic: "", amount: invoice.amountToPay ?? "", purpose: invoice.purpose ?? "", paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "", paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }

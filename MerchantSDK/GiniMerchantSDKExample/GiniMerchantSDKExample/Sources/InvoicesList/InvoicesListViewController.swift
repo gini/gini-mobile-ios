@@ -51,6 +51,12 @@ final class InvoicesListViewController: UIViewController {
         viewModel.viewDidLoad()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        invoicesTableView.reloadData()
+    }
+
     override func loadView() {
         super.loadView()
         title = viewModel.titleText
@@ -74,10 +80,10 @@ final class InvoicesListViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        let uploadInvoiceItem = UIBarButtonItem(title: viewModel.uploadInvoicesText, 
+        let uploadInvoiceItem = UIBarButtonItem(title: viewModel.customOrderText,
                                                 style: .plain,
                                                 target: self,
-                                                action: #selector(uploadInvoicesButtonTapped))
+                                                action: #selector(customOrderButtonTapped))
         self.navigationItem.rightBarButtonItem = uploadInvoiceItem
 
         let cancelItem = UIBarButtonItem(title: viewModel.cancelText,
@@ -87,8 +93,12 @@ final class InvoicesListViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = cancelItem
     }
     
-    @objc func uploadInvoicesButtonTapped() {
-//        viewModel.uploadInvoices()
+    @objc func customOrderButtonTapped() {
+        let newInvoice = InvoiceItem(amountToPay: "", recipient: "", iban: "", purpose: "")
+        viewModel.invoices.append(newInvoice)
+
+        let invoiceViewController = InvoiceDetailViewController(invoice: newInvoice, paymentComponentsController: viewModel.paymentComponentsController)
+        self.navigationController?.pushViewController(invoiceViewController, animated: true)
     }
 
     @objc func dismissViewControllerTapped() {
