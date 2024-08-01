@@ -46,7 +46,7 @@ class SkontoNotAppliedView: UIView {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, statusLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = Constants.stackviewSpacing
+        stackView.spacing = Constants.stackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -102,7 +102,7 @@ class SkontoNotAppliedView: UIView {
 
 private extension SkontoNotAppliedView {
     enum Constants {
-        static let stackviewSpacing: CGFloat = 4
+        static let stackViewSpacing: CGFloat = 4
         static let verticalPadding: CGFloat = 12
     }
 }
