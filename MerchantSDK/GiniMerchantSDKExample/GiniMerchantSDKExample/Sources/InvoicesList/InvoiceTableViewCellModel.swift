@@ -10,7 +10,6 @@ import GiniMerchantSDK
 import GiniUtilites
 import UIKit
 
-// TODO: Remove tableviewcell
 final class InvoiceTableViewCellModel {
     private var invoice: InvoiceItem
     private var paymentComponentsController: PaymentComponentsController

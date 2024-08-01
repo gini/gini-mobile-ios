@@ -112,8 +112,7 @@ final class AppCoordinator: Coordinator {
         
         merchant.delegate = self
         screenAPICoordinator.giniMerchant = merchant
-        
-        screenAPICoordinator.start(documentService: merchant.documentService)
+
         add(childCoordinator: screenAPICoordinator)
         
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
@@ -123,88 +122,6 @@ final class AppCoordinator: Coordinator {
     private var testDocumentExtractions: [GiniMerchantSDK.Extraction]?
 
     private let configuration = GiniMerchantConfiguration()
-
-    // TODO: Remove this flows
-    fileprivate func showPaymentReviewWithTestDocument() {
-        merchant.delegate = self
-        merchant.setConfiguration(configuration)
-
-        if let document = self.testDocument {
-            self.selectAPIViewController.showActivityIndicator()
-
-            self.merchant.fetchDataForReview(documentId: document.id) { result in
-                switch result {
-                case .success(let data):
-                    self.merchant.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
-                        switch result {
-                        case let .success(extractionResult):
-                            print("✅ Successfully fetched extractions for id: \(document.id)")
-//                            let invoice = DocumentWithExtractions(documentID: document.id,
-//                                                                  extractionResult: extractionResult)
-//                            self?.showInvoicesList(invoices: [invoice])
-                        case let .failure(error):
-                            print("❌ Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))")
-                        }
-                    }
-                case .failure(let error):
-                    print("❌ Document data fetching failed: \(String(describing: error))")
-                    self.selectAPIViewController.hideActivityIndicator()
-                }
-            }
-        } else {
-            // Upload the test document image
-            let testDocumentImage = UIImage(named: "testDocument")!
-            let testDocumentData = testDocumentImage.jpegData(compressionQuality: 1)!
-
-            self.selectAPIViewController.showActivityIndicator()
-
-            self.merchant.documentService.createDocument(fileName: nil,
-                                                       docType: nil,
-                                                       type: .partial(testDocumentData),
-                                                       metadata: nil) { result in
-                switch result {
-                case .success(let createdDocument):
-                    let partialDocInfo = GiniMerchantSDK.PartialDocumentInfo(document: createdDocument.links.document)
-                    self.merchant.documentService.createDocument(fileName: nil,
-                                                               docType: nil,
-                                                               type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
-                                                               metadata: nil) { [weak self] result in
-                        switch result {
-                        case .success(let compositeDocument):
-                            self?.merchant.setDocumentForReview(documentId: compositeDocument.id) { [weak self] result in
-                                switch result {
-                                case .success(let extractions):
-                                    self?.testDocument = compositeDocument
-                                    self?.testDocumentExtractions = extractions
-
-                                    self?.merchant.documentService.extractions(for: compositeDocument, cancellationToken: CancellationToken()) { [weak self] result in
-                                        switch result {
-                                        case let .success(extractionResult):
-                                            print("✅ Successfully fetched extractions for id: \(compositeDocument.id)")
-//                                            let invoice = DocumentWithExtractions(documentID: compositeDocument.id,
-//                                                                                  extractionResult: extractionResult)
-//                                            self?.showInvoicesList(invoices: [invoice])
-                                        case let .failure(error):
-                                            print("❌ Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))")
-                                        }
-                                    }
-                                case .failure(let error):
-                                    print("❌ Setting document for review failed: \(String(describing: error))")
-                                    self?.selectAPIViewController.hideActivityIndicator()
-                                }
-                            }
-                        case .failure(let error):
-                            print("❌ Document creation failed: \(String(describing: error))")
-                            self?.selectAPIViewController.hideActivityIndicator()
-                        }
-                    }
-                case .failure(let error):
-                    print("❌ Document creation failed: \(String(describing: error))")
-                    self.selectAPIViewController.hideActivityIndicator()
-                }
-            }
-        }
-    }
 
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
         let alertViewController = UIAlertController(title: "Importierte Datei",
@@ -281,7 +198,7 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
         case .component:
             break
         case .paymentReview:
-            showPaymentReviewWithTestDocument()
+            break
         case .invoicesList:
             showInvoicesList()
         }
