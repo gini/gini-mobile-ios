@@ -45,13 +45,21 @@ final class InvoiceDetailViewController: UIViewController {
     private let errorTitleText = NSLocalizedString("example.invoicesList.error", comment: "")
     
     private var items: [(String, String)] {
-        var items: [(String, String)] = []
-        if let recipient = invoice.recipient { items.append((Fields.recipient.rawValue, recipient)) }
-        if let iban = invoice.iban { items.append((Fields.iban.rawValue, iban)) }
-        if let amountToPay = invoice.amountToPay { items.append((Fields.amountToPay.rawValue, amountToPay)) }
-        if let purpose = invoice.purpose { items.append((Fields.purpose.rawValue, purpose)) }
+        var invoices: [(String, String)] = []
+        if let recipient = invoice.recipient {
+            invoices.append((Fields.recipient.rawValue, recipient))
+        }
+        if let iban = invoice.iban {
+            invoices.append((Fields.iban.rawValue, iban))
+        }
+        if let amountToPay = invoice.amountToPay {
+            invoices.append((Fields.amountToPay.rawValue, amountToPay))
+        }
+        if let purpose = invoice.purpose {
+            invoices.append((Fields.purpose.rawValue, purpose))
+        }
 
-        return items
+        return invoices
     }
 
     init(invoice: InvoiceItem, paymentComponentsController: PaymentComponentsController) {

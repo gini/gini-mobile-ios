@@ -178,20 +178,23 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                         completion(nil, error)
                 }
             }
+        } else {
+            loadPaymentReviewScreenWithoutDocument(paymentInfo: paymentInfo, trackingDelegate: trackingDelegate, completion: completion)
         }
-        else {
-            guard let selectedPaymentProvider else {
-                completion(nil, nil)
-                return
-            }
-            let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
-                                                             data: nil,
-                                                             paymentInfo: paymentInfo,
-                                                             selectedPaymentProvider: selectedPaymentProvider,
-                                                             trackingDelegate: trackingDelegate,
-                                                             paymentComponentsController: self)
-            completion(vc, nil)
+    }
+
+    public func loadPaymentReviewScreenWithoutDocument(paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+        guard let selectedPaymentProvider else {
+            completion(nil, nil)
+            return
         }
+        let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
+                                                         data: nil,
+                                                         paymentInfo: paymentInfo,
+                                                         selectedPaymentProvider: selectedPaymentProvider,
+                                                         trackingDelegate: trackingDelegate,
+                                                         paymentComponentsController: self)
+        completion(vc, nil)
     }
 
     // MARK: - Bottom Sheets

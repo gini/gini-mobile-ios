@@ -53,17 +53,6 @@ final class InvoicesListViewModel {
     func viewDidLoad() {
         paymentComponentsController.loadPaymentProviders()
     }
-
-
-    private func showErrorsIfAny() {
-        if !errors.isEmpty {
-            let uniqueErrorMessages = Array(Set(errors))
-            DispatchQueue.main.async {
-                self.coordinator.invoicesListViewController.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
-            }
-            errors = []
-        }
-    }
 }
 
 extension InvoicesListViewModel: PaymentComponentsControllerProtocol {

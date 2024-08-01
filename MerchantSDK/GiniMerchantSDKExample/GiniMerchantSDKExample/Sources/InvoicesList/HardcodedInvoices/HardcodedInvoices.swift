@@ -60,9 +60,9 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
         if let data = UserDefaults.standard.data(forKey: Constants.storedInvoicesKey) {
             do {
                 let decoder = JSONDecoder()
-                let invoices = try decoder.decode([InvoiceItem].self, from: data)
+                let decoded = try decoder.decode([InvoiceItem].self, from: data)
                 print("✅ Successfully obtained invoices from UserDefaults")
-                return invoices
+                return decoded
             } catch {
                 print("❌ Unable to Decode Notes (\(error))")
             }
@@ -77,7 +77,7 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
     }
     
     func updateInvoice(uuid: UUID, recipient: String?, amountToPay: String?) {
-        var invoices = getInvoices()
+        let invoices = getInvoices()
         if let index = invoices.firstIndex(where: { $0.uuid == uuid }) {
             invoices[index].recipient = recipient
             invoices[index].amountToPay = amountToPay
