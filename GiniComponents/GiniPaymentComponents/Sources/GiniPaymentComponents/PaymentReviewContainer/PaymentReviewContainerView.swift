@@ -531,15 +531,13 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
      Updates amoutToPay, formated string with a currency and removes "0.00" value
      */
     public func updateAmoutToPayWithCurrencyFormat() {
-        if let amountFieldText = amountTextFieldView.text {
-            if let priceValue = decimal(from: amountFieldText ) {
-                amountToPay.value = priceValue
-                if priceValue > 0 {
-                    let amountToPayText = amountToPay.string
-                    amountTextFieldView.text = amountToPayText
-                } else {
-                    amountTextFieldView.text = ""
-                }
+        if let amountFieldText = amountTextFieldView.text, let priceValue = decimal(from: amountFieldText) {
+            amountToPay.value = priceValue
+            if priceValue > 0 {
+                let amountToPayText = amountToPay.string
+                amountTextFieldView.text = amountToPayText
+            } else {
+                amountTextFieldView.text = ""
             }
         }
     }
