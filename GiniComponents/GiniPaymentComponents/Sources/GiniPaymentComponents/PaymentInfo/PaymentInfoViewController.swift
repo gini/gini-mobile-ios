@@ -9,7 +9,7 @@
 import UIKit
 
 public final class PaymentInfoViewController: UIViewController {
-    private let viewModel: PaymentInfoViewModel
+    let viewModel: PaymentInfoViewModel
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()

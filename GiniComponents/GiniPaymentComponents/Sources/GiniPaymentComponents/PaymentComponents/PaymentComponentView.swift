@@ -10,7 +10,7 @@ import UIKit
 import GiniUtilites
 
 public final class PaymentComponentView: UIView {
-    private let viewModel: PaymentComponentViewModel
+    let viewModel: PaymentComponentViewModel
 
     private let contentStackView = EmptyStackView(orientation: .vertical)
     private let selectYourBankView = EmptyView()
