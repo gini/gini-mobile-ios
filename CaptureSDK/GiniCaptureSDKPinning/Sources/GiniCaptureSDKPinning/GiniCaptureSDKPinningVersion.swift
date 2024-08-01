@@ -2,7 +2,7 @@
 //  GiniCaptureSDKPinningVersion.swift
 //  
 //
-//  Created by Nadya Karaban on 29.10.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-public let GiniCaptureSDKPinningVersion = "3.8.0"
+public let GiniCaptureSDKPinningVersion = "3.9.0"

@@ -9,7 +9,7 @@ import UIKit
 class SkontoAppliedDateView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.date.title",
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.expirydate.title",
                                                              comment: "Due date")
         label.text = title
         label.accessibilityValue = title
@@ -22,7 +22,7 @@ class SkontoAppliedDateView: UIView {
 
     private lazy var textField: UITextField = {
         let textField = UITextField()
-        textField.text = viewModel.date.formattedDateString()
+        textField.text = viewModel.dueDate.currentShortString
         textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
@@ -128,7 +128,7 @@ class SkontoAppliedDateView: UIView {
         containerView.layer.borderWidth = isSkontoApplied ? 1 : 0
         textField.isUserInteractionEnabled = isSkontoApplied
         calendarImageView.isHidden = !isSkontoApplied
-        textField.text = viewModel.date.formattedDateString()
+        textField.text = viewModel.dueDate.currentShortString
     }
 
     private func configureDatePicker() {
@@ -137,7 +137,8 @@ class SkontoAppliedDateView: UIView {
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
         }
-        let currentDate = Date()
+        datePicker.date = viewModel.dueDate
+        let currentDate = Date().inBerlinTimeZone
         var dateComponent = DateComponents()
         dateComponent.month = 6
         let endDate = Calendar.current.date(byAdding: dateComponent, to: currentDate)

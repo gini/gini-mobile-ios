@@ -55,6 +55,18 @@
     "docType": {
       "entity": "doctype",
       "value": "Invoice"
+    },
+    "payment_state": {
+      "entity": "payment_state",
+      "value": "Other",
+      "box": {
+        "top": 666.49,
+        "left": 93.65,
+        "width": 121.82999999999998,
+        "height": 11.039999999999964,
+        "page": 1
+      },
+      "candidates": "ibans"
     }
   },
   "candidates": {

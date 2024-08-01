@@ -11,13 +11,15 @@ import XCTest
 final class PaymentTests: XCTestCase {
     
     let baseAPIURLString = "https://health-api.gini.net"
-    var payService = PaymentService(sessionManager: SessionManagerMock(), apiDomain: .default)
+    let versionAPI = 4
+    lazy var payService = PaymentService(sessionManager: SessionManagerMock(), apiDomain: .default, apiVersion: versionAPI)
     
     
     func testPaymentProvidersURL() {
         let resource = APIResource<[PaymentProvider]>(method: .paymentProviders,
-                                               apiDomain: .default,
-                                               httpMethod: .get)
+                                                      apiDomain: .default,
+                                                      apiVersion: versionAPI,
+                                                      httpMethod: .get)
         
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentProviders", "path should match")
@@ -25,24 +27,27 @@ final class PaymentTests: XCTestCase {
     
     func testPaymentProviderURL() {
         let resource = APIResource<PaymentProvider>(method: .paymentProvider(id: "7e72441c-32f8-11eb-b611-c3190574373c"),
-                                               apiDomain: .default,
-                                               httpMethod: .get)
+                                                    apiDomain: .default,
+                                                    apiVersion: versionAPI,
+                                                    httpMethod: .get)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentProviders/7e72441c-32f8-11eb-b611-c3190574373c", "path should match")
     }
     
     func testPaymentRequestURL() {
         let resource = APIResource<PaymentRequest>(method: .paymentRequest(id: "7e72441c-32f8-11eb-b611-c3190574373c"),
-                                               apiDomain: .default,
-                                               httpMethod: .get)
+                                                   apiDomain: .default,
+                                                   apiVersion: versionAPI,
+                                                   httpMethod: .get)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/7e72441c-32f8-11eb-b611-c3190574373c", "path should match")
     }
     
     func testPaymentRequestsURL() {
         let resource = APIResource<PaymentRequests>(method: .paymentRequests(limit: 20, offset: 0),
-                                               apiDomain: .default,
-                                               httpMethod: .get)
+                                                    apiDomain: .default,
+                                                    apiVersion: versionAPI,
+                                                    httpMethod: .get)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests"+"?offset=0&limit=20", "path should match")
     }
@@ -55,9 +60,10 @@ final class PaymentTests: XCTestCase {
             return
         }
         let resource = APIResource<String>(method: .createPaymentRequest,
-                                                          apiDomain: .default,
-                                                          httpMethod: .post,
-                                                          body: jsonData)
+                                           apiDomain: .default,
+                                           apiVersion: versionAPI,
+                                           httpMethod: .post,
+                                           body: jsonData)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests", "path should match")
     }
@@ -92,8 +98,9 @@ final class PaymentTests: XCTestCase {
     
     func testPaymentURL() {
         let resource = APIResource<Payment>(method: .payment(id: "d8b46793-31b4-49d5-8f81-554e9e13f3f5"),
-                                               apiDomain: .default,
-                                               httpMethod: .get)
+                                            apiDomain: .default,
+                                            apiVersion: versionAPI,
+                                            httpMethod: .get)
         let urlString = resource.url.absoluteString
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/d8b46793-31b4-49d5-8f81-554e9e13f3f5/payment", "path should match")
     }

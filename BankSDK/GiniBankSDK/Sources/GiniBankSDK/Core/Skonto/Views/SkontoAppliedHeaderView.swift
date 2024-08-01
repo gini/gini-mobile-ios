@@ -9,7 +9,7 @@ import UIKit
 class SkontoAppliedHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.title",
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.title",
                                                              comment: "With Skonto discount")
         label.text = title
         label.accessibilityValue = title
@@ -22,7 +22,7 @@ class SkontoAppliedHeaderView: UIView {
 
     private lazy var statusLabel: UILabel = {
         let label = UILabel()
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.info.status",
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.active",
                                                              comment: "• Active")
         label.text = title
         label.accessibilityValue = title
