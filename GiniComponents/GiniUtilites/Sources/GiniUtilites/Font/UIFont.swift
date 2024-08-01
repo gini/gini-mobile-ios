@@ -18,6 +18,6 @@ extension UIFont.TextStyle {
     public static let button: UIFont.TextStyle = .init(rawValue: "kButton")
     public static let body1: UIFont.TextStyle = .init(rawValue: "kBody1")
     public static let body2: UIFont.TextStyle = .init(rawValue: "kBody2")
-    public static let captions1: UIFont.TextStyle = .init(rawValue: "kCaption1")
-    public static let captions2: UIFont.TextStyle = .init(rawValue: "kCaption2")
+    public static let captions1: UIFont.TextStyle = .init(rawValue: "kCaptions1")
+    public static let captions2: UIFont.TextStyle = .init(rawValue: "kCaptions2")
 }
