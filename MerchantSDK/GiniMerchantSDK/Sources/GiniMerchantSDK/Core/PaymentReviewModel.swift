@@ -31,11 +31,11 @@ public class PaymentReviewModel: NSObject {
     
     weak var viewModelDelegate: PaymentReviewViewModelDelegate?
 
-    public var document: Document
+    public var document: Document?
 
-    public var extractions: [Extraction]
+    public var extractions: [Extraction]?
 
-    public var documentId: String
+    public var documentId: String?
     private var merchantSDK: GiniMerchant
     private var selectedPaymentProvider: PaymentProvider?
 
@@ -63,9 +63,9 @@ public class PaymentReviewModel: NSObject {
 
     var paymentComponentsController: PaymentComponentsController
 
-    public init(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?, paymentComponentsController: PaymentComponentsController) {
+    public init(with giniMerchant: GiniMerchant, document: Document?, extractions: [Extraction]?, paymentInfo: PaymentInfo?, selectedPaymentProvider: PaymentProvider?, paymentComponentsController: PaymentComponentsController) {
         self.merchantSDK = giniMerchant
-        self.documentId = document.id
+        self.documentId = document?.id
         self.document = document
         self.extractions = extractions
         self.selectedPaymentProvider = selectedPaymentProvider
@@ -81,6 +81,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     func sendFeedback(updatedExtractions: [Extraction]) {
+        guard let document else { return }
         merchantSDK.documentService.submitFeedback(for: document, with: [], and: ["payment": [updatedExtractions]], completion: { _ in })
     }
     
@@ -116,16 +117,17 @@ public class PaymentReviewModel: NSObject {
     }
     
     func fetchImages() {
+        guard let document else { return }
         self.isImagesLoading = true
         let dispatchGroup = DispatchGroup()
         let dispatchQueue = DispatchQueue(label: "imagesQueue")
         let dispatchSemaphore = DispatchSemaphore(value: 0)
         var vms = [PageCollectionCellViewModel]()
         dispatchQueue.async {
-            for page in 1 ... self.document.pageCount {
+            for page in 1 ... document.pageCount {
                 dispatchGroup.enter()
 
-                self.merchantSDK.documentService.preview(for: self.documentId, pageNumber: page) { [weak self] result in
+                self.merchantSDK.documentService.preview(for: document.id, pageNumber: page) { [weak self] result in
                     if let cellModel = self?.proccessPreview(result) {
                         vms.append(cellModel)
                     }

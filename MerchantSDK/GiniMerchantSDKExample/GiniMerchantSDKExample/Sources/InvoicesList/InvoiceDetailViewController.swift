@@ -111,15 +111,9 @@ final class InvoiceDetailViewController: UIViewController {
     }
 
     @objc private func payNowButtonTapped() {
-        invoice.recipient = "invoice.recipient"
-        let paymentInfo = obtainPaymentInfo()
-        paymentComponentsController.createPaymentRequest(paymentInfo: paymentInfo) { paymentRequestID, error in
-            print(" >>> createPaymentRequest")
-        }
-
-//        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: invoice.documentID)
-//        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
-//        self.present(paymentViewBottomSheet, animated: false)
+        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
+        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
+        self.present(paymentViewBottomSheet, animated: false)
     }
 
     @objc private func didTapOnView() {
@@ -141,18 +135,16 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
     }
 
     func didTapOnBankPicker(documentId: String?) {
-        guard let documentId else { return }
-        print("✅ Tapped on Bank Picker on :\(documentId)")
+        print("✅ Tapped on Bank Picker on :\(documentId ?? "")")
         let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
         bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
         self.dismissAndPresent(viewController: bankSelectionBottomSheet, animated: false)
     }
 
     func didTapOnPayInvoice(documentId: String?) {
-        guard let documentId else { return }
-        print("✅ Tapped on Pay Invoice on :\(documentId)")
+        print("✅ Tapped on Pay Invoice on :\(documentId ?? "")")
         if giniMerchantConfiguration.showPaymentReviewScreen {
-            paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
+            paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
                 if let error {
                     self?.errors.append(error.localizedDescription)
                     self?.showErrorsIfAny()
