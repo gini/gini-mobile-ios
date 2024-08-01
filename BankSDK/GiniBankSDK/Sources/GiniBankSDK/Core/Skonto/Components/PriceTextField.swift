@@ -22,6 +22,20 @@ class PriceTextField: UITextField, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return action == #selector(paste(_:))
+    }
+
+    override func paste(_ sender: Any?) {
+        if let pastedText = UIPasteboard.general.string {
+            let filteredText = filterAndTrimInput(pastedText)
+            if let decimal = Decimal(string: filteredText) {
+                let formattedText = formatDecimal(decimal)
+                updateTextField(with: formattedText, originalText: self.text ?? "")
+            }
+        }
+    }
+
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
