@@ -70,7 +70,6 @@ class SkontoAppliedDateView: UIView {
         containerView.addSubview(textField)
         containerView.addSubview(calendarImageView)
         setupConstraints()
-        addTapGestureRecognizer()
         configureDatePicker()
         bindViewModel()
     }
@@ -105,14 +104,12 @@ class SkontoAppliedDateView: UIView {
         ])
     }
 
-    private func addTapGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        addGestureRecognizer(tapGestureRecognizer)
-    }
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard self.bounds.contains(point), viewModel.isSkontoApplied else {
+            return super.hitTest(point, with: event)
+        }
 
-    @objc private func handleTap() {
-        guard viewModel.isSkontoApplied  else { return }
-        textField.becomeFirstResponder()
+        return textField
     }
 
     private func bindViewModel() {
