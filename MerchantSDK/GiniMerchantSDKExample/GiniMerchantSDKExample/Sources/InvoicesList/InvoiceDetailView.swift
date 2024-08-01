@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 @MainActor
 class InvoiceDetailView: UIStackView {
 
@@ -40,7 +39,9 @@ class InvoiceDetailView: UIStackView {
         label.widthAnchor.constraint(equalToConstant: Constants.labelWidth).isActive = true
         horizontalStackView.addArrangedSubview(label)
 
-        let textField = textFields[text.0, default: UITextField()]
+
+        let textField = UITextField()
+        textFields[text.0] = textField
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.text = text.1
         textField.clearButtonMode = .whileEditing

@@ -37,6 +37,7 @@ fileprivate enum Fields: String, CaseIterable {
 final class InvoiceDetailViewController: UIViewController {
 
     private var invoice: InvoiceItem
+
     private let paymentComponentsController: PaymentComponentsController
     private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
 
