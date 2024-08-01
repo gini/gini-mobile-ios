@@ -5,11 +5,21 @@
 //
 
 import UIKit
+import GiniCaptureSDK
 
 class SkontoInvoicePreviewView: UIView {
+    private lazy var imageContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
+        view.layer.cornerRadius = Constants.imageViewCornerRadius
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private lazy var invoicePreviewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = GiniImages.invoicePlaceholderIcon.image
+        imageView.tintColor = .giniColorScheme().icons.standardTertiary.uiColor()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -71,21 +81,30 @@ class SkontoInvoicePreviewView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        addSubview(invoicePreviewImageView)
+        addSubview(imageContainerView)
+        imageContainerView.addSubview(invoicePreviewImageView)
         textStackView.addArrangedSubview(titleLabel)
         textStackView.addArrangedSubview(subtitleLabel)
         addSubview(textStackView)
         addSubview(chevronImageView)
 
         NSLayoutConstraint.activate([
-            invoicePreviewImageView.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                             constant: Constants.imageViewLeading),
-            invoicePreviewImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            invoicePreviewImageView.widthAnchor.constraint(equalToConstant: Constants.imageViewSize),
-            invoicePreviewImageView.heightAnchor.constraint(equalToConstant: Constants.imageViewSize),
+            imageContainerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.imageViewLeading),
+            imageContainerView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            imageContainerView.widthAnchor.constraint(equalToConstant: Constants.imageViewSize),
+            imageContainerView.heightAnchor.constraint(equalToConstant: Constants.imageViewSize),
+
+            invoicePreviewImageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor,
+                                                             constant: Constants.imageViewPadding),
+            invoicePreviewImageView.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor,
+                                                              constant: -Constants.imageViewPadding),
+            invoicePreviewImageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor,
+                                                         constant: Constants.imageViewPadding),
+            invoicePreviewImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor,
+                                                            constant: -Constants.imageViewPadding),
 
             textStackView.topAnchor.constraint(equalTo: topAnchor),
-            textStackView.leadingAnchor.constraint(equalTo: invoicePreviewImageView.trailingAnchor,
+            textStackView.leadingAnchor.constraint(equalTo: imageContainerView.trailingAnchor,
                                                    constant: Constants.stackViewLeading),
             textStackView.trailingAnchor.constraint(lessThanOrEqualTo: chevronImageView.leadingAnchor),
             textStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -98,12 +117,12 @@ class SkontoInvoicePreviewView: UIView {
 
 private extension SkontoInvoicePreviewView {
     enum Constants {
-        static let titleFontSize: CGFloat = 17
-        static let subtitleFontSize: CGFloat = 13
         static let stackViewSpacing: CGFloat = 0
         static let imageViewSize: CGFloat = 40
         static let imageViewLeading: CGFloat = 0
         static let stackViewLeading: CGFloat = 12
         static let chevronTrailing: CGFloat = 8
+        static let imageViewPadding: CGFloat = 7
+        static let imageViewCornerRadius: CGFloat = 6
     }
 }
