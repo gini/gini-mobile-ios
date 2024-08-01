@@ -127,7 +127,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
         model?.viewModelDelegate = self
 
-        paymentInfoContainerView.model = PaymentReviewContainerViewModel(extractions: model?.extractions ?? [], selectedPaymentProvider: selectedPaymentProvider)
+        paymentInfoContainerView.model = PaymentReviewContainerViewModel(extractions: model?.extractions, paymentInfo: model?.paymentInfo, selectedPaymentProvider: selectedPaymentProvider)
     }
 
     override public func viewDidDisappear(_ animated: Bool) {

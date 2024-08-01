@@ -34,6 +34,7 @@ public class PaymentReviewModel: NSObject {
     public var document: Document?
 
     public var extractions: [Extraction]?
+    public var paymentInfo: PaymentInfo?
 
     public var documentId: String?
     private var merchantSDK: GiniMerchant
@@ -68,6 +69,7 @@ public class PaymentReviewModel: NSObject {
         self.documentId = document?.id
         self.document = document
         self.extractions = extractions
+        self.paymentInfo = paymentInfo
         self.selectedPaymentProvider = selectedPaymentProvider
         self.paymentComponentsController = paymentComponentsController
     }
