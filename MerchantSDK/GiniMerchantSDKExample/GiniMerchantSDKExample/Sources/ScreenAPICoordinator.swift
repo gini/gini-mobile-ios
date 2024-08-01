@@ -15,7 +15,7 @@ protocol ScreenAPICoordinatorDelegate: AnyObject {
     func presentInvoicesList(invoices: [InvoiceItem]?)
 }
 
-final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDelegate, GiniCaptureResultsDelegate {
+final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDelegate {
     
     weak var delegate: ScreenAPICoordinatorDelegate?
     var childCoordinators: [Coordinator] = []
@@ -47,58 +47,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
         super.init()
     }
     
-    func start(documentService: GiniMerchantSDK.DefaultDocumentService) {
-        let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
-                                                        configuration: visionConfiguration,
-                                                        resultsDelegate: self,
-                                                        networkingService: MerchantNetworkingService(documentService: documentService))
-        screenAPIViewController = RootNavigationController(rootViewController: viewController)
-        screenAPIViewController.setNavigationBarHidden(true, animated: false)
-        screenAPIViewController.delegate = self
-        screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
-    }
-    
     func onPaymentReviewScreenEvent(event: GiniMerchantSDK.TrackingEvent<GiniMerchantSDK.PaymentReviewScreenEventType>) {
     }
-    
-    // MARK: - GiniCaptureResultsDelegate
-    
-    func giniCaptureDidCancelAnalysis() {
-        screenAPIViewController.dismiss(animated: true)
-    }
-    
-    func giniCaptureDidEnterManually() {
-        screenAPIViewController.dismiss(animated: true)
-    }
-    
-    // TODO: remove this flows
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-            var healthExtractions: [GiniMerchantSDK.Extraction] = []
-            captureExtractedResults = result.extractions.map { $0.value }
-            for extraction in captureExtractedResults {
-                healthExtractions.append(GiniMerchantSDK.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
-            }
-
-            if let giniMerchant = self.giniMerchant, let docId = result.document?.id {
-                // this step needed since we've got 2 different Document structures
-                giniMerchant.fetchDataForReview(documentId: docId) { [weak self] resultReview in
-                    switch resultReview {
-                    case .success(let data):
-                        giniMerchant.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
-                            switch result {
-                            case let .success(extractionResult):
-                                print("✅ Successfully fetched extractions for id: \(docId)")
-
-                            case let .failure(error):
-                                print("❌ Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))")
-                            }
-                        }
-                    case .failure(let error):
-                        print("❌ Document data fetching failed: \(String(describing: error))")
-                    }
-                }
-            }
-        }
 }
 // MARK: - UINavigationControllerDelegate
 
