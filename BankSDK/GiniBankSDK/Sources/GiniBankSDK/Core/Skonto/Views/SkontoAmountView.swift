@@ -54,7 +54,7 @@ class SkontoAmountView: UIView {
         let stackView = UIStackView(arrangedSubviews: [textField, currencyLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = Constants.stackviewSpacing
+        stackView.spacing = Constants.stackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -153,7 +153,7 @@ extension SkontoAmountView: PriceTextFieldDelegate {
 private extension SkontoAmountView {
     enum Constants {
         static let padding: CGFloat = 12
-        static let stackviewSpacing: CGFloat = 4
+        static let stackViewSpacing: CGFloat = 4
         static let cornerRadius: CGFloat = 8
     }
 }
