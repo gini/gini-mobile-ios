@@ -70,7 +70,7 @@ final class DemoViewController: UIViewController {
     private func configureWelcomeTitle() {
         welcomeTitleTopConstraint.constant = Constants.welcomeTitleTopConstant
         welcomeTitlte.text = DemoScreenStrings.welcomeTitle.localized
-        welcomeTitlte.accessibilityIdentifier = MainScreenAccessibilityIdentifier.welcomeTextTitle.rawValue
+        welcomeTitlte.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.welcomeTextTitle.rawValue
     }
     
     private func configureIbanTextField() {
@@ -103,8 +103,8 @@ final class DemoViewController: UIViewController {
             ibanTextField.rightView?.addGestureRecognizer(iconTapGesture)
             
             UITextField.appearance().tintColor = ColorPalette.giniBlue
-            ibanTextField.accessibilityIdentifier = MainScreenAccessibilityIdentifier.ibanTextField.rawValue
-            cameraIcon.accessibilityIdentifier = MainScreenAccessibilityIdentifier.cameraIconButton.rawValue
+            ibanTextField.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.ibanTextField.rawValue
+            cameraIcon.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.cameraIconButton.rawValue
         }
     }
     
@@ -128,13 +128,13 @@ final class DemoViewController: UIViewController {
         photoPaymentButton.backgroundColor = itemBackgroundColor
         photoPaymentButton.setTitle(DemoScreenStrings.photoPaymentButtonTitle.localized, for: .normal)
         photoPaymentButton.setTitleColor(textColor, for: .normal)
-        photoPaymentButton.accessibilityIdentifier = MainScreenAccessibilityIdentifier.photoPaymentButton.rawValue
+        photoPaymentButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue
     }
     
     private func configureScreenDescriptionTitle() {
         descriptionTitle.text = DemoScreenStrings.screenDescription.localized
         descriptionTitle.textColor = textColor
-        descriptionTitle.accessibilityIdentifier = MainScreenAccessibilityIdentifier.descriptionTextTitle.rawValue
+        descriptionTitle.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.descriptionTextTitle.rawValue
     }
   
     private func configureMetaTitle() {
@@ -144,7 +144,7 @@ final class DemoViewController: UIViewController {
         metaInformationLabel.textColor = textColor
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.launchSettings))
         metaInformationLabel.addGestureRecognizer(tapGesture)
-        metaInformationLabel.accessibilityIdentifier = MainScreenAccessibilityIdentifier.metaInformationLabel.rawValue
+        metaInformationLabel.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.metaInformationLabel.rawValue
         
     }
     
