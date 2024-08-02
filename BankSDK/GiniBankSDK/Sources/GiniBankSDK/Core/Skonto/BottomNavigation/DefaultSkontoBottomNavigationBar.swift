@@ -50,7 +50,6 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.font = configuration.textStyleFonts[.subheadline]
         label.textColor = .giniColorScheme().text.primary.uiColor()
         label.adjustsFontForContentSizeCategory = true
-        label.setContentHuggingPriority(.required, for: .vertical)
         let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                             comment: "Total")
         label.text = text
@@ -61,10 +60,12 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     private lazy var totalValueLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.title2Bold]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        label.setContentHuggingPriority(.required, for: .vertical)
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return label
     }()
 
@@ -73,8 +74,10 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
-        label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return label
     }()
 
@@ -93,8 +96,8 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
-        label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
 
@@ -160,6 +163,11 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     }
 
     private func setupConstraints() {
+        var horizontalPadding: CGFloat = Constants.padding
+        if UIDevice.current.isIpad {
+            horizontalPadding += UIScreen.main.bounds.width * (1 - Constants.tabletWidthMultiplier) / 2
+        }
+
         NSLayoutConstraint.activate([
             dividerView.topAnchor.constraint(equalTo: topAnchor),
             dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -167,19 +175,27 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
             totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
-            totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                constant: horizontalPadding),
+            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
+                                                 constant: -Constants.badgeHorizontalPadding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.totalValueLabelTopPadding),
-            totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                     constant: horizontalPadding),
+            totalValueLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
+                                                      constant: -horizontalPadding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
                                                   constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
+            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
+                                                         constant: -horizontalPadding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
             skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                     constant: -Constants.padding),
+                                                      constant: -horizontalPadding),
 
             skontoBadgeLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
                                                   constant: Constants.badgeVerticalPadding),
@@ -190,7 +206,8 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                           constant: horizontalPadding),
             backButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
 
             proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
@@ -230,5 +247,6 @@ extension DefaultSkontoBottomNavigationBar {
         static let cornerRadius: CGFloat = 4
         static let totalValueLabelTopPadding: CGFloat = 4
         static let savingsAmountLabelTopPadding: CGFloat = 2
+        static let tabletWidthMultiplier: CGFloat = 0.7
     }
 }
