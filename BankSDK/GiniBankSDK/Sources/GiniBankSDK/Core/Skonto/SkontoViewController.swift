@@ -8,6 +8,19 @@ import UIKit
 import GiniCaptureSDK
 
 public class SkontoViewController: UIViewController {
+    private lazy var invoicePreviewView: SkontoInvoicePreviewView = {
+        let view = SkontoInvoicePreviewView(viewModel: viewModel)
+        return view
+    }()
+
+    private lazy var invoiceGroupView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        view.layer.cornerRadius = Constants.groupCornerRadius
+        return view
+    }()
+
     private lazy var headerView: SkontoAppliedHeaderView = {
         let view = SkontoAppliedHeaderView(viewModel: viewModel)
         return view
@@ -128,8 +141,10 @@ public class SkontoViewController: UIViewController {
         }
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
+        stackView.addArrangedSubview(invoiceGroupView)
         stackView.addArrangedSubview(appliedGroupView)
         stackView.addArrangedSubview(notAppliedGroupView)
+        invoiceGroupView.addSubview(invoicePreviewView)
         appliedGroupView.addSubview(headerView)
         appliedGroupView.addSubview(infoView)
         appliedGroupView.addSubview(appliedAmountView)
@@ -145,6 +160,7 @@ public class SkontoViewController: UIViewController {
     private func setupConstraints() {
         setupScrollViewConstraints()
         setupStackViewConstraints()
+        setupInvoiceGroupViewConstraints()
         setupAppliedGroupViewConstraints()
         setupNotAppliedGroupViewConstraints()
         setupProceedViewConstraints()
@@ -174,6 +190,19 @@ public class SkontoViewController: UIViewController {
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
                                              constant: -2 * Constants.containerPadding)
+        ])
+    }
+
+    private func setupInvoiceGroupViewConstraints() {
+        NSLayoutConstraint.activate([
+            invoicePreviewView.topAnchor.constraint(equalTo: invoiceGroupView.topAnchor, constant:
+                                                        Constants.verticalPadding),
+            invoicePreviewView.leadingAnchor.constraint(equalTo: invoiceGroupView.leadingAnchor,
+                                                        constant: Constants.horizontalPadding),
+            invoicePreviewView.trailingAnchor.constraint(equalTo: invoiceGroupView.trailingAnchor,
+                                                         constant: -Constants.horizontalPadding),
+            invoicePreviewView.bottomAnchor.constraint(equalTo: invoiceGroupView.bottomAnchor,
+                                                       constant: -Constants.verticalPadding)
         ])
     }
 
