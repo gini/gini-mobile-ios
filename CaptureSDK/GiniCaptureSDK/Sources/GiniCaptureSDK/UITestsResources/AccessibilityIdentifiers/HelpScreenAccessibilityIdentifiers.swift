@@ -1,12 +1,13 @@
 //
-//  HelpScreenAccessibilityIdentifier.swift
+//  HelpScreenAccessibilityIdentifiers.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 
 import Foundation
-enum HelpScreenAccessibilityIdentifier: String {
+
+public enum HelpScreenAccessibilityIdentifiers: String {
     case cameraBackButton = "cameraBackButtonIdentifier"
     case tipsForBestResultLabel = "tipsForBestResultLabelIdentifier"
     case supportedFormatsLabel = "supportedFormatsLabelIdentifier"

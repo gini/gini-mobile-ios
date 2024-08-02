@@ -1,12 +1,12 @@
 //
-//  CaptureScreenAccessibilityIdentifier.swift
+//  CaptureScreenAccessibilityIdentifiers.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 
 import Foundation
-enum CaptureScreenAccessibilityIdentifier: String {
+public enum CaptureScreenAccessibilityIdentifiers: String {
     case captureButton = "captureButtonIdentifier"
     case flashButton = "flashButtonIdentifier"
     case filesUploadButton = "filesIconButtonIdentifier"
