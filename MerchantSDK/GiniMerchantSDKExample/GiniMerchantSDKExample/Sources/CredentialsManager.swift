@@ -7,6 +7,6 @@
 
 import Foundation
 
-let clientID = "gini-mobile-test"
-let clientPassword = "wT4o4kXPAYtDknnOYwWf4w5s"
-let clientDomain = "gini.net"
+let clientID = "client_id"
+let clientPassword = "client_password"
+let clientDomain = "client_domain"
