@@ -16,6 +16,9 @@ class SkontoNotAppliedView: UIView {
         label.textColor = .giniColorScheme().text.primary.uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
+        label.numberOfLines = 0
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -29,12 +32,23 @@ class SkontoNotAppliedView: UIView {
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = UIColor.giniColorScheme().text.status.uiColor()
         label.adjustsFontForContentSizeCategory = true
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     private lazy var amountView: SkontoNotAppliedAmountView = {
         return SkontoNotAppliedAmountView(viewModel: viewModel)
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, statusLabel])
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = Constants.stackViewSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
 
     private let configuration = GiniBankConfiguration.shared
@@ -54,8 +68,7 @@ class SkontoNotAppliedView: UIView {
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .giniColorScheme().bg.surface.uiColor()
-        addSubview(titleLabel)
-        addSubview(statusLabel)
+        addSubview(stackView)
         addSubview(amountView)
         setupConstraints()
         bindViewModel()
@@ -63,14 +76,11 @@ class SkontoNotAppliedView: UIView {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
 
-            statusLabel.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            statusLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor,
-                                                 constant: Constants.statusLabelHorizontalPadding),
-
-            amountView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.verticalPadding),
+            amountView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.verticalPadding),
             amountView.bottomAnchor.constraint(equalTo: bottomAnchor),
             amountView.leadingAnchor.constraint(equalTo: leadingAnchor),
             amountView.trailingAnchor.constraint(equalTo: trailingAnchor)
@@ -92,7 +102,7 @@ class SkontoNotAppliedView: UIView {
 
 private extension SkontoNotAppliedView {
     enum Constants {
-        static let statusLabelHorizontalPadding: CGFloat = 4
+        static let stackViewSpacing: CGFloat = 4
         static let verticalPadding: CGFloat = 12
     }
 }
