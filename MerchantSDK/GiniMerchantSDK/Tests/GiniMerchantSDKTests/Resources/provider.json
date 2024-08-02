@@ -1,0 +1,17 @@
+{
+    "id": "b09ef70a-490f-11eb-952e-9bc6f4646c57",
+    "name": "Gini-Test-Payment-Provider",
+    "appSchemeIOS": "ginipay-bank://",
+    "packageNameAndroid": "net.gini.android.bank.sdk.screenapiexample",
+    "minAppVersion": {
+        "ios": "??.?",
+        "android": "??.?"
+    },
+    "colors": {
+        "background": "009EDC",
+        "text": "FFFFFF"
+    },
+    "iconLocation": "https://pay-api.gini.net/paymentProviders/b09ef70a-490f-11eb-952e-9bc6f4646c57/icon",
+    "universalLinkIOS": "ginipay-bank://",
+    "index": 0
+}

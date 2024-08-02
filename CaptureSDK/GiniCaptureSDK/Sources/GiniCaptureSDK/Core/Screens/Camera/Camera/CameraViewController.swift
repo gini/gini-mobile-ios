@@ -42,6 +42,9 @@ final class CameraViewController: UIViewController {
     private var validQRCodeProcessing: Bool = false
 
     private var isValidIBANDetected: Bool = false
+    // Analytics
+    private var invalidQRCodeOverlayFirstAppearance: Bool = true
+    private var ibanOverlayFirstAppearance: Bool = true
 
     weak var delegate: CameraViewControllerDelegate?
 
@@ -107,6 +110,10 @@ final class CameraViewController: UIViewController {
         super.viewDidAppear(animated)
         validQRCodeProcessing = false
         delegate?.cameraDidAppear(self)
+
+        // this event should be sent every time when the user sees this screen, including
+        // when coming back from Help
+        GiniAnalyticsManager.trackScreenShown(screenName: .camera)
     }
 
     fileprivate func configureTitle() {
@@ -285,6 +292,7 @@ final class CameraViewController: UIViewController {
         cameraPane.setupAuthorization(isHidden: false)
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
+            self?.sendGiniAnalyticsEventCapture()
             self?.cameraPane.toggleCaptureButtonActivation(state: false)
             self?.cameraPreviewViewController.captureImage { [weak self] data, error in
                 guard let self = self else { return }
@@ -332,6 +340,16 @@ final class CameraViewController: UIViewController {
         cameraPane.thumbnailView.thumbnailButton.addTarget(cameraButtonsViewModel,
                                                            action: #selector(cameraButtonsViewModel.thumbnailPressed),
                                                            for: .touchUpInside)
+    }
+
+    private func sendGiniAnalyticsEventCapture() {
+        let eventProperties = [GiniAnalyticsProperty(key: .ibanDetectionLayerVisible,
+                                                     value: !ibanDetectionOverLay.isHidden)]
+
+        GiniAnalyticsManager.track(event: .captureTapped,
+                                   screenName: .camera,
+                                   properties: eventProperties)
+
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -485,14 +503,19 @@ final class CameraViewController: UIViewController {
     }
 
     private func showIBANOverlay(with IBANs: [String]) {
-
         UIView.animate(withDuration: 0.3) {
             self.ibanDetectionOverLay.isHidden = false
             self.cameraPreviewViewController.changeCameraFrameColor(to: .GiniCapture.success2)
         }
 
+        sendGiniAnalyticsEventIBANDetection()
         ibanDetectionOverLay.configureOverlay(hidden: false)
         ibanDetectionOverLay.setupView(with: IBANs)
+    }
+
+    private func sendGiniAnalyticsEventIBANDetection () {
+        guard ibanOverlayFirstAppearance else { return }
+        ibanOverlayFirstAppearance = false
     }
 
     private func hideIBANOverlay() {
@@ -548,6 +571,10 @@ final class CameraViewController: UIViewController {
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.success2)
         }
 
+        // this event is sent once per SDK session since the message can be displayed often in the same session
+        GiniAnalyticsManager.track(event: .qr_code_scanned,
+                                   screenName: .camera,
+                                   properties: [GiniAnalyticsProperty(key: .qrCodeValid, value: true)])
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: true)
     }
 
@@ -561,8 +588,17 @@ final class CameraViewController: UIViewController {
             self.qrCodeOverLay.isHidden = false
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.warning3)
         }
-
+        sendGiniAnalyticsEventForInvalidQRCode()
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
+    }
+
+    private func sendGiniAnalyticsEventForInvalidQRCode() {
+        guard invalidQRCodeOverlayFirstAppearance else { return }
+        // this event is sent once per SDK session since the message can be displayed often in the same session
+        GiniAnalyticsManager.track(event: .qr_code_scanned,
+                                   screenName: .camera,
+                                   properties: [GiniAnalyticsProperty(key: .qrCodeValid, value: false)])
+        invalidQRCodeOverlayFirstAppearance = false
     }
 
     private func resetQRCodeScanning(isValid: Bool) {
@@ -633,14 +669,14 @@ extension CameraViewController: CameraLensSwitcherViewDelegate {
         var device: AVCaptureDevice?
 
         switch lens {
-            case .ultraWide:
-                if #available(iOS 13.0, *) {
-                    device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back)
-                }
-            case .wide:
-                device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
-            case .tele:
-                device = AVCaptureDevice.default(.builtInTelephotoCamera, for: .video, position: .back)
+        case .ultraWide:
+            if #available(iOS 13.0, *) {
+                device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back)
+            }
+        case .wide:
+            device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
+        case .tele:
+            device = AVCaptureDevice.default(.builtInTelephotoCamera, for: .video, position: .back)
         }
 
         guard let device = device else { return }

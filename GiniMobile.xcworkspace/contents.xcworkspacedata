@@ -3,6 +3,26 @@
    version = "1.0">
    <Group
       location = "container:"
+      name = "GiniComponents">
+      <FileRef
+         location = "group:GiniComponents/GiniUtilites">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "GiniMerchantSDK">
+      <FileRef
+         location = "group:MerchantSDK/GiniMerchantSDKPinning">
+      </FileRef>
+      <FileRef
+         location = "group:MerchantSDK/GiniMerchantSDK">
+      </FileRef>
+      <FileRef
+         location = "group:MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
       name = "GiniBankSDK">
       <FileRef
          location = "group:BankSDK/GiniBankSDKPinningExample/GiniBankSDKPinningExample.xcodeproj">

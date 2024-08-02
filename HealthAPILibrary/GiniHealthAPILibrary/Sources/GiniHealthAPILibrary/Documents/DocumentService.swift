@@ -14,7 +14,8 @@ typealias CancellableResourceDataHandler<T: Resource> = (T, CancellationToken?,
 public protocol DocumentService: AnyObject {
     
     var apiDomain: APIDomain { get }
-    
+    var apiVersion: Int { get }
+
     /**
      *  Deletes a document
      *
@@ -118,7 +119,8 @@ extension DocumentService {
                    offset: Int?,
                    completion: @escaping CompletionResult<[Document]>) {
         let resource = APIResource<DocumentList>(method: .documents(limit: limit, offset: offset),
-                                                 apiDomain: apiDomain,
+                                                 apiDomain: apiDomain, 
+                                                 apiVersion: apiVersion,
                                                  httpMethod: .get)
         resourceHandler(resource, { result in
             switch result {
@@ -135,6 +137,7 @@ extension DocumentService {
                         completion: @escaping CompletionResult<String>) {
         let resource = APIResource<String>(method: .document(id: id),
                                            apiDomain: apiDomain,
+                                           apiVersion: apiVersion,
                                            httpMethod: .delete)
         
         resourceHandler(resource, { result in
@@ -159,6 +162,7 @@ extension DocumentService {
                 case .success:
                     let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: document.id),
                                                                      apiDomain: self.apiDomain,
+                                                                     apiVersion: self.apiVersion,
                                                                      httpMethod: .get)
                     
                     resourceHandler(resource, cancellationToken, { result in
@@ -181,6 +185,7 @@ extension DocumentService {
                        completion: @escaping CompletionResult<Document>) {
         let resource = APIResource<Document>(method: .document(id: id),
                                              apiDomain: apiDomain,
+                                             apiVersion: apiVersion,
                                              httpMethod: .get)
         
         resourceHandler(resource, cancellationToken, { result in
@@ -202,6 +207,7 @@ extension DocumentService {
                 completion: @escaping CompletionResult<Document.Layout>) {
         let resource = APIResource<Document.Layout>(method: .layout(forDocumentId: document.id),
                                                     apiDomain: apiDomain,
+                                                    apiVersion: apiVersion,
                                                     httpMethod: .get)
         
         resourceHandler(resource, { result in
@@ -219,6 +225,7 @@ extension DocumentService {
                completion: @escaping CompletionResult<[Document.Page]>) {
         let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: document.id),
                                                     apiDomain: apiDomain,
+                                                    apiVersion: apiVersion,
                                                     httpMethod: .get)
         
         resourceHandler(resource, { result in
@@ -236,6 +243,7 @@ extension DocumentService {
                completion: @escaping CompletionResult<[Document.Page]>) {
         let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: documentId),
                                                     apiDomain: apiDomain,
+                                                    apiVersion: apiVersion,
                                                     httpMethod: .get)
         
         resourceHandler(resource, { result in
@@ -254,6 +262,7 @@ extension DocumentService {
                  completion: @escaping CompletionResult<Data>) {
         let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: documentId),
                                                     apiDomain: self.apiDomain,
+                                                    apiVersion: self.apiVersion,
                                                     httpMethod: .get)
         resourceHandler(resource) { result in
             switch result {
@@ -319,7 +328,10 @@ extension DocumentService {
     func file(urlString: String,
                           resourceHandler: ResourceDataHandler<APIResource<Data>>,
                           completion: @escaping CompletionResult<Data>) {
-        var resource = APIResource<Data>(method: .file(urlString: urlString), apiDomain: apiDomain, httpMethod: .get)
+        var resource = APIResource<Data>(method: .file(urlString: urlString), 
+                                         apiDomain: apiDomain,
+                                         apiVersion: apiVersion,
+                                         httpMethod: .get)
         resource.fullUrlString = urlString
         resourceHandler(resource) { result in
             switch result {
@@ -349,6 +361,7 @@ extension DocumentService {
         
         let resource = APIResource<String>(method: .feedback(forDocumentId: document.id),
                                            apiDomain: apiDomain,
+                                           apiVersion: apiVersion,
                                            httpMethod: .post,
                                            body: json)
         
@@ -377,6 +390,7 @@ extension DocumentService {
         
         let resource = APIResource<String>(method: .feedback(forDocumentId: document.id),
                                            apiDomain: apiDomain,
+                                           apiVersion: apiVersion,
                                            httpMethod: .post,
                                            body: json)
         

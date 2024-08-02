@@ -1,0 +1,66 @@
+name: Publish docs for Merchant SDK
+on:
+  push:
+    tags:
+      - 'GiniMerchantSDK;[0-9]+.[0-9]+.[0-9]+;doc**'
+  workflow_call:
+    secrets:
+      RELEASE_GITHUB_USER:
+        required: true
+      RELEASE_GITHUB_PASSWORD:
+        required: true
+  
+jobs:
+  release-documentation:
+    runs-on: macos-latest    
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1.5.1
+      with:
+        xcode-version: '14.3.1'
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: get branch name
+      id: branch
+      shell: bash
+      run: |
+        # Get the branch ref that contains the tag in github.ref
+        # (github.ref contains the tag because this workflow is triggered by tags: 
+        # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context)
+        branch_ref=$(git branch -r --contains "${{ github.ref }}")
+        # Remove "origin/" prefix from branch_ref and trim whitespace
+        branch_name=$(echo ${branch_ref/origin\/} | tr -d '[:space:]')
+        echo "::set-output name=branch_name::$branch_name"
+        echo "branch_name: $branch_name"
+
+    - name: setup ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.0'
+        bundler-cache: true
+
+    - name: Publish GiniMerchantSDK documentation to the release repo
+      uses: maierj/fastlane-action@v3.0.0
+      with:
+        lane: 'publish_docs'
+        options: >
+          { 
+            "project_folder": "MerchantSDK",
+            "package_folder": "GiniMerchantSDK",
+            "version_file_path": "MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/GiniMerchantSDKVersion.swift",
+            "documentation_title":"GiniMerchantSDK Reference",
+            "is_stable_release": "${{ steps.branch.outputs.branch_name == 'main' }}",
+            "git_tag": "${{ github.ref }}",
+            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
+            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
+            "ci": "true"
+          }
+
+    - name: archive documentation
+      uses: actions/upload-artifact@v3
+      with:
+        name: GiniMerchantSDKDocumentation
+        path: MerchantSDK/GiniMerchantSDK/Documentation/Api

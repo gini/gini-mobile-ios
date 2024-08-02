@@ -53,6 +53,7 @@ extension HelpBottomBarEnabledViewController {
             }
 
             navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+                GiniAnalyticsManager.track(event: .closeTapped, screenName: .help)
                 self?.navigationController?.popViewController(animated: true)
             }
             if let adapter = navigationBarBottomAdapter {

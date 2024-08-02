@@ -62,16 +62,16 @@ final class PaymentComponentViewModel {
                                                         darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
     let moreInformationLabelTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
                                                         darkModeColor: UIColor.GiniHealthColors.light4).uiColor()
-    let moreInformationLabelText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.moreInformation.label", 
+    let moreInformationLabelText = GiniLocalized.string("ginihealth.paymentcomponent.moreInformation.label", 
                                                                     comment: "Text for more information label")
-    let moreInformationActionablePartText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.moreInformation.underlined.part",
+    let moreInformationActionablePartText = GiniLocalized.string("ginihealth.paymentcomponent.moreInformation.underlined.part",
                                                                              comment: "Text for more information actionable part from the label")
     var moreInformationLabelFont: UIFont
     var moreInformationLabelLinkFont: UIFont
     let moreInformationIconName = "info.circle"
     
     // Select bank label
-    let selectYourBankLabelText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectYourBank.label", 
+    let selectYourBankLabelText = GiniLocalized.string("ginihealth.paymentcomponent.selectYourBank.label", 
                                                                    comment: "Text for the select your bank label that's above the payment provider picker")
     let selectYourBankLabelFont: UIFont
     let selectYourBankAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
@@ -87,7 +87,7 @@ final class PaymentComponentViewModel {
     // Primary button
     let notInstalledBankTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
                                                        darkModeColor: UIColor.GiniHealthColors.light4).uiColor()
-    let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label",
+    let placeholderBankNameText: String = GiniLocalized.string("ginihealth.paymentcomponent.selectBank.label",
                                                                                    comment: "Placeholder text used when there isn't a payment provider app installed")
     
     let chevronDownIconName: String = "iconChevronDown"
@@ -98,7 +98,7 @@ final class PaymentComponentViewModel {
     var paymentProviderColors: ProviderColors?
 
     // Pay invoice label
-    let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.payInvoice.label", 
+    let payInvoiceLabelText: String = GiniLocalized.string("ginihealth.paymentcomponent.payInvoice.label", 
                                                                        comment: "Title label used for the pay invoice button")
 
     private var paymentProviderScheme: String?
@@ -110,8 +110,14 @@ final class PaymentComponentViewModel {
     var minimumButtonsHeight: CGFloat
     
     var hasBankSelected: Bool
-    
-    init(paymentProvider: PaymentProvider?, giniHealthConfiguration: GiniHealthConfiguration) {
+
+    var paymentComponentConfiguration: PaymentComponentConfiguration?
+
+    var shouldShowBrandedView: Bool {
+        paymentComponentConfiguration?.isPaymentComponentBranded ?? true
+    }
+
+    init(paymentProvider: PaymentProvider?, giniHealthConfiguration: GiniHealthConfiguration, paymentComponentConfiguration: PaymentComponentConfiguration?) {
         self.giniHealthConfiguration = giniHealthConfiguration
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
@@ -126,6 +132,8 @@ final class PaymentComponentViewModel {
         self.paymentProviderScheme = paymentProvider?.appSchemeIOS
         
         self.minimumButtonsHeight = giniHealthConfiguration.paymentComponentButtonsHeight
+
+        self.paymentComponentConfiguration = paymentComponentConfiguration
     }
     
     func tapOnMoreInformation() {

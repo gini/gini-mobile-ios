@@ -13,12 +13,13 @@ final class PaymentComponentsControllerTests: XCTestCase {
     private var giniHealthAPI: GiniHealthAPI!
     private var mockPaymentComponentsController: PaymentComponentsProtocol!
     private let giniHealthConfiguration = GiniHealthConfiguration.shared
+    private let versionAPI = 4
 
     override func setUp() {
         super.setUp()
         let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock)
+        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
+        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
         giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService)
         let giniHealth = GiniHealth(with: giniHealthAPI)
         mockPaymentComponentsController = MockPaymentComponents(giniHealthSDK: giniHealth)
@@ -38,7 +39,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         XCTAssertFalse(mockPaymentComponentsController.isLoading)
         XCTAssertNil(mockPaymentComponentsController.selectedPaymentProvider)
     }
-    
+
     func testCheckIfDocumentIsPayable_Success() {
         let expectedResult: Result<Bool, GiniHealthError> = .success(true)
         // When
@@ -50,7 +51,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // Then
         XCTAssertEqual(receivedResult, expectedResult)
     }
-    
+
     func testCheckIfDocumentIsPayable_NotPayable() {
         let expectedResult: Result<Bool, GiniHealthError> = .success(false)
         // When
@@ -62,7 +63,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // Then
         XCTAssertEqual(receivedResult, expectedResult)
     }
-    
+
     func testCheckIfDocumentIsPayable_Failure() {
         let expectedResult: Result<Bool, GiniHealthError> = .failure(.apiError(.noResponse))
         // When
@@ -74,11 +75,11 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // Then
         XCTAssertEqual(receivedResult, expectedResult)
     }
-    
+
     func testPaymentView_ReturnsView() {
         // Given
         let documentId = "123456"
-        let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil, giniHealthConfiguration: giniHealthConfiguration)
+        let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil, giniHealthConfiguration: giniHealthConfiguration, paymentComponentConfiguration: PaymentComponentConfiguration(isPaymentComponentBranded: true))
         let expectedView = PaymentComponentView()
         expectedView.viewModel = expectedViewModel
 
