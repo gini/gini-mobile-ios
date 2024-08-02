@@ -1,9 +1,7 @@
 //
-//  Camera2ViewController+Actions.swift
-//  
+//  CameraViewController+Actions.swift
 //
-//  Created by Krzysztof Kryniecki on 14/09/2022.
-//  Copyright © 2022 Gini GmbH. All rights reserved.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit

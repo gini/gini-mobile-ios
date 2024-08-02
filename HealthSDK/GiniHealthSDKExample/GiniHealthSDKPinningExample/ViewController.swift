@@ -9,7 +9,7 @@ import UIKit
 import GiniHealthSDK
 import GiniHealthAPILibrary
 import GiniHealthAPILibraryPinning
-import TrustKit
+
 class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()

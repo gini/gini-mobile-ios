@@ -84,3 +84,31 @@
 
 "ginibank.digitalinvoice.edit.name.error" = "Bitte geben Sie den Artikelnamen ein.";
 "ginibank.digitalinvoice.edit.price.error" = "Bitte geben Sie den Artikelpreis ein.";
+
+// MARK: - Skonto
+
+"ginibank.skonto.screen.title" = "Skonto";
+"ginibank.skonto.backbutton.title" = "Zurück";
+"ginibank.skonto.active" = "• Aktiviert";
+"ginibank.skonto.proceedbutton.title" = "Zahlung fortsetzen";
+
+"ginibank.skonto.withdiscount.title" = "Mit Skonto";
+"ginibank.skonto.withdiscount.price.title" = "Betrag nach Abzug";
+"ginibank.skonto.withdiscount.expirydate.title" = "Ablaufdatum Skonto";
+
+"ginibank.skonto.withoutdiscount.title" = "Ohne Skonto";
+"ginibank.skonto.withoutdiscount.price.title" = "Betrag ohne Abzug";
+
+"ginibank.skonto.total.title" = "Gesamtpreis";
+"ginibank.skonto.total.savings" = "%@ sparen";
+"ginibank.skonto.total.skontopercentage" = "%@ Skonto";
+
+"ginibank.skonto.infobanner.default.message" = "Zahlung in %@: %@ Skonto";
+"ginibank.skonto.infobanner.edgecase.today.message" = "Zahlung heute: %@ Skonto";
+"ginibank.skonto.infobanner.edgecase.cash.message" = "%@ Skonto sind bei Barzahlung innerhalb von %@ möglich";
+"ginibank.skonto.infobanner.edgecase.expired.message" = "Die %@ Skonto sind abgelaufen";
+
+"ginibank.skonto.infobanner.edgecase.today.alert.title" = "In dieser Rechnung ist ein Skonto enthalten – die Frist läuft heute ab.";
+"ginibank.skonto.infobanner.edgecase.cash.alert.title" = "Von dieser Rechnung können Sie einen Skontobetrag abziehen, wenn Sie die Rechnung an einem Bankterminal mit Bareinzahlung bezahlen.";
+"ginibank.skonto.infobanner.edgecase.expired.alert.title" = "Diese Rechnung hätten Sie mit %@ Skonto bezahlen können, die Skontofrist ist jedoch bereits abgelaufen.";
+"ginibank.skonto.alert.ok" = "Verstanden";

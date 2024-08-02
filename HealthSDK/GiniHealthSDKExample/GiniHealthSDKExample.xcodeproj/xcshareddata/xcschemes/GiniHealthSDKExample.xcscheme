@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1520"
-   version = "1.7">
+   version = "2.2">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -17,6 +17,29 @@
                BlueprintIdentifier = "F4EC38BE273C21E4007045DC"
                BuildableName = "GiniHealthSDKExample.app"
                BlueprintName = "GiniHealthSDKExample"
+               ReferencedContainer = "container:GiniHealthSDKExample.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <AutocreatedTestPlanReference>
+            </AutocreatedTestPlanReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F4EC38D3273C21E6007045DC"
+               BuildableName = "GiniHealthSDKExampleTests.xctest"
+               BlueprintName = "GiniHealthSDKExampleTests"
                ReferencedContainer = "container:GiniHealthSDKExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

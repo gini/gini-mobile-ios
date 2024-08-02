@@ -16,10 +16,12 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     let sessionManager: SessionManagerProtocol
     
     public var apiDomain: APIDomain
-    
-    init(sessionManager: SessionManagerProtocol, apiDomain: APIDomain = .default) {
+    public var apiVersion: Int
+
+    init(sessionManager: SessionManagerProtocol, apiDomain: APIDomain = .default, apiVersion: Int) {
         self.sessionManager = sessionManager
         self.apiDomain = apiDomain
+        self.apiVersion = apiVersion
     }
     
     /**
@@ -56,7 +58,8 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                                                                             docType: docType,
                                                                             mimeSubType: "json",
                                                                             documentType: type),
-                                                    apiDomain: apiDomain,
+                                                    apiDomain: apiDomain, 
+                                                    apiVersion: apiVersion,
                                                     httpMethod: .post,
                                                     additionalHeaders: metadata?.headers ?? [:],
                                                     body: try? JSONEncoder().encode(compositeDocumentInfo))
@@ -66,7 +69,8 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                                                                             docType: docType,
                                                                             mimeSubType: "json",
                                                                             documentType: type),
-                                                    apiDomain: apiDomain,
+                                                    apiDomain: apiDomain, 
+                                                    apiVersion: apiVersion,
                                                     httpMethod: .post,
                                                     additionalHeaders: metadata?.headers ?? [:])
             guard let processedData = processDataIfNeeded(data: data) else {

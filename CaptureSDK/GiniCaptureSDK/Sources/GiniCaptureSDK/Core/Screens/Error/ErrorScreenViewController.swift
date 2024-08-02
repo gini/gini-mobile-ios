@@ -71,12 +71,10 @@ class ErrorScreenViewController: UIViewController {
      
      - returns: A view controller instance allowing the user to take a picture or pick a document.
      */
-    public init(
-        giniConfiguration: GiniConfiguration,
-        type: ErrorType,
-        documentType: GiniCaptureDocumentType,
-        viewModel: BottomButtonsViewModel
-    ) {
+    public init(giniConfiguration: GiniConfiguration,
+                type: ErrorType,
+                documentType: GiniCaptureDocumentType,
+                viewModel: BottomButtonsViewModel) {
         self.giniConfiguration = giniConfiguration
         self.viewModel = viewModel
         self.errorType = type
@@ -91,6 +89,26 @@ class ErrorScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+
+        sendAnalyticsScreenShown()
+    }
+
+    private func sendAnalyticsScreenShown() {
+        var eventProperties = [GiniAnalyticsProperty(key: .documentType,
+                                                     value: GiniAnalyticsMapper.documentTypeAnalytics(from: documentType))]
+
+        let errorAnalytics = errorType.errorAnalytics()
+        eventProperties.append(GiniAnalyticsProperty(key: .errorType, value: errorAnalytics.type))
+        if let code = errorAnalytics.code {
+            eventProperties.append(GiniAnalyticsProperty(key: .errorCode, value: code))
+        }
+
+        if let reason = errorAnalytics.reason {
+            eventProperties.append(GiniAnalyticsProperty(key: .errorMessage, value: reason))
+        }
+
+        GiniAnalyticsManager.trackScreenShown(screenName: .error,
+                                              properties: eventProperties)
     }
 
     func setupView() {
@@ -134,19 +152,17 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureButtons() {
-        buttonsView.enterButton.addTarget(
-            viewModel,
-            action: #selector(viewModel.didPressEnterManually),
-            for: .touchUpInside)
-        buttonsView.retakeButton.addTarget(
-            viewModel,
-            action: #selector(viewModel.didPressRetake),
-            for: .touchUpInside)
+        buttonsView.enterButton.addTarget(self,
+                                          action: #selector(didPressEnterManually),
+                                          for: .touchUpInside)
+        buttonsView.retakeButton.addTarget(self,
+                                           action: #selector(didPressRetake),
+                                           for: .touchUpInside)
     }
 
     private func configureCustomTopNavigationBar() {
         let cancelButton = GiniBarButton(ofType: .cancel)
-        cancelButton.addAction(viewModel, #selector(viewModel.didPressCancell))
+        cancelButton.addAction(self, #selector(didPressCancel))
 
         if giniConfiguration.bottomNavigationBarEnabled {
             navigationItem.rightBarButtonItem = cancelButton.barButton
@@ -155,6 +171,21 @@ class ErrorScreenViewController: UIViewController {
         } else {
             navigationItem.leftBarButtonItem = cancelButton.barButton
         }
+    }
+
+    @objc func didPressEnterManually() {
+        GiniAnalyticsManager.track(event: .enterManuallyTapped, screenName: .error)
+        viewModel.didPressEnterManually()
+    }
+
+    @objc func didPressRetake() {
+        GiniAnalyticsManager.track(event: .backToCameraTapped, screenName: .error)
+        viewModel.didPressRetake()
+    }
+
+    @objc func didPressCancel() {
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .error)
+        viewModel.didPressCancel()
     }
 
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
