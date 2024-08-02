@@ -20,8 +20,8 @@ class SkontoAppliedDateView: UIView {
         return label
     }()
 
-    private lazy var textField: UITextField = {
-        let textField = UITextField()
+    private lazy var textField: TextFieldActionsDisabled = {
+        let textField = TextFieldActionsDisabled()
         textField.text = viewModel.dueDate.currentShortString
         textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
