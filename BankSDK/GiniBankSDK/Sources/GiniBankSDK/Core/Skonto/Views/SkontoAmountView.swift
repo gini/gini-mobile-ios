@@ -97,7 +97,6 @@ class SkontoAmountView: UIView {
         containerView.addSubview(titleLabel)
         containerView.addSubview(stackView)
         setupConstraints()
-        addTapGestureRecognizer()
     }
 
     private func setupConstraints() {
@@ -121,16 +120,6 @@ class SkontoAmountView: UIView {
         ])
     }
 
-    private func addTapGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        addGestureRecognizer(tapGestureRecognizer)
-    }
-
-    @objc private func handleTap() {
-        guard isEditable else { return }
-        textField.becomeFirstResponder()
-    }
-
     func configure(isEditable: Bool, price: Price) {
         if isEditable {
             textField.text = price.localizedStringWithoutCurrencyCode ?? ""
@@ -141,6 +130,14 @@ class SkontoAmountView: UIView {
         containerView.layer.borderWidth = isEditable ? 1 : 0
         textField.isUserInteractionEnabled = isEditable
         currencyLabel.isHidden = !isEditable
+    }
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard self.bounds.contains(point), isEditable else {
+            return super.hitTest(point, with: event)
+        }
+
+        return textField
     }
 }
 
