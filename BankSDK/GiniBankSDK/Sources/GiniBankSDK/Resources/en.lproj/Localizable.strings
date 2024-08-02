@@ -119,3 +119,5 @@
 "ginibank.skonto.infobanner.edgecase.cash.alert.title" = "A discount is indicated on this invoice, but it can only be used for cash deposit through a bank terminal.";
 "ginibank.skonto.infobanner.edgecase.expired.alert.title" = "You could have paid this invoice with a %@ discount, but the discount period has already expired.";
 "ginibank.skonto.alert.ok" = "Got it";
+"ginibank.skonto.invoice.title" = "Invoice";
+"ginibank.skonto.invoice.subtitle" = "Tap to view";

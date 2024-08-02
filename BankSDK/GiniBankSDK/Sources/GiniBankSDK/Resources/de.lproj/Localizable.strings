@@ -112,3 +112,5 @@
 "ginibank.skonto.infobanner.edgecase.cash.alert.title" = "Von dieser Rechnung können Sie einen Skontobetrag abziehen, wenn Sie die Rechnung an einem Bankterminal mit Bareinzahlung bezahlen.";
 "ginibank.skonto.infobanner.edgecase.expired.alert.title" = "Diese Rechnung hätten Sie mit %@ Skonto bezahlen können, die Skontofrist ist jedoch bereits abgelaufen.";
 "ginibank.skonto.alert.ok" = "Verstanden";
+"ginibank.skonto.invoice.title" = "Rechnung";
+"ginibank.skonto.invoice.subtitle" = "Tippen Sie hier zur Ansicht";
