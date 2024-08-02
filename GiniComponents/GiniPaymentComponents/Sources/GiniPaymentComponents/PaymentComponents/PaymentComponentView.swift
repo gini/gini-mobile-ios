@@ -28,7 +28,7 @@ public final class PaymentComponentView: UIView {
     private let buttonsView = EmptyView()
     
     private lazy var buttonsStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .horizontal)
+        let stackView = EmptyStackView(orientation: viewModel.showPaymentComponentInOneRow ? .horizontal : .vertical)
         stackView.spacing = Constants.buttonsSpacing
         return stackView
     }()
@@ -88,7 +88,9 @@ public final class PaymentComponentView: UIView {
         
         bottomStackView.addArrangedSubview(moreInformationView)
         bottomStackView.addArrangedSubview(UIView())
-        bottomStackView.addArrangedSubview(poweredByGiniView)
+        if viewModel.shouldShowBrandedView {
+            bottomStackView.addArrangedSubview(poweredByGiniView)
+        }
         bottomView.addSubview(bottomStackView)
         contentStackView.addArrangedSubview(bottomView)
         
@@ -116,6 +118,7 @@ public final class PaymentComponentView: UIView {
     }
     
     private func updateAvailableViews() {
+        guard viewModel.hideInfoForReturningUser else { return }
         let isPaymentComponentUsed = viewModel.isPaymentComponentUsed()
         selectYourBankView.isHidden = isPaymentComponentUsed
         moreInformationView.isHidden = isPaymentComponentUsed
@@ -128,6 +131,7 @@ public final class PaymentComponentView: UIView {
                                          rightImageTintColor: viewModel.configuration.chevronDownIconColor,
                                          shouldShowLabel: !viewModel.hasBankSelected)
         payInvoiceButton.isHidden = !viewModel.hasBankSelected
+        selectBankButton.heightAnchor.constraint(equalToConstant: viewModel.showPaymentComponentInOneRow ? viewModel.minimumButtonsHeight : (viewModel.hasBankSelected ? viewModel.minimumButtonsHeight : Constants.defaultButtonHeihgt)).isActive = true
     }
 
     private func activateContentStackViewConstraints() {
@@ -154,7 +158,7 @@ public final class PaymentComponentView: UIView {
             buttonsStackView.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor),
             buttonsStackView.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: Constants.buttonsTopBottomSpacing),
             buttonsStackView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: -Constants.buttonsTopBottomSpacing),
-            buttonsStackView.heightAnchor.constraint(equalToConstant: viewModel.minimumButtonsHeight)
+            payInvoiceButton.heightAnchor.constraint(equalToConstant: viewModel.minimumButtonsHeight)
         ])
     }
     
@@ -163,7 +167,8 @@ public final class PaymentComponentView: UIView {
             bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor),
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor),
-            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
+            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
+            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
     }
 
@@ -190,5 +195,7 @@ extension PaymentComponentView {
         static let contentBottomPadding: CGFloat = 4
         static let buttonsSpacing = 8.0
         static let buttonsTopBottomSpacing = 4.0
+        static let bottomViewHeight = 44.0
+        static let defaultButtonHeihgt = 44.0
     }
 }

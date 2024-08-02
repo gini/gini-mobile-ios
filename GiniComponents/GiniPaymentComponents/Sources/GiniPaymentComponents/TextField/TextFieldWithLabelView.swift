@@ -12,6 +12,7 @@ public final class TextFieldWithLabelView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = configuration.font(for: .caption2)
         label.adjustsFontForContentSizeCategory = true
         return label
     }()

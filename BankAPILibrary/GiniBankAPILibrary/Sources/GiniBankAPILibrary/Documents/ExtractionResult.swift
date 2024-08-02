@@ -1,46 +1,51 @@
 //
 //  ExtractionResult.swift
-//  GiniBankAPI
 //
-//  Created by Maciej Trybilo on 13.02.20.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
-
 /**
-* Data model for a document extraction result.
-*/
-@objcMembers final public class ExtractionResult: NSObject {
+ * Data model for a document extraction result.
+ */
+@objcMembers
+final public class ExtractionResult: NSObject {
 
     /// The specific extractions.
     public let extractions: [Extraction]
-    
+
     /// The line item compound extractions.
     public var lineItems: [[Extraction]]?
-    
+
     // Return reasons from which users can pick one when deselecting line items.
     public var returnReasons: [ReturnReason]?
-    
+
+    // The Skonto information extractions.
+    public var skontoDiscounts: [[Extraction]]?
+
     /// The extraction candidates.
     public let candidates: [String: [Extraction.Candidate]]
-    
+
     public init(extractions: [Extraction],
-                lineItems: [[Extraction]]?,
-                returnReasons: [ReturnReason]?,
+                lineItems: [[Extraction]]? = nil,
+                returnReasons: [ReturnReason]? = nil,
+                skontoDiscounts: [[Extraction]]? = nil,
                 candidates: [String: [Extraction.Candidate]]) {
         self.extractions = extractions
         self.lineItems = lineItems
         self.returnReasons = returnReasons
+        self.skontoDiscounts = skontoDiscounts
         self.candidates = candidates
-        
+
         super.init()
     }
-    
+
     convenience init(extractionsContainer: ExtractionsContainer) {
-        
+
         self.init(extractions: extractionsContainer.extractions,
-                  lineItems: extractionsContainer.compoundExtractions?["lineItems"],
+                  lineItems: extractionsContainer.compoundExtractions?.lineItems,
                   returnReasons: extractionsContainer.returnReasons,
+                  skontoDiscounts: extractionsContainer.compoundExtractions?.skontoDiscounts,
                   candidates: extractionsContainer.candidates)
     }
 }

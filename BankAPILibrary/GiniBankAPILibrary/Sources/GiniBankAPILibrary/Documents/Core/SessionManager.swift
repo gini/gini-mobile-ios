@@ -311,11 +311,11 @@ private extension SessionManager {
         case 429:
             completion(.failure(.tooManyRequests(response: response, data: data)))
         case 503:
-            completion(.failure(.maintenance))
+            completion(.failure(.maintenance(errorCode: statusCode)))
         case 500:
-            completion(.failure(.outage))
+            completion(.failure(.outage(errorCode: statusCode)))
         case 501, 502, 504...599:
-            completion(.failure(.server))
+            completion(.failure(.server(errorCode: statusCode)))
         default:
             completion(.failure(.unknown(response: response, data: data)))
         }

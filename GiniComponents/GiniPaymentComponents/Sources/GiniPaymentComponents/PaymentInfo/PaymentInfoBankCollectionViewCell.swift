@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 final class PaymentInfoBankCollectionViewCell: UICollectionViewCell {
     

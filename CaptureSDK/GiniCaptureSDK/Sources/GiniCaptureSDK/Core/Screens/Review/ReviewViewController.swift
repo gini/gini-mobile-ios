@@ -1,8 +1,7 @@
 //
 //  ReviewViewController.swift
-//  GiniCapture
 //
-//  Created by Vizaknai David on 28.09.2022
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -179,8 +178,7 @@ public final class ReviewViewController: UIViewController {
         addPagesButton.configure(with: giniConfiguration.addPageButtonConfiguration)
         addPagesButton.didTapButton = { [weak self] in
             guard let self = self else { return }
-            self.setCellStatus(for: self.currentPage, isActive: false)
-            self.delegate?.reviewDidTapAddImage(self)
+            self.didTapAddPages()
         }
         addPagesButton.isAccessibilityElement = true
         addPagesButton.accessibilityTraits = .button
@@ -308,10 +306,11 @@ extension ReviewViewController {
             }
             navigationBarBottomAdapter?.setMainButtonClickedActionCallback { [weak self] in
                 guard let self = self else { return }
-                self.delegate?.reviewDidTapProcess(self)
+                self.didTapProcessDocument()
             }
             navigationBarBottomAdapter?.setSecondaryButtonClickedActionCallback { [weak self] in
                 guard let self = self else { return }
+                GiniAnalyticsManager.track(event: .addPagesTapped, screenName: .review)
                 self.setCellStatus(for: self.currentPage, isActive: false)
                 self.delegate?.reviewDidTapAddImage(self)
             }
@@ -362,6 +361,8 @@ extension ReviewViewController {
             setCellStatus(for: currentPage, isActive: true)
         }
         collectionView.reloadData()
+
+        GiniAnalyticsManager.trackScreenShown(screenName: .review)
     }
 
     public override func viewWillLayoutSubviews() {
@@ -542,6 +543,12 @@ extension ReviewViewController {
 
     @objc
     private func didTapProcessDocument() {
+        let eventProperties = [GiniAnalyticsProperty(key: .numberOfPagesScanned,
+                                                     value: pages.count)]
+
+        GiniAnalyticsManager.track(event: .processTapped,
+                                   screenName: .review,
+                                   properties: eventProperties)
         delegate?.reviewDidTapProcess(self)
     }
 
@@ -550,6 +557,12 @@ extension ReviewViewController {
         pages.remove(at: indexPath.row)
         collectionView.deleteItems(at: [indexPath])
         delegate?.review(self, didDelete: pageToDelete)
+    }
+
+    private func didTapAddPages() {
+        GiniAnalyticsManager.track(event: .addPagesTapped, screenName: .review)
+        setCellStatus(for: currentPage, isActive: false)
+        delegate?.reviewDidTapAddImage(self)
     }
 
     @objc
@@ -562,6 +575,9 @@ extension ReviewViewController {
             collectionView.scrollToItem(at: IndexPath(row: currentPage, section: 0),
                                         at: .centeredHorizontally, animated: true)
             pageControl.currentPage = currentPage
+
+            GiniAnalyticsManager.track(event: .pageSwiped, screenName: .review)
+
         } else if sender.direction == .right {
             guard currentPage > 0 else { return }
             setCellStatus(for: currentPage, isActive: false)
@@ -569,6 +585,8 @@ extension ReviewViewController {
             collectionView.scrollToItem(at: IndexPath(row: currentPage, section: 0),
                                         at: .centeredHorizontally, animated: true)
             pageControl.currentPage = currentPage
+
+            GiniAnalyticsManager.track(event: .pageSwiped, screenName: .review)
         }
     }
 
@@ -655,6 +673,7 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let page = pages[indexPath.row]
+        GiniAnalyticsManager.track(event: .fullScreenPageTapped, screenName: .review)
         delegate?.review(self, didSelectPage: page)
     }
 
@@ -682,7 +701,7 @@ extension ReviewViewController: ReviewCollectionViewDelegate {
     func didTapDelete(on cell: ReviewCollectionCell) {
         guard let indexpath = collectionView.indexPath(for: cell) else { return }
         deleteItem(at: indexpath)
-
+        GiniAnalyticsManager.track(event: .deletePagesTapped, screenName: .review)
         setCurrentPage(basedOn: collectionView)
     }
 }

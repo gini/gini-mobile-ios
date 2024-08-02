@@ -66,11 +66,6 @@ public final class GiniMerchantConfiguration: NSObject {
      */
     public var showPaymentReviewScreen = true
 
-    /**
-     Set to `true` to make amount field editable in the payment review screen
-     */
-    public var isAmountFieldEditable = false
-
     // MARK: - Button configuration options
     /**
      A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View, Payment Review Screen.
