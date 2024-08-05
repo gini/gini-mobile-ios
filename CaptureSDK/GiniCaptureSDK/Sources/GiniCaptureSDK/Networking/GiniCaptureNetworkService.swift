@@ -15,7 +15,7 @@ public protocol GiniCaptureNetworkService: AnyObject  {
     func analyse(partialDocuments: [PartialDocumentInfo],
                  metadata: Document.Metadata?,
                  cancellationToken: CancellationToken,
-                 completion: @escaping (Result<(document: Document,extractionResult: ExtractionResult), GiniError>) -> Void)
+                 completion: @escaping (Result<(document: Document, extractionResult: ExtractionResult), GiniError>) -> Void)
     func upload(document: GiniCaptureDocument,
                 metadata: Document.Metadata?,
                 completion: @escaping UploadDocumentCompletion)
