@@ -21,8 +21,8 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var headerView: SkontoAppliedHeaderView = {
-        let view = SkontoAppliedHeaderView(viewModel: viewModel)
+    private lazy var wihtDiscountHeaderView: SkontoWithDiscountHeaderView = {
+        let view = SkontoWithDiscountHeaderView(viewModel: viewModel)
         return view
     }()
 
@@ -43,8 +43,8 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var notAppliedView: SkontoNotAppliedView = {
-        let view = SkontoNotAppliedView(viewModel: viewModel)
+    private lazy var notAppliedView: SkontoWithoutDiscountView = {
+        let view = SkontoWithoutDiscountView(viewModel: viewModel)
         return view
     }()
 
@@ -53,7 +53,7 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var appliedGroupView: UIView = {
+    private lazy var withDiscountGroupView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
@@ -142,13 +142,13 @@ public class SkontoViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubview(invoiceGroupView)
-        stackView.addArrangedSubview(appliedGroupView)
+        stackView.addArrangedSubview(withDiscountGroupView)
         stackView.addArrangedSubview(notAppliedGroupView)
         invoiceGroupView.addSubview(invoicePreviewView)
-        appliedGroupView.addSubview(headerView)
-        appliedGroupView.addSubview(infoBannerView)
-        appliedGroupView.addSubview(withDiscountPriceView)
-        appliedGroupView.addSubview(expiryDateView)
+        withDiscountGroupView.addSubview(wihtDiscountHeaderView)
+        withDiscountGroupView.addSubview(infoBannerView)
+        withDiscountGroupView.addSubview(withDiscountPriceView)
+        withDiscountGroupView.addSubview(expiryDateView)
         notAppliedGroupView.addSubview(notAppliedView)
         view.addSubview(proceedView)
 
@@ -161,7 +161,7 @@ public class SkontoViewController: UIViewController {
         setupScrollViewConstraints()
         setupStackViewConstraints()
         setupInvoiceGroupViewConstraints()
-        setupAppliedGroupViewConstraints()
+        setupWithDiscountGroupViewConstraints()
         setupNotAppliedGroupViewConstraints()
         setupProceedViewConstraints()
     }
@@ -206,35 +206,35 @@ public class SkontoViewController: UIViewController {
         ])
     }
 
-    private func setupAppliedGroupViewConstraints() {
+    private func setupWithDiscountGroupViewConstraints() {
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: appliedGroupView.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
+            wihtDiscountHeaderView.topAnchor.constraint(equalTo: withDiscountGroupView.topAnchor),
+            wihtDiscountHeaderView.leadingAnchor.constraint(equalTo: withDiscountGroupView.leadingAnchor,
                                                 constant: Constants.horizontalPadding),
-            headerView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
+            wihtDiscountHeaderView.trailingAnchor.constraint(equalTo: withDiscountGroupView.trailingAnchor,
                                                  constant: -Constants.horizontalPadding),
 
-            infoBannerView.topAnchor.constraint(equalTo: headerView.bottomAnchor,
+            infoBannerView.topAnchor.constraint(equalTo: wihtDiscountHeaderView.bottomAnchor,
                                           constant: Constants.horizontalPadding),
-            infoBannerView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
+            infoBannerView.leadingAnchor.constraint(equalTo: withDiscountGroupView.leadingAnchor,
                                               constant: Constants.horizontalPadding),
-            infoBannerView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
+            infoBannerView.trailingAnchor.constraint(equalTo: withDiscountGroupView.trailingAnchor,
                                                constant: -Constants.horizontalPadding),
 
             withDiscountPriceView.topAnchor.constraint(equalTo: infoBannerView.bottomAnchor,
                                                    constant: Constants.horizontalPadding),
-            withDiscountPriceView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
+            withDiscountPriceView.leadingAnchor.constraint(equalTo: withDiscountGroupView.leadingAnchor,
                                                        constant: Constants.horizontalPadding),
-            withDiscountPriceView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
+            withDiscountPriceView.trailingAnchor.constraint(equalTo: withDiscountGroupView.trailingAnchor,
                                                         constant: -Constants.horizontalPadding),
 
             expiryDateView.topAnchor.constraint(equalTo: withDiscountPriceView.bottomAnchor,
                                                 constant: Constants.dateViewTopPadding),
-            expiryDateView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
+            expiryDateView.leadingAnchor.constraint(equalTo: withDiscountGroupView.leadingAnchor,
                                                     constant: Constants.horizontalPadding),
-            expiryDateView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
+            expiryDateView.trailingAnchor.constraint(equalTo: withDiscountGroupView.trailingAnchor,
                                                      constant: -Constants.horizontalPadding),
-            expiryDateView.bottomAnchor.constraint(equalTo: appliedGroupView.bottomAnchor,
+            expiryDateView.bottomAnchor.constraint(equalTo: withDiscountGroupView.bottomAnchor,
                                                    constant: -Constants.horizontalPadding)
         ])
     }
