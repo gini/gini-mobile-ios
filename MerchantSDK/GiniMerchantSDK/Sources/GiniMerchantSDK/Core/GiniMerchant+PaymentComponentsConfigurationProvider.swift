@@ -26,10 +26,6 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
         GiniMerchantConfiguration.shared.showPaymentReviewCloseButton
     }
     
-    public var isAmountFieldEditable: Bool {
-        GiniMerchantConfiguration.shared.isAmountFieldEditable
-    }
-    
     public var paymentComponentButtonsHeight: CGFloat {
         GiniMerchantConfiguration.shared.paymentComponentButtonsHeight
     }
@@ -175,5 +171,9 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
     
     public var secondaryButtonConfiguration: GiniPaymentComponents.ButtonConfiguration {
         GiniMerchantConfiguration.shared.secondaryButtonConfiguration
+    }
+
+    public var paymentComponentConfiguration: GiniPaymentComponents.PaymentComponentConfiguration {
+        PaymentComponentConfiguration(isPaymentComponentBranded: true)
     }
 }

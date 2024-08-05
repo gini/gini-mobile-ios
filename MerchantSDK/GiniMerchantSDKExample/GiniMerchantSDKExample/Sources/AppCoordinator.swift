@@ -9,6 +9,7 @@
 import UIKit
 import GiniCaptureSDK
 import GiniMerchantSDK
+import GiniPaymentComponents
 
 final class AppCoordinator: Coordinator {
     
@@ -263,7 +264,6 @@ final class AppCoordinator: Coordinator {
 
         let invoicesListCoordinator = InvoicesListCoordinator()
         paymentComponentsController = PaymentComponentsController(giniMerchant: merchant)
-        paymentComponentsController.paymentComponentConfiguration = paymentComponentConfiguration
         invoicesListCoordinator.start(documentService: merchant.documentService,
                                       hardcodedInvoicesController: HardcodedInvoicesController(),
                                       paymentComponentsController: paymentComponentsController,

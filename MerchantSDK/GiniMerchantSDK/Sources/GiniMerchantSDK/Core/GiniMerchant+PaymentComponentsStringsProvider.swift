@@ -37,97 +37,97 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
 
     public var paymentComponentsStrings: PaymentComponentsStrings {
         PaymentComponentsStrings(
-            selectYourBankLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectYourBank.label",
+            selectYourBankLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.your.bank.label",
                                                                       comment: "Text for the select your bank label that's above the payment provider picker"),
-            placeholderBankNameText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label",
+            placeholderBankNameText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label",
                                                                       comment: "Placeholder text used when there isn't a payment provider app installed"),
-            payInvoiceLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payInvoice.label",
+            payInvoiceLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.pay.invoice.label",
                                                                   comment: "Title label used for the pay invoice button")
         )
     }
     
     public var installAppStrings: InstallAppStrings {
         InstallAppStrings(
-            titlePattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.title",
+            titlePattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.title",
                                                            comment: "Install App Bottom sheet title"),
-            moreInformationTipPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.tip.description",
+            moreInformationTipPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.tip.description",
                                                                         comment: "Text for tip information label"),
-            moreInformationNotePattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.notes.description",
+            moreInformationNotePattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.notes.description",
                                                                          comment: "Text for notes information label"),
-            continueLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.continue.button.text",
+            continueLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.continue.button.text",
                                                                 comment: "Title label used for the Continue button")
         )
     }
     
     public var shareInvoiceStrings: ShareInvoiceStrings {
         ShareInvoiceStrings(
-            tipActionablePartText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.tip.underlined.part",
+            tipActionablePartText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.tip.underlined.part",
                                                                     comment: "Text for tip actionable part from the label"),
-            continueLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.continue.button.text",
+            continueLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.continue.button.text",
                                                                 comment: "Title label used for the Continue button"),
-            singleAppTitle: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.app",
+            singleAppTitle: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.app",
                                                              comment: "Text for the sigle App"),
-            singleAppMore: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.more",
+            singleAppMore: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.more",
                                                             comment: "Text for the single App more"),
-            titleTextPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.title",
+            titleTextPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.title",
                                                                comment: "Share Invoice Bottom sheet title"),
-            descriptionTextPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.description",
+            descriptionTextPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.description",
                                                                      comment: "Text description for share bottom sheet"),
-            tipLabelPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.shareInvoiceBottomSheet.tip.description",
+            tipLabelPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.tip.description",
                                                               comment: "Text for tip label")
         )
     }
     
     public var paymentInfoStrings: PaymentInfoStrings {
         PaymentInfoStrings(
-            giniWebsiteText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.clickable.text",
+            giniWebsiteText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.pay.bills.description.clickable.text",
                                                               comment: "Word range that's clickable in pay bills description"),
-            giniURLText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.gini.link",
+            giniURLText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.gini.link",
                                                           comment: "Gini website link url"),
-            questionsTitleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.title.label",
+            questionsTitleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.title.label",
                                                                  comment: "Payment Info questions title label text"),
-            answerPrivacyPolicyText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.clickable.text",
+            answerPrivacyPolicyText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.clickable.text",
                                                                       comment: "Payment info answers clickable privacy policy"),
-            privacyPolicyURLText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.gini.privacypolicy.link",
+            privacyPolicyURLText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.gini.privacypolicy.link",
                                                                    comment: "Gini privacy policy link url"),
-            titleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.title.label",
+            titleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.title.label",
                                                         comment: "Payment Info title label text"),
-            payBillsTitleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.title.label",
+            payBillsTitleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.pay.bills.title.label",
                                                                 comment: "Payment Info pay bills title label text"),
-            payBillsDescriptionText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.payBills.description.label",
+            payBillsDescriptionText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.pay.bills.description.label",
                                                                       comment: "Payment Info pay bills description text"),
-            answers: [NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.1",
+            answers: [NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.1",
                                                        comment: "Answers description"),
-                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.2",
+                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.2",
                                                        comment: "Answers description"),
-                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.3",
+                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.3",
                                                        comment: "Answers description"),
-                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.4",
+                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.4",
                                                        comment: "Answers description"),
-                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.5",
+                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.5",
                                                        comment: "Answers description"),
-                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.answer.6",
+                      NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.answer.6",
                                                        comment: "Answers description")],
-            questions: [NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.question.1",
+            questions: [NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.1",
                                                          comment: "Questions titles"),
-                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.question.2",
+                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.2",
                                                          comment: "Questions titles"),
-                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.question.3",
+                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.3",
                                                          comment: "Questions titles"),
-                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.question.4",
+                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.4",
                                                          comment: "Questions titles"),
-                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.question.5",
+                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.5",
                                                          comment: "Questions titles"),
-                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentinfo.questions.question.6",
+                        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.questions.question.6",
                                                          comment: "Questions titles")]
         )
     }
     
     public var banksBottomStrings: BanksBottomStrings {
         BanksBottomStrings(
-            selectBankTitleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label",
+            selectBankTitleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label",
                                                                   comment: "Select bank text from the top label on payment providers bottom sheet"),
-            descriptionText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentproviderslist.description",
+            descriptionText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentbprovidersblist.description",
                                                               comment: "Top description text on payment providers bottom sheet")
         )
     }
@@ -147,13 +147,13 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
     
     public var poweredByGiniStrings: PoweredByGiniStrings {
         PoweredByGiniStrings(
-            poweredByGiniText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.poweredByGini.label", comment: "")
+            poweredByGiniText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.powered.by.gini.label", comment: "")
         )
     }
     
     public var moreInformationStrings: MoreInformationStrings {
         MoreInformationStrings(
-            moreInformationActionablePartText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.moreInformation.underlined.part",
+            moreInformationActionablePartText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.more.information.underlined.part",
                                                                                 comment: "Text for more information actionable part from the label")
         )
     }

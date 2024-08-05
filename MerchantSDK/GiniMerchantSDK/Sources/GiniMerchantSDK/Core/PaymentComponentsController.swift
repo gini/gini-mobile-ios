@@ -9,6 +9,7 @@
 import UIKit
 import GiniPaymentComponents
 import GiniHealthAPILibrary
+import GiniUtilites
 
 /**
  Protocol used to provide updates on the current status of the Payment Components Controller.
@@ -38,15 +39,15 @@ public protocol PaymentComponentsConfigurationProvider {
     var paymentReviewConfiguration: PaymentReviewConfiguration { get }
     var poweredByGiniConfiguration: PoweredByGiniConfiguration { get }
     var moreInformationConfiguration: MoreInformationConfiguration { get }
-    
+    var paymentComponentConfiguration: PaymentComponentConfiguration { get }
+
     var primaryButtonConfiguration: ButtonConfiguration { get }
     var secondaryButtonConfiguration: ButtonConfiguration { get }
-    var defaultStyleInputFieldConfiguration: TextFieldConfiguration { get }
-    var errorStyleInputFieldConfiguration: TextFieldConfiguration { get }
-    var selectionStyleInputFieldConfiguration: TextFieldConfiguration { get }
+    var defaultStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration { get }
+    var errorStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration { get }
+    var selectionStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration { get }
 
     var showPaymentReviewCloseButton: Bool { get }
-    var isAmountFieldEditable: Bool { get }
     var paymentComponentButtonsHeight: CGFloat { get }
 }
 
@@ -230,7 +231,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
             poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
             moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
             moreInformationStrings: stringsProvider.moreInformationStrings,
-            minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight
+            minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
+            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration
         )
         paymentComponentViewModel.delegate = self
         paymentComponentViewModel.documentId = documentId
@@ -267,8 +269,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                    primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
                                                    poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
-                                                   showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
-                                                   isAmountFieldEditable: configurationProvider.isAmountFieldEditable)
+                                                   showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
 
                 let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                                  selectedPaymentProvider: healthSelectedPaymentProvider)

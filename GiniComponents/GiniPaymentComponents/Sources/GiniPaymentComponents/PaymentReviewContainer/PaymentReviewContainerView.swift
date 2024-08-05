@@ -36,7 +36,7 @@ public final class PaymentReviewContainerView: UIView {
 
     private lazy var recipientTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.recipientFieldTag.rawValue, isEditable: false)
     private lazy var ibanTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.ibanFieldTag.rawValue, isEditable: false)
-    private lazy var amountTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.amountFieldTag.rawValue, isEditable: viewModel.isAmountFieldEditable)
+    private lazy var amountTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.amountFieldTag.rawValue, isEditable: true)
     private lazy var usageTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.usageFieldTag.rawValue, isEditable: false)
 
     private let buttonsView = EmptyView()
@@ -532,7 +532,7 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
      Updates amoutToPay, formated string with a currency and removes "0.00" value
      */
     public func updateAmoutToPayWithCurrencyFormat() {
-        if let amountFieldText = amountTextFieldView.text, let priceValue = decimal(from: amountFieldText) {
+        if let amountFieldText = amountTextFieldView.text, let priceValue = amountFieldText.decimal() {
             amountToPay.value = priceValue
             if priceValue > 0 {
                 let amountToPayText = amountToPay.string

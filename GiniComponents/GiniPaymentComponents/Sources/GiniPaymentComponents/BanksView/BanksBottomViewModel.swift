@@ -8,9 +8,10 @@
 
 import UIKit
 import GiniUtilites
+import GiniHealthAPILibrary
 
 public protocol BanksBottomViewProtocol: AnyObject {
-    func didSelectPaymentProvider(paymentProvider: PaymentProvider)
+    func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider)
     func didTapOnMoreInformation()
     func didTapOnClose()
 }
@@ -18,7 +19,7 @@ public protocol BanksBottomViewProtocol: AnyObject {
 struct PaymentProviderAdditionalInfo {
     var isSelected: Bool
     var isInstalled: Bool
-    let paymentProvider: PaymentProvider
+    let paymentProvider: GiniHealthAPILibrary.PaymentProvider
 }
 
 public final class BanksBottomViewModel {

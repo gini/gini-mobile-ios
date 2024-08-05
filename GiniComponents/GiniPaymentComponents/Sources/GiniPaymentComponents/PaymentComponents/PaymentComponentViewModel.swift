@@ -39,7 +39,20 @@ public final class PaymentComponentViewModel {
     var minimumButtonsHeight: CGFloat
     
     var hasBankSelected: Bool
-    
+
+    var paymentComponentConfiguration: PaymentComponentConfiguration?
+
+    var shouldShowBrandedView: Bool {
+        paymentComponentConfiguration?.isPaymentComponentBranded ?? true
+    }
+
+    var showPaymentComponentInOneRow: Bool {
+        paymentComponentConfiguration?.showPaymentComponentInOneRow ?? false
+    }
+    var hideInfoForReturningUser: Bool {
+        paymentComponentConfiguration?.hideInfoForReturningUser ?? false
+    }
+
     public init(paymentProvider: GiniHealthAPILibrary.PaymentProvider?,
                 primaryButtonConfiguration: ButtonConfiguration,
                 secondaryButtonConfiguration: ButtonConfiguration,
@@ -49,11 +62,13 @@ public final class PaymentComponentViewModel {
                 poweredByGiniStrings: PoweredByGiniStrings,
                 moreInformationConfiguration: MoreInformationConfiguration,
                 moreInformationStrings: MoreInformationStrings,
-                minimumButtonsHeight: CGFloat) {
+                minimumButtonsHeight: CGFloat,
+                paymentComponentConfiguration: PaymentComponentConfiguration?) {
         self.configuration = configuration
         self.strings = strings
         self.primaryButtonConfiguration = primaryButtonConfiguration
         self.secondaryButtonConfiguration = secondaryButtonConfiguration
+        self.paymentComponentConfiguration = paymentComponentConfiguration
 
         self.hasBankSelected = paymentProvider != nil
         self.bankImageIconData = paymentProvider?.iconData

@@ -27,10 +27,10 @@ public extension String {
      - returns: decimal value in current locale.
      */
     
-    func decimal(from inputFieldString: String) -> Decimal? {
+    func decimal() -> Decimal? {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.currencySymbol = ""
-        return formatter.number(from: inputFieldString)?.decimalValue
+        return formatter.number(from: self)?.decimalValue
     }
 }

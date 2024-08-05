@@ -6,17 +6,6 @@
 //
 
 import UIKit
-<<<<<<<< HEAD:GiniComponents/GiniPaymentComponents/Sources/GiniPaymentComponents/TextField/TextFieldConfiguration.swift
-========
-
-public struct TextFieldConfiguration {
-    public let backgroundColor: UIColor
-    public let borderColor: UIColor
-    public let textColor: UIColor
-    public let cornerRadius: CGFloat
-    public let borderWidth: CGFloat
-    public let placeholderForegroundColor: UIColor
->>>>>>>> main:GiniComponents/GiniUtilites/Sources/GiniUtilites/TextFieldConfiguration.swift
 
 public struct TextFieldConfiguration {
     public let backgroundColor: UIColor

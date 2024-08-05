@@ -7,6 +7,7 @@
 
 import UIKit
 import GiniHealthAPILibrary
+import GiniUtilites
 
 protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
@@ -97,7 +98,6 @@ public class PaymentReviewModel: NSObject {
     let poweredByGiniConfiguration: PoweredByGiniConfiguration
     let poweredByGiniStrings: PoweredByGiniStrings
     let showPaymentReviewCloseButton: Bool
-    let isAmountFieldEditable: Bool
 
     public init(delegateAPI: PaymentReviewAPIProtocol,
                 bottomSheetsProvider: BottomSheetsProviderProtocol,
@@ -114,8 +114,7 @@ public class PaymentReviewModel: NSObject {
                 primaryButtonConfiguration: ButtonConfiguration,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
-                showPaymentReviewCloseButton: Bool,
-                isAmountFieldEditable: Bool) {
+                showPaymentReviewCloseButton: Bool) {
         self.delegateAPI = delegateAPI
         self.bottomSheetsProvider = bottomSheetsProvider
         self.configuration = configuration
@@ -127,7 +126,6 @@ public class PaymentReviewModel: NSObject {
         self.poweredByGiniConfiguration = poweredByGiniConfiguration
         self.poweredByGiniStrings = poweredByGiniStrings
         self.showPaymentReviewCloseButton = showPaymentReviewCloseButton
-        self.isAmountFieldEditable = isAmountFieldEditable
         self.containerConfiguration = containerConfiguration
         self.containerStrings = containerStrings
         self.primaryButtonConfiguration = primaryButtonConfiguration
@@ -233,8 +231,7 @@ public class PaymentReviewModel: NSObject {
                                         errorStyleInputFieldConfiguration: errorStyleInputFieldConfiguration,
                                         selectionStyleInputFieldConfiguration: selectionStyleInputFieldConfiguration,
                                         poweredByGiniConfiguration: poweredByGiniConfiguration,
-                                        poweredByGiniStrings: poweredByGiniStrings,
-                                        isAmountFieldEditable: isAmountFieldEditable)
+                                        poweredByGiniStrings: poweredByGiniStrings)
     }
 }
 

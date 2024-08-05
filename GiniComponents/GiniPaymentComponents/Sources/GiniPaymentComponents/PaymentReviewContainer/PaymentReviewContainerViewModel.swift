@@ -8,11 +8,11 @@
 
 import Foundation
 import GiniHealthAPILibrary
+import GiniUtilites
 
 public final class PaymentReviewContainerViewModel {
     var onExtractionFetched: (() -> Void)?
     let selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
-    let isAmountFieldEditable: Bool
     let configuration: PaymentReviewContainerConfiguration
     let strings: PaymentReviewContainerStrings
     let primaryButtonConfiguration: ButtonConfiguration
@@ -36,11 +36,9 @@ public final class PaymentReviewContainerViewModel {
          errorStyleInputFieldConfiguration: TextFieldConfiguration,
          selectionStyleInputFieldConfiguration: TextFieldConfiguration,
          poweredByGiniConfiguration: PoweredByGiniConfiguration,
-         poweredByGiniStrings: PoweredByGiniStrings,
-         isAmountFieldEditable: Bool) {
+         poweredByGiniStrings: PoweredByGiniStrings) {
         self.extractions = extractions
         self.selectedPaymentProvider = selectedPaymentProvider
-        self.isAmountFieldEditable = isAmountFieldEditable
         self.configuration = configuration
         self.strings = strings
         self.primaryButtonConfiguration = primaryButtonConfiguration
