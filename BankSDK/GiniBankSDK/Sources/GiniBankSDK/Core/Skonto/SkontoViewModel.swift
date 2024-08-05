@@ -78,7 +78,7 @@ class SkontoViewModel {
 
         // For now multiple Skonto discounts aren't handle
         let skontoDiscountDetails = skontoDiscounts.discounts[0]
-        self.amountToPay = skontoDiscounts.totalAmountToPay
+        amountToPay = skontoDiscounts.totalAmountToPay
         skontoAmountToPay = skontoDiscountDetails.amountToPay
         dueDate = skontoDiscountDetails.dueDate
         amountDiscounted = skontoDiscountDetails.amountDiscounted
