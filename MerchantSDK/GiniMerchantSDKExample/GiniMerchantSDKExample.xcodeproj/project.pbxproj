@@ -91,6 +91,7 @@
 		50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCellModel.swift; sourceTree = "<group>"; };
 		50D80DC92C2478D800B446A8 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniMerchantSDK; path = ../GiniMerchantSDK; sourceTree = "<group>"; };
+		F4EC38FC273C2432007045DC /* GiniCaptureSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniCaptureSDK; path = ../../CaptureSDK/GiniCaptureSDK; sourceTree = "<group>"; };
 		8A16511F2C3D37FA003A1130 /* InvoiceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailViewController.swift; sourceTree = "<group>"; };
 		8A1651212C3D45C2003A1130 /* DebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -196,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */,
+				F4EC38FC273C2432007045DC /* GiniCaptureSDK */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
