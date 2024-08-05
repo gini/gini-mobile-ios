@@ -43,12 +43,10 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                 Log(message: "Deleted \(document.sourceClassification.rawValue) document with id: \(document.id)",
                     event: "🗑")
             case .failure(let error):
-                completion(.failure(error))
                 let message = "Error deleting \(document.sourceClassification.rawValue) document with" +
                     " id: \(document.id)"
-                Log(message: message,event: .error)
-                let errorLog = ErrorLog(description: message, error: error)
-                GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
+                self.handleError(message: message, error: error)
+                completion(.failure(error))
             }
         }
     }
@@ -72,29 +70,12 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                 case let .success(createdDocument):
                     Log(message: "Starting analysis for composite document \(createdDocument.id)",
                         event: "🔎")
-                    self.documentService
-                        .extractions(for: createdDocument,
-                                     cancellationToken: cancellationToken) { [weak self] result in
-                            guard self != nil else { return }
-                            switch result {
-                            case let .success(extractionResult):
-                                Log(message: "Finished analysis process with no errors", event: .success)
-                                completion(.success((createdDocument, extractionResult)))
-                            case let .failure(error):
-                                switch error {
-                                case .requestCancelled:
-                                    Log(message: "Cancelled analysis process", event: .error)
-                                default:
-                                    Log(message: "Finished analysis process with error: \(error)", event: .error)
-                                }
-                                completion(.failure(error))
-                            }
-                        }
+                        self.startExtraction(for: createdDocument,
+                                             cancellationToken: cancellationToken,
+                                             completion: completion)
                 case let .failure(error):
-                    let message = "Composite document creation failed"
-                    Log(message: message, event: .error)
-                    let errorLog = ErrorLog(description: message, error: error)
-                    GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
+                    self.handleError(message: "Composite document creation failed with error: \(error)", 
+                                     error: error)
                     completion(.failure(error))
                 }
             }
@@ -117,10 +98,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                     "for vision document \(document.id)", event: "📄")
                 completion(.success(createdDocument))
             case let .failure(error):
-                let message = "Document creation failed"
-                Log(message: message, event: .error)
-                let errorLog = ErrorLog(description: message, error: error)
-                GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
+                self.handleError(message: "Document creation failed with error: \(error)", error: error)
                 completion(.failure(error))
             }
         }
@@ -146,5 +124,34 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                 completion(result)
             }
         }
+    }
+
+    private func startExtraction(for document: Document,
+                                 cancellationToken: CancellationToken,
+                                 completion: @escaping (Result<(document: Document, 
+                                                                extractionResult: ExtractionResult), GiniError>) -> Void) {
+        documentService
+            .extractions(for: document,
+                         cancellationToken: cancellationToken) { result in
+                switch result {
+                    case let .success(extractionResult):
+                        Log(message: "Finished analysis process with no errors", event: .success)
+                        completion(.success((document, extractionResult)))
+                    case let .failure(error):
+                        switch error {
+                            case .requestCancelled:
+                                Log(message: "Cancelled analysis process", event: .error)
+                            default:
+                                Log(message: "Finished analysis process with error: \(error)", event: .error)
+                        }
+                        completion(.failure(error))
+                }
+            }
+    }
+
+    private func handleError(message: String, error: GiniError) {
+        Log(message: message, event: .error)
+        let errorLog = ErrorLog(description: message, error: error)
+        GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
     }
 }
