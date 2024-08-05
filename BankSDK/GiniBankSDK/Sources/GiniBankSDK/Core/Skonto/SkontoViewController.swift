@@ -26,8 +26,8 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var infoView: SkontoAppliedInfoView = {
-        let view = SkontoAppliedInfoView(viewModel: viewModel)
+    private lazy var infoView: SkontoInfoBannerView = {
+        let view = SkontoInfoBannerView(viewModel: viewModel)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showAlertIfNeeded))
         view.addGestureRecognizer(tapGesture)
         return view
