@@ -1,13 +1,13 @@
 //
-//  SkontoNotAppliedAmountView.swift
+//  SkontoWithoutDiscountPriceView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-class SkontoNotAppliedAmountView: UIView {
-    private lazy var amountView: SkontoAmountToPayView = {
+class SkontoWithoutDiscountPriceView: UIView {
+    private lazy var priceView: SkontoAmountToPayView = {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.price.title",
                                                              comment: "Full amount")
         let view = SkontoAmountToPayView(title: title, price: viewModel.amountToPay)
@@ -33,16 +33,16 @@ class SkontoNotAppliedAmountView: UIView {
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .giniColorScheme().bg.inputUnfocused.uiColor()
-        addSubview(amountView)
+        addSubview(priceView)
         setupConstraints()
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            amountView.topAnchor.constraint(equalTo: topAnchor),
-            amountView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            amountView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            amountView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            priceView.topAnchor.constraint(equalTo: topAnchor),
+            priceView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            priceView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            priceView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
 
@@ -56,12 +56,12 @@ class SkontoNotAppliedAmountView: UIView {
 
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
-        amountView.configure(isEditable: !isSkontoApplied,
+        priceView.configure(isEditable: !isSkontoApplied,
                              price: viewModel.amountToPay)
     }
 }
 
-extension SkontoNotAppliedAmountView: SkontoAmountViewDelegate {
+extension SkontoWithoutDiscountPriceView: SkontoAmountViewDelegate {
     func textFieldPriceChanged(editedText: String) {
         self.viewModel.setDefaultPrice(price: editedText)
     }

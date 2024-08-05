@@ -1,16 +1,16 @@
 //
-//  SkontoAppliedHeaderView.swift
+//  SkontoWithoutDiscountView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-class SkontoAppliedHeaderView: UIView {
+class SkontoWithoutDiscountView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.title",
-                                                             comment: "With Skonto discount")
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.title",
+                                                             comment: "Without Skonto discount")
         label.text = title
         label.accessibilityValue = title
         label.textColor = .giniColorScheme().text.primary.uiColor()
@@ -38,13 +38,8 @@ class SkontoAppliedHeaderView: UIView {
         return label
     }()
 
-    private lazy var discountSwitch: UISwitch = {
-        let discountSwitch = UISwitch()
-        discountSwitch.isOn = viewModel.isSkontoApplied
-        discountSwitch.onTintColor = .giniColorScheme().toggles.surfaceFocused.uiColor()
-        discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
-        discountSwitch.translatesAutoresizingMaskIntoConstraints = false
-        return discountSwitch
+    private lazy var priceView: SkontoWithoutDiscountPriceView = {
+        return SkontoWithoutDiscountPriceView(viewModel: viewModel)
     }()
 
     private lazy var stackView: UIStackView = {
@@ -74,25 +69,22 @@ class SkontoAppliedHeaderView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .giniColorScheme().bg.surface.uiColor()
         addSubview(stackView)
-        addSubview(discountSwitch)
+        addSubview(priceView)
         setupConstraints()
         bindViewModel()
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor,
-                                           constant: Constants.stackViewVerticalPadding),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
 
-            discountSwitch.topAnchor.constraint(greaterThanOrEqualTo: topAnchor,
-                                                constant: Constants.discountSwitchTopPadding),
-            discountSwitch.centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
-            discountSwitch.trailingAnchor.constraint(equalTo: trailingAnchor),
-            discountSwitch.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor,
-                                                    constant: Constants.discountSwitchLeadingPadding),
-            discountSwitch.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+            priceView.topAnchor.constraint(equalTo: stackView.bottomAnchor,
+                                           constant: Constants.verticalPadding),
+            priceView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            priceView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            priceView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
 
@@ -105,21 +97,13 @@ class SkontoAppliedHeaderView: UIView {
     }
 
     private func configure() {
-        let isSkontoApplied = viewModel.isSkontoApplied
-        discountSwitch.isOn = isSkontoApplied
-        statusLabel.isHidden = !isSkontoApplied
-    }
-
-    @objc private func discountSwitchToggled(_ sender: UISwitch) {
-        viewModel.toggleDiscount()
+        statusLabel.isHidden = viewModel.isSkontoApplied
     }
 }
 
-private extension SkontoAppliedHeaderView {
+private extension SkontoWithoutDiscountView {
     enum Constants {
         static let stackViewSpacing: CGFloat = 4
-        static let stackViewVerticalPadding: CGFloat = 16
-        static let discountSwitchLeadingPadding: CGFloat = 4
-        static let discountSwitchTopPadding: CGFloat = 12
+        static let verticalPadding: CGFloat = 12
     }
 }
