@@ -75,7 +75,9 @@ public final class DocumentService: DocumentServiceProtocol {
             .sorted()
             .map { $0.info }
         self.analysisCancellationToken = CancellationToken()
-        captureNetworkService.analyse(partialDocuments: partialDocumentsInfoSorted, metadata: metadata, cancellationToken: analysisCancellationToken!) { [weak self] result in
+        captureNetworkService.analyse(partialDocuments: partialDocumentsInfoSorted,
+                                      metadata: metadata,
+                                      cancellationToken: analysisCancellationToken!) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case let .success((createdDocument, extractionResult)):
