@@ -21,7 +21,7 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var wihtDiscountHeaderView: SkontoWithDiscountHeaderView = {
+    private lazy var withDiscountHeaderView: SkontoWithDiscountHeaderView = {
         let view = SkontoWithDiscountHeaderView(viewModel: viewModel)
         return view
     }()
@@ -145,7 +145,7 @@ public class SkontoViewController: UIViewController {
         stackView.addArrangedSubview(withDiscountContainerView)
         stackView.addArrangedSubview(withoutDiscountContainerView)
         invoicePreviewContainerView.addSubview(invoicePreviewView)
-        withDiscountContainerView.addSubview(wihtDiscountHeaderView)
+        withDiscountContainerView.addSubview(withDiscountHeaderView)
         withDiscountContainerView.addSubview(infoBannerView)
         withDiscountContainerView.addSubview(withDiscountPriceView)
         withDiscountContainerView.addSubview(expiryDateView)
@@ -163,7 +163,7 @@ public class SkontoViewController: UIViewController {
         setupInvoiceGroupViewConstraints()
         setupWithDiscountGroupViewConstraints()
         setupNotAppliedGroupViewConstraints()
-        setupproceedContainerViewConstraints()
+        setupProceedContainerViewConstraints()
     }
 
     private func setupScrollViewConstraints() {
@@ -208,13 +208,13 @@ public class SkontoViewController: UIViewController {
 
     private func setupWithDiscountGroupViewConstraints() {
         NSLayoutConstraint.activate([
-            wihtDiscountHeaderView.topAnchor.constraint(equalTo: withDiscountContainerView.topAnchor),
-            wihtDiscountHeaderView.leadingAnchor.constraint(equalTo: withDiscountContainerView.leadingAnchor,
+            withDiscountHeaderView.topAnchor.constraint(equalTo: withDiscountContainerView.topAnchor),
+            withDiscountHeaderView.leadingAnchor.constraint(equalTo: withDiscountContainerView.leadingAnchor,
                                                             constant: Constants.horizontalPadding),
-            wihtDiscountHeaderView.trailingAnchor.constraint(equalTo: withDiscountContainerView.trailingAnchor,
+            withDiscountHeaderView.trailingAnchor.constraint(equalTo: withDiscountContainerView.trailingAnchor,
                                                              constant: -Constants.horizontalPadding),
 
-            infoBannerView.topAnchor.constraint(equalTo: wihtDiscountHeaderView.bottomAnchor,
+            infoBannerView.topAnchor.constraint(equalTo: withDiscountHeaderView.bottomAnchor,
                                                 constant: Constants.horizontalPadding),
             infoBannerView.leadingAnchor.constraint(equalTo: withDiscountContainerView.leadingAnchor,
                                                     constant: Constants.horizontalPadding),
@@ -251,7 +251,7 @@ public class SkontoViewController: UIViewController {
         ])
     }
 
-    private func setupproceedContainerViewConstraints() {
+    private func setupProceedContainerViewConstraints() {
         NSLayoutConstraint.activate([
             proceedContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             proceedContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
