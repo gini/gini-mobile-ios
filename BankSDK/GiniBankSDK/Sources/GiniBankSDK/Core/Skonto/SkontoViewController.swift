@@ -26,15 +26,15 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var infoView: SkontoInfoBannerView = {
+    private lazy var infoBannerView: SkontoInfoBannerView = {
         let view = SkontoInfoBannerView(viewModel: viewModel)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showAlertIfNeeded))
         view.addGestureRecognizer(tapGesture)
         return view
     }()
 
-    private lazy var appliedAmountView: SkontoAppliedAmountView = {
-        let view = SkontoAppliedAmountView(viewModel: viewModel)
+    private lazy var withDiscountPriceView: SkontoWithDiscountPriceView = {
+        let view = SkontoWithDiscountPriceView(viewModel: viewModel)
         return view
     }()
 
@@ -146,8 +146,8 @@ public class SkontoViewController: UIViewController {
         stackView.addArrangedSubview(notAppliedGroupView)
         invoiceGroupView.addSubview(invoicePreviewView)
         appliedGroupView.addSubview(headerView)
-        appliedGroupView.addSubview(infoView)
-        appliedGroupView.addSubview(appliedAmountView)
+        appliedGroupView.addSubview(infoBannerView)
+        appliedGroupView.addSubview(withDiscountPriceView)
         appliedGroupView.addSubview(expiryDateView)
         notAppliedGroupView.addSubview(notAppliedView)
         view.addSubview(proceedView)
@@ -214,21 +214,21 @@ public class SkontoViewController: UIViewController {
             headerView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
                                                  constant: -Constants.horizontalPadding),
 
-            infoView.topAnchor.constraint(equalTo: headerView.bottomAnchor,
+            infoBannerView.topAnchor.constraint(equalTo: headerView.bottomAnchor,
                                           constant: Constants.horizontalPadding),
-            infoView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
+            infoBannerView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
                                               constant: Constants.horizontalPadding),
-            infoView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
+            infoBannerView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
                                                constant: -Constants.horizontalPadding),
 
-            appliedAmountView.topAnchor.constraint(equalTo: infoView.bottomAnchor,
+            withDiscountPriceView.topAnchor.constraint(equalTo: infoBannerView.bottomAnchor,
                                                    constant: Constants.horizontalPadding),
-            appliedAmountView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
+            withDiscountPriceView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
                                                        constant: Constants.horizontalPadding),
-            appliedAmountView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
+            withDiscountPriceView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
                                                         constant: -Constants.horizontalPadding),
 
-            expiryDateView.topAnchor.constraint(equalTo: appliedAmountView.bottomAnchor,
+            expiryDateView.topAnchor.constraint(equalTo: withDiscountPriceView.bottomAnchor,
                                                 constant: Constants.dateViewTopPadding),
             expiryDateView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
                                                     constant: Constants.horizontalPadding),
