@@ -1,5 +1,5 @@
 //
-//  SkontoProceedView.swift
+//  SkontoProceedContainerView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-class SkontoProceedView: UIView {
+class SkontoProceedContainerView: UIView {
     private lazy var proceedButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -202,7 +202,7 @@ class SkontoProceedView: UIView {
     }
 }
 
-private extension SkontoProceedView {
+private extension SkontoProceedContainerView {
     enum Constants {
         static let padding: CGFloat = 16
         static let verticalPadding: CGFloat = 16
