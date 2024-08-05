@@ -48,8 +48,8 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var proceedView: SkontoProceedView = {
-        let view = SkontoProceedView(viewModel: viewModel)
+    private lazy var proceedContainerView: SkontoProceedContainerView = {
+        let view = SkontoProceedContainerView(viewModel: viewModel)
         return view
     }()
 
@@ -150,7 +150,7 @@ public class SkontoViewController: UIViewController {
         withDiscountGroupView.addSubview(withDiscountPriceView)
         withDiscountGroupView.addSubview(expiryDateView)
         notAppliedGroupView.addSubview(notAppliedView)
-        view.addSubview(proceedView)
+        view.addSubview(proceedContainerView)
 
         setupBottomNavigationBar()
         setupTapGesture()
@@ -163,7 +163,7 @@ public class SkontoViewController: UIViewController {
         setupInvoiceGroupViewConstraints()
         setupWithDiscountGroupViewConstraints()
         setupNotAppliedGroupViewConstraints()
-        setupProceedViewConstraints()
+        setupproceedContainerViewConstraints()
     }
 
     private func setupScrollViewConstraints() {
@@ -176,7 +176,7 @@ public class SkontoViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
-            scrollView.bottomAnchor.constraint(equalTo: proceedView.topAnchor)
+            scrollView.bottomAnchor.constraint(equalTo: proceedContainerView.topAnchor)
         ])
     }
 
@@ -251,11 +251,11 @@ public class SkontoViewController: UIViewController {
         ])
     }
 
-    private func setupProceedViewConstraints() {
+    private func setupproceedContainerViewConstraints() {
         NSLayoutConstraint.activate([
-            proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            proceedContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            proceedContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            proceedContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 
@@ -293,7 +293,7 @@ public class SkontoViewController: UIViewController {
             ])
         }
 
-        proceedView.isHidden = true
+        proceedContainerView.isHidden = true
     }
 
     private func bindViewModel() {
@@ -369,7 +369,7 @@ extension SkontoViewController {
             return
         }
 
-        let contentOffset = keyboardFrame.height - proceedView.frame.height + Constants.containerPadding
+        let contentOffset = keyboardFrame.height - proceedContainerView.frame.height + Constants.containerPadding
         UIView.animate(withDuration: animationDuration) {
             self.scrollView.contentInset.bottom = contentOffset
             self.scrollView.scrollIndicatorInsets.bottom = contentOffset
