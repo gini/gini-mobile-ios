@@ -1,12 +1,12 @@
 //
-//  SkontoDateView.swift
+//  SkontoExpiryDateView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-class SkontoAppliedDateView: UIView {
+class SkontoExpiryDateView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.expirydate.title",
@@ -151,7 +151,7 @@ class SkontoAppliedDateView: UIView {
     }
 }
 
-private extension SkontoAppliedDateView {
+private extension SkontoExpiryDateView {
     enum Constants {
         static let padding: CGFloat = 12
         static let imageHorizontalPadding: CGFloat = 10

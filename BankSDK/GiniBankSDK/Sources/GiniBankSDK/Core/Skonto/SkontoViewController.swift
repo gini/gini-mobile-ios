@@ -38,8 +38,8 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var dateView: SkontoAppliedDateView = {
-        let view = SkontoAppliedDateView(viewModel: viewModel)
+    private lazy var expiryDateView: SkontoExpiryDateView = {
+        let view = SkontoExpiryDateView(viewModel: viewModel)
         return view
     }()
 
@@ -148,7 +148,7 @@ public class SkontoViewController: UIViewController {
         appliedGroupView.addSubview(headerView)
         appliedGroupView.addSubview(infoView)
         appliedGroupView.addSubview(appliedAmountView)
-        appliedGroupView.addSubview(dateView)
+        appliedGroupView.addSubview(expiryDateView)
         notAppliedGroupView.addSubview(notAppliedView)
         view.addSubview(proceedView)
 
@@ -228,14 +228,14 @@ public class SkontoViewController: UIViewController {
             appliedAmountView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
                                                         constant: -Constants.horizontalPadding),
 
-            dateView.topAnchor.constraint(equalTo: appliedAmountView.bottomAnchor,
-                                          constant: Constants.dateViewTopPadding),
-            dateView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
-                                              constant: Constants.horizontalPadding),
-            dateView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
-                                               constant: -Constants.horizontalPadding),
-            dateView.bottomAnchor.constraint(equalTo: appliedGroupView.bottomAnchor,
-                                             constant: -Constants.horizontalPadding)
+            expiryDateView.topAnchor.constraint(equalTo: appliedAmountView.bottomAnchor,
+                                                constant: Constants.dateViewTopPadding),
+            expiryDateView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
+                                                    constant: Constants.horizontalPadding),
+            expiryDateView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
+                                                     constant: -Constants.horizontalPadding),
+            expiryDateView.bottomAnchor.constraint(equalTo: appliedGroupView.bottomAnchor,
+                                                   constant: -Constants.horizontalPadding)
         ])
     }
 
