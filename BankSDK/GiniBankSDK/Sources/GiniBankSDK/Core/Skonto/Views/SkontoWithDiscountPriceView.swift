@@ -1,16 +1,17 @@
 //
-//  SkontoAppliedAmountView.swift
+//  SkontoWithDiscountPriceView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-class SkontoAppliedAmountView: UIView {
-    private lazy var amountView: SkontoAmountView = {
-        let view = SkontoAmountView(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.price.title",
-                                                                                    comment: "Skonto amount to pay"),
-                                    price: viewModel.skontoAmountToPay)
+class SkontoWithDiscountPriceView: UIView {
+    private lazy var amountView: SkontoAmountToPayView = {
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.price.title",
+                                                             comment: "Skonto amount to pay")
+        let view = SkontoAmountToPayView(title: title,
+                                         price: viewModel.skontoAmountToPay)
         view.delegate = self
         return view
     }()
@@ -61,7 +62,7 @@ class SkontoAppliedAmountView: UIView {
     }
 }
 
-extension SkontoAppliedAmountView: SkontoAmountViewDelegate {
+extension SkontoWithDiscountPriceView: SkontoAmountViewDelegate {
     func textFieldPriceChanged(editedText: String) {
         self.viewModel.setSkontoPrice(price: editedText)
     }

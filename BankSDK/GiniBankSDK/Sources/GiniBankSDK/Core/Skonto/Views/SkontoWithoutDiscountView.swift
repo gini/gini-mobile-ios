@@ -1,12 +1,12 @@
 //
-//  SkontoNotAppliedView.swift
+//  SkontoWithoutDiscountView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-class SkontoNotAppliedView: UIView {
+class SkontoWithoutDiscountView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.title",
@@ -23,7 +23,7 @@ class SkontoNotAppliedView: UIView {
         return label
     }()
 
-    private lazy var statusLabel: UILabel = {
+    private lazy var activeLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.active",
                                                              comment: "• Active")
@@ -38,12 +38,12 @@ class SkontoNotAppliedView: UIView {
         return label
     }()
 
-    private lazy var amountView: SkontoNotAppliedAmountView = {
-        return SkontoNotAppliedAmountView(viewModel: viewModel)
+    private lazy var priceView: SkontoWithoutDiscountPriceView = {
+        return SkontoWithoutDiscountPriceView(viewModel: viewModel)
     }()
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, statusLabel])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, activeLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.spacing = Constants.stackViewSpacing
@@ -69,7 +69,7 @@ class SkontoNotAppliedView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .giniColorScheme().bg.surface.uiColor()
         addSubview(stackView)
-        addSubview(amountView)
+        addSubview(priceView)
         setupConstraints()
         bindViewModel()
     }
@@ -80,10 +80,11 @@ class SkontoNotAppliedView: UIView {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
 
-            amountView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.verticalPadding),
-            amountView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            amountView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            amountView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            priceView.topAnchor.constraint(equalTo: stackView.bottomAnchor,
+                                           constant: Constants.verticalPadding),
+            priceView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            priceView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            priceView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
 
@@ -96,11 +97,11 @@ class SkontoNotAppliedView: UIView {
     }
 
     private func configure() {
-        statusLabel.isHidden = viewModel.isSkontoApplied
+        activeLabel.isHidden = viewModel.isSkontoApplied
     }
 }
 
-private extension SkontoNotAppliedView {
+private extension SkontoWithoutDiscountView {
     enum Constants {
         static let stackViewSpacing: CGFloat = 4
         static let verticalPadding: CGFloat = 12

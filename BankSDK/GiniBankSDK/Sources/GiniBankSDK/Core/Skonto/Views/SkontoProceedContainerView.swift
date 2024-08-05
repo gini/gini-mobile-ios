@@ -1,5 +1,5 @@
 //
-//  SkontoProceedView.swift
+//  SkontoProceedContainerView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-class SkontoProceedView: UIView {
+class SkontoProceedContainerView: UIView {
     private lazy var proceedButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -21,7 +21,7 @@ class SkontoProceedView: UIView {
         return button
     }()
 
-    private lazy var totalLabel: UILabel = {
+    private lazy var totalStringLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
@@ -34,7 +34,7 @@ class SkontoProceedView: UIView {
         return label
     }()
 
-    private lazy var totalValueLabel: UILabel = {
+    private lazy var finalAmountToPayLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title2Bold]
@@ -49,7 +49,7 @@ class SkontoProceedView: UIView {
         return label
     }()
 
-    private lazy var skontoBadgeLabel: UILabel = {
+    private lazy var skontoPercentageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
@@ -71,7 +71,7 @@ class SkontoProceedView: UIView {
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(skontoBadgeLabel)
+        view.addSubview(skontoPercentageLabel)
         return view
     }()
 
@@ -117,8 +117,8 @@ class SkontoProceedView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(dividerView)
-        addSubview(totalLabel)
-        addSubview(totalValueLabel)
+        addSubview(totalStringLabel)
+        addSubview(finalAmountToPayLabel)
         addSubview(skontoBadgeView)
         addSubview(savingsAmountLabel)
         addSubview(proceedButton)
@@ -139,34 +139,34 @@ class SkontoProceedView: UIView {
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
-            totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
-            totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
-            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
-                                                 constant: -Constants.badgeHorizontalPadding),
+            totalStringLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
+            totalStringLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
+            totalStringLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
+                                                       constant: -Constants.badgeHorizontalPadding),
 
-            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
-                                                 constant: Constants.totalValueLabelTopPadding),
-            totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
-            totalValueLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
-                                                      constant: -horizontalPadding),
+            finalAmountToPayLabel.topAnchor.constraint(equalTo: totalStringLabel.bottomAnchor,
+                                                       constant: Constants.totalValueLabelTopPadding),
+            finalAmountToPayLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
+            finalAmountToPayLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
+                                                            constant: -horizontalPadding),
 
-            savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
+            savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
                                                     constant: Constants.savingsAmountLabelTopPadding),
-            savingsAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
+            savingsAmountLabel.leadingAnchor.constraint(equalTo: finalAmountToPayLabel.leadingAnchor),
             savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
                                                          constant: -horizontalPadding),
 
-            skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
+            skontoBadgeView.centerYAnchor.constraint(equalTo: totalStringLabel.centerYAnchor),
             skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -horizontalPadding),
 
-            skontoBadgeLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
-                                                  constant: Constants.badgeVerticalPadding),
-            skontoBadgeLabel.bottomAnchor.constraint(equalTo: skontoBadgeView.bottomAnchor,
-                                                     constant: -Constants.badgeVerticalPadding),
-            skontoBadgeLabel.leadingAnchor.constraint(equalTo: skontoBadgeView.leadingAnchor,
-                                                      constant: Constants.badgeHorizontalPadding),
-            skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
-                                                       constant: -Constants.badgeHorizontalPadding),
+            skontoPercentageLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
+                                                       constant: Constants.badgeVerticalPadding),
+            skontoPercentageLabel.bottomAnchor.constraint(equalTo: skontoBadgeView.bottomAnchor,
+                                                          constant: -Constants.badgeVerticalPadding),
+            skontoPercentageLabel.leadingAnchor.constraint(equalTo: skontoBadgeView.leadingAnchor,
+                                                           constant: Constants.badgeHorizontalPadding),
+            skontoPercentageLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
+                                                            constant: -Constants.badgeHorizontalPadding),
 
             proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
                                                constant: Constants.verticalPadding),
@@ -189,9 +189,9 @@ class SkontoProceedView: UIView {
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
         skontoBadgeView.isHidden = !isSkontoApplied
-        skontoBadgeLabel.text = String.localizedStringWithFormat(skontoTitle,
-                                                                 viewModel.formattedPercentageDiscounted)
-        totalValueLabel.text = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
+        skontoPercentageLabel.text = String.localizedStringWithFormat(skontoTitle,
+                                                                      viewModel.formattedPercentageDiscounted)
+        finalAmountToPayLabel.text = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
 
         savingsAmountLabel.isHidden = !isSkontoApplied
         savingsAmountLabel.text = viewModel.savingsAmountString
@@ -202,7 +202,7 @@ class SkontoProceedView: UIView {
     }
 }
 
-private extension SkontoProceedView {
+private extension SkontoProceedContainerView {
     enum Constants {
         static let padding: CGFloat = 16
         static let verticalPadding: CGFloat = 16

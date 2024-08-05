@@ -13,7 +13,7 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var invoiceGroupView: UIView = {
+    private lazy var invoicePreviewContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
@@ -21,39 +21,24 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var headerView: SkontoAppliedHeaderView = {
-        let view = SkontoAppliedHeaderView(viewModel: viewModel)
+    private lazy var withDiscountHeaderView: SkontoWithDiscountHeaderView = {
+        let view = SkontoWithDiscountHeaderView(viewModel: viewModel)
         return view
     }()
 
-    private lazy var infoView: SkontoAppliedInfoView = {
-        let view = SkontoAppliedInfoView(viewModel: viewModel)
+    private lazy var infoBannerView: SkontoInfoBannerView = {
+        let view = SkontoInfoBannerView(viewModel: viewModel)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showAlertIfNeeded))
         view.addGestureRecognizer(tapGesture)
         return view
     }()
 
-    private lazy var appliedAmountView: SkontoAppliedAmountView = {
-        let view = SkontoAppliedAmountView(viewModel: viewModel)
+    private lazy var withDiscountPriceView: SkontoWithDiscountPriceView = {
+        let view = SkontoWithDiscountPriceView(viewModel: viewModel)
         return view
     }()
 
-    private lazy var dateView: SkontoAppliedDateView = {
-        let view = SkontoAppliedDateView(viewModel: viewModel)
-        return view
-    }()
-
-    private lazy var notAppliedView: SkontoNotAppliedView = {
-        let view = SkontoNotAppliedView(viewModel: viewModel)
-        return view
-    }()
-
-    private lazy var proceedView: SkontoProceedView = {
-        let view = SkontoProceedView(viewModel: viewModel)
-        return view
-    }()
-
-    private lazy var appliedGroupView: UIView = {
+    private lazy var withDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
@@ -61,11 +46,26 @@ public class SkontoViewController: UIViewController {
         return view
     }()
 
-    private lazy var notAppliedGroupView: UIView = {
+    private lazy var expiryDateView: SkontoExpiryDateView = {
+        let view = SkontoExpiryDateView(viewModel: viewModel)
+        return view
+    }()
+
+    private lazy var withoutDiscountView: SkontoWithoutDiscountView = {
+        let view = SkontoWithoutDiscountView(viewModel: viewModel)
+        return view
+    }()
+
+    private lazy var withoutDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
+        return view
+    }()
+
+    private lazy var proceedContainerView: SkontoProceedContainerView = {
+        let view = SkontoProceedContainerView(viewModel: viewModel)
         return view
     }()
 
@@ -141,16 +141,16 @@ public class SkontoViewController: UIViewController {
         }
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
-        stackView.addArrangedSubview(invoiceGroupView)
-        stackView.addArrangedSubview(appliedGroupView)
-        stackView.addArrangedSubview(notAppliedGroupView)
-        invoiceGroupView.addSubview(invoicePreviewView)
-        appliedGroupView.addSubview(headerView)
-        appliedGroupView.addSubview(infoView)
-        appliedGroupView.addSubview(appliedAmountView)
-        appliedGroupView.addSubview(dateView)
-        notAppliedGroupView.addSubview(notAppliedView)
-        view.addSubview(proceedView)
+        stackView.addArrangedSubview(invoicePreviewContainerView)
+        stackView.addArrangedSubview(withDiscountContainerView)
+        stackView.addArrangedSubview(withoutDiscountContainerView)
+        invoicePreviewContainerView.addSubview(invoicePreviewView)
+        withDiscountContainerView.addSubview(withDiscountHeaderView)
+        withDiscountContainerView.addSubview(infoBannerView)
+        withDiscountContainerView.addSubview(withDiscountPriceView)
+        withDiscountContainerView.addSubview(expiryDateView)
+        withoutDiscountContainerView.addSubview(withoutDiscountView)
+        view.addSubview(proceedContainerView)
 
         setupBottomNavigationBar()
         setupTapGesture()
@@ -161,9 +161,9 @@ public class SkontoViewController: UIViewController {
         setupScrollViewConstraints()
         setupStackViewConstraints()
         setupInvoiceGroupViewConstraints()
-        setupAppliedGroupViewConstraints()
+        setupWithDiscountGroupViewConstraints()
         setupNotAppliedGroupViewConstraints()
-        setupProceedViewConstraints()
+        setupProceedContainerViewConstraints()
     }
 
     private func setupScrollViewConstraints() {
@@ -176,7 +176,7 @@ public class SkontoViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
-            scrollView.bottomAnchor.constraint(equalTo: proceedView.topAnchor)
+            scrollView.bottomAnchor.constraint(equalTo: proceedContainerView.topAnchor)
         ])
     }
 
@@ -195,67 +195,67 @@ public class SkontoViewController: UIViewController {
 
     private func setupInvoiceGroupViewConstraints() {
         NSLayoutConstraint.activate([
-            invoicePreviewView.topAnchor.constraint(equalTo: invoiceGroupView.topAnchor, constant:
+            invoicePreviewView.topAnchor.constraint(equalTo: invoicePreviewContainerView.topAnchor, constant:
                                                         Constants.verticalPadding),
-            invoicePreviewView.leadingAnchor.constraint(equalTo: invoiceGroupView.leadingAnchor,
+            invoicePreviewView.leadingAnchor.constraint(equalTo: invoicePreviewContainerView.leadingAnchor,
                                                         constant: Constants.horizontalPadding),
-            invoicePreviewView.trailingAnchor.constraint(equalTo: invoiceGroupView.trailingAnchor,
+            invoicePreviewView.trailingAnchor.constraint(equalTo: invoicePreviewContainerView.trailingAnchor,
                                                          constant: -Constants.horizontalPadding),
-            invoicePreviewView.bottomAnchor.constraint(equalTo: invoiceGroupView.bottomAnchor,
+            invoicePreviewView.bottomAnchor.constraint(equalTo: invoicePreviewContainerView.bottomAnchor,
                                                        constant: -Constants.verticalPadding)
         ])
     }
 
-    private func setupAppliedGroupViewConstraints() {
+    private func setupWithDiscountGroupViewConstraints() {
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: appliedGroupView.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
+            withDiscountHeaderView.topAnchor.constraint(equalTo: withDiscountContainerView.topAnchor),
+            withDiscountHeaderView.leadingAnchor.constraint(equalTo: withDiscountContainerView.leadingAnchor,
+                                                            constant: Constants.horizontalPadding),
+            withDiscountHeaderView.trailingAnchor.constraint(equalTo: withDiscountContainerView.trailingAnchor,
+                                                             constant: -Constants.horizontalPadding),
+
+            infoBannerView.topAnchor.constraint(equalTo: withDiscountHeaderView.bottomAnchor,
                                                 constant: Constants.horizontalPadding),
-            headerView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
-                                                 constant: -Constants.horizontalPadding),
+            infoBannerView.leadingAnchor.constraint(equalTo: withDiscountContainerView.leadingAnchor,
+                                                    constant: Constants.horizontalPadding),
+            infoBannerView.trailingAnchor.constraint(equalTo: withDiscountContainerView.trailingAnchor,
+                                                     constant: -Constants.horizontalPadding),
 
-            infoView.topAnchor.constraint(equalTo: headerView.bottomAnchor,
-                                          constant: Constants.horizontalPadding),
-            infoView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
-                                              constant: Constants.horizontalPadding),
-            infoView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
-                                               constant: -Constants.horizontalPadding),
-
-            appliedAmountView.topAnchor.constraint(equalTo: infoView.bottomAnchor,
-                                                   constant: Constants.horizontalPadding),
-            appliedAmountView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
+            withDiscountPriceView.topAnchor.constraint(equalTo: infoBannerView.bottomAnchor,
                                                        constant: Constants.horizontalPadding),
-            appliedAmountView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
-                                                        constant: -Constants.horizontalPadding),
+            withDiscountPriceView.leadingAnchor.constraint(equalTo: withDiscountContainerView.leadingAnchor,
+                                                           constant: Constants.horizontalPadding),
+            withDiscountPriceView.trailingAnchor.constraint(equalTo: withDiscountContainerView.trailingAnchor,
+                                                            constant: -Constants.horizontalPadding),
 
-            dateView.topAnchor.constraint(equalTo: appliedAmountView.bottomAnchor,
-                                          constant: Constants.dateViewTopPadding),
-            dateView.leadingAnchor.constraint(equalTo: appliedGroupView.leadingAnchor,
-                                              constant: Constants.horizontalPadding),
-            dateView.trailingAnchor.constraint(equalTo: appliedGroupView.trailingAnchor,
-                                               constant: -Constants.horizontalPadding),
-            dateView.bottomAnchor.constraint(equalTo: appliedGroupView.bottomAnchor,
-                                             constant: -Constants.horizontalPadding)
+            expiryDateView.topAnchor.constraint(equalTo: withDiscountPriceView.bottomAnchor,
+                                                constant: Constants.dateViewTopPadding),
+            expiryDateView.leadingAnchor.constraint(equalTo: withDiscountContainerView.leadingAnchor,
+                                                    constant: Constants.horizontalPadding),
+            expiryDateView.trailingAnchor.constraint(equalTo: withDiscountContainerView.trailingAnchor,
+                                                     constant: -Constants.horizontalPadding),
+            expiryDateView.bottomAnchor.constraint(equalTo: withDiscountContainerView.bottomAnchor,
+                                                   constant: -Constants.horizontalPadding)
         ])
     }
 
     private func setupNotAppliedGroupViewConstraints() {
         NSLayoutConstraint.activate([
-            notAppliedView.topAnchor.constraint(equalTo: notAppliedGroupView.topAnchor),
-            notAppliedView.leadingAnchor.constraint(equalTo: notAppliedGroupView.leadingAnchor,
+            withoutDiscountView.topAnchor.constraint(equalTo: withoutDiscountContainerView.topAnchor),
+            withoutDiscountView.leadingAnchor.constraint(equalTo: withoutDiscountContainerView.leadingAnchor,
                                                     constant: Constants.horizontalPadding),
-            notAppliedView.trailingAnchor.constraint(equalTo: notAppliedGroupView.trailingAnchor,
+            withoutDiscountView.trailingAnchor.constraint(equalTo: withoutDiscountContainerView.trailingAnchor,
                                                      constant: -Constants.horizontalPadding),
-            notAppliedView.bottomAnchor.constraint(equalTo: notAppliedGroupView.bottomAnchor,
+            withoutDiscountView.bottomAnchor.constraint(equalTo: withoutDiscountContainerView.bottomAnchor,
                                                    constant: -Constants.horizontalPadding)
         ])
     }
 
-    private func setupProceedViewConstraints() {
+    private func setupProceedContainerViewConstraints() {
         NSLayoutConstraint.activate([
-            proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            proceedContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            proceedContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            proceedContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 
@@ -293,7 +293,7 @@ public class SkontoViewController: UIViewController {
             ])
         }
 
-        proceedView.isHidden = true
+        proceedContainerView.isHidden = true
     }
 
     private func bindViewModel() {
@@ -369,7 +369,7 @@ extension SkontoViewController {
             return
         }
 
-        let contentOffset = keyboardFrame.height - proceedView.frame.height + Constants.containerPadding
+        let contentOffset = keyboardFrame.height - proceedContainerView.frame.height + Constants.containerPadding
         UIView.animate(withDuration: animationDuration) {
             self.scrollView.contentInset.bottom = contentOffset
             self.scrollView.scrollIndicatorInsets.bottom = contentOffset

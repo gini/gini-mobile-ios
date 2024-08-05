@@ -1,5 +1,5 @@
 //
-//  SkontoAmountView.swift
+//  SkontoAmountToPayView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -10,7 +10,7 @@ protocol SkontoAmountViewDelegate: AnyObject {
     func textFieldPriceChanged(editedText: String)
 }
 
-class SkontoAmountView: UIView {
+class SkontoAmountToPayView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = titleLabelText
@@ -141,13 +141,13 @@ class SkontoAmountView: UIView {
     }
 }
 
-extension SkontoAmountView: PriceTextFieldDelegate {
+extension SkontoAmountToPayView: PriceTextFieldDelegate {
     func priceTextField(_ textField: PriceTextField, didChangePrice editedText: String) {
         self.delegate?.textFieldPriceChanged(editedText: editedText)
     }
 }
 
-private extension SkontoAmountView {
+private extension SkontoAmountToPayView {
     enum Constants {
         static let padding: CGFloat = 12
         static let stackViewSpacing: CGFloat = 4
