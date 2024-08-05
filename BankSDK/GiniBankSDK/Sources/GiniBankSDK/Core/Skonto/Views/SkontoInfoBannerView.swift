@@ -1,5 +1,5 @@
 //
-//  SkontoInfoMessageView.swift
+//  SkontoInfoBannerView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-class SkontoAppliedInfoView: UIView {
+class SkontoInfoBannerView: UIView {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = GiniImages.infoMessageIcon.image
@@ -141,7 +141,7 @@ class SkontoAppliedInfoView: UIView {
     }
 }
 
-private extension SkontoAppliedInfoView {
+private extension SkontoInfoBannerView {
     enum Constants {
         static let imageVerticalPadding: CGFloat = 10
         static let imageHorizontalPadding: CGFloat = 10
