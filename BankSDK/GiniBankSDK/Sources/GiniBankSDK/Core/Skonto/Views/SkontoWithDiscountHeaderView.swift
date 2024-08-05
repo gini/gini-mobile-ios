@@ -1,12 +1,12 @@
 //
-//  SkontoAppliedHeaderView.swift
+//  SkontoWithDiscountHeaderView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-class SkontoAppliedHeaderView: UIView {
+class SkontoWithDiscountHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.title",
@@ -23,7 +23,7 @@ class SkontoAppliedHeaderView: UIView {
         return label
     }()
 
-    private lazy var statusLabel: UILabel = {
+    private lazy var activeLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.active",
                                                              comment: "• Active")
@@ -48,7 +48,7 @@ class SkontoAppliedHeaderView: UIView {
     }()
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, statusLabel])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, activeLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.spacing = Constants.stackViewSpacing
@@ -107,7 +107,7 @@ class SkontoAppliedHeaderView: UIView {
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
         discountSwitch.isOn = isSkontoApplied
-        statusLabel.isHidden = !isSkontoApplied
+        activeLabel.isHidden = !isSkontoApplied
     }
 
     @objc private func discountSwitchToggled(_ sender: UISwitch) {
@@ -115,7 +115,7 @@ class SkontoAppliedHeaderView: UIView {
     }
 }
 
-private extension SkontoAppliedHeaderView {
+private extension SkontoWithDiscountHeaderView {
     enum Constants {
         static let stackViewSpacing: CGFloat = 4
         static let stackViewVerticalPadding: CGFloat = 16

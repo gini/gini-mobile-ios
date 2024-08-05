@@ -76,7 +76,7 @@ class SkontoViewModel {
     init(skontoDiscounts: SkontoDiscounts) {
         self.skontoDiscounts = skontoDiscounts
 
-        // For now we don't handle multiple Skonto discounts
+        // For now multiple Skonto discounts aren't handle
         let skontoDiscountDetails = skontoDiscounts.discounts[0]
         self.amountToPay = skontoDiscounts.totalAmountToPay
         skontoAmountToPay = skontoDiscountDetails.amountToPay
