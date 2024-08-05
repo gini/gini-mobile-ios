@@ -23,7 +23,7 @@ class SkontoWithoutDiscountView: UIView {
         return label
     }()
 
-    private lazy var statusLabel: UILabel = {
+    private lazy var activeLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.active",
                                                              comment: "• Active")
@@ -43,7 +43,7 @@ class SkontoWithoutDiscountView: UIView {
     }()
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, statusLabel])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, activeLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.spacing = Constants.stackViewSpacing
@@ -97,7 +97,7 @@ class SkontoWithoutDiscountView: UIView {
     }
 
     private func configure() {
-        statusLabel.isHidden = viewModel.isSkontoApplied
+        activeLabel.isHidden = viewModel.isSkontoApplied
     }
 }
 

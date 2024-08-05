@@ -57,7 +57,7 @@ class SkontoWithoutDiscountPriceView: UIView {
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
         priceView.configure(isEditable: !isSkontoApplied,
-                             price: viewModel.amountToPay)
+                            price: viewModel.amountToPay)
     }
 }
 
