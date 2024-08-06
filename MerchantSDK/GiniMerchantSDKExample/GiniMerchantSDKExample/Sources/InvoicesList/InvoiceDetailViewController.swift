@@ -97,7 +97,7 @@ final class InvoiceDetailViewController: UIViewController {
         paymentComponentsController.viewDelegate = self
         paymentComponentsController.bottomViewDelegate = self
 
-        self.title = "Order details"
+        self.title = "Order Details"
         view.backgroundColor = .secondarySystemBackground
 
         view.addSubview(detailView)
