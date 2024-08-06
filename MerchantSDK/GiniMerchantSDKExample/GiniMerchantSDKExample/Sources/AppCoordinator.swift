@@ -9,6 +9,7 @@
 import UIKit
 import GiniCaptureSDK
 import GiniMerchantSDK
+import GiniPaymentComponents
 
 final class AppCoordinator: Coordinator {
     
@@ -48,8 +49,6 @@ final class AppCoordinator: Coordinator {
     
     private lazy var merchant = GiniMerchant(id: clientID, secret: clientPassword, domain: clientDomain)
     private lazy var paymentComponentsController = PaymentComponentsController(giniMerchant: merchant)
-
-    private lazy var paymentComponentConfiguration = PaymentComponentConfiguration()
 
     init(window: UIWindow) {
         self.window = window
@@ -263,7 +262,6 @@ final class AppCoordinator: Coordinator {
 
         let invoicesListCoordinator = InvoicesListCoordinator()
         paymentComponentsController = PaymentComponentsController(giniMerchant: merchant)
-        paymentComponentsController.paymentComponentConfiguration = paymentComponentConfiguration
         invoicesListCoordinator.start(documentService: merchant.documentService,
                                       hardcodedInvoicesController: HardcodedInvoicesController(),
                                       paymentComponentsController: paymentComponentsController,
@@ -350,7 +348,7 @@ extension AppCoordinator: PaymentComponentsControllerProtocol {
 
 extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
-        let debugMenuViewController = DebugMenuViewController(showReviewScreen: configuration.showPaymentReviewScreen, paymentComponentConfiguration: paymentComponentConfiguration)
+        let debugMenuViewController = DebugMenuViewController(showReviewScreen: configuration.showPaymentReviewScreen, paymentComponentConfiguration: merchant.paymentComponentConfiguration)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -362,7 +360,7 @@ extension AppCoordinator: DebugMenuDelegate {
         case .showReviewScreen:
             configuration.showPaymentReviewScreen = isOn
         case .showBrandedView:
-            paymentComponentConfiguration.isPaymentComponentBranded = isOn
+            merchant.paymentComponentConfiguration.isPaymentComponentBranded = isOn
         }
     }
 }

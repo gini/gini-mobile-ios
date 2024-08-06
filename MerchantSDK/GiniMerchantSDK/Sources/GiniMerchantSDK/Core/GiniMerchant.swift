@@ -9,6 +9,7 @@
 import UIKit
 import GiniHealthAPILibrary
 import GiniUtilites
+import GiniPaymentComponents
 
 /**
  Delegate to inform about the current status of the Gini Merchant SDK.
@@ -70,6 +71,10 @@ public struct DataForReview {
     public weak var delegate: GiniMerchantDelegate?
    
     private var bankProviders: [PaymentProvider] = []
+
+    public var paymentComponentConfiguration: GiniPaymentComponents.PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
+                                  showPaymentComponentInOneRow: false,
+                                  hideInfoForReturningUser: false)
 
     /**
      Initializes a new instance of GiniMerchant.
