@@ -97,7 +97,7 @@ final class InvoiceDetailViewController: UIViewController {
 
         self.title = "Invoice details"
 
-        view.backgroundColor = .white.withAlphaComponent(0.9)
+        view.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
 
         view.addSubview(detailView)
         view.addSubview(payNowButton)
