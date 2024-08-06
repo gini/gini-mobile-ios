@@ -12,12 +12,9 @@ import UIKit
 
 final class InvoiceTableViewCellModel {
     private var invoice: InvoiceItem
-    private var paymentComponentsController: PaymentComponentsController
 
-    init(invoice: InvoiceItem,
-         paymentComponentsController: PaymentComponentsController) {
+    init(invoice: InvoiceItem) {
         self.invoice = invoice
-        self.paymentComponentsController = paymentComponentsController
     }
     
     var recipientNameText: String {
@@ -30,24 +27,12 @@ final class InvoiceTableViewCellModel {
         }
         return ""
     }
-    
+
     var ibanText: String {
         invoice.iban ?? ""
     }
-    
-    var isDueDataLabelHidden: Bool {
-        ibanText.isEmpty
-    }
-    
+
     var isRecipientLabelHidden: Bool {
         recipientNameText.isEmpty
-    }
-    
-    var shouldShowPaymentComponent: Bool {
-        false
-    }
-    
-    var paymentComponentView: UIView {
-        return paymentComponentsController.paymentView(documentId: nil)
     }
 }

@@ -33,11 +33,7 @@ final class InvoicesListViewController: UIViewController {
 
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView()
-        if #available(iOS 13.0, *) {
-            activityIndicator.style = .large
-        } else {
-            activityIndicator.style = .gray
-        }
+        activityIndicator.style = .large
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         return activityIndicator
@@ -115,8 +111,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InvoiceTableViewCell.identifier, for: indexPath) as? InvoiceTableViewCell else {
             return UITableViewCell()
         }
-        let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
-                                                                                           paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
+        let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0) }[indexPath.row]
         cell.viewModel = invoiceTableViewCellModel
         return cell
     }
