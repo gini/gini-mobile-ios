@@ -35,7 +35,7 @@ public final class PaymentInfoViewModel {
         self.strings = strings
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
 
-        payBillsDescriptionLinkAttributes = [.foregroundColor: configuration.linksFont]
+        payBillsDescriptionLinkAttributes = [.font: configuration.linksFont]
 
         configurePayBillsGiniLink()
         setupQuestions()

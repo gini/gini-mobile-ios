@@ -130,7 +130,7 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
         BanksBottomStrings(
             selectBankTitleText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label",
                                                                   comment: "Select bank text from the top label on payment providers bottom sheet"),
-            descriptionText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentbprovidersblist.description",
+            descriptionText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.providers.list.description",
                                                               comment: "Top description text on payment providers bottom sheet")
         )
     }

@@ -127,6 +127,7 @@ public final class PaymentInfoViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.title = viewModel.strings.titleText
+        self.setupView()
     }
     
     private func setupView() {
