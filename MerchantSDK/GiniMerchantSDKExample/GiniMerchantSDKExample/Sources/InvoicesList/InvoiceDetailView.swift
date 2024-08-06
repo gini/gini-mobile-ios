@@ -50,7 +50,11 @@ class InvoiceDetailView: UIStackView {
 
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            containerView.backgroundColor = .systemBackground
+        } else {
+            containerView.backgroundColor = .white
+        }
         containerView.addSubview(horizontalStackView)
 
         let bottomLine = UIView()
