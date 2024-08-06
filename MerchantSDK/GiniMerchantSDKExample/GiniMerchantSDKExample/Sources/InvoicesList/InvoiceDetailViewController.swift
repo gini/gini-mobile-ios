@@ -182,7 +182,7 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
                                                 message: error,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))
-        self.present(alertController, animated: true)
+        self.dismissAndPresent(viewController: alertController, animated: true)
     }
 
     private func dismissAndPresent(viewController: UIViewController, animated: Bool) {
