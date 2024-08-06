@@ -12,6 +12,9 @@
       location = "container:"
       name = "GiniMerchantSDK">
       <FileRef
+         location = "group:MerchantSDK/GiniMerchantSDKPinning">
+      </FileRef>
+      <FileRef
          location = "group:MerchantSDK/GiniMerchantSDK">
       </FileRef>
       <FileRef
@@ -95,7 +98,4 @@
          location = "group:CaptureSDK/GiniCaptureSDK">
       </FileRef>
    </Group>
-   <FileRef
-      location = "group:MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExampleTests/GiniMerchantSDKExampleTests.xctestplan">
-   </FileRef>
 </Workspace>

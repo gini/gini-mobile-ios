@@ -56,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C6B4E552C6206D800FF5B1C /* GiniMerchantSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniMerchantSDKExample.entitlements; sourceTree = "<group>"; };
 		4CC69EF52C6141AE00430240 /* GiniMerchantSDKExampleTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GiniMerchantSDKExampleTests.xctestplan; sourceTree = "<group>"; };
 		5024D0462C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleWrongCertificatesTests.swift; sourceTree = "<group>"; };
 		5076CDC82C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleIntegrationTests.swift; sourceTree = "<group>"; };
@@ -141,6 +142,7 @@
 		50D80D562C245A8900B446A8 /* GiniMerchantSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				4C6B4E552C6206D800FF5B1C /* GiniMerchantSDKExample.entitlements */,
 				50D80DC82C24788F00B446A8 /* Sources */,
 				50D80DC72C24786500B446A8 /* Resources */,
 				50D80D652C245A8A00B446A8 /* Info.plist */,
@@ -527,7 +529,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
@@ -561,7 +563,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
