@@ -47,7 +47,7 @@ final class InvoiceTableViewCell: UITableViewCell {
             ibanLabel.isHidden = viewModel.isDueDataLabelHidden
 
             amountLabel.text = viewModel.amountToPayText
-            amountLabel.textColor = Constants.amountLabelTextColor
+            amountLabel.textColor = UIColor(named: "amountLabelTextColor")
 
             if viewModel.shouldShowPaymentComponent {
                 verticalStackView.addArrangedSubview(viewModel.paymentComponentView)
@@ -87,7 +87,6 @@ final class InvoiceTableViewCell: UITableViewCell {
 
 extension InvoiceTableViewCell {
     enum Constants {
-        static let amountLabelTextColor = UIColor(red: 0.0, green: 158.0 / 255.0, blue: 220.0 / 255.0, alpha: 1.0)
         static let padding = 16.0
         static let horizontalSpacing = 10.0
         static let verticalSpacing = 0.0
