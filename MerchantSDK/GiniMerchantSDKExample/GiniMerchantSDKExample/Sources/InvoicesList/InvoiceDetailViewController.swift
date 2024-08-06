@@ -80,12 +80,14 @@ final class InvoiceDetailViewController: UIViewController {
 
     private lazy var payNowButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Pay now", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .blue
-        button.layer.cornerRadius = 5
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Pay", for: .normal)
+        button.setTitleColor(.label, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = Constants.payButtonCornerRadius
         button.addTarget(self, action: #selector(payNowButtonTapped), for: .touchUpInside)
+        button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
+
         return button
     }()
 
@@ -116,15 +118,14 @@ final class InvoiceDetailViewController: UIViewController {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.paddingTop),
+            detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.paddingTopBottom),
             detailView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
             detailView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.paddingLeadingTrailing),
 
-            // Pay now button constraints
-            payNowButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+            payNowButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.paddingTopBottom),
             payNowButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            payNowButton.widthAnchor.constraint(equalToConstant: 100),
-            payNowButton.heightAnchor.constraint(equalToConstant: 44)
+            payNowButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
+            payNowButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
         ])
     }
 
@@ -284,7 +285,9 @@ extension InvoiceDetailViewController: PaymentProvidersBottomViewProtocol {
 
 extension InvoiceDetailViewController {
     enum Constants {
-        static let paddingTop = 8.0
+        static let paddingTopBottom = 8.0
         static let paddingLeadingTrailing = 16.0
+        static let payButtonHeight = 50.0
+        static let payButtonCornerRadius = 14.0
     }
 }
