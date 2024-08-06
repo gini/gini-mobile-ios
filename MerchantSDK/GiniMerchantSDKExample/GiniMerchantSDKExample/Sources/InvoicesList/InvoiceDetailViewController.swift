@@ -98,11 +98,7 @@ final class InvoiceDetailViewController: UIViewController {
         paymentComponentsController.bottomViewDelegate = self
 
         self.title = "Invoice details"
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = .secondarySystemBackground
-        } else {
-            view.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
-        }
+        view.backgroundColor = .secondarySystemBackground
 
         view.addSubview(detailView)
         view.addSubview(payNowButton)
