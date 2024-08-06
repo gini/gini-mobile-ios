@@ -49,8 +49,15 @@ public final class PaymentComponentViewModel {
     var showPaymentComponentInOneRow: Bool {
         paymentComponentConfiguration?.showPaymentComponentInOneRow ?? false
     }
+
     var hideInfoForReturningUser: Bool {
         paymentComponentConfiguration?.hideInfoForReturningUser ?? false
+    }
+
+    var bankName: String?
+
+    var selectBankButtonText: String {
+        showPaymentComponentInOneRow ? strings.placeholderBankNameText : bankName ?? strings.placeholderBankNameText
     }
 
     public init(paymentProvider: GiniHealthAPILibrary.PaymentProvider?,
@@ -74,7 +81,8 @@ public final class PaymentComponentViewModel {
         self.bankImageIconData = paymentProvider?.iconData
         self.paymentProviderColors = paymentProvider?.colors
         self.paymentProviderScheme = paymentProvider?.appSchemeIOS
-        
+        self.bankName = paymentProvider?.name
+
         self.minimumButtonsHeight = minimumButtonsHeight
 
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)

@@ -172,8 +172,4 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
     public var secondaryButtonConfiguration: GiniPaymentComponents.ButtonConfiguration {
         GiniMerchantConfiguration.shared.secondaryButtonConfiguration
     }
-
-    public var paymentComponentConfiguration: GiniPaymentComponents.PaymentComponentConfiguration {
-        PaymentComponentConfiguration(isPaymentComponentBranded: true)
-    }
 }

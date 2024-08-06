@@ -41,8 +41,11 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
                                                                       comment: "Text for the select your bank label that's above the payment provider picker"),
             placeholderBankNameText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label",
                                                                       comment: "Placeholder text used when there isn't a payment provider app installed"),
-            payInvoiceLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.pay.invoice.label",
-                                                                  comment: "Title label used for the pay invoice button")
+            ctaLabelText: GiniMerchantConfiguration.shared.showPaymentReviewScreen ?
+                NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.continue.to.overview.label",
+                                             comment: "Title label used for the pay invoice button") :
+                NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.to.banking.app.label",
+                                                 comment: "Title label used for the pay invoice button")
         )
     }
     

@@ -39,7 +39,7 @@ public protocol PaymentComponentsConfigurationProvider {
     var paymentReviewConfiguration: PaymentReviewConfiguration { get }
     var poweredByGiniConfiguration: PoweredByGiniConfiguration { get }
     var moreInformationConfiguration: MoreInformationConfiguration { get }
-    var paymentComponentConfiguration: PaymentComponentConfiguration { get }
+    var paymentComponentConfiguration: PaymentComponentConfiguration { get set }
 
     var primaryButtonConfiguration: ButtonConfiguration { get }
     var secondaryButtonConfiguration: ButtonConfiguration { get }

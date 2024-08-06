@@ -23,9 +23,11 @@ public struct PaymentComponentConfiguration {
      */
     var hideInfoForReturningUser: Bool
 
-    public init(isPaymentComponentBranded: Bool = true) {
+    public init(isPaymentComponentBranded: Bool = true,
+                showPaymentComponentInOneRow: Bool = false,
+                hideInfoForReturningUser: Bool = false) {
         self.isPaymentComponentBranded = isPaymentComponentBranded
-        self.showPaymentComponentInOneRow = false
-        self.hideInfoForReturningUser = false
+        self.showPaymentComponentInOneRow = showPaymentComponentInOneRow
+        self.hideInfoForReturningUser = hideInfoForReturningUser
     }
 }

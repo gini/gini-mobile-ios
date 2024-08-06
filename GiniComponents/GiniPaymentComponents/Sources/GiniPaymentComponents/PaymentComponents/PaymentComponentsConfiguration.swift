@@ -29,13 +29,13 @@ public struct PaymentComponentsConfiguration {
 public struct PaymentComponentsStrings {
     let selectYourBankLabelText: String
     let placeholderBankNameText: String
-    let payInvoiceLabelText: String
+    let ctaLabelText: String
 
     public init(selectYourBankLabelText: String,
                 placeholderBankNameText: String,
-                payInvoiceLabelText: String) {
+                ctaLabelText: String) {
         self.selectYourBankLabelText = selectYourBankLabelText
         self.placeholderBankNameText = placeholderBankNameText
-        self.payInvoiceLabelText = payInvoiceLabelText
+        self.ctaLabelText = ctaLabelText
     }
 }

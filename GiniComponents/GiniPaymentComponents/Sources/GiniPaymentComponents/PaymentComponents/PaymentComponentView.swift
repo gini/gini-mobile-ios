@@ -18,6 +18,7 @@ public final class PaymentComponentView: UIView {
     private lazy var selectYourBankLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+//        label.text = viewModel.showPaymentComponentInOneRow ? viewModel.strings.placeholderBankNameText : viewModel.bankName ?? viewModel.strings.placeholderBankNameText
         label.text = viewModel.strings.selectYourBankLabelText
         label.textColor = viewModel.configuration.selectYourBankAccentColor
         label.font = viewModel.configuration.selectYourBankLabelFont
@@ -44,7 +45,7 @@ public final class PaymentComponentView: UIView {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: viewModel.primaryButtonConfiguration)
-        button.customConfigure(text: viewModel.strings.payInvoiceLabelText,
+        button.customConfigure(text: viewModel.strings.ctaLabelText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
         return button
@@ -125,11 +126,11 @@ public final class PaymentComponentView: UIView {
     }
     
     private func updateButtonsViews() {
-        selectBankButton.customConfigure(labelText: viewModel.strings.placeholderBankNameText,
+        selectBankButton.customConfigure(labelText: viewModel.selectBankButtonText,
                                          leftImageIcon: viewModel.bankImageIcon,
                                          rightImageIcon: viewModel.configuration.chevronDownIcon,
                                          rightImageTintColor: viewModel.configuration.chevronDownIconColor,
-                                         shouldShowLabel: !viewModel.hasBankSelected)
+                                         shouldShowLabel: viewModel.showPaymentComponentInOneRow ? !viewModel.hasBankSelected : true)
         payInvoiceButton.isHidden = !viewModel.hasBankSelected
         selectBankButton.heightAnchor.constraint(equalToConstant: viewModel.showPaymentComponentInOneRow ? viewModel.minimumButtonsHeight : (viewModel.hasBankSelected ? viewModel.minimumButtonsHeight : Constants.defaultButtonHeihgt)).isActive = true
     }
