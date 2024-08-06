@@ -44,14 +44,9 @@ final class InvoiceTableViewCell: UITableViewCell {
             recipientLabel.isHidden = viewModel.isRecipientLabelHidden
 
             ibanLabel.text = viewModel.ibanText
-            ibanLabel.isHidden = viewModel.isDueDataLabelHidden
 
             amountLabel.text = viewModel.amountToPayText
             amountLabel.textColor = UIColor(named: "amountLabelTextColor")
-
-            if viewModel.shouldShowPaymentComponent {
-                verticalStackView.addArrangedSubview(viewModel.paymentComponentView)
-            }
         }
     }
 
