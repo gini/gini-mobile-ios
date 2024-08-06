@@ -82,7 +82,7 @@ final class InvoiceDetailViewController: UIViewController {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Pay", for: .normal)
-        button.setTitleColor(.label, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = Constants.payButtonCornerRadius
         button.addTarget(self, action: #selector(payNowButtonTapped), for: .touchUpInside)
