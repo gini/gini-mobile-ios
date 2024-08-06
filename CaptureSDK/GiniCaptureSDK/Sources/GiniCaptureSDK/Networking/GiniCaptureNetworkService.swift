@@ -1,8 +1,7 @@
 //
 //  GiniCaptureNetworkService.swift
-//  
 //
-//  Created by Alpár Szotyori on 12.01.22.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation

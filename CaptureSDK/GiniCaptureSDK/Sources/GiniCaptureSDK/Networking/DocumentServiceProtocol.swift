@@ -2,7 +2,7 @@
 //  DocumentServiceProtocol.swift
 //  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 3/29/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
