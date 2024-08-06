@@ -31,5 +31,12 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
         invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
         invoicesListNavigationController.modalPresentationStyle = .fullScreen
         invoicesListNavigationController.interactivePopGestureRecognizer?.delegate = nil
+
+        invoicesListNavigationController.navigationBar.backgroundColor = .white
+        invoicesListNavigationController.navigationBar.isTranslucent = false
+
+        let appearance = UINavigationBarAppearance()
+        invoicesListNavigationController.navigationBar.standardAppearance = appearance
+        invoicesListNavigationController.navigationBar.scrollEdgeAppearance = appearance
     }
 }
