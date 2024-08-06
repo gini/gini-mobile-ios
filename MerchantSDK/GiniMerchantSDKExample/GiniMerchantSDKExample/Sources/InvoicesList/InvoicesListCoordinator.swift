@@ -38,5 +38,6 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
         let appearance = UINavigationBarAppearance()
         invoicesListNavigationController.navigationBar.standardAppearance = appearance
         invoicesListNavigationController.navigationBar.scrollEdgeAppearance = appearance
+        invoicesListNavigationController.navigationBar.tintColor = .label
     }
 }

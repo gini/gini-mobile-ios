@@ -83,7 +83,7 @@ final class InvoiceDetailViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Pay", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = UIColor(named: "payButtonColor")
         button.layer.cornerRadius = Constants.payButtonCornerRadius
         button.addTarget(self, action: #selector(payNowButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
@@ -97,13 +97,21 @@ final class InvoiceDetailViewController: UIViewController {
         paymentComponentsController.viewDelegate = self
         paymentComponentsController.bottomViewDelegate = self
 
-        self.title = "Invoice details"
+        self.title = "Order details"
         view.backgroundColor = .secondarySystemBackground
 
         view.addSubview(detailView)
         view.addSubview(payNowButton)
 
         setupConstraints()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if #available(iOS 14.0, *) {
+            navigationController?.navigationBar.topItem?.backButtonDisplayMode = .minimal
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
