@@ -62,13 +62,17 @@ class InvoiceDetailView: UIStackView {
         bottomLine.backgroundColor = .separator
         containerView.addSubview(bottomLine)
 
-        let views = ["horizontalStackView": horizontalStackView, "bottomLine": bottomLine]
-        NSLayoutConstraint.activate(["H:|-(paddingX)-[horizontalStackView]-(paddingX)-|",
-                                     "V:|-(paddingY)-[horizontalStackView]-(paddingY)-|",
-                                     "H:|-(paddingX)-[bottomLine]|",
-                                     "V:[bottomLine(lineHeight)]-(lineOffset)-|"].flatMap {
-            NSLayoutConstraint.constraints(withVisualFormat: $0, options: [], metrics: Constants.metrics, views: views)
-        })
+        NSLayoutConstraint.activate([
+            horizontalStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.paddingLeadingTrailing),
+            horizontalStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.paddingLeadingTrailing),
+            horizontalStackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.paddingTopBottom),
+            horizontalStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Constants.paddingTopBottom),
+
+            bottomLine.heightAnchor.constraint(equalToConstant: Constants.separatorHeight),
+            bottomLine.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.paddingLeadingTrailing),
+            bottomLine.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            bottomLine.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: Constants.separatorHeight)
+        ])
         return containerView
     }
 }
@@ -77,6 +81,8 @@ extension InvoiceDetailView {
     enum Constants {
         static let labelWidth = 92.0
         static let verticalSpacing = 1.0
-        static let metrics: [String: CGFloat] = ["paddingX": 16.0, "paddingY": 16.0, "lineHeight": 0.5, "lineOffset": -0.5]
+        static let paddingLeadingTrailing = 16.0
+        static let paddingTopBottom = 16.0
+        static let separatorHeight = 0.5
     }
 }
