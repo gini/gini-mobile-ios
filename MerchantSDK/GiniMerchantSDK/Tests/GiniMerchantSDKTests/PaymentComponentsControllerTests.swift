@@ -92,7 +92,8 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                           poweredByGiniStrings: giniMerchant.poweredByGiniStrings,
                                                           moreInformationConfiguration: giniMerchant.moreInformationConfiguration,
                                                           moreInformationStrings: giniMerchant.moreInformationStrings,
-                                                          minimumButtonsHeight: giniMerchant.paymentComponentButtonsHeight)
+                                                          minimumButtonsHeight: giniMerchant.paymentComponentButtonsHeight, 
+                                                          paymentComponentConfiguration: giniMerchant.paymentComponentConfiguration)
 
         let expectedView = PaymentComponentView(viewModel: expectedViewModel)
 

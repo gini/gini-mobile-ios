@@ -74,7 +74,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                   poweredByGiniStrings: giniMerchant.poweredByGiniStrings,
                                                   moreInformationConfiguration: giniMerchant.moreInformationConfiguration,
                                                   moreInformationStrings: giniMerchant.moreInformationStrings, 
-                                                  minimumButtonsHeight: giniMerchant.paymentComponentButtonsHeight)
+                                                  minimumButtonsHeight: giniMerchant.paymentComponentButtonsHeight, 
+                                                  paymentComponentConfiguration: giniMerchant.paymentComponentConfiguration)
         viewModel.documentId = documentId
         let view = PaymentComponentView(viewModel: viewModel)
         return view
