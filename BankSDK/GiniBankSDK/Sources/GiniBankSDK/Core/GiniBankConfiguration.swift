@@ -300,9 +300,9 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: - Skonto feature
 
     /**
-     Indicates whether the Skonto feature is enabled or not. In the case of `true`,
-     the user will be presented with a screen where they can see choose to pay the invoice
-     applying Skonto or not.
+     * Indicates whether the Skonto feature is enabled. If `true`,
+     * the user will be presented with a screen where they can choose
+     * to pay the invoice with or without applying Skonto.
      */
     public var skontoEnabled = true
 
