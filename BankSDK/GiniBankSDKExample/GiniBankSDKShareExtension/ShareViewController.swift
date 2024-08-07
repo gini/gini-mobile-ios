@@ -11,6 +11,7 @@ import CoreServices
 
 class ShareViewController: UIViewController {
     private let typeURL = String(kUTTypeImage)
+    private let typePNG = String(kUTTypePNG)
     private let appURL = "BankSDKExtension://"
     private let groupName = "group.bank.extension.test"
     private let urlDefaultName = "incomingURL"
@@ -25,6 +26,8 @@ class ShareViewController: UIViewController {
         }
         if itemProvider.hasItemConformingToTypeIdentifier(typeURL) {
             handleIncomingURL(itemProvider: itemProvider)
+        } else if itemProvider.hasItemConformingToTypeIdentifier(typePNG) {
+            handleIncomingImage(itemProvider: itemProvider)
         } else {
             self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
         }
@@ -40,6 +43,20 @@ class ShareViewController: UIViewController {
 
     private func handleIncomingURL(itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: typeURL, options: nil) { (item, error) in
+            if let error = error { print("URL-Error: \(error.localizedDescription)") }
+
+            if let url = item as? NSURL, let urlString = url.absoluteString {
+                let imageData = try? Data(contentsOf: url as URL)
+                self.save(imageData!, key: self.imageKey, value: imageData!)
+                self.saveURLString(urlString)
+            }
+
+            self.openMainApp()
+        }
+    }
+
+    private func handleIncomingImage(itemProvider: NSItemProvider) {
+        itemProvider.loadItem(forTypeIdentifier: typePNG, options: nil) { (item, error) in
             if let error = error { print("URL-Error: \(error.localizedDescription)") }
 
             if let url = item as? NSURL, let urlString = url.absoluteString {
