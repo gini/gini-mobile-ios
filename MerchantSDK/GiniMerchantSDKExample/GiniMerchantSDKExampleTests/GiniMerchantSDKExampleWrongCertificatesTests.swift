@@ -1,47 +1,42 @@
 //
-//  GiniMerchantSDKPinningExampleWrongCertificatesTests.swift
-//  GiniMerchantSDKPinningExampleWrongCertificatesTests
+//  GiniMerchantSDKExampleWrongCertificatesTests.swift
+//  GiniMerchantSDKExampleTests
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import XCTest
 @testable import GiniMerchantSDK
-@testable import GiniMerchantSDKPinning
 @testable import GiniHealthAPILibrary
-@testable import GiniHealthAPILibraryPinning
 
-class GiniMerchantSDKPinningExampleWrongCertificatesTests: XCTestCase {
+class GiniMerchantSDKExampleWrongCertificatesTests: XCTestCase {
     
     // When running from Xcode: update these environment variables in the scheme.
     // Make sure not to commit the credentials if the scheme is shared!
     let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
     let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
+    
     let yourPublicPinningConfig = [
-            "health-api.gini.net": [
-                // Wrong hashes
-                "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
-                "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
-            ],
-            "user.gini.net": [
-                // Wrong hashes
-                "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
-                "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
-            ],
+        "health-api.gini.net": [
+            // Wrong hashes
+            "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
+            "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
+        ],
+        "user.gini.net": [
+            // Wrong hashes
+            "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
+            "rFjc3wG7lTZe43zeYTvPq8k4xdDEutCmIhI5dn4oCeE="
         ]
+    ]
 
-    var giniHealthAPILib: GiniHealthAPI!
     var paymentService: PaymentService!
     var sdk: GiniMerchant!
     
     override func setUp() {
-        let client = Client(id: clientId,
-                            secret: clientSecret,
-                            domain: "health-sdk-pinning-example")
-        giniHealthAPILib = GiniHealthAPI
-               .Builder(client: client, pinningConfig: yourPublicPinningConfig)
-               .build()
-        sdk = GiniMerchant.init(giniApiLib: giniHealthAPILib)
+        sdk = GiniMerchant(id: clientId,
+                           secret: clientSecret,
+                           domain: "health-sdk-pinning-example",
+                           pinningConfig: yourPublicPinningConfig)
         paymentService = sdk.paymentService
     }
     
