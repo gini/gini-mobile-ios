@@ -217,8 +217,8 @@ extension DocumentService {
         
         resourceHandler(resource, { result in
             switch result {
-            case .success(let document):
-                completion(.success(document))
+            case .success(let documentLayout):
+                completion(.success(documentLayout))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -234,8 +234,8 @@ extension DocumentService {
         
         resourceHandler(resource, { result in
             switch result {
-            case .success(let document):
-                completion(.success(document))
+            case .success(let pages):
+                completion(.success(pages))
             case .failure(let error):
                 completion(.failure(error))
             }
