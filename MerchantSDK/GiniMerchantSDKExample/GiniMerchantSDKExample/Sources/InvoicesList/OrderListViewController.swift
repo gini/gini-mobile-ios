@@ -1,6 +1,6 @@
 //
 //
-//  InvoicesListViewController.swift
+//  OrderListViewController.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -8,21 +8,21 @@
 
 import UIKit
 
-protocol InvoicesListViewControllerProtocol: AnyObject {
+protocol OrderListViewControllerProtocol: AnyObject {
     func showActivityIndicator()
     func hideActivityIndicator()
     func reloadTableView()
     func showErrorAlertView(error: String)
 }
 
-final class InvoicesListViewController: UIViewController {
+final class OrderListViewController: UIViewController {
 
-    private lazy var invoicesTableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(InvoiceTableViewCell.self, forCellReuseIdentifier: InvoiceTableViewCell.identifier)
+        tableView.register(OrderTableViewCell.self, forCellReuseIdentifier: OrderTableViewCell.identifier)
         tableView.separatorInset = .zero
         tableView.rowHeight = Constants.rowHeight
         tableView.tableFooterView = UIView()
@@ -37,7 +37,7 @@ final class InvoicesListViewController: UIViewController {
         return activityIndicator
     }()
     
-    var viewModel: InvoicesListViewModel!
+    var viewModel: OrderListViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +49,7 @@ final class InvoicesListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        invoicesTableView.reloadData()
+        tableView.reloadData()
     }
 
     override func loadView() {
@@ -61,15 +61,15 @@ final class InvoicesListViewController: UIViewController {
     
     private func setupTableView() {
         if #available(iOS 15.0, *) {
-            invoicesTableView.sectionHeaderTopPadding = 0
+            tableView.sectionHeaderTopPadding = 0
         }
-        view.addSubview(invoicesTableView)
+        view.addSubview(tableView)
 
         NSLayoutConstraint.activate([
-            invoicesTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
-            invoicesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
-            invoicesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
-            invoicesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.padding)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.padding)
         ])
     }
     
@@ -93,8 +93,8 @@ final class InvoicesListViewController: UIViewController {
         let newOrder = Order(amountToPay: "", recipient: "", iban: "", purpose: "")
         viewModel.orders.append(newOrder)
 
-        let invoiceViewController = InvoiceDetailViewController(invoice: newOrder, paymentComponentsController: viewModel.paymentComponentsController)
-        self.navigationController?.pushViewController(invoiceViewController, animated: true)
+        let orderViewController = OrderDetailViewController(newOrder, paymentComponentsController: viewModel.paymentComponentsController)
+        self.navigationController?.pushViewController(orderViewController, animated: true)
     }
 
     @objc func dismissViewControllerTapped() {
@@ -102,17 +102,16 @@ final class InvoicesListViewController: UIViewController {
     }
 }
 
-extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource {
+extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.orders.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: InvoiceTableViewCell.identifier, for: indexPath) as? InvoiceTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: OrderTableViewCell.identifier, for: indexPath) as? OrderTableViewCell else {
             return UITableViewCell()
         }
-        let invoiceTableViewCellModel = viewModel.orders.map { InvoiceTableViewCellModel($0) }[indexPath.row]
-        cell.viewModel = invoiceTableViewCellModel
+        cell.viewModel = viewModel.orders.map { OrderCellViewModel($0) }[indexPath.row]
         return cell
     }
     
@@ -123,17 +122,17 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let invoice = viewModel.orders[indexPath.row]
+        let order = viewModel.orders[indexPath.row]
 
-        // Instantiate InvoiceViewController with the Invoice instance
-        let invoiceViewController = InvoiceDetailViewController(invoice: invoice, paymentComponentsController: viewModel.paymentComponentsController)
+        // Instantiate InvoiceViewController with the Order instance
+        let orderViewController = OrderDetailViewController(order, paymentComponentsController: viewModel.paymentComponentsController)
 
         // Present InvoiceViewController
-        self.navigationController?.pushViewController(invoiceViewController, animated: true)
+        self.navigationController?.pushViewController(orderViewController, animated: true)
     }
 }
 
-extension InvoicesListViewController: InvoicesListViewControllerProtocol {
+extension OrderListViewController: OrderListViewControllerProtocol {
     func showActivityIndicator() {
         self.activityIndicator.startAnimating()
         self.view.addSubview(self.activityIndicator)
@@ -144,7 +143,7 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
     }
     
     func reloadTableView() {
-        self.invoicesTableView.reloadData()
+        self.tableView.reloadData()
     }
     
     func showErrorAlertView(error: String) {
@@ -156,7 +155,7 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
     }
 }
 
-extension InvoicesListViewController {
+extension OrderListViewController {
     private enum Constants {
         static let padding: CGFloat = 0
         static let rowHeight: CGFloat = 80

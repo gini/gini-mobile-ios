@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A41C7642C50F9FB00EEDCA2 /* InvoiceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41C7632C50F9FB00EEDCA2 /* InvoiceDetailView.swift */; };
+		3A41C7642C50F9FB00EEDCA2 /* OrderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41C7632C50F9FB00EEDCA2 /* OrderDetailView.swift */; };
 		507A25E12C355DA900A7106E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E02C355DA900A7106E /* AppDelegate.swift */; };
 		507A25E32C355DA900A7106E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E22C355DA900A7106E /* SceneDelegate.swift */; };
 		507A25E52C355DA900A7106E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E42C355DA900A7106E /* ViewController.swift */; };
@@ -35,15 +35,15 @@
 		50D80DA52C245DAF00B446A8 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */; };
 		50D80DA62C245DAF00B446A8 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */; };
 		50D80DB62C245DBC00B446A8 /* HardcodedOrdersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DA82C245DBC00B446A8 /* HardcodedOrdersController.swift */; };
-		50D80DBC2C245DBC00B446A8 /* InvoicesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */; };
-		50D80DBD2C245DBC00B446A8 /* InvoicesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */; };
-		50D80DBE2C245DBC00B446A8 /* InvoicesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */; };
-		50D80DBF2C245DBC00B446A8 /* InvoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */; };
-		50D80DC12C245DBC00B446A8 /* InvoiceTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */; };
+		50D80DBC2C245DBC00B446A8 /* OrderListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DAF2C245DBC00B446A8 /* OrderListCoordinator.swift */; };
+		50D80DBD2C245DBC00B446A8 /* OrderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB02C245DBC00B446A8 /* OrderListViewController.swift */; };
+		50D80DBE2C245DBC00B446A8 /* OrderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB12C245DBC00B446A8 /* OrderListViewModel.swift */; };
+		50D80DBF2C245DBC00B446A8 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB22C245DBC00B446A8 /* OrderTableViewCell.swift */; };
+		50D80DC12C245DBC00B446A8 /* OrderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB42C245DBC00B446A8 /* OrderCellViewModel.swift */; };
 		50D80DC32C245E6100B446A8 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 50D80DC22C245E6100B446A8 /* GiniCaptureSDK */; };
 		50D80DCA2C2478D800B446A8 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DC92C2478D800B446A8 /* Localizable.xcstrings */; };
 		50D80DCC2C2479BE00B446A8 /* GiniMerchantSDK in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */; };
-		8A1651202C3D37FA003A1130 /* InvoiceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A16511F2C3D37FA003A1130 /* InvoiceDetailViewController.swift */; };
+		8A1651202C3D37FA003A1130 /* OrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A16511F2C3D37FA003A1130 /* OrderDetailViewController.swift */; };
 		8A1651222C3D45C2003A1130 /* DebugMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1651212C3D45C2003A1130 /* DebugMenuViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,7 +65,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3A41C7632C50F9FB00EEDCA2 /* InvoiceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailView.swift; sourceTree = "<group>"; };
+		3A41C7632C50F9FB00EEDCA2 /* OrderDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailView.swift; sourceTree = "<group>"; };
 		4CF9C0D82C46C60E00AED223 /* GiniMerchantSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniMerchantSDKExample.entitlements; sourceTree = "<group>"; };
 		507A25DE2C355DA900A7106E /* GiniMerchantSDKPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniMerchantSDKPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		507A25E02C355DA900A7106E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -99,14 +99,14 @@
 		50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
 		50D80DA82C245DBC00B446A8 /* HardcodedOrdersController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HardcodedOrdersController.swift; sourceTree = "<group>"; };
-		50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListCoordinator.swift; sourceTree = "<group>"; };
-		50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListViewController.swift; sourceTree = "<group>"; };
-		50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListViewModel.swift; sourceTree = "<group>"; };
-		50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCell.swift; sourceTree = "<group>"; };
-		50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCellModel.swift; sourceTree = "<group>"; };
+		50D80DAF2C245DBC00B446A8 /* OrderListCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderListCoordinator.swift; sourceTree = "<group>"; };
+		50D80DB02C245DBC00B446A8 /* OrderListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderListViewController.swift; sourceTree = "<group>"; };
+		50D80DB12C245DBC00B446A8 /* OrderListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderListViewModel.swift; sourceTree = "<group>"; };
+		50D80DB22C245DBC00B446A8 /* OrderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
+		50D80DB42C245DBC00B446A8 /* OrderCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderCellViewModel.swift; sourceTree = "<group>"; };
 		50D80DC92C2478D800B446A8 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniMerchantSDK; path = ../GiniMerchantSDK; sourceTree = "<group>"; };
-		8A16511F2C3D37FA003A1130 /* InvoiceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailViewController.swift; sourceTree = "<group>"; };
+		8A16511F2C3D37FA003A1130 /* OrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewController.swift; sourceTree = "<group>"; };
 		8A1651212C3D45C2003A1130 /* DebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -224,13 +224,13 @@
 			isa = PBXGroup;
 			children = (
 				50D80DA82C245DBC00B446A8 /* HardcodedOrdersController.swift */,
-				50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */,
-				50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */,
-				50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */,
-				50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */,
-				50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */,
-				8A16511F2C3D37FA003A1130 /* InvoiceDetailViewController.swift */,
-				3A41C7632C50F9FB00EEDCA2 /* InvoiceDetailView.swift */,
+				50D80DAF2C245DBC00B446A8 /* OrderListCoordinator.swift */,
+				50D80DB02C245DBC00B446A8 /* OrderListViewController.swift */,
+				50D80DB12C245DBC00B446A8 /* OrderListViewModel.swift */,
+				50D80DB22C245DBC00B446A8 /* OrderTableViewCell.swift */,
+				50D80DB42C245DBC00B446A8 /* OrderCellViewModel.swift */,
+				8A16511F2C3D37FA003A1130 /* OrderDetailViewController.swift */,
+				3A41C7632C50F9FB00EEDCA2 /* OrderDetailView.swift */,
 			);
 			path = InvoicesList;
 			sourceTree = "<group>";
@@ -466,26 +466,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50D80DBC2C245DBC00B446A8 /* InvoicesListCoordinator.swift in Sources */,
+				50D80DBC2C245DBC00B446A8 /* OrderListCoordinator.swift in Sources */,
 				50D80DA22C245DAF00B446A8 /* Coordinator.swift in Sources */,
 				50D80DA02C245DAF00B446A8 /* AppCoordinator.swift in Sources */,
 				50D80D9E2C245DAF00B446A8 /* CredentialsManager.swift in Sources */,
 				50D80D582C245A8900B446A8 /* AppDelegate.swift in Sources */,
 				50D80DA42C245DAF00B446A8 /* UIViewController+Utils.swift in Sources */,
 				50D80D9B2C245DAF00B446A8 /* MerchantNetworkingService.swift in Sources */,
-				8A1651202C3D37FA003A1130 /* InvoiceDetailViewController.swift in Sources */,
+				8A1651202C3D37FA003A1130 /* OrderDetailViewController.swift in Sources */,
 				50D80D5A2C245A8900B446A8 /* SceneDelegate.swift in Sources */,
 				50D80DA32C245DAF00B446A8 /* SelectAPIViewController.swift in Sources */,
-				50D80DBD2C245DBC00B446A8 /* InvoicesListViewController.swift in Sources */,
+				50D80DBD2C245DBC00B446A8 /* OrderListViewController.swift in Sources */,
 				50D80DB62C245DBC00B446A8 /* HardcodedOrdersController.swift in Sources */,
 				50D80DA52C245DAF00B446A8 /* ScreenAPICoordinator.swift in Sources */,
 				50D80DA12C245DAF00B446A8 /* RootNavigationController.swift in Sources */,
-				50D80DBE2C245DBC00B446A8 /* InvoicesListViewModel.swift in Sources */,
-				50D80DBF2C245DBC00B446A8 /* InvoiceTableViewCell.swift in Sources */,
+				50D80DBE2C245DBC00B446A8 /* OrderListViewModel.swift in Sources */,
+				50D80DBF2C245DBC00B446A8 /* OrderTableViewCell.swift in Sources */,
 				8A1651222C3D45C2003A1130 /* DebugMenuViewController.swift in Sources */,
-				3A41C7642C50F9FB00EEDCA2 /* InvoiceDetailView.swift in Sources */,
+				3A41C7642C50F9FB00EEDCA2 /* OrderDetailView.swift in Sources */,
 				50D80D9F2C245DAF00B446A8 /* UIViewController.swift in Sources */,
-				50D80DC12C245DBC00B446A8 /* InvoiceTableViewCellModel.swift in Sources */,
+				50D80DC12C245DBC00B446A8 /* OrderCellViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

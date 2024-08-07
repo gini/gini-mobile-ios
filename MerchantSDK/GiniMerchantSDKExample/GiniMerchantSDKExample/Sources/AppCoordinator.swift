@@ -177,14 +177,14 @@ final class AppCoordinator: Coordinator {
         merchant.setConfiguration(configuration)
         merchant.delegate = self
 
-        let invoicesListCoordinator = InvoicesListCoordinator()
+        let orderListCoordinator = OrderListCoordinator()
         paymentComponentsController = PaymentComponentsController(giniMerchant: merchant)
-        invoicesListCoordinator.start(documentService: merchant.documentService,
-                                      hardcodedOrdersController: HardcodedOrdersController(),
-                                      paymentComponentsController: paymentComponentsController,
-                                      orders: orders)
-        add(childCoordinator: invoicesListCoordinator)
-        rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
+        orderListCoordinator.start(documentService: merchant.documentService,
+                                   hardcodedOrdersController: HardcodedOrdersController(),
+                                   paymentComponentsController: paymentComponentsController,
+                                   orders: orders)
+        add(childCoordinator: orderListCoordinator)
+        rootViewController.present(orderListCoordinator.rootViewController, animated: true)
     }
 }
 
