@@ -12,7 +12,7 @@ import UIKit
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ())
-    func presentInvoicesList(invoices: [InvoiceItem]?)
+    func presentOrdersList(orders: [Order]?)
 }
 
 final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDelegate {
@@ -30,7 +30,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     var visionDocuments: [GiniCaptureDocument]?
     var visionConfiguration: GiniConfiguration
     private var captureExtractedResults: [GiniBankAPILibrary.Extraction] = []
-    private var hardcodedInvoicesController: HardcodedInvoicesController
+    private var hardcodedOrdersController: HardcodedOrdersController
     private var paymentComponentController: PaymentComponentsController
     
     // {extraction name} : {entity name}
@@ -38,11 +38,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     
     init(configuration: GiniConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
-         hardcodedInvoicesController: HardcodedInvoicesController,
+         hardcodedOrdersController: HardcodedOrdersController,
          paymentComponentController: PaymentComponentsController) {
         visionConfiguration = configuration
         visionDocuments = documents
-        self.hardcodedInvoicesController = hardcodedInvoicesController
+        self.hardcodedOrdersController = hardcodedOrdersController
         self.paymentComponentController = paymentComponentController
         super.init()
     }

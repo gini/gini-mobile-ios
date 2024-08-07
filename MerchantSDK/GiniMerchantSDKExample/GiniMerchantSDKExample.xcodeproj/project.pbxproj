@@ -34,12 +34,7 @@
 		50D80DA42C245DAF00B446A8 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D972C245DAF00B446A8 /* UIViewController+Utils.swift */; };
 		50D80DA52C245DAF00B446A8 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */; };
 		50D80DA62C245DAF00B446A8 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */; };
-		50D80DB62C245DBC00B446A8 /* HardcodedInvoices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DA82C245DBC00B446A8 /* HardcodedInvoices.swift */; };
-		50D80DB72C245DBC00B446A8 /* health-invoice-1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DA92C245DBC00B446A8 /* health-invoice-1.jpg */; };
-		50D80DB82C245DBC00B446A8 /* health-invoice-2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAA2C245DBC00B446A8 /* health-invoice-2.jpg */; };
-		50D80DB92C245DBC00B446A8 /* health-invoice-3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAB2C245DBC00B446A8 /* health-invoice-3.jpg */; };
-		50D80DBA2C245DBC00B446A8 /* health-invoice-4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAC2C245DBC00B446A8 /* health-invoice-4.jpg */; };
-		50D80DBB2C245DBC00B446A8 /* health-invoice-5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAD2C245DBC00B446A8 /* health-invoice-5.jpg */; };
+		50D80DB62C245DBC00B446A8 /* HardcodedOrdersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DA82C245DBC00B446A8 /* HardcodedOrdersController.swift */; };
 		50D80DBC2C245DBC00B446A8 /* InvoicesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */; };
 		50D80DBD2C245DBC00B446A8 /* InvoicesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */; };
 		50D80DBE2C245DBC00B446A8 /* InvoicesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */; };
@@ -103,12 +98,7 @@
 		50D80D972C245DAF00B446A8 /* UIViewController+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
 		50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
-		50D80DA82C245DBC00B446A8 /* HardcodedInvoices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HardcodedInvoices.swift; sourceTree = "<group>"; };
-		50D80DA92C245DBC00B446A8 /* health-invoice-1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-1.jpg"; sourceTree = "<group>"; };
-		50D80DAA2C245DBC00B446A8 /* health-invoice-2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-2.jpg"; sourceTree = "<group>"; };
-		50D80DAB2C245DBC00B446A8 /* health-invoice-3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-3.jpg"; sourceTree = "<group>"; };
-		50D80DAC2C245DBC00B446A8 /* health-invoice-4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-4.jpg"; sourceTree = "<group>"; };
-		50D80DAD2C245DBC00B446A8 /* health-invoice-5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-5.jpg"; sourceTree = "<group>"; };
+		50D80DA82C245DBC00B446A8 /* HardcodedOrdersController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HardcodedOrdersController.swift; sourceTree = "<group>"; };
 		50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListCoordinator.swift; sourceTree = "<group>"; };
 		50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListViewController.swift; sourceTree = "<group>"; };
 		50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListViewModel.swift; sourceTree = "<group>"; };
@@ -230,23 +220,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		50D80DAE2C245DBC00B446A8 /* HardcodedInvoices */ = {
-			isa = PBXGroup;
-			children = (
-				50D80DA82C245DBC00B446A8 /* HardcodedInvoices.swift */,
-				50D80DA92C245DBC00B446A8 /* health-invoice-1.jpg */,
-				50D80DAA2C245DBC00B446A8 /* health-invoice-2.jpg */,
-				50D80DAB2C245DBC00B446A8 /* health-invoice-3.jpg */,
-				50D80DAC2C245DBC00B446A8 /* health-invoice-4.jpg */,
-				50D80DAD2C245DBC00B446A8 /* health-invoice-5.jpg */,
-			);
-			path = HardcodedInvoices;
-			sourceTree = "<group>";
-		};
 		50D80DB52C245DBC00B446A8 /* InvoicesList */ = {
 			isa = PBXGroup;
 			children = (
-				50D80DAE2C245DBC00B446A8 /* HardcodedInvoices */,
+				50D80DA82C245DBC00B446A8 /* HardcodedOrdersController.swift */,
 				50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */,
 				50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */,
 				50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */,
@@ -448,16 +425,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50D80DB82C245DBC00B446A8 /* health-invoice-2.jpg in Resources */,
-				50D80DBB2C245DBC00B446A8 /* health-invoice-5.jpg in Resources */,
-				50D80DB92C245DBC00B446A8 /* health-invoice-3.jpg in Resources */,
 				50D80D612C245A8A00B446A8 /* Assets.xcassets in Resources */,
 				50D80DCA2C2478D800B446A8 /* Localizable.xcstrings in Resources */,
 				50D80DA62C245DAF00B446A8 /* SelectAPIViewController.xib in Resources */,
 				50D80D642C245A8A00B446A8 /* Base in Resources */,
-				50D80DB72C245DBC00B446A8 /* health-invoice-1.jpg in Resources */,
 				50D80DCC2C2479BE00B446A8 /* GiniMerchantSDK in Resources */,
-				50D80DBA2C245DBC00B446A8 /* health-invoice-4.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,7 +477,7 @@
 				50D80D5A2C245A8900B446A8 /* SceneDelegate.swift in Sources */,
 				50D80DA32C245DAF00B446A8 /* SelectAPIViewController.swift in Sources */,
 				50D80DBD2C245DBC00B446A8 /* InvoicesListViewController.swift in Sources */,
-				50D80DB62C245DBC00B446A8 /* HardcodedInvoices.swift in Sources */,
+				50D80DB62C245DBC00B446A8 /* HardcodedOrdersController.swift in Sources */,
 				50D80DA52C245DAF00B446A8 /* ScreenAPICoordinator.swift in Sources */,
 				50D80DA12C245DAF00B446A8 /* RootNavigationController.swift in Sources */,
 				50D80DBE2C245DBC00B446A8 /* InvoicesListViewModel.swift in Sources */,
@@ -811,10 +783,11 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
+				DEVELOPMENT_TEAM = PNA99T54YW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniMerchantSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Gini Merchant";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -825,7 +798,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -845,10 +818,11 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
+				DEVELOPMENT_TEAM = PNA99T54YW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniMerchantSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Gini Merchant";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -859,7 +833,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

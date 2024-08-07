@@ -11,25 +11,25 @@ import GiniUtilites
 import UIKit
 
 final class InvoiceTableViewCellModel {
-    private var invoice: InvoiceItem
+    private var order: Order
 
-    init(invoice: InvoiceItem) {
-        self.invoice = invoice
+    init(_ order: Order) {
+        self.order = order
     }
     
     var recipientNameText: String {
-        invoice.recipient ?? ""
+        order.recipient
     }
     
     var amountToPayText: String {
-        if let amoountToPay = invoice.amountToPay, let amountToPayFormatted = Price(extractionString: amoountToPay) {
+        if let amountToPayFormatted = Price(extractionString: order.amountToPay) {
             return amountToPayFormatted.string ?? ""
         }
         return ""
     }
 
     var ibanText: String {
-        invoice.iban ?? ""
+        order.iban
     }
 
     var isRecipientLabelHidden: Bool {

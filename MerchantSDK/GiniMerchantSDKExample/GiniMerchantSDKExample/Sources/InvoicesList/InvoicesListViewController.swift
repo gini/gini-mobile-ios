@@ -16,15 +16,13 @@ protocol InvoicesListViewControllerProtocol: AnyObject {
 }
 
 final class InvoicesListViewController: UIViewController {
-    
-    // MARK: - Variables
+
     private lazy var invoicesTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(InvoiceTableViewCell.self, forCellReuseIdentifier: InvoiceTableViewCell.identifier)
-        tableView.separatorColor = viewModel.tableViewSeparatorColor
         tableView.separatorInset = .zero
         tableView.rowHeight = Constants.rowHeight
         tableView.tableFooterView = UIView()
@@ -40,10 +38,11 @@ final class InvoicesListViewController: UIViewController {
     }()
     
     var viewModel: InvoicesListViewModel!
-    
-    // MARK: - Functions
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = .systemBackground
         viewModel.viewDidLoad()
     }
 
@@ -56,7 +55,6 @@ final class InvoicesListViewController: UIViewController {
     override func loadView() {
         super.loadView()
         title = viewModel.titleText
-        view.backgroundColor = viewModel.backgroundColor
         setupTableView()
         setupNavigationBar()
     }
@@ -64,7 +62,7 @@ final class InvoicesListViewController: UIViewController {
     private func setupTableView() {
         if #available(iOS 15.0, *) {
             invoicesTableView.sectionHeaderTopPadding = 0
-         }
+        }
         view.addSubview(invoicesTableView)
 
         NSLayoutConstraint.activate([
@@ -76,24 +74,26 @@ final class InvoicesListViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        let uploadInvoiceItem = UIBarButtonItem(title: viewModel.customOrderText,
-                                                style: .plain,
-                                                target: self,
-                                                action: #selector(customOrderButtonTapped))
-        self.navigationItem.rightBarButtonItem = uploadInvoiceItem
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: viewModel.customOrderText,
+            style: .plain,
+            target: self,
+            action: #selector(customOrderButtonTapped)
+        )
 
-        let cancelItem = UIBarButtonItem(title: viewModel.cancelText,
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(dismissViewControllerTapped))
-        self.navigationItem.leftBarButtonItem = cancelItem
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: viewModel.cancelText,
+            style: .plain,
+            target: self,
+            action: #selector(dismissViewControllerTapped)
+        )
     }
-    
-    @objc func customOrderButtonTapped() {
-        let newInvoice = InvoiceItem(amountToPay: "", recipient: "", iban: "", purpose: "")
-        viewModel.invoices.append(newInvoice)
 
-        let invoiceViewController = InvoiceDetailViewController(invoice: newInvoice, paymentComponentsController: viewModel.paymentComponentsController)
+    @objc func customOrderButtonTapped() {
+        let newOrder = Order(amountToPay: "", recipient: "", iban: "", purpose: "")
+        viewModel.orders.append(newOrder)
+
+        let invoiceViewController = InvoiceDetailViewController(invoice: newOrder, paymentComponentsController: viewModel.paymentComponentsController)
         self.navigationController?.pushViewController(invoiceViewController, animated: true)
     }
 
@@ -104,35 +104,26 @@ final class InvoicesListViewController: UIViewController {
 
 extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.invoices.count
+        return viewModel.orders.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InvoiceTableViewCell.identifier, for: indexPath) as? InvoiceTableViewCell else {
             return UITableViewCell()
         }
-        let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0) }[indexPath.row]
+        let invoiceTableViewCellModel = viewModel.orders.map { InvoiceTableViewCellModel($0) }[indexPath.row]
         cell.viewModel = invoiceTableViewCellModel
         return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if viewModel.invoices.isEmpty {
-            let label = UILabel()
-            label.text = viewModel.noInvoicesText
-            label.textAlignment = .center
-            tableView.backgroundView = label
-            tableView.separatorStyle = .none
-            return 0
-        } else {
-            tableView.backgroundView = nil
-            tableView.separatorStyle = .singleLine
-            return 1
-        }
+        tableView.backgroundView = nil
+        tableView.separatorStyle = .singleLine
+        return 1
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let invoice = viewModel.invoices[indexPath.row]
+        let invoice = viewModel.orders[indexPath.row]
 
         // Instantiate InvoiceViewController with the Invoice instance
         let invoiceViewController = InvoiceDetailViewController(invoice: invoice, paymentComponentsController: viewModel.paymentComponentsController)

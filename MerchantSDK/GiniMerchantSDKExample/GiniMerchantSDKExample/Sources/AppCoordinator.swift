@@ -105,7 +105,7 @@ final class AppCoordinator: Coordinator {
     fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
         let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
                                                         importedDocuments: pages?.map { $0.document },
-                                                        hardcodedInvoicesController: HardcodedInvoicesController(),
+                                                        hardcodedOrdersController: HardcodedOrdersController(),
                                                         paymentComponentController: paymentComponentsController)
         
         screenAPICoordinator.delegate = self
@@ -167,7 +167,7 @@ final class AppCoordinator: Coordinator {
         }
     }
     
-    fileprivate func showInvoicesList(invoices: [InvoiceItem]? = nil) {
+    fileprivate func showOrdersList(orders: [Order]? = nil) {
         self.selectAPIViewController.hideActivityIndicator()
         
         // Show the close button to dismiss the payment review screen
@@ -180,9 +180,9 @@ final class AppCoordinator: Coordinator {
         let invoicesListCoordinator = InvoicesListCoordinator()
         paymentComponentsController = PaymentComponentsController(giniMerchant: merchant)
         invoicesListCoordinator.start(documentService: merchant.documentService,
-                                      hardcodedInvoicesController: HardcodedInvoicesController(),
+                                      hardcodedOrdersController: HardcodedOrdersController(),
                                       paymentComponentsController: paymentComponentsController,
-                                      invoices: invoices)
+                                      orders: orders)
         add(childCoordinator: invoicesListCoordinator)
         rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
     }
@@ -200,7 +200,7 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
         case .paymentReview:
             break
         case .invoicesList:
-            showInvoicesList()
+            showOrdersList()
         }
     }
 }
@@ -210,11 +210,11 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true)
-        self.remove(childCoordinator: coordinator)
+        remove(childCoordinator: coordinator)
     }
     
-    func presentInvoicesList(invoices: [InvoiceItem]?) {
-        self.showInvoicesList(invoices: invoices)
+    func presentOrdersList(orders: [Order]?) {
+        showOrdersList(orders: orders)
     }
 }
 
