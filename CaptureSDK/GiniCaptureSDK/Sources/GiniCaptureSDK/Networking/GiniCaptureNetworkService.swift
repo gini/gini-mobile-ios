@@ -24,6 +24,43 @@ public protocol GiniCaptureNetworkService: AnyObject  {
                       completion: @escaping (Result<Void, GiniError>) -> Void)
     func log(errorEvent: ErrorEvent,
              completion: @escaping (Result<Void, GiniError>) -> Void)
+
+    func layout(for document: Document,
+                completion: @escaping (Result<Document.Layout, GiniError>) -> Void)
+
+    func pagePreview(for document: Document,
+                     pageNumber: Int,
+                     size: Document.Page.Size,
+                     completion: @escaping (Result<Data, GiniError>) -> Void)
+}
+
+/// Extension for `GiniCaptureNetworkService` protocol to provide default implementations
+public extension GiniCaptureNetworkService {
+
+    /**
+     *  Retrieves the layout of a given document
+     *
+     * - Parameter document:            The document for which the layout is requested
+     * - Parameter completion:          A completion callback, returning the requested document layout on success
+     */
+    func layout(for document: Document,
+                completion: @escaping CompletionResult<Document.Layout>) {
+        // Default implementation is empty
+    }
+    /**
+     *  Retrieves the page preview of a document for a given page and size
+     *
+     * - Parameter document:            Document to get the preview for
+     * - Parameter pageNumber:          The document's page number
+     * - Parameter size:                The document's page size
+     * - Parameter completion:          A completion callback, returning the requested page preview on success
+     */
+    func pagePreview(for document: Document,
+                     pageNumber: Int,
+                     size: Document.Page.Size,
+                     completion: @escaping CompletionResult<Data>) {
+        // Default implementation is empty
+    }
 }
 
 class DefaultCaptureNetworkService: GiniCaptureNetworkService {
@@ -124,6 +161,41 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
             }
         }
     }
+
+    func layout(for document: Document, completion: @escaping DocumentLayoutCompletion) {
+        Log(message: "Getting layout for document with id: \(document.id) ", event: "📝")
+        documentService.layout(for: document) { result in
+            switch result {
+                case let .success(layout):
+                    completion(.success(layout))
+                case let .failure(error):
+                    self.handleError(message: "Document layout retrieval encountered an error: \(error)", 
+                                     error: error)
+                    completion(.failure(error))
+            }
+        }
+    }
+
+    func pagePreview(for document: Document,
+                     pageNumber: Int, 
+                     size: GiniBankAPILibrary.Document.Page.Size,
+                     completion: @escaping DocumentPagePreviewCompletion) {
+        Log(message: "Getting page preview for document with id: \(document.id) ", event: "📝")
+        documentService.pagePreview(for: document,
+                                    pageNumber: pageNumber,
+                                    size: size) { result in
+            switch result {
+                case let .success(pageData):
+                    completion(.success(pageData))
+                case let .failure(error):
+                    self.handleError(message: "Document page preview retrieval encountered an error: \(error)", 
+                                     error: error)
+                    completion(.failure(error))
+            }
+        }
+    }
+
+    // MARK: - Private helper methods
 
     private func startExtraction(for document: Document,
                                  cancellationToken: CancellationToken,
