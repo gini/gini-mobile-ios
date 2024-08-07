@@ -143,7 +143,9 @@ public final class DocumentService: DocumentServiceProtocol {
             Log(message: "Cannot send feedback: no document", event: .error)
             return
         }
-        captureNetworkService.sendFeedback(document: document, updatedExtractions: updatedExtractions, updatedCompoundExtractions: updatedCompoundExtractions) { result in
+        captureNetworkService.sendFeedback(document: document, 
+                                           updatedExtractions: updatedExtractions,
+                                           updatedCompoundExtractions: updatedCompoundExtractions) { result in
             switch result {
             case .success:
                 Log(message: "Feedback sent with \(updatedExtractions.count) extractions and \(updatedCompoundExtractions?.count ?? 0) compound extractions",

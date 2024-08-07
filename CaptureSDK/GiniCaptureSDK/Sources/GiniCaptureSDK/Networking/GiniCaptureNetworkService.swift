@@ -27,7 +27,7 @@ public protocol GiniCaptureNetworkService: AnyObject  {
 }
 
 class DefaultCaptureNetworkService: GiniCaptureNetworkService {
-    
+
     var documentService: DefaultDocumentService
     
     public init(lib: GiniBankAPI) {
@@ -55,7 +55,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
     func analyse(partialDocuments: [PartialDocumentInfo],
                  metadata: Document.Metadata?,
                  cancellationToken: CancellationToken,
-                 completion: @escaping (Result<(document:Document,extractionResult: ExtractionResult), GiniError>) -> Void) {
+                 completion: @escaping (Result<(document: Document, extractionResult: ExtractionResult), GiniError>) -> Void) {
         Log(message: "Creating composite document...", event: "📑")
         let fileName = "Composite-\(NSDate().timeIntervalSince1970)"
 
