@@ -48,7 +48,9 @@ final class AppCoordinator: Coordinator {
     
     private lazy var merchant = GiniMerchant(id: clientID, secret: clientPassword, domain: clientDomain)
     private lazy var paymentComponentsController = PaymentComponentsController(giniMerchant: merchant)
-    
+
+    private lazy var paymentComponentConfiguration = PaymentComponentConfiguration()
+
     init(window: UIWindow) {
         self.window = window
         print("------------------------------------\n\n",
@@ -265,18 +267,19 @@ extension AppCoordinator: PaymentComponentsControllerProtocol {
 
 extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
-        let debugMenuViewController = DebugMenuViewController(showReviewScreen: configuration.showPaymentReviewScreen, isAmountFieldEditable: configuration.isAmountFieldEditable)
+        let debugMenuViewController = DebugMenuViewController(showReviewScreen: configuration.showPaymentReviewScreen, paymentComponentConfiguration: paymentComponentConfiguration)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
 }
 
 extension AppCoordinator: DebugMenuDelegate {
-    func didChangeReviewScreenSwitchValue(isOn: Bool) {
-        configuration.showPaymentReviewScreen = isOn
-    }
-    
-    func didChangeAmountEditableSwitchValue(isOn: Bool) {
-        configuration.isAmountFieldEditable = isOn
+    func didChangeSwitchValue(type: SwitchType, isOn: Bool) {
+        switch type {
+        case .showReviewScreen:
+            configuration.showPaymentReviewScreen = isOn
+        case .showBrandedView:
+            paymentComponentConfiguration.isPaymentComponentBranded = isOn
+        }
     }
 }

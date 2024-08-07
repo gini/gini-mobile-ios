@@ -69,7 +69,7 @@ class PaymentReviewContainerView: UIView {
     private lazy var amountTextFieldView: TextFieldWithLabelView = {
         let textFieldView = TextFieldWithLabelView()
         textFieldView.tag = TextFieldType.amountFieldTag.rawValue
-        textFieldView.isUserInteractionEnabled = giniMerchantConfiguration.isAmountFieldEditable
+        textFieldView.isUserInteractionEnabled = true
         return textFieldView
     }()
 
@@ -279,7 +279,8 @@ class PaymentReviewContainerView: UIView {
             bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPadding),
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPadding),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
-            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
+            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
+            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
     }
 
@@ -719,5 +720,6 @@ extension PaymentReviewContainerView {
         static let heightToolbar = 40.0
         static let stackViewSpacing = 10.0
         static let payInvoiceInactiveAlpha = 0.4
+        static let bottomViewHeight = 44.0
     }
 }
