@@ -10,6 +10,8 @@ import GiniBankAPILibrary
 
 public typealias UploadDocumentCompletion = (Result<Document, GiniError>) -> Void
 public typealias AnalysisCompletion = (Result<ExtractionResult, GiniError>) -> Void
+public typealias DocumentLayoutCompletion = (Result<Document.Layout, GiniError>) -> Void
+public typealias DocumentPagePreviewCompletion = (Result<Data, GiniError>) -> Void
 
 public protocol DocumentServiceProtocol: AnyObject {
     
@@ -27,4 +29,10 @@ public protocol DocumentServiceProtocol: AnyObject {
                 completion: UploadDocumentCompletion?)
     func update(imageDocument: GiniImageDocument)
     func log(errorEvent: ErrorEvent)
+
+    func layout(completion: @escaping DocumentLayoutCompletion)
+
+    func pagePreview(pageNumber: Int,
+                     size: Document.Page.Size,
+                     completion: @escaping DocumentPagePreviewCompletion)
 }
