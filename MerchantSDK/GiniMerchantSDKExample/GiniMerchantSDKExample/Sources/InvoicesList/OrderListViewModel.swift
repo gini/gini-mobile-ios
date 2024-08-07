@@ -1,5 +1,5 @@
 //
-//  InvoicesListViewModel.swift
+//  OrderListViewModel.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -9,9 +9,9 @@ import UIKit
 import GiniCaptureSDK
 import GiniMerchantSDK
 
-final class InvoicesListViewModel {
-    
-    private let coordinator: InvoicesListCoordinator
+final class OrderListViewModel {
+
+    private let coordinator: OrderListCoordinator
     private var documentService: GiniMerchantSDK.DefaultDocumentService
     private let hardcodedOrdersController: HardcodedOrdersControllerProtocol
 
@@ -26,7 +26,7 @@ final class InvoicesListViewModel {
     var paymentComponentsController: PaymentComponentsController
     var orders: [Order]
 
-    init(coordinator: InvoicesListCoordinator,
+    init(coordinator: OrderListCoordinator,
          orders: [Order]? = nil,
          documentService: GiniMerchantSDK.DefaultDocumentService,
          hardcodedOrdersController: HardcodedOrdersControllerProtocol,
@@ -44,25 +44,25 @@ final class InvoicesListViewModel {
     }
 }
 
-extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
+extension OrderListViewModel: PaymentComponentsControllerProtocol {
     func didFetchedPaymentProviders() {
         DispatchQueue.main.async {
-            self.coordinator.invoicesListViewController.reloadTableView()
+            self.coordinator.orderListViewController.reloadTableView()
         }
     }
 
     func isLoadingStateChanged(isLoading: Bool) {
         DispatchQueue.main.async {
             if isLoading {
-                self.coordinator.invoicesListViewController.showActivityIndicator()
+                self.coordinator.orderListViewController.showActivityIndicator()
             } else {
-                self.coordinator.invoicesListViewController.hideActivityIndicator()
+                self.coordinator.orderListViewController.hideActivityIndicator()
             }
         }
     }
 }
 
-extension InvoicesListViewModel: GiniMerchantTrackingDelegate {
+extension OrderListViewModel: GiniMerchantTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
         switch event.type {
         case .onToTheBankButtonClicked:

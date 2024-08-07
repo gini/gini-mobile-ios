@@ -1,5 +1,5 @@
 //
-//  InvoiceDetailView.swift
+//  OrderDetailView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -8,7 +8,7 @@
 import UIKit
 
 @MainActor
-class InvoiceDetailView: UIStackView {
+class OrderDetailView: UIStackView {
 
     static var textFields = [String: UITextField]()
 
@@ -72,7 +72,7 @@ class InvoiceDetailView: UIStackView {
     }
 }
 
-extension InvoiceDetailView {
+extension OrderDetailView {
     enum Constants {
         static let labelWidth = 92.0
         static let verticalSpacing = 1.0

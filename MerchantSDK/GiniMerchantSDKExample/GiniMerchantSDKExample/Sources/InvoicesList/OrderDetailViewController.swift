@@ -1,5 +1,5 @@
 //
-//  InvoiceDetailViewController.swift
+//  OrderDetailViewController.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -15,7 +15,7 @@ fileprivate enum Fields: String, CaseIterable {
     case purpose = "example.order.detail.Purpose"
 }
 
-final class InvoiceDetailViewController: UIViewController {
+final class OrderDetailViewController: UIViewController {
 
     private var order: Order
 
@@ -34,8 +34,8 @@ final class InvoiceDetailViewController: UIViewController {
         }
     }
 
-    init(invoice: Order, paymentComponentsController: PaymentComponentsController) {
-        self.order = invoice
+    init(_ order: Order, paymentComponentsController: PaymentComponentsController) {
+        self.order = order
         self.paymentComponentsController = paymentComponentsController
         super.init(nibName: nil, bundle: nil)
 
@@ -46,8 +46,8 @@ final class InvoiceDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private lazy var detailView: InvoiceDetailView = {
-        InvoiceDetailView(rowItems)
+    private lazy var detailView: OrderDetailView = {
+        OrderDetailView(rowItems)
     }()
 
     private lazy var payButton: UIButton = {
@@ -117,7 +117,7 @@ final class InvoiceDetailViewController: UIViewController {
     }
 }
 
-extension InvoiceDetailViewController: PaymentComponentViewProtocol {
+extension OrderDetailViewController: PaymentComponentViewProtocol {
     func didTapOnMoreInformation(documentId: String?) {
         print("✅ Tapped on More Information")
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
@@ -179,7 +179,7 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
     }
 
     private func saveTextFieldData() {
-        let textFields = InvoiceDetailView.textFields
+        let textFields = OrderDetailView.textFields
         order.iban = textFields[NSLocalizedString(Fields.iban.rawValue, comment: "")]?.text ?? ""
         order.recipient = textFields[NSLocalizedString(Fields.recipient.rawValue, comment: "")]?.text ?? ""
         order.amountToPay = textFields[NSLocalizedString(Fields.amountToPay.rawValue, comment: "")]?.text ?? ""
@@ -224,13 +224,13 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
     }
 }
 
-extension InvoiceDetailViewController: GiniMerchantTrackingDelegate {
+extension OrderDetailViewController: GiniMerchantTrackingDelegate {
     func onPaymentReviewScreenEvent(event: GiniMerchantSDK.TrackingEvent<GiniMerchantSDK.PaymentReviewScreenEventType>) {
         //
     }
 }
 
-extension InvoiceDetailViewController: PaymentProvidersBottomViewProtocol {
+extension OrderDetailViewController: PaymentProvidersBottomViewProtocol {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
         DispatchQueue.main.async {
             self.presentedViewController?.dismiss(animated: true, completion: {
@@ -263,7 +263,7 @@ extension InvoiceDetailViewController: PaymentProvidersBottomViewProtocol {
     }
 }
 
-extension InvoiceDetailViewController {
+extension OrderDetailViewController {
     enum Constants {
         static let paddingTopBottom = 8.0
         static let paddingLeadingTrailing = 16.0

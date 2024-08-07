@@ -1,16 +1,15 @@
 //
-//  InvoiceTableViewCellModel.swift
+//  OrderCellViewModel.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 
 import Foundation
-import GiniMerchantSDK
 import GiniUtilites
 import UIKit
 
-final class InvoiceTableViewCellModel {
+final class OrderCellViewModel {
     private var order: Order
 
     init(_ order: Order) {

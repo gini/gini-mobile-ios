@@ -1,5 +1,5 @@
 //
-//  InvoiceTableViewCell.swift
+//  OrderTableViewCell.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class InvoiceTableViewCell: UITableViewCell {
-    
-    static let identifier = String(describing: InvoiceTableViewCell.self)
+final class OrderTableViewCell: UITableViewCell {
+
+    static let identifier = String(describing: OrderTableViewCell.self)
 
     private let recipientLabel = UILabel()
     private let ibanLabel = UILabel()
@@ -35,7 +35,7 @@ final class InvoiceTableViewCell: UITableViewCell {
         return stackView
     }()
 
-    var viewModel: InvoiceTableViewCellModel? {
+    var viewModel: OrderCellViewModel? {
         didSet {
             guard let viewModel = viewModel else { return }
 
@@ -80,7 +80,7 @@ final class InvoiceTableViewCell: UITableViewCell {
     }
 }
 
-extension InvoiceTableViewCell {
+extension OrderTableViewCell {
     enum Constants {
         static let padding = 16.0
         static let horizontalSpacing = 10.0
