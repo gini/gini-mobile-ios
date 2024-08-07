@@ -9,34 +9,15 @@ import UIKit
 import GiniMerchantSDK
 
 fileprivate enum Fields: String, CaseIterable {
-    case recipient = "Recipient"
-    case iban = "IBAN"
-    case amountToPay = "Amount"
-    case purpose = "Purpose"
-
-    static func all(from document: InvoiceItem) ->  [(String, String)] {
-        var array = [(String, String)]()
-
-        if let recipient = document.recipient {
-            array.append((Self.recipient.rawValue, recipient))
-        }
-        if let iban = document.iban {
-            array.append((Self.iban.rawValue, iban))
-        }
-        if let amountToPay = document.amountToPay {
-            array.append((Self.amountToPay.rawValue, amountToPay))
-        }
-        if let purpose = document.purpose {
-            array.append((Self.purpose.rawValue, purpose))
-        }
-
-        return array
-    }
+    case recipient = "example.order.detail.Recipient"
+    case iban = "example.order.detail.IBAN"
+    case amountToPay = "example.order.detail.Amount"
+    case purpose = "example.order.detail.Purpose"
 }
 
 final class InvoiceDetailViewController: UIViewController {
 
-    private var invoice: InvoiceItem
+    private var order: Order
 
     private let paymentComponentsController: PaymentComponentsController
     private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
@@ -44,26 +25,17 @@ final class InvoiceDetailViewController: UIViewController {
     private var errors: [String] = []
     private let errorTitleText = NSLocalizedString("example.invoicesList.error", comment: "")
     
-    private var items: [(String, String)] {
-        var invoices: [(String, String)] = []
-        if let recipient = invoice.recipient {
-            invoices.append((Fields.recipient.rawValue, recipient))
+    private var rowItems: [(String, String)] {
+        [(Fields.recipient.rawValue, order.recipient),
+         (Fields.iban.rawValue, order.iban),
+         (Fields.amountToPay.rawValue, order.amountToPay),
+         (Fields.purpose.rawValue, order.purpose)].map {
+            (NSLocalizedString($0, comment: ""), $1)
         }
-        if let iban = invoice.iban {
-            invoices.append((Fields.iban.rawValue, iban))
-        }
-        if let amountToPay = invoice.amountToPay {
-            invoices.append((Fields.amountToPay.rawValue, amountToPay))
-        }
-        if let purpose = invoice.purpose {
-            invoices.append((Fields.purpose.rawValue, purpose))
-        }
-
-        return invoices
     }
 
-    init(invoice: InvoiceItem, paymentComponentsController: PaymentComponentsController) {
-        self.invoice = invoice
+    init(invoice: Order, paymentComponentsController: PaymentComponentsController) {
+        self.order = invoice
         self.paymentComponentsController = paymentComponentsController
         super.init(nibName: nil, bundle: nil)
 
@@ -75,17 +47,17 @@ final class InvoiceDetailViewController: UIViewController {
     }
 
     private lazy var detailView: InvoiceDetailView = {
-        InvoiceDetailView(Fields.all(from: invoice))
+        InvoiceDetailView(rowItems)
     }()
 
-    private lazy var payNowButton: UIButton = {
+    private lazy var payButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Pay", for: .normal)
+        button.setTitle(NSLocalizedString("example.order.detail.Pay", comment: ""), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(named: "payButtonColor")
         button.layer.cornerRadius = Constants.payButtonCornerRadius
-        button.addTarget(self, action: #selector(payNowButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
 
         return button
@@ -97,11 +69,12 @@ final class InvoiceDetailViewController: UIViewController {
         paymentComponentsController.viewDelegate = self
         paymentComponentsController.bottomViewDelegate = self
 
-        self.title = "Order Details"
+        title = NSLocalizedString("example.order.navigation.orderdetails", comment: "")
+
         view.backgroundColor = .secondarySystemBackground
 
         view.addSubview(detailView)
-        view.addSubview(payNowButton)
+        view.addSubview(payButton)
 
         setupConstraints()
     }
@@ -126,14 +99,14 @@ final class InvoiceDetailViewController: UIViewController {
             detailView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
             detailView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.paddingLeadingTrailing),
 
-            payNowButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.paddingTopBottom),
-            payNowButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            payNowButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
-            payNowButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
+            payButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.paddingTopBottom),
+            payButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            payButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
+            payButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
         ])
     }
 
-    @objc private func payNowButtonTapped() {
+    @objc private func payButtonTapped() {
         let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
         paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
         self.present(paymentViewBottomSheet, animated: false)
@@ -207,16 +180,16 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
 
     private func saveTextFieldData() {
         let textFields = InvoiceDetailView.textFields
-        invoice.iban = textFields[Fields.iban.rawValue]?.text
-        invoice.recipient = textFields[Fields.recipient.rawValue]?.text
-        invoice.amountToPay = textFields[Fields.amountToPay.rawValue]?.text
-        invoice.purpose = textFields[Fields.purpose.rawValue]?.text
+        order.iban = textFields[Fields.iban.rawValue]?.text ?? ""
+        order.recipient = textFields[Fields.recipient.rawValue]?.text ?? ""
+        order.amountToPay = textFields[Fields.amountToPay.rawValue]?.text ?? ""
+        order.purpose = textFields[Fields.purpose.rawValue]?.text ?? ""
     }
 
     private func obtainPaymentInfo() -> PaymentInfo {
         saveTextFieldData()
 
-        return PaymentInfo(recipient: invoice.recipient ?? "", iban: invoice.iban ?? "", bic: "", amount: invoice.amountToPay ?? "", purpose: invoice.purpose ?? "", paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "", paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
+        return PaymentInfo(recipient: order.recipient, iban: order.iban, bic: "", amount: order.amountToPay, purpose: order.purpose, paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "", paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
 
     private func showErrorsIfAny() {
@@ -233,7 +206,10 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
         let alertController = UIAlertController(title: errorTitleText,
                                                 message: error,
                                                 preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: .default))
+        alertController.addAction(
+            UIAlertAction(title: NSLocalizedString("example.order.detail.Alert.Ok", comment: ""),
+                          style: .default)
+        )
         self.present(alertController, animated: true)
     }
 
@@ -258,7 +234,7 @@ extension InvoiceDetailViewController: PaymentProvidersBottomViewProtocol {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
         DispatchQueue.main.async {
             self.presentedViewController?.dismiss(animated: true, completion: {
-                self.payNowButtonTapped()
+                self.payButtonTapped()
             })
         }
     }

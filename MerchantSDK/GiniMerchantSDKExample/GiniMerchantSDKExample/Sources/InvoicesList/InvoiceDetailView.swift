@@ -39,7 +39,6 @@ class InvoiceDetailView: UIStackView {
         label.widthAnchor.constraint(equalToConstant: Constants.labelWidth).isActive = true
         horizontalStackView.addArrangedSubview(label)
 
-
         let textField = UITextField()
         textFields[text.0] = textField
         textField.translatesAutoresizingMaskIntoConstraints = false

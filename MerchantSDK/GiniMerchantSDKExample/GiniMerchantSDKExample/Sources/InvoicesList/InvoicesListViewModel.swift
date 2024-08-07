@@ -13,11 +13,7 @@ final class InvoicesListViewModel {
     
     private let coordinator: InvoicesListCoordinator
     private var documentService: GiniMerchantSDK.DefaultDocumentService
-
-    private let hardcodedInvoicesController: HardcodedInvoicesControllerProtocol
-    var paymentComponentsController: PaymentComponentsController
-
-    var invoices: [InvoiceItem]
+    private let hardcodedOrdersController: HardcodedOrdersControllerProtocol
 
     let noInvoicesText = NSLocalizedString("example.invoicesList.missingInvoices.text", comment: "")
     let titleText = NSLocalizedString("example.invoicesList.title", comment: "")
@@ -25,26 +21,19 @@ final class InvoicesListViewModel {
     let cancelText = NSLocalizedString("example.cancel.button.title", comment: "")
     let errorTitleText = NSLocalizedString("example.invoicesList.error", comment: "")
 
-    let backgroundColor: UIColor = GiniColor(light: .white, 
-                                             dark: .black).uiColor()
-    let tableViewSeparatorColor: UIColor = GiniColor(light: .lightGray, 
-                                                     dark: .darkGray).uiColor()
-    
-    private let tableViewCell: UITableViewCell.Type = InvoiceTableViewCell.self
     private var errors: [String] = []
 
-    let dispatchGroup = DispatchGroup()
-    var shouldRefetchExtractions = false
-    var documentIDToRefetch: String?
+    var paymentComponentsController: PaymentComponentsController
+    var orders: [Order]
 
     init(coordinator: InvoicesListCoordinator,
-         invoices: [InvoiceItem]? = nil,
+         orders: [Order]? = nil,
          documentService: GiniMerchantSDK.DefaultDocumentService,
-         hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
+         hardcodedOrdersController: HardcodedOrdersControllerProtocol,
          paymentComponentsController: PaymentComponentsController) {
         self.coordinator = coordinator
-        self.hardcodedInvoicesController = hardcodedInvoicesController
-        self.invoices = invoices ?? hardcodedInvoicesController.getInvoices()
+        self.hardcodedOrdersController = hardcodedOrdersController
+        self.orders = orders ?? hardcodedOrdersController.orders
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
         self.paymentComponentsController.delegate = self
@@ -72,8 +61,6 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
         }
     }
 }
-
-
 
 extension InvoicesListViewModel: GiniMerchantTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {

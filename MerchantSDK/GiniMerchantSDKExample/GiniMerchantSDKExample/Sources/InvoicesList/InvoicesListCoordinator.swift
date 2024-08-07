@@ -19,14 +19,14 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     var invoicesListViewController: InvoicesListViewController!
     
     func start(documentService: GiniMerchantSDK.DefaultDocumentService,
-               hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
+               hardcodedOrdersController: HardcodedOrdersControllerProtocol,
                paymentComponentsController: PaymentComponentsController,
-               invoices: [InvoiceItem]? = nil) {
+               orders: [Order]? = nil) {
         self.invoicesListViewController = InvoicesListViewController()
         invoicesListViewController.viewModel = InvoicesListViewModel(coordinator: self,
-                                                                     invoices: invoices,
+                                                                     orders: orders,
                                                                      documentService: documentService,
-                                                                     hardcodedInvoicesController: hardcodedInvoicesController,
+                                                                     hardcodedOrdersController: hardcodedOrdersController,
                                                                      paymentComponentsController: paymentComponentsController)
         invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
         invoicesListNavigationController.modalPresentationStyle = .fullScreen
