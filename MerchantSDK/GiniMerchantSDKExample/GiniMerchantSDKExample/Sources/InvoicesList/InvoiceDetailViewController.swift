@@ -180,10 +180,10 @@ extension InvoiceDetailViewController: PaymentComponentViewProtocol {
 
     private func saveTextFieldData() {
         let textFields = InvoiceDetailView.textFields
-        order.iban = textFields[Fields.iban.rawValue]?.text ?? ""
-        order.recipient = textFields[Fields.recipient.rawValue]?.text ?? ""
-        order.amountToPay = textFields[Fields.amountToPay.rawValue]?.text ?? ""
-        order.purpose = textFields[Fields.purpose.rawValue]?.text ?? ""
+        order.iban = textFields[NSLocalizedString(Fields.iban.rawValue, comment: "")]?.text ?? ""
+        order.recipient = textFields[NSLocalizedString(Fields.recipient.rawValue, comment: "")]?.text ?? ""
+        order.amountToPay = textFields[NSLocalizedString(Fields.amountToPay.rawValue, comment: "")]?.text ?? ""
+        order.purpose = textFields[NSLocalizedString(Fields.purpose.rawValue, comment: "")]?.text ?? ""
     }
 
     private func obtainPaymentInfo() -> PaymentInfo {
