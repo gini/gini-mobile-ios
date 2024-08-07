@@ -21,10 +21,7 @@ final class OrderCellViewModel {
     }
     
     var amountToPayText: String {
-        if let amountToPayFormatted = Price(extractionString: order.amountToPay) {
-            return amountToPayFormatted.string ?? ""
-        }
-        return ""
+        Price(extractionString: order.amountToPay)?.string ?? ""
     }
 
     var ibanText: String {
