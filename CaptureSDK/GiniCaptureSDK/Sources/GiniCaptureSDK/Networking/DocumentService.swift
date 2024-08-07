@@ -9,7 +9,7 @@ import UIKit
 import GiniBankAPILibrary
 
 /**
-    Static veriable for synchronization to prevent display of multiple error screens at the same time
+ Static variable for synchronization to prevent the display of multiple error screens at the same time.
 */
 
 var errorOccurred = false
