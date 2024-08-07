@@ -178,5 +178,58 @@ public final class DocumentService: DocumentServiceProtocol {
             }
         }
     }
-    
+
+    public func layout(completion: @escaping DocumentLayoutCompletion) {
+        guard let document = document else {
+            Log(message: "Cannot get document layout: no document", event: .error)
+            return
+        }
+        captureNetworkService.layout(for: document) { result in
+            switch result {
+                case .success(let documentLayout):
+                    completion(.success(documentLayout))
+                case .failure(let error):
+                    let message = "Failed to get layout for document with id: \(document.id) error: \(error)"
+                    Log(message: message, event: .error)
+                    DispatchQueue.main.async {
+                        guard errorOccurred == false else {
+                            return
+                        }
+                        errorOccurred = true
+                        DispatchQueue.global().async {
+                            completion(.failure(error))
+                        }
+                    }
+            }
+        }
+    }
+
+    public func pagePreview(pageNumber: Int,
+                            size: GiniBankAPILibrary.Document.Page.Size,
+                            completion: @escaping DocumentPagePreviewCompletion) {
+        guard let document = document else {
+            Log(message: "Cannot get document document page", event: .error)
+            return
+        }
+        captureNetworkService.pagePreview(for: document ,
+                                          pageNumber: pageNumber,
+                                          size: size) { result in
+            switch result {
+            case .success(let pageData):
+                completion(.success(pageData))
+            case .failure(let error):
+                let message = "Failed to get page preview for document with id: \(document.id) error: \(error)"
+                Log(message: message, event: .error)
+                DispatchQueue.main.async {
+                    guard errorOccurred == false else {
+                        return
+                    }
+                    errorOccurred = true
+                    DispatchQueue.global().async {
+                        completion(.failure(error))
+                    }
+                }
+            }
+        }
+    }
 }
