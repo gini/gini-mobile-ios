@@ -1,8 +1,7 @@
 //
 //  Document.swift
-//  Pods-GiniExample
 //
-//  Created by Enrique del Pozo Gómez on 1/14/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
