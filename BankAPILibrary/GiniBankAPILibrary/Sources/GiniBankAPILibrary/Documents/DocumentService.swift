@@ -401,22 +401,22 @@ fileprivate extension DocumentService {
         fetchDocument(resourceHandler: resourceHandler,
                       with: document.id,
                       cancellationToken: cancellationToken) { [weak self] result in
-                        guard let self = self else { return }
-                        switch result {
-                        case .success(let document):
-                            if document.progress != .pending {
-                                completion(.success(()))
-                            } else {
-                                DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-                                    self.poll(resourceHandler: resourceHandler,
-                                              document: document,
-                                              cancellationToken: cancellationToken,
-                                              completion: completion)
-                                }
-                            }
-                        case .failure(let error):
-                            completion(.failure(error))
+            guard let self = self else { return }
+            switch result {
+            case .success(let document):
+                if document.progress != .pending {
+                    completion(.success(()))
+                } else {
+                    DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                        self.poll(resourceHandler: resourceHandler,
+                                 document: document,
+                                 cancellationToken: cancellationToken,
+                                 completion: completion)
                         }
+                    }
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 }
