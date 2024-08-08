@@ -128,10 +128,9 @@ public class SkontoViewController: UIViewController {
         edgesForExtendedLayout = []
         view.backgroundColor = .giniColorScheme().bg.background.uiColor()
         if !configuration.bottomNavigationBarEnabled {
-            // MARK: Temporary remove help button
-//            let helpButton = GiniBarButton(ofType: .help)
-//            helpButton.addAction(self, #selector(helpButtonTapped))
-//            navigationItem.rightBarButtonItem = helpButton.barButton
+            let helpButton = GiniBarButton(ofType: .help)
+            helpButton.addAction(self, #selector(helpButtonTapped))
+            navigationItem.rightBarButtonItem = helpButton.barButton
 
             let backButton = GiniBarButton(ofType: .back(title: backButtonTitle))
             backButton.addAction(self, #selector(backButtonTapped))
@@ -271,10 +270,9 @@ public class SkontoViewController: UIViewController {
             self?.viewModel.proceedButtonTapped()
         }
 
-        // MARK: Temporary remove help action
-//        navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-//            self?.helpButtonTapped()
-//        }
+        navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
+            self?.helpButtonTapped()
+        }
 
         navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
             self?.backButtonTapped()
@@ -317,10 +315,9 @@ public class SkontoViewController: UIViewController {
         navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
     }
 
-    // MARK: Temporary remove help action
-//    @objc private func helpButtonTapped() {
-//        viewModel.helpButtonTapped()
-//    }
+    @objc private func helpButtonTapped() {
+        viewModel.helpButtonTapped()
+    }
 
     @objc private func backButtonTapped() {
         viewModel.backButtonTapped()

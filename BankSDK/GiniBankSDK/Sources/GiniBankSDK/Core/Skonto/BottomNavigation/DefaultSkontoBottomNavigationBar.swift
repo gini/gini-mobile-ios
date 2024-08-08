@@ -25,15 +25,14 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         return button
     }()
 
-    // MARK: Temporary remove help action
-//    private lazy var helpButton: GiniBarButton = {
-//        let button = GiniBarButton(ofType: .help)
-//        button.buttonView.translatesAutoresizingMaskIntoConstraints = false
-//        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-//        button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-//        button.addAction(self, #selector(helpButtonClicked))
-//        return button
-//    }()
+    private lazy var helpButton: GiniBarButton = {
+        let button = GiniBarButton(ofType: .help)
+        button.buttonView.translatesAutoresizingMaskIntoConstraints = false
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        button.addAction(self, #selector(helpButtonClicked))
+        return button
+    }()
 
     private lazy var backButton: GiniBarButton = {
         let button = GiniBarButton(ofType: .back(title: ""))
@@ -109,14 +108,15 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     }()
 
     private var proceedAction: (() -> Void)?
-    // MARK: Temporary remove help action
-//    private var helpAction: (() -> Void)?
+    private var helpAction: (() -> Void)?
     private var backAction: (() -> Void)?
 
     init(proceedAction: (() -> Void)?,
-         backAction: (() -> Void)?) {
+         backAction: (() -> Void)?,
+         helpAction: (() -> Void)?) {
         self.proceedAction = proceedAction
         self.backAction = backAction
+        self.helpAction = helpAction
         super.init(frame: .zero)
         setupView()
         setupConstraints()
@@ -158,6 +158,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         addSubview(skontoBadgeView)
         addSubview(savingsAmountLabel)
         addSubview(backButton.buttonView)
+        addSubview(helpButton.buttonView)
         addSubview(dividerView)
         skontoBadgeView.addSubview(skontoBadgeLabel)
     }
@@ -210,9 +211,15 @@ final class DefaultSkontoBottomNavigationBar: UIView {
                                                            constant: horizontalPadding),
             backButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
 
+            helpButton.buttonView.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                           constant: -horizontalPadding),
+            helpButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
+
             proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
                                                constant: Constants.proceedButtonTopPadding),
             proceedButton.leadingAnchor.constraint(equalTo: backButton.buttonView.trailingAnchor),
+            proceedButton.trailingAnchor.constraint(equalTo: helpButton.buttonView.leadingAnchor,
+                                                    constant: -Constants.helpButtonHorizontalPadding),
             proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
@@ -224,10 +231,9 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         proceedAction?()
     }
 
-    // MARK: Temporary remove help action
-//    @objc private func helpButtonClicked() {
-//        helpAction?()
-//    }
+    @objc private func helpButtonClicked() {
+        helpAction?()
+    }
 
     @objc private func backButtonClicked() {
         backAction?()
@@ -248,5 +254,6 @@ extension DefaultSkontoBottomNavigationBar {
         static let totalValueLabelTopPadding: CGFloat = 4
         static let savingsAmountLabelTopPadding: CGFloat = 2
         static let tabletWidthMultiplier: CGFloat = 0.7
+        static let helpButtonHorizontalPadding: CGFloat = 5
     }
 }
