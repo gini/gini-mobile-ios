@@ -5,44 +5,45 @@
 //
 
 
-import GiniCaptureSDK
+
 import XCTest
+@testable import GiniCaptureSDK
+@testable import GiniBankSDK
 
 class GiniBankSDKExampleUITests: XCTestCase {
 
     var app: XCUIApplication!
+    var mainScreen: MainScreen!
+    var helpScreen: HelpScreen!
+    var settingScreen: SettingScreen!
+    var captureScreen: CaptureScreen!
+    var errorScreen: ErrorScreen!
+    var cameraAccessScreen: CameraAccessScreen!
+    var onboadingScreen: OnboardingScreen!
     
     override func setUpWithError() throws {
-    
-        try super.setUpWithError()
+        
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["testing"]
+        app.launchArguments = ["-testing"]
         app.launch()
+        //Initialize Identifiers based on current locale
+        let currentLocale = Locale.current.languageCode ?? "en"
+        mainScreen = MainScreen(app: app, locale: currentLocale)
+        helpScreen = HelpScreen(app: app, locale: currentLocale)
+        settingScreen = SettingScreen(app: app, locale: currentLocale)
+        captureScreen = CaptureScreen(app: app, locale: currentLocale)
+        errorScreen = ErrorScreen(app: app, locale: currentLocale)
+        cameraAccessScreen = CameraAccessScreen(app: app, locale: currentLocale)
+        onboadingScreen = OnboardingScreen(app: app, locale: currentLocale)
+        
     }
     
-    override func tearDown() {
+    override func tearDownWithError() throws  {
         let screenshot = XCUIScreen.main.screenshot()
         let attachment = XCTAttachment(screenshot: screenshot)
         attachment.lifetime = .deleteOnSuccess
         add(attachment)
         app.terminate()
-        super.tearDown()
-    }
-    
-    func initializeMainScreen() -> MainScreen {
-        return MainScreen(app: app)
-    }
-    
-    func initializeSettingScreen() -> SettingScreen {
-        return SettingScreen(app: app)
-    }
-    
-    func initializeCaptureScreen() -> CaptureScreen {
-        return CaptureScreen(app: app)
-    }
-    
-    func initializeHelpScreen() -> HelpScreen {
-        return HelpScreen(app: app)
     }
 }
