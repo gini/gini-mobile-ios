@@ -38,8 +38,8 @@ public final class GiniHealthAPI {
      * The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
      *
      */
-    public func paymentService() -> PaymentService {
-        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: .default, apiVersion: Constants.defaultVersionAPI)
+    public func paymentService(apiDomain: APIDomain = .default, apiVersion: Int = Constants.defaultVersionAPI) -> PaymentService {
+        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: apiDomain, apiVersion: apiVersion)
     }
     
     /// Removes the user stored credentials. Recommended when logging a different user in your app.
@@ -109,13 +109,13 @@ extension GiniHealthAPI {
 
             // Initialize GiniHealthAPILib
             switch api {
-            case .default:
+            case .default, .merchant:
                 let sessionManager = SessionManager(userDomain: userApi,
                                                     sessionDelegate: self.sessionDelegate)
                 return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, 
                                                                              apiVersion: apiVersion),
                                      paymentService: PaymentService(sessionManager: sessionManager,
-                                                                    apiDomain: .default,
+                                                                    apiDomain: api,
                                                                     apiVersion: apiVersion))
             case let .custom(_, tokenSource):
                 var sessionManager: SessionManager
