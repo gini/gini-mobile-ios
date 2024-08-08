@@ -10,13 +10,29 @@ import XCTest
 import GiniCaptureSDK
 
 public class MainScreen {
+    
     let app: XCUIApplication
+    let configurationButton: XCUIElement
+    let allowButton: XCUIElement
     let photoPaymentButton: XCUIElement
     let cameraIconButton: XCUIElement
-    let configurationButton: XCUIElement
+    let dontAllowButton: XCUIElement
+    let allowFullAccess: XCUIElement
     
-    public init(app: XCUIApplication) {
+    public init(app: XCUIApplication, locale: String) {
         self.app = app
+        switch locale  {
+        case "en":
+            allowButton = app.buttons["Allow"]
+            dontAllowButton = app.buttons["Don't Allow"]
+            allowFullAccess = app.buttons["Allow Full Access"]
+        case "de":
+            allowButton = app.buttons["OK"]
+            dontAllowButton = app.buttons["Nicht erlauben"]
+            allowFullAccess = app.buttons["Zugriff auf alle Fotos erlauben"]
+        default:
+            fatalError("Locale \(locale) is not supported")
+        }
         photoPaymentButton = app.buttons[MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue]
         cameraIconButton = app.buttons[MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue]
         configurationButton = app.buttons[MainScreenAccessibilityIdentifiers.metaInformationLabel.rawValue]
@@ -47,21 +63,82 @@ public class MainScreen {
                         errorMessage: "Text mismatch in the main screen subheading")
     }
     
-    public func tapPhotoPaymentButton() {
-        let captureScreen = CaptureScreen(app: app)
-        if photoPaymentButton.waitForExistence(timeout: 10) {
-            photoPaymentButton.tap()
-            captureScreen.tapCancelButton()
+    public func handleCameraPermission(answer: Bool) {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        springboard.waitForExistence(timeout: 5)
+            if answer == true {
+                if allowButton.exists {
+                    allowButton.tap()
+                }
+            } else {
+                if dontAllowButton.exists {
+                    dontAllowButton.tap()
+                }
+            }
+        }
+    
+    public func handlePhotoPermission(answer: Bool) {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        springboard.waitForExistence(timeout: 5)
+            if answer == true {
+                if allowFullAccess.exists {
+                    allowFullAccess.tap()
+                }
+            } else {
+                if dontAllowButton.exists {
+                    dontAllowButton.tap()
+                }
+            }
+        }
+
+    func swipeToElement(element: XCUIElement, direction: String) {
+        var swipeCount = 0
+        let maxSwipes = 5
+        sleep(1) // Add a pause until all elements loaded
+          while !element.isHittable {
+            
+            if swipeCount >= maxSwipes {
+                XCTFail("Failed to find the element after \(maxSwipes) swipes.")
+                break
+            }
+            
+            switch direction.lowercased() {
+            case "up":
+                app.swipeUp()
+            case "down":
+                app.swipeDown()
+            case "left":
+                app.swipeLeft()
+            case "right":
+                app.swipeRight()
+            default:
+                XCTFail("Invalid swipe direction. Use 'up', 'down', 'left', or 'right'.")
+                return
+            }
+            
+            swipeCount += 1
+            sleep(2) // Add a pause between swipes to allow UI to update
+        }
+    }
+
+    func handleConfigurationSetting(element: XCUIElement, enabled: Bool) {
+        let currentValue = element.value as? String
+        if enabled == true && currentValue == "0" {
+            element.tap()
+        } else if enabled == false && currentValue == "1" {
+            element.tap()
         }
     }
     
-    public func tapCameraIconButton() {
-        let captureScreen = CaptureScreen(app: app)
-        cameraIconButton.tap()
-        captureScreen.tapCancelButton()
-    }
-    
-    public func tapConfigurationButton() {
-        configurationButton.tap()
-    }
+    func tapSwitchNextToTextElement(text: String) {
+            // Locate the cell containing the specified text element
+            let cell = app.cells.containing(.staticText, identifier: text).element
+            XCTAssertTrue(cell.exists, "Cell containing text '\(text)' does not exist")
+            // Locate the switch within the found cell
+            let switchElement = cell.switches.element
+            XCTAssertTrue(switchElement.exists, "Switch next to text '\(text)' does not exist")
+            // Tap the switch
+            switchElement.tap()
+        }
 }
+
