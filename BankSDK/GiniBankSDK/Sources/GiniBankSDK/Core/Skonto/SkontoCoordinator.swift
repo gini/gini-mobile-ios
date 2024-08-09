@@ -12,6 +12,8 @@ protocol SkontoCoordinatorDelegate: AnyObject {
     func didCancelAnalysis(_ coordinator: SkontoCoordinator)
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
                            _ editedExtractionResult: ExtractionResult?)
+    func didTapInvoicePreview(_ coordinator: SkontoCoordinator,
+                              _ viewModel: SkontoViewModel)
 }
 
 final class SkontoCoordinator: Coordinator {
@@ -46,6 +48,10 @@ final class SkontoCoordinator: Coordinator {
 }
 
 extension SkontoCoordinator: SkontoViewModelDelegate {
+    func didTapInvoicePreview(on viewModel: SkontoViewModel) {
+        delegate?.didTapInvoicePreview(self, viewModel)
+    }
+
     // MARK: Temporary remove help action
 //    func didTapHelp() {
 //        // Should display Help screen
