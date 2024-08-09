@@ -33,6 +33,10 @@ final class CameraPreviewViewController: UIViewController {
         }
     }
 
+    var hasInitialized: Bool {
+        camera.hasInitialized
+    }
+
     var isFlashSupported: Bool {
         return camera.isFlashSupported && giniConfiguration.flashToggleEnabled
     }
@@ -133,7 +137,9 @@ final class CameraPreviewViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         camera.start()
-        startLoadingIndicator()
+        if !hasInitialized {
+            startLoadingIndicator()
+        }
     }
 
     override func viewDidLoad() {
@@ -314,7 +320,6 @@ final class CameraPreviewViewController: UIViewController {
                 self.notAuthorizedView?.isHidden = true
                 self.delegate?.cameraDidSetUp(self, camera: self.camera)
             }
-
             self.stopLoadingIndicator()
         }
 
