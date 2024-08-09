@@ -19,6 +19,8 @@ final class CorrectQRCodeTextContainer: UIView {
         label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.correct",
                                                       comment: "QR Detected")
         label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 10 / label.font.pointSize
         return label
     }()
 
