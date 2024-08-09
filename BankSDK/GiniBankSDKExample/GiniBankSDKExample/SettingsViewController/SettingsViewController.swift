@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import GiniBankAPILibrary
 import GiniBankSDK
 import GiniCaptureSDK
 import AVFoundation
 
 protocol SettingsViewControllerDelegate: AnyObject {
 	func didTapCloseButton()
+    func didTapSaveCredentialsButton(clientId: String, clientSecret: String)
 }
 
 final class SettingsViewController: UIViewController {
@@ -19,7 +21,9 @@ final class SettingsViewController: UIViewController {
 	@IBOutlet private weak var navigationBarItem: UINavigationItem!
 	@IBOutlet private weak var navigationBar: UINavigationBar!
 	@IBOutlet private weak var tableView: UITableView!
-	
+
+    private let client: Client?
+
 	var contentData = [CellType]()
 	let giniConfiguration: GiniBankConfiguration
 	var settingsButtonStates: SettingsButtonStates
@@ -29,9 +33,11 @@ final class SettingsViewController: UIViewController {
 	
 	// MARK: - Initializers
 	
-	init(giniConfiguration: GiniBankConfiguration,
+    init(client: Client? = nil,
+         giniConfiguration: GiniBankConfiguration,
 		 settingsButtonStates: SettingsButtonStates,
 		 documentValidationsState: DocumentValidationsState) {
+        self.client = client
 		self.giniConfiguration = giniConfiguration
 		self.settingsButtonStates = settingsButtonStates
 		self.documentValidationsState = documentValidationsState
@@ -46,6 +52,12 @@ final class SettingsViewController: UIViewController {
         super.viewDidLoad()
 		configureNavigationBar()
 		configureTableView()
+        setupGestures()
+    }
+
+    private func setupGestures() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
     }
 
 	private func configureNavigationBar() {
@@ -75,10 +87,12 @@ final class SettingsViewController: UIViewController {
 		tableView.register(SwitchOptionTableViewCell.self)
 		tableView.register(SegmentedOptionTableViewCell.self)
 		tableView.register(InfoTableViewCell.self)
+        tableView.register(CredentialsTableViewCell.self)
 
 		var contentData = [CellType]()
 		
 		contentData.append(.info(message: "Please relaunch the app to use the default GiniConfiguration values."))
+        contentData.append(.credentials(data: .init(clientId: client?.id ?? "", secretId: client?.secret ?? "")))
 		contentData.append(.switchOption(data: .init(type: .openWith,
 													 isSwitchOn: giniConfiguration.openWithEnabled)))
 		contentData.append(.switchOption(data: .init(type: .qrCodeScanning,
@@ -505,12 +519,23 @@ final class SettingsViewController: UIViewController {
 		cell.set(message: message)
 		return cell
 	}
-	
+
+    private func cell(for model: CredentialsModel) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell() as CredentialsTableViewCell
+        cell.set(data: model)
+        cell.delegate = self
+        return cell
+    }
+
 	// MARK: - Actions
 	
 	@objc func didSelectCloseButton() {
 		delegate?.didTapCloseButton()
 	}
+
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -533,6 +558,8 @@ extension SettingsViewController: UITableViewDataSource {
 			return cell(for: data, at: row)
 		case .segmentedOption(let data):
 			return cell(for: data, at: row)
+        case .credentials(let data):
+            return cell(for: data)
 		}
 	}
 }
@@ -563,6 +590,15 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
             default: return
         }
 	}
+}
+
+// MARK: - CredentialsTableViewCellDelegate
+
+extension SettingsViewController: CredentialsTableViewCellDelegate {
+    func didTapSaveButton(clientId: String, clientSecret: String) {
+        dismissKeyboard()
+        delegate?.didTapSaveCredentialsButton(clientId: clientId, clientSecret: clientSecret)
+    }
 }
 
 extension SettingsViewController: GiniCaptureErrorLoggerDelegate {
