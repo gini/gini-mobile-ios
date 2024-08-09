@@ -21,7 +21,7 @@ final class SkontoHelpItemView: UIView {
         titleLabel.textColor = .giniColorScheme().text.primary.uiColor()
         titleLabel.font = configuration.textStyleFonts[.bodyBold]
         titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.numberOfLines = 0
+        titleLabel.numberOfLines = Constants.labelNumberOfLines
         return titleLabel
     }()
 
@@ -97,5 +97,6 @@ private extension SkontoHelpItemView {
         static let separatorViewHeight: CGFloat = 1
         static let separatorLeadingPadding: CGFloat = 80
         static let separatorTrailingPadding: CGFloat = 16
+        static let labelNumberOfLines: Int = 0
     }
 }

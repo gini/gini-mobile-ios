@@ -15,7 +15,7 @@ class SkontoHelpHeaderView: UIView {
         titleLabel.textColor = .giniColorScheme().text.primary.uiColor()
         titleLabel.font = configuration.textStyleFonts[.bodyBold]
         titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.numberOfLines = 0
+        titleLabel.numberOfLines = Constants.labelNumberOfLines
         return titleLabel
     }()
 
@@ -27,7 +27,7 @@ class SkontoHelpHeaderView: UIView {
         titleLabel.textColor = .giniColorScheme().text.secondary.uiColor()
         titleLabel.font = configuration.textStyleFonts[.body]
         titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.numberOfLines = 0
+        titleLabel.numberOfLines = Constants.labelNumberOfLines
         return titleLabel
     }()
 
@@ -62,5 +62,6 @@ class SkontoHelpHeaderView: UIView {
 private extension SkontoHelpHeaderView {
     enum Constants {
         static let verticalPadding: CGFloat = 12
+        static let labelNumberOfLines: Int = 0
     }
 }
