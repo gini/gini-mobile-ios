@@ -254,6 +254,6 @@ extension DefaultSkontoBottomNavigationBar {
         static let totalValueLabelTopPadding: CGFloat = 4
         static let savingsAmountLabelTopPadding: CGFloat = 2
         static let tabletWidthMultiplier: CGFloat = 0.7
-        static let helpButtonHorizontalPadding: CGFloat = 5
+        static let helpButtonHorizontalPadding: CGFloat = 25
     }
 }
