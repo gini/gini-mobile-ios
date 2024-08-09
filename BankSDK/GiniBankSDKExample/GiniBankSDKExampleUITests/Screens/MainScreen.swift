@@ -13,26 +13,11 @@ public class MainScreen {
     
     let app: XCUIApplication
     let configurationButton: XCUIElement
-    let allowButton: XCUIElement
     let photoPaymentButton: XCUIElement
     let cameraIconButton: XCUIElement
-    let dontAllowButton: XCUIElement
-    let allowFullAccess: XCUIElement
     
     public init(app: XCUIApplication, locale: String) {
         self.app = app
-        switch locale  {
-        case "en":
-            allowButton = app.buttons["Allow"]
-            dontAllowButton = app.buttons["Don't Allow"]
-            allowFullAccess = app.buttons["Allow Full Access"]
-        case "de":
-            allowButton = app.buttons["OK"]
-            dontAllowButton = app.buttons["Nicht erlauben"]
-            allowFullAccess = app.buttons["Zugriff auf alle Fotos erlauben"]
-        default:
-            fatalError("Locale \(locale) is not supported")
-        }
         photoPaymentButton = app.buttons[MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue]
         cameraIconButton = app.buttons[MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue]
         configurationButton = app.buttons[MainScreenAccessibilityIdentifiers.metaInformationLabel.rawValue]
@@ -63,30 +48,58 @@ public class MainScreen {
                         errorMessage: "Text mismatch in the main screen subheading")
     }
     
+    /*
+     This method doesn't work if identifiers outside func
+     in future replace with addUIInterruptionMonitor(withDescription:handler:)
+     */
     public func handleCameraPermission(answer: Bool) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         springboard.waitForExistence(timeout: 5)
+        
+        let allowBtn = springboard.buttons["Allow"]
+        let allowBtnDE = springboard.buttons["OK"]
+        let dontAllowBtn = springboard.buttons["Don’t Allow"]
+        let dontAllowBtnDE = springboard.buttons["Nicht erlauben"]
+        
             if answer == true {
-                if allowButton.exists {
-                    allowButton.tap()
+                if allowBtn.exists {
+                    allowBtn.tap()
+                } else if allowBtnDE.exists {
+                    allowBtnDE.tap()
                 }
             } else {
-                if dontAllowButton.exists {
-                    dontAllowButton.tap()
+                if dontAllowBtn.exists {
+                    dontAllowBtn.tap()
+                } else if allowBtnDE.exists {
+                    dontAllowBtnDE.tap()
                 }
             }
         }
-    
+
+    /*
+     This method doesn't work if identifiers outside func
+     in future replace with addUIInterruptionMonitor(withDescription:handler:)
+     */
     public func handlePhotoPermission(answer: Bool) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         springboard.waitForExistence(timeout: 5)
+        
+        let allowFullAccess =  springboard.buttons["Allow Full Access"]
+        let allowFullAccessDE =  springboard.buttons["Zugriff auf alle Fotos erlauben"]
+        let dontAllowBtn = springboard.buttons["Don’t Allow"]
+        let dontAllowBtnDE = springboard.buttons["Nicht erlauben"]
+        
             if answer == true {
                 if allowFullAccess.exists {
                     allowFullAccess.tap()
+                } else if allowFullAccessDE.exists {
+                    allowFullAccessDE.tap()
                 }
             } else {
-                if dontAllowButton.exists {
-                    dontAllowButton.tap()
+                if dontAllowBtn.exists {
+                    dontAllowBtn.tap()
+                } else if dontAllowBtnDE.exists {
+                    dontAllowBtnDE.tap()
                 }
             }
         }
