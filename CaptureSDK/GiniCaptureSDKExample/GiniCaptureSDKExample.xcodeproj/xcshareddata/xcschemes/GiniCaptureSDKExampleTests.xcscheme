@@ -52,6 +52,16 @@
                ReferencedContainer = "container:GiniCaptureSDKExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0A3B96511D478BF700BFEF05"
+               BuildableName = "GiniCaptureSDKExampleUITests.xctest"
+               BlueprintName = "GiniCaptureSDKExampleUITests"
+               ReferencedContainer = "container:GiniCaptureSDKExample.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -92,6 +102,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "607FACE41AFB9204008FA782"
+            BuildableName = "GiniCaptureSDKExampleTests.xctest"
+            BlueprintName = "GiniCaptureSDKExampleTests"
+            ReferencedContainer = "container:GiniCaptureSDKExample.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
