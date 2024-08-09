@@ -15,7 +15,7 @@ class SkontoHelpFooterView: UIView {
         titleLabel.textColor = .giniColorScheme().text.secondary.uiColor()
         titleLabel.font = configuration.textStyleFonts[.body]
         titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.numberOfLines = 0
+        titleLabel.numberOfLines = Constants.labelNumberOfLines
         return titleLabel
     }()
 
@@ -38,5 +38,11 @@ class SkontoHelpFooterView: UIView {
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+    }
+}
+
+private extension SkontoHelpFooterView {
+    enum Constants {
+        static let labelNumberOfLines: Int = 0
     }
 }
