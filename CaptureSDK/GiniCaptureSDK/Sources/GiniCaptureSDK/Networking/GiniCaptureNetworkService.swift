@@ -28,10 +28,10 @@ public protocol GiniCaptureNetworkService: AnyObject  {
     func layout(for document: Document,
                 completion: @escaping (Result<Document.Layout, GiniError>) -> Void)
 
-    func pagePreview(for document: Document,
-                     pageNumber: Int,
-                     size: Document.Page.Size,
-                     completion: @escaping (Result<Data, GiniError>) -> Void)
+    func documentPage(for document: Document,
+                      pageNumber: Int,
+                      sizeVariant: GiniBankAPILibrary.Document.Layout.SizeVariant,
+                      completion: @escaping (Result<Data, GiniError>) -> Void)
 }
 
 /// Extension for `GiniCaptureNetworkService` protocol to provide default implementations
@@ -48,17 +48,17 @@ public extension GiniCaptureNetworkService {
         // Default implementation is empty
     }
     /**
-     *  Retrieves the page preview of a document for a given page and size
+     *  Retrieves the page data of a document for a specified page number and size variant
      *
-     * - Parameter document:            Document to get the preview for
-     * - Parameter pageNumber:          The document's page number
-     * - Parameter size:                The document's page size
-     * - Parameter completion:          A completion callback, returning the requested page preview on success
-     */
-    func pagePreview(for document: Document,
-                     pageNumber: Int,
-                     size: Document.Page.Size,
-                     completion: @escaping CompletionResult<Data>) {
+     * - Parameter document:            The document from which to retrieve the page data
+     * - Parameter pageNumber:          The page number within the document to retrieve
+     * - Parameter sizeVariant:         The size variant of the page to retrieve (e.g., large, medium)
+     * - Parameter completion:          A completion callback that returns a `Result<Data, GiniError>`, with the requested page data on success, or an error on failure
+    */
+    func documentPage(for document: Document,
+                      pageNumber: Int,
+                      sizeVariant: GiniBankAPILibrary.Document.Layout.SizeVariant,
+                      completion: @escaping (Result<Data, GiniError>) -> Void) {
         // Default implementation is empty
     }
 }
@@ -81,7 +81,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
             case .failure(let error):
                 let message = "Error deleting \(document.sourceClassification.rawValue) document with" +
                     " id: \(document.id)"
-                self.handleError(message: message, error: error)
+                self.logError(message: message, error: error)
                 completion(.failure(error))
             }
         }
@@ -110,7 +110,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                                              cancellationToken: cancellationToken,
                                              completion: completion)
                 case let .failure(error):
-                    self.handleError(message: "Composite document creation failed with error: \(error)", 
+                    self.logError(message: "Composite document creation failed with error: \(error)", 
                                      error: error)
                     completion(.failure(error))
                 }
@@ -134,7 +134,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                     "for vision document \(document.id)", event: "📄")
                 completion(.success(createdDocument))
             case let .failure(error):
-                self.handleError(message: "Document creation failed with error: \(error)", error: error)
+                self.logError(message: "Document creation failed with error: \(error)", error: error)
                 completion(.failure(error))
             }
         }
@@ -166,31 +166,31 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
         Log(message: "Getting layout for document with id: \(document.id) ", event: "📝")
         documentService.layout(for: document) { result in
             switch result {
-                case let .success(layout):
-                    completion(.success(layout))
-                case let .failure(error):
-                    self.handleError(message: "Document layout retrieval encountered an error: \(error)", 
-                                     error: error)
-                    completion(.failure(error))
+            case let .success(layout):
+                completion(.success(layout))
+            case let .failure(error):
+                self.logError(message: "Document layout retrieval encountered an error: \(error)",
+                              error: error)
+                completion(.failure(error))
             }
         }
     }
 
-    func pagePreview(for document: Document,
-                     pageNumber: Int, 
-                     size: GiniBankAPILibrary.Document.Page.Size,
-                     completion: @escaping DocumentPagePreviewCompletion) {
-        Log(message: "Getting page preview for document with id: \(document.id) ", event: "📝")
-        documentService.pagePreview(for: document,
-                                    pageNumber: pageNumber,
-                                    size: size) { result in
+    func documentPage(for document: Document,
+                      pageNumber: Int,
+                      sizeVariant: GiniBankAPILibrary.Document.Layout.SizeVariant,
+                      completion: @escaping DocumentPagePreviewCompletion) {
+        Log(message: "Getting page for document with id: \(document.id) ", event: "📝")
+        documentService.documentPage(for: document,
+                                     pageNumber: pageNumber,
+                                     sizeVariant: sizeVariant) { result in
             switch result {
-                case let .success(pageData):
-                    completion(.success(pageData))
-                case let .failure(error):
-                    self.handleError(message: "Document page preview retrieval encountered an error: \(error)", 
-                                     error: error)
-                    completion(.failure(error))
+            case let .success(pageData):
+                completion(.success(pageData))
+            case let .failure(error):
+                self.logError(message: "Document page retrieval encountered an error: \(error)",
+                              error: error)
+                completion(.failure(error))
             }
         }
     }
@@ -220,7 +220,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
             }
     }
 
-    private func handleError(message: String, error: GiniError) {
+    private func logError(message: String, error: GiniError) {
         Log(message: message, event: .error)
         let errorLog = ErrorLog(description: message, error: error)
         GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
