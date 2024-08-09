@@ -1,5 +1,5 @@
 //
-//  InvoicePreviewViewModel.swift
+//  DocumentPagesViewModel.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import UIKit
 
 // Structure to represent the size of each document page
-struct InvoicePageSize {
+struct DocumentPageSize {
     /// Page width
     let sizeX: Double
     /// Page height
@@ -21,16 +21,16 @@ struct CornerBoundingBoxes {
     var bottomRight: ExtractionBoundingBox
 }
 
-class InvoicePreviewViewModel {
+class DocumentPagesViewModel {
     let images: [UIImage]
-    let originalSizes: [InvoicePageSize]
+    let originalSizes: [DocumentPageSize]
     var extractionBoundingBoxes: [ExtractionBoundingBox]
 
     private let highlightPadding: CGFloat = 10.0
 
     // Initializer for the class
     init(images: [UIImage],
-         originalSizes: [InvoicePageSize],
+         originalSizes: [DocumentPageSize],
          extractionBoundingBoxes: [ExtractionBoundingBox]) {
         self.images = images
         self.originalSizes = originalSizes
@@ -39,7 +39,7 @@ class InvoicePreviewViewModel {
 
     // Drawing the rectangles
     func drawBoundingBoxes(on image: UIImage,
-                           with size: InvoicePageSize,
+                           with size: DocumentPageSize,
                            boundingBoxes: [ExtractionBoundingBox]) -> UIImage {
         let imageHeight = image.size.height
         let imageWidth = image.size.width

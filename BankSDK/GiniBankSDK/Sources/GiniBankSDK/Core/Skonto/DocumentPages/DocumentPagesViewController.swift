@@ -1,5 +1,5 @@
 //
-//  InvoicePreviewViewController.swift
+//  DocumentPagesViewController.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import GiniCaptureSDK
 import UIKit
 
-final class InvoicePreviewViewController: UIViewController {
+final class DocumentPagesViewController: UIViewController {
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -32,7 +32,7 @@ final class InvoicePreviewViewController: UIViewController {
         return closeButton
     }()
 
-    private var viewModel: InvoicePreviewViewModel?
+    private var viewModel: DocumentPagesViewModel?
 
     // MARK: - Init
     init() {
@@ -45,7 +45,7 @@ final class InvoicePreviewViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setData(viewModel: InvoicePreviewViewModel) {
+    func setData(viewModel: DocumentPagesViewModel) {
         self.viewModel = viewModel
         showProcessedImages()
     }
@@ -53,7 +53,7 @@ final class InvoicePreviewViewController: UIViewController {
     private func showProcessedImages() {
         guard let viewModel else { return }
         // Process each image and draw the corresponding bounding area
-        
+
         imageView.image = viewModel.processImages()[0]
     }
 
@@ -89,7 +89,7 @@ final class InvoicePreviewViewController: UIViewController {
     }
 }
 
-private extension InvoicePreviewViewController {
+private extension DocumentPagesViewController {
     enum Constants {
         static let padding: CGFloat = 24
         static let spacing: CGFloat = 36
