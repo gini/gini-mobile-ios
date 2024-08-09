@@ -450,6 +450,7 @@ final class CameraViewController: UIViewController {
     }
 
     fileprivate func didPick(_ document: GiniCaptureDocument) {
+        navigationItem.rightBarButtonItem?.isEnabled = true
         delegate?.camera(self, didCapture: document)
     }
 
@@ -576,6 +577,7 @@ final class CameraViewController: UIViewController {
                                    screenName: .camera,
                                    properties: [GiniAnalyticsProperty(key: .qrCodeValid, value: true)])
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: true)
+        navigationItem.rightBarButtonItem?.isEnabled = false
     }
 
     private func showInvalidQRCodeFeedback() {
