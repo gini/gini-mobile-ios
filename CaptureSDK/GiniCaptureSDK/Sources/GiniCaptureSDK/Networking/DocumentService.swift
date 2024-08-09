@@ -204,21 +204,21 @@ public final class DocumentService: DocumentServiceProtocol {
         }
     }
 
-    public func pagePreview(pageNumber: Int,
-                            size: GiniBankAPILibrary.Document.Page.Size,
-                            completion: @escaping DocumentPagePreviewCompletion) {
+    public func documentPage(pageNumber: Int,
+                             sizeVariant: Document.Layout.SizeVariant,
+                             completion: @escaping DocumentPagePreviewCompletion){
         guard let document = document else {
-            Log(message: "Cannot get document document page", event: .error)
+            Log(message: "Cannot get document page", event: .error)
             return
         }
-        captureNetworkService.pagePreview(for: document ,
-                                          pageNumber: pageNumber,
-                                          size: size) { result in
+        captureNetworkService.documentPage(for: document,
+                                           pageNumber: pageNumber,
+                                           sizeVariant: sizeVariant) { result in
             switch result {
             case .success(let pageData):
                 completion(.success(pageData))
             case .failure(let error):
-                let message = "Failed to get page preview for document with id: \(document.id) error: \(error)"
+                let message = "Failed to get page for document with id: \(document.id) error: \(error)"
                 Log(message: message, event: .error)
                 DispatchQueue.main.async {
                     guard errorOccurred == false else {
