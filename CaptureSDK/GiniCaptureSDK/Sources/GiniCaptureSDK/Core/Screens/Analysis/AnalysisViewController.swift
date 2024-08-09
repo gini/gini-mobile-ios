@@ -18,9 +18,7 @@ import UIKit
      
      - parameter message: The error type to be displayed.
      */
-    func displayError(errorType: ErrorType,
-                      animated: Bool
-    )
+    func displayError(errorType: ErrorType, animated: Bool)
 
     /**
      In case that the `GiniCaptureDocument` analysed is an image it will display a no results screen
