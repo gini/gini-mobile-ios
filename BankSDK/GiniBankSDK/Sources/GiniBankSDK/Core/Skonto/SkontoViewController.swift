@@ -8,17 +8,17 @@ import UIKit
 import GiniCaptureSDK
 
 final class SkontoViewController: UIViewController {
-    private lazy var invoicePreviewView: SkontoInvoicePreviewView = {
-        let view = SkontoInvoicePreviewView(viewModel: viewModel)
+    private lazy var documentPreviewView: SkontoDocumentPreviewView = {
+        let view = SkontoDocumentPreviewView(viewModel: viewModel)
         return view
     }()
 
-    private lazy var invoicePreviewContainerView: UIView = {
+    private lazy var documentPreviewContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(invoicePreviewTapped))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(documentPreviewTapped))
         view.addGestureRecognizer(tapGesture)
         return view
     }()
@@ -143,10 +143,10 @@ final class SkontoViewController: UIViewController {
         }
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
-        stackView.addArrangedSubview(invoicePreviewContainerView)
+        stackView.addArrangedSubview(documentPreviewContainerView)
         stackView.addArrangedSubview(withDiscountContainerView)
         stackView.addArrangedSubview(withoutDiscountContainerView)
-        invoicePreviewContainerView.addSubview(invoicePreviewView)
+        documentPreviewContainerView.addSubview(documentPreviewView)
         withDiscountContainerView.addSubview(withDiscountHeaderView)
         withDiscountContainerView.addSubview(infoBannerView)
         withDiscountContainerView.addSubview(withDiscountPriceView)
@@ -197,14 +197,14 @@ final class SkontoViewController: UIViewController {
 
     private func setupInvoiceGroupViewConstraints() {
         NSLayoutConstraint.activate([
-            invoicePreviewView.topAnchor.constraint(equalTo: invoicePreviewContainerView.topAnchor, constant:
+            documentPreviewView.topAnchor.constraint(equalTo: documentPreviewContainerView.topAnchor, constant:
                                                         Constants.verticalPadding),
-            invoicePreviewView.leadingAnchor.constraint(equalTo: invoicePreviewContainerView.leadingAnchor,
-                                                        constant: Constants.horizontalPadding),
-            invoicePreviewView.trailingAnchor.constraint(equalTo: invoicePreviewContainerView.trailingAnchor,
-                                                         constant: -Constants.horizontalPadding),
-            invoicePreviewView.bottomAnchor.constraint(equalTo: invoicePreviewContainerView.bottomAnchor,
-                                                       constant: -Constants.verticalPadding)
+            documentPreviewView.leadingAnchor.constraint(equalTo: documentPreviewContainerView.leadingAnchor,
+                                                         constant: Constants.horizontalPadding),
+            documentPreviewView.trailingAnchor.constraint(equalTo: documentPreviewContainerView.trailingAnchor,
+                                                          constant: -Constants.horizontalPadding),
+            documentPreviewView.bottomAnchor.constraint(equalTo: documentPreviewContainerView.bottomAnchor,
+                                                        constant: -Constants.verticalPadding)
         ])
     }
 
@@ -342,8 +342,8 @@ final class SkontoViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    @objc private func invoicePreviewTapped() {
-        viewModel.invoicePreviewTapped()
+    @objc private func documentPreviewTapped() {
+        viewModel.documentPreviewTapped()
     }
 }
 

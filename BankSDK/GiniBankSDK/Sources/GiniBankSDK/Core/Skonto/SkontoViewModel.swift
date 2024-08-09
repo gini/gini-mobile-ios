@@ -12,7 +12,7 @@ protocol SkontoViewModelDelegate: AnyObject {
 //    func didTapHelp()
     func didTapBack()
     func didTapProceed(on viewModel: SkontoViewModel)
-    func didTapInvoicePreview(on viewModel: SkontoViewModel)
+    func didTapDocumentPreview(on viewModel: SkontoViewModel)
 }
 
 class SkontoViewModel {
@@ -140,8 +140,8 @@ class SkontoViewModel {
         delegate?.didTapProceed(on: self)
     }
 
-    func invoicePreviewTapped() {
-        delegate?.didTapInvoicePreview(on: self)
+    func documentPreviewTapped() {
+        delegate?.didTapDocumentPreview(on: self)
     }
 
     // MARK: - ExtractionResult to send to customers
