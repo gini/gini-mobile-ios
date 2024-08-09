@@ -10,5 +10,6 @@ extension SettingsViewController {
 		case info(message: String)
 		case switchOption(data: SwitchOptionModel)
 		case segmentedOption(data: SegmentedOptionModel)
+        case credentials(data: CredentialsModel)
 	}
 }
