@@ -94,6 +94,8 @@ public class SkontoViewController: UIViewController {
     private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
+    private var hasShownAlert = false
+
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
         self.alertFactory = SkontoAlertFactory(viewModel: viewModel)
@@ -333,7 +335,8 @@ public class SkontoViewController: UIViewController {
     }
 
     @objc private func showAlertIfNeeded() {
-        guard let alert = alertFactory.createEdgeCaseAlert() else { return }
+        guard !hasShownAlert, let alert = alertFactory.createEdgeCaseAlert() else { return }
+        self.hasShownAlert = true
         present(alert, animated: true, completion: nil)
     }
 }
