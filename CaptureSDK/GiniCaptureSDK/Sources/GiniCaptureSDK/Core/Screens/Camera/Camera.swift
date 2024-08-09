@@ -19,6 +19,7 @@ protocol CameraProtocol: AnyObject {
     var didDetectIBANs: (([String]) -> Void)? { get set }
     var isFlashSupported: Bool { get }
     var isFlashOn: Bool { get set }
+    var hasInitialized: Bool { get }
 
     func captureStillImage(completion: @escaping (Data?, CameraError?) -> Void)
     func focus(withMode mode: AVCaptureDevice.FocusMode,
@@ -56,6 +57,7 @@ final class Camera: NSObject, CameraProtocol {
     var videoDeviceInput: AVCaptureDeviceInput?
     var videoDataOutput = AVCaptureVideoDataOutput()
     let videoDataOutputQueue = DispatchQueue(label: "ocr queue")
+    var hasInitialized: Bool { !session.inputs.isEmpty }
 
     lazy var isFlashSupported: Bool = {
         #if targetEnvironment(simulator)
