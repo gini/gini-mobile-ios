@@ -190,7 +190,43 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                     size: size,
                     completion: completion)
     }
-    
+
+    /**
+     *  Retrieves the page preview of a document for a given page
+     *
+     * - Parameter documentId:          Document id to get the preview for
+     * - Parameter pageNumber:          The document's page number starting from 1
+     * - Parameter completion:          A completion callback, returning the requested page preview as Data on success
+     */
+    public func preview(for documentId: String,
+                        pageNumber: Int,
+                        completion: @escaping CompletionResult<Data>) {
+
+        preview(resourceHandler: sessionManager.download,
+                with: documentId,
+                pageNumber: pageNumber,
+                completion: completion)
+    }
+
+    /**
+     *  Retrieves the page data of a document for a given page number and size variant
+     *
+     * - Parameter document:            The document from which to retrieve the page data
+     * - Parameter pageNumber:          The document's page number
+     * - Parameter sizeVariant:         The size variant of the page to retrieve (e.g., large, medium)
+     * - Parameter completion:          A completion callback, returning the requested page preview on success, or an error on failure
+     */
+    public func documentPage(for document: Document,
+                             pageNumber: Int,
+                             sizeVariant: Document.Layout.SizeVariant,
+                             completion: @escaping CompletionResult<Data>) {
+        documentPage(resourceHandler: sessionManager.download,
+                     in: document,
+                     pageNumber: pageNumber,
+                     sizeVariant: sizeVariant,
+                     completion: completion)
+    }
+
     /**
      *  Submits the analysis feedback for a given document.
      *
@@ -218,24 +254,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                                completion: @escaping CompletionResult<Void>) {
         submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions, and: compoundExtractions, completion: completion)
     }
-    
-    /**
-     *  Retrieves the page preview of a document for a given page
-     *
-     * - Parameter documentId:          Document id to get the preview for
-     * - Parameter pageNumber:          The document's page number starting from 1
-     * - Parameter completion:          A completion callback, returning the requested page preview as Data on success
-     */
-    public func preview(for documentId: String,
-                        pageNumber: Int,
-                        completion: @escaping CompletionResult<Data>) {
 
-        preview(resourceHandler: sessionManager.download,
-                with: documentId,
-                pageNumber: pageNumber,
-                completion: completion)
-    }
-    
     /**
      * Logs an error event.
      *
