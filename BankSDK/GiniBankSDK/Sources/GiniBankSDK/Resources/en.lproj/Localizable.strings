@@ -121,3 +121,13 @@
 "ginibank.skonto.alert.ok" = "Got it";
 "ginibank.skonto.invoice.title" = "Invoice";
 "ginibank.skonto.invoice.subtitle" = "Tap to view";
+
+"ginibank.skonto.help.screenTitle" = "Help";
+"ginibank.skonto.help.back" = "Skonto";
+"ginibank.skonto.help.header.title" = "Save money by paying promptly";
+"ginibank.skonto.help.header.subtitle" = "Many companies offer cash discounts, which are discounts for paying bills within a specified time frame. With our new feature, you can now:";
+"ginibank.skonto.help.content.item1" = "Use your camera to capture invoices with cash discounts";
+"ginibank.skonto.help.content.item2" = "Immediately identify discounted amounts and due dates";
+"ginibank.skonto.help.content.item3" = "Approve or adjust payment details";
+"ginibank.skonto.help.content.item4" = "Save money by paying promptly";
+"ginibank.skonto.help.footer.title" = "Snap a photo of your invoice and the app will automatically calculate the cash discount. Just review the details, confirm, and enjoy the savings!";

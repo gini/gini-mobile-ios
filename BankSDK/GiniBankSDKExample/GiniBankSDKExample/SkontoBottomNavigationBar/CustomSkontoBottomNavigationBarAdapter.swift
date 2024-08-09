@@ -9,8 +9,7 @@ import GiniBankSDK
 
 final class CustomSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter {
     private var proceedButtonCallback: (() -> Void)?
-    // MARK: Temporary remove help action
-//    private var helpButtonCallback: (() -> Void)?
+    private var helpButtonCallback: (() -> Void)?
     private var backButtonCallback: (() -> Void)?
     private var view: CustomSkontoBottomNavigationBar?
 
@@ -23,7 +22,7 @@ final class CustomSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAda
     }
     
     func setHelpButtonClickedActionCallback(_ callback: @escaping  () -> Void) {
-        // empty for now
+        helpButtonCallback = callback
     }
 
     func updateTotalPrice(priceWithCurrencyCode price: String?) {
@@ -48,7 +47,8 @@ final class CustomSkontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAda
 
     func injectedView() -> UIView {
         let navigationBar = CustomSkontoBottomNavigationBar(proceedAction: proceedButtonCallback,
-                                                             backAction: backButtonCallback)
+                                                            backAction: backButtonCallback,
+                                                            helpAction: helpButtonCallback)
         view = navigationBar
         return navigationBar
     }
