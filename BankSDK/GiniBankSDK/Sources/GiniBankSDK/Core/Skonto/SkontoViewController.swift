@@ -7,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-public class SkontoViewController: UIViewController {
+final class SkontoViewController: UIViewController {
     private lazy var invoicePreviewView: SkontoInvoicePreviewView = {
         let view = SkontoInvoicePreviewView(viewModel: viewModel)
         return view
@@ -18,6 +18,8 @@ public class SkontoViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(invoicePreviewTapped))
+        view.addGestureRecognizer(tapGesture)
         return view
     }()
 
@@ -104,14 +106,14 @@ public class SkontoViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         setupConstraints()
         setupKeyboardObservers()
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showAlertIfNeeded()
     }
@@ -338,6 +340,10 @@ public class SkontoViewController: UIViewController {
     @objc private func showAlertIfNeeded() {
         guard let alert = alertFactory.createEdgeCaseAlert() else { return }
         present(alert, animated: true, completion: nil)
+    }
+
+    @objc private func invoicePreviewTapped() {
+        viewModel.invoicePreviewTapped()
     }
 }
 
