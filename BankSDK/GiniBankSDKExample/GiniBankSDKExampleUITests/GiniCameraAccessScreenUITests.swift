@@ -31,6 +31,9 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         cameraAccessScreen.cancelButtonNavigation.tap()
         //Assert that Photopayment button is displayed
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
+        //Reset Camera Access
+        if #available(iOS 13.4, *) { app.resetAuthorizationStatus(for: .camera) }
+
     }
     
     func testCameraAccessScreenHelpButton() throws {
@@ -50,6 +53,8 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         cameraAccessScreen.helpButton.tap()
         //Assert that Help screen is displayed
         XCTAssertTrue(helpScreen.cameraBackButton.isHittable)
+        //Reset Camera Access
+        if #available(iOS 13.4, *) { app.resetAuthorizationStatus(for: .camera) }
     }
     
     func testCameraAccessScreenGiveAccessButton() throws {
@@ -70,5 +75,7 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         //Assert that Settings is opened
         let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
         XCTAssertTrue(settingsApp.staticTexts["GiniBankSDKExample"].exists)
+        //Reset Camera Access
+        if #available(iOS 13.4, *) { app.resetAuthorizationStatus(for: .camera) }
     }
 }
