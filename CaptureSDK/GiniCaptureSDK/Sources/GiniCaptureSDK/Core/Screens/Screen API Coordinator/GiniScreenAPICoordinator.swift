@@ -46,7 +46,6 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     public var giniConfiguration: GiniConfiguration
     public var pages: [GiniCapturePage] = []
     public weak var visionDelegate: GiniCaptureDelegate?
-
     // Resources
     fileprivate(set) lazy var cancelButtonResource =
         giniConfiguration.cancelButtonResource ??
