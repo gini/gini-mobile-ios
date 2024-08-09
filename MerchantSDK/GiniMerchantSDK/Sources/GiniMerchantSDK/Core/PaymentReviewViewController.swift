@@ -30,11 +30,12 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
     public weak var trackingDelegate: GiniMerchantTrackingDelegate?
 
-    public static func instantiate(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniMerchantTrackingDelegate? = nil, paymentComponentsController: PaymentComponentsController) -> PaymentReviewViewController {
+    public static func instantiate(with giniMerchant: GiniMerchant, document: Document?, extractions: [Extraction]?, paymentInfo: PaymentInfo?, selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniMerchantTrackingDelegate? = nil, paymentComponentsController: PaymentComponentsController) -> PaymentReviewViewController {
         let viewController = PaymentReviewViewController()
         let viewModel = PaymentReviewModel(with: giniMerchant,
                                            document: document,
                                            extractions: extractions,
+                                           paymentInfo: paymentInfo,
                                            selectedPaymentProvider: selectedPaymentProvider,
                                            paymentComponentsController: paymentComponentsController)
         viewController.model = viewModel
@@ -43,11 +44,12 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         return viewController
     }
 
-    public static func instantiate(with giniMerchant: GiniMerchant, data: DataForReview, selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniMerchantTrackingDelegate? = nil, paymentComponentsController: PaymentComponentsController) -> PaymentReviewViewController {
+    public static func instantiate(with giniMerchant: GiniMerchant, data: DataForReview?, paymentInfo: PaymentInfo?, selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniMerchantTrackingDelegate? = nil, paymentComponentsController: PaymentComponentsController) -> PaymentReviewViewController {
         let viewController = PaymentReviewViewController()
         let viewModel = PaymentReviewModel(with: giniMerchant,
-                                           document: data.document,
-                                           extractions: data.extractions,
+                                           document: data?.document,
+                                           extractions: data?.extractions,
+                                           paymentInfo: paymentInfo,
                                            selectedPaymentProvider: selectedPaymentProvider,
                                            paymentComponentsController: paymentComponentsController)
         viewController.model = viewModel
@@ -125,7 +127,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
         model?.viewModelDelegate = self
 
-        paymentInfoContainerView.model = PaymentReviewContainerViewModel(extractions: model?.extractions ?? [], selectedPaymentProvider: selectedPaymentProvider)
+        paymentInfoContainerView.model = PaymentReviewContainerViewModel(extractions: model?.extractions, paymentInfo: model?.paymentInfo, selectedPaymentProvider: selectedPaymentProvider)
     }
 
     override public func viewDidDisappear(_ animated: Bool) {
@@ -350,7 +352,7 @@ fileprivate extension PaymentReviewViewController {
         control.currentPageIndicatorTintColor = GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor()
         control.backgroundColor = screenBackgroundColor
         control.hidesForSinglePage = true
-        control.numberOfPages = model?.document.pageCount ?? 1
+        control.numberOfPages = model?.document?.pageCount ?? 1
         return control
     }
 
