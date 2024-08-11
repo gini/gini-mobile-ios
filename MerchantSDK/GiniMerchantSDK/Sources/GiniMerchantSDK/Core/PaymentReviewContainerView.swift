@@ -190,7 +190,6 @@ class PaymentReviewContainerView: UIView {
         buttonsStackView.addArrangedSubview(payInvoiceButton)
         buttonsView.addSubview(buttonsStackView)
 
-        bottomStackView.addArrangedSubview(UIView())
         bottomStackView.addArrangedSubview(poweredByGiniView)
         bottomView.addSubview(bottomStackView)
 
@@ -201,9 +200,8 @@ class PaymentReviewContainerView: UIView {
         paymentInfoStackView.addArrangedSubview(usageStackView)
         paymentInfoStackView.addArrangedSubview(buttonsView)
         paymentInfoStackView.addArrangedSubview(bottomView)
-        paymentInfoStackView.addArrangedSubview(UIView())
 
-        self.addSubview(paymentInfoStackView)
+        addSubview(paymentInfoStackView)
     }
 
     // MARK: Layout & Constraints
@@ -720,6 +718,6 @@ extension PaymentReviewContainerView {
         static let heightToolbar = 40.0
         static let stackViewSpacing = 10.0
         static let payInvoiceInactiveAlpha = 0.4
-        static let bottomViewHeight = 44.0
+        static let bottomViewHeight = 48.0
     }
 }
