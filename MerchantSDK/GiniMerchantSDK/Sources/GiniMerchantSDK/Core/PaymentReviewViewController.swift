@@ -304,7 +304,6 @@ fileprivate extension PaymentReviewViewController {
         mainView.addSubview(paymentInfoContainerView)
 
         NSLayoutConstraint.activate([
-            paymentInfoContainerView.heightAnchor.constraint(equalToConstant: Constants.inputContainerHeight),
             paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor),
             paymentInfoContainerView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
             paymentInfoContainerView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor)
@@ -490,7 +489,7 @@ extension PaymentReviewViewController {
         static let infoBarLabelPadding = 8.0
         static let pageControlHeight = 20.0
         static let collectionViewPadding = 10.0
-        static let inputContainerHeight = 375.0
+        static let inputContainerHeight = 325.0
         static let cornerRadius = 12.0
         static let moveHeightInfoBar = 32.0
     }
