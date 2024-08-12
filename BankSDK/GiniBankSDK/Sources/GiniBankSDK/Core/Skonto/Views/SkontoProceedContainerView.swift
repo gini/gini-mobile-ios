@@ -8,6 +8,13 @@ import UIKit
 import GiniCaptureSDK
 
 class SkontoProceedContainerView: UIView {
+
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private lazy var proceedButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -116,48 +123,55 @@ class SkontoProceedContainerView: UIView {
         backgroundColor = .giniColorScheme().bg.surface.uiColor()
         translatesAutoresizingMaskIntoConstraints = false
 
-        addSubview(dividerView)
-        addSubview(totalStringLabel)
-        addSubview(finalAmountToPayLabel)
-        addSubview(skontoBadgeView)
-        addSubview(savingsAmountLabel)
-        addSubview(proceedButton)
+        addSubview(contentView)
+
+        contentView.addSubview(dividerView)
+        contentView.addSubview(totalStringLabel)
+        contentView.addSubview(finalAmountToPayLabel)
+        contentView.addSubview(skontoBadgeView)
+        contentView.addSubview(savingsAmountLabel)
+        contentView.addSubview(proceedButton)
 
         setupConstraints()
         bindViewModel()
     }
 
     private func setupConstraints() {
-        var horizontalPadding: CGFloat = Constants.padding
-        if UIDevice.current.isIpad {
-            horizontalPadding += UIScreen.main.bounds.width * (1 - Constants.tabletWidthMultiplier) / 2
-        }
+        let multiplier: CGFloat = UIDevice.current.isIpad ? Constants.tabletWidthMultiplier : 1.0
 
         NSLayoutConstraint.activate([
+            contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: multiplier),
+            contentView.topAnchor.constraint(equalTo: topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
             dividerView.topAnchor.constraint(equalTo: topAnchor),
             dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
             totalStringLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
-            totalStringLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
+            totalStringLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                      constant: Constants.padding),
             totalStringLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
             finalAmountToPayLabel.topAnchor.constraint(equalTo: totalStringLabel.bottomAnchor,
                                                        constant: Constants.totalValueLabelTopPadding),
-            finalAmountToPayLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
-            finalAmountToPayLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
-                                                            constant: -horizontalPadding),
+            finalAmountToPayLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                           constant: Constants.padding),
+            finalAmountToPayLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+                                                            constant: -Constants.padding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
                                                     constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: finalAmountToPayLabel.leadingAnchor),
-            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
-                                                         constant: -horizontalPadding),
+            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+                                                         constant: -Constants.padding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalStringLabel.centerYAnchor),
-            skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -horizontalPadding),
+            skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                      constant: -Constants.padding),
 
             skontoPercentageLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
                                                        constant: Constants.badgeVerticalPadding),
@@ -170,10 +184,11 @@ class SkontoProceedContainerView: UIView {
 
             proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
                                                constant: Constants.verticalPadding),
-            proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
+            proceedButton.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
-            proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            proceedButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalPadding),
+            proceedButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            proceedButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                   constant: Constants.padding),
             proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.proceedButtonHeight)
         ])
     }
