@@ -83,8 +83,7 @@ import UIKit
     }()
 
     private lazy var loadingIndicatorContainer: UIView = {
-        let loadingIndicatorContainer = UIView(frame: CGRect(origin: .zero,
-                                                             size: .zero))
+        let loadingIndicatorContainer = UIView(frame: CGRect.zero)
         return loadingIndicatorContainer
     }()
 
