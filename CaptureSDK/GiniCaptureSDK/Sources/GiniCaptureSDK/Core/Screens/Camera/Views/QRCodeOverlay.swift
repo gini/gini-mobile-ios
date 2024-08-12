@@ -54,6 +54,9 @@ final class IncorrectQRCodeTextContainer: UIView {
         label.textColor = .GiniCapture.dark1
         label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.incorrect.title",
                                                       comment: "Unknown QR")
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 10 / label.font.pointSize
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         return label
     }()
@@ -65,6 +68,9 @@ final class IncorrectQRCodeTextContainer: UIView {
         label.numberOfLines = 0
         label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.incorrect.description",
                                                       comment: "No content")
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 10 / label.font.pointSize
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
