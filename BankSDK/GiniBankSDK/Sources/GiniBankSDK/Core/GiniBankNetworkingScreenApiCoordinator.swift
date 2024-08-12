@@ -5,7 +5,6 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
@@ -269,60 +268,50 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                                   .bankSDKVersion: GiniBankSDKVersion])
         GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
     }
+
+    private func sendAnalyticsEventSDKClose() {
+        GiniAnalyticsManager.track(event: .sdkClosed,
+                                   properties: [GiniAnalyticsProperty(key: .status, value: "successful")])
+    }
 }
 
+// MARK: - Return Assistant
 private extension GiniBankNetworkingScreenApiCoordinator {
-    // MARK: - Deliver with Skonto
-    private func deliverWithSkonto(result: ExtractionResult, analysisDelegate: AnalysisDelegate? = nil) {
-        let hasExtractions = result.extractions.count > 0
 
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            if hasExtractions {
-                let images = self.pages.compactMap { $0.document.previewImage }
-                let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: result.extractions.compactMap {
-                    guard let name = $0.name else { return nil }
+    // MARK: - Start Analysis with Return Assistant or Skonto
 
-                    return (name, $0)
-                })
+    private func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
+        documentService.startAnalysis { result in
 
-                let documentService = self.documentService
+            switch result {
+                case let .success(extractionResult):
 
-                let result = AnalysisResult(extractions: extractions,
-                                            skontoDiscounts: result.skontoDiscounts,
-                                            images: images,
-                                            document: documentService.document,
-                                            candidates: result.candidates)
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                    DispatchQueue.main.async {
 
-                self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
-            } else {
-                analysisDelegate?.tryDisplayNoResultsScreen()
-                self.documentService.resetToInitialState()
+                        if GiniBankConfiguration.shared.returnAssistantEnabled && extractionResult.lineItems != nil {
+                            self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
+                        } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
+                            self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
+                        } else {
+                            self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                        }
+                    }
+
+                case let .failure(error):
+                    guard error != .requestCancelled else {
+                        return
+                    }
+
+                    DispatchQueue.main.async { [weak self] in
+                        guard error != .requestCancelled else { return }
+                        self?.displayError(errorType: ErrorType(error: error), animated: true)
+
+                    }
             }
         }
     }
 
-    private func showSkontoScreen(skontoDiscounts: SkontoDiscounts) {
-        let coordinator = SkontoCoordinator(screenAPINavigationController,
-                                            skontoDiscounts)
-        coordinator.delegate = self
-        childCoordinators.append(coordinator)
-        coordinator.start()
-    }
-
-    private func handleSkontoScreenDisplay(_ extractionResult: ExtractionResult,
-                                           _ networkDelegate: GiniCaptureNetworkDelegate) {
-        do {
-            let skontoDiscounts = try SkontoDiscounts(extractions: extractionResult)
-            showSkontoScreen(skontoDiscounts: skontoDiscounts)
-        } catch {
-            deliverWithSkonto(result: extractionResult,
-                              analysisDelegate: networkDelegate)
-        }
-    }
-
-    // MARK: Deliver with Return Assistant
+    // MARK: - Deliver with Return Assistant
     private func deliverWithReturnAssistant(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
         let hasExtractions = result.extractions.count > 0
 
@@ -354,11 +343,6 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
-    private func sendAnalyticsEventSDKClose() {
-        GiniAnalyticsManager.track(event: .sdkClosed,
-                                   properties: [GiniAnalyticsProperty(key: .status, value: "successful")])
-    }
-
     private func showDigitalInvoiceScreen(digitalInvoice: DigitalInvoice, analysisDelegate: AnalysisDelegate) {
         let coordinator = DigitalInvoiceCoordinator(navigationController: screenAPINavigationController,
                                                     digitalInvoice: digitalInvoice,
@@ -366,39 +350,6 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         coordinator.delegate = self
         childCoordinators.append(coordinator)
         coordinator.start()
-    }
-
-    // MARK: - Start Analysis with Return Assistant or Skonto
-
-    private func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
-        documentService.startAnalysis { result in
-
-            switch result {
-            case let .success(extractionResult):
-
-                DispatchQueue.main.async {
-
-                    if GiniBankConfiguration.shared.returnAssistantEnabled && extractionResult.lineItems != nil {
-                        self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
-                    } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
-                        self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
-                    } else {
-                        self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
-                    }
-                }
-
-            case let .failure(error):
-                guard error != .requestCancelled else {
-                    return
-                }
-
-                DispatchQueue.main.async { [weak self] in
-                    guard error != .requestCancelled else { return }
-                    self?.displayError(errorType: ErrorType(error: error), animated: true)
-
-                }
-            }
-        }
     }
 
     private func handleReturnAssistantScreenDisplay(_ extractionResult: ExtractionResult,
@@ -454,6 +405,93 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
     }
 }
 
+// MARK: - Skonto
+extension GiniBankNetworkingScreenApiCoordinator {
+    // MARK: - Deliver with Skonto
+    private func deliverWithSkonto(result: ExtractionResult, analysisDelegate: AnalysisDelegate? = nil) {
+        let hasExtractions = result.extractions.count > 0
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            if hasExtractions {
+                let images = self.pages.compactMap { $0.document.previewImage }
+                let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: result.extractions.compactMap {
+                    guard let name = $0.name else { return nil }
+
+                    return (name, $0)
+                })
+
+                let documentService = self.documentService
+
+                let result = AnalysisResult(extractions: extractions,
+                                            skontoDiscounts: result.skontoDiscounts,
+                                            images: images,
+                                            document: documentService.document,
+                                            candidates: result.candidates)
+                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+
+                self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
+            } else {
+                analysisDelegate?.tryDisplayNoResultsScreen()
+                self.documentService.resetToInitialState()
+            }
+        }
+    }
+
+    private func showSkontoScreen(skontoDiscounts: SkontoDiscounts, documentId: String) {
+        let coordinator = SkontoCoordinator(screenAPINavigationController,
+                                            skontoDiscounts)
+        coordinator.delegate = self
+        childCoordinators.append(coordinator)
+        coordinator.start()
+    }
+
+    private func handleSkontoScreenDisplay(_ extractionResult: ExtractionResult,
+                                           _ networkDelegate: GiniCaptureNetworkDelegate) {
+        do {
+            guard let documentId = documentService.document?.id else { return }
+            let skontoDiscounts = try SkontoDiscounts(extractions: extractionResult)
+            showSkontoScreen(skontoDiscounts: skontoDiscounts, documentId: documentId)
+        } catch {
+            deliverWithSkonto(result: extractionResult,
+                              analysisDelegate: networkDelegate)
+        }
+    }
+
+   private func getDocumentLayout(completion: @escaping (Result<Document.Layout, GiniError>) -> Void) {
+        documentService.layout(completion: completion)
+    }
+
+    private func getDocumentPage(for pageNumber: Int,
+                                 completion: @escaping (Result<UIImage?, GiniError>) -> Void) {
+
+        documentService.documentPage(pageNumber: pageNumber,
+                                     sizeVariant: .medium) { result in
+            switch result {
+            case let .success(data):
+                DispatchQueue.main.async {
+                    // Convert the data to a UIImage
+                    if let image = UIImage(data: data) {
+                        // Successfully created an image
+                        completion(.success(image))
+                    } else {
+                        // Failed to create an image
+                        print("Failed to create image from data")
+                        completion(.success(nil))
+                    }
+                }
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    private func handleFailure(error: GiniError) {
+        guard error != .requestCancelled else { return }
+        // TODO: to be implemented later
+    }
+}
+
 extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
                            _ editedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
@@ -467,4 +505,111 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         didCancelAnalysis()
         _ = start(withDocuments: nil, animated: true)
     }
+
+    func didTapDocumentPreview(_ coordinator: SkontoCoordinator, _ skontoViewModel: SkontoViewModel) {
+        let viewController = DocumentPagesViewController()
+        viewController.modalPresentationStyle = .overCurrentContext
+        screenAPINavigationController.present(viewController, animated: true)
+
+        guard let documentPagesViewModel = skontoViewModel.documentPagesViewModel else {
+            handleDocumentPage(for: skontoViewModel, with: viewController)
+            return
+        }
+
+        viewController.showAnimation()
+        if documentPagesViewModel.processedImages.isEmpty {
+            handleDocumentPage(for: skontoViewModel, with: viewController)
+        } else {
+            viewController.hideAnimation()
+            viewController.setData(viewModel: documentPagesViewModel)
+        }
+    }
+
+    private func handleDocumentPage(for skontoViewModel: SkontoViewModel,
+                                    with viewController: DocumentPagesViewController) {
+        createDocumentPageViewModel(from: skontoViewModel) { [weak self] result in
+            guard let self = self else { return }
+            viewController.hideAnimation()
+            switch result {
+            case .success(let viewModel):
+                viewController.setData(viewModel: viewModel)
+            case .failure(let error):
+                print("Failed to create invoice preview: \(error)")
+                self.handleFailure(error: error)
+            }
+        }
+    }
+
+    private func createDocumentPageViewModel(from skontoViewModel: SkontoViewModel,
+                                             completion: @escaping (Result<DocumentPagesViewModel,
+                                                                    GiniError>) -> Void) {
+        let dispatchGroup = DispatchGroup()
+        var originalSizes = [DocumentPageSize]()
+        var layoutError: GiniError?
+
+        dispatchGroup.enter()
+        getDocumentLayout { result in
+            switch result {
+            case .success(let documentLayout):
+                originalSizes = documentLayout.pages.map {
+                    DocumentPageSize(width: $0.sizeX, height: $0.sizeY)
+                }
+            case .failure(let error):
+                layoutError = error
+            }
+            dispatchGroup.leave()
+        }
+
+        // PageNumber should start from 1, not 0
+        loadPages(from: skontoViewModel.extractionBoundingBoxes,
+                  startingAt: 1,
+                  using: dispatchGroup) { images, errors in
+            dispatchGroup.notify(queue: .main) {
+                if let layoutError = layoutError {
+                    completion(.failure(layoutError))
+                } else if let firstError = errors.first {
+                    completion(.failure(firstError))
+                } else {
+                    let extractionBoundingBoxes = skontoViewModel.extractionBoundingBoxes
+                    let viewModel = DocumentPagesViewModel(originalImages: images,
+                                                           originalSizes: originalSizes,
+                                                           extractionBoundingBoxes: extractionBoundingBoxes)
+                    skontoViewModel.setDocumentPagesViewModel(viewModel)
+                    completion(.success(viewModel))
+                }
+            }
+        }
+    }
+
+    private func loadPages(from extractionBoundingBoxes: [ExtractionBoundingBox],
+                           startingAt pageNumber: Int,
+                           using dispatchGroup: DispatchGroup,
+                           completion: @escaping ([UIImage], [GiniError]) -> Void) {
+        var images = [UIImage]()
+        var errors = [GiniError]()
+
+        func loadNextPage(at pageNumber: Int) {
+            guard pageNumber <= documentService.document?.partialDocuments?.count ?? 1 else {
+                completion(images, errors)
+                return
+            }
+
+            dispatchGroup.enter()
+            getDocumentPage(for: pageNumber) { result in
+                switch result {
+                case .success(let image):
+                    if let image = image {
+                        images.append(image)
+                        loadNextPage(at: pageNumber + 1)
+                    }
+                case .failure(let error):
+                    errors.append(error)
+                }
+                dispatchGroup.leave()
+            }
+        }
+
+        loadNextPage(at: pageNumber)
+    }
+
 }
