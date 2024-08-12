@@ -29,6 +29,11 @@ protocol PaymentComponentsProtocol {
     func paymentViewBottomSheet(documentID: String?) -> UIViewController
 }
 
+private enum PaymentComponentScreenType {
+    case paymentComponent
+    case bankPicker
+}
+
 /**
  The `PaymentComponentsController` class allows control over the payment components.
  */
@@ -50,6 +55,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     /// Payment Component View Configuration
     public var paymentComponentConfiguration: PaymentComponentConfiguration?
 
+    /// Previous presented view
+    private var previousPresentedView: PaymentComponentScreenType?
+
     /// reponsible for storing the loading state of the controller and passing it to the delegate listeners
     var isLoading: Bool = false {
         didSet {
@@ -70,6 +78,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     public init(giniMerchant: GiniMerchant) {
         self.giniMerchant = giniMerchant
         giniMerchantConfiguration.useInvoiceWithoutDocument = true
+        setupObservers()
     }
     
     /**
@@ -152,6 +161,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     public func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+        previousPresentedView = nil
         if !giniMerchantConfiguration.useInvoiceWithoutDocument {
             guard let documentID else {
                 completion(nil, nil)
@@ -187,6 +197,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     public func loadPaymentReviewScreenWithoutDocument(paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+        previousPresentedView = nil
         guard let selectedPaymentProvider else {
             completion(nil, nil)
             return
@@ -203,11 +214,13 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     // MARK: - Bottom Sheets
 
     public func paymentViewBottomSheet(documentID: String?) -> UIViewController {
+        previousPresentedView = .paymentComponent
         let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID))
         return paymentComponentBottomView
     }
 
     public func bankSelectionBottomSheet() -> UIViewController {
+        previousPresentedView = .bankPicker
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: selectedPaymentProvider)
         let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel)
@@ -224,6 +237,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     public func installAppBottomSheet() -> UIViewController {
+        previousPresentedView = nil
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
         installAppBottomViewModel.viewDelegate = self
         let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel)
@@ -231,6 +245,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     public func shareInvoiceBottomSheet() -> UIViewController {
+        previousPresentedView = nil
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
         shareInvoiceBottomViewModel.viewDelegate = self
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
@@ -290,6 +305,20 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         let count = onboardingCounts.presentationCount(forProvider: selectedPaymentProvider?.name)
         return count < Constants.numberOfTimesOnboardingShareScreenShouldAppear
     }
+
+    private func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(paymentInfoDissapeared), name: Notification.Name("paymentInfoDissapeared"), object: nil)
+    }
+
+    @objc
+    private func paymentInfoDissapeared() {
+        if previousPresentedView == .bankPicker {
+            didTapOnBankPicker()
+        } else if previousPresentedView == .paymentComponent {
+            didTapOnPayButton()
+        }
+        previousPresentedView = nil
+    }
 }
 
 extension PaymentComponentsController: PaymentComponentViewProtocol {
@@ -327,6 +356,10 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     
     public func didTapOnMoreInformation() {
         viewDelegate?.didTapOnMoreInformation()
+    }
+
+    public func didTapOnPayButton() {
+        bottomViewDelegate?.didTapOnPayButton()
     }
 }
 
