@@ -106,10 +106,12 @@ final class OrderDetailViewController: UIViewController {
         ])
     }
 
-    @objc private func payButtonTapped() {
-        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
-        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
-        self.present(paymentViewBottomSheet, animated: false)
+    @objc func payButtonTapped() {
+        DispatchQueue.main.async {
+            let paymentViewBottomSheet = self.paymentComponentsController.paymentViewBottomSheet(documentID: nil)
+            paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
+            self.present(paymentViewBottomSheet, animated: false)
+        }
     }
 
     @objc private func didTapOnView() {
@@ -260,6 +262,10 @@ extension OrderDetailViewController: PaymentProvidersBottomViewProtocol {
                 })
             }
         }
+    }
+
+    func didTapOnPayButton() {
+        payButtonTapped()
     }
 }
 

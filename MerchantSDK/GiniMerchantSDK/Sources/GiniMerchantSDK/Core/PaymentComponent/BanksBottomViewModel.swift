@@ -15,6 +15,7 @@ public protocol PaymentProvidersBottomViewProtocol: AnyObject {
     func didTapOnMoreInformation()
     func didTapOnContinueOnShareBottomSheet()
     func didTapForwardOnInstallBottomSheet()
+    func didTapOnPayButton()
 }
 
 struct PaymentProviderAdditionalInfo {
