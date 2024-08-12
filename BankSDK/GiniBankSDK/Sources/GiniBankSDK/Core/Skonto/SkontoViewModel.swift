@@ -34,6 +34,8 @@ class SkontoViewModel {
     private (set) var paymentMethod: SkontoDiscountDetails.PaymentMethod
     private (set) var edgeCase: SkontoEdgeCase?
 
+    private (set) var documentPagesViewModel: DocumentPagesViewModel?
+
     var finalAmountToPay: Price {
         return isSkontoApplied ? skontoAmountToPay : amountToPay
     }
@@ -123,6 +125,10 @@ class SkontoViewModel {
 
     func addStateChangeHandler(_ handler: @escaping () -> Void) {
         skontoStateChangeHandlers.append(handler)
+    }
+
+    func setDocumentPagesViewModel(_ viewModel: DocumentPagesViewModel) {
+        documentPagesViewModel = viewModel
     }
 
     // MARK: - Actions

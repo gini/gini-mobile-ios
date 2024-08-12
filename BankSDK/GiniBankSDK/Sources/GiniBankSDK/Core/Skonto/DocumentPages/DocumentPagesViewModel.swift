@@ -6,12 +6,9 @@
 
 import UIKit
 
-// Structure to represent the size of each document page
 struct DocumentPageSize {
-    /// Page width
-    let sizeX: Double
-    /// Page height
-    let sizeY: Double
+    let width: Double
+    let height: Double
 }
 
 struct CornerBoundingBoxes {
@@ -21,32 +18,48 @@ struct CornerBoundingBoxes {
     var bottomRight: ExtractionBoundingBox
 }
 
-class DocumentPagesViewModel {
-    let images: [UIImage]
-    let originalSizes: [DocumentPageSize]
-    var extractionBoundingBoxes: [ExtractionBoundingBox]
+final class DocumentPagesViewModel {
+    private let originalImages: [UIImage]
+    private let originalSizes: [DocumentPageSize]
+    private var extractionBoundingBoxes: [ExtractionBoundingBox]
+
+    // Information to be displayed in the screen after highlighting Skonto details
+    private (set) var processedImages = [UIImage]()
 
     private let highlightPadding: CGFloat = 10.0
 
     // Initializer for the class
-    init(images: [UIImage],
+    init(originalImages: [UIImage],
          originalSizes: [DocumentPageSize],
          extractionBoundingBoxes: [ExtractionBoundingBox]) {
-        self.images = images
+        self.originalImages = originalImages
         self.originalSizes = originalSizes
         self.extractionBoundingBoxes = extractionBoundingBoxes
     }
 
-    // Drawing the rectangles
-    func drawBoundingBoxes(on image: UIImage,
-                           with size: DocumentPageSize,
-                           boundingBoxes: [ExtractionBoundingBox]) -> UIImage {
+    /// Highlights Skonto-related details on an image by drawing a rectangle
+    /// around specified bounding boxes.
+    ///
+    /// This method takes an image, its original size, and a list of bounding boxes
+    /// corresponding to Skoto details areas that need to be highlighted. It then calculates an
+    /// encompassing rectangle that covers all the bounding boxes, adds padding,
+    /// and draws the rectangle on the image with a semi-transparent highlight color.
+    ///
+    /// - Parameters:
+    ///   - image: The image on which to draw the highlight.
+    ///   - size: The original size of the document page used to calculate scaling factors.
+    ///   - boundingBoxes: An array of `ExtractionBoundingBox` representing areas to be highlighted.
+    ///
+    /// - Returns: A new `UIImage` with the highlighted area, or the original image if an error occurs.
+    func highlightSkontoDetails(on image: UIImage,
+                                with size: DocumentPageSize,
+                                boundingBoxes: [ExtractionBoundingBox]) -> UIImage {
         let imageHeight = image.size.height
         let imageWidth = image.size.width
 
         // Scale factors (calculated once)
-        let scaleHeight = imageHeight / CGFloat(size.sizeY)
-        let scaleWidth = imageWidth / CGFloat(size.sizeX)
+        let scaleHeight = imageHeight / CGFloat(size.height)
+        let scaleWidth = imageWidth / CGFloat(size.width)
 
         // Initialize the minimum and maximum coordinates
         var minX: CGFloat = CGFloat.greatestFiniteMagnitude
@@ -103,13 +116,24 @@ class DocumentPagesViewModel {
      - Returns: An array of processed UIImages with the bounding areas drawn.
      */
     func processImages() -> [UIImage] {
+        guard processedImages.isEmpty else {
+            return processedImages
+        }
         var processedImages: [UIImage] = []
-        for (index, image) in images.enumerated() {
+        for (index, image) in originalImages.enumerated() {
+            guard index < originalSizes.count else {
+                print("Error: Index \(index) is out of bounds for originalSizes array.")
+                // The loop safely skips any invalid indices, preventing errors.
+                continue
+            }
             let originalSize = originalSizes[index]
             let boundingBoxesForPage = extractionBoundingBoxes.filter { $0.page == index + 1 }
-            let newImage = drawBoundingBoxes(on: image, with: originalSize, boundingBoxes: boundingBoxesForPage)
+            let newImage = highlightSkontoDetails(on: image,
+                                                  with: originalSize,
+                                                  boundingBoxes: boundingBoxesForPage)
             processedImages.append(newImage)
         }
+        self.processedImages = processedImages
         return processedImages
     }
 }
