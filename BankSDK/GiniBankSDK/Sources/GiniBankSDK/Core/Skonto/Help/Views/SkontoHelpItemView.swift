@@ -27,9 +27,9 @@ final class SkontoHelpItemView: UIView {
 
     private let configuration = GiniBankConfiguration.shared
 
-    init(content: SkontoHelpItem, shouldShowSeparator: Bool) {
+    init(content: SkontoHelpItem, hideDivider: Bool) {
         super.init(frame: .zero)
-        setupView(with: content, shouldShowSeparator: shouldShowSeparator)
+        setupView(with: content, hideDivider: hideDivider)
         setupConstraints()
     }
 
@@ -37,7 +37,7 @@ final class SkontoHelpItemView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupView(with content: SkontoHelpItem, shouldShowSeparator: Bool) {
+    private func setupView(with content: SkontoHelpItem, hideDivider: Bool) {
         backgroundColor = .clear
         iconImageView.image = content.icon
         iconImageView.accessibilityValue = content.title
@@ -46,8 +46,8 @@ final class SkontoHelpItemView: UIView {
 
         addSubview(iconImageView)
         addSubview(titleLabel)
-        if shouldShowSeparator {
-            addSeparatorView()
+        if !hideDivider {
+            addDividerView()
         }
     }
 
@@ -74,7 +74,7 @@ final class SkontoHelpItemView: UIView {
         ])
     }
 
-    private func addSeparatorView() {
+    private func addDividerView() {
         let separatorView = UIView()
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         separatorView.backgroundColor = .giniColorScheme().bg.divider.uiColor()

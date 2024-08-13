@@ -44,7 +44,7 @@ class SkontoHelpItemsContainerView: UIView {
         ])
 
         viewModel.items.enumerated().forEach { index, item in
-            let view = SkontoHelpItemView(content: item, shouldShowSeparator: index < viewModel.items.count - 1)
+            let view = SkontoHelpItemView(content: item, hideDivider: index == viewModel.items.count - 1)
             stackView.addArrangedSubview(view)
         }
     }
