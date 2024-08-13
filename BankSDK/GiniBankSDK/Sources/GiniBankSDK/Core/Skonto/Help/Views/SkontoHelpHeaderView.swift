@@ -46,7 +46,7 @@ class SkontoHelpHeaderView: UIView {
         addSubview(titleLabel)
         addSubview(subtitleLabel)
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.topPadding),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
@@ -61,6 +61,7 @@ class SkontoHelpHeaderView: UIView {
 
 private extension SkontoHelpHeaderView {
     enum Constants {
+        static let topPadding: CGFloat = 24
         static let verticalPadding: CGFloat = 12
         static let labelNumberOfLines: Int = 0
     }
