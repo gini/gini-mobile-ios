@@ -75,10 +75,21 @@ final class DocumentPagesViewModel {
             let scaledHeight = CGFloat(box.height) * scaleHeight
 
             // Directly assign min/max without redundant min/max calls
-            if scaledX < minX { minX = scaledX }
-            if scaledY < minY { minY = scaledY }
-            if scaledX + scaledWidth > maxX { maxX = scaledX + scaledWidth }
-            if scaledY + scaledHeight > maxY { maxY = scaledY + scaledHeight }
+            if scaledX < minX {
+                minX = scaledX
+            }
+
+            if scaledY < minY {
+                minY = scaledY
+            }
+
+            if scaledX + scaledWidth > maxX {
+                maxX = scaledX + scaledWidth
+            }
+
+            if scaledY + scaledHeight > maxY {
+                maxY = scaledY + scaledHeight
+            }
         }
 
         // Add padding to the calculated bounds
