@@ -71,7 +71,7 @@ final class SkontoHelpViewController: UIViewController {
     }
 
     private func setupViews() {
-        title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.screenTitle",
+        title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.screen.title",
                                                          comment: "Help")
         view.backgroundColor = .giniColorScheme().bg.background.uiColor()
         view.addSubview(scrollView)
