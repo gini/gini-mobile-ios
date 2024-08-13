@@ -43,9 +43,7 @@ public final class DocumentService: DocumentServiceProtocol {
                 completion?(.success(createdDocument))
             case .failure(let error):
                 DispatchQueue.main.async {
-                    guard errorOccurred == false else {
-                        return
-                    }
+                    guard !errorOccurred else { return }
                     errorOccurred = true
                     DispatchQueue.global().async {
                         completion?(.failure(error))
@@ -85,9 +83,7 @@ public final class DocumentService: DocumentServiceProtocol {
                 completion(.success(extractionResult))
             case let .failure(error):
                 DispatchQueue.main.async {
-                    guard errorOccurred == false else {
-                        return
-                    }
+                    guard !errorOccurred else { return }
                     errorOccurred = true
                     DispatchQueue.global().async {
                         completion(.failure(error))
@@ -192,9 +188,7 @@ public final class DocumentService: DocumentServiceProtocol {
                     let message = "Failed to get layout for document with id: \(document.id) error: \(error)"
                     Log(message: message, event: .error)
                     DispatchQueue.main.async {
-                        guard errorOccurred == false else {
-                            return
-                        }
+                        guard !errorOccurred else { return }
                         errorOccurred = true
                         DispatchQueue.global().async {
                             completion(.failure(error))
@@ -221,9 +215,7 @@ public final class DocumentService: DocumentServiceProtocol {
                 let message = "Failed to get page for document with id: \(document.id) error: \(error)"
                 Log(message: message, event: .error)
                 DispatchQueue.main.async {
-                    guard errorOccurred == false else {
-                        return
-                    }
+                    guard !errorOccurred else { return }
                     errorOccurred = true
                     DispatchQueue.global().async {
                         completion(.failure(error))
