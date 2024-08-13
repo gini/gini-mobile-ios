@@ -144,7 +144,7 @@ final class SkontoHelpViewController: UIViewController {
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: 114)
+            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
@@ -159,5 +159,6 @@ private extension SkontoHelpViewController {
     enum Constants {
         static let padding: CGFloat = 16
         static let spacing: CGFloat = 32
+        static let navigationBarHeight: CGFloat = 114
     }
 }
