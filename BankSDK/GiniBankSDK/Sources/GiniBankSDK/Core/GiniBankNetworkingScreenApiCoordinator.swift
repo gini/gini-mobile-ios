@@ -284,29 +284,24 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         documentService.startAnalysis { result in
 
             switch result {
-                case let .success(extractionResult):
+            case let .success(extractionResult):
 
-                    DispatchQueue.main.async {
-
-                        if GiniBankConfiguration.shared.returnAssistantEnabled && extractionResult.lineItems != nil {
-                            self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
-                        } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
-                            self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
-                        } else {
-                            self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
-                        }
+                DispatchQueue.main.async {
+                    if GiniBankConfiguration.shared.returnAssistantEnabled && extractionResult.lineItems != nil {
+                        self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
+                    } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
+                        self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
+                    } else {
+                        self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
                     }
+                }
 
-                case let .failure(error):
-                    guard error != .requestCancelled else {
-                        return
-                    }
+            case let .failure(error):
+                guard error != .requestCancelled else { return }
 
-                    DispatchQueue.main.async { [weak self] in
-                        guard error != .requestCancelled else { return }
-                        self?.displayError(errorType: ErrorType(error: error), animated: true)
-
-                    }
+                DispatchQueue.main.async { [weak self] in
+                    self?.displayError(errorType: ErrorType(error: error), animated: true)
+                }
             }
         }
     }
