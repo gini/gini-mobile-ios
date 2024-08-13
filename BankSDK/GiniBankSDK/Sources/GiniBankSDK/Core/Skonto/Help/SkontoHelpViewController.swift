@@ -36,8 +36,8 @@ final class SkontoHelpViewController: UIViewController {
         return header
     }()
 
-    private lazy var itemsGroupView: SkontoHelpItemsGroupView = {
-        let groupView = SkontoHelpItemsGroupView(viewModel: viewModel)
+    private lazy var itemsGroupView: SkontoHelpItemsContainerView = {
+        let groupView = SkontoHelpItemsContainerView(viewModel: viewModel)
         return groupView
     }()
 
@@ -56,10 +56,9 @@ final class SkontoHelpViewController: UIViewController {
     private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     private var navigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter?
 
-    private let viewModel: SkontoHelpViewModel
+    private let viewModel = SkontoHelpViewModel()
 
-    init(viewModel: SkontoHelpViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(nibName: nil, bundle: nil)
         setupViews()
         setupConstraints()

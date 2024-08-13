@@ -34,6 +34,6 @@ struct SkontoHelpViewModel {
                                                             comment: "Save money by paying promptly")
         )
 
-        self.items = [item1, item2, item3, item4]
+        items = [item1, item2, item3, item4]
     }
 }

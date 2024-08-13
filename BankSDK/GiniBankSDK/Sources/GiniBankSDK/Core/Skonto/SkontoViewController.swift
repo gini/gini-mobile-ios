@@ -336,7 +336,7 @@ public class SkontoViewController: UIViewController {
 
     @objc private func showAlertIfNeeded() {
         guard !hasShownAlert, let alert = alertFactory.createEdgeCaseAlert() else { return }
-        self.hasShownAlert = true
+        hasShownAlert = true
         present(alert, animated: true, completion: nil)
     }
 }
