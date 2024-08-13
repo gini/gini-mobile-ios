@@ -107,6 +107,7 @@ final class OrderDetailViewController: UIViewController {
     }
 
     @objc private func payButtonTapped() {
+        print("✅ Tapped on Pay")
         let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
         paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
         self.present(paymentViewBottomSheet, animated: false)
@@ -138,7 +139,7 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
     }
 
     func didTapOnPayInvoice(documentId: String?) {
-        print("✅ Tapped on Pay Invoice on :\(documentId ?? "")")
+        print("✅ Tapped on Pay Order")
         if giniMerchantConfiguration.showPaymentReviewScreen {
             paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
                 if let error {
