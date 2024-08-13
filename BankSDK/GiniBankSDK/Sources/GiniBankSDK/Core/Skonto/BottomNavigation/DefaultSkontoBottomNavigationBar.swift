@@ -159,13 +159,13 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         backgroundColor = .giniColorScheme().bg.surface.uiColor()
 
         addSubview(contentView)
-        contentView.addSubview(proceedButton)
+        addSubview(dividerView)
+        addSubview(backButton.buttonView)
+        addSubview(proceedButton)
         contentView.addSubview(totalLabel)
         contentView.addSubview(totalValueLabel)
         contentView.addSubview(skontoBadgeView)
         contentView.addSubview(savingsAmountLabel)
-        contentView.addSubview(backButton.buttonView)
-        contentView.addSubview(dividerView)
     }
 
     private func setupConstraints() {
@@ -175,14 +175,13 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
             contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: multiplier),
             contentView.topAnchor.constraint(equalTo: topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
             dividerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
-            totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
+            totalLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
             totalLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                 constant: Constants.padding),
             totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
@@ -200,6 +199,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             savingsAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
             savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
                                                          constant: -Constants.padding),
+            savingsAmountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
             skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
@@ -214,15 +214,17 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            backButton.buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+            backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor,
                                                            constant: Constants.padding),
             backButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
 
-            proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
+            proceedButton.topAnchor.constraint(equalTo: contentView.bottomAnchor,
                                                constant: Constants.proceedButtonTopPadding),
             proceedButton.leadingAnchor.constraint(equalTo: backButton.buttonView.trailingAnchor),
-            proceedButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            proceedButton.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
+            proceedButton.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor,
+                                                 constant: -Constants.padding * 2),
+            proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
             proceedButton.heightAnchor.constraint(equalToConstant: Constants.proceedButtonHeight)
         ])
