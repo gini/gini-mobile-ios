@@ -10,6 +10,12 @@ import GiniCaptureSDK
 final class DefaultSkontoBottomNavigationBar: UIView {
     private lazy var configuration = GiniBankConfiguration.shared
 
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private lazy var proceedButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -152,50 +158,52 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     private func setupView() {
         backgroundColor = .giniColorScheme().bg.surface.uiColor()
 
-        addSubview(proceedButton)
-        addSubview(totalLabel)
-        addSubview(totalValueLabel)
-        addSubview(skontoBadgeView)
-        addSubview(savingsAmountLabel)
-        addSubview(backButton.buttonView)
+        addSubview(contentView)
         addSubview(dividerView)
-        skontoBadgeView.addSubview(skontoBadgeLabel)
+        addSubview(backButton.buttonView)
+        addSubview(proceedButton)
+        contentView.addSubview(totalLabel)
+        contentView.addSubview(totalValueLabel)
+        contentView.addSubview(skontoBadgeView)
+        contentView.addSubview(savingsAmountLabel)
     }
 
     private func setupConstraints() {
-        var horizontalPadding: CGFloat = Constants.padding
-        if UIDevice.current.isIpad {
-            horizontalPadding += UIScreen.main.bounds.width * (1 - Constants.tabletWidthMultiplier) / 2
-        }
+        let multiplier: CGFloat = UIDevice.current.isIpad ? Constants.tabletWidthMultiplier : 1.0
 
         NSLayoutConstraint.activate([
-            dividerView.topAnchor.constraint(equalTo: topAnchor),
+            contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: multiplier),
+            contentView.topAnchor.constraint(equalTo: topAnchor),
+
+            dividerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
-            totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
-            totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                constant: horizontalPadding),
+            totalLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
+            totalLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                constant: Constants.padding),
             totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
                                                  constant: -Constants.badgeHorizontalPadding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.totalValueLabelTopPadding),
-            totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                     constant: horizontalPadding),
-            totalValueLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
-                                                      constant: -horizontalPadding),
+            totalValueLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                     constant: Constants.padding),
+            totalValueLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+                                                      constant: -Constants.padding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
                                                   constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
-            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
-                                                         constant: -horizontalPadding),
+            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+                                                         constant: -Constants.padding),
+            savingsAmountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
-            skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                      constant: -horizontalPadding),
+            skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                      constant: -Constants.padding),
 
             skontoBadgeLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
                                                   constant: Constants.badgeVerticalPadding),
@@ -207,12 +215,14 @@ final class DefaultSkontoBottomNavigationBar: UIView {
                                                        constant: -Constants.badgeHorizontalPadding),
 
             backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                           constant: horizontalPadding),
+                                                           constant: Constants.padding),
             backButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
 
-            proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
+            proceedButton.topAnchor.constraint(equalTo: contentView.bottomAnchor,
                                                constant: Constants.proceedButtonTopPadding),
             proceedButton.leadingAnchor.constraint(equalTo: backButton.buttonView.trailingAnchor),
+            proceedButton.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor,
+                                                 constant: -Constants.padding * 2),
             proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
