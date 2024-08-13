@@ -72,6 +72,8 @@ public class SkontoViewController: UIViewController {
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
         scrollView.contentInset = UIEdgeInsets(top: Constants.containerPadding,
                                                left: Constants.scrollViewSideInset,
                                                bottom: Constants.containerPadding,
@@ -180,10 +182,11 @@ public class SkontoViewController: UIViewController {
     private func setupStackViewConstraints() {
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                constant: Constants.containerPadding),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
                                                 constant: -Constants.containerPadding),
+            stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
                                              constant: -2 * Constants.containerPadding)
