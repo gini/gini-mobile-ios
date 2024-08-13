@@ -161,6 +161,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         addSubview(contentView)
         addSubview(dividerView)
         addSubview(backButton.buttonView)
+        addSubview(helpButton.buttonView)
         addSubview(proceedButton)
         contentView.addSubview(totalLabel)
         contentView.addSubview(totalValueLabel)
@@ -217,6 +218,10 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor,
                                                            constant: Constants.padding),
             backButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
+
+            helpButton.buttonView.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                           constant: -Constants.padding),
+            helpButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
 
             proceedButton.topAnchor.constraint(equalTo: contentView.bottomAnchor,
                                                constant: Constants.proceedButtonTopPadding),
