@@ -124,8 +124,7 @@ class SkontoProceedContainerView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(contentView)
-
-        contentView.addSubview(dividerView)
+        addSubview(dividerView)
         contentView.addSubview(totalStringLabel)
         contentView.addSubview(finalAmountToPayLabel)
         contentView.addSubview(skontoBadgeView)
@@ -150,7 +149,7 @@ class SkontoProceedContainerView: UIView {
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
-            totalStringLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
+            totalStringLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
             totalStringLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                       constant: Constants.padding),
             totalStringLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
