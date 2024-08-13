@@ -47,7 +47,7 @@ final class SkontoCoordinator: Coordinator {
 
 extension SkontoCoordinator: SkontoViewModelDelegate {
     func didTapHelp() {
-        let helpViewController = SkontoHelpViewController(viewModel: .init())
+        let helpViewController = SkontoHelpViewController()
         navigationController.pushViewController(helpViewController, animated: true)
     }
 

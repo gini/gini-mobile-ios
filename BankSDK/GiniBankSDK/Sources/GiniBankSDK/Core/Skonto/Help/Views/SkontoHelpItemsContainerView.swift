@@ -6,7 +6,7 @@
 
 import UIKit
 
-class SkontoHelpItemsGroupView: UIView {
+class SkontoHelpItemsContainerView: UIView {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +50,7 @@ class SkontoHelpItemsGroupView: UIView {
     }
 }
 
-private extension SkontoHelpItemsGroupView {
+private extension SkontoHelpItemsContainerView {
     enum Constants {
         static let stackViewSpacing: CGFloat = 0
         static let cornerRadius: CGFloat = 8
