@@ -320,24 +320,37 @@ class PaymentReviewContainerView: UIView {
         }
     }
 
-    fileprivate func inputFieldPlaceholderText(_ textFieldView: TextFieldWithLabelView) -> String {
+    fileprivate func inputFieldPlaceholderText(_ textFieldView: TextFieldWithLabelView) -> NSAttributedString {
+        let fullString = NSMutableAttributedString()
         if let fieldIdentifier = TextFieldType(rawValue: textFieldView.tag) {
+            var text = ""
             switch fieldIdentifier {
             case .recipientFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder",
+                text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder",
                                                         comment: "placeholder text for recipient input field")
             case .ibanFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder",
+                text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder",
                                                         comment: "placeholder text for iban input field")
             case .amountFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder",
+                text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder",
                                                         comment: "placeholder text for amount input field")
             case .usageFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
+                text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
                                                         comment: "placeholder text for usage input field")
             }
+            fullString.append(NSAttributedString(string: text))
+
+            if fieldIdentifier != .amountFieldTag {
+                let lockIconAttachment = NSTextAttachment()
+                lockIconAttachment.image = UIImage(named: "inputLock.png")
+                let lockString = NSAttributedString(attachment: lockIconAttachment)
+
+                fullString.append(NSAttributedString(string: "  "))
+                fullString.append(lockString)
+            }
         }
-        return ""
+
+        return fullString
     }
 
     fileprivate func validateTextField(_ textFieldViewTag: Int) {
