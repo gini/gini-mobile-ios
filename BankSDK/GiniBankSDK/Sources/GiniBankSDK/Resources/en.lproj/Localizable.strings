@@ -122,7 +122,7 @@
 "ginibank.skonto.invoice.title" = "Invoice";
 "ginibank.skonto.invoice.subtitle" = "Tap to view";
 
-"ginibank.skonto.help.screenTitle" = "Help";
+"ginibank.skonto.help.screen.title" = "Help";
 "ginibank.skonto.help.back" = "Skonto";
 "ginibank.skonto.help.header.title" = "Save money by paying promptly";
 "ginibank.skonto.help.header.subtitle" = "Many companies offer cash discounts, which are discounts for paying bills within a specified time frame. With our new feature, you can now:";

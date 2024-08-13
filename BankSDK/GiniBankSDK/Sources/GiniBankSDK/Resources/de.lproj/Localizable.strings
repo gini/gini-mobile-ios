@@ -115,7 +115,7 @@
 "ginibank.skonto.invoice.title" = "Rechnung";
 "ginibank.skonto.invoice.subtitle" = "Tippen Sie hier zur Ansicht";
 
-"ginibank.skonto.help.screenTitle" = "Hilfe";
+"ginibank.skonto.help.screen.title" = "Hilfe";
 "ginibank.skonto.help.back" = "Skonto";
 "ginibank.skonto.help.header.title" = "Skonto: Geld sparen durch schnelles Bezahlen";
 "ginibank.skonto.help.header.subtitle" = "Skonto ist ein Rabatt, der für die frühzeitige Bezahlung von Rechnungen gewährt wird. Mit unserer neuen Funktion können Sie jetzt:";
