@@ -205,17 +205,16 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
             .extractions(for: document,
                          cancellationToken: cancellationToken) { result in
                 switch result {
-                    case let .success(extractionResult):
-                        Log(message: "Finished analysis process with no errors", event: .success)
-                        completion(.success((document, extractionResult)))
-                    case let .failure(error):
-                        switch error {
-                            case .requestCancelled:
-                                Log(message: "Cancelled analysis process", event: .error)
-                            default:
-                                Log(message: "Finished analysis process with error: \(error)", event: .error)
-                        }
-                        completion(.failure(error))
+                case let .success(extractionResult):
+                    Log(message: "Finished analysis process with no errors", event: .success)
+                    completion(.success((document, extractionResult)))
+                case let .failure(error):
+                    if error == .requestCancelled {
+                        Log(message: "Cancelled analysis process", event: .error)
+                    } else {
+                        Log(message: "Finished analysis process with error: \(error)", event: .error)
+                    }
+                    completion(.failure(error))
                 }
             }
     }
