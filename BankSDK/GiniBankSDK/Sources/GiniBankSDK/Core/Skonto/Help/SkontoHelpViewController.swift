@@ -124,8 +124,7 @@ final class SkontoHelpViewController: UIViewController {
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.leftBarButtonItem = nil
 
-            if let navigationBar =
-                navigationBarBottomAdapter?.injectedView() {
+            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
                 view.addSubview(navigationBar)
 
