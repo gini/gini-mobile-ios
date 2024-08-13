@@ -136,7 +136,7 @@ final class DigitalInvoiceHelpViewController: UIViewController {
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: 114)
+            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
@@ -152,5 +152,6 @@ private extension DigitalInvoiceHelpViewController {
     enum Constants {
         static let padding: CGFloat = 24
         static let spacing: CGFloat = 36
+        static let navigationBarHeight: CGFloat = 114
     }
 }
