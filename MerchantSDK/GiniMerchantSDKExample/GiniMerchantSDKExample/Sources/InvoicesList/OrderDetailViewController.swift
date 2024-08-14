@@ -110,7 +110,7 @@ final class OrderDetailViewController: UIViewController {
         print("✅ Tapped on Pay")
         let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
         paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
-        self.present(paymentViewBottomSheet, animated: false)
+        self.present(paymentViewBottomSheet, animated: true)
     }
 
     @objc private func didTapOnView() {
@@ -145,10 +145,10 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
                 if let error {
                     self?.errors.append(error.localizedDescription)
                     self?.showErrorsIfAny()
-                } else if let viewController {
-                    viewController.modalTransitionStyle = .coverVertical
-                    viewController.modalPresentationStyle = .overCurrentContext
-                    self?.dismissAndPresent(viewController: viewController, animated: true)
+                } else if let viewController, let paymentViewBottomSheet = self?.paymentComponentsController.paymentInfoBottomSheet() {
+                    paymentViewBottomSheet.modalTransitionStyle = .coverVertical
+                    paymentViewBottomSheet.modalPresentationStyle = .overCurrentContext
+                    self?.dismissAndPresent(viewController: paymentViewBottomSheet, animated: true)
                 }
             }
         } else {
