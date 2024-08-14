@@ -251,7 +251,6 @@ fileprivate extension PaymentReviewViewController {
         view.addSubview(paymentInfoContainerView)
 
         NSLayoutConstraint.activate([
-            paymentInfoContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             paymentInfoContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             paymentInfoContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
