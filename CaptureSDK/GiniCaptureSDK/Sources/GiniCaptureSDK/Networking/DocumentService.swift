@@ -222,7 +222,7 @@ public final class DocumentService: DocumentServiceProtocol {
     }
 
     public func documentPage(pageNumber: Int,
-                             sizeVariant: Document.Layout.SizeVariant,
+                             size: Document.Page.Size,
                              completion: @escaping DocumentPagePreviewCompletion){
         guard let document = document else {
             Log(message: "Cannot get document page", event: .error)
@@ -230,7 +230,7 @@ public final class DocumentService: DocumentServiceProtocol {
         }
         captureNetworkService.documentPage(for: document,
                                            pageNumber: pageNumber,
-                                           sizeVariant: sizeVariant) { result in
+                                           size: size) { result in
             switch result {
             case .success(let pageData):
                 completion(.success(pageData))

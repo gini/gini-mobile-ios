@@ -34,6 +34,6 @@ public protocol DocumentServiceProtocol: AnyObject {
     func layout(completion: @escaping DocumentLayoutCompletion)
     func pages(completion: @escaping DocumentPagsCompletion)
     func documentPage(pageNumber: Int,
-                      sizeVariant: Document.Layout.SizeVariant,
+                      size: Document.Page.Size,
                       completion: @escaping DocumentPagePreviewCompletion)
 }
