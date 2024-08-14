@@ -52,6 +52,7 @@ struct SwitchOptionModel {
 		case customGiniErrorLogger
 		case debugModeOn
         case skontoNavigationBarBottomAdapter
+        case skontoHelpNavigationBarBottomAdapter
         case skontoEnabled
 		
 		var title: String {
@@ -142,6 +143,8 @@ struct SwitchOptionModel {
 				return "Debug mode"
             case .skontoNavigationBarBottomAdapter:
                 return "Skonto bottom navigation bar"
+            case .skontoHelpNavigationBarBottomAdapter:
+                return "Skonto help bottom navigation bar"
             }
 		}
 		
@@ -210,6 +213,8 @@ struct SwitchOptionModel {
 			case .customGiniErrorLogger:
 				return "This will work if the `Gini error logger` is also enabled."
             case .skontoNavigationBarBottomAdapter:
+                return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+            case .skontoHelpNavigationBarBottomAdapter:
                 return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			default:
 				return nil
