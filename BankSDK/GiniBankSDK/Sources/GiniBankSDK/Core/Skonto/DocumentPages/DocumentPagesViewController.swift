@@ -71,8 +71,8 @@ final class DocumentPagesViewController: UIViewController {
 
     // MARK: Toggle animation
 
-    /// Displays a loading activity indicator
-    public func showAnimation() {
+    /// Start the loading activity indicator animation
+    func startLoadingIndicatorAnimation() {
         if let loadingIndicator = configuration.customLoadingIndicator {
             loadingIndicator.startAnimation()
         } else {
@@ -80,8 +80,8 @@ final class DocumentPagesViewController: UIViewController {
         }
     }
 
-    /// Hides the loading activity indicator
-   func hideAnimation() {
+    /// Stops the loading activity indicator
+   func stopLoadingIndicatorAnimation() {
         if let loadingIndicator = configuration.customLoadingIndicator {
             loadingIndicator.stopAnimation()
         } else {
