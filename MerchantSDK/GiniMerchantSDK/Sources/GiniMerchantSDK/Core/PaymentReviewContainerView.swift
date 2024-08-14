@@ -303,6 +303,11 @@ class PaymentReviewContainerView: UIView {
         textFieldView.customConfigure(labelTitle: inputFieldPlaceholderText(textFieldView))
         textFieldView.textField.delegate = self
         textFieldView.textField.tag = textFieldView.tag
+
+        if let fieldIdentifier = TextFieldType(rawValue: textFieldView.tag), fieldIdentifier != .amountFieldTag {
+            textFieldView.textField.textColor = giniMerchantConfiguration.defaultStyleInputFieldConfiguration.placeholderForegroundColor
+        }
+
         textFieldView.layer.masksToBounds = true
     }
 
