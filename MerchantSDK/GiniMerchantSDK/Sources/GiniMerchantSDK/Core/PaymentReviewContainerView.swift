@@ -30,6 +30,7 @@ class PaymentReviewContainerView: UIView {
     private lazy var recipientStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .vertical)
         stackView.distribution = .fill
+        stackView.spacing = Constants.errorTopMargin
         return stackView
     }()
 
@@ -49,13 +50,14 @@ class PaymentReviewContainerView: UIView {
     private lazy var ibanAmountContainerStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .vertical)
         stackView.distribution = .fill
+        stackView.spacing = Constants.errorTopMargin
         return stackView
     }()
 
     private lazy var ibanAmountHorizontalStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .horizontal)
         stackView.distribution = .fill
-        stackView.spacing = Constants.stackViewSpacing
+        stackView.spacing = Constants.errorTopMargin
         return stackView
     }()
 
@@ -106,6 +108,7 @@ class PaymentReviewContainerView: UIView {
     private lazy var usageStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .vertical)
         stackView.distribution = .fill
+        stackView.spacing = Constants.errorTopMargin
         return stackView
     }()
 
@@ -737,5 +740,6 @@ extension PaymentReviewContainerView {
         static let stackViewSpacing = 10.0
         static let payInvoiceInactiveAlpha = 0.4
         static let bottomViewHeight = 48.0
+        static let errorTopMargin = 9.0
     }
 }
