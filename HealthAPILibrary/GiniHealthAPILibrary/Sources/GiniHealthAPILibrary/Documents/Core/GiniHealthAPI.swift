@@ -110,31 +110,29 @@ extension GiniHealthAPI {
             // Initialize GiniHealthAPILib
             switch api {
             case .default, .merchant:
-                let sessionManager = SessionManager(userDomain: userApi,
-                                                    sessionDelegate: self.sessionDelegate)
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, 
-                                                                             apiVersion: apiVersion),
-                                     paymentService: PaymentService(sessionManager: sessionManager,
-                                                                    apiDomain: api,
-                                                                    apiVersion: apiVersion))
+                return createHealthAPI()
             case let .custom(_, tokenSource):
-                var sessionManager: SessionManager
-                if let tokenSource = tokenSource {
-                    sessionManager = SessionManager(alternativeTokenSource: tokenSource,
-                                                    sessionDelegate: self.sessionDelegate)
-                } else {
-                    sessionManager = SessionManager(userDomain: userApi,
-                                                    sessionDelegate: self.sessionDelegate)
-                }
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, 
-                                                                             apiDomain: api,
-                                                                             apiVersion: apiVersion),
-                                     paymentService: PaymentService(sessionManager: sessionManager,
-                                                                    apiDomain: api,
-                                                                    apiVersion: apiVersion))
+                return createHealthAPI(tokenSource: tokenSource)
             }
         }
-        
+
+        private func createHealthAPI(tokenSource: AlternativeTokenSource? = nil) -> GiniHealthAPI {
+            var sessionManager: SessionManager
+            if let tokenSource = tokenSource {
+                sessionManager = SessionManager(alternativeTokenSource: tokenSource,
+                                                sessionDelegate: self.sessionDelegate)
+            } else {
+                sessionManager = SessionManager(userDomain: userApi,
+                                                sessionDelegate: self.sessionDelegate)
+            }
+            return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager,
+                                                                         apiDomain: api,
+                                                                         apiVersion: apiVersion),
+                                 paymentService: PaymentService(sessionManager: sessionManager,
+                                                                apiDomain: api,
+                                                                apiVersion: apiVersion))
+        }
+
         private func save(_ client: Client) {
             do {
                 try KeychainStore().save(item: KeychainManagerItem(key: .clientId,
