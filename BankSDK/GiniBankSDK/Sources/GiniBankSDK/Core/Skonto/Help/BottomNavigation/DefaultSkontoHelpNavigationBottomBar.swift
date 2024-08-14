@@ -12,8 +12,7 @@ import GiniCaptureSDK
 */
 
 final class DefaultSkontoHelpNavigationBottomBar: UIView {
-    let backButton = GiniBarButton(ofType: .back(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.back",
-                                                                                                 comment: "Skonto")))
+    let backButton = GiniBarButton(ofType: .back(title: ""))
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
