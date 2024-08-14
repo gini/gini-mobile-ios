@@ -453,15 +453,20 @@ extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
-   private func getDocumentLayout(completion: @escaping (Result<Document.Layout, GiniError>) -> Void) {
+    private func getDocumentLayout(completion: @escaping (Result<Document.Layout, GiniError>) -> Void) {
         documentService.layout(completion: completion)
     }
 
+    private func getDocumentPages(completion: @escaping (Result<[Document.Page], GiniError>) -> Void) {
+        documentService.pages(completion: completion)
+    }
+
     private func getDocumentPage(for pageNumber: Int,
+                                 size: Document.Page.Size,
                                  completion: @escaping (Result<UIImage?, GiniError>) -> Void) {
 
         documentService.documentPage(pageNumber: pageNumber,
-                                     sizeVariant: .medium) { result in
+                                     size: size) { result in
             switch result {
             case let .success(data):
                 DispatchQueue.main.async {
@@ -539,9 +544,12 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                                              completion: @escaping (Result<DocumentPagesViewModel,
                                                                     GiniError>) -> Void) {
         let dispatchGroup = DispatchGroup()
-        var originalSizes = [DocumentPageSize]()
+        var originalSizes: [DocumentPageSize] = []
         var layoutError: GiniError?
+        var documentPagesError: GiniError?
+        var viewModel: DocumentPagesViewModel?
 
+        // Enter the dispatch group for the document layout task
         dispatchGroup.enter()
         getDocumentLayout { result in
             switch result {
@@ -552,59 +560,99 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             case .failure(let error):
                 layoutError = error
             }
-            dispatchGroup.leave()
+            dispatchGroup.leave() // Leave the group after handling the result
         }
 
-        // PageNumber should start from 1, not 0
-        loadPages(from: skontoViewModel.extractionBoundingBoxes,
-                  startingAt: 1,
-                  using: dispatchGroup) { images, errors in
-            dispatchGroup.notify(queue: .main) {
-                if let layoutError = layoutError {
-                    completion(.failure(layoutError))
-                } else if let firstError = errors.first {
-                    completion(.failure(firstError))
-                } else {
-                    let extractionBoundingBoxes = skontoViewModel.extractionBoundingBoxes
-                    let viewModel = DocumentPagesViewModel(originalImages: images,
-                                                           originalSizes: originalSizes,
-                                                           extractionBoundingBoxes: extractionBoundingBoxes)
-                    skontoViewModel.setDocumentPagesViewModel(viewModel)
-                    completion(.success(viewModel))
-                }
-            }
-        }
-    }
-
-    private func loadPages(from extractionBoundingBoxes: [ExtractionBoundingBox],
-                           startingAt pageNumber: Int,
-                           using dispatchGroup: DispatchGroup,
-                           completion: @escaping ([UIImage], [GiniError]) -> Void) {
-        var images = [UIImage]()
-        var errors = [GiniError]()
-
-        func loadNextPage(at pageNumber: Int) {
-            guard pageNumber <= documentService.document?.partialDocuments?.count ?? 1 else {
-                completion(images, errors)
+        // Enter the dispatch group for the document pages task
+        dispatchGroup.enter()
+        getDocumentPages { [weak self] result in
+            guard let self = self else {
+                dispatchGroup.leave() // Ensure the group is left if self is nil
                 return
             }
 
-            dispatchGroup.enter()
-            getDocumentPage(for: pageNumber) { result in
-                switch result {
-                case .success(let image):
-                    if let image = image {
-                        images.append(image)
-                        loadNextPage(at: pageNumber + 1)
-                    }
-                case .failure(let error):
-                    errors.append(error)
+            switch result {
+            case .success(let pages):
+               self.loadAllPages(from: skontoViewModel,
+                                  pages: pages) { images, error in
+                if let error = error {
+                       documentPagesError = error
+                } else {
+                       let extractionBoundingBoxes = skontoViewModel.extractionBoundingBoxes
+                       viewModel = DocumentPagesViewModel(originalImages: images,
+                                                          originalSizes: originalSizes,
+                                                          extractionBoundingBoxes: extractionBoundingBoxes)
                 }
-                dispatchGroup.leave()
+                   dispatchGroup.leave() // Leave the group after processing pages
+                }
+
+            case .failure(let error):
+                documentPagesError = error
+                dispatchGroup.leave() // Leave the group on failure
             }
         }
 
-        loadNextPage(at: pageNumber)
+        // Notify block is called after all enter/leave pairs are balanced
+        dispatchGroup.notify(queue: .main) {
+            if let layoutError = layoutError {
+                completion(.failure(layoutError))
+            } else if let documentPagesError = documentPagesError {
+                completion(.failure(documentPagesError))
+            } else if let viewModel = viewModel {
+                skontoViewModel.setDocumentPagesViewModel(viewModel)
+                completion(.success(viewModel))
+            } else {
+                completion(.failure(GiniError.unknown())) // Handle unexpected cases
+            }
+        }
     }
 
+    private func loadAllPages(from skontoViewModel: SkontoViewModel,
+                              pages: [Document.Page],
+                              completion: @escaping ([UIImage], GiniError?) -> Void) {
+        var images: [UIImage] = []
+        var loadError: GiniError?
+
+        func loadPage(at index: Int) {
+            guard index < pages.count else {
+                completion(images, nil)
+                return
+            }
+
+            let page = pages[index]
+            loadDocumentPage(from: skontoViewModel.extractionBoundingBoxes,
+                             startingAt: page.number,
+                             size: page.images[0].size) { pageImage, errors in
+                if let firstError = errors.first {
+                    loadError = firstError
+                    completion([], loadError)
+                } else {
+                    images.append(pageImage)
+                    loadPage(at: index + 1) // Load the next page
+                }
+            }
+        }
+
+        // Start loading the first page
+        loadPage(at: 0)
+    }
+
+    private func loadDocumentPage(from extractionBoundingBoxes: [ExtractionBoundingBox],
+                                  startingAt pageNumber: Int,
+                                  size: Document.Page.Size,
+                                  completion: @escaping (UIImage, [GiniError]) -> Void) {
+        var errors = [GiniError]()
+        getDocumentPage(for: pageNumber,
+                        size: size) { result in
+            switch result {
+            case .success(let image):
+                if let image {
+                    completion(image, [])
+                }
+            case .failure(let error):
+                errors.append(error)
+                completion(UIImage(), errors)
+            }
+        }
+    }
 }
