@@ -139,7 +139,7 @@ final class DocumentPagesViewController: UIViewController {
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
                                              constant: -2 * Constants.containerHorizontalPadding),
 
-            // CLose button
+            // Close button
             closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                              constant: Constants.buttonPadding),
             closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
