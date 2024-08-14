@@ -516,7 +516,6 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             return
         }
 
-        viewController.startLoadingIndicatorAnimation()
         if documentPagesViewModel.processedImages.isEmpty {
             handleDocumentPage(for: skontoViewModel, with: viewController)
         } else {
