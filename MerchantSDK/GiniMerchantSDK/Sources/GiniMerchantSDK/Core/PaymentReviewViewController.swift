@@ -300,9 +300,7 @@ fileprivate extension PaymentReviewViewController {
     }
 
     func showInfoBar() {
-        guard !isInfoBarHidden else {
-            return
-        }
+        guard !isInfoBarHidden else { return }
         infoBar.isHidden = false
         animateInfoBar(verticalConstant: Constants.moveHeightInfoBar)
 
@@ -312,18 +310,14 @@ fileprivate extension PaymentReviewViewController {
     }
 
     func animateSlideDownInfoBar() {
-        guard !isInfoBarHidden else {
-            return
-        }
+        guard !isInfoBarHidden else { return }
         animateInfoBar(verticalConstant: Constants.infoBarHeight) { [weak self] _ in
             self?.infoBar.isHidden = true
         }
     }
 
     func animateInfoBar(verticalConstant: CGFloat, completion: ((Bool) -> Void)? = nil) {
-        guard !isInfoBarHidden else {
-            return
-        }
+        guard !isInfoBarHidden else { return }
         UIView.animate(withDuration: Constants.animationDuration,
                        delay: 0,
                        usingSpringWithDamping: 1.0,
