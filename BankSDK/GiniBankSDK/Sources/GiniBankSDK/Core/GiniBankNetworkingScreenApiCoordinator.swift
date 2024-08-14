@@ -516,11 +516,11 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             return
         }
 
-        viewController.showAnimation()
+        viewController.startLoadingIndicatorAnimation()
         if documentPagesViewModel.processedImages.isEmpty {
             handleDocumentPage(for: skontoViewModel, with: viewController)
         } else {
-            viewController.hideAnimation()
+            viewController.stopLoadingIndicatorAnimation()
             viewController.setData(viewModel: documentPagesViewModel)
         }
     }
@@ -529,7 +529,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                                     with viewController: DocumentPagesViewController) {
         createDocumentPageViewModel(from: skontoViewModel) { [weak self] result in
             guard let self = self else { return }
-            viewController.hideAnimation()
+            viewController.stopLoadingIndicatorAnimation()
             switch result {
             case .success(let viewModel):
                 viewController.setData(viewModel: viewModel)
