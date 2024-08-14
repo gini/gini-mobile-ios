@@ -105,8 +105,8 @@ final class DocumentPagesViewController: UIViewController {
 
     private func setupScrollView() {
         scrollView.delegate = self
-        scrollView.minimumZoomScale = 1.0
-        scrollView.maximumZoomScale = 2.0
+        scrollView.minimumZoomScale = Constants.minimumZoomScale
+        scrollView.maximumZoomScale = Constants.maximumZoomScale
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
 
@@ -231,7 +231,7 @@ final class DocumentPagesViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func didRecognizeDoubleTap(_ gestureRecognizer: UITapGestureRecognizer) {
-        let shouldZoomOut = scrollView.zoomScale != 1.0
+        let shouldZoomOut = scrollView.zoomScale != Constants.minimumZoomScale
         if shouldZoomOut {
             scrollView.setZoomScale(1.0, animated: true)
         } else {
@@ -269,5 +269,7 @@ private extension DocumentPagesViewController {
         static let loadingIndicatorContainerHeight: CGFloat = 60
         static let navigationBarHeight: CGFloat = 90
         static let stackViewTopConstraintToNavBar: CGFloat = 56
+        static let minimumZoomScale: CGFloat = 1.0
+        static let maximumZoomScale: CGFloat = 2.0
     }
 }
