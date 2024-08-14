@@ -80,7 +80,11 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         giniMerchantConfiguration.useInvoiceWithoutDocument = true
         setupObservers()
     }
-    
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     /**
      Retrieves the default installed payment provider, if available.
      - Returns: a Payment Provider object.
