@@ -39,11 +39,10 @@ final class DocumentPagesViewController: UIViewController {
         return loadingIndicatorContainer
     }()
 
-    private var loadingIndicatorView: UIActivityIndicatorView = {
+    private lazy var loadingIndicatorView: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView()
         indicatorView.hidesWhenStopped = true
         indicatorView.style = .whiteLarge
-        indicatorView.startAnimating()
         return indicatorView
     }()
 
