@@ -198,6 +198,29 @@ public final class DocumentService: DocumentServiceProtocol {
         }
     }
 
+    public func pages(completion: @escaping DocumentPagsCompletion) {
+        guard let document = document else {
+            Log(message: "Cannot get document pages", event: .error)
+            return
+        }
+        captureNetworkService.pages(for: document) { result in
+            switch result {
+                case let .success(pages):
+                    completion(.success(pages))
+                case let .failure(error):
+                    let message = "Failed to get pages for document with id: \(document.id) error: \(error)"
+                    Log(message: message, event: .error)
+                    DispatchQueue.main.async {
+                        guard !errorOccurred else { return }
+                        errorOccurred = true
+                        DispatchQueue.global().async {
+                            completion(.failure(error))
+                        }
+                    }
+            }
+        }
+    }
+
     public func documentPage(pageNumber: Int,
                              sizeVariant: Document.Layout.SizeVariant,
                              completion: @escaping DocumentPagePreviewCompletion){
