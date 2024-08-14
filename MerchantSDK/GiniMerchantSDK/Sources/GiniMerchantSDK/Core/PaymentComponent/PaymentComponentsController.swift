@@ -307,7 +307,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     private func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(paymentInfoDissapeared), name: Notification.Name("paymentInfoDissapeared"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(paymentInfoDissapeared), name: .paymentInfoDissapeared, object: nil)
     }
 
     @objc
