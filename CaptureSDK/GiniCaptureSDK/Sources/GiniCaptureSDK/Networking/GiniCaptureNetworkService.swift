@@ -31,7 +31,7 @@ public protocol GiniCaptureNetworkService: AnyObject  {
     func pages(for document: Document, completion: @escaping DocumentPagsCompletion)
     func documentPage(for document: Document,
                       pageNumber: Int,
-                      sizeVariant: GiniBankAPILibrary.Document.Layout.SizeVariant,
+                      size: GiniBankAPILibrary.Document.Page.Size,
                       completion: @escaping DocumentPagePreviewCompletion)
 }
 
@@ -60,16 +60,16 @@ public extension GiniCaptureNetworkService {
     }
 
     /**
-     *  Retrieves the page data of a document for a specified page number and size variant
+     *  Retrieves the page data of a document for a specified page number and size
      *
      * - Parameter document:            The document from which to retrieve the page data
      * - Parameter pageNumber:          The page number within the document to retrieve
-     * - Parameter sizeVariant:         The size variant of the page to retrieve (e.g., large, medium)
+     * - Parameter size:                The size of the page to retrieve (e.g., large, medium)
      * - Parameter completion:          A completion callback that returns a `Result<Data, GiniError>`, with the requested page data on success, or an error on failure
     */
     func documentPage(for document: Document,
                       pageNumber: Int,
-                      sizeVariant: Document.Layout.SizeVariant,
+                      size: Document.Page.Size,
                       completion: @escaping DocumentPagePreviewCompletion) {
         // Default implementation is empty
     }
@@ -204,12 +204,12 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
 
     func documentPage(for document: Document,
                       pageNumber: Int,
-                      sizeVariant: GiniBankAPILibrary.Document.Layout.SizeVariant,
+                      size: GiniBankAPILibrary.Document.Page.Size,
                       completion: @escaping DocumentPagePreviewCompletion) {
         Log(message: "Getting page for document with id: \(document.id) ", event: "📝")
         documentService.documentPage(for: document,
                                      pageNumber: pageNumber,
-                                     sizeVariant: sizeVariant) { result in
+                                     size: size) { result in
             switch result {
             case let .success(pageData):
                 completion(.success(pageData))
