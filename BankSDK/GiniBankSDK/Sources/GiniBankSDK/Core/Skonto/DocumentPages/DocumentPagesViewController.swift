@@ -57,6 +57,7 @@ final class DocumentPagesViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         setupViews()
         setupLayout()
+        startLoadingIndicatorAnimation()
     }
 
     required init?(coder: NSCoder) {
@@ -147,49 +148,33 @@ final class DocumentPagesViewController: UIViewController {
             closeButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize),
             closeButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize)
         ])
-
-        scrollView.layoutIfNeeded()
     }
 
     // MARK: - Handle Loading indicator
     private func configureLoadingIndicator() {
-        loadingIndicatorView.color = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
+        loadingIndicatorView.color = GiniColor(light: .GiniCapture.light1,
+                                               dark: .GiniCapture.dark1).uiColor()
 
         addLoadingContainer()
         addLoadingView(intoContainer: loadingIndicatorContainer)
     }
 
-    private func addLoadingView(intoContainer container: UIView? = nil) {
-        let loadingIndicator: UIView
+    private func addLoadingView(intoContainer container: UIView) {
+        let loadingIndicator = configuration.customLoadingIndicator?.injectedView() ?? loadingIndicatorView
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        container.translatesAutoresizingMaskIntoConstraints = false
 
-        if let customLoadingIndicator = configuration.customLoadingIndicator?.injectedView() {
-            loadingIndicator = customLoadingIndicator
-        } else {
-            loadingIndicator = loadingIndicatorView
-        }
+        view.addSubview(container)
+        container.addSubview(loadingIndicator)
 
-        if let container = container {
-            container.translatesAutoresizingMaskIntoConstraints = false
-            loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(container)
-            container.addSubview(loadingIndicator)
-
-            NSLayoutConstraint.activate([
-                container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                container.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                container.heightAnchor.constraint(equalToConstant: Constants.loadingIndicatorContainerHeight),
-                container.widthAnchor.constraint(equalTo: container.heightAnchor),
-                loadingIndicator.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-                loadingIndicator.centerYAnchor.constraint(equalTo: container.centerYAnchor)
-            ])
-        } else {
-            view.addSubview(loadingIndicatorView)
-
-            NSLayoutConstraint.activate([
-                loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-            ])
-        }
+        NSLayoutConstraint.activate([
+            container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            container.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            container.heightAnchor.constraint(equalToConstant: Constants.loadingIndicatorContainerHeight),
+            container.widthAnchor.constraint(equalTo: container.heightAnchor),
+            loadingIndicator.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: container.centerYAnchor)
+        ])
     }
 
     private func addLoadingContainer() {
