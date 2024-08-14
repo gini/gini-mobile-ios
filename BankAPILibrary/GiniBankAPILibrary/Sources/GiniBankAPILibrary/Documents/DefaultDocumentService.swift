@@ -155,7 +155,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     /**
      *  Retrieves the layout of a given document
      *
-     * - Parameter id:                  The document's unique identifier
+     * - Parameter document:            The document from which to retrieve the layout
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     public func layout(for document: Document, completion: @escaping CompletionResult<Document.Layout>) {
@@ -165,7 +165,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     /**
      *  Retrieves the pages of a given document
      *
-     * - Parameter id:                  The document's unique identifier
+     * - Parameter document:            The document from which to retrieve the pages
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     public func pages(in document: Document, completion: @escaping CompletionResult<[Document.Page]>) {
