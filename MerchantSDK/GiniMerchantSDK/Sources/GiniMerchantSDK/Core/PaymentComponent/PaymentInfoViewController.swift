@@ -129,7 +129,7 @@ class PaymentInfoViewController: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.post(name: Notification.Name("paymentInfoDissapeared"), object: nil)
+        NotificationCenter.default.post(name: .paymentInfoDissapeared, object: nil)
     }
 
     private func setupView() {
