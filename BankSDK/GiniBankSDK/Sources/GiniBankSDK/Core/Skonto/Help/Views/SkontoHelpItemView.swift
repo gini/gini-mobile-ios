@@ -75,15 +75,15 @@ final class SkontoHelpItemView: UIView {
     }
 
     private func addDividerView() {
-        let separatorView = UIView()
-        separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = .giniColorScheme().bg.divider.uiColor()
-        addSubview(separatorView)
+        let dividerView = UIView()
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        dividerView.backgroundColor = .giniColorScheme().bg.divider.uiColor()
+        addSubview(dividerView)
         NSLayoutConstraint.activate([
-            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: Constants.separatorViewHeight),
-            separatorView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor,
+            dividerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
+            dividerView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                 constant: -Constants.horizontalPadding)
         ])
     }
@@ -94,9 +94,9 @@ private extension SkontoHelpItemView {
         static let horizontalPadding: CGFloat = 16
         static let verticalPadding: CGFloat = 10
         static let iconSize = CGSize(width: 48, height: 48)
-        static let separatorViewHeight: CGFloat = 1
-        static let separatorLeadingPadding: CGFloat = 80
-        static let separatorTrailingPadding: CGFloat = 16
+        static let dividerViewHeight: CGFloat = 1
+        static let dividerLeadingPadding: CGFloat = 80
+        static let dividerTrailingPadding: CGFloat = 16
         static let labelNumberOfLines: Int = 0
     }
 }
