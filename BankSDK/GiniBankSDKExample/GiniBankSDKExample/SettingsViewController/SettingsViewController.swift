@@ -111,6 +111,8 @@ final class SettingsViewController: UIViewController {
 
         contentData.append(.switchOption(data: .init(type: .skontoNavigationBarBottomAdapter,
                                                      isSwitchOn: giniConfiguration.skontoNavigationBarBottomAdapter != nil)))
+        contentData.append(.switchOption(data: .init(type: .skontoHelpNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.skontoHelpNavigationBarBottomAdapter != nil)))
 
 		contentData.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
 													 isSwitchOn: giniConfiguration.helpNavigationBarBottomAdapter != nil)))
@@ -459,6 +461,9 @@ final class SettingsViewController: UIViewController {
         case .skontoNavigationBarBottomAdapter:
             let customAdapter = CustomSkontoNavigationBarBottomAdapter()
             giniConfiguration.skontoNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+        case .skontoHelpNavigationBarBottomAdapter:
+            let customAdapter = CustomBottomNavigationBarAdapter()
+            giniConfiguration.skontoHelpNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
         }
 	}
 	

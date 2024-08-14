@@ -8,8 +8,7 @@ import Foundation
 import GiniBankAPILibrary
 
 protocol SkontoViewModelDelegate: AnyObject {
-    // MARK: Temporary remove help action
-//    func didTapHelp()
+    func didTapHelp()
     func didTapBack()
     func didTapProceed(on viewModel: SkontoViewModel)
 }
@@ -145,10 +144,9 @@ class SkontoViewModel {
         }
     }
 
-    // MARK: Temporary remove help action
-//    func helpButtonTapped() {
-//        delegate?.didTapHelp()
-//    }
+    func helpButtonTapped() {
+        delegate?.didTapHelp()
+    }
 
     func backButtonTapped() {
         delegate?.didTapBack()
