@@ -64,10 +64,4 @@ extension Document.Layout {
         /// Text contained in the word
         public let text: String
     }
-
-    /// A document's page size variant, indicating the available size options
-    public enum SizeVariant: String, Decodable {
-        case medium
-        case large
-    }
 }

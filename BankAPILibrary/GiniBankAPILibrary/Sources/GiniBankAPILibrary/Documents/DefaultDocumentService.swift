@@ -209,21 +209,21 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     }
 
     /**
-     *  Retrieves the page data of a document for a given page number and size variant
+     *  Retrieves the page data of a document for a given page number and size
      *
      * - Parameter document:            The document from which to retrieve the page data
      * - Parameter pageNumber:          The document's page number
-     * - Parameter sizeVariant:         The size variant of the page to retrieve (e.g., large, medium)
+     * - Parameter size:                The size of the page to retrieve (e.g., large, medium)
      * - Parameter completion:          A completion callback, returning the requested page preview on success, or an error on failure
      */
     public func documentPage(for document: Document,
                              pageNumber: Int,
-                             sizeVariant: Document.Layout.SizeVariant,
+                             size: Document.Page.Size,
                              completion: @escaping CompletionResult<Data>) {
         documentPage(resourceHandler: sessionManager.download,
                      in: document,
                      pageNumber: pageNumber,
-                     sizeVariant: sizeVariant,
+                     size: size,
                      completion: completion)
     }
 
