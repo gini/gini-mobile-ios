@@ -727,7 +727,7 @@ extension PaymentReviewContainerView {
     enum Constants {
         static let buttonViewHeight = 56.0
         static let leftRightPaymentInfoContainerPadding = 8.0
-        static let topBottomPaymentInfoContainerPadding = 16.0
+        static let topBottomPaymentInfoContainerPadding = 0.0
         static let textFieldHeight = 56.0
         static let errorLabelHeight = 12.0
         static let amountWidth = 95.0
