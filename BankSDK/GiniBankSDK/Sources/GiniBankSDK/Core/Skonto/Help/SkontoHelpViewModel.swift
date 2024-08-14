@@ -11,7 +11,7 @@ struct SkontoHelpViewModel {
         SkontoHelpItem(
             icon: GiniImages.skontoHelpItem1.image,
             title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.content.item1",
-                                                            comment: "Use your camera to capture invoices with cash discounts")),
+                                                            comment: "Use your camera to capture invoices with Skonto discounts")),
         SkontoHelpItem(
             icon: GiniImages.skontoHelpItem2.image,
             title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.content.item2",

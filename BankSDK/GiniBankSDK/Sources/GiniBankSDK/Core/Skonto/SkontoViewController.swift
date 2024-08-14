@@ -126,7 +126,7 @@ public class SkontoViewController: UIViewController {
 
     private func setupView() {
         title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.screen.title",
-                                                         comment: "Skonto")
+                                                         comment: "Skonto discount")
         let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
                                                                        comment: "Back")
         edgesForExtendedLayout = []
