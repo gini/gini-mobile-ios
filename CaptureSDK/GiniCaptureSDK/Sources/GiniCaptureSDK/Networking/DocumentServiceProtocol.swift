@@ -12,6 +12,7 @@ public typealias UploadDocumentCompletion = (Result<Document, GiniError>) -> Voi
 public typealias AnalysisCompletion = (Result<ExtractionResult, GiniError>) -> Void
 public typealias DocumentLayoutCompletion = (Result<Document.Layout, GiniError>) -> Void
 public typealias DocumentPagePreviewCompletion = (Result<Data, GiniError>) -> Void
+public typealias DocumentPagsCompletion = (Result<[Document.Page], GiniError>) -> Void
 
 public protocol DocumentServiceProtocol: AnyObject {
     
@@ -31,7 +32,7 @@ public protocol DocumentServiceProtocol: AnyObject {
     func log(errorEvent: ErrorEvent)
 
     func layout(completion: @escaping DocumentLayoutCompletion)
-
+    func pages(completion: @escaping DocumentPagsCompletion)
     func documentPage(pageNumber: Int,
                       sizeVariant: Document.Layout.SizeVariant,
                       completion: @escaping DocumentPagePreviewCompletion)

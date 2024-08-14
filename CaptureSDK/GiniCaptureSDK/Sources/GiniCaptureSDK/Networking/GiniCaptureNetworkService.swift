@@ -11,6 +11,7 @@ public protocol GiniCaptureNetworkService: AnyObject  {
     func delete(document: Document,
                 completion: @escaping (Result<String, GiniError>) -> Void)
     func cleanup()
+    
     func analyse(partialDocuments: [PartialDocumentInfo],
                  metadata: Document.Metadata?,
                  cancellationToken: CancellationToken,
@@ -26,12 +27,12 @@ public protocol GiniCaptureNetworkService: AnyObject  {
              completion: @escaping (Result<Void, GiniError>) -> Void)
 
     func layout(for document: Document,
-                completion: @escaping (Result<Document.Layout, GiniError>) -> Void)
-
+                completion: @escaping DocumentLayoutCompletion)
+    func pages(for document: Document, completion: @escaping DocumentPagsCompletion)
     func documentPage(for document: Document,
                       pageNumber: Int,
                       sizeVariant: GiniBankAPILibrary.Document.Layout.SizeVariant,
-                      completion: @escaping (Result<Data, GiniError>) -> Void)
+                      completion: @escaping DocumentPagePreviewCompletion)
 }
 
 /// Extension for `GiniCaptureNetworkService` protocol to provide default implementations
@@ -44,9 +45,20 @@ public extension GiniCaptureNetworkService {
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     func layout(for document: Document,
-                completion: @escaping CompletionResult<Document.Layout>) {
+                completion: @escaping DocumentLayoutCompletion) {
         // Default implementation is empty
     }
+
+    /**
+     *  Retrieves the pages of a given document
+     *
+     * - Parameter document:            The document from which to retrieve the pages
+     * - Parameter completion:          A completion callback, returning the requested document layout on success
+     */
+    func pages(for document: Document, completion: @escaping DocumentPagsCompletion) {
+        // Default implementation is empty
+    }
+
     /**
      *  Retrieves the page data of a document for a specified page number and size variant
      *
@@ -57,8 +69,8 @@ public extension GiniCaptureNetworkService {
     */
     func documentPage(for document: Document,
                       pageNumber: Int,
-                      sizeVariant: GiniBankAPILibrary.Document.Layout.SizeVariant,
-                      completion: @escaping (Result<Data, GiniError>) -> Void) {
+                      sizeVariant: Document.Layout.SizeVariant,
+                      completion: @escaping DocumentPagePreviewCompletion) {
         // Default implementation is empty
     }
 }
@@ -172,6 +184,20 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                 self.logError(message: "Document layout retrieval encountered an error: \(error)",
                               error: error)
                 completion(.failure(error))
+            }
+        }
+    }
+
+    func pages(for document: Document, completion: @escaping (Result<[Document.Page], GiniError>) -> Void) {
+        Log(message: "Getting pages for document with id: \(document.id) ", event: "📝")
+        documentService.pages(in: document) { result in
+            switch result {
+                case let .success(pages):
+                    completion(.success(pages))
+                case let .failure(error):
+                    self.logError(message: "Document pages retrieval encountered an error: \(error)",
+                                  error: error)
+                    completion(.failure(error))
             }
         }
     }
