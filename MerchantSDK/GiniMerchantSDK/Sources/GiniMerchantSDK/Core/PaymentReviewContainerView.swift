@@ -105,7 +105,7 @@ class PaymentReviewContainerView: UIView {
         return label
     }()
 
-    private lazy var usageStackView: UIStackView = {
+    private lazy var referenceNumberStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .vertical)
         stackView.distribution = .fill
         stackView.spacing = Constants.errorTopMargin
@@ -152,6 +152,7 @@ class PaymentReviewContainerView: UIView {
 
     private var paymentInputFields: [TextFieldWithLabelView] = []
     private var paymentInputFieldsErrorLabels: [UILabel] = []
+    private var coupledErrorLabels: [UILabel] = []
     var model: PaymentReviewContainerViewModel! {
         didSet {
             configureUI()
@@ -164,7 +165,7 @@ class PaymentReviewContainerView: UIView {
         setupViewHierarchy()
         setupLayout()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -172,6 +173,7 @@ class PaymentReviewContainerView: UIView {
     private func setupViewHierarchy() {
         paymentInputFields = [recipientTextFieldView, amountTextFieldView, ibanTextFieldView, usageTextFieldView]
         paymentInputFieldsErrorLabels = [recipientErrorLabel, amountErrorLabel, ibanErrorLabel, usageErrorLabel]
+        coupledErrorLabels = [amountErrorLabel, ibanErrorLabel]
 
         recipientStackView.addArrangedSubview(recipientTextFieldView)
         recipientStackView.addArrangedSubview(recipientErrorLabel)
@@ -187,8 +189,8 @@ class PaymentReviewContainerView: UIView {
         ibanAmountContainerStackView.addArrangedSubview(ibanAmountHorizontalStackView)
         ibanAmountContainerStackView.addArrangedSubview(ibanAmountErrorsHorizontalStackView)
 
-        usageStackView.addArrangedSubview(usageTextFieldView)
-        usageStackView.addArrangedSubview(usageErrorLabel)
+        referenceNumberStackView.addArrangedSubview(usageTextFieldView)
+        referenceNumberStackView.addArrangedSubview(usageErrorLabel)
 
         buttonsStackView.addArrangedSubview(payInvoiceButton)
         buttonsView.addSubview(buttonsStackView)
@@ -200,7 +202,7 @@ class PaymentReviewContainerView: UIView {
 
         paymentInfoStackView.addArrangedSubview(ibanAmountContainerStackView)
 
-        paymentInfoStackView.addArrangedSubview(usageStackView)
+        paymentInfoStackView.addArrangedSubview(referenceNumberStackView)
         paymentInfoStackView.addArrangedSubview(buttonsView)
         paymentInfoStackView.addArrangedSubview(bottomView)
 
@@ -220,10 +222,10 @@ class PaymentReviewContainerView: UIView {
 
     private func setupContainerContraints() {
         NSLayoutConstraint.activate([
-            paymentInfoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPadding),
-            paymentInfoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPadding),
-            paymentInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.topBottomPaymentInfoContainerPadding),
-            paymentInfoStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -Constants.topBottomPaymentInfoContainerPadding)
+            paymentInfoStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPadding),
+            paymentInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPadding),
+            paymentInfoStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.topBottomPaymentInfoContainerPadding),
+            paymentInfoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.topBottomPaymentInfoContainerPadding)
         ])
     }
 
@@ -283,6 +285,12 @@ class PaymentReviewContainerView: UIView {
             bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
             bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
+    }
+
+    private func updateAmountIbanErrorState() {
+        ibanAmountErrorsHorizontalStackView.isHidden = coupledErrorLabels.reduce(true) {
+            $0 && ($1.text?.trimmingCharacters(in: .whitespaces).isEmpty ?? true)
+        }
     }
 
     // MARK: - Input fields configuration
@@ -431,6 +439,7 @@ class PaymentReviewContainerView: UIView {
         for errorLabel in paymentInputFieldsErrorLabels {
             errorLabel.isHidden = true
         }
+        updateAmountIbanErrorState()
     }
 
     fileprivate func fillInInputFields() {
@@ -484,6 +493,7 @@ class PaymentReviewContainerView: UIView {
             errorLabel.textColor = GiniColor.feedback1.uiColor()
             errorLabel.text = errorMessage
         }
+        updateAmountIbanErrorState()
     }
 
     fileprivate func hideErrorLabel(textFieldTag: TextFieldType) {
@@ -502,6 +512,7 @@ class PaymentReviewContainerView: UIView {
             errorLabel.isHidden = true
         }
         disablePayButtonIfNeeded()
+        updateAmountIbanErrorState()
     }
 
     // MARK: - Pay button
@@ -531,6 +542,7 @@ class PaymentReviewContainerView: UIView {
             errorLabel.textColor = GiniColor.feedback1.uiColor()
             errorLabel.text = errorMessage
         }
+        updateAmountIbanErrorState()
     }
 
     fileprivate func configurePayButtonInitialState() {
@@ -739,7 +751,7 @@ extension PaymentReviewContainerView {
         static let heightToolbar = 40.0
         static let stackViewSpacing = 10.0
         static let payInvoiceInactiveAlpha = 0.4
-        static let bottomViewHeight = 48.0
+        static let bottomViewHeight = 20.0
         static let errorTopMargin = 9.0
     }
 }
