@@ -288,9 +288,7 @@ class PaymentReviewContainerView: UIView {
     }
 
     private func updateAmountIbanErrorState() {
-        ibanAmountErrorsHorizontalStackView.isHidden = coupledErrorLabels.reduce(true) {
-            $0 && ($1.text?.trimmingCharacters(in: .whitespaces).isEmpty ?? true)
-        }
+        ibanAmountErrorsHorizontalStackView.isHidden = coupledErrorLabels.allSatisfy { $0.isHidden }
     }
 
     // MARK: - Input fields configuration
