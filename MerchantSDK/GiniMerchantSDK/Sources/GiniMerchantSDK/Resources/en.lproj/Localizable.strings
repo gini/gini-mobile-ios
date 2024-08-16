@@ -29,7 +29,7 @@
 "gini.merchant.paymentcomponent.to.banking.app.label" = "To the banking app";
 "gini.merchant.paymentcomponent.continue.to.overview.label" = "Continue to overview";
 "gini.merchant.paymentcomponent.powered.by.gini.label" = "Powered by";
-"gini.merchant.paymentcomponent.select.bank.label" = "Your bank";
+"gini.merchant.paymentcomponent.select.bank.label" = "Select bank";
 "gini.merchant.paymentcomponent.payment.providers.list.description" = "You can only pay the bill if you have an account with one of the banks listed below.";
 "gini.merchant.paymentcomponent.payment.info.title.label" = "More information";
 "gini.merchant.paymentcomponent.payment.info.pay.bills.title.label" = "Pay bills easily with the banking app.";
