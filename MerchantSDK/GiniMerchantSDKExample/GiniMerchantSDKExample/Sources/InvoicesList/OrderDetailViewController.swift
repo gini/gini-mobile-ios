@@ -145,7 +145,7 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
                 if let error {
                     self?.errors.append(error.localizedDescription)
                     self?.showErrorsIfAny()
-                } else if let viewController, let paymentViewBottomSheet = self?.paymentComponentsController.paymentInfoBottomSheet() {
+                } else if let paymentViewBottomSheet = self?.paymentComponentsController.paymentInfoBottomSheet() {
                     paymentViewBottomSheet.modalTransitionStyle = .coverVertical
                     paymentViewBottomSheet.modalPresentationStyle = .overCurrentContext
                     self?.dismissAndPresent(viewController: paymentViewBottomSheet, animated: true)
