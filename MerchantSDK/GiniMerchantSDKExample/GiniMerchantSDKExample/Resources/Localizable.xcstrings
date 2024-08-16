@@ -68,6 +68,17 @@
         }
       }
     },
+    "example.order.detail.Alert.FieldError" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment details are incomplete"
+          }
+        }
+      }
+    },
     "example.order.detail.Alert.Ok" : {
       "extractionState" : "manual",
       "localizations" : {
