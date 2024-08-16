@@ -43,7 +43,7 @@ final class BanksBottomViewModel {
 
     let selectBankTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label", 
                                                                        comment: "Select bank text from the top label on payment providers bottom sheet")
-    let selectBankLabelAccentColor: UIColor = GiniColor.standard2.uiColor()
+    let selectBankLabelAccentColor: UIColor = GiniColor.standard1.uiColor()
     var selectBankLabelFont: UIFont
 
     let closeTitleIcon: UIImage = GiniMerchantImage.close.preferredUIImage()
@@ -60,7 +60,7 @@ final class BanksBottomViewModel {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.urlOpener = urlOpener
 
-        self.selectBankLabelFont = GiniMerchantConfiguration.shared.font(for: .subtitle1)
+        self.selectBankLabelFont = GiniMerchantConfiguration.shared.font(for: .subtitle2)
         self.descriptionLabelFont = GiniMerchantConfiguration.shared.font(for: .captions1)
 
         self.paymentProviders = paymentProviders
