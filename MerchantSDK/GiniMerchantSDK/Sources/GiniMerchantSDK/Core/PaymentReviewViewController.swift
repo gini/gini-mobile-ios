@@ -27,7 +27,6 @@ public final class PaymentReviewViewController: BottomSheetController, UIGesture
     public static func instantiate(with giniMerchant: GiniMerchant, document: Document?, extractions: [Extraction]?, paymentInfo: PaymentInfo?, selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniMerchantTrackingDelegate? = nil, paymentComponentsController: PaymentComponentsController, isInfoBarHidden: Bool = true) -> PaymentReviewViewController {
         let viewController = PaymentReviewViewController()
         let viewModel = PaymentReviewModel(with: giniMerchant,
-                                           document: document,
                                            extractions: extractions,
                                            paymentInfo: paymentInfo,
                                            selectedPaymentProvider: selectedPaymentProvider,
@@ -42,7 +41,6 @@ public final class PaymentReviewViewController: BottomSheetController, UIGesture
     public static func instantiate(with giniMerchant: GiniMerchant, data: DataForReview?, paymentInfo: PaymentInfo?, selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniMerchantTrackingDelegate? = nil, paymentComponentsController: PaymentComponentsController) -> PaymentReviewViewController {
         let viewController = PaymentReviewViewController()
         let viewModel = PaymentReviewModel(with: giniMerchant,
-                                           document: data?.document,
                                            extractions: data?.extractions,
                                            paymentInfo: paymentInfo,
                                            selectedPaymentProvider: selectedPaymentProvider,

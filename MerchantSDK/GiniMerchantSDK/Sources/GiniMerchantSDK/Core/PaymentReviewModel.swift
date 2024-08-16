@@ -45,10 +45,8 @@ public class PaymentReviewModel: NSObject {
 
     var paymentComponentsController: PaymentComponentsController
 
-    public init(with giniMerchant: GiniMerchant, document: Document?, extractions: [Extraction]?, paymentInfo: PaymentInfo?, selectedPaymentProvider: PaymentProvider?, paymentComponentsController: PaymentComponentsController) {
+    public init(with giniMerchant: GiniMerchant, extractions: [Extraction]?, paymentInfo: PaymentInfo?, selectedPaymentProvider: PaymentProvider?, paymentComponentsController: PaymentComponentsController) {
         self.merchantSDK = giniMerchant
-        self.documentId = document?.id
-        self.document = document
         self.extractions = extractions
         self.paymentInfo = paymentInfo
         self.selectedPaymentProvider = selectedPaymentProvider
