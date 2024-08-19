@@ -146,6 +146,8 @@
 		F4807FC22641830D00F30FF3 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807FC12641830D00F30FF3 /* CredentialsManager.swift */; };
 		F4807FC9264183C000F30FF3 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4807FC8264183C000F30FF3 /* Credentials.plist */; };
 		F490C7E525DE873900D8CA6F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F490C7E425DE873900D8CA6F /* AppDelegate.swift */; };
+		F49D72032C733B4500F16C3E /* ReviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49D72022C733B4500F16C3E /* ReviewScreen.swift */; };
+		F49D72042C733B4500F16C3E /* ReviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49D72022C733B4500F16C3E /* ReviewScreen.swift */; };
 		F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00B525DED1A000C34E15 /* AppCoordinator.swift */; };
 		F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00BB25DED33300C34E15 /* Coordinator.swift */; };
 		F4AD00C225DED43200C34E15 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00C125DED43200C34E15 /* DemoViewController.swift */; };
@@ -158,6 +160,12 @@
 		F4BBCE432C610D8500B682AE /* GiniHelpScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BBCE412C610D8500B682AE /* GiniHelpScreenUITests.swift */; };
 		F4BC109C2C5D71A500598812 /* ErrorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F463266B2C5D690D001C58F5 /* ErrorScreen.swift */; };
 		F4BC984E2ADEA1B600E9E2D0 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = F4BC984D2ADEA1B600E9E2D0 /* Lottie */; };
+		F4C48D8C2C6E0349001FB62E /* SkontoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C48D8B2C6E0349001FB62E /* SkontoScreen.swift */; };
+		F4C48D8D2C6E0349001FB62E /* SkontoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C48D8B2C6E0349001FB62E /* SkontoScreen.swift */; };
+		F4C48D8F2C6E0372001FB62E /* ReturnAssistantScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C48D8E2C6E0372001FB62E /* ReturnAssistantScreen.swift */; };
+		F4C48D902C6E0372001FB62E /* ReturnAssistantScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C48D8E2C6E0372001FB62E /* ReturnAssistantScreen.swift */; };
+		F4C48D922C6E065F001FB62E /* GiniSkontoScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C48D912C6E065F001FB62E /* GiniSkontoScreenUITests.swift */; };
+		F4C48D932C6E065F001FB62E /* GiniSkontoScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C48D912C6E065F001FB62E /* GiniSkontoScreenUITests.swift */; };
 		F4C723AD28F8354400BDDEA7 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C723AC28F8354400BDDEA7 /* ShareViewController.swift */; };
 		F4C723B028F8354400BDDEA7 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C723AE28F8354400BDDEA7 /* MainInterface.storyboard */; };
 		F4C723B428F8354400BDDEA7 /* GiniBankSDKShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F4C723AA28F8354400BDDEA7 /* GiniBankSDKShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -328,6 +336,7 @@
 		F490C7E225DE873900D8CA6F /* GiniBankSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniBankSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F490C7E425DE873900D8CA6F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F490C7FD25DE87A900D8CA6F /* GiniBankSDKExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F49D72022C733B4500F16C3E /* ReviewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewScreen.swift; sourceTree = "<group>"; };
 		F4AD00B525DED1A000C34E15 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		F4AD00BB25DED33300C34E15 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		F4AD00C125DED43200C34E15 /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
@@ -337,6 +346,9 @@
 		F4AD00F725DFDF4400C34E15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuItemViewController.swift; sourceTree = "<group>"; };
 		F4BBCE412C610D8500B682AE /* GiniHelpScreenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHelpScreenUITests.swift; sourceTree = "<group>"; };
+		F4C48D8B2C6E0349001FB62E /* SkontoScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkontoScreen.swift; sourceTree = "<group>"; };
+		F4C48D8E2C6E0372001FB62E /* ReturnAssistantScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReturnAssistantScreen.swift; sourceTree = "<group>"; };
+		F4C48D912C6E065F001FB62E /* GiniSkontoScreenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniSkontoScreenUITests.swift; sourceTree = "<group>"; };
 		F4C723AA28F8354400BDDEA7 /* GiniBankSDKShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GiniBankSDKShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4C723AC28F8354400BDDEA7 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		F4C723AF28F8354400BDDEA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -443,6 +455,9 @@
 				F463266B2C5D690D001C58F5 /* ErrorScreen.swift */,
 				F46A85B82C60EEC700889404 /* CameraAccessScreen.swift */,
 				F44012772C61FDCF0061D353 /* OnboardingScreen.swift */,
+				F4C48D8B2C6E0349001FB62E /* SkontoScreen.swift */,
+				F4C48D8E2C6E0372001FB62E /* ReturnAssistantScreen.swift */,
+				F49D72022C733B4500F16C3E /* ReviewScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -544,6 +559,7 @@
 				F4BBCE412C610D8500B682AE /* GiniHelpScreenUITests.swift */,
 				F440127D2C6200ED0061D353 /* GiniOnboardingScreenUITest.swift */,
 				F44B38072C626081006517E9 /* GiniCaptureScreenUITests.swift */,
+				F4C48D912C6E065F001FB62E /* GiniSkontoScreenUITests.swift */,
 			);
 			path = GiniBankSDKExampleUITests;
 			sourceTree = "<group>";
@@ -1028,18 +1044,22 @@
 				F46B95A22C60F7C500D17A17 /* GiniCameraAccessScreenUITests.swift in Sources */,
 				28F5D44C2C5BA9F100371D4D /* SettingScreen.swift in Sources */,
 				28F5D4482C5BA9F100371D4D /* HelpScreen.swift in Sources */,
+				F4C48D902C6E0372001FB62E /* ReturnAssistantScreen.swift in Sources */,
 				F46A85BA2C60EEC700889404 /* CameraAccessScreen.swift in Sources */,
 				F44B38092C626081006517E9 /* GiniCaptureScreenUITests.swift in Sources */,
 				F463266C2C5D690D001C58F5 /* ErrorScreen.swift in Sources */,
 				28F5D43F2C5BA9DA00371D4D /* GiniBankSDKExampleUITests.swift in Sources */,
 				28C344362C5CF69400FD03C5 /* MainScreenAccessibilityIdentifiers.swift in Sources */,
 				28F5D44A2C5BA9F100371D4D /* MainScreen.swift in Sources */,
+				F4C48D8D2C6E0349001FB62E /* SkontoScreen.swift in Sources */,
 				F4BBCE432C610D8500B682AE /* GiniHelpScreenUITests.swift in Sources */,
 				F44012792C61FDCF0061D353 /* OnboardingScreen.swift in Sources */,
 				28F5D43D2C5BA9DA00371D4D /* GiniMainScreenUITests.swift in Sources */,
+				F4C48D932C6E065F001FB62E /* GiniSkontoScreenUITests.swift in Sources */,
 				28C344382C5CF69900FD03C5 /* SettingScreenAccessibilityIdentifiers.swift in Sources */,
 				F440127F2C6200ED0061D353 /* GiniOnboardingScreenUITest.swift in Sources */,
 				28F5D4462C5BA9F100371D4D /* CaptureScreen.swift in Sources */,
+				F49D72042C733B4500F16C3E /* ReviewScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1062,6 +1082,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4C48D8F2C6E0372001FB62E /* ReturnAssistantScreen.swift in Sources */,
 				83D02CD3290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
 				768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */,
@@ -1083,6 +1104,7 @@
 				F440127E2C6200ED0061D353 /* GiniOnboardingScreenUITest.swift in Sources */,
 				28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */,
 				F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */,
+				F4C48D922C6E065F001FB62E /* GiniSkontoScreenUITests.swift in Sources */,
 				F490C7E525DE873900D8CA6F /* AppDelegate.swift in Sources */,
 				834735F32940999500C3B5F3 /* CustomAnalysisError.swift in Sources */,
 				F4AD00DC25DFDCE400C34E15 /* ResultTableViewController.swift in Sources */,
@@ -1093,6 +1115,7 @@
 				F4AD00C225DED43200C34E15 /* DemoViewController.swift in Sources */,
 				28F62FA92AB319A000D47866 /* TextField.swift in Sources */,
 				28F5D44B2C5BA9F100371D4D /* SettingScreen.swift in Sources */,
+				F4C48D8C2C6E0349001FB62E /* SkontoScreen.swift in Sources */,
 				28F62FA72AB2236500D47866 /* Device.swift in Sources */,
 				F46B95A12C60F7C500D17A17 /* GiniCameraAccessScreenUITests.swift in Sources */,
 				837EEFB5291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
@@ -1124,6 +1147,7 @@
 				28F5D43C2C5BA9DA00371D4D /* GiniMainScreenUITests.swift in Sources */,
 				289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */,
 				28F62F9C2AB21ACE00D47866 /* Localized.swift in Sources */,
+				F49D72032C733B4500F16C3E /* ReviewScreen.swift in Sources */,
 				28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */,
 				28A411302A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift in Sources */,
 				28C344392C5CF69900FD03C5 /* SettingScreenAccessibilityIdentifiers.swift in Sources */,
