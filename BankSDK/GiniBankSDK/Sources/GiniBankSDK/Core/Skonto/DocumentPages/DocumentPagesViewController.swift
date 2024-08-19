@@ -12,13 +12,11 @@ final class DocumentPagesViewController: UIViewController {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = Constants.stackViewItemSpacing
         return stackView
@@ -111,8 +109,8 @@ final class DocumentPagesViewController: UIViewController {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
 
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didRecognizeDoubleTap))
+        let doubleTapRecognizer = UITapGestureRecognizer(target: self,
+                                                         action: #selector(didRecognizeDoubleTap))
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
 
@@ -121,10 +119,9 @@ final class DocumentPagesViewController: UIViewController {
     private func setupLayout() {
         scrollView.frame = view.bounds
         scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        let stackViewTopConstraintConstant = Constants.navigationBarHeight + Constants.stackViewTopConstraintToNavBar
-        stackViewTopConstraint = stackView.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                                                constant: stackViewTopConstraintConstant)
-        stackViewTopConstraint?.isActive = true
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -136,7 +133,8 @@ final class DocumentPagesViewController: UIViewController {
                                                constant: Constants.containerHorizontalPadding),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
                                                 constant: -Constants.containerHorizontalPadding),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -50),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor,
+                                              constant: -Constants.stackViewBottomPadding),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
                                              constant: -2 * Constants.containerHorizontalPadding),
 
@@ -148,6 +146,11 @@ final class DocumentPagesViewController: UIViewController {
             closeButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize),
             closeButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize)
         ])
+
+        let stackViewTopConstraintConstant = Constants.stackViewTopConstraintToNavBar
+        stackViewTopConstraint = stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
+                                                                constant: stackViewTopConstraintConstant)
+        stackViewTopConstraint?.isActive = true
     }
 
     // MARK: - Handle Loading indicator
@@ -193,26 +196,82 @@ final class DocumentPagesViewController: UIViewController {
     private func showProcessedImages() {
         guard let viewModel else { return }
         let images = viewModel.processImages()
-        // Calculate dynamic height (65% of screen height)
-        let imageViewHeight = UIScreen.main.bounds.height * 0.65
 
         for image in images {
+            // Create a container view for the image view
+            let containerView = UIView()
+            containerView.translatesAutoresizingMaskIntoConstraints = false
+
             let imageView = UIImageView(image: image)
             imageView.contentMode = .scaleAspectFill
             imageView.translatesAutoresizingMaskIntoConstraints = false
+            containerView.addSubview(imageView)
 
-            // Apply the dynamic height constraint
-            imageView.heightAnchor.constraint(equalToConstant: imageViewHeight).isActive = true
+            // Constrain image view within its container view
+            NSLayoutConstraint.activate([
+                imageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+                imageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+                imageView.topAnchor.constraint(equalTo: containerView.topAnchor),
+                imageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+            ])
+            stackView.addArrangedSubview(containerView)
 
-            stackView.addArrangedSubview(imageView)
+            // Apply the dynamic height constraint just for iPhones
+            if !UIDevice.current.isIpad {
+                let imageViewHeight = UIScreen.main.bounds.height * 0.65
+                imageView.heightAnchor.constraint(equalToConstant: imageViewHeight).isActive = true
+            }
+            imageView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         }
 
-        if images.count == 1 {
-            stackViewTopConstraint?.constant = Constants.navigationBarHeight + Constants.stackViewTopConstraintToNavBar
-        } else {
-            stackViewTopConstraint?.constant = Constants.stackViewTopConstraintToNavBar
-        }
+        adjustStackViewTopConstraint(for: images.count)
+
+        adjustContentSize()
     }
+
+    // MARK: - Utilities
+
+    private func adjustContentSize() {
+        var contentHeight: CGFloat = 0
+
+        // Calculate the total height of the stackView content
+        for view in stackView.arrangedSubviews {
+            contentHeight += view.frame.size.height
+        }
+
+        // Update the scrollView contentSize
+        scrollView.contentSize = CGSize(width: scrollView.frame.size.width,
+                                        height: max(contentHeight, scrollView.frame.size.height))
+
+        adjustContentToCenter()
+    }
+
+    private func adjustContentToCenter() {
+        let scrollViewSize = scrollView.bounds.size
+        let contentSize = scrollView.contentSize
+
+        let verticalInset = max(0, (scrollViewSize.height - contentSize.height) / 2)
+        let horizontalInset = max(0, (scrollViewSize.width - contentSize.width) / 2)
+
+        scrollView.contentInset = UIEdgeInsets(top: verticalInset,
+                                               left: horizontalInset,
+                                               bottom: verticalInset,
+                                               right: horizontalInset)
+    }
+
+    private func adjustStackViewTopConstraint() {
+        let isZoomedOut = scrollView.zoomScale == Constants.minimumZoomScale
+        stackViewTopConstraint?.constant = isZoomedOut
+        ? Constants.navigationBarHeight + Constants.stackViewTopConstraintToNavBar
+        : Constants.stackViewTopConstraintToNavBar
+    }
+
+    private func adjustStackViewTopConstraint(for imageCount: Int) {
+        stackViewTopConstraint?.constant = imageCount == 1
+        ? Constants.navigationBarHeight + Constants.stackViewTopConstraintToNavBar
+        : Constants.stackViewTopConstraintToNavBar
+    }
+
     // MARK: - Actions
 
     @objc private func didRecognizeDoubleTap(_ gestureRecognizer: UITapGestureRecognizer) {
@@ -241,6 +300,12 @@ extension DocumentPagesViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return stackView
     }
+
+    // UIScrollViewDelegate method to handle zooming
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        adjustContentToCenter()
+        adjustStackViewTopConstraint()
+    }
 }
 
 private extension DocumentPagesViewController {
@@ -250,10 +315,11 @@ private extension DocumentPagesViewController {
         static let buttonSize: CGFloat = 44
         static let buttonPadding: CGFloat = 16
         static let stackViewItemSpacing: CGFloat = 4
-        static let containerHorizontalPadding: CGFloat = 4
+        static let containerHorizontalPadding: CGFloat = UIDevice.current.isIpad ? 31 : 4
         static let loadingIndicatorContainerHeight: CGFloat = 60
         static let navigationBarHeight: CGFloat = 90
-        static let stackViewTopConstraintToNavBar: CGFloat = 56
+        static let stackViewTopConstraintToNavBar: CGFloat = UIDevice.current.isIpad ? 0 : 56
+        static let stackViewBottomPadding: CGFloat = 50
         static let minimumZoomScale: CGFloat = 1.0
         static let maximumZoomScale: CGFloat = 2.0
     }
