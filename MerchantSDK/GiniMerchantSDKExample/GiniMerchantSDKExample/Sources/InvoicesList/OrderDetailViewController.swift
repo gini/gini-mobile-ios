@@ -109,7 +109,13 @@ final class OrderDetailViewController: UIViewController {
     @objc private func payButtonTapped() {
         let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
         paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
-        self.present(paymentViewBottomSheet, animated: false)
+
+        let paymentInfo = obtainPaymentInfo()
+        if paymentInfo.isComplete {
+            present(paymentViewBottomSheet, animated: false)
+        } else {
+            self.showErrorAlertView(error: NSLocalizedString("example.order.detail.Alert.FieldError", comment: ""))
+        }
     }
 
     @objc private func didTapOnView() {
