@@ -62,5 +62,36 @@ class GiniCaptureScreenUITests: GiniBankSDKExampleUITests {
         //Assert Capture button isn't displayed
         //XCTAssertFalse(captureScreen.captureButton.isHittable)
     }
+    
+    func testFlashButton() {
+        
+        //Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        //Tap Flash Off button
+        captureScreen.flashOFFButton.tap()
+        //Assert Flash Off button isn't displayed
+        XCTAssertFalse(captureScreen.flashOFFButton.isHittable)
+        //Tap Flash On button
+        captureScreen.flashONButton.tap()
+        //Assert Flash On button isn't displayed
+        XCTAssertFalse(captureScreen.flashONButton.isHittable)
+    }
+    
+    func testCancelNavigationButton() {
+        
+        //Tap Photopayment button
+        mainScreen.photoPaymentButton.tap()
+        //Handle Camera access pop up
+        mainScreen.handleCameraPermission(answer: true)
+        //Skip onboarding
+        onboadingScreen.skipOnboardingScreens()
+        //Tap Cancel button
+        captureScreen.cancelButtonNavigation.tap()
+        //Assert Photopayment button is displayed
+        XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
+    }
 }
-
