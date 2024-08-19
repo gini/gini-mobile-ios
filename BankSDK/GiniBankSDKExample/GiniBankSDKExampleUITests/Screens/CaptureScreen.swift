@@ -19,6 +19,7 @@ public class CaptureScreen {
     let uploadPhotoButton: XCUIElement
     let uploadFilesButton: XCUIElement
     let cancelButtonInMenu: XCUIElement
+    let openGalleryButton: XCUIElement
     
     public init(app: XCUIApplication, locale: String) {
         self.app = app
@@ -34,6 +35,7 @@ public class CaptureScreen {
             filesButton = app.buttons["Files"]
             uploadPhotoButton = app.buttons["Upload photo"]
             uploadFilesButton = app.buttons["Upload files"]
+            openGalleryButton = app.buttons["Open"]
             cancelButtonInMenu = app.buttons.matching(identifier: "Cancel").element(boundBy: 1)
                
         case "de":
@@ -46,6 +48,7 @@ public class CaptureScreen {
             filesButton = app.buttons["Dateien"]
             uploadPhotoButton = app.buttons["Fotos hochladen"]
             uploadFilesButton = app.buttons["Dokument hochladen"]
+            openGalleryButton = app.buttons["Öffnen"]
             cancelButtonInMenu = app.buttons.matching(identifier: "Abbrechen").element(boundBy: 1)
             
         default:

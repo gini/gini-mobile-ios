@@ -15,9 +15,23 @@ public class MainScreen {
     let configurationButton: XCUIElement
     let photoPaymentButton: XCUIElement
     let cameraIconButton: XCUIElement
+    let deleteButton: XCUIElement
+    let sendFeedbackButton: XCUIElement
     
     public init(app: XCUIApplication, locale: String) {
         self.app = app
+        
+        switch locale {
+        case "en":
+            deleteButton = app.buttons["Delete"]
+            sendFeedbackButton = app.navigationBars.buttons["Send feedback and close"]
+        case "de":
+            deleteButton = app.buttons["Löschen"]
+            sendFeedbackButton = app.navigationBars.buttons["Feedback senden und schließen"]
+        default:
+            fatalError("Locale \(locale) is not supported")
+        }
+        
         photoPaymentButton = app.buttons[MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue]
         cameraIconButton = app.buttons[MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue]
         configurationButton = app.buttons[MainScreenAccessibilityIdentifiers.metaInformationLabel.rawValue]
@@ -102,12 +116,12 @@ public class MainScreen {
                     dontAllowBtnDE.tap()
                 }
             }
-        }
+    }
 
     func swipeToElement(element: XCUIElement, direction: String) {
         var swipeCount = 0
         let maxSwipes = 5
-        sleep(1) // Add a pause until all elements loaded
+        sleep(1) // Pause until all elements loaded
           while !element.isHittable {
             
             if swipeCount >= maxSwipes {
@@ -130,7 +144,7 @@ public class MainScreen {
             }
             
             swipeCount += 1
-            sleep(2) // Add a pause between swipes to allow UI to update
+            sleep(1) // Pause between swipes to allow UI to update
         }
     }
 
@@ -152,6 +166,18 @@ public class MainScreen {
             XCTAssertTrue(switchElement.exists, "Switch next to text '\(text)' does not exist")
             // Tap the switch
             switchElement.tap()
-        }
+    }
+    
+    func clearInputField(element: XCUIElement) {
+        element.doubleTap()
+        deleteButton.tap()
+    }
+    
+    func tapFileWithName(fileName: String) {
+           
+        let fileElement = app.staticTexts[fileName].firstMatch
+        XCTAssertTrue(fileElement.waitForExistence(timeout: 5),"Please add file with file name '\(fileName)' to the device before launching the test.")
+        fileElement.tap()
+    }
 }
 
