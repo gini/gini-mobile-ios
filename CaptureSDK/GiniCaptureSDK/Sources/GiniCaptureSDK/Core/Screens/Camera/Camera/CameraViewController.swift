@@ -16,6 +16,7 @@ final class CameraViewController: UIViewController {
      */
     let giniConfiguration: GiniConfiguration
     var detectedQRCodeDocument: GiniQRCodeDocument?
+    var cameraNeedsInitializing: Bool { !cameraPreviewViewController.hasInitialized }
 
     lazy var cameraPreviewViewController: CameraPreviewViewController = {
         let cameraPreviewViewController = CameraPreviewViewController()
