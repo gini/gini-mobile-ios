@@ -20,6 +20,9 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var errorScreen: ErrorScreen!
     var cameraAccessScreen: CameraAccessScreen!
     var onboadingScreen: OnboardingScreen!
+    var skontoScreen: SkontoScreen!
+    var returnAssistantScreen: ReturnAssistantScreen!
+    var reviewScreen: ReviewScreen!
     
     override func setUpWithError() throws {
         
@@ -36,7 +39,9 @@ class GiniBankSDKExampleUITests: XCTestCase {
         errorScreen = ErrorScreen(app: app, locale: currentLocale)
         cameraAccessScreen = CameraAccessScreen(app: app, locale: currentLocale)
         onboadingScreen = OnboardingScreen(app: app, locale: currentLocale)
-        
+        skontoScreen = SkontoScreen(app: app, locale: currentLocale)
+        returnAssistantScreen = ReturnAssistantScreen(app: app, locale: currentLocale)
+        reviewScreen = ReviewScreen(app: app, locale: currentLocale)
     }
     
     override func tearDownWithError() throws  {
