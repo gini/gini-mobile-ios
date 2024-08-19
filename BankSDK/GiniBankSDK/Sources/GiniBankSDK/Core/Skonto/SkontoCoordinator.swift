@@ -12,6 +12,8 @@ protocol SkontoCoordinatorDelegate: AnyObject {
     func didCancelAnalysis(_ coordinator: SkontoCoordinator)
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
                            _ editedExtractionResult: ExtractionResult?)
+    func didTapDocumentPreview(_ coordinator: SkontoCoordinator,
+                               _ viewModel: SkontoViewModel)
 }
 
 final class SkontoCoordinator: Coordinator {
@@ -49,6 +51,9 @@ extension SkontoCoordinator: SkontoViewModelDelegate {
     func didTapHelp() {
         let helpViewController = SkontoHelpViewController()
         navigationController.pushViewController(helpViewController, animated: true)
+    }
+    func didTapDocumentPreview(on viewModel: SkontoViewModel) {
+        delegate?.didTapDocumentPreview(self, viewModel)
     }
 
     func didTapBack() {
