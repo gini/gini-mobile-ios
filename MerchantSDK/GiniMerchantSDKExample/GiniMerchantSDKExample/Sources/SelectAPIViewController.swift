@@ -61,11 +61,7 @@ final class SelectAPIViewController: UIViewController {
         metaInformationButton.setTitle(metaTitle, for: .normal)
         metaInformationButton.addTarget(self, action: #selector(showDebugMenu), for: .touchUpInside)
 
-        if #available(iOS 13.0, *) {
-            activityIndicator.style = .large
-        } else {
-            activityIndicator.style = .whiteLarge
-        }
+        activityIndicator.style = .large
     }
     
     // MARK: User interaction
