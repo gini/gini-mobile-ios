@@ -155,7 +155,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     /**
      *  Retrieves the layout of a given document
      *
-     * - Parameter id:                  The document's unique identifier
+     * - Parameter document:            The document from which to retrieve the layout
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     public func layout(for document: Document, completion: @escaping CompletionResult<Document.Layout>) {
@@ -165,7 +165,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     /**
      *  Retrieves the pages of a given document
      *
-     * - Parameter id:                  The document's unique identifier
+     * - Parameter document:            The document from which to retrieve the pages
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     public func pages(in document: Document, completion: @escaping CompletionResult<[Document.Page]>) {
@@ -190,7 +190,43 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                     size: size,
                     completion: completion)
     }
-    
+
+    /**
+     *  Retrieves the page preview of a document for a given page
+     *
+     * - Parameter documentId:          Document id to get the preview for
+     * - Parameter pageNumber:          The document's page number starting from 1
+     * - Parameter completion:          A completion callback, returning the requested page preview as Data on success
+     */
+    public func preview(for documentId: String,
+                        pageNumber: Int,
+                        completion: @escaping CompletionResult<Data>) {
+
+        preview(resourceHandler: sessionManager.download,
+                with: documentId,
+                pageNumber: pageNumber,
+                completion: completion)
+    }
+
+    /**
+     *  Retrieves the page data of a document for a given page number and size
+     *
+     * - Parameter document:            The document from which to retrieve the page data
+     * - Parameter pageNumber:          The document's page number
+     * - Parameter size:                The size of the page to retrieve (e.g., large, medium)
+     * - Parameter completion:          A completion callback, returning the requested page preview on success, or an error on failure
+     */
+    public func documentPage(for document: Document,
+                             pageNumber: Int,
+                             size: Document.Page.Size,
+                             completion: @escaping CompletionResult<Data>) {
+        documentPage(resourceHandler: sessionManager.download,
+                     in: document,
+                     pageNumber: pageNumber,
+                     size: size,
+                     completion: completion)
+    }
+
     /**
      *  Submits the analysis feedback for a given document.
      *
@@ -218,24 +254,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                                completion: @escaping CompletionResult<Void>) {
         submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions, and: compoundExtractions, completion: completion)
     }
-    
-    /**
-     *  Retrieves the page preview of a document for a given page
-     *
-     * - Parameter documentId:          Document id to get the preview for
-     * - Parameter pageNumber:          The document's page number starting from 1
-     * - Parameter completion:          A completion callback, returning the requested page preview as Data on success
-     */
-    public func preview(for documentId: String,
-                            pageNumber: Int,
-                            completion: @escaping CompletionResult<Data>) {
 
-        preview(resourceHandler: sessionManager.download,
-                    with: documentId,
-                    pageNumber: pageNumber,
-                    completion: completion)
-    }
-    
     /**
      * Logs an error event.
      *

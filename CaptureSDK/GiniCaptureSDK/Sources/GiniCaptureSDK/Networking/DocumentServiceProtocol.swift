@@ -2,7 +2,7 @@
 //  DocumentServiceProtocol.swift
 //  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 3/29/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -10,6 +10,9 @@ import GiniBankAPILibrary
 
 public typealias UploadDocumentCompletion = (Result<Document, GiniError>) -> Void
 public typealias AnalysisCompletion = (Result<ExtractionResult, GiniError>) -> Void
+public typealias DocumentLayoutCompletion = (Result<Document.Layout, GiniError>) -> Void
+public typealias DocumentPagePreviewCompletion = (Result<Data, GiniError>) -> Void
+public typealias DocumentPagsCompletion = (Result<[Document.Page], GiniError>) -> Void
 
 public protocol DocumentServiceProtocol: AnyObject {
     
@@ -27,4 +30,10 @@ public protocol DocumentServiceProtocol: AnyObject {
                 completion: UploadDocumentCompletion?)
     func update(imageDocument: GiniImageDocument)
     func log(errorEvent: ErrorEvent)
+
+    func layout(completion: @escaping DocumentLayoutCompletion)
+    func pages(completion: @escaping DocumentPagsCompletion)
+    func documentPage(pageNumber: Int,
+                      size: Document.Page.Size,
+                      completion: @escaping DocumentPagePreviewCompletion)
 }

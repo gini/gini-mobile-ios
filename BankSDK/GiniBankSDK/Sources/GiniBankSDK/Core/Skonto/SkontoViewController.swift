@@ -7,17 +7,19 @@
 import UIKit
 import GiniCaptureSDK
 
-public class SkontoViewController: UIViewController {
-    private lazy var invoicePreviewView: SkontoInvoicePreviewView = {
-        let view = SkontoInvoicePreviewView(viewModel: viewModel)
+final class SkontoViewController: UIViewController {
+    private lazy var documentPreviewView: SkontoDocumentPreviewView = {
+        let view = SkontoDocumentPreviewView(viewModel: viewModel)
         return view
     }()
 
-    private lazy var invoicePreviewContainerView: UIView = {
+    private lazy var documentPreviewContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(documentPreviewTapped))
+        view.addGestureRecognizer(tapGesture)
         return view
     }()
 
@@ -108,14 +110,14 @@ public class SkontoViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         setupConstraints()
         setupKeyboardObservers()
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showAlertIfNeeded()
     }
@@ -144,10 +146,10 @@ public class SkontoViewController: UIViewController {
         }
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
-        stackView.addArrangedSubview(invoicePreviewContainerView)
+        stackView.addArrangedSubview(documentPreviewContainerView)
         stackView.addArrangedSubview(withDiscountContainerView)
         stackView.addArrangedSubview(withoutDiscountContainerView)
-        invoicePreviewContainerView.addSubview(invoicePreviewView)
+        documentPreviewContainerView.addSubview(documentPreviewView)
         withDiscountContainerView.addSubview(withDiscountHeaderView)
         withDiscountContainerView.addSubview(infoBannerView)
         withDiscountContainerView.addSubview(withDiscountPriceView)
@@ -196,14 +198,14 @@ public class SkontoViewController: UIViewController {
 
     private func setupInvoiceGroupViewConstraints() {
         NSLayoutConstraint.activate([
-            invoicePreviewView.topAnchor.constraint(equalTo: invoicePreviewContainerView.topAnchor, constant:
+            documentPreviewView.topAnchor.constraint(equalTo: documentPreviewContainerView.topAnchor, constant:
                                                         Constants.verticalPadding),
-            invoicePreviewView.leadingAnchor.constraint(equalTo: invoicePreviewContainerView.leadingAnchor,
-                                                        constant: Constants.horizontalPadding),
-            invoicePreviewView.trailingAnchor.constraint(equalTo: invoicePreviewContainerView.trailingAnchor,
-                                                         constant: -Constants.horizontalPadding),
-            invoicePreviewView.bottomAnchor.constraint(equalTo: invoicePreviewContainerView.bottomAnchor,
-                                                       constant: -Constants.verticalPadding)
+            documentPreviewView.leadingAnchor.constraint(equalTo: documentPreviewContainerView.leadingAnchor,
+                                                         constant: Constants.horizontalPadding),
+            documentPreviewView.trailingAnchor.constraint(equalTo: documentPreviewContainerView.trailingAnchor,
+                                                          constant: -Constants.horizontalPadding),
+            documentPreviewView.bottomAnchor.constraint(equalTo: documentPreviewContainerView.bottomAnchor,
+                                                        constant: -Constants.verticalPadding)
         ])
     }
 
@@ -338,6 +340,10 @@ public class SkontoViewController: UIViewController {
         guard !hasShownAlert, let alert = alertFactory.createEdgeCaseAlert() else { return }
         hasShownAlert = true
         present(alert, animated: true, completion: nil)
+    }
+
+    @objc private func documentPreviewTapped() {
+        viewModel.documentPreviewTapped()
     }
 }
 
