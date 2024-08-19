@@ -15,6 +15,7 @@ struct SkontoDiscountDetails {
     var remainingDays: Int
     var amountDiscounted: Price
     var paymentMethod: PaymentMethod
+    var boundingBoxes: [ExtractionBoundingBox]
 
     enum PaymentMethod {
         case cash
@@ -57,12 +58,13 @@ struct SkontoDiscountDetails {
 
     init(extractions: [Extraction]) throws {
         self.extractions = extractions
-        self.paymentMethod = try Self.extractPaymentMethod(from: extractions)
-        self.amountToPay = try Self.extractAmountToPay(from: extractions)
-        self.amountDiscounted = try Self.extractAmountDiscounted(from: extractions)
-        self.dueDate = try Self.extractDueDate(from: extractions)
-        self.percentageDiscounted = try Self.extractPercentageDiscounted(from: extractions)
-        self.remainingDays = try Self.extractRemainingDays(from: extractions)
+        paymentMethod = try Self.extractPaymentMethod(from: extractions)
+        amountToPay = try Self.extractAmountToPay(from: extractions)
+        amountDiscounted = try Self.extractAmountDiscounted(from: extractions)
+        dueDate = try Self.extractDueDate(from: extractions)
+        percentageDiscounted = try Self.extractPercentageDiscounted(from: extractions)
+        remainingDays = try Self.extractRemainingDays(from: extractions)
+        boundingBoxes = Self.extractBoundingBoxes(from: extractions)
     }
 
     private static func extractPaymentMethod(from extractions: [Extraction]) throws -> PaymentMethod {
@@ -133,5 +135,19 @@ struct SkontoDiscountDetails {
             throw SkontoDiscountParsingException.skontoRemainingDaysMissing
         }
         return Int(extractedRemainingDays) ?? 0
+    }
+
+    private static func extractBoundingBoxes(from extractions: [Extraction]) -> [ExtractionBoundingBox] {
+        return extractions.compactMap { extraction in
+            if let extractionBox = extraction.box {
+                return ExtractionBoundingBox(top: extractionBox.top,
+                                             left: extractionBox.left,
+                                             width: extractionBox.width,
+                                             height: extractionBox.height,
+                                             page: extractionBox.page
+                )
+            }
+            return nil
+        }
     }
 }
