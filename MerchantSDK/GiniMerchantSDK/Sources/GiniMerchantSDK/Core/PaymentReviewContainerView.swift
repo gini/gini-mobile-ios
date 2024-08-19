@@ -416,13 +416,24 @@ class PaymentReviewContainerView: UIView {
 
     fileprivate func fillInInputFields() {
         guard let model else { return }
-        recipientTextFieldView.text = model.extractions.first(where: {$0.name == "payment_recipient"})?.value
-        ibanTextFieldView.text = model.extractions.first(where: {$0.name == "iban"})?.value
-        usageTextFieldView.text = model.extractions.first(where: {$0.name == "payment_purpose"})?.value
-        if let amountString = model.extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
-            self.amountToPay = amountToPay
-            let amountToPayText = amountToPay.string
-            amountTextFieldView.text = amountToPayText
+        if let extractions = model.extractions {
+            recipientTextFieldView.text = extractions.first(where: {$0.name == "payment_recipient"})?.value
+            ibanTextFieldView.text = extractions.first(where: {$0.name == "iban"})?.value
+            usageTextFieldView.text = extractions.first(where: {$0.name == "payment_purpose"})?.value
+            if let amountString = extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
+                self.amountToPay = amountToPay
+                let amountToPayText = amountToPay.string
+                amountTextFieldView.text = amountToPayText
+            }
+        } else if let paymentInfo = model.paymentInfo {
+            recipientTextFieldView.text = paymentInfo.recipient
+            ibanTextFieldView.text = paymentInfo.iban
+            usageTextFieldView.text = paymentInfo.purpose
+            if let amountToPay = Price(extractionString: paymentInfo.amount) {
+                self.amountToPay = amountToPay
+                let amountToPayText = amountToPay.string
+                amountTextFieldView.text = amountToPayText
+            }
         }
         validateAllInputFields()
         disablePayButtonIfNeeded()
