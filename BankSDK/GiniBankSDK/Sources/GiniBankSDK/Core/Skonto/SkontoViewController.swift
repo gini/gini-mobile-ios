@@ -74,6 +74,8 @@ final class SkontoViewController: UIViewController {
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
         scrollView.contentInset = UIEdgeInsets(top: Constants.containerPadding,
                                                left: Constants.scrollViewSideInset,
                                                bottom: Constants.containerPadding,
@@ -95,6 +97,8 @@ final class SkontoViewController: UIViewController {
 
     private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
+
+    private var hasShownAlert = false
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -130,10 +134,9 @@ final class SkontoViewController: UIViewController {
         edgesForExtendedLayout = []
         view.backgroundColor = .giniColorScheme().bg.background.uiColor()
         if !configuration.bottomNavigationBarEnabled {
-            // MARK: Temporary remove help button
-//            let helpButton = GiniBarButton(ofType: .help)
-//            helpButton.addAction(self, #selector(helpButtonTapped))
-//            navigationItem.rightBarButtonItem = helpButton.barButton
+            let helpButton = GiniBarButton(ofType: .help)
+            helpButton.addAction(self, #selector(helpButtonTapped))
+            navigationItem.rightBarButtonItem = helpButton.barButton
 
             let backButton = GiniBarButton(ofType: .back(title: backButtonTitle))
             backButton.addAction(self, #selector(backButtonTapped))
@@ -169,15 +172,12 @@ final class SkontoViewController: UIViewController {
     }
 
     private func setupScrollViewConstraints() {
-        var horizontalPadding: CGFloat = Constants.scrollViewSideInset
-        if UIDevice.current.isIpad {
-            horizontalPadding += UIScreen.main.bounds.width * (1 - Constants.tabletWidthMultiplier) / 2
-        }
+        let multiplier: CGFloat = UIDevice.current.isIpad ? Constants.tabletWidthMultiplier : 1.0
 
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalPadding),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalPadding),
+            scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            scrollView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: multiplier),
             scrollView.bottomAnchor.constraint(equalTo: proceedContainerView.topAnchor)
         ])
     }
@@ -185,10 +185,11 @@ final class SkontoViewController: UIViewController {
     private func setupStackViewConstraints() {
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                constant: Constants.containerPadding),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
                                                 constant: -Constants.containerPadding),
+            stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
                                              constant: -2 * Constants.containerPadding)
@@ -245,11 +246,11 @@ final class SkontoViewController: UIViewController {
         NSLayoutConstraint.activate([
             withoutDiscountView.topAnchor.constraint(equalTo: withoutDiscountContainerView.topAnchor),
             withoutDiscountView.leadingAnchor.constraint(equalTo: withoutDiscountContainerView.leadingAnchor,
-                                                    constant: Constants.horizontalPadding),
+                                                         constant: Constants.horizontalPadding),
             withoutDiscountView.trailingAnchor.constraint(equalTo: withoutDiscountContainerView.trailingAnchor,
-                                                     constant: -Constants.horizontalPadding),
+                                                          constant: -Constants.horizontalPadding),
             withoutDiscountView.bottomAnchor.constraint(equalTo: withoutDiscountContainerView.bottomAnchor,
-                                                   constant: -Constants.horizontalPadding)
+                                                        constant: -Constants.horizontalPadding)
         ])
     }
 
@@ -273,10 +274,9 @@ final class SkontoViewController: UIViewController {
             self?.viewModel.proceedButtonTapped()
         }
 
-        // MARK: Temporary remove help action
-//        navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-//            self?.helpButtonTapped()
-//        }
+        navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
+            self?.helpButtonTapped()
+        }
 
         navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
             self?.backButtonTapped()
@@ -319,10 +319,9 @@ final class SkontoViewController: UIViewController {
         navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
     }
 
-    // MARK: Temporary remove help action
-//    @objc private func helpButtonTapped() {
-//        viewModel.helpButtonTapped()
-//    }
+    @objc private func helpButtonTapped() {
+        viewModel.helpButtonTapped()
+    }
 
     @objc private func backButtonTapped() {
         viewModel.backButtonTapped()
@@ -338,7 +337,8 @@ final class SkontoViewController: UIViewController {
     }
 
     @objc private func showAlertIfNeeded() {
-        guard let alert = alertFactory.createEdgeCaseAlert() else { return }
+        guard !hasShownAlert, let alert = alertFactory.createEdgeCaseAlert() else { return }
+        hasShownAlert = true
         present(alert, animated: true, completion: nil)
     }
 

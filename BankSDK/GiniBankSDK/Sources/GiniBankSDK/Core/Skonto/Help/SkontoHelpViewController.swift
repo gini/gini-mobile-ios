@@ -1,14 +1,13 @@
 //
-//  DigitalInvoiceHelpViewController.swift
-//  
+//  SkontoHelpViewController.swift
 //
-//  Created by David Vizaknai on 15.02.2023.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import GiniCaptureSDK
 import UIKit
 
-final class DigitalInvoiceHelpViewController: UIViewController {
+final class SkontoHelpViewController: UIViewController {
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -26,21 +25,40 @@ final class DigitalInvoiceHelpViewController: UIViewController {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fill
+        stackView.distribution = .equalSpacing
         stackView.axis = .vertical
         stackView.spacing = Constants.spacing
         return stackView
     }()
 
-    private lazy var scrollViewBottomConstraint =
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                               constant: -Constants.padding)
-    private var navigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter?
+    private lazy var headerView: SkontoHelpHeaderView = {
+        let header = SkontoHelpHeaderView()
+        return header
+    }()
 
-    private let viewModel: DigitalInvoiceHelpViewModel
+    private lazy var itemsGroupView: SkontoHelpItemsContainerView = {
+        let groupView = SkontoHelpItemsContainerView(viewModel: viewModel)
+        return groupView
+    }()
 
-    init(viewModel: DigitalInvoiceHelpViewModel) {
-        self.viewModel = viewModel
+    private lazy var footerView: SkontoHelpFooterView = {
+        let footer = SkontoHelpFooterView()
+        return footer
+    }()
+
+    private lazy var spacerView: UIView = {
+        let view = UIView()
+        view.setContentHuggingPriority(.defaultLow, for: .vertical)
+        view.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        return view
+    }()
+
+    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+    private var navigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter?
+
+    private let viewModel = SkontoHelpViewModel()
+
+    init() {
         super.init(nibName: nil, bundle: nil)
         setupViews()
         setupConstraints()
@@ -52,61 +70,51 @@ final class DigitalInvoiceHelpViewController: UIViewController {
     }
 
     private func setupViews() {
-        title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.help.screenTitle",
-                                                         comment: "help screen title")
-        view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2).uiColor()
+        title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.screen.title",
+                                                         comment: "Help")
+        view.backgroundColor = .giniColorScheme().bg.background.uiColor()
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(stackView)
-
-        let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.help.backToInvoice",
-                                                                       comment: "Digital Invoice")
+        stackView.addArrangedSubview(headerView)
+        stackView.addArrangedSubview(itemsGroupView)
+        stackView.addArrangedSubview(footerView)
+        stackView.addArrangedSubview(spacerView)
+        let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.back",
+                                                                       comment: "Skonto")
         let backButton = GiniBarButton(ofType: .back(title: backButtonTitle))
         backButton.addAction(self, #selector(dismissViewController))
         navigationItem.leftBarButtonItem = backButton.barButton
-
-        viewModel.helpSections.forEach { [weak self] sectionContent in
-            let view = DigitalInvoiceHelpSectionView(content: sectionContent)
-            self?.stackView.addArrangedSubview(view)
-        }
-
-        stackView.addArrangedSubview(UIView())
     }
 
     private func setupConstraints() {
+        let widthMultiplier = UIDevice.current.isIpad ? 0.6 : 1
+
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.padding),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
             scrollViewBottomConstraint,
 
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: Constants.padding),
-            contentView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -Constants.padding),
-            contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor),
-            contentView.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: widthMultiplier),
 
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
-
-        if UIDevice.current.isIpad {
-            NSLayoutConstraint.activate([
-                contentView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6)
-            ])
-        }
     }
 
     private func configureBottomNavigationBar() {
         let configuration = GiniBankConfiguration.shared
         if configuration.bottomNavigationBarEnabled {
-            if let bottomBar = configuration.digitalInvoiceHelpNavigationBarBottomAdapter {
+            if let bottomBar = configuration.skontoHelpNavigationBarBottomAdapter {
                 navigationBarBottomAdapter = bottomBar
             } else {
-                navigationBarBottomAdapter = DefaultDigitalInvoiceHelpNavigationBarBottomAdapter()
+                navigationBarBottomAdapter = DefaultSkontoHelpNavigationBarBottomAdapter()
             }
 
             navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
@@ -116,8 +124,7 @@ final class DigitalInvoiceHelpViewController: UIViewController {
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.leftBarButtonItem = nil
 
-            if let navigationBar =
-                navigationBarBottomAdapter?.injectedView() {
+            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
                 view.addSubview(navigationBar)
 
@@ -142,16 +149,15 @@ final class DigitalInvoiceHelpViewController: UIViewController {
         view.layoutSubviews()
     }
 
-    @objc
-    private func dismissViewController() {
+    @objc private func dismissViewController() {
         navigationController?.popViewController(animated: true)
     }
 }
 
-private extension DigitalInvoiceHelpViewController {
+private extension SkontoHelpViewController {
     enum Constants {
-        static let padding: CGFloat = 24
-        static let spacing: CGFloat = 36
+        static let padding: CGFloat = 16
+        static let spacing: CGFloat = 32
         static let navigationBarHeight: CGFloat = 114
     }
 }
