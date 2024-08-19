@@ -1,8 +1,7 @@
 //
 //  Document.swift
-//  Pods-GiniExample
 //
-//  Created by Enrique del Pozo Gómez on 1/14/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -193,7 +192,7 @@ extension Document {
         public let number: Int
         /// Page image urls array, along with their sizes
         public let images: [(size: Size, url: URL)]
-        
+
         //swiftlint:disable nesting
         enum CodingKeys: String, CodingKey {
             case number = "pageNumber"
@@ -207,8 +206,10 @@ extension Document {
             
             /// 1280x1810
             case big = "1280x1810"
+
+            case large
+            case medium
         }
-        
     }
     
     /// The V2 document's type. Used when creating documents in multipage mode.

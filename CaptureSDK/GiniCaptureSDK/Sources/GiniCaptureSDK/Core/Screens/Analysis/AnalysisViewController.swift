@@ -18,9 +18,7 @@ import UIKit
      
      - parameter message: The error type to be displayed.
      */
-    func displayError(errorType: ErrorType,
-                      animated: Bool
-    )
+    func displayError(errorType: ErrorType, animated: Bool)
 
     /**
      In case that the `GiniCaptureDocument` analysed is an image it will display a no results screen
@@ -85,8 +83,7 @@ import UIKit
     }()
 
     private lazy var loadingIndicatorContainer: UIView = {
-        let loadingIndicatorContainer = UIView(frame: CGRect(origin: .zero,
-                                                             size: .zero))
+        let loadingIndicatorContainer = UIView(frame: CGRect.zero)
         return loadingIndicatorContainer
     }()
 
@@ -142,8 +139,9 @@ import UIKit
         super.viewDidAppear(animated)
         didShowAnalysis?()
 
+        let documentTypeAnalytics = GiniAnalyticsMapper.documentTypeAnalytics(from: document.type)
         let eventProperties = [GiniAnalyticsProperty(key: .documentType,
-                                                     value: GiniAnalyticsMapper.documentTypeAnalytics(from: document.type))]
+                                                     value: documentTypeAnalytics)]
         GiniAnalyticsManager.trackScreenShown(screenName: .analysis,
                                               properties: eventProperties)
     }
