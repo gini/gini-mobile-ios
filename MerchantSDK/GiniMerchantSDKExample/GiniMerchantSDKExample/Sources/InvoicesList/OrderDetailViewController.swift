@@ -106,11 +106,16 @@ final class OrderDetailViewController: UIViewController {
         ])
     }
 
-    @objc func payButtonTapped() {
-        DispatchQueue.main.async {
-            let paymentViewBottomSheet = self.paymentComponentsController.paymentViewBottomSheet(documentID: nil)
-            paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
-            self.present(paymentViewBottomSheet, animated: false)
+
+    @objc private func payButtonTapped() {
+        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
+        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
+
+        let paymentInfo = obtainPaymentInfo()
+        if paymentInfo.isComplete {
+            present(paymentViewBottomSheet, animated: false)
+        } else {
+            self.showErrorAlertView(error: NSLocalizedString("example.order.detail.Alert.FieldError", comment: ""))
         }
     }
 
