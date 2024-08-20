@@ -22,11 +22,13 @@ public struct URLOpener {
     ///                 param is true if website was opened successfully
     ///                 param is false if opening failed
 
-    func openLink(url: URL, completion: ((Bool) -> Void)?) {
+    func openLink(url: URL, completion: (@MainActor @Sendable (Bool) -> Void)?) {
         if application.canOpenURL(url) {
             application.open(url, options: [:], completionHandler: completion)
         } else {
-            completion?(false)
+            DispatchQueue.main.async {
+                completion?(false)
+            }
         }
     }
     
@@ -37,7 +39,7 @@ public struct URLOpener {
 
 public protocol URLOpenerProtocol {
     func canOpenURL(_ url: URL) -> Bool
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?)
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?)
 }
 
 extension UIApplication: URLOpenerProtocol {}

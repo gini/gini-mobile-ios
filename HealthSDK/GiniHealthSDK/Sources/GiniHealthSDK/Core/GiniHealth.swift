@@ -281,7 +281,7 @@ public struct DataForReview {
         - requestID: Id of the created payment request.
         - universalLink: Universal link for the selected payment provider
      */
-    public func openPaymentProviderApp(requestID: String, universalLink: String, urlOpener: URLOpener = URLOpener(UIApplication.shared), completion: ((Bool) -> Void)? = nil) {
+    public func openPaymentProviderApp(requestID: String, universalLink: String, urlOpener: URLOpener = URLOpener(UIApplication.shared), completion: (@Sendable (Bool) -> Void)? = nil) {
         let queryItems = [URLQueryItem(name: "id", value: requestID)]
         let urlString = universalLink + "://payment"
         var urlComponents = URLComponents(string: urlString)!
