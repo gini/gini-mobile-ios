@@ -21,6 +21,8 @@ public class ReturnAssistantScreen {
     let quantityTextField: XCUIElement
     let plusButton: XCUIElement
     let minusButton: XCUIElement
+    let proceedButton: XCUIElement
+    let saveButton: XCUIElement
     
     
     public init(app: XCUIApplication, locale: String) {
@@ -32,12 +34,17 @@ public class ReturnAssistantScreen {
             digitalInvoiceTitleText = app.staticTexts["Digital invoice"]
             cancelButtonNavigation = app.navigationBars.buttons["Cancel"]
             editButton = app.buttons["Edit"]
+            proceedButton = app.buttons["Proceed"]
+            saveButton = app.buttons["Save"]
+            
         case "de":
             helpButton = app.buttons["Hilfe"]
             getStartedButton = app.staticTexts["Los geht’s"]
             digitalInvoiceTitleText = app.staticTexts["Digitale Rechnung"]
             cancelButtonNavigation = app.navigationBars.buttons["Abbrechen"]
             editButton = app.buttons["Bearbeiten"]
+            proceedButton = app.buttons["Weiter"]
+            saveButton = app.buttons["Speichern"]
         default:
             fatalError("Locale \(locale) is not supported")
         }
