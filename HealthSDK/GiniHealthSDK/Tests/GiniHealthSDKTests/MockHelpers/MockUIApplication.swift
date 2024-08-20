@@ -21,9 +21,11 @@ struct MockUIApplication: URLOpenerProtocol {
         }
     }
  
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?) {
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
         if canOpen {
-            completion?(true)
+            DispatchQueue.main.async {
+                completion?(true)
+            }
         }
     }
 }
