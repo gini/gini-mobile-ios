@@ -131,3 +131,5 @@
 "ginibank.skonto.help.content.item3" = "Approve or adjust payment details";
 "ginibank.skonto.help.content.item4" = "Save money by paying promptly";
 "ginibank.skonto.help.footer.title" = "Snap a photo of your invoice and the app will automatically calculate the cash discount. Just review the details, confirm, and enjoy the savings!";
+
+"ginibank.skonto.document.pages.screen.title" = "Skonto discount details";

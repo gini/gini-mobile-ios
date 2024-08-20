@@ -8,6 +8,13 @@ import GiniCaptureSDK
 import UIKit
 
 final class DocumentPagesViewController: UIViewController {
+    private lazy var statusBarBackgroundView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+        return view
+    }()
+
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -20,16 +27,6 @@ final class DocumentPagesViewController: UIViewController {
         stackView.axis = .vertical
         stackView.spacing = Constants.stackViewItemSpacing
         return stackView
-    }()
-
-    private lazy var closeButton: UIButton = {
-        let closeButton = UIButton(type: .custom)
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.setImage(GiniImages.closeIcon.image, for: .normal)
-        closeButton.imageView?.contentMode = .scaleAspectFit
-        closeButton.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
-        closeButton.isExclusiveTouch = true
-        return closeButton
     }()
 
     private lazy var loadingIndicatorContainer: UIView = {
@@ -53,13 +50,17 @@ final class DocumentPagesViewController: UIViewController {
     // MARK: - Init
     init() {
         super.init(nibName: nil, bundle: nil)
-        setupViews()
-        setupLayout()
-        startLoadingIndicatorAnimation()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupViews()
+        setupLayout()
+        startLoadingIndicatorAnimation()
     }
 
     func setData(viewModel: DocumentPagesViewModel) {
@@ -92,14 +93,61 @@ final class DocumentPagesViewController: UIViewController {
      */
 
     private func setupViews() {
-        view.backgroundColor = UIColor.GiniCapture.dark1
+        view.backgroundColor = .GiniCapture.dark1
         view.addSubview(scrollView)
-        view.addSubview(closeButton)
-        view.bringSubviewToFront(closeButton)
-        // Set up the scroll view
+
+        setupStatusBarBackground()
+
+        setupNavigationBar()
+
         setupScrollView()
         scrollView.addSubview(stackView)
         configureLoadingIndicator()
+    }
+
+    private func setupStatusBarBackground() {
+        view.addSubview(statusBarBackgroundView)
+
+        NSLayoutConstraint.activate([
+            statusBarBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            statusBarBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            statusBarBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            statusBarBackgroundView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+    }
+
+    private func setupNavigationBar() {
+        // Create and configure the navigation bar
+        let navigationBar = UINavigationBar()
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationBar.shadowImage = UIImage()
+        navigationBar.isTranslucent = true
+        navigationBar.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        view.addSubview(navigationBar)
+
+        // Create a navigation item with a title and a cancel button
+        let screenTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.document.pages.screen.title",
+                                                                   comment: "Skonto discount details")
+        let navigationItem = UINavigationItem(title: screenTitle)
+        // Add the Cancel button
+        let cancelButton = GiniBarButton(ofType: .cancel)
+        cancelButton.addAction(self, #selector(didTapClose))
+        navigationItem.leftBarButtonItem = cancelButton.barButton
+
+        // Apply title text attributes
+        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+
+        // Assign the navigation item to the navigation bar
+        navigationBar.setItems([navigationItem], animated: false)
+
+        // Set constraints for the navigation bar
+        NSLayoutConstraint.activate([
+            navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: Constants.defaultNavigationBarHeight)
+        ])
     }
 
     private func setupScrollView() {
@@ -136,15 +184,8 @@ final class DocumentPagesViewController: UIViewController {
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor,
                                               constant: -Constants.stackViewBottomPadding),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
-                                             constant: -2 * Constants.containerHorizontalPadding),
+                                             constant: -2 * Constants.containerHorizontalPadding)
 
-            // Close button
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                             constant: Constants.buttonPadding),
-            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                 constant: Constants.buttonPadding),
-            closeButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize),
-            closeButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize)
         ])
 
         let stackViewTopConstraintConstant = Constants.stackViewTopConstraintToNavBar
@@ -290,7 +331,7 @@ final class DocumentPagesViewController: UIViewController {
         }
     }
 
-    @objc private func didTapCloseButton() {
+    @objc private func didTapClose() {
         dismiss(animated: true)
     }
 }
@@ -312,8 +353,6 @@ private extension DocumentPagesViewController {
     enum Constants {
         static let padding: CGFloat = 24
         static let spacing: CGFloat = 36
-        static let buttonSize: CGFloat = 44
-        static let buttonPadding: CGFloat = 16
         static let stackViewItemSpacing: CGFloat = 4
         static let containerHorizontalPadding: CGFloat = UIDevice.current.isIpad ? 31 : 4
         static let loadingIndicatorContainerHeight: CGFloat = 60
@@ -322,5 +361,6 @@ private extension DocumentPagesViewController {
         static let stackViewBottomPadding: CGFloat = 50
         static let minimumZoomScale: CGFloat = 1.0
         static let maximumZoomScale: CGFloat = 2.0
+        static let defaultNavigationBarHeight: CGFloat = 44
     }
 }
