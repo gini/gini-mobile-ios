@@ -8,7 +8,6 @@
 
 import UIKit
 import GiniHealthAPILibrary
-import GiniUtilites
 /**
  Protocol used to provide updates on the current status of the Payment Components Controller.
  Uses a callback mechanism to handle payment provider requests.
@@ -55,7 +54,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
 
     /// Payment Component View Configuration
     public var paymentComponentConfiguration: PaymentComponentConfiguration?
-    public var paymentReviewViewController: PaymentReviewViewController?
 
     /// Previous presented view
     private var previousPresentedView: PaymentComponentScreenType?
@@ -208,21 +206,16 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
             completion(nil, nil)
             return
         }
-
-        paymentReviewViewController = PaymentReviewViewController.instantiate(with: self.giniMerchant,
-                                                                              data: nil,
-                                                                              paymentInfo: paymentInfo,
-                                                                              selectedPaymentProvider: selectedPaymentProvider,
-                                                                              trackingDelegate: trackingDelegate,
-                                                                              paymentComponentsController: self)
-        completion(paymentReviewViewController, nil)
+        let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
+                                                         data: nil,
+                                                         paymentInfo: paymentInfo,
+                                                         selectedPaymentProvider: selectedPaymentProvider,
+                                                         trackingDelegate: trackingDelegate,
+                                                         paymentComponentsController: self)
+        completion(vc, nil)
     }
 
     // MARK: - Bottom Sheets
-
-    public func paymentInfoBottomSheet() -> UIViewController {
-        return paymentReviewViewController ?? UIViewController()
-    }
 
     public func paymentViewBottomSheet(documentID: String?) -> UIViewController {
         previousPresentedView = .paymentComponent
