@@ -61,16 +61,3 @@ extension OrderListViewModel: PaymentComponentsControllerProtocol {
         }
     }
 }
-
-extension OrderListViewModel: GiniMerchantTrackingDelegate {
-    func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
-        switch event.type {
-        case .onToTheBankButtonClicked:
-            print("✅ To the banking app button was tapped,\(String(describing: event.info))")
-        case .onCloseButtonClicked:
-            print("✅ Close screen was triggered")
-        case .onCloseKeyboardButtonClicked:
-            print("✅ Close keyboard was triggered")
-        }
-    }
-}
