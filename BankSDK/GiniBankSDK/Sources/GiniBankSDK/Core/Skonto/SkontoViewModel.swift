@@ -48,14 +48,14 @@ class SkontoViewModel {
         }
     }
 
-    var localizedRemainingDays: String {
+    var remainingDaysString: String {
         let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.day",
                                                             comment: "%@ days")
         return String.localizedStringWithFormat(text,
                                                 remainingDays)
     }
 
-    var localizedDiscountString: String {
+    var skontoPercentageString: String {
         return String.localizedStringWithFormat(
             NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
                                                      comment: "%@ Skonto discount"),
@@ -99,7 +99,8 @@ class SkontoViewModel {
     }
 
     func setSkontoPrice(price: String) {
-        guard let price = convertPriceStringToPrice(price: price), price.value <= amountToPay.value else {
+        guard let price = convertPriceStringToPrice(price: price),
+              price.value <= amountToPay.value else {
             notifyStateChangeHandlers()
             return
         }
