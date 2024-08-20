@@ -108,13 +108,12 @@ final class OrderDetailViewController: UIViewController {
 
 
     @objc private func payButtonTapped() {
-        print("✅ Tapped on Pay")
         let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
         paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
 
         let paymentInfo = obtainPaymentInfo()
         if paymentInfo.isComplete {
-            present(paymentViewBottomSheet, animated: true)
+            present(paymentViewBottomSheet, animated: false)
         } else {
             self.showErrorAlertView(error: NSLocalizedString("example.order.detail.Alert.FieldError", comment: ""))
         }
@@ -146,16 +145,16 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
     }
 
     func didTapOnPayInvoice(documentId: String?) {
-        print("✅ Tapped on Pay Order")
+        print("✅ Tapped on Pay Invoice on :\(documentId ?? "")")
         if giniMerchantConfiguration.showPaymentReviewScreen {
             paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
                 if let error {
                     self?.errors.append(error.localizedDescription)
                     self?.showErrorsIfAny()
-                } else if let paymentViewBottomSheet = self?.paymentComponentsController.paymentInfoBottomSheet() {
-                    paymentViewBottomSheet.modalTransitionStyle = .coverVertical
-                    paymentViewBottomSheet.modalPresentationStyle = .overCurrentContext
-                    self?.dismissAndPresent(viewController: paymentViewBottomSheet, animated: true)
+                } else if let viewController {
+                    viewController.modalTransitionStyle = .coverVertical
+                    viewController.modalPresentationStyle = .overCurrentContext
+                    self?.dismissAndPresent(viewController: viewController, animated: true)
                 }
             }
         } else {
