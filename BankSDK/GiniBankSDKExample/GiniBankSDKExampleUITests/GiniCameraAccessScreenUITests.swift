@@ -74,7 +74,7 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         cameraAccessScreen.giveAccessButton.firstMatch.tap()
         //Assert that Settings is opened
         let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
-        XCTAssertTrue(settingsApp.staticTexts["GiniBankSDKExample"].exists)
+        XCTAssertTrue(settingsApp.staticTexts["GiniBankSDKExample"].waitForExistence(timeout: 5))
         //Reset Camera Access
         if #available(iOS 13.4, *) { app.resetAuthorizationStatus(for: .camera) }
     }
