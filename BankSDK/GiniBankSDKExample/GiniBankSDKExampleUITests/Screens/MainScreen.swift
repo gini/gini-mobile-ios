@@ -169,8 +169,20 @@ public class MainScreen {
     }
     
     func clearInputField(element: XCUIElement) {
-        element.doubleTap()
-        deleteButton.tap()
+
+        
+        guard let stringValue = element.value as? String else {
+                    XCTFail("Tried to clear non string value")
+                    return
+                }
+        let lowerRightCorner = element.coordinate(withNormalizedOffset: CGVectorMake(0.9, 0.9))
+        lowerRightCorner.press(forDuration: 2)
+        
+        let deleteString = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
+        element.typeText(deleteString)
+        lowerRightCorner.tap()
+        element.typeText(deleteString)
+    
     }
     
     func tapFileWithName(fileName: String) {
@@ -179,5 +191,23 @@ public class MainScreen {
         XCTAssertTrue(fileElement.waitForExistence(timeout: 5),"Please add file with file name '\(fileName)' to the device before launching the test.")
         fileElement.tap()
     }
+    
+    func assertTextIsDisplayedInAnyStaticText(expectedText: String) {
+        
+        // Get all static text elements
+        let staticTexts = app.staticTexts.allElementsBoundByIndex
+        // Iterate through all static text elements
+        for staticText in staticTexts {
+            if let labelValue = staticText.label as String? {
+                if labelValue.contains(expectedText) {
+                    XCTAssertTrue(labelValue.contains(expectedText), "The text '\(expectedText)' was found in static text '\(labelValue)'")
+                    return // Exit the function as the expected text was found
+                }
+            }
+        }
+        // If the text was not found in any static text element
+        XCTFail("The text '\(expectedText)' was not found in any static text element.")
+    }
+
 }
 
