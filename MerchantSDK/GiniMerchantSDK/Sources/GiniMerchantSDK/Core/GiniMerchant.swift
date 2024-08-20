@@ -85,12 +85,12 @@ public struct DataForReview {
     public init(id: String, 
                 secret: String,
                 domain: String,
-                apiVersion: Int = Constants.defaultVersionAPI,
+                apiVersion: Int = Constants.merchantVersionAPI,
                 logLevel: LogLevel = .none) {
         let client = Client(id: id, secret: secret, domain: domain, apiVersion: apiVersion)
-        self.giniApiLib = GiniHealthAPI.Builder(client: client, logLevel: logLevel.toHealthLogLevel()).build()
+        self.giniApiLib = GiniHealthAPI.Builder(client: client, api: .merchant, logLevel: logLevel.toHealthLogLevel()).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
-        self.paymentService = giniApiLib.paymentService()
+        self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.merchant, apiVersion: apiVersion)
     }
     
     /**
@@ -116,14 +116,14 @@ public struct DataForReview {
                                                 logLevel: logLevel.toHealthLogLevel(),
                                                 sessionDelegate: GiniSessionDelegate(pinningConfig: pinningConfig)).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
-        self.paymentService = giniApiLib.paymentService()
+        self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.merchant, apiVersion: apiVersion)
     }
 
     //For Testing
     internal init(giniApiLib: GiniHealthAPI) {
         self.giniApiLib = giniApiLib
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
-        self.paymentService = giniApiLib.paymentService()
+        self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.merchant, apiVersion: Constants.merchantVersionAPI)
     }
     
     /**
@@ -423,5 +423,6 @@ public struct DataForReview {
 extension GiniMerchant {
     public enum Constants {
         public static let defaultVersionAPI = 4
+        public static let merchantVersionAPI = 1
     }
 }
