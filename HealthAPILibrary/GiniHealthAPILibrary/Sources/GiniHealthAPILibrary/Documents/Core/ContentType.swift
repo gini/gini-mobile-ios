@@ -16,8 +16,8 @@ enum ContentType {
         switch self {
         case .json:
             return "application/json"
-        case .content( _, let subtype, let mimeSubtype):
-            return "application/vnd.gini.v4" + (subtype == nil ? "" : ".\(subtype!)") + "+\(mimeSubtype)"
+        case .content(let apiVersion, let subtype, let mimeSubtype):
+            return "application/vnd.gini.v\(apiVersion)" + (subtype == nil ? "" : ".\(subtype!)") + "+\(mimeSubtype)"
         case .formUrlEncoded:
             return "application/x-www-form-urlencoded"
         }

@@ -64,7 +64,7 @@ Check that the extractions and the document preview are shown and then press the
 
 #### Execute payment
 
-When clicking the `To the banking app` button on the payment review you should be redirected to the example banking app where the payment information will be fetched from Gini (including any changes you made on the payment review). Press the "Pay" button to execute a test payment which will mark the payment as paid in the [Gini Health API](https://health-api.gini.net/documentation/#gini-health-api-documentation).
+When clicking the `To the banking app` button on the payment review you should be redirected to the example banking app where the payment information will be fetched from Gini (including any changes you made on the payment review). Press the "Pay" button to execute a test payment which will mark the payment as paid in the [Gini Merchant API](https://merchant-api.gini.net/documentation/#gini-health-api-documentation).
 You should be redirected to the example banking app where the final extractions are shown:
 
 <br>

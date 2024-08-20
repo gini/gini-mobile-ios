@@ -38,8 +38,8 @@ public final class GiniHealthAPI {
      * The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
      *
      */
-    public func paymentService() -> PaymentService {
-        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: .default, apiVersion: Constants.defaultVersionAPI)
+    public func paymentService(apiDomain: APIDomain = .default, apiVersion: Int = Constants.defaultVersionAPI) -> PaymentService {
+        return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: apiDomain, apiVersion: apiVersion)
     }
     
     /// Removes the user stored credentials. Recommended when logging a different user in your app.
@@ -109,32 +109,30 @@ extension GiniHealthAPI {
 
             // Initialize GiniHealthAPILib
             switch api {
-            case .default:
-                let sessionManager = SessionManager(userDomain: userApi,
-                                                    sessionDelegate: self.sessionDelegate)
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, 
-                                                                             apiVersion: apiVersion),
-                                     paymentService: PaymentService(sessionManager: sessionManager,
-                                                                    apiDomain: .default,
-                                                                    apiVersion: apiVersion))
+            case .default, .merchant:
+                return createHealthAPI()
             case let .custom(_, tokenSource):
-                var sessionManager: SessionManager
-                if let tokenSource = tokenSource {
-                    sessionManager = SessionManager(alternativeTokenSource: tokenSource,
-                                                    sessionDelegate: self.sessionDelegate)
-                } else {
-                    sessionManager = SessionManager(userDomain: userApi,
-                                                    sessionDelegate: self.sessionDelegate)
-                }
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, 
-                                                                             apiDomain: api,
-                                                                             apiVersion: apiVersion),
-                                     paymentService: PaymentService(sessionManager: sessionManager,
-                                                                    apiDomain: api,
-                                                                    apiVersion: apiVersion))
+                return createHealthAPI(tokenSource: tokenSource)
             }
         }
-        
+
+        private func createHealthAPI(tokenSource: AlternativeTokenSource? = nil) -> GiniHealthAPI {
+            var sessionManager: SessionManager
+            if let tokenSource = tokenSource {
+                sessionManager = SessionManager(alternativeTokenSource: tokenSource,
+                                                sessionDelegate: self.sessionDelegate)
+            } else {
+                sessionManager = SessionManager(userDomain: userApi,
+                                                sessionDelegate: self.sessionDelegate)
+            }
+            return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager,
+                                                                         apiDomain: api,
+                                                                         apiVersion: apiVersion),
+                                 paymentService: PaymentService(sessionManager: sessionManager,
+                                                                apiDomain: api,
+                                                                apiVersion: apiVersion))
+        }
+
         private func save(_ client: Client) {
             do {
                 try KeychainStore().save(item: KeychainManagerItem(key: .clientId,
