@@ -1,0 +1,1 @@
+This file is used to learn how git commit signing works.
