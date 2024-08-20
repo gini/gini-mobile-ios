@@ -126,7 +126,12 @@ class PaymentInfoViewController: UIViewController {
         super.viewDidLoad()
         self.title = viewModel.titleText
     }
-    
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.post(name: .paymentInfoDissapeared, object: nil)
+    }
+
     private func setupView() {
         setupViewHierarchy()
         setupViewAttributes()
