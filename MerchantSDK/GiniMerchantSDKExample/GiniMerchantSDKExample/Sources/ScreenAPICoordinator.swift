@@ -15,7 +15,7 @@ protocol ScreenAPICoordinatorDelegate: AnyObject {
     func presentOrdersList(orders: [Order]?)
 }
 
-final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDelegate {
+final class ScreenAPICoordinator: NSObject, Coordinator {
     
     weak var delegate: ScreenAPICoordinatorDelegate?
     var childCoordinators: [Coordinator] = []
