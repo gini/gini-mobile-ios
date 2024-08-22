@@ -28,7 +28,7 @@ jobs:
         bundler-cache: true
 
     - name: Publish GiniHealthSDK package to the release repo
-      uses: maierj/fastlane-action@v3.0.0
+      uses: maierj/fastlane-action@v3.1.0
       with:
         lane: 'publish_swift_package'
         options: >
@@ -44,7 +44,7 @@ jobs:
           }
 
     - name: Publish GiniHealthSDKPinning package to the release repo
-      uses: maierj/fastlane-action@v3.0.0
+      uses: maierj/fastlane-action@v3.1.0
       with:
         lane: 'publish_swift_package'
         options: >
