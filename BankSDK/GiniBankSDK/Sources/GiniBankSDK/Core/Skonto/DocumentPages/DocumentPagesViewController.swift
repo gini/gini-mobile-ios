@@ -62,7 +62,7 @@ final class DocumentPagesViewController: UIViewController {
     private let configuration = GiniBankConfiguration.shared
 
     // Constraints
-    private var stackViewTopConstraint: NSLayoutConstraint?
+    private var contentStackViewTopConstraint: NSLayoutConstraint?
 
     // MARK: - Init
     init() {
@@ -204,9 +204,10 @@ final class DocumentPagesViewController: UIViewController {
         ])
 
         let stackViewTopConstraintConstant = Constants.stackViewTopConstraintToNavBar
-        stackViewTopConstraint = contentStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
-                                                                constant: stackViewTopConstraintConstant)
-        stackViewTopConstraint?.isActive = true
+        contentStackViewTopConstraint = contentStackView.topAnchor
+            .constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
+                        constant: stackViewTopConstraintConstant)
+        contentStackViewTopConstraint?.isActive = true
     }
 
     private func setupFooterView() {
@@ -367,13 +368,13 @@ final class DocumentPagesViewController: UIViewController {
 
     private func adjustStackViewTopConstraint() {
         let isZoomedOut = scrollView.zoomScale == Constants.minimumZoomScale
-        stackViewTopConstraint?.constant = isZoomedOut
+        contentStackViewTopConstraint?.constant = isZoomedOut
         ? Constants.navigationBarHeight + Constants.stackViewTopConstraintToNavBar
         : Constants.stackViewTopConstraintToNavBar
     }
 
     private func adjustStackViewTopConstraint(for imageCount: Int) {
-        stackViewTopConstraint?.constant = imageCount == 1
+        contentStackViewTopConstraint?.constant = imageCount == 1
         ? Constants.navigationBarHeight + Constants.stackViewTopConstraintToNavBar
         : Constants.stackViewTopConstraintToNavBar
     }
