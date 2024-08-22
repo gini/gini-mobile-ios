@@ -53,7 +53,7 @@ jobs:
           ./cyclonedx validate --input-file fastlane/health-sdk-pinning-ios/GiniHealthSDKPinning-sbom.json
 
       - name: archive the cyclonedx sboms
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: CycloneDX SBOM JSONs
           path: fastlane/sbom-jsons.zip
