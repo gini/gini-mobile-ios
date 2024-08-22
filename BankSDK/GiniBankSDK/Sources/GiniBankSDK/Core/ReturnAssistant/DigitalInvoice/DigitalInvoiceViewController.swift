@@ -279,6 +279,7 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
         case titleCell
         case lineItems
         case addOns
+        case skonto
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -288,10 +289,12 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
     // MARK: - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // TODO: 409 Handle Skonto + RA
         switch Section(rawValue: section) {
         case .titleCell: return 1
         case .lineItems: return viewModel.invoice?.lineItems.count ?? 0
         case .addOns: return 1
+        case .skonto: return viewModel.hasSkonto ? 1 : 0
         default: fatalError()
         }
     }
@@ -329,6 +332,15 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
                 return cell
             }
             assertionFailure("DigitalInvoiceAddOnListCell could not been reused")
+            return UITableViewCell()
+        case .skonto:
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSkontoTableViewCell", for: indexPath) as? DigitalInvoiceSkontoTableViewCell {
+                cell.delegate = self
+                guard let skontoViewModel = viewModel.skontoViewModel else { return cell }
+                cell.configure(with: skontoViewModel)
+                return cell
+            }
+            assertionFailure("SkontoTableViewCell could not been reused")
             return UITableViewCell()
         default: fatalError()
         }
@@ -401,6 +413,18 @@ extension DigitalInvoiceViewController: DigitalInvoiceOnboardingViewControllerDe
     func dismissViewController() {
         // after dismissing the oboarding screen, screen_shown event can be sent
         sendAnalyticsScreenShown()
+    }
+}
+
+extension DigitalInvoiceViewController: DigitalInvoiceSkontoTableViewCellDelegate {
+    func reloadCell(cell: DigitalInvoiceSkontoTableViewCell) {
+        updateValues()
+    }
+
+    func editTapped(cell: DigitalInvoiceSkontoTableViewCell) {
+        guard let skontoViewModel = viewModel.skontoViewModel else { return }
+        let vc = DigitalInvoiceSkontoViewController(viewModel: skontoViewModel)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -73,6 +73,35 @@ class SkontoViewModel {
         )
     }
 
+    var localizedBannerInfoMessage: String {
+        let text: String
+        switch edgeCase {
+        case .expired:
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.expired.message",
+                                                                         comment: "The %@ discount has expired.")
+            text = String.localizedStringWithFormat(localizedText,
+                                                    formattedPercentageDiscounted)
+        case .paymentToday:
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.today.message",
+                                                                         comment: "Pay today: %@ discount.")
+            text = String.localizedStringWithFormat(localizedText,
+                                                    formattedPercentageDiscounted)
+        case .payByCash:
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.message",
+                                                                         comment: "A %@ discount is available...")
+            text = String.localizedStringWithFormat(localizedText,
+                                                    formattedPercentageDiscounted,
+                                                    localizedRemainingDays)
+        default:
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.default.message",
+                                                                         comment: "Pay in %@: %@ Skonto discount.")
+            text = String.localizedStringWithFormat(localizedText,
+                                                    localizedRemainingDays,
+                                                    formattedPercentageDiscounted)
+        }
+        return text
+    }
+
     weak var delegate: SkontoViewModelDelegate?
 
     init(skontoDiscounts: SkontoDiscounts) {
