@@ -11,6 +11,7 @@ protocol SkontoViewModelDelegate: AnyObject {
     func didTapHelp()
     func didTapBack()
     func didTapProceed(on viewModel: SkontoViewModel)
+    func didTapDocumentPreview(on viewModel: SkontoViewModel)
 }
 
 class SkontoViewModel {
@@ -31,6 +32,8 @@ class SkontoViewModel {
     private (set) var remainingDays: Int
     private (set) var paymentMethod: SkontoDiscountDetails.PaymentMethod
     private (set) var edgeCase: SkontoEdgeCase?
+
+    private (set) var documentPagesViewModel: DocumentPagesViewModel?
 
     var finalAmountToPay: Price {
         return isSkontoApplied ? skontoAmountToPay : amountToPay
@@ -77,7 +80,7 @@ class SkontoViewModel {
 
         // For now multiple Skonto discounts aren't handle
         let skontoDiscountDetails = skontoDiscounts.discounts[0]
-        self.amountToPay = skontoDiscounts.totalAmountToPay
+        amountToPay = skontoDiscounts.totalAmountToPay
         skontoAmountToPay = skontoDiscountDetails.amountToPay
         dueDate = skontoDiscountDetails.dueDate
         amountDiscounted = skontoDiscountDetails.amountDiscounted
@@ -112,13 +115,6 @@ class SkontoViewModel {
         notifyStateChangeHandlers()
     }
 
-    private func convertPriceStringToPrice(price: String) -> Price? {
-        guard let priceValue = Price.convertLocalizedStringToDecimal(price) else {
-            return nil
-        }
-        return Price(value: priceValue, currencyCode: currencyCode)
-    }
-
     func set(date: Date) {
         self.dueDate = date
         recalculateRemainingDays()
@@ -126,23 +122,15 @@ class SkontoViewModel {
         notifyStateChangeHandlers()
     }
 
-    private func recalculateRemainingDays() {
-        let calendar = Calendar.current
-        let currentDate = calendar.startOfDay(for: Date().inBerlinTimeZone)
-        let dueDate = calendar.startOfDay(for: self.dueDate)
-        let components = calendar.dateComponents([.day], from: currentDate, to: dueDate)
-        remainingDays = components.day ?? 0
-    }
-
     func addStateChangeHandler(_ handler: @escaping () -> Void) {
         skontoStateChangeHandlers.append(handler)
     }
 
-    private func notifyStateChangeHandlers() {
-        for stateHandler in skontoStateChangeHandlers {
-            stateHandler()
-        }
+    func setDocumentPagesViewModel(_ viewModel: DocumentPagesViewModel) {
+        documentPagesViewModel = viewModel
     }
+
+    // MARK: - Actions
 
     func helpButtonTapped() {
         delegate?.didTapHelp()
@@ -156,24 +144,11 @@ class SkontoViewModel {
         delegate?.didTapProceed(on: self)
     }
 
-    private func recalculateAmountToPayWithSkonto() {
-        let calculatedPrice = amountToPay.value * (1 - Decimal(skontoPercentage) / 100)
-        skontoAmountToPay = Price(value: calculatedPrice, currencyCode: currencyCode)
+    func documentPreviewTapped() {
+        delegate?.didTapDocumentPreview(on: self)
     }
 
-    private func recalculateSkontoPercentage() {
-        guard amountToPay.value > 0 else {
-            return
-        }
-
-        let skontoPercentageValue = ((amountToPay.value - skontoAmountToPay.value) / amountToPay.value) * 100
-        self.skontoPercentage = Double(truncating: skontoPercentageValue as NSNumber)
-    }
-
-    private func calculateSkontoSavingsAmount() -> Price {
-        let skontoSavingsValue = amountToPay.value - skontoAmountToPay.value
-        return Price(value: skontoSavingsValue, currencyCode: currencyCode)
-    }
+    // MARK: - ExtractionResult to send to customers
     /**
      The edited `ExtractionResult` data.
      */
@@ -214,6 +189,57 @@ class SkontoViewModel {
         return ExtractionResult(extractions: modifiedExtractions,
                                 skontoDiscounts: modifiedSkontoDiscounts,
                                 candidates: skontoDiscounts.initialExtractionResult.candidates)
+    }
+
+    public var extractionBoundingBoxes: [ExtractionBoundingBox] {
+        // For now we don't handle multiple Skonto discounts
+        guard let skontoDiscountExtraction = skontoDiscounts.discounts.first else {
+            return []
+        }
+
+        return skontoDiscountExtraction.boundingBoxes
+    }
+
+    // MARK: - Private methods
+
+    private func convertPriceStringToPrice(price: String) -> Price? {
+        guard let priceValue = Price.convertLocalizedStringToDecimal(price) else {
+            return nil
+        }
+        return Price(value: priceValue, currencyCode: currencyCode)
+    }
+
+    private func recalculateRemainingDays() {
+        let calendar = Calendar.current
+        let currentDate = calendar.startOfDay(for: Date().inBerlinTimeZone)
+        let dueDate = calendar.startOfDay(for: self.dueDate)
+        let components = calendar.dateComponents([.day], from: currentDate, to: dueDate)
+        remainingDays = components.day ?? 0
+    }
+
+    private func notifyStateChangeHandlers() {
+        for stateHandler in skontoStateChangeHandlers {
+            stateHandler()
+        }
+    }
+
+    private func recalculateAmountToPayWithSkonto() {
+        let calculatedPrice = amountToPay.value * (1 - Decimal(skontoPercentage) / 100)
+        skontoAmountToPay = Price(value: calculatedPrice, currencyCode: currencyCode)
+    }
+
+    private func recalculateSkontoPercentage() {
+        guard amountToPay.value > 0 else {
+            return
+        }
+
+        let skontoPercentageValue = ((amountToPay.value - skontoAmountToPay.value) / amountToPay.value) * 100
+        self.skontoPercentage = Double(truncating: skontoPercentageValue as NSNumber)
+    }
+
+    private func calculateSkontoSavingsAmount() -> Price {
+        let skontoSavingsValue = amountToPay.value - skontoAmountToPay.value
+        return Price(value: skontoSavingsValue, currencyCode: currencyCode)
     }
 
     /**
