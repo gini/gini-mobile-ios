@@ -46,6 +46,18 @@ final class DocumentPagesViewModel {
         self.expiryDate = expiryDate
     }
 
+    func updateExpiryDate(date: Date) {
+        expiryDate = date
+    }
+
+    func updateAmountToPay(price: Price) {
+        amountToPay = price
+    }
+
+    func updateSkontoAmountToPay(price: Price) {
+        skontoAmountToPay = price
+    }
+
     /// Highlights Skonto-related details on an image by drawing a rectangle
     /// around specified bounding boxes.
     ///
