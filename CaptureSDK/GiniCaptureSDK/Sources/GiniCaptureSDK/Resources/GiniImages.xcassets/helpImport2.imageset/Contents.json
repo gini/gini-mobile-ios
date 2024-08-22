@@ -13,10 +13,30 @@
       ],
       "filename" : "Group 46.pdf",
       "idiom" : "universal"
+    },
+    {
+      "filename" : "Group 83.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Group 82.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "localizable" : true,
+    "preserves-vector-representation" : true
   }
 }
