@@ -117,7 +117,7 @@ class SkontoViewModel {
     }
 
     func set(date: Date) {
-        self.dueDate = date
+        dueDate = date
         recalculateRemainingDays()
         determineSkontoEdgeCase()
         notifyStateChangeHandlers()
