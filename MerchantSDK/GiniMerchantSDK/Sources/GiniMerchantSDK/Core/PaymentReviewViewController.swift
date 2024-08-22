@@ -19,7 +19,7 @@ public final class PaymentReviewViewController: BottomSheetController, UIGesture
     private var showInfoBarOnce = true
     private var keyboardWillShowCalled = false
 
-    var model: PaymentReviewModel?
+    public var model: PaymentReviewModel?
     var selectedPaymentProvider: PaymentProvider!
 
     public weak var trackingDelegate: GiniMerchantTrackingDelegate?
