@@ -1,5 +1,5 @@
 //
-//  SkontoInvoicePreviewView.swift
+//  SkontoDocumentPreviewView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-class SkontoInvoicePreviewView: UIView {
+class SkontoDocumentPreviewView: UIView {
     private lazy var imageContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
@@ -16,7 +16,7 @@ class SkontoInvoicePreviewView: UIView {
         return view
     }()
 
-    private lazy var invoicePreviewImageView: UIImageView = {
+    private lazy var documentPreviewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = GiniImages.invoicePlaceholderIcon.image
         imageView.tintColor = .giniColorScheme().icons.standardTertiary.uiColor()
@@ -82,7 +82,7 @@ class SkontoInvoicePreviewView: UIView {
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(imageContainerView)
-        imageContainerView.addSubview(invoicePreviewImageView)
+        imageContainerView.addSubview(documentPreviewImageView)
         textStackView.addArrangedSubview(titleLabel)
         textStackView.addArrangedSubview(subtitleLabel)
         addSubview(textStackView)
@@ -94,14 +94,14 @@ class SkontoInvoicePreviewView: UIView {
             imageContainerView.widthAnchor.constraint(equalToConstant: Constants.imageViewSize),
             imageContainerView.heightAnchor.constraint(equalToConstant: Constants.imageViewSize),
 
-            invoicePreviewImageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor,
-                                                             constant: Constants.imageViewPadding),
-            invoicePreviewImageView.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor,
-                                                              constant: -Constants.imageViewPadding),
-            invoicePreviewImageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor,
-                                                         constant: Constants.imageViewPadding),
-            invoicePreviewImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor,
-                                                            constant: -Constants.imageViewPadding),
+            documentPreviewImageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor,
+                                                              constant: Constants.imageViewPadding),
+            documentPreviewImageView.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor,
+                                                               constant: -Constants.imageViewPadding),
+            documentPreviewImageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor,
+                                                          constant: Constants.imageViewPadding),
+            documentPreviewImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor,
+                                                             constant: -Constants.imageViewPadding),
 
             textStackView.topAnchor.constraint(equalTo: topAnchor),
             textStackView.leadingAnchor.constraint(equalTo: imageContainerView.trailingAnchor,
@@ -115,7 +115,7 @@ class SkontoInvoicePreviewView: UIView {
     }
 }
 
-private extension SkontoInvoicePreviewView {
+private extension SkontoDocumentPreviewView {
     enum Constants {
         static let stackViewSpacing: CGFloat = 0
         static let imageViewSize: CGFloat = 40

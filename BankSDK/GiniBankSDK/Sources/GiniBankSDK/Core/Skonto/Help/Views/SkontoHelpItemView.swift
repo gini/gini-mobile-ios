@@ -19,7 +19,7 @@ final class SkontoHelpItemView: UIView {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .giniColorScheme().text.primary.uiColor()
-        titleLabel.font = configuration.textStyleFonts[.bodyBold]
+        titleLabel.font = configuration.textStyleFonts[.footnoteBold]
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.numberOfLines = Constants.labelNumberOfLines
         return titleLabel
