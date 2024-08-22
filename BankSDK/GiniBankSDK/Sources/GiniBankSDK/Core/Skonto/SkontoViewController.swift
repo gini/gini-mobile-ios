@@ -98,7 +98,7 @@ final class SkontoViewController: UIViewController {
     private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
-    private var hasShownAlert = false
+    private var firstAppearance = true
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -119,7 +119,10 @@ final class SkontoViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showAlertIfNeeded()
+        if firstAppearance {
+            showAlertIfNeeded()
+            firstAppearance = false
+        }
     }
 
     deinit {
@@ -337,8 +340,7 @@ final class SkontoViewController: UIViewController {
     }
 
     @objc private func showAlertIfNeeded() {
-        guard !hasShownAlert, let alert = alertFactory.createEdgeCaseAlert() else { return }
-        hasShownAlert = true
+        guard let alert = alertFactory.createEdgeCaseAlert() else { return }
         present(alert, animated: true, completion: nil)
     }
 
