@@ -200,19 +200,20 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         }
     }
 
-    public func loadPaymentReviewScreenWithoutDocument(paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+    private func loadPaymentReviewScreenWithoutDocument(paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
         previousPresentedView = nil
         guard let selectedPaymentProvider else {
             completion(nil, nil)
             return
         }
-        let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
-                                                         data: nil,
-                                                         paymentInfo: paymentInfo,
-                                                         selectedPaymentProvider: selectedPaymentProvider,
-                                                         trackingDelegate: trackingDelegate,
-                                                         paymentComponentsController: self)
-        completion(vc, nil)
+
+        let paymentReviewViewController = PaymentReviewViewController.instantiate(with: self.giniMerchant,
+                                                                                  data: nil,
+                                                                                  paymentInfo: paymentInfo,
+                                                                                  selectedPaymentProvider: selectedPaymentProvider,
+                                                                                  trackingDelegate: trackingDelegate,
+                                                                                  paymentComponentsController: self)
+        completion(paymentReviewViewController, nil)
     }
 
     // MARK: - Bottom Sheets

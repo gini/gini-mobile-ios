@@ -115,7 +115,7 @@ final class OrderDetailViewController: UIViewController {
         if paymentInfo.isComplete {
             present(paymentViewBottomSheet, animated: false)
         } else {
-            self.showErrorAlertView(error: NSLocalizedString("example.order.detail.Alert.FieldError", comment: ""))
+            showErrorAlertView(error: NSLocalizedString("example.order.detail.Alert.FieldError", comment: ""))
         }
     }
 
