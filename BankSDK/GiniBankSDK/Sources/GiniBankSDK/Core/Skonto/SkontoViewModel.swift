@@ -42,9 +42,9 @@ class SkontoViewModel {
     var formattedPercentageDiscounted: String {
         let formatter = NumberFormatter.floorRoundingFormatter
         if let formattedValue = formatter.string(from: NSNumber(value: skontoPercentage)) {
-            return "\(formattedValue) %"
+            return "\(formattedValue)%"
         } else {
-            return "\(skontoPercentage) %"
+            return "\(skontoPercentage)%"
         }
     }
 
