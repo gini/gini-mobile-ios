@@ -10,7 +10,7 @@ class SkontoHelpFooterView: UIView {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.footer.title",
-                                                                   comment: "Snap a photo of your invoice...")
+                                                                   comment: "Take a photo of your invoice...")
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .giniColorScheme().text.secondary.uiColor()
         titleLabel.font = configuration.textStyleFonts[.body]
