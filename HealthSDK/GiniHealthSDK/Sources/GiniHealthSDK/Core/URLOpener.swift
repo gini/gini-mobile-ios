@@ -39,7 +39,11 @@ public struct URLOpener {
 
 public protocol URLOpenerProtocol {
     func canOpenURL(_ url: URL) -> Bool
+    #if compiler(>=6.0) // checking xcode 16
     func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?)
+    #else
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?)
+    #endif
 }
 
 extension UIApplication: URLOpenerProtocol {}
