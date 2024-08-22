@@ -17,7 +17,7 @@ final class CameraViewController: UIViewController {
     let giniConfiguration: GiniConfiguration
     var detectedQRCodeDocument: GiniQRCodeDocument?
     var cameraNeedsInitializing: Bool { !cameraPreviewViewController.hasInitialized }
-    var shouldShowHelp: Bool { isOnScreen && !validQRCodeProcessing }
+    var shouldShowHelp: Bool { isPresentedOnScreen && !validQRCodeProcessing }
 
     lazy var cameraPreviewViewController: CameraPreviewViewController = {
         let cameraPreviewViewController = CameraPreviewViewController()
@@ -42,7 +42,7 @@ final class CameraViewController: UIViewController {
     private var resetQRCodeTask: DispatchWorkItem?
     private var hideQRCodeTask: DispatchWorkItem?
     private var validQRCodeProcessing: Bool = false
-    private var isOnScreen = false
+    private var isPresentedOnScreen = false
 
     private var isValidIBANDetected: Bool = false
     // Analytics
@@ -111,7 +111,7 @@ final class CameraViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        isOnScreen = true
+        isPresentedOnScreen = true
         validQRCodeProcessing = false
         delegate?.cameraDidAppear(self)
 
@@ -358,7 +358,7 @@ final class CameraViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        isOnScreen = false
+        isPresentedOnScreen = false
 
         qrCodeOverLay.viewWillDisappear()
         ibanDetectionOverLay.viewWillDisappear()
@@ -538,7 +538,7 @@ final class CameraViewController: UIViewController {
     // MARK: - QR Detection
 
     private func showQRCodeFeedback(for document: GiniQRCodeDocument, isValid: Bool) {
-        guard isOnScreen else { return }
+        guard isPresentedOnScreen else { return }
         guard !validQRCodeProcessing else { return }
         guard detectedQRCodeDocument != document else { return }
 
