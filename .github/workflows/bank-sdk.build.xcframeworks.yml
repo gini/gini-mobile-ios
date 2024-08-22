@@ -27,7 +27,7 @@ jobs:
           xcode-version: '14.3.1'
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Mint
         uses: fabasoad/setup-mint-action@main
