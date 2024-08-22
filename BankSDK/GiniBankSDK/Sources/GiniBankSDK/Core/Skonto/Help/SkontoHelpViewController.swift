@@ -81,7 +81,7 @@ final class SkontoHelpViewController: UIViewController {
         stackView.addArrangedSubview(footerView)
         stackView.addArrangedSubview(spacerView)
         let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.back",
-                                                                       comment: "Skonto")
+                                                                       comment: "Skonto discount")
         let backButton = GiniBarButton(ofType: .back(title: backButtonTitle))
         backButton.addAction(self, #selector(dismissViewController))
         navigationItem.leftBarButtonItem = backButton.barButton
