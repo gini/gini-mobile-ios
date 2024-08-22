@@ -220,10 +220,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
 
     // MARK: - Bottom Sheets
 
-    public func paymentInfoBottomSheet() -> UIViewController {
-        return paymentReviewViewController ?? UIViewController()
-    }
-
     public func paymentViewBottomSheet(documentID: String?) -> UIViewController {
         previousPresentedView = .paymentComponent
         let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID))

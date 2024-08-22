@@ -152,10 +152,10 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
                 if let error {
                     self?.errors.append(error.localizedDescription)
                     self?.showErrorsIfAny()
-                } else if let viewController, let paymentViewBottomSheet = self?.paymentComponentsController.paymentInfoBottomSheet() {
-                    paymentViewBottomSheet.modalTransitionStyle = .coverVertical
-                    paymentViewBottomSheet.modalPresentationStyle = .overCurrentContext
-                    self?.dismissAndPresent(viewController: paymentViewBottomSheet, animated: true)
+                } else if let viewController {
+                    viewController.modalTransitionStyle = .coverVertical
+                    viewController.modalPresentationStyle = .overCurrentContext
+                    self?.dismissAndPresent(viewController: viewController, animated: true)
                 }
             }
         } else {
