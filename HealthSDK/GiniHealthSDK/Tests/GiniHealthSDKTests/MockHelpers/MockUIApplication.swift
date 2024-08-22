@@ -21,6 +21,7 @@ struct MockUIApplication: URLOpenerProtocol {
         }
     }
  
+    #if compiler(>=6.0)
     func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
         if canOpen {
             DispatchQueue.main.async {
@@ -28,4 +29,11 @@ struct MockUIApplication: URLOpenerProtocol {
             }
         }
     }
+    #else
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?) {
+        if canOpen {
+            completion?(true)
+        }
+    }
+    #endif
 }
