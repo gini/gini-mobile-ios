@@ -544,9 +544,9 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                                                                     GiniError>) -> Void) {
         let dispatchGroup = DispatchGroup()
         var originalSizes: [DocumentPageSize] = []
+        var pageImages: [UIImage] = []
         var layoutError: GiniError?
         var documentPagesError: GiniError?
-        var viewModel: DocumentPagesViewModel?
 
         // Enter the dispatch group for the document layout task
         dispatchGroup.enter()
@@ -573,17 +573,14 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             switch result {
             case .success(let pages):
                self.loadAllPages(from: skontoViewModel,
-                                  pages: pages) { images, error in
-                if let error = error {
+                                 pages: pages) { images, error in
+                   if let error = error {
                        documentPagesError = error
-                } else {
-                       let extractionBoundingBoxes = skontoViewModel.extractionBoundingBoxes
-                       viewModel = DocumentPagesViewModel(originalImages: images,
-                                                          originalSizes: originalSizes,
-                                                          extractionBoundingBoxes: extractionBoundingBoxes)
-                }
+                   } else {
+                       pageImages = images
+                   }
                    dispatchGroup.leave() // Leave the group after processing pages
-                }
+               }
 
             case .failure(let error):
                 documentPagesError = error
@@ -597,11 +594,13 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                 completion(.failure(layoutError))
             } else if let documentPagesError = documentPagesError {
                 completion(.failure(documentPagesError))
-            } else if let viewModel = viewModel {
+            } else {
+                let extractionBoundingBoxes = skontoViewModel.extractionBoundingBoxes
+                let viewModel = DocumentPagesViewModel(originalImages: pageImages,
+                                                       originalSizes: originalSizes,
+                                                       extractionBoundingBoxes: extractionBoundingBoxes)
                 skontoViewModel.setDocumentPagesViewModel(viewModel)
                 completion(.success(viewModel))
-            } else {
-                completion(.failure(GiniError.unknown())) // Handle unexpected cases
             }
         }
     }
