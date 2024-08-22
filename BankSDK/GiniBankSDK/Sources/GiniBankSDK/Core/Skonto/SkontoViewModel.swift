@@ -98,27 +98,30 @@ class SkontoViewModel {
         notifyStateChangeHandlers()
     }
 
-    func setSkontoPrice(price: String) {
+    func setSkontoAmountToPayPrice(_ price: String) {
         guard let price = convertPriceStringToPrice(price: price),
               price.value <= amountToPay.value else {
             notifyStateChangeHandlers()
             return
         }
         skontoAmountToPay = price
+        updateDocumentPagesModelData()
         recalculateSkontoPercentage()
         notifyStateChangeHandlers()
     }
 
-    func setDefaultPrice(price: String) {
+    func setAmountToPayPrice(_ price: String) {
         guard let price = convertPriceStringToPrice(price: price) else { return }
         amountToPay = price
         recalculateAmountToPayWithSkonto()
+        updateDocumentPagesModelData()
         notifyStateChangeHandlers()
     }
 
-    func set(date: Date) {
+    func setExpiryDate(_ date: Date) {
         dueDate = date
         recalculateRemainingDays()
+        updateDocumentPagesModelData()
         determineSkontoEdgeCase()
         notifyStateChangeHandlers()
     }
@@ -129,6 +132,12 @@ class SkontoViewModel {
 
     func setDocumentPagesViewModel(_ viewModel: DocumentPagesViewModel) {
         documentPagesViewModel = viewModel
+    }
+
+    private func updateDocumentPagesModelData() {
+        documentPagesViewModel?.updateExpiryDate(date: dueDate)
+        documentPagesViewModel?.updateAmountToPay(price: amountToPay)
+        documentPagesViewModel?.updateSkontoAmountToPay(price: skontoAmountToPay)
     }
 
     // MARK: - Actions
