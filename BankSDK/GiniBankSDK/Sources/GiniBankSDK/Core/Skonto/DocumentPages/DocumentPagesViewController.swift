@@ -29,6 +29,23 @@ final class DocumentPagesViewController: UIViewController {
         return stackView
     }()
 
+    private lazy var footerView: UIView = {
+        let footerView = UIView()
+        footerView.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+        footerView.translatesAutoresizingMaskIntoConstraints = false
+        return footerView
+    }()
+
+    private lazy var footerStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.distribution = .equalSpacing
+        stackView.spacing = Constants.stackViewItemSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+
+    }()
     private lazy var loadingIndicatorContainer: UIView = {
         let loadingIndicatorContainer = UIView(frame: CGRect.zero)
         return loadingIndicatorContainer
@@ -66,6 +83,7 @@ final class DocumentPagesViewController: UIViewController {
     func setData(viewModel: DocumentPagesViewModel) {
         self.viewModel = viewModel
         showProcessedImages()
+        showSkontoDetailsInFooter()
     }
 
     // MARK: Toggle animation
@@ -88,9 +106,7 @@ final class DocumentPagesViewController: UIViewController {
         }
     }
 
-    /**
-     Set up the view elements on the screen
-     */
+    /// Set up the view elements on the screen
 
     private func setupViews() {
         view.backgroundColor = .GiniCapture.dark1
@@ -99,7 +115,7 @@ final class DocumentPagesViewController: UIViewController {
         setupStatusBarBackground()
 
         setupNavigationBar()
-
+        setupFooterView()
         setupScrollView()
         scrollView.addSubview(contentStackView)
         configureLoadingIndicator()
@@ -161,7 +177,6 @@ final class DocumentPagesViewController: UIViewController {
                                                          action: #selector(didRecognizeDoubleTap))
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
-
     }
 
     private func setupLayout() {
@@ -194,10 +209,37 @@ final class DocumentPagesViewController: UIViewController {
         stackViewTopConstraint?.isActive = true
     }
 
+    private func setupFooterView() {
+        view.addSubview(footerView)
+        view.bringSubviewToFront(footerView)
+
+        NSLayoutConstraint.activate([
+            footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+
+        footerView.addSubview(footerStackView)
+        // Get the bottom safe area height
+        let bottomSafeAreaHeight = view.safeAreaInsets.bottom
+        let stackViewBottomConstraint = bottomSafeAreaHeight + Constants.footerStackViewBottomPadding
+        NSLayoutConstraint.activate([
+            footerStackView.leadingAnchor.constraint(equalTo: footerView.leadingAnchor,
+                                               constant: Constants.footerStackViewDefaultPadding),
+            footerStackView.trailingAnchor.constraint(equalTo: footerView.trailingAnchor,
+                                                constant: -Constants.footerStackViewDefaultPadding),
+            footerStackView.topAnchor.constraint(equalTo: footerView.topAnchor,
+                                           constant: Constants.footerStackViewDefaultPadding),
+            footerStackView.bottomAnchor.constraint(equalTo: footerView.bottomAnchor,
+                                              constant: -stackViewBottomConstraint)
+        ])
+
+    }
+
     // MARK: - Handle Loading indicator
     private func configureLoadingIndicator() {
         loadingIndicatorView.color = GiniColor(light: .GiniCapture.light1,
-                                               dark: .GiniCapture.dark1).uiColor()
+                                               dark: .GiniCapture.light1).uiColor()
 
         addLoadingContainer()
         addLoadingView(intoContainer: loadingIndicatorContainer)
@@ -268,6 +310,29 @@ final class DocumentPagesViewController: UIViewController {
         adjustStackViewTopConstraint(for: images.count)
 
         adjustContentSize()
+    }
+
+    private func showSkontoDetailsInFooter() {
+        guard let viewModel, !viewModel.processedImages.isEmpty else { return }
+
+        let skontoExpiryDateLabel = UILabel()
+        skontoExpiryDateLabel.text = viewModel.expiryDateString
+        skontoExpiryDateLabel.textColor = .GiniBank.light1
+        skontoExpiryDateLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        footerStackView.addArrangedSubview(skontoExpiryDateLabel)
+
+        let skontoWithDiscountPriceLabel = UILabel()
+        skontoWithDiscountPriceLabel.text = viewModel.withDiscountPriceString
+        skontoWithDiscountPriceLabel.textColor = .GiniBank.light1
+        skontoWithDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        footerStackView.addArrangedSubview(skontoWithDiscountPriceLabel)
+
+        let skontoWithoutDiscountPriceLabel = UILabel()
+        skontoWithoutDiscountPriceLabel.text = viewModel.withoutDiscountPriceString
+        skontoWithoutDiscountPriceLabel.textColor = .GiniBank.light1
+        skontoWithoutDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        footerStackView.addArrangedSubview(skontoWithoutDiscountPriceLabel)
     }
 
     // MARK: - Utilities
@@ -362,5 +427,7 @@ private extension DocumentPagesViewController {
         static let minimumZoomScale: CGFloat = 1.0
         static let maximumZoomScale: CGFloat = 2.0
         static let defaultNavigationBarHeight: CGFloat = 44
+        static let footerStackViewBottomPadding: CGFloat = 25
+        static let footerStackViewDefaultPadding: CGFloat = 16
     }
 }

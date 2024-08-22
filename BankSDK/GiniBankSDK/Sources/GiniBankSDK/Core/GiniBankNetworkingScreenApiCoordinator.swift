@@ -574,16 +574,19 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             case .success(let pages):
                self.loadAllPages(from: skontoViewModel,
                                   pages: pages) { images, error in
-                if let error = error {
+                   if let error = error {
                        documentPagesError = error
-                } else {
+                   } else {
                        let extractionBoundingBoxes = skontoViewModel.extractionBoundingBoxes
                        viewModel = DocumentPagesViewModel(originalImages: images,
                                                           originalSizes: originalSizes,
-                                                          extractionBoundingBoxes: extractionBoundingBoxes)
-                }
+                                                          extractionBoundingBoxes: extractionBoundingBoxes,
+                                                          amountToPay: skontoViewModel.finalAmountToPay,
+                                                          skontoAmountToPay: skontoViewModel.skontoAmountToPay,
+                                                          expiryDate: skontoViewModel.dueDate)
+                   }
                    dispatchGroup.leave() // Leave the group after processing pages
-                }
+               }
 
             case .failure(let error):
                 documentPagesError = error
