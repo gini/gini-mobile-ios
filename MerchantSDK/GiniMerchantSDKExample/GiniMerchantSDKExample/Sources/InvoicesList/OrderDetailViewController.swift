@@ -34,6 +34,12 @@ final class OrderDetailViewController: UIViewController {
         }
     }
 
+    private var detaiViewConstraints: [NSLayoutConstraint] { [
+        detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.paddingTopBottom),
+        detailView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
+        detailView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.paddingLeadingTrailing)]
+    }
+
     init(_ order: Order, paymentComponentsController: PaymentComponentsController) {
         self.order = order
         self.paymentComponentsController = paymentComponentsController
@@ -72,7 +78,6 @@ final class OrderDetailViewController: UIViewController {
         title = NSLocalizedString("example.order.navigation.orderdetails", comment: "")
 
         view.backgroundColor = .secondarySystemBackground
-
         view.addSubview(detailView)
         view.addSubview(payButton)
 
@@ -93,19 +98,24 @@ final class OrderDetailViewController: UIViewController {
         saveTextFieldData()
     }
 
+    public func setAmount(_ amount: String) {
+        order.amountToPay = amount
+
+        detailView.removeFromSuperview()
+        detailView = OrderDetailView(rowItems)
+        view.addSubview(detailView)
+
+        NSLayoutConstraint.activate(detaiViewConstraints)
+    }
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.paddingTopBottom),
-            detailView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
-            detailView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.paddingLeadingTrailing),
-
             payButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.paddingTopBottom),
             payButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             payButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
             payButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
-        ])
+        ] + detaiViewConstraints)
     }
-
 
     @objc private func payButtonTapped() {
         print("✅ Tapped on Pay")
