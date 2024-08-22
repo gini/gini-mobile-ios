@@ -17,7 +17,21 @@ protocol DigitalInvoiceViewModelDelagate: AnyObject {
 
 final class DigitalInvoiceViewModel {
     weak var delegate: DigitalInvoiceViewModelDelagate?
-    var invoice: DigitalInvoice?
+    var invoice: DigitalInvoice? {
+        didSet {
+            skontoViewModel?.setDefaultPrice(price: invoice?.total?.stringWithoutSymbol ?? "")
+        }
+    }
+    var skontoViewModel: SkontoViewModel?
+
+    var totalPrice: Price? {
+        let skontoIsActive = skontoViewModel?.isSkontoApplied ?? false
+        return skontoIsActive ? skontoViewModel?.skontoAmountToPay : invoice?.total
+    }
+    
+    var hasSkonto: Bool {
+        return skontoViewModel != nil
+    }
 
     init(invoice: DigitalInvoice?) {
         self.invoice = invoice
