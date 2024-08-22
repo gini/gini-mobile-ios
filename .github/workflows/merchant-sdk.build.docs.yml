@@ -4,14 +4,12 @@ on:
   push:
     paths:
       - 'MerchantSDK/**'
-  workflow_dispatch:
     tags-ignore:
       - '**'
   pull_request:
     paths:
       - 'MerchantSDK/**'
   workflow_dispatch:
-  
 jobs:
   documentation:
     runs-on: macos-latest    
@@ -21,7 +19,7 @@ jobs:
         xcode-version: '14.3.1'
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: setup ruby
       uses: ruby/setup-ruby@v1
