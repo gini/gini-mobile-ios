@@ -89,6 +89,7 @@ public class PaymentReviewModel: NSObject {
     
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestID: String) -> ())? = nil) {
         isLoading = true
+        self.paymentInfo = paymentInfo
         merchantSDK.createPaymentRequest(paymentInfo: paymentInfo) {[weak self] result in
             self?.isLoading = false
             switch result {
