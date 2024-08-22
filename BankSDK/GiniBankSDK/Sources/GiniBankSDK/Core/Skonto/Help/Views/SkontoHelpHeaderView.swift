@@ -22,7 +22,7 @@ class SkontoHelpHeaderView: UIView {
     private lazy var subtitleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.header.subtitle",
-                                                                   comment: "Many companies offer cash discounts...")
+                                                                   comment: "Many companies offer Skonto discounts...")
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .giniColorScheme().text.secondary.uiColor()
         titleLabel.font = configuration.textStyleFonts[.body]

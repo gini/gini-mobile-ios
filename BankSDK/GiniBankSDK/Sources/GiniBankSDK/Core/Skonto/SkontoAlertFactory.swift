@@ -17,14 +17,18 @@ class SkontoAlertFactory {
         switch viewModel.edgeCase {
         case .expired:
             let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.expired.alert.title",
-                                                                         comment: "You could have paid this...")
-            return String.localizedStringWithFormat(text, viewModel.formattedPercentageDiscounted)
+                                                                comment: "This invoice contained...")
+            if Locale.current.languageCode == "en" {
+                return text
+            } else {
+                return String.localizedStringWithFormat(text, viewModel.formattedPercentageDiscounted)
+            }
         case .paymentToday:
             return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.today.alert.title",
-                                                            comment: "A discount is indicated on this invoice...")
+                                                            comment: "A Skonto discount can be applied...")
         case .payByCash:
             return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.alert.title",
-                                                            comment: "A discount is indicated on this invoice...")
+                                                            comment: "A Skonto discount can be applied...")
         default:
             return nil
         }
@@ -39,7 +43,7 @@ class SkontoAlertFactory {
                                       message: "",
                                       preferredStyle: .alert)
         let okAction = UIAlertAction(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.alert.ok",
-                                                                                     comment: "OK"),
+                                                                                     comment: "Understood"),
                                      style: .default)
         alert.addAction(okAction)
         return alert

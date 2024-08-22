@@ -28,7 +28,7 @@ class SkontoDocumentPreviewView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.invoice.title",
-                                                             comment: "Your invoice")
+                                                             comment: "Invoice")
         label.text = title
         label.accessibilityValue = title
         label.textColor = .giniColorScheme().text.primary.uiColor()

@@ -92,23 +92,23 @@ class SkontoInfoBannerView: UIView {
         switch edgeCase {
         case .expired:
             let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.expired.message",
-                                                                         comment: "The %@ discount has expired.")
+                                                                         comment: "The %@ Skonto discount has expired")
             text = String.localizedStringWithFormat(localizedText,
                                                     viewModel.formattedPercentageDiscounted)
         case .paymentToday:
             let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.today.message",
-                                                                         comment: "Pay today: %@ discount.")
+                                                                         comment: "Pay today: receive %@ Skonto discount")
             text = String.localizedStringWithFormat(localizedText,
                                                     viewModel.formattedPercentageDiscounted)
         case .payByCash:
             let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.message",
-                                                                         comment: "A %@ discount is available...")
+                                                                         comment: "Pay in cash within...")
             text = String.localizedStringWithFormat(localizedText,
-                                                    viewModel.formattedPercentageDiscounted,
-                                                    viewModel.remainingDaysString)
+                                                    viewModel.remainingDaysString,
+                                                    viewModel.formattedPercentageDiscounted)
         default:
             let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.default.message",
-                                                                         comment: "Pay in %@: %@ Skonto discount.")
+                                                                         comment: "Pay in %@: receive %@ Skonto discount")
             text = String.localizedStringWithFormat(localizedText,
                                                     viewModel.remainingDaysString,
                                                     viewModel.formattedPercentageDiscounted)
