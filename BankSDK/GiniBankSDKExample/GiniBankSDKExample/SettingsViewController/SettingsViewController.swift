@@ -14,6 +14,7 @@ import AVFoundation
 protocol SettingsViewControllerDelegate: AnyObject {
 	func didTapCloseButton()
     func didTapSaveCredentialsButton(clientId: String, clientSecret: String)
+    func didSelectAPIEnvironment(apiEnvironment: APIEnvironment)
 }
 
 final class SettingsViewController: UIViewController {
@@ -23,6 +24,7 @@ final class SettingsViewController: UIViewController {
 	@IBOutlet private weak var tableView: UITableView!
 
     private let client: Client?
+    private var apiEnvironment: APIEnvironment
 
 	var contentData = [CellType]()
 	let giniConfiguration: GiniBankConfiguration
@@ -32,13 +34,15 @@ final class SettingsViewController: UIViewController {
 	weak var delegate: SettingsViewControllerDelegate?
 	
 	// MARK: - Initializers
-	
-    init(client: Client? = nil,
+     
+    init(apiEnvironment: APIEnvironment,
+         client: Client? = nil,
          giniConfiguration: GiniBankConfiguration,
-		 settingsButtonStates: SettingsButtonStates,
-		 documentValidationsState: DocumentValidationsState) {
+         settingsButtonStates: SettingsButtonStates,
+         documentValidationsState: DocumentValidationsState) {
+        self.apiEnvironment = apiEnvironment
         self.client = client
-		self.giniConfiguration = giniConfiguration
+        self.giniConfiguration = giniConfiguration
 		self.settingsButtonStates = settingsButtonStates
 		self.documentValidationsState = documentValidationsState
 		super.init(nibName: nil, bundle: nil)
@@ -92,6 +96,14 @@ final class SettingsViewController: UIViewController {
 		var contentData = [CellType]()
 		
 		contentData.append(.info(message: "Please relaunch the app to use the default GiniConfiguration values."))
+        var selectedAPISegmentIndex = 0
+        switch apiEnvironment {
+        case .production:
+            selectedAPISegmentIndex = 0
+        case .stage:
+            selectedAPISegmentIndex = 1
+        }
+        contentData.append(.segmentedOption(data: APIEnvironmentSegmentedOptionModel(selectedIndex: selectedAPISegmentIndex)))
         contentData.append(.credentials(data: .init(clientId: client?.id ?? "", secretId: client?.secret ?? "")))
 		contentData.append(.switchOption(data: .init(type: .openWith,
 													 isSwitchOn: giniConfiguration.openWithEnabled)))
@@ -118,7 +130,7 @@ final class SettingsViewController: UIViewController {
 		case .pdf_and_images:
 			selectedFileImportTypeSegmentIndex = 2
 		}
-        contentData.append(.segmentedOption(data: .init(selectedIndex: selectedFileImportTypeSegmentIndex)))
+        contentData.append(.segmentedOption(data: FileImportSegmentedOptionModel(selectedIndex: selectedFileImportTypeSegmentIndex)))
 		
 		contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isSwitchOn: giniConfiguration.bottomNavigationBarEnabled)))
@@ -502,7 +514,7 @@ final class SettingsViewController: UIViewController {
 		return cell
 	}
 
-	private func cell(for optionModel: SegmentedOptionModel, at row: Int) -> UITableViewCell {
+	private func cell(for optionModel: SegmentedOptionModelProtocol, at row: Int) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell() as SegmentedOptionTableViewCell
 		cell.tag = row
 		
@@ -580,7 +592,8 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
 		guard case .segmentedOption(var data) = option else { return }
         data.selectedIndex = cell.selectedSegmentIndex
         
-        switch data.selectedIndex {
+        if data is FileImportSegmentedOptionModel {
+            switch data.selectedIndex {
             case 0:
                 giniConfiguration.fileImportSupportedTypes = .none
             case 1:
@@ -588,6 +601,16 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
             case 2:
                 giniConfiguration.fileImportSupportedTypes = .pdf_and_images
             default: return
+            }
+        } else if data is APIEnvironmentSegmentedOptionModel {
+            switch data.selectedIndex {
+            case 0:
+                delegate?.didSelectAPIEnvironment(apiEnvironment: .production)
+            case 1:
+                delegate?.didSelectAPIEnvironment(apiEnvironment: .stage)
+            default:
+                return
+            }
         }
 	}
 }

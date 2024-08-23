@@ -20,7 +20,8 @@ final class ScreenAPICoordinatorTests: XCTestCase {
     var screenAPICoordinator: ScreenAPICoordinator?
     
     func testInitialization() {
-        screenAPICoordinator = ScreenAPICoordinator(configuration: GiniBankConfiguration(),
+        screenAPICoordinator = ScreenAPICoordinator(apiEnvironment: .stage,
+                                                    configuration: GiniBankConfiguration(),
                                                     importedDocuments: nil,
                                                     client: client,
                                                     documentMetadata: nil)

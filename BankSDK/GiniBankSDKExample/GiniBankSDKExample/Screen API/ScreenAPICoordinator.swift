@@ -58,11 +58,15 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 											   "iban" : "iban",
 											   "bic" : "bic",
 											   "amountToPay" : "amount"]
-    
-    init(configuration: GiniBankConfiguration,
+
+    private let apiEnvironment: APIEnvironment
+
+    init(apiEnvironment: APIEnvironment,
+         configuration: GiniBankConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
          client: Client,
          documentMetadata: Document.Metadata?) {
+        self.apiEnvironment = apiEnvironment
         self.configuration = configuration
         self.visionDocuments = documents
         self.client = client
@@ -78,8 +82,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                                  configuration: configuration,
                                                  resultsDelegate: self,
                                                  documentMetadata: documentMetadata,
-                                                 api: .default,
-                                                 userApi: .default,
+                                                 api: apiEnvironment.api,
+                                                 userApi: apiEnvironment.userApi,
                                                  trackingDelegate: trackingDelegate)
 // MARK: - Screen API with custom networking
 //        let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
