@@ -25,6 +25,7 @@ final class DigitalInvoiceViewController: UIViewController {
                            forCellReuseIdentifier: DigitalLineItemTableViewCell.reuseIdentifier)
         tableView.register(DigitalInvoiceAddOnListCell.self,
                            forCellReuseIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier)
+        tableView.register(DigitalInvoiceSkontoTableViewCell.self, forCellReuseIdentifier: "DigitalInvoiceSkontoTableViewCell")
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
@@ -72,8 +73,8 @@ final class DigitalInvoiceViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        label.text = viewModel.invoice?.total?.string
-        label.accessibilityValue = viewModel.invoice?.total?.string
+        label.text = viewModel.totalPrice?.string
+        label.accessibilityValue = viewModel.totalPrice?.string
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
@@ -238,11 +239,11 @@ final class DigitalInvoiceViewController: UIViewController {
         tableView.reloadData()
 
         if configuration.bottomNavigationBarEnabled {
-            navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencySymbol: viewModel.invoice?.total?.string)
+            navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencySymbol: viewModel.totalPrice?.string)
             navigationBarBottomAdapter?.updateProceedButtonState(enabled: viewModel.isPayButtonEnabled())
         } else {
-            totalValueLabel.text = viewModel.invoice?.total?.string
-            totalValueLabel.accessibilityValue = viewModel.invoice?.total?.string
+            totalValueLabel.text = viewModel.totalPrice?.string
+            totalValueLabel.accessibilityValue = viewModel.totalPrice?.string
 
             if viewModel.isPayButtonEnabled() {
                 payButton.isEnabled = true

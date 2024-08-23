@@ -343,6 +343,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                                     digitalInvoice: digitalInvoice,
                                                     analysisDelegate: analysisDelegate)
         coordinator.delegate = self
+        coordinator.skontoDelegate = self
         childCoordinators.append(coordinator)
         coordinator.start()
     }
@@ -506,7 +507,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         _ = start(withDocuments: nil, animated: true)
     }
 
-    func didTapDocumentPreview(_ coordinator: SkontoCoordinator, _ skontoViewModel: SkontoViewModel) {
+    func didTapDocumentPreview(_ coordinator: Coordinator, _ skontoViewModel: SkontoViewModel) {
         let viewController = DocumentPagesViewController()
         viewController.modalPresentationStyle = .overCurrentContext
         screenAPINavigationController.present(viewController, animated: true)

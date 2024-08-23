@@ -12,7 +12,7 @@ protocol SkontoCoordinatorDelegate: AnyObject {
     func didCancelAnalysis(_ coordinator: SkontoCoordinator)
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
                            _ editedExtractionResult: ExtractionResult?)
-    func didTapDocumentPreview(_ coordinator: SkontoCoordinator,
+    func didTapDocumentPreview(_ coordinator: Coordinator,
                                _ viewModel: SkontoViewModel)
 }
 
