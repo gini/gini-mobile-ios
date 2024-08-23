@@ -15,6 +15,23 @@ final class DocumentPagesViewController: UIViewController {
         return view
     }()
 
+    private lazy var navigationBar: UINavigationBar = {
+        let navBar = UINavigationBar()
+        navBar.translatesAutoresizingMaskIntoConstraints = false
+        navBar.setBackgroundImage(UIImage(), for: .default)
+        navBar.shadowImage = UIImage()
+        navBar.isTranslucent = true
+        navBar.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+        navBar.titleTextAttributes = [.font: configuration.textStyleFonts[.bodyBold] as Any,
+                                             .foregroundColor: UIColor.white]
+        return navBar
+    }()
+
+    private lazy var cancelButton: GiniBarButton = {
+        let button = GiniBarButton(ofType: .cancel)
+        button.addAction(self, #selector(didTapClose))
+        return button
+    }()
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -133,26 +150,14 @@ final class DocumentPagesViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        // Create and configure the navigation bar
-        let navigationBar = UINavigationBar()
-        navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationBar.shadowImage = UIImage()
-        navigationBar.isTranslucent = true
-        navigationBar.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         view.addSubview(navigationBar)
 
         // Create a navigation item with a title and a cancel button
         let screenTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.document.pages.screen.title",
                                                                    comment: "Skonto discount details")
-        let navigationItem = UINavigationItem(title: screenTitle)
-        // Add the Cancel button
-        let cancelButton = GiniBarButton(ofType: .cancel)
-        cancelButton.addAction(self, #selector(didTapClose))
-        navigationItem.leftBarButtonItem = cancelButton.barButton
 
-        // Apply title text attributes
-        navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        let navigationItem = UINavigationItem(title: screenTitle)
+        navigationItem.leftBarButtonItem = cancelButton.barButton
 
         // Assign the navigation item to the navigation bar
         navigationBar.setItems([navigationItem], animated: false)
@@ -318,6 +323,7 @@ final class DocumentPagesViewController: UIViewController {
 
         let skontoExpiryDateLabel = UILabel()
         skontoExpiryDateLabel.text = viewModel.expiryDateString
+        skontoExpiryDateLabel.font = configuration.textStyleFonts[.footnote]
         skontoExpiryDateLabel.textColor = .GiniBank.light1
         skontoExpiryDateLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -325,12 +331,14 @@ final class DocumentPagesViewController: UIViewController {
 
         let skontoWithDiscountPriceLabel = UILabel()
         skontoWithDiscountPriceLabel.text = viewModel.withDiscountPriceString
+        skontoWithDiscountPriceLabel.font = configuration.textStyleFonts[.footnote]
         skontoWithDiscountPriceLabel.textColor = .GiniBank.light1
         skontoWithDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
         footerStackView.addArrangedSubview(skontoWithDiscountPriceLabel)
 
         let skontoWithoutDiscountPriceLabel = UILabel()
         skontoWithoutDiscountPriceLabel.text = viewModel.withoutDiscountPriceString
+        skontoWithoutDiscountPriceLabel.font = configuration.textStyleFonts[.footnote]
         skontoWithoutDiscountPriceLabel.textColor = .GiniBank.light1
         skontoWithoutDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
         footerStackView.addArrangedSubview(skontoWithoutDiscountPriceLabel)
