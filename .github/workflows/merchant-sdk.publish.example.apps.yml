@@ -104,7 +104,7 @@ jobs:
             CODE_SIGN_STYLE=Manual
 
       - name: Check file existence
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: "*.ipa"
 
