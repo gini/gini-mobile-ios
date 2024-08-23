@@ -22,6 +22,9 @@ final class DocumentPagesViewModel {
     private let originalImages: [UIImage]
     private let originalSizes: [DocumentPageSize]
     private var extractionBoundingBoxes: [ExtractionBoundingBox]
+    private var amountToPay: Price
+    private var skontoAmountToPay: Price
+    private var expiryDate: Date
 
     // Information to be displayed in the screen after highlighting Skonto details
     private (set) var processedImages = [UIImage]()
@@ -31,10 +34,28 @@ final class DocumentPagesViewModel {
     // Initializer for the class
     init(originalImages: [UIImage],
          originalSizes: [DocumentPageSize],
-         extractionBoundingBoxes: [ExtractionBoundingBox]) {
+         extractionBoundingBoxes: [ExtractionBoundingBox],
+         amountToPay: Price,
+         skontoAmountToPay: Price,
+         expiryDate: Date) {
         self.originalImages = originalImages
         self.originalSizes = originalSizes
         self.extractionBoundingBoxes = extractionBoundingBoxes
+        self.amountToPay = amountToPay
+        self.skontoAmountToPay = skontoAmountToPay
+        self.expiryDate = expiryDate
+    }
+
+    func updateExpiryDate(date: Date) {
+        expiryDate = date
+    }
+
+    func updateAmountToPay(price: Price) {
+        amountToPay = price
+    }
+
+    func updateSkontoAmountToPay(price: Price) {
+        skontoAmountToPay = price
     }
 
     /// Highlights Skonto-related details on an image by drawing a rectangle
@@ -146,5 +167,29 @@ final class DocumentPagesViewModel {
         }
         self.processedImages = processedImages
         return processedImages
+    }
+
+    var withoutDiscountPriceString: String {
+        let localizableText = "ginibank.skonto.withoutdiscount.price.title"
+        let withoutDiscountPriceLabel = NSLocalizedStringPreferredGiniBankFormat(localizableText,
+                                                            comment: "Without discount")
+        return String.concatenateWithSeparator(withoutDiscountPriceLabel,
+                                               amountToPay.localizedStringWithCurrencyCode ?? "")
+    }
+
+    var withDiscountPriceString: String {
+        let localizableText = "ginibank.skonto.withdiscount.price.title"
+        let withDiscountPriceLabel = NSLocalizedStringPreferredGiniBankFormat(localizableText,
+                                                            comment: "With discount")
+        return String.concatenateWithSeparator(withDiscountPriceLabel,
+                                               skontoAmountToPay.localizedStringWithCurrencyCode ?? "")
+    }
+
+    var expiryDateString: String {
+        let localizableText = "ginibank.skonto.withdiscount.expirydate.title"
+        let expiryDateLabel = NSLocalizedStringPreferredGiniBankFormat(localizableText,
+                                                            comment: "Expiry date")
+        return String.concatenateWithSeparator(expiryDateLabel,
+                                               expiryDate.currentShortString)
     }
 }

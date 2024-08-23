@@ -104,13 +104,13 @@ class SkontoInfoBannerView: UIView {
             let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.message",
                                                                          comment: "Pay in cash within...")
             text = String.localizedStringWithFormat(localizedText,
-                                                    viewModel.localizedRemainingDays,
+                                                    viewModel.remainingDaysString,
                                                     viewModel.formattedPercentageDiscounted)
         default:
             let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.default.message",
                                                                          comment: "Pay in %@: receive %@ Skonto discount")
             text = String.localizedStringWithFormat(localizedText,
-                                                    viewModel.localizedRemainingDays,
+                                                    viewModel.remainingDaysString,
                                                     viewModel.formattedPercentageDiscounted)
         }
 

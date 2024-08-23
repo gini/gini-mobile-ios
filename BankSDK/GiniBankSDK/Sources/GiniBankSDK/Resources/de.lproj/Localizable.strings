@@ -124,3 +124,6 @@
 "ginibank.skonto.help.content.item4" = "Geld sparen durch schnelles Bezahlen";
 "ginibank.skonto.help.footer.title" = "Machen Sie einfach ein Foto der Rechnung und die App erkennt automatisch die Rabatte. Überprüfen Sie die Details, bestätigen Sie und sparen Sie mit den Rabatten!";
 "ginibank.skonto.help.back" = "Skonto";
+
+"ginibank.skonto.document.pages.screen.title" = "Skonto-Details";
+
