@@ -9,7 +9,8 @@ on:
         required: true
       RELEASE_GITHUB_PASSWORD:
         required: true
-  
+  workflow_dispatch:
+
 jobs:
   release-documentation:
     runs-on: macos-latest

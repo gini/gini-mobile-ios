@@ -4,7 +4,8 @@ on:
     tags:
       - 'GiniCaptureSDK;[0-9]+.[0-9]+.[0-9]+'
       - 'GiniCaptureSDK;[0-9]+.[0-9]+.[0-9]+-beta[0-9][0-9]'
-  
+  workflow_dispatch:
+
 jobs:
   check:
     uses: gini/gini-mobile-ios/.github/workflows/capture-sdk.check.yml@main
