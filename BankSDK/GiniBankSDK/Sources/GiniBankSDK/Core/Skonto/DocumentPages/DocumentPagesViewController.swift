@@ -23,7 +23,7 @@ final class DocumentPagesViewController: UIViewController {
         navBar.isTranslucent = true
         navBar.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
         navBar.titleTextAttributes = [.font: configuration.textStyleFonts[.bodyBold] as Any,
-                                             .foregroundColor: UIColor.white]
+                                      .foregroundColor: UIColor.GiniBank.light1]
         return navBar
     }()
 
