@@ -55,7 +55,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
 
     /// Payment Component View Configuration
     public var paymentComponentConfiguration: PaymentComponentConfiguration?
-    public var paymentReviewViewController: PaymentReviewViewController?
 
     /// Previous presented view
     private var previousPresentedView: PaymentComponentScreenType?

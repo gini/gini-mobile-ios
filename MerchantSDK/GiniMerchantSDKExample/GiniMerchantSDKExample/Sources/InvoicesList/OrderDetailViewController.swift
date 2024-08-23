@@ -7,8 +7,9 @@
 
 import UIKit
 import GiniMerchantSDK
+import GiniUtilites
 
-fileprivate enum Fields: String, CaseIterable {
+enum Fields: String, CaseIterable {
     case recipient = "example.order.detail.Recipient"
     case iban = "example.order.detail.IBAN"
     case amountToPay = "example.order.detail.Amount"
@@ -207,7 +208,13 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
     private func obtainPaymentInfo() -> PaymentInfo {
         saveTextFieldData()
 
-        return PaymentInfo(recipient: order.recipient, iban: order.iban, bic: "", amount: order.amountToPay, purpose: order.purpose, paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "", paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
+        return PaymentInfo(recipient: order.recipient,
+                           iban: order.iban,
+                           bic: "",
+                           amount: detailView.amountToPay.extractionString,
+                           purpose: order.purpose,
+                           paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
+                           paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
 
     private func showErrorsIfAny() {
