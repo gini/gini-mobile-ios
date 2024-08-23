@@ -38,7 +38,7 @@ final class DigitalInvoiceViewModel {
     }
 
     func isPayButtonEnabled() -> Bool {
-        if let total = invoice?.total?.value {
+        if let total = totalPrice?.value {
             return total > 0
         }
 
@@ -54,6 +54,9 @@ final class DigitalInvoiceViewModel {
     }
 
     func didTapPay() {
+        if hasSkonto {
+            self.invoice?.totalPriceForExtractions = totalPrice
+        }
         delegate?.didTapPay(on: self)
     }
 
