@@ -5,7 +5,15 @@
 //  Created by Valentina Iancu on 16.06.23.
 //
 
-struct SegmentedOptionModel {
+import GiniBankAPILibrary
+
+protocol SegmentedOptionModelProtocol {
+    var selectedIndex: Int { get set }
+    var items: [String] { get }
+    var title: String { get }
+}
+
+struct FileImportSegmentedOptionModel: SegmentedOptionModelProtocol {
 	var selectedIndex: Int = 0
 	
     enum ImportFileType: String {
@@ -20,5 +28,17 @@ struct SegmentedOptionModel {
     
     var title: String {
         return "File import"
+    }
+}
+
+struct APIEnvironmentSegmentedOptionModel: SegmentedOptionModelProtocol {
+    var selectedIndex: Int = 0
+
+    var items: [String] {
+        return [APIEnvironment.production.rawValue, APIEnvironment.stage.rawValue]
+    }
+
+    var title: String {
+        return "API Environment"
     }
 }
