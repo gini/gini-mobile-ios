@@ -9,15 +9,27 @@ import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
 
+private enum DisplayMode: Int {
+    case bottomSheet
+    case documentCollection
+}
+
 public final class PaymentReviewViewController: BottomSheetController, UIGestureRecognizerDelegate {
+    private lazy var mainView = buildMainView()
+    private lazy var closeButton = buildCloseButton()
     private lazy var infoBar = buildInfoBar()
     private lazy var infoBarLabel = buildInfoBarLabel()
+    private lazy var containerCollectionView = buildContainerCollectionView()
     private var isInfoBarHidden = true
     lazy var paymentInfoContainerView = buildPaymentInfoContainerView()
+    lazy var collectionView = buildCollectionView()
+    lazy var pageControl = buildPageControl()
 
     private var infoBarBottomConstraint: NSLayoutConstraint?
+    private let screenBackgroundColor = GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor()
     private var showInfoBarOnce = true
     private var keyboardWillShowCalled = false
+    private var displayMode = DisplayMode.bottomSheet
 
     public var model: PaymentReviewModel?
     var selectedPaymentProvider: PaymentProvider!
@@ -36,6 +48,7 @@ public final class PaymentReviewViewController: BottomSheetController, UIGesture
         viewController.trackingDelegate = trackingDelegate
         viewController.selectedPaymentProvider = selectedPaymentProvider
         viewController.isInfoBarHidden = isInfoBarHidden
+        viewController.displayMode = document != nil ? .documentCollection : .bottomSheet
         return viewController
     }
 
@@ -73,6 +86,19 @@ public final class PaymentReviewViewController: BottomSheetController, UIGesture
 
     fileprivate func setupViewModel() {
 
+        model?.updateImagesLoadingStatus = { [weak self] () in
+            DispatchQueue.main.async { [weak self] in
+                let isLoading = self?.model?.isImagesLoading ?? false
+                if isLoading {
+                    self?.collectionView.showLoading(style: Constants.loadingIndicatorStyle,
+                                                     color: GiniMerchantColorPalette.accent1.preferredColor(),
+                                                     scale: Constants.loadingIndicatorScale)
+                } else {
+                    self?.collectionView.stopLoading()
+                }
+            }
+        }
+
         model?.updateLoadingStatus = { [weak self] () in
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isLoading ?? false
@@ -90,10 +116,25 @@ public final class PaymentReviewViewController: BottomSheetController, UIGesture
             self?.showError(message: NSLocalizedStringPreferredFormat("gini.merchant.errors.default", comment: "default error message"))
         }
 
+        model?.reloadCollectionViewClosure = { [weak self] () in
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+
+        model?.onPreviewImagesFetched = { [weak self] () in
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+
         model?.onCreatePaymentRequestErrorHandling = { [weak self] () in
             self?.showError(message: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.payment.request.creation", comment: "error for creating payment request"))
         }
 
+        if displayMode == .documentCollection {
+            model?.fetchImages()
+        }
         model?.viewModelDelegate = self
 
         paymentInfoContainerView.model = PaymentReviewContainerViewModel(extractions: model?.extractions, paymentInfo: model?.paymentInfo, selectedPaymentProvider: selectedPaymentProvider)
@@ -108,9 +149,18 @@ public final class PaymentReviewViewController: BottomSheetController, UIGesture
     }
 
     fileprivate func layoutUI() {
-        layoutPaymentInfoContainerView()
-        layoutInfoBar()
-        setContent(content: paymentInfoContainerView)
+        switch displayMode {
+        case .documentCollection:
+            layoutMainView()
+            layoutPaymentInfoContainerView()
+            layoutContainerCollectionView()
+            layoutInfoBar()
+            layoutCloseButton()
+        case .bottomSheet:
+            layoutPaymentInfoContainerView()
+            layoutInfoBar()
+            setContent(content: paymentInfoContainerView)
+        }
     }
 
     // MARK: - Pay Button Action
@@ -186,7 +236,8 @@ extension PaymentReviewViewController {
         /**
          Moves the root view up by the distance of keyboard height  taking in account safeAreaInsets.bottom
          */
-        view.bounds.origin.y = keyboardSize.height - view.safeAreaInsets.bottom
+        (displayMode == .bottomSheet ? view : mainView)
+            .bounds.origin.y = keyboardSize.height - view.safeAreaInsets.bottom
 
         keyboardWillShowCalled = true
     }
@@ -230,7 +281,29 @@ extension PaymentReviewViewController {
     fileprivate func dismissKeyboardOnTap() {
         let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
+        (displayMode == .bottomSheet ? view : mainView).addGestureRecognizer(tap)
+    }
+}
+
+
+//MARK: - MainView
+fileprivate extension PaymentReviewViewController {
+    func buildMainView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = GiniColor.standard7.uiColor()
+        return view
+    }
+
+    func layoutMainView() {
+        mainView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(mainView)
+        mainView.backgroundColor = screenBackgroundColor
+        NSLayoutConstraint.activate([
+            mainView.topAnchor.constraint(equalTo: view.topAnchor),
+            mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mainView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mainView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
     }
 }
 
@@ -248,12 +321,101 @@ fileprivate extension PaymentReviewViewController {
 
     func layoutPaymentInfoContainerView() {
         paymentInfoContainerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(paymentInfoContainerView)
+        
+        let container = displayMode == .bottomSheet ? (view ?? UIView()) : mainView
+        container.addSubview(paymentInfoContainerView)
 
         NSLayoutConstraint.activate([
+            paymentInfoContainerView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            paymentInfoContainerView.trailingAnchor.constraint(equalTo: container.trailingAnchor)
+        ])
+    }
+}
+
+//MARK: - Collection View Container
+fileprivate extension PaymentReviewViewController {
+    func buildContainerCollectionView() -> UIStackView {
+        let container = UIStackView(arrangedSubviews: [collectionView, pageControl])
+        container.spacing = 0
+        container.axis = .vertical
+        container.distribution = .fill
+        return container
+    }
+
+    func buildCollectionView() -> UICollectionView {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumInteritemSpacing = Constants.collectionViewPadding
+        flowLayout.minimumLineSpacing = Constants.collectionViewPadding
+
+        let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
+        collection.backgroundColor = screenBackgroundColor
+        collection.delegate = self
+        collection.dataSource = self
+        collection.register(cellType: PageCollectionViewCell.self)
+        return collection
+    }
+
+    func buildPageControl() -> UIPageControl {
+        let control = UIPageControl()
+        control.pageIndicatorTintColor = GiniColor.standard4.uiColor()
+        control.currentPageIndicatorTintColor = GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor()
+        control.backgroundColor = screenBackgroundColor
+        control.hidesForSinglePage = true
+        control.numberOfPages = model?.document?.pageCount ?? 1
+        return control
+    }
+
+    func layoutContainerCollectionView() {
+        containerCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        mainView.addSubview(containerCollectionView)
+        mainView.sendSubviewToBack(containerCollectionView)
+
+        NSLayoutConstraint.activate([
+            containerCollectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            containerCollectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
+            containerCollectionView.topAnchor.constraint(equalTo: mainView.topAnchor),
+            containerCollectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor),
+
+            pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight),
+            collectionView.widthAnchor.constraint(equalTo: containerCollectionView.widthAnchor),
+            collectionView.heightAnchor.constraint(equalTo: containerCollectionView.heightAnchor),
             paymentInfoContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             paymentInfoContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+    }
+}
+
+//MARK: - Close Button
+fileprivate extension PaymentReviewViewController {
+    func buildCloseButton() -> UIButton {
+        let button = UIButton()
+        button.isHidden = !giniMerchantConfiguration.showPaymentReviewCloseButton
+        button.setImage(GiniMerchantImage.paymentReviewClose.preferredUIImage(), for: .normal)
+        button.addTarget(self, action: #selector(closeButtonClicked), for: .touchUpInside)
+        return button
+    }
+
+    func layoutCloseButton() {
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(closeButton)
+
+        NSLayoutConstraint.activate([
+            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeButtonSide),
+            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeButtonSide),
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.closeButtonPadding),
+            closeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.closeButtonPadding)
+        ])
+
+    }
+
+    @objc func closeButtonClicked(_ sender: UIButton) {
+        if (keyboardWillShowCalled) {
+            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseKeyboardButtonClicked))
+            view.endEditing(true)
+        } else {
+            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseButtonClicked))
+            dismiss(animated: true, completion: nil)
+        }
     }
 }
 

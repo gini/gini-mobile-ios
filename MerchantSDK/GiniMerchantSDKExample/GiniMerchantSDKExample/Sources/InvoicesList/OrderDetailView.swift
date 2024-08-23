@@ -6,11 +6,13 @@
 
 
 import UIKit
+import GiniUtilites
 
-@MainActor
 class OrderDetailView: UIStackView {
 
-    static var textFields = [String: UITextField]()
+    public static var textFields = [String: UITextField]()
+    private static var amountTextField = UITextField()
+    public var amountToPay = Price(value: 0, currencyCode: "EUR")
 
     convenience init(_ items: [(String, String)]) {
         Self.textFields.removeAll()
@@ -21,6 +23,8 @@ class OrderDetailView: UIStackView {
         distribution = .fill
         alignment = .fill
         spacing = Constants.verticalSpacing
+
+        Self.amountTextField.delegate = self
     }
 
     private class func view(for text: (String, String)) -> UIView {
@@ -41,6 +45,11 @@ class OrderDetailView: UIStackView {
 
         let textField = UITextField()
         textFields[text.0] = textField
+
+        if text.0 == NSLocalizedString(Fields.amountToPay.rawValue, comment: "") {
+            amountTextField = textField
+        }
+
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.text = text.1
         textField.clearButtonMode = .whileEditing
@@ -70,6 +79,77 @@ class OrderDetailView: UIStackView {
         ])
         return containerView
     }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension OrderDetailView: UITextFieldDelegate {
+    /**
+     Dissmiss the keyboard when return key pressed
+     */
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    /**
+     Updates amoutToPay, formated string with a currency and removes "0.00" value
+     */
+    func updateAmoutToPayWithCurrencyFormat() {
+        let textField = Self.amountTextField
+        if textField.hasText, let text = textField.text {
+            if let priceValue = text.toDecimal() {
+                amountToPay.value = priceValue
+                textField.text = priceValue > 0 ? amountToPay.string : ""
+            }
+        }
+    }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // remove currency symbol and whitespaces for edit mode
+        let amountToPayText = amountToPay.stringWithoutSymbol
+        Self.amountTextField.text = amountToPayText
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        // add currency format when edit is finished
+        updateAmoutToPayWithCurrencyFormat()
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = textField.text,
+           let textRange = Range(range, in: text) {
+            let updatedText = text.replacingCharacters(in: textRange, with: string)
+
+            // Limit length to 7 digits
+            let onlyDigits = String(updatedText
+                                        .trimmingCharacters(in: .whitespaces)
+                                        .filter { c in c != "," && c != "."}
+                                        .prefix(7))
+
+            if let decimal = Decimal(string: onlyDigits) {
+                let decimalWithFraction = decimal / 100
+
+                if let newAmount = Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
+                    // Save the selected text range to restore the cursor position after replacing the text
+                    let selectedRange = textField.selectedTextRange
+
+                    textField.text = newAmount
+                    amountToPay.value = decimalWithFraction
+
+                    // Move the cursor position after the inserted character
+                    if let selectedRange = selectedRange {
+                        let countDelta = newAmount.count - text.count
+                        let offset = countDelta == 0 ? 1 : countDelta
+                        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
+                    }
+                }
+            }
+            return false
+           }
+        return true
+    }
+
+    func textFieldDidChangeSelection(_ textField: UITextField) {}
 }
 
 extension OrderDetailView {
