@@ -323,6 +323,7 @@ final class DocumentPagesViewController: UIViewController {
 
         let skontoExpiryDateLabel = UILabel()
         skontoExpiryDateLabel.text = viewModel.expiryDateString
+        skontoExpiryDateLabel.accessibilityValue = viewModel.expiryDateString
         skontoExpiryDateLabel.font = configuration.textStyleFonts[.footnote]
         skontoExpiryDateLabel.textColor = .GiniBank.light1
         skontoExpiryDateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -331,6 +332,7 @@ final class DocumentPagesViewController: UIViewController {
 
         let skontoWithDiscountPriceLabel = UILabel()
         skontoWithDiscountPriceLabel.text = viewModel.withDiscountPriceString
+        skontoWithDiscountPriceLabel.accessibilityValue = viewModel.withDiscountPriceString
         skontoWithDiscountPriceLabel.font = configuration.textStyleFonts[.footnote]
         skontoWithDiscountPriceLabel.textColor = .GiniBank.light1
         skontoWithDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -338,6 +340,7 @@ final class DocumentPagesViewController: UIViewController {
 
         let skontoWithoutDiscountPriceLabel = UILabel()
         skontoWithoutDiscountPriceLabel.text = viewModel.withoutDiscountPriceString
+        skontoWithoutDiscountPriceLabel.accessibilityValue = viewModel.withoutDiscountPriceString
         skontoWithoutDiscountPriceLabel.font = configuration.textStyleFonts[.footnote]
         skontoWithoutDiscountPriceLabel.textColor = .GiniBank.light1
         skontoWithoutDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
