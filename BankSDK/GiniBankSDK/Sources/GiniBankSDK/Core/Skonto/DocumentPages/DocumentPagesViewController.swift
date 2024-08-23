@@ -8,6 +8,30 @@ import GiniCaptureSDK
 import UIKit
 
 final class DocumentPagesViewController: UIViewController {
+    private lazy var statusBarBackgroundView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+        return view
+    }()
+
+    private lazy var navigationBar: UINavigationBar = {
+        let navBar = UINavigationBar()
+        navBar.translatesAutoresizingMaskIntoConstraints = false
+        navBar.setBackgroundImage(UIImage(), for: .default)
+        navBar.shadowImage = UIImage()
+        navBar.isTranslucent = true
+        navBar.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+        navBar.titleTextAttributes = [.font: configuration.textStyleFonts[.bodyBold] as Any,
+                                      .foregroundColor: UIColor.GiniBank.light1]
+        return navBar
+    }()
+
+    private lazy var cancelButton: GiniBarButton = {
+        let button = GiniBarButton(ofType: .cancel)
+        button.addAction(self, #selector(didTapClose))
+        return button
+    }()
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -15,23 +39,30 @@ final class DocumentPagesViewController: UIViewController {
         return scrollView
     }()
 
-    private lazy var stackView: UIStackView = {
+    private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = Constants.stackViewItemSpacing
         return stackView
     }()
 
-    private lazy var closeButton: UIButton = {
-        let closeButton = UIButton(type: .custom)
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.setImage(GiniImages.closeIcon.image, for: .normal)
-        closeButton.imageView?.contentMode = .scaleAspectFit
-        closeButton.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
-        closeButton.isExclusiveTouch = true
-        return closeButton
+    private lazy var footerView: UIView = {
+        let footerView = UIView()
+        footerView.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+        footerView.translatesAutoresizingMaskIntoConstraints = false
+        return footerView
     }()
 
+    private lazy var footerStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.distribution = .equalSpacing
+        stackView.spacing = Constants.stackViewItemSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+
+    }()
     private lazy var loadingIndicatorContainer: UIView = {
         let loadingIndicatorContainer = UIView(frame: CGRect.zero)
         return loadingIndicatorContainer
@@ -48,23 +79,28 @@ final class DocumentPagesViewController: UIViewController {
     private let configuration = GiniBankConfiguration.shared
 
     // Constraints
-    private var stackViewTopConstraint: NSLayoutConstraint?
+    private var contentStackViewTopConstraint: NSLayoutConstraint?
 
     // MARK: - Init
     init() {
         super.init(nibName: nil, bundle: nil)
-        setupViews()
-        setupLayout()
-        startLoadingIndicatorAnimation()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupViews()
+        setupLayout()
+        startLoadingIndicatorAnimation()
+    }
+
     func setData(viewModel: DocumentPagesViewModel) {
         self.viewModel = viewModel
         showProcessedImages()
+        showSkontoDetailsInFooter()
     }
 
     // MARK: Toggle animation
@@ -87,19 +123,52 @@ final class DocumentPagesViewController: UIViewController {
         }
     }
 
-    /**
-     Set up the view elements on the screen
-     */
+    /// Set up the view elements on the screen
 
     private func setupViews() {
-        view.backgroundColor = UIColor.GiniCapture.dark1
+        view.backgroundColor = .GiniCapture.dark1
         view.addSubview(scrollView)
-        view.addSubview(closeButton)
-        view.bringSubviewToFront(closeButton)
-        // Set up the scroll view
+
+        setupStatusBarBackground()
+
+        setupNavigationBar()
+        setupFooterView()
         setupScrollView()
-        scrollView.addSubview(stackView)
+        scrollView.addSubview(contentStackView)
         configureLoadingIndicator()
+    }
+
+    private func setupStatusBarBackground() {
+        view.addSubview(statusBarBackgroundView)
+
+        NSLayoutConstraint.activate([
+            statusBarBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            statusBarBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            statusBarBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            statusBarBackgroundView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+    }
+
+    private func setupNavigationBar() {
+        view.addSubview(navigationBar)
+
+        // Create a navigation item with a title and a cancel button
+        let screenTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.document.pages.screen.title",
+                                                                   comment: "Skonto discount details")
+
+        let navigationItem = UINavigationItem(title: screenTitle)
+        navigationItem.leftBarButtonItem = cancelButton.barButton
+
+        // Assign the navigation item to the navigation bar
+        navigationBar.setItems([navigationItem], animated: false)
+
+        // Set constraints for the navigation bar
+        NSLayoutConstraint.activate([
+            navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: Constants.defaultNavigationBarHeight)
+        ])
     }
 
     private func setupScrollView() {
@@ -113,14 +182,13 @@ final class DocumentPagesViewController: UIViewController {
                                                          action: #selector(didRecognizeDoubleTap))
         doubleTapRecognizer.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTapRecognizer)
-
     }
 
     private func setupLayout() {
         scrollView.frame = view.bounds
         scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -129,34 +197,55 @@ final class DocumentPagesViewController: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
             // Stack view
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                constant: Constants.containerHorizontalPadding),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
                                                 constant: -Constants.containerHorizontalPadding),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor,
+            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor,
                                               constant: -Constants.stackViewBottomPadding),
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
-                                             constant: -2 * Constants.containerHorizontalPadding),
+            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
+                                             constant: -2 * Constants.containerHorizontalPadding)
 
-            // Close button
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                             constant: Constants.buttonPadding),
-            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                 constant: Constants.buttonPadding),
-            closeButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize),
-            closeButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize)
         ])
 
         let stackViewTopConstraintConstant = Constants.stackViewTopConstraintToNavBar
-        stackViewTopConstraint = stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
-                                                                constant: stackViewTopConstraintConstant)
-        stackViewTopConstraint?.isActive = true
+        contentStackViewTopConstraint = contentStackView.topAnchor
+            .constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
+                        constant: stackViewTopConstraintConstant)
+        contentStackViewTopConstraint?.isActive = true
+    }
+
+    private func setupFooterView() {
+        view.addSubview(footerView)
+        view.bringSubviewToFront(footerView)
+
+        NSLayoutConstraint.activate([
+            footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+
+        footerView.addSubview(footerStackView)
+        // Get the bottom safe area height
+        let bottomSafeAreaHeight = view.safeAreaInsets.bottom
+        let stackViewBottomConstraint = bottomSafeAreaHeight + Constants.footerStackViewBottomPadding
+        NSLayoutConstraint.activate([
+            footerStackView.leadingAnchor.constraint(equalTo: footerView.leadingAnchor,
+                                               constant: Constants.footerStackViewDefaultPadding),
+            footerStackView.trailingAnchor.constraint(equalTo: footerView.trailingAnchor,
+                                                constant: -Constants.footerStackViewDefaultPadding),
+            footerStackView.topAnchor.constraint(equalTo: footerView.topAnchor,
+                                           constant: Constants.footerStackViewDefaultPadding),
+            footerStackView.bottomAnchor.constraint(equalTo: footerView.bottomAnchor,
+                                              constant: -stackViewBottomConstraint)
+        ])
+
     }
 
     // MARK: - Handle Loading indicator
     private func configureLoadingIndicator() {
         loadingIndicatorView.color = GiniColor(light: .GiniCapture.light1,
-                                               dark: .GiniCapture.dark1).uiColor()
+                                               dark: .GiniCapture.light1).uiColor()
 
         addLoadingContainer()
         addLoadingView(intoContainer: loadingIndicatorContainer)
@@ -214,19 +303,48 @@ final class DocumentPagesViewController: UIViewController {
                 imageView.topAnchor.constraint(equalTo: containerView.topAnchor),
                 imageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
             ])
-            stackView.addArrangedSubview(containerView)
+            contentStackView.addArrangedSubview(containerView)
 
             // Apply the dynamic height constraint just for iPhones
             if !UIDevice.current.isIpad {
                 let imageViewHeight = UIScreen.main.bounds.height * 0.65
                 imageView.heightAnchor.constraint(equalToConstant: imageViewHeight).isActive = true
             }
-            imageView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+            imageView.widthAnchor.constraint(equalTo: contentStackView.widthAnchor).isActive = true
         }
 
         adjustStackViewTopConstraint(for: images.count)
 
         adjustContentSize()
+    }
+
+    private func showSkontoDetailsInFooter() {
+        guard let viewModel, !viewModel.processedImages.isEmpty else { return }
+
+        let skontoExpiryDateLabel = UILabel()
+        skontoExpiryDateLabel.text = viewModel.expiryDateString
+        skontoExpiryDateLabel.accessibilityValue = viewModel.expiryDateString
+        skontoExpiryDateLabel.font = configuration.textStyleFonts[.footnote]
+        skontoExpiryDateLabel.textColor = .GiniBank.light1
+        skontoExpiryDateLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        footerStackView.addArrangedSubview(skontoExpiryDateLabel)
+
+        let skontoWithDiscountPriceLabel = UILabel()
+        skontoWithDiscountPriceLabel.text = viewModel.withDiscountPriceString
+        skontoWithDiscountPriceLabel.accessibilityValue = viewModel.withDiscountPriceString
+        skontoWithDiscountPriceLabel.font = configuration.textStyleFonts[.footnote]
+        skontoWithDiscountPriceLabel.textColor = .GiniBank.light1
+        skontoWithDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        footerStackView.addArrangedSubview(skontoWithDiscountPriceLabel)
+
+        let skontoWithoutDiscountPriceLabel = UILabel()
+        skontoWithoutDiscountPriceLabel.text = viewModel.withoutDiscountPriceString
+        skontoWithoutDiscountPriceLabel.accessibilityValue = viewModel.withoutDiscountPriceString
+        skontoWithoutDiscountPriceLabel.font = configuration.textStyleFonts[.footnote]
+        skontoWithoutDiscountPriceLabel.textColor = .GiniBank.light1
+        skontoWithoutDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        footerStackView.addArrangedSubview(skontoWithoutDiscountPriceLabel)
     }
 
     // MARK: - Utilities
@@ -235,7 +353,7 @@ final class DocumentPagesViewController: UIViewController {
         var contentHeight: CGFloat = 0
 
         // Calculate the total height of the stackView content
-        for view in stackView.arrangedSubviews {
+        for view in contentStackView.arrangedSubviews {
             contentHeight += view.frame.size.height
         }
 
@@ -261,13 +379,13 @@ final class DocumentPagesViewController: UIViewController {
 
     private func adjustStackViewTopConstraint() {
         let isZoomedOut = scrollView.zoomScale == Constants.minimumZoomScale
-        stackViewTopConstraint?.constant = isZoomedOut
+        contentStackViewTopConstraint?.constant = isZoomedOut
         ? Constants.navigationBarHeight + Constants.stackViewTopConstraintToNavBar
         : Constants.stackViewTopConstraintToNavBar
     }
 
     private func adjustStackViewTopConstraint(for imageCount: Int) {
-        stackViewTopConstraint?.constant = imageCount == 1
+        contentStackViewTopConstraint?.constant = imageCount == 1
         ? Constants.navigationBarHeight + Constants.stackViewTopConstraintToNavBar
         : Constants.stackViewTopConstraintToNavBar
     }
@@ -279,7 +397,7 @@ final class DocumentPagesViewController: UIViewController {
         if shouldZoomOut {
             scrollView.setZoomScale(1.0, animated: true)
         } else {
-            let tapPoint = gestureRecognizer.location(in: stackView)
+            let tapPoint = gestureRecognizer.location(in: contentStackView)
             let newZoomScale = scrollView.maximumZoomScale
             let zoomedRectSize = CGSize(width: scrollView.bounds.size.width / newZoomScale,
                                         height: scrollView.bounds.size.height / newZoomScale)
@@ -290,7 +408,7 @@ final class DocumentPagesViewController: UIViewController {
         }
     }
 
-    @objc private func didTapCloseButton() {
+    @objc private func didTapClose() {
         dismiss(animated: true)
     }
 }
@@ -298,7 +416,7 @@ final class DocumentPagesViewController: UIViewController {
 extension DocumentPagesViewController: UIScrollViewDelegate {
     // Delegate method to specify the view to zoom
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return stackView
+        return contentStackView
     }
 
     // UIScrollViewDelegate method to handle zooming
@@ -312,8 +430,6 @@ private extension DocumentPagesViewController {
     enum Constants {
         static let padding: CGFloat = 24
         static let spacing: CGFloat = 36
-        static let buttonSize: CGFloat = 44
-        static let buttonPadding: CGFloat = 16
         static let stackViewItemSpacing: CGFloat = 4
         static let containerHorizontalPadding: CGFloat = UIDevice.current.isIpad ? 31 : 4
         static let loadingIndicatorContainerHeight: CGFloat = 60
@@ -322,5 +438,8 @@ private extension DocumentPagesViewController {
         static let stackViewBottomPadding: CGFloat = 50
         static let minimumZoomScale: CGFloat = 1.0
         static let maximumZoomScale: CGFloat = 2.0
+        static let defaultNavigationBarHeight: CGFloat = 44
+        static let footerStackViewBottomPadding: CGFloat = 25
+        static let footerStackViewDefaultPadding: CGFloat = 16
     }
 }

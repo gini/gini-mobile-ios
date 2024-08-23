@@ -598,7 +598,10 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                 let extractionBoundingBoxes = skontoViewModel.extractionBoundingBoxes
                 let viewModel = DocumentPagesViewModel(originalImages: pageImages,
                                                        originalSizes: originalSizes,
-                                                       extractionBoundingBoxes: extractionBoundingBoxes)
+                                                       extractionBoundingBoxes: extractionBoundingBoxes,
+                                                       amountToPay: skontoViewModel.amountToPay, 
+                                                       skontoAmountToPay: skontoViewModel.skontoAmountToPay,
+                                                       expiryDate: skontoViewModel.dueDate)
                 skontoViewModel.setDocumentPagesViewModel(viewModel)
                 completion(.success(viewModel))
             }
