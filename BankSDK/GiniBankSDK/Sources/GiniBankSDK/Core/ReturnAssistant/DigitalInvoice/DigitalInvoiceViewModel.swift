@@ -28,7 +28,7 @@ final class DigitalInvoiceViewModel {
         let skontoIsActive = skontoViewModel?.isSkontoApplied ?? false
         return skontoIsActive ? skontoViewModel?.skontoAmountToPay : invoice?.total
     }
-    
+
     var hasSkonto: Bool {
         return skontoViewModel != nil
     }
@@ -55,7 +55,8 @@ final class DigitalInvoiceViewModel {
 
     func didTapPay() {
         if hasSkonto {
-            self.invoice?.totalPriceForExtractions = totalPrice
+            let totalPriceForExtractions = totalPrice
+            self.invoice?.totalPriceForExtractions = totalPriceForExtractions
         }
         delegate?.didTapPay(on: self)
     }
