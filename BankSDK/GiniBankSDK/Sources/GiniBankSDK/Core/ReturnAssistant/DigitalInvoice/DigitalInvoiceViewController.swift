@@ -34,8 +34,8 @@ final class DigitalInvoiceViewController: UIViewController {
         return tableView
     }()
 
-    private lazy var proceedView: DigitalInvoiceSkontoProceedView = {
-        let containerView = DigitalInvoiceSkontoProceedView()
+    private lazy var proceedView: DigitalInvoiceProceedView = {
+        let containerView = DigitalInvoiceProceedView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         return containerView
     }()
