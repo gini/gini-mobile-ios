@@ -12,7 +12,7 @@ class OrderDetailView: UIStackView {
 
     public static var textFields = [String: UITextField]()
     private static var amountTextField = UITextField()
-    public var amountToPay = Price(value: 0, currencyCode: "EUR")
+    public var order: Order?
 
     convenience init(_ items: [(String, String)]) {
         Self.textFields.removeAll()
@@ -47,6 +47,7 @@ class OrderDetailView: UIStackView {
         textFields[text.0] = textField
 
         if text.0 == NSLocalizedString(Fields.amountToPay.rawValue, comment: "") {
+            textField.keyboardType = .decimalPad
             amountTextField = textField
         }
 
@@ -98,15 +99,16 @@ extension OrderDetailView: UITextFieldDelegate {
     func updateAmoutToPayWithCurrencyFormat() {
         let textField = Self.amountTextField
         if textField.hasText, let text = textField.text {
-            if let priceValue = text.toDecimal() {
-                amountToPay.value = priceValue
-                textField.text = priceValue > 0 ? amountToPay.string : ""
+            if let priceValue = text.toDecimal(),
+               var price = order?.price {
+                price.value = priceValue
+                textField.text = priceValue > 0 ? price.string : ""
             }
         }
     }
     func textFieldDidBeginEditing(_ textField: UITextField) {
         // remove currency symbol and whitespaces for edit mode
-        let amountToPayText = amountToPay.stringWithoutSymbol
+        let amountToPayText = order?.price?.stringWithoutSymbol ?? ""
         Self.amountTextField.text = amountToPayText
     }
 
@@ -116,36 +118,6 @@ extension OrderDetailView: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let text = textField.text,
-           let textRange = Range(range, in: text) {
-            let updatedText = text.replacingCharacters(in: textRange, with: string)
-
-            // Limit length to 7 digits
-            let onlyDigits = String(updatedText
-                                        .trimmingCharacters(in: .whitespaces)
-                                        .filter { c in c != "," && c != "."}
-                                        .prefix(7))
-
-            if let decimal = Decimal(string: onlyDigits) {
-                let decimalWithFraction = decimal / 100
-
-                if let newAmount = Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
-                    // Save the selected text range to restore the cursor position after replacing the text
-                    let selectedRange = textField.selectedTextRange
-
-                    textField.text = newAmount
-                    amountToPay.value = decimalWithFraction
-
-                    // Move the cursor position after the inserted character
-                    if let selectedRange = selectedRange {
-                        let countDelta = newAmount.count - text.count
-                        let offset = countDelta == 0 ? 1 : countDelta
-                        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
-                    }
-                }
-            }
-            return false
-           }
         return true
     }
 

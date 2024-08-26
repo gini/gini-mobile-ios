@@ -6,6 +6,7 @@
 
 
 import Foundation
+import GiniUtilites
 
 protocol HardcodedOrdersControllerProtocol {
     var orders: [Order] { get }
@@ -16,6 +17,10 @@ class Order: Codable {
     var recipient = ""
     var iban = ""
     var purpose = ""
+
+    var price: Price? {
+        Price(extractionString: amountToPay)
+    }
 
     convenience init(amountToPay: String, recipient: String, iban: String, purpose: String) {
         self.init()

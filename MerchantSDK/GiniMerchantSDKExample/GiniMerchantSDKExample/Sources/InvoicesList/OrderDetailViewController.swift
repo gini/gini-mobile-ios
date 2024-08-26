@@ -46,6 +46,8 @@ final class OrderDetailViewController: UIViewController {
         self.paymentComponentsController = paymentComponentsController
         super.init(nibName: nil, bundle: nil)
 
+        detailView.order = order
+
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnView)))
     }
 
@@ -104,6 +106,7 @@ final class OrderDetailViewController: UIViewController {
 
         detailView.removeFromSuperview()
         detailView = OrderDetailView(rowItems)
+        detailView.order = order
         view.addSubview(detailView)
 
         NSLayoutConstraint.activate(detaiViewConstraints)
@@ -120,6 +123,8 @@ final class OrderDetailViewController: UIViewController {
 
     @objc private func payButtonTapped() {
         print("✅ Tapped on Pay")
+        view.endEditing(true)
+
         let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
         paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
 
@@ -201,8 +206,16 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
         let textFields = OrderDetailView.textFields
         order.iban = textFields[NSLocalizedString(Fields.iban.rawValue, comment: "")]?.text ?? ""
         order.recipient = textFields[NSLocalizedString(Fields.recipient.rawValue, comment: "")]?.text ?? ""
-        order.amountToPay = textFields[NSLocalizedString(Fields.amountToPay.rawValue, comment: "")]?.text ?? ""
         order.purpose = textFields[NSLocalizedString(Fields.purpose.rawValue, comment: "")]?.text ?? ""
+
+        var text = textFields[NSLocalizedString(Fields.amountToPay.rawValue, comment: "")]?.text ?? ""
+        text = text.replacingOccurrences(of: ",", with: ".")
+        if let decimalAmount = Decimal(string: text) {
+            var price = Price(extractionString: order.amountToPay) ?? Price(value: decimalAmount, currencyCode: "€")
+            price.value = decimalAmount
+
+            order.amountToPay = price.extractionString
+        }
     }
 
     private func obtainPaymentInfo() -> PaymentInfo {
@@ -211,7 +224,7 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
         return PaymentInfo(recipient: order.recipient,
                            iban: order.iban,
                            bic: "",
-                           amount: detailView.amountToPay.extractionString,
+                           amount: order.amountToPay,
                            purpose: order.purpose,
                            paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
                            paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
