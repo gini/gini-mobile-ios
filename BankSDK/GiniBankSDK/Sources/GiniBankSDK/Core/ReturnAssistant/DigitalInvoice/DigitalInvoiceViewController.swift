@@ -220,7 +220,6 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
     // MARK: - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // TODO: 409 Handle Skonto + RA
         switch Section(rawValue: section) {
         case .titleCell: return 1
         case .lineItems: return viewModel.invoice?.lineItems.count ?? 0
