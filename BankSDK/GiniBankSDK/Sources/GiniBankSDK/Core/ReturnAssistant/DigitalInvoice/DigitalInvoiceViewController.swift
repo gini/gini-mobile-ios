@@ -259,6 +259,9 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             if let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier,
                                                         for: indexPath) as? DigitalInvoiceAddOnListCell {
                 cell.addOns = viewModel.invoice?.addons
+                if viewModel.skontoViewModel == nil {
+                    cell.setAsLastTableViewCell()
+                }
                 return cell
             }
             assertionFailure("DigitalInvoiceAddOnListCell could not been reused")
