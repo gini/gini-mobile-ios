@@ -14,6 +14,12 @@ protocol SkontoViewModelDelegate: AnyObject {
     func didTapDocumentPreview(on viewModel: SkontoViewModel)
 }
 
+extension SkontoViewModelDelegate {
+    func didTapProceed(on viewModel: SkontoViewModel) {
+        // Default implementation
+    }
+}
+
 class SkontoViewModel {
     private var skontoStateChangeHandlers: [() -> Void] = []
     var endEditingAction: (() -> Void)?
