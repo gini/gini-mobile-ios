@@ -34,56 +34,10 @@ final class DigitalInvoiceViewController: UIViewController {
         return tableView
     }()
 
-    private lazy var buttonContainerView: UIView = {
-        let containerView = UIView()
-        containerView.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+    private lazy var proceedView: DigitalInvoiceSkontoProceedView = {
+        let containerView = DigitalInvoiceSkontoProceedView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         return containerView
-    }()
-
-    private lazy var payButton: MultilineTitleButton = {
-        let button = MultilineTitleButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.configure(with: configuration.primaryButtonConfiguration)
-        button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
-                                                                   comment: "Proceed")
-        button.setTitle(buttonTitle, for: .normal)
-
-        button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
-        button.isEnabled = viewModel.isPayButtonEnabled()
-        return button
-    }()
-
-    private lazy var totalLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontForContentSizeCategory = true
-        label.font = configuration.textStyleFonts[.body]
-        label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        let labelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
-                                                                  comment: "Total")
-        label.text = labelTitle
-        label.accessibilityValue = labelTitle
-        return label
-    }()
-
-    private lazy var totalValueLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = configuration.textStyleFonts[.title1Bold]
-        label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        label.text = viewModel.totalPrice?.string
-        label.accessibilityValue = viewModel.totalPrice?.string
-        label.adjustsFontForContentSizeCategory = true
-        return label
-    }()
-
-    private lazy var dividerView: UIView = {
-        let dividerView = UIView()
-        dividerView.backgroundColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
-        dividerView.translatesAutoresizingMaskIntoConstraints = false
-        return dividerView
     }()
 
     private let viewModel: DigitalInvoiceViewModel
@@ -122,12 +76,11 @@ final class DigitalInvoiceViewController: UIViewController {
         }
 
         view.addSubview(tableView)
-        view.addSubview(buttonContainerView)
+        view.addSubview(proceedView)
 
-        buttonContainerView.addSubview(dividerView)
-        buttonContainerView.addSubview(totalLabel)
-        buttonContainerView.addSubview(totalValueLabel)
-        buttonContainerView.addSubview(payButton)
+        proceedView.proceedAction = { [weak self] in
+            self?.viewModel.didTapPay()
+        }
 
         setupBottomNavigationBar()
     }
@@ -135,34 +88,12 @@ final class DigitalInvoiceViewController: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
-            tableView.bottomAnchor.constraint(equalTo: buttonContainerView.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: proceedView.topAnchor),
 
-            buttonContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            buttonContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            buttonContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            buttonContainerView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonContainerHeight),
-
-            dividerView.topAnchor.constraint(equalTo: buttonContainerView.topAnchor),
-            dividerView.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor),
-            dividerView.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor),
-            dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
-
-            totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor,
-                                            constant: Constants.padding),
-            totalLabel.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-            totalLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-
-            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
-                                                 constant: Constants.padding / 2),
-            totalValueLabel.leadingAnchor.constraint(equalTo: totalLabel.leadingAnchor),
-            totalValueLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-
-            payButton.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: Constants.labelPadding),
-            payButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor,
-                                              constant: -Constants.labelPadding),
-            payButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
-            payButton.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-            payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.payButtonHeight)
+            proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            proceedView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonContainerHeight)
         ])
 
         if UIDevice.current.isIpad {
@@ -208,7 +139,7 @@ final class DigitalInvoiceViewController: UIViewController {
                 ])
             }
 
-            buttonContainerView.isHidden = true
+            proceedView.isHidden = true
             updateValues()
         }
     }
@@ -219,6 +150,7 @@ final class DigitalInvoiceViewController: UIViewController {
         setupView()
         setupConstraints()
         viewModel.shouldShowOnboarding()
+        updateValues()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -241,17 +173,15 @@ final class DigitalInvoiceViewController: UIViewController {
         if configuration.bottomNavigationBarEnabled {
             navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencySymbol: viewModel.totalPrice?.string)
             navigationBarBottomAdapter?.updateProceedButtonState(enabled: viewModel.isPayButtonEnabled())
-        } else {
-            totalValueLabel.text = viewModel.totalPrice?.string
-            totalValueLabel.accessibilityValue = viewModel.totalPrice?.string
-
-            if viewModel.isPayButtonEnabled() {
-                payButton.isEnabled = true
-                payButton.configure(with: configuration.primaryButtonConfiguration)
-            } else {
-                payButton.isEnabled = false
-                payButton.configure(with: configuration.secondaryButtonConfiguration)
+            if let skontoViewModel = viewModel.skontoViewModel {
+                let isSkontoApplied = skontoViewModel.isSkontoApplied
+                navigationBarBottomAdapter?.updateSkontoPercentageBadgeVisibility(hidden: !isSkontoApplied)
+                navigationBarBottomAdapter?.updateSkontoPercentageBadge(with: skontoViewModel.localizedDiscountString)
+                navigationBarBottomAdapter?.updateSkontoSavingsInfo(with: skontoViewModel.savingsAmountString)
+                navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
             }
+        } else {
+            proceedView.configure(viewModel: viewModel)
         }
     }
 
