@@ -145,10 +145,6 @@ extension DigitalInvoiceCoordinator: SkontoViewModelDelegate {
         self.navigationController.popViewController(animated: true)
     }
 
-    func didTapProceed(on viewModel: SkontoViewModel) {
-
-    }
-
     func didTapDocumentPreview(on viewModel: SkontoViewModel) {
         skontoDelegate?.didTapDocumentPreview(self, viewModel)
     }
