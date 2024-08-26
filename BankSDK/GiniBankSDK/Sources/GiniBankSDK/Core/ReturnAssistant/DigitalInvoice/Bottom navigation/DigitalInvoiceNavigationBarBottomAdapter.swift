@@ -41,4 +41,50 @@ public protocol DigitalInvoiceNavigationBarBottomAdapter: InjectedViewAdapter {
      * - Parameter enabled: A bool value to reflect the state of the button
      */
     func updateProceedButtonState(enabled: Bool)
+
+    /**
+     *  Update the Skonto percentage badge text on the bottom navigation bar.
+     *
+     * - Parameter text: A string which contains the value of Skonto percentage(e.g: "3 % Skonto").
+     */
+    func updateSkontoPercentageBadge(with text: String?)
+
+    /**
+     *  Update the Skonto percentage badge visibility.
+     *
+     * - Parameter enabled: A bool value to reflect the visibility of the Skonto percentage badge.
+     */
+    func updateSkontoPercentageBadgeVisibility(hidden: Bool)
+
+    /**
+     *  Update the Skonto savings information on the bottom navigation bar. This reflects the savings after paying the invoice within the Skonto period.
+     *
+     * - Parameter text: A string that contains the value of the savings when paying within the Skonto period(e.g: "3,00 EUR sparen").
+     */
+    func updateSkontoSavingsInfo(with text: String?)
+
+    /**
+     *  Update the Skonto savings information visibility.
+     *
+     * - Parameter hidden: A bool value to reflect the visibility of the savings information.
+     */
+    func updateSkontoSavingsInfoVisibility(hidden: Bool)
+}
+
+public extension DigitalInvoiceNavigationBarBottomAdapter {
+    func updateSkontoPercentageBadge(with text: String?) {
+        // Default implementation
+    }
+
+    func updateSkontoPercentageBadgeVisibility(hidden: Bool) {
+        // Default implementation
+    }
+
+    func updateSkontoSavingsInfo(with text: String?) {
+        // Default implementation
+    }
+
+    func updateSkontoSavingsInfoVisibility(hidden: Bool) {
+        // Default implementation
+    }
 }
