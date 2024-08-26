@@ -1,5 +1,5 @@
 //
-//  DigitalInvoiceSkontoProceedView.swift
+//  DigitalInvoiceProceedView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-class DigitalInvoiceSkontoProceedView: UIView {
+class DigitalInvoiceProceedView: UIView {
 
     private lazy var contentView: UIView = {
         let view = UIView()
@@ -213,7 +213,7 @@ class DigitalInvoiceSkontoProceedView: UIView {
     }
 }
 
-private extension DigitalInvoiceSkontoProceedView {
+private extension DigitalInvoiceProceedView {
     enum Constants {
         static let padding: CGFloat = 16
         static let verticalPadding: CGFloat = 16

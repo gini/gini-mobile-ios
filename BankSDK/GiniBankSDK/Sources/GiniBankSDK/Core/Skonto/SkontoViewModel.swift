@@ -78,6 +78,12 @@ class SkontoViewModel {
             priceString
         )
     }
+    
+    var savingsAmountNegativeSignString: String {
+        let savingsAmount = calculateSkontoSavingsAmount()
+        guard let priceString = savingsAmount.localizedStringWithCurrencyCode else { return "" }
+        return "-\(priceString)"
+    }
 
     var localizedBannerInfoMessage: String {
         let text: String
