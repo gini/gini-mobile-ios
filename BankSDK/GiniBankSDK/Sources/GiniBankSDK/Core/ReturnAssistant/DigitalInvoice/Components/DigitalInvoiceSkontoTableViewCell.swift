@@ -142,7 +142,8 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
             edgeCaseLabel.isHidden = viewModel.isSkontoApplied
         }
         valueLabel.isHidden = !viewModel.isSkontoApplied
-        valueLabel.text = viewModel.savingsAmountNegativeSignString
+        let savingsPrice = "-\(viewModel.savingsPriceString)"
+        valueLabel.text = savingsPrice
         toggleSwitch.isOn = viewModel.isSkontoApplied
         edgeCaseLabel.text = viewModel.localizedBannerInfoMessage
         delegate?.reloadCell(cell: self)
