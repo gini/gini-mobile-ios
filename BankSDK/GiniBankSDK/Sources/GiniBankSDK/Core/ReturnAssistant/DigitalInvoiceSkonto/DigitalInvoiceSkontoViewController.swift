@@ -242,7 +242,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
             view.addSubview(navigationBar)
 
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
-            
+
             scrollViewBottomConstraint.isActive = false
             NSLayoutConstraint.activate([
                 navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
