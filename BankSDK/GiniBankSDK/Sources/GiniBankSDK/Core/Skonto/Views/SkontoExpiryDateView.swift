@@ -147,7 +147,7 @@ class SkontoExpiryDateView: UIView {
     }
 
     @objc private func dateChanged(_ datePicker: UIDatePicker) {
-        viewModel.set(date: datePicker.date)
+        viewModel.setExpiryDate(datePicker.date)
     }
 }
 

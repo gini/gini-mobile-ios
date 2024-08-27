@@ -48,20 +48,20 @@ class SkontoViewModel {
     var formattedPercentageDiscounted: String {
         let formatter = NumberFormatter.floorRoundingFormatter
         if let formattedValue = formatter.string(from: NSNumber(value: skontoPercentage)) {
-            return "\(formattedValue) %"
+            return "\(formattedValue)%"
         } else {
-            return "\(skontoPercentage) %"
+            return "\(skontoPercentage)%"
         }
     }
 
-    var localizedRemainingDays: String {
+    var remainingDaysString: String {
         let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.day",
                                                             comment: "%@ days")
         return String.localizedStringWithFormat(text,
                                                 remainingDays)
     }
 
-    var localizedDiscountString: String {
+    var skontoPercentageString: String {
         return String.localizedStringWithFormat(
             NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
                                                      comment: "%@ Skonto discount"),
@@ -137,26 +137,30 @@ class SkontoViewModel {
         notifyStateChangeHandlers()
     }
 
-    func setSkontoPrice(price: String) {
-        guard let price = convertPriceStringToPrice(price: price), price.value <= amountToPay.value else {
+    func setSkontoAmountToPayPrice(_ price: String) {
+        guard let price = convertPriceStringToPrice(price: price),
+              price.value <= amountToPay.value else {
             notifyStateChangeHandlers()
             return
         }
         skontoAmountToPay = price
+        updateDocumentPagesModelData()
         recalculateSkontoPercentage()
         notifyStateChangeHandlers()
     }
 
-    func setDefaultPrice(price: String) {
+    func setAmountToPayPrice(_ price: String) {
         guard let price = convertPriceStringToPrice(price: price) else { return }
         amountToPay = price
         recalculateAmountToPayWithSkonto()
+        updateDocumentPagesModelData()
         notifyStateChangeHandlers()
     }
 
-    func set(date: Date) {
-        self.dueDate = date
+    func setExpiryDate(_ date: Date) {
+        dueDate = date
         recalculateRemainingDays()
+        updateDocumentPagesModelData()
         determineSkontoEdgeCase()
         notifyStateChangeHandlers()
     }
@@ -167,6 +171,12 @@ class SkontoViewModel {
 
     func setDocumentPagesViewModel(_ viewModel: DocumentPagesViewModel) {
         documentPagesViewModel = viewModel
+    }
+
+    private func updateDocumentPagesModelData() {
+        documentPagesViewModel?.updateExpiryDate(date: dueDate)
+        documentPagesViewModel?.updateAmountToPay(price: amountToPay)
+        documentPagesViewModel?.updateSkontoAmountToPay(price: skontoAmountToPay)
     }
 
     // MARK: - Actions
