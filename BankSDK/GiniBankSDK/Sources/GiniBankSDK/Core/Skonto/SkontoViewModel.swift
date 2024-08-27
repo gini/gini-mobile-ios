@@ -201,13 +201,13 @@ class SkontoViewModel {
                 let modifiedExtraction = extraction
                 switch modifiedExtraction.name {
                 case "skontoAmountToPay", "skontoAmountToPayCalculated":
-                        modifiedExtraction.value = skontoAmountToPay.stringWithoutSymbol ?? ""
+                        modifiedExtraction.value = skontoAmountToPay.extractionString
                 case "skontoDueDate", "skontoDueDateCalculated":
                     modifiedExtraction.value = dueDate.yearMonthDayString
                 case "skontoPercentageDiscounted", "skontoPercentageDiscountedCalculated":
                     modifiedExtraction.value = formattedPercentageDiscounted
                 case "skontoAmountDiscounted", "skontoAmountDiscountedCalculated":
-                    modifiedExtraction.value = amountDiscounted.stringWithoutSymbol ?? ""
+                    modifiedExtraction.value = amountDiscounted.extractionString
                 case "skontoRemainingDays":
                     modifiedExtraction.value = "\(remainingDays)"
                 default:
@@ -221,7 +221,7 @@ class SkontoViewModel {
             .map { extraction -> Extraction in
                 let modifiedExtraction = extraction
                 if modifiedExtraction.name == "amountToPay" {
-                    modifiedExtraction.value = finalAmountToPay.stringWithoutSymbol ?? ""
+                    modifiedExtraction.value = finalAmountToPay.extractionString
                 }
                 return modifiedExtraction
             }
