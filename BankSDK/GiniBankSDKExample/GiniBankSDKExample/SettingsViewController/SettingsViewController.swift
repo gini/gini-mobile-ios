@@ -170,6 +170,8 @@ final class SettingsViewController: UIViewController {
 													 isSwitchOn: giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)))
 		contentData.append(.switchOption(data: .init(type: .digitalInvoiceNavigationBarBottomAdapter,
 													 isSwitchOn: giniConfiguration.digitalInvoiceNavigationBarBottomAdapter != nil)))
+        contentData.append(.switchOption(data: .init(type: .digitalInvoiceSkontoNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter != nil)))
 
 		contentData.append(.switchOption(data: .init(type: .primaryButtonConfiguration,
 													 isSwitchOn: settingsButtonStates.primaryButtonState.isSwitchOn)))
@@ -367,6 +369,9 @@ final class SettingsViewController: UIViewController {
 		case .digitalInvoiceNavigationBarBottomAdapter:
 			let customAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
 			giniConfiguration.digitalInvoiceNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+        case .digitalInvoiceSkontoNavigationBarBottomAdapter:
+            let customAdapter = CustomDigitalInvoiceSkontoBottomNavigationBarAdapter()
+            giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
 		case .primaryButtonConfiguration:
 			guard data.isSwitchOn else {
 				giniConfiguration.primaryButtonConfiguration = settingsButtonStates.primaryButtonState.configuration
