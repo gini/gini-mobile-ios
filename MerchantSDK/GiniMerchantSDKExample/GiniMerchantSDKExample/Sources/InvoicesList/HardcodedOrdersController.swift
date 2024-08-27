@@ -18,8 +18,9 @@ class Order: Codable {
     var iban = ""
     var purpose = ""
 
-    var price: Price? {
-        Price(extractionString: amountToPay)
+    var price: Price {
+        Price(extractionString: amountToPay) ??
+        Price(value: .zero, currencyCode: "€")
     }
 
     convenience init(amountToPay: String, recipient: String, iban: String, purpose: String) {

@@ -102,13 +102,15 @@ extension OrderDetailView: UITextFieldDelegate {
             if let priceValue = text.toDecimal(),
                var price = order?.price {
                 price.value = priceValue
+
+                order?.amountToPay = price.extractionString
                 textField.text = priceValue > 0 ? price.string : ""
             }
         }
     }
     func textFieldDidBeginEditing(_ textField: UITextField) {
         // remove currency symbol and whitespaces for edit mode
-        let amountToPayText = order?.price?.stringWithoutSymbol ?? ""
+        let amountToPayText = order?.price.stringWithoutSymbol ?? ""
         Self.amountTextField.text = amountToPayText
     }
 
