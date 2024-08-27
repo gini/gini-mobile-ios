@@ -80,7 +80,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     private var navigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
-    private var hasShownAlert = false
+    private var firstAppearance = true
 
     private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 
@@ -103,7 +103,10 @@ class DigitalInvoiceSkontoViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showAlertIfNeeded()
+        if firstAppearance {
+            showAlertIfNeeded()
+            firstAppearance = false
+        }
     }
 
     deinit {
@@ -277,8 +280,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     }
 
     @objc private func showAlertIfNeeded() {
-        guard !hasShownAlert, let alert = alertFactory.createEdgeCaseAlert() else { return }
-        hasShownAlert = true
+        guard let alert = alertFactory.createEdgeCaseAlert() else { return }
         present(alert, animated: true, completion: nil)
     }
 
