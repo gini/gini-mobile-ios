@@ -27,6 +27,7 @@ final class PoweredByGiniView: UIView {
         label.font = viewModel.poweredByGiniLabelFont
         label.numberOfLines = Constants.textNumberOfLines
         label.adjustsFontSizeToFitWidth = true
+        label.textAlignment = .right
         return label
     }()
     
