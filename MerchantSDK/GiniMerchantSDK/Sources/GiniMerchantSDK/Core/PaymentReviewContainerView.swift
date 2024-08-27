@@ -355,16 +355,26 @@ class PaymentReviewContainerView: UIView {
             fullString.append(NSAttributedString(string: text))
 
             if fieldIdentifier != .amountFieldTag {
-                let lockIconAttachment = NSTextAttachment()
-                lockIconAttachment.image = UIImage(named: "inputLock.png")
-                let lockString = NSAttributedString(attachment: lockIconAttachment)
-
-                fullString.append(NSAttributedString(string: "  "))
-                fullString.append(lockString)
+                appendLockIcon(fullString)
             }
         }
 
         return fullString
+    }
+
+    fileprivate func appendLockIcon(_ string: NSMutableAttributedString) {
+        let lockIconAttachment = NSTextAttachment()
+        let icon = GiniMerchantImage.lock.preferredUIImage()
+        lockIconAttachment.image = icon
+
+        let height = Constants.lockIconHeight
+        let ratio = icon.size.width / icon.size.height
+        lockIconAttachment.bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: ratio * height, height: height)
+
+        let lockString = NSAttributedString(attachment: lockIconAttachment)
+
+        string.append(NSAttributedString(string: "  "))
+        string.append(lockString)
     }
 
     fileprivate func validateTextField(_ textFieldViewTag: Int) {
@@ -751,5 +761,6 @@ extension PaymentReviewContainerView {
         static let payInvoiceInactiveAlpha = 0.4
         static let bottomViewHeight = 20.0
         static let errorTopMargin = 9.0
+        static let lockIconHeight = 11.0
     }
 }
