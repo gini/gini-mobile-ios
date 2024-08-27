@@ -176,7 +176,7 @@ final class DigitalInvoiceViewController: UIViewController {
             if let skontoViewModel = viewModel.skontoViewModel {
                 let isSkontoApplied = skontoViewModel.isSkontoApplied
                 navigationBarBottomAdapter?.updateSkontoPercentageBadgeVisibility(hidden: !isSkontoApplied)
-                navigationBarBottomAdapter?.updateSkontoPercentageBadge(with: skontoViewModel.localizedDiscountString)
+                navigationBarBottomAdapter?.updateSkontoPercentageBadge(with: skontoViewModel.skontoPercentageString)
                 navigationBarBottomAdapter?.updateSkontoSavingsInfo(with: skontoViewModel.savingsAmountString)
                 navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
             }
