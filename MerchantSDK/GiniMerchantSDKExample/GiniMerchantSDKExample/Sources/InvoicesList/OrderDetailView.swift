@@ -102,6 +102,8 @@ extension OrderDetailView: UITextFieldDelegate {
             if let priceValue = text.toDecimal(),
                var price = order?.price {
                 price.value = priceValue
+
+                order?.amountToPay = price.extractionString
                 textField.text = priceValue > 0 ? price.string : ""
             }
         }
