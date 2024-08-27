@@ -77,10 +77,12 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     private let alertFactory: SkontoAlertFactory
     private let configuration = GiniBankConfiguration.shared
 
-    private var navigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
+    private var navigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
     private var hasShownAlert = false
+
+    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -155,7 +157,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             scrollView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: multiplier),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            scrollViewBottomConstraint
         ])
     }
 
@@ -221,14 +223,10 @@ class DigitalInvoiceSkontoViewController: UIViewController {
 
     private func setupBottomNavigationBar() {
         guard configuration.bottomNavigationBarEnabled else { return }
-        if let bottomBarAdapter = configuration.skontoNavigationBarBottomAdapter {
+        if let bottomBarAdapter = configuration.digitalInvoiceSkontoNavigationBarBottomAdapter {
             navigationBarBottomAdapter = bottomBarAdapter
         } else {
-            navigationBarBottomAdapter = DefaultSkontoNavigationBarBottomAdapter()
-        }
-
-        navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
-            self?.viewModel.proceedButtonTapped()
+            navigationBarBottomAdapter = DefaultDigitalInvoiceSkontoNavigationBarBottomAdapter()
         }
 
         navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
@@ -244,34 +242,21 @@ class DigitalInvoiceSkontoViewController: UIViewController {
             view.addSubview(navigationBar)
 
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
-
+            
+            scrollViewBottomConstraint.isActive = false
             NSLayoutConstraint.activate([
                 navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
             ])
         }
     }
 
     private func bindViewModel() {
-        configure()
-        viewModel.addStateChangeHandler { [weak self] in
-            guard let self else { return }
-            self.configure()
-        }
         viewModel.endEditingAction = {
             self.endEditing()
         }
-    }
-
-    private func configure() {
-        let isSkontoApplied = viewModel.isSkontoApplied
-        navigationBarBottomAdapter?.updateSkontoPercentageBadgeVisibility(hidden: !isSkontoApplied)
-        navigationBarBottomAdapter?.updateSkontoPercentageBadge(with: viewModel.localizedDiscountString)
-        navigationBarBottomAdapter?.updateSkontoSavingsInfo(with: viewModel.savingsAmountString)
-        navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
-        let localizedStringWithCurrencyCode = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
-        navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
     }
 
     @objc private func helpButtonTapped() {
@@ -360,5 +345,6 @@ private extension DigitalInvoiceSkontoViewController {
         static let groupCornerRadius: CGFloat = 8
         static let scrollIndicatorInset: CGFloat = 0
         static let tabletWidthMultiplier: CGFloat = 0.7
+        static let navigationBarHeight: CGFloat = 114
     }
 }
