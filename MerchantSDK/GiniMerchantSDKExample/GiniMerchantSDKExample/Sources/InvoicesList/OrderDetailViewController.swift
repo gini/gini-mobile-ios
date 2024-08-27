@@ -129,7 +129,7 @@ final class OrderDetailViewController: UIViewController {
         paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
 
         let paymentInfo = obtainPaymentInfo()
-        if paymentInfo.isComplete {
+        if paymentInfo.isComplete && order.price.value != .zero {
             present(paymentViewBottomSheet, animated: false)
         } else {
             showErrorAlertView(error: NSLocalizedString("example.order.detail.Alert.FieldError", comment: ""))
@@ -215,6 +215,8 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
             price.value = decimalAmount
 
             order.amountToPay = price.extractionString
+        } else {
+            order.amountToPay = Price(value: .zero, currencyCode: "€").extractionString
         }
     }
 
