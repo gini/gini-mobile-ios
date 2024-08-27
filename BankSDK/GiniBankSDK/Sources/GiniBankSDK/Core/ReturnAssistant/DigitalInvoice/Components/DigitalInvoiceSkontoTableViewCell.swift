@@ -114,7 +114,8 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
             mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
                                                constant: Constants.stackViewVerticalSpacing),
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                                  constant: -Constants.stackViewVerticalSpacing)
+                                                  constant: -Constants.stackViewVerticalSpacing),
+            titleLabel.heightAnchor.constraint(greaterThanOrEqualTo: toggleSwitch.heightAnchor)
         ])
     }
 
