@@ -25,7 +25,8 @@ public enum GiniMerchantImage: String {
     case chevronDown = "gm.iconChevronDown"
     case selectionIndicator = "gm.selectionIndicator"
     case paymentReviewClose = "gm.paymentReviewClose"
-    
+    case lock = "gm.iconInputLock"
+
     /**
      Retrieves an image corresponding to the enumeration case, prioritizing the client's bundle. If the image is not found in the client's bundle, it attempts to load the image from the Gini Merchant SDK bundle.
      
