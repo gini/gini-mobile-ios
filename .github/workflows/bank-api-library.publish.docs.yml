@@ -9,17 +9,18 @@ on:
           required: true
         RELEASE_GITHUB_PASSWORD:
           required: true
-  
+  workflow_dispatch:
+
 jobs:
   release-documentation:
     runs-on: macos-latest    
     steps:
-    - uses: maxim-lobanov/setup-xcode@v1.5.1
+    - uses: maxim-lobanov/setup-xcode@v1.6.0
       with:
-        xcode-version: '14.3.1'
+        xcode-version: '15.3'
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -43,7 +44,7 @@ jobs:
         bundler-cache: true
 
     - name: Publish GiniBankAPILibrary documentation to the release repo
-      uses: maierj/fastlane-action@v3.0.0
+      uses: maierj/fastlane-action@v3.1.0
       with:
         lane: 'publish_docs'
         options: >
@@ -60,7 +61,7 @@ jobs:
           }
 
     - name: archive documentation
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: GiniBankAPILibraryDocumentation
         path: BankAPILibrary/GiniBankAPILibrary/Documentation/Api              
