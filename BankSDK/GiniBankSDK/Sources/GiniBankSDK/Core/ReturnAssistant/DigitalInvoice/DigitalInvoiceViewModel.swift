@@ -19,7 +19,7 @@ final class DigitalInvoiceViewModel {
     weak var delegate: DigitalInvoiceViewModelDelagate?
     var invoice: DigitalInvoice? {
         didSet {
-            skontoViewModel?.setDefaultPrice(price: invoice?.total?.stringWithoutSymbol ?? "")
+            skontoViewModel?.setAmountToPayPrice(invoice?.total?.stringWithoutSymbol ?? "")
         }
     }
     var skontoViewModel: SkontoViewModel?
