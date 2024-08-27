@@ -64,9 +64,9 @@ final class TextFieldWithLabelView: UIView {
         self.titleLabel.textColor = configuration.placeholderForegroundColor
     }
     
-    func customConfigure(labelTitle: String) {
-        titleLabel.text = labelTitle
-        titleLabel.accessibilityValue = labelTitle
+    func customConfigure(labelTitle: NSAttributedString) {
+        titleLabel.attributedText = labelTitle
+        titleLabel.accessibilityValue = labelTitle.string
     }
 
     private func setupConstraints() {

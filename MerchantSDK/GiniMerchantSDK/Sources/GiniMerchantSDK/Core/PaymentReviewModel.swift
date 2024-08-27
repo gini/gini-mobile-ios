@@ -28,7 +28,7 @@ public class PaymentReviewModel: NSObject {
     var onErrorHandling: ((_ error: GiniMerchantError) -> Void)?
 
     var onCreatePaymentRequestErrorHandling: (() -> Void)?
-    
+
     weak var viewModelDelegate: PaymentReviewViewModelDelegate?
 
     public var document: Document?
@@ -55,7 +55,7 @@ public class PaymentReviewModel: NSObject {
             self.updateLoadingStatus?()
         }
     }
-    
+
     var isImagesLoading: Bool = false {
         didSet {
             self.updateImagesLoadingStatus?()
@@ -89,6 +89,7 @@ public class PaymentReviewModel: NSObject {
     
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestID: String) -> ())? = nil) {
         isLoading = true
+        self.paymentInfo = paymentInfo
         merchantSDK.createPaymentRequest(paymentInfo: paymentInfo) {[weak self] result in
             self?.isLoading = false
             switch result {
@@ -117,7 +118,7 @@ public class PaymentReviewModel: NSObject {
     func openPaymentProviderApp(requestId: String, universalLink: String) {
         merchantSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
     }
-    
+
     func fetchImages() {
         guard let document else { return }
         self.isImagesLoading = true
@@ -148,7 +149,7 @@ public class PaymentReviewModel: NSObject {
             }
         }
     }
-    
+
     private func proccessPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
         switch result {
         case let .success(dataImage):
@@ -178,7 +179,7 @@ extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
 
 /**
  View model class for collection view cell
- 
+
   */
 public struct PageCollectionCellViewModel {
     let preview: UIImage
