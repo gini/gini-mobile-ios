@@ -260,16 +260,17 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
                                                         for: indexPath) as? DigitalInvoiceAddOnListCell {
                 cell.addOns = viewModel.invoice?.addons
                 if viewModel.skontoViewModel == nil {
-                    cell.setAsLastTableViewCell()
+                    cell.configureAsBottomTableCell()
                 }
                 return cell
             }
             assertionFailure("DigitalInvoiceAddOnListCell could not been reused")
             return UITableViewCell()
         case .skonto:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSkontoTableViewCell", for: indexPath) as? DigitalInvoiceSkontoTableViewCell {
+            guard let skontoViewModel = viewModel.skontoViewModel else { return UITableViewCell() }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSkontoTableViewCell",for: indexPath)
+            if let cell = cell as? DigitalInvoiceSkontoTableViewCell {
                 cell.delegate = self
-                guard let skontoViewModel = viewModel.skontoViewModel else { return cell }
                 cell.configure(with: skontoViewModel)
                 return cell
             }
