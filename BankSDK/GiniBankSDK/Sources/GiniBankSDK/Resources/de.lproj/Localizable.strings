@@ -85,8 +85,6 @@
 "ginibank.digitalinvoice.edit.name.error" = "Bitte geben Sie den Artikelnamen ein.";
 "ginibank.digitalinvoice.edit.price.error" = "Bitte geben Sie den Artikelpreis ein.";
 
-"ginibank.digitalinvoice.skonto.title" = "Skonto";
-
 // MARK: - Skonto
 
 "ginibank.skonto.screen.title" = "Skonto";

@@ -21,7 +21,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         label.adjustsFontForContentSizeCategory = true
         label.font = GiniBankConfiguration.shared.textStyleFonts[.body]
         label.textColor = .giniColorScheme().text.tertiary.uiColor()
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.skonto.title",
+        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.screen.title",
                                                               comment: "Skonto discount")
         label.numberOfLines = 0
         return label
