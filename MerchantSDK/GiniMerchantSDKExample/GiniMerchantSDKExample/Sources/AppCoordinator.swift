@@ -229,6 +229,16 @@ extension AppCoordinator: GiniMerchantDelegate {
     
     func didCreatePaymentRequest(paymentRequestID: String) {
         print("✅ Created payment request with id \(paymentRequestID)")
+        DispatchQueue.main.async {
+            guard let orderListCoordinator = self.childCoordinators.first as? OrderListCoordinator,
+                  let orderController = orderListCoordinator.orderListNavigationController.topViewController as? OrderDetailViewController,
+                  let reviewController = orderListCoordinator.orderListViewController.presentedViewController as? PaymentReviewViewController else {
+                return
+            }
+            reviewController.dismiss(animated: false)
+
+            orderController.setAmount(reviewController.model?.paymentInfo?.amount ?? "")
+        }
     }
 }
 

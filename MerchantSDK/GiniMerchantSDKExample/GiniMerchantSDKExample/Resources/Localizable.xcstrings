@@ -71,6 +71,12 @@
     "example.order.detail.Alert.FieldError" : {
       "extractionState" : "manual",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Zahlungsdetails sind unvollständig"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",

@@ -259,8 +259,8 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func showHelpMenuScreen() {
-        let topViewController = screenAPINavigationController.topViewController
-        guard topViewController is CameraViewController else {
+        let topViewController = screenAPINavigationController.topViewController as? CameraViewController
+        guard let topViewController, topViewController.shouldShowHelp else {
             return
         }
 

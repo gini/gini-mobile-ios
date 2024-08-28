@@ -7,8 +7,9 @@
 
 import UIKit
 import GiniMerchantSDK
+import GiniUtilites
 
-fileprivate enum Fields: String, CaseIterable {
+enum Fields: String, CaseIterable {
     case recipient = "example.order.detail.Recipient"
     case iban = "example.order.detail.IBAN"
     case amountToPay = "example.order.detail.Amount"
@@ -34,10 +35,18 @@ final class OrderDetailViewController: UIViewController {
         }
     }
 
+    private var detaiViewConstraints: [NSLayoutConstraint] { [
+        detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.paddingTopBottom),
+        detailView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
+        detailView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.paddingLeadingTrailing)]
+    }
+
     init(_ order: Order, paymentComponentsController: PaymentComponentsController) {
         self.order = order
         self.paymentComponentsController = paymentComponentsController
         super.init(nibName: nil, bundle: nil)
+
+        detailView.order = order
 
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnView)))
     }
@@ -72,7 +81,6 @@ final class OrderDetailViewController: UIViewController {
         title = NSLocalizedString("example.order.navigation.orderdetails", comment: "")
 
         view.backgroundColor = .secondarySystemBackground
-
         view.addSubview(detailView)
         view.addSubview(payButton)
 
@@ -93,29 +101,38 @@ final class OrderDetailViewController: UIViewController {
         saveTextFieldData()
     }
 
+    public func setAmount(_ amount: String) {
+        order.amountToPay = amount
+
+        detailView.removeFromSuperview()
+        detailView = OrderDetailView(rowItems)
+        detailView.order = order
+        view.addSubview(detailView)
+
+        NSLayoutConstraint.activate(detaiViewConstraints)
+    }
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.paddingTopBottom),
-            detailView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
-            detailView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.paddingLeadingTrailing),
-
             payButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.paddingTopBottom),
             payButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             payButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
             payButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
-        ])
+        ] + detaiViewConstraints)
     }
 
-
     @objc private func payButtonTapped() {
+        print("✅ Tapped on Pay")
+        view.endEditing(true)
+
         let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
         paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
 
         let paymentInfo = obtainPaymentInfo()
-        if paymentInfo.isComplete {
+        if paymentInfo.isComplete && order.price.value != .zero {
             present(paymentViewBottomSheet, animated: false)
         } else {
-            self.showErrorAlertView(error: NSLocalizedString("example.order.detail.Alert.FieldError", comment: ""))
+            showErrorAlertView(error: NSLocalizedString("example.order.detail.Alert.FieldError", comment: ""))
         }
     }
 
@@ -145,7 +162,7 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
     }
 
     func didTapOnPayInvoice(documentId: String?) {
-        print("✅ Tapped on Pay Invoice on :\(documentId ?? "")")
+        print("✅ Tapped on Pay Order")
         if giniMerchantConfiguration.showPaymentReviewScreen {
             paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
                 if let error {
@@ -189,14 +206,30 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
         let textFields = OrderDetailView.textFields
         order.iban = textFields[NSLocalizedString(Fields.iban.rawValue, comment: "")]?.text ?? ""
         order.recipient = textFields[NSLocalizedString(Fields.recipient.rawValue, comment: "")]?.text ?? ""
-        order.amountToPay = textFields[NSLocalizedString(Fields.amountToPay.rawValue, comment: "")]?.text ?? ""
         order.purpose = textFields[NSLocalizedString(Fields.purpose.rawValue, comment: "")]?.text ?? ""
+
+        var text = textFields[NSLocalizedString(Fields.amountToPay.rawValue, comment: "")]?.text ?? ""
+        text = text.replacingOccurrences(of: ",", with: ".")
+        if let decimalAmount = Decimal(string: text) {
+            var price = Price(extractionString: order.amountToPay) ?? Price(value: decimalAmount, currencyCode: "€")
+            price.value = decimalAmount
+
+            order.amountToPay = price.extractionString
+        } else {
+            order.amountToPay = Price(value: .zero, currencyCode: "€").extractionString
+        }
     }
 
     private func obtainPaymentInfo() -> PaymentInfo {
         saveTextFieldData()
 
-        return PaymentInfo(recipient: order.recipient, iban: order.iban, bic: "", amount: order.amountToPay, purpose: order.purpose, paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "", paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
+        return PaymentInfo(recipient: order.recipient,
+                           iban: order.iban,
+                           bic: "",
+                           amount: order.amountToPay,
+                           purpose: order.purpose,
+                           paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
+                           paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
 
     private func showErrorsIfAny() {
