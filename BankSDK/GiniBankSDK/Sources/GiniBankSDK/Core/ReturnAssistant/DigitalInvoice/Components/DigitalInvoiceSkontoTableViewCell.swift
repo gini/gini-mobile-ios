@@ -137,11 +137,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
 
     private func configure() {
         guard let viewModel = viewModel else { return }
-        if viewModel.edgeCase != nil {
-            edgeCaseLabel.isHidden = false
-        } else {
-            edgeCaseLabel.isHidden = viewModel.isSkontoApplied
-        }
+        edgeCaseLabel.isHidden = (viewModel.edgeCase == nil) ? viewModel.isSkontoApplied : false
         valueLabel.isHidden = !viewModel.isSkontoApplied
         let savingsPrice = "-\(viewModel.savingsPriceString)"
         valueLabel.text = savingsPrice
