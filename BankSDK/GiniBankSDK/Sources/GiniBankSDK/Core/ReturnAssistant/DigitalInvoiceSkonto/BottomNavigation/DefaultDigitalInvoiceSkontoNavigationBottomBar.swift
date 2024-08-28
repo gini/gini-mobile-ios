@@ -8,7 +8,7 @@ import UIKit
 import GiniCaptureSDK
 
 /**
- A custom view that displays a Digital Invoice Skonto bottom navigation bar.
+ A custom view that displays a Digital Invoice screen with Skonto information bottom navigation bar.
 */
 
 final class DefaultDigitalInvoiceSkontoNavigationBottomBar: UIView {
