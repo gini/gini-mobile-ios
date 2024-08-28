@@ -94,10 +94,10 @@ class DigitalInvoiceProceedView: UIView {
     }()
 
     var proceedAction: (() -> Void)?
-    
+
     private let configuration = GiniBankConfiguration.shared
 
-    private let skontoTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
+    private let skontoPercentageText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
                                                                       comment: "%@ Skonto discount")
 
     init() {
@@ -125,38 +125,67 @@ class DigitalInvoiceProceedView: UIView {
     }
 
     private func setupConstraints() {
+        setupContentViewConstraints()
+        setupDividerViewConstraints()
+        setupTotalStringLabelConstraints()
+        setupFinalAmountToPayLabelConstraints()
+        setupSavingsAmountLabelConstraints()
+        setupSkontoBadgeViewConstraints()
+        setupProceedButtonConstraints()
+    }
+
+    private func setupContentViewConstraints() {
         let multiplier: CGFloat = UIDevice.current.isIpad ? Constants.tabletWidthMultiplier : 1.0
 
         NSLayoutConstraint.activate([
             contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
             contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: multiplier),
             contentView.topAnchor.constraint(equalTo: topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
 
+    private func setupDividerViewConstraints() {
+        NSLayoutConstraint.activate([
             dividerView.topAnchor.constraint(equalTo: topAnchor),
             dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
+            dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight)
+        ])
+    }
 
+    private func setupTotalStringLabelConstraints() {
+        NSLayoutConstraint.activate([
             totalStringLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-            totalStringLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                      constant: Constants.padding),
+            totalStringLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: Constants.padding),
             totalStringLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
-                                                       constant: -Constants.badgeHorizontalPadding),
+                                                       constant: -Constants.badgeHorizontalPadding)
+        ])
+    }
 
+    private func setupFinalAmountToPayLabelConstraints() {
+        NSLayoutConstraint.activate([
             finalAmountToPayLabel.topAnchor.constraint(equalTo: totalStringLabel.bottomAnchor,
                                                        constant: Constants.totalValueLabelTopPadding),
             finalAmountToPayLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                            constant: Constants.padding),
             finalAmountToPayLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
-                                                            constant: -Constants.padding),
+                                                            constant: -Constants.padding)
+        ])
+    }
 
+    private func setupSavingsAmountLabelConstraints() {
+        NSLayoutConstraint.activate([
             savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
                                                     constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: finalAmountToPayLabel.leadingAnchor),
             savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
-                                                         constant: -Constants.padding),
+                                                         constant: -Constants.padding)
+        ])
+    }
 
+    private func setupSkontoBadgeViewConstraints() {
+        NSLayoutConstraint.activate([
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalStringLabel.centerYAnchor),
             skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                       constant: -Constants.padding),
@@ -168,25 +197,27 @@ class DigitalInvoiceProceedView: UIView {
             skontoPercentageLabel.leadingAnchor.constraint(equalTo: skontoBadgeView.leadingAnchor,
                                                            constant: Constants.badgeHorizontalPadding),
             skontoPercentageLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
-                                                            constant: -Constants.badgeHorizontalPadding),
+                                                            constant: -Constants.badgeHorizontalPadding)
+        ])
+    }
 
+    private func setupProceedButtonConstraints() {
+        NSLayoutConstraint.activate([
             proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
                                                constant: Constants.verticalPadding),
             proceedButton.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
             proceedButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            proceedButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                   constant: Constants.padding),
+            proceedButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
             proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.proceedButtonHeight)
         ])
     }
 
     func configure(viewModel: DigitalInvoiceViewModel) {
+        proceedButton.isEnabled = viewModel.isPayButtonEnabled()
         if viewModel.isPayButtonEnabled() {
-            proceedButton.isEnabled = true
             proceedButton.configure(with: configuration.primaryButtonConfiguration)
         } else {
-            proceedButton.isEnabled = false
             proceedButton.configure(with: configuration.secondaryButtonConfiguration)
         }
 
@@ -197,7 +228,7 @@ class DigitalInvoiceProceedView: UIView {
         if let skontoViewModel = viewModel.skontoViewModel {
             let isSkontoApplied = skontoViewModel.isSkontoApplied
             skontoBadgeView.isHidden = !isSkontoApplied
-            let skontoPercentageLabelText = String.localizedStringWithFormat(skontoTitle,
+            let skontoPercentageLabelText = String.localizedStringWithFormat(skontoPercentageText,
                                                                              skontoViewModel.formattedPercentageDiscounted)
             skontoPercentageLabel.text = skontoPercentageLabelText
             skontoPercentageLabel.accessibilityValue = skontoPercentageLabelText
