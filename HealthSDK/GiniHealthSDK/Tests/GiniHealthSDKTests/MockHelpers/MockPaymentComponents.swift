@@ -46,6 +46,20 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         }
     }
 
+    func checkIfDocumentContainsMultipleInvoices(docId: String, completion: @escaping (Result<Bool, GiniHealthSDK.GiniHealthError>) -> Void) {
+        switch docId {
+        case MockSessionManager.payableDocumentID:
+            completion(.success(false))
+        case MockSessionManager.notPayableDocumentID:
+            completion(.success(true))
+        case MockSessionManager.missingDocumentID:
+            completion(.failure(.apiError(.noResponse)))
+        default:
+            fatalError("Document id not handled in tests")
+        }
+    }
+
+
     func paymentView(documentId: String) -> UIView {
         let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniHealthConfiguration: giniHealthConfiguration, paymentComponentConfiguration: PaymentComponentConfiguration(isPaymentComponentBranded: true))
         viewModel.documentId = documentId
