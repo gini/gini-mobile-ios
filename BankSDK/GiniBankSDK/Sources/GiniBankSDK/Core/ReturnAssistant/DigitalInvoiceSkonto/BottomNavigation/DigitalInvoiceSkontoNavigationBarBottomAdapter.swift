@@ -8,7 +8,7 @@ import Foundation
 import GiniCaptureSDK
 
 /**
-Protocol for injecting a custom bottom navigation bar on the Digital Invoice Skonto screen.
+Protocol for injecting a custom bottom navigation bar on the Digital Invoice screen with Skonto information.
 
 - note: Bottom navigation only.
 */
