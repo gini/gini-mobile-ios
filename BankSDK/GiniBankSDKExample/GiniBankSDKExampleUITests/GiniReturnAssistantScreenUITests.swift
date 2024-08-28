@@ -10,6 +10,12 @@ import XCTest
 
 class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     
+    /*
+     To launch these tests and be as possibly close to real user behavior
+     Please upload to device: 
+        "Return Assistant Testrechnung" PDF file
+     */
+    
     func testReturnAssistant() {
         
         //Tap Photopayment button

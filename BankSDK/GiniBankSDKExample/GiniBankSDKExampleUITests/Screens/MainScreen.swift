@@ -75,7 +75,7 @@ public class MainScreen {
         let dontAllowBtn = springboard.buttons["Don’t Allow"]
         let dontAllowBtnDE = springboard.buttons["Nicht erlauben"]
         
-            if answer == true {
+            if answer {
                 if allowBtn.exists {
                     allowBtn.tap()
                 } else if allowBtnDE.exists {
@@ -103,7 +103,7 @@ public class MainScreen {
         let dontAllowBtn = springboard.buttons["Don’t Allow"]
         let dontAllowBtnDE = springboard.buttons["Nicht erlauben"]
         
-            if answer == true {
+            if answer {
                 if allowFullAccess.exists {
                     allowFullAccess.tap()
                 } else if allowFullAccessDE.exists {
@@ -150,11 +150,9 @@ public class MainScreen {
 
     func handleConfigurationSetting(element: XCUIElement, enabled: Bool) {
         let currentValue = element.value as? String
-        if enabled == true && currentValue == "0" {
-            element.tap()
-        } else if enabled == false && currentValue == "1" {
-            element.tap()
-        }
+        if (enabled && currentValue == "0") || (!enabled && currentValue == "1") {
+                element.tap()
+            }
     }
     
     func tapSwitchNextToTextElement(text: String) {
