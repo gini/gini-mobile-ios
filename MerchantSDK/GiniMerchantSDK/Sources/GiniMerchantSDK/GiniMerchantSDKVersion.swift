@@ -5,4 +5,4 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-public let GiniMerchantSDKVersion = "0.0.1"
+public let GiniMerchantSDKVersion = "1.0.0"
