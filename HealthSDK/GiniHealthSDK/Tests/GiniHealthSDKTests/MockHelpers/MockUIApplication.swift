@@ -24,8 +24,14 @@ struct MockUIApplication: URLOpenerProtocol {
     #if compiler(>=6.0)
     func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
         if canOpen {
-            DispatchQueue.main.async {
-                completion?(true)
+            if #available(iOS 13, *) {
+                Task { @MainActor in
+                    completion?(true)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion?(true)
+                }
             }
         }
     }
