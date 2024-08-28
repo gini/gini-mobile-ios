@@ -57,6 +57,7 @@ final class DigitalInvoiceViewModel {
         if hasSkonto {
             let totalPriceForExtractions = totalPrice
             self.invoice?.totalPriceForExtractions = totalPriceForExtractions
+            self.invoice?.skontoExtractions = skontoViewModel?.editedExtractionResult.skontoDiscounts
         }
         delegate?.didTapPay(on: self)
     }
