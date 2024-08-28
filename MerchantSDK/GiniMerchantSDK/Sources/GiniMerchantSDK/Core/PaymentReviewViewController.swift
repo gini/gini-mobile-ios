@@ -144,10 +144,6 @@ public final class PaymentReviewViewController: BottomSheetController, UIGesture
         unsubscribeFromNotifications()
     }
 
-    public override var preferredStatusBarStyle: UIStatusBarStyle {
-        return giniMerchantConfiguration.paymentReviewStatusBarStyle
-    }
-
     fileprivate func layoutUI() {
         switch displayMode {
         case .documentCollection:
@@ -385,11 +381,11 @@ fileprivate extension PaymentReviewViewController {
     }
 }
 
-//MARK: - Close Button
+//MARK: - Close Button used in Gini Health SDK
 fileprivate extension PaymentReviewViewController {
     func buildCloseButton() -> UIButton {
         let button = UIButton()
-        button.isHidden = !giniMerchantConfiguration.showPaymentReviewCloseButton
+        button.isHidden = true
         button.setImage(GiniMerchantImage.paymentReviewClose.preferredUIImage(), for: .normal)
         button.addTarget(self, action: #selector(closeButtonClicked), for: .touchUpInside)
         return button
