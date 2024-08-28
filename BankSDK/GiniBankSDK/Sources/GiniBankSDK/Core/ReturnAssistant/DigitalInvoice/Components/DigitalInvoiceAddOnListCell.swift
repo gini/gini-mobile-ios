@@ -57,7 +57,7 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
         contentView.addSubview(separatorView)
     }
 
-    func setAsLastTableViewCell() {
+    func configureAsBottomTableCell() {
         layer.cornerRadius = 8
         layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
     }
