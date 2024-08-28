@@ -14,7 +14,7 @@ import GiniBankAPILibrary
  */
 public struct DigitalInvoice {
 
-    let _extractionResult: ExtractionResult
+    private let _extractionResult: ExtractionResult
     var lineItems: [LineItem]
     var addons: [DigitalInvoiceAddon]
     var returnReasons: [ReturnReason]?
@@ -162,7 +162,7 @@ extension DigitalInvoice {
             return ExtractionResult(extractions: _extractionResult.extractions,
                                     lineItems: lineItems.map { $0.extractions },
                                     returnReasons: returnReasons,
-                                    skontoDiscounts: skontoExtractions,
+                                    skontoDiscounts: skontoExtractions ?? _extractionResult.skontoDiscounts,
                                     candidates: _extractionResult.candidates)
         }
 
@@ -178,7 +178,7 @@ extension DigitalInvoice {
         return ExtractionResult(extractions: modifiedExtractions,
                                 lineItems: lineItems.map { $0.extractions },
                                 returnReasons: returnReasons,
-                                skontoDiscounts: skontoExtractions,
+                                skontoDiscounts: skontoExtractions ?? _extractionResult.skontoDiscounts,
                                 candidates: _extractionResult.candidates)
     }
 }
