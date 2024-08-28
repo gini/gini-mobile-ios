@@ -25,8 +25,7 @@ final class DigitalInvoiceViewModel {
     var skontoViewModel: SkontoViewModel?
 
     var totalPrice: Price? {
-        let skontoIsActive = skontoViewModel?.isSkontoApplied ?? false
-        return skontoIsActive ? skontoViewModel?.skontoAmountToPay : invoice?.total
+        skontoViewModel?.isSkontoApplied == true ? skontoViewModel?.skontoAmountToPay : invoice?.total
     }
 
     var hasSkonto: Bool {
