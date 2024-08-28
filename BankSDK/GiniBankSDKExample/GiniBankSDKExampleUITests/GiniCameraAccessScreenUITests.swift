@@ -19,7 +19,9 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         //Reset Camera Access
         app.terminate()
     //Don't work on simulators
-        if #available(iOS 13.4, *) { app.resetAuthorizationStatus(for: .camera) }
+        if #available(iOS 13.4, *) {
+            app.resetAuthorizationStatus(for: .camera)
+        }
         app.launch()
         //Tap Photopaymen button
         mainScreen.photoPaymentButton.tap()
@@ -32,16 +34,19 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         //Assert that Photopayment button is displayed
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
         //Reset Camera Access
-        if #available(iOS 13.4, *) { app.resetAuthorizationStatus(for: .camera) }
-
+        if #available(iOS 13.4, *) {
+            app.resetAuthorizationStatus(for: .camera)
+        }
     }
     
     func testCameraAccessScreenHelpButton() throws {
         
         //Reset Camera Access
         app.terminate()
-    //Don't work on simulators
-        if #available(iOS 13.4, *) { app.resetAuthorizationStatus(for: .camera) }
+        //Don't work on simulators
+        if #available(iOS 13.4, *) {
+            app.resetAuthorizationStatus(for: .camera)
+        }
         app.launch()
         //Tap Photopaymen button
         mainScreen.photoPaymentButton.tap()
@@ -54,7 +59,9 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         //Assert that Help screen is displayed
         XCTAssertTrue(helpScreen.cameraBackButton.isHittable)
         //Reset Camera Access
-        if #available(iOS 13.4, *) { app.resetAuthorizationStatus(for: .camera) }
+        if #available(iOS 13.4, *) {
+            app.resetAuthorizationStatus(for: .camera)
+        }
     }
     
     func testCameraAccessScreenGiveAccessButton() throws {
@@ -62,7 +69,9 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         //Reset Camera Access
         app.terminate()
     //Don't work on simulators
-        if #available(iOS 13.4, *) { app.resetAuthorizationStatus(for: .camera) }
+        if #available(iOS 13.4, *) {
+            app.resetAuthorizationStatus(for: .camera)
+        }
         app.launch()
         //Tap Photopaymen button
         mainScreen.photoPaymentButton.tap()
@@ -76,6 +85,8 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
         XCTAssertTrue(settingsApp.staticTexts["GiniBankSDKExample"].waitForExistence(timeout: 5))
         //Reset Camera Access
-        if #available(iOS 13.4, *) { app.resetAuthorizationStatus(for: .camera) }
+        if #available(iOS 13.4, *) {
+            app.resetAuthorizationStatus(for: .camera)
+        }
     }
 }

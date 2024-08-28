@@ -10,6 +10,13 @@ import XCTest
 
 class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
     
+    /*
+     To launch these tests and be as possibly close to real user behavior
+     Please upload to device:
+        "skonto_past" file with expired skonto
+        "skonto_valid" file with valid skonto
+     */
+    
     func testSkonto() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
