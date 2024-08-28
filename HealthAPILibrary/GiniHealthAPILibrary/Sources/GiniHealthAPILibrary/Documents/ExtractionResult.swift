@@ -19,6 +19,7 @@ public enum PaymentState: String {
  */
 public enum ExtractionType: String {
     case paymentState = "payment_state"
+    case containsMultipleDocs = "contains_multiple_docs"
     case paymentDueDate = "payment_due_date"
     case amountToPay = "amount_to_pay"
     case paymentRecipient = "payment_recipient"

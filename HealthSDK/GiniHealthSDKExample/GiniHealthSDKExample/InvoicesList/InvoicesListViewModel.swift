@@ -16,6 +16,7 @@ struct DocumentWithExtractions: Codable {
     var paymentDueDate: String?
     var recipient: String?
     var isPayable: Bool?
+    var hasMultipleDocuments: Bool?
 
     init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
         self.documentID = documentID
@@ -23,6 +24,7 @@ struct DocumentWithExtractions: Codable {
         self.paymentDueDate = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentDueDate.rawValue })?.value
         self.recipient = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.paymentRecipient.rawValue })?.value
         self.isPayable = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
+        self.hasMultipleDocuments = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value == true.description
     }
 }
 
@@ -71,6 +73,8 @@ final class InvoicesListViewModel {
     
     func viewDidLoad() {
         paymentComponentsController.loadPaymentProviders()
+        
+        checkDocumentsForMultipleInvoices()
     }
     
     func refetchExtractions() {
@@ -207,6 +211,15 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
                 viewController.modalPresentationStyle = .overCurrentContext
                 self?.coordinator.invoicesListViewController.present(viewController, animated: true)
             }
+        }
+    }
+
+    private func checkDocumentsForMultipleInvoices() {
+        for invoice in self.invoices {
+            if invoice.hasMultipleDocuments ?? false && !(invoice.isPayable ?? false) {
+                self.errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.contains.multiple.invoices", comment: "")): \(invoice.recipient ?? "")")
+            }
+            showErrorsIfAny()
         }
     }
 }
