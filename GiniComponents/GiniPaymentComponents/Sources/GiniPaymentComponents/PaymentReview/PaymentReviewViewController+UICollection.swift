@@ -11,6 +11,7 @@ import GiniUtilites
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 
 extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { 1 }
 
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -25,7 +26,7 @@ extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionVie
         cell.pageImageView.display(image: cellModel.preview)
         return cell
     }
-    
+
     // MARK: - UICollectionViewDelegateFlowLayout
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

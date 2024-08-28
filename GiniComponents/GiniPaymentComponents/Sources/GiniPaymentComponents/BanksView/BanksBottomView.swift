@@ -37,6 +37,7 @@ public final class BanksBottomView: BottomSheetViewController {
         imageView.tintColor = viewModel.configuration.closeIconAccentColor
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnCloseIcon)))
+        imageView.isHidden = true
         return imageView
     }()
     
@@ -146,7 +147,7 @@ public final class BanksBottomView: BottomSheetViewController {
 
     private func setupDescriptionConstraints() {
         NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: descriptionView.topAnchor),
+            descriptionLabel.topAnchor.constraint(equalTo: descriptionView.topAnchor, constant: Constants.descriptionTopPadding),
             descriptionLabel.leadingAnchor.constraint(equalTo: descriptionView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             descriptionLabel.trailingAnchor.constraint(equalTo: descriptionView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             descriptionLabel.bottomAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: -Constants.viewPaddingConstraint)
@@ -182,7 +183,8 @@ public final class BanksBottomView: BottomSheetViewController {
 
 extension BanksBottomView {
     enum Constants {
-        static let heightTitleView = 48.0
+        static let heightTitleView = 19.0
+        static let descriptionTopPadding = 4.0
         static let viewPaddingConstraint = 16.0
         static let topAnchorTitleView = 32.0
         static let closeIconSize = 24.0

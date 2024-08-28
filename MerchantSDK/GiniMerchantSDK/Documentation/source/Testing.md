@@ -29,16 +29,16 @@ After you've set the client credentials in the example banking app and installed
 
 #### Payment component
 
-After following the integration steps above you'll arrive at the `Payment Invoice list screen`, which already has integrated the `Payment Component`.
-The following screenshot shows a sample list of invoices where the `PaymentComponent` is shown for each invoice.
+After following the integration steps above you'll arrive at the `Payments list screen`. Then, you can navigate to `Payment detail screen`. Tapping on `Pay` will show you the `Payment Component`.
+The following screenshot shows a payment detail screen with the `PaymentComponent` shown in a bottom sheet.
 
 <br>
-<center><img src="img/Integration guide/InvoiceListWithPaymentComponent.png" height="500"/></center>
+<center><img src="img/Integration guide/PaymentDetailWithPaymentComponent.png" height="500"/></center>
 </br>
 
 #### Bank Selection Bottom sheet 
 
-You should see the `Gini-Test-Payment-Provider` preselected in every payment component view. By clicking the picker you should see the `BankSelectionBottomSheet` with the list of available banking apps (including `Gini-Test-Payment-Provider` and other testing and production apps).
+By clicking the picker you should see the `BankSelectionBottomSheet` with the list of available banking apps (including `Gini-Test-Payment-Provider` and other testing and production apps).
 
 <br>
 <center><img src="img/Integration guide/BankSelectionBottomSheet.png" height="500"/></center>
@@ -54,9 +54,9 @@ By clicking either the more information or the info icon on the `Payment Compone
 
 #### Payment Review
 
-By clicking the `Pay the invoice` button on a `Payment Component` view you should see the `Payment Review screen`, which shows the invoice's pages and the payment information. It also allows editing the payment information. The `To the banking app` button should have the icon and colors of the banking app, which was selected in the payment component view.
+By clicking the `Continue to overview` button on a `Payment Component` view you should see the `Payment Review Bottom Sheet`, which shows the the payment information. It also allows editing the payment amount information. The `To the banking app` button should have the icon and colors of the banking app, which was selected in the payment component view.
 
-Check that the extractions and the document preview are shown and then press the `Pay` button:
+Check that the details are shown and then press the `To the banking app` button:
 
 <br>
 <center><img src="img/Integration guide/PaymentReviewScreen.png" height="500"/></center>
@@ -64,8 +64,8 @@ Check that the extractions and the document preview are shown and then press the
 
 #### Execute payment
 
-When clicking the `To the banking app` button on the payment review you should be redirected to the example banking app where the payment information will be fetched from Gini (including any changes you made on the payment review). Press the "Pay" button to execute a test payment which will mark the payment as paid in the [Gini Health API](https://health-api.gini.net/documentation/#gini-health-api-documentation).
-You should be redirected to the example banking app where the final extractions are shown:
+When clicking the `To the banking app` button on the payment review you should be redirected to the example banking app where the payment information will be fetched from Gini (including any changes you made on the payment review). Press the "Pay" button to execute a test payment which will mark the payment as paid in the [Gini Merchant API](https://merchant-api.gini.net/documentation/#gini-health-api-documentation).
+You should be redirected to the example banking app where the final payment details are shown:
 
 <br>
 <center><img src="img/Integration guide/ReviewScreenBeforeResolvingPayment.png" height="500"/></center>

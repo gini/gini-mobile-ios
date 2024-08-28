@@ -60,6 +60,11 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     }
 
     func cameraDidAppear(_ viewController: CameraViewController) {
+        // we should reinitialize camera when it's already initialized, otherwise camera behaves weird
+        guard viewController.cameraNeedsInitializing || shouldShowOnboarding() else {
+            viewController.stopLoadingIndicater()
+            return
+        }
         if shouldShowOnboarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
                 viewController.setupCamera()

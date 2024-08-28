@@ -27,4 +27,8 @@ extension CameraViewController {
     public func setupCamera() {
         cameraPreviewViewController.setupCamera()
     }
+
+    public func stopLoadingIndicater() {
+        cameraPreviewViewController.stopLoadingIndicator()
+    }
 }

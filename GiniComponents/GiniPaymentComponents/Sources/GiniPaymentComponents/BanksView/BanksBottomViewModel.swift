@@ -14,6 +14,9 @@ public protocol BanksBottomViewProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider)
     func didTapOnMoreInformation()
     func didTapOnClose()
+    func didTapOnContinueOnShareBottomSheet()
+    func didTapForwardOnInstallBottomSheet()
+    func didTapOnPayButton()
 }
 
 struct PaymentProviderAdditionalInfo {

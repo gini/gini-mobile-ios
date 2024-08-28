@@ -13,10 +13,10 @@ import UIKit
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ())
-    func presentInvoicesList(invoices: [DocumentWithExtractions]?)
+    func presentOrdersList(orders: [Order]?)
 }
 
-final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDelegate, GiniCaptureResultsDelegate {
+final class ScreenAPICoordinator: NSObject, Coordinator {
     
     weak var delegate: ScreenAPICoordinatorDelegate?
     var childCoordinators: [Coordinator] = []
@@ -31,7 +31,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     var visionDocuments: [GiniCaptureDocument]?
     var visionConfiguration: GiniConfiguration
     private var captureExtractedResults: [GiniBankAPILibrary.Extraction] = []
-    private var hardcodedInvoicesController: HardcodedInvoicesController
+    private var hardcodedOrdersController: HardcodedOrdersController
     private var paymentComponentController: PaymentComponentsController
     
     // {extraction name} : {entity name}
@@ -39,74 +39,17 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniMerchantTrackingDel
     
     init(configuration: GiniConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
-         hardcodedInvoicesController: HardcodedInvoicesController,
+         hardcodedOrdersController: HardcodedOrdersController,
          paymentComponentController: PaymentComponentsController) {
         visionConfiguration = configuration
         visionDocuments = documents
-        self.hardcodedInvoicesController = hardcodedInvoicesController
+        self.hardcodedOrdersController = hardcodedOrdersController
         self.paymentComponentController = paymentComponentController
         super.init()
     }
     
-    func start(documentService: GiniMerchantSDK.DefaultDocumentService) {
-        let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
-                                                        configuration: visionConfiguration,
-                                                        resultsDelegate: self,
-                                                        networkingService: MerchantNetworkingService(documentService: documentService))
-        screenAPIViewController = RootNavigationController(rootViewController: viewController)
-        screenAPIViewController.setNavigationBarHidden(true, animated: false)
-        screenAPIViewController.delegate = self
-        screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
-    }
-    
     func onPaymentReviewScreenEvent(event: GiniMerchantSDK.TrackingEvent<GiniMerchantSDK.PaymentReviewScreenEventType>) {
     }
-    
-    // MARK: - GiniCaptureResultsDelegate
-    
-    func giniCaptureDidCancelAnalysis() {
-        screenAPIViewController.dismiss(animated: true)
-    }
-    
-    func giniCaptureDidEnterManually() {
-        screenAPIViewController.dismiss(animated: true)
-    }
-    
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-            var healthExtractions: [GiniMerchantSDK.Extraction] = []
-            captureExtractedResults = result.extractions.map { $0.value }
-            for extraction in captureExtractedResults {
-                healthExtractions.append(GiniMerchantSDK.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
-            }
-
-            if let giniMerchant = self.giniMerchant, let docId = result.document?.id {
-                // this step needed since we've got 2 different Document structures
-                giniMerchant.fetchDataForReview(documentId: docId) { [weak self] resultReview in
-                    switch resultReview {
-                    case .success(let data):
-                        giniMerchant.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
-                            switch result {
-                            case let .success(extractionResult):
-                                print("✅ Successfully fetched extractions for id: \(docId)")
-                                // Store invoice/document into Invoices list
-                                let invoice = DocumentWithExtractions(documentID: docId,
-                                                                      extractionResult: extractionResult)
-                                self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
-                                DispatchQueue.main.async {
-                                    self?.rootViewController.dismiss(animated: true, completion: {
-                                        self?.delegate?.presentInvoicesList(invoices: [invoice])
-                                    })
-                                }
-                            case let .failure(error):
-                                print("❌ Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))")
-                            }
-                        }
-                    case .failure(let error):
-                        print("❌ Document data fetching failed: \(String(describing: error))")
-                    }
-                }
-            }
-        }
 }
 // MARK: - UINavigationControllerDelegate
 

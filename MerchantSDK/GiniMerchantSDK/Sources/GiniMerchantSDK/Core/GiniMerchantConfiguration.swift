@@ -139,6 +139,9 @@ public final class GiniMerchantConfiguration: NSObject {
     public func font(for textStyle: UIFont.TextStyle) -> UIFont {
         return fontProvider.font(for: textStyle)
     }
+
+    // We will switch this option internally to stil handle documents with extractions on GiniHealthSDK and still handle invoices without document on GiniMerchantSDK
+    var useInvoiceWithoutDocument: Bool = false
 }
 
 extension GiniMerchantConfiguration {

@@ -24,8 +24,7 @@ merchantSDK.delegate = self // where self conforms to the GiniMerchantDelegate p
 Implement the `GiniMerchantTrackingDelegate` protocol and supply the delegate when initializing `PaymentReviewViewController`. For example:
 
 ```swift
-let viewController = paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId,
-                                                                            trackingDelegate: self)
+let viewController = paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, paymentInfo: paymentInfo, trackingDelegate: self)
 ```
 
 ## Events
