@@ -177,7 +177,6 @@ public struct DataForReview {
                            }
                        case .failure(let error):
                            completion(.failure(.apiError(error)))
-                           break
                        }
                    }
                }
@@ -213,7 +212,6 @@ public struct DataForReview {
                             }
                         case .failure(let error):
                             completion(.failure(.apiError(error)))
-                            break
                         }
                     }
                 }
@@ -222,8 +220,6 @@ public struct DataForReview {
             }
         }
     }
-
-
 
     /**
      Polls the document via document id.
