@@ -146,8 +146,11 @@ final class AppCoordinator: Coordinator {
                      do {
                          try GiniCapture.validate(doc,
                                                   withConfig: captureConfiguration)
-                         self.showOpenWithSwitchDialog(
-                             for: [GiniCapturePage(document: doc, error: nil)])
+                         // waiting one second for controllers to dismiss, and we can't use swift concurrency in ios 12 for `popToRootViewControllerIfNeeded`
+                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                             self?.showOpenWithSwitchDialog(
+                                for: [GiniCapturePage(document: doc, error: nil)])
+                         }
                      } catch  {
                          self.rootViewController.showErrorDialog(for: error, positiveAction: nil)
                      }
@@ -296,6 +299,8 @@ final class AppCoordinator: Coordinator {
     
     fileprivate func popToRootViewControllerIfNeeded() {
         self.childCoordinators.forEach { coordinator in
+            // there can be another controller presented, like action sheet or document picker
+            coordinator.rootViewController.presentedViewController?.dismiss(animated: true)
             coordinator.rootViewController.dismiss(animated: true)
             self.remove(childCoordinator: coordinator)
         }
