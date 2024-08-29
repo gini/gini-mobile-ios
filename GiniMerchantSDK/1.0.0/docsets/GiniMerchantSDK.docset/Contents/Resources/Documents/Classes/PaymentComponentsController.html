@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PaymentComponentsController Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/PaymentComponentsController" class="dashAnchor"></a>
+
+    <a title="PaymentComponentsController Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+        <img class="logo-icon" src="../img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">GiniMerchantSDK Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      PaymentComponentsController Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../testing.html">Testing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BottomSheetController.html">BottomSheetController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CancellationToken.html">CancellationToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDocumentService.html">DefaultDocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction.html">Extraction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction/Box.html">– Box</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction/Candidate.html">– Candidate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ExtractionResult.html">ExtractionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniMerchant.html">GiniMerchant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniMerchant/Constants.html">– Constants</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniMerchantConfiguration.html">GiniMerchantConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PaymentComponentsController.html">PaymentComponentsController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PaymentReviewModel.html">PaymentReviewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PaymentReviewViewController.html">PaymentReviewViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ZoomedImageView.html">ZoomedImageView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ZoomedImageView/ScaleMode.html">– ScaleMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ZoomedImageView/Offset.html">– Offset</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:15GiniMerchantSDK0aB10SDKVersionSSvp">GiniMerchantSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ExtractionType.html">ExtractionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniError.html">GiniError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniMerchantError.html">GiniMerchantError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniMerchantImage.html">GiniMerchantImage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/LogLevel.html">LogLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/PaymentReviewScreenEventType.html">PaymentReviewScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/PaymentState.html">PaymentState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/PlatformSupported.html">PlatformSupported</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Extensions.html#/AppKit">AppKit</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Functions.html#/s:15GiniMerchantSDK04giniB6BundleSo8NSBundleCyF">giniMerchantBundle()</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniErrorProtocol.html">GiniErrorProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniMerchantDelegate.html">GiniMerchantDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Protocols.html#/s:15GiniMerchantSDK0aB16TrackingDelegateP">GiniMerchantTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ImageScrollViewDelegate.html">ImageScrollViewDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PaymentProvidersBottomViewProtocol.html">PaymentProvidersBottomViewProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PaymentReviewScreenTrackingDelegate.html">PaymentReviewScreenTrackingDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ButtonConfiguration.html">ButtonConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CompositeDocument.html">CompositeDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CompositeDocumentInfo.html">CompositeDocumentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DataForReview.html">DataForReview</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document.html">Document</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Layout.html">– Layout</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Progress.html">– Progress</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Origin.html">– Origin</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/SourceClassification.html">– SourceClassification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Page.html">– Page</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Links.html">– Links</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/DocType.html">– DocType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/TypeV2.html">– TypeV2</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Metadata.html">– Metadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ExtractionsContainer.html">ExtractionsContainer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/MinAppVersions.html">MinAppVersions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Structs.html#/s:15GiniMerchantSDK27PageCollectionCellViewModelV">PageCollectionCellViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PartialDocumentInfo.html">PartialDocumentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentComponentConfiguration.html">PaymentComponentConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentInfo.html">PaymentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentProvider.html">PaymentProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ProviderColors.html">ProviderColors</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/TrackingEvent.html">TrackingEvent</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Type Aliases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Typealiases.html#/s:15GiniMerchantSDK16CompletionResulta">CompletionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Typealiases.html#/s:15GiniMerchantSDK16PaymentProvidersa">PaymentProviders</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>PaymentComponentsController</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">PaymentComponentsController</span> <span class="p">:</span> <span class="kt">PaymentComponentsProtocol</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PaymentComponentsController</span><span class="p">:</span> <span class="kt"><a href="../Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PaymentComponentsController</span><span class="p">:</span> <span class="kt"><a href="../Protocols/PaymentProvidersBottomViewProtocol.html">PaymentProvidersBottomViewProtocol</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>The <code>PaymentComponentsController</code> class allows control over the payment components.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC8delegateAA0deF8Protocol_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/delegate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC8delegateAA0deF8Protocol_pSgvp">delegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>handling the Payment Component Controller delegate</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">delegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC12viewDelegateAA0D21ComponentViewProtocol_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/viewDelegate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC12viewDelegateAA0D21ComponentViewProtocol_pSgvp">viewDelegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>handling the Payment Component view delegate</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">viewDelegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC18bottomViewDelegateAA0d15ProvidersBottomH8Protocol_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/bottomViewDelegate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC18bottomViewDelegateAA0d15ProvidersBottomH8Protocol_pSgvp">bottomViewDelegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>handling the Payment Bottom view delegate</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">bottomViewDelegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/PaymentProvidersBottomViewProtocol.html">PaymentProvidersBottomViewProtocol</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC08selectedD8ProviderAA0dH0VSgvp"></a>
+                    <a name="//apple_ref/swift/Property/selectedPaymentProvider" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC08selectedD8ProviderAA0dH0VSgvp">selectedPaymentProvider</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>storing the current selected payment provider</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">selectedPaymentProvider</span><span class="p">:</span> <span class="kt"><a href="../Structs/PaymentProvider.html">PaymentProvider</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC29paymentComponentConfigurationAA0dhI0VSgvp"></a>
+                    <a name="//apple_ref/swift/Property/paymentComponentConfiguration" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC29paymentComponentConfigurationAA0dhI0VSgvp">paymentComponentConfiguration</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Payment Component View Configuration</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentComponentConfiguration</span><span class="p">:</span> <span class="kt"><a href="../Structs/PaymentComponentConfiguration.html">PaymentComponentConfiguration</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC04giniB0AcA0aB0C_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(giniMerchant:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC04giniB0AcA0aB0C_tcfc">init(giniMerchant:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializer of the Payment Component Controller class.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">giniMerchant</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniMerchant.html">GiniMerchant</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>giniMerchant</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An instance of GiniMerchant initialized with GiniHealthAPI.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><ul>
+<li>instance of the payment component controller class</li>
+</ul></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC04loadD9ProvidersyyF"></a>
+                    <a name="//apple_ref/swift/Method/loadPaymentProviders()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC04loadD9ProvidersyyF">loadPaymentProviders()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Loads the payment providers list and stores them.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Also triggers a function that checks if the payment providers are installed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">loadPaymentProviders</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC24checkIfDocumentIsPayable5docId10completionySS_ys6ResultOySbAA0aB5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/checkIfDocumentIsPayable(docId:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC24checkIfDocumentIsPayable5docId10completionySS_ys6ResultOySbAA0aB5ErrorOGctF">checkIfDocumentIsPayable(docId:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Checks if the document is payable by extracting the IBAN.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">checkIfDocumentIsPayable</span><span class="p">(</span><span class="nv">docId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt"><a href="../Enums/GiniMerchantError.html">GiniMerchantError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>docId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ID of the uploaded document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure for processing asynchronous data received from the service. It has a Result type parameter, representing either success or failure. The completion block is called on the main thread.
+In the case of success, it includes a boolean value indicating whether the IBAN was extracted successfully.
+In case of failure, it returns an error from the server side.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC11paymentView10documentIdSo6UIViewCSSSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/paymentView(documentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC11paymentView10documentIdSo6UIViewCSSSg_tF">paymentView(documentId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provides a custom Gini view that contains more information, bank selection if available and a tappable button to pay the document/invoice</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">paymentView</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">UIView</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>a custom view</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC04loadD15ReviewScreenFor10documentID11paymentInfo16trackingDelegate10completionySSSg_AA0dN0VSgAA0ab8TrackingP0_pSgySo06UIViewF0CSg_AA0aB5ErrorOSgtctF"></a>
+                    <a name="//apple_ref/swift/Method/loadPaymentReviewScreenFor(documentID:paymentInfo:trackingDelegate:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC04loadD15ReviewScreenFor10documentID11paymentInfo16trackingDelegate10completionySSSg_AA0dN0VSgAA0ab8TrackingP0_pSgySo06UIViewF0CSg_AA0aB5ErrorOSgtctF">loadPaymentReviewScreenFor(documentID:paymentInfo:trackingDelegate:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">loadPaymentReviewScreenFor</span><span class="p">(</span><span class="nv">documentID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">paymentInfo</span><span class="p">:</span> <span class="kt"><a href="../Structs/PaymentInfo.html">PaymentInfo</a></span><span class="p">?,</span> <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="kt"><a href="../Other%20Protocols.html#/s:15GiniMerchantSDK0aB16TrackingDelegateP">GiniMerchantTrackingDelegate</a></span><span class="p">?,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">UIViewController</span><span class="p">?,</span> <span class="kt"><a href="../Enums/GiniMerchantError.html">GiniMerchantError</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Bottom%20Sheets"></a>
+                <a name="//apple_ref/swift/Section/Bottom Sheets" class="dashAnchor"></a>
+                <a href="#/Bottom%20Sheets">
+                  <h3 class="section-name">Bottom Sheets</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC22paymentViewBottomSheet10documentIDSo06UIViewF0CSSSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/paymentViewBottomSheet(documentID:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC22paymentViewBottomSheet10documentIDSo06UIViewF0CSSSg_tF">paymentViewBottomSheet(documentID:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">paymentViewBottomSheet</span><span class="p">(</span><span class="nv">documentID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC24bankSelectionBottomSheetSo06UIViewF0CyF"></a>
+                    <a name="//apple_ref/swift/Method/bankSelectionBottomSheet()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC24bankSelectionBottomSheetSo06UIViewF0CyF">bankSelectionBottomSheet()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bankSelectionBottomSheet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC015paymentInfoViewF0So06UIViewF0CyF"></a>
+                    <a name="//apple_ref/swift/Method/paymentInfoViewController()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC015paymentInfoViewF0So06UIViewF0CyF">paymentInfoViewController()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">paymentInfoViewController</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC21installAppBottomSheetSo06UIViewF0CyF"></a>
+                    <a name="//apple_ref/swift/Method/installAppBottomSheet()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC21installAppBottomSheetSo06UIViewF0CyF">installAppBottomSheet()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">installAppBottomSheet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC23shareInvoiceBottomSheetSo06UIViewF0CyF"></a>
+                    <a name="//apple_ref/swift/Method/shareInvoiceBottomSheet()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC23shareInvoiceBottomSheetSo06UIViewF0CyF">shareInvoiceBottomSheet()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">shareInvoiceBottomSheet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Helping%20functions"></a>
+                <a name="//apple_ref/swift/Section/Helping functions" class="dashAnchor"></a>
+                <a href="#/Helping%20functions">
+                  <h3 class="section-name">Helping functions</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC07canOpenD11ProviderAppSbyF"></a>
+                    <a name="//apple_ref/swift/Method/canOpenPaymentProviderApp()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC07canOpenD11ProviderAppSbyF">canOpenPaymentProviderApp()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">canOpenPaymentProviderApp</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC16supportsOpenWithSbyF"></a>
+                    <a name="//apple_ref/swift/Method/supportsOpenWith()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC16supportsOpenWithSbyF">supportsOpenWith()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">supportsOpenWith</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC11supportsGPCSbyF"></a>
+                    <a name="//apple_ref/swift/Method/supportsGPC()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC11supportsGPCSbyF">supportsGPC()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">supportsGPC</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC016obtainPDFURLFromD7Request11paymentInfo04viewF0yAA0dK0V_So06UIViewF0CtF"></a>
+                    <a name="//apple_ref/swift/Method/obtainPDFURLFromPaymentRequest(paymentInfo:viewController:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC016obtainPDFURLFromD7Request11paymentInfo04viewF0yAA0dK0V_So06UIViewF0CtF">obtainPDFURLFromPaymentRequest(paymentInfo:viewController:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">obtainPDFURLFromPaymentRequest</span><span class="p">(</span><span class="nv">paymentInfo</span><span class="p">:</span> <span class="kt"><a href="../Structs/PaymentInfo.html">PaymentInfo</a></span><span class="p">,</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC06createD7Request11paymentInfo10completionyAA0dJ0V_ySSSg_AA0aB5ErrorOSgtctF"></a>
+                    <a name="//apple_ref/swift/Method/createPaymentRequest(paymentInfo:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC06createD7Request11paymentInfo10completionyAA0dJ0V_ySSSg_AA0aB5ErrorOSgtctF">createPaymentRequest(paymentInfo:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">createPaymentRequest</span><span class="p">(</span><span class="nv">paymentInfo</span><span class="p">:</span> <span class="kt"><a href="../Structs/PaymentInfo.html">PaymentInfo</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">paymentRequestID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt"><a href="../Enums/GiniMerchantError.html">GiniMerchantError</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC04openD11ProviderApp9requestId13universalLinkySS_SStF"></a>
+                    <a name="//apple_ref/swift/Method/openPaymentProviderApp(requestId:universalLink:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC04openD11ProviderApp9requestId13universalLinkySS_SStF">openPaymentProviderApp(requestId:universalLink:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">openPaymentProviderApp</span><span class="p">(</span><span class="nv">requestId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">universalLink</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC29shouldShowOnboardingScreenForSbyF"></a>
+                    <a name="//apple_ref/swift/Method/shouldShowOnboardingScreenFor()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC29shouldShowOnboardingScreenForSbyF">shouldShowOnboardingScreenFor()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">shouldShowOnboardingScreenFor</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK28PaymentComponentViewProtocolP23didTapOnMoreInformation10documentIdySSSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnMoreInformation(documentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK28PaymentComponentViewProtocolP23didTapOnMoreInformation10documentIdySSSg_tF">didTapOnMoreInformation(documentId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnMoreInformation</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK28PaymentComponentViewProtocolP18didTapOnBankPicker10documentIdySSSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnBankPicker(documentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK28PaymentComponentViewProtocolP18didTapOnBankPicker10documentIdySSSg_tF">didTapOnBankPicker(documentId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnBankPicker</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK28PaymentComponentViewProtocolP18didTapOnPayInvoice10documentIdySSSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnPayInvoice(documentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK28PaymentComponentViewProtocolP18didTapOnPayInvoice10documentIdySSSg_tF">didTapOnPayInvoice(documentId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnPayInvoice</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC33didTapForwardOnInstallBottomSheetyyF"></a>
+                    <a name="//apple_ref/swift/Method/didTapForwardOnInstallBottomSheet()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC33didTapForwardOnInstallBottomSheetyyF">didTapForwardOnInstallBottomSheet()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapForwardOnInstallBottomSheet</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC016didTapOnContinueI16ShareBottomSheetyyF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnContinueOnShareBottomSheet()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC016didTapOnContinueI16ShareBottomSheetyyF">didTapOnContinueOnShareBottomSheet()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnContinueOnShareBottomSheet</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC09didSelectD8Provider07paymentI0yAA0dI0V_tF"></a>
+                    <a name="//apple_ref/swift/Method/didSelectPaymentProvider(paymentProvider:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC09didSelectD8Provider07paymentI0yAA0dI0V_tF">didSelectPaymentProvider(paymentProvider:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didSelectPaymentProvider</span><span class="p">(</span><span class="nv">paymentProvider</span><span class="p">:</span> <span class="kt"><a href="../Structs/PaymentProvider.html">PaymentProvider</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC13didTapOnCloseyyF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnClose()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC13didTapOnCloseyyF">didTapOnClose()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnClose</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC23didTapOnMoreInformationyyF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnMoreInformation()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC23didTapOnMoreInformationyyF">didTapOnMoreInformation()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnMoreInformation</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15GiniMerchantSDK27PaymentComponentsControllerC17didTapOnPayButtonyyF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnPayButton()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15GiniMerchantSDK27PaymentComponentsControllerC17didTapOnPayButtonyyF">didTapOnPayButton()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnPayButton</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2024 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2024-08-29)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

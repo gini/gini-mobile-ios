@@ -1,0 +1,1405 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/CompositeDocumentInfo.swift",
+      "line": 16,
+      "symbol": "CompositeDocumentInfo.init(partialDocuments:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document+Layout.swift",
+      "line": 45,
+      "symbol": "Document.Layout.TextZone.paragraphs",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 157,
+      "symbol": "Document.Links.extractions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 158,
+      "symbol": "Document.Links.layout",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 159,
+      "symbol": "Document.Links.processed",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 160,
+      "symbol": "Document.Links.document",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 161,
+      "symbol": "Document.Links.pages",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 172,
+      "symbol": "Document.DocType.bankStatement",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 173,
+      "symbol": "Document.DocType.contract",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 174,
+      "symbol": "Document.DocType.invoice",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 175,
+      "symbol": "Document.DocType.receipt",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 176,
+      "symbol": "Document.DocType.reminder",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 177,
+      "symbol": "Document.DocType.remittanceSlip",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 178,
+      "symbol": "Document.DocType.travelExpenseReport",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Document.swift",
+      "line": 179,
+      "symbol": "Document.DocType.other",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/DocumentService.swift",
+      "line": 241,
+      "symbol": "DefaultDocumentService.file(urlString:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 28,
+      "symbol": "Extraction.Box.height",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 29,
+      "symbol": "Extraction.Box.left",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 30,
+      "symbol": "Extraction.Box.page",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 31,
+      "symbol": "Extraction.Box.top",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 32,
+      "symbol": "Extraction.Box.width",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 34,
+      "symbol": "Extraction.Box.init(height:left:page:top:width:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 45,
+      "symbol": "Extraction.Candidate.box",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 46,
+      "symbol": "Extraction.Candidate.entity",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 47,
+      "symbol": "Extraction.Candidate.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 49,
+      "symbol": "Extraction.Candidate.init(box:entity:value:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 56,
+      "symbol": "Extraction.init(box:candidates:entity:value:name:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 76,
+      "symbol": "Extraction.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 90,
+      "symbol": "Extraction.debugDescription",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 97,
+      "symbol": "Extraction.Box.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/Extraction.swift",
+      "line": 111,
+      "symbol": "Extraction.Candidate.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/ExtractionResult.swift",
+      "line": 14,
+      "symbol": "PaymentState.payable",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/ExtractionResult.swift",
+      "line": 15,
+      "symbol": "PaymentState.other",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/ExtractionResult.swift",
+      "line": 21,
+      "symbol": "ExtractionType.paymentState",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/ExtractionResult.swift",
+      "line": 22,
+      "symbol": "ExtractionType.paymentDueDate",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/ExtractionResult.swift",
+      "line": 23,
+      "symbol": "ExtractionType.amountToPay",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/ExtractionResult.swift",
+      "line": 24,
+      "symbol": "ExtractionType.paymentRecipient",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/ExtractionResult.swift",
+      "line": 25,
+      "symbol": "ExtractionType.iban",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/ExtractionResult.swift",
+      "line": 26,
+      "symbol": "ExtractionType.paymentPurpose",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/ExtractionResult.swift",
+      "line": 43,
+      "symbol": "ExtractionResult.init(extractions:payment:lineItems:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/ExtractionsContainer.swift",
+      "line": 10,
+      "symbol": "ExtractionsContainer",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/ExtractionsContainer.swift",
+      "line": 24,
+      "symbol": "ExtractionsContainer",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniError.swift",
+      "line": 11,
+      "symbol": "GiniErrorProtocol",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniError.swift",
+      "line": 12,
+      "symbol": "GiniErrorProtocol.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniError.swift",
+      "line": 13,
+      "symbol": "GiniErrorProtocol.response",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniError.swift",
+      "line": 14,
+      "symbol": "GiniErrorProtocol.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniError.swift",
+      "line": 17,
+      "symbol": "GiniError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniError.swift",
+      "line": 18,
+      "symbol": "GiniError.decorator(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniError.swift",
+      "line": 20,
+      "symbol": "GiniError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniError.swift",
+      "line": 27,
+      "symbol": "GiniError.response",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniError.swift",
+      "line": 34,
+      "symbol": "GiniError.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniLog.swift",
+      "line": 10,
+      "symbol": "LogLevel",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniLog.swift",
+      "line": 11,
+      "symbol": "LogLevel.none",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/GiniLog.swift",
+      "line": 12,
+      "symbol": "LogLevel.debug",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PartialDocumentInfo.swift",
+      "line": 28,
+      "symbol": "PartialDocumentInfo.init(document:rotationDelta:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 14,
+      "symbol": "PaymentProvider.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 15,
+      "symbol": "PaymentProvider.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 16,
+      "symbol": "PaymentProvider.appSchemeIOS",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 17,
+      "symbol": "PaymentProvider.colors",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 18,
+      "symbol": "PaymentProvider.minAppVersion",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 19,
+      "symbol": "PaymentProvider.iconData",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 20,
+      "symbol": "PaymentProvider.appStoreUrlIOS",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 21,
+      "symbol": "PaymentProvider.universalLinkIOS",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 22,
+      "symbol": "PaymentProvider.index",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 23,
+      "symbol": "PaymentProvider.gpcSupportedPlatforms",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 24,
+      "symbol": "PaymentProvider.openWithSupportedPlatforms",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 26,
+      "symbol": "PaymentProvider.init(id:name:appSchemeIOS:minAppVersion:colors:iconData:appStoreUrlIOS:universalLinkIOS:index:gpcSupportedPlatforms:openWithSupportedPlatforms:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 40,
+      "symbol": "PaymentProviders",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 54,
+      "symbol": "MinAppVersions.init(ios:android:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 63,
+      "symbol": "ProviderColors.background",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 64,
+      "symbol": "ProviderColors.text",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 65,
+      "symbol": "ProviderColors.init(background:text:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 75,
+      "symbol": "PlatformSupported.ios",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/PaymentProvider.swift",
+      "line": 76,
+      "symbol": "PlatformSupported.android",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/SessionManager.swift",
+      "line": 11,
+      "symbol": "CompletionResult",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/SessionManager.swift",
+      "line": 23,
+      "symbol": "CancellationToken.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Adapter/SessionManager.swift",
+      "line": 27,
+      "symbol": "CancellationToken.init(healthToken:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/BottomSheetController.swift",
+      "line": 12,
+      "symbol": "BottomSheetController",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/BottomSheetController.swift",
+      "line": 56,
+      "symbol": "BottomSheetController.viewDidLoad()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/BottomSheetController.swift",
+      "line": 62,
+      "symbol": "BottomSheetController.viewDidAppear(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ButtonConfiguration.swift",
+      "line": 10,
+      "symbol": "ButtonConfiguration",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchant.swift",
+      "line": 52,
+      "symbol": "DataForReview.document",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchant.swift",
+      "line": 53,
+      "symbol": "DataForReview.extractions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchant.swift",
+      "line": 54,
+      "symbol": "DataForReview.init(document:extractions:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchant.swift",
+      "line": 418,
+      "symbol": "GiniMerchant.versionString",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchant.swift",
+      "line": 424,
+      "symbol": "GiniMerchant.Constants",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchant.swift",
+      "line": 425,
+      "symbol": "GiniMerchant.Constants.defaultVersionAPI",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchant.swift",
+      "line": 426,
+      "symbol": "GiniMerchant.Constants.merchantVersionAPI",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantConfiguration.swift",
+      "line": 125,
+      "symbol": "GiniMerchantConfiguration.font(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantImage.swift",
+      "line": 18,
+      "symbol": "GiniMerchantImage.logo",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantImage.swift",
+      "line": 19,
+      "symbol": "GiniMerchantImage.info",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantImage.swift",
+      "line": 20,
+      "symbol": "GiniMerchantImage.close",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantImage.swift",
+      "line": 21,
+      "symbol": "GiniMerchantImage.more",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantImage.swift",
+      "line": 22,
+      "symbol": "GiniMerchantImage.plus",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantImage.swift",
+      "line": 23,
+      "symbol": "GiniMerchantImage.minus",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantImage.swift",
+      "line": 24,
+      "symbol": "GiniMerchantImage.appStore",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantImage.swift",
+      "line": 25,
+      "symbol": "GiniMerchantImage.chevronDown",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantImage.swift",
+      "line": 26,
+      "symbol": "GiniMerchantImage.selectionIndicator",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantImage.swift",
+      "line": 27,
+      "symbol": "GiniMerchantImage.paymentReviewClose",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/GiniMerchantImage.swift",
+      "line": 28,
+      "symbol": "GiniMerchantImage.lock",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/BanksBottomViewModel.swift",
+      "line": 12,
+      "symbol": "PaymentProvidersBottomViewProtocol",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/BanksBottomViewModel.swift",
+      "line": 13,
+      "symbol": "PaymentProvidersBottomViewProtocol.didSelectPaymentProvider(paymentProvider:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/BanksBottomViewModel.swift",
+      "line": 14,
+      "symbol": "PaymentProvidersBottomViewProtocol.didTapOnClose()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/BanksBottomViewModel.swift",
+      "line": 15,
+      "symbol": "PaymentProvidersBottomViewProtocol.didTapOnMoreInformation()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/BanksBottomViewModel.swift",
+      "line": 16,
+      "symbol": "PaymentProvidersBottomViewProtocol.didTapOnContinueOnShareBottomSheet()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/BanksBottomViewModel.swift",
+      "line": 17,
+      "symbol": "PaymentProvidersBottomViewProtocol.didTapForwardOnInstallBottomSheet()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/BanksBottomViewModel.swift",
+      "line": 18,
+      "symbol": "PaymentProvidersBottomViewProtocol.didTapOnPayButton()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentConfiguration.swift",
+      "line": 10,
+      "symbol": "PaymentComponentConfiguration",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentConfiguration.swift",
+      "line": 26,
+      "symbol": "PaymentComponentConfiguration.init(isPaymentComponentBranded:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentViewModel.swift",
+      "line": 45,
+      "symbol": "PaymentComponentViewProtocol.didTapOnMoreInformation()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentViewModel.swift",
+      "line": 48,
+      "symbol": "PaymentComponentViewProtocol.didTapOnBankPicker()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentViewModel.swift",
+      "line": 51,
+      "symbol": "PaymentComponentViewProtocol.didTapOnPayInvoice()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 17,
+      "symbol": "PaymentComponentsControllerProtocol.isLoadingStateChanged(isLoading:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 18,
+      "symbol": "PaymentComponentsControllerProtocol.didFetchedPaymentProviders()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 168,
+      "symbol": "PaymentComponentsController.loadPaymentReviewScreenFor(documentID:paymentInfo:trackingDelegate:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 222,
+      "symbol": "PaymentComponentsController.paymentViewBottomSheet(documentID:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 228,
+      "symbol": "PaymentComponentsController.bankSelectionBottomSheet()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 238,
+      "symbol": "PaymentComponentsController.paymentInfoViewController()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 245,
+      "symbol": "PaymentComponentsController.installAppBottomSheet()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 253,
+      "symbol": "PaymentComponentsController.shareInvoiceBottomSheet()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 263,
+      "symbol": "PaymentComponentsController.canOpenPaymentProviderApp()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 272,
+      "symbol": "PaymentComponentsController.supportsOpenWith()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 279,
+      "symbol": "PaymentComponentsController.supportsGPC()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 286,
+      "symbol": "PaymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo:viewController:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 294,
+      "symbol": "PaymentComponentsController.createPaymentRequest(paymentInfo:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 305,
+      "symbol": "PaymentComponentsController.openPaymentProviderApp(requestId:universalLink:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 309,
+      "symbol": "PaymentComponentsController.shouldShowOnboardingScreenFor()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 345,
+      "symbol": "PaymentComponentsController.didTapForwardOnInstallBottomSheet()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 349,
+      "symbol": "PaymentComponentsController.didTapOnContinueOnShareBottomSheet()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 353,
+      "symbol": "PaymentComponentsController.didSelectPaymentProvider(paymentProvider:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 359,
+      "symbol": "PaymentComponentsController.didTapOnClose()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 363,
+      "symbol": "PaymentComponentsController.didTapOnMoreInformation()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentComponent/PaymentComponentsController.swift",
+      "line": 367,
+      "symbol": "PaymentComponentsController.didTapOnPayButton()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentInfo.swift",
+      "line": 15,
+      "symbol": "PaymentInfo.recipient",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentInfo.swift",
+      "line": 16,
+      "symbol": "PaymentInfo.iban",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentInfo.swift",
+      "line": 17,
+      "symbol": "PaymentInfo.bic",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentInfo.swift",
+      "line": 18,
+      "symbol": "PaymentInfo.amount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentInfo.swift",
+      "line": 19,
+      "symbol": "PaymentInfo.purpose",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentInfo.swift",
+      "line": 20,
+      "symbol": "PaymentInfo.paymentUniversalLink",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentInfo.swift",
+      "line": 21,
+      "symbol": "PaymentInfo.paymentProviderId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentInfo.swift",
+      "line": 23,
+      "symbol": "PaymentInfo.init(recipient:iban:bic:amount:purpose:paymentUniversalLink:paymentProviderId:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentInfo.swift",
+      "line": 33,
+      "symbol": "PaymentInfo.isComplete",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewModel.swift",
+      "line": 34,
+      "symbol": "PaymentReviewModel.document",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewModel.swift",
+      "line": 36,
+      "symbol": "PaymentReviewModel.extractions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewModel.swift",
+      "line": 37,
+      "symbol": "PaymentReviewModel.paymentInfo",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewModel.swift",
+      "line": 39,
+      "symbol": "PaymentReviewModel.documentId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewModel.swift",
+      "line": 67,
+      "symbol": "PaymentReviewModel.init(with:document:extractions:paymentInfo:selectedPaymentProvider:paymentComponentsController:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController+UICollection.swift",
+      "line": 15,
+      "symbol": "PaymentReviewViewController.collectionView(_:numberOfItemsInSection:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController+UICollection.swift",
+      "line": 17,
+      "symbol": "PaymentReviewViewController.numberOfSections(in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController+UICollection.swift",
+      "line": 21,
+      "symbol": "PaymentReviewViewController.collectionView(_:cellForItemAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController+UICollection.swift",
+      "line": 32,
+      "symbol": "PaymentReviewViewController.collectionView(_:layout:sizeForItemAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController+UICollection.swift",
+      "line": 40,
+      "symbol": "PaymentReviewViewController.scrollViewDidScroll(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController.swift",
+      "line": 13,
+      "symbol": "PaymentReviewViewController",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController.swift",
+      "line": 17,
+      "symbol": "PaymentReviewViewController",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController.swift",
+      "line": 34,
+      "symbol": "PaymentReviewViewController.model",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController.swift",
+      "line": 37,
+      "symbol": "PaymentReviewViewController.trackingDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController.swift",
+      "line": 39,
+      "symbol": "PaymentReviewViewController.instantiate(with:document:extractions:paymentInfo:selectedPaymentProvider:trackingDelegate:paymentComponentsController:isInfoBarHidden:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController.swift",
+      "line": 55,
+      "symbol": "PaymentReviewViewController.instantiate(with:data:paymentInfo:selectedPaymentProvider:trackingDelegate:paymentComponentsController:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController.swift",
+      "line": 71,
+      "symbol": "PaymentReviewViewController.viewDidLoad()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController.swift",
+      "line": 79,
+      "symbol": "PaymentReviewViewController.viewDidAppear(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/PaymentReviewViewController.swift",
+      "line": 143,
+      "symbol": "PaymentReviewViewController.viewDidDisappear(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/Tracking/GiniMerchantTrackingDelegate.swift",
+      "line": 38,
+      "symbol": "PaymentReviewScreenTrackingDelegate.onPaymentReviewScreenEvent(event:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 10,
+      "symbol": "ImageScrollViewDelegate",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 11,
+      "symbol": "ImageScrollViewDelegate.imageScrollViewDidChangeOrientation(imageScrollView:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 14,
+      "symbol": "ZoomedImageView",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 16,
+      "symbol": "ZoomedImageView.ScaleMode",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 17,
+      "symbol": "ZoomedImageView.ScaleMode.aspectFill",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 18,
+      "symbol": "ZoomedImageView.ScaleMode.aspectFit",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 19,
+      "symbol": "ZoomedImageView.ScaleMode.widthFill",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 20,
+      "symbol": "ZoomedImageView.ScaleMode.heightFill",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 23,
+      "symbol": "ZoomedImageView.Offset",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 24,
+      "symbol": "ZoomedImageView.Offset.begining",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 25,
+      "symbol": "ZoomedImageView.Offset.center",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 30,
+      "symbol": "ZoomedImageView.imageContentMode",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 31,
+      "symbol": "ZoomedImageView.initialOffset",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 33,
+      "symbol": "ZoomedImageView.zoomView",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 35,
+      "symbol": "ZoomedImageView.imageScrollViewDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 40,
+      "symbol": "ZoomedImageView.maxScaleFromMinScale",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 42,
+      "symbol": "ZoomedImageView.frame",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 56,
+      "symbol": "ZoomedImageView.init(frame:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 62,
+      "symbol": "ZoomedImageView.init(coder:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 82,
+      "symbol": "ZoomedImageView.adjustFrameToCenter()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 160,
+      "symbol": "ZoomedImageView.setup()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 177,
+      "symbol": "ZoomedImageView.display(image:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 280,
+      "symbol": "ZoomedImageView.refresh()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 297,
+      "symbol": "ZoomedImageView",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 299,
+      "symbol": "ZoomedImageView.scrollViewDidScroll(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 303,
+      "symbol": "ZoomedImageView.scrollViewWillBeginDragging(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 307,
+      "symbol": "ZoomedImageView.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 311,
+      "symbol": "ZoomedImageView.scrollViewDidEndDragging(_:willDecelerate:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 315,
+      "symbol": "ZoomedImageView.scrollViewWillBeginDecelerating(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 319,
+      "symbol": "ZoomedImageView.scrollViewDidEndDecelerating(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 323,
+      "symbol": "ZoomedImageView.scrollViewDidEndScrollingAnimation(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 327,
+      "symbol": "ZoomedImageView.scrollViewWillBeginZooming(_:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 331,
+      "symbol": "ZoomedImageView.scrollViewDidEndZooming(_:with:atScale:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 335,
+      "symbol": "ZoomedImageView.scrollViewShouldScrollToTop(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 339,
+      "symbol": "ZoomedImageView.scrollViewDidChangeAdjustedContentInset(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 343,
+      "symbol": "ZoomedImageView.viewForZooming(in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/Core/ZoomedImageView.swift",
+      "line": 347,
+      "symbol": "ZoomedImageView.scrollViewDidZoom(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/MerchantSDK/GiniMerchantSDK/Sources/GiniMerchantSDK/GiniMerchantSDKVersion.swift",
+      "line": 8,
+      "symbol": "GiniMerchantSDKVersion",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios"
+}
