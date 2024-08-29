@@ -25,7 +25,7 @@ let package = Package(
         
         .target(
             name: "GiniMerchantSDK",
-            dependencies: ["GiniHealthAPILibrary"]),
+            dependencies: ["GiniHealthAPILibrary", "GiniUtilites"]),
         .testTarget(
             name: "GiniMerchantSDKTests",
             dependencies: ["GiniMerchantSDK"]),
