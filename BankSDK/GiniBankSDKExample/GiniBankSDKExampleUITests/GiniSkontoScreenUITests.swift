@@ -32,10 +32,6 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.tapFileWithName(fileName: "skonto_past")
         //tap Open button
         captureScreen.openGalleryButton.tap()
-        //Assert that Proceed button is displayed
-        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
-        //Tap Process button
-        reviewScreen.processButton.tap()
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Tap Got it button
@@ -63,10 +59,6 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.tapFileWithName(fileName: "skonto_past")
         //tap Open button
         captureScreen.openGalleryButton.tap()
-        //Assert that Proceed button is displayed
-        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
-        //Tap Process button
-        reviewScreen.processButton.tap()
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Tap Got it button
@@ -92,10 +84,6 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.tapFileWithName(fileName: "skonto_past")
         //tap Open button
         captureScreen.openGalleryButton.tap()
-        //Assert that Proceed button is displayed
-        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
-        //Tap Process button
-        reviewScreen.processButton.tap()
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Tap Got it button
@@ -130,10 +118,6 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.tapFileWithName(fileName: "skonto_valid")
         //tap Open button
         captureScreen.openGalleryButton.tap()
-        //Assert that Proceed button is displayed
-        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
-        //Tap Process button
-        reviewScreen.processButton.tap()
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Assert that Switch is disabled
@@ -155,10 +139,6 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.tapFileWithName(fileName: "skonto_past")
         //tap Open button
         captureScreen.openGalleryButton.tap()
-        //Assert that Proceed button is displayed
-        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
-        //Tap Process button
-        reviewScreen.processButton.tap()
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
         //Assert that Switch is disabled
@@ -180,10 +160,6 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.tapFileWithName(fileName: "skonto_past")
         //tap Open button
         captureScreen.openGalleryButton.tap()
-        //Assert that Proceed button is displayed
-        XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
-        //Tap Process button
-        reviewScreen.processButton.tap()
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
 // Uncomment Help screen release

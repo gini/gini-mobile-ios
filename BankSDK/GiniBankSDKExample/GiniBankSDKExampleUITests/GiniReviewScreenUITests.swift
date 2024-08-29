@@ -10,6 +10,12 @@ import XCTest
 
 class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
     
+    /*
+     To launch these tests and be as possibly close to real user behavior
+     Please upload to device:
+        "test_image" image file with invoice
+     */
+    
     func testAddPageButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -19,10 +25,10 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         //Tap Files button
         captureScreen.filesButton.tap()
-        //Tap Upload photo button
+        //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
-        mainScreen.tapFileWithName(fileName: "PNG image")
+        mainScreen.tapFileWithName(fileName: "test_image")
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
@@ -42,7 +48,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         //Tap Files button
         captureScreen.filesButton.tap()
-        //Tap Upload photo button
+        //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
         mainScreen.tapFileWithName(fileName: "test_image")
@@ -65,7 +71,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         //Tap Files button
         captureScreen.filesButton.tap()
-        //Tap Upload photo button
+        //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
         mainScreen.tapFileWithName(fileName: "test_image")
@@ -88,7 +94,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         onboadingScreen.skipOnboardingScreens()
         //Tap Files button
         captureScreen.filesButton.tap()
-        //Tap Upload photo button
+        //Tap Upload Files button
         captureScreen.uploadFilesButton.tap()
         //Tap Skonto document
         mainScreen.tapFileWithName(fileName: "test_image")

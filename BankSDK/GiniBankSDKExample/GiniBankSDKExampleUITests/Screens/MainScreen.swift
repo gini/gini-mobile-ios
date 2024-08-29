@@ -17,6 +17,7 @@ public class MainScreen {
     let cameraIconButton: XCUIElement
     let deleteButton: XCUIElement
     let sendFeedbackButton: XCUIElement
+    let recentsButton: XCUIElement
     
     public init(app: XCUIApplication, locale: String) {
         self.app = app
@@ -25,9 +26,11 @@ public class MainScreen {
         case "en":
             deleteButton = app.buttons["Delete"]
             sendFeedbackButton = app.navigationBars.buttons["Send feedback and close"]
+            recentsButton = app.staticTexts["Recents"]
         case "de":
             deleteButton = app.buttons["Löschen"]
             sendFeedbackButton = app.navigationBars.buttons["Feedback senden und schließen"]
+            recentsButton = app.staticTexts["Verlauf"]
         default:
             fatalError("Locale \(locale) is not supported")
         }
@@ -184,7 +187,7 @@ public class MainScreen {
     }
     
     func tapFileWithName(fileName: String) {
-           
+        recentsButton.tap()
         let fileElement = app.staticTexts[fileName].firstMatch
         XCTAssertTrue(fileElement.waitForExistence(timeout: 5),"Please add file with file name '\(fileName)' to the device before launching the test.")
         fileElement.tap()
