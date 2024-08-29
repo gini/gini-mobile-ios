@@ -14,6 +14,12 @@ protocol SkontoViewModelDelegate: AnyObject {
     func didTapDocumentPreview(on viewModel: SkontoViewModel)
 }
 
+extension SkontoViewModelDelegate {
+    func didTapProceed(on viewModel: SkontoViewModel) {
+        // Default implementation
+    }
+}
+
 class SkontoViewModel {
     private var skontoStateChangeHandlers: [() -> Void] = []
     var endEditingAction: (() -> Void)?
@@ -64,13 +70,46 @@ class SkontoViewModel {
     }
 
     var savingsAmountString: String {
-        let savingsAmount = calculateSkontoSavingsAmount()
-        guard let priceString = savingsAmount.localizedStringWithCurrencyCode else { return "" }
         return String.localizedStringWithFormat(
             NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.savings",
                                                      comment: "Save %@"),
-            priceString
+            savingsPriceString
         )
+    }
+
+    var savingsPriceString: String {
+        let savingsAmount = calculateSkontoSavingsAmount()
+        guard let priceString = savingsAmount.localizedStringWithCurrencyCode else { return "" }
+        return priceString
+    }
+
+    var localizedBannerInfoMessage: String {
+        let text: String
+        switch edgeCase {
+        case .expired:
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.expired.message",
+                                                                         comment: "The %@ discount has expired.")
+            text = String.localizedStringWithFormat(localizedText,
+                                                    formattedPercentageDiscounted)
+        case .paymentToday:
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.today.message",
+                                                                         comment: "Pay today: %@ discount.")
+            text = String.localizedStringWithFormat(localizedText,
+                                                    formattedPercentageDiscounted)
+        case .payByCash:
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.message",
+                                                                         comment: "A %@ discount is available...")
+            text = String.localizedStringWithFormat(localizedText,
+                                                    formattedPercentageDiscounted,
+                                                    remainingDaysString)
+        default:
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.default.message",
+                                                                         comment: "Pay in %@: %@ Skonto discount.")
+            text = String.localizedStringWithFormat(localizedText,
+                                                    remainingDaysString,
+                                                    formattedPercentageDiscounted)
+        }
+        return text
     }
 
     weak var delegate: SkontoViewModelDelegate?
@@ -170,13 +209,13 @@ class SkontoViewModel {
                 let modifiedExtraction = extraction
                 switch modifiedExtraction.name {
                 case "skontoAmountToPay", "skontoAmountToPayCalculated":
-                        modifiedExtraction.value = skontoAmountToPay.stringWithoutSymbol ?? ""
+                        modifiedExtraction.value = skontoAmountToPay.extractionString
                 case "skontoDueDate", "skontoDueDateCalculated":
                     modifiedExtraction.value = dueDate.yearMonthDayString
                 case "skontoPercentageDiscounted", "skontoPercentageDiscountedCalculated":
                     modifiedExtraction.value = formattedPercentageDiscounted
                 case "skontoAmountDiscounted", "skontoAmountDiscountedCalculated":
-                    modifiedExtraction.value = amountDiscounted.stringWithoutSymbol ?? ""
+                    modifiedExtraction.value = amountDiscounted.extractionString
                 case "skontoRemainingDays":
                     modifiedExtraction.value = "\(remainingDays)"
                 default:
@@ -190,7 +229,7 @@ class SkontoViewModel {
             .map { extraction -> Extraction in
                 let modifiedExtraction = extraction
                 if modifiedExtraction.name == "amountToPay" {
-                    modifiedExtraction.value = finalAmountToPay.stringWithoutSymbol ?? ""
+                    modifiedExtraction.value = finalAmountToPay.extractionString
                 }
                 return modifiedExtraction
             }

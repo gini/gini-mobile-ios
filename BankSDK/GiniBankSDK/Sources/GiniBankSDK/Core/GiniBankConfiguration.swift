@@ -297,6 +297,11 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
 
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice screen which include Skonto information.
+     */
+    public var digitalInvoiceSkontoNavigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter?
+
     // MARK: - Skonto feature
 
     /**

@@ -43,7 +43,7 @@ class SkontoDocumentPreviewView: UIView {
                                                              comment: "Tap to view")
         label.text = title
         label.accessibilityValue = title
-        label.textColor = .giniColorScheme().text.tertiary.uiColor()
+        label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.font = configuration.textStyleFonts[.footnote]
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
