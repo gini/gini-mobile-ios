@@ -15,6 +15,8 @@ public final class DefaultDocumentService {
     
     init(docService: GiniHealthAPILibrary.DefaultDocumentService) {
         self.docService = docService
+        self.docService.apiDomain = .merchant
+        self.docService.apiVersion = GiniMerchant.Constants.merchantVersionAPI
     }
     
     /**

@@ -8,6 +8,7 @@
 
 import UIKit
 import GiniHealthAPILibrary
+import GiniUtilites
 /**
  Protocol used to provide updates on the current status of the Payment Components Controller.
  Uses a callback mechanism to handle payment provider requests.
@@ -22,11 +23,16 @@ protocol PaymentComponentsProtocol {
     var selectedPaymentProvider: PaymentProvider? { get set }
     func loadPaymentProviders()
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniMerchantError>) -> Void)
-    func paymentView(documentId: String) -> UIView
+    func paymentView(documentId: String?) -> UIView
     func bankSelectionBottomSheet() -> UIViewController
-    func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void)
+    func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void)
     func paymentInfoViewController() -> UIViewController
-    func paymentViewBottomSheet(documentID: String) -> UIViewController
+    func paymentViewBottomSheet(documentID: String?) -> UIViewController
+}
+
+private enum PaymentComponentScreenType {
+    case paymentComponent
+    case bankPicker
 }
 
 /**
@@ -47,6 +53,12 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     /// storing the current selected payment provider
     public var selectedPaymentProvider: PaymentProvider?
 
+    /// Payment Component View Configuration
+    public var paymentComponentConfiguration: PaymentComponentConfiguration?
+
+    /// Previous presented view
+    private var previousPresentedView: PaymentComponentScreenType?
+
     /// reponsible for storing the loading state of the controller and passing it to the delegate listeners
     var isLoading: Bool = false {
         didSet {
@@ -66,8 +78,14 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      */
     public init(giniMerchant: GiniMerchant) {
         self.giniMerchant = giniMerchant
+        giniMerchantConfiguration.useInvoiceWithoutDocument = true
+        setupObservers()
     }
-    
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     /**
      Retrieves the default installed payment provider, if available.
      - Returns: a Payment Provider object.
@@ -138,49 +156,77 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      - Parameters:
      - Returns: a custom view
      */
-    public func paymentView(documentId: String) -> UIView {
+    public func paymentView(documentId: String?) -> UIView {
         paymentComponentView = PaymentComponentView()
-        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniMerchantConfiguration: giniMerchantConfiguration)
+        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniMerchantConfiguration: giniMerchantConfiguration, paymentComponentConfiguration: paymentComponentConfiguration)
         paymentComponentViewModel.delegate = viewDelegate
         paymentComponentViewModel.documentId = documentId
         paymentComponentView.viewModel = paymentComponentViewModel
         return paymentComponentView
     }
 
-    public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
-        self.isLoading = true
-        self.giniMerchant.fetchDataForReview(documentId: documentID) { [weak self] result in
-            self?.isLoading = false
-            switch result {
-            case .success(let data):
-                guard let self else {
-                    completion(nil, nil)
-                    return
-                }
-                guard let selectedPaymentProvider else {
-                    completion(nil, nil)
-                    return
-                }
-                let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
-                                                                 data: data,
-                                                                 selectedPaymentProvider: selectedPaymentProvider,
-                                                                 trackingDelegate: trackingDelegate,
-                                                                 paymentComponentsController: self)
-                completion(vc, nil)
-            case .failure(let error):
-                completion(nil, error)
+    public func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+        previousPresentedView = nil
+        if !giniMerchantConfiguration.useInvoiceWithoutDocument {
+            guard let documentID else {
+                completion(nil, nil)
+                return
             }
+            self.isLoading = true
+            self.giniMerchant.fetchDataForReview(documentId: documentID) { [weak self] result in
+                self?.isLoading = false
+                switch result {
+                    case .success(let data):
+                        guard let self else {
+                            completion(nil, nil)
+                            return
+                        }
+                        guard let selectedPaymentProvider else {
+                            completion(nil, nil)
+                            return
+                        }
+                        let vc = PaymentReviewViewController.instantiate(with: self.giniMerchant,
+                                                                         data: data,
+                                                                         paymentInfo: nil,
+                                                                         selectedPaymentProvider: selectedPaymentProvider,
+                                                                         trackingDelegate: trackingDelegate,
+                                                                         paymentComponentsController: self)
+                        completion(vc, nil)
+                    case .failure(let error):
+                        completion(nil, error)
+                }
+            }
+        } else {
+            loadPaymentReviewScreenWithoutDocument(paymentInfo: paymentInfo, trackingDelegate: trackingDelegate, completion: completion)
         }
+    }
+
+    private func loadPaymentReviewScreenWithoutDocument(paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+        previousPresentedView = nil
+        guard let selectedPaymentProvider else {
+            completion(nil, nil)
+            return
+        }
+
+        let paymentReviewViewController = PaymentReviewViewController.instantiate(with: self.giniMerchant,
+                                                                                  data: nil,
+                                                                                  paymentInfo: paymentInfo,
+                                                                                  selectedPaymentProvider: selectedPaymentProvider,
+                                                                                  trackingDelegate: trackingDelegate,
+                                                                                  paymentComponentsController: self)
+        completion(paymentReviewViewController, nil)
     }
 
     // MARK: - Bottom Sheets
 
-    public func paymentViewBottomSheet(documentID: String) -> UIViewController {
+    public func paymentViewBottomSheet(documentID: String?) -> UIViewController {
+        previousPresentedView = .paymentComponent
         let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID))
         return paymentComponentBottomView
     }
 
     public func bankSelectionBottomSheet() -> UIViewController {
+        previousPresentedView = .bankPicker
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: selectedPaymentProvider)
         let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel)
@@ -197,6 +243,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     public func installAppBottomSheet() -> UIViewController {
+        previousPresentedView = nil
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
         installAppBottomViewModel.viewDelegate = self
         let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel)
@@ -204,6 +251,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     public func shareInvoiceBottomSheet() -> UIViewController {
+        previousPresentedView = nil
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
         shareInvoiceBottomViewModel.viewDelegate = self
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
@@ -263,6 +311,20 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         let count = onboardingCounts.presentationCount(forProvider: selectedPaymentProvider?.name)
         return count < Constants.numberOfTimesOnboardingShareScreenShouldAppear
     }
+
+    private func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(paymentInfoDissapeared), name: .paymentInfoDissapeared, object: nil)
+    }
+
+    @objc
+    private func paymentInfoDissapeared() {
+        if previousPresentedView == .bankPicker {
+            didTapOnBankPicker()
+        } else if previousPresentedView == .paymentComponent {
+            didTapOnPayButton()
+        }
+        previousPresentedView = nil
+    }
 }
 
 extension PaymentComponentsController: PaymentComponentViewProtocol {
@@ -300,6 +362,10 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     
     public func didTapOnMoreInformation() {
         viewDelegate?.didTapOnMoreInformation()
+    }
+
+    public func didTapOnPayButton() {
+        bottomViewDelegate?.didTapOnPayButton()
     }
 }
 

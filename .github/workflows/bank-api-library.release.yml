@@ -4,7 +4,8 @@ on:
     tags:
       - 'GiniBankAPILibrary;[0-9]+.[0-9]+.[0-9]+'
       - 'GiniBankAPILibrary;[0-9]+.[0-9]+.[0-9]+-beta[0-9][0-9]'
-  
+  workflow_dispatch:
+
 jobs:
   check:
     uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.check.yml@main
@@ -15,12 +16,12 @@ jobs:
     needs: check
     runs-on: macos-latest    
     steps:
-    - uses: maxim-lobanov/setup-xcode@v1.5.1
+    - uses: maxim-lobanov/setup-xcode@v1.6.0
       with:
-        xcode-version: '14.3.1'
+        xcode-version: '15.3'
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: setup ruby
       uses: ruby/setup-ruby@v1
@@ -29,7 +30,7 @@ jobs:
         bundler-cache: true
 
     - name: Publish GiniBankAPILibrary package to the release repo
-      uses: maierj/fastlane-action@v3.0.0
+      uses: maierj/fastlane-action@v3.1.0
       with:
         lane: 'publish_swift_package'
         options: >
@@ -45,7 +46,7 @@ jobs:
           }
 
     - name: Publish GiniBankAPILibraryPinning package to the release repo
-      uses: maierj/fastlane-action@v3.0.0
+      uses: maierj/fastlane-action@v3.1.0
       with:
         lane: 'publish_swift_package'
         options: >

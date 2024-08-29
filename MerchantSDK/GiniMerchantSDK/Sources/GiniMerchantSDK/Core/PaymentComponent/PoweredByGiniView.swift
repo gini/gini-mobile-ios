@@ -27,6 +27,7 @@ final class PoweredByGiniView: UIView {
         label.font = viewModel.poweredByGiniLabelFont
         label.numberOfLines = Constants.textNumberOfLines
         label.adjustsFontSizeToFitWidth = true
+        label.textAlignment = .right
         return label
     }()
     
@@ -61,12 +62,9 @@ final class PoweredByGiniView: UIView {
             giniImageView.leadingAnchor.constraint(equalTo: poweredByGiniLabel.trailingAnchor, constant: Constants.spacingImageText),
             poweredByGiniLabel.centerYAnchor.constraint(equalTo: giniImageView.centerYAnchor),
             poweredByGiniLabel.leadingAnchor.constraint(equalTo: mainContainer.leadingAnchor),
-            poweredByGiniLabel.topAnchor.constraint(equalTo: mainContainer.topAnchor),
-            poweredByGiniLabel.bottomAnchor.constraint(equalTo: mainContainer.bottomAnchor),
             giniImageView.heightAnchor.constraint(equalToConstant: giniImageView.frame.height),
             giniImageView.widthAnchor.constraint(equalToConstant: giniImageView.frame.width),
-            giniImageView.topAnchor.constraint(equalTo: mainContainer.topAnchor, constant: Constants.imageTopBottomPadding),
-            giniImageView.bottomAnchor.constraint(equalTo: mainContainer.bottomAnchor, constant: -Constants.imageTopBottomPadding)
+            giniImageView.centerYAnchor.constraint(equalTo: mainContainer.centerYAnchor)
         ])
     }
 }

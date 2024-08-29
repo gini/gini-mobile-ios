@@ -29,7 +29,7 @@ final class InstallAppBottomViewModel {
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
                                                     darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
 
-    var titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.title",
+    var titleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.title",
                                                              comment: "Install App Bottom sheet title")
     let titleLabelAccentColor: UIColor = GiniColor.standard2.uiColor()
     var titleLabelFont: UIFont
@@ -48,10 +48,10 @@ final class InstallAppBottomViewModel {
     let moreInformationAccentColor: UIColor = GiniColor.standard3.uiColor()
     var moreInformationLabelText: String {
         isBankInstalled ? 
-        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.tip.description",
+        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.tip.description",
                                          comment: "Text for tip information label").replacingOccurrences(of: bankToReplaceString,
                                                                                                          with: selectedPaymentProvider?.name ?? "") :
-        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.notes.description",
+        NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.notes.description",
                                          comment: "Text for notes information label").replacingOccurrences(of: bankToReplaceString,
                                                                                                            with: selectedPaymentProvider?.name ?? "")
     }
@@ -61,7 +61,7 @@ final class InstallAppBottomViewModel {
     let moreInformationIcon: UIImage = GiniMerchantImage.info.preferredUIImage()
     
     // Pay invoice label
-    let continueLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.installAppBottomSheet.continue.button.text",
+    let continueLabelText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.continue.button.text",
                                                                      comment: "Title label used for the Continue button")
     
     var appStoreIcon: UIImage = GiniMerchantImage.appStore.preferredUIImage()

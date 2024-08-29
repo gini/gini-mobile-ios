@@ -224,7 +224,8 @@ class InstallAppBottomView: BottomSheetViewController {
             bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
-            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
+            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
+            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
     }
     
@@ -264,5 +265,6 @@ extension InstallAppBottomView {
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let moreInformationBottomAnchorConstraint = 8.0
         static let infoIconSize = 24.0
+        static let bottomViewHeight = 44.0
     }
 }

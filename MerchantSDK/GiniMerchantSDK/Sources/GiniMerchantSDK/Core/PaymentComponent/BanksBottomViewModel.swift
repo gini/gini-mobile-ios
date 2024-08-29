@@ -15,6 +15,7 @@ public protocol PaymentProvidersBottomViewProtocol: AnyObject {
     func didTapOnMoreInformation()
     func didTapOnContinueOnShareBottomSheet()
     func didTapForwardOnInstallBottomSheet()
+    func didTapOnPayButton()
 }
 
 struct PaymentProviderAdditionalInfo {
@@ -40,15 +41,15 @@ final class BanksBottomViewModel {
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
                                                     darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
 
-    let selectBankTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.selectBank.label", 
+    let selectBankTitleText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label", 
                                                                        comment: "Select bank text from the top label on payment providers bottom sheet")
-    let selectBankLabelAccentColor: UIColor = GiniColor.standard2.uiColor()
+    let selectBankLabelAccentColor: UIColor = GiniColor(lightModeColorName: .dark1, darkModeColorName: .light2).uiColor()
     var selectBankLabelFont: UIFont
 
     let closeTitleIcon: UIImage = GiniMerchantImage.close.preferredUIImage()
     let closeIconAccentColor: UIColor = GiniColor.standard2.uiColor()
 
-    let descriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.paymentproviderslist.description", 
+    let descriptionText: String = NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.providers.list.description", 
                                                                    comment: "Top description text on payment providers bottom sheet")
     let descriptionLabelAccentColor: UIColor = GiniColor.standard3.uiColor()
     var descriptionLabelFont: UIFont
@@ -59,7 +60,7 @@ final class BanksBottomViewModel {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.urlOpener = urlOpener
 
-        self.selectBankLabelFont = GiniMerchantConfiguration.shared.font(for: .subtitle1)
+        self.selectBankLabelFont = GiniMerchantConfiguration.shared.font(for: .subtitle2)
         self.descriptionLabelFont = GiniMerchantConfiguration.shared.font(for: .captions1)
 
         self.paymentProviders = paymentProviders

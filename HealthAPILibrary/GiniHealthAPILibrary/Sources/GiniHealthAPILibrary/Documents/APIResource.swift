@@ -12,14 +12,18 @@ public enum APIDomain {
     case `default`
     /// A custom domain with optional custom token source
     case custom(domain: String, tokenSource: AlternativeTokenSource?)
-    
+    /// Merchant domain
+    case merchant
+
     var domainString: String {
         
         switch self {
         case .default: return "health-api.gini.net"
         case .custom(let domain, _): return domain
+        case .merchant: return "merchant-api.gini.net"
         }
     }
+    
 }
 
 struct APIResource<T: Decodable>: Resource {

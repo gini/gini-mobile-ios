@@ -63,7 +63,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         }
     }
     
-    func paymentView(documentId: String) -> UIView {
+    func paymentView(documentId: String?) -> UIView {
         let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniMerchantConfiguration: giniMerchantConfiguration)
         viewModel.documentId = documentId
         let view = PaymentComponentView()
@@ -78,7 +78,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         return paymentProvidersBottomView
     }
     
-    func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: (any GiniMerchantTrackingDelegate)?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+    func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: GiniMerchantSDK.PaymentInfo?, trackingDelegate: (any GiniMerchantSDK.GiniMerchantTrackingDelegate)?, completion: @escaping (UIViewController?, GiniMerchantSDK.GiniMerchantError?) -> Void) {
         switch documentID {
         case MockSessionManager.payableDocumentID:
             completion(PaymentReviewViewController(), nil)
@@ -96,7 +96,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         return paymentInfoViewController
     }
 
-    func paymentViewBottomSheet(documentID: String) -> UIViewController {
+    func paymentViewBottomSheet(documentID: String?) -> UIViewController {
         let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID))
         return paymentComponentBottomView
     }
