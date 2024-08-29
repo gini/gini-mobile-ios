@@ -24,6 +24,7 @@ final class DigitalInvoiceCoordinator: Coordinator {
     private weak var analysisDelegate: AnalysisDelegate?
 
     weak var delegate: DigitalInvoiceCoordinatorDelegate?
+    weak var skontoDelegate: SkontoCoordinatorDelegate?
     var rootViewController: UIViewController {
         guard let digitalInvoiceViewController = digitalInvoiceViewController else {
             return UIViewController()
@@ -47,8 +48,16 @@ final class DigitalInvoiceCoordinator: Coordinator {
 
         let viewModel = DigitalInvoiceViewModel(invoice: digitalInvoice)
         viewModel.delegate = self
-        digitalInvoiceViewModel = viewModel
-        digitalInvoiceViewController = DigitalInvoiceViewController(viewModel: digitalInvoiceViewModel!)
+        self.digitalInvoiceViewModel = viewModel
+        self.digitalInvoiceViewController = DigitalInvoiceViewController(viewModel: viewModel)
+
+        let extractionResult = digitalInvoice.extractionResult
+        if let skontoDiscounts = try? SkontoDiscounts(extractions: extractionResult),
+           GiniBankConfiguration.shared.skontoEnabled {
+            let skontoViewModel = SkontoViewModel(skontoDiscounts: skontoDiscounts)
+            skontoViewModel.delegate = self
+            self.digitalInvoiceViewModel?.skontoViewModel = skontoViewModel
+        }
     }
 
     private func showDigitalInvoiceOnboarding() {
@@ -124,5 +133,20 @@ extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
         navigationController.dismiss(animated: true) { [weak self] in
             self?.digitalInvoiceViewController?.sendAnalyticsScreenShown()
         }
+    }
+}
+
+extension DigitalInvoiceCoordinator: SkontoViewModelDelegate {
+    func didTapHelp() {
+        let helpViewController = SkontoHelpViewController()
+        navigationController.pushViewController(helpViewController, animated: true)
+    }
+
+    func didTapBack() {
+        self.navigationController.popViewController(animated: true)
+    }
+
+    func didTapDocumentPreview(on viewModel: SkontoViewModel) {
+        skontoDelegate?.didTapDocumentPreview(self, viewModel)
     }
 }

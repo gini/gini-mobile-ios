@@ -86,34 +86,7 @@ class SkontoInfoBannerView: UIView {
     }
 
     private func updateLabelText() {
-        let edgeCase = viewModel.edgeCase
-        let text: String
-
-        switch edgeCase {
-        case .expired:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.expired.message",
-                                                                         comment: "The %@ Skonto discount has expired")
-            text = String.localizedStringWithFormat(localizedText,
-                                                    viewModel.formattedPercentageDiscounted)
-        case .paymentToday:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.today.message",
-                                                                         comment: "Pay today: receive %@ Skonto discount")
-            text = String.localizedStringWithFormat(localizedText,
-                                                    viewModel.formattedPercentageDiscounted)
-        case .payByCash:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.message",
-                                                                         comment: "Pay in cash within...")
-            text = String.localizedStringWithFormat(localizedText,
-                                                    viewModel.remainingDaysString,
-                                                    viewModel.formattedPercentageDiscounted)
-        default:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.default.message",
-                                                                         comment: "Pay in %@: receive %@ Skonto discount")
-            text = String.localizedStringWithFormat(localizedText,
-                                                    viewModel.remainingDaysString,
-                                                    viewModel.formattedPercentageDiscounted)
-        }
-
+        let text = viewModel.localizedBannerInfoMessage
         label.text = text
         label.accessibilityValue = text
     }

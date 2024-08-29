@@ -40,6 +40,7 @@ struct SwitchOptionModel {
 		case digitalInvoiceHelpNavigationBarBottomAdapter
 		case digitalInvoiceOnboardingNavigationBarBottomAdapter
 		case digitalInvoiceNavigationBarBottomAdapter
+        case digitalInvoiceSkontoNavigationBarBottomAdapter
 		case primaryButtonConfiguration
 		case secondaryButtonConfiguration
 		case transparentButtonConfiguration
@@ -117,6 +118,8 @@ struct SwitchOptionModel {
 				return "Digital invoice onboarding bottom navigation bar"
 			case .digitalInvoiceNavigationBarBottomAdapter:
 				return "Digital invoice bottom navigation bar"
+            case .digitalInvoiceSkontoNavigationBarBottomAdapter:
+                return "Digital invoice Skonto bottom navigation bar"
 			case .primaryButtonConfiguration:
 				return "Custom configuration for the primary button"
 			case .secondaryButtonConfiguration:
@@ -186,6 +189,8 @@ struct SwitchOptionModel {
 				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
 			case .digitalInvoiceNavigationBarBottomAdapter:
 				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
+            case .digitalInvoiceSkontoNavigationBarBottomAdapter:
+                return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
 			case .helpNavigationBarBottomAdapter:
 				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			case .cameraNavigationBarBottomAdapter:
