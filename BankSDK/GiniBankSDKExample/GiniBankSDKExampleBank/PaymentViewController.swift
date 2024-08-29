@@ -124,7 +124,7 @@ class PaymentViewController: UIViewController {
                                                              comment: "Pay button")
         payButton.setTitle(payButtonTitle, for: .normal)
 
-        let backToBusinessButtonTitle = NSLocalizedString("ginipaybank.reviewscreen.backToInsurance.title",
+        let backToBusinessButtonTitle = NSLocalizedString("ginipaybank.reviewscreen.backToInitialApp.title",
                                                              comment: "Back to insurance")
         backToBusinessButton.setTitle(backToBusinessButtonTitle, for: .normal)
 
