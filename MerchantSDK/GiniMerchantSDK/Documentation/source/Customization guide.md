@@ -47,8 +47,13 @@ Text customization is done via overriding of string resources.
 For example you would like to customize pay invoice button label in the Payment Component:
 
 1. Find a string key for a text that you would like to customize.
-For the [Pay the invoice button label](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8987-2854&t=vNb6FqqGtzIAVdJl-1) in the Payment Component we use `gini.merchant.paymentcomponent.payInvoice.label`. 
-2. Add the string key with a desired value to `Localizable.strings` in your app.
+For the [Pay the invoice button label](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8987-2854&t=vNb6FqqGtzIAVdJl-1) in the Payment Component we use `gini.merchant.paymentcomponent.pay.invoice.label`. 
+
+2. If you use localizable strings:
+Add the string key with a desired value to `Localizable.strings` in your app.
+
+If you use a [string catalog](https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog):
+Add the string key with a desired value to `Localizable.xcstrings` in your app.
 
 ### Supporting dark mode
 
@@ -56,7 +61,7 @@ We support dark mode in our SDK. If you decide to customize the color palette, p
 
 ## Payment Component
  
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8987-2854&t=vNb6FqqGtzIAVdJl-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/ww461LDHx2u6NY9dAr9gsl/iOS-Gini-Merchant-SDK-1.0-UI-Customisation?node-id=12922-11524&t=7NfLZSvYFs3UI2BV-1).
 
 For configuring the the payment component height use `paymentComponentButtonsHeight` configuration option:
 
@@ -71,46 +76,45 @@ merchantSDK.setConfiguration(config)
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D8987-2854%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2Fww461LDHx2u6NY9dAr9gsl%2FiOS-Gini-Merchant-SDK-1.0-UI-Customisation%3Fnode-id%3D12922-11524%26t%3D7NfLZSvYFs3UI2BV-1" allowfullscreen></iframe>
 
 ## Bank Selection Bottom Sheet
 
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=9008-1654&t=vNb6FqqGtzIAVdJl-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/ww461LDHx2u6NY9dAr9gsl/iOS-Gini-Merchant-SDK-1.0-UI-Customisation?node-id=12922-11246&t=7NfLZSvYFs3UI2BV-1).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D9008-1654%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2Fww461LDHx2u6NY9dAr9gsl%2FiOS-Gini-Merchant-SDK-1.0-UI-Customisation%3Fnode-id%3D12922-11246%26t%3D7NfLZSvYFs3UI2BV-1" allowfullscreen></iframe>
 
 ## Payment Feature Info Screen
 
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=9044-1582&t=vNb6FqqGtzIAVdJl-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/ww461LDHx2u6NY9dAr9gsl/iOS-Gini-Merchant-SDK-1.0-UI-Customisation?node-id=12922-11379&t=7NfLZSvYFs3UI2BV-1).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D9044-1582%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2Fww461LDHx2u6NY9dAr9gsl%2FiOS-Gini-Merchant-SDK-1.0-UI-Customisation%3Fnode-id%3D12922-11379%26t%3D7NfLZSvYFs3UI2BV-1" allowfullscreen></iframe>
 
-## Payment Review screen
+## Payment Review Bottom Sheet
  
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=9008-1300&t=vNb6FqqGtzIAVdJl-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/ww461LDHx2u6NY9dAr9gsl/iOS-Gini-Merchant-SDK-1.0-UI-Customisation?node-id=12922-10422&t=7NfLZSvYFs3UI2BV-1).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D9008-1300%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2Fww461LDHx2u6NY9dAr9gsl%2FiOS-Gini-Merchant-SDK-1.0-UI-Customisation%3Fnode-id%3D12922-10422%26t%3D7NfLZSvYFs3UI2BV-1" allowfullscreen></iframe>
 
 > **Note:** 
-> - PaymentReviewViewController contains the following configuration options:
-> - paymentReviewStatusBarStyle: Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in `Info.plist`.
-> - showPaymentReviewCloseButton: If set to true, a floating close button will be shown in the top right corner of the screen.
-Default value is false.
+> - PaymentReviewViewController Bottom Sheet contains the following configuration options:
+> - showPaymentReviewScreen: If set to true, a Payment Review Bottom Sheet will be shown.
+Default value is true.
 
-For enabling `showPaymentReviewCloseButton`:
+For disabling `showPaymentReviewScreen`:
 
 ```swift
 let giniConfiguration = GiniMerchantConfiguration()
-config.showPaymentReviewCloseButton =  true
+config.showPaymentReviewScreen =  false
 merchantSDK.setConfiguration(config)
 ```
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import GiniCaptureSDK
+import GiniMerchantSDK
 
 protocol SelectAPIViewControllerDelegate: AnyObject {
     func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniCaptureAPIType)
@@ -56,15 +57,11 @@ final class SelectAPIViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        let metaTitle = "Gini Capture SDK: (\(GiniCapture.versionString)) / Client id: \(self.clientId ?? "")"
+        let metaTitle = "Gini Merchant SDK: (\(GiniMerchant.versionString)) / Client id: \(self.clientId ?? "")"
         metaInformationButton.setTitle(metaTitle, for: .normal)
         metaInformationButton.addTarget(self, action: #selector(showDebugMenu), for: .touchUpInside)
 
-        if #available(iOS 13.0, *) {
-            activityIndicator.style = .large
-        } else {
-            activityIndicator.style = .whiteLarge
-        }
+        activityIndicator.style = .large
     }
     
     // MARK: User interaction

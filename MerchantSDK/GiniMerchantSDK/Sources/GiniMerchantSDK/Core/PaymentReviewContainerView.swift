@@ -30,6 +30,7 @@ class PaymentReviewContainerView: UIView {
     private lazy var recipientStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .vertical)
         stackView.distribution = .fill
+        stackView.spacing = Constants.errorTopMargin
         return stackView
     }()
 
@@ -49,13 +50,14 @@ class PaymentReviewContainerView: UIView {
     private lazy var ibanAmountContainerStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .vertical)
         stackView.distribution = .fill
+        stackView.spacing = Constants.errorTopMargin
         return stackView
     }()
 
     private lazy var ibanAmountHorizontalStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .horizontal)
         stackView.distribution = .fill
-        stackView.spacing = Constants.stackViewSpacing
+        stackView.spacing = Constants.errorTopMargin
         return stackView
     }()
 
@@ -69,7 +71,7 @@ class PaymentReviewContainerView: UIView {
     private lazy var amountTextFieldView: TextFieldWithLabelView = {
         let textFieldView = TextFieldWithLabelView()
         textFieldView.tag = TextFieldType.amountFieldTag.rawValue
-        textFieldView.isUserInteractionEnabled = giniMerchantConfiguration.isAmountFieldEditable
+        textFieldView.isUserInteractionEnabled = true
         return textFieldView
     }()
 
@@ -103,9 +105,10 @@ class PaymentReviewContainerView: UIView {
         return label
     }()
 
-    private lazy var usageStackView: UIStackView = {
+    private lazy var referenceNumberStackView: UIStackView = {
         let stackView = EmptyStackView(orientation: .vertical)
         stackView.distribution = .fill
+        stackView.spacing = Constants.errorTopMargin
         return stackView
     }()
 
@@ -149,6 +152,7 @@ class PaymentReviewContainerView: UIView {
 
     private var paymentInputFields: [TextFieldWithLabelView] = []
     private var paymentInputFieldsErrorLabels: [UILabel] = []
+    private var coupledErrorLabels: [UILabel] = []
     var model: PaymentReviewContainerViewModel! {
         didSet {
             configureUI()
@@ -161,7 +165,7 @@ class PaymentReviewContainerView: UIView {
         setupViewHierarchy()
         setupLayout()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -169,6 +173,7 @@ class PaymentReviewContainerView: UIView {
     private func setupViewHierarchy() {
         paymentInputFields = [recipientTextFieldView, amountTextFieldView, ibanTextFieldView, usageTextFieldView]
         paymentInputFieldsErrorLabels = [recipientErrorLabel, amountErrorLabel, ibanErrorLabel, usageErrorLabel]
+        coupledErrorLabels = [amountErrorLabel, ibanErrorLabel]
 
         recipientStackView.addArrangedSubview(recipientTextFieldView)
         recipientStackView.addArrangedSubview(recipientErrorLabel)
@@ -184,13 +189,12 @@ class PaymentReviewContainerView: UIView {
         ibanAmountContainerStackView.addArrangedSubview(ibanAmountHorizontalStackView)
         ibanAmountContainerStackView.addArrangedSubview(ibanAmountErrorsHorizontalStackView)
 
-        usageStackView.addArrangedSubview(usageTextFieldView)
-        usageStackView.addArrangedSubview(usageErrorLabel)
+        referenceNumberStackView.addArrangedSubview(usageTextFieldView)
+        referenceNumberStackView.addArrangedSubview(usageErrorLabel)
 
         buttonsStackView.addArrangedSubview(payInvoiceButton)
         buttonsView.addSubview(buttonsStackView)
 
-        bottomStackView.addArrangedSubview(UIView())
         bottomStackView.addArrangedSubview(poweredByGiniView)
         bottomView.addSubview(bottomStackView)
 
@@ -198,12 +202,11 @@ class PaymentReviewContainerView: UIView {
 
         paymentInfoStackView.addArrangedSubview(ibanAmountContainerStackView)
 
-        paymentInfoStackView.addArrangedSubview(usageStackView)
+        paymentInfoStackView.addArrangedSubview(referenceNumberStackView)
         paymentInfoStackView.addArrangedSubview(buttonsView)
         paymentInfoStackView.addArrangedSubview(bottomView)
-        paymentInfoStackView.addArrangedSubview(UIView())
 
-        self.addSubview(paymentInfoStackView)
+        addSubview(paymentInfoStackView)
     }
 
     // MARK: Layout & Constraints
@@ -219,10 +222,10 @@ class PaymentReviewContainerView: UIView {
 
     private func setupContainerContraints() {
         NSLayoutConstraint.activate([
-            paymentInfoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPadding),
-            paymentInfoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPadding),
-            paymentInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.topBottomPaymentInfoContainerPadding),
-            paymentInfoStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -Constants.topBottomPaymentInfoContainerPadding)
+            paymentInfoStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPadding),
+            paymentInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPadding),
+            paymentInfoStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.topBottomPaymentInfoContainerPadding),
+            paymentInfoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.topBottomPaymentInfoContainerPadding)
         ])
     }
 
@@ -279,8 +282,13 @@ class PaymentReviewContainerView: UIView {
             bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPadding),
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPadding),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
-            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
+            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
+            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
+    }
+
+    private func updateAmountIbanErrorState() {
+        ibanAmountErrorsHorizontalStackView.isHidden = coupledErrorLabels.allSatisfy { $0.isHidden }
     }
 
     // MARK: - Input fields configuration
@@ -304,6 +312,11 @@ class PaymentReviewContainerView: UIView {
         textFieldView.customConfigure(labelTitle: inputFieldPlaceholderText(textFieldView))
         textFieldView.textField.delegate = self
         textFieldView.textField.tag = textFieldView.tag
+
+        if let fieldIdentifier = TextFieldType(rawValue: textFieldView.tag), fieldIdentifier != .amountFieldTag {
+            textFieldView.textField.textColor = giniMerchantConfiguration.defaultStyleInputFieldConfiguration.placeholderForegroundColor
+        }
+
         textFieldView.layer.masksToBounds = true
     }
 
@@ -321,24 +334,47 @@ class PaymentReviewContainerView: UIView {
         }
     }
 
-    fileprivate func inputFieldPlaceholderText(_ textFieldView: TextFieldWithLabelView) -> String {
+    fileprivate func inputFieldPlaceholderText(_ textFieldView: TextFieldWithLabelView) -> NSAttributedString {
+        let fullString = NSMutableAttributedString()
         if let fieldIdentifier = TextFieldType(rawValue: textFieldView.tag) {
+            var text = ""
             switch fieldIdentifier {
             case .recipientFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder",
+                text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder",
                                                         comment: "placeholder text for recipient input field")
             case .ibanFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder",
+                text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder",
                                                         comment: "placeholder text for iban input field")
             case .amountFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder",
+                text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder",
                                                         comment: "placeholder text for amount input field")
             case .usageFieldTag:
-                return NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
+                text = NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
                                                         comment: "placeholder text for usage input field")
             }
+            fullString.append(NSAttributedString(string: text))
+
+            if fieldIdentifier != .amountFieldTag {
+                appendLockIcon(fullString)
+            }
         }
-        return ""
+
+        return fullString
+    }
+
+    fileprivate func appendLockIcon(_ string: NSMutableAttributedString) {
+        let lockIconAttachment = NSTextAttachment()
+        let icon = GiniMerchantImage.lock.preferredUIImage()
+        lockIconAttachment.image = icon
+
+        let height = Constants.lockIconHeight
+        let ratio = icon.size.width / icon.size.height
+        lockIconAttachment.bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: ratio * height, height: height)
+
+        let lockString = NSAttributedString(attachment: lockIconAttachment)
+
+        string.append(NSAttributedString(string: "  "))
+        string.append(lockString)
     }
 
     fileprivate func validateTextField(_ textFieldViewTag: Int) {
@@ -411,17 +447,29 @@ class PaymentReviewContainerView: UIView {
         for errorLabel in paymentInputFieldsErrorLabels {
             errorLabel.isHidden = true
         }
+        updateAmountIbanErrorState()
     }
 
     fileprivate func fillInInputFields() {
         guard let model else { return }
-        recipientTextFieldView.text = model.extractions.first(where: {$0.name == "payment_recipient"})?.value
-        ibanTextFieldView.text = model.extractions.first(where: {$0.name == "iban"})?.value
-        usageTextFieldView.text = model.extractions.first(where: {$0.name == "payment_purpose"})?.value
-        if let amountString = model.extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
-            self.amountToPay = amountToPay
-            let amountToPayText = amountToPay.string
-            amountTextFieldView.text = amountToPayText
+        if let extractions = model.extractions {
+            recipientTextFieldView.text = extractions.first(where: {$0.name == "payment_recipient"})?.value
+            ibanTextFieldView.text = extractions.first(where: {$0.name == "iban"})?.value
+            usageTextFieldView.text = extractions.first(where: {$0.name == "payment_purpose"})?.value
+            if let amountString = extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
+                self.amountToPay = amountToPay
+                let amountToPayText = amountToPay.string
+                amountTextFieldView.text = amountToPayText
+            }
+        } else if let paymentInfo = model.paymentInfo {
+            recipientTextFieldView.text = paymentInfo.recipient
+            ibanTextFieldView.text = paymentInfo.iban
+            usageTextFieldView.text = paymentInfo.purpose
+            if let amountToPay = Price(extractionString: paymentInfo.amount) {
+                self.amountToPay = amountToPay
+                let amountToPayText = amountToPay.string
+                amountTextFieldView.text = amountToPayText
+            }
         }
         validateAllInputFields()
         disablePayButtonIfNeeded()
@@ -453,6 +501,7 @@ class PaymentReviewContainerView: UIView {
             errorLabel.textColor = GiniColor.feedback1.uiColor()
             errorLabel.text = errorMessage
         }
+        updateAmountIbanErrorState()
     }
 
     fileprivate func hideErrorLabel(textFieldTag: TextFieldType) {
@@ -471,6 +520,7 @@ class PaymentReviewContainerView: UIView {
             errorLabel.isHidden = true
         }
         disablePayButtonIfNeeded()
+        updateAmountIbanErrorState()
     }
 
     // MARK: - Pay button
@@ -500,6 +550,7 @@ class PaymentReviewContainerView: UIView {
             errorLabel.textColor = GiniColor.feedback1.uiColor()
             errorLabel.text = errorMessage
         }
+        updateAmountIbanErrorState()
     }
 
     fileprivate func configurePayButtonInitialState() {
@@ -699,7 +750,7 @@ extension PaymentReviewContainerView {
     enum Constants {
         static let buttonViewHeight = 56.0
         static let leftRightPaymentInfoContainerPadding = 8.0
-        static let topBottomPaymentInfoContainerPadding = 16.0
+        static let topBottomPaymentInfoContainerPadding = 0.0
         static let textFieldHeight = 56.0
         static let errorLabelHeight = 12.0
         static let amountWidth = 95.0
@@ -708,5 +759,8 @@ extension PaymentReviewContainerView {
         static let heightToolbar = 40.0
         static let stackViewSpacing = 10.0
         static let payInvoiceInactiveAlpha = 0.4
+        static let bottomViewHeight = 20.0
+        static let errorTopMargin = 9.0
+        static let lockIconHeight = 11.0
     }
 }

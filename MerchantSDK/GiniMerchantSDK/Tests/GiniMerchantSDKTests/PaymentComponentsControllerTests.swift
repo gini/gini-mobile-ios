@@ -14,13 +14,13 @@ final class PaymentComponentsControllerTests: XCTestCase {
     private var giniHealthAPI: GiniHealthAPI!
     private var mockPaymentComponentsController: PaymentComponentsProtocol!
     private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
-    private let versionAPI = 4
-    
+    private let versionAPI = 1
+
     override func setUp() {
         super.setUp()
         let sessionManagerMock = MockSessionManager()
-        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
+        let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiDomain: .merchant, apiVersion: versionAPI)
+        let paymentService = PaymentService(sessionManager: sessionManagerMock, apiDomain: .merchant, apiVersion: versionAPI)
         giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService)
         let giniMerchant = GiniMerchant(giniApiLib: giniHealthAPI)
         mockPaymentComponentsController = MockPaymentComponents(giniMerchant: giniMerchant)
@@ -116,7 +116,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniMerchantError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentID: documentID, trackingDelegate: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentID: documentID, paymentInfo: nil, trackingDelegate: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }
@@ -134,7 +134,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniMerchantError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentID: documentID, trackingDelegate: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentID: documentID, paymentInfo: nil, trackingDelegate: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }

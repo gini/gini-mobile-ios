@@ -20,4 +20,10 @@ extension UILabel {
                                  attributes: [NSAttributedString.Key.font: font],
                                  context: nil).size.height
     }
+
+    func enableScaling() {
+        adjustsFontSizeToFitWidth = true
+        minimumScaleFactor = 10 / font.pointSize
+        adjustsFontForContentSizeCategory = true
+    }
 }
