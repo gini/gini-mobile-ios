@@ -16,10 +16,8 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
     //Preconditions
         //Open settings screen
         mainScreen.configurationButton.tap()
-        //Scroll to element
-        mainScreen.swipeToElement(element: settingScreen.onboardingEveryLaunchSwitch,direction: "up")
-        //Enable Onboarding at every launch switch
-        mainScreen.handleConfigurationSetting(element: settingScreen.onboardingEveryLaunchSwitch ,enabled: true)
+        //Enable Onboarding screens at every launch
+        mainScreen.tapSwitchNextToTextElement(text: "Onboarding screens at every launch")
         //Scroll to element
         mainScreen.swipeToElement(element: settingScreen.onboardingAtFirstLaunchSwitch,direction: "up")
         //Disable Onboarding at first launch switch
@@ -48,10 +46,8 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
     //Preconditions
         //Open settings screen
         mainScreen.configurationButton.tap()
-        //Scroll to element
-        mainScreen.swipeToElement(element: settingScreen.onboardingEveryLaunchSwitch, direction: "up")
-        //Enable Onboarding at every launch switch
-        mainScreen.handleConfigurationSetting(element: settingScreen.onboardingEveryLaunchSwitch, enabled: true)
+        //Enable Onboarding screens at every launch
+        mainScreen.tapSwitchNextToTextElement(text: "Onboarding screens at every launch")
         //Scroll to element
         mainScreen.swipeToElement(element: settingScreen.onboardingAtFirstLaunchSwitch, direction: "up")
         //Disable Onboarding at first launch switch
@@ -75,10 +71,8 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
     //Preconditions
         //Open settings screen
         mainScreen.configurationButton.tap()
-        //Scroll to element
-        mainScreen.swipeToElement(element: settingScreen.onboardingEveryLaunchSwitch, direction: "up")
-        //Enable Onboarding at every launch switch
-        mainScreen.handleConfigurationSetting(element: settingScreen.onboardingEveryLaunchSwitch, enabled: true)
+        //Enable Onboarding screens at every launch
+        mainScreen.tapSwitchNextToTextElement(text: "Onboarding screens at every launch")
         //Scroll to element
         mainScreen.swipeToElement(element: settingScreen.onboardingAtFirstLaunchSwitch, direction: "up")
         //Disable Onboarding at first launch switch
