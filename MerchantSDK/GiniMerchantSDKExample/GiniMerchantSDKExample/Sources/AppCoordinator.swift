@@ -172,10 +172,6 @@ final class AppCoordinator: Coordinator {
     fileprivate func showOrdersList(orders: [Order]? = nil) {
         self.selectAPIViewController.hideActivityIndicator()
         
-        // Show the close button to dismiss the payment review screen
-        configuration.showPaymentReviewCloseButton = true
-        configuration.paymentReviewStatusBarStyle = .lightContent
-
         merchant.setConfiguration(configuration)
         merchant.delegate = self
 
