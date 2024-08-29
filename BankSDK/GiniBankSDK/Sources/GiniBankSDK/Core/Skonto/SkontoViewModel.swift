@@ -93,21 +93,21 @@ class SkontoViewModel {
                                                     formattedPercentageDiscounted)
         case .paymentToday:
             let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.today.message",
-                                                                         comment: "Pay today: %@ discount.")
+                                                                         comment: "Pay today: receive %@ Skonto discount.")
             text = String.localizedStringWithFormat(localizedText,
                                                     formattedPercentageDiscounted)
         case .payByCash:
             if remainingDays == 0 {
                 let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.today.message",
-                                                                             comment: "Pay in cash today...")
+                                                                             comment: "Pay in cash today and receive a %@ Skonto discount")
                 text = String.localizedStringWithFormat(localizedText,
                                                         formattedPercentageDiscounted)
             } else {
                 let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.message",
-                                                                             comment: "Pay in cash within the next...")
+                                                                             comment: "Pay in cash within the next  %@ days ...  %@")
                 text = String.localizedStringWithFormat(localizedText,
-                                                        formattedPercentageDiscounted,
-                                                        remainingDaysString)
+                                                        remainingDaysString,
+                                                        formattedPercentageDiscounted)
             }
         default:
             let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.default.message",
