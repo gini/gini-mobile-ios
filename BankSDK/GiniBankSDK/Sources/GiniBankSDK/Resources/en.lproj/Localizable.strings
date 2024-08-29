@@ -113,6 +113,7 @@
 "ginibank.skonto.infobanner.default.message" = "Pay in %@: receive %@ Skonto discount";
 "ginibank.skonto.infobanner.edgecase.today.message" = "Pay today: receive %@ Skonto discount";
 "ginibank.skonto.infobanner.edgecase.cash.message" = "Pay in cash within the next %@ and receive a %@ Skonto discount";
+"ginibank.skonto.infobanner.edgecase.cash.today.message" = "Pay in cash today and receive a %@ Skonto discount";
 "ginibank.skonto.infobanner.edgecase.expired.message" = "The %@ Skonto discount has expired";
 
 "ginibank.skonto.infobanner.edgecase.today.alert.title" = "A Skonto discount can be applied to this invoice, it will expire after today.";
