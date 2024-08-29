@@ -21,7 +21,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var separatorView: UIView!
-    @IBOutlet weak var backroundContainerView: UIView!
+    @IBOutlet weak var backgroundContainerView: UIView!
     @IBOutlet weak var unitPriceLabel: UILabel!
 
     private let configuration = GiniBankConfiguration.shared
@@ -89,7 +89,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         let bgColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         backgroundColor = bgColor
         contentView.backgroundColor = bgColor
-        backroundContainerView.backgroundColor = bgColor
+        backgroundContainerView.backgroundColor = bgColor
         selectionStyle = .none
 
         if viewModel?.index == 0 {
