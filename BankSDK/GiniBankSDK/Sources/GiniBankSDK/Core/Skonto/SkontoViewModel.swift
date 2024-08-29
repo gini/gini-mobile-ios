@@ -97,11 +97,18 @@ class SkontoViewModel {
             text = String.localizedStringWithFormat(localizedText,
                                                     formattedPercentageDiscounted)
         case .payByCash:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.message",
-                                                                         comment: "A %@ discount is available...")
-            text = String.localizedStringWithFormat(localizedText,
-                                                    formattedPercentageDiscounted,
-                                                    remainingDaysString)
+            if remainingDays == 0 {
+                let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.today.message",
+                                                                             comment: "Pay in cash today...")
+                text = String.localizedStringWithFormat(localizedText,
+                                                        formattedPercentageDiscounted)
+            } else {
+                let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.message",
+                                                                             comment: "Pay in cash within the next...")
+                text = String.localizedStringWithFormat(localizedText,
+                                                        formattedPercentageDiscounted,
+                                                        remainingDaysString)
+            }
         default:
             let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.default.message",
                                                                          comment: "Pay in %@: %@ Skonto discount.")
