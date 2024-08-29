@@ -29,7 +29,7 @@ class CustomDigitalInvoiceSkontoBottomNavigationBarAdapter: DigitalInvoiceSkonto
     }
 
     func onDeinit() {
-
+        // Mandatory implementation, but no cleanup actions are required
     }
 
     @objc private func backButtonClicked() {
