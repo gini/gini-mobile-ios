@@ -106,6 +106,7 @@
 "ginibank.skonto.infobanner.default.message" = "Zahlung in %@: %@ Skonto";
 "ginibank.skonto.infobanner.edgecase.today.message" = "Zahlung heute: %@ Skonto";
 "ginibank.skonto.infobanner.edgecase.cash.message" = "Zahlen Sie diese Rechnung innerhalb von %@ in bar und Sie erhalten %@ Skonto";
+"ginibank.skonto.infobanner.edgecase.cash.today.message" = "Zahlen Sie heute bar und erhalten Sie %@ Skonto";
 "ginibank.skonto.infobanner.edgecase.expired.message" = "Die %@ Skonto sind abgelaufen";
 
 "ginibank.skonto.infobanner.edgecase.today.alert.title" = "Von dieser Rechnung kann ein Skontobetrag abgezogen werden – die Frist läuft heute ab.";
