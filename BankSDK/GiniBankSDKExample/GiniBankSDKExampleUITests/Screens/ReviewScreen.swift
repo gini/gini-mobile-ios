@@ -39,7 +39,5 @@ public class ReviewScreen {
         default:
             fatalError("Locale \(locale) is not supported")
         }
-        
-
     }
 }

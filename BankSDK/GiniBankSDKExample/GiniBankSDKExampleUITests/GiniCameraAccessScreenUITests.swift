@@ -18,7 +18,7 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         
         //Reset Camera Access
         app.terminate()
-    //Don't work on simulators
+        //Don't work on simulators
         if #available(iOS 13.4, *) {
             app.resetAuthorizationStatus(for: .camera)
         }
@@ -68,7 +68,7 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
         
         //Reset Camera Access
         app.terminate()
-    //Don't work on simulators
+        //Don't work on simulators
         if #available(iOS 13.4, *) {
             app.resetAuthorizationStatus(for: .camera)
         }
