@@ -11,7 +11,7 @@ import XCTest
 class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
     
     /*
-     To launch these tests and be as possibly close to real user behavior
+     To launch these tests and closely mimic real user behavior
      Please upload to device:
         "test_image" image file with invoice
      */

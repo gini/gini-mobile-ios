@@ -11,7 +11,7 @@ import XCTest
 class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
     
     /*
-     To launch these tests and be as possibly close to real user behavior
+     To launch these tests and closely mimic real user behavior
      Please upload to device:
         "skonto_past" file with expired skonto
         "skonto_valid" file with valid skonto
