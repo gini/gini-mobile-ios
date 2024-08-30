@@ -22,6 +22,9 @@ enum GiniImages: String {
     case skontoHelpItem2 = "skonto_help_item2"
     case skontoHelpItem3 = "skonto_help_item3"
     case skontoHelpItem4 = "skonto_help_item4"
+    case attachmentOptionsIcon = "attachment_options_icon"
+    case attachmentImageIcon = "attachment_image_icon"
+    case attachmentDocumentIcon = "attachment_document_icon"
 
     var image: UIImage? {
         return prefferedImage(named: rawValue)
