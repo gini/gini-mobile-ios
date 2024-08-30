@@ -7,6 +7,7 @@
 
 import UIKit
 import GiniCaptureSDK
+import GiniBankSDK
 
 protocol DemoViewControllerDelegate: AnyObject {
     func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint)
@@ -138,8 +139,9 @@ final class DemoViewController: UIViewController {
     }
   
     private func configureMetaTitle() {
+        
         metaInformationLabel.isUserInteractionEnabled = true
-        let metaTitle = "Gini Bank SDK: () / Gini Capture SDK: (\(GiniCaptureSDKVersion)) / Client id: \(self.clientId ?? "")"
+        let metaTitle = "Gini Bank SDK: (\(GiniBankSDKVersion)) / Gini Capture SDK: (\(GiniCaptureSDKVersion)) / Client id: \(self.clientId ?? "")"
         metaInformationLabel.text = metaTitle
         metaInformationLabel.textColor = textColor
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.launchSettings))
