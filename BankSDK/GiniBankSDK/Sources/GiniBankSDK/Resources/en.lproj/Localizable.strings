@@ -134,3 +134,11 @@
 "ginibank.skonto.help.back" = "Skonto discount";
 
 "ginibank.skonto.document.pages.screen.title" = "Skonto discount details";
+
+"ginibank.invoice.attachment.alert.title" = "Add an attachment to this transaction";
+"ginibank.invoice.attachment.alert.message" = "We recommend adding attachments to transactions to manage expenses efficiently and easily recall purchases.";
+"ginibank.invoice.attachment.alert.action.attachAlways" = "Always attach";
+"ginibank.invoice.attachment.alert.action.attach" = "Attach";
+"ginibank.invoice.attachment.alert.action.dontAttach" = "Don't attach";
+
+"ginibank.invoice.attachments.title" = "Attachments";
