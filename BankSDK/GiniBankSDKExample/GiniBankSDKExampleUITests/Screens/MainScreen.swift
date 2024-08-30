@@ -48,17 +48,20 @@ public class MainScreen {
      */
     public func handleCameraPermission(answer: Bool) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        
+        let waitForPermission = springboard.waitForExistence(timeout: 5)
         let allowButton = springboard.buttons["Allow"]
         let allowButtonDE = springboard.buttons["OK"]
         let dontAllowButton = springboard.buttons["Don’t Allow"]
         let dontAllowButtonDE = springboard.buttons["Nicht erlauben"]
+        let buttonToTap: XCUIElement
         
         if answer {
-            let buttonToTap = allowButton.exists ? allowButton : allowButtonDE
-            buttonToTap.tap()
+            buttonToTap = allowButton.exists ? allowButton : allowButtonDE
         } else {
-            let buttonToTap = dontAllowButton.exists ? dontAllowButton : dontAllowButtonDE
+            buttonToTap = dontAllowButton.exists ? dontAllowButton : dontAllowButtonDE
+        }
+        
+        if buttonToTap.exists {
             buttonToTap.tap()
         }
     }
@@ -69,19 +72,23 @@ public class MainScreen {
      */
     public func handlePhotoPermission(answer: Bool) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-
+        let waitForPermission = springboard.waitForExistence(timeout: 5)
         let allowFullAccess =  springboard.buttons["Allow Full Access"]
         let allowFullAccessDE =  springboard.buttons["Zugriff auf alle Fotos erlauben"]
         let dontAllowButton = springboard.buttons["Don’t Allow"]
         let dontAllowButtonDE = springboard.buttons["Nicht erlauben"]
+        let buttonToTap: XCUIElement
         
         if answer {
-            let buttonToTap = allowFullAccess.exists ? allowFullAccess : allowFullAccessDE
-            buttonToTap.tap()
+            buttonToTap = allowFullAccess.exists ? allowFullAccess : allowFullAccessDE
         } else {
-            let buttonToTap = dontAllowButton.exists ? dontAllowButton : dontAllowButtonDE
+            buttonToTap = dontAllowButton.exists ? dontAllowButton : dontAllowButtonDE
+        }
+        
+        if buttonToTap.exists {
             buttonToTap.tap()
         }
+        
     }
 
     func swipeToElement(element: XCUIElement, direction: String) {
