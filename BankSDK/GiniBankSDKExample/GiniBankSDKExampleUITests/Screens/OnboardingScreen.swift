@@ -36,8 +36,8 @@ public class OnboardingScreen {
     }
     
     public func skipOnboardingScreens() {
-            if skipButton.exists {
-                skipButton.tap()
+        if skipButton.exists {
+            skipButton.tap()
         }
     }
 }
