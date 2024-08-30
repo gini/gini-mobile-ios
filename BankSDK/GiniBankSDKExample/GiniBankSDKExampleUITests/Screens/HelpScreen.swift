@@ -35,10 +35,4 @@ public class HelpScreen {
             fatalError("Locale \(locale) is not supported")
         }
     }
-    
-    struct VerifyMessage {
-        struct HelpScreenMenuItem {
-            static let title = "Good lightning"
-        }
-    }
 }
