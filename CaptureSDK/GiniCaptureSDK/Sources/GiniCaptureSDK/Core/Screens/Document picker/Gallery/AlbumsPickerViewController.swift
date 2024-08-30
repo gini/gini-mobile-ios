@@ -177,7 +177,7 @@ extension AlbumsPickerViewController: UITableViewDataSource {
         cell?.setUp(with: album,
                     giniConfiguration: giniConfiguration,
                     galleryManager: galleryManager)
-        if indexPath.row >= tableView.numberOfRows(inSection: indexPath.section) - 1 {
+        if indexPath.row == galleryManager.albums.count - 1 {
             cell?.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         }
         return cell!
