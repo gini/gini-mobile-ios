@@ -23,7 +23,7 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
     }
     
     public var showPaymentReviewCloseButton: Bool {
-        GiniMerchantConfiguration.shared.showPaymentReviewCloseButton
+        false
     }
     
     public var paymentComponentButtonsHeight: CGFloat {
@@ -143,7 +143,7 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             paymentReviewClose: GiniMerchantImage.paymentReviewClose.preferredUIImage(),
             backgroundColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor(),
             infoBarLabelFont: GiniMerchantConfiguration.shared.font(for: .captions1),
-            statusBarStyle: GiniMerchantConfiguration.shared.paymentReviewStatusBarStyle,
+            statusBarStyle: .default,
             pageIndicatorTintColor: GiniColor.standard4.uiColor(),
             currentPageIndicatorTintColor: GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor(),
             isInfoBarHidden: true
