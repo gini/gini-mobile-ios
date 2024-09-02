@@ -38,18 +38,8 @@ public final class GiniMerchantConfiguration: NSObject {
         super.init()
     }
     
-    // MARK: - Payment review screen
+    // MARK: - Payment component view
 
-    /**
-     Set to `true` to show a close button on the payment review screen.
-     */
-    @objc public var showPaymentReviewCloseButton = false
-    
-    /**
-     Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
-     */
-    @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
-    
     /**
     Height of the buttons from the Payment Component View
      */
@@ -60,6 +50,8 @@ public final class GiniMerchantConfiguration: NSObject {
             }
         }
     }
+
+    // MARK: - Payment review screen
 
     /**
      Set to `false` to hide the payment review screen and jump straight to payment

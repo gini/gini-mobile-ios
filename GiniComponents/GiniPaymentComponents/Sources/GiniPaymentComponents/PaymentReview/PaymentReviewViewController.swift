@@ -377,7 +377,7 @@ fileprivate extension PaymentReviewViewController {
     }
 }
 
-//MARK: - Close Button
+//MARK: - Close Button used in Gini Health SDK
 fileprivate extension PaymentReviewViewController {
     func buildCloseButton() -> UIButton {
         let button = UIButton()
