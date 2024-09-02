@@ -9,6 +9,7 @@ import XCTest
 @testable import GiniUtilites
 @testable import GiniMerchantSDK
 @testable import GiniHealthAPILibrary
+@testable import GiniPaymentComponents
 
 final class GiniMerchantTests: XCTestCase {
     
