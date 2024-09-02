@@ -226,7 +226,7 @@ extension PaymentReviewViewController {
          Moves the root view up by the distance of keyboard height  taking in account safeAreaInsets.bottom
          */
         (displayMode == .bottomSheet ? view : mainView)
-                    .bounds.origin.y = keyboardSize.height - view.safeAreaInsets.bottom
+            .bounds.origin.y = keyboardSize.height - view.safeAreaInsets.bottom
 
         keyboardWillShowCalled = true
     }
@@ -235,21 +235,15 @@ extension PaymentReviewViewController {
         let animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? Constants.animationDuration
         let animationCurve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? UInt(UIView.AnimationCurve.easeOut.rawValue)
 
-        self.keyboardWillShowCalled = false
+        keyboardWillShowCalled = false
 
         /**
          Moves back the root view origin to zero. Schedules it on the main dispatch queue to prevent
          the view jumping if another keyboard is shown right after this one is hidden.
          */
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            guard let self = self else { return }
-
-            if !self.keyboardWillShowCalled {
-                UIView.animate(withDuration: animationDuration, delay: 0.0, options: UIView.AnimationOptions(rawValue: animationCurve), animations: {
-                    self.mainView.bounds.origin.y = 0
-                }, completion: nil)
-            }
-        }
+        UIView.animate(withDuration: animationDuration, delay: 0.0, options: UIView.AnimationOptions(rawValue: animationCurve), animations: { [weak self] in
+            self?.view.bounds.origin.y = 0
+        }, completion: nil)
     }
 
     func subscribeOnNotifications() {
