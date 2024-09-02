@@ -10,10 +10,14 @@ import UIKit
 public struct PaymentReviewContainerConfiguration {
     let errorLabelTextColor: UIColor
     let errorLabelFont: UIFont
-    
-    public init(errorLabelTextColor: UIColor, errorLabelFont: UIFont) {
+    let lockIcon: UIImage
+
+    public init(errorLabelTextColor: UIColor,
+                errorLabelFont: UIFont,
+                lockIcon: UIImage) {
         self.errorLabelTextColor = errorLabelTextColor
         self.errorLabelFont = errorLabelFont
+        self.lockIcon = lockIcon
     }
 }
 
@@ -29,7 +33,7 @@ public struct PaymentReviewContainerStrings {
     let amountErrorMessage: String
     let purposeErrorMessage: String
     let payInvoiceLabelText: String
-    
+
     public init(emptyCheckErrorMessage: String,
                 ibanCheckErrorMessage: String,
                 recipientFieldPlaceholder: String,

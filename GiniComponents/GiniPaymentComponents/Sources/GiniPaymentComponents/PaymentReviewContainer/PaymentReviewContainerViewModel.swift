@@ -21,23 +21,31 @@ public final class PaymentReviewContainerViewModel {
     let selectionStyleInputFieldConfiguration: TextFieldConfiguration
     let poweredByGiniViewModel: PoweredByGiniViewModel
 
-    public var extractions: [Extraction] {
+    public var extractions: [Extraction]? {
         didSet {
             self.onExtractionFetched?()
         }
     }
 
-    public init(extractions: [Extraction],
-         selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider,
-         configuration: PaymentReviewContainerConfiguration,
-         strings: PaymentReviewContainerStrings,
-         primaryButtonConfiguration: ButtonConfiguration,
-         defaultStyleInputFieldConfiguration: TextFieldConfiguration,
-         errorStyleInputFieldConfiguration: TextFieldConfiguration,
-         selectionStyleInputFieldConfiguration: TextFieldConfiguration,
-         poweredByGiniConfiguration: PoweredByGiniConfiguration,
-         poweredByGiniStrings: PoweredByGiniStrings) {
+    public var paymentInfo: PaymentInfo? {
+        didSet {
+            self.onExtractionFetched?()
+        }
+    }
+
+    public init(extractions: [Extraction]?,
+                paymentInfo: PaymentInfo?,
+                selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider,
+                configuration: PaymentReviewContainerConfiguration,
+                strings: PaymentReviewContainerStrings,
+                primaryButtonConfiguration: ButtonConfiguration,
+                defaultStyleInputFieldConfiguration: TextFieldConfiguration,
+                errorStyleInputFieldConfiguration: TextFieldConfiguration,
+                selectionStyleInputFieldConfiguration: TextFieldConfiguration,
+                poweredByGiniConfiguration: PoweredByGiniConfiguration,
+                poweredByGiniStrings: PoweredByGiniStrings) {
         self.extractions = extractions
+        self.paymentInfo = paymentInfo
         self.selectedPaymentProvider = selectedPaymentProvider
         self.configuration = configuration
         self.strings = strings

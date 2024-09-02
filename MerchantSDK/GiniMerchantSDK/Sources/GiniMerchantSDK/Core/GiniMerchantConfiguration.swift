@@ -141,7 +141,7 @@ public final class GiniMerchantConfiguration: NSObject {
     }
 
     // We will switch this option internally to stil handle documents with extractions on GiniHealthSDK and still handle invoices without document on GiniMerchantSDK
-    var useInvoiceWithoutDocument: Bool = false
+    var useInvoiceWithoutDocument: Bool = true
 }
 
 extension GiniMerchantConfiguration {

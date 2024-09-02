@@ -63,6 +63,7 @@ public final class PaymentReviewContainerView: UIView {
 
     private var paymentInputFields: [TextFieldWithLabelView] = []
     private var paymentInputFieldsErrorLabels: [UILabel] = []
+    private var coupledErrorLabels: [UILabel] = []
     private let viewModel: PaymentReviewContainerViewModel
     public var onPayButtonClicked: (() -> Void)?
     
@@ -81,6 +82,7 @@ public final class PaymentReviewContainerView: UIView {
     private func setupViewHierarchy() {
         paymentInputFields = [recipientTextFieldView, amountTextFieldView, ibanTextFieldView, usageTextFieldView]
         paymentInputFieldsErrorLabels = [recipientErrorLabel, amountErrorLabel, ibanErrorLabel, usageErrorLabel]
+        coupledErrorLabels = [amountErrorLabel, ibanErrorLabel]
 
         recipientStackView.addArrangedSubview(recipientTextFieldView)
         recipientStackView.addArrangedSubview(recipientErrorLabel)
@@ -233,20 +235,42 @@ public final class PaymentReviewContainerView: UIView {
         }
     }
 
-    fileprivate func inputFieldPlaceholderText(_ textFieldView: TextFieldWithLabelView) -> String {
+    fileprivate func inputFieldPlaceholderText(_ textFieldView: TextFieldWithLabelView) -> NSAttributedString {
+        let fullString = NSMutableAttributedString()
         if let fieldIdentifier = TextFieldType(rawValue: textFieldView.tag) {
+            var text = ""
             switch fieldIdentifier {
             case .recipientFieldTag:
-                return viewModel.strings.recipientFieldPlaceholder
+                text = viewModel.strings.recipientFieldPlaceholder
             case .ibanFieldTag:
-                return viewModel.strings.ibanFieldPlaceholder
+                text = viewModel.strings.ibanFieldPlaceholder
             case .amountFieldTag:
-                return viewModel.strings.amountFieldPlaceholder
+                text = viewModel.strings.amountFieldPlaceholder
             case .usageFieldTag:
-                return viewModel.strings.usageFieldPlaceholder
+                text = viewModel.strings.usageFieldPlaceholder
+            }
+            fullString.append(NSAttributedString(string: text))
+
+            if fieldIdentifier != .amountFieldTag {
+                appendLockIcon(fullString)
             }
         }
-        return ""
+        return fullString
+    }
+
+    fileprivate func appendLockIcon(_ string: NSMutableAttributedString) {
+        let lockIconAttachment = NSTextAttachment()
+        let icon = viewModel.configuration.lockIcon
+        lockIconAttachment.image = icon
+
+        let height = Constants.lockIconHeight
+        let ratio = icon.size.width / icon.size.height
+        lockIconAttachment.bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: ratio * height, height: height)
+
+        let lockString = NSAttributedString(attachment: lockIconAttachment)
+
+        string.append(NSAttributedString(string: "  "))
+        string.append(lockString)
     }
 
     fileprivate func validateTextField(_ textFieldViewTag: Int) {
@@ -254,7 +278,7 @@ public final class PaymentReviewContainerView: UIView {
         if let fieldIdentifier = TextFieldType(rawValue: textFieldViewTag) {
             switch fieldIdentifier {
             case .amountFieldTag:
-                if !amountTextFieldView.isReallyEmpty  {
+                    if amountTextFieldView.hasText && !amountTextFieldView.isReallyEmpty {
                     let decimalPart = amountToPay.value
                     if decimalPart > 0 {
                         applyDefaultStyle(textFieldView)
@@ -269,7 +293,7 @@ public final class PaymentReviewContainerView: UIView {
                     showErrorLabel(textFieldTag: fieldIdentifier)
                 }
             case .ibanFieldTag, .recipientFieldTag, .usageFieldTag:
-                if !textFieldView.isReallyEmpty {
+                if textFieldView.hasText && !textFieldView.isReallyEmpty {
                     applyDefaultStyle(textFieldView)
                     hideErrorLabel(textFieldTag: fieldIdentifier)
                 } else {
@@ -319,16 +343,28 @@ public final class PaymentReviewContainerView: UIView {
         for errorLabel in paymentInputFieldsErrorLabels {
             errorLabel.isHidden = true
         }
+        updateAmountIbanErrorState()
     }
 
     fileprivate func fillInInputFields() {
-        recipientTextFieldView.text = viewModel.extractions.first(where: {$0.name == "payment_recipient"})?.value
-        ibanTextFieldView.text = viewModel.extractions.first(where: {$0.name == "iban"})?.value
-        usageTextFieldView.text = viewModel.extractions.first(where: {$0.name == "payment_purpose"})?.value
-        if let amountString = viewModel.extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
-            self.amountToPay = amountToPay
-            let amountToPayText = amountToPay.string
-            amountTextFieldView.text = amountToPayText
+        if let extractions = viewModel.extractions {
+            recipientTextFieldView.text = extractions.first(where: {$0.name == "payment_recipient"})?.value
+            ibanTextFieldView.text = extractions.first(where: {$0.name == "iban"})?.value
+            usageTextFieldView.text = extractions.first(where: {$0.name == "payment_purpose"})?.value
+            if let amountString = extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
+                self.amountToPay = amountToPay
+                let amountToPayText = amountToPay.string
+                amountTextFieldView.text = amountToPayText
+            }
+        } else if let paymentInfo = viewModel.paymentInfo {
+            recipientTextFieldView.text = paymentInfo.recipient
+            ibanTextFieldView.text = paymentInfo.iban
+            usageTextFieldView.text = paymentInfo.purpose
+            if let amountToPay = Price(extractionString: paymentInfo.amount) {
+                self.amountToPay = amountToPay
+                let amountToPayText = amountToPay.string
+                amountTextFieldView.text = amountToPayText
+            }
         }
         validateAllInputFields()
         disablePayButtonIfNeeded()
@@ -355,6 +391,7 @@ public final class PaymentReviewContainerView: UIView {
             errorLabel.isHidden = false
             errorLabel.text = errorMessage
         }
+        updateAmountIbanErrorState()
     }
 
     fileprivate func hideErrorLabel(textFieldTag: TextFieldType) {
@@ -373,6 +410,7 @@ public final class PaymentReviewContainerView: UIView {
             errorLabel.isHidden = true
         }
         disablePayButtonIfNeeded()
+        updateAmountIbanErrorState()
     }
 
     // MARK: - Pay button
@@ -400,6 +438,7 @@ public final class PaymentReviewContainerView: UIView {
 
             errorLabel.text = errorMessage
         }
+        updateAmountIbanErrorState()
     }
 
     fileprivate func configurePayButtonInitialState() {
@@ -430,9 +469,13 @@ public final class PaymentReviewContainerView: UIView {
         _ = amountTextFieldView.endEditing(true)
         _ = amountTextFieldView.resignFirstResponder()
 
-        if !amountTextFieldView.isReallyEmpty {
+        if amountTextFieldView.hasText && !amountTextFieldView.isReallyEmpty {
             updateAmoutToPayWithCurrencyFormat()
         }
+    }
+
+    private func updateAmountIbanErrorState() {
+        ibanAmountErrorsHorizontalStackView.isHidden = coupledErrorLabels.allSatisfy { $0.isHidden }
     }
 
     // MARK: - Pay Button Action
@@ -496,7 +539,8 @@ public extension PaymentReviewContainerView {
         let amountText = amountToPay.extractionString
         let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "",
                                       iban: ibanTextFieldView.text ?? "",
-                                      bic: "", amount: amountText,
+                                      bic: "", 
+                                      amount: amountText,
                                       purpose: usageTextFieldView.text ?? "",
                                       paymentUniversalLink: viewModel.selectedPaymentProvider.universalLinkIOS,
                                       paymentProviderId: viewModel.selectedPaymentProvider.id)
@@ -513,6 +557,19 @@ public extension PaymentReviewContainerView {
             return amountTextFieldView.isReallyEmpty
         case .usageFieldTag:
             return usageTextFieldView.isReallyEmpty
+        }
+    }
+
+    func textFieldText(textFieldType: TextFieldType) -> String? {
+        switch textFieldType {
+        case .recipientFieldTag:
+            return recipientTextFieldView.text
+        case .ibanFieldTag:
+            return ibanTextFieldView.text
+        case .amountFieldTag:
+            return amountTextFieldView.text
+        case .usageFieldTag:
+            return usageTextFieldView.text
         }
     }
 }
@@ -532,13 +589,15 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
      Updates amoutToPay, formated string with a currency and removes "0.00" value
      */
     public func updateAmoutToPayWithCurrencyFormat() {
-        if let amountFieldText = amountTextFieldView.text, let priceValue = amountFieldText.decimal() {
-            amountToPay.value = priceValue
-            if priceValue > 0 {
-                let amountToPayText = amountToPay.string
-                amountTextFieldView.text = amountToPayText
-            } else {
-                amountTextFieldView.text = ""
+        if amountTextFieldView.hasText, let amountFieldText = amountTextFieldView.text {
+            if let priceValue = amountFieldText.decimal() {
+                amountToPay.value = priceValue
+                if priceValue > 0 {
+                    let amountToPayText = amountToPay.string
+                    amountTextFieldView.text = amountToPayText
+                } else {
+                    amountTextFieldView.text = ""
+                }
             }
         }
     }
@@ -614,17 +673,19 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
 
 extension PaymentReviewContainerView {
     enum Constants {
-        static let buttonViewHeight = 56.0
-        static let leftRightPaymentInfoContainerPadding = 8.0
-        static let topBottomPaymentInfoContainerPadding = 16.0
-        static let textFieldHeight = 56.0
-        static let errorLabelHeight = 12.0
-        static let amountWidth = 95.0
-        static let animationDuration: CGFloat = 0.3
-        static let topAnchorPoweredByGiniConstraint = 5.0
-        static let heightToolbar = 40.0
-        static let stackViewSpacing = 10.0
-        static let payInvoiceInactiveAlpha = 0.4
-        static let bottomViewHeight = 44.0
-    }
+            static let buttonViewHeight = 56.0
+            static let leftRightPaymentInfoContainerPadding = 8.0
+            static let topBottomPaymentInfoContainerPadding = 0.0
+            static let textFieldHeight = 56.0
+            static let errorLabelHeight = 12.0
+            static let amountWidth = 95.0
+            static let animationDuration: CGFloat = 0.3
+            static let topAnchorPoweredByGiniConstraint = 5.0
+            static let heightToolbar = 40.0
+            static let stackViewSpacing = 10.0
+            static let payInvoiceInactiveAlpha = 0.4
+            static let bottomViewHeight = 20.0
+            static let errorTopMargin = 9.0
+            static let lockIconHeight = 11.0
+        }
 }

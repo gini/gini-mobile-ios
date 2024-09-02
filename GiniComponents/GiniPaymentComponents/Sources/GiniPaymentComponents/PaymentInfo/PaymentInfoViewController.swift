@@ -7,6 +7,7 @@
 
 
 import UIKit
+import GiniUtilites
 
 public final class PaymentInfoViewController: UIViewController {
     let viewModel: PaymentInfoViewModel
@@ -130,7 +131,7 @@ public final class PaymentInfoViewController: UIViewController {
         self.setupView()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
+    public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.post(name: .paymentInfoDissapeared, object: nil)
     }

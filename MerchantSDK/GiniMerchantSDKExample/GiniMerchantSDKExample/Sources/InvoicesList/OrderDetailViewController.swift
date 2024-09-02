@@ -6,8 +6,10 @@
 
 
 import UIKit
-import GiniMerchantSDK
+//import GiniMerchantSDK
+import GiniPaymentComponents
 import GiniUtilites
+import GiniMerchantSDK
 
 enum Fields: String, CaseIterable {
     case recipient = "example.order.detail.Recipient"
@@ -141,7 +143,7 @@ final class OrderDetailViewController: UIViewController {
     }
 }
 
-extension OrderDetailViewController: PaymentComponentViewProtocol {
+extension OrderDetailViewController: GiniPaymentComponents.PaymentComponentViewProtocol {
     func didTapOnMoreInformation(documentId: String?) {
         print("✅ Tapped on More Information")
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
@@ -220,7 +222,7 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
         }
     }
 
-    private func obtainPaymentInfo() -> PaymentInfo {
+    private func obtainPaymentInfo() -> GiniPaymentComponents.PaymentInfo {
         saveTextFieldData()
 
         return PaymentInfo(recipient: order.recipient,
@@ -307,7 +309,7 @@ extension OrderDetailViewController: PaymentProvidersBottomViewProtocol {
                 self?.showErrorsIfAny()
             } else if let paymentRequestID {
                 self?.dismiss(animated: true, completion: {
-                    self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                    self?.paymentComponentsController.openPaymentProviderApp(requestID: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
                 })
             }
         }

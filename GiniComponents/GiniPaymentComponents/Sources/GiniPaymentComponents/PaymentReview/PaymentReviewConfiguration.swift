@@ -19,6 +19,7 @@ public struct PaymentReviewConfiguration {
     let statusBarStyle: UIStatusBarStyle
     let pageIndicatorTintColor: UIColor
     let currentPageIndicatorTintColor: UIColor
+    let isInfoBarHidden: Bool
 
     public init(loadingIndicatorStyle: UIActivityIndicatorView.Style,
                 loadingIndicatorColor: UIColor,
@@ -31,7 +32,8 @@ public struct PaymentReviewConfiguration {
                 infoBarLabelFont: UIFont,
                 statusBarStyle: UIStatusBarStyle,
                 pageIndicatorTintColor: UIColor,
-                currentPageIndicatorTintColor: UIColor) {
+                currentPageIndicatorTintColor: UIColor,
+                isInfoBarHidden: Bool) {
         self.loadingIndicatorStyle = loadingIndicatorStyle
         self.loadingIndicatorColor = loadingIndicatorColor
         self.infoBarLabelTextColor = infoBarLabelTextColor
@@ -44,6 +46,7 @@ public struct PaymentReviewConfiguration {
         self.pageIndicatorTintColor = pageIndicatorTintColor
         self.currentPageIndicatorTintColor = currentPageIndicatorTintColor
         self.paymentReviewClose = paymentReviewClose
+        self.isInfoBarHidden = isInfoBarHidden
     }
 }
 

@@ -58,11 +58,13 @@ public class PaymentReviewModel: NSObject {
 
     public var onPaymentRequestCreated: (() -> Void)?
 
-    public var document: Document
+    public var document: Document?
 
-    public var extractions: [Extraction]
+    public var extractions: [Extraction]?
 
-    public var documentId: String
+    public var paymentInfo: PaymentInfo?
+
+    public var documentId: String?
     private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
@@ -97,12 +99,14 @@ public class PaymentReviewModel: NSObject {
     let primaryButtonConfiguration: ButtonConfiguration
     let poweredByGiniConfiguration: PoweredByGiniConfiguration
     let poweredByGiniStrings: PoweredByGiniStrings
+    let bottomSheetConfiguration: BottomSheetConfiguration
     let showPaymentReviewCloseButton: Bool
 
     public init(delegateAPI: PaymentReviewAPIProtocol,
                 bottomSheetsProvider: BottomSheetsProviderProtocol,
-                document: Document,
-                extractions: [Extraction],
+                document: Document?,
+                extractions: [Extraction]?,
+                paymentInfo: PaymentInfo?,
                 selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider,
                 configuration: PaymentReviewConfiguration,
                 strings: PaymentReviewStrings,
@@ -114,14 +118,16 @@ public class PaymentReviewModel: NSObject {
                 primaryButtonConfiguration: ButtonConfiguration,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
+                bottomSheetConfiguration: BottomSheetConfiguration,
                 showPaymentReviewCloseButton: Bool) {
         self.delegateAPI = delegateAPI
         self.bottomSheetsProvider = bottomSheetsProvider
         self.configuration = configuration
         self.strings = strings
-        self.documentId = document.id
+        self.documentId = document?.id
         self.document = document
         self.extractions = extractions
+        self.paymentInfo = paymentInfo
         self.selectedPaymentProvider = selectedPaymentProvider
         self.poweredByGiniConfiguration = poweredByGiniConfiguration
         self.poweredByGiniStrings = poweredByGiniStrings
@@ -132,6 +138,7 @@ public class PaymentReviewModel: NSObject {
         self.defaultStyleInputFieldConfiguration = defaultStyleInputFieldConfiguration
         self.errorStyleInputFieldConfiguration = errorStyleInputFieldConfiguration
         self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
+        self.bottomSheetConfiguration = bottomSheetConfiguration
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> PageCollectionCellViewModel {
@@ -143,6 +150,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     func sendFeedback(updatedExtractions: [Extraction]) {
+        guard let document else { return }
         delegateAPI?.submitFeedback(for: document, updatedExtractions: updatedExtractions, completion: { _ in })
     }
 
@@ -182,12 +190,13 @@ public class PaymentReviewModel: NSObject {
         let dispatchGroup = DispatchGroup()
         let dispatchQueue = DispatchQueue(label: "imagesQueue")
         let dispatchSemaphore = DispatchSemaphore(value: 0)
+        guard let document, let documentId else { return }
         var vms = [PageCollectionCellViewModel]()
         dispatchQueue.async {
-            for page in 1 ... self.document.pageCount {
+            for page in 1 ... document.pageCount {
                 dispatchGroup.enter()
 
-                self.delegateAPI?.preview(for: self.documentId, pageNumber: page, completion: { [weak self] result in
+                self.delegateAPI?.preview(for: documentId, pageNumber: page, completion: { [weak self] result in
                     if let cellModel = self?.proccessPreview(result) {
                         vms.append(cellModel)
                     }
@@ -223,6 +232,7 @@ public class PaymentReviewModel: NSObject {
 
     func paymentReviewContainerViewModel() -> PaymentReviewContainerViewModel {
         PaymentReviewContainerViewModel(extractions: extractions,
+                                        paymentInfo: paymentInfo,
                                         selectedPaymentProvider: selectedPaymentProvider,
                                         configuration: containerConfiguration,
                                         strings: containerStrings,

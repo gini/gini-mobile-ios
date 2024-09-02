@@ -236,7 +236,7 @@ extension AppCoordinator: GiniMerchantDelegate {
             }
             reviewController.dismiss(animated: false)
 
-            orderController.setAmount(reviewController.model?.paymentInfo?.amount ?? "")
+            orderController.setAmount(reviewController.model.paymentInfo?.amount ?? "")
         }
     }
 }

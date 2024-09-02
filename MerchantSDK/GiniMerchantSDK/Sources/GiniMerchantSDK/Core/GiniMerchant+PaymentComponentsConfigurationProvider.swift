@@ -33,7 +33,8 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
     public var paymentReviewContainerConfiguration: PaymentReviewContainerConfiguration {
         PaymentReviewContainerConfiguration(
             errorLabelTextColor: GiniColor.feedback1.uiColor(),
-            errorLabelFont: GiniMerchantConfiguration.shared.font(for: .captions2)
+            errorLabelFont: GiniMerchantConfiguration.shared.font(for: .captions2),
+            lockIcon: GiniMerchantImage.lock.preferredUIImage()
         )
     }
     
@@ -144,7 +145,8 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             infoBarLabelFont: GiniMerchantConfiguration.shared.font(for: .captions1),
             statusBarStyle: GiniMerchantConfiguration.shared.paymentReviewStatusBarStyle,
             pageIndicatorTintColor: GiniColor.standard4.uiColor(),
-            currentPageIndicatorTintColor: GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor()
+            currentPageIndicatorTintColor: GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor(),
+            isInfoBarHidden: true
         )
     }
     

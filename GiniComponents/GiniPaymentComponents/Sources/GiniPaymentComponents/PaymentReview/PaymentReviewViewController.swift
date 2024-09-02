@@ -9,12 +9,18 @@ import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
 
-public final class PaymentReviewViewController: UIViewController, UIGestureRecognizerDelegate {
+private enum DisplayMode: Int {
+    case bottomSheet
+    case documentCollection
+}
+
+public final class PaymentReviewViewController: BottomSheetViewController, UIGestureRecognizerDelegate {
     private lazy var mainView = buildMainView()
     private lazy var closeButton = buildCloseButton()
     private lazy var infoBar = buildInfoBar()
     private lazy var infoBarLabel = buildInfoBarLabel()
     private lazy var containerCollectionView = buildContainerCollectionView()
+    private var isInfoBarHidden = true
     lazy var paymentInfoContainerView = buildPaymentInfoContainerView()
     lazy var collectionView = buildCollectionView()
     lazy var pageControl = buildPageControl()
@@ -24,14 +30,18 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     private var showInfoBarOnce = true
     private var keyboardWillShowCalled = false
 
-    let model: PaymentReviewModel
+    public let model: PaymentReviewModel
     private let selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
+
+    private var displayMode = DisplayMode.bottomSheet
 
     init(viewModel: PaymentReviewModel,
          selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
         self.model = viewModel
         self.selectedPaymentProvider = selectedPaymentProvider
-        super.init(nibName: nil, bundle: nil)
+        self.displayMode = viewModel.document != nil ? .documentCollection : .bottomSheet
+        self.isInfoBarHidden = viewModel.configuration.isInfoBarHidden
+        super.init(configuration: self.model.bottomSheetConfiguration)
     }
 
     required init?(coder: NSCoder) {
@@ -48,7 +58,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if showInfoBarOnce {
+        if showInfoBarOnce && !isInfoBarHidden {
             showInfoBar()
             showInfoBarOnce = false
         }
@@ -105,7 +115,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             self.showError(message: self.model.strings.createPaymentErrorMessage)
         }
 
-        model.fetchImages()
+        if displayMode == .documentCollection {
+            model.fetchImages()
+        }
         model.viewModelDelegate = self
     }
 
@@ -118,11 +130,18 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 
     fileprivate func layoutUI() {
-        layoutMainView()
-        layoutPaymentInfoContainerView()
-        layoutContainerCollectionView()
-        layoutInfoBar()
-        layoutCloseButton()
+        switch displayMode {
+        case .documentCollection:
+            layoutMainView()
+            layoutPaymentInfoContainerView()
+            layoutContainerCollectionView()
+            layoutInfoBar()
+            layoutCloseButton()
+        case .bottomSheet:
+            layoutPaymentInfoContainerView()
+            layoutInfoBar()
+            setContent(content: paymentInfoContainerView)
+        }
     }
 
     // MARK: - Pay Button Action
@@ -206,7 +225,8 @@ extension PaymentReviewViewController {
         /**
          Moves the root view up by the distance of keyboard height  taking in account safeAreaInsets.bottom
          */
-        mainView.bounds.origin.y = keyboardSize.height - view.safeAreaInsets.bottom
+        (displayMode == .bottomSheet ? view : mainView)
+                    .bounds.origin.y = keyboardSize.height - view.safeAreaInsets.bottom
 
         keyboardWillShowCalled = true
     }
@@ -260,7 +280,7 @@ extension PaymentReviewViewController {
     fileprivate func dismissKeyboardOnTap() {
         let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         tap.cancelsTouchesInView = false
-        mainView.addGestureRecognizer(tap)
+        (displayMode == .bottomSheet ? view : mainView).addGestureRecognizer(tap)
     }
 }
 
@@ -299,13 +319,13 @@ fileprivate extension PaymentReviewViewController {
 
     func layoutPaymentInfoContainerView() {
         paymentInfoContainerView.translatesAutoresizingMaskIntoConstraints = false
-        mainView.addSubview(paymentInfoContainerView)
+        
+        let container = displayMode == .bottomSheet ? (view ?? UIView()) : mainView
+        container.addSubview(paymentInfoContainerView)
 
         NSLayoutConstraint.activate([
-            paymentInfoContainerView.heightAnchor.constraint(equalToConstant: Constants.inputContainerHeight),
-            paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor),
-            paymentInfoContainerView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
-            paymentInfoContainerView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor)
+            paymentInfoContainerView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            paymentInfoContainerView.trailingAnchor.constraint(equalTo: container.trailingAnchor)
         ])
     }
 }
@@ -339,7 +359,7 @@ fileprivate extension PaymentReviewViewController {
         control.currentPageIndicatorTintColor = model.configuration.currentPageIndicatorTintColor
         control.backgroundColor = model.configuration.backgroundColor
         control.hidesForSinglePage = true
-        control.numberOfPages = model.document.pageCount
+        control.numberOfPages = model.document?.pageCount ?? 0
         return control
     }
 
@@ -357,6 +377,8 @@ fileprivate extension PaymentReviewViewController {
             pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight),
             collectionView.widthAnchor.constraint(equalTo: containerCollectionView.widthAnchor),
             collectionView.heightAnchor.constraint(equalTo: containerCollectionView.heightAnchor),
+            paymentInfoContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            paymentInfoContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
 }
@@ -401,6 +423,7 @@ fileprivate extension PaymentReviewViewController {
         let view = UIView()
         view.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadius)
         view.backgroundColor = model.configuration.infoBarBackgroundColor
+        view.isHidden = isInfoBarHidden
         return view
     }
 
@@ -419,15 +442,15 @@ fileprivate extension PaymentReviewViewController {
         infoBar.translatesAutoresizingMaskIntoConstraints = false
         infoBarLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        mainView.insertSubview(infoBar, belowSubview: paymentInfoContainerView)
+        view.insertSubview(infoBar, belowSubview: paymentInfoContainerView)
         infoBar.addSubview(infoBarLabel)
 
         let bottomConstraint = infoBar.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.infoBarHeight)
         infoBarBottomConstraint = bottomConstraint
         NSLayoutConstraint.activate([
             bottomConstraint,
-            infoBar.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
-            infoBar.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
+            infoBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            infoBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             infoBar.heightAnchor.constraint(equalToConstant: Constants.infoBarHeight),
 
             infoBarLabel.centerXAnchor.constraint(equalTo: infoBar.centerXAnchor),
@@ -436,6 +459,7 @@ fileprivate extension PaymentReviewViewController {
     }
 
     func showInfoBar() {
+        guard !isInfoBarHidden else { return }
         infoBar.isHidden = false
         animateInfoBar(verticalConstant: Constants.moveHeightInfoBar)
 
@@ -445,12 +469,14 @@ fileprivate extension PaymentReviewViewController {
     }
 
     func animateSlideDownInfoBar() {
+        guard !isInfoBarHidden else { return }
         animateInfoBar(verticalConstant: Constants.infoBarHeight) { [weak self] _ in
             self?.infoBar.isHidden = true
         }
     }
 
     func animateInfoBar(verticalConstant: CGFloat, completion: ((Bool) -> Void)? = nil) {
+        guard !isInfoBarHidden else { return }
         UIView.animate(withDuration: Constants.animationDuration,
                        delay: 0,
                        usingSpringWithDamping: 1.0,

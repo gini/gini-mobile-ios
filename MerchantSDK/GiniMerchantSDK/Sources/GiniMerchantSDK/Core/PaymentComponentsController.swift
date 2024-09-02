@@ -26,6 +26,7 @@ public protocol PaymentProvidersBottomViewProtocol: AnyObject {
     func didTapOnMoreInformation()
     func didTapOnContinueOnShareBottomSheet()
     func didTapForwardOnInstallBottomSheet()
+    func didTapOnPayButton()
 }
 
 public protocol PaymentComponentsConfigurationProvider {
@@ -68,38 +69,43 @@ protocol PaymentComponentsProtocol {
     var selectedPaymentProvider: PaymentProvider? { get set }
     func loadPaymentProviders()
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniMerchantError>) -> Void)
-    func paymentView(documentId: String) -> UIView
+    func paymentView(documentId: String?) -> UIView
     func bankSelectionBottomSheet() -> UIViewController
-    func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void)
+    func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void)
     func paymentInfoViewController() -> UIViewController
-    func paymentViewBottomSheet(documentID: String) -> UIViewController
+    func paymentViewBottomSheet(documentID: String?) -> UIViewController
 }
 
-/**
- Delegate to inform about the actions happened of the custom payment component view.
- You may find out when the user tapped on more information area, on the payment provider picker or on the pay invoice button
+///**
+// Delegate to inform about the actions happened of the custom payment component view.
+// You may find out when the user tapped on more information area, on the payment provider picker or on the pay invoice button
+//
+// */
+//public protocol PaymentComponentViewProtocol: AnyObject {
+//    /**
+//     Called when the user tapped on the more information actionable label or the information icon
+//
+//     - parameter documentId: Id of document
+//     */
+//    func didTapOnMoreInformation(documentId: String?)
+//
+//    /**
+//     Called when the user tapped on payment provider picker to change the selected payment provider or install it
+//
+//     - parameter documentId: Id of document
+//     */
+//    func didTapOnBankPicker(documentId: String?)
+//
+//    /**
+//     Called when the user tapped on the pay the invoice button to pay the invoice/document
+//     - parameter documentId: Id of document
+//     */
+//    func didTapOnPayInvoice(documentId: String?)
+//}
 
- */
-public protocol PaymentComponentViewProtocol: AnyObject {
-    /**
-     Called when the user tapped on the more information actionable label or the information icon
-
-     - parameter documentId: Id of document
-     */
-    func didTapOnMoreInformation(documentId: String?)
-
-    /**
-     Called when the user tapped on payment provider picker to change the selected payment provider or install it
-
-     - parameter documentId: Id of document
-     */
-    func didTapOnBankPicker(documentId: String?)
-
-    /**
-     Called when the user tapped on the pay the invoice button to pay the invoice/document
-     - parameter documentId: Id of document
-     */
-    func didTapOnPayInvoice(documentId: String?)
+private enum PaymentComponentScreenType {
+    case paymentComponent
+    case bankPicker
 }
 
 /**
@@ -135,6 +141,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     }
     
     var paymentComponentView: PaymentComponentView!
+
+    /// Previous presented view
+    private var previousPresentedView: PaymentComponentScreenType?
 
     /**
      Initializer of the Payment Component Controller class.
@@ -220,7 +229,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
      - Parameters:
      - Returns: a custom view
      */
-    public func paymentView(documentId: String) -> UIView {
+    public func paymentView(documentId: String?) -> UIView {
         let paymentComponentViewModel = PaymentComponentViewModel(
             paymentProvider: healthSelectedPaymentProvider,
             primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
@@ -239,50 +248,139 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
         return PaymentComponentView(viewModel: paymentComponentViewModel)
     }
 
-    public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
-        self.trackingDelegate = trackingDelegate
-        self.isLoading = true
-        self.giniSDK.fetchDataForReview(documentId: documentID) { [weak self] result in
-            self?.isLoading = false
-            switch result {
-            case .success(let data):
-                guard let self else {
-                    completion(nil, nil)
-                    return
-                }
-                guard let healthSelectedPaymentProvider else {
-                    completion(nil, nil)
-                    return
-                }
-                let viewModel = PaymentReviewModel(delegateAPI: self, 
-                                                   bottomSheetsProvider: self,
-                                                   document: data.document.toHealthDocument(),
-                                                   extractions: data.extractions.map { $0.toHealthExtraction() },
-                                                   selectedPaymentProvider: healthSelectedPaymentProvider,
-                                                   configuration: configurationProvider.paymentReviewConfiguration,
-                                                   strings: stringsProvider.paymentReviewStrings,
-                                                   containerConfiguration: configurationProvider.paymentReviewContainerConfiguration,
-                                                   containerStrings: stringsProvider.paymentReviewContainerStrings,
-                                                   defaultStyleInputFieldConfiguration: configurationProvider.defaultStyleInputFieldConfiguration,
-                                                   errorStyleInputFieldConfiguration: configurationProvider.errorStyleInputFieldConfiguration,
-                                                   selectionStyleInputFieldConfiguration: configurationProvider.selectionStyleInputFieldConfiguration,
-                                                   primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
-                                                   poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                   poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
-                                                   showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+//    public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+//        self.trackingDelegate = trackingDelegate
+//        self.isLoading = true
+//        self.giniSDK.fetchDataForReview(documentId: documentID) { [weak self] result in
+//            self?.isLoading = false
+//            switch result {
+//            case .success(let data):
+//                guard let self else {
+//                    completion(nil, nil)
+//                    return
+//                }
+//                guard let healthSelectedPaymentProvider else {
+//                    completion(nil, nil)
+//                    return
+//                }
+//                let viewModel = PaymentReviewModel(delegateAPI: self, 
+//                                                   bottomSheetsProvider: self,
+//                                                   document: data.document.toHealthDocument(),
+//                                                   extractions: data.extractions.map { $0.toHealthExtraction() },
+//                                                   selectedPaymentProvider: healthSelectedPaymentProvider,
+//                                                   configuration: configurationProvider.paymentReviewConfiguration,
+//                                                   strings: stringsProvider.paymentReviewStrings,
+//                                                   containerConfiguration: configurationProvider.paymentReviewContainerConfiguration,
+//                                                   containerStrings: stringsProvider.paymentReviewContainerStrings,
+//                                                   defaultStyleInputFieldConfiguration: configurationProvider.defaultStyleInputFieldConfiguration,
+//                                                   errorStyleInputFieldConfiguration: configurationProvider.errorStyleInputFieldConfiguration,
+//                                                   selectionStyleInputFieldConfiguration: configurationProvider.selectionStyleInputFieldConfiguration,
+//                                                   primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
+//                                                   poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+//                                                   poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+//                                                   showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+//
+//                let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
+//                                                                 selectedPaymentProvider: healthSelectedPaymentProvider)
+//                completion(vc, nil)
+//            case .failure(let error):
+//                completion(nil, error)
+//            }
+//        }
+//    }
 
-                let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
-                                                                 selectedPaymentProvider: healthSelectedPaymentProvider)
-                completion(vc, nil)
-            case .failure(let error):
-                completion(nil, error)
+    public func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+            previousPresentedView = nil
+            if !GiniMerchantConfiguration.shared.useInvoiceWithoutDocument {
+                guard let documentID else {
+                    completion(nil, nil)
+                    return
+                }
+                self.isLoading = true
+                self.giniSDK.fetchDataForReview(documentId: documentID) { [weak self] result in
+                    self?.isLoading = false
+                    switch result {
+                        case .success(let data):
+                            guard let self else {
+                                completion(nil, nil)
+                                return
+                            }
+                            guard let healthSelectedPaymentProvider else {
+                                completion(nil, nil)
+                                return
+                            }
+                            let viewModel = PaymentReviewModel(delegateAPI: self,
+                                                               bottomSheetsProvider: self,
+                                                               document: data.document.toHealthDocument(),
+                                                               extractions: data.extractions.map { $0.toHealthExtraction() },
+                                                               paymentInfo: nil,
+                                                               selectedPaymentProvider: healthSelectedPaymentProvider,
+                                                               configuration: configurationProvider.paymentReviewConfiguration,
+                                                               strings: stringsProvider.paymentReviewStrings,
+                                                               containerConfiguration: configurationProvider.paymentReviewContainerConfiguration,
+                                                               containerStrings: stringsProvider.paymentReviewContainerStrings,
+                                                               defaultStyleInputFieldConfiguration: configurationProvider.defaultStyleInputFieldConfiguration,
+                                                               errorStyleInputFieldConfiguration: configurationProvider.errorStyleInputFieldConfiguration,
+                                                               selectionStyleInputFieldConfiguration: configurationProvider.selectionStyleInputFieldConfiguration,
+                                                               primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
+                                                               poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+                                                               poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                               bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
+                                                               showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+
+                            let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
+                                                                             selectedPaymentProvider: healthSelectedPaymentProvider)
+                            completion(vc, nil)
+                        case .failure(let error):
+                            completion(nil, error)
+                    }
+                }
+            } else {
+                loadPaymentReviewScreenWithoutDocument(paymentInfo: paymentInfo, trackingDelegate: trackingDelegate, completion: completion)
             }
         }
+
+    private func loadPaymentReviewScreenWithoutDocument(paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+        previousPresentedView = nil
+        guard let healthSelectedPaymentProvider else {
+            completion(nil, nil)
+            return
+        }
+
+//        let paymentReviewViewController = PaymentReviewViewController.instantiate(with: self.giniMerchant,
+//                                                                                  data: nil,
+//                                                                                  paymentInfo: paymentInfo,
+//                                                                                  selectedPaymentProvider: selectedPaymentProvider,
+//                                                                                  trackingDelegate: trackingDelegate,
+//                                                                                  paymentComponentsController: self)
+
+        let viewModel = PaymentReviewModel(delegateAPI: self,
+                                           bottomSheetsProvider: self,
+                                           document: nil,
+                                           extractions: nil,
+                                           paymentInfo: paymentInfo,
+                                           selectedPaymentProvider: healthSelectedPaymentProvider,
+                                           configuration: configurationProvider.paymentReviewConfiguration,
+                                           strings: stringsProvider.paymentReviewStrings,
+                                           containerConfiguration: configurationProvider.paymentReviewContainerConfiguration,
+                                           containerStrings: stringsProvider.paymentReviewContainerStrings,
+                                           defaultStyleInputFieldConfiguration: configurationProvider.defaultStyleInputFieldConfiguration,
+                                           errorStyleInputFieldConfiguration: configurationProvider.errorStyleInputFieldConfiguration,
+                                           selectionStyleInputFieldConfiguration: configurationProvider.selectionStyleInputFieldConfiguration,
+                                           primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
+                                           poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+                                           poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                           bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
+                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+
+        let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
+                                                         selectedPaymentProvider: healthSelectedPaymentProvider)
+        completion(vc, nil)
     }
 
     // MARK: - Bottom Sheets
 
-    public func paymentViewBottomSheet(documentID: String) -> UIViewController {
+    public func paymentViewBottomSheet(documentID: String?) -> UIViewController {
         let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return paymentComponentBottomView
     }
@@ -356,10 +454,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
             return true
         }
         return false
-    }
-
-    public func obtainPDFURLFromPaymentRequest(paymentInfo: GiniPaymentComponents.PaymentInfo, viewController: UIViewController) {
-        obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo(paymentConponentsInfo: paymentInfo), viewController: viewController)
     }
 
     public func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController) {
@@ -501,6 +595,18 @@ extension PaymentComponentsController {
 }
 
 extension PaymentComponentsController: BanksBottomViewProtocol {
+    public func didTapForwardOnInstallBottomSheet() {
+        print("Tapped Forward on Install Bottom Sheet")
+    }
+
+    public func didTapOnContinueOnShareBottomSheet() {
+        print("Tapped Continue on Share Bottom Sheet")
+    }
+
+    public func didTapOnPayButton() {
+        bottomViewDelegate?.didTapOnPayButton()
+    }
+    
     public func didTapOnClose() {
         bottomViewDelegate?.didTapOnClose()
     }
