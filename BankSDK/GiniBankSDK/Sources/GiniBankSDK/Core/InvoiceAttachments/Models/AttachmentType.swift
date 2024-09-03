@@ -6,7 +6,7 @@
 
 import UIKit
 
-enum AttachmentType {
+public enum AttachmentType {
     case image
     case document
 

@@ -14,10 +14,7 @@ public class AttachmentsView: UIView {
 
     public weak var delegate: AttachmentsViewDelegate?
 
-    private lazy var attachments: [Attachment] = [
-        Attachment(fileName: UUID().uuidString, type: .image),
-        Attachment(fileName: UUID().uuidString, type: .document)
-    ]
+    private var attachments: [Attachment] = []
 
     private lazy var containerView: UIView = {
         let view = UIView()
@@ -69,6 +66,11 @@ public class AttachmentsView: UIView {
 
         setupStackViewContent()
         setupConstraints()
+    }
+
+    public func updateAttachments(_ newAttachments: [Attachment]) {
+        attachments = newAttachments
+        setupStackViewContent()
     }
 
     private func setupStackViewContent() {
