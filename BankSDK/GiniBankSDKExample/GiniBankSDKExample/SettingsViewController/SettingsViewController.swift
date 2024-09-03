@@ -593,26 +593,34 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
         data.selectedIndex = cell.selectedSegmentIndex
         
         if data is FileImportSegmentedOptionModel {
-            switch data.selectedIndex {
-            case 0:
-                giniConfiguration.fileImportSupportedTypes = .none
-            case 1:
-                giniConfiguration.fileImportSupportedTypes = .pdf
-            case 2:
-                giniConfiguration.fileImportSupportedTypes = .pdf_and_images
-            default: return
-            }
+            handleFileImportOption(fileImportIndex: data.selectedIndex)
         } else if data is APIEnvironmentSegmentedOptionModel {
-            switch data.selectedIndex {
-            case 0:
-                delegate?.didSelectAPIEnvironment(apiEnvironment: .production)
-            case 1:
-                delegate?.didSelectAPIEnvironment(apiEnvironment: .stage)
-            default:
-                return
-            }
+            handleApiEnvironmentOption(environmentIndex: data.selectedIndex)
         }
 	}
+
+    func handleFileImportOption(fileImportIndex: Int) {
+        switch fileImportIndex {
+        case 0:
+            giniConfiguration.fileImportSupportedTypes = .none
+        case 1:
+            giniConfiguration.fileImportSupportedTypes = .pdf
+        case 2:
+            giniConfiguration.fileImportSupportedTypes = .pdf_and_images
+        default: return
+        }
+    }
+
+    func handleApiEnvironmentOption(environmentIndex: Int) {
+        switch environmentIndex {
+        case 0:
+            delegate?.didSelectAPIEnvironment(apiEnvironment: .production)
+        case 1:
+            delegate?.didSelectAPIEnvironment(apiEnvironment: .stage)
+        default:
+            return
+        }
+    }
 }
 
 // MARK: - CredentialsTableViewCellDelegate

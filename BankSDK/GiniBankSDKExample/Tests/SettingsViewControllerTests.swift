@@ -82,7 +82,7 @@ final class SettingsViewControllerTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
-        settingsViewController = SettingsViewController(apiEnvironment: .stage,
+        settingsViewController = SettingsViewController(apiEnvironment: .production,
                                                         giniConfiguration: configuration,
 														settingsButtonStates: settingsButtonStates,
 														documentValidationsState: documentValidationsState)
