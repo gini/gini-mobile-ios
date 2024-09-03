@@ -36,7 +36,7 @@ class AttachmentView: UIView {
     private lazy var optionsButton: UIButton = {
         let button = UIButton()
         button.setImage(GiniImages.attachmentOptionsIcon.image, for: .normal)
-        button.tintColor = .giniColorScheme().button.textEnabled.uiColor()
+        button.tintColor = .giniColorScheme().icons.standardPrimary.uiColor()
         button.addTarget(self, action: #selector(optionsButtonTapped), for: .touchUpInside)
         return button
     }()
