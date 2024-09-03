@@ -6,7 +6,12 @@
 
 import Foundation
 
-struct Attachment {
-    let fileName: String
-    let type: AttachmentType
+public struct Attachment {
+    public let fileName: String
+    public let type: AttachmentType
+    
+    public init(fileName: String, type: AttachmentType) {
+        self.fileName = fileName
+        self.type = type
+    }
 }
