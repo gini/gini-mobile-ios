@@ -2,7 +2,7 @@
 //  SettingsViewController+SegmentedOptionModel.swift
 //  GiniBankSDKExample
 //
-//  Created by Valentina Iancu on 16.06.23.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import GiniBankAPILibrary
