@@ -16,7 +16,7 @@ final class PaymentComponentView: UIView {
     }
     
     private lazy var contentStackView: UIStackView = {
-        EmptyStackView(orientation: .vertical)
+        EmptyStackView().orientation(.vertical)
     }()
     
     private lazy var selectYourBankView: UIView = {
@@ -38,7 +38,7 @@ final class PaymentComponentView: UIView {
     }()
     
     private lazy var buttonsStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .horizontal)
+        let stackView = EmptyStackView().orientation(.horizontal)
         stackView.spacing = Constants.buttonsSpacing
         return stackView
     }()
@@ -64,7 +64,7 @@ final class PaymentComponentView: UIView {
     }()
     
     private lazy var bottomStackView: UIStackView = {
-        EmptyStackView(orientation: .horizontal)
+        EmptyStackView().orientation(.horizontal)
     }()
     
     private lazy var moreInformationView: MoreInformationView = {

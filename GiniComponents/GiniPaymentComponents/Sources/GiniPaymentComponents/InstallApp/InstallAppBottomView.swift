@@ -13,7 +13,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
 
     var viewModel: InstallAppBottomViewModel
     
-    private let contentStackView = EmptyStackView(orientation: .vertical)
+    private let contentStackView = EmptyStackView().orientation(.vertical)
 
     private let titleView = EmptyView()
 
@@ -42,7 +42,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
     private let moreInformationView = EmptyView()
     
     private lazy var moreInformationStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .horizontal)
+        let stackView = EmptyStackView().orientation(.horizontal)
         stackView.spacing = Constants.viewPaddingConstraint
         stackView.distribution = .fillProportionally
         return stackView
@@ -90,7 +90,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
     
     private let bottomView = EmptyView()
     
-    private let bottomStackView = EmptyStackView(orientation: .horizontal)
+    private let bottomStackView = EmptyStackView().orientation(.horizontal)
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
         PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)

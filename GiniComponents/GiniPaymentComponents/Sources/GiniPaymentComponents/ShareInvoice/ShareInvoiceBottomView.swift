@@ -13,7 +13,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
 
     var viewModel: ShareInvoiceBottomViewModel
     
-    private let contentStackView = EmptyStackView(orientation: .vertical)
+    private let contentStackView = EmptyStackView().orientation(.vertical)
 
     private let titleView = EmptyView()
 
@@ -49,7 +49,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     }()
     
     private lazy var appsStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .horizontal)
+        let stackView = EmptyStackView().orientation(.horizontal)
         stackView.distribution = .fillEqually
         stackView.spacing = Constants.appsViewSpacing
         return stackView
@@ -68,7 +68,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     private let tipView = EmptyView()
     
     private lazy var tipStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: .horizontal)
+        let stackView = EmptyStackView().orientation(.horizontal)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Constants.viewPaddingConstraint
         stackView.distribution = .fillProportionally
@@ -125,7 +125,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     }()
 
     private let bottomView = EmptyView()
-    private let bottomStackView = EmptyStackView(orientation: .horizontal)
+    private let bottomStackView = EmptyStackView().orientation(.horizontal)
     
     private lazy var poweredByGiniView: PoweredByGiniView = {
         PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)

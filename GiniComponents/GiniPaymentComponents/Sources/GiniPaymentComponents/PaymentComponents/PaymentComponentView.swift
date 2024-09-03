@@ -12,13 +12,12 @@ import GiniUtilites
 public final class PaymentComponentView: UIView {
     let viewModel: PaymentComponentViewModel
 
-    private let contentStackView = EmptyStackView(orientation: .vertical)
+    private let contentStackView = EmptyStackView().orientation(.vertical)
     private let selectYourBankView = EmptyView()
     
     private lazy var selectYourBankLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-//        label.text = viewModel.showPaymentComponentInOneRow ? viewModel.strings.placeholderBankNameText : viewModel.bankName ?? viewModel.strings.placeholderBankNameText
         label.text = viewModel.strings.selectYourBankLabelText
         label.textColor = viewModel.configuration.selectYourBankAccentColor
         label.font = viewModel.configuration.selectYourBankLabelFont
@@ -29,7 +28,7 @@ public final class PaymentComponentView: UIView {
     private let buttonsView = EmptyView()
     
     private lazy var buttonsStackView: UIStackView = {
-        let stackView = EmptyStackView(orientation: viewModel.showPaymentComponentInOneRow ? .horizontal : .vertical)
+        let stackView = EmptyStackView().orientation(viewModel.showPaymentComponentInOneRow ? .horizontal : .vertical)
         stackView.spacing = Constants.buttonsSpacing
         return stackView
     }()
@@ -53,7 +52,7 @@ public final class PaymentComponentView: UIView {
     
     private let bottomView = EmptyView()
     
-    private let bottomStackView = EmptyStackView(orientation: .horizontal)
+    private let bottomStackView = EmptyStackView().orientation(.horizontal)
     
     private lazy var moreInformationView: MoreInformationView = {
         let viewModel = viewModel.moreInformationViewModel

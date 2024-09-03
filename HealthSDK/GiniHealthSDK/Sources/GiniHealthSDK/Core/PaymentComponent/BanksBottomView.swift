@@ -12,7 +12,7 @@ class BanksBottomView: BottomSheetViewController {
     var viewModel: BanksBottomViewModel
     
     private lazy var contentStackView: UIStackView = {
-        EmptyStackView(orientation: .vertical)
+        EmptyStackView().orientation(.vertical)
     }()
 
     private lazy var titleView: UIView = {
@@ -81,7 +81,7 @@ class BanksBottomView: BottomSheetViewController {
     }()
     
     private lazy var bottomStackView: UIStackView = {
-        EmptyStackView(orientation: .horizontal)
+        EmptyStackView().orientation(.horizontal)
     }()
     
     private lazy var moreInformationView: MoreInformationView = {

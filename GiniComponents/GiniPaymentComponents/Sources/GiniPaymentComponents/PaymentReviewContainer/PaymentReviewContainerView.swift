@@ -24,15 +24,15 @@ public final class PaymentReviewContainerView: UIView {
     private lazy var ibanErrorLabel = buildErrorLabel()
     private lazy var amountErrorLabel = buildErrorLabel()
 
-    private let paymentInfoStackView = EmptyStackView(orientation: .vertical, distribution: .fill, spacing: Constants.stackViewSpacing)
-    private let recipientStackView = EmptyStackView(orientation: .vertical, distribution: .fill)
-    private let ibanAmountContainerStackView = EmptyStackView(orientation: .vertical, distribution: .fill)
-    private let ibanAmountHorizontalStackView =  EmptyStackView(orientation: .horizontal, distribution: .fill, spacing: Constants.stackViewSpacing)
+    private let paymentInfoStackView = EmptyStackView().orientation(.vertical).distribution(.fill).spacing(Constants.stackViewSpacing)
+    private let recipientStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
+    private let ibanAmountContainerStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
+    private let ibanAmountHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fill).spacing(Constants.stackViewSpacing)
 
-    private let ibanAmountErrorsHorizontalStackView = EmptyStackView(orientation: .horizontal, distribution: .fill)
-    private let ibanErrorStackView = EmptyStackView(orientation: .vertical, distribution: .fill)
-    private let amountErrorStackView = EmptyStackView(orientation: .vertical, distribution: .fill)
-    private let usageStackView = EmptyStackView(orientation: .vertical, distribution: .fill)
+    private let ibanAmountErrorsHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fill)
+    private let ibanErrorStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
+    private let amountErrorStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
+    private let usageStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
 
     private lazy var recipientTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.recipientFieldTag.rawValue, isEditable: false)
     private lazy var ibanTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.ibanFieldTag.rawValue, isEditable: false)
@@ -49,8 +49,8 @@ public final class PaymentReviewContainerView: UIView {
     }()
 
     private let bottomView = EmptyView()
-    private let buttonsStackView = EmptyStackView(orientation: .horizontal)
-    private let bottomStackView = EmptyStackView(orientation: .horizontal)
+    private let buttonsStackView = EmptyStackView().orientation(.horizontal)
+    private let bottomStackView = EmptyStackView().orientation(.horizontal)
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
         let view = PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
