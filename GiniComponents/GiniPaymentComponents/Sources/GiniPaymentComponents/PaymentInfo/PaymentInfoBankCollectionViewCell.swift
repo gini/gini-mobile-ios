@@ -53,19 +53,12 @@ final class PaymentInfoBankCollectionViewCell: UICollectionViewCell {
 }
 
 final class PaymentInfoBankCollectionViewCellModel {
-    private var bankImageIconData: Data?
-    var bankImageIcon: UIImage {
-        if let bankImageIconData {
-            return UIImage(data: bankImageIconData) ?? UIImage()
-        }
-        return UIImage()
-    }
-
+    let bankImageIcon: UIImage
     let borderColor: UIColor
 
     init(bankImageIconData: Data?, borderColor: UIColor) {
         self.borderColor = borderColor
-        self.bankImageIconData = bankImageIconData
+        self.bankImageIcon = bankImageIconData?.toImage ?? UIImage()
     }
 }
 

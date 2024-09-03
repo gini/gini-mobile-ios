@@ -22,13 +22,7 @@ public final class PaymentComponentViewModel {
     let poweredByGiniViewModel: PoweredByGiniViewModel
     let moreInformationViewModel: MoreInformationViewModel
     let paymentProviderColors: GiniHealthAPILibrary.ProviderColors?
-
-    // Bank image icon
-    private var bankImageIconData: Data?
-    var bankImageIcon: UIImage? {
-        guard let bankImageIconData else { return nil }
-        return UIImage(data: bankImageIconData)
-    }
+    let bankImageIcon: UIImage?
 
     private var paymentProviderScheme: String?
 
@@ -78,7 +72,7 @@ public final class PaymentComponentViewModel {
         self.paymentComponentConfiguration = paymentComponentConfiguration
 
         self.hasBankSelected = paymentProvider != nil
-        self.bankImageIconData = paymentProvider?.iconData
+        self.bankImageIcon = paymentProvider?.iconData.toImage
         self.paymentProviderColors = paymentProvider?.colors
         self.paymentProviderScheme = paymentProvider?.appSchemeIOS
         self.bankName = paymentProvider?.name

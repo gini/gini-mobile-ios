@@ -34,15 +34,8 @@ public final class ShareInvoiceBottomViewModel {
     let titleText: String
     let descriptionLabelText: String
     let tipLabelText: String
+    let bankImageIcon: UIImage
 
-    private var bankImageIconData: Data?
-    var bankImageIcon: UIImage {
-        if let bankImageIconData {
-            return UIImage(data: bankImageIconData) ?? UIImage()
-        }
-        return UIImage()
-    }
-    
     var appsMocked: [SingleApp] = []
 
     public init(selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider?,
@@ -52,7 +45,7 @@ public final class ShareInvoiceBottomViewModel {
          poweredByGiniConfiguration: PoweredByGiniConfiguration,
          poweredByGiniStrings: PoweredByGiniStrings) {
         self.selectedPaymentProvider = selectedPaymentProvider
-        self.bankImageIconData = selectedPaymentProvider?.iconData
+        self.bankImageIcon = selectedPaymentProvider?.iconData.toImage ?? UIImage()
         self.paymentProviderColors = selectedPaymentProvider?.colors
         self.configuration = configuration
         self.strings = strings

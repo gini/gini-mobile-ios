@@ -22,16 +22,9 @@ public final class InstallAppBottomViewModel {
 
     let selectedPaymentProvider: PaymentProvider?
     let paymentProviderColors: ProviderColors?
+    let bankImageIcon: UIImage
 
     public weak var viewDelegate: InstallAppBottomViewProtocol?
-
-    private var bankImageIconData: Data?
-    var bankImageIcon: UIImage {
-        if let bankImageIconData {
-            return UIImage(data: bankImageIconData) ?? UIImage()
-        }
-        return UIImage()
-    }
 
     var moreInformationLabelText: String {
         isBankInstalled ?
@@ -53,7 +46,7 @@ public final class InstallAppBottomViewModel {
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings) {
         self.selectedPaymentProvider = selectedPaymentProvider
-        self.bankImageIconData = selectedPaymentProvider?.iconData
+        self.bankImageIcon = selectedPaymentProvider?.iconData.toImage ?? UIImage()
         self.paymentProviderColors = selectedPaymentProvider?.colors
         self.configuration = installAppConfiguration
         self.strings = strings

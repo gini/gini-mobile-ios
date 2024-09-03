@@ -26,14 +26,7 @@ final class BankSelectionTableViewCellModel {
     let selectedBankBorderColor: UIColor
     let notSelectedBankBorderColor: UIColor
     let selectionIndicatorImage: UIImage
-
-    private var bankImageIconData: Data?
-    var bankImageIcon: UIImage {
-        if let bankImageIconData {
-            return UIImage(data: bankImageIconData) ?? UIImage()
-        }
-        return UIImage()
-    }
+    let bankImageIcon: UIImage
 
     init(paymentProvider: PaymentProviderAdditionalInfo, 
          backgroundColor: UIColor,
@@ -44,7 +37,7 @@ final class BankSelectionTableViewCellModel {
          notSelectedBankBorderColor: UIColor,
          selectionIndicatorImage: UIImage) {
         self.isSelected = paymentProvider.isSelected
-        self.bankImageIconData = paymentProvider.paymentProvider.iconData
+        self.bankImageIcon = paymentProvider.paymentProvider.iconData.toImage
         self.bankName = paymentProvider.paymentProvider.name
         self.bankNameFont = bankNameFont
         self.backgroundColor = backgroundColor
