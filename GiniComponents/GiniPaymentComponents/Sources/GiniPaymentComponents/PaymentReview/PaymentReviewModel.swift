@@ -60,7 +60,7 @@ public class PaymentReviewModel: NSObject {
     var onCreatePaymentRequestErrorHandling: (() -> Void)?
 
     weak var viewModelDelegate: PaymentReviewViewModelDelegate?
-    weak var delegateAPI: PaymentReviewProtocol?
+    weak var delegate: PaymentReviewProtocol?
     weak var bottomSheetsProvider: BottomSheetsProviderProtocol?
 
     public var onPaymentRequestCreated: (() -> Void)?
@@ -127,7 +127,7 @@ public class PaymentReviewModel: NSObject {
                 poweredByGiniStrings: PoweredByGiniStrings,
                 bottomSheetConfiguration: BottomSheetConfiguration,
                 showPaymentReviewCloseButton: Bool) {
-        self.delegateAPI = delegateAPI
+        self.delegate = delegateAPI
         self.bottomSheetsProvider = bottomSheetsProvider
         self.configuration = configuration
         self.strings = strings
@@ -158,18 +158,18 @@ public class PaymentReviewModel: NSObject {
 
     func sendFeedback(updatedExtractions: [Extraction]) {
         guard let document else { return }
-        delegateAPI?.submitFeedback(for: document, updatedExtractions: updatedExtractions, completion: { _ in })
+        delegate?.submitFeedback(for: document, updatedExtractions: updatedExtractions, completion: { _ in })
     }
 
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestID: String) -> ())? = nil) {
         isLoading = true
-        delegateAPI?.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] result in
+        delegate?.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] result in
             self?.isLoading = false
             switch result {
             case let .success(requestId):
                 completion?(requestId)
             case let .failure(error):
-                if self?.delegateAPI?.shouldHandleErrorInternally(error: error) == true {
+                if self?.delegate?.shouldHandleErrorInternally(error: error) == true {
                     self?.onCreatePaymentRequestErrorHandling?()
                 }
             }
@@ -189,7 +189,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
-        delegateAPI?.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
+        delegate?.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
     }
 
     func fetchImages() {
@@ -203,7 +203,7 @@ public class PaymentReviewModel: NSObject {
             for page in 1 ... document.pageCount {
                 dispatchGroup.enter()
 
-                self.delegateAPI?.preview(for: documentId, pageNumber: page, completion: { [weak self] result in
+                self.delegate?.preview(for: documentId, pageNumber: page, completion: { [weak self] result in
                     if let cellModel = self?.proccessPreview(result) {
                         vms.append(cellModel)
                     }
@@ -230,7 +230,7 @@ public class PaymentReviewModel: NSObject {
                 return createCellViewModel(previewImage: image)
             }
         case let .failure(error):
-            if delegateAPI?.shouldHandleErrorInternally(error: error) == true {
+            if delegate?.shouldHandleErrorInternally(error: error) == true {
                 onErrorHandling?(error)
             }
         }

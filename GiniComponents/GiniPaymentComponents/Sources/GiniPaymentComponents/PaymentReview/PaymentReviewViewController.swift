@@ -146,10 +146,10 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
 
     // MARK: - Pay Button Action
     func payButtonClicked() {
-        model.delegateAPI?.trackOnPaymentReviewBankButtonClicked(providerName: selectedPaymentProvider.name)
+        model.delegate?.trackOnPaymentReviewBankButtonClicked(providerName: selectedPaymentProvider.name)
         view.endEditing(true)
 
-        if model.delegateAPI?.supportsGPC() == true {
+        if model.delegate?.supportsGPC() ?? false {
             guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
                 model.openInstallAppBottomSheet()
                 return
@@ -158,8 +158,8 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             if paymentInfoContainerView.noErrorsFound() {
                 createPaymentRequest()
             }
-        } else if model.delegateAPI?.supportsOpenWith() == true {
-            if model.delegateAPI?.shouldShowOnboardingScreenFor() == true {
+        } else if model.delegate?.supportsOpenWith() ?? false {
+            if model.delegate?.shouldShowOnboardingScreenFor() ?? false {
                 model.openOnboardingShareInvoiceBottomSheet()
             } else {
                 obtainPDFFromPaymentRequest()
@@ -402,10 +402,10 @@ fileprivate extension PaymentReviewViewController {
 
     @objc func closeButtonClicked(_ sender: UIButton) {
         if (keyboardWillShowCalled) {
-            model.delegateAPI?.trackOnPaymentReviewCloseKeyboardClicked()
+            model.delegate?.trackOnPaymentReviewCloseKeyboardClicked()
             view.endEditing(true)
         } else {
-            model.delegateAPI?.trackOnPaymentReviewCloseButtonClicked()
+            model.delegate?.trackOnPaymentReviewCloseButtonClicked()
             dismiss(animated: true, completion: nil)
         }
     }
