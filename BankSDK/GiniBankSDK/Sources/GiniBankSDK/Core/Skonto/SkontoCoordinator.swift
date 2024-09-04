@@ -64,7 +64,7 @@ extension SkontoCoordinator: SkontoViewModelDelegate {
         let action: (() -> Void) = {
             self.delegate?.didFinishAnalysis(self, viewModel.editedExtractionResult)
         }
-        InvoiceAttachmentAlert.show(on: navigationController.topViewController!,
+        TransactionDocsAlert.show(on: navigationController.topViewController!,
                                     alwaysAttachHandler: action,
                                     attachHandler: action,
                                     dontAttachHandler: action)

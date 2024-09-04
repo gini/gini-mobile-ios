@@ -1,12 +1,12 @@
 //
-//  AttachmentHeaderView.swift
+//  TransactionDocsHeaderView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-class AttachmentHeaderView: UIView {
+class TransactionDocsHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.attachments.title",
@@ -46,7 +46,7 @@ class AttachmentHeaderView: UIView {
     }
 }
 
-private extension AttachmentHeaderView {
+private extension TransactionDocsHeaderView {
     enum Constants {
         static let headerLabelLeadingAnchor: CGFloat = 12
         static let headerLabelTrailingAnchor: CGFloat = -12
