@@ -6,7 +6,6 @@
 
 
 import UIKit
-//import GiniMerchantSDK
 import GiniPaymentComponents
 import GiniUtilites
 import GiniMerchantSDK
