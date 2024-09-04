@@ -26,10 +26,60 @@ final class CustomDigitalInvoiceBottomNavigationBar: UIView {
         return button
     }()
 
+    private lazy var buttonsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [payButton, helpButton])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        return stackView
+    }()
+
+    private lazy var totalLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentHuggingPriority(.required, for: .vertical)
+        label.text = "Total"
+        return label
+    }()
+
     private lazy var totalValueLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentHuggingPriority(.required, for: .vertical)
         return label
+    }()
+
+    private lazy var skontoBadgeLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private lazy var skontoBadgeView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(skontoBadgeLabel)
+        return view
+    }()
+    
+    private lazy var savedAmountLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .green
+        label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+        return label
+    }()
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [totalValueLabel, skontoBadgeView, savedAmountLabel, buttonsStackView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        return stackView
     }()
 
     init() {
@@ -43,25 +93,15 @@ final class CustomDigitalInvoiceBottomNavigationBar: UIView {
     }
 
     private func setupView() {
-        addSubview(payButton)
-        addSubview(helpButton)
-        addSubview(totalValueLabel)
+        addSubview(stackView)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            totalValueLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            totalValueLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-            payButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            payButton.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: 16),
-            payButton.heightAnchor.constraint(equalToConstant: 44),
-            payButton.widthAnchor.constraint(equalToConstant: 88),
-
-            helpButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            helpButton.heightAnchor.constraint(equalToConstant: 44),
-            helpButton.widthAnchor.constraint(equalToConstant: 88),
-            helpButton.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: 16)
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 
@@ -71,6 +111,22 @@ final class CustomDigitalInvoiceBottomNavigationBar: UIView {
 
     func updatePrice(with price: String?) {
         totalValueLabel.text = price
+    }
+    
+    func updateSkontoPercentageBadge(with discount: String?) {
+        skontoBadgeLabel.text = discount
+    }
+
+    func updateSkontoPercentageBadgeVisibility(hidden: Bool) {
+        skontoBadgeView.isHidden = hidden
+    }
+
+    func updateSkontoSavingsInfo(with text: String?) {
+        savedAmountLabel.text = text
+    }
+
+    func updateSkontoSavingsInfoVisibility(hidden: Bool) {
+        savedAmountLabel.isHidden = hidden
     }
 
     func setupConstraints(relatedTo: UIView) {

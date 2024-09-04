@@ -303,12 +303,17 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var enableReturnReasons: Bool = false
 
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice screen which include Skonto information.
+     */
+    public var digitalInvoiceSkontoNavigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter?
+
     // MARK: - Skonto feature
 
     /**
-     Indicates whether the Skonto feature is enabled or not. In the case of `true`,
-     the user will be presented with a screen where they can see choose to pay the invoice
-     applying Skonto or not.
+     * Indicates whether the Skonto feature is enabled. If `true`,
+     * the user will be presented with a screen where they can choose
+     * to pay the invoice with or without applying Skonto.
      */
     public var skontoEnabled: Bool = true
 
@@ -319,6 +324,13 @@ public final class GiniBankConfiguration: NSObject {
 
     // MAKR: - Transaction Docs feature
     /**
+     Set an adapter implementation to show a custom bottom navigation bar on the Skonto help screen
+     */
+    public var skontoHelpNavigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter?
+
+    /**
+     Indicates whether the Return reasons feature is enabled or not. In the case of `true`,
+     the users will be asked to select from a predefined list of reasons why they decided to return an item.
      * Indicates whether the Transaction Docs feature is enabled or not. If set to `true`,
      * the user will be presented with an alert dialog in the photo payment flow to choose
      * whether to attach images or PDFs to the transaction.

@@ -111,6 +111,8 @@ final class SettingsViewController: UIViewController {
 
         contentData.append(.switchOption(data: .init(type: .skontoNavigationBarBottomAdapter,
                                                      isSwitchOn: giniConfiguration.skontoNavigationBarBottomAdapter != nil)))
+        contentData.append(.switchOption(data: .init(type: .skontoHelpNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.skontoHelpNavigationBarBottomAdapter != nil)))
 
 		contentData.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
 													 isSwitchOn: giniConfiguration.helpNavigationBarBottomAdapter != nil)))
@@ -173,6 +175,8 @@ final class SettingsViewController: UIViewController {
 													 isSwitchOn: giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)))
 		contentData.append(.switchOption(data: .init(type: .digitalInvoiceNavigationBarBottomAdapter,
 													 isSwitchOn: giniConfiguration.digitalInvoiceNavigationBarBottomAdapter != nil)))
+        contentData.append(.switchOption(data: .init(type: .digitalInvoiceSkontoNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter != nil)))
 
 		contentData.append(.switchOption(data: .init(type: .primaryButtonConfiguration,
 													 isSwitchOn: settingsButtonStates.primaryButtonState.isSwitchOn)))
@@ -372,6 +376,9 @@ final class SettingsViewController: UIViewController {
 		case .digitalInvoiceNavigationBarBottomAdapter:
 			let customAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
 			giniConfiguration.digitalInvoiceNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+        case .digitalInvoiceSkontoNavigationBarBottomAdapter:
+            let customAdapter = CustomDigitalInvoiceSkontoBottomNavigationBarAdapter()
+            giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
 		case .primaryButtonConfiguration:
 			guard data.isSwitchOn else {
 				giniConfiguration.primaryButtonConfiguration = settingsButtonStates.primaryButtonState.configuration
@@ -466,6 +473,9 @@ final class SettingsViewController: UIViewController {
         case .skontoNavigationBarBottomAdapter:
             let customAdapter = CustomSkontoNavigationBarBottomAdapter()
             giniConfiguration.skontoNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+        case .skontoHelpNavigationBarBottomAdapter:
+            let customAdapter = CustomBottomNavigationBarAdapter()
+            giniConfiguration.skontoHelpNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
         }
 	}
 	
