@@ -24,8 +24,7 @@ merchantSDK.delegate = self // where self conforms to the GiniMerchantDelegate p
 Implement the `GiniMerchantTrackingDelegate` protocol and supply the delegate when initializing `PaymentReviewViewController`. For example:
 
 ```swift
-let viewController = paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId,
-                                                                            trackingDelegate: self)
+let viewController = paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, paymentInfo: paymentInfo, trackingDelegate: self)
 ```
 
 ## Events
@@ -35,5 +34,3 @@ Event types are partitioned into different domains according to the screens that
 | Domain | Event type | Additional info keys | Comment |
 | --- | --- | --- | --- | 
 | Payment Review Screen | `onToTheBankButtonClicked` |`"paymentProvider"`| User tapped "To the banking app" button from the payment review screen |
-| Payment Review Screen | `onCloseButtonClicked` || User tapped "close" button and closed the payment review screen |
-| Payment Review Screen | `onCloseKeyboardButtonClicked` || User tapped "close" button and keyboard will be hidden from the payment review screen |

@@ -11,6 +11,10 @@ import CoreServices
 
 class ShareViewController: UIViewController {
     private let typeURL = String(kUTTypeImage)
+    private let typePNG = String(kUTTypePNG)
+    private let typeGIF = String(kUTTypeGIF)
+    private let typeJPG = String(kUTTypeJPEG)
+    private let typeTIFF = String(kUTTypeTIFF)
     private let appURL = "BankSDKExtension://"
     private let groupName = "group.bank.extension.test"
     private let urlDefaultName = "incomingURL"
@@ -23,11 +27,13 @@ class ShareViewController: UIViewController {
                 self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
                 return
         }
-        if itemProvider.hasItemConformingToTypeIdentifier(typeURL) {
-            handleIncomingURL(itemProvider: itemProvider)
-        } else {
-            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        for type in [typeURL, typePNG, typeGIF, typeJPG, typeTIFF] {
+            if itemProvider.hasItemConformingToTypeIdentifier(type) {
+                handleIncomingItem(itemProvider: itemProvider, type: type)
+                return
+            }
         }
+        self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
     }
       
     private func save(_ data: Data, key: String, value: Any) {
@@ -38,8 +44,8 @@ class ShareViewController: UIViewController {
     }
         
 
-    private func handleIncomingURL(itemProvider: NSItemProvider) {
-        itemProvider.loadItem(forTypeIdentifier: typeURL, options: nil) { (item, error) in
+    private func handleIncomingItem(itemProvider: NSItemProvider, type: String) {
+        itemProvider.loadItem(forTypeIdentifier: type, options: nil) { (item, error) in
             if let error = error { print("URL-Error: \(error.localizedDescription)") }
 
             if let url = item as? NSURL, let urlString = url.absoluteString {

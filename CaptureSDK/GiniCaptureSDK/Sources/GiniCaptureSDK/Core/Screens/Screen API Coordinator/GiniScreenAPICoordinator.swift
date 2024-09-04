@@ -46,7 +46,6 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     public var giniConfiguration: GiniConfiguration
     public var pages: [GiniCapturePage] = []
     public weak var visionDelegate: GiniCaptureDelegate?
-
     // Resources
     fileprivate(set) lazy var cancelButtonResource =
         giniConfiguration.cancelButtonResource ??
@@ -260,8 +259,8 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func showHelpMenuScreen() {
-        let topViewController = screenAPINavigationController.topViewController
-        guard topViewController is CameraViewController else {
+        let topViewController = screenAPINavigationController.topViewController as? CameraViewController
+        guard let topViewController, topViewController.shouldShowHelp else {
             return
         }
 

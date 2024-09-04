@@ -61,7 +61,7 @@ public struct Price {
 
     // Formatted string with currency symbol
     public var string: String? {
-        let result = (Price.stringWithoutSymbol(from: value) ?? "") + " " + (currencySymbol ?? "")
+        let result = (Price.stringWithoutSymbol(from: value) ?? "") + " " + (currencySymbol ?? "€")
         return result.isEmpty ? nil : result
     }
 

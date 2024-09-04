@@ -242,7 +242,7 @@ extension UIColor {
                 system: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
                 primary: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1),
                 secondary: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7),
-                tertiary: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light4),
+                tertiary: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.dark7),
                 status: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3)),
             chips: GiniColorScheme.Chips(
                 suggestionEnabled: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),

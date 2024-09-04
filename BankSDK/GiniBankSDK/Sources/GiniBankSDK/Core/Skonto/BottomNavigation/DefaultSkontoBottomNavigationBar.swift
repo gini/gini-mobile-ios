@@ -10,13 +10,19 @@ import GiniCaptureSDK
 final class DefaultSkontoBottomNavigationBar: UIView {
     private lazy var configuration = GiniBankConfiguration.shared
 
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private lazy var proceedButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.proceedbutton.title",
-                                                             comment: "Continue to pay")
+                                                             comment: "Proceed")
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
         button.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -25,15 +31,14 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         return button
     }()
 
-    // MARK: Temporary remove help action
-//    private lazy var helpButton: GiniBarButton = {
-//        let button = GiniBarButton(ofType: .help)
-//        button.buttonView.translatesAutoresizingMaskIntoConstraints = false
-//        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-//        button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-//        button.addAction(self, #selector(helpButtonClicked))
-//        return button
-//    }()
+    private lazy var helpButton: GiniBarButton = {
+        let button = GiniBarButton(ofType: .help)
+        button.buttonView.translatesAutoresizingMaskIntoConstraints = false
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        button.addAction(self, #selector(helpButtonClicked))
+        return button
+    }()
 
     private lazy var backButton: GiniBarButton = {
         let button = GiniBarButton(ofType: .back(title: ""))
@@ -50,7 +55,6 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.font = configuration.textStyleFonts[.subheadline]
         label.textColor = .giniColorScheme().text.primary.uiColor()
         label.adjustsFontForContentSizeCategory = true
-        label.setContentHuggingPriority(.required, for: .vertical)
         let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                             comment: "Total")
         label.text = text
@@ -61,10 +65,12 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     private lazy var totalValueLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.title2Bold]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        label.setContentHuggingPriority(.required, for: .vertical)
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return label
     }()
 
@@ -73,8 +79,10 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
-        label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return label
     }()
 
@@ -93,8 +101,8 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
-        label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
 
@@ -106,14 +114,15 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     }()
 
     private var proceedAction: (() -> Void)?
-    // MARK: Temporary remove help action
-//    private var helpAction: (() -> Void)?
+    private var helpAction: (() -> Void)?
     private var backAction: (() -> Void)?
 
     init(proceedAction: (() -> Void)?,
-         backAction: (() -> Void)?) {
+         backAction: (() -> Void)?,
+         helpAction: (() -> Void)?) {
         self.proceedAction = proceedAction
         self.backAction = backAction
+        self.helpAction = helpAction
         super.init(frame: .zero)
         setupView()
         setupConstraints()
@@ -149,37 +158,53 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     private func setupView() {
         backgroundColor = .giniColorScheme().bg.surface.uiColor()
 
-        addSubview(proceedButton)
-        addSubview(totalLabel)
-        addSubview(totalValueLabel)
-        addSubview(skontoBadgeView)
-        addSubview(savingsAmountLabel)
-        addSubview(backButton.buttonView)
+        addSubview(contentView)
         addSubview(dividerView)
-        skontoBadgeView.addSubview(skontoBadgeLabel)
+        addSubview(backButton.buttonView)
+        addSubview(helpButton.buttonView)
+        addSubview(proceedButton)
+        contentView.addSubview(totalLabel)
+        contentView.addSubview(totalValueLabel)
+        contentView.addSubview(skontoBadgeView)
+        contentView.addSubview(savingsAmountLabel)
     }
 
     private func setupConstraints() {
+        let multiplier: CGFloat = UIDevice.current.isIpad ? Constants.tabletWidthMultiplier : 1.0
+
         NSLayoutConstraint.activate([
-            dividerView.topAnchor.constraint(equalTo: topAnchor),
+            contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: multiplier),
+            contentView.topAnchor.constraint(equalTo: topAnchor),
+
+            dividerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
-            totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor, constant: Constants.padding),
-            totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            totalLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
+            totalLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                constant: Constants.padding),
+            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
+                                                 constant: -Constants.badgeHorizontalPadding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.totalValueLabelTopPadding),
-            totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            totalValueLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                     constant: Constants.padding),
+            totalValueLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+                                                      constant: -Constants.padding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
                                                   constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
+            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+                                                         constant: -Constants.padding),
+            savingsAmountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
-            skontoBadgeView.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                     constant: -Constants.padding),
+            skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                      constant: -Constants.padding),
 
             skontoBadgeLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
                                                   constant: Constants.badgeVerticalPadding),
@@ -190,12 +215,19 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding),
 
-            backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                           constant: Constants.padding),
             backButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
 
-            proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
+            helpButton.buttonView.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                           constant: -Constants.padding),
+            helpButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
+
+            proceedButton.topAnchor.constraint(equalTo: contentView.bottomAnchor,
                                                constant: Constants.proceedButtonTopPadding),
             proceedButton.leadingAnchor.constraint(equalTo: backButton.buttonView.trailingAnchor),
+            proceedButton.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor,
+                                                 constant: -Constants.padding * 2),
             proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
@@ -207,10 +239,9 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         proceedAction?()
     }
 
-    // MARK: Temporary remove help action
-//    @objc private func helpButtonClicked() {
-//        helpAction?()
-//    }
+    @objc private func helpButtonClicked() {
+        helpAction?()
+    }
 
     @objc private func backButtonClicked() {
         backAction?()
@@ -230,5 +261,7 @@ extension DefaultSkontoBottomNavigationBar {
         static let cornerRadius: CGFloat = 4
         static let totalValueLabelTopPadding: CGFloat = 4
         static let savingsAmountLabelTopPadding: CGFloat = 2
+        static let tabletWidthMultiplier: CGFloat = 0.7
+        static let helpButtonHorizontalPadding: CGFloat = 25
     }
 }

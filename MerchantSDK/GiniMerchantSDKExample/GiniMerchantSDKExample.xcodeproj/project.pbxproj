@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A41C7642C50F9FB00EEDCA2 /* OrderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41C7632C50F9FB00EEDCA2 /* OrderDetailView.swift */; };
 		507A25E12C355DA900A7106E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E02C355DA900A7106E /* AppDelegate.swift */; };
 		507A25E32C355DA900A7106E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E22C355DA900A7106E /* SceneDelegate.swift */; };
 		507A25E52C355DA900A7106E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25E42C355DA900A7106E /* ViewController.swift */; };
@@ -16,6 +17,8 @@
 		507A25F82C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A25F72C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.swift */; };
 		507A260F2C355F7700A7106E /* GiniMerchantSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = 507A260E2C355F7700A7106E /* GiniMerchantSDKPinning */; };
 		507A26122C35B5C200A7106E /* GiniMerchantSDKPinningExampleWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507A26112C35B5C200A7106E /* GiniMerchantSDKPinningExampleWrongCertificatesTests.swift */; };
+		5024D0472C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5024D0462C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift */; };
+		5076CDC92C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5076CDC82C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift */; };
 		50D80D582C245A8900B446A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D572C245A8900B446A8 /* AppDelegate.swift */; };
 		50D80D5A2C245A8900B446A8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D592C245A8900B446A8 /* SceneDelegate.swift */; };
 		50D80D612C245A8A00B446A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50D80D602C245A8A00B446A8 /* Assets.xcassets */; };
@@ -33,33 +36,20 @@
 		50D80DA42C245DAF00B446A8 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D972C245DAF00B446A8 /* UIViewController+Utils.swift */; };
 		50D80DA52C245DAF00B446A8 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */; };
 		50D80DA62C245DAF00B446A8 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */; };
-		50D80DB62C245DBC00B446A8 /* HardcodedInvoices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DA82C245DBC00B446A8 /* HardcodedInvoices.swift */; };
-		50D80DB72C245DBC00B446A8 /* health-invoice-1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DA92C245DBC00B446A8 /* health-invoice-1.jpg */; };
-		50D80DB82C245DBC00B446A8 /* health-invoice-2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAA2C245DBC00B446A8 /* health-invoice-2.jpg */; };
-		50D80DB92C245DBC00B446A8 /* health-invoice-3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAB2C245DBC00B446A8 /* health-invoice-3.jpg */; };
-		50D80DBA2C245DBC00B446A8 /* health-invoice-4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAC2C245DBC00B446A8 /* health-invoice-4.jpg */; };
-		50D80DBB2C245DBC00B446A8 /* health-invoice-5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DAD2C245DBC00B446A8 /* health-invoice-5.jpg */; };
-		50D80DBC2C245DBC00B446A8 /* InvoicesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */; };
-		50D80DBD2C245DBC00B446A8 /* InvoicesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */; };
-		50D80DBE2C245DBC00B446A8 /* InvoicesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */; };
-		50D80DBF2C245DBC00B446A8 /* InvoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */; };
-		50D80DC02C245DBC00B446A8 /* InvoiceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DB32C245DBC00B446A8 /* InvoiceTableViewCell.xib */; };
-		50D80DC12C245DBC00B446A8 /* InvoiceTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */; };
+		50D80DB62C245DBC00B446A8 /* HardcodedOrdersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DA82C245DBC00B446A8 /* HardcodedOrdersController.swift */; };
+		50D80DBC2C245DBC00B446A8 /* OrderListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DAF2C245DBC00B446A8 /* OrderListCoordinator.swift */; };
+		50D80DBD2C245DBC00B446A8 /* OrderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB02C245DBC00B446A8 /* OrderListViewController.swift */; };
+		50D80DBE2C245DBC00B446A8 /* OrderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB12C245DBC00B446A8 /* OrderListViewModel.swift */; };
+		50D80DBF2C245DBC00B446A8 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB22C245DBC00B446A8 /* OrderTableViewCell.swift */; };
+		50D80DC12C245DBC00B446A8 /* OrderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D80DB42C245DBC00B446A8 /* OrderCellViewModel.swift */; };
 		50D80DC32C245E6100B446A8 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 50D80DC22C245E6100B446A8 /* GiniCaptureSDK */; };
 		50D80DCA2C2478D800B446A8 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DC92C2478D800B446A8 /* Localizable.xcstrings */; };
 		50D80DCC2C2479BE00B446A8 /* GiniMerchantSDK in Resources */ = {isa = PBXBuildFile; fileRef = 50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */; };
-		8A1651202C3D37FA003A1130 /* InvoiceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A16511F2C3D37FA003A1130 /* InvoiceDetailViewController.swift */; };
+		8A1651202C3D37FA003A1130 /* OrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A16511F2C3D37FA003A1130 /* OrderDetailViewController.swift */; };
 		8A1651222C3D45C2003A1130 /* DebugMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1651212C3D45C2003A1130 /* DebugMenuViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		507A25F42C355DAA00A7106E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 50D80D4C2C245A8900B446A8 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 507A25DD2C355DA900A7106E;
-			remoteInfo = GiniMerchantSDKPinningExample;
-		};
 		50D80D6B2C245A8A00B446A8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 50D80D4C2C245A8900B446A8 /* Project object */;
@@ -70,6 +60,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A41C7632C50F9FB00EEDCA2 /* OrderDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailView.swift; sourceTree = "<group>"; };
 		4CF9C0D82C46C60E00AED223 /* GiniMerchantSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniMerchantSDKExample.entitlements; sourceTree = "<group>"; };
 		507A25DE2C355DA900A7106E /* GiniMerchantSDKPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniMerchantSDKPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		507A25E02C355DA900A7106E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +74,10 @@
 		507A25F72C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKPinningExampleTests.swift; sourceTree = "<group>"; };
 		507A26102C35700F00A7106E /* GiniMerchantSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniMerchantSDKPinning; path = ../GiniMerchantSDKPinning; sourceTree = "<group>"; };
 		507A26112C35B5C200A7106E /* GiniMerchantSDKPinningExampleWrongCertificatesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKPinningExampleWrongCertificatesTests.swift; sourceTree = "<group>"; };
+		4C6B4E552C6206D800FF5B1C /* GiniMerchantSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniMerchantSDKExample.entitlements; sourceTree = "<group>"; };
+		4CC69EF52C6141AE00430240 /* GiniMerchantSDKExampleTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GiniMerchantSDKExampleTests.xctestplan; sourceTree = "<group>"; };
+		5024D0462C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleWrongCertificatesTests.swift; sourceTree = "<group>"; };
+		5076CDC82C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniMerchantSDKExampleIntegrationTests.swift; sourceTree = "<group>"; };
 		50D80D542C245A8900B446A8 /* GiniMerchantSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniMerchantSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D80D572C245A8900B446A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		50D80D592C245A8900B446A8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,40 +97,20 @@
 		50D80D972C245DAF00B446A8 /* UIViewController+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
 		50D80D982C245DAF00B446A8 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		50D80D992C245DAF00B446A8 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
-		50D80DA82C245DBC00B446A8 /* HardcodedInvoices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HardcodedInvoices.swift; sourceTree = "<group>"; };
-		50D80DA92C245DBC00B446A8 /* health-invoice-1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-1.jpg"; sourceTree = "<group>"; };
-		50D80DAA2C245DBC00B446A8 /* health-invoice-2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-2.jpg"; sourceTree = "<group>"; };
-		50D80DAB2C245DBC00B446A8 /* health-invoice-3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-3.jpg"; sourceTree = "<group>"; };
-		50D80DAC2C245DBC00B446A8 /* health-invoice-4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-4.jpg"; sourceTree = "<group>"; };
-		50D80DAD2C245DBC00B446A8 /* health-invoice-5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-5.jpg"; sourceTree = "<group>"; };
-		50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListCoordinator.swift; sourceTree = "<group>"; };
-		50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListViewController.swift; sourceTree = "<group>"; };
-		50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoicesListViewModel.swift; sourceTree = "<group>"; };
-		50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCell.swift; sourceTree = "<group>"; };
-		50D80DB32C245DBC00B446A8 /* InvoiceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InvoiceTableViewCell.xib; sourceTree = "<group>"; };
-		50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCellModel.swift; sourceTree = "<group>"; };
+		50D80DA82C245DBC00B446A8 /* HardcodedOrdersController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HardcodedOrdersController.swift; sourceTree = "<group>"; };
+		50D80DAF2C245DBC00B446A8 /* OrderListCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderListCoordinator.swift; sourceTree = "<group>"; };
+		50D80DB02C245DBC00B446A8 /* OrderListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderListViewController.swift; sourceTree = "<group>"; };
+		50D80DB12C245DBC00B446A8 /* OrderListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderListViewModel.swift; sourceTree = "<group>"; };
+		50D80DB22C245DBC00B446A8 /* OrderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
+		50D80DB42C245DBC00B446A8 /* OrderCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderCellViewModel.swift; sourceTree = "<group>"; };
 		50D80DC92C2478D800B446A8 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniMerchantSDK; path = ../GiniMerchantSDK; sourceTree = "<group>"; };
-		8A16511F2C3D37FA003A1130 /* InvoiceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailViewController.swift; sourceTree = "<group>"; };
+		8A16511F2C3D37FA003A1130 /* OrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewController.swift; sourceTree = "<group>"; };
 		8A1651212C3D45C2003A1130 /* DebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuViewController.swift; sourceTree = "<group>"; };
+		F4EC38FC273C2432007045DC /* GiniCaptureSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniCaptureSDK; path = ../../CaptureSDK/GiniCaptureSDK; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		507A25DB2C355DA900A7106E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				507A260F2C355F7700A7106E /* GiniMerchantSDKPinning in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		507A25F02C355DAA00A7106E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		50D80D512C245A8900B446A8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -156,37 +131,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		507A25DF2C355DA900A7106E /* GiniMerchantSDKPinningExample */ = {
-			isa = PBXGroup;
-			children = (
-				507A25E02C355DA900A7106E /* AppDelegate.swift */,
-				507A25E22C355DA900A7106E /* SceneDelegate.swift */,
-				507A25E42C355DA900A7106E /* ViewController.swift */,
-				507A25E62C355DA900A7106E /* Main.storyboard */,
-				507A25E92C355DAA00A7106E /* Assets.xcassets */,
-				507A25EB2C355DAA00A7106E /* LaunchScreen.storyboard */,
-				507A25EE2C355DAA00A7106E /* Info.plist */,
-			);
-			path = GiniMerchantSDKPinningExample;
-			sourceTree = "<group>";
-		};
-		507A25F62C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests */ = {
-			isa = PBXGroup;
-			children = (
-				507A25F72C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.swift */,
-				507A26112C35B5C200A7106E /* GiniMerchantSDKPinningExampleWrongCertificatesTests.swift */,
-			);
-			path = GiniMerchantSDKPinningExampleTests;
-			sourceTree = "<group>";
-		};
 		50D80D4B2C245A8900B446A8 = {
 			isa = PBXGroup;
 			children = (
 				50D80DC52C246D8300B446A8 /* Packages */,
 				50D80D562C245A8900B446A8 /* GiniMerchantSDKExample */,
 				50D80D6D2C245A8A00B446A8 /* GiniMerchantSDKExampleTests */,
-				507A25DF2C355DA900A7106E /* GiniMerchantSDKPinningExample */,
-				507A25F62C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests */,
 				50D80D552C245A8900B446A8 /* Products */,
 				50D80D872C245D2B00B446A8 /* Frameworks */,
 			);
@@ -197,8 +147,6 @@
 			children = (
 				50D80D542C245A8900B446A8 /* GiniMerchantSDKExample.app */,
 				50D80D6A2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.xctest */,
-				507A25DE2C355DA900A7106E /* GiniMerchantSDKPinningExample.app */,
-				507A25F32C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -206,7 +154,7 @@
 		50D80D562C245A8900B446A8 /* GiniMerchantSDKExample */ = {
 			isa = PBXGroup;
 			children = (
-				4CF9C0D82C46C60E00AED223 /* GiniMerchantSDKExample.entitlements */,
+				4C6B4E552C6206D800FF5B1C /* GiniMerchantSDKExample.entitlements */,
 				50D80DC82C24788F00B446A8 /* Sources */,
 				50D80DC72C24786500B446A8 /* Resources */,
 				50D80D652C245A8A00B446A8 /* Info.plist */,
@@ -217,6 +165,9 @@
 		50D80D6D2C245A8A00B446A8 /* GiniMerchantSDKExampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				4CC69EF52C6141AE00430240 /* GiniMerchantSDKExampleTests.xctestplan */,
+				5024D0462C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift */,
+				5076CDC82C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift */,
 				50D80D6E2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.swift */,
 			);
 			path = GiniMerchantSDKExampleTests;
@@ -230,30 +181,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		50D80DAE2C245DBC00B446A8 /* HardcodedInvoices */ = {
-			isa = PBXGroup;
-			children = (
-				50D80DA82C245DBC00B446A8 /* HardcodedInvoices.swift */,
-				50D80DA92C245DBC00B446A8 /* health-invoice-1.jpg */,
-				50D80DAA2C245DBC00B446A8 /* health-invoice-2.jpg */,
-				50D80DAB2C245DBC00B446A8 /* health-invoice-3.jpg */,
-				50D80DAC2C245DBC00B446A8 /* health-invoice-4.jpg */,
-				50D80DAD2C245DBC00B446A8 /* health-invoice-5.jpg */,
-			);
-			path = HardcodedInvoices;
-			sourceTree = "<group>";
-		};
 		50D80DB52C245DBC00B446A8 /* InvoicesList */ = {
 			isa = PBXGroup;
 			children = (
-				50D80DAE2C245DBC00B446A8 /* HardcodedInvoices */,
-				50D80DAF2C245DBC00B446A8 /* InvoicesListCoordinator.swift */,
-				50D80DB02C245DBC00B446A8 /* InvoicesListViewController.swift */,
-				50D80DB12C245DBC00B446A8 /* InvoicesListViewModel.swift */,
-				8A16511F2C3D37FA003A1130 /* InvoiceDetailViewController.swift */,
-				50D80DB22C245DBC00B446A8 /* InvoiceTableViewCell.swift */,
-				50D80DB32C245DBC00B446A8 /* InvoiceTableViewCell.xib */,
-				50D80DB42C245DBC00B446A8 /* InvoiceTableViewCellModel.swift */,
+				50D80DA82C245DBC00B446A8 /* HardcodedOrdersController.swift */,
+				50D80DAF2C245DBC00B446A8 /* OrderListCoordinator.swift */,
+				50D80DB02C245DBC00B446A8 /* OrderListViewController.swift */,
+				50D80DB12C245DBC00B446A8 /* OrderListViewModel.swift */,
+				50D80DB22C245DBC00B446A8 /* OrderTableViewCell.swift */,
+				50D80DB42C245DBC00B446A8 /* OrderCellViewModel.swift */,
+				8A16511F2C3D37FA003A1130 /* OrderDetailViewController.swift */,
+				3A41C7632C50F9FB00EEDCA2 /* OrderDetailView.swift */,
 			);
 			path = InvoicesList;
 			sourceTree = "<group>";
@@ -261,8 +199,8 @@
 		50D80DC52C246D8300B446A8 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				507A26102C35700F00A7106E /* GiniMerchantSDKPinning */,
 				50D80DCB2C2479BE00B446A8 /* GiniMerchantSDK */,
+				F4EC38FC273C2432007045DC /* GiniCaptureSDK */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -301,44 +239,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		507A25DD2C355DA900A7106E /* GiniMerchantSDKPinningExample */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 507A26052C355DAA00A7106E /* Build configuration list for PBXNativeTarget "GiniMerchantSDKPinningExample" */;
-			buildPhases = (
-				507A25DA2C355DA900A7106E /* Sources */,
-				507A25DB2C355DA900A7106E /* Frameworks */,
-				507A25DC2C355DA900A7106E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = GiniMerchantSDKPinningExample;
-			packageProductDependencies = (
-				507A260E2C355F7700A7106E /* GiniMerchantSDKPinning */,
-			);
-			productName = GiniMerchantSDKPinningExample;
-			productReference = 507A25DE2C355DA900A7106E /* GiniMerchantSDKPinningExample.app */;
-			productType = "com.apple.product-type.application";
-		};
-		507A25F22C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 507A26082C355DAA00A7106E /* Build configuration list for PBXNativeTarget "GiniMerchantSDKPinningExampleTests" */;
-			buildPhases = (
-				507A25EF2C355DAA00A7106E /* Sources */,
-				507A25F02C355DAA00A7106E /* Frameworks */,
-				507A25F12C355DAA00A7106E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				507A25F52C355DAA00A7106E /* PBXTargetDependency */,
-			);
-			name = GiniMerchantSDKPinningExampleTests;
-			productName = GiniMerchantSDKPinningExampleTests;
-			productReference = 507A25F32C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		50D80D532C245A8900B446A8 /* GiniMerchantSDKExample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 50D80D7E2C245A8A00B446A8 /* Build configuration list for PBXNativeTarget "GiniMerchantSDKExample" */;
@@ -388,13 +288,6 @@
 				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
-					507A25DD2C355DA900A7106E = {
-						CreatedOnToolsVersion = 15.4;
-					};
-					507A25F22C355DAA00A7106E = {
-						CreatedOnToolsVersion = 15.4;
-						TestTargetID = 507A25DD2C355DA900A7106E;
-					};
 					50D80D532C245A8900B446A8 = {
 						CreatedOnToolsVersion = 15.4;
 					};
@@ -419,46 +312,21 @@
 			projectRoot = "";
 			targets = (
 				50D80D532C245A8900B446A8 /* GiniMerchantSDKExample */,
-				507A25DD2C355DA900A7106E /* GiniMerchantSDKPinningExample */,
 				50D80D692C245A8A00B446A8 /* GiniMerchantSDKExampleTests */,
-				507A25F22C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		507A25DC2C355DA900A7106E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				507A25EA2C355DAA00A7106E /* Assets.xcassets in Resources */,
-				507A25ED2C355DAA00A7106E /* Base in Resources */,
-				507A25E82C355DA900A7106E /* Base in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		507A25F12C355DAA00A7106E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		50D80D522C245A8900B446A8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50D80DB82C245DBC00B446A8 /* health-invoice-2.jpg in Resources */,
-				50D80DBB2C245DBC00B446A8 /* health-invoice-5.jpg in Resources */,
-				50D80DB92C245DBC00B446A8 /* health-invoice-3.jpg in Resources */,
 				50D80D612C245A8A00B446A8 /* Assets.xcassets in Resources */,
 				50D80DCA2C2478D800B446A8 /* Localizable.xcstrings in Resources */,
-				50D80DC02C245DBC00B446A8 /* InvoiceTableViewCell.xib in Resources */,
 				50D80DA62C245DAF00B446A8 /* SelectAPIViewController.xib in Resources */,
 				50D80D642C245A8A00B446A8 /* Base in Resources */,
-				50D80DB72C245DBC00B446A8 /* health-invoice-1.jpg in Resources */,
 				50D80DCC2C2479BE00B446A8 /* GiniMerchantSDK in Resources */,
-				50D80DBA2C245DBC00B446A8 /* health-invoice-4.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,48 +340,30 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		507A25DA2C355DA900A7106E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				507A25E52C355DA900A7106E /* ViewController.swift in Sources */,
-				507A25E12C355DA900A7106E /* AppDelegate.swift in Sources */,
-				507A25E32C355DA900A7106E /* SceneDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		507A25EF2C355DAA00A7106E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				507A26122C35B5C200A7106E /* GiniMerchantSDKPinningExampleWrongCertificatesTests.swift in Sources */,
-				507A25F82C355DAA00A7106E /* GiniMerchantSDKPinningExampleTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		50D80D502C245A8900B446A8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50D80DBC2C245DBC00B446A8 /* InvoicesListCoordinator.swift in Sources */,
+				50D80DBC2C245DBC00B446A8 /* OrderListCoordinator.swift in Sources */,
 				50D80DA22C245DAF00B446A8 /* Coordinator.swift in Sources */,
 				50D80DA02C245DAF00B446A8 /* AppCoordinator.swift in Sources */,
 				50D80D9E2C245DAF00B446A8 /* CredentialsManager.swift in Sources */,
 				50D80D582C245A8900B446A8 /* AppDelegate.swift in Sources */,
 				50D80DA42C245DAF00B446A8 /* UIViewController+Utils.swift in Sources */,
 				50D80D9B2C245DAF00B446A8 /* MerchantNetworkingService.swift in Sources */,
-				8A1651202C3D37FA003A1130 /* InvoiceDetailViewController.swift in Sources */,
+				8A1651202C3D37FA003A1130 /* OrderDetailViewController.swift in Sources */,
 				50D80D5A2C245A8900B446A8 /* SceneDelegate.swift in Sources */,
 				50D80DA32C245DAF00B446A8 /* SelectAPIViewController.swift in Sources */,
-				50D80DBD2C245DBC00B446A8 /* InvoicesListViewController.swift in Sources */,
-				50D80DB62C245DBC00B446A8 /* HardcodedInvoices.swift in Sources */,
+				50D80DBD2C245DBC00B446A8 /* OrderListViewController.swift in Sources */,
+				50D80DB62C245DBC00B446A8 /* HardcodedOrdersController.swift in Sources */,
 				50D80DA52C245DAF00B446A8 /* ScreenAPICoordinator.swift in Sources */,
 				50D80DA12C245DAF00B446A8 /* RootNavigationController.swift in Sources */,
-				50D80DBE2C245DBC00B446A8 /* InvoicesListViewModel.swift in Sources */,
-				50D80DBF2C245DBC00B446A8 /* InvoiceTableViewCell.swift in Sources */,
+				50D80DBE2C245DBC00B446A8 /* OrderListViewModel.swift in Sources */,
+				50D80DBF2C245DBC00B446A8 /* OrderTableViewCell.swift in Sources */,
 				8A1651222C3D45C2003A1130 /* DebugMenuViewController.swift in Sources */,
+				3A41C7642C50F9FB00EEDCA2 /* OrderDetailView.swift in Sources */,
 				50D80D9F2C245DAF00B446A8 /* UIViewController.swift in Sources */,
-				50D80DC12C245DBC00B446A8 /* InvoiceTableViewCellModel.swift in Sources */,
+				50D80DC12C245DBC00B446A8 /* OrderCellViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -522,17 +372,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				50D80D6F2C245A8A00B446A8 /* GiniMerchantSDKExampleTests.swift in Sources */,
+				5024D0472C45613F00324644 /* GiniMerchantSDKExampleWrongCertificatesTests.swift in Sources */,
+				5076CDC92C45574300094FE4 /* GiniMerchantSDKExampleIntegrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		507A25F52C355DAA00A7106E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 507A25DD2C355DA900A7106E /* GiniMerchantSDKPinningExample */;
-			targetProxy = 507A25F42C355DAA00A7106E /* PBXContainerItemProxy */;
-		};
 		50D80D6C2C245A8A00B446A8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 50D80D532C245A8900B446A8 /* GiniMerchantSDKExample */;
@@ -541,22 +388,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		507A25E62C355DA900A7106E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				507A25E72C355DA900A7106E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		507A25EB2C355DAA00A7106E /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				507A25EC2C355DAA00A7106E /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 		50D80D622C245A8A00B446A8 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -568,122 +399,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		507A26062C355DAA00A7106E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
-				ENABLE_ON_DEMAND_RESOURCES = NO;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GiniMerchantSDKPinningExample/Info.plist;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.pinning.example;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		507A26072C355DAA00A7106E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
-				ENABLE_ON_DEMAND_RESOURCES = NO;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GiniMerchantSDKPinningExample/Info.plist;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.pinning.example;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		507A26092C355DAA00A7106E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example.GiniMerchantSDKPinningExampleTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniMerchantSDKPinningExample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GiniMerchantSDKPinningExample";
-			};
-			name = Debug;
-		};
-		507A260A2C355DAA00A7106E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example.GiniMerchantSDKPinningExampleTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniMerchantSDKPinningExample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GiniMerchantSDKPinningExample";
-			};
-			name = Release;
-		};
 		50D80D7C2C245A8A00B446A8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -808,13 +523,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniMerchantSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Gini Merchant";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -825,7 +541,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.merchantsdk.example1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -842,13 +558,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = GiniMerchantSDKExample/GiniMerchantSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniMerchantSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Gini Merchant";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -922,24 +639,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		507A26052C355DAA00A7106E /* Build configuration list for PBXNativeTarget "GiniMerchantSDKPinningExample" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				507A26062C355DAA00A7106E /* Debug */,
-				507A26072C355DAA00A7106E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		507A26082C355DAA00A7106E /* Build configuration list for PBXNativeTarget "GiniMerchantSDKPinningExampleTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				507A26092C355DAA00A7106E /* Debug */,
-				507A260A2C355DAA00A7106E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		50D80D4F2C245A8900B446A8 /* Build configuration list for PBXProject "GiniMerchantSDKExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -970,10 +669,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		507A260E2C355F7700A7106E /* GiniMerchantSDKPinning */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GiniMerchantSDKPinning;
-		};
 		50D80D8A2C245D3B00B446A8 /* GiniMerchantSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniMerchantSDK;

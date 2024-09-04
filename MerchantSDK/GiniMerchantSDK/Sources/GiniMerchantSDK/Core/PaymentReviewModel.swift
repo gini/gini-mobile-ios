@@ -28,14 +28,15 @@ public class PaymentReviewModel: NSObject {
     var onErrorHandling: ((_ error: GiniMerchantError) -> Void)?
 
     var onCreatePaymentRequestErrorHandling: (() -> Void)?
-    
+
     weak var viewModelDelegate: PaymentReviewViewModelDelegate?
 
-    public var document: Document
+    public var document: Document?
 
-    public var extractions: [Extraction]
+    public var extractions: [Extraction]?
+    public var paymentInfo: PaymentInfo?
 
-    public var documentId: String
+    public var documentId: String?
     private var merchantSDK: GiniMerchant
     private var selectedPaymentProvider: PaymentProvider?
 
@@ -54,7 +55,7 @@ public class PaymentReviewModel: NSObject {
             self.updateLoadingStatus?()
         }
     }
-    
+
     var isImagesLoading: Bool = false {
         didSet {
             self.updateImagesLoadingStatus?()
@@ -63,11 +64,12 @@ public class PaymentReviewModel: NSObject {
 
     var paymentComponentsController: PaymentComponentsController
 
-    public init(with giniMerchant: GiniMerchant, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?, paymentComponentsController: PaymentComponentsController) {
+    public init(with giniMerchant: GiniMerchant, document: Document?, extractions: [Extraction]?, paymentInfo: PaymentInfo?, selectedPaymentProvider: PaymentProvider?, paymentComponentsController: PaymentComponentsController) {
         self.merchantSDK = giniMerchant
-        self.documentId = document.id
+        self.documentId = document?.id
         self.document = document
         self.extractions = extractions
+        self.paymentInfo = paymentInfo
         self.selectedPaymentProvider = selectedPaymentProvider
         self.paymentComponentsController = paymentComponentsController
     }
@@ -81,11 +83,13 @@ public class PaymentReviewModel: NSObject {
     }
 
     func sendFeedback(updatedExtractions: [Extraction]) {
+        guard let document else { return }
         merchantSDK.documentService.submitFeedback(for: document, with: [], and: ["payment": [updatedExtractions]], completion: { _ in })
     }
     
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestID: String) -> ())? = nil) {
         isLoading = true
+        self.paymentInfo = paymentInfo
         merchantSDK.createPaymentRequest(paymentInfo: paymentInfo) {[weak self] result in
             self?.isLoading = false
             switch result {
@@ -114,18 +118,19 @@ public class PaymentReviewModel: NSObject {
     func openPaymentProviderApp(requestId: String, universalLink: String) {
         merchantSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
     }
-    
+
     func fetchImages() {
+        guard let document else { return }
         self.isImagesLoading = true
         let dispatchGroup = DispatchGroup()
         let dispatchQueue = DispatchQueue(label: "imagesQueue")
         let dispatchSemaphore = DispatchSemaphore(value: 0)
         var vms = [PageCollectionCellViewModel]()
         dispatchQueue.async {
-            for page in 1 ... self.document.pageCount {
+            for page in 1 ... document.pageCount {
                 dispatchGroup.enter()
 
-                self.merchantSDK.documentService.preview(for: self.documentId, pageNumber: page) { [weak self] result in
+                self.merchantSDK.documentService.preview(for: document.id, pageNumber: page) { [weak self] result in
                     if let cellModel = self?.proccessPreview(result) {
                         vms.append(cellModel)
                     }
@@ -144,7 +149,7 @@ public class PaymentReviewModel: NSObject {
             }
         }
     }
-    
+
     private func proccessPreview(_ result: Result<Data, GiniError>) -> PageCollectionCellViewModel? {
         switch result {
         case let .success(dataImage):
@@ -174,7 +179,7 @@ extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
 
 /**
  View model class for collection view cell
- 
+
   */
 public struct PageCollectionCellViewModel {
     let preview: UIImage
