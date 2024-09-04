@@ -18,11 +18,7 @@ class SkontoAlertFactory {
         case .expired:
             let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.expired.alert.title",
                                                                 comment: "This invoice contained...")
-            if Locale.current.languageCode == "en" {
-                return text
-            } else {
-                return String.localizedStringWithFormat(text, viewModel.formattedPercentageDiscounted)
-            }
+            return String.localizedStringWithFormat(text, viewModel.formattedPercentageDiscounted)
         case .paymentToday:
             return NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.today.alert.title",
                                                             comment: "A Skonto discount can be applied...")
