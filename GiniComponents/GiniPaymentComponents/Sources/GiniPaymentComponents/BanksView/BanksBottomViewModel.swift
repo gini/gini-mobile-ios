@@ -81,14 +81,17 @@ public final class BanksBottomViewModel {
     }
 
     func paymentProvidersViewModel(paymentProvider: PaymentProviderAdditionalInfo) -> BankSelectionTableViewCellModel {
-        BankSelectionTableViewCellModel(
-            paymentProvider: paymentProvider,
+        let bankSelectionTableViewCellModelColors = BankSelectionTableViewCellModelColors(
             backgroundColor: configuration.bankCellBackgroundColor,
-            bankNameFont: configuration.bankCellNameFont,
             bankNameAccentColor: configuration.bankCellNameAccentColor,
             bankIconBorderColor: configuration.bankCellIconBorderColor,
             selectedBankBorderColor: configuration.bankCellSelectedBorderColor,
-            notSelectedBankBorderColor: configuration.bankCellNotSelectedBorderColor,
+            notSelectedBankBorderColor: configuration.bankCellNotSelectedBorderColor
+        )
+        return BankSelectionTableViewCellModel(
+            paymentProvider: paymentProvider,
+            bankNameFont: configuration.bankCellNameFont,
+            colors: bankSelectionTableViewCellModelColors,
             selectionIndicatorImage: configuration.bankCellSelectionIndicatorImage
         )
     }

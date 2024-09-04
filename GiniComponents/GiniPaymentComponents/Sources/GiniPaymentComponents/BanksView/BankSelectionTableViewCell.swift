@@ -96,16 +96,16 @@ private extension BankSelectionTableViewCell {
         let isSelected = cellViewModel.shouldShowSelectionIcon
 
         bankImageView.image = cellViewModel.bankImageIcon
-        bankImageView.layer.borderColor = cellViewModel.bankIconBorderColor.cgColor
-        
+        bankImageView.layer.borderColor = cellViewModel.colors.bankIconBorderColor.cgColor
+
         bankNameLabel.text = cellViewModel.bankName
         bankNameLabel.font = cellViewModel.bankNameFont
-        bankNameLabel.textColor = cellViewModel.bankNameAccentColor
-        
-        cellView.backgroundColor = cellViewModel.backgroundColor
+        bankNameLabel.textColor = cellViewModel.colors.bankNameAccentColor
+
+        cellView.backgroundColor = cellViewModel.colors.backgroundColor
         cellView.layer.borderWidth = isSelected ? Constants.selectedBorderWidth : Constants.notSelectedBorderWidth
-        cellView.layer.borderColor = isSelected ? cellViewModel.selectedBankBorderColor.cgColor : cellViewModel.notSelectedBankBorderColor.cgColor
-        
+        cellView.layer.borderColor = isSelected ? cellViewModel.colors.selectedBankBorderColor.cgColor : cellViewModel.colors.notSelectedBankBorderColor.cgColor
+
         selectionIndicatorImageView.image = cellViewModel.selectionIndicatorImage
         selectionIndicatorImageView.isHidden = !isSelected
     }

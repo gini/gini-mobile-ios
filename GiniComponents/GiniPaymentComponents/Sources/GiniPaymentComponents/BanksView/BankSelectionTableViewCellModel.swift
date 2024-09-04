@@ -10,6 +10,14 @@ import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
 
+struct BankSelectionTableViewCellModelColors {
+    let backgroundColor: UIColor
+    let bankNameAccentColor: UIColor
+    let bankIconBorderColor: UIColor
+    let selectedBankBorderColor: UIColor
+    let notSelectedBankBorderColor: UIColor
+}
+
 final class BankSelectionTableViewCellModel {
 
     private var isSelected: Bool = false
@@ -19,32 +27,20 @@ final class BankSelectionTableViewCellModel {
     }
 
     let bankName: String
-    let backgroundColor: UIColor
-    let bankIconBorderColor: UIColor
+    let colors: BankSelectionTableViewCellModelColors
     let bankNameFont: UIFont
-    let bankNameAccentColor: UIColor
-    let selectedBankBorderColor: UIColor
-    let notSelectedBankBorderColor: UIColor
     let selectionIndicatorImage: UIImage
     let bankImageIcon: UIImage
 
-    init(paymentProvider: PaymentProviderAdditionalInfo, 
-         backgroundColor: UIColor,
+    init(paymentProvider: PaymentProviderAdditionalInfo,
          bankNameFont: UIFont,
-         bankNameAccentColor: UIColor,
-         bankIconBorderColor: UIColor,
-         selectedBankBorderColor: UIColor,
-         notSelectedBankBorderColor: UIColor,
+         colors: BankSelectionTableViewCellModelColors,
          selectionIndicatorImage: UIImage) {
         self.isSelected = paymentProvider.isSelected
         self.bankImageIcon = paymentProvider.paymentProvider.iconData.toImage
         self.bankName = paymentProvider.paymentProvider.name
         self.bankNameFont = bankNameFont
-        self.backgroundColor = backgroundColor
-        self.bankNameAccentColor = bankNameAccentColor
-        self.bankIconBorderColor = bankIconBorderColor
-        self.selectedBankBorderColor = selectedBankBorderColor
-        self.notSelectedBankBorderColor = notSelectedBankBorderColor
+        self.colors = colors
         self.selectionIndicatorImage = selectionIndicatorImage
     }
 }
