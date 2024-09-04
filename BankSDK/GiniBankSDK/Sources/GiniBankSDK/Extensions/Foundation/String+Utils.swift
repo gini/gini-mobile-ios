@@ -36,8 +36,8 @@ extension String {
     // combines the firstString and secondString with the separator in between.
 
     public static func concatenateWithSeparator(_ firstString: String,
-                                  _ secondString: String,
-                                  separator: String = ": ") -> String {
+                                                _ secondString: String,
+                                                separator: String = ": ") -> String {
         return "\(firstString)\(separator)\(secondString)"
     }
 }
