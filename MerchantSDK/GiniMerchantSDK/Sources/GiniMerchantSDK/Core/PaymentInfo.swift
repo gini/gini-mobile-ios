@@ -29,4 +29,11 @@ public struct PaymentInfo {
         self.paymentUniversalLink = paymentUniversalLink
         self.paymentProviderId = paymentProviderId
     }
+
+    public var isComplete: Bool {
+        !recipient.isEmpty &&
+        !iban.isEmpty &&
+        !amount.isEmpty &&
+        !purpose.isEmpty
+    }
 }

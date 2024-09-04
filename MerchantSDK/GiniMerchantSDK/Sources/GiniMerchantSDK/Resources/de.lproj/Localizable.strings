@@ -29,7 +29,7 @@
 "gini.merchant.paymentcomponent.to.banking.app.label" = "Zur Banking App";
 "gini.merchant.paymentcomponent.continue.to.overview.label" = "Weiter zur Übersicht";
 "gini.merchant.paymentcomponent.powered.by.gini.label" = "Powered by";
-"gini.merchant.paymentcomponent.select.bank.label" = "Ihre Bank";
+"gini.merchant.paymentcomponent.select.bank.label" = "Bank auswählen";
 "gini.merchant.paymentcomponent.payment.providers.list.description" = "Sie können die Rechnung nur bezahlen, wenn Sie ein Konto bei einer der unten aufgeführten Banken haben.";
 "gini.merchant.paymentcomponent.payment.info.title.label" = "Mehr Informationen";
 "gini.merchant.paymentcomponent.payment.info.pay.bills.title.label" = "Rechnungen ganz einfach mit der Banking-App bezahlen.";

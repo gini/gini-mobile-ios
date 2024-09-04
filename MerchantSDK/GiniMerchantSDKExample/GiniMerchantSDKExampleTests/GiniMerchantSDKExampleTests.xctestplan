@@ -1,0 +1,38 @@
+{
+  "configurations" : [
+    {
+      "id" : "3F4B9F51-DFBD-4ED1-9B71-CE717A925695",
+      "name" : "Test Scheme Action",
+      "options" : {
+        "targetForVariableExpansion" : {
+          "containerPath" : "container:GiniMerchantSDKExample.xcodeproj",
+          "identifier" : "50D80D532C245A8900B446A8",
+          "name" : "GiniMerchantSDKExample"
+        }
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "CLIENT_ID",
+        "value" : "$(CLIENT_ID)"
+      },
+      {
+        "key" : "CLIENT_SECRET",
+        "value" : "$(CLIENT_SECRET)"
+      }
+    ]
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:GiniMerchantSDKExample.xcodeproj",
+        "identifier" : "50D80D692C245A8A00B446A8",
+        "name" : "GiniMerchantSDKExampleTests"
+      }
+    }
+  ],
+  "version" : 1
+}

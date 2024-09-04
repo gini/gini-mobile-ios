@@ -14,7 +14,7 @@ final class QuantityView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnote]
-        label.textColor = .GiniBank.dark6
+        label.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light5).uiColor()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.quantity",
                                                              comment: "Quantity")
         label.text = title

@@ -12,7 +12,7 @@
             "background": "009EDC",
             "text": "FFFFFF"
         },
-        "iconLocation": "https://health-api.gini.net/paymentProviders/b09ef70a-490f-11eb-952e-9bc6f4646c57/icon",
+        "iconLocation": "https://merchant-api.gini.net/paymentProviders/b09ef70a-490f-11eb-952e-9bc6f4646c57/icon",
         "appStoreUrlIOS": "https://apps.apple.com/de/app/bank/id1234567890",
         "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=net.gini.android.bank.insurance.mock",
         "universalLinkIOS": "ginipay-bank://",
@@ -36,7 +36,7 @@
             "background": "FFFFFF",
             "text": "009EDC"
         },
-        "iconLocation": "https://health-api.gini.net/paymentProviders/f7d06ee0-51fd-11ec-8216-97f0937beb16/icon",
+        "iconLocation": "https://merchant-api.gini.net/paymentProviders/f7d06ee0-51fd-11ec-8216-97f0937beb16/icon",
         "appStoreUrlIOS": "https://apps.apple.com/de/app/bank/id1234567890",
         "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=net.gini.android.fake",
         "universalLinkIOS": "ginipay-ginibank://",
@@ -60,7 +60,7 @@
             "background": "4DBED3",
             "text": "FFFFFF"
         },
-        "iconLocation": "https://health-api.gini.net/paymentProviders/0bd58eae-7ea2-11ec-8a88-8fbe75353d94/icon",
+        "iconLocation": "https://merchant-api.gini.net/paymentProviders/0bd58eae-7ea2-11ec-8a88-8fbe75353d94/icon",
         "appStoreUrlIOS": "https://apps.apple.com/de/app/bank/id1234567890",
         "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=net.gini.android.fake",
         "universalLinkIOS": "ginipay-consorsbank-mock://",
@@ -84,7 +84,7 @@
             "background": "0080A6",
             "text": "FFFFFF"
         },
-        "iconLocation": "https://health-api.gini.net/paymentProviders/f2d2f9a6-8e4a-11ec-97e4-e372f4cd98db/icon",
+        "iconLocation": "https://merchant-api.gini.net/paymentProviders/f2d2f9a6-8e4a-11ec-97e4-e372f4cd98db/icon",
         "appStoreUrlIOS": "https://apps.apple.com/de/app/bank/id1234567890",
         "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=net.gini.android.fake",
         "universalLinkIOS": "ginipay-consorsbanktest://",
@@ -108,7 +108,7 @@
             "background": "0080A6",
             "text": "FFFFFF"
         },
-        "iconLocation": "https://health-api.gini.net/paymentProviders/d5a56d26-8e4c-11ec-9c27-5b350ade3856/icon",
+        "iconLocation": "https://merchant-api.gini.net/paymentProviders/d5a56d26-8e4c-11ec-9c27-5b350ade3856/icon",
         "appStoreUrlIOS": "https://apps.apple.com/de/app/bank/id1234567890",
         "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=net.gini.android.fake",
         "universalLinkIOS": "ginipay-consorsbankdebug://",
@@ -132,7 +132,7 @@
             "background": "003FE2",
             "text": "FFFFFF"
         },
-        "iconLocation": "https://health-api.gini.net/paymentProviders/f2e66ede-57be-43d9-b483-5c746220c594/icon",
+        "iconLocation": "https://merchant-api.gini.net/paymentProviders/f2e66ede-57be-43d9-b483-5c746220c594/icon",
         "appStoreUrlIOS": "https://testflight.apple.com/join/BTe3AH8w",
         "playStoreUrlAndroid": "https://install.appcenter.ms/orgs/gini-team-organization/apps/bank-1/distribution_groups/internal",
         "universalLinkIOS": "ginipay-insurance-bank-mock://",
@@ -156,7 +156,7 @@
             "background": "daa520",
             "text": "54f1db"
         },
-        "iconLocation": "https://health-api.gini.net/paymentProviders/dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7/icon",
+        "iconLocation": "https://merchant-api.gini.net/paymentProviders/dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7/icon",
         "appStoreUrlIOS": "https://apps.apple.com/de/app/bank/id1234567890",
         "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=net.gini.android.fake",
         "universalLinkIOS": "ginipay-ingdiba://",
@@ -180,7 +180,7 @@
             "background": "0080A6",
             "text": "FFFFFF"
         },
-        "iconLocation": "https://health-api.gini.net/paymentProviders/a65b0646-51fe-11ec-8736-c338396b2f09/icon",
+        "iconLocation": "https://merchant-api.gini.net/paymentProviders/a65b0646-51fe-11ec-8736-c338396b2f09/icon",
         "appStoreUrlIOS": "https://apps.apple.com/de/app/consorsbank/id930883278",
         "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=de.consorsbank",
         "universalLinkIOS": "ginipay-consorsbank://",
@@ -204,7 +204,7 @@
             "background": "01975E",
             "text": "FFFFFF"
         },
-        "iconLocation": "https://health-api.gini.net/paymentProviders/03e8f20c-8e4d-11ec-a97f-5f81b1fbfee4/icon",
+        "iconLocation": "https://merchant-api.gini.net/paymentProviders/03e8f20c-8e4d-11ec-a97f-5f81b1fbfee4/icon",
         "appStoreUrlIOS": "https://apps.apple.com/de/app/myprivatebank/id1115169520",
         "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=de.bnp.wm",
         "universalLinkIOS": "ginipay-cbwm://",
@@ -228,7 +228,7 @@
             "background": "01975E",
             "text": "FFFFFF"
         },
-        "iconLocation": "https://health-api.gini.net/paymentProviders/43119f92-8e4d-11ec-861f-c75b8eeceadc/icon",
+        "iconLocation": "https://merchant-api.gini.net/paymentProviders/43119f92-8e4d-11ec-861f-c75b8eeceadc/icon",
         "appStoreUrlIOS": "https://apps.apple.com/de/app/bank/id1234567890",
         "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=net.gini.android.fake",
         "universalLinkIOS": "ginipay-cbwmdebug://",
@@ -252,7 +252,7 @@
             "background": "01975E",
             "text": "FFFFFF"
         },
-        "iconLocation": "https://health-api.gini.net/paymentProviders/72e3b804-8e4d-11ec-be15-9bfa6d461196/icon",
+        "iconLocation": "https://merchant-api.gini.net/paymentProviders/72e3b804-8e4d-11ec-be15-9bfa6d461196/icon",
         "appStoreUrlIOS": "https://apps.apple.com/de/app/bank/id1234567890",
         "playStoreUrlAndroid": "https://play.google.com/store/apps/details?id=net.gini.android.fake",
         "universalLinkIOS": "ginipay-cbwmtest://",

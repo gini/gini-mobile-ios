@@ -25,3 +25,19 @@ extension String {
         return DateFormatter.yearMonthDay.date(from: self)
     }
 }
+
+
+// MARK: - String Extension for Concatenation
+
+extension String {
+    // This method concatenates two strings with a custom separator.
+    // The method takes two strings as parameters (firstString and secondString) and an optional separator.
+    // The separator defaults to ": " if not provided. The method returns a single string that
+    // combines the firstString and secondString with the separator in between.
+
+    public static func concatenateWithSeparator(_ firstString: String,
+                                                _ secondString: String,
+                                                separator: String = ": ") -> String {
+        return "\(firstString)\(separator)\(secondString)"
+    }
+}

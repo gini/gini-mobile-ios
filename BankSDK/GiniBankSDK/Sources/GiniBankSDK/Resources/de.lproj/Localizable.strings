@@ -105,10 +105,26 @@
 
 "ginibank.skonto.infobanner.default.message" = "Zahlung in %@: %@ Skonto";
 "ginibank.skonto.infobanner.edgecase.today.message" = "Zahlung heute: %@ Skonto";
-"ginibank.skonto.infobanner.edgecase.cash.message" = "%@ Skonto sind bei Barzahlung innerhalb von %@ möglich";
+"ginibank.skonto.infobanner.edgecase.cash.message" = "Zahlen Sie diese Rechnung innerhalb von %@ in bar und Sie erhalten %@ Skonto";
+"ginibank.skonto.infobanner.edgecase.cash.today.message" = "Zahlen Sie heute bar und erhalten Sie %@ Skonto";
 "ginibank.skonto.infobanner.edgecase.expired.message" = "Die %@ Skonto sind abgelaufen";
 
-"ginibank.skonto.infobanner.edgecase.today.alert.title" = "In dieser Rechnung ist ein Skonto enthalten – die Frist läuft heute ab.";
-"ginibank.skonto.infobanner.edgecase.cash.alert.title" = "Von dieser Rechnung können Sie einen Skontobetrag abziehen, wenn Sie die Rechnung an einem Bankterminal mit Bareinzahlung bezahlen.";
+"ginibank.skonto.infobanner.edgecase.today.alert.title" = "Von dieser Rechnung kann ein Skontobetrag abgezogen werden – die Frist läuft heute ab.";
+"ginibank.skonto.infobanner.edgecase.cash.alert.title" = "Von dieser Rechnung können Sie einen Skontobetrag abziehen, wenn Sie diese in bar bezahlen.";
 "ginibank.skonto.infobanner.edgecase.expired.alert.title" = "Diese Rechnung hätten Sie mit %@ Skonto bezahlen können, die Skontofrist ist jedoch bereits abgelaufen.";
 "ginibank.skonto.alert.ok" = "Verstanden";
+"ginibank.skonto.invoice.title" = "Rechnung";
+"ginibank.skonto.invoice.subtitle" = "Zur Ansicht hier tippen";
+
+"ginibank.skonto.help.screen.title" = "Hilfe";
+"ginibank.skonto.help.header.title" = "Skonto: Geld sparen durch schnelles Bezahlen";
+"ginibank.skonto.help.header.subtitle" = "Skonto ist ein Rabatt, der für die frühzeitige Bezahlung von Rechnungen gewährt wird. Mit unserer neuen Funktion können Sie jetzt:";
+"ginibank.skonto.help.content.item1" = "Skonto-Rechnungen mit Ihrer Kamera erfassen";
+"ginibank.skonto.help.content.item2" = "Rabattierte Beträge und das Ablaufdatum des Skontos sofort erkennen";
+"ginibank.skonto.help.content.item3" = "Zahlungsdetails genehmigen oder anpassen";
+"ginibank.skonto.help.content.item4" = "Geld sparen durch schnelles Bezahlen";
+"ginibank.skonto.help.footer.title" = "Machen Sie einfach ein Foto der Rechnung und die App erkennt automatisch die Rabatte. Überprüfen Sie die Details, bestätigen Sie und sparen Sie mit den Rabatten!";
+"ginibank.skonto.help.back" = "Skonto";
+
+"ginibank.skonto.document.pages.screen.title" = "Skonto-Details";
+

@@ -183,7 +183,7 @@ final class ImagePickerViewController: UIViewController {
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: 114)
+            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
@@ -234,5 +234,11 @@ extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
         } else {
             delegate?.imagePicker(self, didSelectAsset: asset, at: indexPath)
         }
+    }
+}
+
+private extension ImagePickerViewController {
+    enum Constants {
+        static let navigationBarHeight: CGFloat = 114
     }
 }

@@ -61,11 +61,22 @@ extension BottomLabelButton {
     }
 }
 
-public extension UIButton {
+public class GiniCaptureButton: UIButton {
+    var traitCollectionUpdated: () -> Void = {}
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        traitCollectionUpdated()
+    }
+}
+
+public extension GiniCaptureButton {
     func configure(with configuration: ButtonConfiguration) {
         self.backgroundColor = configuration.backgroundColor
         self.layer.borderColor = configuration.borderColor.cgColor
         self.layer.shadowColor = configuration.shadowColor.cgColor
+        traitCollectionUpdated = { [weak self] in
+            self?.layer.borderColor = configuration.borderColor.cgColor
+            self?.layer.shadowColor = configuration.shadowColor.cgColor
+        }
         self.setTitleColor(configuration.titleColor, for: .normal)
         self.setTitleColor(configuration.titleColor, for: .highlighted)
         self.setTitleColor(configuration.titleColor, for: .selected)
@@ -74,10 +85,11 @@ public extension UIButton {
         self.layer.borderWidth = configuration.borderWidth
         self.layer.shadowRadius = configuration.shadowRadius
 
+        // When switching from one ButtonConfiguration with a blur effect to another ButtonConfiguration with a blur effect,
+        // the previous blur effect should be removed.
+        self.removeBlurEffect()
         if configuration.withBlurEffect {
             self.addBlurEffect(cornerRadius: configuration.cornerRadius)
-        } else {
-            self.removeBlurEffect()
         }
     }
 }

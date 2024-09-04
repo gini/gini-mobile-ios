@@ -34,7 +34,8 @@ final class CameraMock: CameraProtocol {
     let state: CameraAuthState
     var isFlashOn: Bool = true
     var isFlashSupported: Bool = true
-    
+    var hasInitialized: Bool = true
+
     init(state: CameraAuthState) {
         self.state = state
     }
