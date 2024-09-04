@@ -1,12 +1,12 @@
 //
-//  SkontoDateView.swift
+//  SkontoExpiryDateView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-class SkontoAppliedDateView: UIView {
+class SkontoExpiryDateView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.expirydate.title",
@@ -20,13 +20,14 @@ class SkontoAppliedDateView: UIView {
         return label
     }()
 
-    private lazy var textField: UITextField = {
-        let textField = UITextField()
+    private lazy var textField: TextFieldActionsDisabled = {
+        let textField = TextFieldActionsDisabled()
         textField.text = viewModel.dueDate.currentShortString
         textField.textColor = .giniColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.adjustsFontForContentSizeCategory = true
+        textField.adjustsFontSizeToFitWidth = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -70,7 +71,6 @@ class SkontoAppliedDateView: UIView {
         containerView.addSubview(textField)
         containerView.addSubview(calendarImageView)
         setupConstraints()
-        addTapGestureRecognizer()
         configureDatePicker()
         bindViewModel()
     }
@@ -105,14 +105,12 @@ class SkontoAppliedDateView: UIView {
         ])
     }
 
-    private func addTapGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        addGestureRecognizer(tapGestureRecognizer)
-    }
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard self.bounds.contains(point), viewModel.isSkontoApplied else {
+            return super.hitTest(point, with: event)
+        }
 
-    @objc private func handleTap() {
-        guard viewModel.isSkontoApplied  else { return }
-        textField.becomeFirstResponder()
+        return textField
     }
 
     private func bindViewModel() {
@@ -149,11 +147,11 @@ class SkontoAppliedDateView: UIView {
     }
 
     @objc private func dateChanged(_ datePicker: UIDatePicker) {
-        viewModel.set(date: datePicker.date)
+        viewModel.setExpiryDate(datePicker.date)
     }
 }
 
-private extension SkontoAppliedDateView {
+private extension SkontoExpiryDateView {
     enum Constants {
         static let padding: CGFloat = 12
         static let imageHorizontalPadding: CGFloat = 10
