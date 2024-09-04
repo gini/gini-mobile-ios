@@ -186,8 +186,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
             bankIconImageView.widthAnchor.constraint(equalToConstant: Constants.bankIconSize),
             bankIconImageView.topAnchor.constraint(equalTo: bankView.topAnchor),
             bankIconImageView.bottomAnchor.constraint(equalTo: bankView.bottomAnchor),
-            bankIconImageView.centerXAnchor.constraint(equalTo: bankView.centerXAnchor),
-            
+            bankIconImageView.centerXAnchor.constraint(equalTo: bankView.centerXAnchor)
         ])
     }
     

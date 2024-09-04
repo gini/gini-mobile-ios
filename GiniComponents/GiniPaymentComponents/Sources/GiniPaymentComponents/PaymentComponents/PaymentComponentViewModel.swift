@@ -14,6 +14,22 @@ public protocol PaymentComponentViewProtocol: AnyObject {
     func didTapOnPayInvoice(documentId: String?)
 }
 
+/**
+ Helping extension for using the PaymentComponentViewProtocol methods without the document ID. This should be kept by the document view model and passed hierarchically from there.
+
+ */
+extension PaymentComponentViewProtocol {
+    public func didTapOnMoreInformation() {
+        didTapOnMoreInformation(documentId: nil)
+    }
+    public func didTapOnBankPicker() {
+        didTapOnBankPicker(documentId: nil)
+    }
+    public func didTapOnPayInvoice() {
+        didTapOnPayInvoice(documentId: nil)
+    }
+}
+
 public final class PaymentComponentViewModel {
     let primaryButtonConfiguration: ButtonConfiguration
     let secondaryButtonConfiguration: ButtonConfiguration

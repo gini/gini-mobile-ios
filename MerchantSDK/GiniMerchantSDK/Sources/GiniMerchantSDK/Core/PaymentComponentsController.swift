@@ -157,6 +157,11 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
         self.giniSDK = giniMerchant
         self.configurationProvider = giniMerchant
         self.stringsProvider = giniMerchant
+        setupObservers()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     /**
@@ -340,11 +345,13 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     // MARK: - Bottom Sheets
 
     public func paymentViewBottomSheet(documentID: String?) -> UIViewController {
+        previousPresentedView = .paymentComponent
         let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return paymentComponentBottomView
     }
 
     public func bankSelectionBottomSheet() -> UIViewController {
+        previousPresentedView = .bankPicker
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                    configuration: configurationProvider.bankSelectionConfiguration,
@@ -367,6 +374,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     }
 
     public func installAppBottomSheet() -> BottomSheetViewController {
+        previousPresentedView = nil
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                   installAppConfiguration: configurationProvider.installAppConfiguration,
                                                                   strings: stringsProvider.installAppStrings,
@@ -379,6 +387,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     }
 
     public func shareInvoiceBottomSheet() -> BottomSheetViewController {
+        previousPresentedView = nil
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
                                                                       strings: stringsProvider.shareInvoiceStrings,
@@ -438,6 +447,20 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
         let onboardingCounts = OnboardingShareInvoiceScreenCount.load()
         let count = onboardingCounts.presentationCount(forProvider: selectedPaymentProvider?.name)
         return count < Constants.numberOfTimesOnboardingShareScreenShouldAppear
+    }
+
+    private func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(paymentInfoDissapeared), name: .paymentInfoDissapeared, object: nil)
+    }
+
+    @objc
+    private func paymentInfoDissapeared() {
+        if previousPresentedView == .bankPicker {
+            didTapOnBankPicker()
+        } else if previousPresentedView == .paymentComponent {
+            didTapOnPayButton()
+        }
+        previousPresentedView = nil
     }
 }
 
