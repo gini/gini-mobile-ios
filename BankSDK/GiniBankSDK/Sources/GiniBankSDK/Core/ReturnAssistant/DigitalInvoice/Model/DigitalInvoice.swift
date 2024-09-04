@@ -21,6 +21,9 @@ public struct DigitalInvoice {
     let inaccurateResults: Bool
     private let amountToPay: Price
 
+    var totalPriceForExtractions: Price?
+    var skontoExtractions: [[Extraction]]?
+
     var total: Price? {
 
         guard let firstLineItem = lineItems.first else { return nil }
@@ -153,12 +156,13 @@ extension DigitalInvoice {
      The backing `ExtractionResult` data.
      */
     public var extractionResult: ExtractionResult {
-
+        let total = totalPriceForExtractions ?? total
         guard let totalValue = total?.extractionString else {
 
             return ExtractionResult(extractions: _extractionResult.extractions,
                                     lineItems: lineItems.map { $0.extractions },
                                     returnReasons: returnReasons,
+                                    skontoDiscounts: skontoExtractions ?? _extractionResult.skontoDiscounts,
                                     candidates: _extractionResult.candidates)
         }
 
@@ -174,6 +178,7 @@ extension DigitalInvoice {
         return ExtractionResult(extractions: modifiedExtractions,
                                 lineItems: lineItems.map { $0.extractions },
                                 returnReasons: returnReasons,
+                                skontoDiscounts: skontoExtractions ?? _extractionResult.skontoDiscounts,
                                 candidates: _extractionResult.candidates)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  SkontoAmountView.swift
+//  SkontoAmountToPayView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -10,7 +10,7 @@ protocol SkontoAmountViewDelegate: AnyObject {
     func textFieldPriceChanged(editedText: String)
 }
 
-class SkontoAmountView: UIView {
+class SkontoAmountToPayView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = titleLabelText
@@ -31,6 +31,9 @@ class SkontoAmountView: UIView {
         textField.keyboardType = .numberPad
         textField.isUserInteractionEnabled = isEditable
         textField.adjustsFontForContentSizeCategory = true
+        textField.adjustsFontSizeToFitWidth = true
+        textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -41,8 +44,19 @@ class SkontoAmountView: UIView {
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.font = configuration.textStyleFonts[.body]
         label.adjustsFontForContentSizeCategory = true
+        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [textField, currencyLabel])
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = Constants.stackViewSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
 
     private lazy var containerView: UIView = {
@@ -81,16 +95,11 @@ class SkontoAmountView: UIView {
         backgroundColor = .giniColorScheme().bg.inputUnfocused.uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
-        containerView.addSubview(textField)
-        containerView.addSubview(currencyLabel)
+        containerView.addSubview(stackView)
         setupConstraints()
-        addTapGestureRecognizer()
     }
 
     private func setupConstraints() {
-        currencyLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        currencyLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: topAnchor),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -101,25 +110,14 @@ class SkontoAmountView: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding),
 
-            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            textField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
-            textField.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Constants.padding),
-
-            currencyLabel.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
-            currencyLabel.leadingAnchor.constraint(equalTo: textField.trailingAnchor,
-                                                   constant: Constants.currencyLabelHorizontalPadding),
-            currencyLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding)
+            stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.padding),
+            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
+                                                        constant: Constants.padding),
+            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
+                                                         constant: -Constants.padding),
+            stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor,
+                                                       constant: -Constants.padding)
         ])
-    }
-
-    private func addTapGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        addGestureRecognizer(tapGestureRecognizer)
-    }
-
-    @objc private func handleTap() {
-        guard isEditable else { return }
-        textField.becomeFirstResponder()
     }
 
     func configure(isEditable: Bool, price: Price) {
@@ -133,18 +131,26 @@ class SkontoAmountView: UIView {
         textField.isUserInteractionEnabled = isEditable
         currencyLabel.isHidden = !isEditable
     }
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard self.bounds.contains(point), isEditable else {
+            return super.hitTest(point, with: event)
+        }
+
+        return textField
+    }
 }
 
-extension SkontoAmountView: PriceTextFieldDelegate {
+extension SkontoAmountToPayView: PriceTextFieldDelegate {
     func priceTextField(_ textField: PriceTextField, didChangePrice editedText: String) {
         self.delegate?.textFieldPriceChanged(editedText: editedText)
     }
 }
 
-private extension SkontoAmountView {
+private extension SkontoAmountToPayView {
     enum Constants {
         static let padding: CGFloat = 12
-        static let currencyLabelHorizontalPadding: CGFloat = 10
+        static let stackViewSpacing: CGFloat = 4
         static let cornerRadius: CGFloat = 8
     }
 }

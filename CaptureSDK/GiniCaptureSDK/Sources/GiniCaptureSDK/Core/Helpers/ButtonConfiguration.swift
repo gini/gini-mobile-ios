@@ -85,10 +85,11 @@ public extension GiniCaptureButton {
         self.layer.borderWidth = configuration.borderWidth
         self.layer.shadowRadius = configuration.shadowRadius
 
+        // When switching from one ButtonConfiguration with a blur effect to another ButtonConfiguration with a blur effect,
+        // the previous blur effect should be removed.
+        self.removeBlurEffect()
         if configuration.withBlurEffect {
             self.addBlurEffect(cornerRadius: configuration.cornerRadius)
-        } else {
-            self.removeBlurEffect()
         }
     }
 }

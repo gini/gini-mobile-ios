@@ -24,16 +24,19 @@ final class CustomSkontoBottomNavigationBar: UIView {
         return button
     }()
 
-    // MARK: Temporary remove help action
-//    private lazy var helpButton: UIButton = {
-//        let button = UIButton()
-//        button.setTitle("Help", for: .normal)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-//        button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-//        button.addTarget(self, action: #selector(helpButtonClicked), for: .touchUpInside)
-//        return button
-//    }()
+    private lazy var helpButton: UIButton = {
+        let button = UIButton()
+        let title = "Help"
+        button.setTitle(title, for: .normal)
+        button.accessibilityValue = title
+        button.backgroundColor = .gray
+        button.layer.cornerRadius = Constants.cornerRadius
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        button.addTarget(self, action: #selector(helpButtonClicked), for: .touchUpInside)
+        return button
+    }()
 
     private lazy var backButton: UIButton = {
         let button = UIButton()
@@ -50,7 +53,7 @@ final class CustomSkontoBottomNavigationBar: UIView {
     }()
 
     private lazy var buttonsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [backButton, proceedButton])
+        let stackView = UIStackView(arrangedSubviews: [backButton, proceedButton, helpButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .fill
@@ -101,14 +104,15 @@ final class CustomSkontoBottomNavigationBar: UIView {
     }()
     
     private var proceedAction: (() -> Void)?
-    // MARK: Temporary remove help action
-//    private var helpAction: (() -> Void)?
+    private var helpAction: (() -> Void)?
     private var backAction: (() -> Void)?
 
     init(proceedAction: (() -> Void)?,
-         backAction: (() -> Void)?) {
+         backAction: (() -> Void)?,
+         helpAction: (() -> Void)?) {
         self.proceedAction = proceedAction
         self.backAction = backAction
+        self.helpAction = helpAction
         super.init(frame: .zero)
         setupView()
         setupConstraints()
@@ -186,10 +190,9 @@ final class CustomSkontoBottomNavigationBar: UIView {
         proceedAction?()
     }
 
-    // MARK: Temporary remove help action
-//    @objc private func helpButtonClicked() {
-//        helpAction?()
-//    }
+    @objc private func helpButtonClicked() {
+        helpAction?()
+    }
     
     @objc private func backButtonClicked() {
         backAction?()
