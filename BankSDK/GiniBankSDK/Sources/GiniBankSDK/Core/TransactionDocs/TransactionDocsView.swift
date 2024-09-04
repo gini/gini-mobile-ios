@@ -14,7 +14,12 @@ public class TransactionDocsView: UIView {
 
     public weak var delegate: TransactionDocsViewDelegate?
 
-    private var transactionDocs: [TransactionDoc] = []
+    public weak var presentingViewController: UIViewController?
+
+    private lazy var transactionDocs: [TransactionDoc] = [
+        TransactionDoc(fileName: UUID().uuidString, type: .image),
+        TransactionDoc(fileName: UUID().uuidString, type: .document)
+    ]
 
     private lazy var containerView: UIView = {
         let view = UIView()
@@ -68,11 +73,6 @@ public class TransactionDocsView: UIView {
         setupConstraints()
     }
 
-    public func updateTransactionDocs(_ newTransactionDocs: [TransactionDoc]) {
-        transactionDocs = newTransactionDocs
-        setupStackViewContent()
-    }
-
     private func setupStackViewContent() {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         stackView.addArrangedSubview(headerView)
@@ -80,7 +80,11 @@ public class TransactionDocsView: UIView {
         for (index, transactionDoc) in transactionDocs.enumerated() {
             let transactionDocsItemView = TransactionDocsItemView(transactionDoc: transactionDoc)
             transactionDocsItemView.optionsAction = { [weak self] in
-                self?.optionsForTransactionDoc(at: index)
+                guard let self, let presentingViewController  else { return }
+                let deleteAction = { self.deleteTransactionDoc(at: index) }
+                TransactionDocActionsBottomSheet.showDeleteAlert(on: presentingViewController,
+                                                                 deleteHandler: deleteAction,
+                                                                 cancelHandler: {})
             }
             stackView.addArrangedSubview(transactionDocsItemView)
         }
@@ -112,7 +116,7 @@ public class TransactionDocsView: UIView {
         setupStackViewContent()
     }
 
-    private func optionsForTransactionDoc(at index: Int) {
+    private func deleteTransactionDoc(at index: Int) {
         transactionDocs.remove(at: index)
         setupStackViewContent()
     }

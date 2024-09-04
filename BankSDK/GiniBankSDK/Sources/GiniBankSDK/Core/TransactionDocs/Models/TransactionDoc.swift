@@ -6,12 +6,7 @@
 
 import Foundation
 
-public struct TransactionDoc {
-    public let fileName: String
-    public let type: TransactionDocType
-    
-    public init(fileName: String, type: TransactionDocType) {
-        self.fileName = fileName
-        self.type = type
-    }
+struct TransactionDoc {
+    let fileName: String
+    let type: TransactionDocType
 }
