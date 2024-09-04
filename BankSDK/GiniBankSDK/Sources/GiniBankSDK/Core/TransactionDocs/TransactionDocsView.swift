@@ -45,14 +45,6 @@ public class TransactionDocsView: UIView {
         return TransactionDocsHeaderView()
     }()
 
-    private lazy var footerView: TransactionDocsFooterView = {
-        let footerView = TransactionDocsFooterView()
-        footerView.addButtonAction = { [weak self] in
-            self?.addTransactionDoc()
-        }
-        return footerView
-    }()
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -87,7 +79,6 @@ public class TransactionDocsView: UIView {
             stackView.addArrangedSubview(transactionDocsItemView)
         }
 
-        stackView.addArrangedSubview(footerView)
         delegate?.transactionDocsViewDidUpdateContent(self)
     }
 
@@ -105,13 +96,8 @@ public class TransactionDocsView: UIView {
             stackView.topAnchor.constraint(equalTo: containerView.topAnchor,
                                            constant: Constants.stackViewPadding),
             stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor,
-                                              constant: -Constants.stackViewPadding)
+                                              constant: Constants.stackViewBottomAnchor)
         ])
-    }
-
-    @objc private func addTransactionDoc() {
-        transactionDocs.append(.init(fileName: UUID().uuidString, type: .document))
-        setupStackViewContent()
     }
 
     private func deleteTransactionDoc(at index: Int) {
@@ -130,5 +116,6 @@ private extension TransactionDocsView {
 
         static let stackViewSpacing: CGFloat = 0
         static let stackViewPadding: CGFloat = 0
+        static let stackViewBottomAnchor: CGFloat = -12
     }
 }

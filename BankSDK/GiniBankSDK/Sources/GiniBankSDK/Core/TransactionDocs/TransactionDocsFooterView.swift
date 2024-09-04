@@ -6,6 +6,9 @@
 
 import UIKit
 
+/**
+    Test view, add transaction doc logic is not part of MVP
+ */
 class TransactionDocsFooterView: UIView {
     private lazy var addButton: UIButton = {
         let button = UIButton()
