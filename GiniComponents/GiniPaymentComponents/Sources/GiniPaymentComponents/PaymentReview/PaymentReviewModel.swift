@@ -21,6 +21,9 @@ public protocol BottomSheetsProviderProtocol: AnyObject {
     func shareInvoiceBottomSheet() -> BottomSheetViewController
 }
 
+
+public typealias PaymentReviewProtocol = PaymentReviewAPIProtocol & PaymentReviewTrackingProtocol & PaymentReviewSupportedFormatsProtocol
+
 public protocol PaymentReviewAPIProtocol: AnyObject {
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void)
     func shouldHandleErrorInternally(error: GiniError) -> Bool
@@ -28,11 +31,15 @@ public protocol PaymentReviewAPIProtocol: AnyObject {
     func submitFeedback(for document: Document, updatedExtractions: [Extraction], completion: @escaping (Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)
     func preview(for documentId: String, pageNumber: Int, completion: @escaping (Result<Data, GiniHealthAPILibrary.GiniError>) -> Void)
     func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController)
+}
 
+public protocol PaymentReviewTrackingProtocol {
     func trackOnPaymentReviewCloseKeyboardClicked()
     func trackOnPaymentReviewCloseButtonClicked()
     func trackOnPaymentReviewBankButtonClicked(providerName: String)
+}
 
+public protocol PaymentReviewSupportedFormatsProtocol {
     func supportsGPC() -> Bool
     func supportsOpenWith() -> Bool
     func shouldShowOnboardingScreenFor() -> Bool
@@ -53,7 +60,7 @@ public class PaymentReviewModel: NSObject {
     var onCreatePaymentRequestErrorHandling: (() -> Void)?
 
     weak var viewModelDelegate: PaymentReviewViewModelDelegate?
-    weak var delegateAPI: PaymentReviewAPIProtocol?
+    weak var delegateAPI: PaymentReviewProtocol?
     weak var bottomSheetsProvider: BottomSheetsProviderProtocol?
 
     public var onPaymentRequestCreated: (() -> Void)?
@@ -102,7 +109,7 @@ public class PaymentReviewModel: NSObject {
     let bottomSheetConfiguration: BottomSheetConfiguration
     let showPaymentReviewCloseButton: Bool
 
-    public init(delegateAPI: PaymentReviewAPIProtocol,
+    public init(delegateAPI: PaymentReviewProtocol,
                 bottomSheetsProvider: BottomSheetsProviderProtocol,
                 document: Document?,
                 extractions: [Extraction]?,

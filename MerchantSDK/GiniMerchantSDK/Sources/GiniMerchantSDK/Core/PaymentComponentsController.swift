@@ -618,7 +618,7 @@ extension PaymentComponentsController: InstallAppBottomViewProtocol {
     }
 }
 
-extension PaymentComponentsController: PaymentReviewAPIProtocol {
+extension PaymentComponentsController: PaymentReviewProtocol {
     public func submitFeedback(for document: GiniHealthAPILibrary.Document, updatedExtractions: [GiniHealthAPILibrary.Extraction], completion: @escaping (Result<Void, GiniHealthAPILibrary.GiniError>) -> Void) {
         let newDocument = Document(healthDocument: document)
         let extractions = updatedExtractions.map { Extraction(healthExtraction: $0) }
