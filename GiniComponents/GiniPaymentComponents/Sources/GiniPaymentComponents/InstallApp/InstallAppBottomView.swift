@@ -100,7 +100,11 @@ public final class InstallAppBottomView: BottomSheetViewController {
         super.viewDidLoad()
         setupView()
     }
-    
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     public init(viewModel: InstallAppBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
         self.viewModel = viewModel
         super.init(configuration: bottomSheetConfiguration)
