@@ -102,6 +102,7 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
 
         albumTitleLabel.font = giniConfiguration.textStyleFonts[.headline]
         albumSubTitleLabel.font = giniConfiguration.textStyleFonts[.subheadline]
+        separatorInset = UIEdgeInsets(top: 0, left: Constants.paddingBig, bottom: 0, right: 0)
 
         let asset = album.assets[album.assets.count - 1]
         galleryManager.fetchImage(from: asset,
