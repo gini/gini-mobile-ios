@@ -26,7 +26,7 @@ public class TransactionDocsView: UIView {
         view.layer.borderColor = Constants.containerViewBorderColor.cgColor
         view.layer.borderWidth = Constants.containerViewBorderWidth
         view.layer.cornerRadius = Constants.containerViewBorderCornerRadius
-        view.backgroundColor = .clear
+        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -37,7 +37,6 @@ public class TransactionDocsView: UIView {
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
         stackView.spacing = Constants.stackViewSpacing
-        stackView.backgroundColor = .clear
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -65,7 +64,6 @@ public class TransactionDocsView: UIView {
     }
 
     private func commonInit() {
-        backgroundColor = .giniColorScheme().bg.surface.uiColor()
         addSubview(containerView)
         containerView.addSubview(stackView)
 
