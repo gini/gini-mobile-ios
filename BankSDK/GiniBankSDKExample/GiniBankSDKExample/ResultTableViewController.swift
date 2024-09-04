@@ -27,9 +27,9 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
     var lineItems: [[Extraction]]? = nil
     var enabledRows: [Int] = []
 
-    private lazy var attachments: [Attachment] = [
-        Attachment(fileName: UUID().uuidString, type: .image),
-        Attachment(fileName: UUID().uuidString, type: .document)
+    private lazy var attachments: [TransactionDoc] = [
+        TransactionDoc(fileName: UUID().uuidString, type: .image),
+        TransactionDoc(fileName: UUID().uuidString, type: .document)
     ]
 
     override func viewDidLoad() {
@@ -108,8 +108,8 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
     }
 }
 
-extension ResultTableViewController: AttachmentsViewDelegate {
-    func attachmentsViewDidUpdateContent(_ attachmentsView: AttachmentsView) {
+extension ResultTableViewController: TransactionDocsViewDelegate {
+    func transactionDocsViewDidUpdateContent(_ attachmentsView: TransactionDocsView) {
         tableView.beginUpdates()
         tableView.endUpdates()
     }
