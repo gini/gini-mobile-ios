@@ -24,7 +24,7 @@ healthSDK.delegate = self // where self conforms to the GiniHealthDelegate proto
 Implement the `GiniHealthTrackingDelegate` protocol and supply the delegate when initializing `PaymentReviewViewController`. For example:
 
 ```swift
-let viewController = paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId,
+let viewController = paymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId,
                                                                             trackingDelegate: self)
 ```
 

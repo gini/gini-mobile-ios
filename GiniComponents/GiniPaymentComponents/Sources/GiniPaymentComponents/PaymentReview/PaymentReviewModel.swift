@@ -21,13 +21,12 @@ public protocol BottomSheetsProviderProtocol: AnyObject {
     func shareInvoiceBottomSheet() -> BottomSheetViewController
 }
 
-
 public typealias PaymentReviewProtocol = PaymentReviewAPIProtocol & PaymentReviewTrackingProtocol & PaymentReviewSupportedFormatsProtocol
 
 public protocol PaymentReviewAPIProtocol: AnyObject {
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void)
     func shouldHandleErrorInternally(error: GiniError) -> Bool
-    func openPaymentProviderApp(requestID: String, universalLink: String)
+    func openPaymentProviderApp(requestId: String, universalLink: String)
     func submitFeedback(for document: Document, updatedExtractions: [Extraction], completion: @escaping (Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)
     func preview(for documentId: String, pageNumber: Int, completion: @escaping (Result<Data, GiniHealthAPILibrary.GiniError>) -> Void)
     func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController)
@@ -189,7 +188,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
-        delegate?.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
+        delegate?.openPaymentProviderApp(requestId: requestId, universalLink: universalLink)
     }
 
     func fetchImages() {

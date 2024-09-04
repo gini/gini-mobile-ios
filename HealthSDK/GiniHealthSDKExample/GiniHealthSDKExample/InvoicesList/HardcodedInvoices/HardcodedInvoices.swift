@@ -13,7 +13,7 @@ protocol HardcodedInvoicesControllerProtocol: AnyObject {
     func storeInvoicesWithExtractions(invoices: [DocumentWithExtractions])
     func getInvoicesWithExtractions() -> [DocumentWithExtractions]
     func appendInvoiceWithExtractions(invoice: DocumentWithExtractions)
-    func updateDocumentExtractions(documentID: String, extractions: ExtractionResult)
+    func updateDocumentExtractions(documentId: String, extractions: ExtractionResult)
 }
 
 final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
@@ -68,9 +68,9 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
         storeInvoicesWithExtractions(invoices: storedInvoices)
     }
     
-    func updateDocumentExtractions(documentID: String, extractions: ExtractionResult) {
+    func updateDocumentExtractions(documentId: String, extractions: ExtractionResult) {
         var invoices = getInvoicesWithExtractions()
-        if let index = invoices.firstIndex(where: { $0.documentID == documentID }) {
+        if let index = invoices.firstIndex(where: { $0.documentId == documentId }) {
             invoices[index].recipient = extractions.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
             invoices[index].amountToPay = extractions.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
         }

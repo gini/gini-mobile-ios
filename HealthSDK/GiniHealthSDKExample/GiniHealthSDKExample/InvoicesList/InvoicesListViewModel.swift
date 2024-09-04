@@ -11,14 +11,14 @@ import GiniCaptureSDK
 import GiniHealthSDK
 
 struct DocumentWithExtractions: Codable {
-    var documentID: String
+    var documentId: String
     var amountToPay: String?
     var paymentDueDate: String?
     var recipient: String?
     var isPayable: Bool?
 
-    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
-        self.documentID = documentID
+    init(documentId: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
+        self.documentId = documentId
         self.amountToPay = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.amountToPay.rawValue })?.value
         self.paymentDueDate = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentDueDate.rawValue })?.value
         self.recipient = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.paymentRecipient.rawValue })?.value
@@ -52,7 +52,7 @@ final class InvoicesListViewModel {
 
     let dispatchGroup = DispatchGroup()
     var shouldRefetchExtractions = false
-    var documentIDToRefetch: String?
+    var documentIdToRefetch: String?
 
     init(coordinator: InvoicesListCoordinator,
          invoices: [DocumentWithExtractions]? = nil,
@@ -75,19 +75,19 @@ final class InvoicesListViewModel {
     
     func refetchExtractions() {
         guard shouldRefetchExtractions else { return }
-        guard let documentIDToRefetch else { return }
+        guard let documentIdToRefetch else { return }
         DispatchQueue.main.async {
             self.coordinator.invoicesListViewController?.showActivityIndicator()
         }
-        self.documentService.fetchDocument(with: documentIDToRefetch) { [weak self] result in
+        self.documentService.fetchDocument(with: documentIdToRefetch) { [weak self] result in
             switch result {
             case .success(let document):
                 self?.documentService.extractions(for: document, cancellationToken: CancellationToken()) { resultExtractions in
                     switch resultExtractions {
                     case .success(let extractions):
                         self?.shouldRefetchExtractions = false
-                        self?.documentIDToRefetch = nil
-                        self?.hardcodedInvoicesController.updateDocumentExtractions(documentID: document.id, extractions: extractions)
+                        self?.documentIdToRefetch = nil
+                        self?.hardcodedInvoicesController.updateDocumentExtractions(documentId: document.id, extractions: extractions)
                         self?.invoices = self?.hardcodedInvoicesController.getInvoicesWithExtractions() ?? []
                         DispatchQueue.main.async {
                             self?.coordinator.invoicesListViewController?.hideActivityIndicator()
@@ -154,7 +154,7 @@ final class InvoicesListViewModel {
                         switch result {
                         case let .success(extractionResult):
                             Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
-                            self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id,
+                            self?.invoices.append(DocumentWithExtractions(documentId: createdDocument.id,
                                                                           extractionResult: extractionResult))
                         case let .failure(error):
                             Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))", event: .error)
@@ -197,8 +197,8 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
     func didTapOnPayInvoice(documentId: String?) {
         guard let documentId else { return }
         Log("Tapped on Pay Invoice on :\(documentId)", event: .success)
-        documentIDToRefetch = documentId
-        paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
+        documentIdToRefetch = documentId
+        paymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, trackingDelegate: self) { [weak self] viewController, error in
             if let error {
                 self?.errors.append(error.localizedDescription)
                 self?.showErrorsIfAny()

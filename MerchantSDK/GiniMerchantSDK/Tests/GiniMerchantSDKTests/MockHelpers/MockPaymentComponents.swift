@@ -95,8 +95,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         return paymentProvidersBottomView
     }
     
-    func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: (any GiniMerchantSDK.GiniMerchantTrackingDelegate)?, completion: @escaping (UIViewController?, GiniMerchantSDK.GiniMerchantError?) -> Void) {
-        switch documentID {
+    func loadPaymentReviewScreenFor(documentId: String?, paymentInfo: PaymentInfo?, trackingDelegate: (any GiniMerchantSDK.GiniMerchantTrackingDelegate)?, completion: @escaping (UIViewController?, GiniMerchantSDK.GiniMerchantError?) -> Void) {
+        switch documentId {
         case MockSessionManager.payableDocumentID:
             completion(UIViewController(), nil)
         case MockSessionManager.missingDocumentID:
@@ -116,8 +116,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         return paymentInfoViewController
     }
 	
-    func paymentViewBottomSheet(documentID: String?) -> UIViewController {
-        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID),
+    func paymentViewBottomSheet(documentId: String?) -> UIViewController {
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentId),
                                                                     bottomSheetConfiguration: giniMerchant.bottomSheetConfiguration)
         return paymentComponentBottomView
     }

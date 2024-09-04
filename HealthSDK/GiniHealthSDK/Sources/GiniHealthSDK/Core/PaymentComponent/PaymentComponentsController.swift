@@ -23,7 +23,7 @@ protocol PaymentComponentsProtocol {
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
     func paymentView(documentId: String) -> UIView
     func bankSelectionBottomSheet() -> UIViewController
-    func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
+    func loadPaymentReviewScreenFor(documentId: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
     func paymentInfoViewController() -> UIViewController
 }
 
@@ -157,9 +157,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         return paymentProvidersBottomView
     }
     
-    public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+    public func loadPaymentReviewScreenFor(documentId: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         self.isLoading = true
-        self.giniHealth.fetchDataForReview(documentId: documentID) { [weak self] result in
+        self.giniHealth.fetchDataForReview(documentId: documentId) { [weak self] result in
             self?.isLoading = false
             switch result {
             case .success(let data):

@@ -63,11 +63,11 @@ In this step you will show the `PaymentComponentBottomView` in a bottom sheet.
 This function provides the UIViewController and you cand present it anywhere.
 
 ```swift
-public func paymentViewBottomSheet(documentID: String?) -> UIViewController 
+public func paymentViewBottomSheet(documentId: String?) -> UIViewController 
 ```
 
 ```
-let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
+let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentId: nil)
 paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
 present(paymentViewBottomSheet, animated: false)
 ```
@@ -151,7 +151,7 @@ The `PaymentReviewViewController` presentation requires a `PaymentComponentsCont
 ```swift
     func didTapOnPayInvoice(documentId: String?) {
         guard let documentId else { return }
-                    paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
+                    paymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
         if let error {
             self?.errors.append(error.localizedDescription)
             self?.showErrorsIfAny()

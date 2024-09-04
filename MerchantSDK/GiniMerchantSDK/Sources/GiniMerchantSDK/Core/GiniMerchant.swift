@@ -318,9 +318,9 @@ public struct DataForReview {
         paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: paymentInfo.paymentProviderId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, bic: "", amount: paymentInfo.amount, purpose: paymentInfo.purpose) { result in
             DispatchQueue.main.async {
                 switch result {
-                case let .success(requestID):
-                    completion(.success(requestID))
-                    self.delegate?.didCreatePaymentRequest(paymentRequestID: requestID)
+                case let .success(requestId):
+                    completion(.success(requestId))
+                    self.delegate?.didCreatePaymentRequest(paymentRequestID: requestId)
                 case let .failure(error):
                     completion(.failure(GiniError.decorator(error)))
                 }
@@ -333,11 +333,11 @@ public struct DataForReview {
         openUrl called on main thread.
      
      - Parameters:
-        - requestID: Id of the created payment request.
+        - requestId: Id of the created payment request.
         - universalLink: Universal link for the selected payment provider
      */
-    public func openPaymentProviderApp(requestID: String, universalLink: String, urlOpener: URLOpener = URLOpener(UIApplication.shared), completion: ((Bool) -> Void)? = nil) {
-        let queryItems = [URLQueryItem(name: "id", value: requestID)]
+    public func openPaymentProviderApp(requestId: String, universalLink: String, urlOpener: URLOpener = URLOpener(UIApplication.shared), completion: ((Bool) -> Void)? = nil) {
+        let queryItems = [URLQueryItem(name: "id", value: requestId)]
         let urlString = universalLink + "://payment"
         var urlComponents = URLComponents(string: urlString)!
         urlComponents.queryItems = queryItems

@@ -124,12 +124,12 @@ final class PaymentComponentsControllerTests: XCTestCase {
     
     func testLoadPaymentReviewScreenFor_Success() {
         // Given
-        let documentID = MockSessionManager.payableDocumentID
+        let documentId = MockSessionManager.payableDocumentID
 
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniMerchantError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentID: documentID, paymentInfo: nil, trackingDelegate: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: nil, trackingDelegate: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }
@@ -141,12 +141,12 @@ final class PaymentComponentsControllerTests: XCTestCase {
     
     func testLoadPaymentReviewScreenFor_Failure() {
         // Given
-        let documentID = MockSessionManager.missingDocumentID
+        let documentId = MockSessionManager.missingDocumentID
 
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniMerchantError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentID: documentID, paymentInfo: nil, trackingDelegate: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: nil, trackingDelegate: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }

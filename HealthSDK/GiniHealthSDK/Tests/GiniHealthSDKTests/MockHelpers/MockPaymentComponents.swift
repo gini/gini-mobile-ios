@@ -61,8 +61,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         return paymentProvidersBottomView
     }
     
-    func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: (any GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
-        switch documentID {
+    func loadPaymentReviewScreenFor(documentId: String, trackingDelegate: (any GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+        switch documentId {
         case MockSessionManager.payableDocumentID:
             completion(PaymentReviewViewController(), nil)
         case MockSessionManager.missingDocumentID:

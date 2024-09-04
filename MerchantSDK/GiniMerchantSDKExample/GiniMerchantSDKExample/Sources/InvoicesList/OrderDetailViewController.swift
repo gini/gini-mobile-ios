@@ -127,7 +127,7 @@ final class OrderDetailViewController: UIViewController {
         print("✅ Tapped on Pay")
         view.endEditing(true)
 
-        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
+        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentId: nil)
         paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
 
         let paymentInfo = obtainPaymentInfo()
@@ -166,7 +166,7 @@ extension OrderDetailViewController: GiniPaymentComponents.PaymentComponentViewP
     func didTapOnPayInvoice(documentId: String?) {
         print("✅ Tapped on Pay Order")
         if giniMerchantConfiguration.showPaymentReviewScreen {
-            paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
+            paymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
                 if let error {
                     self?.errors.append(error.localizedDescription)
                     self?.showErrorsIfAny()
@@ -192,7 +192,7 @@ extension OrderDetailViewController: GiniPaymentComponents.PaymentComponentViewP
                             self?.errors.append(error.localizedDescription)
                             self?.showErrorsIfAny()
                         } else if let paymentRequestID {
-                            self?.paymentComponentsController.openPaymentProviderApp(requestID: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                            self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
                         }
                     }
                 } else {
@@ -309,7 +309,7 @@ extension OrderDetailViewController: PaymentProvidersBottomViewProtocol {
                 self?.showErrorsIfAny()
             } else if let paymentRequestID {
                 self?.dismiss(animated: true, completion: {
-                    self?.paymentComponentsController.openPaymentProviderApp(requestID: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                    self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
                 })
             }
         }

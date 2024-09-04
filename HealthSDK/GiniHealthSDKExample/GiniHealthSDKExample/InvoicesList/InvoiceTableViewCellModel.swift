@@ -48,6 +48,6 @@ final class InvoiceTableViewCellModel {
     }
     
     var paymentComponentView: UIView {
-        return paymentComponentsController.paymentView(documentId: invoice.documentID)
+        return paymentComponentsController.paymentView(documentId: invoice.documentId)
     }
 }
