@@ -6,7 +6,7 @@
 
 import UIKit
 
-public enum TransactionDocType {
+enum TransactionDocType {
     case image
     case document
 

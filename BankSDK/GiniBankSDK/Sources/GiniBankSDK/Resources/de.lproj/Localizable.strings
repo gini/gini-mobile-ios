@@ -135,3 +135,6 @@
 "ginibank.invoice.transactionDoc.alert.action.dontAttach" = "Nicht anhängen";
 
 "ginibank.invoice.transactionDoc.title" = "Anhänge";
+
+"ginibank.transactionDoc.bottomSheet.action.delete" = "Löschen";
+"ginibank.transactionDoc.bottomSheet.action.cancel" = "Abbrechen";
