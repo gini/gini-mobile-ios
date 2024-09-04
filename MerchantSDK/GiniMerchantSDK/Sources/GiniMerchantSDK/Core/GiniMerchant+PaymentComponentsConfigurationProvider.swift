@@ -104,8 +104,8 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
         )
     }
     
-    public var banksBottomConfiguration: BanksBottomConfiguration {
-        BanksBottomConfiguration(
+    public var bankSelectionConfiguration: BankSelectionConfiguration {
+        BankSelectionConfiguration(
             descriptionAccentColor: GiniColor.standard3.uiColor(),
             descriptionFont: GiniMerchantConfiguration.shared.font(for: .captions1),
             selectBankAccentColor: GiniColor.standard2.uiColor(),

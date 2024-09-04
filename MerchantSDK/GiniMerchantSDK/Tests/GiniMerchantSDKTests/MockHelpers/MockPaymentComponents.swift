@@ -85,7 +85,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders.map { $0.toHealthPaymentProvider() },
                                                                    selectedPaymentProvider: selectedPaymentProvider?.toHealthPaymentProvider(),
-                                                                   configuration: giniMerchant.banksBottomConfiguration,
+                                                                   configuration: giniMerchant.bankSelectionConfiguration,
                                                                    strings: giniMerchant.banksBottomStrings,
                                                                    poweredByGiniConfiguration: giniMerchant.poweredByGiniConfiguration,
                                                                    poweredByGiniStrings: giniMerchant.poweredByGiniStrings,

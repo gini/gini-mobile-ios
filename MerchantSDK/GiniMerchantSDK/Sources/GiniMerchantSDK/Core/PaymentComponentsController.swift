@@ -35,7 +35,7 @@ public protocol PaymentComponentsConfigurationProvider {
     var bottomSheetConfiguration: BottomSheetConfiguration { get }
     var shareInvoiceConfiguration: ShareInvoiceConfiguration { get }
     var paymentInfoConfiguration: PaymentInfoConfiguration { get }
-    var banksBottomConfiguration: BanksBottomConfiguration { get }
+    var bankSelectionConfiguration: BankSelectionConfiguration { get }
     var paymentComponentsConfiguration: PaymentComponentsConfiguration { get }
     var paymentReviewConfiguration: PaymentReviewConfiguration { get }
     var poweredByGiniConfiguration: PoweredByGiniConfiguration { get }
@@ -347,7 +347,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     public func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
-                                                                   configuration: configurationProvider.banksBottomConfiguration,
+                                                                   configuration: configurationProvider.bankSelectionConfiguration,
                                                                    strings: stringsProvider.banksBottomStrings,
                                                                    poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,

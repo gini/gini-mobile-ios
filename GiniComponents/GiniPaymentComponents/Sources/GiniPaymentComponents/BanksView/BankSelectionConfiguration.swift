@@ -6,7 +6,7 @@
 
 import UIKit
 
-public struct BanksBottomConfiguration {
+public struct BankSelectionConfiguration {
     let descriptionAccentColor: UIColor
     let descriptionFont: UIFont
     let selectBankAccentColor: UIColor

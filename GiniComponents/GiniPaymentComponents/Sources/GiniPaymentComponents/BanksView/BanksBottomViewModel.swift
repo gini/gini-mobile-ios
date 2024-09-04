@@ -26,7 +26,7 @@ struct PaymentProviderAdditionalInfo {
 }
 
 public final class BanksBottomViewModel {
-    let configuration: BanksBottomConfiguration
+    let configuration: BankSelectionConfiguration
     let strings: BanksBottomStrings
     let poweredByGiniViewModel: PoweredByGiniViewModel
     let moreInformationViewModel: MoreInformationViewModel
@@ -44,7 +44,7 @@ public final class BanksBottomViewModel {
 
     public init(paymentProviders: PaymentProviders,
                 selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider?,
-                configuration: BanksBottomConfiguration,
+                configuration: BankSelectionConfiguration,
                 strings: BanksBottomStrings,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,

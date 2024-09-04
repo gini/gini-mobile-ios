@@ -183,7 +183,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
 
         let bottomViewModel = BanksBottomViewModel(paymentProviders: givenPaymentProviders.map { $0.toHealthPaymentProvider() },
                                                    selectedPaymentProvider: nil,
-                                                   configuration: giniMerchant.banksBottomConfiguration,
+                                                   configuration: giniMerchant.bankSelectionConfiguration,
                                                    strings: giniMerchant.banksBottomStrings,
                                                    poweredByGiniConfiguration: giniMerchant.poweredByGiniConfiguration,
                                                    poweredByGiniStrings: giniMerchant.poweredByGiniStrings,
