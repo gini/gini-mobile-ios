@@ -1,12 +1,12 @@
 //
-//  AttachmentFooterView.swift
+//  TransactionDocsFooterView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-class AttachmentFooterView: UIView {
+class TransactionDocsFooterView: UIView {
     private lazy var addButton: UIButton = {
         let button = UIButton()
         button.setTitle("ADD (TEST)", for: .normal)

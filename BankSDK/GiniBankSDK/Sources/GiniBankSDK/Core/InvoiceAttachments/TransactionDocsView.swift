@@ -1,20 +1,20 @@
 //
-//  AttachmentsView.swift
+//  TransactionDocsView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-public protocol AttachmentsViewDelegate: AnyObject {
-    func attachmentsViewDidUpdateContent(_ attachmentsView: AttachmentsView)
+public protocol TransactionDocsViewDelegate: AnyObject {
+    func transactionDocsViewDidUpdateContent(_ transactionDocsView: TransactionDocsView)
 }
 
-public class AttachmentsView: UIView {
+public class TransactionDocsView: UIView {
 
-    public weak var delegate: AttachmentsViewDelegate?
+    public weak var delegate: TransactionDocsViewDelegate?
 
-    private var attachments: [Attachment] = []
+    private var transactionDocs: [TransactionDoc] = []
 
     private lazy var containerView: UIView = {
         let view = UIView()
@@ -37,14 +37,14 @@ public class AttachmentsView: UIView {
         return stackView
     }()
 
-    private lazy var headerView: AttachmentHeaderView = {
-        return AttachmentHeaderView()
+    private lazy var headerView: TransactionDocsHeaderView = {
+        return TransactionDocsHeaderView()
     }()
 
-    private lazy var footerView: AttachmentFooterView = {
-        let footerView = AttachmentFooterView()
+    private lazy var footerView: TransactionDocsFooterView = {
+        let footerView = TransactionDocsFooterView()
         footerView.addButtonAction = { [weak self] in
-            self?.addAttachment()
+            self?.addTransactionDoc()
         }
         return footerView
     }()
@@ -68,8 +68,8 @@ public class AttachmentsView: UIView {
         setupConstraints()
     }
 
-    public func updateAttachments(_ newAttachments: [Attachment]) {
-        attachments = newAttachments
+    public func updateTransactionDocs(_ newTransactionDocs: [TransactionDoc]) {
+        transactionDocs = newTransactionDocs
         setupStackViewContent()
     }
 
@@ -77,16 +77,16 @@ public class AttachmentsView: UIView {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         stackView.addArrangedSubview(headerView)
 
-        for (index, attachment) in attachments.enumerated() {
-            let attachmentView = AttachmentView(attachment: attachment)
-            attachmentView.optionsAction = { [weak self] in
-                self?.optionsForAttachment(at: index)
+        for (index, transactionDoc) in transactionDocs.enumerated() {
+            let transactionDocsItemView = TransactionDocsItemView(transactionDoc: transactionDoc)
+            transactionDocsItemView.optionsAction = { [weak self] in
+                self?.optionsForTransactionDoc(at: index)
             }
-            stackView.addArrangedSubview(attachmentView)
+            stackView.addArrangedSubview(transactionDocsItemView)
         }
 
         stackView.addArrangedSubview(footerView)
-        delegate?.attachmentsViewDidUpdateContent(self)
+        delegate?.transactionDocsViewDidUpdateContent(self)
     }
 
     private func setupConstraints() {
@@ -107,18 +107,18 @@ public class AttachmentsView: UIView {
         ])
     }
 
-    @objc private func addAttachment() {
-        attachments.append(.init(fileName: UUID().uuidString, type: .document))
+    @objc private func addTransactionDoc() {
+        transactionDocs.append(.init(fileName: UUID().uuidString, type: .document))
         setupStackViewContent()
     }
 
-    private func optionsForAttachment(at index: Int) {
-        attachments.remove(at: index)
+    private func optionsForTransactionDoc(at index: Int) {
+        transactionDocs.remove(at: index)
         setupStackViewContent()
     }
 }
 
-private extension AttachmentsView {
+private extension TransactionDocsView {
     enum Constants {
         static let containerViewBorderColor: UIColor = .giniColorScheme().bg.border.uiColor()
         static let containerViewBorderWidth: CGFloat = 1.0

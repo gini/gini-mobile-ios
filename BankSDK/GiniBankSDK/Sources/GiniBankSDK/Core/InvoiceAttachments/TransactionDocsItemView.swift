@@ -1,5 +1,5 @@
 //
-//  AttachmentView.swift
+//  TransactionDocsItemView.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import UIKit
 import GiniCaptureSDK
 
-class AttachmentView: UIView {
+class TransactionDocsItemView: UIView {
     private lazy var imageContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
@@ -43,25 +43,25 @@ class AttachmentView: UIView {
 
     private let configuration = GiniBankConfiguration.shared
 
-    private var attachment: Attachment?
+    private var transactionDoc: TransactionDoc?
 
     var optionsAction: (() -> Void)?
 
-    init(attachment: Attachment) {
+    init(transactionDoc: TransactionDoc) {
         super.init(frame: .zero)
-        self.attachment = attachment
+        self.transactionDoc = transactionDoc
         setupViews()
         setupConstraints()
-        configure(with: attachment)
+        configure(with: transactionDoc)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func configure(with attachment: Attachment) {
-        iconImageView.image = attachment.type.icon
-        fileNameLabel.text = attachment.fileName
+    private func configure(with transactionDoc: TransactionDoc) {
+        iconImageView.image = transactionDoc.type.icon
+        fileNameLabel.text = transactionDoc.fileName
     }
 
     private func setupViews() {
@@ -117,7 +117,7 @@ class AttachmentView: UIView {
     }
 }
 
-private extension AttachmentView {
+private extension TransactionDocsItemView {
     enum Constants {
         static let iconImageViewLeadingAnchor: CGFloat = 12
         static let iconImageViewSize: CGFloat = 24

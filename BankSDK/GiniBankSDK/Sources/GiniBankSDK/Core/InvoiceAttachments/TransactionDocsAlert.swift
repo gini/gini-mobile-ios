@@ -1,12 +1,12 @@
 //
-//  InvoiceAttachmentAlert.swift
+//  TransactionDocsAlert.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-class InvoiceAttachmentAlert {
+class TransactionDocsAlert {
     static func show(on viewController: UIViewController,
                      alwaysAttachHandler: @escaping () -> Void,
                      attachHandler: @escaping () -> Void,
@@ -34,7 +34,7 @@ class InvoiceAttachmentAlert {
     }
 }
 
-private extension InvoiceAttachmentAlert {
+private extension TransactionDocsAlert {
     enum Constants {
         static let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.attachment.alert.title",
                                                                     comment: "Add an attachment to this transaction")

@@ -1,12 +1,12 @@
 //
-//  AttachmentType.swift
+//  TransactionDocType.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-public enum AttachmentType {
+public enum TransactionDocType {
     case image
     case document
 

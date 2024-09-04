@@ -95,7 +95,7 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
                 self.delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
             }
         }
-        InvoiceAttachmentAlert.show(on: navigationController.topViewController!,
+        TransactionDocsAlert.show(on: navigationController.topViewController!,
                                     alwaysAttachHandler: action,
                                     attachHandler: action,
                                     dontAttachHandler: action)
