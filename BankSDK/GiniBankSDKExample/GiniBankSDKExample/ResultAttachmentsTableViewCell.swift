@@ -37,9 +37,10 @@ class ResultAttachmentsTableViewCell: UITableViewCell {
         ])
     }
 
-    func configure(delegate: TransactionDocsViewDelegate?, attachments: [TransactionDoc]) {
+    func configure(presentingViewController: UIViewController,
+                   delegate: TransactionDocsViewDelegate?) {
         attachmentsView.delegate = delegate
-        attachmentsView.updateTransactionDocs(attachments)
+        attachmentsView.presentingViewController = presentingViewController
     }
 }
 

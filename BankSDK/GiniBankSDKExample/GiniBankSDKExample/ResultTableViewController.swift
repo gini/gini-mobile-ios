@@ -27,11 +27,6 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
     var lineItems: [[Extraction]]? = nil
     var enabledRows: [Int] = []
 
-    private lazy var attachments: [TransactionDoc] = [
-        TransactionDoc(fileName: UUID().uuidString, type: .image),
-        TransactionDoc(fileName: UUID().uuidString, type: .document)
-    ]
-
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(ResultAttachmentsTableViewCell.self, forCellReuseIdentifier: ResultAttachmentsTableViewCell.reuseIdentifier)
@@ -76,7 +71,8 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ResultAttachmentsTableViewCell.reuseIdentifier, for: indexPath) as? ResultAttachmentsTableViewCell else {
                 return UITableViewCell()
             }
-            cell.configure(delegate: self, attachments: attachments)
+            cell.configure(presentingViewController: self,
+                           delegate: self)
             return cell
         }
     }
