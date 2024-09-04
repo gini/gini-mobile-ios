@@ -16,6 +16,12 @@ enum GiniImages: String {
     case infoMessageIcon = "info_message_icon"
     case quantityMinusIcon = "quantity_minus_icon"
     case quantityPlusIcon = "quantity_plus_icon"
+    case chevronRight = "chevron_right"
+    case invoicePlaceholderIcon = "invoice_placeholder_icon"
+    case skontoHelpItem1 = "skonto_help_item1"
+    case skontoHelpItem2 = "skonto_help_item2"
+    case skontoHelpItem3 = "skonto_help_item3"
+    case skontoHelpItem4 = "skonto_help_item4"
 
     var image: UIImage? {
         return prefferedImage(named: rawValue)

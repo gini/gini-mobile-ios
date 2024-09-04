@@ -12,6 +12,8 @@ protocol SkontoCoordinatorDelegate: AnyObject {
     func didCancelAnalysis(_ coordinator: SkontoCoordinator)
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
                            _ editedExtractionResult: ExtractionResult?)
+    func didTapDocumentPreview(_ coordinator: Coordinator,
+                               _ viewModel: SkontoViewModel)
 }
 
 final class SkontoCoordinator: Coordinator {
@@ -46,10 +48,13 @@ final class SkontoCoordinator: Coordinator {
 }
 
 extension SkontoCoordinator: SkontoViewModelDelegate {
-    // MARK: Temporary remove help action
-//    func didTapHelp() {
-//        // Should display Help screen
-//    }
+    func didTapHelp() {
+        let helpViewController = SkontoHelpViewController()
+        navigationController.pushViewController(helpViewController, animated: true)
+    }
+    func didTapDocumentPreview(on viewModel: SkontoViewModel) {
+        delegate?.didTapDocumentPreview(self, viewModel)
+    }
 
     func didTapBack() {
         delegate?.didCancelAnalysis(self)

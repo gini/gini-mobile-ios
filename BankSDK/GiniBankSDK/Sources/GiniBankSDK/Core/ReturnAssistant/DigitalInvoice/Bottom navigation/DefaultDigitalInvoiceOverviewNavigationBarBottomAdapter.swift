@@ -29,10 +29,25 @@ final class DefaultDigitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavig
         view?.updatePrice(with: price)
     }
 
+    func updateSkontoPercentageBadge(with text: String?) {
+        view?.updateDiscountValue(with: text)
+    }
+
+    func updateSkontoPercentageBadgeVisibility(hidden: Bool) {
+        view?.updateDiscountBadge(hidden: hidden)
+    }
+
+    func updateSkontoSavingsInfo(with text: String?) {
+        view?.updateInvoiceSkontoSavings(with: text)
+    }
+
+    func updateSkontoSavingsInfoVisibility(hidden: Bool) {
+        view?.displayInvoiceSkontoSavingsBadge(hidden: hidden)
+    }
+
     func injectedView() -> UIView {
-        let navigationBar = DigitalInvoiceBottomNavigationBar()
-        navigationBar.payButton.addTarget(self, action: #selector(proceedButtonClicked), for: .touchUpInside)
-        navigationBar.helpButton.addAction(self, #selector(helpButtonClicked))
+        let navigationBar = DigitalInvoiceBottomNavigationBar(proceedAction: proceedButtonClicked,
+                                                              helpAction: helpButtonClicked)
         view = navigationBar
         return navigationBar
     }
