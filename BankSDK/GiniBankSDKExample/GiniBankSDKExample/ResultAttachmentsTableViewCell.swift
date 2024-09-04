@@ -10,8 +10,8 @@ import GiniBankSDK
 class ResultAttachmentsTableViewCell: UITableViewCell {
     static let reuseIdentifier = "ResultAttachmentsTableViewCell"
     
-    private lazy var attachmentsView: AttachmentsView = {
-        let view = AttachmentsView()
+    private lazy var attachmentsView: TransactionDocsView = {
+        let view = TransactionDocsView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -37,9 +37,9 @@ class ResultAttachmentsTableViewCell: UITableViewCell {
         ])
     }
 
-    func configure(delegate: AttachmentsViewDelegate?, attachments: [Attachment]) {
+    func configure(delegate: TransactionDocsViewDelegate?, attachments: [TransactionDoc]) {
         attachmentsView.delegate = delegate
-        attachmentsView.updateAttachments(attachments)
+        attachmentsView.updateTransactionDocs(attachments)
     }
 }
 
