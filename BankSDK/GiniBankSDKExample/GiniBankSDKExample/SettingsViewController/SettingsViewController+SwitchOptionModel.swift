@@ -2,7 +2,7 @@
 //  SettingsViewController+SwitchOptionModel.swift
 //  GiniBankSDKExample
 //
-//  Created by Valentina Iancu on 16.06.23.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 struct SwitchOptionModel {
@@ -53,7 +53,8 @@ struct SwitchOptionModel {
 		case debugModeOn
         case skontoNavigationBarBottomAdapter
         case skontoEnabled
-		
+        case transactionDocsEnabled
+
 		var title: String {
 			switch self {
 			case .openWith:
@@ -128,10 +129,14 @@ struct SwitchOptionModel {
 				return "Custom configuration for the add page button"
 			case .returnAssistantEnabled:
 				return "Return Assistant feature"
+            case .enableReturnReasons:
+                return "Return reasons dialog"
             case .skontoEnabled:
                 return "Skonto feature"
-			case .enableReturnReasons:
-				return "Return reasons dialog"
+            case .skontoNavigationBarBottomAdapter:
+                return "Skonto bottom navigation bar"
+            case .transactionDocsEnabled:
+                return "Transaction docs feature"
 			case .customDocumentValidations:
 				return "Custom document validations"
 			case .giniErrorLoggerIsOn:
@@ -140,8 +145,6 @@ struct SwitchOptionModel {
 				return "Custom Gini error logger"
 			case .debugModeOn:
 				return "Debug mode"
-            case .skontoNavigationBarBottomAdapter:
-                return "Skonto bottom navigation bar"
             }
 		}
 		
