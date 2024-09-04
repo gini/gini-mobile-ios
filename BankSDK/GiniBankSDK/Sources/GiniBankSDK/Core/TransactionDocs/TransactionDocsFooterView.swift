@@ -42,8 +42,7 @@ class TransactionDocsFooterView: UIView {
             addButton.leadingAnchor.constraint(equalTo: leadingAnchor),
             addButton.trailingAnchor.constraint(equalTo: trailingAnchor),
             addButton.topAnchor.constraint(equalTo: topAnchor),
-            addButton.bottomAnchor.constraint(equalTo: bottomAnchor),
-            addButton.heightAnchor.constraint(equalToConstant: 50)
+            addButton.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }
