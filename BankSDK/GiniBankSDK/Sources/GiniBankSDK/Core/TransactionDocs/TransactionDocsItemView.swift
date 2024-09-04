@@ -35,7 +35,7 @@ class TransactionDocsItemView: UIView {
 
     private lazy var optionsButton: UIButton = {
         let button = UIButton()
-        button.setImage(GiniImages.attachmentOptionsIcon.image, for: .normal)
+        button.setImage(GiniImages.transactionDocOptionsIcon.image, for: .normal)
         button.tintColor = .giniColorScheme().icons.standardPrimary.uiColor()
         button.addTarget(self, action: #selector(optionsButtonTapped), for: .touchUpInside)
         return button
