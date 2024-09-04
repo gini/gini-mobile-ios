@@ -33,7 +33,11 @@ struct Price {
     }
 
     var extractionString: String {
-        return "\(value):\(currencyCode.uppercased())"
+        let formatter = NumberFormatter.twoDecimalPriceFormatter
+        formatter.usesGroupingSeparator = false
+        formatter.decimalSeparator = "."
+        guard let formattedString = formatter.string(from: NSDecimalNumber(decimal: value)) else { return "" }
+        return "\(formattedString):\(currencyCode.uppercased())"
     }
 
     var currencySymbol: String? {

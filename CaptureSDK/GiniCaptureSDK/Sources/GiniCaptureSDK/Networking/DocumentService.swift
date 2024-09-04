@@ -9,7 +9,7 @@ import UIKit
 import GiniBankAPILibrary
 
 /**
-    Static veriable for synchronization to prevent display of multiple error screens at the same time
+ Static variable for synchronization to prevent the display of multiple error screens at the same time.
 */
 
 var errorOccurred = false
@@ -43,9 +43,7 @@ public final class DocumentService: DocumentServiceProtocol {
                 completion?(.success(createdDocument))
             case .failure(let error):
                 DispatchQueue.main.async {
-                    guard errorOccurred == false else {
-                        return
-                    }
+                    guard !errorOccurred else { return }
                     errorOccurred = true
                     DispatchQueue.global().async {
                         completion?(.failure(error))
@@ -75,7 +73,9 @@ public final class DocumentService: DocumentServiceProtocol {
             .sorted()
             .map { $0.info }
         self.analysisCancellationToken = CancellationToken()
-        captureNetworkService.analyse(partialDocuments: partialDocumentsInfoSorted, metadata: metadata, cancellationToken: analysisCancellationToken!) { [weak self] result in
+        captureNetworkService.analyse(partialDocuments: partialDocumentsInfoSorted,
+                                      metadata: metadata,
+                                      cancellationToken: analysisCancellationToken!) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case let .success((createdDocument, extractionResult)):
@@ -83,9 +83,7 @@ public final class DocumentService: DocumentServiceProtocol {
                 completion(.success(extractionResult))
             case let .failure(error):
                 DispatchQueue.main.async {
-                    guard errorOccurred == false else {
-                        return
-                    }
+                    guard !errorOccurred else { return }
                     errorOccurred = true
                     DispatchQueue.global().async {
                         completion(.failure(error))
@@ -141,7 +139,9 @@ public final class DocumentService: DocumentServiceProtocol {
             Log(message: "Cannot send feedback: no document", event: .error)
             return
         }
-        captureNetworkService.sendFeedback(document: document, updatedExtractions: updatedExtractions, updatedCompoundExtractions: updatedCompoundExtractions) { result in
+        captureNetworkService.sendFeedback(document: document, 
+                                           updatedExtractions: updatedExtractions,
+                                           updatedCompoundExtractions: updatedCompoundExtractions) { result in
             switch result {
             case .success:
                 Log(message: "Feedback sent with \(updatedExtractions.count) extractions and \(updatedCompoundExtractions?.count ?? 0) compound extractions",
@@ -174,5 +174,77 @@ public final class DocumentService: DocumentServiceProtocol {
             }
         }
     }
-    
+
+    public func layout(completion: @escaping DocumentLayoutCompletion) {
+        guard let document = document else {
+            Log(message: "Cannot get document layout: no document", event: .error)
+            return
+        }
+        captureNetworkService.layout(for: document) { result in
+            switch result {
+                case .success(let documentLayout):
+                    completion(.success(documentLayout))
+                case .failure(let error):
+                    let message = "Failed to get layout for document with id: \(document.id) error: \(error)"
+                    Log(message: message, event: .error)
+                    DispatchQueue.main.async {
+                        guard !errorOccurred else { return }
+                        errorOccurred = true
+                        DispatchQueue.global().async {
+                            completion(.failure(error))
+                        }
+                    }
+            }
+        }
+    }
+
+    public func pages(completion: @escaping DocumentPagsCompletion) {
+        guard let document = document else {
+            Log(message: "Cannot get document pages", event: .error)
+            return
+        }
+        captureNetworkService.pages(for: document) { result in
+            switch result {
+                case let .success(pages):
+                    completion(.success(pages))
+                case let .failure(error):
+                    let message = "Failed to get pages for document with id: \(document.id) error: \(error)"
+                    Log(message: message, event: .error)
+                    DispatchQueue.main.async {
+                        guard !errorOccurred else { return }
+                        errorOccurred = true
+                        DispatchQueue.global().async {
+                            completion(.failure(error))
+                        }
+                    }
+            }
+        }
+    }
+
+    public func documentPage(pageNumber: Int,
+                             size: Document.Page.Size,
+                             completion: @escaping DocumentPagePreviewCompletion){
+        guard let document = document else {
+            Log(message: "Cannot get document page", event: .error)
+            return
+        }
+        captureNetworkService.documentPage(for: document,
+                                           pageNumber: pageNumber,
+                                           size: size) { result in
+            switch result {
+            case .success(let pageData):
+                completion(.success(pageData))
+            case .failure(let error):
+                let message = "Failed to get page for document with id: \(document.id) error: \(error)"
+                Log(message: message, event: .error)
+                DispatchQueue.main.async {
+                    guard !errorOccurred else { return }
+                    errorOccurred = true
+                    DispatchQueue.global().async {
+                        completion(.failure(error))
+                    }
+                }
+            }
+        }
+    }
 }

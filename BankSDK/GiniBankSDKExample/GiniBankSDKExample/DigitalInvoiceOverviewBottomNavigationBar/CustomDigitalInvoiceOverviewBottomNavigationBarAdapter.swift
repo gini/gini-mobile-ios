@@ -33,6 +33,22 @@ class CustomDigitalInvoiceBottomNavigationBarAdapter: DigitalInvoiceNavigationBa
         self.view?.setupConstraints(relatedTo: view)
     }
 
+    func updateSkontoPercentageBadge(with text: String?) {
+        self.view?.updateSkontoPercentageBadge(with: text)
+    }
+
+    func updateSkontoPercentageBadgeVisibility(hidden: Bool) {
+        self.view?.updateSkontoPercentageBadgeVisibility(hidden: hidden)
+    }
+
+    func updateSkontoSavingsInfo(with text: String?) {
+        self.view?.updateSkontoSavingsInfo(with: text)
+    }
+
+    func updateSkontoSavingsInfoVisibility(hidden: Bool) {
+        self.view?.updateSkontoSavingsInfoVisibility(hidden: hidden)
+    }
+
     func injectedView() -> UIView {
         let navigationBar = CustomDigitalInvoiceBottomNavigationBar()
         navigationBar.payButton.addTarget(self, action: #selector(proceedButtonClicked), for: .touchUpInside)
