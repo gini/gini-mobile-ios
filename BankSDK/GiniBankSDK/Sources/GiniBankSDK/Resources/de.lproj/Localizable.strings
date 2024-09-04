@@ -128,10 +128,10 @@
 
 "ginibank.skonto.document.pages.screen.title" = "Skonto-Details";
 
-"ginibank.invoice.attachment.alert.title" = "Fügen Sie der Transaktion einen Anhang hinzu?";
-"ginibank.invoice.attachment.alert.message" = "Sie können dieser Transaktion einen Anhang hinzufügen. Das erleichert es Ihnen, Ausgaben effizient zu verwalten und Einkäufe einfacher zurückzurufen.";
-"ginibank.invoice.attachment.alert.action.attachAlways" = "Immer anhängen";
-"ginibank.invoice.attachment.alert.action.attach" = "Nur für diese Transaktion";
-"ginibank.invoice.attachment.alert.action.dontAttach" = "Nicht anhängen";
+"ginibank.invoice.transactionDoc.alert.title" = "Fügen Sie der Transaktion einen Anhang hinzu?";
+"ginibank.invoice.transactionDoc.alert.message" = "Sie können dieser Transaktion einen Anhang hinzufügen. Das erleichert es Ihnen, Ausgaben effizient zu verwalten und Einkäufe einfacher zurückzurufen.";
+"ginibank.invoice.transactionDoc.alert.action.attachAlways" = "Immer anhängen";
+"ginibank.invoice.transactionDoc.alert.action.attach" = "Nur für diese Transaktion";
+"ginibank.invoice.transactionDoc.alert.action.dontAttach" = "Nicht anhängen";
 
-"ginibank.invoice.attachments.title" = "Anhänge";
+"ginibank.invoice.transactionDoc.title" = "Anhänge";

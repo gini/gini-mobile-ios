@@ -36,15 +36,15 @@ class TransactionDocsAlert {
 
 private extension TransactionDocsAlert {
     enum Constants {
-        static let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.attachment.alert.title",
+        static let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.transactionDoc.alert.title",
                                                                     comment: "Add an attachment to this transaction")
-        static let message = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.attachment.alert.message",
+        static let message = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.transactionDoc.alert.message",
                                                                       comment: "We recommend adding attachments...")
-        static let alwaysAttachButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.attachment.alert.action.attachAlways",
+        static let alwaysAttachButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.transactionDoc.alert.action.attachAlways",
                                                                                       comment: "Always attach")
-        static let attachButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.attachment.alert.action.attach",
+        static let attachButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.transactionDoc.alert.action.attach",
                                                                                 comment: "Attach")
-        static let dontAttachButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.attachment.alert.action.dontAttach",
+        static let dontAttachButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.transactionDoc.alert.action.dontAttach",
                                                                                     comment: "Don't attach")
     }
 }

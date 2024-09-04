@@ -13,9 +13,9 @@ public enum TransactionDocType {
     var icon: UIImage? {
         switch self {
         case .image:
-            return GiniImages.attachmentImageIcon.image
+            return GiniImages.transactionDocImageIcon.image
         case .document:
-            return GiniImages.attachmentDocumentIcon.image
+            return GiniImages.transactionDocDocumentIcon.image
         }
     }
 }
