@@ -553,7 +553,7 @@ extension PaymentComponentsController {
     }
 }
 
-extension PaymentComponentsController: BanksBottomViewProtocol {
+extension PaymentComponentsController: BanksSelectionProtocol {
     public func didTapForwardOnInstallBottomSheet() {
         print("Tapped Forward on Install Bottom Sheet")
     }
