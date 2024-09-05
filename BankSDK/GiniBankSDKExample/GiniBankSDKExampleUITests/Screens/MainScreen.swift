@@ -156,6 +156,7 @@ public class MainScreen {
     
     func tapFileWithName(fileName: String) {
 
+        sleep(1)
         if  recentsButton.exists {
             recentsButton.tap()
         } else if recentsText.exists {

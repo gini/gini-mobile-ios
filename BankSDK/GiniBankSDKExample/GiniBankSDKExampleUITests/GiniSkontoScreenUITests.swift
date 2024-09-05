@@ -162,12 +162,11 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         captureScreen.openGalleryButton.tap()
         //Assert that Got it button is displayed
         XCTAssertTrue(skontoScreen.gotItButton.waitForExistence(timeout: 10))
-// Uncomment Help screen release
-//        //Tap Got it button
-//        skontoScreen.gotItButton.tap()
-//        //Tap Help button
-//        skontoScreen.helpButton.tap()
-//        //Assert Proceed button isn't displayed
-//        XCTAssertFalse(skontoScreen.proceedButton.isHittable)
+        //Tap Got it button
+        skontoScreen.gotItButton.tap()
+        //Tap Help button
+        skontoScreen.helpButton.tap()
+        //Assert Proceed button isn't displayed
+        XCTAssertFalse(skontoScreen.proceedButton.isHittable)
     }
 }
