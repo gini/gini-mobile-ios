@@ -2,7 +2,6 @@
 //  SettingsViewControllerTests.swift
 //  GiniCapture_Tests
 //
-//  Created by Enrique del Pozo Gómez on 11/16/17.
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
@@ -176,10 +175,12 @@ final class SettingsViewControllerTests: XCTestCase {
 													 isSwitchOn: settingsButtonStates.addPageButtonState.isSwitchOn)))
 		contentData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
 													 isSwitchOn: configuration.returnAssistantEnabled)))
-        contentData.append(.switchOption(data: .init(type: .skontoEnabled,
-                                                     isSwitchOn: configuration.skontoEnabled)))
 		contentData.append(.switchOption(data: .init(type: .enableReturnReasons,
 													 isSwitchOn: configuration.enableReturnReasons)))
+        contentData.append(.switchOption(data: .init(type: .skontoEnabled,
+                                                     isSwitchOn: configuration.skontoEnabled)))
+        contentData.append(.switchOption(data: .init(type: .transactionDocsEnabled,
+                                                     isSwitchOn: configuration.transactionDocsEnabled)))
 		contentData.append(.switchOption(data: .init(type: .customDocumentValidations,
 													 isSwitchOn: documentValidationsState.isSwitchOn)))
 		contentData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
@@ -1906,7 +1907,47 @@ extension SettingsViewControllerTests {
 						   "returnAssistantEnabled should not be enabled in the gini configuration")
 		}
 	}
-    
+
+    // MARK: - ReturnReasonsDigitalInvoiceDialog
+
+    func testReturnReasonsDigitalInvoiceDialogSwitchOn() {
+        guard let index = getSwitchOptionIndex(for: .enableReturnReasons) else {
+            XCTFail("`enableReturnReasons` option not found in sectionData")
+            return
+        }
+
+        if case .switchOption(var data) = contentData[index] {
+            guard data.type == .enableReturnReasons else {
+                XCTFail("Expected type `enableReturnReasons`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = true
+            configuration.enableReturnReasons = data.isSwitchOn
+
+            XCTAssertTrue(configuration.enableReturnReasons,
+                          "enableReturnReasons should be enabled in the gini configuration")
+        }
+    }
+
+    func testReturnReasonsDigitalInvoiceDialogSwitchOff() {
+        guard let index = getSwitchOptionIndex(for: .enableReturnReasons) else {
+            XCTFail("`enableReturnReasons` option not found in sectionData")
+            return
+        }
+
+        if case .switchOption(var data) = contentData[index] {
+            guard data.type == .enableReturnReasons else {
+                XCTFail("Expected type `enableReturnReasons`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = false
+            configuration.enableReturnReasons = data.isSwitchOn
+
+            XCTAssertFalse(configuration.enableReturnReasons,
+                           "enableReturnReasons should not be enabled in the gini configuration")
+        }
+    }
+
     // MARK: - Skonto
     
     func testSkontoSwitchOn() {
@@ -1946,47 +1987,47 @@ extension SettingsViewControllerTests {
                            "skontoEnabled should not be enabled in the gini configuration")
         }
     }
-	
-	// MARK: - ReturnReasonsDigitalInvoiceDialog
-	
-	func testReturnReasonsDigitalInvoiceDialogSwitchOn() {
-		guard let index = getSwitchOptionIndex(for: .enableReturnReasons) else {
-			XCTFail("`enableReturnReasons` option not found in sectionData")
-			return
-		}
-		
-		if case .switchOption(var data) = contentData[index] {
-			guard data.type == .enableReturnReasons else {
-				XCTFail("Expected type `enableReturnReasons`, found a different one: \(data.type)")
-				return
-			}
-			data.isSwitchOn = true
-			configuration.enableReturnReasons = data.isSwitchOn
-			
-			XCTAssertTrue(configuration.enableReturnReasons,
-						  "enableReturnReasons should be enabled in the gini configuration")
-		}
-	}
-	
-	func testReturnReasonsDigitalInvoiceDialogSwitchOff() {
-		guard let index = getSwitchOptionIndex(for: .enableReturnReasons) else {
-			XCTFail("`enableReturnReasons` option not found in sectionData")
-			return
-		}
-		
-		if case .switchOption(var data) = contentData[index] {
-			guard data.type == .enableReturnReasons else {
-				XCTFail("Expected type `enableReturnReasons`, found a different one: \(data.type)")
-				return
-			}
-			data.isSwitchOn = false
-			configuration.enableReturnReasons = data.isSwitchOn
-			
-			XCTAssertFalse(configuration.enableReturnReasons,
-						   "enableReturnReasons should not be enabled in the gini configuration")
-		}
-	}
-	
+
+    // MARK: - Transaction Docs
+
+    func testTransactionDocsSwitchOn() {
+        guard let index = getSwitchOptionIndex(for: .transactionDocsEnabled) else {
+            XCTFail("`transactionDocsEnabled` option not found in sectionData")
+            return
+        }
+
+        if case .switchOption(var data) = contentData[index] {
+            guard data.type == .transactionDocsEnabled else {
+                XCTFail("Expected type `transactionDocsEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = true
+            configuration.transactionDocsEnabled = data.isSwitchOn
+
+            XCTAssertTrue(configuration.transactionDocsEnabled,
+                          "`transactionDocsEnabled` should be enabled in the gini configuration")
+        }
+    }
+
+    func testTransactionDocsSwitchOff() {
+        guard let index = getSwitchOptionIndex(for: .transactionDocsEnabled) else {
+            XCTFail("`transactionDocsEnabled` option not found in sectionData")
+            return
+        }
+
+        if case .switchOption(var data) = contentData[index] {
+            guard data.type == .transactionDocsEnabled else {
+                XCTFail("Expected type `transactionDocsEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = false
+            configuration.transactionDocsEnabled = data.isSwitchOn
+
+            XCTAssertFalse(configuration.transactionDocsEnabled,
+                           "transactionDocsEnabled should not be enabled in the gini configuration")
+        }
+    }
+
 	// MARK: - CustomDocumentValidations
 	
 	func testCustomDocumentValidationsSwitchOn() {
