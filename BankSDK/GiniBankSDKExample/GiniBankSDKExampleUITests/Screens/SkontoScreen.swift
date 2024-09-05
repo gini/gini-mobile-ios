@@ -33,7 +33,7 @@ public class SkontoScreen {
             proceedButton = app.buttons["Proceed"]
             skontoTitleText = app.buttons["Discount"]
             backButtonNavigation = app.buttons["Back Back"]
-            gotItButton = app.buttons["Got it"]
+            gotItButton = app.buttons["Understood"]
             
         case "de":
             helpButton = app.buttons["Hilfe"]
