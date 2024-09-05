@@ -43,7 +43,7 @@ class TransactionDocsItemView: UIView {
 
     private let configuration = GiniBankConfiguration.shared
 
-    private var transactionDoc: TransactionDoc?
+    private (set) var transactionDoc: TransactionDoc?
 
     var optionsAction: (() -> Void)?
 
