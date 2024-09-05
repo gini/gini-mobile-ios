@@ -24,23 +24,41 @@ jobs:
     steps:
       - uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
-          xcode-version: '14.3.1'
+          xcode-version: '15.3'
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Mint
-        uses: fabasoad/setup-mint-action@main
+      # - name: Setup Mint
+      #   uses: fabasoad/setup-mint-action@main
 
-      - name: Setup swift-create-xcframework 
-        run: |
-          /usr/local/bin/brew install mint
-          /usr/local/bin/mint install unsignedapps/swift-create-xcframework@v2.3.0
+      # - name: Install Homebrew
+      #   run: |
+      #     echo "Installing Homebrew"
+      #     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      #     echo "Adding Homebrew to PATH"
+      #     echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+          # eval "$(/opt/homebrew/bin/brew shellenv)"
+
+        # run: |
+        #   sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer  # Ensure full Xcode is selected
+        #   brew install segment-integrations/formulae/swift-create-xcframework
+      - name: Create XCFramework
+        uses: unsignedapps/swift-create-xcframework@v2
 
       - name: GiniBankSDKPinning Project File
         run: |
           cd BankSDK/GiniBankSDKPinning
-          /usr/local/bin/mint run swift-create-xcframework
+          swift create-xcframework
+      # - name: Setup swift-create-xcframework 
+      #   run: |
+      #     /usr/local/bin/brew install segment-integrations/formulae/swift-create-xcframework
+         
+
+      # - name: GiniBankSDKPinning Project File
+      #   run: |
+      #     cd BankSDK/GiniBankSDKPinning
+      #     /usr/local/bin/brew run swift-create-xcframework
 
       - name: setup ruby
         uses: ruby/setup-ruby@v1
