@@ -44,7 +44,7 @@ jobs:
         #   sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer  # Ensure full Xcode is selected
         #   brew install segment-integrations/formulae/swift-create-xcframework
       - name: Create XCFramework
-        uses: unsignedapps/swift-create-xcframework@v2
+        uses: segment-integrations/swift-create-xcframework@2.4.0
 
       - name: GiniBankSDKPinning Project File
         run: |
