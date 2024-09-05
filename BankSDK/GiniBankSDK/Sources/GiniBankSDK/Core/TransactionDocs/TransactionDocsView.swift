@@ -63,25 +63,6 @@ public class TransactionDocsView: UIView {
         setupConstraints()
     }
 
-    private func setupStackViewContent() {
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        stackView.addArrangedSubview(headerView)
-
-        for (index, transactionDoc) in transactionDocs.enumerated() {
-            let transactionDocsItemView = TransactionDocsItemView(transactionDoc: transactionDoc)
-            transactionDocsItemView.optionsAction = { [weak self] in
-                guard let self, let presentingViewController  else { return }
-                let deleteAction = { self.deleteTransactionDoc(at: index) }
-                TransactionDocActionsBottomSheet.showDeleteAlert(on: presentingViewController,
-                                                                 deleteHandler: deleteAction,
-                                                                 cancelHandler: {})
-            }
-            stackView.addArrangedSubview(transactionDocsItemView)
-        }
-
-        delegate?.transactionDocsViewDidUpdateContent(self)
-    }
-
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -100,9 +81,38 @@ public class TransactionDocsView: UIView {
         ])
     }
 
-    private func deleteTransactionDoc(at index: Int) {
-        transactionDocs.remove(at: index)
-        setupStackViewContent()
+    private func setupStackViewContent() {
+        stackView.addArrangedSubview(headerView)
+
+        for transactionDoc in transactionDocs {
+            let transactionDocsItemView = createTransactionDocsItemView(for: transactionDoc)
+            stackView.addArrangedSubview(transactionDocsItemView)
+        }
+    }
+
+    private func createTransactionDocsItemView(for transactionDoc: TransactionDoc) -> TransactionDocsItemView {
+        let transactionDocsItemView = TransactionDocsItemView(transactionDoc: transactionDoc)
+        transactionDocsItemView.optionsAction = { [weak self] in
+            guard let self, let presentingViewController else { return }
+            let fileName = transactionDoc.fileName
+            let deleteAction = { self.deleteTransactionDoc(with: fileName) }
+            TransactionDocActionsBottomSheet.showDeleteAlert(on: presentingViewController,
+                                                             deleteHandler: deleteAction,
+                                                             cancelHandler: {})
+        }
+        return transactionDocsItemView
+    }
+
+    private func deleteTransactionDoc(with fileName: String) {
+        transactionDocs.removeAll(where: { $0.fileName == fileName })
+        if let itemView = stackView.arrangedSubviews.first(where: {
+            guard let itemView = $0 as? TransactionDocsItemView else { return false }
+            return itemView.transactionDoc?.fileName == fileName
+        }) {
+            self.stackView.removeArrangedSubview(itemView)
+            itemView.removeFromSuperview()
+            self.delegate?.transactionDocsViewDidUpdateContent(self)
+        }
     }
 }
 
