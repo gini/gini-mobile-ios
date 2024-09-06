@@ -9,7 +9,7 @@ import UIKit
 class TransactionDocsActionsBottomSheet {
     static func showDeleteAlert(on viewController: UIViewController,
                                 deleteHandler: @escaping () -> Void,
-                                cancelHandler: @escaping () -> Void) {
+                                cancelHandler: (() -> Void)? = nil) {
         let actionSheet = UIAlertController(title: nil,
                                             message: nil,
                                             preferredStyle: .actionSheet)
@@ -19,7 +19,7 @@ class TransactionDocsActionsBottomSheet {
             deleteHandler()
         }
         let cancelAction = UIAlertAction(title: Constants.cancelTitle, style: .cancel) { _ in
-            cancelHandler()
+            cancelHandler?()
         }
         actionSheet.addAction(deleteAction)
         actionSheet.addAction(cancelAction)
