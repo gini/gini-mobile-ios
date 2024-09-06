@@ -98,8 +98,7 @@ public class TransactionDocsView: UIView {
             let fileName = transactionDoc.fileName
             let deleteAction = { self.deleteTransactionDoc(with: fileName) }
             TransactionDocsActionsBottomSheet.showDeleteAlert(on: presentingViewController,
-                                                             deleteHandler: deleteAction,
-                                                             cancelHandler: {})
+                                                             deleteHandler: deleteAction)
         }
         return transactionDocsItemView
     }
