@@ -90,9 +90,15 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
     }
 
     func didTapPay(on viewModel: DigitalInvoiceViewModel) {
-        if let analysisDelegate = analysisDelegate {
-            delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
+        let action: (() -> Void) = {
+            if let analysisDelegate = self.analysisDelegate {
+                self.delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
+            }
         }
+        TransactionDocsAlert.show(on: navigationController.topViewController!,
+                                    alwaysAttachHandler: action,
+                                    attachHandler: action,
+                                    dontAttachHandler: action)
     }
 
     func didTapEdit(on viewModel: DigitalInvoiceViewModel, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
