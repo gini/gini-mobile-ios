@@ -17,6 +17,14 @@ public protocol ClientConfigurationServiceProtocol: AnyObject {
      - parameter completion: A closure that handles the result of the configuration fetch operation.
      */
     func fetchConfigurations(completion: @escaping CompletionResult<ClientConfiguration>)
+    
+    /**
+     The last successfully fetched client configuration, saved locally for persistence.
+     This configuration is retrieved from `UserDefaults`, allowing the app to use the last known settings
+
+     - returns: An optional `ClientConfiguration` object that may contain previously fetched configurations.
+     */
+    var savedConfiguration: ClientConfiguration? { get }
 }
 
 extension ClientConfigurationServiceProtocol {
