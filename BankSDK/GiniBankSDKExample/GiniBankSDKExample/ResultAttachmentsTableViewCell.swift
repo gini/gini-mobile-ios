@@ -27,6 +27,7 @@ class ResultAttachmentsTableViewCell: UITableViewCell {
     }
 
     private func setupView() {
+        selectionStyle = .none
         contentView.addSubview(attachmentsView)
 
         NSLayoutConstraint.activate([
