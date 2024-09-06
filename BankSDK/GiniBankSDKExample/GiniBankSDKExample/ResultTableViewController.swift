@@ -29,7 +29,8 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(ResultAttachmentsTableViewCell.self, forCellReuseIdentifier: ResultAttachmentsTableViewCell.reuseIdentifier)
+        tableView.register(ResultAttachmentsTableViewCell.self,
+                           forCellReuseIdentifier: ResultAttachmentsTableViewCell.reuseIdentifier)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
