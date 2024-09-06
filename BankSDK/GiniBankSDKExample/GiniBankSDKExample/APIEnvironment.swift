@@ -18,7 +18,7 @@ public enum APIEnvironment: String {
         case .production:
             return .default
         case .stage:
-            return .custom(domain: "users.stage.gini.net")
+            return .custom(domain: "user.stage.gini.net")
         }
     }
 }
