@@ -53,12 +53,12 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
             cell.detailTextField.textColor = GiniColor(light: UIColor.black,
                                                        dark: UIColor.gray).uiColor()
 
-            if (editableFields.keys.contains(result[indexPath.row].name ?? "")) {
+            if editableFields.keys.contains(result[indexPath.row].name ?? "") {
                 cell.detailTextField.isEnabled = true
                 cell.detailTextField.returnKeyType = indexPath.row == result.count - 1 ? .done : .next
                 cell.detailTextField.alpha = 1
 
-                if (!enabledRows.contains(indexPath.row)) {
+                if !enabledRows.contains(indexPath.row) {
                     enabledRows.append(indexPath.row)
                 }
             } else {
@@ -90,12 +90,13 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if (textField.returnKeyType == .done) {
+        if textField.returnKeyType == .done {
             textField.resignFirstResponder()
             return true
         }
         
-        guard let rowIndex = enabledRows.firstIndex(of: textField.tag), enabledRows.count > rowIndex + 1, let visibleCell = tableView.cellForRow(at: IndexPath(row: enabledRows[rowIndex + 1], section: 0)) as? ResultTableViewCell else {
+        guard let rowIndex = enabledRows.firstIndex(of: textField.tag), enabledRows.count > rowIndex + 1,
+              let visibleCell = tableView.cellForRow(at: IndexPath(row: enabledRows[rowIndex + 1], section: 0)) as? ResultTableViewCell else {
             return true
         }
         
