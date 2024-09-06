@@ -135,13 +135,13 @@
 
 "ginibank.skonto.document.pages.screen.title" = "Skonto discount details";
 
-"ginibank.invoice.transactionDoc.alert.title" = "Add an attachment to this transaction";
-"ginibank.invoice.transactionDoc.alert.message" = "We recommend adding attachments to transactions to manage expenses efficiently and easily recall purchases.";
-"ginibank.invoice.transactionDoc.alert.action.attachAlways" = "Always attach";
-"ginibank.invoice.transactionDoc.alert.action.attach" = "Attach";
-"ginibank.invoice.transactionDoc.alert.action.dontAttach" = "Don't attach";
+"ginibank.transactionDocs.alert.title" = "Add an attachment to this transaction?";
+"ginibank.transactionDocs.alert.message" = "We recommend adding attachments to transactions to manage expenses efficiently and easily recall purchases.";
+"ginibank.transactionDocs.alert.action.attachAlways" = "Always attach";
+"ginibank.transactionDocs.alert.action.attach" = "Only for this transaction";
+"ginibank.transactionDocs.alert.action.dontAttach" = "Don't attach";
 
-"ginibank.invoice.transactionDoc.title" = "Attachments";
+"ginibank.transactionDocs.title" = "Attachments";
 
-"ginibank.transactionDoc.bottomSheet.action.delete" = "Delete";
-"ginibank.transactionDoc.bottomSheet.action.cancel" = "Cancel";
+"ginibank.transactionDocs.bottomSheet.action.delete" = "Delete";
+"ginibank.transactionDocs.bottomSheet.action.cancel" = "Cancel";

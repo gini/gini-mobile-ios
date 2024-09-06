@@ -16,9 +16,10 @@ public class TransactionDocsView: UIView {
 
     public weak var presentingViewController: UIViewController?
 
+    // Mock data
     private lazy var transactionDocs: [TransactionDoc] = [
-        TransactionDoc(fileName: UUID().uuidString, type: .image),
-        TransactionDoc(fileName: UUID().uuidString, type: .document)
+        TransactionDoc(fileName: "image.png", type: .image),
+        TransactionDoc(fileName: "document.pdf", type: .document)
     ]
 
     private lazy var containerView: UIView = {
@@ -91,12 +92,12 @@ public class TransactionDocsView: UIView {
     }
 
     private func createTransactionDocsItemView(for transactionDoc: TransactionDoc) -> TransactionDocsItemView {
-        let transactionDocsItemView = TransactionDocsItemView(transactionDoc: transactionDoc)
+        let transactionDocsItemView = TransactionDocsItemView(transactionDocsItem: transactionDoc)
         transactionDocsItemView.optionsAction = { [weak self] in
             guard let self, let presentingViewController else { return }
             let fileName = transactionDoc.fileName
             let deleteAction = { self.deleteTransactionDoc(with: fileName) }
-            TransactionDocActionsBottomSheet.showDeleteAlert(on: presentingViewController,
+            TransactionDocsActionsBottomSheet.showDeleteAlert(on: presentingViewController,
                                                              deleteHandler: deleteAction,
                                                              cancelHandler: {})
         }
@@ -107,7 +108,7 @@ public class TransactionDocsView: UIView {
         transactionDocs.removeAll(where: { $0.fileName == fileName })
         if let itemView = stackView.arrangedSubviews.first(where: {
             guard let itemView = $0 as? TransactionDocsItemView else { return false }
-            return itemView.transactionDoc?.fileName == fileName
+            return itemView.transactionDocsItem?.fileName == fileName
         }) {
             self.stackView.removeArrangedSubview(itemView)
             itemView.removeFromSuperview()

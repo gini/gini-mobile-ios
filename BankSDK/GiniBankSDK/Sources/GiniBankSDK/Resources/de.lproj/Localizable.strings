@@ -128,13 +128,13 @@
 
 "ginibank.skonto.document.pages.screen.title" = "Skonto-Details";
 
-"ginibank.invoice.transactionDoc.alert.title" = "Fügen Sie der Transaktion einen Anhang hinzu?";
-"ginibank.invoice.transactionDoc.alert.message" = "Sie können dieser Transaktion einen Anhang hinzufügen. Das erleichert es Ihnen, Ausgaben effizient zu verwalten und Einkäufe einfacher zurückzurufen.";
-"ginibank.invoice.transactionDoc.alert.action.attachAlways" = "Immer anhängen";
-"ginibank.invoice.transactionDoc.alert.action.attach" = "Nur für diese Transaktion";
-"ginibank.invoice.transactionDoc.alert.action.dontAttach" = "Nicht anhängen";
+"ginibank.transactionDocs.alert.title" = "Fügen Sie der Transaktion einen Anhang hinzu?";
+"ginibank.transactionDocs.alert.message" = "Sie können dieser Transaktion einen Anhang hinzufügen. Das erleichert es Ihnen, Ausgaben effizient zu verwalten und Einkäufe einfacher zurückzurufen.";
+"ginibank.transactionDocs.alert.action.attachAlways" = "Immer anhängen";
+"ginibank.transactionDocs.alert.action.attach" = "Nur für diese Transaktion";
+"ginibank.transactionDocs.alert.action.dontAttach" = "Nicht anhängen";
 
-"ginibank.invoice.transactionDoc.title" = "Anhänge";
+"ginibank.transactionDocs.title" = "Anhänge";
 
-"ginibank.transactionDoc.bottomSheet.action.delete" = "Löschen";
-"ginibank.transactionDoc.bottomSheet.action.cancel" = "Abbrechen";
+"ginibank.transactionDocs.bottomSheet.action.delete" = "Löschen";
+"ginibank.transactionDocs.bottomSheet.action.cancel" = "Abbrechen";

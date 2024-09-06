@@ -35,7 +35,7 @@ class TransactionDocsItemView: UIView {
 
     private lazy var optionsButton: UIButton = {
         let button = UIButton()
-        button.setImage(GiniImages.transactionDocOptionsIcon.image, for: .normal)
+        button.setImage(GiniImages.transactionDocsOptionsIcon.image, for: .normal)
         button.tintColor = .giniColorScheme().icons.standardPrimary.uiColor()
         button.addTarget(self, action: #selector(optionsButtonTapped), for: .touchUpInside)
         return button
@@ -43,16 +43,16 @@ class TransactionDocsItemView: UIView {
 
     private let configuration = GiniBankConfiguration.shared
 
-    private (set) var transactionDoc: TransactionDoc?
+    private (set) var transactionDocsItem: TransactionDoc?
 
     var optionsAction: (() -> Void)?
 
-    init(transactionDoc: TransactionDoc) {
+    init(transactionDocsItem: TransactionDoc) {
         super.init(frame: .zero)
-        self.transactionDoc = transactionDoc
+        self.transactionDocsItem = transactionDocsItem
         setupViews()
         setupConstraints()
-        configure(with: transactionDoc)
+        configure(with: transactionDocsItem)
     }
 
     required init?(coder: NSCoder) {
