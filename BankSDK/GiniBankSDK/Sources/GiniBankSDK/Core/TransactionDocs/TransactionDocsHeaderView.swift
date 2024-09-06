@@ -9,7 +9,7 @@ import UIKit
 class TransactionDocsHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.invoice.transactionDoc.title",
+        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.transactionDocs.title",
                                                               comment: "Attachments")
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = .giniColorScheme().text.primary.uiColor()

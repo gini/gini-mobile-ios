@@ -6,7 +6,7 @@
 
 import UIKit
 
-class TransactionDocActionsBottomSheet {
+class TransactionDocsActionsBottomSheet {
     static func showDeleteAlert(on viewController: UIViewController,
                                 deleteHandler: @escaping () -> Void,
                                 cancelHandler: @escaping () -> Void) {
@@ -29,11 +29,11 @@ class TransactionDocActionsBottomSheet {
     }
 }
 
-private extension TransactionDocActionsBottomSheet {
+private extension TransactionDocsActionsBottomSheet {
     enum Constants {
-        static let deleteTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.transactionDoc.bottomSheet.action.delete",
+        static let deleteTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.transactionDocs.bottomSheet.action.delete",
                                                                                 comment: "Delete")
-        static let cancelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.transactionDoc.bottomSheet.action.cancel",
+        static let cancelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.transactionDocs.bottomSheet.action.cancel",
                                                                                 comment: "Cancel")
     }
 }
