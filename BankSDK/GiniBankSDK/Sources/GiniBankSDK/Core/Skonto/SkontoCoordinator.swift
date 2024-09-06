@@ -61,12 +61,6 @@ extension SkontoCoordinator: SkontoViewModelDelegate {
     }
 
     func didTapProceed(on viewModel: SkontoViewModel) {
-        let action: (() -> Void) = {
-            self.delegate?.didFinishAnalysis(self, viewModel.editedExtractionResult)
-        }
-        TransactionDocsAlert.show(on: navigationController.topViewController!,
-                                    alwaysAttachHandler: action,
-                                    attachHandler: action,
-                                    dontAttachHandler: action)
+        self.delegate?.didFinishAnalysis(self, viewModel.editedExtractionResult)
     }
 }

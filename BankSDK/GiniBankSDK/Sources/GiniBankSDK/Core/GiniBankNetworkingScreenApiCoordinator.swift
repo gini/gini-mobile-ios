@@ -392,7 +392,19 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
                            invoice: DigitalInvoice?,
                            analysisDelegate: GiniCaptureSDK.AnalysisDelegate) {
         guard let invoice = invoice else { return }
-        deliverWithReturnAssistant(result: invoice.extractionResult, analysisDelegate: analysisDelegate)
+        let transactionDocsEnabled = configurationService?.savedConfiguration?.transactionDocsEnabled ?? false
+        if transactionDocsEnabled && giniBankConfiguration.transactionDocsEnabled {
+            // MARK: same action for all handlers, before backend will be implemented
+            let action: (() -> Void) = { [weak self] in
+                self?.deliverWithReturnAssistant(result: invoice.extractionResult, analysisDelegate: analysisDelegate)
+            }
+            TransactionDocsAlert.show(on: coordinator.rootViewController,
+                                        alwaysAttachHandler: action,
+                                        attachHandler: action,
+                                        dontAttachHandler: action)
+        } else {
+            deliverWithReturnAssistant(result: invoice.extractionResult, analysisDelegate: analysisDelegate)
+        }
     }
 
     func didCancelAnalysis(_ coordinator: DigitalInvoiceCoordinator) {
@@ -497,7 +509,19 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
                            _ editedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
         guard let editedExtractionResult else { return }
-        deliverWithSkonto(result: editedExtractionResult)
+        let transactionDocsEnabled = configurationService?.savedConfiguration?.transactionDocsEnabled ?? false
+        if transactionDocsEnabled && giniBankConfiguration.transactionDocsEnabled {
+            // MARK: same action for all handlers, before backend will be implemented
+            let action: (() -> Void) = { [weak self] in
+                self?.deliverWithSkonto(result: editedExtractionResult)
+            }
+            TransactionDocsAlert.show(on: coordinator.rootViewController,
+                                      alwaysAttachHandler: action,
+                                      attachHandler: action,
+                                      dontAttachHandler: action)
+        } else {
+            self.deliverWithSkonto(result: editedExtractionResult)
+        }
     }
 
     func didCancelAnalysis(_ coordinator: SkontoCoordinator) {
