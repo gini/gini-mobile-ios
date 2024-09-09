@@ -293,7 +293,21 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                     } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
                         self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
-                        self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                        let savedConfiguration = self.configurationService?.savedConfiguration
+                        let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
+                        if transactionDocsEnabled && self.giniBankConfiguration.transactionDocsEnabled {
+                            // MARK: same action for all handlers, before backend will be implemented
+                            let action: (() -> Void) = { [weak self] in
+                                self?.deliverWithReturnAssistant(result: extractionResult,
+                                                                 analysisDelegate: networkDelegate)
+                            }
+                            TransactionDocsAlert.show(on: self.screenAPINavigationController,
+                                                        alwaysAttachHandler: action,
+                                                        attachHandler: action,
+                                                        dontAttachHandler: action)
+                        } else {
+                            self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                        }
                     }
                 }
 
