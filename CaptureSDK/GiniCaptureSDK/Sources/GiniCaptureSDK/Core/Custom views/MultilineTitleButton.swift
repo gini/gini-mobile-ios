@@ -15,7 +15,7 @@ import UIKit
  o that the button's width and height can be adjusted by the Auto Layout system.
  **/
 
-public class MultilineTitleButton: UIButton {
+public class MultilineTitleButton: GiniCaptureButton {
 
     /**
      `init?(coder:)` is used for creating an instance of the class from a nib file

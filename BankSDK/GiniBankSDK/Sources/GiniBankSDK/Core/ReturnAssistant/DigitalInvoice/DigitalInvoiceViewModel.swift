@@ -17,14 +17,27 @@ protocol DigitalInvoiceViewModelDelagate: AnyObject {
 
 final class DigitalInvoiceViewModel {
     weak var delegate: DigitalInvoiceViewModelDelagate?
-    var invoice: DigitalInvoice?
+    var invoice: DigitalInvoice? {
+        didSet {
+            skontoViewModel?.setAmountToPayPrice(invoice?.total?.stringWithoutSymbol ?? "")
+        }
+    }
+    var skontoViewModel: SkontoViewModel?
+
+    var totalPrice: Price? {
+        skontoViewModel?.isSkontoApplied == true ? skontoViewModel?.skontoAmountToPay : invoice?.total
+    }
+
+    var hasSkonto: Bool {
+        return skontoViewModel != nil
+    }
 
     init(invoice: DigitalInvoice?) {
         self.invoice = invoice
     }
 
     func isPayButtonEnabled() -> Bool {
-        if let total = invoice?.total?.value {
+        if let total = totalPrice?.value {
             return total > 0
         }
 
@@ -40,6 +53,11 @@ final class DigitalInvoiceViewModel {
     }
 
     func didTapPay() {
+        if hasSkonto {
+            let totalPriceForExtractions = totalPrice
+            self.invoice?.totalPriceForExtractions = totalPriceForExtractions
+            self.invoice?.skontoExtractions = skontoViewModel?.editedExtractionResult.skontoDiscounts
+        }
         delegate?.didTapPay(on: self)
     }
 
