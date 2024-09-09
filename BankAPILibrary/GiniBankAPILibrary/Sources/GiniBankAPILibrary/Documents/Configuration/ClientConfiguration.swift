@@ -28,7 +28,7 @@ public struct ClientConfiguration: Codable {
                 amplitudeApiKey: String? = nil,
                 skontoEnabled: Bool,
                 returnAssistantEnabled: Bool,
-                transactionDocsEnabled: Bool? = nil) {
+                transactionDocsEnabled: Bool) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.amplitudeApiKey = amplitudeApiKey
@@ -42,5 +42,5 @@ public struct ClientConfiguration: Codable {
     public let amplitudeApiKey: String?
     public let skontoEnabled: Bool
     public let returnAssistantEnabled: Bool
-    public let transactionDocsEnabled: Bool?
+    public let transactionDocsEnabled: Bool
 }
