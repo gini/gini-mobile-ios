@@ -73,8 +73,6 @@ final class InvoicesListViewModel {
     
     func viewDidLoad() {
         paymentComponentsController.loadPaymentProviders()
-        
-        checkDocumentsForMultipleInvoices()
     }
     
     func refetchExtractions() {
@@ -174,12 +172,25 @@ final class InvoicesListViewModel {
             }
         }
     }
+
+    @discardableResult
+    func checkDocumentForMultipleInvoices(documentID: String) -> Bool {
+        if let document = invoices.first(where: { $0.documentID == documentID }) {
+            if document.hasMultipleDocuments ?? false {
+                errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.contains.multiple.invoices", comment: ""))")
+                showErrorsIfAny()
+                return true
+            }
+        }
+        return false
+    }
 }
 
 extension InvoicesListViewModel: PaymentComponentViewProtocol {
 
     func didTapOnMoreInformation(documentId: String?) {
         Log("Tapped on More Information", event: .success)
+        guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
         if let presentedViewController = self.coordinator.invoicesListViewController.presentedViewController {
             presentedViewController.dismiss(animated: true) {
@@ -192,6 +203,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
     
     func didTapOnBankPicker(documentId: String?) {
         guard let documentId else { return }
+        guard !checkDocumentForMultipleInvoices(documentID: documentId) else { return }
         Log("Tapped on Bank Picker on :\(documentId)", event: .success)
         let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
         bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
@@ -200,6 +212,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
 
     func didTapOnPayInvoice(documentId: String?) {
         guard let documentId else { return }
+        guard !checkDocumentForMultipleInvoices(documentID: documentId) else { return }
         Log("Tapped on Pay Invoice on :\(documentId)", event: .success)
         documentIDToRefetch = documentId
         paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
@@ -211,15 +224,6 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
                 viewController.modalPresentationStyle = .overCurrentContext
                 self?.coordinator.invoicesListViewController.present(viewController, animated: true)
             }
-        }
-    }
-
-    private func checkDocumentsForMultipleInvoices() {
-        for invoice in self.invoices {
-            if invoice.hasMultipleDocuments ?? false && !(invoice.isPayable ?? false) {
-                self.errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.contains.multiple.invoices", comment: "")): \(invoice.recipient ?? "")")
-            }
-            showErrorsIfAny()
         }
     }
 }
