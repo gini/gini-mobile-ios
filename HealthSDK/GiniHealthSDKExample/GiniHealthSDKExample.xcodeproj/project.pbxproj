@@ -179,7 +179,6 @@
 				F4C36A9F270C6F6B00CCC69C /* Packages */,
 				F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */,
 				F4EC38D7273C21E6007045DC /* GiniHealthSDKExampleTests */,
-				F4DB641F283546960027681C /* GiniHealthSDKPinningExampleTests */,
 				F4C36A89270C6EBF00CCC69C /* Products */,
 				F4C36AA1270C6F9C00CCC69C /* Frameworks */,
 			);
@@ -209,13 +208,6 @@
 				F42377252799ABB000FAC3D6 /* CloudKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F4DB641F283546960027681C /* GiniHealthSDKPinningExampleTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = GiniHealthSDKPinningExampleTests;
 			sourceTree = "<group>";
 		};
 		F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */ = {

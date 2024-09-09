@@ -21,7 +21,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        target: [GiniHealthSDK, GiniHealthSDKPinning]
+        target: [GiniHealthSDK]
         destination: ['platform=iOS Simulator,OS=17.2,name=iPhone SE (3rd generation)', 'platform=iOS Simulator,OS=18.1,name=iPhone 15 Pro Max']
     steps:
     - uses: maxim-lobanov/setup-xcode@v1.6.0
@@ -36,11 +36,6 @@ jobs:
            cd HealthSDK/GiniHealthSDK
            swift package update
 
-    - name: Check package GiniHealthSDKPinning
-      run: |
-           cd HealthSDK/GiniHealthSDKPinning
-           swift package update
-
     - name: Build sdk targets
       run: |
         xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
@@ -48,31 +43,7 @@ jobs:
     - name: Run unit tests
       run: |
         xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-   
+
     - name: Build example app
       run: |
-        xcodebuild -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKPinningExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
-
-    - name: Build pinning example app and run integration tests
-      run: >
-        xcodebuild clean test
-        -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
-        -scheme "GiniHealthSDKPinningExampleTests"
-        -destination "${{ matrix.destination }}"
-        -skip-testing:GiniHealthSDKPinningExampleTests/GiniHealthSDKPinningExampleWrongCertificatesTests
-        CODE_SIGN_IDENTITY=""
-        CODE_SIGNING_REQUIRED=NO
-        ONLY_ACTIVE_ARCH=NO
-        CLIENT_ID="gini-mobile-test"
-        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
-        &&
-        xcodebuild clean test
-        -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
-        -scheme "GiniHealthSDKPinningExampleTests"
-        -destination "${{ matrix.destination }}"
-        -only-testing:GiniHealthSDKPinningExampleTests/GiniHealthSDKPinningExampleWrongCertificatesTests
-        CODE_SIGN_IDENTITY=""
-        CODE_SIGNING_REQUIRED=NO
-        ONLY_ACTIVE_ARCH=NO
-        CLIENT_ID="gini-mobile-test"
-        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+        xcodebuild -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
