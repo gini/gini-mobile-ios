@@ -273,7 +273,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                 completion(nil, nil)
                                 return
                             }
-                            let viewModel = PaymentReviewModel(delegateAPI: self,
+                            let viewModel = PaymentReviewModel(delegate: self,
                                                                bottomSheetsProvider: self,
                                                                document: data.document.toHealthDocument(),
                                                                extractions: data.extractions.map { $0.toHealthExtraction() },
@@ -318,7 +318,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
 //                                                                                  trackingDelegate: trackingDelegate,
 //                                                                                  paymentComponentsController: self)
 
-        let viewModel = PaymentReviewModel(delegateAPI: self,
+        let viewModel = PaymentReviewModel(delegate: self,
                                            bottomSheetsProvider: self,
                                            document: nil,
                                            extractions: nil,

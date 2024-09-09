@@ -108,7 +108,7 @@ public class PaymentReviewModel: NSObject {
     let bottomSheetConfiguration: BottomSheetConfiguration
     let showPaymentReviewCloseButton: Bool
 
-    public init(delegateAPI: PaymentReviewProtocol,
+    public init(delegate: PaymentReviewProtocol,
                 bottomSheetsProvider: BottomSheetsProviderProtocol,
                 document: Document?,
                 extractions: [Extraction]?,
@@ -126,7 +126,7 @@ public class PaymentReviewModel: NSObject {
                 poweredByGiniStrings: PoweredByGiniStrings,
                 bottomSheetConfiguration: BottomSheetConfiguration,
                 showPaymentReviewCloseButton: Bool) {
-        self.delegate = delegateAPI
+        self.delegate = delegate
         self.bottomSheetsProvider = bottomSheetsProvider
         self.configuration = configuration
         self.strings = strings
