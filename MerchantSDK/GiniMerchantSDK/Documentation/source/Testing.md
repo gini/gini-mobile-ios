@@ -29,11 +29,11 @@ After you've set the client credentials in the example banking app and installed
 
 #### Payment component
 
-After following the integration steps above you'll arrive at the `Payments list screen`. Then, you can navigate to `Payment detail screen`. Tapping on `Pay` will show you the `Payment Component`.
-The following screenshot shows a payment detail screen with the `PaymentComponent` shown in a bottom sheet.
+After following the integration steps above you'll arrive at the `Orders list screen`. Then, you can navigate to `Order detail screen`. Tapping on `Pay` will show you the `Payment Component`.
+The following screenshot shows an order detail screen with the `PaymentComponent` shown in a bottom sheet.
 
 <br>
-<center><img src="img/Integration guide/PaymentDetailWithPaymentComponent.png" height="500"/></center>
+<center><img src="img/Integration guide/OrderDetailWithPaymentComponent.png" height="500"/></center>
 </br>
 
 #### Bank Selection Bottom sheet 
@@ -59,7 +59,7 @@ By clicking the `Continue to overview` button on a `Payment Component` view you 
 Check that the details are shown and then press the `To the banking app` button:
 
 <br>
-<center><img src="img/Integration guide/PaymentReviewScreen.png" height="500"/></center>
+<center><img src="img/Integration guide/PaymentReviewBottomSheet.png" height="500"/></center>
 </br>
 
 #### Execute payment
@@ -79,7 +79,7 @@ After you press the `Pay` button the Gini Bank SDK resolves the payment and allo
 
 #### Return to your app
 
-After the test payment has been executed, the example banking app should show a "Return to Merchant app" button which should take you back to your app.
+After the test payment has been executed, the example banking app should show a "Return back" button which should take you back to your app.
 
 For handling incoming url in your app after redirecting back from the banking app you need to implement to handle the incoming url:
 The following is an example for the url `gini-pay://payment-requester`:

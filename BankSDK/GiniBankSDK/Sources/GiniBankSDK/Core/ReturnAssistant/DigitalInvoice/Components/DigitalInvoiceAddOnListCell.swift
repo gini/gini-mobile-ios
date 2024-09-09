@@ -52,11 +52,14 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         clipsToBounds = true
-        layer.cornerRadius = 8
-        layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
 
         contentView.addSubview(addOnStackView)
         contentView.addSubview(separatorView)
+    }
+
+    func configureAsBottomTableCell() {
+        layer.cornerRadius = 8
+        layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
     }
 
     private func setupConstraints() {
