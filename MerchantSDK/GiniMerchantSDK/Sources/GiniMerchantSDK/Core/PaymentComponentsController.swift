@@ -71,9 +71,9 @@ protocol PaymentComponentsProtocol {
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniMerchantError>) -> Void)
     func paymentView(documentId: String?) -> UIView
     func bankSelectionBottomSheet() -> UIViewController
-    func loadPaymentReviewScreenFor(documentId: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void)
+    func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void)
     func paymentInfoViewController() -> UIViewController
-    func paymentViewBottomSheet(documentId: String?) -> UIViewController
+    func paymentViewBottomSheet(documentID: String?) -> UIViewController
 }
 
 ///**
@@ -253,15 +253,15 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
         return PaymentComponentView(viewModel: paymentComponentViewModel)
     }
 
-    public func loadPaymentReviewScreenFor(documentId: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
+    public func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniMerchantTrackingDelegate?, completion: @escaping (UIViewController?, GiniMerchantError?) -> Void) {
             previousPresentedView = nil
             if !GiniMerchantConfiguration.shared.useInvoiceWithoutDocument {
-                guard let documentId else {
+                guard let documentID else {
                     completion(nil, nil)
                     return
                 }
                 self.isLoading = true
-                self.giniSDK.fetchDataForReview(documentId: documentId) { [weak self] result in
+                self.giniSDK.fetchDataForReview(documentId: documentID) { [weak self] result in
                     self?.isLoading = false
                     switch result {
                         case .success(let data):
@@ -311,13 +311,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
             return
         }
 
-//        let paymentReviewViewController = PaymentReviewViewController.instantiate(with: self.giniMerchant,
-//                                                                                  data: nil,
-//                                                                                  paymentInfo: paymentInfo,
-//                                                                                  selectedPaymentProvider: selectedPaymentProvider,
-//                                                                                  trackingDelegate: trackingDelegate,
-//                                                                                  paymentComponentsController: self)
-
         let viewModel = PaymentReviewModel(delegate: self,
                                            bottomSheetsProvider: self,
                                            document: nil,
@@ -344,9 +337,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
 
     // MARK: - Bottom Sheets
 
-    public func paymentViewBottomSheet(documentId: String?) -> UIViewController {
+    public func paymentViewBottomSheet(documentID: String?) -> UIViewController {
         previousPresentedView = .paymentComponent
-        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentId), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return paymentComponentBottomView
     }
 

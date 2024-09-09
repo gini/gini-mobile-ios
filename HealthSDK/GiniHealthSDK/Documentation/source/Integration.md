@@ -238,7 +238,7 @@ The `PaymentReviewViewController` presentation requires a `PaymentComponentsCont
 ```swift
     func didTapOnPayInvoice(documentId: String?) {
         guard let documentId else { return }
-        paymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, trackingDelegate: self) { [weak self] viewController, error in
+        paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
             if let error {
                 self?.showErrorsIfAny()
             } else if let viewController {

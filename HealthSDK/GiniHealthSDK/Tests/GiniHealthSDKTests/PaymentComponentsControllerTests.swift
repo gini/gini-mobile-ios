@@ -115,7 +115,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniHealthError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, trackingDelegate: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }
@@ -133,7 +133,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniHealthError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, trackingDelegate: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }
