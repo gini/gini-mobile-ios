@@ -59,7 +59,7 @@ public class TransactionDocsView: UIView {
     }
 
     private func commonInit() {
-        let savedConfiguration = configuration.configurationService?.savedConfiguration
+        let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
         let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
         guard transactionDocsEnabled, configuration.transactionDocsEnabled, !transactionDocs.isEmpty else { return }
         addSubview(containerView)
