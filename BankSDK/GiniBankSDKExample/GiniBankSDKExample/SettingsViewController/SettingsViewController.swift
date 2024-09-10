@@ -6,12 +6,15 @@
 //
 
 import UIKit
+import GiniBankAPILibrary
 import GiniBankSDK
 import GiniCaptureSDK
 import AVFoundation
 
 protocol SettingsViewControllerDelegate: AnyObject {
 	func didTapCloseButton()
+    func didTapSaveCredentialsButton(clientId: String, clientSecret: String)
+    func didSelectAPIEnvironment(apiEnvironment: APIEnvironment)
 }
 
 final class SettingsViewController: UIViewController {
@@ -19,7 +22,10 @@ final class SettingsViewController: UIViewController {
 	@IBOutlet private weak var navigationBarItem: UINavigationItem!
 	@IBOutlet private weak var navigationBar: UINavigationBar!
 	@IBOutlet private weak var tableView: UITableView!
-	
+
+    private let client: Client?
+    private var apiEnvironment: APIEnvironment
+
 	var contentData = [CellType]()
 	let giniConfiguration: GiniBankConfiguration
 	var settingsButtonStates: SettingsButtonStates
@@ -28,11 +34,15 @@ final class SettingsViewController: UIViewController {
 	weak var delegate: SettingsViewControllerDelegate?
 	
 	// MARK: - Initializers
-	
-	init(giniConfiguration: GiniBankConfiguration,
-		 settingsButtonStates: SettingsButtonStates,
-		 documentValidationsState: DocumentValidationsState) {
-		self.giniConfiguration = giniConfiguration
+     
+    init(apiEnvironment: APIEnvironment,
+         client: Client? = nil,
+         giniConfiguration: GiniBankConfiguration,
+         settingsButtonStates: SettingsButtonStates,
+         documentValidationsState: DocumentValidationsState) {
+        self.apiEnvironment = apiEnvironment
+        self.client = client
+        self.giniConfiguration = giniConfiguration
 		self.settingsButtonStates = settingsButtonStates
 		self.documentValidationsState = documentValidationsState
 		super.init(nibName: nil, bundle: nil)
@@ -46,6 +56,12 @@ final class SettingsViewController: UIViewController {
         super.viewDidLoad()
 		configureNavigationBar()
 		configureTableView()
+        setupGestures()
+    }
+
+    private func setupGestures() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
     }
 
 	private func configureNavigationBar() {
@@ -75,10 +91,20 @@ final class SettingsViewController: UIViewController {
 		tableView.register(SwitchOptionTableViewCell.self)
 		tableView.register(SegmentedOptionTableViewCell.self)
 		tableView.register(InfoTableViewCell.self)
+        tableView.register(CredentialsTableViewCell.self)
 
 		var contentData = [CellType]()
 		
 		contentData.append(.info(message: "Please relaunch the app to use the default GiniConfiguration values."))
+        var selectedAPISegmentIndex = 0
+        switch apiEnvironment {
+        case .production:
+            selectedAPISegmentIndex = 0
+        case .stage:
+            selectedAPISegmentIndex = 1
+        }
+        contentData.append(.segmentedOption(data: APIEnvironmentSegmentedOptionModel(selectedIndex: selectedAPISegmentIndex)))
+        contentData.append(.credentials(data: .init(clientId: client?.id ?? "", secretId: client?.secret ?? "")))
 		contentData.append(.switchOption(data: .init(type: .openWith,
 													 isSwitchOn: giniConfiguration.openWithEnabled)))
 		contentData.append(.switchOption(data: .init(type: .qrCodeScanning,
@@ -104,7 +130,7 @@ final class SettingsViewController: UIViewController {
 		case .pdf_and_images:
 			selectedFileImportTypeSegmentIndex = 2
 		}
-        contentData.append(.segmentedOption(data: .init(selectedIndex: selectedFileImportTypeSegmentIndex)))
+        contentData.append(.segmentedOption(data: FileImportSegmentedOptionModel(selectedIndex: selectedFileImportTypeSegmentIndex)))
 		
 		contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isSwitchOn: giniConfiguration.bottomNavigationBarEnabled)))
@@ -488,7 +514,7 @@ final class SettingsViewController: UIViewController {
 		return cell
 	}
 
-	private func cell(for optionModel: SegmentedOptionModel, at row: Int) -> UITableViewCell {
+	private func cell(for optionModel: SegmentedOptionModelProtocol, at row: Int) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell() as SegmentedOptionTableViewCell
 		cell.tag = row
 		
@@ -505,12 +531,23 @@ final class SettingsViewController: UIViewController {
 		cell.set(message: message)
 		return cell
 	}
-	
+
+    private func cell(for model: CredentialsModel) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell() as CredentialsTableViewCell
+        cell.set(data: model)
+        cell.delegate = self
+        return cell
+    }
+
 	// MARK: - Actions
 	
 	@objc func didSelectCloseButton() {
 		delegate?.didTapCloseButton()
 	}
+
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -533,6 +570,8 @@ extension SettingsViewController: UITableViewDataSource {
 			return cell(for: data, at: row)
 		case .segmentedOption(let data):
 			return cell(for: data, at: row)
+        case .credentials(let data):
+            return cell(for: data)
 		}
 	}
 }
@@ -553,16 +592,44 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
 		guard case .segmentedOption(var data) = option else { return }
         data.selectedIndex = cell.selectedSegmentIndex
         
-        switch data.selectedIndex {
-            case 0:
-                giniConfiguration.fileImportSupportedTypes = .none
-            case 1:
-                giniConfiguration.fileImportSupportedTypes = .pdf
-            case 2:
-                giniConfiguration.fileImportSupportedTypes = .pdf_and_images
-            default: return
+        if data is FileImportSegmentedOptionModel {
+            handleFileImportOption(fileImportIndex: data.selectedIndex)
+        } else if data is APIEnvironmentSegmentedOptionModel {
+            handleApiEnvironmentOption(environmentIndex: data.selectedIndex)
         }
 	}
+
+    func handleFileImportOption(fileImportIndex: Int) {
+        switch fileImportIndex {
+        case 0:
+            giniConfiguration.fileImportSupportedTypes = .none
+        case 1:
+            giniConfiguration.fileImportSupportedTypes = .pdf
+        case 2:
+            giniConfiguration.fileImportSupportedTypes = .pdf_and_images
+        default: return
+        }
+    }
+
+    func handleApiEnvironmentOption(environmentIndex: Int) {
+        switch environmentIndex {
+        case 0:
+            delegate?.didSelectAPIEnvironment(apiEnvironment: .production)
+        case 1:
+            delegate?.didSelectAPIEnvironment(apiEnvironment: .stage)
+        default:
+            return
+        }
+    }
+}
+
+// MARK: - CredentialsTableViewCellDelegate
+
+extension SettingsViewController: CredentialsTableViewCellDelegate {
+    func didTapSaveButton(clientId: String, clientSecret: String) {
+        dismissKeyboard()
+        delegate?.didTapSaveCredentialsButton(clientId: clientId, clientSecret: clientSecret)
+    }
 }
 
 extension SettingsViewController: GiniCaptureErrorLoggerDelegate {
