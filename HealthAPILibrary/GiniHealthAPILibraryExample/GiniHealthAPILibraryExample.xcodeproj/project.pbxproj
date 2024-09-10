@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5044351A2C5AEA1D00105D0B /* GiniHealthAPILibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 504435192C5AEA1D00105D0B /* GiniHealthAPILibrary */; };
+		3AC048EE2C9061A5007C81FE /* GiniHealthAPILibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC048ED2C9061A5007C81FE /* GiniHealthAPILibrary */; };
 		F466A5DC270F27B300FB1364 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F466A5DB270F27B300FB1364 /* AuthenticationServices.framework */; };
 		F46DE04C2705FC21002F7420 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46DE04B2705FC21002F7420 /* AppDelegate.swift */; };
 		F46DE04E2705FC21002F7420 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46DE04D2705FC21002F7420 /* SceneDelegate.swift */; };
@@ -50,7 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5044351A2C5AEA1D00105D0B /* GiniHealthAPILibrary in Frameworks */,
+				3AC048EE2C9061A5007C81FE /* GiniHealthAPILibrary in Frameworks */,
 				F466A5DC270F27B300FB1364 /* AuthenticationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -133,7 +133,7 @@
 			);
 			name = GiniHealthAPILibraryExample;
 			packageProductDependencies = (
-				504435192C5AEA1D00105D0B /* GiniHealthAPILibrary */,
+				3AC048ED2C9061A5007C81FE /* GiniHealthAPILibrary */,
 			);
 			productName = HealthAPILibraryExample;
 			productReference = F46DE0482705FC21002F7420 /* GiniHealthAPILibraryExample.app */;
@@ -534,7 +534,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		504435192C5AEA1D00105D0B /* GiniHealthAPILibrary */ = {
+		3AC048ED2C9061A5007C81FE /* GiniHealthAPILibrary */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniHealthAPILibrary;
 		};
