@@ -293,20 +293,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                     } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
                         self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
-                        let savedConfiguration = self.configurationService?.savedConfiguration
-                        let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
-                        if transactionDocsEnabled && self.giniBankConfiguration.transactionDocsEnabled {
-                            // MARK: same action for all handlers, before backend will be implemented
-                            let action: (() -> Void) = { [weak self] in
-                                self?.deliverWithReturnAssistant(result: extractionResult,
-                                                                 analysisDelegate: networkDelegate)
-                            }
-                            TransactionDocsAlert.show(on: self.screenAPINavigationController,
-                                                        alwaysAttachHandler: action,
-                                                        attachHandler: action,
-                                                        dontAttachHandler: action)
-                        } else {
-                            self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                        self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController) { [weak self] in
+                            self?.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
                         }
                     }
                 }
@@ -407,18 +395,8 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
                            invoice: DigitalInvoice?,
                            analysisDelegate: GiniCaptureSDK.AnalysisDelegate) {
         guard let invoice = invoice else { return }
-        let transactionDocsEnabled = configurationService?.savedConfiguration?.transactionDocsEnabled ?? false
-        if transactionDocsEnabled && giniBankConfiguration.transactionDocsEnabled {
-            // MARK: same action for all handlers, before backend will be implemented
-            let action: (() -> Void) = { [weak self] in
-                self?.deliverWithReturnAssistant(result: invoice.extractionResult, analysisDelegate: analysisDelegate)
-            }
-            TransactionDocsAlert.show(on: coordinator.rootViewController,
-                                        alwaysAttachHandler: action,
-                                        attachHandler: action,
-                                        dontAttachHandler: action)
-        } else {
-            deliverWithReturnAssistant(result: invoice.extractionResult, analysisDelegate: analysisDelegate)
+        handleTransactionDocsAlertIfNeeded(on: coordinator.rootViewController) { [weak self] in
+            self?.deliverWithReturnAssistant(result: invoice.extractionResult, analysisDelegate: analysisDelegate)
         }
     }
 
@@ -524,18 +502,8 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
                            _ editedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
         guard let editedExtractionResult else { return }
-        let transactionDocsEnabled = configurationService?.savedConfiguration?.transactionDocsEnabled ?? false
-        if transactionDocsEnabled && giniBankConfiguration.transactionDocsEnabled {
-            // MARK: same action for all handlers, before backend will be implemented
-            let action: (() -> Void) = { [weak self] in
-                self?.deliverWithSkonto(result: editedExtractionResult)
-            }
-            TransactionDocsAlert.show(on: coordinator.rootViewController,
-                                      alwaysAttachHandler: action,
-                                      attachHandler: action,
-                                      dontAttachHandler: action)
-        } else {
-            self.deliverWithSkonto(result: editedExtractionResult)
+        handleTransactionDocsAlertIfNeeded(on: coordinator.rootViewController) { [weak self] in
+            self?.deliverWithSkonto(result: editedExtractionResult)
         }
     }
 
@@ -694,6 +662,23 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                 errors.append(error)
                 completion(UIImage(), errors)
             }
+        }
+    }
+}
+
+extension GiniBankNetworkingScreenApiCoordinator {
+    private func handleTransactionDocsAlertIfNeeded(on controller: UIViewController, action: @escaping () -> Void) {
+        let savedConfiguration = self.configurationService?.savedConfiguration
+        let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
+
+        if transactionDocsEnabled && self.giniBankConfiguration.transactionDocsEnabled {
+            // MARK: same action for all handlers, before backend will be implemented
+            TransactionDocsAlert.show(on: controller,
+                                      alwaysAttachHandler: action,
+                                      attachHandler: action,
+                                      dontAttachHandler: action)
+        } else {
+            action()
         }
     }
 }
