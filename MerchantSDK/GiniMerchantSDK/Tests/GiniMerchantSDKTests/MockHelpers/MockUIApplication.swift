@@ -21,19 +21,11 @@ struct MockUIApplication: URLOpenerProtocol {
         }
     }
 
-    #if compiler(>=6.0)
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: GiniOpenLinkCompletionBlock?) {
         if canOpen {
             Task { @MainActor in
                 completion?(true)
             }
         }
     }
-    #else
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?) {
-        if canOpen {
-            completion?(true)
-        }
-    }
-    #endif
 }
