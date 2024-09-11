@@ -110,7 +110,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         }
         
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
+            .instantiateViewController(withIdentifier: "resultScreen") as? TransactionSummaryTableViewController)!
 
         customResultsScreen.tableView.estimatedRowHeight = 75
         customResultsScreen.result = results
