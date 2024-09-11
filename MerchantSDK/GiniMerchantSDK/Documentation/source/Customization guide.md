@@ -27,7 +27,7 @@ If you want to override specific SDK images:
 1. Create an asset catalog for images called `GiniImages.xcassets` in your app.
 2. Add your own images to `GiniImages.xcassets` using the image names from the SDK's UI customization guide. It is important to name the images you wish to override exactly as shown in the UI customization guide, otherwise overriding won’t work.
 
-### Typography test
+### Typography
 
 We provide global typography based on text appearance styles from UIFont.TextStyle.
 Preview our typography and find the names of the style resources (you can also view it in Figma [here](https://www.figma.com/design/ww461LDHx2u6NY9dAr9gsl/iOS-Gini-Merchant-SDK-1.0-UI-Customisation?node-id=12904-7257&t=AIAD3FTRx74e1Lg7-1)).
