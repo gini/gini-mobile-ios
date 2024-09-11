@@ -1,5 +1,5 @@
 //
-//  ResultAttachmentsTableViewCell.swift
+//  AttachmentsTableViewCell.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,8 +7,8 @@
 import UIKit
 import GiniBankSDK
 
-class ResultAttachmentsTableViewCell: UITableViewCell {
-    static let reuseIdentifier = "ResultAttachmentsTableViewCell"
+class AttachmentsTableViewCell: UITableViewCell {
+    static let reuseIdentifier = "AttachmentsTableViewCell"
     
     private lazy var attachmentsView: TransactionDocsView = {
         let view = TransactionDocsView()
@@ -45,7 +45,7 @@ class ResultAttachmentsTableViewCell: UITableViewCell {
     }
 }
 
-private extension ResultAttachmentsTableViewCell {
+private extension AttachmentsTableViewCell {
     enum Constants {
         static let padding: CGFloat = 16
     }
