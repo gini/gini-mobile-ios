@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A54ED2D2C917D5500EB5EED /* GiniHealthAPILibrary in Resources */ = {isa = PBXBuildFile; fileRef = 3A54ED2C2C917D5500EB5EED /* GiniHealthAPILibrary */; };
 		3AC048EE2C9061A5007C81FE /* GiniHealthAPILibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC048ED2C9061A5007C81FE /* GiniHealthAPILibrary */; };
 		F466A5DC270F27B300FB1364 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F466A5DB270F27B300FB1364 /* AuthenticationServices.framework */; };
 		F46DE04C2705FC21002F7420 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46DE04B2705FC21002F7420 /* AppDelegate.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A54ED2C2C917D5500EB5EED /* GiniHealthAPILibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniHealthAPILibrary; path = ../GiniHealthAPILibrary; sourceTree = "<group>"; };
 		F466A5DA270F27B300FB1364 /* HealthAPILibraryExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthAPILibraryExample.entitlements; sourceTree = "<group>"; };
 		F466A5DB270F27B300FB1364 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		F46DE0482705FC21002F7420 /* GiniHealthAPILibraryExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniHealthAPILibraryExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,9 +67,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A54ED2B2C917D2F00EB5EED /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				3A54ED2C2C917D5500EB5EED /* GiniHealthAPILibrary */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		F46DE03F2705FC21002F7420 = {
 			isa = PBXGroup;
 			children = (
+				3A54ED2B2C917D2F00EB5EED /* Packages */,
 				F46DE04A2705FC21002F7420 /* GiniHealthAPILibraryExample */,
 				F4FD486F270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests */,
 				F46DE0492705FC21002F7420 /* Products */,
@@ -200,6 +211,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A54ED2D2C917D5500EB5EED /* GiniHealthAPILibrary in Resources */,
 				F46DE0582705FC22002F7420 /* LaunchScreen.storyboard in Resources */,
 				F46DE0552705FC22002F7420 /* Assets.xcassets in Resources */,
 				F46DE0532705FC21002F7420 /* Main.storyboard in Resources */,
