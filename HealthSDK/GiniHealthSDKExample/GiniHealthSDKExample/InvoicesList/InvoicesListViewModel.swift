@@ -6,9 +6,9 @@
 
 
 import UIKit
-import GiniHealthAPILibrary
 import GiniCaptureSDK
 import GiniHealthSDK
+import GiniPaymentComponents
 
 struct DocumentWithExtractions: Codable {
     var documentId: String
@@ -17,7 +17,7 @@ struct DocumentWithExtractions: Codable {
     var recipient: String?
     var isPayable: Bool?
 
-    init(documentId: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
+    init(documentId: String, extractionResult: GiniHealthSDK.ExtractionResult) {
         self.documentId = documentId
         self.amountToPay = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.amountToPay.rawValue })?.value
         self.paymentDueDate = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentDueDate.rawValue })?.value
@@ -26,10 +26,10 @@ struct DocumentWithExtractions: Codable {
     }
 }
 
-final class InvoicesListViewModel {
+final class InvoicesListViewModel: PaymentComponentViewProtocol {
     
     private let coordinator: InvoicesListCoordinator
-    private var documentService: GiniHealthAPILibrary.DefaultDocumentService
+    private var documentService: GiniHealthSDK.DefaultDocumentService
 
     private let hardcodedInvoicesController: HardcodedInvoicesControllerProtocol
     var paymentComponentsController: PaymentComponentsController
@@ -56,7 +56,7 @@ final class InvoicesListViewModel {
 
     init(coordinator: InvoicesListCoordinator,
          invoices: [DocumentWithExtractions]? = nil,
-         documentService: GiniHealthAPILibrary.DefaultDocumentService,
+         documentService: GiniHealthSDK.DefaultDocumentService,
          hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
          paymentComponentsController: PaymentComponentsController) {
         self.coordinator = coordinator
@@ -148,22 +148,22 @@ final class InvoicesListViewModel {
                                                 metadata: nil) { [weak self] result in
                 switch result {
                 case .success(let createdDocument):
-                    Log("Successfully created document with id: \(createdDocument.id)", event: .success)
+                    print("Successfully created document with id: \(createdDocument.id)")
                     self?.documentService.extractions(for: createdDocument,
                                                       cancellationToken: CancellationToken()) { [weak self] result in
                         switch result {
                         case let .success(extractionResult):
-                            Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
+                            print("Successfully fetched extractions for id: \(createdDocument.id)")
                             self?.invoices.append(DocumentWithExtractions(documentId: createdDocument.id,
                                                                           extractionResult: extractionResult))
                         case let .failure(error):
-                            Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))", event: .error)
+                            print("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))")
                             self?.errors.append(error.message)
                         }
                         self?.dispatchGroup.leave()
                     }
                 case .failure(let error):
-                    Log("Document creation failed: \(String(describing: error))", event: .error)
+                    print("Document creation failed: \(String(describing: error))")
                     self?.errors.append(error.message)
                     self?.dispatchGroup.leave()
                 }
@@ -172,10 +172,10 @@ final class InvoicesListViewModel {
     }
 }
 
-extension InvoicesListViewModel: PaymentComponentViewProtocol {
+extension InvoicesListViewModel {
 
     func didTapOnMoreInformation(documentId: String?) {
-        Log("Tapped on More Information", event: .success)
+        print("Tapped on More Information")
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
         if let presentedViewController = self.coordinator.invoicesListViewController.presentedViewController {
             presentedViewController.dismiss(animated: true) {
@@ -188,7 +188,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
     
     func didTapOnBankPicker(documentId: String?) {
         guard let documentId else { return }
-        Log("Tapped on Bank Picker on :\(documentId)", event: .success)
+        print("Tapped on Bank Picker on :\(documentId)")
         let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
         bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
         self.coordinator.invoicesListViewController.present(bankSelectionBottomSheet, animated: false)
@@ -196,7 +196,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
 
     func didTapOnPayInvoice(documentId: String?) {
         guard let documentId else { return }
-        Log("Tapped on Pay Invoice on :\(documentId)", event: .success)
+        print("Tapped on Pay Invoice on :\(documentId)")
         documentIdToRefetch = documentId
         paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
             if let error {
@@ -230,6 +230,18 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
 }
 
 extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
+    func didTapOnContinueOnShareBottomSheet() {
+        //
+    }
+    
+    func didTapForwardOnInstallBottomSheet() {
+        //
+    }
+    
+    func didTapOnPayButton() {
+        //
+    }
+
     func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
         DispatchQueue.main.async {
             self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
@@ -249,12 +261,12 @@ extension InvoicesListViewModel: GiniHealthTrackingDelegate {
         switch event.type {
         case .onToTheBankButtonClicked:
             self.shouldRefetchExtractions = true
-            Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
+            print("To the banking app button was tapped,\(String(describing: event.info))")
         case .onCloseButtonClicked:
             refetchExtractions()
-            Log("Close screen was triggered", event: .success)
+            print("Close screen was triggered")
         case .onCloseKeyboardButtonClicked:
-            Log("Close keyboard was triggered", event: .success)
+            print("Close keyboard was triggered")
         }
     }
 }

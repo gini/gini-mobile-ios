@@ -155,7 +155,6 @@ public struct DataForReview {
                         completion(.failure(.noInstalledApps))
                     }
                 case let .failure(error):
-                    
                     completion(.failure(GiniMerchantError.apiError(error)))
                 }
             }

@@ -10,6 +10,7 @@ import UIKit
 import GiniCaptureSDK
 import GiniHealthAPILibrary
 import GiniHealthSDK
+import GiniPaymentComponents
 
 final class AppCoordinator: Coordinator {
     
@@ -23,7 +24,7 @@ final class AppCoordinator: Coordinator {
         let selectAPIViewController = SelectAPIViewController()
         selectAPIViewController.delegate = self
         selectAPIViewController.debugMenuPresenter = self
-        selectAPIViewController.clientId = self.client.id
+        selectAPIViewController.clientId = clientID
         return selectAPIViewController
     }()
     
@@ -46,11 +47,10 @@ final class AppCoordinator: Coordinator {
         }
         return giniConfiguration
     }()
-    
-    private lazy var client: GiniHealthAPILibrary.Client = CredentialsManager.fetchClientFromBundle()
-    private lazy var apiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
-    private lazy var health = GiniHealth(with: apiLib)
+
+    private lazy var health = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain)
     private lazy var paymentComponentsController = PaymentComponentsController(giniHealth: health)
+
     private lazy var giniHealthConfiguration: GiniHealthConfiguration = {
         let configuration = GiniHealthConfiguration()
         // Show the close button to dismiss the payment review screen
@@ -61,7 +61,7 @@ final class AppCoordinator: Coordinator {
     
     var isBrandedPaymentComponent = true
 
-    private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
+    private var documentMetadata: GiniHealthSDK.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
     
@@ -69,8 +69,8 @@ final class AppCoordinator: Coordinator {
         self.window = window
         print("------------------------------------\n\n",
               "📸 Gini Capture SDK for iOS (\(GiniCapture.versionString))\n\n",
-              "      - Client id:  \(client.id)\n",
-              "      - Client email domain:  \(client.domain)",
+              "      - Client id:  \(clientID)\n",
+              "      - Client email domain:  \(clientDomain)",
               "\n\n------------------------------------\n")
     }
     
@@ -125,9 +125,9 @@ final class AppCoordinator: Coordinator {
 
         let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
                                                         importedDocuments: pages?.map { $0.document },
-                                                        client: GiniHealthAPILibrary.Client(id: self.client.id,
-                                                                                            secret: self.client.secret,
-                                                                                            domain: self.client.domain),
+                                                        client: GiniHealthAPILibrary.Client(id: clientID,
+                                                                                            secret: clientPassword,
+                                                                                            domain: clientDomain),
                                                                                             documentMetadata: metadata,
                                                         hardcodedInvoicesController: HardcodedInvoicesController(),
                                                         paymentComponentController: paymentComponentsController)
@@ -137,15 +137,16 @@ final class AppCoordinator: Coordinator {
         health.delegate = self
         screenAPICoordinator.giniHealth = health
         
-        screenAPICoordinator.start(healthAPI: apiLib)
+        // TODO: replace
+//        screenAPICoordinator.start(healthAPI: apiLib)
         add(childCoordinator: screenAPICoordinator)
         
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
     
-    private var testDocument: GiniHealthAPILibrary.Document?
-    private var testDocumentExtractions: [GiniHealthAPILibrary.Extraction]?
-    
+    private var testDocument: GiniHealthSDK.Document?
+    private var testDocumentExtractions: [GiniHealthSDK.Extraction]?
+
     fileprivate func showPaymentReviewWithTestDocument() {
         health.delegate = self
         health.setConfiguration(giniHealthConfiguration)
@@ -185,7 +186,7 @@ final class AppCoordinator: Coordinator {
                                                        metadata: nil) { result in
                 switch result {
                 case .success(let createdDocument):
-                    let partialDocInfo = GiniHealthAPILibrary.PartialDocumentInfo(document: createdDocument.links.document)
+                    let partialDocInfo = GiniHealthSDK.PartialDocumentInfo(document: createdDocument.links.document)
                     self.health.documentService.createDocument(fileName: nil,
                                                                docType: nil,
                                                                type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
@@ -283,7 +284,7 @@ final class AppCoordinator: Coordinator {
         let invoicesListCoordinator = InvoicesListCoordinator()
         paymentComponentsController = PaymentComponentsController(giniHealth: health)
         let paymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: isBrandedPaymentComponent)
-        paymentComponentsController.paymentComponentConfiguration = paymentComponentConfiguration
+        health.paymentComponentConfiguration = paymentComponentConfiguration
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
                                           hardcodedInvoicesController: HardcodedInvoicesController(),
