@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  UserDefaultPropertyWrapper.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
