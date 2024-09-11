@@ -221,6 +221,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             switch result {
             case .success(let configuration):
                 DispatchQueue.main.async {
+                    GiniBankUserDefaultsStorage.clientConfiguration = configuration
                     self.initializeAnalytics(with: configuration)
                 }
             case .failure(let error):
@@ -292,7 +293,9 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                     } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
                         self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
-                        self.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                        self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController) { [weak self] in
+                            self?.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                        }
                     }
                 }
 
@@ -392,7 +395,9 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
                            invoice: DigitalInvoice?,
                            analysisDelegate: GiniCaptureSDK.AnalysisDelegate) {
         guard let invoice = invoice else { return }
-        deliverWithReturnAssistant(result: invoice.extractionResult, analysisDelegate: analysisDelegate)
+        handleTransactionDocsAlertIfNeeded(on: coordinator.rootViewController) { [weak self] in
+            self?.deliverWithReturnAssistant(result: invoice.extractionResult, analysisDelegate: analysisDelegate)
+        }
     }
 
     func didCancelAnalysis(_ coordinator: DigitalInvoiceCoordinator) {
@@ -497,7 +502,9 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
                            _ editedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
         guard let editedExtractionResult else { return }
-        deliverWithSkonto(result: editedExtractionResult)
+        handleTransactionDocsAlertIfNeeded(on: coordinator.rootViewController) { [weak self] in
+            self?.deliverWithSkonto(result: editedExtractionResult)
+        }
     }
 
     func didCancelAnalysis(_ coordinator: SkontoCoordinator) {
@@ -655,6 +662,23 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                 errors.append(error)
                 completion(UIImage(), errors)
             }
+        }
+    }
+}
+
+extension GiniBankNetworkingScreenApiCoordinator {
+    private func handleTransactionDocsAlertIfNeeded(on controller: UIViewController, action: @escaping () -> Void) {
+        let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
+        let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
+
+        if transactionDocsEnabled && self.giniBankConfiguration.transactionDocsEnabled {
+            // MARK: same action for all handlers, before backend will be implemented
+            TransactionDocsAlert.show(on: controller,
+                                      alwaysAttachHandler: action,
+                                      attachHandler: action,
+                                      dontAttachHandler: action)
+        } else {
+            action()
         }
     }
 }

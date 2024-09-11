@@ -16,6 +16,8 @@ public class TransactionDocsView: UIView {
 
     public weak var presentingViewController: UIViewController?
 
+    private let configuration = GiniBankConfiguration.shared
+
     // Mock data
     private lazy var transactionDocs: [TransactionDoc] = [
         TransactionDoc(fileName: "image.png", type: .image),
@@ -57,6 +59,9 @@ public class TransactionDocsView: UIView {
     }
 
     private func commonInit() {
+        let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
+        let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
+        guard transactionDocsEnabled, configuration.transactionDocsEnabled, !transactionDocs.isEmpty else { return }
         addSubview(containerView)
         containerView.addSubview(stackView)
 
@@ -111,6 +116,9 @@ public class TransactionDocsView: UIView {
         }) {
             self.stackView.removeArrangedSubview(itemView)
             itemView.removeFromSuperview()
+            if transactionDocs.isEmpty {
+                containerView.removeFromSuperview()
+            }
             self.delegate?.transactionDocsViewDidUpdateContent(self)
         }
     }
