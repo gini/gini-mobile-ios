@@ -18,7 +18,7 @@ struct CornerBoundingBoxes {
     var bottomRight: ExtractionBoundingBox
 }
 
-final class DocumentPagesViewModel {
+final class DocumentPagesViewModel: DocumentPagesViewModelProtocol {
     private let originalImages: [UIImage]
     private let originalSizes: [DocumentPageSize]
     private var extractionBoundingBoxes: [ExtractionBoundingBox]
@@ -28,6 +28,9 @@ final class DocumentPagesViewModel {
 
     // Information to be displayed in the screen after highlighting Skonto details
     private (set) var processedImages = [UIImage]()
+    var bottomInfoItems: [String] {
+        return [expiryDateString, withDiscountPriceString, withoutDiscountPriceString]
+    }
 
     private let highlightPadding: CGFloat = 10.0
 

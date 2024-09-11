@@ -46,23 +46,12 @@ final class DocumentPagesViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var footerView: UIView = {
-        let footerView = UIView()
-        footerView.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+    private lazy var footerView: DocumentPagesFooterView = {
+        let footerView = DocumentPagesFooterView()
         footerView.translatesAutoresizingMaskIntoConstraints = false
         return footerView
     }()
 
-    private lazy var footerStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.alignment = .leading
-        stackView.distribution = .equalSpacing
-        stackView.spacing = Constants.stackViewItemSpacing
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-
-    }()
     private lazy var loadingIndicatorContainer: UIView = {
         let loadingIndicatorContainer = UIView(frame: CGRect.zero)
         return loadingIndicatorContainer
@@ -75,7 +64,7 @@ final class DocumentPagesViewController: UIViewController {
         return indicatorView
     }()
 
-    private var viewModel: DocumentPagesViewModel?
+    private var viewModel: DocumentPagesViewModelProtocol?
     private let configuration = GiniBankConfiguration.shared
 
     // Constraints
@@ -224,22 +213,6 @@ final class DocumentPagesViewController: UIViewController {
             footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
-        footerView.addSubview(footerStackView)
-        // Get the bottom safe area height
-        let bottomSafeAreaHeight = view.safeAreaInsets.bottom
-        let stackViewBottomConstraint = bottomSafeAreaHeight + Constants.footerStackViewBottomPadding
-        NSLayoutConstraint.activate([
-            footerStackView.leadingAnchor.constraint(equalTo: footerView.leadingAnchor,
-                                               constant: Constants.footerStackViewDefaultPadding),
-            footerStackView.trailingAnchor.constraint(equalTo: footerView.trailingAnchor,
-                                                constant: -Constants.footerStackViewDefaultPadding),
-            footerStackView.topAnchor.constraint(equalTo: footerView.topAnchor,
-                                           constant: Constants.footerStackViewDefaultPadding),
-            footerStackView.bottomAnchor.constraint(equalTo: footerView.bottomAnchor,
-                                              constant: -stackViewBottomConstraint)
-        ])
-
     }
 
     // MARK: - Handle Loading indicator
@@ -341,30 +314,7 @@ final class DocumentPagesViewController: UIViewController {
     private func showSkontoDetailsInFooter() {
         guard let viewModel, !viewModel.processedImages.isEmpty else { return }
 
-        let skontoExpiryDateLabel = UILabel()
-        skontoExpiryDateLabel.text = viewModel.expiryDateString
-        skontoExpiryDateLabel.accessibilityValue = viewModel.expiryDateString
-        skontoExpiryDateLabel.font = configuration.textStyleFonts[.footnote]
-        skontoExpiryDateLabel.textColor = .GiniBank.light1
-        skontoExpiryDateLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        footerStackView.addArrangedSubview(skontoExpiryDateLabel)
-
-        let skontoWithDiscountPriceLabel = UILabel()
-        skontoWithDiscountPriceLabel.text = viewModel.withDiscountPriceString
-        skontoWithDiscountPriceLabel.accessibilityValue = viewModel.withDiscountPriceString
-        skontoWithDiscountPriceLabel.font = configuration.textStyleFonts[.footnote]
-        skontoWithDiscountPriceLabel.textColor = .GiniBank.light1
-        skontoWithDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        footerStackView.addArrangedSubview(skontoWithDiscountPriceLabel)
-
-        let skontoWithoutDiscountPriceLabel = UILabel()
-        skontoWithoutDiscountPriceLabel.text = viewModel.withoutDiscountPriceString
-        skontoWithoutDiscountPriceLabel.accessibilityValue = viewModel.withoutDiscountPriceString
-        skontoWithoutDiscountPriceLabel.font = configuration.textStyleFonts[.footnote]
-        skontoWithoutDiscountPriceLabel.textColor = .GiniBank.light1
-        skontoWithoutDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        footerStackView.addArrangedSubview(skontoWithoutDiscountPriceLabel)
+        footerView.updateFooter(with: viewModel.bottomInfoItems)
     }
 
     // MARK: - Utilities
@@ -459,7 +409,5 @@ private extension DocumentPagesViewController {
         static let minimumZoomScale: CGFloat = 1.0
         static let maximumZoomScale: CGFloat = 2.0
         static let defaultNavigationBarHeight: CGFloat = 44
-        static let footerStackViewBottomPadding: CGFloat = 25
-        static let footerStackViewDefaultPadding: CGFloat = 16
     }
 }
