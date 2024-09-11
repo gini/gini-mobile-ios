@@ -130,7 +130,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         GiniBank.setConfiguration(configuration)
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
-        giniBankConfiguration.configurationService = configurationService
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
     }
