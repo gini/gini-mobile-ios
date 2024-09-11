@@ -20,4 +20,4 @@
 "ginipaybank.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig";
 
 "ginipaybank.reviewscreen.payButton.title" = "Zahlen";
-"ginipaybank.reviewscreen.backToInsurance.title" = "Zur Health App";
+"ginipaybank.reviewscreen.backToInitialApp.title" = "Zurück";

@@ -85,6 +85,7 @@ final class AppCoordinator: Coordinator {
     private let imageDataKey = "imageData"
 	private var settingsButtonStates: SettingsButtonStates?
 	private var documentValidationsState: DocumentValidationsState?
+    private var apiEnvironment: APIEnvironment = .production
 
     init(window: UIWindow) {
         self.window = window
@@ -206,7 +207,8 @@ final class AppCoordinator: Coordinator {
 
         documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
                                              additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
-        let screenAPICoordinator = ScreenAPICoordinator(configuration: configuration,
+        let screenAPICoordinator = ScreenAPICoordinator(apiEnvironment: apiEnvironment,
+                                                        configuration: configuration,
                                                         importedDocuments: pages?.map { $0.document },
                                                         client: client,
                                                         documentMetadata: documentMetadata)
@@ -251,9 +253,11 @@ final class AppCoordinator: Coordinator {
     fileprivate func showSettings() {
 		guard let settingsButtonStates = settingsButtonStates,
 			  let documentValidationsState = documentValidationsState else { return }
-		let settingsViewController = SettingsViewController(giniConfiguration: configuration,
-															settingsButtonStates: settingsButtonStates,
-															documentValidationsState: documentValidationsState)
+        let settingsViewController = SettingsViewController(apiEnvironment: apiEnvironment,
+                                                            client: client,
+                                                            giniConfiguration: configuration,
+                                                            settingsButtonStates: settingsButtonStates,
+                                                            documentValidationsState: documentValidationsState)
 		settingsViewController.delegate = self
 		settingsViewController.modalPresentationStyle = .overFullScreen
 		settingsViewController.modalTransitionStyle = .coverVertical
@@ -319,6 +323,15 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     func didTapCloseButton() {
 		rootViewController.dismiss(animated: true)
 		GiniBank.setConfiguration(configuration)
+    }
+
+    func didTapSaveCredentialsButton(clientId: String, clientSecret: String) {
+        client.id = clientId
+        client.secret = clientSecret
+    }
+
+    func didSelectAPIEnvironment(apiEnvironment: APIEnvironment) {
+        self.apiEnvironment = apiEnvironment
     }
 }
 

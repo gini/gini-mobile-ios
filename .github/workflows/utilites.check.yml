@@ -1,0 +1,33 @@
+name: Check Gini Utilites
+on:
+  push:
+   paths:
+      - 'GiniComponents/GiniUtilites/**'
+   tags-ignore:
+      - '**'
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        target: [GiniUtilites]
+        destination: ['platform=iOS Simulator,OS=17.2,name=iPhone SE (3rd generation)', 'platform=iOS Simulator,OS=18.1,name=iPhone 15 Pro Max']
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1.6.0
+      with:
+        xcode-version: '15.3'
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Check package GiniUtilites
+      run: |
+           cd GiniComponents/GiniUtilites
+           swift package update
+
+    - name: Build sdk targets
+      run: |
+        xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO

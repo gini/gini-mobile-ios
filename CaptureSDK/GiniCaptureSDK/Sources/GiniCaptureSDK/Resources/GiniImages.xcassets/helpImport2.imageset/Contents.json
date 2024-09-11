@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Group 76.pdf",
+      "filename" : "Group 31.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,12 +11,62 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Group 46.pdf",
+      "filename" : "Group 48.pdf",
       "idiom" : "universal"
+    },
+    {
+      "filename" : "Group 47.pdf",
+      "idiom" : "ipad"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Group 46.pdf",
+      "idiom" : "ipad"
+    },
+    {
+      "filename" : "Group 83.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Group 81.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "filename" : "Group 84.pdf",
+      "idiom" : "ipad",
+      "locale" : "de"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Group 82.pdf",
+      "idiom" : "ipad",
+      "locale" : "de"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "localizable" : true,
+    "preserves-vector-representation" : true
   }
 }
