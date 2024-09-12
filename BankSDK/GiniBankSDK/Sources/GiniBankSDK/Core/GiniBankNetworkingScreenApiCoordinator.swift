@@ -667,16 +667,17 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 }
 
 extension GiniBankNetworkingScreenApiCoordinator {
-    private func handleTransactionDocsAlertIfNeeded(on controller: UIViewController, action: @escaping () -> Void) {
+    private func handleTransactionDocsAlertIfNeeded(on controller: UIViewController, 
+                                                    action: @escaping () -> Void) {
         let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
         let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
 
         if transactionDocsEnabled && self.giniBankConfiguration.transactionDocsEnabled {
             // MARK: same action for all handlers, before backend will be implemented
-            TransactionDocsAlert.show(on: controller,
-                                      alwaysAttachHandler: action,
-                                      attachOnceHandler: action,
-                                      doNotAttachHandler: action)
+            TransactionDocsAlertController.show(on: controller,
+                                                alwaysAttachHandler: action,
+                                                attachOnceHandler: action,
+                                                doNotAttachHandler: action)
         } else {
             action()
         }
