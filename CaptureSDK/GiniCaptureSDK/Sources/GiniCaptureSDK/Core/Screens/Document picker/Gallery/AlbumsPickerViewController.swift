@@ -37,6 +37,7 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
 
     lazy var albumsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.bounces = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
