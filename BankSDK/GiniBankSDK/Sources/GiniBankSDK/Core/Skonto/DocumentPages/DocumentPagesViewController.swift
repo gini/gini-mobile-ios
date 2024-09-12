@@ -267,7 +267,7 @@ final class DocumentPagesViewController: UIViewController {
 
     private func showProcessedImages() {
         guard let viewModel else { return }
-        let images = viewModel.processImages()
+        let images = viewModel.imagesForDisplay()
 
         for image in images {
             // Create a container view for the image view
@@ -322,7 +322,7 @@ final class DocumentPagesViewController: UIViewController {
     }
 
     private func showSkontoDetailsInFooter() {
-        guard let viewModel, !viewModel.processImages().isEmpty else { return }
+        guard let viewModel, !viewModel.imagesForDisplay().isEmpty else { return }
 
         footerView.updateFooter(with: viewModel.bottomInfoItems)
     }

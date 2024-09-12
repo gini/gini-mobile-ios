@@ -29,7 +29,7 @@ final class TransactionDocsDocumentPagesViewModel: DocumentPagesViewModelProtoco
         self.rightBarButtonAction = rightBarButtonAction
     }
 
-    func processImages() -> [UIImage] {
+    func imagesForDisplay() -> [UIImage] {
         return originalImages
     }
 
