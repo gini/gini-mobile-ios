@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -59,6 +59,7 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="ggS-N1-el3" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leading" id="QQx-hP-9ti"/>
+                                    <constraint firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leading" id="S6b-de-p4S"/>
                                     <constraint firstItem="vN8-eg-TBS" firstAttribute="height" secondItem="EiW-yt-Ug3" secondAttribute="height" multiplier="0.4" id="SuC-Vo-6xK"/>
                                     <constraint firstItem="ggS-N1-el3" firstAttribute="bottom" secondItem="ySK-ra-mer" secondAttribute="bottom" id="XL5-bT-xkG"/>
                                     <constraint firstItem="ySK-ra-mer" firstAttribute="trailing" secondItem="ggS-N1-el3" secondAttribute="trailing" id="sEH-Zh-2JJ"/>
@@ -68,7 +69,7 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="ggS-N1-el3"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="bJz-ke-al3"/>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ydb-dv-dAn">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ydb-dv-dAn" customClass="MultilineTitleButton" customModule="GiniCaptureSDK">
                                 <rect key="frame" x="102.66666666666669" y="690" width="170" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="48" id="C36-9G-Njd">
@@ -88,7 +89,6 @@
                             <constraint firstItem="Ydb-dv-dAn" firstAttribute="centerX" secondItem="sZ4-c8-lTq" secondAttribute="centerX" id="GeT-zw-GQg"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="EiW-yt-Ug3" secondAttribute="trailing" id="Jbb-Og-dU0"/>
                             <constraint firstItem="EiW-yt-Ug3" firstAttribute="centerX" secondItem="sZ4-c8-lTq" secondAttribute="centerX" id="LUE-TR-0EJ"/>
-                            <constraint firstItem="EiW-yt-Ug3" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leading" id="S6b-de-p4S"/>
                             <constraint firstItem="3IY-Df-aw6" firstAttribute="bottom" secondItem="Ydb-dv-dAn" secondAttribute="bottom" constant="40" id="qOM-vH-0vu"/>
                             <constraint firstItem="EiW-yt-Ug3" firstAttribute="bottom" secondItem="Ydb-dv-dAn" secondAttribute="top" constant="-64" id="yge-kX-bNI"/>
                         </constraints>

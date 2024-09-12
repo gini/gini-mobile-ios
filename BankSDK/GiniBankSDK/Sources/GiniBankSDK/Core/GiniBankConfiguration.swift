@@ -678,14 +678,12 @@ public final class GiniBankConfiguration: NSObject {
         guard let documentService = documentService else { return }
         documentService.resetToInitialState()
         self.documentService = nil
-        configurationService = nil
         lineItems = nil
         skontoDiscounts = nil
     }
 
     // MARK: - Internal usage
     var documentService: DocumentServiceProtocol?
-    var configurationService: ClientConfigurationServiceProtocol?
     var lineItems: [[Extraction]]?
     var skontoDiscounts: [[Extraction]]?
 

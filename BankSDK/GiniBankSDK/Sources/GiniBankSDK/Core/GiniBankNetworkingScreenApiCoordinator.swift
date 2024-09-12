@@ -130,7 +130,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         GiniBank.setConfiguration(configuration)
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
-        giniBankConfiguration.configurationService = configurationService
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
     }
@@ -222,6 +221,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             switch result {
             case .success(let configuration):
                 DispatchQueue.main.async {
+                    GiniBankUserDefaultsStorage.clientConfiguration = configuration
                     self.initializeAnalytics(with: configuration)
                 }
             case .failure(let error):
@@ -668,7 +668,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 
 extension GiniBankNetworkingScreenApiCoordinator {
     private func handleTransactionDocsAlertIfNeeded(on controller: UIViewController, action: @escaping () -> Void) {
-        let savedConfiguration = self.configurationService?.savedConfiguration
+        let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
         let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
 
         if transactionDocsEnabled && self.giniBankConfiguration.transactionDocsEnabled {
