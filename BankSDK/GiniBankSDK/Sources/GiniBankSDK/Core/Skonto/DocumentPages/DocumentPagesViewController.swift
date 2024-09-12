@@ -92,7 +92,7 @@ final class DocumentPagesViewController: UIViewController {
     func setData(viewModel: DocumentPagesViewModelProtocol) {
         self.viewModel = viewModel
         if viewModel.rightBarButtonAction != nil {
-            // TODO: Replace help with options
+            // TODO: PP-805 Replace help with options
             let optionsButton = GiniBarButton(ofType: .help)
             optionsButton.addAction(self, #selector(didTapOptionsButton))
             navigationBar.topItem?.rightBarButtonItem = optionsButton.barButton

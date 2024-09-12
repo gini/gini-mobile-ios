@@ -25,7 +25,7 @@ class TransactionDocsActionsBottomSheet {
             popoverController.permittedArrowDirections = []
         }
 
-        // MARK: 805 test action
+        // TODO: PP-805 test action
         if let openHandler {
             let openAction = UIAlertAction(title: Constants.openTitle, style: .default) { _ in
                 openHandler()
@@ -48,7 +48,7 @@ class TransactionDocsActionsBottomSheet {
 
 private extension TransactionDocsActionsBottomSheet {
     enum Constants {
-        // TODO: 805 test action, add localization when will have translations
+        // TODO: PP-805 test action, add localization when will have translations
         static let openTitle = "Open"
         static let deleteTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.transactionDocs.bottomSheet.action.delete",
                                                                                 comment: "Delete")
