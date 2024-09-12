@@ -1,5 +1,5 @@
 //
-//  DocumentPagesViewModel.swift
+//  SkontoDocumentPagesViewModel.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -18,7 +18,7 @@ struct CornerBoundingBoxes {
     var bottomRight: ExtractionBoundingBox
 }
 
-final class DocumentPagesViewModel: DocumentPagesViewModelProtocol {
+final class SkontoDocumentPagesViewModel: DocumentPagesViewModelProtocol {
     private let originalImages: [UIImage]
     private let originalSizes: [DocumentPageSize]
     private var extractionBoundingBoxes: [ExtractionBoundingBox]
