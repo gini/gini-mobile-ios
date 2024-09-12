@@ -131,8 +131,8 @@
 "ginibank.transactionDocs.alert.title" = "Fügen Sie der Transaktion einen Anhang hinzu?";
 "ginibank.transactionDocs.alert.message" = "Sie können dieser Transaktion einen Anhang hinzufügen. Das erleichert es Ihnen, Ausgaben effizient zu verwalten und Einkäufe einfacher zurückzurufen.";
 "ginibank.transactionDocs.alert.action.attachAlways" = "Immer anhängen";
-"ginibank.transactionDocs.alert.action.attach" = "Nur für diese Transaktion";
-"ginibank.transactionDocs.alert.action.dontAttach" = "Nicht anhängen";
+"ginibank.transactionDocs.alert.action.attachOnce" = "Nur für diese Transaktion";
+"ginibank.transactionDocs.alert.action.doNotAttach" = "Nicht anhängen";
 
 "ginibank.transactionDocs.title" = "Anhänge";
 
