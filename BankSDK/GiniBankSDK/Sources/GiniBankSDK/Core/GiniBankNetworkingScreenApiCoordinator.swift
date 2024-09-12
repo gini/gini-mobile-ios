@@ -675,8 +675,8 @@ extension GiniBankNetworkingScreenApiCoordinator {
             // MARK: same action for all handlers, before backend will be implemented
             TransactionDocsAlert.show(on: controller,
                                       alwaysAttachHandler: action,
-                                      attachHandler: action,
-                                      dontAttachHandler: action)
+                                      attachOnceHandler: action,
+                                      doNotAttachHandler: action)
         } else {
             action()
         }
