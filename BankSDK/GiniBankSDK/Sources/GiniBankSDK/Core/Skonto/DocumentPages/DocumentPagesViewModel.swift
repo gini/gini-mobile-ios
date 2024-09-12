@@ -28,9 +28,12 @@ final class DocumentPagesViewModel: DocumentPagesViewModelProtocol {
 
     // Information to be displayed in the screen after highlighting Skonto details
     private (set) var processedImages = [UIImage]()
+    static var screenTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.document.pages.screen.title",
+                                                                              comment: "Skonto discount details")
     var bottomInfoItems: [String] {
         return [expiryDateString, withDiscountPriceString, withoutDiscountPriceString]
     }
+    var rightBarButtonAction: (() -> Void)?
 
     private let highlightPadding: CGFloat = 10.0
 
