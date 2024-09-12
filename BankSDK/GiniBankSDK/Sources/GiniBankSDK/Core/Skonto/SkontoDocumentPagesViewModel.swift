@@ -1,5 +1,5 @@
 //
-//  DocumentPagesViewModel.swift
+//  SkontoDocumentPagesViewModel.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -18,7 +18,7 @@ struct CornerBoundingBoxes {
     var bottomRight: ExtractionBoundingBox
 }
 
-final class DocumentPagesViewModel {
+final class SkontoDocumentPagesViewModel: DocumentPagesViewModelProtocol {
     private let originalImages: [UIImage]
     private let originalSizes: [DocumentPageSize]
     private var extractionBoundingBoxes: [ExtractionBoundingBox]
@@ -28,6 +28,12 @@ final class DocumentPagesViewModel {
 
     // Information to be displayed in the screen after highlighting Skonto details
     private (set) var processedImages = [UIImage]()
+    static var screenTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.document.pages.screen.title",
+                                                                              comment: "Skonto discount details")
+    var bottomInfoItems: [String] {
+        return [expiryDateString, withDiscountPriceString, withoutDiscountPriceString]
+    }
+    var rightBarButtonAction: (() -> Void)?
 
     private let highlightPadding: CGFloat = 10.0
 
@@ -147,7 +153,7 @@ final class DocumentPagesViewModel {
 
      - Returns: An array of processed UIImages with the bounding areas drawn.
      */
-    func processImages() -> [UIImage] {
+    func imagesForDisplay() -> [UIImage] {
         guard processedImages.isEmpty else {
             return processedImages
         }

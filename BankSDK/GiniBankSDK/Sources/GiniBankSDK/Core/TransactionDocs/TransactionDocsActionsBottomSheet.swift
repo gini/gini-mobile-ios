@@ -8,6 +8,7 @@ import UIKit
 
 class TransactionDocsActionsBottomSheet {
     static func showDeleteAlert(on viewController: UIViewController,
+                                openHandler: (() -> Void)? = nil,
                                 deleteHandler: @escaping () -> Void,
                                 cancelHandler: (() -> Void)? = nil) {
         let actionSheet = UIAlertController(title: nil,
@@ -15,6 +16,22 @@ class TransactionDocsActionsBottomSheet {
                                             preferredStyle: .actionSheet)
         actionSheet.view.tintColor = .GiniBank.accent1
 
+        if let popoverController = actionSheet.popoverPresentationController {
+            popoverController.sourceView = viewController.view
+            popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX,
+                                                  y: viewController.view.bounds.maxY,
+                                                  width: 0,
+                                                  height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+
+        // TODO: PP-805 test action
+        if let openHandler {
+            let openAction = UIAlertAction(title: Constants.openTitle, style: .default) { _ in
+                openHandler()
+            }
+            actionSheet.addAction(openAction)
+        }
         let deleteAction = UIAlertAction(title: Constants.deleteTitle, style: .destructive) { _ in
             deleteHandler()
         }
@@ -31,6 +48,8 @@ class TransactionDocsActionsBottomSheet {
 
 private extension TransactionDocsActionsBottomSheet {
     enum Constants {
+        // TODO: PP-805 test action, add localization when will have translations
+        static let openTitle = "Open"
         static let deleteTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.transactionDocs.bottomSheet.action.delete",
                                                                                 comment: "Delete")
         static let cancelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.transactionDocs.bottomSheet.action.cancel",
