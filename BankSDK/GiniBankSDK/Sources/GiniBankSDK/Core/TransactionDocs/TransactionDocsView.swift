@@ -102,8 +102,33 @@ public class TransactionDocsView: UIView {
             guard let self, let presentingViewController else { return }
             let fileName = transactionDoc.fileName
             let deleteAction = { self.deleteTransactionDoc(with: fileName) }
+            // TODO: PP-805 its only for tests, to display preview flow for TD
+            let openAction = {
+                let viewController = DocumentPagesViewController(screenTitle: fileName)
+                viewController.modalPresentationStyle = .fullScreen
+                let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: [GiniImages.transactionDocsFileIcon.image!],
+                                                                      amountToPay: .init(value: 100, currencyCode: "EUR"),
+                                                                      iban: "IBAN",
+                                                                      expiryDate: Date(),
+                                                                      rightBarButtonAction: {
+                    let deleteAction = {
+                        self.deleteTransactionDoc(with: fileName)
+                        viewController.dismiss(animated: true)
+                    }
+                    TransactionDocsActionsBottomSheet.showDeleteAlert(on: viewController,
+                                                                      deleteHandler: deleteAction)
+                })
+
+                presentingViewController.present(viewController, animated: true)
+                // TODO: PP-805 Simulate data loading delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    viewController.stopLoadingIndicatorAnimation()
+                    viewController.setData(viewModel: viewModel)
+                }
+            }
             TransactionDocsActionsBottomSheet.showDeleteAlert(on: presentingViewController,
-                                                             deleteHandler: deleteAction)
+                                                              openHandler: openAction,
+                                                              deleteHandler: deleteAction)
         }
         return transactionDocsItemView
     }
