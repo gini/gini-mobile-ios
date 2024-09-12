@@ -138,3 +138,6 @@
 
 "ginibank.transactionDocs.bottomSheet.action.delete" = "Löschen";
 "ginibank.transactionDocs.bottomSheet.action.cancel" = "Abbrechen";
+"ginibank.transactionDocs.preview.amountToPay" = "Betrag zu zahlen";
+"ginibank.transactionDocs.preview.iban" = "IBAN";
+"ginibank.transactionDocs.preview.expiryDate" = "Rechnungsfälligkeitsdatum";
