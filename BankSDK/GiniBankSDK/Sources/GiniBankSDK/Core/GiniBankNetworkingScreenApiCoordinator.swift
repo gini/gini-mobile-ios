@@ -515,7 +515,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     }
 
     func didTapDocumentPreview(_ coordinator: Coordinator, _ skontoViewModel: SkontoViewModel) {
-        let viewController = DocumentPagesViewController()
+        let viewController = DocumentPagesViewController(screenTitle: DocumentPagesViewModel.screenTitle)
         viewController.modalPresentationStyle = .overCurrentContext
         screenAPINavigationController.present(viewController, animated: true)
 
