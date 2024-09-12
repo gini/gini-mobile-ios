@@ -39,8 +39,10 @@ final class DocumentPagesFooterView: UIView {
         let bottomSafeAreaHeight = safeAreaInsets.bottom
         let stackViewBottomConstraint = bottomSafeAreaHeight + Constants.stackViewBottomPadding
         NSLayoutConstraint.activate([
-            footerStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.stackViewDefaultPadding),
-            footerStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.stackViewDefaultPadding),
+            footerStackView.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                     constant: Constants.stackViewDefaultPadding),
+            footerStackView.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                      constant: -Constants.stackViewDefaultPadding),
             footerStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.stackViewDefaultPadding),
             footerStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -stackViewBottomConstraint)
         ])
