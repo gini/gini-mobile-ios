@@ -32,6 +32,7 @@ final class DocumentPagesViewController: UIViewController {
         button.addAction(self, #selector(didTapClose))
         return button
     }()
+
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -66,12 +67,14 @@ final class DocumentPagesViewController: UIViewController {
 
     private var viewModel: DocumentPagesViewModelProtocol?
     private let configuration = GiniBankConfiguration.shared
+    private let screenTitle: String?
 
     // Constraints
     private var contentStackViewTopConstraint: NSLayoutConstraint?
 
     // MARK: - Init
-    init() {
+    init(screenTitle: String? = nil) {
+        self.screenTitle = screenTitle
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -86,8 +89,14 @@ final class DocumentPagesViewController: UIViewController {
         startLoadingIndicatorAnimation()
     }
 
-    func setData(viewModel: DocumentPagesViewModel) {
+    func setData(viewModel: DocumentPagesViewModelProtocol) {
         self.viewModel = viewModel
+        if viewModel.rightBarButtonAction != nil {
+            // TODO: Replace help with options
+            let optionsButton = GiniBarButton(ofType: .help)
+            optionsButton.addAction(self, #selector(didTapOptionsButton))
+            navigationBar.topItem?.rightBarButtonItem = optionsButton.barButton
+        }
         showProcessedImages()
         showSkontoDetailsInFooter()
     }
@@ -142,10 +151,7 @@ final class DocumentPagesViewController: UIViewController {
         view.addSubview(navigationBar)
 
         // Create a navigation item with a title and a cancel button
-        let screenTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.document.pages.screen.title",
-                                                                   comment: "Skonto discount details")
-
-        let navigationItem = UINavigationItem(title: screenTitle)
+        let navigationItem = UINavigationItem(title: screenTitle ?? "")
         navigationItem.leftBarButtonItem = cancelButton.barButton
 
         // Assign the navigation item to the navigation bar
@@ -158,6 +164,10 @@ final class DocumentPagesViewController: UIViewController {
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             navigationBar.heightAnchor.constraint(equalToConstant: Constants.defaultNavigationBarHeight)
         ])
+    }
+
+    @objc private func didTapOptionsButton() {
+        viewModel?.rightBarButtonAction?()
     }
 
     private func setupScrollView() {
@@ -312,7 +322,7 @@ final class DocumentPagesViewController: UIViewController {
     }
 
     private func showSkontoDetailsInFooter() {
-        guard let viewModel, !viewModel.processedImages.isEmpty else { return }
+        guard let viewModel, !viewModel.processImages().isEmpty else { return }
 
         footerView.updateFooter(with: viewModel.bottomInfoItems)
     }
