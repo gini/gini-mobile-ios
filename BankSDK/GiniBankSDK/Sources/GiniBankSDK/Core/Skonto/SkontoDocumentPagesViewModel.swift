@@ -153,7 +153,7 @@ final class SkontoDocumentPagesViewModel: DocumentPagesViewModelProtocol {
 
      - Returns: An array of processed UIImages with the bounding areas drawn.
      */
-    func processImages() -> [UIImage] {
+    func imagesForDisplay() -> [UIImage] {
         guard processedImages.isEmpty else {
             return processedImages
         }

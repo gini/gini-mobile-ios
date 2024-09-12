@@ -10,5 +10,5 @@ protocol DocumentPagesViewModelProtocol {
     var rightBarButtonAction: (() -> Void)? { get }
     var bottomInfoItems: [String] { get }
 
-    func processImages() -> [UIImage]
+    func imagesForDisplay() -> [UIImage]
 }
