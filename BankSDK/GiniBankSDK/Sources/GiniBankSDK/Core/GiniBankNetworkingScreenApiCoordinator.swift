@@ -515,7 +515,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     }
 
     func didTapDocumentPreview(_ coordinator: Coordinator, _ skontoViewModel: SkontoViewModel) {
-        let viewController = DocumentPagesViewController()
+        let viewController = DocumentPagesViewController(screenTitle: SkontoDocumentPagesViewModel.screenTitle)
         viewController.modalPresentationStyle = .overCurrentContext
         screenAPINavigationController.present(viewController, animated: true)
 
@@ -548,7 +548,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     }
 
     private func createDocumentPageViewModel(from skontoViewModel: SkontoViewModel,
-                                             completion: @escaping (Result<DocumentPagesViewModel,
+                                             completion: @escaping (Result<SkontoDocumentPagesViewModel,
                                                                     GiniError>) -> Void) {
         let dispatchGroup = DispatchGroup()
         var originalSizes: [DocumentPageSize] = []
@@ -604,12 +604,12 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                 completion(.failure(documentPagesError))
             } else {
                 let extractionBoundingBoxes = skontoViewModel.extractionBoundingBoxes
-                let viewModel = DocumentPagesViewModel(originalImages: pageImages,
-                                                       originalSizes: originalSizes,
-                                                       extractionBoundingBoxes: extractionBoundingBoxes,
-                                                       amountToPay: skontoViewModel.amountToPay, 
-                                                       skontoAmountToPay: skontoViewModel.skontoAmountToPay,
-                                                       expiryDate: skontoViewModel.dueDate)
+                let viewModel = SkontoDocumentPagesViewModel(originalImages: pageImages,
+                                                             originalSizes: originalSizes,
+                                                             extractionBoundingBoxes: extractionBoundingBoxes,
+                                                             amountToPay: skontoViewModel.amountToPay,
+                                                             skontoAmountToPay: skontoViewModel.skontoAmountToPay,
+                                                             expiryDate: skontoViewModel.dueDate)
                 skontoViewModel.setDocumentPagesViewModel(viewModel)
                 completion(.success(viewModel))
             }
