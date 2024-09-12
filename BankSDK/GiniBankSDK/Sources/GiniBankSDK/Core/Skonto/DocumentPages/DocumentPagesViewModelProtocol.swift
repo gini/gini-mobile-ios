@@ -7,12 +7,8 @@
 import UIKit
 
 protocol DocumentPagesViewModelProtocol {
-    var processedImages: [UIImage] { get }
+    var rightBarButtonAction: (() -> Void)? { get }
     var bottomInfoItems: [String] { get }
-    
-    func processImages() -> [UIImage]
-}
 
-extension DocumentPagesViewModelProtocol {
-    func processImages() -> [UIImage] { return [] }
+    func processImages() -> [UIImage]
 }
