@@ -173,8 +173,23 @@ final class InvoicesListViewModel {
         }
     }
 
+    func checkForErrors(documentID: String) {
+        if !checkDocumentForMultipleInvoices(documentID: documentID) {
+            checkDocumentIsPayable(documentID: documentID)
+        }
+    }
+
+    private func checkDocumentIsPayable(documentID: String) {
+        if let document = invoices.first(where: { $0.documentID == documentID }) {
+            if !(document.isPayable ?? false) {
+                errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.invoice.not.payable", comment: ""))")
+                showErrorsIfAny()
+            }
+        }
+    }
+
     @discardableResult
-    func checkDocumentForMultipleInvoices(documentID: String) -> Bool {
+    private func checkDocumentForMultipleInvoices(documentID: String) -> Bool {
         if let document = invoices.first(where: { $0.documentID == documentID }) {
             if document.hasMultipleDocuments ?? false {
                 errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.contains.multiple.invoices", comment: ""))")

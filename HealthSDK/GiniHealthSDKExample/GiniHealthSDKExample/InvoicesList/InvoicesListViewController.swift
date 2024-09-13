@@ -138,7 +138,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let documentID = viewModel.invoices[indexPath.row].documentID
-        viewModel.checkDocumentForMultipleInvoices(documentID: documentID)
+        viewModel.checkForErrors(documentID: documentID)
     }
 }
 
