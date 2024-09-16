@@ -12,3 +12,5 @@
 "giniHealthSDKExample.invoicesList.error" = "Error";
 "giniHealthSDKExample.cancel.button.title" = "Cancel";
 "ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "https://www.google.com/"; // This should be overwrited by client with their privacy policy link
+"giniHealthSDKExample.error.contains.multiple.invoices" = "Document contains multiple invoices";
+"giniHealthSDKExample.error.invoice.not.payable" = "Invoice is not payable";
