@@ -321,6 +321,12 @@ fileprivate extension PaymentReviewViewController {
             paymentInfoContainerView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             paymentInfoContainerView.trailingAnchor.constraint(equalTo: container.trailingAnchor)
         ])
+
+        if displayMode == .documentCollection {
+            NSLayoutConstraint.activate([
+                paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor)
+            ])
+        }
     }
 }
 
