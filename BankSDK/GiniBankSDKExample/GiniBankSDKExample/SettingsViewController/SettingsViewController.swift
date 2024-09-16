@@ -92,6 +92,7 @@ final class SettingsViewController: UIViewController {
 		tableView.register(SegmentedOptionTableViewCell.self)
 		tableView.register(InfoTableViewCell.self)
         tableView.register(CredentialsTableViewCell.self)
+        tableView.register(UpdateUserDefaultsCell.self)
 
 		var contentData = [CellType]()
 		
@@ -186,6 +187,9 @@ final class SettingsViewController: UIViewController {
 		
         contentData.append(.switchOption(data: .init(type: .transactionDocsEnabled,
                                                      isSwitchOn: giniConfiguration.transactionDocsEnabled)))
+
+        contentData.append(.userDefaults(message: "Remove TransactionDocs attachement options from UserDefaults",
+                                         buttonActive: UserDefaults.standard.bool(forKey: "ginibank.defaults.user.alwaysAttachDocs")))
 
         contentData.append(.switchOption(data: .init(type: .skontoEnabled,
                                                      isSwitchOn: giniConfiguration.skontoEnabled)))
@@ -546,6 +550,13 @@ final class SettingsViewController: UIViewController {
         return cell
     }
 
+    private func userDefaultsCell(for message: String, _ buttoActive: Bool) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell() as UpdateUserDefaultsCell
+        cell.set(message: message, buttonActive: buttoActive)
+        cell.delegate = self
+        return cell
+    }
+
 	// MARK: - Actions
 	
 	@objc func didSelectCloseButton() {
@@ -579,10 +590,19 @@ extension SettingsViewController: UITableViewDataSource {
 			return cell(for: data, at: row)
         case .credentials(let data):
             return cell(for: data)
+        case .userDefaults(let message, let buttoActive):
+            return userDefaultsCell(for: message, buttoActive)
 		}
 	}
 }
 
+extension SettingsViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+}
 // MARK: - SwitchOptionTableViewCellDelegate
 
 extension SettingsViewController: SwitchOptionTableViewCellDelegate {
@@ -643,4 +663,23 @@ extension SettingsViewController: GiniCaptureErrorLoggerDelegate {
 	func handleErrorLog(error: GiniCaptureSDK.ErrorLog) {
 		print("💻 custom - log error event called")
 	}
+}
+
+extension SettingsViewController: UpdateUserDefaultsCellDelegate {
+    func didTapRemoveButton(in view: UpdateUserDefaultsCell) {
+        let alwaysAttachDocs = UserDefaults.standard.bool(forKey: "ginibank.defaults.user.alwaysAttachDocs")
+        if alwaysAttachDocs {
+            UserDefaults.standard.removeObject(forKey: "ginibank.defaults.user.alwaysAttachDocs")
+            view.updateButtonState(isActive: false)
+            // Show confirmation alert
+            let alert = UIAlertController(title: "Success",
+                                          message: "The preference was successfully removed.",
+                                          preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+
+            // Present the alert on the provided viewController
+            present(alert, animated: true, completion: nil)
+        }
+    }
 }
