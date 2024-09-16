@@ -67,6 +67,10 @@
         "page": 1
       },
       "candidates": "ibans"
+    },
+    "contains_multiple_docs": {
+        "entity": "text",
+        "value": "true"
     }
   },
   "candidates": {
