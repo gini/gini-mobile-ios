@@ -16,6 +16,7 @@ struct DocumentWithExtractions: Codable {
     var paymentDueDate: String?
     var recipient: String?
     var isPayable: Bool?
+    var hasMultipleDocuments: Bool?
 
     init(documentId: String, extractionResult: GiniHealthSDK.ExtractionResult) {
         self.documentId = documentId
@@ -23,6 +24,7 @@ struct DocumentWithExtractions: Codable {
         self.paymentDueDate = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentDueDate.rawValue })?.value
         self.recipient = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.paymentRecipient.rawValue })?.value
         self.isPayable = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
+        self.hasMultipleDocuments = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value == true.description
     }
 }
 
@@ -170,12 +172,40 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
             }
         }
     }
+
+    func checkForErrors(documentID: String) {
+        if !checkDocumentForMultipleInvoices(documentID: documentID) {
+            checkDocumentIsPayable(documentID: documentID)
+        }
+    }
+
+    private func checkDocumentIsPayable(documentID: String) {
+        if let document = invoices.first(where: { $0.documentID == documentID }) {
+            if !(document.isPayable ?? false) {
+                errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.invoice.not.payable", comment: ""))")
+                showErrorsIfAny()
+            }
+        }
+    }
+
+    @discardableResult
+    private func checkDocumentForMultipleInvoices(documentID: String) -> Bool {
+        if let document = invoices.first(where: { $0.documentID == documentID }) {
+            if document.hasMultipleDocuments ?? false {
+                errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.contains.multiple.invoices", comment: ""))")
+                showErrorsIfAny()
+                return true
+            }
+        }
+        return false
+    }
 }
 
 extension InvoicesListViewModel {
 
     func didTapOnMoreInformation(documentId: String?) {
         print("Tapped on More Information")
+        guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
         if let presentedViewController = self.coordinator.invoicesListViewController.presentedViewController {
             presentedViewController.dismiss(animated: true) {
@@ -189,6 +219,7 @@ extension InvoicesListViewModel {
     func didTapOnBankPicker(documentId: String?) {
         guard let documentId else { return }
         print("Tapped on Bank Picker on :\(documentId)")
+        guard !checkDocumentForMultipleInvoices(documentID: documentId) else { return }
         let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
         bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
         self.coordinator.invoicesListViewController.present(bankSelectionBottomSheet, animated: false)
@@ -198,6 +229,7 @@ extension InvoicesListViewModel {
         guard let documentId else { return }
         print("Tapped on Pay Invoice on :\(documentId)")
         documentIdToRefetch = documentId
+        guard !checkDocumentForMultipleInvoices(documentID: documentId) else { return }
         paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
             if let error {
                 self?.errors.append(error.localizedDescription)

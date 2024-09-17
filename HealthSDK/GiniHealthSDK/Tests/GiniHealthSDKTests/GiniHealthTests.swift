@@ -161,6 +161,63 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertNil(isDocumentPayable)
     }
 
+    func testCheckIfDocumentContainMultipleInvoices_Success() {
+        // When
+        let expectation = self.expectation(description: "Checking if document contains multiple invoices")
+        var hasMultipleInvoices: Bool?
+        giniHealth.checkIfDocumentContainsMultipleInvoices(docId: MockSessionManager.notPayableDocumentID) { result in
+            switch result {
+            case .success(let containsMultipleDocs):
+                hasMultipleInvoices = containsMultipleDocs
+            case .failure(_):
+                hasMultipleInvoices = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+
+        // Then
+        XCTAssertEqual(true, hasMultipleInvoices)
+    }
+
+    func testCheckIfDocumentDontContainMultipleInvoices_Success() {
+        // When
+        let expectation = self.expectation(description: "Checking if document don't contain multiple invoices")
+        var hasMultipleInvoices: Bool?
+        giniHealth.checkIfDocumentContainsMultipleInvoices(docId: MockSessionManager.payableDocumentID) { result in
+            switch result {
+            case .success(let containsMultipleDocs):
+                    hasMultipleInvoices = containsMultipleDocs
+            case .failure(_):
+                    hasMultipleInvoices = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertEqual(false, hasMultipleInvoices)
+    }
+
+    func testCheckIfDocumentContainMultipleInvoices_Failure() {
+        // When
+        let expectation = self.expectation(description: "Checking if request fails")
+        var hasMultipleInvoices: Bool?
+        giniHealth.checkIfDocumentContainsMultipleInvoices(docId: MockSessionManager.failurePayableDocumentID) { result in
+            switch result {
+            case .success(let containsMultipleDocs):
+                hasMultipleInvoices = containsMultipleDocs
+            case .failure(_):
+                hasMultipleInvoices = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNil(hasMultipleInvoices)
+    }
+
     func testPollDocument_Success() {
         // Given
         let expectedDocument: Document? = GiniHealthSDKTests.load(fromFile: "document1")

@@ -82,7 +82,8 @@ final class SettingsViewControllerTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
-		settingsViewController = SettingsViewController(giniConfiguration: configuration,
+        settingsViewController = SettingsViewController(apiEnvironment: .production,
+                                                        giniConfiguration: configuration,
 														settingsButtonStates: settingsButtonStates,
 														documentValidationsState: documentValidationsState)
 		
@@ -201,7 +202,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		case .pdf_and_images:
 			selectedSegmentIndex = 2
 		}
-        contentData.append(.segmentedOption(data: .init(selectedIndex: selectedSegmentIndex)))
+        contentData.append(.segmentedOption(data: FileImportSegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
 	}
 	
 	private var flashToggleSettingEnabled: Bool = {
