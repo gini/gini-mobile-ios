@@ -172,7 +172,6 @@ public final class DocumentPickerCoordinator: NSObject {
 
         documentPicker.allowsMultipleSelection = giniConfiguration.multipageEnabled
         documentPicker.view.tintColor = .GiniCapture.accent1
-    
         currentPickerDismissesAutomatically = true
         currentPickerViewController = documentPicker
 

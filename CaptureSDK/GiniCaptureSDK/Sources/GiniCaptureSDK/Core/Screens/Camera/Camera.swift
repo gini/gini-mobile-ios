@@ -367,7 +367,8 @@ fileprivate extension Camera {
         // Configure video data output.
         videoDataOutput.alwaysDiscardsLateVideoFrames = true
         videoDataOutput.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
-        videoDataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
+        let videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
+        videoDataOutput.videoSettings = videoSettings
         if !session.canAddOutput(videoDataOutput) {
             for output in session.outputs {
                 session.removeOutput(output)
@@ -402,8 +403,8 @@ fileprivate extension Camera {
                 for result in extractIBANS(string: candidate.string) {
                     let ibanRectTransformed = visionResult.boundingBox.applying(visionToAVFTransform)
                     if let videoPreviewLayer = videoPreviewLayer, let regionOfInterest = regionOfInterest {
-                        let convertedRect = videoPreviewLayer.layerRectConverted(fromMetadataOutputRect: ibanRectTransformed)
-                        if regionOfInterest.contains(convertedRect) {
+                        let newRect = videoPreviewLayer.layerRectConverted(fromMetadataOutputRect: ibanRectTransformed)
+                        if regionOfInterest.contains(newRect) {
                             ibans.insert(result)
                         }
                     }
