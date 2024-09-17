@@ -24,6 +24,7 @@ public enum ExtractionType: String {
     case paymentRecipient = "payment_recipient"
     case iban = "iban"
     case paymentPurpose = "payment_purpose"
+    case containsMultipleDocs = "contains_multiple_docs"
 }
 
 /**

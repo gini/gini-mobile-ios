@@ -180,7 +180,7 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
     }
 
     private func checkDocumentIsPayable(documentID: String) {
-        if let document = invoices.first(where: { $0.documentID == documentID }) {
+        if let document = invoices.first(where: { $0.documentId == documentID }) {
             if !(document.isPayable ?? false) {
                 errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.invoice.not.payable", comment: ""))")
                 showErrorsIfAny()
@@ -190,7 +190,7 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
 
     @discardableResult
     private func checkDocumentForMultipleInvoices(documentID: String) -> Bool {
-        if let document = invoices.first(where: { $0.documentID == documentID }) {
+        if let document = invoices.first(where: { $0.documentId == documentID }) {
             if document.hasMultipleDocuments ?? false {
                 errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.contains.multiple.invoices", comment: ""))")
                 showErrorsIfAny()
