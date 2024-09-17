@@ -147,7 +147,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             statusBarStyle: GiniHealthConfiguration.shared.paymentReviewStatusBarStyle,
             pageIndicatorTintColor: GiniColor.standard4.uiColor(),
             currentPageIndicatorTintColor: GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor(),
-            isInfoBarHidden: true
+            isInfoBarHidden: false
         )
     }
 

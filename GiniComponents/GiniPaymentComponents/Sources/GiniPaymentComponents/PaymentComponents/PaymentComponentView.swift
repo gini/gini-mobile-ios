@@ -122,6 +122,9 @@ public final class PaymentComponentView: UIView {
         let isPaymentComponentUsed = viewModel.isPaymentComponentUsed()
         selectYourBankView.isHidden = isPaymentComponentUsed
         moreInformationView.isHidden = isPaymentComponentUsed
+        if moreInformationView.isHidden && !bottomStackView.contains(poweredByGiniView) {
+            bottomView.isHidden = true
+        }
     }
     
     private func updateButtonsViews() {

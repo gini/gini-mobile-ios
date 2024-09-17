@@ -20,6 +20,7 @@ public final class PaymentReviewContainerViewModel {
     let errorStyleInputFieldConfiguration: TextFieldConfiguration
     let selectionStyleInputFieldConfiguration: TextFieldConfiguration
     let poweredByGiniViewModel: PoweredByGiniViewModel
+    var dispayMode: DisplayMode = .bottomSheet
 
     public var extractions: [Extraction]? {
         didSet {
@@ -43,7 +44,8 @@ public final class PaymentReviewContainerViewModel {
                 errorStyleInputFieldConfiguration: TextFieldConfiguration,
                 selectionStyleInputFieldConfiguration: TextFieldConfiguration,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
-                poweredByGiniStrings: PoweredByGiniStrings) {
+                poweredByGiniStrings: PoweredByGiniStrings,
+                displayMode: DisplayMode) {
         self.extractions = extractions
         self.paymentInfo = paymentInfo
         self.selectedPaymentProvider = selectedPaymentProvider
@@ -54,5 +56,6 @@ public final class PaymentReviewContainerViewModel {
         self.errorStyleInputFieldConfiguration = errorStyleInputFieldConfiguration
         self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
+        self.dispayMode = displayMode
     }
 }

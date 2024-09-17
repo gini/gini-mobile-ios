@@ -135,8 +135,8 @@ public final class PaymentReviewContainerView: UIView {
         NSLayoutConstraint.activate([
             paymentInfoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPadding),
             paymentInfoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPadding),
-            paymentInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.topBottomPaymentInfoContainerPadding),
-            paymentInfoStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -Constants.topBottomPaymentInfoContainerPadding)
+            paymentInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : Constants.topBottomPaymentInfoContainerPadding),
+            paymentInfoStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : -Constants.topBottomPaymentInfoContainerPadding)
         ])
     }
 
@@ -675,7 +675,7 @@ extension PaymentReviewContainerView {
     enum Constants {
             static let buttonViewHeight = 56.0
             static let leftRightPaymentInfoContainerPadding = 8.0
-            static let topBottomPaymentInfoContainerPadding = 0.0
+            static let topBottomPaymentInfoContainerPadding = 16.0
             static let textFieldHeight = 56.0
             static let errorLabelHeight = 12.0
             static let amountWidth = 95.0

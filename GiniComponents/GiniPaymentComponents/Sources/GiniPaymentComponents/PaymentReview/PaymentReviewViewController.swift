@@ -9,7 +9,7 @@ import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
 
-private enum DisplayMode: Int {
+public enum DisplayMode: Int {
     case bottomSheet
     case documentCollection
 }
@@ -33,13 +33,10 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     public let model: PaymentReviewModel
     private let selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
 
-    private var displayMode = DisplayMode.bottomSheet
-
     init(viewModel: PaymentReviewModel,
          selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
         self.model = viewModel
         self.selectedPaymentProvider = selectedPaymentProvider
-        self.displayMode = viewModel.document != nil ? .documentCollection : .bottomSheet
         self.isInfoBarHidden = viewModel.configuration.isInfoBarHidden
         super.init(configuration: self.model.bottomSheetConfiguration)
     }
@@ -115,7 +112,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             self.showError(message: self.model.strings.createPaymentErrorMessage)
         }
 
-        if displayMode == .documentCollection {
+        if model.displayMode == .documentCollection {
             model.fetchImages()
         }
         model.viewModelDelegate = self
@@ -130,7 +127,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     }
 
     fileprivate func layoutUI() {
-        switch displayMode {
+        switch model.displayMode {
         case .documentCollection:
             layoutMainView()
             layoutPaymentInfoContainerView()
@@ -225,7 +222,7 @@ extension PaymentReviewViewController {
         /**
          Moves the root view up by the distance of keyboard height  taking in account safeAreaInsets.bottom
          */
-        (displayMode == .bottomSheet ? view : mainView)
+        (model.displayMode == .bottomSheet ? view : mainView)
             .bounds.origin.y = keyboardSize.height - view.safeAreaInsets.bottom
 
         keyboardWillShowCalled = true
@@ -274,7 +271,7 @@ extension PaymentReviewViewController {
     fileprivate func dismissKeyboardOnTap() {
         let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         tap.cancelsTouchesInView = false
-        (displayMode == .bottomSheet ? view : mainView).addGestureRecognizer(tap)
+        (model.displayMode == .bottomSheet ? view : mainView).addGestureRecognizer(tap)
     }
 }
 
@@ -314,7 +311,7 @@ fileprivate extension PaymentReviewViewController {
     func layoutPaymentInfoContainerView() {
         paymentInfoContainerView.translatesAutoresizingMaskIntoConstraints = false
         
-        let container = displayMode == .bottomSheet ? (view ?? UIView()) : mainView
+        let container = model.displayMode == .bottomSheet ? (view ?? UIView()) : mainView
         container.addSubview(paymentInfoContainerView)
 
         NSLayoutConstraint.activate([
@@ -322,7 +319,7 @@ fileprivate extension PaymentReviewViewController {
             paymentInfoContainerView.trailingAnchor.constraint(equalTo: container.trailingAnchor)
         ])
 
-        if displayMode == .documentCollection {
+        if model.displayMode == .documentCollection {
             NSLayoutConstraint.activate([
                 paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor)
             ])
@@ -442,7 +439,8 @@ fileprivate extension PaymentReviewViewController {
         infoBar.translatesAutoresizingMaskIntoConstraints = false
         infoBarLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        view.insertSubview(infoBar, belowSubview: paymentInfoContainerView)
+        let container = model.displayMode == .bottomSheet ? (view ?? UIView()) : mainView
+        container.insertSubview(infoBar, belowSubview: paymentInfoContainerView)
         infoBar.addSubview(infoBarLabel)
 
         let bottomConstraint = infoBar.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.infoBarHeight)
@@ -508,7 +506,7 @@ extension PaymentReviewViewController {
         static let loadingIndicatorScale = 1.0
         static let closeButtonSide = 48.0
         static let closeButtonPadding = 16.0
-        static let infoBarHeight = 60.0
+        static let infoBarHeight = 55.0
         static let infoBarLabelPadding = 8.0
         static let pageControlHeight = 20.0
         static let collectionViewPadding = 10.0

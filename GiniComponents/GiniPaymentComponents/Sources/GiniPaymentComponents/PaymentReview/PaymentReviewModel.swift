@@ -107,6 +107,7 @@ public class PaymentReviewModel: NSObject {
     let poweredByGiniStrings: PoweredByGiniStrings
     let bottomSheetConfiguration: BottomSheetConfiguration
     let showPaymentReviewCloseButton: Bool
+    var displayMode: DisplayMode
 
     public init(delegate: PaymentReviewProtocol,
                 bottomSheetsProvider: BottomSheetsProviderProtocol,
@@ -145,6 +146,7 @@ public class PaymentReviewModel: NSObject {
         self.errorStyleInputFieldConfiguration = errorStyleInputFieldConfiguration
         self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
         self.bottomSheetConfiguration = bottomSheetConfiguration
+        self.displayMode = document != nil ? .documentCollection : .bottomSheet
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> PageCollectionCellViewModel {
@@ -247,7 +249,8 @@ public class PaymentReviewModel: NSObject {
                                         errorStyleInputFieldConfiguration: errorStyleInputFieldConfiguration,
                                         selectionStyleInputFieldConfiguration: selectionStyleInputFieldConfiguration,
                                         poweredByGiniConfiguration: poweredByGiniConfiguration,
-                                        poweredByGiniStrings: poweredByGiniStrings)
+                                        poweredByGiniStrings: poweredByGiniStrings,
+                                        displayMode: displayMode)
     }
 }
 
