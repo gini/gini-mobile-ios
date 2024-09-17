@@ -53,7 +53,7 @@ extension ExtractionResult {
 //MARK: - PaymentProvider
 
 extension PaymentProvider {
-    init(healthPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
+    public init(healthPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
         let openWithPlatforms = healthPaymentProvider.openWithSupportedPlatforms.compactMap { PlatformSupported(rawValue: $0.rawValue) }
         let gpcSupportedPlatforms = healthPaymentProvider.gpcSupportedPlatforms.compactMap { PlatformSupported(rawValue: $0.rawValue) }
         let colors = ProviderColors(healthProviderColors: healthPaymentProvider.colors)
