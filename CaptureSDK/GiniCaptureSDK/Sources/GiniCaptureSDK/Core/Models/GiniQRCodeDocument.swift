@@ -38,7 +38,7 @@ import UIKit
         .extractParameters(from: self.scannedString, withFormat: self.qrCodeFormat)
     fileprivate let epc06912LinesCount = 12
     public lazy var qrCodeFormat: QRCodesFormat? = {
-        if self.scannedString.starts(with: "https://payment.gini.net/") {
+        if self.scannedString.starts(with: "https://pay.gini.net/") {
             return .giniQRCode
         } else if self.scannedString.starts(with: "bank://") {
             return .bezahl
