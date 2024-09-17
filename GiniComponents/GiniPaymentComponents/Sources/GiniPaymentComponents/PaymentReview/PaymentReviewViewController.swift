@@ -239,7 +239,9 @@ extension PaymentReviewViewController {
          the view jumping if another keyboard is shown right after this one is hidden.
          */
         UIView.animate(withDuration: animationDuration, delay: 0.0, options: UIView.AnimationOptions(rawValue: animationCurve), animations: { [weak self] in
-            self?.view.bounds.origin.y = 0
+            guard let self else { return }
+            (model.displayMode == .bottomSheet ? view : mainView)?.bounds.origin.y = 0
+//            self?.view.bounds.origin.y = 0
         }, completion: nil)
     }
 
