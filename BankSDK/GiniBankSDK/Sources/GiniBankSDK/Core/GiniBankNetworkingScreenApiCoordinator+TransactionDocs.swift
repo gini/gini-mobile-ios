@@ -20,7 +20,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
             return
         }
 
-        if let alwaysAttachDocs = GiniBankUserDefaultsStorage.alwaysAttachDocs {
+        if let alwaysAttachDocs = transactionDocsDataCoordinator?.getAlwaysAttachDocsValue() {
             handleExistingAttachmentOption(alwaysAttachDocs,
                                            on: controller,
                                            action: action)
@@ -59,9 +59,10 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
     private func transactionDocsAction(selectedAttachmentOption: AttachmentOption,
                                        action: @escaping () -> Void) -> (() -> Void) {
-        return {
-
-            GiniBankUserDefaultsStorage.alwaysAttachDocs = selectedAttachmentOption == .alwaysAttach
+        return { [weak self] in
+            if selectedAttachmentOption == .alwaysAttach {
+                self?.transactionDocsDataCoordinator?.setAlwaysAttachDocs()
+            }
             action()
         }
     }

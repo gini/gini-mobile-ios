@@ -112,6 +112,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
     private var configurationService: ClientConfigurationServiceProtocol?
+    var transactionDocsDataCoordinator: TransactionDocsDataCoordinator?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
     public init(client: Client,
@@ -132,6 +133,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration.documentService = documentService
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
+
+        transactionDocsDataCoordinator = TransactionDocsDataCoordinator()
     }
 
     public init(resultsDelegate: GiniCaptureResultsDelegate,
@@ -154,6 +157,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
+
+        transactionDocsDataCoordinator = TransactionDocsDataCoordinator()
     }
 
     convenience init(client: Client,
