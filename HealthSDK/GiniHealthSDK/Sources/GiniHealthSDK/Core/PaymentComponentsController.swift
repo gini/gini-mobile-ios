@@ -260,6 +260,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
 
                 let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                                  selectedPaymentProvider: healthSelectedPaymentProvider)
+                self.trackingDelegate = trackingDelegate
                 completion(vc, nil)
             case .failure(let error):
                 completion(nil, error)
