@@ -11,13 +11,16 @@ public struct PaymentReviewContainerConfiguration {
     let errorLabelTextColor: UIColor
     let errorLabelFont: UIFont
     let lockIcon: UIImage
+    let lockedFields: Bool
 
     public init(errorLabelTextColor: UIColor,
                 errorLabelFont: UIFont,
-                lockIcon: UIImage) {
+                lockIcon: UIImage,
+                lockedFields: Bool) {
         self.errorLabelTextColor = errorLabelTextColor
         self.errorLabelFont = errorLabelFont
         self.lockIcon = lockIcon
+        self.lockedFields = lockedFields
     }
 }
 

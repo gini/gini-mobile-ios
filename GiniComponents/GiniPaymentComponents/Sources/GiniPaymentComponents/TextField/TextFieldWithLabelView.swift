@@ -61,6 +61,10 @@ public final class TextFieldWithLabelView: UIView {
         titleLabel.accessibilityValue = labelTitle
     }
 
+    func setInputAccesoryView(view: UIView?) {
+        textField.inputAccessoryView = view
+    }
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.topBottomPadding),
@@ -103,14 +107,14 @@ public extension TextFieldWithLabelView {
         }
     }
 
-    override var inputAccessoryView: UIView? {
-        get {
-            return textField.inputAccessoryView
-        }
-        set {
-            textField.inputAccessoryView = newValue
-        }
-    }
+//    override var inputAccessoryView: UIView? {
+//        get {
+//            return textField.inputAccessoryView
+//        }
+//        set {
+//            textField.inputAccessoryView = newValue
+//        }
+//    }
 
     var delegate: UITextFieldDelegate? {
         get {

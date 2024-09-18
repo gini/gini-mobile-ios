@@ -35,7 +35,8 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
         PaymentReviewContainerConfiguration(
             errorLabelTextColor: GiniColor.feedback1.uiColor(),
             errorLabelFont: GiniHealthConfiguration.shared.font(for: .captions2),
-            lockIcon: GiniHealthImage.lock.preferredUIImage()
+            lockIcon: GiniHealthImage.lock.preferredUIImage(),
+            lockedFields: false
         )
     }
 

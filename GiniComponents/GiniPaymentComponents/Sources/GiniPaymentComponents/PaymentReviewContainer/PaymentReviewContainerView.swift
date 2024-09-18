@@ -34,10 +34,10 @@ public final class PaymentReviewContainerView: UIView {
     private let amountErrorStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let usageStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
 
-    private lazy var recipientTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.recipientFieldTag.rawValue, isEditable: false)
-    private lazy var ibanTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.ibanFieldTag.rawValue, isEditable: false)
+    private lazy var recipientTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.recipientFieldTag.rawValue, isEditable: !viewModel.configuration.lockedFields)
+    private lazy var ibanTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.ibanFieldTag.rawValue, isEditable: !viewModel.configuration.lockedFields)
     private lazy var amountTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.amountFieldTag.rawValue, isEditable: true)
-    private lazy var usageTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.usageFieldTag.rawValue, isEditable: false)
+    private lazy var usageTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.usageFieldTag.rawValue, isEditable: !viewModel.configuration.lockedFields)
 
     private let buttonsView = EmptyView()
 
@@ -251,8 +251,10 @@ public final class PaymentReviewContainerView: UIView {
             }
             fullString.append(NSAttributedString(string: text))
 
-            if fieldIdentifier != .amountFieldTag {
-                appendLockIcon(fullString)
+            if viewModel.configuration.lockedFields {
+                if fieldIdentifier != .amountFieldTag {
+                    appendLockIcon(fullString)
+                }
             }
         }
         return fullString
@@ -462,7 +464,7 @@ public final class PaymentReviewContainerView: UIView {
                                               action: #selector(doneWithAmountInputButtonTapped))
 
         toolbarDone.items = [flexBarButton, barBtnDone]
-        textFieldView.inputAccessoryView = toolbarDone
+        textFieldView.setInputAccesoryView(view: toolbarDone)
     }
 
     @objc fileprivate func doneWithAmountInputButtonTapped() {
@@ -520,7 +522,6 @@ public final class PaymentReviewContainerView: UIView {
         textFieldView.isUserInteractionEnabled = isEditable
         return textFieldView
     }
-
 }
 
 // MARK: - Public
