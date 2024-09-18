@@ -42,7 +42,7 @@ class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
         giniHealthAPILib = GiniHealthAPI
                .Builder(client: client, pinningConfig: yourPublicPinningConfig)
                .build()
-        sdk = GiniHealth.init(with: giniHealthAPILib)
+        sdk = GiniHealth.init(giniApiLib: giniHealthAPILib)
         paymentService = sdk.paymentService
     }
     
