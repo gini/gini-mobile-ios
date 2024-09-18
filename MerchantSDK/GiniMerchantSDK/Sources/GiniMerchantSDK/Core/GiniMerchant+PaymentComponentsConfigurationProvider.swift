@@ -34,7 +34,8 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
         PaymentReviewContainerConfiguration(
             errorLabelTextColor: GiniColor.feedback1.uiColor(),
             errorLabelFont: GiniMerchantConfiguration.shared.font(for: .captions2),
-            lockIcon: GiniMerchantImage.lock.preferredUIImage()
+            lockIcon: GiniMerchantImage.lock.preferredUIImage(),
+            lockedFields: true
         )
     }
     
