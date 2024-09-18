@@ -299,7 +299,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                         self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
                         self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController) { [weak self] in
-                            self?.deliverWithReturnAssistant(result: extractionResult, analysisDelegate: networkDelegate)
+                            self?.deliverWithReturnAssistant(result: extractionResult,
+                                                             analysisDelegate: networkDelegate)
                         }
                     }
                 }
@@ -401,7 +402,8 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
                            analysisDelegate: GiniCaptureSDK.AnalysisDelegate) {
         guard let invoice = invoice else { return }
         handleTransactionDocsAlertIfNeeded(on: coordinator.rootViewController) { [weak self] in
-            self?.deliverWithReturnAssistant(result: invoice.extractionResult, analysisDelegate: analysisDelegate)
+            self?.deliverWithReturnAssistant(result: invoice.extractionResult,
+                                             analysisDelegate: analysisDelegate)
         }
     }
 
