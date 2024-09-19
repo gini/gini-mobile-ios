@@ -4,7 +4,6 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-
 import Foundation
 
 /// A protocol that defines methods for managing the state of transaction documents in a photo payment flow.
@@ -12,12 +11,11 @@ import Foundation
 public protocol TransactionDocsDataProtocol: AnyObject {
 
     /// Retrieves the current value of the "Always Attach Documents" setting.
-    /// - Returns: A `Bool` representing whether documents should always be attached to the transaction,
-    /// or `nil` if no value is set.
-    func getAlwaysAttachDocsValue() -> Bool?
+    /// - Returns: A `Bool` representing whether documents should always be attached to the transaction
+    func getAlwaysAttachDocsValue() -> Bool
 
     /// Sets the "Always Attach Documents" setting to `true`.
-    func setAlwaysAttachDocs()
+    func setAlwaysAttachDocs(_ value: Bool)
 
     /// Resets the "Always Attach Documents" setting entirely.
     /// This may be used when the setting needs to be cleared or invalidated.
@@ -37,13 +35,13 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol {
     // MARK: - TransactionDocsDataProtocol Methods
 
     /// Retrieves the current value of the "Always Attach Documents" setting.
-    public func getAlwaysAttachDocsValue() -> Bool? {
-        return GiniBankUserDefaultsStorage.alwaysAttachDocs
+    public func getAlwaysAttachDocsValue() -> Bool {
+        return GiniBankUserDefaultsStorage.alwaysAttachDocs ?? false
     }
 
     /// Sets the "Always Attach Documents" setting to `true`.
-    public func setAlwaysAttachDocs() {
-        GiniBankUserDefaultsStorage.alwaysAttachDocs = true
+    public func setAlwaysAttachDocs(_ value: Bool) {
+        GiniBankUserDefaultsStorage.alwaysAttachDocs = value
     }
 
     /// Resets the "Always Attach Documents" setting entirely.
