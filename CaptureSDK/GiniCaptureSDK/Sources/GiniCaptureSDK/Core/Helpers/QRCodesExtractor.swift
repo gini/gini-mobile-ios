@@ -12,6 +12,19 @@ public enum QRCodesFormat {
     case eps4mobile
     case bezahl
     case giniQRCode
+
+    var prefixURL: String {
+        switch self {
+        case .epc06912:
+            return "BCD"
+        case .eps4mobile:
+            return "epspayment://"
+        case .bezahl:
+            return "bank://"
+        case .giniQRCode:
+            return "https://pay.gini.net/"
+        }
+    }
 }
 
 public final class QRCodesExtractor {

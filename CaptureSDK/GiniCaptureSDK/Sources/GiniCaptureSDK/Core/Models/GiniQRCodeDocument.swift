@@ -38,13 +38,14 @@ import UIKit
         .extractParameters(from: self.scannedString, withFormat: self.qrCodeFormat)
     fileprivate let epc06912LinesCount = 12
     public lazy var qrCodeFormat: QRCodesFormat? = {
-        if self.scannedString.starts(with: "https://pay.gini.net/") {
+        if self.scannedString.starts(with: QRCodesFormat.giniQRCode.prefixURL) {
             return .giniQRCode
-        } else if self.scannedString.starts(with: "bank://") {
+        } else if self.scannedString.starts(with: QRCodesFormat.bezahl.prefixURL) {
             return .bezahl
-        } else if self.scannedString.starts(with: "epspayment://") {
+        } else if self.scannedString.starts(with: QRCodesFormat.eps4mobile.prefixURL) {
             return .eps4mobile
-        } else if let lines = Optional(self.scannedString.splitlines), lines.count > 0 && lines[0] == "BCD" {
+        } else if let lines = Optional(self.scannedString.splitlines),
+                  lines.count > 0 && lines[0] == QRCodesFormat.epc06912.prefixURL {
             if !(lines[2] == "1" || lines[2] == "2") {
                 print("WARNING: Character set \(lines[2]) is unknown. Expected version 1 or 2.")
             }
