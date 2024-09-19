@@ -491,11 +491,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
             }
         }
     }
-
-    private func handleFailure(error: GiniError) {
-        guard error != .requestCancelled else { return }
-        // TODO: to be implemented later
-    }
 }
 
 extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
@@ -542,7 +537,10 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                 viewController.setData(viewModel: viewModel)
             case .failure(let error):
                 print("Failed to create invoice preview: \(error)")
-                self.handleFailure(error: error)
+                viewController.setError {
+                    viewController.startLoadingIndicatorAnimation()
+                    self.handleDocumentPage(for: skontoViewModel, with: viewController)
+                }
             }
         }
     }
