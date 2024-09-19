@@ -120,10 +120,16 @@ public class TransactionDocsView: UIView {
                 })
 
                 presentingViewController.present(viewController, animated: true)
-                // TODO: PP-805 Simulate data loading delay
+                // TODO: PP-805 Simulate data loading delay with first result as error
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     viewController.stopLoadingIndicatorAnimation()
-                    viewController.setData(viewModel: viewModel)
+                    viewController.setError(buttonAction: {
+                        viewController.startLoadingIndicatorAnimation()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            viewController.stopLoadingIndicatorAnimation()
+                            viewController.setData(viewModel: viewModel)
+                        }
+                    })
                 }
             }
             TransactionDocsActionsBottomSheet.showDeleteAlert(on: presentingViewController,
