@@ -29,7 +29,12 @@ import UIKit
     public var isImported: Bool = false
 
     fileprivate lazy var paymentInformation: Data? = {
-        let jsonDict: [String: Any] = ["qrcode": self.scannedString, "paymentdata": self.extractedParameters]
+        var jsonDict: [String: Any] = ["qrcode": self.scannedString]
+
+        // Include paymentdata only if the format is not giniQRCode
+        if self.qrCodeFormat != .giniQRCode {
+            jsonDict["paymentdata"] = self.extractedParameters
+        }
 
         return try? JSONSerialization.data(withJSONObject: jsonDict, options: .prettyPrinted)
     }()
