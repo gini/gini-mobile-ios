@@ -1,16 +1,16 @@
 //
-//  AttachmentOption.swift
+//  GiniUserAttachmentOption.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
-enum AttachmentOption {
+public enum GiniUserAttachmentOption: Codable {
     case alwaysAttach
     case attachOnce
     case doNotAttach
 
-    var title: String {
+   internal var title: String {
         switch self {
         case .alwaysAttach:
             return NSLocalizedStringPreferredGiniBankFormat("ginibank.transactionDocs.alert.action.attachAlways",
