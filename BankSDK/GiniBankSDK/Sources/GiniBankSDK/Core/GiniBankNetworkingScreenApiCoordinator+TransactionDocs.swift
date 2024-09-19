@@ -57,7 +57,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                                 action: action))
     }
 
-    private func transactionDocsAction(selectedAttachmentOption: AttachmentOption,
+    private func transactionDocsAction(selectedAttachmentOption: GiniUserAttachmentOption,
                                        action: @escaping () -> Void) -> (() -> Void) {
         return { [weak self] in
             if selectedAttachmentOption == .alwaysAttach {
