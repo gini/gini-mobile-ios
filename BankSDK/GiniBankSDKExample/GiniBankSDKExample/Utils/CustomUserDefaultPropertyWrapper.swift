@@ -37,3 +37,11 @@ struct UserDefault<T: Codable> {
     }
 }
 
+
+struct UserDefaultsStorage {
+    @UserDefault("user.attachmentOption", defaultValue: nil)
+    static var attachmentOption: Bool?
+    static func removeAttachmentOption() {
+        UserDefaultsStorage.attachmentOption = nil
+    }
+}
