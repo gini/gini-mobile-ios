@@ -14,6 +14,7 @@ public class TransactionDocsView: UIView {
 
     public weak var delegate: TransactionDocsViewDelegate?
 
+    // Should be the topmost view controller in the hierarchy
     public weak var presentingViewController: UIViewController?
 
     private let configuration = GiniBankConfiguration.shared
