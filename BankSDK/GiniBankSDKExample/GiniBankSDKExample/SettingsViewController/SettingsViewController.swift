@@ -188,8 +188,12 @@ final class SettingsViewController: UIViewController {
         contentData.append(.switchOption(data: .init(type: .transactionDocsEnabled,
                                                      isSwitchOn: giniConfiguration.transactionDocsEnabled)))
 
+        //TODO: need to rethink this because this is related to customer internal option to store and reset Gini setting ???!!!!
+        // in Gini is saved in UserDefaults as object and not primitive so for that the approach below is not working, but should
+        // customers know how we implemented? in case we switch to our backend this it will not work entirely
+        print("DEBUG ----- UserDefaultsStorage.attachmentOption =", UserDefaultsStorage.attachmentOption ?? false)
         contentData.append(.userDefaults(message: "Remove TransactionDocs attachement options from UserDefaults",
-                                         buttonActive: UserDefaults.standard.bool(forKey: "ginibank.defaults.user.alwaysAttachDocs")))
+                                         buttonActive: UserDefaultsStorage.attachmentOption ?? false))
 
         contentData.append(.switchOption(data: .init(type: .skontoEnabled,
                                                      isSwitchOn: giniConfiguration.skontoEnabled)))
@@ -667,9 +671,13 @@ extension SettingsViewController: GiniCaptureErrorLoggerDelegate {
 
 extension SettingsViewController: UpdateUserDefaultsCellDelegate {
     func didTapRemoveButton(in view: UpdateUserDefaultsCell) {
-        let alwaysAttachDocs = UserDefaults.standard.bool(forKey: "ginibank.defaults.user.alwaysAttachDocs")
-        if alwaysAttachDocs {
-            UserDefaults.standard.removeObject(forKey: "ginibank.defaults.user.alwaysAttachDocs")
+        //TODO: need to rethink this because this is related to customer internal option to store and reset Gini setting ???!!!!
+        // in Gini is saved in UserDefaults as object and not primitive so for that the approach below is not working, but should
+        // customers know how we implemented? in case we switch to our backend this it will not work entirely
+
+        let isAttachmentOptionEnabled = UserDefaultsStorage.attachmentOption ?? false
+        if isAttachmentOptionEnabled {
+            UserDefaultsStorage.removeAttachmentOption()
             view.updateButtonState(isActive: false)
             // Show confirmation alert
             let alert = UIAlertController(title: "Success",
