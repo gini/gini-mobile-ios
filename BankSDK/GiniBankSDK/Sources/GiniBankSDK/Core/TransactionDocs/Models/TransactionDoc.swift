@@ -6,7 +6,8 @@
 
 import Foundation
 
-struct TransactionDoc {
+public struct TransactionDoc {
+    let documentId: String
     let fileName: String
     let type: TransactionDocType
 }
