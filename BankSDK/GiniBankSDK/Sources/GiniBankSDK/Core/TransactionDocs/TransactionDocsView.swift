@@ -21,7 +21,7 @@ public class TransactionDocsView: UIView {
 
     public var transactionDocs: [TransactionDoc] = [] {
         didSet {
-            commonInit()
+            print(transactionDocs)
         }
     }
 
@@ -55,11 +55,11 @@ public class TransactionDocsView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        commonInit()
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func commonInit() {
+        transactionDocs = TransactionDocsDataCoordinator.shared.transactionDocs
         let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
         let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
         guard transactionDocsEnabled, configuration.transactionDocsEnabled, !transactionDocs.isEmpty else { return }

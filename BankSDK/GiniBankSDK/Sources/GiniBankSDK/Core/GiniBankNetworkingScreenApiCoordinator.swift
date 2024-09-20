@@ -294,15 +294,19 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                     } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
                         self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
-                        self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController) { [weak self] in
-                            // let documentService = self.documentService -> document has documentId and documentName
-                            // extraction Result to be used to create TransactionDocsDocumentPagesViewModel
-                            // amountToPay: Price,
-                            // iban: String,
-                            // expiryDate: Date,
+                        self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController,
+                                                                defaultAction: { [weak self] in
+                            self?.transactionDocsDataCoordinator.transactionDocs = []
                             self?.deliverWithReturnAssistant(result: extractionResult,
                                                              analysisDelegate: networkDelegate)
-                        }
+                        },
+                                                                attachAction: { [weak self] in
+                            self?.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: self?.documentService.document?.id ?? "",
+                                                                                    fileName: self?.documentService.document?.name ?? "",
+                                                                                    type: .document)]
+                            self?.deliverWithReturnAssistant(result: extractionResult,
+                                                             analysisDelegate: networkDelegate)
+                        })
                     }
                 }
 
@@ -402,15 +406,19 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
                            invoice: DigitalInvoice?,
                            analysisDelegate: GiniCaptureSDK.AnalysisDelegate) {
         guard let invoice = invoice else { return }
-        handleTransactionDocsAlertIfNeeded(on: coordinator.rootViewController) { [weak self] in
-            //  let documentService = self.documentService -> document has documentId and documentName
-            // extraction Result to be used to create TransactionDocsDocumentPagesViewModel
-            //  amountToPay: Price,
-            // iban: String,
-            // expiryDate: Date,
+        self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController,
+                                                defaultAction: { [weak self] in
+            self?.transactionDocsDataCoordinator.transactionDocs = []
             self?.deliverWithReturnAssistant(result: invoice.extractionResult,
                                              analysisDelegate: analysisDelegate)
-        }
+        },
+                                                attachAction: { [weak self] in
+            self?.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: self?.documentService.document?.id ?? "",
+                                                                    fileName: self?.documentService.document?.name ?? "",
+                                                                    type: .document)]
+            self?.deliverWithReturnAssistant(result: invoice.extractionResult,
+                                             analysisDelegate: analysisDelegate)
+        })
     }
 
     func didCancelAnalysis(_ coordinator: DigitalInvoiceCoordinator) {
@@ -515,14 +523,18 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
                            _ editedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
         guard let editedExtractionResult else { return }
-        handleTransactionDocsAlertIfNeeded(on: coordinator.rootViewController) { [weak self] in
-            //  let documentService = self.documentService -> document has documentId and documentName
-            // extraction Result to be used to create TransactionDocsDocumentPagesViewModel
-            //  amountToPay: Price,
-            // iban: String,
-            // expiryDate: Date,
+        self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController,
+                                                defaultAction: { [weak self] in
+            self?.transactionDocsDataCoordinator.transactionDocs = []
             self?.deliverWithSkonto(result: editedExtractionResult)
-        }
+        },
+                                                attachAction: { [weak self] in
+            
+            self?.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: self?.documentService.document?.id ?? "",
+                                                                    fileName: self?.documentService.document?.name ?? "",
+                                                                    type: .document)]
+            self?.deliverWithSkonto(result: editedExtractionResult)
+        })
     }
 
     func didCancelAnalysis(_ coordinator: SkontoCoordinator) {
