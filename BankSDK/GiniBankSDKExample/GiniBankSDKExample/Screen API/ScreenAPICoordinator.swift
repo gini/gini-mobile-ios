@@ -117,10 +117,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 
         customResultsScreen.tableView.estimatedRowHeight = 75
         customResultsScreen.result = results
-        if let transactionDocsDataCoordinator {
-            customResultsScreen.showTransactionDocsAttached = transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
-            customResultsScreen.transactionDocs = transactionDocsDataCoordinator.getAttachedDocs()
-        }
+        //if let transactionDocsDataCoordinator {
+            // CLARIFICATION PP-809 this breaks entire flow of popup. View will be hidden itself
+            //customResultsScreen.showTransactionDocsAttached = transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
+            // CLARIFICATION PP-809 shouldn't it be directly inside a view from data coordinator?
+            //customResultsScreen.transactionDocs = transactionDocsDataCoordinator.getAttachedDocs()
+        //}
 		customResultsScreen.editableFields = editableSpecificExtractions
         customResultsScreen.navigationItem.setHidesBackButton(true, animated: true)
         let title =
