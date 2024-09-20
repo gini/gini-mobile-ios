@@ -141,3 +141,7 @@
 "ginibank.transactionDocs.preview.amountToPay" = "Betrag zu zahlen";
 "ginibank.transactionDocs.preview.iban" = "IBAN";
 "ginibank.transactionDocs.preview.expiryDate" = "Rechnungsfälligkeitsdatum";
+// TODO: PP-739 add german localization
+"ginibank.transactionDocs.preview.error.title" = "Service is unavailable.";
+"ginibank.transactionDocs.preview.error.content" = "The service is unavailable. Please try again later. We appreciate your understanding.";
+"ginibank.transactionDocs.preview.error.action" = "Try again";
