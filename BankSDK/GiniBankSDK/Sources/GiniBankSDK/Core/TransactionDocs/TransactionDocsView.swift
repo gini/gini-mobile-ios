@@ -19,11 +19,11 @@ public class TransactionDocsView: UIView {
 
     private let configuration = GiniBankConfiguration.shared
 
-    // Mock data
-    private lazy var transactionDocs: [TransactionDoc] = [
-        TransactionDoc(fileName: "image.png", type: .image),
-        TransactionDoc(fileName: "document.pdf", type: .document)
-    ]
+    public var transactionDocs: [TransactionDoc] = [] {
+        didSet {
+            commonInit()
+        }
+    }
 
     private lazy var containerView: UIView = {
         let view = UIView()
