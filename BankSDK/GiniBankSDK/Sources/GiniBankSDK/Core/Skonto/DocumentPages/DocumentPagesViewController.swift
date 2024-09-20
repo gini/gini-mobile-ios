@@ -104,8 +104,16 @@ final class DocumentPagesViewController: UIViewController {
 
     func setError(buttonAction: @escaping () -> Void) {
         let errorView = DocumentPagesErrorView(
-            errorType: .init(error: .noResponse),
-            buttonTitle: "Try Again",
+            errorTitle: NSLocalizedStringPreferredGiniBankFormat(
+                "ginibank.transactionDocs.preview.error.title",
+                comment: "Service is unavailable."),
+            errorIcon: GiniImages.errorServiceUnavailable.image,
+            errorContentText: NSLocalizedStringPreferredGiniBankFormat(
+                "ginibank.transactionDocs.preview.error.content",
+                comment: "The service is unavailable. Please try again..."),
+            buttonTitle: NSLocalizedStringPreferredGiniBankFormat(
+                "ginibank.transactionDocs.preview.error.action",
+                comment: "Try again"),
             buttonAction: {
                 buttonAction()
                 print("try again pressed")
@@ -118,7 +126,7 @@ final class DocumentPagesViewController: UIViewController {
         errorView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            errorView.topAnchor.constraint(equalTo: view.topAnchor),
+            errorView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
             errorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             errorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             errorView.bottomAnchor.constraint(equalTo: view.bottomAnchor)

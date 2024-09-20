@@ -40,19 +40,23 @@ class DocumentPagesErrorView: UIView {
         return scrollView
     }()
 
-    private let errorType: ErrorType
     private let buttonTitle: String
     private let buttonAction: (() -> Void)?
+    private let errorTitle: String
+    private let errorIcon: UIImage?
+    private let errorContentText: String
 
-    init(errorType: ErrorType,
+    init(errorTitle: String,
+         errorIcon: UIImage?,
+         errorContentText: String,
          buttonTitle: String,
          buttonAction: (() -> Void)? = nil) {
-        self.errorType = errorType
         self.buttonTitle = buttonTitle
         self.buttonAction = buttonAction
+        self.errorTitle = errorTitle
+        self.errorIcon = errorIcon
+        self.errorContentText = errorContentText
         super.init(frame: .zero)
-        button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        button.configure(with: configuration.primaryButtonConfiguration)
         setupView()
     }
 
@@ -74,20 +78,22 @@ class DocumentPagesErrorView: UIView {
     }
 
     private func configureErrorHeader() {
-        errorHeader.headerLabel.text = errorType.title()
+        errorHeader.headerLabel.text = errorTitle
         errorHeader.headerLabel.font = configuration.textStyleFonts[.subheadline]
         errorHeader.headerLabel.textColor = .GiniCapture.light1
         errorHeader.backgroundColor = .GiniCapture.error1
-        errorHeader.iconImageView.image = UIImageNamedPreferred(named: errorType.iconName())
+        errorHeader.iconImageView.image = errorIcon
     }
 
     private func configureErrorContent() {
-        errorContent.text = errorType.content()
+        errorContent.text = errorContentText
         errorContent.font = configuration.textStyleFonts[.body]
         errorContent.textColor = .GiniCapture.light6
     }
 
     private func configureButton() {
+        button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        button.configure(with: configuration.primaryButtonConfiguration)
         button.addTarget(self, action: #selector(didPressButton), for: .touchUpInside)
     }
 
@@ -100,7 +106,6 @@ class DocumentPagesErrorView: UIView {
         configureScrollViewConstraints()
         configureButtonViewConstraints()
         configureErrorContentConstraints()
-        layoutSubviews()
     }
 
     private func configureHeaderConstraints() {
@@ -113,7 +118,7 @@ class DocumentPagesErrorView: UIView {
         } else {
             NSLayoutConstraint.activate([
                 errorHeader.headerStack.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                                 constant: Constants.sidePadding),
+                                                                 constant: Constants.stackViewLeadingPadding),
                 errorHeader.headerStack.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                                   constant: -Constants.sidePadding)
             ])
@@ -184,10 +189,11 @@ class DocumentPagesErrorView: UIView {
 
     private enum Constants {
         static let singleButtonHeight: CGFloat = 50
-        static let errorHeaderMinHeight: CGFloat = 64
+        static let errorHeaderMinHeight: CGFloat = 62
         static let errorHeaderHeightMultiplier: CGFloat = 0.3
-        static let errorContentBottomMargin: CGFloat = 13
-        static let sidePadding: CGFloat = 24
+        static let errorContentBottomMargin: CGFloat = 24
+        static let stackViewLeadingPadding: CGFloat = 35
+        static let sidePadding: CGFloat = 16
         static let iPadWidthMultiplier: CGFloat = 0.7
     }
 }
