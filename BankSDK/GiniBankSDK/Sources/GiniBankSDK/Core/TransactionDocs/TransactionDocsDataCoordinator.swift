@@ -14,22 +14,40 @@ public protocol TransactionDocsDataProtocol: AnyObject {
     /// - Returns: A `Bool` representing whether documents should always be attached to the transaction
     func getAlwaysAttachDocsValue() -> Bool
 
-    /// Sets the "Always Attach Documents" setting to `true`.
+    /// Sets the "Always Attach Documents" setting to a given value.
+    /// - Parameter value: A `Bool` to set whether documents should always be attached to the transaction.
     func setAlwaysAttachDocs(_ value: Bool)
 
     /// Resets the "Always Attach Documents" setting entirely.
     /// This may be used when the setting needs to be cleared or invalidated.
     func resetAlwaysAttachDocs()
+
+    /// Retrieves the current list of attached documents.
+    /// - Returns: An array of `TransactionDoc` representing the attached documents.
+    func getAttachedDocs() -> [TransactionDoc]
+
+    /// Deletes a document from the attached documents list.
+    /// - Parameter fileName: The name of the document to be deleted.
+    func deleteAttachedDoc(named fileName: String)
 }
 
 /// A class that implements the TransactionDocsDataProtocol and manages transaction document data.
 /// Responsible for handling the state of attaching documents to a transaction.
 public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol {
+    
+    // Singleton instance
+    public static let shared = TransactionDocsDataCoordinator()
+
+    private init() {}
 
     // Mock data for transaction documents
-   private var transactionDocs: [TransactionDoc] = [
-        TransactionDoc(fileName: "image.png", type: .image),
-        TransactionDoc(fileName: "document.pdf", type: .document)
+    public var transactionDocs: [TransactionDoc] = [
+        TransactionDoc(documentId: "12121dssa", 
+                       fileName: "imagess.png",
+                       type: .image),
+        TransactionDoc(documentId: "232asasas",
+                       fileName: "documentwww.pdf",
+                       type: .document)
     ]
 
     // MARK: - TransactionDocsDataProtocol Methods
@@ -47,5 +65,15 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol {
     /// Resets the "Always Attach Documents" setting entirely.
     public func resetAlwaysAttachDocs() {
         GiniBankUserDefaultsStorage.removeAlwaysAttachDocs()
+    }
+
+    /// Retrieves the current list of attached documents.
+    public func getAttachedDocs() -> [TransactionDoc] {
+        return transactionDocs
+    }
+
+    /// Deletes a document from the attached documents list.
+    public func deleteAttachedDoc(named fileName: String) {
+        transactionDocs.removeAll { $0.fileName == fileName }
     }
 }
