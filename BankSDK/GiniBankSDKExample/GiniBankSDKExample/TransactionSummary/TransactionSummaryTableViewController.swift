@@ -22,8 +22,10 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
         }
     }
 
-    var transactionDocs = [TransactionDoc]()
-    var showTransactionDocsAttached: Bool = false
+    //var transactionDocs = [TransactionDoc]()
+    var showTransactionDocsAttached: Bool {
+        return !TransactionDocsDataCoordinator.shared.transactionDocs.isEmpty
+    }
 	var editableFields: [String : String] = [:]
     var lineItems: [[Extraction]]? = nil
     var enabledRows: [Int] = []
@@ -84,8 +86,8 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
                 return UITableViewCell()
             }
             cell.configure(presentingViewController: self,
-                           delegate: self, 
-                           docs: transactionDocs)
+                           delegate: self)
+                           //docs: transactionDocs)
             return cell
         }
     }
