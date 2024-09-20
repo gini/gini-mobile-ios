@@ -21,10 +21,18 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
             result.sort(by: { $0.name! < $1.name! })
         }
     }
-    
+
+    var transactionDocs = [TransactionDoc]()
+    var showTransactionDocsAttached: Bool = false
 	var editableFields: [String : String] = [:]
     var lineItems: [[Extraction]]? = nil
     var enabledRows: [Int] = []
+    private var numberOfSections = 1
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        numberOfSections = showTransactionDocsAttached ? 2 : 1
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,10 +41,13 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return numberOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if numberOfSections == 1 {
+            return result.count
+        }
         return section == 0 ? result.count : 1
     }
 
@@ -73,7 +84,8 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
                 return UITableViewCell()
             }
             cell.configure(presentingViewController: self,
-                           delegate: self)
+                           delegate: self, 
+                           docs: transactionDocs)
             return cell
         }
     }
