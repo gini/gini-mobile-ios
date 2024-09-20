@@ -17,6 +17,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(name: "GiniHealthAPILibrary", url: "https://github.com/gini/health-api-library-ios.git", .exact("4.3.0")),
+        .package(name: "GiniPaymentComponents", path: "../../GiniComponents/GiniPaymentComponents"),
         .package(name: "GiniUtilites", url: "https://github.com/gini/utilites-ios.git", .exact("1.0.0")),
     ],
     targets: [
@@ -25,7 +26,7 @@ let package = Package(
         
         .target(
             name: "GiniMerchantSDK",
-            dependencies: ["GiniHealthAPILibrary", "GiniUtilites"]),
+            dependencies: ["GiniHealthAPILibrary", "GiniPaymentComponents", "GiniUtilites"]),
         .testTarget(
             name: "GiniMerchantSDKTests",
             dependencies: ["GiniMerchantSDK"]),

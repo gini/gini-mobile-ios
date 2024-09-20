@@ -107,15 +107,6 @@ public extension TextFieldWithLabelView {
         }
     }
 
-//    override var inputAccessoryView: UIView? {
-//        get {
-//            return textField.inputAccessoryView
-//        }
-//        set {
-//            textField.inputAccessoryView = newValue
-//        }
-//    }
-
     var delegate: UITextFieldDelegate? {
         get {
             return textField.delegate
