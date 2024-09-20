@@ -8,6 +8,7 @@ import UIKit
 
 extension GiniBankNetworkingScreenApiCoordinator {
     func handleTransactionDocsAlertIfNeeded(on controller: UIViewController,
+
                                             action: @escaping () -> Void) {
         let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
         let clientTransactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
@@ -20,8 +21,9 @@ extension GiniBankNetworkingScreenApiCoordinator {
             return
         }
 
-        if let alwaysAttachDocs = transactionDocsDataCoordinator?.getAlwaysAttachDocsValue() {
-            handleExistingAttachmentOption(alwaysAttachDocs,
+        if transactionDocsDataCoordinator.getAlwaysAttachDocsValue() {
+            let allwaysAttachDocs = transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
+            handleExistingAttachmentOption(allwaysAttachDocs,
                                            on: controller,
                                            action: action)
         } else {
@@ -61,7 +63,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                        action: @escaping () -> Void) -> (() -> Void) {
         return { [weak self] in
             if selectedAttachmentOption == .alwaysAttach {
-                self?.transactionDocsDataCoordinator?.setAlwaysAttachDocs()
+                self?.transactionDocsDataCoordinator.setAlwaysAttachDocs(true)
             }
             action()
         }
