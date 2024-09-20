@@ -39,9 +39,11 @@ class AttachmentsTableViewCell: UITableViewCell {
     }
 
     func configure(presentingViewController: UIViewController,
-                   delegate: TransactionDocsViewDelegate?) {
+                   delegate: TransactionDocsViewDelegate?,
+                   docs: [TransactionDoc]) {
         attachmentsView.delegate = delegate
         attachmentsView.presentingViewController = presentingViewController
+        attachmentsView.transactionDocs = docs
     }
 }
 
