@@ -14,7 +14,6 @@ final class GiniSetupHelper {
     var giniHealthAPIDocumentService: GiniHealthAPILibrary.DefaultDocumentService!
 
     func setup() {
-        // TODO: Replace with proper credentials before testing
         let client: GiniHealthAPILibrary.Client = Client(id: "",
                                                          secret: "",
                                                          domain: "")

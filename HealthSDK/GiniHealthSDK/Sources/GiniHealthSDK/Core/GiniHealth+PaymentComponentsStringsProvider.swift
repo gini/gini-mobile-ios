@@ -31,7 +31,7 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             purposeErrorMessage: NSLocalizedStringPreferredFormat("gini.health.errors.failed.purpose.non.empty.check",
                                                                   comment: "purpose failed non empty check"),
             payInvoiceLabelText: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.banking.app.button.label",
-                                                                  comment: "Title label used for the pay invoice button")
+                                                                  comment: "Title label used for the pay invoice button default")
         )
     }
 
@@ -43,9 +43,9 @@ extension GiniHealth: PaymentComponentsStringsProvider {
                                                                       comment: "Placeholder text used when there isn't a payment provider app installed"),
             ctaLabelText: GiniHealthConfiguration.shared.showPaymentReviewScreen ?
                 NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.continue.to.overview.label",
-                                             comment: "Title label used for the pay invoice button") :
+                                             comment: "Title label used for the pay invoice button when overview is available") :
                 NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.to.banking.app.label",
-                                                 comment: "Title label used for the pay invoice button")
+                                                 comment: "Title label used for the pay invoice button when you jump to the banking app")
         )
     }
 
