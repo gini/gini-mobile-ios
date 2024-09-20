@@ -94,7 +94,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                           moreInformationStrings: giniMerchant.moreInformationStrings,
                                                           minimumButtonsHeight: giniMerchant.paymentComponentButtonsHeight, 
                                                           paymentComponentConfiguration: giniMerchant.paymentComponentConfiguration)
-
+        expectedViewModel.documentId = documentId
         let expectedView = PaymentComponentView(viewModel: expectedViewModel)
 
         // When
@@ -106,7 +106,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
             XCTFail("Error finding correct view.")
             return
         }
-        XCTAssertEqual(view.viewModel.documentId, documentId)
+        XCTAssertEqual(view.viewModel.documentId, expectedView.viewModel.documentId)
     }
     
     func testBankSelectionBottomSheet_ReturnsViewController() {

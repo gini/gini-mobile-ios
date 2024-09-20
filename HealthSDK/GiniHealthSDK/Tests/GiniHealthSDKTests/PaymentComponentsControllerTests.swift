@@ -95,7 +95,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                           paymentComponentConfiguration: giniHealth.paymentComponentConfiguration)
 
         let expectedView = PaymentComponentView(viewModel: expectedViewModel)
-
+        expectedViewModel.documentId = documentId
         // When
         let view = mockPaymentComponentsController.paymentView(documentId: documentId)
 
@@ -105,7 +105,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
             XCTFail("Error finding correct view.")
             return
         }
-        XCTAssertEqual(view.viewModel.documentId, documentId)
+        XCTAssertEqual(view.viewModel.documentId, expectedView.viewModel.documentId)
     }
     
     func testBankSelectionBottomSheet_ReturnsViewController() {

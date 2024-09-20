@@ -251,10 +251,8 @@ public final class PaymentReviewContainerView: UIView {
             }
             fullString.append(NSAttributedString(string: text))
 
-            if viewModel.configuration.lockedFields {
-                if fieldIdentifier != .amountFieldTag {
-                    appendLockIcon(fullString)
-                }
+            if viewModel.configuration.lockedFields, fieldIdentifier != .amountFieldTag {
+                appendLockIcon(fullString)
             }
         }
         return fullString
