@@ -112,7 +112,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
     private var configurationService: ClientConfigurationServiceProtocol?
-    var transactionDocsDataCoordinator: TransactionDocsDataCoordinator?
+    var transactionDocsDataCoordinator = TransactionDocsDataCoordinator.shared
     var giniBankConfiguration = GiniBankConfiguration.shared
 
     public init(client: Client,
@@ -133,8 +133,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration.documentService = documentService
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
-
-        transactionDocsDataCoordinator = TransactionDocsDataCoordinator()
     }
 
     public init(resultsDelegate: GiniCaptureResultsDelegate,
@@ -157,8 +155,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
-
-        transactionDocsDataCoordinator = TransactionDocsDataCoordinator()
     }
 
     convenience init(client: Client,
@@ -299,6 +295,11 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                         self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
                         self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController) { [weak self] in
+                            // let documentService = self.documentService -> document has documentId and documentName
+                            // extraction Result to be used to create TransactionDocsDocumentPagesViewModel
+                            // amountToPay: Price,
+                            // iban: String,
+                            // expiryDate: Date,
                             self?.deliverWithReturnAssistant(result: extractionResult,
                                                              analysisDelegate: networkDelegate)
                         }
@@ -402,6 +403,11 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
                            analysisDelegate: GiniCaptureSDK.AnalysisDelegate) {
         guard let invoice = invoice else { return }
         handleTransactionDocsAlertIfNeeded(on: coordinator.rootViewController) { [weak self] in
+            //  let documentService = self.documentService -> document has documentId and documentName
+            // extraction Result to be used to create TransactionDocsDocumentPagesViewModel
+            //  amountToPay: Price,
+            // iban: String,
+            // expiryDate: Date,
             self?.deliverWithReturnAssistant(result: invoice.extractionResult,
                                              analysisDelegate: analysisDelegate)
         }
@@ -510,6 +516,11 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                            _ editedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
         guard let editedExtractionResult else { return }
         handleTransactionDocsAlertIfNeeded(on: coordinator.rootViewController) { [weak self] in
+            //  let documentService = self.documentService -> document has documentId and documentName
+            // extraction Result to be used to create TransactionDocsDocumentPagesViewModel
+            //  amountToPay: Price,
+            // iban: String,
+            // expiryDate: Date,
             self?.deliverWithSkonto(result: editedExtractionResult)
         }
     }
