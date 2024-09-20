@@ -248,7 +248,8 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
                                                                            index: indexPath.row,
                                                                            invoiceNumTotal: invoice.numTotal,
                                                                            invoiceLineItemsCount:
-                                                                                invoice.lineItems.count)
+                                                                           invoice.lineItems.count,
+                                                                           nameMaxCharactersCount: 300)
                 }
                 cell.delegate = self
                 return cell
