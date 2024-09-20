@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import GiniHealthSDKExample
+import GiniHealthSDKExample
 
 class GiniHealthSDKExampleTests: XCTestCase {
 

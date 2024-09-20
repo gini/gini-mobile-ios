@@ -231,43 +231,44 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
             self?.isLoading = false
             switch result {
             case .success(let data):
-                guard let self else {
-                    completion(nil, nil)
-                    return
-                }
-                guard let healthSelectedPaymentProvider else {
-                    completion(nil, nil)
-                    return
-                }
-                let viewModel = PaymentReviewModel(delegate: self,
-                                                   bottomSheetsProvider: self,
-                                                   document: data.document.toHealthDocument(),
-                                                   extractions: data.extractions.map { $0.toHealthExtraction() },
-                                                   paymentInfo: nil,
-                                                   selectedPaymentProvider: healthSelectedPaymentProvider,
-                                                   configuration: configurationProvider.paymentReviewConfiguration,
-                                                   strings: stringsProvider.paymentReviewStrings,
-                                                   containerConfiguration: configurationProvider.paymentReviewContainerConfiguration,
-                                                   containerStrings: stringsProvider.paymentReviewContainerStrings,
-                                                   defaultStyleInputFieldConfiguration: configurationProvider.defaultStyleInputFieldConfiguration,
-                                                   errorStyleInputFieldConfiguration: configurationProvider.errorStyleInputFieldConfiguration,
-                                                   selectionStyleInputFieldConfiguration: configurationProvider.selectionStyleInputFieldConfiguration,
-                                                   primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
-                                                   poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                   poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
-                                                   bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
-                                                   showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
-
-                let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
-                                                                 selectedPaymentProvider: healthSelectedPaymentProvider)
-                self.trackingDelegate = trackingDelegate
-                completion(vc, nil)
+                self?.preparePaymentReviewViewController(data: data, completion: completion)
+                self?.trackingDelegate = trackingDelegate
             case .failure(let error):
                 completion(nil, error)
             }
         }
     }
-    
+
+    private func preparePaymentReviewViewController(data: DataForReview, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+        guard let healthSelectedPaymentProvider else {
+            completion(nil, nil)
+            return
+        }
+        let viewModel = PaymentReviewModel(delegate: self,
+                                           bottomSheetsProvider: self,
+                                           document: data.document.toHealthDocument(),
+                                           extractions: data.extractions.map { $0.toHealthExtraction() },
+                                           paymentInfo: nil,
+                                           selectedPaymentProvider: healthSelectedPaymentProvider,
+                                           configuration: configurationProvider.paymentReviewConfiguration,
+                                           strings: stringsProvider.paymentReviewStrings,
+                                           containerConfiguration: configurationProvider.paymentReviewContainerConfiguration,
+                                           containerStrings: stringsProvider.paymentReviewContainerStrings,
+                                           defaultStyleInputFieldConfiguration: configurationProvider.defaultStyleInputFieldConfiguration,
+                                           errorStyleInputFieldConfiguration: configurationProvider.errorStyleInputFieldConfiguration,
+                                           selectionStyleInputFieldConfiguration: configurationProvider.selectionStyleInputFieldConfiguration,
+                                           primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
+                                           poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+                                           poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                           bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
+                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+
+        let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
+                                                         selectedPaymentProvider: healthSelectedPaymentProvider)
+
+        completion(vc, nil)
+    }
+
     public func paymentInfoViewController() -> UIViewController {
         let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders,
                                                         configuration: configurationProvider.paymentInfoConfiguration,

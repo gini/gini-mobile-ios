@@ -7,8 +7,8 @@
 
 import XCTest
 import UIKit
-@testable import GiniHealthAPILibrary
-@testable import GiniHealthSDK
+import GiniHealthAPILibrary
+import GiniHealthSDK
 
 class UploadDocumentsTests: XCTestCase {
     lazy var giniHelper = GiniSetupHelper()
