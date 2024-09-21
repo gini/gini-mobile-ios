@@ -14,13 +14,21 @@ public class TransactionDocsViewModel {
         }
     }
 
-    public var presentingViewController: UIViewController?
+    private var presentingViewController: UIViewController? {
+        return TransactionDocsDataCoordinator.shared.presentingViewController
+    }
+
+    private lazy var documentPagesViewController: DocumentPagesViewController = {
+        let transactionDoc = self.transactionDocs.first
+        let viewController = DocumentPagesViewController(screenTitle: transactionDoc?.fileName ?? "")
+        viewController.modalPresentationStyle = .overCurrentContext
+        return viewController
+    }()
 
     public var onUpdate: (() -> Void)?
 
     public init(transactionDocs: [TransactionDoc] = TransactionDocsDataCoordinator.shared.transactionDocs) {
         self.transactionDocs = transactionDocs
-        self.presentingViewController = TransactionDocsDataCoordinator.shared.presentingViewController
     }
 
     public func deleteTransactionDoc(with fileName: String) {
@@ -28,38 +36,9 @@ public class TransactionDocsViewModel {
         onUpdate?()
     }
 
-    public func handleDocumentOpen(for documentId: String) {
-        guard let presentingViewController = TransactionDocsDataCoordinator.shared.presentingViewController else {
-            print("No presenting view controller available.")
-            return
-        }
-
-        guard let transactionDoc = transactionDocs.first(where: { $0.documentId == documentId }) else {
-            print("Document not found.")
-            return
-        }
-
-        let viewModel = TransactionDocsDocumentPagesViewModel(
-            originalImages: [GiniImages.transactionDocsFileIcon.image!],
-            amountToPay: .init(value: 100, currencyCode: "EUR"),
-            iban: "IBAN",
-            expiryDate: Date(),
-            rightBarButtonAction: { [weak self] in
-                self?.deleteTransactionDoc(with: transactionDoc.fileName)
-                presentingViewController.dismiss(animated: true)
-            }
-        )
-
-        let viewController = DocumentPagesViewController(screenTitle: transactionDoc.fileName)
-        viewController.modalPresentationStyle = .fullScreen
-
-        presentingViewController.present(viewController, animated: true)
-
-        // Simulate data loading delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            viewController.stopLoadingIndicatorAnimation()
-            viewController.setData(viewModel: viewModel)
-        }
+    public func handleDocumentOpen() {
+        presentingViewController?.present(documentPagesViewController, animated: true)
+        TransactionDocsDataCoordinator.shared.loadDocumentData?()
     }
 
     public func presentDocumentActionSheet(for document: TransactionDoc) {
@@ -70,10 +49,25 @@ public class TransactionDocsViewModel {
 
         TransactionDocsActionsBottomSheet.showDeleteAlert(on: presentingViewController,
                                                           openHandler: { [weak self] in
-            self?.handleDocumentOpen(for: document.documentId)
+            self?.handleDocumentOpen()
         },
                                                           deleteHandler: { [weak self] in
             self?.deleteTransactionDoc(with: document.fileName)
         })
+    }
+
+    func setTransactionDocsDocumentPagesViewModel(transactionDocsDocumentPagesViewModel: TransactionDocsDocumentPagesViewModel) {
+        let transactionDoc = self.transactionDocs.first
+        transactionDocsDocumentPagesViewModel.rightBarButtonAction = { [weak self] in
+            guard let self else { return }
+            let deleteAction = {
+                self.deleteTransactionDoc(with: transactionDoc?.fileName ?? "")
+                self.documentPagesViewController.dismiss(animated: true)
+            }
+            TransactionDocsActionsBottomSheet.showDeleteAlert(on: self.documentPagesViewController,
+                                                              deleteHandler: deleteAction)
+        }
+        documentPagesViewController.stopLoadingIndicatorAnimation()
+        documentPagesViewController.setData(viewModel: transactionDocsDocumentPagesViewModel)
     }
 }

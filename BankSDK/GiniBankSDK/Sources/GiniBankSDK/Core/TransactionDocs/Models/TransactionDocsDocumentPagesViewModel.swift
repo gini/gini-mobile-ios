@@ -20,13 +20,11 @@ final class TransactionDocsDocumentPagesViewModel: DocumentPagesViewModelProtoco
     init(originalImages: [UIImage],
          amountToPay: Price,
          iban: String,
-         expiryDate: Date,
-         rightBarButtonAction: @escaping (() -> Void)) {
+         expiryDate: Date) {
         self.originalImages = originalImages
         self.amountToPay = amountToPay
         self.iban = iban
         self.expiryDate = expiryDate
-        self.rightBarButtonAction = rightBarButtonAction
     }
 
     func imagesForDisplay() -> [UIImage] {

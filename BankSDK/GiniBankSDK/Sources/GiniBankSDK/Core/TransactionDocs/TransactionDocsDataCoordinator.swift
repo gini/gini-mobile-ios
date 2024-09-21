@@ -40,17 +40,19 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol {
 
     public weak var presentingViewController: UIViewController?
 
+    var loadDocumentData: (() -> Void)?
+
     private init() {}
 
-    // Mock data for transaction documents
-    public var transactionDocs: [TransactionDoc] = [
-        TransactionDoc(documentId: "12121dssa", 
-                       fileName: "imagess.png",
-                       type: .image),
-        TransactionDoc(documentId: "232asasas",
-                       fileName: "documentwww.pdf",
-                       type: .document)
-    ]
+    public var transactionDocs: [TransactionDoc] = [] {
+        didSet {
+            transactionDocsViewModel?.transactionDocs = transactionDocs
+        }
+    }
+
+    lazy var transactionDocsViewModel: TransactionDocsViewModel? = {
+        return TransactionDocsViewModel()
+    }()
 
     // MARK: - TransactionDocsDataProtocol Methods
 
