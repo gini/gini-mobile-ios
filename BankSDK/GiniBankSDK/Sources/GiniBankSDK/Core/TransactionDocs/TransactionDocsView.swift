@@ -14,8 +14,6 @@ public class TransactionDocsView: UIView {
 
     public weak var delegate: TransactionDocsViewDelegate?
 
-    private let viewModel: TransactionDocsViewModel
-
     private let configuration = GiniBankConfiguration.shared
 
     private lazy var stackView: UIStackView = {
@@ -32,8 +30,7 @@ public class TransactionDocsView: UIView {
         return TransactionDocsHeaderView()
     }()
 
-    public init(viewModel: TransactionDocsViewModel) {
-        self.viewModel = viewModel
+    public init() {
         super.init(frame: .zero)
         commonInit()
     }
@@ -54,11 +51,11 @@ public class TransactionDocsView: UIView {
     }
 
     private func setupViewModelBindings() {
-        viewModel.onUpdate = { [weak self] in
-            if self?.viewModel.transactionDocs.isEmpty ?? true {
+        TransactionDocsDataCoordinator.shared.transactionDocsViewModel?.onUpdate = { [weak self] in
+            self?.reloadStackViewContent()
+            if TransactionDocsDataCoordinator.shared.transactionDocsViewModel?.transactionDocs.isEmpty ?? true {
                 self?.stackView.removeFromSuperview()
             }
-            self?.reloadStackViewContent()
             self?.delegate?.transactionDocsViewDidUpdateContent(self!)
         }
     }
@@ -83,7 +80,7 @@ public class TransactionDocsView: UIView {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         stackView.addArrangedSubview(headerView)
 
-        for transactionDoc in viewModel.transactionDocs {
+        for transactionDoc in TransactionDocsDataCoordinator.shared.transactionDocsViewModel?.transactionDocs ?? [] {
             let transactionDocsItemView = createTransactionDocsItemView(for: transactionDoc)
             stackView.addArrangedSubview(transactionDocsItemView)
         }
@@ -93,7 +90,7 @@ public class TransactionDocsView: UIView {
         let transactionDocsItemView = TransactionDocsItemView(transactionDocsItem: transactionDoc)
 
         transactionDocsItemView.optionsAction = { [weak self] in
-            self?.viewModel.presentDocumentActionSheet(for: transactionDoc)
+            TransactionDocsDataCoordinator.shared.transactionDocsViewModel?.presentDocumentActionSheet(for: transactionDoc)
         }
 
         return transactionDocsItemView

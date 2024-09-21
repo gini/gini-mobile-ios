@@ -38,6 +38,7 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        TransactionDocsDataCoordinator.shared.presentingViewController = self
         tableView.register(AttachmentsTableViewCell.self,
                            forCellReuseIdentifier: AttachmentsTableViewCell.reuseIdentifier)
     }
@@ -85,8 +86,7 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
                     as? AttachmentsTableViewCell else {
                 return UITableViewCell()
             }
-            cell.configure(presentingViewController: self,
-                           delegate: self)
+            cell.configure(delegate: self)
                            //docs: transactionDocs)
             return cell
         }

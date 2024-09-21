@@ -11,7 +11,7 @@ class AttachmentsTableViewCell: UITableViewCell {
     static let reuseIdentifier = "AttachmentsTableViewCell"
     
     private lazy var attachmentsView: TransactionDocsView = {
-        let view = TransactionDocsView(viewModel: .init())
+        let view = TransactionDocsView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -38,11 +38,9 @@ class AttachmentsTableViewCell: UITableViewCell {
         ])
     }
 
-    func configure(presentingViewController: UIViewController,
-                   delegate: TransactionDocsViewDelegate?) {
+    func configure(delegate: TransactionDocsViewDelegate?) {
                    //docs: [TransactionDoc]) {
         attachmentsView.delegate = delegate
-        TransactionDocsDataCoordinator.shared.presentingViewController = presentingViewController
         //attachmentsView.transactionDocs = docs
     }
 }
