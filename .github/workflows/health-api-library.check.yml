@@ -58,7 +58,7 @@ jobs:
       run: >
         xcodebuild clean test
         -project HealthAPILibrary/GiniHealthAPILibraryExample/GiniHealthAPILibraryExample.xcodeproj
-        -scheme "GiniHealthAPILibraryPinningExampleTests"
+        -scheme "GiniHealthAPILibraryTests"
         -destination "${{ matrix.destination }}"
         -skip-testing:GiniHealthAPILibraryPinningExampleTests/HealthAPILibraryPinningWrongCertificatesTests
         CODE_SIGN_IDENTITY=""
