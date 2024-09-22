@@ -8,7 +8,7 @@
 
 import UIKit
 import GiniHealthAPILibrary
-import GiniPaymentComponents
+import GiniInternalPayment
 import GiniUtilites
 
 /**
@@ -44,9 +44,9 @@ public protocol PaymentComponentsConfigurationProvider {
 
     var primaryButtonConfiguration: ButtonConfiguration { get }
     var secondaryButtonConfiguration: ButtonConfiguration { get }
-    var defaultStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration { get }
-    var errorStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration { get }
-    var selectionStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration { get }
+    var defaultStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration { get }
+    var errorStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration { get }
+    var selectionStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration { get }
 
     var showPaymentReviewCloseButton: Bool { get }
     var paymentComponentButtonsHeight: CGFloat { get }
@@ -374,7 +374,7 @@ extension PaymentComponentsController: InstallAppBottomViewProtocol {
 }
 
 extension PaymentComponentsController: PaymentReviewProtocol {
-    public func createPaymentRequest(paymentInfo: GiniPaymentComponents.PaymentInfo, completion: @escaping (Result<String, GiniHealthAPILibrary.GiniError>) -> Void) {
+    public func createPaymentRequest(paymentInfo: GiniInternalPayment.PaymentInfo, completion: @escaping (Result<String, GiniHealthAPILibrary.GiniError>) -> Void) {
         let info = PaymentInfo(paymentConponentsInfo: paymentInfo)
         giniSDK.createPaymentRequest(paymentInfo: info, completion: { result in
             switch result {

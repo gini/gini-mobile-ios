@@ -9,7 +9,7 @@
 import UIKit
 import GiniCaptureSDK
 import GiniMerchantSDK
-import GiniPaymentComponents
+import GiniInternalPayment
 
 final class AppCoordinator: Coordinator {
     

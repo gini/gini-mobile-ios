@@ -9,7 +9,7 @@ import XCTest
 @testable import GiniUtilites
 @testable import GiniMerchantSDK
 @testable import GiniHealthAPILibrary
-@testable import GiniPaymentComponents
+@testable import GiniInternalPayment
 
 final class PaymentComponentsControllerTests: XCTestCase {
     private var giniHealthAPI: GiniHealthAPI!

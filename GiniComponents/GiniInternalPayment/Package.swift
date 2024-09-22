@@ -4,29 +4,29 @@
 import PackageDescription
 
 let package = Package(
-    name: "GiniPaymentComponents",
+    name: "GiniInternalPayment",
     defaultLocalization: "en",
     platforms: [.iOS(.v13)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "GiniPaymentComponents",
-            targets: ["GiniPaymentComponents"]),
+            name: "GiniInternalPayment",
+            targets: ["GiniInternalPayment"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(name: "GiniHealthAPILibrary", url: "https://github.com/gini/health-api-library-ios.git", .exact("4.3.0")),
-        .package(name: "GiniUtilites", url: "https://github.com/gini/utilites-ios.git", .exact("1.0.0")),
+        .package(name: "GiniHealthAPILibrary", path: "../../HealthAPILibrary/GiniHealthAPILibrary"),
+        .package(name: "GiniUtilites", path: "../../GiniComponents/GiniUtilites")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "GiniPaymentComponents",
+            name: "GiniInternalPayment",
             dependencies: ["GiniHealthAPILibrary", "GiniUtilites"]),
         .testTarget(
-            name: "GiniPaymentComponentsTests",
-            dependencies: ["GiniPaymentComponents"]),
+            name: "GiniInternalPaymentTests",
+            dependencies: ["GiniInternalPayment"]),
     ]
 )

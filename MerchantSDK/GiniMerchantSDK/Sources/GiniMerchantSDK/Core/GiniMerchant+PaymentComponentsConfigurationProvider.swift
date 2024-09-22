@@ -7,18 +7,18 @@
 
 import UIKit
 import GiniUtilites
-import GiniPaymentComponents
+import GiniInternalPayment
 
 extension GiniMerchant: PaymentComponentsConfigurationProvider {
-    public var defaultStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration {
+    public var defaultStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration {
         GiniMerchantConfiguration.shared.defaultStyleInputFieldConfiguration
     }
     
-    public var errorStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration {
+    public var errorStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration {
         GiniMerchantConfiguration.shared.errorStyleInputFieldConfiguration
     }
     
-    public var selectionStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration {
+    public var selectionStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration {
         GiniMerchantConfiguration.shared.selectionStyleInputFieldConfiguration
     }
     
@@ -168,11 +168,11 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
         )
     }
     
-    public var primaryButtonConfiguration: GiniPaymentComponents.ButtonConfiguration {
+    public var primaryButtonConfiguration: GiniInternalPayment.ButtonConfiguration {
         GiniMerchantConfiguration.shared.primaryButtonConfiguration
     }
     
-    public var secondaryButtonConfiguration: GiniPaymentComponents.ButtonConfiguration {
+    public var secondaryButtonConfiguration: GiniInternalPayment.ButtonConfiguration {
         GiniMerchantConfiguration.shared.secondaryButtonConfiguration
     }
 }

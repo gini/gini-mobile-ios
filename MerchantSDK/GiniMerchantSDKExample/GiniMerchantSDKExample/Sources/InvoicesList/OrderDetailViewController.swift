@@ -6,7 +6,7 @@
 
 
 import UIKit
-import GiniPaymentComponents
+import GiniInternalPayment
 import GiniUtilites
 import GiniMerchantSDK
 
@@ -142,7 +142,7 @@ final class OrderDetailViewController: UIViewController {
     }
 }
 
-extension OrderDetailViewController: GiniPaymentComponents.PaymentComponentViewProtocol {
+extension OrderDetailViewController: GiniInternalPayment.PaymentComponentViewProtocol {
     func didTapOnMoreInformation(documentId: String?) {
         print("✅ Tapped on More Information")
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
@@ -221,7 +221,7 @@ extension OrderDetailViewController: GiniPaymentComponents.PaymentComponentViewP
         }
     }
 
-    private func obtainPaymentInfo() -> GiniPaymentComponents.PaymentInfo {
+    private func obtainPaymentInfo() -> GiniInternalPayment.PaymentInfo {
         saveTextFieldData()
 
         return PaymentInfo(recipient: order.recipient,

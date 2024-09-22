@@ -7,7 +7,7 @@
 
 import UIKit
 import GiniUtilites
-import GiniPaymentComponents
+import GiniInternalPayment
 
 /**
  The `GiniMerchantConfiguration` class allows customizations to the look of the Gini Merchant SDK.
@@ -89,7 +89,7 @@ public final class GiniMerchantConfiguration: NSObject {
     /**
      A default style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var defaultStyleInputFieldConfiguration = GiniPaymentComponents.TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+    public lazy var defaultStyleInputFieldConfiguration = GiniInternalPayment.TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
                                                                                  borderColor: GiniColor.standard5.uiColor(),
                                                                                  textColor: GiniColor.standard1.uiColor(), 
                                                                                  textFont: font(for: .captions2),
@@ -99,7 +99,7 @@ public final class GiniMerchantConfiguration: NSObject {
     /**
      A error style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var errorStyleInputFieldConfiguration = GiniPaymentComponents.TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+    public lazy var errorStyleInputFieldConfiguration = GiniInternalPayment.TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
                                                                                borderColor: GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1).uiColor(),
                                                                                textColor: GiniColor.standard1.uiColor(),
                                                                                textFont: font(for: .captions2),
@@ -109,7 +109,7 @@ public final class GiniMerchantConfiguration: NSObject {
     /**
      A selection style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var selectionStyleInputFieldConfiguration = GiniPaymentComponents.TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+    public lazy var selectionStyleInputFieldConfiguration = GiniInternalPayment.TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
                                                                                    borderColor: GiniColor.accent1.uiColor(),
                                                                                    textColor: GiniColor.standard1.uiColor(),
                                                                                    textFont: font(for: .captions2),

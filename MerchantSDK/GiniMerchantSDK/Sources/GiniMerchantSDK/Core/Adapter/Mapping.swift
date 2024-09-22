@@ -7,7 +7,7 @@
 
 import Foundation
 import GiniHealthAPILibrary
-import GiniPaymentComponents
+import GiniInternalPayment
 
 //MARK: - Mapping Extraction
 extension Extraction {
@@ -233,7 +233,7 @@ extension LogLevel {
 //MARK: - PaymentProvider
 
 extension PaymentInfo {
-    init(paymentConponentsInfo: GiniPaymentComponents.PaymentInfo) {
+    init(paymentConponentsInfo: GiniInternalPayment.PaymentInfo) {
         self.init(recipient: paymentConponentsInfo.recipient,
                   iban: paymentConponentsInfo.iban,
                   bic: paymentConponentsInfo.bic,

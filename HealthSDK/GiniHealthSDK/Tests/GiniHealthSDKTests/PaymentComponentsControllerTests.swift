@@ -8,7 +8,7 @@
 import XCTest
 @testable import GiniHealthSDK
 @testable import GiniHealthAPILibrary
-@testable import GiniPaymentComponents
+@testable import GiniInternalPayment
 @testable import GiniUtilites
 
 final class PaymentComponentsControllerTests: XCTestCase {
