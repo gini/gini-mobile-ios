@@ -52,11 +52,12 @@ public class TransactionDocsView: UIView {
 
     private func setupViewModelBindings() {
         TransactionDocsDataCoordinator.shared.transactionDocsViewModel?.onUpdate = { [weak self] in
-            self?.reloadStackViewContent()
+            guard let self else { return }
+            self.reloadStackViewContent()
             if TransactionDocsDataCoordinator.shared.transactionDocsViewModel?.transactionDocs.isEmpty ?? true {
-                self?.stackView.removeFromSuperview()
+                self.stackView.removeFromSuperview()
             }
-            self?.delegate?.transactionDocsViewDidUpdateContent(self!)
+            self.delegate?.transactionDocsViewDidUpdateContent(self)
         }
     }
 

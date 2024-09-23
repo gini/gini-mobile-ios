@@ -18,12 +18,7 @@ public class TransactionDocsViewModel {
         return TransactionDocsDataCoordinator.shared.presentingViewController
     }
 
-    private lazy var documentPagesViewController: DocumentPagesViewController = {
-        let transactionDoc = self.transactionDocs.first
-        let viewController = DocumentPagesViewController(screenTitle: transactionDoc?.fileName ?? "")
-        viewController.modalPresentationStyle = .overCurrentContext
-        return viewController
-    }()
+    private var documentPagesViewController: DocumentPagesViewController?
 
     public var onUpdate: (() -> Void)?
 
@@ -31,13 +26,17 @@ public class TransactionDocsViewModel {
         self.transactionDocs = transactionDocs
     }
 
-    public func deleteTransactionDoc(with fileName: String) {
-        transactionDocs.removeAll { $0.fileName == fileName }
+    public func deleteTransactionDoc(with documentId: String) {
+        transactionDocs.removeAll { $0.documentId == documentId }
         onUpdate?()
     }
 
     public func handleDocumentOpen() {
-        presentingViewController?.present(documentPagesViewController, animated: true)
+        let transactionDoc = self.transactionDocs.first
+        let viewController = DocumentPagesViewController(screenTitle: transactionDoc?.fileName ?? "")
+        viewController.modalPresentationStyle = .overCurrentContext
+        documentPagesViewController = viewController
+        presentingViewController?.present(viewController, animated: true)
         TransactionDocsDataCoordinator.shared.loadDocumentData?()
     }
 
@@ -52,22 +51,23 @@ public class TransactionDocsViewModel {
             self?.handleDocumentOpen()
         },
                                                           deleteHandler: { [weak self] in
-            self?.deleteTransactionDoc(with: document.fileName)
+            self?.deleteTransactionDoc(with: document.documentId)
         })
     }
 
-    func setTransactionDocsDocumentPagesViewModel(_ transactionDocsDocumentPagesViewModel: TransactionDocsDocumentPagesViewModel) {
+    func setTransactionDocsDocumentPagesViewModel(_ viewModel: TransactionDocsDocumentPagesViewModel) {
+        guard let documentPagesViewController else { return }
         let transactionDoc = self.transactionDocs.first
-        transactionDocsDocumentPagesViewModel.rightBarButtonAction = { [weak self] in
+        viewModel.rightBarButtonAction = { [weak self] in
             guard let self else { return }
             let deleteAction = {
-                self.deleteTransactionDoc(with: transactionDoc?.fileName ?? "")
-                self.documentPagesViewController.dismiss(animated: true)
+                self.deleteTransactionDoc(with: transactionDoc?.documentId ?? "")
+                documentPagesViewController.dismiss(animated: true)
             }
-            TransactionDocsActionsBottomSheet.showDeleteAlert(on: self.documentPagesViewController,
+            TransactionDocsActionsBottomSheet.showDeleteAlert(on: documentPagesViewController,
                                                               deleteHandler: deleteAction)
         }
         documentPagesViewController.stopLoadingIndicatorAnimation()
-        documentPagesViewController.setData(viewModel: transactionDocsDocumentPagesViewModel)
+        documentPagesViewController.setData(viewModel: viewModel)
     }
 }
