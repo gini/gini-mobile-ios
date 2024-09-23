@@ -18,12 +18,7 @@ public class TransactionDocsViewModel {
         return TransactionDocsDataCoordinator.shared.presentingViewController
     }
 
-    private lazy var documentPagesViewController: DocumentPagesViewController = {
-        let transactionDoc = self.transactionDocs.first
-        let viewController = DocumentPagesViewController(screenTitle: transactionDoc?.fileName ?? "")
-        viewController.modalPresentationStyle = .overCurrentContext
-        return viewController
-    }()
+    private var documentPagesViewController: DocumentPagesViewController?
 
     public var onUpdate: (() -> Void)?
 
@@ -37,7 +32,11 @@ public class TransactionDocsViewModel {
     }
 
     public func handleDocumentOpen() {
-        presentingViewController?.present(documentPagesViewController, animated: true)
+        let transactionDoc = self.transactionDocs.first
+        let viewController = DocumentPagesViewController(screenTitle: transactionDoc?.fileName ?? "")
+        viewController.modalPresentationStyle = .overCurrentContext
+        documentPagesViewController = viewController
+        presentingViewController?.present(viewController, animated: true)
         TransactionDocsDataCoordinator.shared.loadDocumentData?()
     }
 
@@ -57,14 +56,15 @@ public class TransactionDocsViewModel {
     }
 
     func setDocumentPagesViewModel(viewModel: TransactionDocsDocumentPagesViewModel) {
+        guard let documentPagesViewController else { return }
         let transactionDoc = self.transactionDocs.first
         viewModel.rightBarButtonAction = { [weak self] in
             guard let self else { return }
             let deleteAction = {
                 self.deleteTransactionDoc(with: transactionDoc?.documentId ?? "")
-                self.documentPagesViewController.dismiss(animated: true)
+                documentPagesViewController.dismiss(animated: true)
             }
-            TransactionDocsActionsBottomSheet.showDeleteAlert(on: self.documentPagesViewController,
+            TransactionDocsActionsBottomSheet.showDeleteAlert(on: documentPagesViewController,
                                                               deleteHandler: deleteAction)
         }
         documentPagesViewController.stopLoadingIndicatorAnimation()
