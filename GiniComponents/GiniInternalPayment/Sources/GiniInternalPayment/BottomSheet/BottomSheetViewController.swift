@@ -174,15 +174,19 @@ private extension BottomSheetViewController {
             // This state will occur when user is dragging
             self.mainContainerView.frame.origin.y = currentY + pannedHeight
         case .ended:
-            // When user stop dragging
-            // if fulfil the condition dismiss it, else move to original position
-            if pannedHeight >= Constants.minDismissiblePanHeight {
-                dismissBottomSheet()
-            } else {
-                self.mainContainerView.frame.origin.y = currentY
-            }
+            handlePanGestureEnded(pannedHeight: pannedHeight, currentY: currentY)
         default:
             break
+        }
+    }
+
+    private func handlePanGestureEnded(pannedHeight: CGFloat, currentY: CGFloat) {
+        // When user stop dragging
+        // if fulfil the condition dismiss it, else move to original position
+        if pannedHeight >= Constants.minDismissiblePanHeight {
+            dismissBottomSheet()
+        } else {
+            self.mainContainerView.frame.origin.y = currentY
         }
     }
 
