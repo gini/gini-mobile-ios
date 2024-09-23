@@ -111,13 +111,18 @@ jobs:
         with:
           files: "*.ipa"
 
-      - name: Distribute Health-sdk example apk to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
+      -name: Distribute bank-sdk example ipa to Firebase App Distribution
+      - uses: nickwph/firebase-app-distribution-action@v1
         with:
-          appId: 1:1008447554665:ios:c5c2362ee87d0bd605cef8
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
-          groups: testers
           file: GiniBankSDKExample.ipa
-          releaseNotes: |
-              ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
-              ${{ github.event.head_commit.message }}
+          app: 1:1008447554665:ios:c5c2362ee87d0bd605cef8
+          credentials: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
+          release-notes: ""                    # Optional
+          release-notes-file: ""               # Optional
+          testers: "testers"                          # Optional
+          testers-file: ""                     # Optional
+          groups: ""                           # Optional
+          groups-file: ""                      # Optional
+          debug: false                         # Optional: Default false. A flag you can include to print verbose log output.
+          cache: true                          # Optional: Default true. Whether to cache the firebase tools for next job, keeping this "true" will speed up the build.
+          upgrade: true                        # Optional: Default true. Whether to attempt to upgrade firebase tools when cache is "true", turning this "false" will speed up the build.
