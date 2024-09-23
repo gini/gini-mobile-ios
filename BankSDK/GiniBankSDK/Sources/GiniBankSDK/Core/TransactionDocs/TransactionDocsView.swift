@@ -123,7 +123,7 @@ public class TransactionDocsView: UIView {
                 // TODO: PP-805 Simulate data loading delay with first result as error
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     viewController.stopLoadingIndicatorAnimation()
-                    viewController.setError(buttonAction: {
+                    viewController.setError(errorType: .unexpected, buttonAction: {
                         viewController.startLoadingIndicatorAnimation()
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             viewController.stopLoadingIndicatorAnimation()

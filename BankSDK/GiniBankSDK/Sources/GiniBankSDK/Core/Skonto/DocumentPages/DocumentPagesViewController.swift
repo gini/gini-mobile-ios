@@ -102,15 +102,9 @@ final class DocumentPagesViewController: UIViewController {
         showSkontoDetailsInFooter()
     }
 
-    func setError(buttonAction: @escaping () -> Void) {
+    func setError(errorType: ErrorType, buttonAction: @escaping () -> Void) {
         let errorView = DocumentPagesErrorView(
-            errorTitle: NSLocalizedStringPreferredGiniBankFormat(
-                "ginibank.transactionDocs.preview.error.title",
-                comment: "Service is unavailable."),
-            errorIcon: GiniImages.errorServiceUnavailable.image,
-            errorContentText: NSLocalizedStringPreferredGiniBankFormat(
-                "ginibank.transactionDocs.preview.error.content",
-                comment: "The service is unavailable. Please try again..."),
+            errorType: errorType,
             buttonTitle: NSLocalizedStringPreferredGiniBankFormat(
                 "ginibank.transactionDocs.preview.error.action",
                 comment: "Try again"),
