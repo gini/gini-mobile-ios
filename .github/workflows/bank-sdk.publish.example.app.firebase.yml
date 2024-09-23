@@ -115,14 +115,5 @@ jobs:
         uses: nickwph/firebase-app-distribution-action@v1
         with:
           file: GiniBankSDKExample.ipa
-          app: 1:1008447554665:ios:c5c2362ee87d0bd605cef8
+          app: "1:1008447554665:ios:c5c2362ee87d0bd605cef8"
           credentials: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
-          release-notes: ""                    # Optional
-          release-notes-file: ""               # Optional
-          testers: "testers"                          # Optional
-          testers-file: ""                     # Optional
-          groups: ""                           # Optional
-          groups-file: ""                      # Optional
-          debug: false                         # Optional: Default false. A flag you can include to print verbose log output.
-          cache: true                          # Optional: Default true. Whether to cache the firebase tools for next job, keeping this "true" will speed up the build.
-          upgrade: true                        # Optional: Default true. Whether to attempt to upgrade firebase tools when cache is "true", turning this "false" will speed up the build.
