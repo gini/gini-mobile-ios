@@ -204,19 +204,23 @@ open class ZoomedImageView: UIScrollView {
             let xOffset = contentSize.width < bounds.width ? 0 : (contentSize.width - bounds.width)/2
             let yOffset = contentSize.height < bounds.height ? 0 : (contentSize.height - bounds.height)/2
 
-            switch imageContentMode {
-            case .aspectFit:
-                contentOffset =  CGPoint.zero
-            case .aspectFill:
-                contentOffset = CGPoint(x: xOffset, y: yOffset)
-            case .heightFill:
-                contentOffset = CGPoint(x: xOffset, y: 0)
-            case .widthFill:
-                contentOffset = CGPoint(x: 0, y: yOffset)
-            }
+            contentOffset = getContentOffset(imageContentMode: imageContentMode, xOffset: xOffset, yOffset: yOffset)
         }
     }
-    
+
+    private func getContentOffset(imageContentMode: ScaleMode, xOffset: CGFloat, yOffset: CGFloat) -> CGPoint {
+        switch imageContentMode {
+        case .aspectFit:
+            return CGPoint.zero
+        case .aspectFill:
+            return CGPoint(x: xOffset, y: yOffset)
+        case .heightFill:
+            return CGPoint(x: xOffset, y: 0)
+        case .widthFill:
+            return CGPoint(x: 0, y: yOffset)
+        }
+    }
+
     private func setMaxMinZoomScalesForCurrentBounds() {
         // calculate min/max zoomscale
         let xScale = bounds.width / imageSize.width    // the scale needed to perfectly fit the image width-wise
