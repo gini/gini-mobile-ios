@@ -638,35 +638,38 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
            let text = textField.text,
            let textRange = Range(range, in: text) {
             let updatedText = text.replacingCharacters(in: textRange, with: string)
-
-            // Limit length to 7 digits
-            let onlyDigits = String(updatedText
-                                        .trimmingCharacters(in: .whitespaces)
-                                        .filter { c in c != "," && c != "."}
-                                        .prefix(7))
-
-            if let decimal = Decimal(string: onlyDigits) {
-                let decimalWithFraction = decimal / 100
-
-                if let newAmount = Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
-                    // Save the selected text range to restore the cursor position after replacing the text
-                    let selectedRange = textField.selectedTextRange
-
-                    textField.text = newAmount
-                    amountToPay.value = decimalWithFraction
-
-                    // Move the cursor position after the inserted character
-                    if let selectedRange = selectedRange {
-                        let countDelta = newAmount.count - text.count
-                        let offset = countDelta == 0 ? 1 : countDelta
-                        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
-                    }
-                }
-            }
+            adjustAmountValue(textField: textField, updatedText: updatedText)
             disablePayButtonIfNeeded()
             return false
            }
         return true
+    }
+
+    private func adjustAmountValue(textField: UITextField, updatedText: String) {
+        // Limit length to 7 digits
+        let onlyDigits = String(updatedText
+                                    .trimmingCharacters(in: .whitespaces)
+                                    .filter { c in c != "," && c != "."}
+                                    .prefix(7))
+
+        if let decimal = Decimal(string: onlyDigits) {
+            let decimalWithFraction = decimal / 100
+
+            if let newAmount = Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
+                // Save the selected text range to restore the cursor position after replacing the text
+                let selectedRange = textField.selectedTextRange
+
+                textField.text = newAmount
+                amountToPay.value = decimalWithFraction
+
+                // Move the cursor position after the inserted character
+                if let selectedRange = selectedRange {
+                    let countDelta = newAmount.count - (textField.text?.count ?? 0)
+                    let offset = countDelta == 0 ? 1 : countDelta
+                    textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
+                }
+            }
+        }
     }
 
     public func textFieldDidChangeSelection(_ textField: UITextField) {
