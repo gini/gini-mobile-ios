@@ -134,7 +134,11 @@ public final class PaymentComponentView: UIView {
                                          rightImageTintColor: viewModel.configuration.chevronDownIconColor,
                                          shouldShowLabel: viewModel.showPaymentComponentInOneRow ? !viewModel.hasBankSelected : true)
         payInvoiceButton.isHidden = !viewModel.hasBankSelected
-        selectBankButton.heightAnchor.constraint(equalToConstant: viewModel.showPaymentComponentInOneRow ? viewModel.minimumButtonsHeight : (viewModel.hasBankSelected ? viewModel.minimumButtonsHeight : Constants.defaultButtonHeihgt)).isActive = true
+        selectBankButton.heightAnchor.constraint(equalToConstant: heightConstantSelectBankButton).isActive = true
+    }
+
+    var heightConstantSelectBankButton: Double {
+        viewModel.showPaymentComponentInOneRow ? viewModel.minimumButtonsHeight : (viewModel.hasBankSelected ? viewModel.minimumButtonsHeight : Constants.defaultButtonHeihgt)
     }
 
     private func activateContentStackViewConstraints() {
