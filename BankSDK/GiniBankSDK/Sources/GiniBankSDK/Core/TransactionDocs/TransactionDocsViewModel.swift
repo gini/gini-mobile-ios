@@ -56,9 +56,9 @@ public class TransactionDocsViewModel {
         })
     }
 
-    func setTransactionDocsDocumentPagesViewModel(transactionDocsDocumentPagesViewModel: TransactionDocsDocumentPagesViewModel) {
+    func setDocumentPagesViewModel(viewModel: TransactionDocsDocumentPagesViewModel) {
         let transactionDoc = self.transactionDocs.first
-        transactionDocsDocumentPagesViewModel.rightBarButtonAction = { [weak self] in
+        viewModel.rightBarButtonAction = { [weak self] in
             guard let self else { return }
             let deleteAction = {
                 self.deleteTransactionDoc(with: transactionDoc?.documentId ?? "")
@@ -68,6 +68,6 @@ public class TransactionDocsViewModel {
                                                               deleteHandler: deleteAction)
         }
         documentPagesViewController.stopLoadingIndicatorAnimation()
-        documentPagesViewController.setData(viewModel: transactionDocsDocumentPagesViewModel)
+        documentPagesViewController.setData(viewModel: viewModel)
     }
 }
