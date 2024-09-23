@@ -27,7 +27,7 @@ public protocol PaymentReviewAPIProtocol: AnyObject {
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void)
     func shouldHandleErrorInternally(error: GiniError) -> Bool
     func openPaymentProviderApp(requestId: String, universalLink: String)
-    func submitFeedback(for document: Document, updatedExtractions: [Extraction], completion: @escaping (Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)
+    func submitFeedback(for document: Document, updatedExtractions: [Extraction], completion: ((Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)?)
     func preview(for documentId: String, pageNumber: Int, completion: @escaping (Result<Data, GiniHealthAPILibrary.GiniError>) -> Void)
     func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController)
 }
@@ -159,7 +159,7 @@ public class PaymentReviewModel: NSObject {
 
     func sendFeedback(updatedExtractions: [Extraction]) {
         guard let document else { return }
-        delegate?.submitFeedback(for: document, updatedExtractions: updatedExtractions, completion: { _ in })
+        delegate?.submitFeedback(for: document, updatedExtractions: updatedExtractions, completion: nil)
     }
 
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestID: String) -> ())? = nil) {
