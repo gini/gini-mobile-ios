@@ -537,7 +537,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                 viewController.setData(viewModel: viewModel)
             case .failure(let error):
                 print("Failed to create invoice preview: \(error)")
-                viewController.setError {
+                viewController.setError(errorType: .init(error: error)) {
                     viewController.startLoadingIndicatorAnimation()
                     self.handleDocumentPage(for: skontoViewModel, with: viewController)
                 }

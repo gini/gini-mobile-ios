@@ -46,16 +46,14 @@ class DocumentPagesErrorView: UIView {
     private let errorIcon: UIImage?
     private let errorContentText: String
 
-    init(errorTitle: String,
-         errorIcon: UIImage?,
-         errorContentText: String,
+    init(errorType: ErrorType,
          buttonTitle: String,
          buttonAction: (() -> Void)? = nil) {
         self.buttonTitle = buttonTitle
         self.buttonAction = buttonAction
-        self.errorTitle = errorTitle
-        self.errorIcon = errorIcon
-        self.errorContentText = errorContentText
+        self.errorTitle = errorType.title()
+        self.errorIcon = UIImageNamedPreferred(named: errorType.iconName())
+        self.errorContentText = errorType.content()
         super.init(frame: .zero)
         setupView()
     }
