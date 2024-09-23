@@ -6,7 +6,7 @@
 
 import UIKit
 
-protocol DocumentPagesViewModelProtocol {
+protocol DocumentPagesViewModelProtocol: AnyObject {
     var rightBarButtonAction: (() -> Void)? { get }
     var bottomInfoItems: [String] { get }
 
