@@ -56,7 +56,7 @@ public class TransactionDocsViewModel {
         })
     }
 
-    func setTransactionDocsDocumentPagesViewModel(transactionDocsDocumentPagesViewModel: TransactionDocsDocumentPagesViewModel) {
+    func setTransactionDocsDocumentPagesViewModel(_ transactionDocsDocumentPagesViewModel: TransactionDocsDocumentPagesViewModel) {
         let transactionDoc = self.transactionDocs.first
         transactionDocsDocumentPagesViewModel.rightBarButtonAction = { [weak self] in
             guard let self else { return }

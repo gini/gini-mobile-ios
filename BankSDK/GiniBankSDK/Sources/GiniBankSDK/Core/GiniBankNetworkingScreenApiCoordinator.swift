@@ -295,7 +295,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                     } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
                         self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
-
+                        // Default case when no Skonto or RA to be displayed
                         self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController,
                                                                 defaultAction: { [weak self] in
                             self?.transactionDocsDataCoordinator.transactionDocs = []
@@ -305,12 +305,12 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                                                                 attachAction: { [weak self] in
                             if let documentId = document?.id {
                                 self?.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: documentId,
-                                                                                              fileName: document?.name ?? "",
+                                                                                              fileName: "Document",
                                                                                               type: .document)]
                             } else {
                                 self?.transactionDocsDataCoordinator.transactionDocs = []
                             }
-                            self?.setTransactionDocsDataCoordinatorDocumentLoadAction()
+                            self?.setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: extractionResult)
                             self?.deliverWithReturnAssistant(result: extractionResult,
                                                              analysisDelegate: networkDelegate)
                         })
@@ -423,12 +423,12 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
                                                 attachAction: { [weak self] in
             if let documentId = document?.id {
                 self?.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: documentId,
-                                                                              fileName: document?.name ?? "",
+                                                                              fileName: "Document",
                                                                               type: .document)]
             } else {
                 self?.transactionDocsDataCoordinator.transactionDocs = []
             }
-            self?.setTransactionDocsDataCoordinatorDocumentLoadAction()
+            self?.setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: invoice.extractionResult)
             self?.deliverWithReturnAssistant(result: invoice.extractionResult,
                                              analysisDelegate: analysisDelegate)
         })
@@ -545,12 +545,12 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                                                 attachAction: { [weak self] in
             if let documentId = document?.id {
                 self?.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: documentId,
-                                                                              fileName: document?.name ?? "",
+                                                                              fileName: "Document",
                                                                               type: .document)]
             } else {
                 self?.transactionDocsDataCoordinator.transactionDocs = []
             }
-            self?.setTransactionDocsDataCoordinatorDocumentLoadAction()
+            self?.setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: editedExtractionResult)
             self?.deliverWithSkonto(result: editedExtractionResult)
         })
     }
@@ -711,7 +711,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 }
 
 extension GiniBankNetworkingScreenApiCoordinator {
-    private func setTransactionDocsDataCoordinatorDocumentLoadAction() {
+    private func setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: ExtractionResult) {
         transactionDocsDataCoordinator.loadDocumentData = { [weak self] in
             self?.getDocumentPages { [weak self] result in
                 guard let self = self else {
@@ -725,11 +725,12 @@ extension GiniBankNetworkingScreenApiCoordinator {
                            // TODO: handle error
                        } else {
                            DispatchQueue.main.async {
-                               let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images, 
-                                                                                     amountToPay: .init(value: 100, currencyCode: "EUR"),
-                                                                                     iban: "IBAN", 
-                                                                                     expiryDate: Date())
-                               self.transactionDocsDataCoordinator.transactionDocsViewModel?.setTransactionDocsDocumentPagesViewModel(transactionDocsDocumentPagesViewModel: viewModel)
+                               let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
+                               let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
+                                                                                     extractions: extractionInfo)
+                               self.transactionDocsDataCoordinator
+                                   .transactionDocsViewModel?
+                                   .setTransactionDocsDocumentPagesViewModel(viewModel)
                            }
                        }
                    }
