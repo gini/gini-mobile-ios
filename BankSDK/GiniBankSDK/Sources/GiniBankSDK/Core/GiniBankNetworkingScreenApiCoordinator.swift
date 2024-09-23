@@ -711,7 +711,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                        } else {
                            DispatchQueue.main.async {
                                let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images, amountToPay: .init(value: 100, currencyCode: "EUR"), iban: "IBAN", expiryDate: Date())
-                               self.transactionDocsDataCoordinator.transactionDocsViewModel?.setTransactionDocsDocumentPagesViewModel(transactionDocsDocumentPagesViewModel: viewModel)
+                               self.transactionDocsDataCoordinator.transactionDocsViewModel?.setDocumentPagesViewModel(viewModel: viewModel)
                            }
                        }
                    }
