@@ -278,20 +278,7 @@ public final class PaymentReviewContainerView: UIView {
         if let fieldIdentifier = TextFieldType(rawValue: textFieldViewTag) {
             switch fieldIdentifier {
             case .amountFieldTag:
-                    if amountTextFieldView.hasText && !amountTextFieldView.isReallyEmpty {
-                    let decimalPart = amountToPay.value
-                    if decimalPart > 0 {
-                        applyDefaultStyle(textFieldView)
-                        hideErrorLabel(textFieldTag: fieldIdentifier)
-                    } else {
-                        amountTextFieldView.text = ""
-                        applyErrorStyle(textFieldView)
-                        showErrorLabel(textFieldTag: fieldIdentifier)
-                    }
-                } else {
-                    applyErrorStyle(textFieldView)
-                    showErrorLabel(textFieldTag: fieldIdentifier)
-                }
+                validateAmountTextField()
             case .ibanFieldTag, .recipientFieldTag, .usageFieldTag:
                 if textFieldView.hasText && !textFieldView.isReallyEmpty {
                     applyDefaultStyle(textFieldView)
@@ -301,6 +288,23 @@ public final class PaymentReviewContainerView: UIView {
                     showErrorLabel(textFieldTag: fieldIdentifier)
                 }
             }
+        }
+    }
+
+    fileprivate func validateAmountTextField() {
+        if amountTextFieldView.hasText && !amountTextFieldView.isReallyEmpty {
+            let decimalPart = amountToPay.value
+            if decimalPart > 0 {
+                applyDefaultStyle(amountTextFieldView)
+                hideErrorLabel(textFieldTag: .amountFieldTag)
+            } else {
+                amountTextFieldView.text = ""
+                applyErrorStyle(amountTextFieldView)
+                showErrorLabel(textFieldTag: .amountFieldTag)
+            }
+        } else {
+            applyErrorStyle(amountTextFieldView)
+            showErrorLabel(textFieldTag: .amountFieldTag)
         }
     }
 
