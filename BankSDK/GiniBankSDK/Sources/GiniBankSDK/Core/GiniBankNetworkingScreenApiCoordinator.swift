@@ -722,7 +722,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 case .success(let pages):
                    self.loadAllPages(pages: pages) { images, error in
                        if let error = error {
-                           
+                           // TODO: handle error
                        } else {
                            DispatchQueue.main.async {
                                let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images, 
@@ -735,6 +735,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                    }
 
                 case .failure(let error):
+                        // TODO: handle error
                     print(error)
                 }
             }
