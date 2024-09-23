@@ -111,8 +111,8 @@ jobs:
         with:
           files: "*.ipa"
 
-      -name: Distribute bank-sdk example ipa to Firebase App Distribution
-      - uses: nickwph/firebase-app-distribution-action@v1
+      - name: Distribute bank-sdk example ipa to Firebase App Distribution
+        uses: nickwph/firebase-app-distribution-action@v1
         with:
           file: GiniBankSDKExample.ipa
           app: 1:1008447554665:ios:c5c2362ee87d0bd605cef8
