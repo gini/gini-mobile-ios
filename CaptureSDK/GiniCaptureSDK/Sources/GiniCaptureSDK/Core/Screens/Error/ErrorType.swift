@@ -66,7 +66,7 @@ import GiniBankAPILibrary
         ErrorType.errorAnalyticsDictionary[self] = errorAnalytics
     }
 
-    public func iconName() -> String {
+    func iconName() -> String {
         switch self {
         case .connection:
             return "errorGlobe"
@@ -83,7 +83,7 @@ import GiniBankAPILibrary
         }
     }
 
-    public func content() -> String {
+    func content() -> String {
         switch self {
         case .connection:
             return NSLocalizedStringPreferredFormat(
@@ -116,7 +116,7 @@ import GiniBankAPILibrary
         }
     }
 
-    public func title() -> String {
+    func title() -> String {
         switch self {
         case .connection:
             return NSLocalizedStringPreferredFormat(
