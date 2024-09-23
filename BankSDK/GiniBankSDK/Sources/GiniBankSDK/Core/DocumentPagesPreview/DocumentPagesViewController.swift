@@ -92,10 +92,12 @@ final class DocumentPagesViewController: UIViewController {
     func setData(viewModel: DocumentPagesViewModelProtocol) {
         self.viewModel = viewModel
         if viewModel.rightBarButtonAction != nil {
-            // TODO: PP-805 Replace help with options
-            let optionsButton = GiniBarButton(ofType: .help)
-            optionsButton.addAction(self, #selector(didTapOptionsButton))
-            navigationBar.topItem?.rightBarButtonItem = optionsButton.barButton
+            let buttonImage = GiniImages.transactionDocsOptionsIcon.image
+            let optionsButton = UIBarButtonItem(image: buttonImage,
+                                                style: .plain,
+                                                target: self,
+                                                action: #selector(didTapOptionsButton))
+            navigationBar.topItem?.rightBarButtonItem = optionsButton
         }
         showProcessedImages()
         showSkontoDetailsInFooter()
