@@ -122,6 +122,7 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
         if !errors.isEmpty {
             let uniqueErrorMessages = Array(Set(errors))
             DispatchQueue.main.async {
+                self.coordinator.invoicesListViewController.hideActivityIndicator()
                 self.coordinator.invoicesListViewController.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
             }
             errors = []

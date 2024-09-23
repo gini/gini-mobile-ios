@@ -62,6 +62,26 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     }
 
     fileprivate func setupViewModel() {
+        model.onErrorHandling = { [weak self] error in
+            guard let self = self else { return }
+            self.showError(message: self.model.strings.defaultErrorMessage)
+        }
+
+        model.onCreatePaymentRequestErrorHandling = { [weak self] () in
+            guard let self = self else { return }
+            self.showError(message: self.model.strings.createPaymentErrorMessage)
+        }
+
+        if model.displayMode == .documentCollection {
+            setupViewModelWithDocument()
+        }
+
+        model.viewModelDelegate = self
+    }
+
+    private func setupViewModelWithDocument() {
+        model.fetchImages()
+
         model.updateImagesLoadingStatus = { [weak self] () in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
@@ -101,21 +121,6 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
                 self?.collectionView.reloadData()
             }
         }
-
-        model.onErrorHandling = { [weak self] error in
-            guard let self = self else { return }
-            self.showError(message: self.model.strings.defaultErrorMessage)
-        }
-
-        model.onCreatePaymentRequestErrorHandling = { [weak self] () in
-            guard let self = self else { return }
-            self.showError(message: self.model.strings.createPaymentErrorMessage)
-        }
-
-        if model.displayMode == .documentCollection {
-            model.fetchImages()
-        }
-        model.viewModelDelegate = self
     }
 
     override public func viewDidDisappear(_ animated: Bool) {
