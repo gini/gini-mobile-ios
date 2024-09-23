@@ -31,8 +31,8 @@ public class TransactionDocsViewModel {
         self.transactionDocs = transactionDocs
     }
 
-    public func deleteTransactionDoc(with fileName: String) {
-        transactionDocs.removeAll { $0.fileName == fileName }
+    public func deleteTransactionDoc(with documentId: String) {
+        transactionDocs.removeAll { $0.documentId == documentId }
         onUpdate?()
     }
 
@@ -52,7 +52,7 @@ public class TransactionDocsViewModel {
             self?.handleDocumentOpen()
         },
                                                           deleteHandler: { [weak self] in
-            self?.deleteTransactionDoc(with: document.fileName)
+            self?.deleteTransactionDoc(with: document.documentId)
         })
     }
 
@@ -61,7 +61,7 @@ public class TransactionDocsViewModel {
         transactionDocsDocumentPagesViewModel.rightBarButtonAction = { [weak self] in
             guard let self else { return }
             let deleteAction = {
-                self.deleteTransactionDoc(with: transactionDoc?.fileName ?? "")
+                self.deleteTransactionDoc(with: transactionDoc?.documentId ?? "")
                 self.documentPagesViewController.dismiss(animated: true)
             }
             TransactionDocsActionsBottomSheet.showDeleteAlert(on: self.documentPagesViewController,
