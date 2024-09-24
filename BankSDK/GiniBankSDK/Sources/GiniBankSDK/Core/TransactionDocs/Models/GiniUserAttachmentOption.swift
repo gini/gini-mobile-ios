@@ -5,7 +5,8 @@
 //
 
 import Foundation
-public enum GiniUserAttachmentOption: Codable {
+
+enum GiniUserAttachmentOption: Codable {
     case alwaysAttach
     case attachOnce
     case doNotAttach
