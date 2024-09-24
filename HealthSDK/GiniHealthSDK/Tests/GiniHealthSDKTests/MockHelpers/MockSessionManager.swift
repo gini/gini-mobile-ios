@@ -15,7 +15,8 @@ final class MockSessionManager: SessionManagerProtocol {
     static let missingDocumentID = "626626a0-749f-11e2-bfd6-000000000000"
     static let extractionsWithPaymentDocumentID = "626626a0-749f-11e2-bfd6-000000000004"
     static let paymentRequestId = "b09ef70a-490f-11eb-952e-9bc6f4646c57"
-    
+    static let doctorsNameDocumentID = "626626a0-749f-11e2-bfd6-000000000005"
+
     func upload<T>(resource: T, data: Data, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
         //
     }
@@ -69,6 +70,11 @@ final class MockSessionManager: SessionManagerProtocol {
                     if let document = document as? T.ResponseType {
                         completion(.success(document))
                     }
+                case (MockSessionManager.doctorsNameDocumentID, .get):
+                    let document: Document? = load(fromFile: "document5", type: "json")
+                    if let document = document as? T.ResponseType {
+                        completion(.success(document))
+                    }
                 default:
                     fatalError("Document id not found in tests")
                 }
@@ -102,6 +108,11 @@ final class MockSessionManager: SessionManagerProtocol {
                     completion(.failure(.noResponse))
                 case (MockSessionManager.extractionsWithPaymentDocumentID, .get):
                     let extractionResults: ExtractionsContainer? = load(fromFile: "extractionsWithPayment")
+                    if let extractionResults = extractionResults as? T.ResponseType {
+                        completion(.success(extractionResults))
+                    }
+                case (MockSessionManager.doctorsNameDocumentID, .get):
+                    let extractionResults: ExtractionsContainer? = load(fromFile: "test_doctorsname")
                     if let extractionResults = extractionResults as? T.ResponseType {
                         completion(.success(extractionResults))
                     }

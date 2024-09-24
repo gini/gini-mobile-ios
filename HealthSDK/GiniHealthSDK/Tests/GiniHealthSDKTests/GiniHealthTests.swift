@@ -442,4 +442,75 @@ final class GiniHealthTests: XCTestCase {
         // Then
         XCTAssertNotNil(receivedError)
     }
+
+    func testGetAllExtractions_Success() {
+        // Given
+        let fileName = "test_doctorsname"
+        let expectedExtractionContainer: ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
+        guard let expectedExtractionContainer else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
+        let expectedExtractions: [Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).extractions
+
+        // When
+        let expectation = self.expectation(description: "Getting all extractions")
+        var receivedExtractions: [Extraction]?
+        giniHealth.getAllExtractions(docId: MockSessionManager.doctorsNameDocumentID) { result in
+            switch result {
+            case .success(let extractions):
+                receivedExtractions = extractions
+            case .failure(_):
+                receivedExtractions = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(receivedExtractions)
+        XCTAssertEqual(receivedExtractions?.count, expectedExtractions.count)
+    }
+
+    func testGetAlllExtractions_Failure() {
+        // When
+        let expectation = self.expectation(description: "Extraction failure")
+        var receivedExtractions: [Extraction]?
+        giniHealth.getAllExtractions(docId: MockSessionManager.failurePayableDocumentID) { result in
+            switch result {
+            case .success(let extractions):
+                receivedExtractions = extractions
+            case .failure(_):
+                receivedExtractions = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNil(receivedExtractions)
+    }
+
+    func testGetDoctorsNameExtractions_Success() {
+        // Given
+        let expectedDoctorName = "DR. SOMMER TEAM"
+
+        // When
+        let expectation = self.expectation(description: "Getting doctor name extractions")
+        var receivedDoctorExtraction: Extraction?
+        giniHealth.getAllExtractions(docId: MockSessionManager.doctorsNameDocumentID) { result in
+            switch result {
+            case .success(let extractions):
+                receivedDoctorExtraction = extractions.first(where: { $0.name == ExtractionType.doctorName.rawValue })
+            case .failure(_):
+                receivedDoctorExtraction = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(receivedDoctorExtraction)
+        XCTAssertEqual(receivedDoctorExtraction?.value, expectedDoctorName)
+    }
 }
