@@ -39,9 +39,7 @@ class AttachmentsTableViewCell: UITableViewCell {
     }
 
     func configure(delegate: TransactionDocsViewDelegate?) {
-                   //docs: [TransactionDoc]) {
         attachmentsView.delegate = delegate
-        //attachmentsView.transactionDocs = docs
     }
 }
 

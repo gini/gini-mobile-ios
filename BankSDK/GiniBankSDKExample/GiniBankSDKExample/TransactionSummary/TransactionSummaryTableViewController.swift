@@ -22,10 +22,6 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
         }
     }
 
-    //var transactionDocs = [TransactionDoc]()
-    var showTransactionDocsAttached: Bool {
-        return !TransactionDocsDataCoordinator.shared.transactionDocs.isEmpty
-    }
 	var editableFields: [String : String] = [:]
     var lineItems: [[Extraction]]? = nil
     var enabledRows: [Int] = []
@@ -33,12 +29,12 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        numberOfSections = showTransactionDocsAttached ? 2 : 1
+        let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
+        numberOfSections = transactionDocsDataCoordinator.transactionDocs.isEmpty ? 1 : 2
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        TransactionDocsDataCoordinator.shared.presentingViewController = self
         tableView.register(AttachmentsTableViewCell.self,
                            forCellReuseIdentifier: AttachmentsTableViewCell.reuseIdentifier)
     }
@@ -87,7 +83,6 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
                 return UITableViewCell()
             }
             cell.configure(delegate: self)
-                           //docs: transactionDocs)
             return cell
         }
     }

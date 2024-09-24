@@ -77,7 +77,6 @@ final class AppCoordinator: Coordinator {
        return configuration
     }()
     
-    private lazy var transactionDocsDataCoordinator = TransactionDocsDataCoordinator.shared
     private lazy var client: Client = CredentialsManager.fetchClientFromBundle()
     private var documentMetadata: Document.Metadata?
     private let documentMetadataBranchId = "GVLExampleIOS"
@@ -210,7 +209,6 @@ final class AppCoordinator: Coordinator {
                                              additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
         let screenAPICoordinator = ScreenAPICoordinator(apiEnvironment: apiEnvironment,
                                                         configuration: configuration,
-                                                        transactionDocsDataCoordinator: transactionDocsDataCoordinator,
                                                         importedDocuments: pages?.map { $0.document },
                                                         client: client,
                                                         documentMetadata: documentMetadata)
