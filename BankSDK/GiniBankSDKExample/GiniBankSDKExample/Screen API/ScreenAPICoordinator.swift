@@ -43,7 +43,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
     var screenAPIViewController: UINavigationController!
     var trackingDelegate = TrackingDelegate()
-    var transactionDocsDataCoordinator: TransactionDocsDataCoordinator?
     let client: Client
     let documentMetadata: Document.Metadata?
     weak var analysisDelegate: GiniBankAnalysisDelegate?
@@ -64,13 +63,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 
     init(apiEnvironment: APIEnvironment,
          configuration: GiniBankConfiguration,
-         transactionDocsDataCoordinator: TransactionDocsDataCoordinator?,
          importedDocuments documents: [GiniCaptureDocument]?,
          client: Client,
          documentMetadata: Document.Metadata?) {
         self.apiEnvironment = apiEnvironment
         self.configuration = configuration
-        self.transactionDocsDataCoordinator = transactionDocsDataCoordinator
         self.visionDocuments = documents
         self.client = client
         self.documentMetadata = documentMetadata
@@ -116,13 +113,10 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
             .instantiateViewController(withIdentifier: "resultScreen") as? TransactionSummaryTableViewController)!
 
         customResultsScreen.tableView.estimatedRowHeight = 75
+        
+        configuration.transactionDocsDataCoordinator.presentingViewController = customResultsScreen
+
         customResultsScreen.result = results
-        //if let transactionDocsDataCoordinator {
-            // CLARIFICATION PP-809 this breaks entire flow of popup. View will be hidden itself
-            //customResultsScreen.showTransactionDocsAttached = transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
-            // CLARIFICATION PP-809 shouldn't it be directly inside a view from data coordinator?
-            //customResultsScreen.transactionDocs = transactionDocsDataCoordinator.getAttachedDocs()
-        //}
 		customResultsScreen.editableFields = editableSpecificExtractions
         customResultsScreen.navigationItem.setHidesBackButton(true, animated: true)
         let title =
