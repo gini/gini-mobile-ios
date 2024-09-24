@@ -157,7 +157,7 @@ public struct DataForReview {
     - Parameters:
        - docId: Id of uploaded document.
        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
-       In success case it includes a boolean value and returns true if iban was extracted.
+       In success case it includes a boolean value and returns true if paymentState is payable.
        In case of failure in case of failure error from the server side.
 
     */
@@ -177,7 +177,6 @@ public struct DataForReview {
                            }
                        case .failure(let error):
                            completion(.failure(.apiError(error)))
-                           break
                        }
                    }
                }
@@ -186,6 +185,41 @@ public struct DataForReview {
            }
        }
    }
+
+    /**
+    Checks if the document contains multiple invoices.
+
+    - Parameters:
+       - docId: Id of uploaded document.
+       - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
+       In success case it includes a boolean value and returns true if contains multiple documents is true or false
+       In case of failure in case of failure error from the server side.
+
+    */
+    public func checkIfDocumentContainsMultipleInvoices(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+        documentService.fetchDocument(with: docId) { result in
+            switch result {
+            case let .success(createdDocument):
+                self.documentService.extractions(for: createdDocument,
+                                                 cancellationToken: CancellationToken()) { result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case let .success(extractionResult):
+                                if let containsMultipleDocsExtraction = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value, containsMultipleDocsExtraction == Constants.hasMultipleDocuments {
+                                completion(.success(true))
+                            } else {
+                                completion(.success(false))
+                            }
+                        case .failure(let error):
+                            completion(.failure(.apiError(error)))
+                        }
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(.apiError(error)))
+            }
+        }
+    }
 
     /**
      Polls the document via document id.
@@ -363,6 +397,12 @@ public struct DataForReview {
                 }
             }
         }
+    }
+}
+
+extension GiniHealth {
+    private enum Constants {
+        static let hasMultipleDocuments = "true"
     }
 }
 
