@@ -22,6 +22,7 @@ class DocumentPagesErrorView: UIView {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(buttonTitle, for: .normal)
+        button.accessibilityLabel = buttonTitle
         return button
     }()
 
@@ -77,6 +78,7 @@ class DocumentPagesErrorView: UIView {
 
     private func configureErrorHeader() {
         errorHeader.headerLabel.text = errorTitle
+        errorHeader.headerLabel.accessibilityLabel = errorTitle
         errorHeader.headerLabel.font = configuration.textStyleFonts[.subheadline]
         errorHeader.headerLabel.textColor = .GiniCapture.light1
         errorHeader.backgroundColor = .GiniCapture.error1
@@ -85,6 +87,7 @@ class DocumentPagesErrorView: UIView {
 
     private func configureErrorContent() {
         errorContent.text = errorContentText
+        errorContent.accessibilityLabel = errorContentText
         errorContent.font = configuration.textStyleFonts[.body]
         errorContent.textColor = .GiniCapture.light6
     }
