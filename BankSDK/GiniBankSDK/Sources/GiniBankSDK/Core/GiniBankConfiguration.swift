@@ -337,6 +337,14 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var transactionDocsEnabled: Bool = true
 
+    /// A coordinator that manages the state of transaction documents in the photo payment flow.
+    /// It conforms to `TransactionDocsDataProtocol` and is responsible for tracking,
+    /// modifying, and handling the state related to attaching documents to a transaction.
+    ///
+    /// This instance is initialized with a default `TransactionDocsDataCoordinator` object
+    /// that implements the protocol.
+    public var transactionDocsDataCoordinator: TransactionDocsDataProtocol = TransactionDocsDataCoordinator()
+
     /**
      Set the entry point used for launching the Gini Bank SDK.
      Default value is `GiniEntryPoint.button`.
