@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import GiniHealthSDK
+import GiniHealthSDK
 @testable import GiniHealthAPILibrary
 
 class GiniHealthSDKPinningExampleWrongCertificatesTests: XCTestCase {
@@ -33,13 +33,14 @@ class GiniHealthSDKPinningExampleWrongCertificatesTests: XCTestCase {
     var sdk: GiniHealth!
     
     override func setUp() {
+        let domain = "health-sdk-pinning-example"
         let client = Client(id: clientId,
                             secret: clientSecret,
-                            domain: "health-sdk-pinning-example")
+                            domain: domain)
         giniHealthAPILib = GiniHealthAPI
                .Builder(client: client, pinningConfig: yourPublicPinningConfig)
                .build()
-        sdk = GiniHealth.init(giniApiLib: giniHealthAPILib)
+        sdk = GiniHealth.init(id: clientId, secret: clientSecret, domain: domain)
         paymentService = sdk.paymentService
     }
     
