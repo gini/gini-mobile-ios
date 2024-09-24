@@ -14,9 +14,10 @@ final class GiniSetupHelper {
     var giniHealthAPIDocumentService: GiniHealthAPILibrary.DefaultDocumentService!
 
     func setup() {
-        let client: GiniHealthAPILibrary.Client = Client(id: "",
-                                                         secret: "",
-                                                         domain: "")
+        let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
+        let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
+
+        let client: GiniHealthAPILibrary.Client = Client(id: clientId, secret: clientSecret, domain: "gini.net")
         giniHealthAPILib = GiniHealthAPI
             .Builder(client: client)
             .build()

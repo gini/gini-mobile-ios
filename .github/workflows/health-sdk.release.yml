@@ -44,22 +44,6 @@ jobs:
             "ci": "true"
           }
 
-    - name: Publish GiniHealthSDKPinning package to the release repo
-      uses: maierj/fastlane-action@v3.1.0
-      with:
-        lane: 'publish_swift_package'
-        options: >
-          { 
-            "project_folder": "HealthSDK",
-            "package_folder": "GiniHealthSDKPinning",
-            "version_file_path": "HealthSDK/GiniHealthSDKPinning/Sources/GiniHealthSDKPinning/GiniHealthSDKPinningVersion.swift",
-            "git_tag": "${{ github.ref }}", 
-            "repo_url": "https://github.com/gini/health-sdk-pinning-ios.git", 
-            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
-            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
-            "ci": "true"
-          }      
-
   release-documentation:
     needs: release
     uses: gini/gini-mobile-ios/.github/workflows/health-sdk.publish.docs.yml@main

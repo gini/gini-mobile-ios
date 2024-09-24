@@ -41,16 +41,10 @@
       location = "container:"
       name = "GiniHealthAPILibrary">
       <FileRef
-         location = "group:HealthAPILibrary/GiniHealthAPILibraryPinningExample/GiniHealthAPILibraryPinningExample.xcodeproj">
+         location = "group:HealthAPILibrary/GiniHealthAPILibrary">
       </FileRef>
       <FileRef
          location = "container:HealthAPILibrary/GiniHealthAPILibraryExample/GiniHealthAPILibraryExample.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:HealthAPILibrary/GiniHealthAPILibraryPinning">
-      </FileRef>
-      <FileRef
-         location = "group:HealthAPILibrary/GiniHealthAPILibrary">
       </FileRef>
    </Group>
    <Group
@@ -73,13 +67,10 @@
       location = "container:"
       name = "GiniHealthSDK">
       <FileRef
-         location = "group:HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj">
-      </FileRef>
-      <FileRef
          location = "group:HealthSDK/GiniHealthSDK">
       </FileRef>
       <FileRef
-         location = "group:HealthSDK/GiniHealthSDKPinning">
+         location = "group:HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj">
       </FileRef>
    </Group>
    <Group
