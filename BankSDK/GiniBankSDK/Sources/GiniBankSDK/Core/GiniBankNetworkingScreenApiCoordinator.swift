@@ -597,7 +597,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     }
 
     private func createDocumentPageViewModel(from skontoViewModel: SkontoViewModel,
-                                             completion: @escaping (Result<SkontoDocumentPagesViewModel,
+                                             completion: @escaping (Result<SkontoDocumentPagesViewModel, 
                                                                     GiniError>) -> Void) {
         let dispatchGroup = DispatchGroup()
         var originalSizes: [DocumentPageSize] = []
@@ -606,6 +606,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         var documentPagesError: GiniError?
 
         // Enter the dispatch group for the document layout task
+        // Fetch document layout
         dispatchGroup.enter()
         getDocumentLayout { result in
             switch result {
@@ -616,35 +617,22 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             case .failure(let error):
                 layoutError = error
             }
-            dispatchGroup.leave() // Leave the group after handling the result
+            dispatchGroup.leave()
         }
 
         // Enter the dispatch group for the document pages task
+        // Fetch document pages
         dispatchGroup.enter()
-        getDocumentPages { [weak self] result in
-            guard let self = self else {
-                dispatchGroup.leave() // Ensure the group is left if self is nil
-                return
-            }
-
-            switch result {
-            case .success(let pages):
-               self.loadAllPages(pages: pages) { images, error in
-                   if let error = error {
-                       documentPagesError = error
-                   } else {
-                       pageImages = images
-                   }
-                   dispatchGroup.leave() // Leave the group after processing pages
-               }
-
-            case .failure(let error):
+        loadDocumentPages { images, error in
+            if let error = error {
                 documentPagesError = error
-                dispatchGroup.leave() // Leave the group on failure
+            } else {
+                pageImages = images
             }
+            dispatchGroup.leave()
         }
 
-        // Notify block is called after all enter/leave pairs are balanced
+        // Notify after both tasks are completed
         dispatchGroup.notify(queue: .main) {
             if let layoutError = layoutError {
                 completion(.failure(layoutError))
@@ -660,6 +648,24 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                                                              expiryDate: skontoViewModel.dueDate)
                 skontoViewModel.setDocumentPagesViewModel(viewModel)
                 completion(.success(viewModel))
+            }
+        }
+    }
+
+    private func loadDocumentPages(completion: @escaping ([UIImage], GiniError?) -> Void) {
+        getDocumentPages { [weak self] result in
+            guard let self = self else {
+                completion([], nil)
+                return
+            }
+
+            switch result {
+                case .success(let pages):
+                    self.loadAllPages(pages: pages) { images, error in
+                        completion(images, error)
+                    }
+                case .failure(let error):
+                    completion([], error)
             }
         }
     }
@@ -714,30 +720,21 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 extension GiniBankNetworkingScreenApiCoordinator {
     private func setTransactionDocsDataToDisplay(with extractionResult: ExtractionResult) {
         transactionDocsDataCoordinator?.loadDocumentData = { [weak self] in
-            self?.getDocumentPages { [weak self] result in
-                guard let self = self else {
+            self?.loadDocumentPages { images, error in
+                guard let self = self else { return }
+
+                if let error = error {
+                    // TODO: handle error
+                    print(error)
                     return
                 }
 
-                switch result {
-                case .success(let pages):
-                   self.loadAllPages(pages: pages) { images, error in
-                       if let error = error {
-                           // TODO: handle error
-                       } else {
-                           DispatchQueue.main.async {
-                               let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
-                               let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
-                                                                                     extractions: extractionInfo)
-                               self.transactionDocsDataCoordinator?.getTransactionDocsViewModel()?
-                                   .setTransactionDocsDocumentPagesViewModel(viewModel)
-                           }
-                       }
-                   }
-
-                case .failure(let error):
-                        // TODO: handle error
-                    print(error)
+                DispatchQueue.main.async {
+                    let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
+                    let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
+                                                                          extractions: extractionInfo)
+                    self.transactionDocsDataCoordinator?.getTransactionDocsViewModel()?
+                        .setTransactionDocsDocumentPagesViewModel(viewModel)
                 }
             }
         }
