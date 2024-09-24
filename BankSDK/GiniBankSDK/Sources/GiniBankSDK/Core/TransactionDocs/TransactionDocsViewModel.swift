@@ -6,8 +6,12 @@
 
 import UIKit
 
+/// A view model responsible for managing the state of documents attached to a transaction.
+/// The `TransactionDocsViewModel` class handles loading, deleting, and presenting attached documents
+/// and communicates updates to the view.
 public class TransactionDocsViewModel {
 
+    /// The current list of transaction documents.
     public var transactionDocs: [TransactionDoc] {
         didSet {
             onUpdate?()
@@ -26,26 +30,34 @@ public class TransactionDocsViewModel {
     private let transactionDocsDataProtocol: TransactionDocsDataProtocol
     public var onUpdate: (() -> Void)?
 
+    /// Initializes a new instance of `TransactionDocsViewModel`.
+    /// - Parameter transactionDocsDataProtocol: The protocol responsible for managing attached documents.
     public init(transactionDocsDataProtocol: TransactionDocsDataProtocol) {
         self.transactionDocsDataProtocol = transactionDocsDataProtocol
         // Access transactionDocs from the internal protocol if available
         transactionDocs = (transactionDocsDataProtocol as? TransactionDocsDataInternalProtocol)?.transactionDocs ?? []
     }
+
+    /// Deletes a transaction document from the list.
+    /// - Parameter documentId: The ID of the document to delete.
     public func deleteTransactionDoc(with documentId: String) {
         transactionDocs.removeAll { $0.documentId == documentId }
         transactionDocsDataProtocol.deleteAttachedDoc(named: documentId)
         onUpdate?()
     }
-
+    /// Handles the action to open and present a document
     public func handleDocumentOpen() {
-        let transactionDoc = self.transactionDocs.first
-        let viewController = DocumentPagesViewController(screenTitle: transactionDoc?.fileName ?? "")
+        //TODO: do we need to change this? Why first
+        let transactionDoc = transactionDocs.first
+        let screenTitle = transactionDoc?.fileName ?? ""
+        let viewController = DocumentPagesViewController(screenTitle: screenTitle)
         viewController.modalPresentationStyle = .overCurrentContext
         documentPagesViewController = viewController
         presentingViewController?.present(viewController, animated: true)
         internalTransactionDocsDataCoordinator?.loadDocumentData?()
     }
-
+    /// Presents an action sheet for the specified attached document, allowing the user to open or delete the document.
+    /// - Parameter document: The `TransactionDoc` to present actions for.
     public func presentDocumentActionSheet(for document: TransactionDoc) {
         guard let presentingViewController = transactionDocsDataProtocol.presentingViewController else {
             print("No presenting view controller available.")
@@ -61,6 +73,8 @@ public class TransactionDocsViewModel {
         })
     }
 
+    /// Sets the document pages view model for the `DocumentPagesViewController`.
+    /// - Parameter viewModel: The view model representing the document pages.
     func setTransactionDocsDocumentPagesViewModel(_ viewModel: TransactionDocsDocumentPagesViewModel) {
         guard let documentPagesViewController else { return }
         let transactionDoc = transactionDocs.first
