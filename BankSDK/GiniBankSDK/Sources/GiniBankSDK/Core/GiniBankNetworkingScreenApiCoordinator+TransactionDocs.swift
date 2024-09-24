@@ -22,8 +22,8 @@ extension GiniBankNetworkingScreenApiCoordinator {
             return
         }
 
-        if transactionDocsDataCoordinator.getAlwaysAttachDocsValue() {
-            let allwaysAttachDocs = transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
+        if giniBankConfiguration.transactionDocsDataCoordinator.getAlwaysAttachDocsValue() {
+            let allwaysAttachDocs = giniBankConfiguration.transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
             handleExistingAttachmentOption(allwaysAttachDocs,
                                            on: controller,
                                            defaultAction: defaultAction,
@@ -53,7 +53,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                                  attachAction: @escaping () -> Void) {
         TransactionDocsAlertController.show(on: controller,
                                             alwaysAttachHandler: { [weak self] in
-            self?.transactionDocsDataCoordinator.setAlwaysAttachDocs(true)
+            self?.giniBankConfiguration.transactionDocsDataCoordinator.setAlwaysAttachDocs(true)
             attachAction()
         },
                                             attachOnceHandler: {

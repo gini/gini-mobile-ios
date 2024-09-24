@@ -15,19 +15,20 @@ public class TransactionDocsViewModel {
     }
 
     private var presentingViewController: UIViewController? {
-        return TransactionDocsDataCoordinator.shared.presentingViewController
+        return transactionDocsDataProtocol.presentingViewController
     }
 
     private var documentPagesViewController: DocumentPagesViewController?
-
+    private let transactionDocsDataProtocol: TransactionDocsDataProtocol
     public var onUpdate: (() -> Void)?
 
-    public init(transactionDocs: [TransactionDoc] = TransactionDocsDataCoordinator.shared.transactionDocs) {
-        self.transactionDocs = transactionDocs
+    public init(transactionDocsDataProtocol: TransactionDocsDataProtocol) {
+        self.transactionDocsDataProtocol = transactionDocsDataProtocol
+        self.transactionDocs = transactionDocsDataProtocol.transactionDocs
     }
-
     public func deleteTransactionDoc(with documentId: String) {
         transactionDocs.removeAll { $0.documentId == documentId }
+        transactionDocsDataProtocol.deleteAttachedDoc(named: documentId)
         onUpdate?()
     }
 
@@ -37,11 +38,11 @@ public class TransactionDocsViewModel {
         viewController.modalPresentationStyle = .overCurrentContext
         documentPagesViewController = viewController
         presentingViewController?.present(viewController, animated: true)
-        TransactionDocsDataCoordinator.shared.loadDocumentData?()
+        transactionDocsDataProtocol.loadDocumentData?()
     }
 
     public func presentDocumentActionSheet(for document: TransactionDoc) {
-        guard let presentingViewController = TransactionDocsDataCoordinator.shared.presentingViewController else {
+        guard let presentingViewController = transactionDocsDataProtocol.presentingViewController else {
             print("No presenting view controller available.")
             return
         }

@@ -16,6 +16,10 @@ public class TransactionDocsView: UIView {
 
     private let configuration = GiniBankConfiguration.shared
 
+    private var viewModel: TransactionDocsViewModel? {
+        return configuration.transactionDocsDataCoordinator.getTransactionDocsViewModel()
+    }
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -40,21 +44,22 @@ public class TransactionDocsView: UIView {
     }
 
     private func commonInit() {
-        let transactionDocs = TransactionDocsDataCoordinator.shared.transactionDocs
+        let transactionDocs = configuration.transactionDocsDataCoordinator.transactionDocs
         let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
         let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
         guard transactionDocsEnabled, configuration.transactionDocsEnabled, !transactionDocs.isEmpty else { return }
-        
+
         setupStackViewContent()
         setupConstraints()
         setupViewModelBindings()
     }
 
     private func setupViewModelBindings() {
-        TransactionDocsDataCoordinator.shared.transactionDocsViewModel?.onUpdate = { [weak self] in
+        guard let viewModel else { return }
+        viewModel.onUpdate = { [weak self] in
             guard let self else { return }
             self.reloadStackViewContent()
-            if TransactionDocsDataCoordinator.shared.transactionDocsViewModel?.transactionDocs.isEmpty ?? true {
+            if viewModel.transactionDocs.isEmpty {
                 self.stackView.removeFromSuperview()
             }
             self.delegate?.transactionDocsViewDidUpdateContent(self)
@@ -81,7 +86,7 @@ public class TransactionDocsView: UIView {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         stackView.addArrangedSubview(headerView)
 
-        for transactionDoc in TransactionDocsDataCoordinator.shared.transactionDocsViewModel?.transactionDocs ?? [] {
+        for transactionDoc in viewModel?.transactionDocs ?? [] {
             let transactionDocsItemView = createTransactionDocsItemView(for: transactionDoc)
             stackView.addArrangedSubview(transactionDocsItemView)
         }
@@ -91,7 +96,7 @@ public class TransactionDocsView: UIView {
         let transactionDocsItemView = TransactionDocsItemView(transactionDocsItem: transactionDoc)
 
         transactionDocsItemView.optionsAction = { [weak self] in
-            TransactionDocsDataCoordinator.shared.transactionDocsViewModel?.presentDocumentActionSheet(for: transactionDoc)
+            self?.viewModel?.presentDocumentActionSheet(for: transactionDoc)
         }
 
         return transactionDocsItemView
