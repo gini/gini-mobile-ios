@@ -16,10 +16,14 @@ public class TransactionDocsView: UIView {
 
     private let configuration = GiniBankConfiguration.shared
 
-    private var viewModel: TransactionDocsViewModel? {
-        return configuration.transactionDocsDataCoordinator.getTransactionDocsViewModel()
+    // Cast the coordinator to the internal protocol to access internal properties and methods
+    private var internalTransactionDocsDataCoordinator: TransactionDocsDataInternalProtocol? {
+        return configuration.transactionDocsDataCoordinator as? TransactionDocsDataInternalProtocol
     }
 
+    private var viewModel: TransactionDocsViewModel? {
+        return internalTransactionDocsDataCoordinator?.getTransactionDocsViewModel()
+    }
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -44,7 +48,8 @@ public class TransactionDocsView: UIView {
     }
 
     private func commonInit() {
-        let transactionDocs = configuration.transactionDocsDataCoordinator.transactionDocs
+        guard let internalTransactionDocsDataCoordinator = internalTransactionDocsDataCoordinator else { return }
+        let transactionDocs = internalTransactionDocsDataCoordinator.transactionDocs
         let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
         let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
         guard transactionDocsEnabled, configuration.transactionDocsEnabled, !transactionDocs.isEmpty else { return }
