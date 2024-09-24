@@ -65,6 +65,7 @@
 
 /* Begin PBXFileReference section */
 		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
+		3AC824B42CA2B16500DE37C0 /* GiniHealthSDKExampleTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GiniHealthSDKExampleTests.xctestplan; sourceTree = "<group>"; };
 		50ED3DA42C34A16D004FC25C /* DebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuViewController.swift; sourceTree = "<group>"; };
 		7D6161C52BE1327E0091000B /* test_pdf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = test_pdf.pdf; sourceTree = "<group>"; };
 		7DB661822B554622004537AA /* InvoicesListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListCoordinator.swift; sourceTree = "<group>"; };
@@ -244,6 +245,7 @@
 		F4EC38D7273C21E6007045DC /* GiniHealthSDKExampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				3AC824B42CA2B16500DE37C0 /* GiniHealthSDKExampleTests.xctestplan */,
 				F4DB6420283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift */,
 				F4DB642728354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift */,
 				F4EC38D8273C21E6007045DC /* GiniHealthSDKExampleTests.swift */,

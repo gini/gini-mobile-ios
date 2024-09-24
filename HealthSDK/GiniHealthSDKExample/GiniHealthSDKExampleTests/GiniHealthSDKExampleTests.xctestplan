@@ -1,0 +1,33 @@
+{
+  "configurations" : [
+    {
+      "id" : "E330AA46-C5A5-4423-9B5E-EC21CB065FCC",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "CLIENT_ID",
+        "value" : "$(CLIENT_ID)"
+      },
+      {
+        "key" : "CLIENT_SECRET",
+        "value" : "$(CLIENT_SECRET)"
+      }
+    ]
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:GiniHealthSDKExample.xcodeproj",
+        "identifier" : "F4EC38D3273C21E6007045DC",
+        "name" : "GiniHealthSDKExampleTests"
+      }
+    }
+  ],
+  "version" : 1
+}
