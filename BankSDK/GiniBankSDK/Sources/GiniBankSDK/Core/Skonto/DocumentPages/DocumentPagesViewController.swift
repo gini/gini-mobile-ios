@@ -106,11 +106,10 @@ final class DocumentPagesViewController: UIViewController {
         let errorView = DocumentPagesErrorView(
             errorType: errorType,
             buttonTitle: NSLocalizedStringPreferredGiniBankFormat(
-                "ginibank.transactionDocs.preview.error.action",
+                "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle",
                 comment: "Try again"),
             buttonAction: {
                 buttonAction()
-                print("try again pressed")
                 self.removeErrorView()
             }
         )
@@ -130,10 +129,9 @@ final class DocumentPagesViewController: UIViewController {
     }
 
     func removeErrorView() {
-        if let errorView = self.errorView {
-            errorView.removeFromSuperview()
-            self.errorView = nil
-        }
+        guard let errorView = errorView else { return }
+        errorView.removeFromSuperview()
+        self.errorView = nil
     }
 
     // MARK: Toggle animation

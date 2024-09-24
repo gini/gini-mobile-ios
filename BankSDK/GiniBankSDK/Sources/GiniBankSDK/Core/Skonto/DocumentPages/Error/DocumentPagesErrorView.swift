@@ -10,7 +10,7 @@ import GiniCaptureSDK
 class DocumentPagesErrorView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
-    lazy var errorHeader: ErrorHeaderView = {
+    private lazy var errorHeader: ErrorHeaderView = {
         let header = ErrorHeaderView()
         header.headerLabel.adjustsFontForContentSizeCategory = true
         header.headerLabel.adjustsFontSizeToFitWidth = true
@@ -18,14 +18,14 @@ class DocumentPagesErrorView: UIView {
         return header
     }()
 
-    lazy var button: MultilineTitleButton = {
+    private lazy var button: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(buttonTitle, for: .normal)
         return button
     }()
 
-    lazy var errorContent: UILabel = {
+    private lazy var errorContent: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -146,17 +146,17 @@ class DocumentPagesErrorView: UIView {
     private func configureButtonViewConstraints() {
         NSLayoutConstraint.activate([
             button.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.singleButtonHeight),
-            button.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -GiniMargins.margin)
+            button.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Constants.sidePadding)
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                button.leadingAnchor.constraint(equalTo: leadingAnchor, constant: GiniMargins.margin),
-                button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -GiniMargins.margin)
+                button.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.sidePadding),
+                button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.sidePadding)
             ])
         } else {
             NSLayoutConstraint.activate([
-                button.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: GiniMargins.margin),
-                button.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -GiniMargins.margin)
+                button.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.sidePadding),
+                button.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -Constants.sidePadding)
             ])
         }
     }

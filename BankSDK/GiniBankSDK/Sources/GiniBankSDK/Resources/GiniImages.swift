@@ -25,7 +25,6 @@ enum GiniImages: String {
     case transactionDocsOptionsIcon = "attachment_options_icon"
     case transactionDocsImageIcon = "attachment_image_icon"
     case transactionDocsFileIcon = "attachment_document_icon"
-    case errorServiceUnavailable = "error_service_unavailable"
 
     var image: UIImage? {
         return prefferedImage(named: rawValue)
