@@ -115,5 +115,5 @@ jobs:
         uses: nickwph/firebase-app-distribution-action@v1
         with:
           file: GiniBankSDKExample.ipa
-          app: "1:1008447554665:ios:c5c2362ee87d0bd605cef8"
+          app: ${{ secrets.GINI_BANK_SDK_EXAMPLE_APP_FIREBASE_ID }}
           credentials: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
