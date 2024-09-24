@@ -21,36 +21,46 @@ public protocol TransactionDocsDataProtocol: AnyObject {
     /// - Parameter value: A `Bool` indicating whether documents should always be attached to the transaction.
     func setAlwaysAttachDocs(_ value: Bool)
 
-    /// Retrieves the current view model for transaction documents.
-    /// - Returns: An optional `TransactionDocsViewModel` instance if available.
-    func getTransactionDocsViewModel() -> TransactionDocsViewModel?
-
-    /// A closure that handles the loading of document data.
-    var loadDocumentData: (() -> Void)? { get set }
-
-    /// The list of attached transaction documents.
-    var transactionDocs: [TransactionDoc] { get set }
+    /// Checks if there are any attached transaction documents.
+    /// - Returns: A `Bool` indicating whether there are any attached documents.
+    func hasAttachedDocuments() -> Bool
 
     /// Deletes a document from the attached documents list.
     /// - Parameter fileName: The name of the document to be deleted.
     func deleteAttachedDoc(named fileName: String)
 }
 
-/// A class that implements the `TransactionDocsDataProtocol` to manage transaction document data.
-/// Responsible for handling the state of attaching, managing, and presenting documents attached to a transaction.
-public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol {
-
-    /// The view controller responsible for presenting document-related views.
-    public weak var presentingViewController: UIViewController?
-
-    /// A closure that handles loading document data.
-    public var loadDocumentData: (() -> Void)?
+/// An internal protocol that defines methods and properties for managing the state
+/// of transaction documents used within the GiniBankSDK.
+internal protocol TransactionDocsDataInternalProtocol: AnyObject {
 
     /// The list of attached transaction documents.
-    public var transactionDocs: [TransactionDoc] = [] {
+    var transactionDocs: [TransactionDoc] { get set }
+
+    /// Retrieves the current view model for transaction documents.
+    /// - Returns: An optional `TransactionDocsViewModel` instance if available.
+    func getTransactionDocsViewModel() -> TransactionDocsViewModel?
+
+    /// A closure that handles the loading of document data.
+    var loadDocumentData: (() -> Void)? { get set }
+}
+
+/// A class that implements the `TransactionDocsDataProtocol` to manage transaction document data.
+/// Responsible for handling the state of attaching, managing, and presenting documents attached to a transaction.
+public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, TransactionDocsDataInternalProtocol {
+
+    // MARK: - Internal properties and methods
+
+    /// The list of attached transaction documents.
+    var transactionDocs: [TransactionDoc] = [] {
         didSet {
             transactionDocsViewModel?.transactionDocs = transactionDocs
         }
+    }
+    /// Retrieves the current view model for transaction documents.
+    /// - Returns: An optional `TransactionDocsViewModel` instance if available.
+    func getTransactionDocsViewModel() -> TransactionDocsViewModel? {
+        return transactionDocsViewModel
     }
 
     /// Lazily initialized view model for transaction documents.
@@ -58,8 +68,17 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol {
         return TransactionDocsViewModel(transactionDocsDataProtocol: self)
     }()
 
-    /// Default initializer.
+    // MARK: - Initializer
     public init() {}
+
+    // MARK: - TransactionDocsDataProtocol
+    // Public protocol methods and properties
+
+    /// The view controller responsible for presenting document-related views.
+    public weak var presentingViewController: UIViewController?
+
+    /// A closure that handles loading document data.
+    public var loadDocumentData: (() -> Void)?
 
     /// Retrieves the current value of the "Always Attach Documents" setting.
     /// - Returns: A `Bool` representing whether documents should always be attached to the transaction.
@@ -78,10 +97,8 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol {
         GiniBankUserDefaultsStorage.removeAlwaysAttachDocs()
     }
 
-    /// Retrieves the current view model for transaction documents.
-    /// - Returns: An optional `TransactionDocsViewModel` instance if available.
-    public func getTransactionDocsViewModel() -> TransactionDocsViewModel? {
-        return transactionDocsViewModel
+    public func hasAttachedDocuments() -> Bool {
+        return !transactionDocs.isEmpty
     }
 
     /// Deletes a document from the attached documents list.
