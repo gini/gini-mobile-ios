@@ -22,15 +22,17 @@ extension GiniBankNetworkingScreenApiCoordinator {
             return
         }
 
-        if giniBankConfiguration.transactionDocsDataCoordinator.getAlwaysAttachDocsValue() {
-            let allwaysAttachDocs = giniBankConfiguration.transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
-            handleExistingAttachmentOption(allwaysAttachDocs,
+        let alwaysAttachDocsValue = giniBankConfiguration.transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
+        if alwaysAttachDocsValue {
+            handleExistingAttachmentOption(alwaysAttachDocsValue,
                                            on: controller,
                                            defaultAction: defaultAction,
                                            attachAction: attachAction)
         } else {
             // First time displaying the TransactionDocsAlertController
-            showAndSaveTransactionDocsAlert(on: controller, defaultAction: defaultAction, attachAction: attachAction)
+            showAndSaveTransactionDocsAlert(on: controller,
+                                            defaultAction: defaultAction,
+                                            attachAction: attachAction)
         }
     }
 
@@ -40,11 +42,12 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                                 attachAction: @escaping () -> Void) {
         if alwaysAttachDocs {
             // Do not show the TransactionDocsAlertController, always attach document
-            // TODO: send in the AnalysisResult the TransactionDoc information
             attachAction()
         } else {
             // Show the TransactionDocsAlertController every time
-            showAndSaveTransactionDocsAlert(on: controller, defaultAction: defaultAction, attachAction: attachAction)
+            showAndSaveTransactionDocsAlert(on: controller, 
+                                            defaultAction: defaultAction,
+                                            attachAction: attachAction)
         }
     }
 
