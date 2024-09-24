@@ -114,6 +114,11 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     private var configurationService: ClientConfigurationServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
+    /// Internal coordinator for managing transaction documents, conforming to `TransactionDocsDataInternalProtocol`.
+    /// Provides access to internal methods like retrieving the view model, deleting documents, and loading document data.
+    /// This is cast from the public-facing protocol for internal SDK use only.
+    private var transactionDocsDataCoordinator: TransactionDocsDataInternalProtocol?
+
     public init(client: Client,
                 resultsDelegate: GiniCaptureResultsDelegate,
                 configuration: GiniBankConfiguration,
@@ -132,6 +137,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration.documentService = documentService
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
+
+        transactionDocsDataCoordinator = internalTransactionDocsDataCoordinator()
     }
 
     public init(resultsDelegate: GiniCaptureResultsDelegate,
@@ -154,6 +161,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
+        transactionDocsDataCoordinator = internalTransactionDocsDataCoordinator()
     }
 
     convenience init(client: Client,
@@ -233,6 +241,13 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         })
         return self.start(withDocuments: documents, animated: animated)
     }
+
+    /// Attempts to cast the public-facing `transactionDocsDataCoordinator` to the internal protocol.
+    /// - Returns: The `TransactionDocsDataInternalProtocol` instance if the cast is successful, otherwise `nil`.
+    private func internalTransactionDocsDataCoordinator() -> TransactionDocsDataInternalProtocol? {
+        let coordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
+        return coordinator as? TransactionDocsDataInternalProtocol
+    }
 }
 
 // MARK: - Analytics Handling Extension
@@ -297,17 +312,17 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                         // Default case when no Skonto or RA to be displayed
                         self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController,
                                                                 defaultAction: { [weak self] in
-                            self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
+                            self?.transactionDocsDataCoordinator?.transactionDocs = []
                             self?.deliverWithReturnAssistant(result: extractionResult,
                                                              analysisDelegate: networkDelegate)
                         },
                                                                 attachAction: { [weak self] in
                             if let documentId = document?.id {
-                                self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: documentId,
+                                self?.transactionDocsDataCoordinator?.transactionDocs = [.init(documentId: documentId,
                                                                                               fileName: "Document",
                                                                                               type: .document)]
                             } else {
-                                self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
+                                self?.transactionDocsDataCoordinator?.transactionDocs = []
                             }
                             self?.setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: extractionResult)
                             self?.deliverWithReturnAssistant(result: extractionResult,
@@ -415,17 +430,17 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
         let document = documentService.document
         self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController,
                                                 defaultAction: { [weak self] in
-            self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
+            self?.transactionDocsDataCoordinator?.transactionDocs = []
             self?.deliverWithReturnAssistant(result: invoice.extractionResult,
                                              analysisDelegate: analysisDelegate)
         },
                                                 attachAction: { [weak self] in
             if let documentId = document?.id {
-                self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: documentId,
+                self?.transactionDocsDataCoordinator?.transactionDocs = [.init(documentId: documentId,
                                                                               fileName: "Document",
                                                                               type: .document)]
             } else {
-                self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
+                self?.transactionDocsDataCoordinator?.transactionDocs = []
             }
             self?.setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: invoice.extractionResult)
             self?.deliverWithReturnAssistant(result: invoice.extractionResult,
@@ -538,16 +553,16 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         let document = documentService.document
         self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController,
                                                 defaultAction: { [weak self] in
-            self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
+            self?.transactionDocsDataCoordinator?.transactionDocs = []
             self?.deliverWithSkonto(result: editedExtractionResult)
         },
                                                 attachAction: { [weak self] in
             if let documentId = document?.id {
-                self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: documentId,
+                self?.transactionDocsDataCoordinator?.transactionDocs = [.init(documentId: documentId,
                                                                               fileName: "Document",
                                                                               type: .document)]
             } else {
-                self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
+                self?.transactionDocsDataCoordinator?.transactionDocs = []
             }
             self?.setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: editedExtractionResult)
             self?.deliverWithSkonto(result: editedExtractionResult)
@@ -711,7 +726,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 
 extension GiniBankNetworkingScreenApiCoordinator {
     private func setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: ExtractionResult) {
-        giniBankConfiguration.transactionDocsDataCoordinator.loadDocumentData = { [weak self] in
+        transactionDocsDataCoordinator?.loadDocumentData = { [weak self] in
             self?.getDocumentPages { [weak self] result in
                 guard let self = self else {
                     return
@@ -727,7 +742,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
                                let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
                                                                                      extractions: extractionInfo)
-                               self.giniBankConfiguration.transactionDocsDataCoordinator.getTransactionDocsViewModel()?
+                               self.transactionDocsDataCoordinator?.getTransactionDocsViewModel()?
                                    .setTransactionDocsDocumentPagesViewModel(viewModel)
                            }
                        }

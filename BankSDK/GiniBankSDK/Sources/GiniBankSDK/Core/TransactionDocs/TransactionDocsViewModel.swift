@@ -17,6 +17,10 @@ public class TransactionDocsViewModel {
     private var presentingViewController: UIViewController? {
         return transactionDocsDataProtocol.presentingViewController
     }
+    // Cast the transactionDocsDataProtocol to the internal protocol to access internal properties and methods
+    private var internalTransactionDocsDataCoordinator: TransactionDocsDataInternalProtocol? {
+        return transactionDocsDataProtocol as? TransactionDocsDataInternalProtocol
+    }
 
     private var documentPagesViewController: DocumentPagesViewController?
     private let transactionDocsDataProtocol: TransactionDocsDataProtocol
@@ -24,7 +28,8 @@ public class TransactionDocsViewModel {
 
     public init(transactionDocsDataProtocol: TransactionDocsDataProtocol) {
         self.transactionDocsDataProtocol = transactionDocsDataProtocol
-        self.transactionDocs = transactionDocsDataProtocol.transactionDocs
+        // Access transactionDocs from the internal protocol if available
+        transactionDocs = (transactionDocsDataProtocol as? TransactionDocsDataInternalProtocol)?.transactionDocs ?? []
     }
     public func deleteTransactionDoc(with documentId: String) {
         transactionDocs.removeAll { $0.documentId == documentId }
@@ -38,7 +43,7 @@ public class TransactionDocsViewModel {
         viewController.modalPresentationStyle = .overCurrentContext
         documentPagesViewController = viewController
         presentingViewController?.present(viewController, animated: true)
-        transactionDocsDataProtocol.loadDocumentData?()
+        internalTransactionDocsDataCoordinator?.loadDocumentData?()
     }
 
     public func presentDocumentActionSheet(for document: TransactionDoc) {
@@ -58,7 +63,7 @@ public class TransactionDocsViewModel {
 
     func setTransactionDocsDocumentPagesViewModel(_ viewModel: TransactionDocsDocumentPagesViewModel) {
         guard let documentPagesViewController else { return }
-        let transactionDoc = self.transactionDocs.first
+        let transactionDoc = transactionDocs.first
         viewModel.rightBarButtonAction = { [weak self] in
             guard let self else { return }
             let deleteAction = {
