@@ -283,6 +283,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     // MARK: - Start Analysis with Return Assistant or Skonto
 
     private func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
+        let document = documentService.document
         documentService.startAnalysis { result in
 
             switch result {
@@ -294,15 +295,25 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                     } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
                         self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
                     } else {
-                        self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController) { [weak self] in
-                            // let documentService = self.documentService -> document has documentId and documentName
-                            // extraction Result to be used to create TransactionDocsDocumentPagesViewModel
-                            // amountToPay: Price,
-                            // iban: String,
-                            // expiryDate: Date,
+                        // Default case when no Skonto or RA to be displayed
+                        self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController,
+                                                                defaultAction: { [weak self] in
+                            self?.transactionDocsDataCoordinator.transactionDocs = []
                             self?.deliverWithReturnAssistant(result: extractionResult,
                                                              analysisDelegate: networkDelegate)
-                        }
+                        },
+                                                                attachAction: { [weak self] in
+                            if let documentId = document?.id {
+                                self?.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: documentId,
+                                                                                              fileName: "Document",
+                                                                                              type: .document)]
+                            } else {
+                                self?.transactionDocsDataCoordinator.transactionDocs = []
+                            }
+                            self?.setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: extractionResult)
+                            self?.deliverWithReturnAssistant(result: extractionResult,
+                                                             analysisDelegate: networkDelegate)
+                        })
                     }
                 }
 
@@ -402,15 +413,25 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
                            invoice: DigitalInvoice?,
                            analysisDelegate: GiniCaptureSDK.AnalysisDelegate) {
         guard let invoice = invoice else { return }
-        handleTransactionDocsAlertIfNeeded(on: coordinator.rootViewController) { [weak self] in
-            //  let documentService = self.documentService -> document has documentId and documentName
-            // extraction Result to be used to create TransactionDocsDocumentPagesViewModel
-            //  amountToPay: Price,
-            // iban: String,
-            // expiryDate: Date,
+        let document = documentService.document
+        self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController,
+                                                defaultAction: { [weak self] in
+            self?.transactionDocsDataCoordinator.transactionDocs = []
             self?.deliverWithReturnAssistant(result: invoice.extractionResult,
                                              analysisDelegate: analysisDelegate)
-        }
+        },
+                                                attachAction: { [weak self] in
+            if let documentId = document?.id {
+                self?.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: documentId,
+                                                                              fileName: "Document",
+                                                                              type: .document)]
+            } else {
+                self?.transactionDocsDataCoordinator.transactionDocs = []
+            }
+            self?.setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: invoice.extractionResult)
+            self?.deliverWithReturnAssistant(result: invoice.extractionResult,
+                                             analysisDelegate: analysisDelegate)
+        })
     }
 
     func didCancelAnalysis(_ coordinator: DigitalInvoiceCoordinator) {
@@ -515,14 +536,23 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     func didFinishAnalysis(_ coordinator: SkontoCoordinator,
                            _ editedExtractionResult: GiniBankAPILibrary.ExtractionResult?) {
         guard let editedExtractionResult else { return }
-        handleTransactionDocsAlertIfNeeded(on: coordinator.rootViewController) { [weak self] in
-            //  let documentService = self.documentService -> document has documentId and documentName
-            // extraction Result to be used to create TransactionDocsDocumentPagesViewModel
-            //  amountToPay: Price,
-            // iban: String,
-            // expiryDate: Date,
+        let document = documentService.document
+        self.handleTransactionDocsAlertIfNeeded(on: self.screenAPINavigationController,
+                                                defaultAction: { [weak self] in
+            self?.transactionDocsDataCoordinator.transactionDocs = []
             self?.deliverWithSkonto(result: editedExtractionResult)
-        }
+        },
+                                                attachAction: { [weak self] in
+            if let documentId = document?.id {
+                self?.transactionDocsDataCoordinator.transactionDocs = [.init(documentId: documentId,
+                                                                              fileName: "Document",
+                                                                              type: .document)]
+            } else {
+                self?.transactionDocsDataCoordinator.transactionDocs = []
+            }
+            self?.setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: editedExtractionResult)
+            self?.deliverWithSkonto(result: editedExtractionResult)
+        })
     }
 
     func didCancelAnalysis(_ coordinator: SkontoCoordinator) {
@@ -598,8 +628,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 
             switch result {
             case .success(let pages):
-               self.loadAllPages(from: skontoViewModel,
-                                 pages: pages) { images, error in
+               self.loadAllPages(pages: pages) { images, error in
                    if let error = error {
                        documentPagesError = error
                    } else {
@@ -634,8 +663,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         }
     }
 
-    private func loadAllPages(from skontoViewModel: SkontoViewModel,
-                              pages: [Document.Page],
+    private func loadAllPages(pages: [Document.Page],
                               completion: @escaping ([UIImage], GiniError?) -> Void) {
         var images: [UIImage] = []
         var loadError: GiniError?
@@ -647,8 +675,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             }
 
             let page = pages[index]
-            loadDocumentPage(from: skontoViewModel.extractionBoundingBoxes,
-                             startingAt: page.number,
+            loadDocumentPage(startingAt: page.number,
                              size: page.images[0].size) { pageImage, errors in
                 if let firstError = errors.first {
                     loadError = firstError
@@ -664,8 +691,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         loadPage(at: 0)
     }
 
-    private func loadDocumentPage(from extractionBoundingBoxes: [ExtractionBoundingBox],
-                                  startingAt pageNumber: Int,
+    private func loadDocumentPage(startingAt pageNumber: Int,
                                   size: Document.Page.Size,
                                   completion: @escaping (UIImage, [GiniError]) -> Void) {
         var errors = [GiniError]()
@@ -684,3 +710,36 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
     }
 }
 
+extension GiniBankNetworkingScreenApiCoordinator {
+    private func setTransactionDocsDataCoordinatorDocumentLoadAction(extractionResult: ExtractionResult) {
+        transactionDocsDataCoordinator.loadDocumentData = { [weak self] in
+            self?.getDocumentPages { [weak self] result in
+                guard let self = self else {
+                    return
+                }
+
+                switch result {
+                case .success(let pages):
+                   self.loadAllPages(pages: pages) { images, error in
+                       if let error = error {
+                           // TODO: handle error
+                       } else {
+                           DispatchQueue.main.async {
+                               let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
+                               let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
+                                                                                     extractions: extractionInfo)
+                               self.transactionDocsDataCoordinator
+                                   .transactionDocsViewModel?
+                                   .setTransactionDocsDocumentPagesViewModel(viewModel)
+                           }
+                       }
+                   }
+
+                case .failure(let error):
+                        // TODO: handle error
+                    print(error)
+                }
+            }
+        }
+    }
+}
