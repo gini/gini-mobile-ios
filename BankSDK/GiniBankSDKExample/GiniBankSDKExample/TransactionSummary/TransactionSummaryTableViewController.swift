@@ -30,7 +30,7 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
-        numberOfSections = transactionDocsDataCoordinator.transactionDocs.isEmpty ? 1 : 2
+        numberOfSections = transactionDocsDataCoordinator.hasAttachedDocuments() ? 2 : 1
     }
 
     override func viewDidLoad() {
