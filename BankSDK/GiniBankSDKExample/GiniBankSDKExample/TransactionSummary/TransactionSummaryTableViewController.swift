@@ -22,8 +22,10 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
         }
     }
 
-    var transactionDocs = [TransactionDoc]()
-    var showTransactionDocsAttached: Bool = false
+    //var transactionDocs = [TransactionDoc]()
+    var showTransactionDocsAttached: Bool {
+        return !TransactionDocsDataCoordinator.shared.transactionDocs.isEmpty
+    }
 	var editableFields: [String : String] = [:]
     var lineItems: [[Extraction]]? = nil
     var enabledRows: [Int] = []
@@ -36,6 +38,7 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        TransactionDocsDataCoordinator.shared.presentingViewController = self
         tableView.register(AttachmentsTableViewCell.self,
                            forCellReuseIdentifier: AttachmentsTableViewCell.reuseIdentifier)
     }
@@ -83,9 +86,8 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
                     as? AttachmentsTableViewCell else {
                 return UITableViewCell()
             }
-            cell.configure(presentingViewController: self,
-                           delegate: self, 
-                           docs: transactionDocs)
+            cell.configure(delegate: self)
+                           //docs: transactionDocs)
             return cell
         }
     }
