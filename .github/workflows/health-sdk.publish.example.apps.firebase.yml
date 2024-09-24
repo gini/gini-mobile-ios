@@ -1,9 +1,6 @@
 name: Publish GiniHealthSDKExample to App Center
 on:
   push:
-    paths:
-      - 'HealthSDK/**'
-      - 'HealthAPILibrary/**'
   workflow_dispatch:
 jobs:
   check:

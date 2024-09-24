@@ -1,9 +1,6 @@
 name: Publish GiniMerchantSDKExample to App Center
 on:
   push:
-    paths:
-      - 'MerchantSDK/**'
-      - 'HealthAPILibrary/**'
   workflow_dispatch:
 jobs:
   check:
