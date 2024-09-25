@@ -117,7 +117,7 @@ jobs:
           file: GiniBankSDKExample.ipa
           app: ${{ secrets.GINI_BANK_SDK_EXAMPLE_APP_FIREBASE_ID }}
           credentials: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
-          testers: testers
+          groups: testers
           release-notes: |
               ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
               ${{ github.event.head_commit.message }}
