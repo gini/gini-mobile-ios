@@ -719,14 +719,15 @@ extension GiniBankNetworkingScreenApiCoordinator {
         transactionDocsDataCoordinator?.loadDocumentData = { [weak self] in
             self?.loadDocumentPages { images, error in
                 guard let self = self else { return }
-
-                if let error = error {
-                    // TODO: handle error
-                    print(error)
-                    return
-                }
-
                 DispatchQueue.main.async {
+                    if let error = error {
+                        let viewModel = self.transactionDocsDataCoordinator?.getTransactionDocsViewModel()
+                        viewModel?.setPreviewDocumentError(error: error, tryAgainAction: { [weak self] in
+                            self?.transactionDocsDataCoordinator?.loadDocumentData?()
+                        })
+                        return
+                    }
+
                     let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
                     let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
                                                                           extractions: extractionInfo)

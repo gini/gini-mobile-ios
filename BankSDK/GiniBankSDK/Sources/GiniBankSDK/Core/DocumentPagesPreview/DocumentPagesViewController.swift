@@ -104,14 +104,14 @@ final class DocumentPagesViewController: UIViewController {
         showSkontoDetailsInFooter()
     }
 
-    func setError(errorType: ErrorType, buttonAction: @escaping () -> Void) {
+    func setError(errorType: ErrorType, tryAgainAction: @escaping () -> Void) {
         let errorView = DocumentPagesErrorView(
             errorType: errorType,
             buttonTitle: NSLocalizedStringPreferredGiniBankFormat(
                 "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle",
                 comment: "Try again"),
             buttonAction: {
-                buttonAction()
+                tryAgainAction()
                 self.removeErrorView()
             }
         )
