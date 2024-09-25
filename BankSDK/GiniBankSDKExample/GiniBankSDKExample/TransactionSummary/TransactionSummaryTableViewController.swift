@@ -1,8 +1,7 @@
 //
-//  ResultTableViewController.swift
-//  Example Swift
+//  TransactionSummaryTableViewController.swift
 //
-//  Created by Nadya Karaban on 19.02.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -13,7 +12,7 @@ import GiniBankSDK
  Presents a dictionary of results from the analysis process in a table view.
  Values from the dictionary will be used as the cells titles and keys as the cells subtitles.
  */
-final class ResultTableViewController: UITableViewController, UITextFieldDelegate {
+final class TransactionSummaryTableViewController: UITableViewController, UITextFieldDelegate {
     /**
      The result collection from the analysis process.
      */
@@ -22,28 +21,38 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
             result.sort(by: { $0.name! < $1.name! })
         }
     }
-    
+
 	var editableFields: [String : String] = [:]
     var lineItems: [[Extraction]]? = nil
     var enabledRows: [Int] = []
+    private var numberOfSections = 1
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
+        numberOfSections = transactionDocsDataCoordinator.hasAttachedDocuments() ? 2 : 1
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(ResultAttachmentsTableViewCell.self,
-                           forCellReuseIdentifier: ResultAttachmentsTableViewCell.reuseIdentifier)
+        tableView.register(AttachmentsTableViewCell.self,
+                           forCellReuseIdentifier: AttachmentsTableViewCell.reuseIdentifier)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return numberOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if numberOfSections == 1 {
+            return result.count
+        }
         return section == 0 ? result.count : 1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell", for: indexPath) as? ResultTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell", for: indexPath) as? ExtractionResultTableViewCell else {
                 return UITableViewCell()
             }
 
@@ -69,11 +78,11 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
 
             return cell
         } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ResultAttachmentsTableViewCell.reuseIdentifier, for: indexPath) as? ResultAttachmentsTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentsTableViewCell.reuseIdentifier, for: indexPath) 
+                    as? AttachmentsTableViewCell else {
                 return UITableViewCell()
             }
-            cell.configure(presentingViewController: self,
-                           delegate: self)
+            cell.configure(delegate: self)
             return cell
         }
     }
@@ -97,7 +106,7 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
         }
         
         guard let rowIndex = enabledRows.firstIndex(of: textField.tag), enabledRows.count > rowIndex + 1,
-              let visibleCell = tableView.cellForRow(at: IndexPath(row: enabledRows[rowIndex + 1], section: 0)) as? ResultTableViewCell else {
+              let visibleCell = tableView.cellForRow(at: IndexPath(row: enabledRows[rowIndex + 1], section: 0)) as? ExtractionResultTableViewCell else {
             return true
         }
         
@@ -106,7 +115,7 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
     }
 }
 
-extension ResultTableViewController: TransactionDocsViewDelegate {
+extension TransactionSummaryTableViewController: TransactionDocsViewDelegate {
     func transactionDocsViewDidUpdateContent(_ attachmentsView: TransactionDocsView) {
         tableView.beginUpdates()
         tableView.endUpdates()
