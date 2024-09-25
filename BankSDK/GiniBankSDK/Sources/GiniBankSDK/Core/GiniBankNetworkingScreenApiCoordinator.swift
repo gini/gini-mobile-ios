@@ -723,24 +723,35 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 extension GiniBankNetworkingScreenApiCoordinator {
     private func setTransactionDocsDataToDisplay(with extractionResult: ExtractionResult) {
         transactionDocsDataCoordinator?.loadDocumentData = { [weak self] in
-            self?.loadDocumentPages { images, error in
+            self?.loadDocumentPages { [weak self] images, error in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     if let error = error {
-                        let viewModel = self.transactionDocsDataCoordinator?.getTransactionDocsViewModel()
-                        viewModel?.setPreviewDocumentError(error: error, tryAgainAction: { [weak self] in
-                            self?.transactionDocsDataCoordinator?.loadDocumentData?()
-                        })
+                        self.handlePreviewDocumentError(error: error)
                         return
                     }
 
-                    let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
-                    let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
-                                                                          extractions: extractionInfo)
-                    self.transactionDocsDataCoordinator?.getTransactionDocsViewModel()?
-                        .setTransactionDocsDocumentPagesViewModel(viewModel)
+                    self.updateTransactionDocsViewModel(with: images, extractionResult: extractionResult)
                 }
             }
         }
+    }
+
+    // MARK: - Helper Methods
+
+    private func handlePreviewDocumentError(error: GiniError) {
+        let viewModel = transactionDocsDataCoordinator?.getTransactionDocsViewModel()
+        viewModel?.setPreviewDocumentError(error: error) { [weak self] in
+            self?.transactionDocsDataCoordinator?.loadDocumentData?()
+        }
+    }
+
+    private func updateTransactionDocsViewModel(with images: [UIImage], extractionResult: ExtractionResult) {
+        let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
+        let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images, 
+                                                              extractions: extractionInfo)
+        transactionDocsDataCoordinator?
+            .getTransactionDocsViewModel()?
+            .setTransactionDocsDocumentPagesViewModel(viewModel)
     }
 }
