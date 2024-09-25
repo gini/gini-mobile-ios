@@ -20,24 +20,40 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     // MARK: - GiniCaptureDelegate
 
     public func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
-        // The EPS QR codes are a special case, since they don0t have to be analyzed by the Gini Bank API and therefore,
-        // they are ready to be delivered after capturing them.
-        if let qrCodeDocument = document as? GiniQRCodeDocument,
-           let format = qrCodeDocument.qrCodeFormat,
-           case .eps4mobile = format {
-            let extractions = qrCodeDocument.extractedParameters.compactMap {
+        // Common logic for creating extractions
+        func createExtractions(for key: String, from document: GiniQRCodeDocument) -> [Extraction] {
+            return document.extractedParameters.compactMap {
                 Extraction(box: nil, candidates: nil,
-                           entity: QRCodesExtractor.epsCodeUrlKey,
+                           entity: key,
                            value: $0.value,
-                           name: QRCodesExtractor.epsCodeUrlKey)
+                           name: key)
             }
+        }
+
+        // Common logic for delivering the result
+        func deliverExtractionResult(for key: String, document: GiniQRCodeDocument) {
+            let extractions = createExtractions(for: key, from: document)
             let extractionResult = ExtractionResult(extractions: extractions,
                                                     lineItems: [],
                                                     returnReasons: [],
                                                     candidates: [:])
-
             deliver(result: extractionResult, analysisDelegate: networkDelegate)
-            return
+        }
+
+        // The EPS QR codes are a special case, since they don0t have to be analyzed by the Gini Bank API and therefore,
+        // they are ready to be delivered after capturing them.
+        if let qrCodeDocument = document as? GiniQRCodeDocument,
+           let format = qrCodeDocument.qrCodeFormat {
+            switch format {
+            case .eps4mobile:
+                deliverExtractionResult(for: QRCodesExtractor.epsCodeUrlKey, document: qrCodeDocument)
+                return
+            case .giniQRCode:
+                deliverExtractionResult(for: QRCodesExtractor.giniCodeUrlKey, document: qrCodeDocument)
+                return
+            default:
+                break
+            }
         }
 
         // When an non reviewable document or an image in multipage mode is captured,
