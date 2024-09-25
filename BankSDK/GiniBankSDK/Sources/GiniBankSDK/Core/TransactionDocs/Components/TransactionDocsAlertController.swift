@@ -6,7 +6,19 @@
 
 import UIKit
 
+/// A utility class responsible for presenting an alert to the user with options for handling transaction document attachments.
+/// The alert allows the user to choose between always attaching documents, attaching once, or not attaching documents at all.
 class TransactionDocsAlertController {
+
+    /// Presents an alert on the specified view controller, offering the user three options related to attaching transaction documents.
+    ///
+    /// - Parameters:
+    ///   - viewController: The view controller on which to present the alert.
+    ///   - alwaysAttachHandler: A closure that is called when the user selects the "Always Attach" option.
+    ///   - attachOnceHandler: A closure that is called when the user selects the "Attach Once" option.
+    ///   - doNotAttachHandler: A closure that is called when the user selects the "Do Not Attach" option.
+    ///
+    /// This alert is used to prompt the user to decide how they want to handle the attachment of transaction documents in PP flow.
     static func show(on viewController: UIViewController,
                      alwaysAttachHandler: @escaping () -> Void,
                      attachOnceHandler: @escaping () -> Void,

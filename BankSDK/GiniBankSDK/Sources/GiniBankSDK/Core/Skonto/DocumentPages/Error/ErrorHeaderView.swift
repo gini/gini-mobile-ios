@@ -51,11 +51,13 @@ class ErrorHeaderView: UIView {
         NSLayoutConstraint.activate([
             iconImageView.widthAnchor.constraint(equalToConstant: Constants.iconImageSize),
             iconImageView.heightAnchor.constraint(equalToConstant: Constants.iconImageSize),
-            headerStack.topAnchor.constraint(equalTo: topAnchor, constant: Constants.stackViewTopPadding),
-            headerStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.stackViewBottomPadding)
+            headerStack.topAnchor.constraint(equalTo: topAnchor, 
+                                             constant: Constants.stackViewTopPadding),
+            headerStack.bottomAnchor.constraint(equalTo: bottomAnchor,
+                                                constant: Constants.stackViewBottomPadding)
         ])
     }
-    
+
     private enum Constants {
         static let iconImageSize: CGFloat = 24
         static let stackViewSpacing: CGFloat = 19
