@@ -45,10 +45,10 @@ public class TransactionDocsViewModel {
         transactionDocsDataProtocol.deleteTransactionDoc(with: documentId)
         onUpdate?()
     }
-    /// Handles the action to open and present a document
-    public func handleDocumentOpen() {
-        //TODO: do we need to change this? Why first
-        let transactionDoc = transactionDocs.first
+    /// Handles the action to preview an attached document
+    /// - Parameter documentId: The ID of the document to preview.
+    public func handlePreviewDocument(for documentId: String) {
+        let transactionDoc = transactionDocs.first(where: { $0.documentId == documentId })
         let screenTitle = transactionDoc?.fileName ?? ""
         let viewController = DocumentPagesViewController(screenTitle: screenTitle)
         viewController.modalPresentationStyle = .overCurrentContext

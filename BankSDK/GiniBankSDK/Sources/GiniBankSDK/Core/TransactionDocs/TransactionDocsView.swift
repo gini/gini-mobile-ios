@@ -114,7 +114,7 @@ public class TransactionDocsView: UIView {
     private func createTransactionDocsItemView(for transactionDoc: TransactionDoc) -> TransactionDocsItemView {
         let transactionDocsItemView = TransactionDocsItemView(transactionDocsItem: transactionDoc)
 
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, 
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self,
                                                           action: #selector(didTapToPreviewDocument(_:)))
         transactionDocsItemView.addGestureRecognizer(tapGestureRecognizer)
 
@@ -127,8 +127,9 @@ public class TransactionDocsView: UIView {
 
     // MARK: - Actions
     @objc private func didTapToPreviewDocument(_ sender: UITapGestureRecognizer) {
-        guard let tappedView = sender.view as? TransactionDocsItemView else { return }
-        viewModel?.handleDocumentOpen()
+        guard let tappedView = sender.view as? TransactionDocsItemView,
+              let documentId = tappedView.transactionDocsItem?.documentId else { return }
+        viewModel?.handlePreviewDocument(for: documentId)
     }
 }
 
