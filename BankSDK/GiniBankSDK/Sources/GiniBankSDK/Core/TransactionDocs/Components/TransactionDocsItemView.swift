@@ -77,8 +77,7 @@ class TransactionDocsItemView: UIView {
         optionsButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            imageContainerView.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                        constant: Constants.iconImageViewLeadingAnchor),
+            imageContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageContainerView.centerYAnchor.constraint(equalTo: centerYAnchor),
             imageContainerView.widthAnchor.constraint(equalToConstant: Constants.imageViewSize),
             imageContainerView.heightAnchor.constraint(equalToConstant: Constants.imageViewSize),
@@ -102,8 +101,7 @@ class TransactionDocsItemView: UIView {
             fileNameLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor,
                                                              constant: Constants.fileNameLabelMinimalBottomAnchor),
 
-            optionsButton.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                   constant: Constants.optionsButtonTrailingAnchor),
+            optionsButton.trailingAnchor.constraint(equalTo: trailingAnchor),
             optionsButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             optionsButton.widthAnchor.constraint(equalToConstant: Constants.optionsButtonSize),
             optionsButton.heightAnchor.constraint(equalToConstant: Constants.optionsButtonSize),
@@ -119,14 +117,12 @@ class TransactionDocsItemView: UIView {
 
 private extension TransactionDocsItemView {
     enum Constants {
-        static let iconImageViewLeadingAnchor: CGFloat = 12
         static let iconImageViewSize: CGFloat = 24
         static let fileNameLabelNumberOfLines: Int = 0
         static let fileNameLabelLeadingAnchor: CGFloat = 16
         static let fileNameLabelTrailingAnchor: CGFloat = -16
         static let fileNameLabelMinimalTopAnchor: CGFloat = 8
         static let fileNameLabelMinimalBottomAnchor: CGFloat = -8
-        static let optionsButtonTrailingAnchor: CGFloat = -12
         static let optionsButtonSize: CGFloat = 30
         static let viewMinimalHeight: CGFloat = 44
         static let imageViewPadding: CGFloat = 8
