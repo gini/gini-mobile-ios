@@ -6,7 +6,6 @@
 
 
 import Foundation
-import GiniHealthAPILibrary
 import GiniHealthSDK
 import GiniUtilites
 import UIKit
