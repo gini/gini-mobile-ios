@@ -87,8 +87,8 @@ class SkontoViewModel {
         let text: String
         switch edgeCase {
         case .expired:
-            let expireMessageKey = "ginibank.skonto.infobanner.edgecase.expired.message"
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat(expireMessageKey,
+            let expiredMessageKey = "ginibank.skonto.infobanner.edgecase.expired.message"
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat(expiredMessageKey,
                                                                          comment: "The %@ discount has expired.")
             text = String.localizedStringWithFormat(localizedText,
                                                     formattedPercentageDiscounted)
