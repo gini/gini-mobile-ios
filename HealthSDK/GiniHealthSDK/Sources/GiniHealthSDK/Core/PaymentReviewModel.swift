@@ -133,7 +133,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
-        healthSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
+        healthSDK.openPaymentProviderApp(requestId: requestId, universalLink: universalLink)
     }
     
     func shouldShowOnboardingScreenFor(paymentProvider: PaymentProvider) -> Bool {

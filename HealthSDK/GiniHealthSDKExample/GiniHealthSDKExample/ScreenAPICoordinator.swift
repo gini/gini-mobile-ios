@@ -95,7 +95,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
                         case let .success(extractionResult):
                             print("✅Successfully fetched extractions for id: \(docId)")
                             // Store invoice/document into Invoices list
-                            let invoice = DocumentWithExtractions(documentID: docId,
+                            let invoice = DocumentWithExtractions(documentId: docId,
                                                                   extractionResult: extractionResult)
                             self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
                             DispatchQueue.main.async {

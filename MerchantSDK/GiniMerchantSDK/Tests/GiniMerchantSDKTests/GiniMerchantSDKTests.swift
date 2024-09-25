@@ -9,6 +9,7 @@ import XCTest
 @testable import GiniUtilites
 @testable import GiniMerchantSDK
 @testable import GiniHealthAPILibrary
+@testable import GiniPaymentComponents
 
 final class GiniMerchantTests: XCTestCase {
     
@@ -261,7 +262,7 @@ final class GiniMerchantTests: XCTestCase {
         let urlOpener = URLOpener(mockUIApplication)
         let waitForWebsiteOpen = expectation(description: "Link was opened")
 
-        giniMerchant.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
+        giniMerchant.openPaymentProviderApp(requestId: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
             waitForWebsiteOpen.fulfill()
             XCTAssert(open, "testOpenLink - FAILED to open link")
         })
@@ -274,7 +275,7 @@ final class GiniMerchantTests: XCTestCase {
         let urlOpener = URLOpener(mockUIApplication)
         let waitForWebsiteOpen = expectation(description: "Link was not opened")
 
-        giniMerchant.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
+        giniMerchant.openPaymentProviderApp(requestId: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
             waitForWebsiteOpen.fulfill()
             XCTAssert(open == false, "testOpenLink - MANAGED to open link")
         })

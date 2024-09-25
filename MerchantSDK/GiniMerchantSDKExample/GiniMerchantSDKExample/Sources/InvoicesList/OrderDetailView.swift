@@ -99,7 +99,7 @@ extension OrderDetailView: UITextFieldDelegate {
     func updateAmoutToPayWithCurrencyFormat() {
         let textField = Self.amountTextField
         if textField.hasText, let text = textField.text {
-            if let priceValue = text.toDecimal(),
+            if let priceValue = text.decimal(),
                var price = order?.price {
                 price.value = priceValue
 

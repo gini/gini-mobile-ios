@@ -160,7 +160,7 @@ final class AppCoordinator: Coordinator {
                         switch result {
                         case let .success(extractionResult):
                             print("✅Successfully fetched extractions for id: \(document.id)")
-                            let invoice = DocumentWithExtractions(documentID: document.id,
+                            let invoice = DocumentWithExtractions(documentId: document.id,
                                                                   extractionResult: extractionResult)
                             self?.showInvoicesList(invoices: [invoice])
                         case let .failure(error):
@@ -202,7 +202,7 @@ final class AppCoordinator: Coordinator {
                                         switch result {
                                         case let .success(extractionResult):
                                             print("✅Successfully fetched extractions for id: \(compositeDocument.id)")
-                                            let invoice = DocumentWithExtractions(documentID: compositeDocument.id,
+                                            let invoice = DocumentWithExtractions(documentId: compositeDocument.id,
                                                                                   extractionResult: extractionResult)
                                             self?.showInvoicesList(invoices: [invoice])
                                         case let .failure(error):
