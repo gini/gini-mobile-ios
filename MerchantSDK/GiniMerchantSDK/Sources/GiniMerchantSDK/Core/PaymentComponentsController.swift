@@ -7,7 +7,7 @@
 
 
 import UIKit
-import GiniInternalPayment
+import GiniInternalPaymentSDK
 import GiniHealthAPILibrary
 import GiniUtilites
 
@@ -44,9 +44,9 @@ public protocol PaymentComponentsConfigurationProvider {
 
     var primaryButtonConfiguration: ButtonConfiguration { get }
     var secondaryButtonConfiguration: ButtonConfiguration { get }
-    var defaultStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration { get }
-    var errorStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration { get }
-    var selectionStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration { get }
+    var defaultStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration { get }
+    var errorStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration { get }
+    var selectionStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration { get }
 
     var showPaymentReviewCloseButton: Bool { get }
     var paymentComponentButtonsHeight: CGFloat { get }
@@ -457,7 +457,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     }
 }
 
-extension PaymentComponentsController: GiniInternalPayment.PaymentComponentViewProtocol {
+extension PaymentComponentsController: GiniInternalPaymentSDK.PaymentComponentViewProtocol {
     public func didTapOnMoreInformation(documentId: String?) {
         viewDelegate?.didTapOnMoreInformation(documentId: documentId)
     }
@@ -626,7 +626,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
         }
     }
     
-    public func createPaymentRequest(paymentInfo: GiniInternalPayment.PaymentInfo, completion: @escaping (Result<String, GiniHealthAPILibrary.GiniError>) -> Void) {
+    public func createPaymentRequest(paymentInfo: GiniInternalPaymentSDK.PaymentInfo, completion: @escaping (Result<String, GiniHealthAPILibrary.GiniError>) -> Void) {
         let info = PaymentInfo(paymentConponentsInfo: paymentInfo)
         giniSDK.createPaymentRequest(paymentInfo: info, completion: { result in
             switch result {

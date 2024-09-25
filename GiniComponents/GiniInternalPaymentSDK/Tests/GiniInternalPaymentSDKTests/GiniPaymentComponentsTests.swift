@@ -1,7 +1,7 @@
 import XCTest
-@testable import GiniInternalPayment
+@testable import GiniInternalPaymentSDK
 
-final class GiniInternalPaymentTests: XCTestCase {
+final class GiniInternalPaymentSDKTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest

@@ -9,7 +9,7 @@ import GiniBankAPILibrary
 import GiniCaptureSDK
 import GiniHealthSDK
 import GiniHealthAPILibrary
-import GiniInternalPayment
+import GiniInternalPaymentSDK
 import UIKit
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {

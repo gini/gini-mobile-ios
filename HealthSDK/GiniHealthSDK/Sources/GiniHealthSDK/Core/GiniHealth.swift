@@ -8,7 +8,7 @@
 import UIKit
 import GiniHealthAPILibrary
 import GiniUtilites
-import GiniInternalPayment
+import GiniInternalPaymentSDK
 
 /**
  Delegate to inform about the current status of the Gini Health SDK.

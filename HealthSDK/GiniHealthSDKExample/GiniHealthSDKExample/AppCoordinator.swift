@@ -10,7 +10,7 @@ import UIKit
 import GiniCaptureSDK
 import GiniHealthAPILibrary
 import GiniHealthSDK
-import GiniInternalPayment
+import GiniInternalPaymentSDK
 
 final class AppCoordinator: Coordinator {
     

@@ -8,7 +8,7 @@
 import UIKit
 @testable import GiniHealthSDK
 @testable import GiniHealthAPILibrary
-@testable import GiniInternalPayment
+@testable import GiniInternalPaymentSDK
 
 class MockPaymentComponents: PaymentComponentsProtocol {
 

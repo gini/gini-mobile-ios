@@ -4,14 +4,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "GiniInternalPayment",
+    name: "GiniInternalPaymentSDK",
     defaultLocalization: "en",
     platforms: [.iOS(.v13)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "GiniInternalPayment",
-            targets: ["GiniInternalPayment"]),
+            name: "GiniInternalPaymentSDK",
+            targets: ["GiniInternalPaymentSDK"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -26,7 +26,7 @@ let package = Package(
             name: "GiniInternalPayment",
             dependencies: ["GiniHealthAPILibrary", "GiniUtilites"]),
         .testTarget(
-            name: "GiniInternalPaymentTests",
-            dependencies: ["GiniInternalPayment"]),
+            name: "GiniInternalPaymenTests",
+            dependencies: ["GiniInternalPaymentSDK"]),
     ]
 )

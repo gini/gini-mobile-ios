@@ -7,18 +7,18 @@
 
 import UIKit
 import GiniUtilites
-import GiniInternalPayment
+import GiniInternalPaymentSDK
 
 extension GiniHealth: PaymentComponentsConfigurationProvider {
-    public var defaultStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration {
+    public var defaultStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration {
         GiniHealthConfiguration.shared.defaultStyleInputFieldConfiguration
     }
 
-    public var errorStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration {
+    public var errorStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration {
         GiniHealthConfiguration.shared.errorStyleInputFieldConfiguration
     }
 
-    public var selectionStyleInputFieldConfiguration: GiniInternalPayment.TextFieldConfiguration {
+    public var selectionStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration {
         GiniHealthConfiguration.shared.selectionStyleInputFieldConfiguration
     }
 
@@ -169,11 +169,11 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
         )
     }
 
-    public var primaryButtonConfiguration: GiniInternalPayment.ButtonConfiguration {
+    public var primaryButtonConfiguration: GiniInternalPaymentSDK.ButtonConfiguration {
         GiniHealthConfiguration.shared.primaryButtonConfiguration
     }
 
-    public var secondaryButtonConfiguration: GiniInternalPayment.ButtonConfiguration {
+    public var secondaryButtonConfiguration: GiniInternalPaymentSDK.ButtonConfiguration {
         GiniHealthConfiguration.shared.secondaryButtonConfiguration
     }
 }

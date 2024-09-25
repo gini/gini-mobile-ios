@@ -5,7 +5,7 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-import GiniInternalPayment
+import GiniInternalPaymentSDK
 
 extension GiniHealth: PaymentComponentsStringsProvider {
     public var paymentReviewContainerStrings: PaymentReviewContainerStrings {

@@ -1,7 +1,7 @@
 import XCTest
 @testable import GiniHealthSDK
 @testable import GiniHealthAPILibrary
-@testable import GiniInternalPayment
+@testable import GiniInternalPaymentSDK
 @testable import GiniUtilites
 
 final class GiniHealthTests: XCTestCase {

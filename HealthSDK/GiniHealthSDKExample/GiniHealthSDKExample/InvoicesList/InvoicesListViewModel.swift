@@ -8,7 +8,7 @@
 import UIKit
 import GiniCaptureSDK
 import GiniHealthSDK
-import GiniInternalPayment
+import GiniInternalPaymentSDK
 
 struct DocumentWithExtractions: Codable {
     var documentId: String
