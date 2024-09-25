@@ -69,7 +69,10 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, Transa
     }()
 
     // MARK: - Initializer
-    public init() {}
+    /// Initializes a new instance of the class.
+    public init() {
+        /// This initializer is intentionally left empty because no custom setup is required at initialization.
+    }
 
     // MARK: - TransactionDocsDataProtocol
     // Public protocol methods and properties
