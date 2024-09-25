@@ -585,14 +585,20 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             case .success(let viewModel):
                 viewController.setData(viewModel: viewModel)
             case .failure(let error):
-                viewController.setError(errorType: .init(error: error)) {
-                    viewController.startLoadingIndicatorAnimation()
-                    self.handleDocumentPage(for: skontoViewModel, with: viewController)
-                }
+                self.handleDocumentPageError(for: skontoViewModel, with: viewController, error: error)
             }
         }
     }
 
+    private func handleDocumentPageError(for skontoViewModel: SkontoViewModel,
+                                         with viewController: DocumentPagesViewController,
+                                         error: GiniError) {
+        viewController.setError(errorType: .init(error: error)) { [weak self] in
+            guard let self = self else { return }
+            viewController.startLoadingIndicatorAnimation()
+            self.handleDocumentPage(for: skontoViewModel, with: viewController)
+        }
+    }
     private func createDocumentPageViewModel(from skontoViewModel: SkontoViewModel,
                                              completion: @escaping (Result<SkontoDocumentPagesViewModel, 
                                                                     GiniError>) -> Void) {
