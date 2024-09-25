@@ -99,7 +99,10 @@ public class TransactionDocsView: UIView {
     }
 
     private func reloadStackViewContent() {
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        stackView.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
+
         stackView.addArrangedSubview(headerView)
 
         for transactionDoc in viewModel?.transactionDocs ?? [] {
@@ -111,11 +114,21 @@ public class TransactionDocsView: UIView {
     private func createTransactionDocsItemView(for transactionDoc: TransactionDoc) -> TransactionDocsItemView {
         let transactionDocsItemView = TransactionDocsItemView(transactionDocsItem: transactionDoc)
 
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, 
+                                                          action: #selector(didTapToPreviewDocument(_:)))
+        transactionDocsItemView.addGestureRecognizer(tapGestureRecognizer)
+
         transactionDocsItemView.optionsAction = { [weak self] in
             self?.viewModel?.presentDocumentActionSheet(for: transactionDoc)
         }
 
         return transactionDocsItemView
+    }
+
+    // MARK: - Actions
+    @objc private func didTapToPreviewDocument(_ sender: UITapGestureRecognizer) {
+        guard let tappedView = sender.view as? TransactionDocsItemView else { return }
+        viewModel?.handleDocumentOpen()
     }
 }
 
