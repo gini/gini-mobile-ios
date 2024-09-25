@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniBankAPILibrary
 
 /// A view model responsible for managing the state of documents attached to a transaction.
 /// The `TransactionDocsViewModel` class handles loading, deleting, and presenting attached documents
@@ -89,5 +90,18 @@ public class TransactionDocsViewModel {
         }
         documentPagesViewController.stopLoadingIndicatorAnimation()
         documentPagesViewController.setData(viewModel: viewModel)
+    }
+
+    /// Informs that an error occurred while trying to preview a document.
+    /// The method allows passing an error along with a retry action to handle the error scenario.
+    ///
+    /// - Parameters:
+    ///   - error: The `GiniError` that occurred while previewing the document.
+    ///   - tryAgainAction: A closure that is called when the user attempts to retry the document preview action.
+    func setPreviewDocumentError(error: GiniError, tryAgainAction: @escaping () -> Void) {
+        guard let documentPagesViewController else { return }
+        documentPagesViewController.stopLoadingIndicatorAnimation()
+        documentPagesViewController.setError(errorType: .init(error: error),
+                                             tryAgainAction: tryAgainAction)
     }
 }

@@ -6,6 +6,7 @@
 
 import Foundation
 import UIKit
+import GiniBankAPILibrary
 /// A protocol that defines methods and properties for managing the state of transaction documents in a photo payment flow.
 /// Conforming types are responsible for tracking, modifying, and handling the state related to attaching documents to a transaction.
 public protocol TransactionDocsDataProtocol: AnyObject {
@@ -43,6 +44,14 @@ internal protocol TransactionDocsDataInternalProtocol: AnyObject {
 
     /// A closure that handles the loading of document data.
     var loadDocumentData: (() -> Void)? { get set }
+
+    /// Informs that an error occurred while trying to preview a document.
+    /// The method allows passing an error along with a retry action to handle the error scenario.
+    ///
+    /// - Parameters:
+    ///   - error: The `GiniError` that occurred while previewing the document.
+    ///   - tryAgainAction: A closure that is called when the user attempts to retry the document preview action.
+    func setPreviewDocumentError(error: GiniError, tryAgainAction: @escaping () -> Void)
 }
 
 /// A class that implements the `TransactionDocsDataProtocol` to manage transaction document data.
@@ -105,5 +114,15 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, Transa
     /// - Parameter fileName: The name of the document to be deleted.
     public func deleteAttachedDoc(named fileName: String) {
         transactionDocs.removeAll { $0.fileName == fileName }
+    }
+
+    /// Informs that an error occurred while trying to preview a document.
+    /// The method allows passing an error along with a retry action to handle the error scenario.
+    ///
+    /// - Parameters:
+    ///   - error: The `GiniError` that occurred while previewing the document.
+    ///   - tryAgainAction: A closure that is called when the user attempts to retry the document preview action.
+    func setPreviewDocumentError(error: GiniBankAPILibrary.GiniError, tryAgainAction: @escaping () -> Void) {
+        transactionDocsViewModel?.setPreviewDocumentError(error: error, tryAgainAction: tryAgainAction)
     }
 }
