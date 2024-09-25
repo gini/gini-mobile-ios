@@ -600,7 +600,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                 let viewModel = DocumentPagesViewModel(originalImages: pageImages,
                                                        originalSizes: originalSizes,
                                                        extractionBoundingBoxes: extractionBoundingBoxes,
-                                                       amountToPay: skontoViewModel.amountToPay, 
+                                                       amountToPay: skontoViewModel.amountToPay,
                                                        skontoAmountToPay: skontoViewModel.skontoAmountToPay,
                                                        expiryDate: skontoViewModel.dueDate)
                 skontoViewModel.setDocumentPagesViewModel(viewModel)
