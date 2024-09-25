@@ -78,7 +78,8 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
 
             return cell
         } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentsTableViewCell.reuseIdentifier, for: indexPath) 
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentsTableViewCell.reuseIdentifier, 
+                                                           for: indexPath) 
                     as? AttachmentsTableViewCell else {
                 return UITableViewCell()
             }
