@@ -25,9 +25,9 @@ public protocol TransactionDocsDataProtocol: AnyObject {
     /// - Returns: A `Bool` indicating whether there are any attached documents.
     func hasAttachedDocuments() -> Bool
 
-    /// Deletes a document from the attached documents list.
-    /// - Parameter fileName: The name of the document to be deleted.
-    func deleteAttachedDoc(named fileName: String)
+    /// Deletes a attached document to a transaction from the list.
+    /// - Parameter documentId: The ID of the document to delete.
+    func deleteTransactionDoc(with documentId: String)
 }
 
 /// An internal protocol that defines methods and properties for managing the state
@@ -101,9 +101,9 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, Transa
         return !transactionDocs.isEmpty
     }
 
-    /// Deletes a document from the attached documents list.
-    /// - Parameter fileName: The name of the document to be deleted.
-    public func deleteAttachedDoc(named fileName: String) {
-        transactionDocs.removeAll { $0.fileName == fileName }
+    /// Deletes a attached document to a transaction from the list.
+    /// - Parameter documentId: The ID of the document to delete.
+    public func deleteTransactionDoc(with documentId: String) {
+        transactionDocs.removeAll { $0.documentId == documentId }
     }
 }
