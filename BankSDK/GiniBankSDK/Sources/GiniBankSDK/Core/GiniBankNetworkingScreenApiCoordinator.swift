@@ -656,12 +656,12 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             }
 
             switch result {
-                case .success(let pages):
-                    self.loadAllPages(pages: pages) { images, error in
-                        completion(images, error)
-                    }
-                case .failure(let error):
-                    completion([], error)
+            case .success(let pages):
+                self.loadAllPages(pages: pages) { images, error in
+                    completion(images, error)
+                }
+            case .failure(let error):
+                completion([], error)
             }
         }
     }
@@ -741,7 +741,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
     private func updateTransactionDocsViewModel(with images: [UIImage], extractionResult: ExtractionResult) {
         let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
-        let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images, 
+        let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
                                                               extractions: extractionInfo)
         transactionDocsDataCoordinator?
             .getTransactionDocsViewModel()?
