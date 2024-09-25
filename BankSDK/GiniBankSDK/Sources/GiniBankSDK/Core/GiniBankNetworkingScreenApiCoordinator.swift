@@ -117,7 +117,10 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     /// Internal coordinator for managing transaction documents, conforming to `TransactionDocsDataInternalProtocol`.
     /// Provides access to internal methods like retrieving the view model, deleting documents, and loading document data.
     /// This is cast from the public-facing protocol for internal SDK use only.
-    private var transactionDocsDataCoordinator: TransactionDocsDataInternalProtocol?
+    private var transactionDocsDataCoordinator: TransactionDocsDataInternalProtocol? {
+        return GiniBankConfiguration
+            .shared.transactionDocsDataCoordinator as? TransactionDocsDataInternalProtocol
+    }
 
     public init(client: Client,
                 resultsDelegate: GiniCaptureResultsDelegate,
@@ -137,8 +140,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration.documentService = documentService
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
-
-        transactionDocsDataCoordinator = internalTransactionDocsDataCoordinator()
     }
 
     public init(resultsDelegate: GiniCaptureResultsDelegate,
@@ -161,7 +162,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
-        transactionDocsDataCoordinator = internalTransactionDocsDataCoordinator()
     }
 
     convenience init(client: Client,
@@ -240,13 +240,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             }
         })
         return self.start(withDocuments: documents, animated: animated)
-    }
-
-    /// Attempts to cast the public-facing `transactionDocsDataCoordinator` to the internal protocol.
-    /// - Returns: The `TransactionDocsDataInternalProtocol` instance if the cast is successful, otherwise `nil`.
-    private func internalTransactionDocsDataCoordinator() -> TransactionDocsDataInternalProtocol? {
-        let coordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
-        return coordinator as? TransactionDocsDataInternalProtocol
     }
 }
 
