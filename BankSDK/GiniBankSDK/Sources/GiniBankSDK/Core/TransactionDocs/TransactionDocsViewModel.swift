@@ -65,9 +65,6 @@ public class TransactionDocsViewModel {
         }
 
         TransactionDocsActionsBottomSheet.showDeleteAlert(on: presentingViewController,
-                                                          openHandler: { [weak self] in
-            self?.handleDocumentOpen()
-        },
                                                           deleteHandler: { [weak self] in
             self?.deleteTransactionDoc(with: document.documentId)
         })
