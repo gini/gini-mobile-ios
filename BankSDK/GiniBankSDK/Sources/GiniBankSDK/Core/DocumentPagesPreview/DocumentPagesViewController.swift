@@ -68,6 +68,7 @@ final class DocumentPagesViewController: UIViewController {
     private var viewModel: DocumentPagesViewModelProtocol?
     private let configuration = GiniBankConfiguration.shared
     private let screenTitle: String?
+    private var errorView: DocumentPagesErrorView?
 
     // Constraints
     private var contentStackViewTopConstraint: NSLayoutConstraint?
@@ -101,6 +102,38 @@ final class DocumentPagesViewController: UIViewController {
         }
         showProcessedImages()
         showSkontoDetailsInFooter()
+    }
+
+    func setError(errorType: ErrorType, tryAgainAction: @escaping () -> Void) {
+        let errorView = DocumentPagesErrorView(
+            errorType: errorType,
+            buttonTitle: NSLocalizedStringPreferredGiniBankFormat(
+                "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle",
+                comment: "Try again"),
+            buttonAction: {
+                tryAgainAction()
+                self.removeErrorView()
+            }
+        )
+
+        view.addSubview(errorView)
+
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            errorView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+            errorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            errorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            errorView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+
+        self.errorView = errorView
+    }
+
+    func removeErrorView() {
+        guard let errorView = errorView else { return }
+        errorView.removeFromSuperview()
+        self.errorView = nil
     }
 
     // MARK: Toggle animation
