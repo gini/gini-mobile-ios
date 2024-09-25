@@ -151,6 +151,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.help.supportedFormats.qrcode.item.2" = "eps Überweisung";
 "ginicapture.help.supportedFormats.qrcode.item.3" = "Stuzza (AT)";
 "ginicapture.help.supportedFormats.qrcode.item.4" = "Girocode (DE)";
+"ginicapture.help.supportedFormats.qrcode.item.5" = "QR by Gini";
 
 "ginicapture.help.menu.title" = "Help";
 "ginicapture.help.menu.tips" = "Tips for best results from photos";
