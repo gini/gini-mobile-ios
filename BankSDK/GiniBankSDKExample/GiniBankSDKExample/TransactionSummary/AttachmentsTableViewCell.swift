@@ -40,17 +40,17 @@ class AttachmentsTableViewCell: UITableViewCell {
 
     private func setupView() {
         selectionStyle = .none
-        addSubview(containerView)
+        contentView.addSubview(containerView)
         containerView.addSubview(attachmentsView)
 
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor,
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                    constant: Constants.padding),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor,
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                     constant: -Constants.padding),
-            containerView.topAnchor.constraint(equalTo: topAnchor,
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor,
                                                constant: Constants.padding),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor,
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
                                                   constant: -Constants.padding),
 
             attachmentsView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
