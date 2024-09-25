@@ -148,3 +148,4 @@
 "ginibank.transactionDocs.preview.amountToPay" = "Amount to Pay";
 "ginibank.transactionDocs.preview.iban" = "IBAN";
 "ginibank.transactionDocs.preview.expiryDate" = "Invoice Due Date";
+"ginibank.transactionDocs.preview.error.tryAgain.buttonTitle" = "Try again";

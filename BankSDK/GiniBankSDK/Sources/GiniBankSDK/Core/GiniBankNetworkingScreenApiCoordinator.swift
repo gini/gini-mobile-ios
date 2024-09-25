@@ -515,11 +515,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
             }
         }
     }
-
-    private func handleFailure(error: GiniError) {
-        guard error != .requestCancelled else { return }
-        // TODO: to be implemented later
-    }
 }
 
 extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
@@ -590,8 +585,10 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             case .success(let viewModel):
                 viewController.setData(viewModel: viewModel)
             case .failure(let error):
-                print("Failed to create invoice preview: \(error)")
-                self.handleFailure(error: error)
+                viewController.setError(errorType: .init(error: error)) {
+                    viewController.startLoadingIndicatorAnimation()
+                    self.handleDocumentPage(for: skontoViewModel, with: viewController)
+                }
             }
         }
     }
@@ -722,14 +719,15 @@ extension GiniBankNetworkingScreenApiCoordinator {
         transactionDocsDataCoordinator?.loadDocumentData = { [weak self] in
             self?.loadDocumentPages { images, error in
                 guard let self = self else { return }
-
-                if let error = error {
-                    // TODO: handle error
-                    print(error)
-                    return
-                }
-
                 DispatchQueue.main.async {
+                    if let error = error {
+                        let viewModel = self.transactionDocsDataCoordinator?.getTransactionDocsViewModel()
+                        viewModel?.setPreviewDocumentError(error: error, tryAgainAction: { [weak self] in
+                            self?.transactionDocsDataCoordinator?.loadDocumentData?()
+                        })
+                        return
+                    }
+
                     let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
                     let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
                                                                           extractions: extractionInfo)
