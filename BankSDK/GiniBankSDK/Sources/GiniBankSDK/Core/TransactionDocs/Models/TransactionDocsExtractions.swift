@@ -8,15 +8,12 @@ import Foundation
 import GiniBankAPILibrary
 
 struct TransactionDocsExtractions {
-    private let initialExtractionResult: ExtractionResult
     let amountToPay: Price
     let iban: String
 }
 
 extension TransactionDocsExtractions {
     init(extractions: ExtractionResult) {
-
-        self.initialExtractionResult = extractions
         if let amountToPayExtraction = extractions.extractions.first(where: { $0.name == "amountToPay" }) {
             amountToPay = Price(extractionString: amountToPayExtraction.value) ?? Price(value: 0, currencyCode: "EUR")
         } else {
