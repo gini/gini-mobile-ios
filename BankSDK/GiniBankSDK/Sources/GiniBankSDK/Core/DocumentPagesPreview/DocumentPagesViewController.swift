@@ -130,7 +130,7 @@ final class DocumentPagesViewController: UIViewController {
         self.errorView = errorView
     }
 
-    func removeErrorView() {
+    private func removeErrorView() {
         guard let errorView = errorView else { return }
         errorView.removeFromSuperview()
         self.errorView = nil
