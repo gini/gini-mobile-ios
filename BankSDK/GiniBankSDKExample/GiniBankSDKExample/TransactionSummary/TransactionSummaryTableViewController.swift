@@ -30,7 +30,7 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        numberOfSections = transactionDocsDataCoordinator.hasAttachedDocuments() ? 2 : 1
+        numberOfSections = transactionDocsDataCoordinator.transactionDocIDs.isEmpty ? 1 : 2
     }
 
     override func viewDidLoad() {
@@ -118,7 +118,7 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
 
 extension TransactionSummaryTableViewController: TransactionDocsViewDelegate {
     func transactionDocsViewDidUpdateContent(_ attachmentsView: TransactionDocsView) {
-        numberOfSections = transactionDocsDataCoordinator.hasAttachedDocuments() ? 2 : 1
+        numberOfSections = transactionDocsDataCoordinator.transactionDocIDs.isEmpty ? 1 : 2
         tableView.reloadData()
     }
 }
