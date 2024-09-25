@@ -13,7 +13,7 @@ import GiniBankAPILibrary
 public class TransactionDocsViewModel {
 
     /// The current list of transaction documents.
-    public var transactionDocs: [TransactionDoc] {
+    var transactionDocs: [TransactionDoc] {
         didSet {
             onUpdate?()
         }
@@ -41,14 +41,14 @@ public class TransactionDocsViewModel {
 
     /// Deletes a transaction document from the list.
     /// - Parameter documentId: The ID of the document to delete.
-    public func deleteTransactionDoc(with documentId: String) {
+    func deleteTransactionDoc(with documentId: String) {
         transactionDocs.removeAll { $0.documentId == documentId }
-        transactionDocsDataProtocol.deleteTransactionDoc(with: documentId)
+        internalTransactionDocsDataCoordinator?.deleteTransactionDoc(with: documentId)
         onUpdate?()
     }
     /// Handles the action to preview an attached document
     /// - Parameter documentId: The ID of the document to preview.
-    public func handlePreviewDocument(for documentId: String) {
+    func handlePreviewDocument(for documentId: String) {
         let transactionDoc = transactionDocs.first(where: { $0.documentId == documentId })
         let screenTitle = transactionDoc?.fileName ?? ""
         let viewController = DocumentPagesViewController(screenTitle: screenTitle)
@@ -59,7 +59,7 @@ public class TransactionDocsViewModel {
     }
     /// Presents an action sheet for the specified attached document, allowing the user to open or delete the document.
     /// - Parameter document: The `TransactionDoc` to present actions for.
-    public func presentDocumentActionSheet(for document: TransactionDoc) {
+    func presentDocumentActionSheet(for document: TransactionDoc) {
         guard let presentingViewController = transactionDocsDataProtocol.presentingViewController else {
             print("No presenting view controller available.")
             return
