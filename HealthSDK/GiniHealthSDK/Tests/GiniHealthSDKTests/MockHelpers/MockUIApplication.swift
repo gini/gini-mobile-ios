@@ -7,6 +7,7 @@
 
 import UIKit
 @testable import GiniHealthSDK
+@testable import GiniUtilites
 
 struct MockUIApplication: URLOpenerProtocol {
     var canOpen: Bool

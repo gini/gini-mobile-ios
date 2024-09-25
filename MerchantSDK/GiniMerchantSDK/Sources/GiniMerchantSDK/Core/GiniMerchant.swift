@@ -9,7 +9,7 @@
 import UIKit
 import GiniHealthAPILibrary
 import GiniUtilites
-import GiniPaymentComponents
+import GiniInternalPaymentSDK
 
 /**
  Delegate to inform about the current status of the Gini Merchant SDK.
@@ -72,7 +72,7 @@ public struct DataForReview {
    
     private var bankProviders: [PaymentProvider] = []
 
-    public var paymentComponentConfiguration: GiniPaymentComponents.PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
+    public var paymentComponentConfiguration: GiniInternalPaymentSDK.PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
                                   showPaymentComponentInOneRow: false,
                                   hideInfoForReturningUser: false)
 
@@ -155,7 +155,6 @@ public struct DataForReview {
                         completion(.failure(.noInstalledApps))
                     }
                 case let .failure(error):
-                    
                     completion(.failure(GiniMerchantError.apiError(error)))
                 }
             }
