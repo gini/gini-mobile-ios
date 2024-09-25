@@ -79,6 +79,10 @@ class TransactionDocsItemView: UIView {
         NSLayoutConstraint.activate([
             imageContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageContainerView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            imageContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor,
+                                                    constant: Constants.minimalTopAnchor),
+            imageContainerView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor,
+                                                       constant: Constants.minimalBottomAnchor),
             imageContainerView.widthAnchor.constraint(equalToConstant: Constants.imageViewSize),
             imageContainerView.heightAnchor.constraint(equalToConstant: Constants.imageViewSize),
 
@@ -97,9 +101,9 @@ class TransactionDocsItemView: UIView {
             fileNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: optionsButton.leadingAnchor,
                                                     constant: Constants.fileNameLabelTrailingAnchor),
             fileNameLabel.topAnchor.constraint(greaterThanOrEqualTo: topAnchor,
-                                                          constant: Constants.fileNameLabelMinimalTopAnchor),
+                                                          constant: Constants.minimalTopAnchor),
             fileNameLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor,
-                                                             constant: Constants.fileNameLabelMinimalBottomAnchor),
+                                                             constant: Constants.minimalBottomAnchor),
 
             optionsButton.trailingAnchor.constraint(equalTo: trailingAnchor),
             optionsButton.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -121,8 +125,8 @@ private extension TransactionDocsItemView {
         static let fileNameLabelNumberOfLines: Int = 0
         static let fileNameLabelLeadingAnchor: CGFloat = 16
         static let fileNameLabelTrailingAnchor: CGFloat = -16
-        static let fileNameLabelMinimalTopAnchor: CGFloat = 8
-        static let fileNameLabelMinimalBottomAnchor: CGFloat = -8
+        static let minimalTopAnchor: CGFloat = 8
+        static let minimalBottomAnchor: CGFloat = -8
         static let optionsButtonSize: CGFloat = 30
         static let viewMinimalHeight: CGFloat = 44
         static let imageViewPadding: CGFloat = 8
