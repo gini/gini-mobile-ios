@@ -42,7 +42,7 @@ public class TransactionDocsViewModel {
     /// - Parameter documentId: The ID of the document to delete.
     public func deleteTransactionDoc(with documentId: String) {
         transactionDocs.removeAll { $0.documentId == documentId }
-        transactionDocsDataProtocol.deleteAttachedDoc(named: documentId)
+        transactionDocsDataProtocol.deleteTransactionDoc(with: documentId)
         onUpdate?()
     }
     /// Handles the action to open and present a document
