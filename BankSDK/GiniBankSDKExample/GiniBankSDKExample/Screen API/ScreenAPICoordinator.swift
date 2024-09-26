@@ -110,14 +110,20 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         }
         
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
+            .instantiateViewController(withIdentifier: "resultScreen") as? TransactionSummaryTableViewController)!
 
         customResultsScreen.tableView.estimatedRowHeight = 75
+        
+        configuration.transactionDocsDataCoordinator.presentingViewController = customResultsScreen
+
         customResultsScreen.result = results
 		customResultsScreen.editableFields = editableSpecificExtractions
         customResultsScreen.navigationItem.setHidesBackButton(true, animated: true)
         let title =
-        NSLocalizedStringPreferredFormat("results.sendfeedback.button.title", fallbackKey: "Send feedback and close", comment: "title for send feedback button", isCustomizable: true)
+        NSLocalizedStringPreferredFormat("results.sendfeedback.button.title", 
+                                         fallbackKey: "Send feedback and close",
+                                         comment: "title for send feedback button",
+                                         isCustomizable: true)
         customResultsScreen.navigationItem
             .rightBarButtonItem = UIBarButtonItem(title: title,
                                                   style: .plain,
@@ -275,5 +281,4 @@ extension ScreenAPICoordinator: GiniCaptureDelegate {
     func didCancelAnalysis() {
         // Add your  implementation
     }
-
 }

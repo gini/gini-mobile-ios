@@ -68,6 +68,7 @@ final class DocumentPagesViewController: UIViewController {
     private var viewModel: DocumentPagesViewModelProtocol?
     private let configuration = GiniBankConfiguration.shared
     private let screenTitle: String?
+    private var errorView: DocumentPagesErrorView?
 
     // Constraints
     private var contentStackViewTopConstraint: NSLayoutConstraint?
@@ -92,13 +93,47 @@ final class DocumentPagesViewController: UIViewController {
     func setData(viewModel: DocumentPagesViewModelProtocol) {
         self.viewModel = viewModel
         if viewModel.rightBarButtonAction != nil {
-            // TODO: PP-805 Replace help with options
-            let optionsButton = GiniBarButton(ofType: .help)
-            optionsButton.addAction(self, #selector(didTapOptionsButton))
-            navigationBar.topItem?.rightBarButtonItem = optionsButton.barButton
+            let buttonImage = GiniImages.transactionDocsOptionsIcon.image
+            let optionsButton = UIBarButtonItem(image: buttonImage,
+                                                style: .plain,
+                                                target: self,
+                                                action: #selector(didTapOptionsButton))
+            navigationBar.topItem?.rightBarButtonItem = optionsButton
         }
         showProcessedImages()
         showSkontoDetailsInFooter()
+    }
+
+    func setError(errorType: ErrorType, tryAgainAction: @escaping () -> Void) {
+        let errorView = DocumentPagesErrorView(
+            errorType: errorType,
+            buttonTitle: NSLocalizedStringPreferredGiniBankFormat(
+                "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle",
+                comment: "Try again"),
+            buttonAction: {
+                tryAgainAction()
+                self.removeErrorView()
+            }
+        )
+
+        view.addSubview(errorView)
+
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            errorView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+            errorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            errorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            errorView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+
+        self.errorView = errorView
+    }
+
+    private func removeErrorView() {
+        guard let errorView = errorView else { return }
+        errorView.removeFromSuperview()
+        self.errorView = nil
     }
 
     // MARK: Toggle animation

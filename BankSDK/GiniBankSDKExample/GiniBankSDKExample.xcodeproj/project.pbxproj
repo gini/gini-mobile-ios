@@ -21,6 +21,7 @@
 		28A411302A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A4112E2A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift */; };
 		28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */; };
 		28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B203FC2BB2E6EE00C78740 /* FileLoader.swift */; };
+		28B448CE2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B448CD2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift */; };
 		28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */; };
 		28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873D2A3727F8008CB210 /* ReusableView.swift */; };
 		28B587462A373A72008CB210 /* SwitchOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B587442A373A72008CB210 /* SwitchOptionTableViewCell.swift */; };
@@ -30,6 +31,7 @@
 		28B5874D2A374730008CB210 /* SegmentedOptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */; };
 		28B605D02BC42A8500FCF4DE /* GiniSetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */; };
 		28B605D12BC42E6F00FCF4DE /* GiniSetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */; };
+		28B898D02CA324CD00C79231 /* CodeLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B898CF2CA324CD00C79231 /* CodeLoading.swift */; };
 		28C8E4B12BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4AF2BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf */; };
 		28C8E4B22BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4AF2BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf */; };
 		28C8E4B32BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4B02BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json */; };
@@ -43,7 +45,7 @@
 		28F62FA22AB21C2E00D47866 /* DemoScreen.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28F62FA42AB21C2E00D47866 /* DemoScreen.strings */; };
 		28F62FA72AB2236500D47866 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA62AB2236500D47866 /* Device.swift */; };
 		28F62FA92AB319A000D47866 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA82AB319A000D47866 /* TextField.swift */; };
-		3E7839CE29C9DBB700B42216 /* ResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7839CD29C9DBB700B42216 /* ResultTableViewCell.swift */; };
+		3E7839CE29C9DBB700B42216 /* ExtractionResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7839CD29C9DBB700B42216 /* ExtractionResultTableViewCell.swift */; };
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
 		502B63FA2C3FED5D00B5D5EA /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 502B63F92C3FED5D00B5D5EA /* PhotosUI.framework */; };
 		5D5328862C63F59C00DEA203 /* CredentialsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D5328852C63F59C00DEA203 /* CredentialsTableViewCell.xib */; };
@@ -81,7 +83,7 @@
 		83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CDA290AC86300DA97F7 /* NibLoading.swift */; };
 		847B68CA2C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */; };
 		847B68CC2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */; };
-		84C53D5E2C87477D00A908BB /* ResultAttachmentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C53D5D2C87477D00A908BB /* ResultAttachmentsTableViewCell.swift */; };
+		84C53D5E2C87477D00A908BB /* AttachmentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */; };
 		84CD074D2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */; };
 		84CD074F2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD074E2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
@@ -127,7 +129,7 @@
 		F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00BB25DED33300C34E15 /* Coordinator.swift */; };
 		F4AD00C225DED43200C34E15 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00C125DED43200C34E15 /* DemoViewController.swift */; };
 		F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00CB25DFDB4E00C34E15 /* CredentialsManager.swift */; };
-		F4AD00DC25DFDCE400C34E15 /* ResultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */; };
+		F4AD00DC25DFDCE400C34E15 /* TransactionSummaryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00DB25DFDCE400C34E15 /* TransactionSummaryTableViewController.swift */; };
 		F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00EB25DFDE2000C34E15 /* RootNavigationController.swift */; };
 		F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4AD00F725DFDF4400C34E15 /* Images.xcassets */; };
 		F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */; };
@@ -185,6 +187,7 @@
 		28A4112E2A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+DocumentValidationsState.swift"; sourceTree = "<group>"; };
 		28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+LoadNib.swift"; sourceTree = "<group>"; };
 		28B203FC2BB2E6EE00C78740 /* FileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileLoader.swift; sourceTree = "<group>"; };
+		28B448CD2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserDefaultsCell.swift; sourceTree = "<group>"; };
 		28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+CellRegistration.swift"; sourceTree = "<group>"; };
 		28B5873D2A3727F8008CB210 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
 		28B587442A373A72008CB210 /* SwitchOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchOptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -193,6 +196,7 @@
 		28B5874A2A374730008CB210 /* SegmentedOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedOptionTableViewCell.swift; sourceTree = "<group>"; };
 		28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegmentedOptionTableViewCell.xib; sourceTree = "<group>"; };
 		28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniSetupHelper.swift; sourceTree = "<group>"; };
+		28B898CF2CA324CD00C79231 /* CodeLoading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeLoading.swift; sourceTree = "<group>"; };
 		28C8E4AF2BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_line_items_with_discount.pdf; sourceTree = "<group>"; };
 		28C8E4B02BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_line_items_with_discount.json; sourceTree = "<group>"; };
 		28CDB8222A38A5E40016A81C /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
@@ -205,7 +209,7 @@
 		28F62FA52AB21C3000D47866 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/DemoScreen.strings; sourceTree = "<group>"; };
 		28F62FA62AB2236500D47866 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		28F62FA82AB319A000D47866 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
-		3E7839CD29C9DBB700B42216 /* ResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableViewCell.swift; sourceTree = "<group>"; };
+		3E7839CD29C9DBB700B42216 /* ExtractionResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResultTableViewCell.swift; sourceTree = "<group>"; };
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
 		502B63F92C3FED5D00B5D5EA /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
@@ -241,7 +245,7 @@
 		83D02CDA290AC86300DA97F7 /* NibLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoading.swift; sourceTree = "<group>"; };
 		847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
 		847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
-		84C53D5D2C87477D00A908BB /* ResultAttachmentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultAttachmentsTableViewCell.swift; sourceTree = "<group>"; };
+		84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentsTableViewCell.swift; sourceTree = "<group>"; };
 		84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
 		84CD074E2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
@@ -289,7 +293,7 @@
 		F4AD00BB25DED33300C34E15 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		F4AD00C125DED43200C34E15 /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		F4AD00CB25DFDB4E00C34E15 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
-		F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableViewController.swift; sourceTree = "<group>"; };
+		F4AD00DB25DFDCE400C34E15 /* TransactionSummaryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSummaryTableViewController.swift; sourceTree = "<group>"; };
 		F4AD00EB25DFDE2000C34E15 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		F4AD00F725DFDF4400C34E15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuItemViewController.swift; sourceTree = "<group>"; };
@@ -344,6 +348,7 @@
 		28B5873A2A37270F008CB210 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				28B898CF2CA324CD00C79231 /* CodeLoading.swift */,
 				83D02CDA290AC86300DA97F7 /* NibLoading.swift */,
 				28B5873D2A3727F8008CB210 /* ReusableView.swift */,
 				28CDB8222A38A5E40016A81C /* ColorPalette.swift */,
@@ -369,8 +374,19 @@
 				289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */,
 				5D5328852C63F59C00DEA203 /* CredentialsTableViewCell.xib */,
 				5D5328872C63F71100DEA203 /* CredentialsTableViewCell.swift */,
+				28B448CD2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		28BB82022C91D4D9003C8389 /* TransactionSummary */ = {
+			isa = PBXGroup;
+			children = (
+				F4AD00DB25DFDCE400C34E15 /* TransactionSummaryTableViewController.swift */,
+				84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */,
+				3E7839CD29C9DBB700B42216 /* ExtractionResultTableViewCell.swift */,
+			);
+			path = TransactionSummary;
 			sourceTree = "<group>";
 		};
 		28F62F9A2AB21ABE00D47866 /* Localization */ = {
@@ -626,6 +642,7 @@
 		F490C7E325DE873900D8CA6F /* GiniBankSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				28BB82022C91D4D9003C8389 /* TransactionSummary */,
 				5DCC9FA32C779BC000C1B76A /* Models */,
 				84CD074B2C7DB501004DF1DE /* DigitalInvoiceSkontoBottomNavigationBar */,
 				847B68C82C4009D700544050 /* SkontoBottomNavigationBar */,
@@ -644,9 +661,6 @@
 				F4AD00B525DED1A000C34E15 /* AppCoordinator.swift */,
 				F441DCC525E56BF800AAB09A /* LaunchScreen.xib */,
 				F459606E2A813CB1004B0112 /* SettingsViewController */,
-				F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */,
-				84C53D5D2C87477D00A908BB /* ResultAttachmentsTableViewCell.swift */,
-				3E7839CD29C9DBB700B42216 /* ResultTableViewCell.swift */,
 				F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */,
 				F4AD00C125DED43200C34E15 /* DemoViewController.swift */,
 				28F62F982AB1C2CA00D47866 /* DemoViewController.xib */,
@@ -939,11 +953,12 @@
 				768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */,
 				847B68CC2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift in Sources */,
 				83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */,
-				84C53D5E2C87477D00A908BB /* ResultAttachmentsTableViewCell.swift in Sources */,
+				84C53D5E2C87477D00A908BB /* AttachmentsTableViewCell.swift in Sources */,
 				28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */,
 				83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */,
 				76EFD4D629B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift in Sources */,
 				76810039299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift in Sources */,
+				28B448CE2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift in Sources */,
 				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,
 				F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */,
 				289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */,
@@ -952,7 +967,7 @@
 				F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */,
 				F490C7E525DE873900D8CA6F /* AppDelegate.swift in Sources */,
 				834735F32940999500C3B5F3 /* CustomAnalysisError.swift in Sources */,
-				F4AD00DC25DFDCE400C34E15 /* ResultTableViewController.swift in Sources */,
+				F4AD00DC25DFDCE400C34E15 /* TransactionSummaryTableViewController.swift in Sources */,
 				28F62F9E2AB21B1700D47866 /* DemoScreenStrings.swift in Sources */,
 				F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */,
 				28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */,
@@ -979,6 +994,7 @@
 				28B605D12BC42E6F00FCF4DE /* GiniSetupHelper.swift in Sources */,
 				2883DE062AB89F4000AE3A9C /* GiniCaptureSDKColors.swift in Sources */,
 				284F52082BD954B200CF70AD /* GiniBankCustomResourceProvider.swift in Sources */,
+				28B898D02CA324CD00C79231 /* CodeLoading.swift in Sources */,
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
 				284F520A2BD959F300CF70AD /* UIColor.swift in Sources */,
 				84CD074D2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift in Sources */,
@@ -990,7 +1006,7 @@
 				28A411302A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift in Sources */,
 				28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */,
 				289D3DB32A4EC857002A6681 /* InfoTableViewCell.swift in Sources */,
-				3E7839CE29C9DBB700B42216 /* ResultTableViewCell.swift in Sources */,
+				3E7839CE29C9DBB700B42216 /* ExtractionResultTableViewCell.swift in Sources */,
 				5D53288A2C63F77E00DEA203 /* CredentialsModel.swift in Sources */,
 				28B587492A373FCB008CB210 /* SettingsViewController+CellType.swift in Sources */,
 			);
