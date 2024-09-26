@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
-          xcode-version: '15.3' # make 14?
+          xcode-version: '14.3.1'
 
       - name: Checkout repository
         uses: actions/checkout@v4
