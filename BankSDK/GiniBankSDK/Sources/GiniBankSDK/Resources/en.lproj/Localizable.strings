@@ -138,8 +138,8 @@
 "ginibank.transactionDocs.alert.title" = "Add an attachment to this transaction?";
 "ginibank.transactionDocs.alert.message" = "We recommend adding attachments to transactions to manage expenses efficiently and easily recall purchases.";
 "ginibank.transactionDocs.alert.action.attachAlways" = "Always attach";
-"ginibank.transactionDocs.alert.action.attach" = "Only for this transaction";
-"ginibank.transactionDocs.alert.action.dontAttach" = "Don't attach";
+"ginibank.transactionDocs.alert.action.attachOnce" = "Only for this transaction";
+"ginibank.transactionDocs.alert.action.doNotAttach" = "Don't attach";
 
 "ginibank.transactionDocs.title" = "Attachments";
 
@@ -148,3 +148,4 @@
 "ginibank.transactionDocs.preview.amountToPay" = "Amount to Pay";
 "ginibank.transactionDocs.preview.iban" = "IBAN";
 "ginibank.transactionDocs.preview.expiryDate" = "Invoice Due Date";
+"ginibank.transactionDocs.preview.error.tryAgain.buttonTitle" = "Try again";

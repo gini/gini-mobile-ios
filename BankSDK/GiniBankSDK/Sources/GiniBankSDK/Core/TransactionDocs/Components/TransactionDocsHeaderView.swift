@@ -37,10 +37,9 @@ class TransactionDocsHeaderView: UIView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.headerLabelLeadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                 constant: Constants.headerLabelTrailingAnchor),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.headerLabelTopAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.headerLabelBottomAnchor)
         ])
     }
@@ -48,9 +47,6 @@ class TransactionDocsHeaderView: UIView {
 
 private extension TransactionDocsHeaderView {
     enum Constants {
-        static let headerLabelLeadingAnchor: CGFloat = 12
-        static let headerLabelTrailingAnchor: CGFloat = -12
-        static let headerLabelTopAnchor: CGFloat = 12
         static let headerLabelBottomAnchor: CGFloat = -8
     }
 }

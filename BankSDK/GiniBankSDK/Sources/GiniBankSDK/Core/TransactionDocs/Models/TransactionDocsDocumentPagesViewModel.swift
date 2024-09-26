@@ -10,23 +10,16 @@ final class TransactionDocsDocumentPagesViewModel: DocumentPagesViewModelProtoco
     private let originalImages: [UIImage]
     private var amountToPay: Price
     private var iban: String
-    private var expiryDate: Date
 
     var bottomInfoItems: [String] {
-        return [amountToPayString, ibanString, expiryDateString]
+        return [amountToPayString, ibanString]
     }
     var rightBarButtonAction: (() -> Void)?
 
-    init(originalImages: [UIImage],
-         amountToPay: Price,
-         iban: String,
-         expiryDate: Date,
-         rightBarButtonAction: @escaping (() -> Void)) {
+    init(originalImages: [UIImage], extractions: TransactionDocsExtractions) {
         self.originalImages = originalImages
-        self.amountToPay = amountToPay
-        self.iban = iban
-        self.expiryDate = expiryDate
-        self.rightBarButtonAction = rightBarButtonAction
+        self.amountToPay = extractions.amountToPay
+        self.iban = extractions.iban
     }
 
     func imagesForDisplay() -> [UIImage] {
@@ -36,7 +29,7 @@ final class TransactionDocsDocumentPagesViewModel: DocumentPagesViewModelProtoco
     var amountToPayString: String {
         let localizableText = "ginibank.transactionDocs.preview.amountToPay"
         let localizedString = NSLocalizedStringPreferredGiniBankFormat(localizableText,
-                                                            comment: "Amount to Pay")
+                                                                       comment: "Amount to Pay")
         return String.concatenateWithSeparator(localizedString,
                                                amountToPay.localizedStringWithCurrencyCode ?? "")
     }
@@ -44,16 +37,8 @@ final class TransactionDocsDocumentPagesViewModel: DocumentPagesViewModelProtoco
     var ibanString: String {
         let localizableText = "ginibank.transactionDocs.preview.iban"
         let localizedString = NSLocalizedStringPreferredGiniBankFormat(localizableText,
-                                                            comment: "IBAN")
+                                                                       comment: "IBAN")
         return String.concatenateWithSeparator(localizedString,
                                                iban)
-    }
-
-    var expiryDateString: String {
-        let localizableText = "ginibank.transactionDocs.preview.expiryDate"
-        let localizedString = NSLocalizedStringPreferredGiniBankFormat(localizableText,
-                                                            comment: "Expiry date")
-        return String.concatenateWithSeparator(localizedString,
-                                               expiryDate.currentShortString)
     }
 }

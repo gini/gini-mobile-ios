@@ -7,6 +7,7 @@
 import Foundation
 
 struct TransactionDoc {
+    let documentId: String
     let fileName: String
     let type: TransactionDocType
 }
