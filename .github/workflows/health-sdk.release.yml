@@ -66,12 +66,3 @@ jobs:
     secrets:
       RELEASE_GITHUB_USER: ${{ secrets.RELEASE_GITHUB_USER }}
       RELEASE_GITHUB_PASSWORD: ${{ secrets.RELEASE_GITHUB_PASSWORD }}
-
-  build-xcframeworks:
-    needs: release
-    uses: ./.github/workflows/health-sdk.build.xcframeworks.yml
-    secrets:
-      BUILD_CERTIFICATE_BASE64: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE }}
-      P12_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
-      BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_ADHOC_DISTRIBUTION_PROVISION_PROFILE }}
-      KEYCHAIN_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
