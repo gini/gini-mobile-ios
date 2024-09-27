@@ -184,7 +184,8 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
 
         NSLayoutConstraint.activate([
             contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: multiplier),
+            contentView.widthAnchor.constraint(equalTo: widthAnchor,
+                                               multiplier: multiplier),
             contentView.topAnchor.constraint(equalTo: topAnchor)
         ])
     }
@@ -201,7 +202,8 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
     private func setupTotalLabelConstraints() {
         NSLayoutConstraint.activate([
             totalLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-            totalLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
+            totalLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                constant: Constants.padding),
             totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
                                                  constant: -Constants.badgeHorizontalPadding)
         ])
@@ -211,7 +213,8 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         NSLayoutConstraint.activate([
             totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.totalValueLabelTopPadding),
-            totalValueLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
+            totalValueLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                     constant: Constants.padding),
             totalValueLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
                                                       constant: -Constants.padding)
         ])
@@ -247,26 +250,32 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
 
     private func setupHelpButtonConstraints() {
         NSLayoutConstraint.activate([
-            helpButton.buttonView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+            helpButton.buttonView.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                            constant: -Constants.padding),
             helpButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor)
         ])
     }
 
     private func setupProceedButtonConstraints() {
         NSLayoutConstraint.activate([
-            proceedButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: Constants.proceedButtonTopPadding),
+            proceedButton.topAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                               constant: Constants.proceedButtonTopPadding),
             proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Constants.verticalPadding),
+            proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
+                                                  constant: -Constants.verticalPadding),
             proceedButton.heightAnchor.constraint(equalToConstant: Constants.proceedButtonHeight)
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                proceedButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -Constants.padding * 2)
+                proceedButton.widthAnchor.constraint(equalTo: contentView.widthAnchor,
+                                                     constant: -Constants.padding * 2)
             ])
         } else {
             NSLayoutConstraint.activate([
-                proceedButton.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, constant: -Constants.padding * 2),
-                proceedButton.trailingAnchor.constraint(equalTo: helpButton.buttonView.leadingAnchor, constant: -Constants.helpButtonHorizontalPadding)
+                proceedButton.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor,
+                                                     constant: -Constants.padding * 2),
+                proceedButton.trailingAnchor.constraint(equalTo: helpButton.buttonView.leadingAnchor,
+                                                        constant: -Constants.helpButtonHorizontalPadding)
             ])
         }
     }

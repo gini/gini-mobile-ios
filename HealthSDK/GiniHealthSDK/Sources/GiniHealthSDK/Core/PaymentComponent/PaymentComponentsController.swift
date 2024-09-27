@@ -21,6 +21,7 @@ protocol PaymentComponentsProtocol {
     var selectedPaymentProvider: PaymentProvider? { get set }
     func loadPaymentProviders()
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
+    func checkIfDocumentContainsMultipleInvoices(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
     func paymentView(documentId: String) -> UIView
     func bankSelectionBottomSheet() -> UIViewController
     func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
@@ -133,6 +134,17 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         giniHealth.checkIfDocumentIsPayable(docId: docId, completion: completion)
     }
 
+    /**
+     Checks if the document uploaded is having multiple invoices in it.
+     - Parameters:
+         - docId: The ID of the uploaded document.
+         - completion: A closure for processing asynchronous data received from the service. It has a Result type parameter, representing either success or failure. The completion block is called on the main thread.
+         In the case of success, it includes a boolean value indicating if the upload contains multiple documents
+         In case of failure, it returns an error from the server side.
+     */
+    public func checkIfDocumentContainsMultipleInvoices(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+        giniHealth.checkIfDocumentContainsMultipleInvoices(docId: docId, completion: completion)
+    }
     /**
      Provides a custom Gini view that contains more information, bank selection if available and a tappable button to pay the document/invoice
 
