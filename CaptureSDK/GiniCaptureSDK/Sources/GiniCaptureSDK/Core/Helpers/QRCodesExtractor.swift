@@ -11,12 +11,27 @@ public enum QRCodesFormat {
     case epc06912
     case eps4mobile
     case bezahl
+    case giniQRCode
+
+    var prefixURL: String {
+        switch self {
+        case .epc06912:
+            return "BCD"
+        case .eps4mobile:
+            return "epspayment://"
+        case .bezahl:
+            return "bank://"
+        case .giniQRCode:
+            return "https://pay.gini.net/"
+        }
+    }
 }
 
 public final class QRCodesExtractor {
 
     public static let epsCodeUrlKey = "epsPaymentQRCodeUrl"
-
+    public static let giniCodeUrlKey = "giniPaymentQRCodeUrl"
+    
     class func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
         switch qrCodeFormat {
         case .some(.bezahl):
@@ -25,6 +40,8 @@ public final class QRCodesExtractor {
             return extractParameters(fromEPC06912CodeString: string)
         case .some(.eps4mobile):
             return [epsCodeUrlKey: string]
+        case .some(.giniQRCode):
+            return [giniCodeUrlKey: string]
         case .none:
             return [:]
         }

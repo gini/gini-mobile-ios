@@ -25,7 +25,9 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
               NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.3",
                                                 comment: "QR code type"),
               NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.4",
-                                                comment: "QR code type")],
+                                                comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.5",
+                                               comment: "QR code type")],
             UIImageNamedPreferred(named: "supportedFormatsIcon"))
         ]
 
