@@ -11,15 +11,19 @@ final class TransactionDocsDocumentPagesViewModel: DocumentPagesViewModelProtoco
     private var amountToPay: Price
     private var iban: String
 
-    var bottomInfoItems: [String] {
-        return [amountToPayString, ibanString]
-    }
+    private(set) var bottomInfoItems: [String] = []
     var rightBarButtonAction: (() -> Void)?
 
     init(originalImages: [UIImage], extractions: TransactionDocsExtractions) {
         self.originalImages = originalImages
         self.amountToPay = extractions.amountToPay
         self.iban = extractions.iban
+        if amountToPay.value != 0 {
+            self.bottomInfoItems.append(amountToPayString)
+        }
+        if !iban.isEmpty {
+            self.bottomInfoItems.append(ibanString)
+        }
     }
 
     func imagesForDisplay() -> [UIImage] {
