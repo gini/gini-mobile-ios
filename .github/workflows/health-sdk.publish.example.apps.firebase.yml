@@ -1,10 +1,7 @@
 name: Publish GiniHealthSDKExample to Firebase Distribution
 on:
-  push:
-      paths:
-      - 'HealthSDK/**'
-      - 'HealthAPILibrary/**'
   workflow_dispatch:
+
 jobs:
   check:
     uses: gini/gini-mobile-ios/.github/workflows/health-sdk.check.yml@main
