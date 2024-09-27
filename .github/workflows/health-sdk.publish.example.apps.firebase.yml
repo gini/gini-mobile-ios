@@ -1,4 +1,4 @@
-name: Publish GiniHealthSDKExample to App Center
+name: Publish GiniHealthSDKExample to Firebase Distribution
 on:
   push:
       paths:
