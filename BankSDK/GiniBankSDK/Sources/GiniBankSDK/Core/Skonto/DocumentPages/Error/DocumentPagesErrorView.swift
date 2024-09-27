@@ -128,7 +128,8 @@ class DocumentPagesErrorView: UIView {
         errorHeader.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
 
         NSLayoutConstraint.activate([
-            errorHeader.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            errorHeader.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor,
+                                             constant: Constants.errorHeaderTopPadding),
             errorHeader.leadingAnchor.constraint(equalTo: leadingAnchor),
             errorHeader.trailingAnchor.constraint(equalTo: trailingAnchor),
             errorHeader.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorHeaderMinHeight),
@@ -191,6 +192,7 @@ class DocumentPagesErrorView: UIView {
     private enum Constants {
         static let singleButtonHeight: CGFloat = 50
         static let errorHeaderMinHeight: CGFloat = 62
+        static let errorHeaderTopPadding: CGFloat = 24
         static let errorHeaderHeightMultiplier: CGFloat = 0.3
         static let errorContentBottomMargin: CGFloat = 24
         static let stackViewLeadingPadding: CGFloat = 35
