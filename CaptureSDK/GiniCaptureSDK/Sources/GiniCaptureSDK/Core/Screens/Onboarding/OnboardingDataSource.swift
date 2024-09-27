@@ -72,16 +72,19 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         let flatPaperPage = OnboardingPage(imageName: DefaultOnboardingPage.flatPaper.imageName,
                                            title: DefaultOnboardingPage.flatPaper.title,
                                            description: DefaultOnboardingPage.flatPaper.description)
+        let flatPaperIllustrationAdapter = giniConfiguration.onboardingAlignCornersIllustrationAdapter
         let flatPaperPageModel = OnboardingPageModel(page: flatPaperPage,
-                                                     illustrationAdapter: giniConfiguration.onboardingAlignCornersIllustrationAdapter,
+                                                     illustrationAdapter: flatPaperIllustrationAdapter,
                                                      analyticsScreen: GiniAnalyticsScreen.onboardingFlatPaper.rawValue)
 
         let goodLightingPage = OnboardingPage(imageName: DefaultOnboardingPage.lighting.imageName,
                                               title: DefaultOnboardingPage.lighting.title,
                                               description: DefaultOnboardingPage.lighting.description)
+        let goodlightingIllustrationAdapter = giniConfiguration.onboardingLightingIllustrationAdapter
+        let goodLightingScreenAnalyticValue = GiniAnalyticsScreen.onboardingLighting.rawValue
         let goodLightingPageModel = OnboardingPageModel(page: goodLightingPage,
-                                                        illustrationAdapter: giniConfiguration.onboardingLightingIllustrationAdapter,
-                                                        analyticsScreen: GiniAnalyticsScreen.onboardingLighting.rawValue)
+                                                        illustrationAdapter: goodlightingIllustrationAdapter,
+                                                        analyticsScreen: goodLightingScreenAnalyticValue)
 
         pageModels = [flatPaperPageModel, goodLightingPageModel]
 
@@ -89,8 +92,9 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             let multiPage = OnboardingPage(imageName: DefaultOnboardingPage.multipage.imageName,
                                            title: DefaultOnboardingPage.multipage.title,
                                            description: DefaultOnboardingPage.multipage.description)
+            let multiPageIllustrationAdapter = giniConfiguration.onboardingMultiPageIllustrationAdapter
             let multiPageModel = OnboardingPageModel(page: multiPage,
-                                                     illustrationAdapter: giniConfiguration.onboardingMultiPageIllustrationAdapter,
+                                                     illustrationAdapter: multiPageIllustrationAdapter,
                                                      analyticsScreen: GiniAnalyticsScreen.onboardingMultipage.rawValue)
             pageModels.append(multiPageModel)
         }
@@ -99,8 +103,9 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             let qrCodePage = OnboardingPage(imageName: DefaultOnboardingPage.qrcode.imageName,
                                             title: DefaultOnboardingPage.qrcode.title,
                                             description: DefaultOnboardingPage.qrcode.description)
+            let qrCodeIllustrationAdapter = giniConfiguration.onboardingQRCodeIllustrationAdapter
             let qrCodePageModel = OnboardingPageModel(page: qrCodePage,
-                                                      illustrationAdapter: giniConfiguration.onboardingQRCodeIllustrationAdapter,
+                                                      illustrationAdapter: qrCodeIllustrationAdapter,
                                                       analyticsScreen: GiniAnalyticsScreen.onboardingQRcode.rawValue)
             pageModels.append(qrCodePageModel)
         }

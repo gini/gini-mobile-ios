@@ -2,7 +2,6 @@
 //  GiniCaptureUtils.swift
 //  GiniCapture
 //
-//  Created by Peter Pult on 15/06/16.
 //  Copyright © 2016 Gini GmbH. All rights reserved.
 //
 
@@ -14,9 +13,9 @@ public func giniCaptureBundle() -> Bundle {
 
 /**
  Returns an optional `UIImage` instance with the given `name` preferably from the client's bundle.
- 
+
  - parameter name: The name of the image file without file extension.
- 
+
  - returns: Image if found with name.
  */
 public func UIImageNamedPreferred(named name: String) -> UIImage? {
@@ -39,9 +38,9 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
 
 /**
  Returns an optional `UIColor` instance with the given `name` preferably from the client's bundle.
- 
+
  - parameter name: The name of the UIColor from `GiniColors` asset catalog.
- 
+
  - returns: color if found with name.
  */
 public func UIColorPreferred(named name: String) -> UIColor {
@@ -84,10 +83,10 @@ public func UIColorPreferredByProvider(named name: String) -> UIColor {
 
 /**
  Returns a localized string resource preferably from the client's bundle.
- 
+
  - parameter key:     The key to search for in the strings file.
  - parameter comment: The corresponding comment.
- 
+
  - returns: String resource for the given key.
  */
 public func NSLocalizedStringPreferredFormat(_ key: String,
@@ -106,7 +105,7 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
                                                                                 fallbackKey: fallbackKey,
                                                                                 comment: comment,
                                                                                 bundle: customBundle) {
-         
+
             return clientLocalizedStringCustomBundle
         }
     }
@@ -118,7 +117,7 @@ private func giniLocalizedString(_ key: String,
                                  fallbackKey: String,
                                  comment: String) -> String {
     let giniBundle = giniCaptureBundle()
-    
+
     var defaultFormat = NSLocalizedString(key,
                                           bundle: giniBundle,
                                           comment: comment)
@@ -141,7 +140,7 @@ private func clientLocalizedString(_ key: String,
     var fallbackClientString = NSLocalizedString(fallbackKey,
                                                  bundle: bundle,
                                                  comment: comment)
-    
+
     if let localizedResourceName = GiniConfiguration.shared.localizedStringsTableName {
         clientString = NSLocalizedString(key,
                                          tableName: localizedResourceName,
@@ -152,11 +151,12 @@ private func clientLocalizedString(_ key: String,
                                                  bundle: bundle,
                                                  comment: comment)
     }
-    
-    guard (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased()) else {
+
+    guard clientString.lowercased() != key.lowercased()
+            || fallbackClientString.lowercased() != fallbackKey.lowercased() else {
         return nil
     }
-    
+
     return clientString
 }
 
@@ -225,7 +225,7 @@ public class Constraints {
 }
 
 /**
-    Measure the time spent executing a block
+ Measure the time spent executing a block
  */
 
 func measure(block: () -> Void) {
