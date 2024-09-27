@@ -1,4 +1,4 @@
-name: Publish GiniMerchantSDKExample to App Center
+name: Publish GiniMerchantSDKExample to Firebase Distribution
 on:
   push:
     paths:
