@@ -90,8 +90,8 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
     }
 
     func didTapPay(on viewModel: DigitalInvoiceViewModel) {
-        if let analysisDelegate = analysisDelegate {
-            delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
+        if let analysisDelegate = self.analysisDelegate {
+            self.delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
         }
     }
 

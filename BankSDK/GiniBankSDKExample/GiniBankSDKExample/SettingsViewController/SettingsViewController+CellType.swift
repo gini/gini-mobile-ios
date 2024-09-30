@@ -11,5 +11,6 @@ extension SettingsViewController {
 		case switchOption(data: SwitchOptionModel)
 		case segmentedOption(data: SegmentedOptionModelProtocol)
         case credentials(data: CredentialsModel)
+        case userDefaults(message: String, buttonActive: Bool)
 	}
 }
