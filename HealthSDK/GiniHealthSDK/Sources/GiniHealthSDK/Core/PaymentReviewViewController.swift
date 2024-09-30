@@ -550,14 +550,13 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if let iban = ibanTextFieldView.text {
             lastValidatedIBAN = iban
         }
-        
+        guard inputFieldsHaveNoErrors() else { return }
         if selectedPaymentProvider.gpcSupportedPlatforms.contains(.ios) {
             guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
                 model?.openInstallAppBottomSheet()
                 return
             }
-
-            checkForErrors()
+            createPaymentRequest()
         } else if selectedPaymentProvider.openWithSupportedPlatforms.contains(.ios) {
             if model?.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
                 model?.openOnboardingShareInvoiceBottomSheet()
@@ -566,15 +565,12 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             }
         }
     }
-    
-    func checkForErrors() {
-        // check if no errors labels are shown
-        if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
-            createPaymentRequest()
-        }
+
+    func inputFieldsHaveNoErrors() -> Bool {
+        paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }
     }
     
-    private func createPaymentRequest() {
+    func createPaymentRequest() {
         if !amountTextFieldView.textField.isReallyEmpty {
             let paymentInfo = obtainPaymentInfo()
             model?.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
