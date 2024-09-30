@@ -32,6 +32,7 @@ final class DocumentPagesViewController: UIViewController {
         button.addAction(self, #selector(didTapClose))
         return button
     }()
+
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -46,23 +47,12 @@ final class DocumentPagesViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var footerView: UIView = {
-        let footerView = UIView()
-        footerView.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+    private lazy var footerView: DocumentPagesFooterView = {
+        let footerView = DocumentPagesFooterView()
         footerView.translatesAutoresizingMaskIntoConstraints = false
         return footerView
     }()
 
-    private lazy var footerStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.alignment = .leading
-        stackView.distribution = .equalSpacing
-        stackView.spacing = Constants.stackViewItemSpacing
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-
-    }()
     private lazy var loadingIndicatorContainer: UIView = {
         let loadingIndicatorContainer = UIView(frame: CGRect.zero)
         return loadingIndicatorContainer
@@ -75,14 +65,17 @@ final class DocumentPagesViewController: UIViewController {
         return indicatorView
     }()
 
-    private var viewModel: DocumentPagesViewModel?
+    private var viewModel: DocumentPagesViewModelProtocol?
     private let configuration = GiniBankConfiguration.shared
+    private let screenTitle: String?
+    private var errorView: DocumentPagesErrorView?
 
     // Constraints
     private var contentStackViewTopConstraint: NSLayoutConstraint?
 
     // MARK: - Init
-    init() {
+    init(screenTitle: String? = nil) {
+        self.screenTitle = screenTitle
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -97,10 +90,50 @@ final class DocumentPagesViewController: UIViewController {
         startLoadingIndicatorAnimation()
     }
 
-    func setData(viewModel: DocumentPagesViewModel) {
+    func setData(viewModel: DocumentPagesViewModelProtocol) {
         self.viewModel = viewModel
+        if viewModel.rightBarButtonAction != nil {
+            let buttonImage = GiniImages.transactionDocsOptionsIcon.image
+            let optionsButton = UIBarButtonItem(image: buttonImage,
+                                                style: .plain,
+                                                target: self,
+                                                action: #selector(didTapOptionsButton))
+            navigationBar.topItem?.rightBarButtonItem = optionsButton
+        }
         showProcessedImages()
         showSkontoDetailsInFooter()
+    }
+
+    func setError(errorType: ErrorType, tryAgainAction: @escaping () -> Void) {
+        let errorView = DocumentPagesErrorView(
+            errorType: errorType,
+            buttonTitle: NSLocalizedStringPreferredGiniBankFormat(
+                "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle",
+                comment: "Try again"),
+            buttonAction: {
+                tryAgainAction()
+                self.removeErrorView()
+            }
+        )
+
+        view.addSubview(errorView)
+
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            errorView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+            errorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            errorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            errorView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+
+        self.errorView = errorView
+    }
+
+    private func removeErrorView() {
+        guard let errorView = errorView else { return }
+        errorView.removeFromSuperview()
+        self.errorView = nil
     }
 
     // MARK: Toggle animation
@@ -153,10 +186,7 @@ final class DocumentPagesViewController: UIViewController {
         view.addSubview(navigationBar)
 
         // Create a navigation item with a title and a cancel button
-        let screenTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.document.pages.screen.title",
-                                                                   comment: "Skonto discount details")
-
-        let navigationItem = UINavigationItem(title: screenTitle)
+        let navigationItem = UINavigationItem(title: screenTitle ?? "")
         navigationItem.leftBarButtonItem = cancelButton.barButton
 
         // Assign the navigation item to the navigation bar
@@ -169,6 +199,10 @@ final class DocumentPagesViewController: UIViewController {
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             navigationBar.heightAnchor.constraint(equalToConstant: Constants.defaultNavigationBarHeight)
         ])
+    }
+
+    @objc private func didTapOptionsButton() {
+        viewModel?.rightBarButtonAction?()
     }
 
     private func setupScrollView() {
@@ -224,22 +258,6 @@ final class DocumentPagesViewController: UIViewController {
             footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
-        footerView.addSubview(footerStackView)
-        // Get the bottom safe area height
-        let bottomSafeAreaHeight = view.safeAreaInsets.bottom
-        let stackViewBottomConstraint = bottomSafeAreaHeight + Constants.footerStackViewBottomPadding
-        NSLayoutConstraint.activate([
-            footerStackView.leadingAnchor.constraint(equalTo: footerView.leadingAnchor,
-                                               constant: Constants.footerStackViewDefaultPadding),
-            footerStackView.trailingAnchor.constraint(equalTo: footerView.trailingAnchor,
-                                                constant: -Constants.footerStackViewDefaultPadding),
-            footerStackView.topAnchor.constraint(equalTo: footerView.topAnchor,
-                                           constant: Constants.footerStackViewDefaultPadding),
-            footerStackView.bottomAnchor.constraint(equalTo: footerView.bottomAnchor,
-                                              constant: -stackViewBottomConstraint)
-        ])
-
     }
 
     // MARK: - Handle Loading indicator
@@ -284,7 +302,7 @@ final class DocumentPagesViewController: UIViewController {
 
     private func showProcessedImages() {
         guard let viewModel else { return }
-        let images = viewModel.processImages()
+        let images = viewModel.imagesForDisplay()
 
         for image in images {
             // Create a container view for the image view
@@ -339,32 +357,9 @@ final class DocumentPagesViewController: UIViewController {
     }
 
     private func showSkontoDetailsInFooter() {
-        guard let viewModel, !viewModel.processedImages.isEmpty else { return }
+        guard let viewModel, !viewModel.imagesForDisplay().isEmpty else { return }
 
-        let skontoExpiryDateLabel = UILabel()
-        skontoExpiryDateLabel.text = viewModel.expiryDateString
-        skontoExpiryDateLabel.accessibilityValue = viewModel.expiryDateString
-        skontoExpiryDateLabel.font = configuration.textStyleFonts[.footnote]
-        skontoExpiryDateLabel.textColor = .GiniBank.light1
-        skontoExpiryDateLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        footerStackView.addArrangedSubview(skontoExpiryDateLabel)
-
-        let skontoWithDiscountPriceLabel = UILabel()
-        skontoWithDiscountPriceLabel.text = viewModel.withDiscountPriceString
-        skontoWithDiscountPriceLabel.accessibilityValue = viewModel.withDiscountPriceString
-        skontoWithDiscountPriceLabel.font = configuration.textStyleFonts[.footnote]
-        skontoWithDiscountPriceLabel.textColor = .GiniBank.light1
-        skontoWithDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        footerStackView.addArrangedSubview(skontoWithDiscountPriceLabel)
-
-        let skontoWithoutDiscountPriceLabel = UILabel()
-        skontoWithoutDiscountPriceLabel.text = viewModel.withoutDiscountPriceString
-        skontoWithoutDiscountPriceLabel.accessibilityValue = viewModel.withoutDiscountPriceString
-        skontoWithoutDiscountPriceLabel.font = configuration.textStyleFonts[.footnote]
-        skontoWithoutDiscountPriceLabel.textColor = .GiniBank.light1
-        skontoWithoutDiscountPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        footerStackView.addArrangedSubview(skontoWithoutDiscountPriceLabel)
+        footerView.updateFooter(with: viewModel.bottomInfoItems)
     }
 
     // MARK: - Utilities
@@ -459,7 +454,5 @@ private extension DocumentPagesViewController {
         static let minimumZoomScale: CGFloat = 1.0
         static let maximumZoomScale: CGFloat = 2.0
         static let defaultNavigationBarHeight: CGFloat = 44
-        static let footerStackViewBottomPadding: CGFloat = 25
-        static let footerStackViewDefaultPadding: CGFloat = 16
     }
 }

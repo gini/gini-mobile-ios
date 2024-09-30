@@ -370,6 +370,14 @@ import GiniBankAPILibrary
     */
     public var customMenuItems: [HelpMenuItem] = []
 
+    // MAKR: - Transaction Docs feature
+    /**
+     * Indicates whether the Transaction Docs feature is enabled or not. If set to `true`,
+     * the user will be presented with an alert dialog in the photo payment flow to choose
+     * whether to attach images or PDFs to the transaction.
+     */
+    public var transactionDocsEnabled: Bool = true
+
     /**
      Sets the default error logger. It is only used when giniErrorLoggerIsOn is true.
 
