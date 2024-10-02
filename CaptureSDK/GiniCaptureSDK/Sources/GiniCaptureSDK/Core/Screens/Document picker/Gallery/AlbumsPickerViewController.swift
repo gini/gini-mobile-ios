@@ -37,6 +37,7 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
 
     lazy var albumsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.bounces = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
@@ -177,6 +178,9 @@ extension AlbumsPickerViewController: UITableViewDataSource {
         cell?.setUp(with: album,
                     giniConfiguration: giniConfiguration,
                     galleryManager: galleryManager)
+        if indexPath.row == galleryManager.albums.count - 1 {
+            cell?.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        }
         return cell!
     }
 

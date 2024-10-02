@@ -85,6 +85,7 @@ final class AppCoordinator: Coordinator {
     private let imageDataKey = "imageData"
 	private var settingsButtonStates: SettingsButtonStates?
 	private var documentValidationsState: DocumentValidationsState?
+    private var apiEnvironment: APIEnvironment = .production
 
     init(window: UIWindow) {
         self.window = window
@@ -117,8 +118,11 @@ final class AppCoordinator: Coordinator {
                 do {
                     try GiniCapture.validate(document,
                                              withConfig: captureConfiguration)
-                    self.showOpenWithSwitchDialog(
-                        for: [GiniCapturePage(document: document, error: nil)])
+                    // waiting one second for controllers to dismiss, and we can't use swift concurrency in ios 12 for `popToRootViewControllerIfNeeded`
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.showOpenWithSwitchDialog(
+                            for: [GiniCapturePage(document: document, error: nil)])
+                    }
                 } catch  {
                     self.rootViewController.showErrorDialog(for: error, positiveAction: nil)
                 }            // When a document is imported with "Open with", a dialog allowing to choose between both APIs
@@ -146,8 +150,11 @@ final class AppCoordinator: Coordinator {
                      do {
                          try GiniCapture.validate(doc,
                                                   withConfig: captureConfiguration)
-                         self.showOpenWithSwitchDialog(
-                             for: [GiniCapturePage(document: doc, error: nil)])
+                         // waiting one second for controllers to dismiss, and we can't use swift concurrency in ios 12 for `popToRootViewControllerIfNeeded`
+                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                             self?.showOpenWithSwitchDialog(
+                                for: [GiniCapturePage(document: doc, error: nil)])
+                         }
                      } catch  {
                          self.rootViewController.showErrorDialog(for: error, positiveAction: nil)
                      }
@@ -206,7 +213,8 @@ final class AppCoordinator: Coordinator {
 
         documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
                                              additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
-        let screenAPICoordinator = ScreenAPICoordinator(configuration: configuration,
+        let screenAPICoordinator = ScreenAPICoordinator(apiEnvironment: apiEnvironment,
+                                                        configuration: configuration,
                                                         importedDocuments: pages?.map { $0.document },
                                                         client: client,
                                                         documentMetadata: documentMetadata)
@@ -251,9 +259,11 @@ final class AppCoordinator: Coordinator {
     fileprivate func showSettings() {
 		guard let settingsButtonStates = settingsButtonStates,
 			  let documentValidationsState = documentValidationsState else { return }
-		let settingsViewController = SettingsViewController(giniConfiguration: configuration,
-															settingsButtonStates: settingsButtonStates,
-															documentValidationsState: documentValidationsState)
+        let settingsViewController = SettingsViewController(apiEnvironment: apiEnvironment,
+                                                            client: client,
+                                                            giniConfiguration: configuration,
+                                                            settingsButtonStates: settingsButtonStates,
+                                                            documentValidationsState: documentValidationsState)
 		settingsViewController.delegate = self
 		settingsViewController.modalPresentationStyle = .overFullScreen
 		settingsViewController.modalTransitionStyle = .coverVertical
@@ -296,6 +306,8 @@ final class AppCoordinator: Coordinator {
     
     fileprivate func popToRootViewControllerIfNeeded() {
         self.childCoordinators.forEach { coordinator in
+            // there can be another controller presented, like action sheet or document picker
+            coordinator.rootViewController.presentedViewController?.dismiss(animated: false)
             coordinator.rootViewController.dismiss(animated: true)
             self.remove(childCoordinator: coordinator)
         }
@@ -319,6 +331,15 @@ extension AppCoordinator: SettingsViewControllerDelegate {
     func didTapCloseButton() {
 		rootViewController.dismiss(animated: true)
 		GiniBank.setConfiguration(configuration)
+    }
+
+    func didTapSaveCredentialsButton(clientId: String, clientSecret: String) {
+        client.id = clientId
+        client.secret = clientSecret
+    }
+
+    func didSelectAPIEnvironment(apiEnvironment: APIEnvironment) {
+        self.apiEnvironment = apiEnvironment
     }
 }
 
