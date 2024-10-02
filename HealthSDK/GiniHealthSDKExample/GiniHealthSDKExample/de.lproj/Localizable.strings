@@ -11,4 +11,5 @@
 "giniHealthSDKExample.invoicesList.missingInvoices.text" = "Keine Rechnungen";
 "giniHealthSDKExample.invoicesList.error" = "Fehler";
 "giniHealthSDKExample.cancel.button.title" = "Abbrechen";
-
+"giniHealthSDKExample.error.contains.multiple.invoices" = "Dokument enthält mehrere Rechnungen";
+"giniHealthSDKExample.error.invoice.not.payable" = "Rechnung ist nicht zahlbar";

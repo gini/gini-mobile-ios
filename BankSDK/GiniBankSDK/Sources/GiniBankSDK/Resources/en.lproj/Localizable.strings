@@ -134,3 +134,19 @@
 "ginibank.skonto.help.back" = "Skonto discount";
 
 "ginibank.skonto.document.pages.screen.title" = "Skonto discount details";
+
+// MARK: - Transaction Docs feature
+"ginibank.transactionDocs.alert.title" = "Add an attachment to this transaction?";
+"ginibank.transactionDocs.alert.message" = "We recommend adding attachments to transactions to manage expenses efficiently and easily recall purchases.";
+"ginibank.transactionDocs.alert.action.attachAlways" = "Always attach";
+"ginibank.transactionDocs.alert.action.attachOnce" = "Only for this transaction";
+"ginibank.transactionDocs.alert.action.doNotAttach" = "Don't attach";
+
+"ginibank.transactionDocs.componentView.title" = "Attachments";
+
+"ginibank.transactionDocs.bottomSheet.action.delete" = "Delete";
+"ginibank.transactionDocs.bottomSheet.action.cancel" = "Cancel";
+"ginibank.transactionDocs.preview.amountToPay" = "Amount to Pay";
+"ginibank.transactionDocs.preview.iban" = "IBAN";
+"ginibank.transactionDocs.preview.expiryDate" = "Invoice Due Date";
+"ginibank.transactionDocs.preview.error.tryAgain.buttonTitle" = "Try again";
