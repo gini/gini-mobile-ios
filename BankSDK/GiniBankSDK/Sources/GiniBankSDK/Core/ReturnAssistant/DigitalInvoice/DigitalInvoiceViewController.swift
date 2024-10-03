@@ -25,7 +25,8 @@ final class DigitalInvoiceViewController: UIViewController {
                            forCellReuseIdentifier: DigitalLineItemTableViewCell.reuseIdentifier)
         tableView.register(DigitalInvoiceAddOnListCell.self,
                            forCellReuseIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier)
-        tableView.register(DigitalInvoiceSkontoTableViewCell.self, forCellReuseIdentifier: "DigitalInvoiceSkontoTableViewCell")
+        tableView.register(DigitalInvoiceSkontoTableViewCell.self,
+                           forCellReuseIdentifier: "DigitalInvoiceSkontoTableViewCell")
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
@@ -229,15 +230,15 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
         }
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch Section(rawValue: indexPath.section) {
         case .titleCell:
-            if let cell = tableView.dequeueReusableCell(
-                                        withIdentifier: DigitalInvoiceTableViewTitleCell.reuseIdentifier,
-                                        for: indexPath) as? DigitalInvoiceTableViewTitleCell {
+            let cellIdentifier = DigitalInvoiceTableViewTitleCell.reuseIdentifier
+            if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier,
+                                                        for: indexPath) as? DigitalInvoiceTableViewTitleCell {
                 return cell
             }
-            assertionFailure("DigitalInvoiceTableViewTitleCell could not been reused")
             return UITableViewCell()
         case .lineItems:
 
@@ -268,7 +269,8 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             return UITableViewCell()
         case .skonto:
             guard let skontoViewModel = viewModel.skontoViewModel else { return UITableViewCell() }
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSkontoTableViewCell",for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSkontoTableViewCell",
+                                                     for: indexPath)
             if let cell = cell as? DigitalInvoiceSkontoTableViewCell {
                 cell.delegate = self
                 cell.configure(with: skontoViewModel)

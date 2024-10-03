@@ -370,6 +370,14 @@ import GiniBankAPILibrary
     */
     public var customMenuItems: [HelpMenuItem] = []
 
+    // MAKR: - Transaction Docs feature
+    /**
+     * Indicates whether the Transaction Docs feature is enabled or not. If set to `true`,
+     * the user will be presented with an alert dialog in the photo payment flow to choose
+     * whether to attach images or PDFs to the transaction.
+     */
+    public var transactionDocsEnabled: Bool = true
+
     /**
      Sets the default error logger. It is only used when giniErrorLoggerIsOn is true.
 
@@ -475,6 +483,26 @@ import GiniBankAPILibrary
                         amountToPay: ExtractionAmount) {
         guard let documentService = documentService else { return }
 
+        let updatedExtractions = buildPaymentExtractions(paymentRecipient,
+                                                         paymentReference,
+                                                         paymentPurpose,
+                                                         iban,
+                                                         bic,
+                                                         amountToPay)
+
+        documentService.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: nil)
+
+        documentService.resetToInitialState()
+        self.documentService = nil
+    }
+
+    private func buildPaymentExtractions(_ paymentRecipient: String,
+                                         _ paymentReference: String,
+                                         _ paymentPurpose: String,
+                                         _ iban: String,
+                                         _ bic: String,
+                                         _ amountToPay: ExtractionAmount) -> [Extraction] {
+
         let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"
         let amountToPayString = "\(formattedPriceValue)" + ":" + amountToPay.currency.rawValue
 
@@ -508,18 +536,12 @@ import GiniBankAPILibrary
                                           entity: "amount",
                                           value: amountToPayString,
                                           name: "amountToPay")
-
-        let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
-                                                paymentReferenceExtraction,
-                                                paymentPurposeExtraction,
-                                                ibanExtraction,
-                                                bicExtraction,
-                                                amountExtraction]
-
-        documentService.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: nil)
-
-        documentService.resetToInitialState()
-        self.documentService = nil
+        return [paymentRecipientExtraction,
+                paymentReferenceExtraction,
+                paymentPurposeExtraction,
+                ibanExtraction,
+                bicExtraction,
+                amountExtraction]
     }
     // swiftlint:enable function_parameter_count
 
@@ -566,46 +588,12 @@ import GiniBankAPILibrary
                                     amountToPay: ExtractionAmount) {
         guard let documentService = documentService else { return }
 
-        let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"
-        let amountToPayString = "\(formattedPriceValue)" + ":" + amountToPay.currency.rawValue
-
-        let paymentRecipientExtraction = Extraction(box: nil,
-                                                    candidates: nil,
-                                                    entity: "companyname",
-                                                    value: paymentRecipient,
-                                                    name: "paymentRecipient")
-        let paymentReferenceExtraction = Extraction(box: nil,
-                                                    candidates: nil,
-                                                    entity: "reference",
-                                                    value: paymentReference,
-                                                    name: "paymentReference")
-        let paymentPurposeExtraction = Extraction(box: nil,
-                                                  candidates: nil,
-                                                  entity: "text",
-                                                  value: paymentPurpose,
-                                                  name: "paymentPurpose")
-        let ibanExtraction = Extraction(box: nil,
-                                        candidates: nil,
-                                        entity: "iban",
-                                        value: iban,
-                                        name: "iban")
-        let bicExtraction = Extraction(box: nil,
-                                       candidates: nil,
-                                       entity: "bic",
-                                       value: bic,
-                                       name: "bic")
-        let amountExtraction = Extraction(box: nil,
-                                          candidates: nil,
-                                          entity: "amount",
-                                          value: amountToPayString,
-                                          name: "amountToPay")
-
-        let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
-                                                paymentReferenceExtraction,
-                                                paymentPurposeExtraction,
-                                                ibanExtraction,
-                                                bicExtraction,
-                                                amountExtraction]
+        let updatedExtractions = buildPaymentExtractions(paymentRecipient,
+                                                         paymentReference,
+                                                         paymentPurpose,
+                                                         iban,
+                                                         bic,
+                                                         amountToPay)
 
         documentService.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: nil)
     }

@@ -17,6 +17,7 @@ struct DocumentWithExtractions: Codable {
     var recipient: String?
     var isPayable: Bool?
     var hasMultipleDocuments: Bool?
+    var doctorName: String?
 
     init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
         self.documentID = documentID
@@ -25,6 +26,7 @@ struct DocumentWithExtractions: Codable {
         self.recipient = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.paymentRecipient.rawValue })?.value
         self.isPayable = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
         self.hasMultipleDocuments = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value == true.description
+        self.doctorName = extractionResult.extractions.first(where: { $0.name == ExtractionType.doctorName.rawValue })?.value
     }
 }
 

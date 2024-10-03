@@ -187,13 +187,7 @@ public final class DocumentService: DocumentServiceProtocol {
                 case .failure(let error):
                     let message = "Failed to get layout for document with id: \(document.id) error: \(error)"
                     Log(message: message, event: .error)
-                    DispatchQueue.main.async {
-                        guard !errorOccurred else { return }
-                        errorOccurred = true
-                        DispatchQueue.global().async {
-                            completion(.failure(error))
-                        }
-                    }
+                    completion(.failure(error))
             }
         }
     }
@@ -210,13 +204,7 @@ public final class DocumentService: DocumentServiceProtocol {
                 case let .failure(error):
                     let message = "Failed to get pages for document with id: \(document.id) error: \(error)"
                     Log(message: message, event: .error)
-                    DispatchQueue.main.async {
-                        guard !errorOccurred else { return }
-                        errorOccurred = true
-                        DispatchQueue.global().async {
-                            completion(.failure(error))
-                        }
-                    }
+                    completion(.failure(error))
             }
         }
     }
@@ -237,13 +225,7 @@ public final class DocumentService: DocumentServiceProtocol {
             case .failure(let error):
                 let message = "Failed to get page for document with id: \(document.id) error: \(error)"
                 Log(message: message, event: .error)
-                DispatchQueue.main.async {
-                    guard !errorOccurred else { return }
-                    errorOccurred = true
-                    DispatchQueue.global().async {
-                        completion(.failure(error))
-                    }
-                }
+                completion(.failure(error))
             }
         }
     }
