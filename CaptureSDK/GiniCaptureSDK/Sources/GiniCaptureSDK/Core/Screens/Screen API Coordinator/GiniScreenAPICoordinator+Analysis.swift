@@ -27,9 +27,9 @@ extension GiniScreenAPICoordinator {
 }
 
 // MARK: - ImageAnalysisNoResults screen
-
+typealias NoResultType = NoResultScreenViewController.NoResultType
 extension GiniScreenAPICoordinator {
-    func createImageAnalysisNoResultsScreen(type: NoResultScreenViewController.NoResultType) -> NoResultScreenViewController {
+    func createImageAnalysisNoResultsScreen(type: NoResultType) -> NoResultScreenViewController {
             let viewModel: BottomButtonsViewModel
             let viewController: NoResultScreenViewController
             switch type {

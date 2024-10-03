@@ -25,6 +25,9 @@ public enum ExtractionType: String {
     case paymentRecipient = "payment_recipient"
     case iban = "iban"
     case paymentPurpose = "payment_purpose"
+    case doctorName = "medical_service_provider"
+    case bic = "bic"
+    case invoiceDate = "invoice_date"
 }
 
 /**

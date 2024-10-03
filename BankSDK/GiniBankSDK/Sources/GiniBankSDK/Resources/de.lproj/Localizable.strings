@@ -128,3 +128,18 @@
 
 "ginibank.skonto.document.pages.screen.title" = "Skonto-Details";
 
+// MARK: - Transaction Docs feature
+"ginibank.transactionDocs.alert.title" = "Fügen Sie der Transaktion einen Anhang hinzu?";
+"ginibank.transactionDocs.alert.message" = "Sie können dieser Transaktion einen Anhang hinzufügen. Das erleichert es Ihnen, Ausgaben effizient zu verwalten und Einkäufe einfacher zurückzurufen.";
+"ginibank.transactionDocs.alert.action.attachAlways" = "Immer anhängen";
+"ginibank.transactionDocs.alert.action.attachOnce" = "Nur für diese Transaktion";
+"ginibank.transactionDocs.alert.action.doNotAttach" = "Nicht anhängen";
+
+"ginibank.transactionDocs.componentView.title" = "Anhänge";
+
+"ginibank.transactionDocs.bottomSheet.action.delete" = "Löschen";
+"ginibank.transactionDocs.bottomSheet.action.cancel" = "Abbrechen";
+"ginibank.transactionDocs.preview.amountToPay" = "Betrag zu zahlen";
+"ginibank.transactionDocs.preview.iban" = "IBAN";
+"ginibank.transactionDocs.preview.expiryDate" = "Rechnungsfälligkeitsdatum";
+"ginibank.transactionDocs.preview.error.tryAgain.buttonTitle" = "Versuch's nochmal";
