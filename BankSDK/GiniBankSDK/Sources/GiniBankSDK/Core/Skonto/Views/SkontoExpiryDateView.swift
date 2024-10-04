@@ -34,7 +34,7 @@ class SkontoExpiryDateView: UIView {
 
     private lazy var calendarImageView: UIImageView = {
         let imageView = UIImageView(image: GiniImages.calendar.image)
-        imageView.tintColor = .giniColorScheme().icons.standardTertiary.uiColor()
+        imageView.tintColor = .giniColorScheme().placeholder.tint.uiColor()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -42,7 +42,7 @@ class SkontoExpiryDateView: UIView {
 
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderColor = UIColor.giniColorScheme().bg.border.uiColor().cgColor
+        view.layer.borderColor = UIColor.giniColorScheme().textField.border.uiColor().cgColor
         view.layer.borderWidth = 1
         view.layer.cornerRadius = Constants.cornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +65,7 @@ class SkontoExpiryDateView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().bg.inputUnfocused.uiColor()
+        backgroundColor = .giniColorScheme().textField.bg.uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(textField)
