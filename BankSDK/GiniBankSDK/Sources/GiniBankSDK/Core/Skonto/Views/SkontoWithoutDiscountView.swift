@@ -30,7 +30,7 @@ class SkontoWithoutDiscountView: UIView {
         label.text = title
         label.accessibilityValue = title
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = UIColor.giniColorScheme().text.status.uiColor()
+        label.textColor = UIColor.giniColorScheme().text.success.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -67,7 +67,7 @@ class SkontoWithoutDiscountView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        backgroundColor = .giniColorScheme().bg.secondary.uiColor()
         addSubview(stackView)
         addSubview(priceView)
         setupConstraints()
