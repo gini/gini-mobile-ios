@@ -30,7 +30,7 @@ class SkontoWithDiscountHeaderView: UIView {
         label.text = title
         label.accessibilityValue = title
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = UIColor.giniColorScheme().text.status.uiColor()
+        label.textColor = UIColor.giniColorScheme().text.success.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -41,7 +41,7 @@ class SkontoWithDiscountHeaderView: UIView {
     private lazy var discountSwitch: UISwitch = {
         let discountSwitch = UISwitch()
         discountSwitch.isOn = viewModel.isSkontoApplied
-        discountSwitch.onTintColor = .giniColorScheme().toggles.surfaceFocused.uiColor()
+        discountSwitch.onTintColor = .giniColorScheme().toggles.trackOn.uiColor()
         discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
         discountSwitch.translatesAutoresizingMaskIntoConstraints = false
         return discountSwitch
@@ -72,7 +72,7 @@ class SkontoWithDiscountHeaderView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        backgroundColor = .giniColorScheme().bg.secondary.uiColor()
         addSubview(stackView)
         addSubview(discountSwitch)
         setupConstraints()
