@@ -281,7 +281,7 @@ public struct DataForReview {
      In case of failure in case of failure error from the server side.
      
      */
-    public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void){
+    public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
         documentService.fetchDocument(with: docId) { result in
             switch result {
             case let .success(createdDocument):
@@ -308,7 +308,41 @@ public struct DataForReview {
             }
         }
     }
-        
+
+    /**
+     Get all extractions for the document. Medical information included.
+
+     - parameter docId: Id of the uploaded document.
+     - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
+     Completion block called on main thread.
+     In success case it includes array of extractions.
+     In case of failure in case of failure error from the server side.
+
+     */
+    public func getAllExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
+        documentService.fetchDocument(with: docId) { result in
+            switch result {
+            case let .success(createdDocument):
+                self.documentService
+                        .extractions(for: createdDocument,
+                                     cancellationToken: CancellationToken()) { result in
+                            DispatchQueue.main.async {
+                                switch result {
+                                case let .success(extractionResult):
+                                    completion(.success(extractionResult.extractions))
+                                case let .failure(error):
+                                    completion(.failure(.apiError(error)))
+                                }
+                            }
+                        }
+            case let .failure(error):
+                DispatchQueue.main.async {
+                    completion(.failure(.apiError(error)))
+                }
+            }
+        }
+    }
+
     /**
      Creates a payment request
      
