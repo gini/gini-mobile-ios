@@ -151,6 +151,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
         model.delegate?.trackOnPaymentReviewBankButtonClicked(providerName: selectedPaymentProvider.name)
         view.endEditing(true)
 
+        guard paymentInfoContainerView.noErrorsFound() else { return }
         if model.delegate?.supportsGPC() ?? false {
             guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
                 model.openInstallAppBottomSheet()
