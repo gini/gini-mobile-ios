@@ -19,7 +19,7 @@ class TransactionDocsItemView: UIView {
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .giniColorScheme().icons.standardTertiary.uiColor()
+        imageView.tintColor = .giniColorScheme().placeholder.tint.uiColor()
         return imageView
     }()
 
@@ -36,7 +36,7 @@ class TransactionDocsItemView: UIView {
     private lazy var optionsButton: UIButton = {
         let button = UIButton()
         button.setImage(GiniImages.transactionDocsOptionsIcon.image, for: .normal)
-        button.tintColor = .giniColorScheme().icons.standardPrimary.uiColor()
+        button.tintColor = .giniColorScheme().icons.primary.uiColor()
         button.addTarget(self, action: #selector(optionsButtonTapped), for: .touchUpInside)
         return button
     }()
