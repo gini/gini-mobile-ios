@@ -60,7 +60,7 @@ class SkontoProceedContainerView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
+        label.textColor = .giniColorScheme().badge.content.uiColor()
         let labelText = String.localizedStringWithFormat(skontoTitle,
                                                          viewModel.formattedPercentageDiscounted)
         label.text = labelText
@@ -74,7 +74,7 @@ class SkontoProceedContainerView: UIView {
 
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
+        view.backgroundColor = .giniColorScheme().badge.bg.uiColor()
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +86,7 @@ class SkontoProceedContainerView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
+        label.textColor = .giniColorScheme().badge.bg.uiColor()
         let labelText = viewModel.savingsAmountString
         label.text = labelText
         label.accessibilityValue = labelText
@@ -97,7 +97,7 @@ class SkontoProceedContainerView: UIView {
 
     private lazy var dividerView: UIView = {
         let dividerView = UIView()
-        dividerView.backgroundColor = .giniColorScheme().bg.divider.uiColor()
+        dividerView.backgroundColor = .giniColorScheme().bottomBar.border.uiColor()
         dividerView.translatesAutoresizingMaskIntoConstraints = false
         return dividerView
     }()
@@ -120,7 +120,7 @@ class SkontoProceedContainerView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        backgroundColor = .giniColorScheme().bg.secondary.uiColor()
         translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(contentView)
