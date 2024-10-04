@@ -19,7 +19,7 @@ class SkontoDocumentPreviewView: UIView {
     private lazy var documentPreviewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = GiniImages.invoicePlaceholderIcon.image
-        imageView.tintColor = .giniColorScheme().icons.standardTertiary.uiColor()
+        imageView.tintColor = .giniColorScheme().placeholder.tint.uiColor()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
