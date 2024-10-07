@@ -72,7 +72,7 @@ class SkontoWithDiscountHeaderView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().bg.secondary.uiColor()
+        backgroundColor = .giniColorScheme().card.bg.uiColor()
         addSubview(stackView)
         addSubview(discountSwitch)
         setupConstraints()
