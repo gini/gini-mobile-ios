@@ -173,7 +173,7 @@ extension UIColor {
             ),
             placeholder: GiniColorScheme.Placeholder(
                 bg: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4),
-                tint: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.dark6)
+                tint: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light6)
             ),
             text: GiniColorScheme.Text(
                 primary: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1),
