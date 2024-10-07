@@ -6,6 +6,7 @@
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
+import GiniBankAPILibrary
 import UIKit
 import MobileCoreServices
 
@@ -22,6 +23,7 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
     public var previewImage: UIImage?
     public var isReviewable: Bool
     public var isImported: Bool
+    public var uploadMetadata: Document.UploadMetadata?
     public var rotationDelta: Int { // Should be normalized to be in [0, 360)
         return self.metaInformationManager.imageRotationDeltaDegrees()
     }
@@ -43,11 +45,12 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
          processedImageData: Data? = nil,
          imageSource: DocumentSource,
          imageImportMethod: DocumentImportMethod? = nil,
-         deviceOrientation: UIInterfaceOrientation? = nil) {
+         deviceOrientation: UIInterfaceOrientation? = nil,
+         uploadMetadata: Document.UploadMetadata? = nil) {
         self.previewImage = UIImage(data: processedImageData ?? data)
         self.isReviewable = true
         self.id = UUID().uuidString
-
+        self.uploadMetadata = uploadMetadata
         switch imageSource {
         case .appName(name: _):
             isFromOtherApp = true
