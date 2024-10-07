@@ -120,7 +120,7 @@ class SkontoProceedContainerView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .giniColorScheme().bg.secondary.uiColor()
+        backgroundColor = .giniColorScheme().bottomBar.bg.uiColor()
         translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(contentView)
