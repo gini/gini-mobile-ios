@@ -15,28 +15,30 @@ final class TransactionDocsDocumentPagesViewModelTests: XCTestCase {
     private let testImages = [UIImage(), UIImage()]
     private let singleTestImage = [UIImage()]
 
+    private func buildViewModel(amount: Price, iban: String, images: [UIImage]) -> TransactionDocsDocumentPagesViewModel {
+        let extractions = TransactionDocsExtractions(amountToPay: amount, iban: iban)
+        return TransactionDocsDocumentPagesViewModel(originalImages: images, extractions: extractions)
+    }
+
     func testInitializationWithValidAmountToPayAndIBAN() {
-        let extractions = TransactionDocsExtractions(amountToPay: validAmountToPay, iban: testIban)
-        let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: testImages, extractions: extractions)
-        
+        let viewModel = buildViewModel(amount: validAmountToPay, iban: testIban, images: testImages)
+
         XCTAssertEqual(viewModel.bottomInfoItems.count, 2)
         XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.amountToPayString))
         XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.ibanString))
     }
-    
+
     func testInitializationWithZeroAmountToPay() {
-        let extractions = TransactionDocsExtractions(amountToPay: zeroAmountToPay, iban: testIban)
-        let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: singleTestImage, extractions: extractions)
-        
+        let viewModel = buildViewModel(amount: zeroAmountToPay, iban: testIban, images: singleTestImage)
+
         XCTAssertEqual(viewModel.bottomInfoItems.count, 1)
         XCTAssertFalse(viewModel.bottomInfoItems.contains(viewModel.amountToPayString))
         XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.ibanString))
     }
 
     func testInitializationWithEmptyIBAN() {
-        let extractions = TransactionDocsExtractions(amountToPay: validAmountToPay, iban: "")
-        let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: singleTestImage, extractions: extractions)
-        
+        let viewModel = buildViewModel(amount: validAmountToPay, iban: "", images: singleTestImage)
+
         XCTAssertEqual(viewModel.bottomInfoItems.count, 1)
         XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.amountToPayString))
         XCTAssertFalse(viewModel.bottomInfoItems.contains(viewModel.ibanString))
