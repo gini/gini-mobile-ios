@@ -16,7 +16,7 @@ final class SkontoViewController: UIViewController {
     private lazy var documentPreviewContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.secondary.uiColor()
+        view.backgroundColor = .giniColorScheme().card.bg.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(documentPreviewTapped))
         view.addGestureRecognizer(tapGesture)
@@ -43,7 +43,7 @@ final class SkontoViewController: UIViewController {
     private lazy var withDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.secondary.uiColor()
+        view.backgroundColor = .giniColorScheme().card.bg.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()
@@ -61,7 +61,7 @@ final class SkontoViewController: UIViewController {
     private lazy var withoutDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.secondary.uiColor()
+        view.backgroundColor = .giniColorScheme().card.bg.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()

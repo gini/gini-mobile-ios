@@ -38,6 +38,10 @@ public struct GiniColorScheme {
         var bg: GiniColor
         var border: GiniColor
     }
+    
+    struct Card {
+        var bg: GiniColor
+    }
 
     struct Placeholder {
         var bg: GiniColor
@@ -126,6 +130,7 @@ public struct GiniColorScheme {
     var navigationBar: NavigationBar
     var content: Content
     var bottomBar: BottomBar
+    var card: Card
     var placeholder: Placeholder
     var text: Text
     var icons: Icons
@@ -170,6 +175,9 @@ extension UIColor {
             bottomBar: GiniColorScheme.BottomBar(
                 bg: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
                 border: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4)
+            ),
+            card: GiniColorScheme.Card(
+                bg: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3)
             ),
             placeholder: GiniColorScheme.Placeholder(
                 bg: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4),
