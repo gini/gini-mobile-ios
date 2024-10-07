@@ -105,4 +105,10 @@ class TransactionDocsDataCoordinatorInternalProtocolTests: XCTestCase {
         XCTAssertEqual(coordinator.transactionDocs.count, 1)
         XCTAssertEqual(coordinator.transactionDocs.first?.documentId, doc2Id)
     }
+
+    func testGetTransactionDocsViewModel() {
+        let viewModel = coordinator.getTransactionDocsViewModel()
+        XCTAssertNotNil(viewModel)
+        XCTAssertEqual(viewModel?.transactionDocs.count, 0)
+    }
 }
