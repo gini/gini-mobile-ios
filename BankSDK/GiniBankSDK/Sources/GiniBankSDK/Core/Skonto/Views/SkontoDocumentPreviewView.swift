@@ -10,7 +10,7 @@ import GiniCaptureSDK
 class SkontoDocumentPreviewView: UIView {
     private lazy var imageContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
+        view.backgroundColor = .giniColorScheme().placeholder.bg.uiColor()
         view.layer.cornerRadius = Constants.imageViewCornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
