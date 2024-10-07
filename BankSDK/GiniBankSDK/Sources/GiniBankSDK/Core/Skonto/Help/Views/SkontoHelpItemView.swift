@@ -77,7 +77,7 @@ final class SkontoHelpItemView: UIView {
     private func addDividerView() {
         let dividerView = UIView()
         dividerView.translatesAutoresizingMaskIntoConstraints = false
-        dividerView.backgroundColor = .giniColorScheme().bottomBar.border.uiColor()
+        dividerView.backgroundColor = .giniColorScheme().textField.border.uiColor()
         addSubview(dividerView)
         NSLayoutConstraint.activate([
             dividerView.bottomAnchor.constraint(equalTo: bottomAnchor),
