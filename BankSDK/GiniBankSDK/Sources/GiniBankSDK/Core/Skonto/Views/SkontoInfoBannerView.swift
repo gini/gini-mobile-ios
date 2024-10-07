@@ -41,7 +41,7 @@ class SkontoInfoBannerView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().chips.assistEnabled.uiColor()
+        backgroundColor = .giniColorScheme().message.bgSuccess.uiColor()
         layer.cornerRadius = Constants.cornerRadius
         layer.masksToBounds = true
         addSubview(imageView)
@@ -98,14 +98,14 @@ class SkontoInfoBannerView: UIView {
 
         switch edgeCase {
         case .expired:
-            tintColor = GiniColor(light: .GiniBank.error2, dark: .GiniBank.error2).uiColor()
-            backgroundColor = GiniColor(light: .GiniBank.error5, dark: .GiniBank.error5).uiColor()
+            tintColor = .giniColorScheme().message.contentError.uiColor()
+            backgroundColor = .giniColorScheme().message.bgError.uiColor()
         case .paymentToday, .payByCash:
-            tintColor = GiniColor(light: .GiniBank.warning2, dark: .GiniBank.warning2).uiColor()
-            backgroundColor = GiniColor(light: .GiniBank.warning5, dark: .GiniBank.warning5).uiColor()
+            tintColor = .giniColorScheme().message.contentWarning.uiColor()
+            backgroundColor = .giniColorScheme().message.bgWarning.uiColor()
         default:
-            tintColor = .giniColorScheme().chips.textAssistEnabled.uiColor()
-            backgroundColor = .giniColorScheme().chips.assistEnabled.uiColor()
+            tintColor = .giniColorScheme().message.contentSuccess.uiColor()
+            backgroundColor = .giniColorScheme().message.bgSuccess.uiColor()
         }
 
         label.textColor = tintColor

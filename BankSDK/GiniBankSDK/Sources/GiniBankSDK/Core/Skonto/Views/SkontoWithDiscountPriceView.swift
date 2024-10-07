@@ -33,7 +33,6 @@ class SkontoWithDiscountPriceView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().bg.inputUnfocused.uiColor()
         addSubview(amountView)
         setupConstraints()
     }

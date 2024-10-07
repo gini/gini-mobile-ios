@@ -40,7 +40,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.font = GiniBankConfiguration.shared.textStyleFonts[.bodyBold]
-        label.textColor = .giniColorScheme().text.status.uiColor()
+        label.textColor = .giniColorScheme().text.success.uiColor()
         return label
     }()
 
@@ -98,7 +98,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     // MARK: - Setup Methods
     private func setupViews() {
         selectionStyle = .none
-        backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        backgroundColor = .giniColorScheme().bg.secondary.uiColor()
         clipsToBounds = true
         layer.cornerRadius = 8
         layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
