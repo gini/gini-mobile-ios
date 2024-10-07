@@ -6,6 +6,11 @@
 
 import UIKit
 
+public enum PaymentComponentScreenType {
+    case paymentComponent
+    case bankPicker
+}
+
 public struct PaymentComponentsConfiguration {
     let selectYourBankLabelFont: UIFont
     let selectYourBankAccentColor: UIColor

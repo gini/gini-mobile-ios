@@ -44,9 +44,9 @@ public protocol PaymentComponentsConfigurationProvider {
 
     var primaryButtonConfiguration: ButtonConfiguration { get }
     var secondaryButtonConfiguration: ButtonConfiguration { get }
-    var defaultStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration { get }
-    var errorStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration { get }
-    var selectionStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration { get }
+    var defaultStyleInputFieldConfiguration: TextFieldConfiguration { get }
+    var errorStyleInputFieldConfiguration: TextFieldConfiguration { get }
+    var selectionStyleInputFieldConfiguration: TextFieldConfiguration { get }
 
     var showPaymentReviewCloseButton: Bool { get }
     var paymentComponentButtonsHeight: CGFloat { get }
@@ -75,39 +75,6 @@ protocol PaymentComponentsProtocol {
     func paymentInfoViewController() -> UIViewController
     func paymentViewBottomSheet(documentID: String?) -> UIViewController
 }
-
-///**
-// Delegate to inform about the actions happened of the custom payment component view.
-// You may find out when the user tapped on more information area, on the payment provider picker or on the pay invoice button
-//
-// */
-//public protocol PaymentComponentViewProtocol: AnyObject {
-//    /**
-//     Called when the user tapped on the more information actionable label or the information icon
-//
-//     - parameter documentId: Id of document
-//     */
-//    func didTapOnMoreInformation(documentId: String?)
-//
-//    /**
-//     Called when the user tapped on payment provider picker to change the selected payment provider or install it
-//
-//     - parameter documentId: Id of document
-//     */
-//    func didTapOnBankPicker(documentId: String?)
-//
-//    /**
-//     Called when the user tapped on the pay the invoice button to pay the invoice/document
-//     - parameter documentId: Id of document
-//     */
-//    func didTapOnPayInvoice(documentId: String?)
-//}
-
-private enum PaymentComponentScreenType {
-    case paymentComponent
-    case bankPicker
-}
-
 /**
  The `PaymentComponentsController` class allows control over the payment components.
  */
