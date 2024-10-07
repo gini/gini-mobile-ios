@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Data model that represents a Document entity
 public struct Document {
@@ -237,7 +238,8 @@ extension Document {
         var headers: [String: String] = [:]
         static let headerKeyPrefix = "X-Document-Metadata-"
         static let branchIdHeaderKey = "BranchId"
-        
+        static let uploadHeaderKey = "Upload"
+
         /**
          * The document metadata initializer with the branch ID (i.e: the BLZ of a Bank in Germany) and additional
          * headers.
@@ -245,14 +247,67 @@ extension Document {
          * - Parameter branchId:            The branch id (i.e: the BLZ of a Bank in Germany)
          * - Parameter additionalHeaders:   Additional headers for the metadata. i.e: ["customerId":"123456"]
          */
-        public init(branchId: String? = nil, additionalHeaders: [String: String]? = nil) {
+        public init(branchId: String? = nil, uploadMetadata: UploadMetadata? = nil, additionalHeaders: [String: String]? = nil) {
             if let branchId = branchId {
                 headers[Document.Metadata.headerKeyPrefix + Document.Metadata.branchIdHeaderKey] = branchId
             }
-            
+
+            if let uploadMetadata {
+                headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] = uploadMetadata.userComment
+            }
+
             if let additionalHeaders = additionalHeaders {
                 additionalHeaders.forEach { headers["\(Document.Metadata.headerKeyPrefix)\($0)"] = $1 }
             }
+        }
+
+        public mutating func addUploadMetadata(_ uploadMetadata: UploadMetadata) {
+            headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] = uploadMetadata.userComment
+        }
+
+        public func hasUploadMetadata() -> Bool {
+            headers.keys.contains(Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey)
+        }
+    }
+
+    @objc
+    public class UploadMetadata: NSObject {
+        var userComment: String
+        let userCommentPlatform = "Platform"
+        let userCommentOSVer = "OSVer"
+        let userCommentGiniVersionVer = "GiniCaptureVer"
+        let userCommentDeviceOrientation = "DeviceOrientation"
+        let userCommentSource = "Source"
+        let userCommentImportMethod = "ImportMethod"
+        let userCommentEntryPoint = "EntryPoint"
+
+        public init(
+            giniCaptureVersion: String,
+            deviceOrientation: String,
+            source: String,
+            importMethod: String,
+            entryPoint: String
+        ) {
+            let platform = "iOS"
+            let osVersion = UIDevice.current.systemVersion
+            var comment = "\(userCommentPlatform)=\(platform)," +
+            "\(userCommentOSVer)=\(osVersion)"
+            if !giniCaptureVersion.isEmpty {
+                comment += ",\(userCommentGiniVersionVer)=\(giniCaptureVersion)"
+            }
+            if !source.isEmpty {
+                comment += ",\(userCommentSource)=\(source)"
+            }
+            if !entryPoint.isEmpty {
+                comment += ",\(userCommentEntryPoint)=\(entryPoint)"
+            }
+            if !importMethod.isEmpty {
+                comment += ",\(userCommentImportMethod)=\(importMethod)"
+            }
+            if !deviceOrientation.isEmpty {
+                comment += ",\(userCommentDeviceOrientation)=\(deviceOrientation)"
+            }
+            userComment = comment
         }
     }
 }
