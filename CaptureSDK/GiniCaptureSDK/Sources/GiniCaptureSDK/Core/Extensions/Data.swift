@@ -16,6 +16,7 @@ extension Data {
         0x47: "image/gif",
         0x49: "image/tiff",
         0x4D: "image/tiff",
+        0x52: "image/webp",
         0x25: "application/pdf",
         0xD0: "application/vnd",
         0x46: "text/plain"
