@@ -11,7 +11,7 @@ import UIKit
  
  */
 public func giniHealthBundle() -> Bundle {
-    Bundle.module
+    Bundle.resource
 }
 
 /**
