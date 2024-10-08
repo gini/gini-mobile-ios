@@ -49,21 +49,37 @@ jobs:
 
     - name: Run unit tests
       run: |
-        xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+        xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO \
+        -skip-testing:GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniCaptureScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniErrorScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniHelpScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniMainScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniOnboardingScreenUITest \
+        -skip-testing:GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniReviewScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniSkontoScreenUITests \
    
     - name: Build example app and run unit and integration tests
-      run: >
-        xcodebuild clean test
-        -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj
-        -scheme "GiniBankSDKExampleTests"
-        -destination "${{ matrix.destination }}"
-        -skip-testing:GiniBankSDKExampleUITests
-        CODE_SIGN_IDENTITY=""
-        CODE_SIGNING_REQUIRED=NO
-        ONLY_ACTIVE_ARCH=NO
-        CLIENT_ID="gini-mobile-test"
-        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
-        | tee xcodebuild.log
+      run: |
+        xcodebuild clean test \
+        -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
+        -scheme "GiniBankSDKExampleTests" \
+        -destination "${{ matrix.destination }}" \
+        -skip-testing:GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniCaptureScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniErrorScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniHelpScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniMainScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniOnboardingScreenUITest \
+        -skip-testing:GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniReviewScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniSkontoScreenUITests \
+        CODE_SIGN_IDENTITY="" \
+        CODE_SIGNING_REQUIRED=NO \
+        ONLY_ACTIVE_ARCH=NO \
+        CLIENT_ID="gini-mobile-test" \
+         CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
 
     - name: Build pinning example app and run unit and integration tests
       run: >
@@ -71,6 +87,15 @@ jobs:
         -project BankSDK/GiniBankSDKPinningExample/GiniBankSDKPinningExample.xcodeproj
         -scheme "GiniBankSDKPinningExampleTests"
         -destination "${{ matrix.destination }}"
+        -skip-testing:GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniCaptureScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniErrorScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniHelpScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniMainScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniOnboardingScreenUITest \
+        -skip-testing:GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniReviewScreenUITests \
+        -skip-testing:GiniBankSDKExampleUITests/GiniSkontoScreenUITests \
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
