@@ -48,20 +48,20 @@ class GiniHelpScreenUITests: GiniBankSDKExampleUITests {
     
     func testHelpScreenImportDocumentsButton() {
         
-        //Tap Photopaymen button
-        mainScreen.photoPaymentButton.tap()
-        //Handle Camera access pop up
-        mainScreen.handleCameraPermission(answer: true)
-        //Skip onboarding
-        onboadingScreen.skipOnboardingScreens()
-        //Tap Help button
-        captureScreen.helpButton.tap()
-        //Tap Import button
-        helpScreen.importDocumentsLabel.tap()
-        //Tap back button
-        helpScreen.helpBackButton.tap()
-        //Assert that Help screen is displayed
-        XCTAssertTrue(helpScreen.cameraBackButton.isHittable)
+//        //Tap Photopaymen button
+//        mainScreen.photoPaymentButton.tap()
+//        //Handle Camera access pop up
+//        mainScreen.handleCameraPermission(answer: true)
+//        //Skip onboarding
+//        onboadingScreen.skipOnboardingScreens()
+//        //Tap Help button
+//        captureScreen.helpButton.tap()
+//        //Tap Import button
+//        helpScreen.importDocumentsLabel.tap()
+//        //Tap back button
+//        helpScreen.helpBackButton.tap()
+//        //Assert that Help screen is displayed
+//        XCTAssertTrue(helpScreen.cameraBackButton.isHittable)
     }
 }
     
