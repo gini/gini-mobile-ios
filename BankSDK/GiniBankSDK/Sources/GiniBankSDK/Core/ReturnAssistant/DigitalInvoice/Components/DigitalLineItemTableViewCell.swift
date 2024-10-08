@@ -31,7 +31,9 @@ class DigitalLineItemTableViewCell: UITableViewCell {
             guard let viewModel = viewModel else { return }
 
             if let nameLabelString = viewModel.nameLabelString {
-                nameLabel.text = nameLabelString
+                setTextWithLimit(for: nameLabel,
+                                 text: nameLabelString,
+                                 maxCharacters: viewModel.nameMaxCharactersCount)
                 nameLabel.accessibilityValue = nameLabelString
             }
 
@@ -114,6 +116,15 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         nameLabel.font = configuration.textStyleFonts[.body]
         unitPriceLabel.font = configuration.textStyleFonts[.body]
         editButton.titleLabel?.font = configuration.textStyleFonts[.body]
+    }
+
+    private func setTextWithLimit(for label: UILabel, text: String, maxCharacters: Int) {
+        if text.count > maxCharacters {
+            let limitedText = String(text.prefix(maxCharacters))
+            label.text = "\(limitedText)…"
+        } else {
+            label.text = text
+        }
     }
 
     override func prepareForReuse() {
