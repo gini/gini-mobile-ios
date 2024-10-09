@@ -57,15 +57,6 @@ jobs:
         -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
         -scheme "GiniBankSDKExampleTests" \
         -destination "${{ matrix.destination }}" \
-        -skip-testing:GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniCaptureScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniErrorScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniHelpScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniMainScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniOnboardingScreenUITest \
-        -skip-testing:GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniReviewScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniSkontoScreenUITests \
         CODE_SIGN_IDENTITY="" \
         CODE_SIGNING_REQUIRED=NO \
         ONLY_ACTIVE_ARCH=NO \
@@ -78,15 +69,6 @@ jobs:
         -project BankSDK/GiniBankSDKPinningExample/GiniBankSDKPinningExample.xcodeproj
         -scheme "GiniBankSDKPinningExampleTests"
         -destination "${{ matrix.destination }}"
-        -skip-testing:GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniCaptureScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniErrorScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniHelpScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniMainScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniOnboardingScreenUITest \
-        -skip-testing:GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniReviewScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniSkontoScreenUITests \
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
