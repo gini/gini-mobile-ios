@@ -98,7 +98,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     // MARK: - Setup Methods
     private func setupViews() {
         selectionStyle = .none
-        backgroundColor = .giniColorScheme().bg.secondary.uiColor()
+        backgroundColor = .giniColorScheme().background.secondary.uiColor()
         clipsToBounds = true
         layer.cornerRadius = 8
         layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]

@@ -67,7 +67,7 @@ class SkontoWithoutDiscountView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().card.bg.uiColor()
+        backgroundColor = .giniColorScheme().container.background.uiColor()
         addSubview(stackView)
         addSubview(priceView)
         setupConstraints()

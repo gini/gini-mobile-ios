@@ -80,7 +80,7 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
 
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniColorScheme().badge.bg.uiColor()
+        view.backgroundColor = .giniColorScheme().badge.background.uiColor()
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.isHidden = true
@@ -156,7 +156,7 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .giniColorScheme().bg.secondary.uiColor()
+        backgroundColor = .giniColorScheme().background.secondary.uiColor()
 
         addSubview(contentView)
         addSubview(dividerView)

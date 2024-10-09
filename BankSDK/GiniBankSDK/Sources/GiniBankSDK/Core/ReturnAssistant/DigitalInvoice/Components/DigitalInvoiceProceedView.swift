@@ -67,7 +67,7 @@ class DigitalInvoiceProceedView: UIView {
 
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniColorScheme().badge.bg.uiColor()
+        view.backgroundColor = .giniColorScheme().badge.background.uiColor()
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.isHidden = true
@@ -80,7 +80,7 @@ class DigitalInvoiceProceedView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().badge.bg.uiColor()
+        label.textColor = .giniColorScheme().badge.background.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -107,7 +107,7 @@ class DigitalInvoiceProceedView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .giniColorScheme().bg.secondary.uiColor()
+        backgroundColor = .giniColorScheme().background.secondary.uiColor()
         translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(contentView)

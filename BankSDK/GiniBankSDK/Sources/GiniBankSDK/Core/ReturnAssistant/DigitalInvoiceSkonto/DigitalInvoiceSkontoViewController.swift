@@ -16,7 +16,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     private lazy var documentPreviewContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.secondary.uiColor()
+        view.backgroundColor = .giniColorScheme().background.secondary.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(documentPreviewTapped))
         view.addGestureRecognizer(tapGesture)
@@ -43,7 +43,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     private lazy var withDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.secondary.uiColor()
+        view.backgroundColor = .giniColorScheme().background.secondary.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()
@@ -119,7 +119,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
         let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
                                                                        comment: "Back")
         edgesForExtendedLayout = []
-        view.backgroundColor = .giniColorScheme().bg.primary.uiColor()
+        view.backgroundColor = .giniColorScheme().background.primary.uiColor()
         if !configuration.bottomNavigationBarEnabled {
             let helpButton = GiniBarButton(ofType: .help)
             helpButton.addAction(self, #selector(helpButtonTapped))

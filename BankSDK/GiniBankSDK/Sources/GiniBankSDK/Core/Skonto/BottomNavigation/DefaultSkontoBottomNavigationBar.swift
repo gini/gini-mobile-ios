@@ -88,7 +88,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
 
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniColorScheme().badge.bg.uiColor()
+        view.backgroundColor = .giniColorScheme().badge.background.uiColor()
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -156,7 +156,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .giniColorScheme().bottomBar.bg.uiColor()
+        backgroundColor = .giniColorScheme().bottomBar.background.uiColor()
 
         addSubview(contentView)
         addSubview(dividerView)

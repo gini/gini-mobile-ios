@@ -65,7 +65,7 @@ class SkontoExpiryDateView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().textField.bg.uiColor()
+        backgroundColor = .giniColorScheme().textField.background.uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(textField)

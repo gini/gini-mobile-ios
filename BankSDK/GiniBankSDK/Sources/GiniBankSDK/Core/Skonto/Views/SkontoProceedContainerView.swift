@@ -74,7 +74,7 @@ class SkontoProceedContainerView: UIView {
 
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniColorScheme().badge.bg.uiColor()
+        view.backgroundColor = .giniColorScheme().badge.background.uiColor()
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +86,7 @@ class SkontoProceedContainerView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().badge.bg.uiColor()
+        label.textColor = .giniColorScheme().badge.background.uiColor()
         let labelText = viewModel.savingsAmountString
         label.text = labelText
         label.accessibilityValue = labelText
@@ -120,7 +120,7 @@ class SkontoProceedContainerView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .giniColorScheme().bottomBar.bg.uiColor()
+        backgroundColor = .giniColorScheme().bottomBar.background.uiColor()
         translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(contentView)
