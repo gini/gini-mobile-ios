@@ -147,110 +147,176 @@ struct GiniColorScheme {
 extension UIColor {
     static func giniColorScheme() -> GiniColorScheme {
         return GiniColorScheme(
-            background: GiniColorScheme.Background(
-                primary: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2),
-                secondary: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2)
-            ),
-            actionSheet: GiniColorScheme.ActionSheet(
-                buttonBackground: GiniColor(
-                    light: .GiniBank.light1.withAlphaComponent(0.72),
-                    dark: .GiniBank.dark5.withAlphaComponent(0.5)),
-                cancelButtonBackground: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3)
-            ),
-            alert: GiniColorScheme.Alert(
-                background: GiniColor(light: .GiniBank.light2.withAlphaComponent(0.8),
-                              dark: .GiniBank.dark3.withAlphaComponent(0.8)),
-                divider: GiniColor(light: .GiniBank.light6,
-                                   dark: .GiniBank.dark4.withAlphaComponent(0.65))
-            ),
-            navigationBar: GiniColorScheme.NavigationBar(
-                background: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2),
-                action: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
-                navigation: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1)
-            ),
-            content: GiniColorScheme.Content(
-                navigation: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
-                text: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
-            ),
-            bottomBar: GiniColorScheme.BottomBar(
-                background: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
-                border: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4)
-            ),
-            container: GiniColorScheme.Container(
-                background: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3)
-            ),
-            placeholder: GiniColorScheme.Placeholder(
-                background: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4),
-                tint: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light6)
-            ),
-            text: GiniColorScheme.Text(
-                primary: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1),
-                secondary: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7),
-                tertiary: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.dark7),
-                accent: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
-                success: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),
-                error: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3)
-            ),
-            icon: GiniColorScheme.Icon(
-                primary: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
-                secondary: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark6)
-            ),
-            pageController: GiniColorScheme.PageController(
-                selected: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1),
-                unselected: GiniColor(light: .GiniBank.dark1.withAlphaComponent(0.3),
-                                      dark: .GiniBank.light1.withAlphaComponent(0.3))
-            ),
-            error: GiniColorScheme.Error(
-                background: GiniColor(light: .GiniBank.error4, dark: .GiniBank.error4),
-                icon: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3)
-            ),
-            message: GiniColorScheme.Message(
-                backgroundSuccess: GiniColor(light: .GiniBank.success5, dark: .GiniBank.success5),
-                contentSuccess: GiniColor(light: .GiniBank.success2, dark: .GiniBank.success2),
-                backgroundWarning: GiniColor(light: .GiniBank.warning5, dark: .GiniBank.warning5),
-                contentWarning: GiniColor(light: .GiniBank.warning2, dark: .GiniBank.warning2),
-                backgroundError: GiniColor(light: .GiniBank.error5, dark: .GiniBank.error5),
-                contentError: GiniColor(light: .GiniBank.error2, dark: .GiniBank.error2)
-            ),
-            badge: GiniColorScheme.Badge(
-                background: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),
-                content: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
-            ),
-            button: GiniColorScheme.Button(
-                background: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
-                backgroundLoading: GiniColor(light: .GiniBank.accent1.withAlphaComponent(0.24),
-                                     dark: .GiniBank.accent1.withAlphaComponent(0.24)),
-                content: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
-            ),
-            buttonOutlined: GiniColorScheme.ButtonOutlined(
-                background: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4),
-                content: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6)
-            ),
-            textField: GiniColorScheme.TextField(
-                background: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
-                border: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4),
-                focusedText: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
-                unfocusedText: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
-                disabledText: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
-                errorText: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3),
-                labelFocused: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
-                labelUnfocused: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
-                labelDisabled: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
-                labelError: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3),
-                supportingFocused: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
-                supportingUnfocused: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
-                supportingDisabled: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
-                supportingError: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3),
-                trailingFocused: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light6),
-                cursorEnabled: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
-                cursorError: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3)
-            ),
-            toggle: GiniColorScheme.Toggle(
-                thumb: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1),
-                trackOn: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
-                trackOff: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4),
-                disabledTrack: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4)
-            )
+            background: createBackgroundColorScheme(),
+            actionSheet: createActionSheetColorScheme(),
+            alert: createAlertColorScheme(),
+            navigationBar: createNavigationBarColorScheme(),
+            content: createContentColorScheme(),
+            bottomBar: createBottomBarColorScheme(),
+            container: createContainerColorScheme(),
+            placeholder: createPlaceholderColorScheme(),
+            text: createTextColorScheme(),
+            icon: createIconColorScheme(),
+            pageController: createPageControllerColorScheme(),
+            error: createErrorColorScheme(),
+            message: createMessageColorScheme(),
+            badge: createBadgeColorScheme(),
+            button: createButtonColorScheme(),
+            buttonOutlined: createButtonOutlinedColorScheme(),
+            textField: createTextFieldColorScheme(),
+            toggle: createToggleColorScheme()
+        )
+    }
+
+    private static func createBackgroundColorScheme() -> GiniColorScheme.Background {
+        return GiniColorScheme.Background(
+            primary: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2),
+            secondary: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2)
+        )
+    }
+
+    private static func createActionSheetColorScheme() -> GiniColorScheme.ActionSheet {
+        return GiniColorScheme.ActionSheet(
+            buttonBackground: GiniColor(light: .GiniBank.light1.withAlphaComponent(0.72), dark: .GiniBank.dark5.withAlphaComponent(0.5)),
+            cancelButtonBackground: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3)
+        )
+    }
+
+    private static func createAlertColorScheme() -> GiniColorScheme.Alert {
+        return GiniColorScheme.Alert(
+            background: GiniColor(light: .GiniBank.light2.withAlphaComponent(0.8), dark: .GiniBank.dark3.withAlphaComponent(0.8)),
+            divider: GiniColor(light: .GiniBank.light6, dark: .GiniBank.dark4.withAlphaComponent(0.65))
+        )
+    }
+
+    private static func createNavigationBarColorScheme() -> GiniColorScheme.NavigationBar {
+        return GiniColorScheme.NavigationBar(
+            background: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2),
+            action: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
+            navigation: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1)
+        )
+    }
+
+    private static func createContentColorScheme() -> GiniColorScheme.Content {
+        return GiniColorScheme.Content(
+            navigation: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
+            text: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
+        )
+    }
+
+    private static func createBottomBarColorScheme() -> GiniColorScheme.BottomBar {
+        return GiniColorScheme.BottomBar(
+            background: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
+            border: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4)
+        )
+    }
+
+    private static func createContainerColorScheme() -> GiniColorScheme.Container {
+        return GiniColorScheme.Container(
+            background: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3)
+        )
+    }
+
+    private static func createPlaceholderColorScheme() -> GiniColorScheme.Placeholder {
+        return GiniColorScheme.Placeholder(
+            background: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4),
+            tint: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light6)
+        )
+    }
+
+    private static func createTextColorScheme() -> GiniColorScheme.Text {
+        return GiniColorScheme.Text(
+            primary: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1),
+            secondary: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7),
+            tertiary: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.dark7),
+            accent: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
+            success: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),
+            error: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3)
+        )
+    }
+
+    private static func createIconColorScheme() -> GiniColorScheme.Icon {
+        return GiniColorScheme.Icon(
+            primary: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
+            secondary: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark6)
+        )
+    }
+
+    private static func createPageControllerColorScheme() -> GiniColorScheme.PageController {
+        return GiniColorScheme.PageController(
+            selected: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1),
+            unselected: GiniColor(light: .GiniBank.dark1.withAlphaComponent(0.3), dark: .GiniBank.light1.withAlphaComponent(0.3))
+        )
+    }
+
+    private static func createErrorColorScheme() -> GiniColorScheme.Error {
+        return GiniColorScheme.Error(
+            background: GiniColor(light: .GiniBank.error4, dark: .GiniBank.error4),
+            icon: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3)
+        )
+    }
+
+    private static func createMessageColorScheme() -> GiniColorScheme.Message {
+        return GiniColorScheme.Message(
+            backgroundSuccess: GiniColor(light: .GiniBank.success5, dark: .GiniBank.success5),
+            contentSuccess: GiniColor(light: .GiniBank.success2, dark: .GiniBank.success2),
+            backgroundWarning: GiniColor(light: .GiniBank.warning5, dark: .GiniBank.warning5),
+            contentWarning: GiniColor(light: .GiniBank.warning2, dark: .GiniBank.warning2),
+            backgroundError: GiniColor(light: .GiniBank.error5, dark: .GiniBank.error5),
+            contentError: GiniColor(light: .GiniBank.error2, dark: .GiniBank.error2)
+        )
+    }
+
+    private static func createBadgeColorScheme() -> GiniColorScheme.Badge {
+        return GiniColorScheme.Badge(
+            background: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),
+            content: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
+        )
+    }
+
+    private static func createButtonColorScheme() -> GiniColorScheme.Button {
+        return GiniColorScheme.Button(
+            background: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
+            backgroundLoading: GiniColor(light: .GiniBank.accent1.withAlphaComponent(0.24), dark: .GiniBank.accent1.withAlphaComponent(0.24)),
+            content: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
+        )
+    }
+
+    private static func createButtonOutlinedColorScheme() -> GiniColorScheme.ButtonOutlined {
+        return GiniColorScheme.ButtonOutlined(
+            background: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4),
+            content: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6)
+        )
+    }
+
+    private static func createTextFieldColorScheme() -> GiniColorScheme.TextField {
+        return GiniColorScheme.TextField(
+            background: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
+            border: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4),
+            focusedText: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
+            unfocusedText: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
+            disabledText: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
+            errorText: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3),
+            labelFocused: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
+            labelUnfocused: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
+            labelDisabled: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
+            labelError: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3),
+            supportingFocused: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
+            supportingUnfocused: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
+            supportingDisabled: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark6),
+            supportingError: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3),
+            trailingFocused: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light6),
+            cursorEnabled: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
+            cursorError: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3)
+        )
+    }
+
+    private static func createToggleColorScheme() -> GiniColorScheme.Toggle {
+        return GiniColorScheme.Toggle(
+            thumb: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1),
+            trackOn: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
+            trackOff: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4),
+            disabledTrack: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4)
         )
     }
 }
