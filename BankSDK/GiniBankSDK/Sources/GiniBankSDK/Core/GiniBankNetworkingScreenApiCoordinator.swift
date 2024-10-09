@@ -718,7 +718,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
     private func setTransactionDocsDataToDisplay(with extractionResult: ExtractionResult, for documentId: String) {
         transactionDocsDataCoordinator?.loadDocumentData = { [weak self] in
             if let images = self?.transactionDocsDataCoordinator?
-                .getTransactionDocsViewModel()?.imagesCache[documentId], !images.isEmpty {
+                .getTransactionDocsViewModel()?.cachedImages[documentId], !images.isEmpty {
                 self?.updateTransactionDocsViewModel(with: images, extractionResult: extractionResult, for: documentId)
                 return
             }

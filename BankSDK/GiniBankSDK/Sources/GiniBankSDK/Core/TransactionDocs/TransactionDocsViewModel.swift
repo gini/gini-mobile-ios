@@ -22,7 +22,7 @@ public class TransactionDocsViewModel {
     /// The current cache of document images.
     /// The key is the `documentId` of the corresponding transaction document,
     /// and the value is an array of `UIImage` representing the images for that document.
-    var imagesCache: [String: [UIImage]] = [:]
+    var cachedImages: [String: [UIImage]] = [:]
 
     private var presentingViewController: UIViewController? {
         return transactionDocsDataProtocol.presentingViewController
@@ -93,7 +93,7 @@ public class TransactionDocsViewModel {
         }
         documentPagesViewController.stopLoadingIndicatorAnimation()
         documentPagesViewController.setData(viewModel: viewModel)
-        imagesCache[documentId] = viewModel.imagesForDisplay()
+        cachedImages[documentId] = viewModel.imagesForDisplay()
     }
 
     /// Informs that an error occurred while trying to preview a document.
