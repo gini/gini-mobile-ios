@@ -19,6 +19,11 @@ public class TransactionDocsViewModel {
         }
     }
 
+    /// The current cache of document images.
+    /// The key is the `documentId` of the corresponding transaction document,
+    /// and the value is an array of `UIImage` representing the images for that document.
+    var cachedImages: [String: [UIImage]] = [:]
+
     private var presentingViewController: UIViewController? {
         return transactionDocsDataProtocol.presentingViewController
     }
@@ -73,9 +78,10 @@ public class TransactionDocsViewModel {
 
     /// Sets the document pages view model for the `DocumentPagesViewController`.
     /// - Parameter viewModel: The view model representing the document pages.
-    func setTransactionDocsDocumentPagesViewModel(_ viewModel: TransactionDocsDocumentPagesViewModel) {
+    func setTransactionDocsDocumentPagesViewModel(_ viewModel: TransactionDocsDocumentPagesViewModel,
+                                                  for documentId: String) {
         guard let documentPagesViewController else { return }
-        let transactionDoc = transactionDocs.first
+        let transactionDoc = transactionDocs.first(where: { $0.documentId == documentId })
         viewModel.rightBarButtonAction = { [weak self] in
             guard let self else { return }
             let deleteAction = {
@@ -87,6 +93,7 @@ public class TransactionDocsViewModel {
         }
         documentPagesViewController.stopLoadingIndicatorAnimation()
         documentPagesViewController.setData(viewModel: viewModel)
+        cachedImages[documentId] = viewModel.imagesForDisplay()
     }
 
     /// Informs that an error occurred while trying to preview a document.
