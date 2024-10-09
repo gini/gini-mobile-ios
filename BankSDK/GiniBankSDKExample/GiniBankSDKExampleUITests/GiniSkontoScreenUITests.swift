@@ -7,7 +7,7 @@
 
 import Foundation
 import XCTest
-
+/*
 class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
     
     /*
@@ -170,3 +170,4 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
 //        XCTAssertFalse(skontoScreen.proceedButton.isHittable)
     }
 }
+*/

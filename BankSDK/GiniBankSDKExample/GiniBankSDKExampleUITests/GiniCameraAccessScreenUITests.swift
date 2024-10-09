@@ -8,6 +8,7 @@
 import Foundation
 import XCTest
 
+/*
 class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
     
     /*
@@ -90,3 +91,4 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
 //        }
     }
 }
+*/

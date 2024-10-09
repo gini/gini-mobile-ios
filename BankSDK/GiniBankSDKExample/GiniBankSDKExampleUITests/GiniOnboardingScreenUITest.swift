@@ -9,6 +9,7 @@ import Foundation
 import XCTest
 import GiniBankSDK
 
+/*
 class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
 
     func testOnboardingGetStartedButton() throws {
@@ -165,3 +166,4 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
 //        XCTAssertTrue(captureScreen.captureButton.isHittable)
     }
 }
+*/

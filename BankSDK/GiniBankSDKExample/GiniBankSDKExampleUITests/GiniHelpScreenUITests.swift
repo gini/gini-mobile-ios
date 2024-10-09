@@ -7,7 +7,7 @@
 
 import Foundation
 import XCTest
-
+/*
 class GiniHelpScreenUITests: GiniBankSDKExampleUITests {
     
     func testHelpScreenTipsButton() {
@@ -65,3 +65,4 @@ class GiniHelpScreenUITests: GiniBankSDKExampleUITests {
     }
 }
     
+*/

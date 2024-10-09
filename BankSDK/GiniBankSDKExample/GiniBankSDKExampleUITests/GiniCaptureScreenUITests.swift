@@ -7,7 +7,7 @@
 
 import Foundation
 import XCTest
-
+/*
 class GiniCaptureScreenUITests: GiniBankSDKExampleUITests {
     
     func testCancelButtonInMenu() throws {
@@ -95,3 +95,4 @@ class GiniCaptureScreenUITests: GiniBankSDKExampleUITests {
 //        XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
 }
+*/

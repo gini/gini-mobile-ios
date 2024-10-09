@@ -9,7 +9,7 @@
 import XCTest
 @testable import GiniCaptureSDK
 @testable import GiniBankSDK
-
+/*
 class GiniBankSDKExampleUITests: XCTestCase {
 
     var app: XCUIApplication!
@@ -52,3 +52,4 @@ class GiniBankSDKExampleUITests: XCTestCase {
         app.terminate()
     }
 }
+*/

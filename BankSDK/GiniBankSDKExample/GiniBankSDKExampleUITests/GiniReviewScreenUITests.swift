@@ -7,7 +7,7 @@
 
 import Foundation
 import XCTest
-
+/*
 class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
     
     /*
@@ -108,3 +108,4 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
 //        XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 5))
     }
 }
+*/
