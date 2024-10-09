@@ -7,11 +7,12 @@
 
 import Foundation
 import XCTest
+/*
+class GiniMainScreenUITests: GiniBankSDKExampleUITests {
 
-//class GiniMainScreenUITests: GiniBankSDKExampleUITests {
-//
-//    func testMainScreenPhotopaymentButton() throws {
-//        
-//        mainScreen.photoPaymentButton.tap()
-//    }
-//}
+    func testMainScreenPhotopaymentButton() throws {
+        
+        mainScreen.photoPaymentButton.tap()
+    }
+}
+*/
