@@ -717,21 +717,29 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 extension GiniBankNetworkingScreenApiCoordinator {
     private func setTransactionDocsDataToDisplay(with extractionResult: ExtractionResult, for documentId: String) {
         transactionDocsDataCoordinator?.loadDocumentData = { [weak self] in
-            if let images = self?.transactionDocsDataCoordinator?
-                .getTransactionDocsViewModel()?.cachedImages[documentId], !images.isEmpty {
-                self?.updateTransactionDocsViewModel(with: images, extractionResult: extractionResult, for: documentId)
+            guard let viewModel = self?.transactionDocsDataCoordinator?.getTransactionDocsViewModel(),
+                  let images = viewModel.cachedImages[documentId],
+                  !images.isEmpty else {
+                self?.loadDocumentPagesAndHandleErrors(for: documentId, with: extractionResult)
                 return
             }
-            self?.loadDocumentPages { [weak self] images, error in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    if let error = error {
-                        self.handlePreviewDocumentError(error: error)
-                        return
-                    }
+            self?.updateTransactionDocsViewModel(with: images,
+                                                 extractionResult: extractionResult,
+                                                 for: documentId)
+        }
+    }
 
-                    self.updateTransactionDocsViewModel(with: images, extractionResult: extractionResult, for: documentId)
+    private func loadDocumentPagesAndHandleErrors(for documentId: String, with extractionResult: ExtractionResult) {
+        loadDocumentPages { [weak self] images, error in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.handlePreviewDocumentError(error: error)
+                    return
                 }
+                self.updateTransactionDocsViewModel(with: images,
+                                                    extractionResult: extractionResult,
+                                                    for: documentId)
             }
         }
     }
@@ -745,7 +753,9 @@ extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
-    private func updateTransactionDocsViewModel(with images: [UIImage], extractionResult: ExtractionResult, for documentId: String) {
+    private func updateTransactionDocsViewModel(with images: [UIImage],
+                                                extractionResult: ExtractionResult,
+                                                for documentId: String) {
         let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
         let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
                                                               extractions: extractionInfo)
