@@ -47,20 +47,11 @@ jobs:
       run: |
         xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
 
-    - name: Run unit tests
+    - name: Run unit tests for `GiniBankSDK` and `GiniBankSDKPinning` targets
       run: |
-        xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO \
-        -skip-testing:GiniBankSDKExampleUITests/GiniCameraAccessScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniCaptureScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniErrorScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniHelpScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniMainScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniOnboardingScreenUITest \
-        -skip-testing:GiniBankSDKExampleUITests/GiniReturnAssistantScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniReviewScreenUITests \
-        -skip-testing:GiniBankSDKExampleUITests/GiniSkontoScreenUITests \
+        xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
    
-    - name: Build example app and run unit and integration tests
+    - name: Build example app and run unit and integration tests without UITests
       run: |
         xcodebuild clean test \
         -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
