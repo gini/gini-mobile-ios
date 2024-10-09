@@ -14,7 +14,9 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
 
     func createPaymentRequestAndOpenBankApp() {
         self.presentedViewController?.dismiss(animated: true)
-        checkForErrors()
+        if inputFieldsHaveNoErrors() {
+            createPaymentRequest()
+        }
     }
 
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController) {
