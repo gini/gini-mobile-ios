@@ -41,7 +41,7 @@ class SkontoWithDiscountHeaderView: UIView {
     private lazy var discountSwitch: UISwitch = {
         let discountSwitch = UISwitch()
         discountSwitch.isOn = viewModel.isSkontoApplied
-        discountSwitch.onTintColor = .giniColorScheme().toggles.trackOn.uiColor()
+        discountSwitch.onTintColor = .giniColorScheme().toggle.trackOn.uiColor()
         discountSwitch.addTarget(self, action: #selector(discountSwitchToggled(_:)), for: .valueChanged)
         discountSwitch.translatesAutoresizingMaskIntoConstraints = false
         return discountSwitch
@@ -72,7 +72,7 @@ class SkontoWithDiscountHeaderView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().card.bg.uiColor()
+        backgroundColor = .giniColorScheme().container.background.uiColor()
         addSubview(stackView)
         addSubview(discountSwitch)
         setupConstraints()

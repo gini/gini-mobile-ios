@@ -1,5 +1,5 @@
 //
-//  GiniColorSchemeV2.swift
+//  GiniColorScheme.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,24 +7,24 @@
 import UIKit
 import GiniCaptureSDK
 
-public struct GiniColorScheme {
-    struct Bg {
+struct GiniColorScheme {
+    struct Background {
         var primary: GiniColor
         var secondary: GiniColor
     }
 
-    struct ActionSheets {
-        var buttonsBg: GiniColor
-        var cancelButtonBg: GiniColor
+    struct ActionSheet {
+        var buttonBackground: GiniColor
+        var cancelButtonBackground: GiniColor
     }
 
     struct Alert {
-        var bg: GiniColor
+        var background: GiniColor
         var divider: GiniColor
     }
 
     struct NavigationBar {
-        var bg: GiniColor
+        var background: GiniColor
         var action: GiniColor
         var navigation: GiniColor
     }
@@ -35,16 +35,16 @@ public struct GiniColorScheme {
     }
 
     struct BottomBar {
-        var bg: GiniColor
+        var background: GiniColor
         var border: GiniColor
     }
     
-    struct Card {
-        var bg: GiniColor
+    struct Container {
+        var background: GiniColor
     }
 
     struct Placeholder {
-        var bg: GiniColor
+        var background: GiniColor
         var tint: GiniColor
     }
 
@@ -57,7 +57,7 @@ public struct GiniColorScheme {
         var error: GiniColor
     }
 
-    struct Icons {
+    struct Icon {
         var primary: GiniColor
         var secondary: GiniColor
     }
@@ -68,37 +68,37 @@ public struct GiniColorScheme {
     }
 
     struct Error {
-        var bg: GiniColor
+        var background: GiniColor
         var icon: GiniColor
     }
 
     struct Message {
-        var bgSuccess: GiniColor
+        var backgroundSuccess: GiniColor
         var contentSuccess: GiniColor
-        var bgWarning: GiniColor
+        var backgroundWarning: GiniColor
         var contentWarning: GiniColor
-        var bgError: GiniColor
+        var backgroundError: GiniColor
         var contentError: GiniColor
     }
 
     struct Badge {
-        var bg: GiniColor
+        var background: GiniColor
         var content: GiniColor
     }
 
     struct Button {
-        var bg: GiniColor
-        var bgLoading: GiniColor
+        var background: GiniColor
+        var backgroundLoading: GiniColor
         var content: GiniColor
     }
 
     struct ButtonOutlined {
-        var bg: GiniColor
+        var background: GiniColor
         var content: GiniColor
     }
 
     struct TextField {
-        var bg: GiniColor
+        var background: GiniColor
         var border: GiniColor
         var focusedText: GiniColor
         var unfocusedText: GiniColor
@@ -117,23 +117,23 @@ public struct GiniColorScheme {
         var cursorError: GiniColor
     }
 
-    struct Toggles {
+    struct Toggle {
         var thumb: GiniColor
         var trackOn: GiniColor
         var trackOff: GiniColor
         var disabledTrack: GiniColor
     }
 
-    var bg: Bg
-    var actionSheets: ActionSheets
+    var background: Background
+    var actionSheet: ActionSheet
     var alert: Alert
     var navigationBar: NavigationBar
     var content: Content
     var bottomBar: BottomBar
-    var card: Card
+    var container: Container
     var placeholder: Placeholder
     var text: Text
-    var icons: Icons
+    var icon: Icon
     var pageController: PageController
     var error: Error
     var message: Message
@@ -141,30 +141,30 @@ public struct GiniColorScheme {
     var button: Button
     var buttonOutlined: ButtonOutlined
     var textField: TextField
-    var toggles: Toggles
+    var toggle: Toggle
 }
 
 extension UIColor {
-    public static func giniColorScheme() -> GiniColorScheme {
+    static func giniColorScheme() -> GiniColorScheme {
         return GiniColorScheme(
-            bg: GiniColorScheme.Bg(
+            background: GiniColorScheme.Background(
                 primary: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2),
                 secondary: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2)
             ),
-            actionSheets: GiniColorScheme.ActionSheets(
-                buttonsBg: GiniColor(
+            actionSheet: GiniColorScheme.ActionSheet(
+                buttonBackground: GiniColor(
                     light: .GiniBank.light1.withAlphaComponent(0.72),
                     dark: .GiniBank.dark5.withAlphaComponent(0.5)),
-                cancelButtonBg: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3)
+                cancelButtonBackground: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3)
             ),
             alert: GiniColorScheme.Alert(
-                bg: GiniColor(light: .GiniBank.light2.withAlphaComponent(0.8),
+                background: GiniColor(light: .GiniBank.light2.withAlphaComponent(0.8),
                               dark: .GiniBank.dark3.withAlphaComponent(0.8)),
                 divider: GiniColor(light: .GiniBank.light6,
                                    dark: .GiniBank.dark4.withAlphaComponent(0.65))
             ),
             navigationBar: GiniColorScheme.NavigationBar(
-                bg: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2),
+                background: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2),
                 action: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
                 navigation: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1)
             ),
@@ -173,14 +173,14 @@ extension UIColor {
                 text: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
             ),
             bottomBar: GiniColorScheme.BottomBar(
-                bg: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
+                background: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
                 border: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4)
             ),
-            card: GiniColorScheme.Card(
-                bg: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3)
+            container: GiniColorScheme.Container(
+                background: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3)
             ),
             placeholder: GiniColorScheme.Placeholder(
-                bg: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4),
+                background: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4),
                 tint: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light6)
             ),
             text: GiniColorScheme.Text(
@@ -191,7 +191,7 @@ extension UIColor {
                 success: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),
                 error: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3)
             ),
-            icons: GiniColorScheme.Icons(
+            icon: GiniColorScheme.Icon(
                 primary: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
                 secondary: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark6)
             ),
@@ -201,33 +201,33 @@ extension UIColor {
                                       dark: .GiniBank.light1.withAlphaComponent(0.3))
             ),
             error: GiniColorScheme.Error(
-                bg: GiniColor(light: .GiniBank.error4, dark: .GiniBank.error4),
+                background: GiniColor(light: .GiniBank.error4, dark: .GiniBank.error4),
                 icon: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3)
             ),
             message: GiniColorScheme.Message(
-                bgSuccess: GiniColor(light: .GiniBank.success5, dark: .GiniBank.success5),
+                backgroundSuccess: GiniColor(light: .GiniBank.success5, dark: .GiniBank.success5),
                 contentSuccess: GiniColor(light: .GiniBank.success2, dark: .GiniBank.success2),
-                bgWarning: GiniColor(light: .GiniBank.warning5, dark: .GiniBank.warning5),
+                backgroundWarning: GiniColor(light: .GiniBank.warning5, dark: .GiniBank.warning5),
                 contentWarning: GiniColor(light: .GiniBank.warning2, dark: .GiniBank.warning2),
-                bgError: GiniColor(light: .GiniBank.error5, dark: .GiniBank.error5),
+                backgroundError: GiniColor(light: .GiniBank.error5, dark: .GiniBank.error5),
                 contentError: GiniColor(light: .GiniBank.error2, dark: .GiniBank.error2)
             ),
             badge: GiniColorScheme.Badge(
-                bg: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),
+                background: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),
                 content: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
             ),
             button: GiniColorScheme.Button(
-                bg: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
-                bgLoading: GiniColor(light: .GiniBank.accent1.withAlphaComponent(0.24),
+                background: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
+                backgroundLoading: GiniColor(light: .GiniBank.accent1.withAlphaComponent(0.24),
                                      dark: .GiniBank.accent1.withAlphaComponent(0.24)),
                 content: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
             ),
             buttonOutlined: GiniColorScheme.ButtonOutlined(
-                bg: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4),
+                background: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4),
                 content: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6)
             ),
             textField: GiniColorScheme.TextField(
-                bg: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
+                background: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3),
                 border: GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4),
                 focusedText: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
                 unfocusedText: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light1),
@@ -245,7 +245,7 @@ extension UIColor {
                 cursorEnabled: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
                 cursorError: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3)
             ),
-            toggles: GiniColorScheme.Toggles(
+            toggle: GiniColorScheme.Toggle(
                 thumb: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1),
                 trackOn: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
                 trackOff: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4),
