@@ -116,7 +116,8 @@ public class GiniCaptureDocumentBuilder: NSObject {
             deviceOrientation: deviceOrientation,
             source: documentSource.value,
             importMethod: importMethod.rawValue,
-            entryPoint: entryFieldString(GiniConfiguration.shared.entryPoint)
+            entryPoint: entryFieldString(GiniConfiguration.shared.entryPoint),
+            osVersion: UIDevice.current.systemVersion
         )
     }
 
