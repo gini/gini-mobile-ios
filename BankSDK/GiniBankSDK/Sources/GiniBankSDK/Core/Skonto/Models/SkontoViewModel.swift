@@ -39,7 +39,7 @@ class SkontoViewModel {
     private (set) var paymentMethod: SkontoDiscountDetails.PaymentMethod
     private (set) var edgeCase: SkontoEdgeCase?
 
-    private (set) var documentPagesViewModel: DocumentPagesViewModel?
+    private (set) var documentPagesViewModel: SkontoDocumentPagesViewModel?
 
     var finalAmountToPay: Price {
         return isSkontoApplied ? skontoAmountToPay : amountToPay
@@ -87,24 +87,28 @@ class SkontoViewModel {
         let text: String
         switch edgeCase {
         case .expired:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.expired.message",
+            let expiredMessageKey = "ginibank.skonto.infobanner.edgecase.expired.message"
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat(expiredMessageKey,
                                                                          comment: "The %@ discount has expired.")
             text = String.localizedStringWithFormat(localizedText,
                                                     formattedPercentageDiscounted)
         case .paymentToday:
-            let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.today.message",
-                                                                         comment: "Pay today: receive %@ Skonto discount.")
+            let todayMessageKey = "ginibank.skonto.infobanner.edgecase.today.message"
+            let localizedText = NSLocalizedStringPreferredGiniBankFormat(todayMessageKey,
+                                                                         comment: "Receive %@ Skonto discount.")
             text = String.localizedStringWithFormat(localizedText,
                                                     formattedPercentageDiscounted)
         case .payByCash:
             if remainingDays == 0 {
-                let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.today.message",
-                                                                             comment: "Pay in cash today and receive a %@ Skonto discount")
+                let todayCashMessageKey = "ginibank.skonto.infobanner.edgecase.cash.today.message"
+                let localizedText = NSLocalizedStringPreferredGiniBankFormat(todayCashMessageKey,
+                                                                             comment: "Receive a %@ Skonto discount")
                 text = String.localizedStringWithFormat(localizedText,
                                                         formattedPercentageDiscounted)
             } else {
-                let localizedText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.cash.message",
-                                                                             comment: "Pay in cash within the next  %@ days ...  %@")
+                let cashMessageKey = "ginibank.skonto.infobanner.edgecase.cash.message"
+                let localizedText = NSLocalizedStringPreferredGiniBankFormat(cashMessageKey,
+                                                                             comment: "Cash within the next %@ days %@")
                 text = String.localizedStringWithFormat(localizedText,
                                                         remainingDaysString,
                                                         formattedPercentageDiscounted)
@@ -176,7 +180,7 @@ class SkontoViewModel {
         skontoStateChangeHandlers.append(handler)
     }
 
-    func setDocumentPagesViewModel(_ viewModel: DocumentPagesViewModel) {
+    func setDocumentPagesViewModel(_ viewModel: SkontoDocumentPagesViewModel) {
         documentPagesViewModel = viewModel
     }
 

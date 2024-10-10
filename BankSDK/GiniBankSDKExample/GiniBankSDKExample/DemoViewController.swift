@@ -71,6 +71,7 @@ final class DemoViewController: UIViewController {
     private func configureWelcomeTitle() {
         welcomeTitleTopConstraint.constant = Constants.welcomeTitleTopConstant
         welcomeTitlte.text = DemoScreenStrings.welcomeTitle.localized
+        welcomeTitlte.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.welcomeTextTitle.rawValue
     }
     
     private func configureIbanTextField() {
@@ -103,6 +104,8 @@ final class DemoViewController: UIViewController {
             ibanTextField.rightView?.addGestureRecognizer(iconTapGesture)
             
             UITextField.appearance().tintColor = ColorPalette.giniBlue
+            ibanTextField.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.ibanTextField.rawValue
+            cameraIcon.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.cameraIconButton.rawValue
         }
     }
     
@@ -126,20 +129,25 @@ final class DemoViewController: UIViewController {
         photoPaymentButton.backgroundColor = itemBackgroundColor
         photoPaymentButton.setTitle(DemoScreenStrings.photoPaymentButtonTitle.localized, for: .normal)
         photoPaymentButton.setTitleColor(textColor, for: .normal)
+        photoPaymentButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue
     }
     
     private func configureScreenDescriptionTitle() {
         descriptionTitle.text = DemoScreenStrings.screenDescription.localized
         descriptionTitle.textColor = textColor
+        descriptionTitle.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.descriptionTextTitle.rawValue
     }
   
     private func configureMetaTitle() {
+        
         metaInformationLabel.isUserInteractionEnabled = true
         let metaTitle = "Gini Bank SDK: (\(GiniBankSDKVersion)) / Gini Capture SDK: (\(GiniCaptureSDKVersion)) / Client id: \(self.clientId ?? "")"
         metaInformationLabel.text = metaTitle
         metaInformationLabel.textColor = textColor
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.launchSettings))
         metaInformationLabel.addGestureRecognizer(tapGesture)
+        metaInformationLabel.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.metaInformationLabel.rawValue
+        
     }
     
     private func startSDK(entryPoint: GiniConfiguration.GiniEntryPoint) {

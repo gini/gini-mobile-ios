@@ -377,9 +377,9 @@ extension AppCoordinator: PaymentComponentsControllerProtocol {
 
 extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
-        let debugMenuViewController = DebugMenuViewController(giniHealth: health,
-                                                              giniHealthConfiguration: giniHealthConfiguration,
-                                                              isBrandedPaymentComponent: isBrandedPaymentComponent)
+        let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
+                                                              useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
+                                                              paymentComponentConfiguration: health.paymentComponentConfiguration)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -387,7 +387,14 @@ extension AppCoordinator: DebugMenuPresenter {
 
 //MARK: - DebugMenuDelegate
 extension AppCoordinator: DebugMenuDelegate {
-    func didChangeBrandedSwitchValue(isOn: Bool) {
-        isBrandedPaymentComponent = isOn
+    func didChangeSwitchValue(type: SwitchType, isOn: Bool) {
+        switch type {
+        case .showReviewScreen:
+            giniHealthConfiguration.showPaymentReviewScreen = isOn
+        case .showBrandedView:
+            health.paymentComponentConfiguration.isPaymentComponentBranded = isOn
+        case .useBottomPaymentComponent:
+            giniHealthConfiguration.useBottomPaymentComponentView = isOn
+        }
     }
 }

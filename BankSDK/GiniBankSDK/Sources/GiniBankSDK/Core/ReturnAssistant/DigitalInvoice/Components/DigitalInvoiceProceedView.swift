@@ -97,9 +97,6 @@ class DigitalInvoiceProceedView: UIView {
 
     private let configuration = GiniBankConfiguration.shared
 
-    private let skontoPercentageText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
-                                                                      comment: "%@ Skonto discount")
-
     init() {
         super.init(frame: .zero)
         setupView()
@@ -139,7 +136,8 @@ class DigitalInvoiceProceedView: UIView {
 
         NSLayoutConstraint.activate([
             contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: multiplier),
+            contentView.widthAnchor.constraint(equalTo: widthAnchor,
+                                               multiplier: multiplier),
             contentView.topAnchor.constraint(equalTo: topAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
@@ -157,7 +155,8 @@ class DigitalInvoiceProceedView: UIView {
     private func setupTotalStringLabelConstraints() {
         NSLayoutConstraint.activate([
             totalStringLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-            totalStringLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: Constants.padding),
+            totalStringLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                      constant: Constants.padding),
             totalStringLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding)
         ])
@@ -228,8 +227,11 @@ class DigitalInvoiceProceedView: UIView {
         if let skontoViewModel = viewModel.skontoViewModel {
             let isSkontoApplied = skontoViewModel.isSkontoApplied
             skontoBadgeView.isHidden = !isSkontoApplied
-            let skontoPercentageLabelText = String.localizedStringWithFormat(skontoPercentageText,
-                                                                             skontoViewModel.formattedPercentageDiscounted)
+            let formattedPercentageDiscounted = skontoViewModel.formattedPercentageDiscounted
+            let percentageText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
+                                                                          comment: "%@ Skonto discount")
+            let skontoPercentageLabelText = String.localizedStringWithFormat(percentageText,
+                                                                             formattedPercentageDiscounted)
             skontoPercentageLabel.text = skontoPercentageLabelText
             skontoPercentageLabel.accessibilityValue = skontoPercentageLabelText
             savingsAmountLabel.isHidden = !isSkontoApplied

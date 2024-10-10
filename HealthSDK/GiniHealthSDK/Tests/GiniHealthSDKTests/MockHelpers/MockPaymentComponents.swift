@@ -120,4 +120,26 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         let paymentInfoViewController = PaymentInfoViewController(viewModel: paymentInfoViewModel)
         return paymentInfoViewController
     }
+
+    func paymentView(documentId: String?) -> UIView {
+        paymentView(documentId: documentId ?? "")
+    }
+
+    func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: GiniInternalPaymentSDK.PaymentInfo?, trackingDelegate: (any GiniHealthSDK.GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthSDK.GiniHealthError?) -> Void) {
+        switch documentID {
+        case MockSessionManager.payableDocumentID:
+            completion(UIViewController(), nil)
+        case MockSessionManager.missingDocumentID:
+            completion(nil, .apiError(GiniError.decorator(.noResponse)))
+        default:
+            fatalError("Document id not handled in tests")
+        }
+    }
+
+    func paymentViewBottomSheet(documentID: String?) -> UIViewController {
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID),
+                                                                    bottomSheetConfiguration: giniHealth.bottomSheetConfiguration)
+        return paymentComponentBottomView
+    }
+
 }

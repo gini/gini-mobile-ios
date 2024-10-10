@@ -61,6 +61,6 @@ extension SkontoCoordinator: SkontoViewModelDelegate {
     }
 
     func didTapProceed(on viewModel: SkontoViewModel) {
-        delegate?.didFinishAnalysis(self, viewModel.editedExtractionResult)
+        self.delegate?.didFinishAnalysis(self, viewModel.editedExtractionResult)
     }
 }

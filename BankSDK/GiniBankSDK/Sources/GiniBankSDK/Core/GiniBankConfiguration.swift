@@ -298,6 +298,12 @@ public final class GiniBankConfiguration: NSObject {
     public var digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
 
     /**
+     Indicates whether the Return reasons feature is enabled or not. In the case of `true`,
+     the users will be asked to select from a predefined list of reasons why they decided to return an item.
+     */
+    public var enableReturnReasons: Bool = false
+
+    /**
      Set an adapter implementation to show a custom bottom navigation bar on the digital invoice screen which include Skonto information.
      */
     public var digitalInvoiceSkontoNavigationBarBottomAdapter: DigitalInvoiceSkontoNavigationBarBottomAdapter?
@@ -309,13 +315,14 @@ public final class GiniBankConfiguration: NSObject {
      * the user will be presented with a screen where they can choose
      * to pay the invoice with or without applying Skonto.
      */
-    public var skontoEnabled = true
+    public var skontoEnabled: Bool = true
 
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the Skonto screen.
      */
     public var skontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
 
+    // MAKR: - Transaction Docs feature
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the Skonto help screen
      */
@@ -324,8 +331,19 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Indicates whether the Return reasons feature is enabled or not. In the case of `true`,
      the users will be asked to select from a predefined list of reasons why they decided to return an item.
+     * Indicates whether the Transaction Docs feature is enabled or not. If set to `true`,
+     * the user will be presented with an alert dialog in the photo payment flow to choose
+     * whether to attach images or PDFs to the transaction.
      */
-    public var enableReturnReasons: Bool = false
+    public var transactionDocsEnabled: Bool = true
+
+    /// A coordinator that manages the state of transaction documents in the photo payment flow.
+    /// It conforms to `TransactionDocsDataProtocol` and is responsible for tracking,
+    /// modifying, and handling the state related to attaching documents to a transaction.
+    ///
+    /// This instance is initialized with a default `TransactionDocsDataCoordinator` object
+    /// that implements the protocol.
+    public var transactionDocsDataCoordinator: TransactionDocsDataProtocol = TransactionDocsDataCoordinator()
 
     /**
      Set the entry point used for launching the Gini Bank SDK.
@@ -407,6 +425,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.shouldShowDragAndDropTutorial = self.shouldShowDragAndDropTutorial
 
         configuration.customMenuItems = self.customMenuItems
+        configuration.transactionDocsEnabled = self.transactionDocsEnabled
 
         configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
         configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
@@ -473,6 +492,8 @@ public final class GiniBankConfiguration: NSObject {
 		giniBankConfiguration.onButtonLoadingIndicator = configuration.onButtonLoadingIndicator
 		giniBankConfiguration.customLoadingIndicator = configuration.customLoadingIndicator
 		giniBankConfiguration.customMenuItems = configuration.customMenuItems
+
+        giniBankConfiguration.transactionDocsEnabled = configuration.transactionDocsEnabled
 
 		giniBankConfiguration.customNavigationController = configuration.customNavigationController
 		giniBankConfiguration.helpNavigationBarBottomAdapter = configuration.helpNavigationBarBottomAdapter

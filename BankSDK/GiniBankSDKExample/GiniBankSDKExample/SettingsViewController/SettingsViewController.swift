@@ -2,7 +2,7 @@
 //  SettingsViewController.swift
 //  GiniBankSDKExample
 //
-//  Created by Valentina Iancu on 07.06.23.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -92,6 +92,7 @@ final class SettingsViewController: UIViewController {
 		tableView.register(SegmentedOptionTableViewCell.self)
 		tableView.register(InfoTableViewCell.self)
         tableView.register(CredentialsTableViewCell.self)
+        tableView.register(UpdateUserDefaultsCell.self)
 
 		var contentData = [CellType]()
 		
@@ -184,10 +185,21 @@ final class SettingsViewController: UIViewController {
 														 isSwitchOn: giniConfiguration.shouldShowDragAndDropTutorial)))
 		}
 		
-		contentData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
-													 isSwitchOn: giniConfiguration.returnAssistantEnabled)))
+        contentData.append(.switchOption(data: .init(type: .transactionDocsEnabled,
+                                                     isSwitchOn: giniConfiguration.transactionDocsEnabled)))
+
+        // Retrieve the current value from the SDK's transactionDocsDataCoordinator
+        let alwaysAttachDocsValue = GiniBankConfiguration.shared.transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
+
+        contentData.append(.userDefaults(message: "Remove TransactionDocs attachement options from UserDefaults",
+                                         buttonActive: alwaysAttachDocsValue))
+
         contentData.append(.switchOption(data: .init(type: .skontoEnabled,
                                                      isSwitchOn: giniConfiguration.skontoEnabled)))
+
+		contentData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
+													 isSwitchOn: giniConfiguration.returnAssistantEnabled)))
+
 		contentData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingIllustrationAdapter,
 													 isSwitchOn: giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter != nil)))
 		contentData.append(.switchOption(data: .init(type: .digitalInvoiceHelpNavigationBarBottomAdapter,
@@ -367,10 +379,12 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.shouldShowDragAndDropTutorial = data.isSwitchOn
 		case .returnAssistantEnabled:
 			giniConfiguration.returnAssistantEnabled = data.isSwitchOn
+        case .enableReturnReasons:
+            giniConfiguration.enableReturnReasons = data.isSwitchOn
         case .skontoEnabled:
             giniConfiguration.skontoEnabled = data.isSwitchOn
-		case .enableReturnReasons:
-			giniConfiguration.enableReturnReasons = data.isSwitchOn
+        case .transactionDocsEnabled:
+            giniConfiguration.transactionDocsEnabled = data.isSwitchOn
 		case .giniErrorLoggerIsOn:
 			giniConfiguration.giniErrorLoggerIsOn = data.isSwitchOn
 		case .customGiniErrorLogger:
@@ -539,6 +553,13 @@ final class SettingsViewController: UIViewController {
         return cell
     }
 
+    private func userDefaultsCell(for message: String, _ buttoActive: Bool) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell() as UpdateUserDefaultsCell
+        cell.set(message: message, buttonActive: buttoActive)
+        cell.delegate = self
+        return cell
+    }
+
 	// MARK: - Actions
 	
 	@objc func didSelectCloseButton() {
@@ -572,10 +593,19 @@ extension SettingsViewController: UITableViewDataSource {
 			return cell(for: data, at: row)
         case .credentials(let data):
             return cell(for: data)
+        case .userDefaults(let message, let buttoActive):
+            return userDefaultsCell(for: message, buttoActive)
 		}
 	}
 }
 
+extension SettingsViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+}
 // MARK: - SwitchOptionTableViewCellDelegate
 
 extension SettingsViewController: SwitchOptionTableViewCellDelegate {
@@ -636,4 +666,23 @@ extension SettingsViewController: GiniCaptureErrorLoggerDelegate {
 	func handleErrorLog(error: GiniCaptureSDK.ErrorLog) {
 		print("💻 custom - log error event called")
 	}
+}
+
+extension SettingsViewController: UpdateUserDefaultsCellDelegate {
+    func didTapRemoveButton(in view: UpdateUserDefaultsCell) {
+        let alwaysAttachDocsValue = GiniBankConfiguration.shared.transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
+        if alwaysAttachDocsValue {
+            GiniBankConfiguration.shared.transactionDocsDataCoordinator.setAlwaysAttachDocs(false)
+            view.updateButtonState(isActive: false)
+            // Show confirmation alert
+            let alert = UIAlertController(title: "Success",
+                                          message: "The preference was successfully removed.",
+                                          preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+
+            // Present the alert on the provided viewController
+            present(alert, animated: true, completion: nil)
+        }
+    }
 }

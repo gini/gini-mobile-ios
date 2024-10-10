@@ -11,11 +11,11 @@ struct SkontoHelpViewModel {
         SkontoHelpItem(
             icon: GiniImages.skontoHelpItem1.image,
             title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.content.item1",
-                                                            comment: "Use your camera to capture invoices with Skonto discounts")),
+                                                            comment: "Capture invoices with Skonto discounts")),
         SkontoHelpItem(
             icon: GiniImages.skontoHelpItem2.image,
             title: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.content.item2",
-                                                            comment: "Immediately identify discounted amounts and due dates")
+                                                            comment: "Identify discounted amounts and due dates")
         ),
         SkontoHelpItem(
             icon: GiniImages.skontoHelpItem3.image,
