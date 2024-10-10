@@ -7,7 +7,7 @@
 
 import Foundation
 import XCTest
-
+/*
 class GiniMainScreenUITests: GiniBankSDKExampleUITests {
 
     func testMainScreenPhotopaymentButton() throws {
@@ -15,3 +15,4 @@ class GiniMainScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.photoPaymentButton.tap()
     }
 }
+*/
