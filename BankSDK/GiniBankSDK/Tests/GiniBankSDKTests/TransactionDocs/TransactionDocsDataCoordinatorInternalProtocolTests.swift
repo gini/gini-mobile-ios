@@ -38,9 +38,11 @@ class TransactionDocsDataCoordinatorInternalProtocolTests: XCTestCase {
 
     func testInternalDeleteTransactionDocShouldRemoveCorrectDocument() {
         coordinator.transactionDocs = mockDocs
-        coordinator.deleteTransactionDoc(with: mockDocs.first!.documentId)
+        let documentToDelete = mockDocs.first!
+        coordinator.deleteTransactionDoc(with: documentToDelete.documentId)
         XCTAssertEqual(coordinator.transactionDocs.count, mockDocs.count - 1, "Expected transactionDocs count to decrease by one after deleting a document")
-        XCTAssertEqual(coordinator.transactionDocs.first?.documentId, mockDocs.last?.documentId, "Expected remaining document to be the second document after deletion")
+        XCTAssertNotEqual(coordinator.transactionDocs.last?.documentId, documentToDelete.documentId, "Expected the last document to not be the deleted document")
+        XCTAssertFalse(coordinator.transactionDocs.contains { $0.documentId == documentToDelete.documentId }, "Expected the deleted document to no longer be present in the transactionDocs")
     }
 
     func testGetTransactionDocsViewModel() {
