@@ -95,7 +95,8 @@ public final class CameraButtonsViewModel {
                 case .button: "button"
                 case .field: "field"
                 }
-            }()
+            }(),
+            osVersion: UIDevice.current.systemVersion
         )
         let imageDocument = GiniImageDocument(
             data: imageData,
