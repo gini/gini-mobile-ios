@@ -18,7 +18,7 @@ on:
 jobs:
   prepare-frameworks:
     name: Create Release
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
@@ -30,7 +30,7 @@ jobs:
       - name: Setup Mint
         uses: fabasoad/setup-mint-action@main
 
-      - name: Setup swift-create-xcframework 
+      - name: Setup swift-create-xcframework
         run: |
           /usr/local/bin/brew install mint
           /usr/local/bin/mint install unsignedapps/swift-create-xcframework@v2.3.0
@@ -75,7 +75,7 @@ jobs:
           -configuration Release \
           -destination generic/platform=iOS \
           -archivePath "iphoneosPinning.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
-  
+
       - name: Generate XCFrameworks
         run: |
           xcodebuild -create-xcframework \
@@ -108,7 +108,6 @@ jobs:
           # Setup distribution certificate
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           PP_PATH1=$RUNNER_TEMP/build_pp1.mobileprovision
-          PP_PATH2=$RUNNER_TEMP/build_pp2.mobileprovision
 
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
@@ -128,10 +127,9 @@ jobs:
           # apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH1 ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH2 ~/Library/MobileDevice/Provisioning\ Profiles
 
           # sign xcframeworks
-          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthBankAPILibrary.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthAPILibrary.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthSDK.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthAPILibraryPinning.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthSDKPinning.xcframework
