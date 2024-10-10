@@ -6,6 +6,7 @@
 //  Copyright © 2016 Gini GmbH. All rights reserved.
 //
 
+import GiniBankAPILibrary
 import UIKit
 import AVFoundation
 import Photos
@@ -424,6 +425,26 @@ fileprivate extension Camera {
             Log(message: "IBAN detection is not supported for iOS 12 or older", event: .warning)
         }
     }
+
+    func generateUploadMetadata() -> Document.UploadMetadata {
+        Document.UploadMetadata(
+            giniCaptureVersion: GiniCaptureSDKVersion,
+            deviceOrientation: UIDevice.current.orientation.isLandscape ? "landscape" : "portrait",
+            source: DocumentSource.camera.value,
+            importMethod: "",
+            entryPoint: entryFieldString(GiniConfiguration.shared.entryPoint),
+            osVersion: UIDevice.current.systemVersion
+        )
+    }
+
+    func entryFieldString(_ entryPoint: GiniConfiguration.GiniEntryPoint) -> String {
+        switch entryPoint {
+        case .button:
+            return "button"
+        case .field:
+            return "field"
+        }
+    }
 }
 
 // MARK: - AVCaptureMetadataOutputObjectsDelegate
@@ -438,7 +459,7 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
 
         if let metadataObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
            metadataObj.type == AVMetadataObject.ObjectType.qr, let metaString = metadataObj.stringValue {
-            let qrDocument = GiniQRCodeDocument(scannedString: metaString)
+            let qrDocument = GiniQRCodeDocument(scannedString: metaString, uploadMetadata: generateUploadMetadata())
             do {
                 try GiniCaptureDocumentValidator.validate(qrDocument, withConfig: giniConfiguration)
                 DispatchQueue.main.async { [weak self] in
