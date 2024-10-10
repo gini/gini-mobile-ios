@@ -14,7 +14,7 @@
 		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
 		289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289570912A30CD7600CC2C56 /* SettingsViewController.swift */; };
 		289570942A30CE2800CC2C56 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289570922A30CD7600CC2C56 /* SettingsViewController.xib */; };
-		289918002BAB0B1900F5D214 /* DigitalInvoiceViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289917FF2BAB0B1900F5D214 /* DigitalInvoiceViewControllerTests.swift */; };
+		289918002BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289917FF2BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift */; };
 		289D3DB32A4EC857002A6681 /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D3DB12A4EC857002A6681 /* InfoTableViewCell.swift */; };
 		289D3DB42A4EC857002A6681 /* InfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */; };
 		28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */; };
@@ -42,6 +42,7 @@
 		28C8E4B32BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4B02BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json */; };
 		28C8E4B42BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4B02BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json */; };
 		28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CDB8222A38A5E40016A81C /* ColorPalette.swift */; };
+		28DAC20B2CB6D94F008B85E0 /* BaseIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAC2092CB6D90A008B85E0 /* BaseIntegrationTest.swift */; };
 		28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB2C812A39AF5000F5B304 /* GiniButton.swift */; };
 		28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC10722AB345400080FD4F /* UIImage+TintColor.swift */; };
 		28F5D43C2C5BA9DA00371D4D /* GiniMainScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F5D43A2C5BA9DA00371D4D /* GiniMainScreenUITests.swift */; };
@@ -233,7 +234,7 @@
 		289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SegmentedOptionModel.swift"; sourceTree = "<group>"; };
 		289570912A30CD7600CC2C56 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		289570922A30CD7600CC2C56 /* SettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
-		289917FF2BAB0B1900F5D214 /* DigitalInvoiceViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalInvoiceViewControllerTests.swift; sourceTree = "<group>"; };
+		289917FF2BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalInvoiceIntegrationTests.swift; sourceTree = "<group>"; };
 		289D3DB12A4EC857002A6681 /* InfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
 		289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoTableViewCell.xib; sourceTree = "<group>"; };
 		28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SettingsButtonStates.swift"; sourceTree = "<group>"; };
@@ -255,6 +256,7 @@
 		28C8E4AF2BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_line_items_with_discount.pdf; sourceTree = "<group>"; };
 		28C8E4B02BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_line_items_with_discount.json; sourceTree = "<group>"; };
 		28CDB8222A38A5E40016A81C /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
+		28DAC2092CB6D90A008B85E0 /* BaseIntegrationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseIntegrationTest.swift; sourceTree = "<group>"; };
 		28DB2C812A39AF5000F5B304 /* GiniButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniButton.swift; sourceTree = "<group>"; };
 		28EC10722AB345400080FD4F /* UIImage+TintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+TintColor.swift"; sourceTree = "<group>"; };
 		28F5D43A2C5BA9DA00371D4D /* GiniMainScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniMainScreenUITests.swift; sourceTree = "<group>"; };
@@ -686,7 +688,8 @@
 		F45D7EFF2800566900C73C63 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				289917FF2BAB0B1900F5D214 /* DigitalInvoiceViewControllerTests.swift */,
+				28DAC2092CB6D90A008B85E0 /* BaseIntegrationTest.swift */,
+				289917FF2BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift */,
 				F45D7F002800566900C73C63 /* TransferSummaryIntegrationTest.swift */,
 				F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */,
 				F45D7F022800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift */,
@@ -1237,10 +1240,11 @@
 				28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */,
 				F45D7F0E2800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
 				F45D7F152800566900C73C63 /* SettingsViewControllerTests.swift in Sources */,
+				28DAC20B2CB6D94F008B85E0 /* BaseIntegrationTest.swift in Sources */,
 				F45D7F0C2800566900C73C63 /* TransferSummaryIntegrationTest.swift in Sources */,
 				28B605D02BC42A8500FCF4DE /* GiniSetupHelper.swift in Sources */,
 				F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */,
-				289918002BAB0B1900F5D214 /* DigitalInvoiceViewControllerTests.swift in Sources */,
+				289918002BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
