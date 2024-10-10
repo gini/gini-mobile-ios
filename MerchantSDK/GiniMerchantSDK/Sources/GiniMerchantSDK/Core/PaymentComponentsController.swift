@@ -424,7 +424,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     }
 }
 
-extension PaymentComponentsController: GiniInternalPaymentSDK.PaymentComponentViewProtocol {
+extension PaymentComponentsController: PaymentComponentViewProtocol {
     public func didTapOnMoreInformation(documentId: String?) {
         viewDelegate?.didTapOnMoreInformation(documentId: documentId)
     }

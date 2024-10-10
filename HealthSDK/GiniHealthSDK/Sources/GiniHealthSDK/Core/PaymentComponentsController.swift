@@ -70,10 +70,12 @@ protocol PaymentComponentsProtocol {
     func loadPaymentProviders()
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
     func paymentView(documentId: String) -> UIView
+    func paymentView(documentId: String?) -> UIView
     func bankSelectionBottomSheet() -> UIViewController
     func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
     func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
     func paymentInfoViewController() -> UIViewController
+    func paymentViewBottomSheet(documentID: String?) -> UIViewController
 }
 
 /**
@@ -125,6 +127,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
         self.giniSDK = giniHealth
         self.configurationProvider = giniHealth
         self.stringsProvider = giniHealth
+        setupObservers()
     }
 
     /**
@@ -216,7 +219,18 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
         return PaymentComponentView(viewModel: paymentComponentViewModel)
     }
 
+    func paymentView(documentId: String?) -> UIView {
+        paymentView(documentId: documentId ?? "")
+    }
+
+    public func paymentViewBottomSheet(documentID: String?) -> UIViewController {
+        previousPresentedView = .paymentComponent
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
+        return paymentComponentBottomView
+    }
+
     public func bankSelectionBottomSheet() -> UIViewController {
+        previousPresentedView = .bankPicker
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                    configuration: configurationProvider.bankSelectionConfiguration,
@@ -230,6 +244,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     }
     
     public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+        // In order to use invoice without document flow, please use the `public func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)` function
+        previousPresentedView = nil
         self.isLoading = true
         self.giniSDK.fetchDataForReview(documentId: documentID) { [weak self] result in
             self?.isLoading = false
@@ -314,6 +330,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     }
 
     public func installAppBottomSheet() -> BottomSheetViewController {
+        previousPresentedView = nil
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                   installAppConfiguration: configurationProvider.installAppConfiguration,
                                                                   strings: stringsProvider.installAppStrings,
@@ -326,6 +343,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     }
 
     public func shareInvoiceBottomSheet() -> BottomSheetViewController {
+        previousPresentedView = nil
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
                                                                       strings: stringsProvider.shareInvoiceStrings,
@@ -341,6 +359,20 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     private func incrementOnboardingCountFor(paymentProvider: GiniHealthAPILibrary.PaymentProvider?) {
         var onboardingCounts = OnboardingShareInvoiceScreenCount.load()
         onboardingCounts.incrementPresentationCount(forProvider: paymentProvider?.name)
+    }
+
+    private func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(paymentInfoDissapeared), name: .paymentInfoDissapeared, object: nil)
+    }
+
+    @objc
+    private func paymentInfoDissapeared() {
+        if previousPresentedView == .bankPicker {
+            didTapOnBankPicker()
+        } else if previousPresentedView == .paymentComponent {
+            didTapOnPayButton()
+        }
+        previousPresentedView = nil
     }
 }
 
@@ -422,15 +454,14 @@ extension PaymentComponentsController: PaymentReviewProtocol {
         })
     }
 
-    public func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController) {
-        createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
-            switch result {
-                case .success(let paymentRequestID):
-                    self?.loadPDFData(paymentRequestID: paymentRequestID, viewController: viewController)
-                case .failure:
-                    break
+    // MARK: - Helping functions
+    public func canOpenPaymentProviderApp() -> Bool {
+        if supportsGPC() {
+            if healthSelectedPaymentProvider?.appSchemeIOS.canOpenURLString() == true {
+                return true
             }
         }
+        return false
     }
 
     public func supportsOpenWith() -> Bool {
@@ -445,6 +476,17 @@ extension PaymentComponentsController: PaymentReviewProtocol {
             return true
         }
         return false
+    }
+
+    public func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController) {
+        createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
+            switch result {
+                case .success(let paymentRequestID):
+                    self?.loadPDFData(paymentRequestID: paymentRequestID, viewController: viewController)
+                case .failure:
+                    break
+            }
+        }
     }
 
     public func shouldShowOnboardingScreenFor() -> Bool {

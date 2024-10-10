@@ -41,6 +41,11 @@ public final class GiniHealthConfiguration: NSObject {
     // MARK: - Payment component view
 
     /**
+     Set to `true` to use the payment component view as bottom view
+     */
+    public var useBottomPaymentComponentView = false
+
+    /**
     Height of the buttons from the Payment Component View
      */
     public var paymentComponentButtonsHeight: CGFloat = Constants.defaultButtonsHeight {
