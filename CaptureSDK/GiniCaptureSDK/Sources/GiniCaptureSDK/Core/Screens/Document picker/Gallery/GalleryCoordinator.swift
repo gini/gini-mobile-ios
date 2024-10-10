@@ -304,7 +304,8 @@ extension GalleryCoordinator: ImagePickerViewControllerDelegate {
                 case .button: "button"
                 case .field: "field"
                 }
-            }()
+            }(),
+            osVersion: UIDevice.current.systemVersion
         )
         let imageDocument = GiniImageDocument(data: data,
                                               imageSource: .external,

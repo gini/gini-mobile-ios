@@ -5,7 +5,6 @@
 //
 
 import Foundation
-import UIKit
 
 /// Data model that represents a Document entity
 public struct Document {
@@ -261,17 +260,26 @@ extension Document {
             }
         }
 
+        /**
+         * Adds upload metadata
+         *
+         * - Parameter branchId:            The branch id (i.e: the BLZ of a Bank in Germany)
+         * - Parameter additionalHeaders:   Additional headers for the metadata. i.e: ["customerId":"123456"]
+         */
         public mutating func addUploadMetadata(_ uploadMetadata: UploadMetadata) {
             headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] = uploadMetadata.userComment
         }
 
+        /// Checks if upload metadata is present
         public func hasUploadMetadata() -> Bool {
             headers.keys.contains(Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey)
         }
     }
 
-    @objc
-    public class UploadMetadata: NSObject {
+    /**
+     * The metadata contains document upload metadata
+     */
+    @objc public class UploadMetadata: NSObject {
         var userComment: String
         let userCommentPlatform = "Platform"
         let userCommentOSVer = "OSVer"
@@ -281,15 +289,26 @@ extension Document {
         let userCommentImportMethod = "ImportMethod"
         let userCommentEntryPoint = "EntryPoint"
 
+        /**
+         * The document upload metadata initializer
+         * headers.
+         *
+         * - Parameter giniCaptureVersion:   GiniCapture version
+         * - Parameter deviceOrientation:    Device orientation, portrait or landscape
+         * - Parameter source:               Source of the document
+         * - Parameter importMethod:         Import method
+         * - Parameter entryPoint:           Entry point
+         * - Parameter osVersion:            OS version
+         */
         public init(
             giniCaptureVersion: String,
             deviceOrientation: String,
             source: String,
             importMethod: String,
-            entryPoint: String
+            entryPoint: String,
+            osVersion: String
         ) {
             let platform = "iOS"
-            let osVersion = UIDevice.current.systemVersion
             var comment = "\(userCommentPlatform)=\(platform)," +
             "\(userCommentOSVer)=\(osVersion)"
             if !giniCaptureVersion.isEmpty {
