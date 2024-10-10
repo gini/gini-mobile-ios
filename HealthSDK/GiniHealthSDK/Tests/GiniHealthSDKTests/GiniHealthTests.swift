@@ -67,7 +67,7 @@ final class GiniHealthTests: XCTestCase {
             return
         }
         let extractionsResult = ExtractionResult(extractionsContainer: extractions)
-        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
+        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == GiniHealthSDK.PaymentState.payable.rawValue
         // Then
         XCTAssertEqual(isPayable, true)
     }
@@ -81,7 +81,7 @@ final class GiniHealthTests: XCTestCase {
             return
         }
         let extractionsResult = ExtractionResult(extractionsContainer: extractions)
-        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
+        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == GiniHealthSDK.PaymentState.payable.rawValue
         // Then
         XCTAssertEqual(isPayable, false)
     }
@@ -452,16 +452,16 @@ final class GiniHealthTests: XCTestCase {
     func testGetAllExtractions_Success() {
         // Given
         let fileName = "test_doctorsname"
-        let expectedExtractionContainer: ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
+        let expectedExtractionContainer: GiniHealthSDK.ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
         guard let expectedExtractionContainer else {
             XCTFail("Error loading file: `\(fileName).json`")
             return
         }
-        let expectedExtractions: [Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).extractions
+        let expectedExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).extractions
 
         // When
         let expectation = self.expectation(description: "Getting all extractions")
-        var receivedExtractions: [Extraction]?
+        var receivedExtractions: [GiniHealthSDK.Extraction]?
         giniHealth.getAllExtractions(docId: MockSessionManager.doctorsNameDocumentID) { result in
             switch result {
             case .success(let extractions):
@@ -481,7 +481,7 @@ final class GiniHealthTests: XCTestCase {
     func testGetAlllExtractions_Failure() {
         // When
         let expectation = self.expectation(description: "Extraction failure")
-        var receivedExtractions: [Extraction]?
+        var receivedExtractions: [GiniHealthSDK.Extraction]?
         giniHealth.getAllExtractions(docId: MockSessionManager.failurePayableDocumentID) { result in
             switch result {
             case .success(let extractions):
@@ -503,7 +503,7 @@ final class GiniHealthTests: XCTestCase {
 
         // When
         let expectation = self.expectation(description: "Getting doctor name extractions")
-        var receivedDoctorExtraction: Extraction?
+        var receivedDoctorExtraction: GiniHealthSDK.Extraction?
         giniHealth.getAllExtractions(docId: MockSessionManager.doctorsNameDocumentID) { result in
             switch result {
             case .success(let extractions):
