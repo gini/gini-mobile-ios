@@ -426,7 +426,8 @@ fileprivate extension Camera {
             deviceOrientation: UIDevice.current.orientation.isLandscape ? "landscape" : "portrait",
             source: DocumentSource.camera.value,
             importMethod: "",
-            entryPoint: entryFieldString(GiniConfiguration.shared.entryPoint)
+            entryPoint: entryFieldString(GiniConfiguration.shared.entryPoint),
+            osVersion: UIDevice.current.systemVersion
         )
     }
 
