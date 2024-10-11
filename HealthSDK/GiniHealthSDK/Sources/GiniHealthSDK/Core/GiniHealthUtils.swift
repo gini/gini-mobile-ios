@@ -6,13 +6,6 @@
 //
 
 import UIKit
-/**
-  Returns the GiniHealth bundle.
- 
- */
-public func giniHealthBundle() -> Bundle {
-    giniHealthBundleResource()
-}
 
 /**
  Returns an optional `UIImage` instance with the given `name` preferably from the client's bundle.
@@ -25,7 +18,7 @@ func UIImageNamedPreferred(named name: String) -> UIImage? {
     if let clientImage = UIImage(named: name) {
         return clientImage
     }
-    return UIImage(named: name, in: giniHealthBundle(), compatibleWith: nil)
+    return UIImage(named: name, in: giniHealthBundleResource(), compatibleWith: nil)
 }
 
 /**

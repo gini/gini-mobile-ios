@@ -61,7 +61,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
-        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
+        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundleResource())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
         let viewModel = PaymentReviewModel(with: giniHealth,
                                            document: document,
@@ -74,7 +74,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
-        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
+        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundleResource())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
         let viewModel = PaymentReviewModel(with: giniHealth,
                                            document: data.document,
