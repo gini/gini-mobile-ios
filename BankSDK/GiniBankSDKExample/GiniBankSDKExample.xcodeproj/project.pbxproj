@@ -47,6 +47,7 @@
 		28D0DB1D2CB80B41003CA3B7 /* result_Gini_invoice_example_skonto.json in Resources */ = {isa = PBXBuildFile; fileRef = 28D0DB1B2CB80B41003CA3B7 /* result_Gini_invoice_example_skonto.json */; };
 		28D0DB242CB90764003CA3B7 /* Gini_invoice_example_skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28D0DB222CB90764003CA3B7 /* Gini_invoice_example_skonto.pdf */; };
 		28D0DB252CB90764003CA3B7 /* result_Gini_invoice_example_skonto.json in Resources */ = {isa = PBXBuildFile; fileRef = 28D0DB232CB90764003CA3B7 /* result_Gini_invoice_example_skonto.json */; };
+		28D0DB272CB91F5B003CA3B7 /* DocumentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D0DB262CB91F5B003CA3B7 /* DocumentCreationTests.swift */; };
 		28DAC20B2CB6D94F008B85E0 /* BaseIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAC2092CB6D90A008B85E0 /* BaseIntegrationTest.swift */; };
 		28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB2C812A39AF5000F5B304 /* GiniButton.swift */; };
 		28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC10722AB345400080FD4F /* UIImage+TintColor.swift */; };
@@ -266,6 +267,7 @@
 		28D0DB1B2CB80B41003CA3B7 /* result_Gini_invoice_example_skonto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = result_Gini_invoice_example_skonto.json; path = Tests/Resources/Skonto/result_Gini_invoice_example_skonto.json; sourceTree = SOURCE_ROOT; };
 		28D0DB222CB90764003CA3B7 /* Gini_invoice_example_skonto.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_skonto.pdf; sourceTree = "<group>"; };
 		28D0DB232CB90764003CA3B7 /* result_Gini_invoice_example_skonto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_skonto.json; sourceTree = "<group>"; };
+		28D0DB262CB91F5B003CA3B7 /* DocumentCreationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCreationTests.swift; sourceTree = "<group>"; };
 		28DAC2092CB6D90A008B85E0 /* BaseIntegrationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseIntegrationTest.swift; sourceTree = "<group>"; };
 		28DB2C812A39AF5000F5B304 /* GiniButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniButton.swift; sourceTree = "<group>"; };
 		28EC10722AB345400080FD4F /* UIImage+TintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+TintColor.swift"; sourceTree = "<group>"; };
@@ -729,6 +731,7 @@
 			isa = PBXGroup;
 			children = (
 				28DAC2092CB6D90A008B85E0 /* BaseIntegrationTest.swift */,
+				28D0DB262CB91F5B003CA3B7 /* DocumentCreationTests.swift */,
 				28D0DB0F2CB803E7003CA3B7 /* SkontoIntegrationTests.swift */,
 				289917FF2BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift */,
 				F45D7F002800566900C73C63 /* TransferSummaryIntegrationTest.swift */,
@@ -1283,6 +1286,7 @@
 				28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */,
 				F45D7F0E2800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
 				F45D7F152800566900C73C63 /* SettingsViewControllerTests.swift in Sources */,
+				28D0DB272CB91F5B003CA3B7 /* DocumentCreationTests.swift in Sources */,
 				28DAC20B2CB6D94F008B85E0 /* BaseIntegrationTest.swift in Sources */,
 				28D0DB102CB803E7003CA3B7 /* SkontoIntegrationTests.swift in Sources */,
 				F45D7F0C2800566900C73C63 /* TransferSummaryIntegrationTest.swift in Sources */,
