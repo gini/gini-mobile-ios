@@ -26,11 +26,15 @@ class TransactionDocsAlertControllerTests: XCTestCase {
                                             attachOnceHandler: { },
                                             doNotAttachHandler: { })
 
-        XCTAssertTrue(mockViewController.presentCalled, "Expected present() to be called when presenting alert controller")
-        XCTAssertNotNil(mockViewController.viewControllerToPresent as? UIAlertController, "Expected presented view controller to be of type UIAlertController")
+        XCTAssertTrue(mockViewController.presentCalled,
+                      "Expected present() to be called when presenting alert controller")
+        XCTAssertNotNil(mockViewController.viewControllerToPresent as? UIAlertController,
+                        "Expected presented view controller to be of type UIAlertController")
 
         let alertController = mockViewController.viewControllerToPresent as? UIAlertController
-        XCTAssertEqual(alertController?.actions.count, 3, "Expected UIAlertController to have exactly 3 actions")
+        XCTAssertEqual(alertController?.actions.count,
+                       3,
+                       "Expected UIAlertController to have exactly 3 actions")
     }
 }
 
