@@ -14,6 +14,30 @@
 		287068432CB950D700D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2870683E2CB94F7500D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf */; };
 		287068462CB9519000D5F2C9 /* result_Gini_invoice_example_RA_Skonto.json in Resources */ = {isa = PBXBuildFile; fileRef = 287068402CB94FDD00D5F2C9 /* result_Gini_invoice_example_RA_Skonto.json */; };
 		287068472CB9519200D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2870683E2CB94F7500D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf */; };
+		287068502CB9670200D5F2C9 /* GiniBankSDKExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870684F2CB9670200D5F2C9 /* GiniBankSDKExampleUITests.swift */; };
+		287068702CB9675000D5F2C9 /* GiniMainScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287068582CB9674F00D5F2C9 /* GiniMainScreenUITests.swift */; };
+		287068722CB9675000D5F2C9 /* GiniReviewScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870685A2CB9674F00D5F2C9 /* GiniReviewScreenUITests.swift */; };
+		287068732CB9675000D5F2C9 /* GiniReturnAssistantScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870685B2CB9674F00D5F2C9 /* GiniReturnAssistantScreenUITests.swift */; };
+		287068742CB9675000D5F2C9 /* GiniOnboardingScreenUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870685C2CB9674F00D5F2C9 /* GiniOnboardingScreenUITest.swift */; };
+		287068752CB9675000D5F2C9 /* CameraAccessScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870685D2CB9675000D5F2C9 /* CameraAccessScreen.swift */; };
+		287068762CB9675000D5F2C9 /* CaptureScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870685E2CB9675000D5F2C9 /* CaptureScreen.swift */; };
+		287068772CB9675000D5F2C9 /* ErrorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870685F2CB9675000D5F2C9 /* ErrorScreen.swift */; };
+		287068782CB9675000D5F2C9 /* HelpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287068602CB9675000D5F2C9 /* HelpScreen.swift */; };
+		287068792CB9675000D5F2C9 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287068612CB9675000D5F2C9 /* MainScreen.swift */; };
+		2870687A2CB9675000D5F2C9 /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287068622CB9675000D5F2C9 /* OnboardingScreen.swift */; };
+		2870687B2CB9675000D5F2C9 /* ReturnAssistantScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287068632CB9675000D5F2C9 /* ReturnAssistantScreen.swift */; };
+		2870687C2CB9675000D5F2C9 /* ReviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287068642CB9675000D5F2C9 /* ReviewScreen.swift */; };
+		2870687D2CB9675000D5F2C9 /* SettingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287068652CB9675000D5F2C9 /* SettingScreen.swift */; };
+		2870687E2CB9675000D5F2C9 /* SkontoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287068662CB9675000D5F2C9 /* SkontoScreen.swift */; };
+		2870687F2CB9675000D5F2C9 /* GiniHelpScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287068682CB9675000D5F2C9 /* GiniHelpScreenUITests.swift */; };
+		287068802CB9675000D5F2C9 /* GiniSkontoScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287068692CB9675000D5F2C9 /* GiniSkontoScreenUITests.swift */; };
+		287068812CB9675000D5F2C9 /* GiniErrorScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870686A2CB9675000D5F2C9 /* GiniErrorScreenUITests.swift */; };
+		287068822CB9675000D5F2C9 /* GiniCaptureScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870686B2CB9675000D5F2C9 /* GiniCaptureScreenUITests.swift */; };
+		287068832CB9675000D5F2C9 /* MainScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870686C2CB9675000D5F2C9 /* MainScreenAccessibilityIdentifiers.swift */; };
+		287068842CB9675000D5F2C9 /* SettingScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870686D2CB9675000D5F2C9 /* SettingScreenAccessibilityIdentifiers.swift */; };
+		287068852CB9675000D5F2C9 /* GiniCameraAccessScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870686F2CB9675000D5F2C9 /* GiniCameraAccessScreenUITests.swift */; };
+		287068862CB969FE00D5F2C9 /* MainScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870686C2CB9675000D5F2C9 /* MainScreenAccessibilityIdentifiers.swift */; };
+		287068872CB96A0200D5F2C9 /* SettingScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870686D2CB9675000D5F2C9 /* SettingScreenAccessibilityIdentifiers.swift */; };
 		2883DE062AB89F4000AE3A9C /* GiniCaptureSDKColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2883DE052AB89F4000AE3A9C /* GiniCaptureSDKColors.swift */; };
 		289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */; };
 		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
@@ -155,6 +179,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		287068532CB9670200D5F2C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F490C7B725DE72E400D8CA6F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F490C7E125DE873900D8CA6F;
+			remoteInfo = GiniBankSDKExample;
+		};
 		F490C80C25DE87AF00D8CA6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F490C7B725DE72E400D8CA6F /* Project object */;
@@ -191,6 +222,29 @@
 		2870683B2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalInvoiceWithSkontoIntegrationTests.swift; sourceTree = "<group>"; };
 		2870683E2CB94F7500D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_RA_Skonto.pdf; sourceTree = "<group>"; };
 		287068402CB94FDD00D5F2C9 /* result_Gini_invoice_example_RA_Skonto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_RA_Skonto.json; sourceTree = "<group>"; };
+		2870684D2CB9670200D5F2C9 /* GiniBankSDKExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2870684F2CB9670200D5F2C9 /* GiniBankSDKExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankSDKExampleUITests.swift; sourceTree = "<group>"; };
+		287068582CB9674F00D5F2C9 /* GiniMainScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniMainScreenUITests.swift; sourceTree = "<group>"; };
+		2870685A2CB9674F00D5F2C9 /* GiniReviewScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniReviewScreenUITests.swift; sourceTree = "<group>"; };
+		2870685B2CB9674F00D5F2C9 /* GiniReturnAssistantScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniReturnAssistantScreenUITests.swift; sourceTree = "<group>"; };
+		2870685C2CB9674F00D5F2C9 /* GiniOnboardingScreenUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniOnboardingScreenUITest.swift; sourceTree = "<group>"; };
+		2870685D2CB9675000D5F2C9 /* CameraAccessScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraAccessScreen.swift; sourceTree = "<group>"; };
+		2870685E2CB9675000D5F2C9 /* CaptureScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureScreen.swift; sourceTree = "<group>"; };
+		2870685F2CB9675000D5F2C9 /* ErrorScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorScreen.swift; sourceTree = "<group>"; };
+		287068602CB9675000D5F2C9 /* HelpScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpScreen.swift; sourceTree = "<group>"; };
+		287068612CB9675000D5F2C9 /* MainScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		287068622CB9675000D5F2C9 /* OnboardingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
+		287068632CB9675000D5F2C9 /* ReturnAssistantScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReturnAssistantScreen.swift; sourceTree = "<group>"; };
+		287068642CB9675000D5F2C9 /* ReviewScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewScreen.swift; sourceTree = "<group>"; };
+		287068652CB9675000D5F2C9 /* SettingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingScreen.swift; sourceTree = "<group>"; };
+		287068662CB9675000D5F2C9 /* SkontoScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkontoScreen.swift; sourceTree = "<group>"; };
+		287068682CB9675000D5F2C9 /* GiniHelpScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniHelpScreenUITests.swift; sourceTree = "<group>"; };
+		287068692CB9675000D5F2C9 /* GiniSkontoScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniSkontoScreenUITests.swift; sourceTree = "<group>"; };
+		2870686A2CB9675000D5F2C9 /* GiniErrorScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniErrorScreenUITests.swift; sourceTree = "<group>"; };
+		2870686B2CB9675000D5F2C9 /* GiniCaptureScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniCaptureScreenUITests.swift; sourceTree = "<group>"; };
+		2870686C2CB9675000D5F2C9 /* MainScreenAccessibilityIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainScreenAccessibilityIdentifiers.swift; sourceTree = "<group>"; };
+		2870686D2CB9675000D5F2C9 /* SettingScreenAccessibilityIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingScreenAccessibilityIdentifiers.swift; sourceTree = "<group>"; };
+		2870686F2CB9675000D5F2C9 /* GiniCameraAccessScreenUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniCameraAccessScreenUITests.swift; sourceTree = "<group>"; };
 		2883DE052AB89F4000AE3A9C /* GiniCaptureSDKColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniCaptureSDKColors.swift; sourceTree = "<group>"; };
 		289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SwitchOptionModel.swift"; sourceTree = "<group>"; };
 		289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SegmentedOptionModel.swift"; sourceTree = "<group>"; };
@@ -331,6 +385,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2870684A2CB9670200D5F2C9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4807C31263C20BA00F30FF3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -375,6 +436,51 @@
 				2870683E2CB94F7500D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf */,
 			);
 			path = DigitalInvoiceWithSkonto;
+			sourceTree = "<group>";
+		};
+		2870684E2CB9670200D5F2C9 /* GiniBankSDKExampleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				2870686E2CB9675000D5F2C9 /* AccessibilityIdentifiers */,
+				2870684F2CB9670200D5F2C9 /* GiniBankSDKExampleUITests.swift */,
+				2870686F2CB9675000D5F2C9 /* GiniCameraAccessScreenUITests.swift */,
+				2870686B2CB9675000D5F2C9 /* GiniCaptureScreenUITests.swift */,
+				2870686A2CB9675000D5F2C9 /* GiniErrorScreenUITests.swift */,
+				287068682CB9675000D5F2C9 /* GiniHelpScreenUITests.swift */,
+				287068582CB9674F00D5F2C9 /* GiniMainScreenUITests.swift */,
+				2870685C2CB9674F00D5F2C9 /* GiniOnboardingScreenUITest.swift */,
+				2870685B2CB9674F00D5F2C9 /* GiniReturnAssistantScreenUITests.swift */,
+				2870685A2CB9674F00D5F2C9 /* GiniReviewScreenUITests.swift */,
+				287068692CB9675000D5F2C9 /* GiniSkontoScreenUITests.swift */,
+				287068672CB9675000D5F2C9 /* Screens */,
+			);
+			path = GiniBankSDKExampleUITests;
+			sourceTree = "<group>";
+		};
+		287068672CB9675000D5F2C9 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2870685D2CB9675000D5F2C9 /* CameraAccessScreen.swift */,
+				2870685E2CB9675000D5F2C9 /* CaptureScreen.swift */,
+				2870685F2CB9675000D5F2C9 /* ErrorScreen.swift */,
+				287068602CB9675000D5F2C9 /* HelpScreen.swift */,
+				287068612CB9675000D5F2C9 /* MainScreen.swift */,
+				287068622CB9675000D5F2C9 /* OnboardingScreen.swift */,
+				287068632CB9675000D5F2C9 /* ReturnAssistantScreen.swift */,
+				287068642CB9675000D5F2C9 /* ReviewScreen.swift */,
+				287068652CB9675000D5F2C9 /* SettingScreen.swift */,
+				287068662CB9675000D5F2C9 /* SkontoScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2870686E2CB9675000D5F2C9 /* AccessibilityIdentifiers */ = {
+			isa = PBXGroup;
+			children = (
+				2870686C2CB9675000D5F2C9 /* MainScreenAccessibilityIdentifiers.swift */,
+				2870686D2CB9675000D5F2C9 /* SettingScreenAccessibilityIdentifiers.swift */,
+			);
+			path = AccessibilityIdentifiers;
 			sourceTree = "<group>";
 		};
 		28B5873A2A37270F008CB210 /* Utils */ = {
@@ -752,6 +858,7 @@
 				F490C7E325DE873900D8CA6F /* GiniBankSDKExample */,
 				F4807C35263C20BA00F30FF3 /* GiniBankSDKExampleBank */,
 				F4C723AB28F8354400BDDEA7 /* GiniBankSDKShareExtension */,
+				2870684E2CB9670200D5F2C9 /* GiniBankSDKExampleUITests */,
 				F490C7C125DE72E400D8CA6F /* Products */,
 				F439C21927355C310010D77D /* Frameworks */,
 			);
@@ -764,6 +871,7 @@
 				F490C7FD25DE87A900D8CA6F /* GiniBankSDKExampleTests.xctest */,
 				F4807C34263C20BA00F30FF3 /* GiniBankSDKExampleBank.app */,
 				F4C723AA28F8354400BDDEA7 /* GiniBankSDKShareExtension.appex */,
+				2870684D2CB9670200D5F2C9 /* GiniBankSDKExampleUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -826,6 +934,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2870684C2CB9670200D5F2C9 /* GiniBankSDKExampleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 287068572CB9670200D5F2C9 /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleUITests" */;
+			buildPhases = (
+				287068492CB9670200D5F2C9 /* Sources */,
+				2870684A2CB9670200D5F2C9 /* Frameworks */,
+				2870684B2CB9670200D5F2C9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				287068542CB9670200D5F2C9 /* PBXTargetDependency */,
+			);
+			name = GiniBankSDKExampleUITests;
+			productName = GiniBankSDKExampleUITests;
+			productReference = 2870684D2CB9670200D5F2C9 /* GiniBankSDKExampleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		F4807C33263C20BA00F30FF3 /* GiniBankSDKExampleBank */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4807C47263C20BB00F30FF3 /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleBank" */;
@@ -913,9 +1039,13 @@
 		F490C7B725DE72E400D8CA6F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1400;
+				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					2870684C2CB9670200D5F2C9 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = F490C7E125DE873900D8CA6F;
+					};
 					F4807C33263C20BA00F30FF3 = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -952,11 +1082,19 @@
 				F490C7FC25DE87A800D8CA6F /* GiniBankSDKExampleTests */,
 				F4807C33263C20BA00F30FF3 /* GiniBankSDKExampleBank */,
 				F4C723A928F8354400BDDEA7 /* GiniBankSDKShareExtension */,
+				2870684C2CB9670200D5F2C9 /* GiniBankSDKExampleUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2870684B2CB9670200D5F2C9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4807C32263C20BA00F30FF3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1066,6 +1204,35 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		287068492CB9670200D5F2C9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				287068792CB9675000D5F2C9 /* MainScreen.swift in Sources */,
+				287068852CB9675000D5F2C9 /* GiniCameraAccessScreenUITests.swift in Sources */,
+				2870687B2CB9675000D5F2C9 /* ReturnAssistantScreen.swift in Sources */,
+				287068702CB9675000D5F2C9 /* GiniMainScreenUITests.swift in Sources */,
+				287068502CB9670200D5F2C9 /* GiniBankSDKExampleUITests.swift in Sources */,
+				287068812CB9675000D5F2C9 /* GiniErrorScreenUITests.swift in Sources */,
+				287068822CB9675000D5F2C9 /* GiniCaptureScreenUITests.swift in Sources */,
+				287068732CB9675000D5F2C9 /* GiniReturnAssistantScreenUITests.swift in Sources */,
+				287068842CB9675000D5F2C9 /* SettingScreenAccessibilityIdentifiers.swift in Sources */,
+				287068742CB9675000D5F2C9 /* GiniOnboardingScreenUITest.swift in Sources */,
+				287068752CB9675000D5F2C9 /* CameraAccessScreen.swift in Sources */,
+				287068722CB9675000D5F2C9 /* GiniReviewScreenUITests.swift in Sources */,
+				2870687E2CB9675000D5F2C9 /* SkontoScreen.swift in Sources */,
+				2870687A2CB9675000D5F2C9 /* OnboardingScreen.swift in Sources */,
+				287068772CB9675000D5F2C9 /* ErrorScreen.swift in Sources */,
+				2870687F2CB9675000D5F2C9 /* GiniHelpScreenUITests.swift in Sources */,
+				2870687D2CB9675000D5F2C9 /* SettingScreen.swift in Sources */,
+				287068802CB9675000D5F2C9 /* GiniSkontoScreenUITests.swift in Sources */,
+				287068832CB9675000D5F2C9 /* MainScreenAccessibilityIdentifiers.swift in Sources */,
+				287068782CB9675000D5F2C9 /* HelpScreen.swift in Sources */,
+				287068762CB9675000D5F2C9 /* CaptureScreen.swift in Sources */,
+				2870687C2CB9675000D5F2C9 /* ReviewScreen.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4807C30263C20BA00F30FF3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1113,6 +1280,7 @@
 				28F62FA72AB2236500D47866 /* Device.swift in Sources */,
 				837EEFB5291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
 				76610BE9298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */,
+				287068862CB969FE00D5F2C9 /* MainScreenAccessibilityIdentifiers.swift in Sources */,
 				F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */,
 				28B5874C2A374730008CB210 /* SegmentedOptionTableViewCell.swift in Sources */,
 				8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */,
@@ -1140,6 +1308,7 @@
 				28F62F9C2AB21ACE00D47866 /* Localized.swift in Sources */,
 				28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */,
 				28A411302A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift in Sources */,
+				287068872CB96A0200D5F2C9 /* SettingScreenAccessibilityIdentifiers.swift in Sources */,
 				28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */,
 				289D3DB32A4EC857002A6681 /* InfoTableViewCell.swift in Sources */,
 				3E7839CE29C9DBB700B42216 /* ExtractionResultTableViewCell.swift in Sources */,
@@ -1179,6 +1348,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		287068542CB9670200D5F2C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F490C7E125DE873900D8CA6F /* GiniBankSDKExample */;
+			targetProxy = 287068532CB9670200D5F2C9 /* PBXContainerItemProxy */;
+		};
 		F490C80D25DE87AF00D8CA6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F490C7E125DE873900D8CA6F /* GiniBankSDKExample */;
@@ -1280,6 +1454,61 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		287068552CB9670200D5F2C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdk.example.uitests.GiniBankSDKExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GiniBankSDKExample;
+			};
+			name = Debug;
+		};
+		287068562CB9670200D5F2C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdk.example.uitests.GiniBankSDKExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GiniBankSDKExample;
+			};
+			name = Release;
+		};
 		F4807C45263C20BB00F30FF3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1637,6 +1866,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		287068572CB9670200D5F2C9 /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				287068552CB9670200D5F2C9 /* Debug */,
+				287068562CB9670200D5F2C9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F4807C47263C20BB00F30FF3 /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleBank" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
