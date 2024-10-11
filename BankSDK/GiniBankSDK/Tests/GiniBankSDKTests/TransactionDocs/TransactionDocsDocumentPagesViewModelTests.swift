@@ -23,30 +23,43 @@ final class TransactionDocsDocumentPagesViewModelTests: XCTestCase {
     func testInitializationWithValidAmountToPayAndIBAN() {
         let viewModel = buildViewModel(amount: validAmountToPay, iban: testIban, images: testImages)
 
-        XCTAssertEqual(viewModel.bottomInfoItems.count, 2, "Expected bottomInfoItems to contain 2 items: amountToPayString and ibanString")
-        XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.amountToPayString), "Expected bottomInfoItems to contain amountToPayString")
-        XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.ibanString), "Expected bottomInfoItems to contain ibanString")
+        XCTAssertEqual(viewModel.bottomInfoItems.count,
+                       2,
+                       "Expected bottomInfoItems to contain 2 items: amountToPayString and ibanString")
+        XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.amountToPayString),
+                      "Expected bottomInfoItems to contain amountToPayString")
+        XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.ibanString),
+                      "Expected bottomInfoItems to contain ibanString")
     }
     
     func testInitializationWithEmptyIBANAndZeroAmount() {
         let viewModel = buildViewModel(amount: zeroAmountToPay, iban: "", images: singleTestImage)
-        XCTAssertTrue(viewModel.bottomInfoItems.isEmpty, "Expected no bottom info items when both IBAN and amount are empty")
+        XCTAssertTrue(viewModel.bottomInfoItems.isEmpty,
+                      "Expected no bottom info items when both IBAN and amount are empty")
     }
 
     func testInitializationWithZeroAmountToPay() {
         let viewModel = buildViewModel(amount: zeroAmountToPay, iban: testIban, images: singleTestImage)
 
-        XCTAssertEqual(viewModel.bottomInfoItems.count, 1, "Expected bottomInfoItems to contain 1 item (ibanString) when amountToPay is zero")
-        XCTAssertFalse(viewModel.bottomInfoItems.contains(viewModel.amountToPayString), "Expected bottomInfoItems not to contain amountToPayString when amountToPay is zero")
-        XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.ibanString), "Expected bottomInfoItems to contain ibanString")
+        XCTAssertEqual(viewModel.bottomInfoItems.count,
+                       1,
+                       "Expected bottomInfoItems to contain 1 item (ibanString) when amountToPay is zero")
+        XCTAssertFalse(viewModel.bottomInfoItems.contains(viewModel.amountToPayString),
+                       "Expected bottomInfoItems not to contain amountToPayString when amountToPay is zero")
+        XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.ibanString),
+                      "Expected bottomInfoItems to contain ibanString")
     }
 
     func testInitializationWithEmptyIBAN() {
         let viewModel = buildViewModel(amount: validAmountToPay, iban: "", images: singleTestImage)
 
-        XCTAssertEqual(viewModel.bottomInfoItems.count, 1, "Expected bottomInfoItems to contain 1 item (amountToPayString) when IBAN is empty")
-        XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.amountToPayString), "Expected bottomInfoItems to contain amountToPayString")
-        XCTAssertFalse(viewModel.bottomInfoItems.contains(viewModel.ibanString), "Expected bottomInfoItems not to contain ibanString when IBAN is empty")
+        XCTAssertEqual(viewModel.bottomInfoItems.count,
+                       1,
+                       "Expected bottomInfoItems to contain 1 item (amountToPayString) when IBAN is empty")
+        XCTAssertTrue(viewModel.bottomInfoItems.contains(viewModel.amountToPayString),
+                      "Expected bottomInfoItems to contain amountToPayString")
+        XCTAssertFalse(viewModel.bottomInfoItems.contains(viewModel.ibanString),
+                       "Expected bottomInfoItems not to contain ibanString when IBAN is empty")
     }
 
     func testImagesForDisplay() {
@@ -55,8 +68,12 @@ final class TransactionDocsDocumentPagesViewModelTests: XCTestCase {
 
         let displayedImages = viewModel.imagesForDisplay()
 
-        XCTAssertEqual(displayedImages.count, testImages.count, "Expected displayedImages count to match original testImages count")
-        XCTAssertEqual(displayedImages, testImages, "Expected displayedImages to match the original testImages")
+        XCTAssertEqual(displayedImages.count,
+                       testImages.count,
+                       "Expected displayedImages count to match original testImages count")
+        XCTAssertEqual(displayedImages,
+                       testImages,
+                       "Expected displayedImages to match the original testImages")
     }
 
     func testRightBarButtonAction() {
