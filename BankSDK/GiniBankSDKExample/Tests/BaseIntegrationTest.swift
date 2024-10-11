@@ -11,6 +11,7 @@ import XCTest
 
 class BaseIntegrationTest: XCTestCase {
     lazy var giniHelper = GiniSetupHelper()
+    var analysisExtractionResult: ExtractionResult?
 
     override func setUp() {
         giniHelper.setup()
@@ -24,8 +25,7 @@ class BaseIntegrationTest: XCTestCase {
      * In your production code you should not call `DocumentService` methods.
      * Interaction with the network service is handled by the Bank SDK internally.
      */
-
-    func uploadAndAnalyzeDocument(fileName: String, 
+    func uploadAndAnalyzeDocument(fileName: String,
                                   delegate: GiniCaptureResultsDelegate,
                                   documentType: String = "pdf",
                                   sendTransferSummaryIfNeeded: Bool = false) {
@@ -57,7 +57,7 @@ class BaseIntegrationTest: XCTestCase {
                                                                     images: [],
                                                                     document: self.giniHelper.giniCaptureSDKDocumentService?.document,
                                                                     candidates: [:])
-
+                                self.analysisExtractionResult = extractionResult
                                 delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
                                 GiniBankConfiguration.shared.lineItems = extractionResult.lineItems
                                 if sendTransferSummaryIfNeeded {
@@ -132,9 +132,10 @@ class BaseIntegrationTest: XCTestCase {
         XCTAssertNotNil(paymentRecipientExtraction?.value, "The value of paymentRecipient extraction should not be nil.")
     }
 
-    func verifyExtractions(result: AnalysisResult, fileName: String, verifyLineItemsIfNeeded: Bool = false) {
+    @discardableResult
+    func verifyExtractions(result: AnalysisResult, fileName: String, verifyLineItemsIfNeeded: Bool = false) -> ExtractionsContainer? {
         guard let fixtureExtractionsContainer = loadFixtureExtractionsContainer(from: fileName) else {
-            return
+            return nil
         }
 
         verifyExtractions(result: result, fixtureContainer: fixtureExtractionsContainer)
@@ -142,6 +143,7 @@ class BaseIntegrationTest: XCTestCase {
         if verifyLineItemsIfNeeded {
             verifyLineItems(result: result, fixtureContainer: fixtureExtractionsContainer)
         }
+        return fixtureExtractionsContainer
     }
 
     // Specific method for verifying line items on the Return Assistent invoice
