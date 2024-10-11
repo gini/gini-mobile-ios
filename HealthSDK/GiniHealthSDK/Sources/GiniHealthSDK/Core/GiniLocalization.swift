@@ -40,10 +40,10 @@ enum GiniLocalized {
         } else if let fallbackKey = fallbackKey,
                     let fallbackClientString = overridedString(fallbackKey, locale: locale, comment: comment, bundle: clientAppBundle) {
             return fallbackClientString
-        } else if let sdkString = overridedString(key, locale: locale, comment: comment, bundle: giniHealthBundle()) {
+        } else if let sdkString = overridedString(key, locale: locale, comment: comment, bundle: giniHealthBundleResource()) {
             return sdkString
         }
-        return localizationString(fallbackKey ?? "", locale: locale, comment: comment, bundle: giniHealthBundle())
+        return localizationString(fallbackKey ?? "", locale: locale, comment: comment, bundle: giniHealthBundleResource())
     }
     
     /**
