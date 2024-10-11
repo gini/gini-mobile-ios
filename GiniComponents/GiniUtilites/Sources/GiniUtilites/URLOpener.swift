@@ -7,6 +7,12 @@
 
 import UIKit
 
+#if compiler(>=6.0)
+public typealias GiniOpenLinkCompletionBlock = @MainActor @Sendable (Bool) -> Void
+#else
+public typealias GiniOpenLinkCompletionBlock = (Bool) -> Void
+#endif
+
 // URLOpener helper structure for better testing of the open AppStore links functionality
 public struct URLOpener {
     private let application: URLOpenerProtocol
@@ -22,12 +28,13 @@ public struct URLOpener {
     ///   - completion: called after opening is completed
     ///                 param is true if website was opened successfully
     ///                 param is false if opening failed
-
-    public func openLink(url: URL, completion: ((Bool) -> Void)?) {
+    public func openLink(url: URL, completion: GiniOpenLinkCompletionBlock?) {
         if application.canOpenURL(url) {
             application.open(url, options: [:], completionHandler: completion)
         } else {
-            completion?(false)
+            Task { @MainActor in
+                completion?(false)
+            }
         }
     }
     
@@ -38,7 +45,7 @@ public struct URLOpener {
 
 public protocol URLOpenerProtocol {
     func canOpenURL(_ url: URL) -> Bool
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?)
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: GiniOpenLinkCompletionBlock?)
 }
 
 extension UIApplication: URLOpenerProtocol {}
