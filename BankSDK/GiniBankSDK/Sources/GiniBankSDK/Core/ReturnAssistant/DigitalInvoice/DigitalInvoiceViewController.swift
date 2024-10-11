@@ -249,7 +249,8 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
                                                                            index: indexPath.row,
                                                                            invoiceNumTotal: invoice.numTotal,
                                                                            invoiceLineItemsCount:
-                                                                                invoice.lineItems.count)
+                                                                           invoice.lineItems.count,
+                                                                           nameMaxCharactersCount: Constants.nameMaxCharactersCount)
                 }
                 cell.delegate = self
                 return cell
@@ -372,5 +373,6 @@ private extension DigitalInvoiceViewController {
         static let buttonContainerHeight: CGFloat = 160
         static let payButtonHeight: CGFloat = 50
         static let dividerViewHeight: CGFloat = 1
+        static let nameMaxCharactersCount: Int = 150
     }
 }
