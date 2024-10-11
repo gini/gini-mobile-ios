@@ -36,7 +36,11 @@ class BaseIntegrationTest: XCTestCase {
         }
 
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "GiniBankSDKExample"))
-        let captureDocument = builder.build(with: testDocumentData, fileName: "\(fileName).\(documentType)")!
+        guard let captureDocument = builder.build(with: testDocumentData, 
+                                                  fileName: "\(fileName).\(documentType)") else {
+            XCTFail("Failed to build capture document with file: \(fileName).\(documentType)")
+            return
+        }
 
         GiniBankConfiguration.shared.documentService = giniHelper.giniCaptureSDKDocumentService
 
@@ -133,7 +137,9 @@ class BaseIntegrationTest: XCTestCase {
     }
 
     @discardableResult
-    func verifyExtractions(result: AnalysisResult, fileName: String, verifyLineItemsIfNeeded: Bool = false) -> ExtractionsContainer? {
+    func verifyExtractions(result: AnalysisResult,
+                           fileName: String,
+                           verifyLineItemsIfNeeded: Bool = false) -> ExtractionsContainer? {
         guard let fixtureExtractionsContainer = loadFixtureExtractionsContainer(from: fileName) else {
             return nil
         }
@@ -169,7 +175,9 @@ class BaseIntegrationTest: XCTestCase {
             if let fixtureBaseGrossExtraction = fixtureItem.first(where: { $0.name == "baseGross" }),
                let resultBaseGrossExtraction = resultItem.first(where: { $0.name == "baseGross" }) {
                 // Compare the values of baseGross extractions
-                XCTAssertEqual(fixtureBaseGrossExtraction.value, resultBaseGrossExtraction.value, "Values for baseGross are not equal.")
+                XCTAssertEqual(fixtureBaseGrossExtraction.value, 
+                               resultBaseGrossExtraction.value,
+                               "Values for baseGross are not equal.")
             } else {
                 XCTFail("baseGross not found in one or both arrays.")
             }
