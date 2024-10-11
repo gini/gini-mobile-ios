@@ -4,10 +4,9 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-
-import Foundation
-import XCTest
-import GiniBankSDK
+//import Foundation
+//import XCTest
+//import GiniBankSDK
 
 /*
 class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {

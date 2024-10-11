@@ -5,8 +5,8 @@
 //
 
 
-import Foundation
-import XCTest
+//import Foundation
+//import XCTest
 /*
 class GiniCaptureScreenUITests: GiniBankSDKExampleUITests {
     
