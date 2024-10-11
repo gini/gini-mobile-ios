@@ -35,7 +35,7 @@ class SkontoIntegrationTests: BaseIntegrationTest {
             let mockedInvoiceName = "result_Gini_invoice_example_skonto"
             guard let analysisExtractionResult = testCase.analysisExtractionResult,
                   let fixtureContainer = testCase.verifyExtractions(result: result,
-                                                              fileName: mockedInvoiceName) else {
+                                                                    fileName: mockedInvoiceName) else {
                 return
             }
             testCase.verifySkontoDiscounts(result: analysisExtractionResult, fixtureContainer: fixtureContainer)
