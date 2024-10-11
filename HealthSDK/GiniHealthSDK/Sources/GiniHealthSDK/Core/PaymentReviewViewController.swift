@@ -61,7 +61,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
-        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
+        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundleResource())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
         let viewModel = PaymentReviewModel(with: giniHealth,
                                            document: document,
@@ -74,7 +74,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
-        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
+        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundleResource())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
         let viewModel = PaymentReviewModel(with: giniHealth,
                                            document: data.document,
@@ -453,7 +453,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func fillInInputFields() {
         guard let model else { return }
-        recipientTextFieldView.text = model.extractions.first(where: {$0.name == ExtractionType.paymentRecipient.rawValue})?.value
+        recipientTextFieldView.text = model.extractions.first(where: {$0.name == ExtractionType.doctorName.rawValue})?.value ?? model.extractions.first(where: {$0.name == ExtractionType.paymentRecipient.rawValue})?.value
         ibanTextFieldView.text = model.extractions.first(where: {$0.name == ExtractionType.iban.rawValue})?.value
         usageTextFieldView.text = model.extractions.first(where: {$0.name == ExtractionType.paymentPurpose.rawValue})?.value
         if let amountString = model.extractions.first(where: {$0.name == ExtractionType.amountToPay.rawValue})?.value, let amountToPay = Price(extractionString: amountString) {
@@ -550,14 +550,13 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if let iban = ibanTextFieldView.text {
             lastValidatedIBAN = iban
         }
-        
+        guard inputFieldsHaveNoErrors() else { return }
         if selectedPaymentProvider.gpcSupportedPlatforms.contains(.ios) {
             guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
                 model?.openInstallAppBottomSheet()
                 return
             }
-
-            checkForErrors()
+            createPaymentRequest()
         } else if selectedPaymentProvider.openWithSupportedPlatforms.contains(.ios) {
             if model?.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
                 model?.openOnboardingShareInvoiceBottomSheet()
@@ -566,15 +565,12 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             }
         }
     }
-    
-    func checkForErrors() {
-        // check if no errors labels are shown
-        if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
-            createPaymentRequest()
-        }
+
+    func inputFieldsHaveNoErrors() -> Bool {
+        paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }
     }
     
-    private func createPaymentRequest() {
+    func createPaymentRequest() {
         if !amountTextFieldView.textField.isReallyEmpty {
             let paymentInfo = obtainPaymentInfo()
             model?.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in

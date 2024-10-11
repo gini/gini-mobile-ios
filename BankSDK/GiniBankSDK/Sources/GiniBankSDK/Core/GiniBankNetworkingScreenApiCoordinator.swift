@@ -552,6 +552,11 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
                                             extractionResult: ExtractionResult,
                                             documentId: String?,
                                             deliveryFunction: @escaping (ExtractionResult) -> Void) {
+        guard extractionResult.extractions.count > 0 else {
+            deliveryFunction(extractionResult)
+            return
+        }
+
         self.handleTransactionDocsAlertIfNeeded(on: navigationController,
                                                 defaultAction: { [weak self] in
             self?.transactionDocsDataCoordinator?.transactionDocs = []

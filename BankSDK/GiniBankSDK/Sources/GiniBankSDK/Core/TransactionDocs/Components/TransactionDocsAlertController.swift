@@ -23,10 +23,10 @@ class TransactionDocsAlertController {
                      alwaysAttachHandler: @escaping () -> Void,
                      attachOnceHandler: @escaping () -> Void,
                      doNotAttachHandler: @escaping () -> Void) {
-        let alterController = UIAlertController(title: Constants.title,
+        let alertController = UIAlertController(title: Constants.title,
                                                 message: Constants.message,
                                                 preferredStyle: .alert)
-        alterController.view.tintColor = .GiniBank.accent1
+        alertController.view.tintColor = .GiniBank.accent1
 
         let alwaysAttachAction = UIAlertAction(title: GiniUserAttachmentOption.alwaysAttach.title,
                                                style: .default) { _ in
@@ -40,12 +40,12 @@ class TransactionDocsAlertController {
                                               style: .cancel) { _ in
             doNotAttachHandler()
         }
-        alterController.addAction(alwaysAttachAction)
-        alterController.addAction(attachOnce)
-        alterController.addAction(doNotAttachAction)
-        alterController.preferredAction = alwaysAttachAction
+        alertController.addAction(alwaysAttachAction)
+        alertController.addAction(attachOnce)
+        alertController.addAction(doNotAttachAction)
+        alertController.preferredAction = alwaysAttachAction
 
-        viewController.present(alterController, animated: true, completion: nil)
+        viewController.present(alertController, animated: true, completion: nil)
     }
 }
 
