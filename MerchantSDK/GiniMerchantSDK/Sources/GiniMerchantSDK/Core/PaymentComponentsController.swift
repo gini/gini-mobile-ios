@@ -624,7 +624,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
     }
     
     public func openPaymentProviderApp(requestId: String, universalLink: String) {
-        giniSDK.openPaymentProviderApp(requestId: requestId, universalLink: universalLink)
+        giniSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
     }
 
     public func trackOnPaymentReviewCloseKeyboardClicked() {
