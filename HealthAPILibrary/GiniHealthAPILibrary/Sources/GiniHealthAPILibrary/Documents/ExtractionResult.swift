@@ -8,14 +8,6 @@
 import Foundation
 
 /**
- Payment State types from payment state from extraction result
- */
-public enum PaymentState: String {
-    case payable = "Payable"
-    case other = "Other"
-}
-
-/**
 * Data model for a document extraction result.
 */
 @objcMembers final public class ExtractionResult: NSObject {

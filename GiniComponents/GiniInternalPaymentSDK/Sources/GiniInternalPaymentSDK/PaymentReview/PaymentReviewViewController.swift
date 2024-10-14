@@ -152,15 +152,13 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
         view.endEditing(true)
 
         guard paymentInfoContainerView.noErrorsFound() else { return }
+        guard paymentInfoContainerView.inputFieldsHaveNoErrors() else { return }
         if model.delegate?.supportsGPC() ?? false {
             guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
                 model.openInstallAppBottomSheet()
                 return
             }
-
-            if paymentInfoContainerView.noErrorsFound() {
-                createPaymentRequest()
-            }
+            createPaymentRequest()
         } else if model.delegate?.supportsOpenWith() ?? false {
             if model.delegate?.shouldShowOnboardingScreenFor() ?? false {
                 model.openOnboardingShareInvoiceBottomSheet()

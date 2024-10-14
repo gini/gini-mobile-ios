@@ -8,10 +8,31 @@
 import UIKit
 /**
   Returns the GiniHealth bundle.
-
  */
 public func giniHealthBundle() -> Bundle {
     Bundle.module
+}
+
+func UIImageNamedPreferred(named name: String) -> UIImage? {
+    if let clientImage = UIImage(named: name) {
+        return clientImage
+    }
+    return UIImage(named: name, in: giniHealthBundleResource(), compatibleWith: nil)
+}
+
+/**
+ Returns a decimal value
+ 
+ - parameter inputFieldString: String from input field.
+ 
+ - returns: decimal value in current locale.
+ */
+
+func decimal(from inputFieldString: String) -> Decimal? {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .currency
+    formatter.currencySymbol = ""
+    return formatter.number(from: inputFieldString)?.decimalValue
 }
 
 /**
@@ -33,7 +54,7 @@ func NSLocalizedStringPreferredFormat(_ key: String,
         && isCustomizable {
         format = clientString
     } else {
-        let bundle = giniHealthBundleResource()
+        let bundle = giniHealthBundle()
 
         var defaultFormat = NSLocalizedString(key, bundle: bundle, comment: comment)
 
@@ -45,6 +66,29 @@ func NSLocalizedStringPreferredFormat(_ key: String,
     }
 
     return format
+}
+
+/**
+ Returns an optional `UIColor` instance with the given `name` preferably from the client's bundle.
+ 
+ - parameter name: The name of the UIColor from `GiniColors` asset catalog.
+ 
+ - returns: color if found with name.
+ */
+func UIColorPreferred(named name: String) -> UIColor {
+    if let mainBundleColor = UIColor(named: name,
+                                     in: Bundle.main,
+                                     compatibleWith: nil) {
+        return mainBundleColor
+    }
+
+    if let color = UIColor(named: name,
+                           in: giniHealthBundleResource(),
+                           compatibleWith: nil) {
+        return color
+    } else {
+        fatalError("The color named '\(name)' does not exist.")
+    }
 }
 
 func giniHealthBundleResource() -> Bundle {

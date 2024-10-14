@@ -538,6 +538,10 @@ public extension PaymentReviewContainerView {
         }
     }
 
+    func inputFieldsHaveNoErrors() -> Bool {
+        paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }
+    }
+
     func obtainPaymentInfo() -> PaymentInfo {
         let amountText = amountToPay.extractionString
         let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "",
