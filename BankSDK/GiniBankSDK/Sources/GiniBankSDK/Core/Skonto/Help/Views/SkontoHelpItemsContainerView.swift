@@ -31,7 +31,7 @@ class SkontoHelpItemsContainerView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        backgroundColor = .giniColorScheme().background.secondary.uiColor()
         layer.cornerRadius = Constants.cornerRadius
         layer.masksToBounds = true
 

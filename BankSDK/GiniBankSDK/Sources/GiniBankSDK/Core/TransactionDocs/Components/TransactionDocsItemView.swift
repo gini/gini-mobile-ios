@@ -10,7 +10,7 @@ import GiniCaptureSDK
 class TransactionDocsItemView: UIView {
     private lazy var imageContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
+        view.backgroundColor = .giniColorScheme().placeholder.background.uiColor()
         view.layer.cornerRadius = Constants.imageViewCornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -19,7 +19,7 @@ class TransactionDocsItemView: UIView {
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .giniColorScheme().icons.standardTertiary.uiColor()
+        imageView.tintColor = .giniColorScheme().placeholder.tint.uiColor()
         return imageView
     }()
 
@@ -36,7 +36,7 @@ class TransactionDocsItemView: UIView {
     private lazy var optionsButton: UIButton = {
         let button = UIButton()
         button.setImage(GiniImages.transactionDocsOptionsIcon.image, for: .normal)
-        button.tintColor = .giniColorScheme().icons.standardPrimary.uiColor()
+        button.tintColor = .giniColorScheme().icon.primary.uiColor()
         button.addTarget(self, action: #selector(optionsButtonTapped), for: .touchUpInside)
         return button
     }()
