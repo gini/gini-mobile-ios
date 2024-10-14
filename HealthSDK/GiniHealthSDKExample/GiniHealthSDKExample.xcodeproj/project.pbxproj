@@ -42,7 +42,6 @@
 		F4EC38D9273C21E6007045DC /* GiniHealthSDKExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38D8273C21E6007045DC /* GiniHealthSDKExampleTests.swift */; };
 		F4EC38F5273C2311007045DC /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38EF273C2310007045DC /* UIViewController+Utils.swift */; };
 		F4EC38F8273C2311007045DC /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38F2273C2311007045DC /* CredentialsManager.swift */; };
-		F4EC38F9273C2311007045DC /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4EC38F3273C2311007045DC /* Credentials.plist */; };
 		F4EC38FA273C2311007045DC /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = F4EC38F4273C2311007045DC /* Base.lproj */; };
 		F4EC3900273C245E007045DC /* GiniHealthSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4EC38FF273C245E007045DC /* GiniHealthSDK */; };
 		F4EC390A273C2622007045DC /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC3903273C2621007045DC /* AppCoordinator.swift */; };
@@ -104,7 +103,6 @@
 		F4EC38D8273C21E6007045DC /* GiniHealthSDKExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthSDKExampleTests.swift; sourceTree = "<group>"; };
 		F4EC38EF273C2310007045DC /* UIViewController+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
 		F4EC38F2273C2311007045DC /* CredentialsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
-		F4EC38F3273C2311007045DC /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		F4EC38F4273C2311007045DC /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
 		F4EC38FB273C240F007045DC /* GiniHealthSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthSDK; path = ../GiniHealthSDK; sourceTree = "<group>"; };
 		F4EC38FC273C2432007045DC /* GiniCaptureSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniCaptureSDK; path = ../../CaptureSDK/GiniCaptureSDK; sourceTree = "<group>"; };
@@ -229,7 +227,6 @@
 				F4EC3907273C2621007045DC /* SelectAPIViewController.swift */,
 				7DB661882B554A79004537AA /* InvoicesList */,
 				F4EC38F4273C2311007045DC /* Base.lproj */,
-				F4EC38F3273C2311007045DC /* Credentials.plist */,
 				F4EC38F2273C2311007045DC /* CredentialsManager.swift */,
 				F4EC38EF273C2310007045DC /* UIViewController+Utils.swift */,
 				F4EC38C3273C21E4007045DC /* SceneDelegate.swift */,
@@ -348,7 +345,6 @@
 				F464B17627CD2147001735B9 /* Localizable.strings in Resources */,
 				F4EC38FA273C2311007045DC /* Base.lproj in Resources */,
 				7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */,
-				F4EC38F9273C2311007045DC /* Credentials.plist in Resources */,
 				8ADEE2FA2C2CB2E4006D3526 /* invoice-12MB.png in Resources */,
 				8ADEE2FB2C2CB302006D3526 /* invoice-13MB.pdf in Resources */,
 				284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */,
@@ -494,7 +490,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -551,7 +547,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -585,7 +581,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -628,7 +624,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

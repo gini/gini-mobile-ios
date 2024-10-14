@@ -6,8 +6,8 @@
 
 
 import Foundation
-import GiniHealthAPILibrary
 import GiniHealthSDK
+import GiniUtilites
 import UIKit
 
 final class InvoiceTableViewCellModel {
@@ -32,7 +32,7 @@ final class InvoiceTableViewCellModel {
     }
     
     var dueDateText: String {
-        invoice.paymentDueDate ?? ""
+        [invoice.paymentDueDate ?? "", invoice.doctorName ?? ""].joined(separator: ", ")
     }
     
     var isDueDataLabelHidden: Bool {

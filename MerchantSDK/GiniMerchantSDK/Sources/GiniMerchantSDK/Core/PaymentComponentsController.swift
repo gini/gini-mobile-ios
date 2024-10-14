@@ -7,7 +7,7 @@
 
 
 import UIKit
-import GiniPaymentComponents
+import GiniInternalPaymentSDK
 import GiniHealthAPILibrary
 import GiniUtilites
 
@@ -44,9 +44,9 @@ public protocol PaymentComponentsConfigurationProvider {
 
     var primaryButtonConfiguration: ButtonConfiguration { get }
     var secondaryButtonConfiguration: ButtonConfiguration { get }
-    var defaultStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration { get }
-    var errorStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration { get }
-    var selectionStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration { get }
+    var defaultStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration { get }
+    var errorStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration { get }
+    var selectionStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration { get }
 
     var showPaymentReviewCloseButton: Bool { get }
     var paymentComponentButtonsHeight: CGFloat { get }
@@ -457,7 +457,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     }
 }
 
-extension PaymentComponentsController: GiniPaymentComponents.PaymentComponentViewProtocol {
+extension PaymentComponentsController: GiniInternalPaymentSDK.PaymentComponentViewProtocol {
     public func didTapOnMoreInformation(documentId: String?) {
         viewDelegate?.didTapOnMoreInformation(documentId: documentId)
     }
@@ -612,21 +612,21 @@ extension PaymentComponentsController: InstallAppBottomViewProtocol {
 }
 
 extension PaymentComponentsController: PaymentReviewProtocol {
-    public func submitFeedback(for document: GiniHealthAPILibrary.Document, updatedExtractions: [GiniHealthAPILibrary.Extraction], completion: @escaping (Result<Void, GiniHealthAPILibrary.GiniError>) -> Void) {
+    public func submitFeedback(for document: GiniHealthAPILibrary.Document, updatedExtractions: [GiniHealthAPILibrary.Extraction], completion: ((Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)?) {
         let newDocument = Document(healthDocument: document)
         let extractions = updatedExtractions.map { Extraction(healthExtraction: $0) }
         giniSDK.documentService.submitFeedback(for: newDocument, with: [], and: ["payment": [extractions]]) { result in
             switch result {
             case .success(let result):
-                completion(.success(result))
+                completion?(.success(result))
             case .failure(let error):
                 let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
-                completion(.failure(healthError))
+                completion?(.failure(healthError))
             }
         }
     }
     
-    public func createPaymentRequest(paymentInfo: GiniPaymentComponents.PaymentInfo, completion: @escaping (Result<String, GiniHealthAPILibrary.GiniError>) -> Void) {
+    public func createPaymentRequest(paymentInfo: GiniInternalPaymentSDK.PaymentInfo, completion: @escaping (Result<String, GiniHealthAPILibrary.GiniError>) -> Void) {
         let info = PaymentInfo(paymentConponentsInfo: paymentInfo)
         giniSDK.createPaymentRequest(paymentInfo: info, completion: { result in
             switch result {
@@ -657,7 +657,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
     }
     
     public func openPaymentProviderApp(requestId: String, universalLink: String) {
-        giniSDK.openPaymentProviderApp(requestId: requestId, universalLink: universalLink)
+        giniSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
     }
 
     public func trackOnPaymentReviewCloseKeyboardClicked() {

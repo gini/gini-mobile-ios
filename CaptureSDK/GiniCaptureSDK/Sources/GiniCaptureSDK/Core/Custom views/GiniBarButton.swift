@@ -193,14 +193,14 @@ public final class GiniBarButton {
         return attributes
     }
 
-    public func setContentHuggingPriority(_ priority: UILayoutPriority, 
+    public func setContentHuggingPriority(_ priority: UILayoutPriority,
                                           for axis: NSLayoutConstraint.Axis) {
         stackView.setContentHuggingPriority(priority, for: axis)
         titleLabel.setContentHuggingPriority(priority, for: axis)
         imageView.setContentHuggingPriority(priority, for: axis)
     }
 
-    public func setContentCompressionResistancePriority(_ priority: UILayoutPriority, 
+    public func setContentCompressionResistancePriority(_ priority: UILayoutPriority,
                                                         for axis: NSLayoutConstraint.Axis) {
         stackView.setContentCompressionResistancePriority(priority, for: axis)
         titleLabel.setContentCompressionResistancePriority(priority, for: axis)

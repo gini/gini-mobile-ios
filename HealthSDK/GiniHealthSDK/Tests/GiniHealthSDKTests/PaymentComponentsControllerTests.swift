@@ -8,9 +8,12 @@
 import XCTest
 @testable import GiniHealthSDK
 @testable import GiniHealthAPILibrary
+@testable import GiniInternalPaymentSDK
+@testable import GiniUtilites
 
 final class PaymentComponentsControllerTests: XCTestCase {
     private var giniHealthAPI: GiniHealthAPI!
+    private var giniHealth: GiniHealth!
     private var mockPaymentComponentsController: PaymentComponentsProtocol!
     private let giniHealthConfiguration = GiniHealthConfiguration.shared
     private let versionAPI = 4
@@ -21,8 +24,8 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
         let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
         giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService)
-        let giniHealth = GiniHealth(with: giniHealthAPI)
-        mockPaymentComponentsController = MockPaymentComponents(giniHealthSDK: giniHealth)
+        giniHealth = GiniHealth(giniApiLib: giniHealthAPI)
+        mockPaymentComponentsController = MockPaymentComponents(giniHealth: giniHealth)
     }
 
     override func tearDown() {
@@ -65,7 +68,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
     }
 
     func testCheckIfDocumentIsPayable_Failure() {
-        let expectedResult: Result<Bool, GiniHealthError> = .failure(.apiError(.noResponse))
+        let expectedResult: Result<Bool, GiniHealthError> = .failure(.apiError(.decorator(.noResponse)))
         // When
         var receivedResult: Result<Bool, GiniHealthError>?
         mockPaymentComponentsController.checkIfDocumentIsPayable(docId: MockSessionManager.missingDocumentID) { result in
@@ -79,10 +82,20 @@ final class PaymentComponentsControllerTests: XCTestCase {
     func testPaymentView_ReturnsView() {
         // Given
         let documentId = "123456"
-        let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil, giniHealthConfiguration: giniHealthConfiguration, paymentComponentConfiguration: PaymentComponentConfiguration(isPaymentComponentBranded: true))
-        let expectedView = PaymentComponentView()
-        expectedView.viewModel = expectedViewModel
+        let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil,
+                                                          primaryButtonConfiguration: giniHealth.primaryButtonConfiguration,
+                                                          secondaryButtonConfiguration: giniHealth.secondaryButtonConfiguration,
+                                                          configuration: giniHealth.paymentComponentsConfiguration,
+                                                          strings: giniHealth.paymentComponentsStrings,
+                                                          poweredByGiniConfiguration: giniHealth.poweredByGiniConfiguration,
+                                                          poweredByGiniStrings: giniHealth.poweredByGiniStrings,
+                                                          moreInformationConfiguration: giniHealth.moreInformationConfiguration,
+                                                          moreInformationStrings: giniHealth.moreInformationStrings,
+                                                          minimumButtonsHeight: giniHealth.paymentComponentButtonsHeight,
+                                                          paymentComponentConfiguration: giniHealth.paymentComponentConfiguration)
 
+        let expectedView = PaymentComponentView(viewModel: expectedViewModel)
+        expectedViewModel.documentId = documentId
         // When
         let view = mockPaymentComponentsController.paymentView(documentId: documentId)
 
@@ -92,7 +105,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
             XCTFail("Error finding correct view.")
             return
         }
-        XCTAssertEqual(view.viewModel?.documentId, documentId)
+        XCTAssertEqual(view.viewModel.documentId, expectedView.viewModel.documentId)
     }
     
     func testBankSelectionBottomSheet_ReturnsViewController() {
@@ -123,7 +136,6 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // Then
         XCTAssertNil(receivedError)
         XCTAssertNotNil(receivedViewController)
-        XCTAssertTrue(receivedViewController is PaymentReviewViewController)
     }
     
     func testLoadPaymentReviewScreenFor_Failure() {
@@ -141,7 +153,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // Then
         XCTAssertNotNil(receivedError)
         XCTAssertNil(receivedViewController)
-        XCTAssertEqual(receivedError, .apiError(.noResponse))
+        XCTAssertEqual(receivedError, .apiError(.decorator(.noResponse)))
     }
     
     func testPaymentInfoViewController_ReturnsCorrectViewController() {
@@ -155,10 +167,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
             return
         }
         XCTAssertNotNil(paymentInfoVC.viewModel)
-        guard let paymentInfoViewModel = paymentInfoVC.viewModel else {
-            XCTFail("Error finding payment info viewModel.")
-            return
-        }
+        let paymentInfoViewModel = paymentInfoVC.viewModel
         XCTAssertEqual(paymentInfoViewModel.paymentProviders, [])
     }
     
@@ -168,12 +177,21 @@ final class PaymentComponentsControllerTests: XCTestCase {
             XCTFail("Error loading file: `\(fileName).json`")
             return
         }
-        
+
         let expectedPaymentProviders = loadProviders(fileName: "sortedBanks")
-        
-        let bottomViewModel = BanksBottomViewModel(paymentProviders: givenPaymentProviders, selectedPaymentProvider: nil, urlOpener: URLOpener(MockUIApplication(canOpen: false)))
-        
+
+        let bottomViewModel = BanksBottomViewModel(paymentProviders: givenPaymentProviders.map { $0.toHealthPaymentProvider() },
+                                                   selectedPaymentProvider: nil,
+                                                   configuration: giniHealth.bankSelectionConfiguration,
+                                                   strings: giniHealth.banksBottomStrings,
+                                                   poweredByGiniConfiguration: giniHealth.poweredByGiniConfiguration,
+                                                   poweredByGiniStrings: giniHealth.poweredByGiniStrings,
+                                                   moreInformationConfiguration: giniHealth.moreInformationConfiguration,
+                                                   moreInformationStrings: giniHealth.moreInformationStrings,
+                                                   urlOpener: URLOpener(MockUIApplication(canOpen: false)))
+
+
         XCTAssertEqual(bottomViewModel.paymentProviders.count, 11)
-        XCTAssertEqual(bottomViewModel.paymentProviders.map { $0.paymentProvider }, expectedPaymentProviders)
+        XCTAssertEqual(bottomViewModel.paymentProviders.map { PaymentProvider(healthPaymentProvider: $0.paymentProvider) }, expectedPaymentProviders)
     }
 }

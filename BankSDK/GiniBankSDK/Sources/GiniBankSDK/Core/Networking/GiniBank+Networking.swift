@@ -2,7 +2,7 @@
 //  GiniBank.swift
 //  GiniBank
 //
-//  Created by Nadya Karaban on 18.02.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -59,6 +59,7 @@ extension GiniBank {
      - parameter documentMetadata: Additional HTTP headers to send when uploading documents.
      - parameter trackingDelegate: A delegate object to receive user events.
      - parameter networkingService: A delegate object which implement protocol for the document processing events.
+     - parameter configurationService: A delegate object which implement protocol for the customer configuration.
 
      - note: Screen API with custom networking only.
 
@@ -70,7 +71,8 @@ extension GiniBank {
                                      documentMetadata: Document.Metadata? = nil,
                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil,
                                      networkingService: GiniCaptureNetworkService,
-                                     configurationService: ClientConfigurationServiceProtocol? = nil) -> UIViewController {
+                                     configurationService: ClientConfigurationServiceProtocol? = nil)
+    -> UIViewController {
         let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(resultsDelegate: resultsDelegate,
                                                                        configuration: configuration,
                                                                        documentMetadata: documentMetadata,
