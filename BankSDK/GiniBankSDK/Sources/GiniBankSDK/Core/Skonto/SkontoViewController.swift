@@ -16,7 +16,7 @@ final class SkontoViewController: UIViewController {
     private lazy var documentPreviewContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        view.backgroundColor = .giniColorScheme().container.background.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(documentPreviewTapped))
         view.addGestureRecognizer(tapGesture)
@@ -43,7 +43,7 @@ final class SkontoViewController: UIViewController {
     private lazy var withDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        view.backgroundColor = .giniColorScheme().container.background.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()
@@ -61,7 +61,7 @@ final class SkontoViewController: UIViewController {
     private lazy var withoutDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        view.backgroundColor = .giniColorScheme().container.background.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()
@@ -135,7 +135,7 @@ final class SkontoViewController: UIViewController {
         let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
                                                                        comment: "Back")
         edgesForExtendedLayout = []
-        view.backgroundColor = .giniColorScheme().bg.background.uiColor()
+        view.backgroundColor = .giniColorScheme().background.primary.uiColor()
         if !configuration.bottomNavigationBarEnabled {
             let helpButton = GiniBarButton(ofType: .help)
             helpButton.addAction(self, #selector(helpButtonTapped))
