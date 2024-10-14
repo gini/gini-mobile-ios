@@ -97,6 +97,11 @@ jobs:
           -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniHealthSDKPinning.framework \
           -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniHealthSDKPinning.framework \
           -output GiniHealthSDKPinning.xcframework
+          \
+          xcodebuild -create-xcframework \
+          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework \
+          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework \
+          -output TrustKit.xcframework
       
       - name: Sign the XCFrameworks
         env:
@@ -143,4 +148,5 @@ jobs:
             GiniHealthSDK.xcframework
             GiniHealthSDKPinning.xcframework
             GiniHealthAPILibraryPinning.xcframework
+            TrustKit.xcframework
 
