@@ -15,7 +15,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
 
     func createPaymentRequestAndOpenBankApp() {
         self.presentedViewController?.dismiss(animated: true)
-        if paymentInfoContainerView.noErrorsFound() {
+        if paymentInfoContainerView.inputFieldsHaveNoErrors() {
             createPaymentRequest()
         }
     }
