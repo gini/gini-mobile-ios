@@ -15,6 +15,7 @@ struct DigitalLineItemTableViewCellViewModel {
     let index: Int
     let invoiceNumTotal: Int
     let invoiceLineItemsCount: Int
+    let nameMaxCharactersCount: Int
 
     private var quantityString: String {
         let string = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.quantity",
