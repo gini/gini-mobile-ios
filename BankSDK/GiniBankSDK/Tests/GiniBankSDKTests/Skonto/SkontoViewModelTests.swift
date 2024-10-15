@@ -171,6 +171,62 @@ class SkontoViewModelTests: XCTestCase {
                        "Skonto amount should remain unchanged if an invalid price is provided.")
     }
     
+    func testSetZeroSkontoAmountToPayPrice() {
+        let newPrice = 0.00
+        viewModel.setSkontoAmountToPayPrice(formatValue(newPrice))
+
+        XCTAssertEqual(viewModel.skontoAmountToPay.value,
+                       Decimal(newPrice),
+                       "Skonto amount to pay should be updated to zero correctly.")
+    }
+
+    func testSetZeroAmountToPayPrice() {
+        let newPrice = 0.00
+        viewModel.setAmountToPayPrice(formatValue(newPrice))
+
+        XCTAssertEqual(viewModel.amountToPay.value,
+                       Decimal(newPrice),
+                       "Amount to pay should be updated to zero correctly.")
+    }
+
+    func testSetNonNumericSkontoAmountToPayPrice() {
+        let newPrice = "abc"
+        viewModel.setSkontoAmountToPayPrice(newPrice)
+
+        XCTAssertNotEqual(viewModel.skontoAmountToPay.value,
+                          Decimal(string: newPrice),
+                          "Skonto amount to pay should not accept non-numeric values.")
+    }
+
+    func testSetNonNumericAmountToPayPrice() {
+        let newPrice = "abc"
+        viewModel.setAmountToPayPrice(newPrice)
+
+        XCTAssertNotEqual(viewModel.amountToPay.value,
+                          Decimal(string: newPrice),
+                          "Amount to pay should not accept non-numeric values.")
+    }
+
+    func testSetPriceWithTooManyDecimalsForSkontoAmountToPay() {
+        let newPrice = 123.45678
+        viewModel.setSkontoAmountToPayPrice(formatValue(newPrice))
+
+        let expectedValue = Decimal(123.46)
+        XCTAssertEqual(viewModel.skontoAmountToPay.value,
+                       expectedValue,
+                       "Skonto amount to pay should be rounded to two decimal places.")
+    }
+
+    func testSetPriceWithTooManyDecimalsForAmountToPay() {
+        let newPrice = 123.45678
+        viewModel.setAmountToPayPrice(formatValue(newPrice))
+
+        let expectedValue = Decimal(123.46)
+        XCTAssertEqual(viewModel.amountToPay.value,
+                       expectedValue,
+                       "Amount to pay should be rounded to two decimal places.")
+    }
+
     private func formatValue(_ value: Double) -> String {
         return NumberFormatter.twoDecimalPriceFormatter.string(from: NSNumber(value: value)) ?? ""
     }
