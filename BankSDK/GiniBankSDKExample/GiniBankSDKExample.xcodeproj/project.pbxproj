@@ -450,6 +450,80 @@
 			path = DigitalInvoice;
 			sourceTree = "<group>";
 		};
+		28D77C5C2CBEC01700F815DB /* DigitalInvoice */ = {
+			isa = PBXGroup;
+			children = (
+				289917FF2BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift */,
+			);
+			path = DigitalInvoice;
+			sourceTree = "<group>";
+		};
+		28D77C5D2CBEC02A00F815DB /* Skonto */ = {
+			isa = PBXGroup;
+			children = (
+				28D77C562CBEA85100F815DB /* BaseIntegrationTest+Skonto.swift */,
+				28D0DB0F2CB803E7003CA3B7 /* SkontoIntegrationTests.swift */,
+			);
+			path = Skonto;
+			sourceTree = "<group>";
+		};
+		28D77C5E2CBEC04100F815DB /* DigitalInvoiceWithSkonto */ = {
+			isa = PBXGroup;
+			children = (
+				2870683B2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift */,
+			);
+			path = DigitalInvoiceWithSkonto;
+			sourceTree = "<group>";
+		};
+		28D77C5F2CBEC05100F815DB /* IntegrationTests */ = {
+			isa = PBXGroup;
+			children = (
+				28D77C612CBEC07000F815DB /* Base */,
+				28D77C5C2CBEC01700F815DB /* DigitalInvoice */,
+				28D77C5D2CBEC02A00F815DB /* Skonto */,
+				28D77C5E2CBEC04100F815DB /* DigitalInvoiceWithSkonto */,
+				28D77C602CBEC05D00F815DB /* TransferSummary */,
+			);
+			path = IntegrationTests;
+			sourceTree = "<group>";
+		};
+		28D77C602CBEC05D00F815DB /* TransferSummary */ = {
+			isa = PBXGroup;
+			children = (
+				28D77C592CBEA8B100F815DB /* BaseIntegrationTest+TransferSummary.swift */,
+				F45D7F002800566900C73C63 /* TransferSummaryIntegrationTest.swift */,
+			);
+			path = TransferSummary;
+			sourceTree = "<group>";
+		};
+		28D77C612CBEC07000F815DB /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				28DAC2092CB6D90A008B85E0 /* BaseIntegrationTest.swift */,
+				28D0DB262CB91F5B003CA3B7 /* DocumentCreationTests.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		28D77C622CBEC09500F815DB /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */,
+				F45D7F022800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift */,
+				F45D7F0A2800566900C73C63 /* SettingsViewControllerTests.swift */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		28D77C632CBEC0B400F815DB /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				28B203FC2BB2E6EE00C78740 /* FileLoader.swift */,
+				28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		28F62F9A2AB21ABE00D47866 /* Localization */ = {
 			isa = PBXGroup;
 			children = (
@@ -617,19 +691,9 @@
 		F45D7EFF2800566900C73C63 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				28DAC2092CB6D90A008B85E0 /* BaseIntegrationTest.swift */,
-				28D77C562CBEA85100F815DB /* BaseIntegrationTest+Skonto.swift */,
-				28D77C592CBEA8B100F815DB /* BaseIntegrationTest+TransferSummary.swift */,
-				28D0DB262CB91F5B003CA3B7 /* DocumentCreationTests.swift */,
-				28D0DB0F2CB803E7003CA3B7 /* SkontoIntegrationTests.swift */,
-				2870683B2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift */,
-				289917FF2BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift */,
-				F45D7F002800566900C73C63 /* TransferSummaryIntegrationTest.swift */,
-				F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */,
-				F45D7F022800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift */,
-				F45D7F0A2800566900C73C63 /* SettingsViewControllerTests.swift */,
-				28B203FC2BB2E6EE00C78740 /* FileLoader.swift */,
-				28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */,
+				28D77C632CBEC0B400F815DB /* Helpers */,
+				28D77C622CBEC09500F815DB /* UnitTests */,
+				28D77C5F2CBEC05100F815DB /* IntegrationTests */,
 				F45D7F0B2800566900C73C63 /* Info.plist */,
 				F45D7F042800566900C73C63 /* Resources */,
 			);
