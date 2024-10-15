@@ -10,15 +10,15 @@ import GiniUtilites
 import GiniInternalPaymentSDK
 
 extension GiniMerchant: PaymentComponentsConfigurationProvider {
-    public var defaultStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration {
+    public var defaultStyleInputFieldConfiguration: TextFieldConfiguration {
         GiniMerchantConfiguration.shared.defaultStyleInputFieldConfiguration
     }
     
-    public var errorStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration {
+    public var errorStyleInputFieldConfiguration: TextFieldConfiguration {
         GiniMerchantConfiguration.shared.errorStyleInputFieldConfiguration
     }
     
-    public var selectionStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration {
+    public var selectionStyleInputFieldConfiguration: TextFieldConfiguration {
         GiniMerchantConfiguration.shared.selectionStyleInputFieldConfiguration
     }
     

@@ -67,7 +67,7 @@ final class GiniHealthTests: XCTestCase {
             return
         }
         let extractionsResult = ExtractionResult(extractionsContainer: extractions)
-        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
+        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == GiniHealthSDK.PaymentState.payable.rawValue
         // Then
         XCTAssertEqual(isPayable, true)
     }
@@ -81,7 +81,7 @@ final class GiniHealthTests: XCTestCase {
             return
         }
         let extractionsResult = ExtractionResult(extractionsContainer: extractions)
-        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
+        let isPayable = extractionsResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == GiniHealthSDK.PaymentState.payable.rawValue
         // Then
         XCTAssertEqual(isPayable, false)
     }
@@ -457,7 +457,7 @@ final class GiniHealthTests: XCTestCase {
             XCTFail("Error loading file: `\(fileName).json`")
             return
         }
-        let expectedExtractions: [GiniHealthSDK.Extraction] = GiniHealthSDK.ExtractionResult(extractionsContainer: expectedExtractionContainer).extractions
+        let expectedExtractions: [GiniHealthSDK.Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).extractions
 
         // When
         let expectation = self.expectation(description: "Getting all extractions")
