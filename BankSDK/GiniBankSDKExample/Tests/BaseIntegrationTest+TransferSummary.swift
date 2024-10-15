@@ -24,46 +24,9 @@ extension BaseIntegrationTest {
                 self.getUpdatedExtractionsFromGiniBankSDK(for: result.document!) { updatedResult in
                     switch updatedResult {
                         case let .success(extractionResult):
-                            let extractionsAfterFeedback = extractionResult.extractions
-
-                            let mockedInvoice = "result_Gini_invoice_example_payment_reference_after_feedback"
-                            // Load the expected fixture after feedback
-                            guard let fixtureExtractionsAfterFeedbackContainer = self.loadFixtureExtractionsContainer(from: mockedInvoice)
-                            else {
-                                return
-                            }
-
-                            // Validate the updated extractions against the fixture
-                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
-                                           extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
-
-                            let paymentRecipientExtraction = extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })
-                            self.verifyPaymentRecipient(paymentRecipientExtraction)
-
-                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
-                                           extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
-                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
-                                           extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
-
-
-                            // Validate line items if applicable
-                            let fixtureLineItems = fixtureExtractionsAfterFeedbackContainer.compoundExtractions?.lineItems
-                            if let firstLineItemAfterFeedback = extractionResult.lineItems?.first, let fixtureLineItem = fixtureLineItems?.first {
-                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "baseGross" })?.value,
-                                               firstLineItemAfterFeedback.first(where: { $0.name == "baseGross" })?.value)
-                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "description" })?.value,
-                                               firstLineItemAfterFeedback.first(where: { $0.name == "description" })?.value)
-                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "quantity" })?.value,
-                                               firstLineItemAfterFeedback.first(where: { $0.name == "quantity" })?.value)
-                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "artNumber" })?.value,
-                                               firstLineItemAfterFeedback.first(where: { $0.name == "artNumber" })?.value)
-                            }
-
-                            // Free resources and cleanup
-                            GiniBankConfiguration.shared.cleanup()
-                            XCTAssertNil(GiniBankConfiguration.shared.documentService)
-
-                            expect.fulfill()
+                            self.handleSuccessfulTransferSummaryUpdate(extractionResult: extractionResult,
+                                                                       expect: expect,
+                                                                       result: result)
                         case let .failure(error):
                             XCTFail("Error updating transfer summary: \(error)")
                     }
@@ -71,6 +34,58 @@ extension BaseIntegrationTest {
             }
         }
     }
+
+    /**
+     Handles the successful result of updating the transfer summary.
+
+     - Parameters:
+     - extractionResult: The updated extractions after feedback.
+     - expect: The XCTestExpectation that needs to be fulfilled upon success.
+     - result: The initial analysis result.
+     */
+    private func handleSuccessfulTransferSummaryUpdate(extractionResult: ExtractionResult,
+                                                       expect: XCTestExpectation,
+                                                       result: AnalysisResult) {
+        let extractionsAfterFeedback = extractionResult.extractions
+
+        let mockedInvoice = "result_Gini_invoice_example_payment_reference_after_feedback"
+        // Load the expected fixture after feedback
+        guard let fixtureExtractionsAfterFeedbackContainer = self.loadFixtureExtractionsContainer(from: mockedInvoice) else {
+            return
+        }
+
+        // Validate the updated extractions against the fixture
+        XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
+                       extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
+
+        let paymentRecipientExtraction = extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })
+        self.verifyPaymentRecipient(paymentRecipientExtraction)
+
+        XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
+                       extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
+        XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
+                       extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
+
+        // Validate line items if applicable
+        let fixtureLineItems = fixtureExtractionsAfterFeedbackContainer.compoundExtractions?.lineItems
+        if let firstLineItemAfterFeedback = extractionResult.lineItems?.first, let fixtureLineItem = fixtureLineItems?.first {
+            XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "baseGross" })?.value,
+                           firstLineItemAfterFeedback.first(where: { $0.name == "baseGross" })?.value)
+            XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "description" })?.value,
+                           firstLineItemAfterFeedback.first(where: { $0.name == "description" })?.value)
+            XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "quantity" })?.value,
+                           firstLineItemAfterFeedback.first(where: { $0.name == "quantity" })?.value)
+            XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "artNumber" })?.value,
+                           firstLineItemAfterFeedback.first(where: { $0.name == "artNumber" })?.value)
+        }
+
+        // Free resources and cleanup
+        GiniBankConfiguration.shared.cleanup()
+        XCTAssertNil(GiniBankConfiguration.shared.documentService)
+
+        expect.fulfill()
+    }
+
 
     /**
      * This method reproduces getting updated extractions for the already known document by the Bank SDK.
