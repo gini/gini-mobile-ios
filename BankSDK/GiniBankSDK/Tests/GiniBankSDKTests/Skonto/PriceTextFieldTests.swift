@@ -33,8 +33,10 @@ class PriceTextFieldTests: XCTestCase, PriceTextFieldDelegate {
     }
 
     func testSingleDigitInput() {
+        priceTextChangeExpectation = expectation(description: "Price text change should be triggered")
         simulateTextInput("1")
         let expectedValue = formatValue(0.01)
+        wait(for: [priceTextChangeExpectation!], timeout: 1.0)
         XCTAssertEqual(priceTextField.text, expectedValue, "Expected formatted value of 0.01 when user inputs a single digit '1'")
     }
 
