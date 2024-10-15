@@ -16,8 +16,9 @@ class SkontoViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
         let filename = "skontoDiscounts"
-        guard let skontoDiscountsJson = FileLoader.loadFile(withName: filename, ofType: "json") else {
-            XCTFail("Error loading file: `\(filename).json`")
+        let filetype = "json"
+        guard let skontoDiscountsJson = FileLoader.loadFile(withName: filename, ofType: filetype) else {
+            XCTFail("Error loading file: `\(filename).\(filetype)`")
             return
         }
         
