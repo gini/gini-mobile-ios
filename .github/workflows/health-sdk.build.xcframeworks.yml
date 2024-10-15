@@ -96,7 +96,7 @@ jobs:
           xcodebuild -create-xcframework \
           -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniHealthSDKPinning.framework \
           -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniHealthSDKPinning.framework \
-          -output GiniHealthSDKPinning.xcframework
+          -output GiniHealthSDKPinning.xcframework &&\
           \
           xcodebuild -create-xcframework \
           -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework \
