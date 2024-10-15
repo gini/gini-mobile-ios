@@ -17,9 +17,9 @@ class TransactionDocsDataCoordinatorPublicProtocolTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockDocs = TransactionDoc.createMockDocuments()
-        let coordinator = TransactionDocsDataCoordinator()
-        coordinator.transactionDocs = mockDocs
-        self.coordinator = coordinator
+        let transactionDocsDataCoordinator = TransactionDocsDataCoordinator()
+        transactionDocsDataCoordinator.transactionDocs = mockDocs
+        coordinator = transactionDocsDataCoordinator
     }
 
     override func tearDown() {
