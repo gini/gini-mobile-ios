@@ -77,7 +77,7 @@ class SkontoViewModelTests: XCTestCase {
     
     func testRecalculateRemainingDays() {
         let remainingDays = 5
-        let newDate = Calendar.current.date(byAdding: .day, value: remainingDays, to: Date())!
+        let newDate = Calendar.current.date(byAdding: .day, value: remainingDays, to: Date()) ?? Date()
         viewModel.setExpiryDate(newDate)
         XCTAssertEqual(viewModel.remainingDays,
                        remainingDays,
@@ -85,7 +85,7 @@ class SkontoViewModelTests: XCTestCase {
     }
     
     func testExpiredDiscountEdgeCase() {
-        let pastDate = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        let pastDate = Calendar.current.date(byAdding: .day, value: -1, to: Date()) ?? Date()
         viewModel.setExpiryDate(pastDate)
         XCTAssertEqual(viewModel.edgeCase,
                        .expired,
