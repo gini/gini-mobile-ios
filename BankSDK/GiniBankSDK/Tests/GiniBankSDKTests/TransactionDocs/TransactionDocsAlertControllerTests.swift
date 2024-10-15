@@ -22,9 +22,15 @@ class TransactionDocsAlertControllerTests: XCTestCase {
 
     func testAlertControllerIsPresented() {
         TransactionDocsAlertController.show(on: mockViewController,
-                                            alwaysAttachHandler: { },
-                                            attachOnceHandler: { },
-                                            doNotAttachHandler: { })
+                                            alwaysAttachHandler: {
+                                                // Not testing the implementation of this closure
+                                            },
+                                            attachOnceHandler: {
+                                                // Not testing the implementation of this closure
+                                            },
+                                            doNotAttachHandler: {
+                                                // Not testing the implementation of this closure
+                                            })
 
         XCTAssertTrue(mockViewController.presentCalled,
                       "Expected present() to be called when presenting alert controller")
