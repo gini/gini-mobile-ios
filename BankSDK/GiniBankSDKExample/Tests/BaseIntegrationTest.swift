@@ -48,40 +48,74 @@ class BaseIntegrationTest: XCTestCase {
         giniHelper.giniCaptureSDKDocumentService.upload(document: captureDocument) { result in
             switch result {
                 case .success(_):
-                    self.giniHelper.giniCaptureSDKDocumentService?.startAnalysis { result in
-                        switch result {
-                            case let .success(extractionResult):
-                                let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: extractionResult.extractions.compactMap {
-                                    guard let name = $0.name else { return nil }
-                                    return (name, $0)
-                                })
-
-                                let analysisResult = AnalysisResult(extractions: extractions,
-                                                                    lineItems: extractionResult.lineItems,
-                                                                    images: [],
-                                                                    document: self.giniHelper.giniCaptureSDKDocumentService?.document,
-                                                                    candidates: [:])
-                                self.analysisExtractionResult = extractionResult
-                                delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
-                                GiniBankConfiguration.shared.lineItems = extractionResult.lineItems
-                                if sendTransferSummaryIfNeeded {
-                                    // 4. Send transfer summary for the extractions the user saw
-                                    //    with the final (user confirmed or updated) extraction values
-                                    GiniBankConfiguration.shared.sendTransferSummary(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
-                                                                                     paymentReference: extractions["paymentReference"]?.value ?? "",
-                                                                                     paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
-                                                                                     iban: extractions["iban"]?.value ?? "",
-                                                                                     bic: extractions["bic"]?.value ?? "",
-                                                                                     amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
-                                }
-
-                            case let .failure(error):
-                                XCTFail(String(describing: error))
-                        }
-                    }
+                    self.handleUploadSuccess(captureDocument: captureDocument,
+                                             delegate: delegate,
+                                             sendTransferSummaryIfNeeded: sendTransferSummaryIfNeeded)
                 case let .failure(error):
                     XCTFail(String(describing: error))
             }
+        }
+    }
+
+    /**
+     Handles the success of the document upload and starts the document analysis.
+
+     - Parameters:
+     - captureDocument: The uploaded document that will be analyzed.
+     - delegate: The delegate to handle analysis results.
+     - sendTransferSummaryIfNeeded: A Boolean flag indicating whether to send a transfer summary after analysis.
+     */
+    func handleUploadSuccess(captureDocument: GiniCaptureDocument,
+                             delegate: GiniCaptureResultsDelegate,
+                             sendTransferSummaryIfNeeded: Bool) {
+        giniHelper.giniCaptureSDKDocumentService?.startAnalysis { result in
+            switch result {
+                case let .success(extractionResult):
+                    self.handleAnalysisSuccess(extractionResult: extractionResult,
+                                               delegate: delegate,
+                                               sendTransferSummaryIfNeeded: sendTransferSummaryIfNeeded)
+                case let .failure(error):
+                    XCTFail(String(describing: error))
+            }
+        }
+    }
+    
+    /**
+     Handles the analysis success and processes the extracted data.
+
+     - Parameters:
+     - extractionResult: The result of the successful document analysis.
+     - delegate: The delegate to handle analysis results.
+     - sendTransferSummaryIfNeeded: A Boolean flag indicating whether to send a transfer summary after analysis.
+     */
+    func handleAnalysisSuccess(extractionResult: ExtractionResult,
+                               delegate: GiniCaptureResultsDelegate,
+                               sendTransferSummaryIfNeeded: Bool) {
+        let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: extractionResult.extractions.compactMap {
+            guard let name = $0.name else { return nil }
+            return (name, $0)
+        })
+
+        let analysisResult = AnalysisResult(extractions: extractions,
+                                            lineItems: extractionResult.lineItems,
+                                            images: [],
+                                            document: self.giniHelper.giniCaptureSDKDocumentService?.document,
+                                            candidates: [:])
+
+        self.analysisExtractionResult = extractionResult
+        delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+        GiniBankConfiguration.shared.lineItems = extractionResult.lineItems
+
+        if sendTransferSummaryIfNeeded {
+            // Send transfer summary for the extractions the user confirmed
+            GiniBankConfiguration.shared.sendTransferSummary(
+                paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
+                paymentReference: extractions["paymentReference"]?.value ?? "",
+                paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
+                iban: extractions["iban"]?.value ?? "",
+                bic: extractions["bic"]?.value ?? "",
+                amountToPay: ExtractionAmount(value: 950.00, currency: .EUR)
+            )
         }
     }
 
