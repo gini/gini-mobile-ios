@@ -11,7 +11,6 @@ class PriceTextFieldTests: XCTestCase, PriceTextFieldDelegate {
 
     var priceTextField: PriceTextField!
     var priceTextChangeExpectation: XCTestExpectation?
-    var changedText: String?
 
     override func setUp() {
         super.setUp()
@@ -22,100 +21,175 @@ class PriceTextFieldTests: XCTestCase, PriceTextFieldDelegate {
 
     override func tearDown() {
         priceTextField = nil
-        changedText = nil
         priceTextChangeExpectation = nil
         super.tearDown()
     }
 
     func priceTextField(_ textField: PriceTextField, didChangePrice editedText: String) {
-        changedText = editedText
         priceTextChangeExpectation?.fulfill()
     }
 
     func testSingleDigitInput() {
-        priceTextChangeExpectation = expectation(description: "Price text change should be triggered")
-        simulateTextInput("1")
+        let input = "1"
         let expectedValue = formatValue(0.01)
+        
+        priceTextChangeExpectation = expectation(description: "Price text change should be triggered")
+        simulateTextInput(input)
         wait(for: [priceTextChangeExpectation!], timeout: 1.0)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected formatted value of 0.01 when user inputs a single digit '1'")
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected formatted value of \(expectedValue) when user inputs '\(input)'")
     }
 
     func testMultipleDigitInput() {
-        simulateTextInput("12345")
+        let input = "12345"
         let expectedValue = formatValue(123.45)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected formatted value of 123.45 when user inputs '12345'")
+
+        simulateTextInput(input)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected formatted value of \(expectedValue) when user inputs '\(input)'")
     }
 
     func testExceedingMaxDigitsBeforeDecimal() {
-        simulateTextInput("123456789")
+        let input = "123456789"
         let expectedValue = formatValue(12345.67)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected value to stop at 5 digits before the decimal point: 12345.67")
+
+        simulateTextInput(input)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected value to stop at 5 digits before the decimal point: \(expectedValue)")
     }
 
     func testMaxPositiveValue() {
-        simulateTextInput("99999.99")
+        let input = "99999.99"
         let expectedValue = formatValue(99999.99)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected maximum positive value to be 99999.99")
+
+        simulateTextInput(input)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected maximum positive value to be \(expectedValue)")
     }
 
     func testValueCappedAtMaxDigits() {
-        simulateTextInput("100000.00")
+        let input = "100000.00"
         let expectedValue = formatValue(10000.00)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected value to be capped at 10000.00 after input exceeding max digits")
+
+        simulateTextInput(input)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected value to be capped at \(expectedValue) after input exceeding max digits")
     }
 
     func testDeletingTwoDigits() {
-        simulateTextInput("123456")
-        simulateDeleteAction(count: 2)
+        let input = "123456"
+        let deleteCount = 2
         let expectedValue = formatValue(12.34)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected value to update to 12.34 after deleting two digits")
+
+        simulateTextInput(input)
+        simulateDeleteAction(count: deleteCount)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected value to update to \(expectedValue) after deleting \(deleteCount) digits")
     }
 
     func testDeleteAllInput() {
-        simulateTextInput("123456")
-        simulateDeleteAction(count: 6)
+        let input = "123456"
+        let deleteCount = 6
         let expectedValue = formatValue(0.00)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected value to reset to 0.00 after deleting all digits")
+
+        simulateTextInput(input)
+        simulateDeleteAction(count: deleteCount)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected value to reset to \(expectedValue) after deleting all digits")
     }
 
     func testInputWithLeadingZeros() {
-        simulateTextInput("00012345")
+        let input = "00012345"
         let expectedValue = formatValue(123.45)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected leading zeros to be ignored, resulting in 123.45")
+
+        simulateTextInput(input)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected leading zeros to be ignored, resulting in \(expectedValue)")
     }
 
     func testInputAfterDeletingDecimal() {
-        simulateTextInput("123456")
-        simulateDeleteAction(count: 2)
-        simulateTextInput("12")
+        let initialInput = "123456"
+        let deleteCount = 2
+        let additionalInput = "12"
         let expectedValue = formatValue(1234.12)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected value to update to 1234.12 after adding digits following deletion")
+
+        simulateTextInput(initialInput)
+        simulateDeleteAction(count: deleteCount)
+        simulateTextInput(additionalInput)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected value to update to \(expectedValue) after adding digits following deletion")
     }
 
     func testMixedInputWithInvalidCharacters() {
-        simulateTextInput("1asd234fdsf5gfd6")
+        let input = "1asd234fdsf5gfd6"
         let expectedValue = formatValue(1234.56)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected non-numeric characters to be ignored, resulting in 1234.56")
+
+        simulateTextInput(input)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected non-numeric characters to be ignored, resulting in \(expectedValue)")
     }
 
     func testInputWithDoubleCommas() {
-        simulateTextInput("1234,,56")
+        let input = "1234,,56"
         let expectedValue = formatValue(1234.56)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected commas to be ignored, resulting in 1234.56")
+
+        simulateTextInput(input)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected commas to be ignored, resulting in \(expectedValue)")
     }
 
     func testInputWithExcessiveTrailingZeros() {
-        simulateTextInput("123400000000")
+        let input = "123400000000"
         let expectedValue = formatValue(12340.00)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected trailing zeros after the decimal point to be handled, resulting in 12340.00")
+
+        simulateTextInput(input)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected trailing zeros after the decimal point to be handled, resulting in \(expectedValue)")
     }
 
     func testAllZerosInput() {
-        simulateTextInput("00000000")
+        let input = "00000000"
         let expectedValue = formatValue(0.00)
-        XCTAssertEqual(priceTextField.text, expectedValue, "Expected value to remain 0.00 when input consists only of zeros")
+
+        simulateTextInput(input)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected value to remain \(expectedValue) when input consists only of zeros")
     }
 
+    func testInputWithSpaces() {
+        let input = "12 34 56"
+        let expectedValue = formatValue(1234.56)
+
+        simulateTextInput(input)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected spaces to be ignored, resulting in \(expectedValue)")
+    }
+
+    func testNegativeValueInput() {
+        let input = "-12345"
+        let expectedValue = formatValue(123.45)
+
+        simulateTextInput(input)
+        XCTAssertEqual(priceTextField.text,
+                       expectedValue,
+                       "Expected negative sign to be ignored, resulting in \(expectedValue)")
+    }
+
+    // Helper methods for simulating text input and formatting values
     private func simulateTextInput(_ input: String) {
         for char in input {
             let currentText = priceTextField.text ?? ""
