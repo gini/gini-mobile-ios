@@ -45,7 +45,7 @@ class TransactionDocsDataCoordinatorInternalProtocolTests: XCTestCase {
 
     func testInternalDeleteTransactionDocShouldRemoveCorrectDocument() {
         coordinator.transactionDocs = mockDocs
-        let documentToDelete = mockDocs.first!
+        let documentToDelete = mockDocs[0]
         coordinator.deleteTransactionDoc(with: documentToDelete.documentId)
         XCTAssertEqual(coordinator.transactionDocs.count,
                        mockDocs.count - 1,
