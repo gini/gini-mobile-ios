@@ -15,16 +15,14 @@ class SkontoViewModelTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        let fileURLPath: String? = Bundle.module
-            .path(forResource: "skontoDiscounts", ofType: "json")
-        let data = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
-        guard let data else {
-            XCTFail("Missing file: skontoDiscounts.json")
+        let filename = "skontoDiscounts"
+        guard let skontoDiscountsJson = FileLoader.loadFile(withName: filename, ofType: "json") else {
+            XCTFail("Error loading file: `\(filename).json`")
             return
         }
         
         do {
-            let extractionsContainer = try JSONDecoder().decode(ExtractionsContainer.self, from: data)
+            let extractionsContainer = try JSONDecoder().decode(ExtractionsContainer.self, from: skontoDiscountsJson)
             let extractionResult = ExtractionResult(extractionsContainer: extractionsContainer)
             skontoDiscounts = try SkontoDiscounts(extractions: extractionResult)
             viewModel = SkontoViewModel(skontoDiscounts: skontoDiscounts)
