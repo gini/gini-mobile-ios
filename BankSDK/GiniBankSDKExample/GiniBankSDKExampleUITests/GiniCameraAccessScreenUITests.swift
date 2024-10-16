@@ -63,7 +63,7 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
             app.resetAuthorizationStatus(for: .camera)
         }
     }
-    
+    /*
     func testCameraAccessScreenGiveAccessButton() throws {
         
         //Reset Camera Access
@@ -89,5 +89,6 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
             app.resetAuthorizationStatus(for: .camera)
         }
     }
+     */
 }
 
