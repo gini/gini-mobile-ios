@@ -7,6 +7,9 @@
 import Foundation
 import XCTest
 
+/*
+ // This class is commented out because the tests require preparation of simulators to include a specific file.
+
 class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
     
     /*
@@ -107,3 +110,4 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 5))
     }
 }
+*/

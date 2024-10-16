@@ -6,6 +6,8 @@
 
 import Foundation
 import XCTest
+/*
+ // This class is commented out because the tests require preparation of simulators to include a specific file.
 
 class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
     
@@ -169,3 +171,4 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertFalse(skontoScreen.proceedButton.isHittable)
     }
 }
+*/
