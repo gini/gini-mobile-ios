@@ -55,7 +55,6 @@ jobs:
         -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj
         -scheme "GiniBankSDKExampleTests"
         -destination "${{ matrix.destination }}"
-        -skip-testing:UI-GiniBankSDKExampleUITests
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
