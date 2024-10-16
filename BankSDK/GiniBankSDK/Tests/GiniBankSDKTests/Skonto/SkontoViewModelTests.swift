@@ -1,5 +1,5 @@
 //
-//  PP-845-iOS-SkontoViewModelTests-unit-tests-for-Skonto-RA.swift
+//  SkontoViewModelTests.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -17,19 +17,32 @@ class SkontoViewModelTests: XCTestCase {
         super.setUp()
         let filename = "skontoDiscounts"
         let filetype = "json"
-        guard let skontoDiscountsJson = FileLoader.loadFile(withName: filename, ofType: filetype) else {
-            XCTFail("Error loading file: `\(filename).\(filetype)`")
-            return
-        }
-        
         do {
-            let extractionsContainer = try JSONDecoder().decode(ExtractionsContainer.self, from: skontoDiscountsJson)
-            let extractionResult = ExtractionResult(extractionsContainer: extractionsContainer)
-            skontoDiscounts = try SkontoDiscounts(extractions: extractionResult)
+            skontoDiscounts = try loadSkontoDiscounts(from: filename, filetype: filetype)
             viewModel = SkontoViewModel(skontoDiscounts: skontoDiscounts)
         } catch {
             XCTFail("Failed to decode JSON: \(error)")
         }
+    }
+    
+    /**
+     Helper method to load and decode the SkontoDiscounts JSON file.
+
+     - Parameters:
+        - filename: The name of the JSON file to load.
+        - filetype: The type of the file (usually "json").
+     
+     - Returns: A `SkontoDiscounts` object if decoding is successful, otherwise throws an error.
+     */
+    func loadSkontoDiscounts(from filename: String, filetype: String) throws -> SkontoDiscounts {
+        guard let skontoDiscountsJson = FileLoader.loadFile(withName: filename, ofType: filetype) else {
+            XCTFail("Error loading file: `\(filename).\(filetype)`")
+            throw NSError(domain: "FileLoader", code: 1, userInfo: [NSLocalizedDescriptionKey: "Error loading file: \(filename).\(filetype)"])
+        }
+        
+        let extractionsContainer = try JSONDecoder().decode(ExtractionsContainer.self, from: skontoDiscountsJson)
+        let extractionResult = ExtractionResult(extractionsContainer: extractionsContainer)
+        return try SkontoDiscounts(extractions: extractionResult)
     }
     
     override func tearDown() {
@@ -90,6 +103,8 @@ class SkontoViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.edgeCase,
                        .expired,
                        "Edge case should be set to 'expired' when the expiry date is in the past.")
+        XCTAssertFalse(viewModel.isSkontoApplied,
+                       "Skonto should not be applied when the discount is expired.")
     }
 
     func testPaymentTodayEdgeCase() {
