@@ -8,7 +8,7 @@
 import Foundation
 import XCTest
 
-public class ReviewScreen {
+class ReviewScreen {
     
     let app: XCUIApplication
     let reviewTitleText: XCUIElement
@@ -16,10 +16,8 @@ public class ReviewScreen {
     let processButton: XCUIElement
     let deleteButton: XCUIElement
     let addPageButton: XCUIElement
-    
-    
-    
-    public init(app: XCUIApplication, locale: String) {
+
+    init(app: XCUIApplication, locale: String) {
         self.app = app
         
         switch locale {

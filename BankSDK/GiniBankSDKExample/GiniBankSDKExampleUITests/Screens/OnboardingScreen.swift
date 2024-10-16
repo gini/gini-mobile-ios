@@ -8,15 +8,15 @@
 import Foundation
 import XCTest
 
-public class OnboardingScreen {
-    
+class OnboardingScreen {
+
     let app: XCUIApplication
     let nextButton: XCUIElement
     let skipButton: XCUIElement
     let getStartedButton: XCUIElement
     let nextButtonCustom: XCUIElement
     
-    public init(app: XCUIApplication, locale: String) {
+    init(app: XCUIApplication, locale: String) {
         self.app = app
         
         switch locale {
@@ -35,7 +35,7 @@ public class OnboardingScreen {
         nextButtonCustom = app.buttons[">"]
     }
     
-    public func skipOnboardingScreens() {
+    func skipOnboardingScreens() {
         if skipButton.exists {
             skipButton.tap()
         }
