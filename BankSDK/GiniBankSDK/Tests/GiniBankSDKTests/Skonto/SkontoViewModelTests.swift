@@ -243,8 +243,6 @@ class SkontoViewModelTests: XCTestCase {
     }
     
     func testInitialSkontoStateDetermination() {
-        let viewModel = SkontoViewModel(skontoDiscounts: skontoDiscounts)
-
         let isSkontoApplied = viewModel.isSkontoApplied
 
         if viewModel.remainingDays < 0 {
