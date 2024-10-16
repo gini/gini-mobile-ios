@@ -8,7 +8,7 @@ import Foundation
 import XCTest
 import GiniCaptureSDK
 
-public class HelpScreen {
+class HelpScreen {
     let app: XCUIApplication
     let cameraBackButton: XCUIElement
     let tipsForBestResultLabel: XCUIElement
@@ -16,7 +16,7 @@ public class HelpScreen {
     let importDocumentsLabel: XCUIElement
     let helpBackButton: XCUIElement
     
-    public init(app: XCUIApplication, locale: String) {
+    init(app: XCUIApplication, locale: String) {
         self.app = app
         switch locale {
         case "en":

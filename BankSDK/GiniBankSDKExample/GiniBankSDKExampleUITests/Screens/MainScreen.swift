@@ -9,7 +9,7 @@ import Foundation
 import XCTest
 import GiniCaptureSDK
 
-public class MainScreen {
+class MainScreen {
     
     let app: XCUIApplication
     let configurationButton: XCUIElement
@@ -20,7 +20,7 @@ public class MainScreen {
     let recentsButton: XCUIElement
     let recentsText: XCUIElement
     
-    public init(app: XCUIApplication, locale: String) {
+    init(app: XCUIApplication, locale: String) {
         self.app = app
         
         switch locale {
@@ -48,7 +48,7 @@ public class MainScreen {
      */
     public func handleCameraPermission(answer: Bool) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let waitForPermission = springboard.waitForExistence(timeout: 5)
+        let _ = springboard.waitForExistence(timeout: 5)
         let allowButton = springboard.buttons["Allow"]
         let allowButtonDE = springboard.buttons["OK"]
         let dontAllowButton = springboard.buttons["Don’t Allow"]
@@ -175,12 +175,10 @@ public class MainScreen {
         let staticTexts = app.staticTexts.allElementsBoundByIndex
         // Iterate through all static text elements
         for staticText in staticTexts {
-            if let labelValue = staticText.label as String? {
-                if labelValue.contains(expectedText) {
-                    XCTAssertTrue(labelValue.contains(expectedText), 
-                                  "The text '\(expectedText)' was found in static text '\(labelValue)'")
-                    return // Exit the function as the expected text was found
-                }
+            if let labelValue = staticText.label as String?, labelValue.contains(expectedText) {
+                XCTAssertTrue(labelValue.contains(expectedText),
+                             "The text '\(expectedText)' was found in static text '\(labelValue)'")
+                return // Exit the function as the expected text was found
             }
         }
         // If the text was not found in any static text element

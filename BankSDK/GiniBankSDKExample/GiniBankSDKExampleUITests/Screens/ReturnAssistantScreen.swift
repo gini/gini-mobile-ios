@@ -8,7 +8,7 @@
 import Foundation
 import XCTest
 
-public class ReturnAssistantScreen {
+class ReturnAssistantScreen {
     
     let app: XCUIApplication
     let getStartedButton: XCUIElement
@@ -25,7 +25,7 @@ public class ReturnAssistantScreen {
     let saveButton: XCUIElement
     
     
-    public init(app: XCUIApplication, locale: String) {
+    init(app: XCUIApplication, locale: String) {
         self.app = app
         switch locale {
         case "en":
