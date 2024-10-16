@@ -8,7 +8,7 @@
 import Foundation
 import XCTest
 
-public class SkontoScreen {
+class SkontoScreen {
     
     let app: XCUIApplication
     let skontoTitleText: XCUIElement
@@ -22,9 +22,8 @@ public class SkontoScreen {
     let eurStaticText: XCUIElement
     let gotItButton: XCUIElement
     let iconImage: XCUIElement
-    
-    
-    public init(app: XCUIApplication, locale: String) {
+
+    init(app: XCUIApplication, locale: String) {
         self.app = app
         
         switch locale {

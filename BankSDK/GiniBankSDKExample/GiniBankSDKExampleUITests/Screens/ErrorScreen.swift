@@ -7,7 +7,7 @@
 import XCTest
 import Foundation
 
-public class ErrorScreen {
+class ErrorScreen {
     
     let app: XCUIApplication
     let cancelButton: XCUIElement
@@ -16,7 +16,7 @@ public class ErrorScreen {
     let errorTitle: XCUIElement
     let okButton: XCUIElement
     
-    public init(app: XCUIApplication, locale: String) {
+    init(app: XCUIApplication, locale: String) {
         self.app = app
         
         switch locale {

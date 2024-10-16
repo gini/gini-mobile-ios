@@ -8,7 +8,7 @@
 import Foundation
 import XCTest
 
-public class CameraAccessScreen {
+class CameraAccessScreen {
     
     let app: XCUIApplication
     let cameraTitleText: XCUIElement
@@ -16,7 +16,7 @@ public class CameraAccessScreen {
     let helpButton: XCUIElement
     let giveAccessButton: XCUIElement
     
-    public init(app: XCUIApplication, locale: String) {
+   init(app: XCUIApplication, locale: String) {
         self.app = app
         
         switch locale {

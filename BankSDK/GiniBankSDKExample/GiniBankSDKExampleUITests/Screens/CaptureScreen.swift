@@ -7,7 +7,7 @@
 import Foundation
 import XCTest
 
-public class CaptureScreen {
+class CaptureScreen {
     let app: XCUIApplication
     let captureButton: XCUIElement
     let flashONButton: XCUIElement
@@ -21,7 +21,7 @@ public class CaptureScreen {
     let cancelButtonInMenu: XCUIElement
     let openGalleryButton: XCUIElement
     
-    public init(app: XCUIApplication, locale: String) {
+    init(app: XCUIApplication, locale: String) {
         self.app = app
         
         switch locale {
@@ -56,14 +56,15 @@ public class CaptureScreen {
         }
     }
     
-    public func assertFlashButton(){
+    func assertFlashButton(){
         XCTAssertFalse(flashONButton.exists, "Does not exists")
     }
-    public func tapCancelButton(){
+
+    func tapCancelButton(){
         cancelButtonNavigation.tap()
     }
     
-    public func tapHelpButton(){
+    func tapHelpButton(){
         helpButton.tap()
     }
 }

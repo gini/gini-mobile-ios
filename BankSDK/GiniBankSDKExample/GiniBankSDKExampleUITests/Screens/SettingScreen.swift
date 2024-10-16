@@ -7,7 +7,7 @@
 import Foundation
 import XCTest
 
-public class SettingScreen {
+class SettingScreen {
     
     let app: XCUIApplication
     let closeButton: XCUIElement
@@ -20,7 +20,7 @@ public class SettingScreen {
     let bottomNavBar: XCUIElement
     let onboardingCustomBottomNavBar: XCUIElement
     
-    public init(app: XCUIApplication, locale: String) {
+    init(app: XCUIApplication, locale: String) {
         self.app = app
         closeButton = app.buttons["Close"]
         qrCodeScanSwitch = app.buttons[SettingScreenAccessibilityIdentifiers.qrCodeScanSwitch.rawValue]
