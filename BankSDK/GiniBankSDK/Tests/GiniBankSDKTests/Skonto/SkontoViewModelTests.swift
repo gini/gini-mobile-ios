@@ -226,6 +226,83 @@ class SkontoViewModelTests: XCTestCase {
                        expectedValue,
                        "Amount to pay should be rounded to two decimal places.")
     }
+    
+    func testInitialSkontoStateDetermination() {
+        let viewModel = SkontoViewModel(skontoDiscounts: skontoDiscounts)
+
+        let isSkontoApplied = viewModel.isSkontoApplied
+
+        if viewModel.remainingDays < 0 {
+            XCTAssertFalse(isSkontoApplied,
+                           "Skonto should not be applied if the discount is expired.")
+            XCTAssertEqual(viewModel.edgeCase,
+                           .expired,
+                           "Edge case should be 'expired' when remaining days are negative.")
+        } else if viewModel.paymentMethod == .cash {
+            XCTAssertFalse(isSkontoApplied,
+                           "Skonto should not be applied if the payment method is cash.")
+            XCTAssertEqual(viewModel.edgeCase,
+                           .payByCash,
+                           "Edge case should be 'pay by cash' if the payment method is cash.")
+        } else if viewModel.remainingDays == 0 {
+            XCTAssertTrue(isSkontoApplied,
+                          "Skonto should be applied if the payment is due today.")
+            XCTAssertEqual(viewModel.edgeCase,
+                           .paymentToday,
+                           "Edge case should be 'payment today' when the due date is today.")
+        } else {
+            XCTAssertTrue(isSkontoApplied,
+                          "Skonto should be applied by default.")
+            XCTAssertNil(viewModel.edgeCase,
+                         "Edge case should be nil for normal conditions.")
+        }
+    }
+
+    func testToggleDiscountChangesFinalAmountToPay() {
+        let initialAmount = viewModel.finalAmountToPay
+
+        viewModel.toggleDiscount()
+        let newAmount = viewModel.finalAmountToPay
+
+        XCTAssertNotEqual(initialAmount,
+                          newAmount,
+                          "Toggling the Skonto discount should change the final amount to pay.")
+    }
+
+    func testRecalculateSkontoPercentageThroughFormattedValue() {
+        let initialViewModel: SkontoViewModel! = viewModel
+        let initialFormattedPercentage = initialViewModel?.formattedPercentageDiscounted
+
+        // Set a new Skonto amount to pay that is lower than the current one to trigger recalculation
+        let newSkontoAmountToPay = Price(value: 200, currencyCode: initialViewModel.currencyCode)
+
+        // Assert that the new Skonto amount to pay is less than or equal to the original amount
+        XCTAssertTrue(newSkontoAmountToPay.value <= viewModel.amountToPay.value,
+                      "New Skonto amount to pay must be less than or equal to the total amount to pay.")
+
+        viewModel.setSkontoAmountToPayPrice(newSkontoAmountToPay.stringWithoutSymbol ?? "")
+
+        let updatedFormattedPercentage = viewModel.formattedPercentageDiscounted
+        XCTAssertNotEqual(updatedFormattedPercentage,
+                          initialFormattedPercentage,
+                          "Skonto percentage should be recalculated and reflected in the formatted percentage string when the Skonto amount to pay changes.")
+    }
+
+    func testSkontoSavingsAmountCalculation() {
+        let initialSavings = viewModel.savingsPriceString
+        let newSkontoAmountToPay = Price(value: viewModel.amountToPay.value * 0.5, currencyCode: viewModel.currencyCode)
+
+        XCTAssertTrue(newSkontoAmountToPay.value <= viewModel.amountToPay.value,
+                      "New Skonto amount to pay must be less than or equal to the total amount to pay.")
+
+        viewModel.setSkontoAmountToPayPrice(newSkontoAmountToPay.stringWithoutSymbol ?? "")
+
+        let updatedSavings = viewModel.savingsPriceString
+
+        XCTAssertNotEqual(updatedSavings,
+                          initialSavings,
+                          "Skonto savings amount should be updated when the Skonto amount to pay changes, reflecting a change in the Skonto percentage.")
+    }
 
     private func formatValue(_ value: Double) -> String {
         return NumberFormatter.twoDecimalPriceFormatter.string(from: NSNumber(value: value)) ?? ""
