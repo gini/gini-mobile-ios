@@ -11,8 +11,8 @@ import GiniCaptureSDK
 import GiniBankSDK
 
 final class GiniSetupHelper {
-    private let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
-    private let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
+    private let clientId = "gini-mobile-test"//ProcessInfo.processInfo.environment["CLIENT_ID"]!
+    private let clientSecret = "Tuzp6r9VsZhbo8irgR28"//ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
     private var giniBankAPILib: GiniBankAPI!
     var giniCaptureSDKDocumentService: GiniCaptureSDK.DocumentService!
     var giniBankAPIDocumentService: GiniBankAPILibrary.DefaultDocumentService!

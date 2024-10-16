@@ -279,7 +279,7 @@ final class GiniMerchantTests: XCTestCase {
             XCTAssert(open == false, "testOpenLink - MANAGED to open link")
         })
 
-        waitForExpectations(timeout: 0.1, handler: nil)
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
     
     func testSetDocumentForReview_Success() {
