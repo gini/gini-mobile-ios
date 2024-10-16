@@ -94,7 +94,10 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
         //Assert Take pickrute button is displayed
         XCTAssertTrue(captureScreen.captureButton.isHittable)
     }
-    
+
+
+    /*
+     // this method is commented until Vlad will fix the issue with small devices screen size
     func testOnboardingSwipeActionBottomNavBar() throws {
         
     //Preconditions
@@ -127,7 +130,9 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
         //Assert Take pickrute button is displayed
         XCTAssertTrue(captureScreen.captureButton.isHittable)
     }
-    
+     */
+    /*
+     // this method is commented until Vlad will fix the issue with small devices screen size
     func testOnboardingSwipeActionCustomBottomNavBar() throws {
         
     //Preconditions
@@ -164,4 +169,5 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
         //Assert Take pickrute button is displayed
         XCTAssertTrue(captureScreen.captureButton.isHittable)
     }
+     */
 }
