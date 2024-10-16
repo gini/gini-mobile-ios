@@ -7,8 +7,8 @@
 import Foundation
 import XCTest
 
-/*
- // This class is commented out because the tests require preparation of simulators to include a specific PDF file.
+// All the test methods have "manual" as a prefix because the tests require preparation of simulators to include a specific file.
+// Please remove the prefix if you want to test locally on a simulator
 
 class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
     
@@ -18,7 +18,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         "Return Assistant Testrechnung" PDF file
      */
     
-    func testReturnAssistant() {
+    func manualTestReturnAssistant() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -46,7 +46,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func testReturnAssistantEditName() {
+    func manualTestReturnAssistantEditName() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -84,7 +84,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func testReturnAssistantEditPrice() {
+    func manualTestReturnAssistantEditPrice() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -128,7 +128,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func testReturnAssistantEditQuantity() {
+    func manualTestReturnAssistantEditQuantity() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -172,7 +172,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func testReturnAssistantDisableSwitch() {
+    func manualTestReturnAssistantDisableSwitch() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -202,7 +202,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func testReturnAssistantCancelButton() {
+    func manualTestReturnAssistantCancelButton() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -228,7 +228,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func testReturnAssistantHelpButton() {
+    func manualTestReturnAssistantHelpButton() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -254,4 +254,3 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertFalse(returnAssistantScreen.proceedButton.isHittable)
     }
 }
-*/
