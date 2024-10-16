@@ -7,8 +7,8 @@
 import Foundation
 import XCTest
 
-/*
- // This class is commented out because the tests require preparation of simulators to include a specific file.
+// All the test methods have "manual" as a prefix because the tests require preparation of simulators to include a specific file.
+// Please remove the prefix if you want to test locally on a simulator
 
 class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
     
@@ -18,7 +18,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         "test_image" image file with invoice
      */
     
-    func testAddPageButton() {
+    func manualTestAddPageButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -41,7 +41,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 5))
     }
     
-    func testProcessButton() {
+    func manualTestProcessButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -64,7 +64,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
     }
     
-    func testCancelButton() {
+    func manualTestCancelButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -87,7 +87,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.waitForExistence(timeout: 5))
     }
     
-    func testDeleteButton() {
+    func manualTestDeleteButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -110,4 +110,3 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 5))
     }
 }
-*/
