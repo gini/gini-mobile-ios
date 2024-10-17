@@ -29,43 +29,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # - name: Setup Mint
-      #   uses: fabasoad/setup-mint-action@main
-
-      # - name: Install Homebrew
-      #   run: |
-      #     echo "Installing Homebrew"
-      #     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      #     echo "Adding Homebrew to PATH"
-      #     echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-          # eval "$(/opt/homebrew/bin/brew shellenv)"
-
-        # run: |
-        #   sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer  # Ensure full Xcode is selected
-        #   brew install segment-integrations/formulae/swift-create-xcframework
-      - name: Create XCFramework
-        uses: segment-integrations/swift-create-xcframework@2.4.0
+      - name: Install Homebrew if missing
+        run: |
+          if ! command -v brew &> /dev/null; then
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          fi
+          # Add Homebrew to PATH for this and subsequent steps
+          echo "HOMEBREW_PREFIX=$(brew --prefix)" >> $GITHUB_ENV
+          echo "HOMEBREW_PATH=$(brew --prefix)/bin" >> $GITHUB_ENV
+          echo "PATH=$HOMEBREW_PATH:$PATH" >> $GITHUB_ENV
+      
+      - name: Update Homebrew
+        run: |
+          brew update
+      
+      - name: Setup swift-create-xcframework
+        run: |
+          brew tap segment-integrations/formulae
+          brew install swift-create-xcframework
 
       - name: GiniBankSDKPinning Project File
         run: |
           cd BankSDK/GiniBankSDKPinning
           swift create-xcframework
-      # - name: Setup swift-create-xcframework 
-      #   run: |
-      #     /usr/local/bin/brew install segment-integrations/formulae/swift-create-xcframework
-         
 
-      # - name: GiniBankSDKPinning Project File
-      #   run: |
-      #     cd BankSDK/GiniBankSDKPinning
-      #     /usr/local/bin/brew run swift-create-xcframework
-
-      - name: setup ruby
+      - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2.0'
           bundler-cache: true
-    
       - name: Add resources to BankSDK target for generated Xcode project
         uses: maierj/fastlane-action@v3.1.0
         with:
