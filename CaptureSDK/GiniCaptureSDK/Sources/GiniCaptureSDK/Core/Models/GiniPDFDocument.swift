@@ -6,6 +6,7 @@
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
+import GiniBankAPILibrary
 import UIKit
 import MobileCoreServices
 
@@ -19,6 +20,7 @@ final public class GiniPDFDocument: NSObject, GiniCaptureDocument {
     public var previewImage: UIImage?
     public var isReviewable: Bool
     public var isImported: Bool
+    public var uploadMetadata: Document.UploadMetadata?
 
     private(set) var numberPages: Int = 0
     private(set) var pdfTitle: String?
@@ -31,11 +33,12 @@ final public class GiniPDFDocument: NSObject, GiniCaptureDocument {
 
      */
 
-    init(data: Data, fileName: String?) {
+    init(data: Data, fileName: String?, uploadMetadata: Document.UploadMetadata? = nil) {
         self.data = data
         self.isReviewable = false
         self.id = UUID().uuidString
         self.isImported = true
+        self.uploadMetadata = uploadMetadata
         super.init()
 
         if let dataProvider = CGDataProvider(data: data as CFData), let pdfDocument = CGPDFDocument(dataProvider) {
