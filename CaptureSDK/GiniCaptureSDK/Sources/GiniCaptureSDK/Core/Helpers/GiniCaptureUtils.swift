@@ -241,6 +241,9 @@ extension Foundation.Bundle {
      The resource bundle associated with the current module.
      - important: When `GiniCaptureSDK` is distributed via Swift Package Manager, it will be synthesized automatically in the name of `Bundle.module`.
      */
+#if SWIFT_PACKAGE
+    static let resource = Bundle.module
+#else
     static var resource: Bundle = {
         let moduleName = "GiniCaptureSDK"
         let bundleName = "\(moduleName)_\(moduleName)"
@@ -262,6 +265,7 @@ extension Foundation.Bundle {
         }
         return Bundle(for: GiniCapture.self)
     }()
+#endif
 }
 
 public struct RoundedCorners {
