@@ -199,6 +199,9 @@ extension Foundation.Bundle {
      The resource bundle associated with the current module.
      - important: When `GiniBankSDK` is distributed via Swift Package Manager, it will be synthesized automatically in the name of `Bundle.module`.
      */
+#if SWIFT_PACKAGE
+    static var resource = Bundle.module
+#else
     static var resource: Bundle = {
         let moduleName = "GiniBankSDK"
         let bundleName = "\(moduleName)_\(moduleName)"
@@ -221,4 +224,5 @@ extension Foundation.Bundle {
         }
         return Bundle(for: GiniBank.self)
     }()
+#endif
 }
