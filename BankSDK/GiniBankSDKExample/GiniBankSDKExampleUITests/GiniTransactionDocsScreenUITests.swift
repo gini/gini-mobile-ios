@@ -10,6 +10,12 @@ import XCTest
 
 class GiniTransactionDocsScreenUITests: GiniBankSDKExampleUITests {
     
+    /*
+     To launch these tests and closely mimic real user behavior
+     Please upload to device:
+        "test_image" image file with invoice
+     */
+    
     func testDontAttach() {
         
         //Tap Photopayment button

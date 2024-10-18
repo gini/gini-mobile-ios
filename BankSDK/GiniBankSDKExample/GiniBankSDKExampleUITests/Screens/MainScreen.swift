@@ -72,7 +72,7 @@ class MainScreen {
      */
     public func handlePhotoPermission(answer: Bool) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let waitForPermission = springboard.waitForExistence(timeout: 5)
+        let _ = springboard.waitForExistence(timeout: 5)
         let allowFullAccess =  springboard.buttons["Allow Full Access"]
         let allowFullAccessDE =  springboard.buttons["Zugriff auf alle Fotos erlauben"]
         let dontAllowButton = springboard.buttons["Don’t Allow"]
