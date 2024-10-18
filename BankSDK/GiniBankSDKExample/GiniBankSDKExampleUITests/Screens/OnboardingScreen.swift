@@ -22,7 +22,7 @@ class OnboardingScreen {
         switch locale {
         case "en":
             nextButton = app.staticTexts["Next"]
-            skipButton = app.navigationBars.buttons["Skip"]
+            skipButton = app.buttons["Skip"]
             getStartedButton = app.buttons["Get Started"]
         case "de":
             nextButton = app.staticTexts["Weiter"]
