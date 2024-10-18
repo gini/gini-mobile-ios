@@ -164,7 +164,17 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
     }
     
     func showErrorAlertView(error: String) {
-        let alertController = UIAlertController(title: viewModel.errorTitleText, 
+        if presentedViewController != nil {
+            self.presentedViewController?.dismiss(animated: true, completion: {
+                self.presentAlerViewController(error: error)
+            })
+        } else {
+            presentAlerViewController(error: error)
+        }
+    }
+
+    private func presentAlerViewController(error: String) {
+        let alertController = UIAlertController(title: viewModel.errorTitleText,
                                                 message: error,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))
@@ -176,6 +186,6 @@ extension InvoicesListViewController {
     private enum Constants {
         static let padding: CGFloat = 8
         static let cornerRadius: CGFloat = 16
-        static let rowHeight: CGFloat = 80
+        static let rowHeight: CGFloat = 40
     }
 }

@@ -25,17 +25,17 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wCb-NR-BJ9">
                                 <rect key="frame" x="0.0" y="0.0" width="288" height="44"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="doh-SV-RC8">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="doh-SV-RC8">
                                         <rect key="frame" x="0.0" y="0.0" width="85.666666666666671" height="44"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Recipient " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wi4-Z7-eRK">
-                                                <rect key="frame" x="0.0" y="0.0" width="85.666666666666671" height="23"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="85.666666666666671" height="24.666666666666668"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="19"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Due date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IyQ-jU-9a9">
-                                                <rect key="frame" x="0.0" y="23" width="85.666666666666671" height="21"/>
+                                                <rect key="frame" x="0.0" y="24.666666666666671" width="85.666666666666671" height="19.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -112,7 +112,7 @@
     </objects>
     <resources>
         <namedColor name="Accent01">
-            <color red="0.039000000804662704" green="0.51800000667572021" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.61960784313725492" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="gini-blue">
             <color red="0.27500000596046448" green="0.61599999666213989" blue="0.86699998378753662" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

@@ -18,6 +18,7 @@ struct DocumentWithExtractions: Codable {
     var isPayable: Bool?
     var hasMultipleDocuments: Bool?
     var doctorName: String?
+    var iban: String?
 
     init(documentId: String, extractionResult: GiniHealthSDK.ExtractionResult) {
         self.documentId = documentId
@@ -27,6 +28,7 @@ struct DocumentWithExtractions: Codable {
         self.isPayable = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
         self.hasMultipleDocuments = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value == true.description
         self.doctorName = extractionResult.extractions.first(where: { $0.name == ExtractionType.doctorName.rawValue })?.value
+        self.iban = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.iban.rawValue })?.value
     }
 }
 
@@ -275,7 +277,9 @@ extension InvoicesListViewModel {
                         paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo(for: index)) { [weak self] result in
                             switch result {
                             case .success(let paymentRequestID):
-                                self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                                self?.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true, completion: {
+                                    self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                                })
                             case .failure(let error):
                                 self?.errors.append(error.localizedDescription)
                                 self?.showErrorsIfAny()
@@ -303,7 +307,7 @@ extension InvoicesListViewModel {
 
     private func obtainPaymentInfo(for index: Int) -> GiniInternalPaymentSDK.PaymentInfo {
         return PaymentInfo(recipient: invoices[index].recipient ?? "",
-                           iban: "",
+                           iban: invoices[index].iban ?? "",
                            bic: "",
                            amount: invoices[index].amountToPay ?? "",
                            purpose: "",

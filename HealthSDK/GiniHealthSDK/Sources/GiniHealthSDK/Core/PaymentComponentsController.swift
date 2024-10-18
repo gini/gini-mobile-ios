@@ -424,8 +424,8 @@ extension PaymentComponentsController: PaymentReviewProtocol {
         let info = PaymentInfo(paymentConponentsInfo: paymentInfo)
         giniSDK.createPaymentRequest(paymentInfo: info, completion: { result in
             switch result {
-                case .success(let paymentRequestID):
-                    completion(.success(paymentRequestID))
+            case .success(let paymentRequestID):
+                completion(.success(paymentRequestID))
             case .failure(let error):
                 let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
                 completion(.failure(healthError))
