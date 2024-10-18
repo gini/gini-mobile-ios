@@ -28,9 +28,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
     
     override func setUpWithError() throws {
         
-        if isSimulator == true {
-            throw XCTSkip("Skipping test")
-        }
+        if isSimulator == true { throw XCTSkip("Skipping test") }
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["-testing"]
