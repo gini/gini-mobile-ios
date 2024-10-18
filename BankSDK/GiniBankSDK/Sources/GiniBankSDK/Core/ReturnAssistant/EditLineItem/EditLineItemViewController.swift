@@ -213,7 +213,13 @@ final class EditLineItemViewController: UIViewController {
             case .changed:
                 if UIDevice.current.isIpad {
                     // Move the container based on the pan gesture
-                    containerViewBottomConstraint?.constant = -newBottomPadding
+                    if UIApplication.shared.statusBarOrientation.isLandscape,
+                       self.isKeyboardPresented,
+                       self.keyboardHeight > 200 { // checking if digital keyboard is presented.
+                        containerViewBottomConstraint?.constant = -(view.frame.height - currentContainerHeight - Constants.topPadding - translation.y)
+                    } else {
+                        containerViewBottomConstraint?.constant = -newBottomPadding
+                    }
                     view.layoutIfNeeded()
                 } else {
                     // Resize the container based on the pan gesture
@@ -271,7 +277,13 @@ final class EditLineItemViewController: UIViewController {
 
     private func animateContainerToInitialPosition() {
         UIView.animate(withDuration: Constants.animationDuration) {
-            self.containerViewBottomConstraint?.constant = -self.currentBottomPadding
+            if UIApplication.shared.statusBarOrientation.isLandscape,
+               self.isKeyboardPresented,
+               self.keyboardHeight > 200 { // checking if digital keyboard is presented.
+                self.containerViewBottomConstraint?.constant = -(self.view.frame.height - self.currentContainerHeight - Constants.topPadding)
+            } else {
+                self.containerViewBottomConstraint?.constant = -self.currentBottomPadding
+            }
             self.view.layoutIfNeeded()
         }
     }
