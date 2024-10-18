@@ -18,7 +18,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         "Return Assistant Testrechnung" PDF file
      */
     
-    func manualTestReturnAssistant() {
+    func testReturnAssistant() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -40,13 +40,16 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         returnAssistantScreen.getStartedButton.tap()
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
+        //Tap Only for this transaction
+        transactionDocsScreen.onlyForThisTransaction.tap()
         //Tap Send feedback and close
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
         //Assert Photopayment button is displayed
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func manualTestReturnAssistantEditName() {
+    func testReturnAssistantEditName() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -78,13 +81,16 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(app.staticTexts["1x New Product"].waitForExistence(timeout: 1))
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
+        //Tap Only for this transaction
+        transactionDocsScreen.onlyForThisTransaction.tap()
         //Tap Send feedback and close
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
         //Assert Photopayment button is displayed
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func manualTestReturnAssistantEditPrice() {
+    func testReturnAssistantEditPrice() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -122,13 +128,16 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.assertTextIsDisplayedInAnyStaticText(expectedText: value as! String)
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
+        //Tap Only for this transaction
+        transactionDocsScreen.onlyForThisTransaction.tap()
         //Tap Send feedback and close
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
         //Assert Photopayment button is displayed
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func manualTestReturnAssistantEditQuantity() {
+    func testReturnAssistantEditQuantity() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -166,13 +175,16 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(app.staticTexts["2x New Product"].waitForExistence(timeout: 1))
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
+        //Tap Only for this transaction
+        transactionDocsScreen.onlyForThisTransaction.tap()
         //Tap Send feedback and close
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
         //Assert Photopayment button is displayed
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func manualTestReturnAssistantDisableSwitch() {
+    func testReturnAssistantDisableSwitch() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -196,13 +208,16 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         app.switches.firstMatch.tap()
         //Tap Proceed button
         returnAssistantScreen.proceedButton.tap()
+        //Tap Only for this transaction
+        transactionDocsScreen.onlyForThisTransaction.tap()
         //Tap Send feedback and close
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
         //Assert Photopayment button is displayed
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func manualTestReturnAssistantCancelButton() {
+    func testReturnAssistantCancelButton() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
@@ -228,7 +243,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func manualTestReturnAssistantHelpButton() {
+    func testReturnAssistantHelpButton() {
         
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()

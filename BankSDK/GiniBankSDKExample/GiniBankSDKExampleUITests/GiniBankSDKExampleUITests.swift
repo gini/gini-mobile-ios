@@ -23,6 +23,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var skontoScreen: SkontoScreen!
     var returnAssistantScreen: ReturnAssistantScreen!
     var reviewScreen: ReviewScreen!
+    var transactionDocsScreen: TransactionDocsScreen!
     var isSimulator = true
     
     override func setUpWithError() throws {
@@ -46,6 +47,7 @@ class GiniBankSDKExampleUITests: XCTestCase {
         skontoScreen = SkontoScreen(app: app, locale: currentLocale)
         returnAssistantScreen = ReturnAssistantScreen(app: app, locale: currentLocale)
         reviewScreen = ReviewScreen(app: app, locale: currentLocale)
+        transactionDocsScreen = TransactionDocsScreen(app: app, locale: currentLocale)
     }
     
     override func tearDownWithError() throws  {
