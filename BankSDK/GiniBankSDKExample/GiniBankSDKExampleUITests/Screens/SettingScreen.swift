@@ -15,10 +15,10 @@ class SettingScreen {
     let qrCodeScanOnlySwitch: XCUIElement
     let multiPageSwitch: XCUIElement
     let flashToggleSwitch: XCUIElement
-    let onboardingEveryLaunchSwitch: XCUIElement
-    let onboardingAtFirstLaunchSwitch: XCUIElement
-    let bottomNavBar: XCUIElement
-    let onboardingCustomBottomNavBar: XCUIElement
+    let onboardingEveryLaunchSwitch: String
+    let onboardingAtFirstLaunchSwitch: String
+    let bottomNavBar: String
+    let onboardingCustomBottomNavBar: String
     
     init(app: XCUIApplication, locale: String) {
         self.app = app
@@ -27,10 +27,10 @@ class SettingScreen {
         qrCodeScanOnlySwitch = app.buttons[SettingScreenAccessibilityIdentifiers.qrCodeScanOnlySwitch.rawValue]
         multiPageSwitch = app.buttons[SettingScreenAccessibilityIdentifiers.multiPageSwitch.rawValue]
         flashToggleSwitch = app.switches[SettingScreenAccessibilityIdentifiers.flashToggleSwitch.rawValue]
-        onboardingEveryLaunchSwitch = app.switches["Onboarding screens at every launch"]
-        onboardingAtFirstLaunchSwitch = app.switches["Onboarding screens at first launch, Overwrites `Onboarding screens at every launch` for the first launch."]
-        bottomNavBar = app.switches["Bottom navigation bar"]
-        onboardingCustomBottomNavBar = app.switches["Onboarding custom bottom navigation bar, The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."]
+        onboardingEveryLaunchSwitch = "Onboarding screens at every launch"
+        onboardingAtFirstLaunchSwitch = "Onboarding screens at first launch"
+        bottomNavBar = "Bottom navigation bar"
+        onboardingCustomBottomNavBar = "Onboarding custom bottom navigation bar"
     }
     
     public func tapFlashToggleSwitch(){
