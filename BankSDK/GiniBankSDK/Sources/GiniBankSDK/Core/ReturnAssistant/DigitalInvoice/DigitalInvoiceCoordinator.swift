@@ -62,7 +62,7 @@ final class DigitalInvoiceCoordinator: Coordinator {
 
     private func showDigitalInvoiceOnboarding() {
         let onboardingViewControllerName = "digitalInvoiceOnboardingViewController"
-        let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: giniBankBundle())
+        let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: giniBankResourceBundle())
         let digitalInvoiceOnboardingViewController =
         storyboard.instantiateViewController(withIdentifier: onboardingViewControllerName)
         as! DigitalInvoiceOnboardingViewController

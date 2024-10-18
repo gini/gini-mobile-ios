@@ -72,7 +72,7 @@ private func clientLocalizedString(_ key: String,
 private func giniLocalizedString(_ key: String,
                                  fallbackKey: String,
                                  comment: String) -> String {
-    let giniBundle = giniBankBundle()
+    let giniBundle = giniBankResourceBundle()
     
     var defaultFormat = NSLocalizedString(key,
                                           bundle: giniBundle,
@@ -87,8 +87,8 @@ private func giniLocalizedString(_ key: String,
     return defaultFormat
 }
 
-func giniBankBundle() -> Bundle {
-    Bundle.resource
+func giniBankResourceBundle() -> Bundle {
+    Bundle.resourceBundle
 }
 
 /**
@@ -112,7 +112,7 @@ func prefferedImage(named name: String) -> UIImage? {
     }
 
     return UIImage(named: name,
-                   in: giniBankBundle(),
+                   in: giniBankResourceBundle(),
                    compatibleWith: nil)
 }
 /**
@@ -137,7 +137,7 @@ func prefferedColor(named name: String) -> UIColor {
     }
 
     if let color = UIColor(named: name,
-                           in: giniBankBundle(),
+                           in: giniBankResourceBundle(),
                            compatibleWith: nil) {
         return color
     } else {
@@ -199,10 +199,7 @@ extension Foundation.Bundle {
      The resource bundle associated with the current module.
      - important: When `GiniBankSDK` is distributed via Swift Package Manager, it will be synthesized automatically in the name of `Bundle.module`.
      */
-#if SWIFT_PACKAGE
-    static var resource = Bundle.module
-#else
-    static var resource: Bundle = {
+    static var resourceBundle: Bundle = {
         let moduleName = "GiniBankSDK"
         let bundleName = "\(moduleName)_\(moduleName)"
 
@@ -224,5 +221,4 @@ extension Foundation.Bundle {
         }
         return Bundle(for: GiniBank.self)
     }()
-#endif
 }
