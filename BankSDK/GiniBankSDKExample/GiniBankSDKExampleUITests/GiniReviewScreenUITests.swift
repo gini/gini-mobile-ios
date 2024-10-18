@@ -18,7 +18,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         "test_image" image file with invoice
      */
     
-    func manualTestAddPageButton() {
+    func testAddPageButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -41,7 +41,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 5))
     }
     
-    func manualTestProcessButton() {
+    func testProcessButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -60,11 +60,14 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
         //Tap Process button
         reviewScreen.processButton.tap()
+        //Tap Only for this transaction
+        XCTAssertTrue(transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 5))
+        transactionDocsScreen.onlyForThisTransaction.tap()
         //Assert that Capture button is displayed
         XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
     }
     
-    func manualTestCancelButton() {
+    func testCancelButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -87,7 +90,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(mainScreen.photoPaymentButton.waitForExistence(timeout: 5))
     }
     
-    func manualTestDeleteButton() {
+    func testDeleteButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up

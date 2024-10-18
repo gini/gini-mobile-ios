@@ -19,7 +19,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         "skonto_valid" file with valid skonto
      */
     
-    func manualTestSkonto() {
+    func testSkonto() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -40,13 +40,17 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         skontoScreen.gotItButton.tap()
         //Tap Proceed button
         skontoScreen.proceedButton.tap()
+        //Tap Only for this transaction button
+        XCTAssertTrue(transactionDocsScreen.onlyForThisTransaction.waitForExistence(timeout: 5))
+        transactionDocsScreen.onlyForThisTransaction.tap()
         //Tap Send feedback and close
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
         //Assert Photopayment button is displayed
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
-    func manualTestSkontoBackButton() {
+    func testSkontoBackButton() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -71,7 +75,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue(captureScreen.captureButton.isHittable)
     }
     
-    func manualTestSkontoSwitch() {
+    func testSkontoSwitch() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -98,14 +102,17 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "1")
         //Tap Proceed button
         skontoScreen.proceedButton.tap()
+        //Tap Only for this transaction
+        transactionDocsScreen.onlyForThisTransaction.tap()
         //Tap Send feedback and close
+        XCTAssertTrue(mainScreen.sendFeedbackButton.waitForExistence(timeout: 5))
         mainScreen.sendFeedbackButton.tap()
         //Assert Photopayment button is displayed
         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
     }
     
     
-    func manualTestSkontoInFuture() {
+    func testSkontoInFuture() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -126,7 +133,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "1")
     }
     
-    func manualTestSkontoInPast() {
+    func testSkontoInPast() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
@@ -147,7 +154,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         XCTAssertTrue((skontoScreen.skontoSwitch.value != nil), "0")
     }
     
-    func manualTestSkontoHelpButtonbo() {
+    func testSkontoHelpButtonbo() {
         //Tap Photopayment button
         mainScreen.photoPaymentButton.tap()
         //Handle Camera access pop up
