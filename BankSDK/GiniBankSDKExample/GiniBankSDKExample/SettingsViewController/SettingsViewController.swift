@@ -40,6 +40,7 @@ final class SettingsViewController: UIViewController {
                                                    settingsButtonStates: settingsButtonStates,
                                                    documentValidationsState: documentValidationsState)
 		super.init(nibName: nil, bundle: nil)
+        self.viewModel.delegate = self
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -187,8 +188,7 @@ extension SettingsViewController: UITableViewDelegate {
 
 extension SettingsViewController: SwitchOptionTableViewCellDelegate {
 	func didToggleOption(in cell: SwitchOptionTableViewCell) {
-        let nextSwitchOptionCell = getSwitchOptionCell(at: cell.tag + 1) as? SwitchOptionTableViewCell
-        viewModel.handleOnToggle(in: cell, nextSwitchOptionCell: nextSwitchOptionCell)
+        viewModel.handleOnToggle(in: cell)
 	}
 }
 
@@ -244,5 +244,11 @@ extension SettingsViewController: UpdateUserDefaultsCellDelegate {
             // Present the alert on the provided viewController
             present(alert, animated: true, completion: nil)
         }
+    }
+}
+
+extension SettingsViewController: SettingsViewModelDelegate {
+    func contentDataUpdated() {
+        self.tableView.reloadData()
     }
 }

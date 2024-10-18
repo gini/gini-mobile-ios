@@ -11,12 +11,18 @@ import GiniBankSDK
 import GiniCaptureSDK
 import UIKit
 
+protocol SettingsViewModelDelegate: AnyObject {
+    func contentDataUpdated()
+}
+
 final class SettingsViewModel {
     private var giniConfiguration: GiniBankConfiguration
     private var settingsButtonStates: SettingsButtonStates
     private var documentValidationsState: DocumentValidationsState
     private(set) var contentData: [SettingsViewController.CellType] = []
 
+    weak var delegate: SettingsViewModelDelegate?
+    
     private var flashToggleSettingEnabled: Bool = {
         #if targetEnvironment(simulator)
             return true
@@ -35,35 +41,13 @@ final class SettingsViewModel {
         self.documentValidationsState = documentValidationsState
         setupContentData(apiEnvironment: apiEnvironment, client: client)
     }
-
+    
     private func setupContentData(apiEnvironment: APIEnvironment,
                                   client: Client? = nil) {
+        // Default configuration
         contentData.append(.info(message: "Please relaunch the app to use the default GiniConfiguration values."))
-        var selectedAPISegmentIndex = 0
-        switch apiEnvironment {
-        case .production:
-            selectedAPISegmentIndex = 0
-        case .stage:
-            selectedAPISegmentIndex = 1
-        }
-        contentData.append(.segmentedOption(data: APIEnvironmentSegmentedOptionModel(selectedIndex: selectedAPISegmentIndex)))
-        contentData.append(.credentials(data: .init(clientId: client?.id ?? "", secretId: client?.secret ?? "")))
-        contentData.append(.switchOption(data: .init(type: .openWith,
-                                                     isSwitchOn: giniConfiguration.openWithEnabled)))
-        contentData.append(.switchOption(data: .init(type: .qrCodeScanning,
-                                                     isSwitchOn: giniConfiguration.qrCodeScanningEnabled)))
-        contentData.append(.switchOption(data: .init(type: .qrCodeScanningOnly,
-                                                     isSwitchOn: giniConfiguration.onlyQRCodeScanningEnabled)))
-        contentData.append(.switchOption(data: .init(type: .multipage,
-                                                     isSwitchOn: giniConfiguration.multipageEnabled)))
-        if flashToggleSettingEnabled {
-            contentData.append(.switchOption(data: .init(type: .flashToggle,
-                                                         isSwitchOn: giniConfiguration.flashToggleEnabled)))
-            contentData.append(.switchOption(data: .init(type: .flashOnByDefault,
-                                                         isSwitchOn: giniConfiguration.flashOnByDefault)))
-        }
-        contentData.append(.switchOption(data: .init(type: .customResourceProvider,
-                                                     isSwitchOn: giniConfiguration.customResourceProvider != nil)))
+        
+        // Feature toggles
         var selectedFileImportTypeSegmentIndex = 0
         switch giniConfiguration.fileImportSupportedTypes {
         case .none:
@@ -75,30 +59,48 @@ final class SettingsViewModel {
         }
         contentData.append(.segmentedOption(data: FileImportSegmentedOptionModel(selectedIndex: selectedFileImportTypeSegmentIndex)))
         
+        contentData.append(.switchOption(data: .init(type: .openWith,
+                                                     isSwitchOn: giniConfiguration.openWithEnabled)))
+        contentData.append(.switchOption(data: .init(type: .qrCodeScanning,
+                                                     isSwitchOn: giniConfiguration.qrCodeScanningEnabled)))
+        contentData.append(.switchOption(data: .init(type: .qrCodeScanningOnly,
+                                                     isSwitchOn: giniConfiguration.onlyQRCodeScanningEnabled)))
+        contentData.append(.switchOption(data: .init(type: .multipage,
+                                                     isSwitchOn: giniConfiguration.multipageEnabled)))
+        contentData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
+                                                     isSwitchOn: giniConfiguration.returnAssistantEnabled)))
+        contentData.append(.switchOption(data: .init(type: .skontoEnabled,
+                                                     isSwitchOn: giniConfiguration.skontoEnabled)))
+        contentData.append(.switchOption(data: .init(type: .transactionDocsEnabled,
+                                                     isSwitchOn: giniConfiguration.transactionDocsEnabled)))
+        
+        // Bottom navigation bars
         contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
                                                      isSwitchOn: giniConfiguration.bottomNavigationBarEnabled)))
-
-        contentData.append(.switchOption(data: .init(type: .skontoNavigationBarBottomAdapter,
-                                                     isSwitchOn: giniConfiguration.skontoNavigationBarBottomAdapter != nil)))
-        contentData.append(.switchOption(data: .init(type: .skontoHelpNavigationBarBottomAdapter,
-                                                     isSwitchOn: giniConfiguration.skontoHelpNavigationBarBottomAdapter != nil)))
-
-        contentData.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
-                                                     isSwitchOn: giniConfiguration.helpNavigationBarBottomAdapter != nil)))
+        contentData.append(.switchOption(data: .init(type: .onboardingNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.onboardingNavigationBarBottomAdapter != nil)))
         contentData.append(.switchOption(data: .init(type: .cameraNavigationBarBottomAdapter,
                                                      isSwitchOn: giniConfiguration.cameraNavigationBarBottomAdapter != nil)))
+        contentData.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.helpNavigationBarBottomAdapter != nil)))
         contentData.append(.switchOption(data: .init(type: .reviewNavigationBarBottomAdapter,
                                                      isSwitchOn: giniConfiguration.reviewNavigationBarBottomAdapter != nil)))
         contentData.append(.switchOption(data: .init(type: .imagePickerNavigationBarBottomAdapter,
                                                      isSwitchOn: giniConfiguration.imagePickerNavigationBarBottomAdapter != nil)))
-
+        contentData.append(.switchOption(data: .init(type: .digitalInvoiceNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.digitalInvoiceNavigationBarBottomAdapter != nil)))
+        contentData.append(.switchOption(data: .init(type: .digitalInvoiceHelpNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter != nil)))
+        contentData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)))
+        
+        // Onboarding
         contentData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
                                                      isSwitchOn: giniConfiguration.onboardingShowAtLaunch)))
         contentData.append(.switchOption(data: .init(type: .onboardingShowAtFirstLaunch,
                                                      isSwitchOn: giniConfiguration.onboardingShowAtFirstLaunch)))
         contentData.append(.switchOption(data: .init(type: .customOnboardingPages,
                                                      isSwitchOn: giniConfiguration.customOnboardingPages != nil)))
-
         contentData.append(.switchOption(data: .init(type: .onboardingAlignCornersIllustrationAdapter,
                                                      isSwitchOn: giniConfiguration.onboardingAlignCornersIllustrationAdapter != nil)))
         contentData.append(.switchOption(data: .init(type: .onboardingLightingIllustrationAdapter,
@@ -107,85 +109,89 @@ final class SettingsViewModel {
                                                      isSwitchOn: giniConfiguration.onboardingQRCodeIllustrationAdapter != nil)))
         contentData.append(.switchOption(data: .init(type: .onboardingMultiPageIllustrationAdapter,
                                                      isSwitchOn: giniConfiguration.onboardingMultiPageIllustrationAdapter != nil)))
-        contentData.append(.switchOption(data: .init(type: .onboardingNavigationBarBottomAdapter,
-                                                     isSwitchOn: giniConfiguration.onboardingNavigationBarBottomAdapter != nil)))
         
-        contentData.append(.switchOption(data: .init(type: .onButtonLoadingIndicator,
-                                                     isSwitchOn: giniConfiguration.onButtonLoadingIndicator != nil)))
+        // Camera
+        if flashToggleSettingEnabled {
+            contentData.append(.switchOption(data: .init(type: .flashToggle,
+                                                         isSwitchOn: giniConfiguration.flashToggleEnabled)))
+            contentData.append(.switchOption(data: .init(type: .flashOnByDefault,
+                                                         isSwitchOn: giniConfiguration.flashOnByDefault)))
+        }
+        
+        // Analysis
         contentData.append(.switchOption(data: .init(type: .customLoadingIndicator,
                                                      isSwitchOn: giniConfiguration.customLoadingIndicator != nil)))
-
+        contentData.append(.switchOption(data: .init(type: .onButtonLoadingIndicator,
+                                                     isSwitchOn: giniConfiguration.onButtonLoadingIndicator != nil)))
+        
+        // Help
         contentData.append(.switchOption(data: .init(type: .shouldShowSupportedFormatsScreen,
                                                      isSwitchOn: giniConfiguration.shouldShowSupportedFormatsScreen)))
         contentData.append(.switchOption(data: .init(type: .customMenuItems,
                                                      isSwitchOn: !giniConfiguration.customMenuItems.isEmpty)))
-
-        contentData.append(.switchOption(data: .init(type: .customNavigationController,
-                                                     isSwitchOn: giniConfiguration.customNavigationController != nil)))
-        if UIDevice.current.isIpad {
-            contentData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
-                                                         isSwitchOn: giniConfiguration.shouldShowDragAndDropTutorial)))
-        }
         
-        contentData.append(.switchOption(data: .init(type: .transactionDocsEnabled,
-                                                     isSwitchOn: giniConfiguration.transactionDocsEnabled)))
-
-        // Retrieve the current value from the SDK's transactionDocsDataCoordinator
-        let alwaysAttachDocsValue = GiniBankConfiguration.shared.transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
-
-        contentData.append(.userDefaults(message: "Remove TransactionDocs attachement options from UserDefaults",
-                                         buttonActive: alwaysAttachDocsValue))
-
-        contentData.append(.switchOption(data: .init(type: .skontoEnabled,
-                                                     isSwitchOn: giniConfiguration.skontoEnabled)))
-
-        contentData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
-                                                     isSwitchOn: giniConfiguration.returnAssistantEnabled)))
-
-        contentData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingIllustrationAdapter,
-                                                     isSwitchOn: giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter != nil)))
-        contentData.append(.switchOption(data: .init(type: .digitalInvoiceHelpNavigationBarBottomAdapter,
-                                                     isSwitchOn: giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter != nil)))
-        contentData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingNavigationBarBottomAdapter,
-                                                     isSwitchOn: giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)))
-        contentData.append(.switchOption(data: .init(type: .digitalInvoiceNavigationBarBottomAdapter,
-                                                     isSwitchOn: giniConfiguration.digitalInvoiceNavigationBarBottomAdapter != nil)))
-        contentData.append(.switchOption(data: .init(type: .digitalInvoiceSkontoNavigationBarBottomAdapter,
-                                                     isSwitchOn: giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter != nil)))
-
-        contentData.append(.switchOption(data: .init(type: .primaryButtonConfiguration,
-                                                     isSwitchOn: settingsButtonStates.primaryButtonState.isSwitchOn)))
-        
-        contentData.append(.switchOption(data: .init(type: .secondaryButtonConfiguration,
-                                                     isSwitchOn: settingsButtonStates.secondaryButtonState.isSwitchOn)))
-        
-        contentData.append(.switchOption(data: .init(type: .transparentButtonConfiguration,
-                                                     isSwitchOn: settingsButtonStates.transparentButtonState.isSwitchOn)))
-        
-        contentData.append(.switchOption(data: .init(type: .cameraControlButtonConfiguration,
-                                                     isSwitchOn: settingsButtonStates.cameraControlButtonState.isSwitchOn)))
-        
-        contentData.append(.switchOption(data: .init(type: .addPageButtonConfiguration,
-                                                     isSwitchOn: settingsButtonStates.addPageButtonState.isSwitchOn)))
-
+        // Return Assistant
         contentData.append(.switchOption(data: .init(type: .enableReturnReasons,
                                                      isSwitchOn: giniConfiguration.enableReturnReasons)))
+        contentData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingIllustrationAdapter,
+                                                     isSwitchOn: giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter != nil)))
+        contentData.append(.switchOption(data: .init(type: .digitalInvoiceSkontoNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter != nil)))
         
-        contentData.append(.switchOption(data: .init(type: .customDocumentValidations,
-                                                     isSwitchOn: documentValidationsState.isSwitchOn)))
+        // Skonto
+        contentData.append(.switchOption(data: .init(type: .skontoNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.skontoNavigationBarBottomAdapter != nil)))
+        contentData.append(.switchOption(data: .init(type: .skontoHelpNavigationBarBottomAdapter,
+                                                     isSwitchOn: giniConfiguration.skontoHelpNavigationBarBottomAdapter != nil)))
         
-        // Add debug or development options at the end in the list
+        // General UI customization
+        contentData.append(.switchOption(data: .init(type: .primaryButtonConfiguration,
+                                                     isSwitchOn: settingsButtonStates.primaryButtonState.isSwitchOn)))
+        contentData.append(.switchOption(data: .init(type: .secondaryButtonConfiguration,
+                                                     isSwitchOn: settingsButtonStates.secondaryButtonState.isSwitchOn)))
+        contentData.append(.switchOption(data: .init(type: .transparentButtonConfiguration,
+                                                     isSwitchOn: settingsButtonStates.transparentButtonState.isSwitchOn)))
+        contentData.append(.switchOption(data: .init(type: .cameraControlButtonConfiguration,
+                                                     isSwitchOn: settingsButtonStates.cameraControlButtonState.isSwitchOn)))
+        contentData.append(.switchOption(data: .init(type: .addPageButtonConfiguration,
+                                                     isSwitchOn: settingsButtonStates.addPageButtonState.isSwitchOn)))
+        contentData.append(.switchOption(data: .init(type: .customNavigationController,
+                                                     isSwitchOn: giniConfiguration.customNavigationController != nil)))
+        contentData.append(.switchOption(data: .init(type: .customResourceProvider,
+                                                     isSwitchOn: giniConfiguration.customResourceProvider != nil)))
         
+        // Debug and Development Options
         contentData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
                                                      isSwitchOn: giniConfiguration.giniErrorLoggerIsOn)))
         contentData.append(.switchOption(data: .init(type: .customGiniErrorLogger,
                                                      isSwitchOn: giniConfiguration.customGiniErrorLoggerDelegate != nil)))
-        
         contentData.append(.switchOption(data: .init(type: .debugModeOn,
                                                      isSwitchOn: giniConfiguration.debugModeOn)))
+        contentData.append(.switchOption(data: .init(type: .customDocumentValidations,
+                                                     isSwitchOn: documentValidationsState.isSwitchOn)))
+        
+        if UIDevice.current.isIpad {
+            contentData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
+                                                         isSwitchOn: giniConfiguration.shouldShowDragAndDropTutorial)))
+        }
+        // Retrieve the current value from the SDK's transactionDocsDataCoordinator
+        let alwaysAttachDocsValue = GiniBankConfiguration.shared.transactionDocsDataCoordinator.getAlwaysAttachDocsValue()
+        contentData.append(.userDefaults(message: "Remove TransactionDocs attachement options from UserDefaults",
+                                         buttonActive: alwaysAttachDocsValue))
+        // Credentials
+        contentData.append(.credentials(data: .init(clientId: client?.id ?? "", secretId: client?.secret ?? "")))
+        var selectedAPISegmentIndex = 0
+        switch apiEnvironment {
+        case .production:
+            selectedAPISegmentIndex = 0
+        case .stage:
+            selectedAPISegmentIndex = 1
+        }
+        contentData.append(.segmentedOption(data: APIEnvironmentSegmentedOptionModel(selectedIndex: selectedAPISegmentIndex)))
     }
+    
 
-    func handleOnToggle(in cell: SwitchOptionTableViewCell, nextSwitchOptionCell: SwitchOptionTableViewCell?) {
+    func handleOnToggle(in cell: SwitchOptionTableViewCell) {
         let option = contentData[cell.tag]
         guard case .switchOption(var data) = option else { return }
         data.isSwitchOn = cell.isSwitchOn
@@ -194,21 +200,23 @@ final class SettingsViewModel {
         case .openWith:
             giniConfiguration.openWithEnabled = data.isSwitchOn
         case .qrCodeScanning:
+            // TODO: check if flash logic correctly removed
             giniConfiguration.qrCodeScanningEnabled = data.isSwitchOn
-            giniConfiguration.flashToggleEnabled = data.isSwitchOn
-            if !data.isSwitchOn && giniConfiguration.flashOnByDefault {
+            if !data.isSwitchOn && giniConfiguration.onlyQRCodeScanningEnabled {
                 // if `qrCodeScanningEnabled` is disabled and `onlyQRCodeScanningEnabled` is enabled,
                 // make `onlyQRCodeScanningEnabled` disabled
                 // onlyQRCodeScanningEnabled cell is right after
-                nextSwitchOptionCell?.isSwitchOn = data.isSwitchOn
+                contentData[cell.tag + 1] = .switchOption(data:(SwitchOptionModel(type: .qrCodeScanningOnly, isSwitchOn: data.isSwitchOn)))
+                delegate?.contentDataUpdated()
                 giniConfiguration.onlyQRCodeScanningEnabled = data.isSwitchOn
             }
         case .qrCodeScanningOnly:
             giniConfiguration.onlyQRCodeScanningEnabled = data.isSwitchOn
-            if data.isSwitchOn && !giniConfiguration.flashToggleEnabled {
+            if data.isSwitchOn && !giniConfiguration.qrCodeScanningEnabled {
                 // if `onlyQRCodeScanningEnabled` is enabled and `qrCodeScanningEnabled` is disabled, make `qrCodeScanningEnabled` enabled
                 // qrCodeScanningEnabled cell is right above this
-                nextSwitchOptionCell?.isSwitchOn = data.isSwitchOn
+                contentData[cell.tag - 1] = .switchOption(data:(SwitchOptionModel(type: .qrCodeScanning, isSwitchOn: data.isSwitchOn)))
+                delegate?.contentDataUpdated()
                 giniConfiguration.qrCodeScanningEnabled = data.isSwitchOn
             }
         case .multipage:
@@ -218,7 +226,8 @@ final class SettingsViewModel {
             if !data.isSwitchOn && giniConfiguration.flashOnByDefault {
                 // if `flashToggle` is disabled and `flashOnByDefault` is enabled, make `flashOnByDefault` disabled
                 // flashOnByDefault cell is right after
-                nextSwitchOptionCell?.isSwitchOn = data.isSwitchOn
+                contentData[cell.tag + 1] = .switchOption(data:(SwitchOptionModel(type: .flashOnByDefault, isSwitchOn: data.isSwitchOn)))
+                delegate?.contentDataUpdated()
                 giniConfiguration.flashOnByDefault = data.isSwitchOn
             }
         case .flashOnByDefault:
@@ -226,7 +235,8 @@ final class SettingsViewModel {
             if data.isSwitchOn && !giniConfiguration.flashToggleEnabled {
                 // if `flashOnByDefault` is enabled and `flashToggle` is disabled, make `flashToggle` enabled
                 // flashToggle cell is right above this
-                nextSwitchOptionCell?.isSwitchOn = data.isSwitchOn
+                contentData[cell.tag - 1] = .switchOption(data:(SwitchOptionModel(type: .flashToggle, isSwitchOn: data.isSwitchOn)))
+                delegate?.contentDataUpdated()
                 giniConfiguration.flashToggleEnabled = data.isSwitchOn
             }
         case .customResourceProvider:
