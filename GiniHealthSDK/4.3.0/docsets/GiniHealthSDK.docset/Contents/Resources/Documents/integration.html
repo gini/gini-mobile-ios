@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Integration  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+
+    <a title="Integration  Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="index.html">
+        <img class="logo-icon" src="img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="index.html">GiniHealthSDK Reference</a>
+      <img class="carat" src="img/carat.png" />
+      Integration  Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="testing.html">Testing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniColor.html">GiniColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniHealth.html">GiniHealth</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniHealthConfiguration.html">GiniHealthConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/PaymentComponentsController.html">PaymentComponentsController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/PaymentReviewModel.html">PaymentReviewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/PaymentReviewViewController.html">PaymentReviewViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ZoomedImageView.html">ZoomedImageView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ZoomedImageView/ScaleMode.html">– ScaleMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ZoomedImageView/Offset.html">– Offset</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Global%20Variables.html#/s:13GiniHealthSDK0aB10SDKVersionSSvp">GiniHealthSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/GiniHealthError.html">GiniHealthError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/GiniLocalization.html">GiniLocalization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/PaymentReviewScreenEventType.html">PaymentReviewScreenEventType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Extensions.html#/AppKit">AppKit</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Extensions.html#/c:objc(cs)UIApplication">UIApplication</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIColor.html">UIColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIFont.html">UIFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIFont/TextStyle.html">– TextStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UITextField.html">UITextField</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIView.html">UIView</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniHealthDelegate.html">GiniHealthDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Protocols.html#/s:13GiniHealthSDK0aB16TrackingDelegateP">GiniHealthTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ImageScrollViewDelegate.html">ImageScrollViewDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/PaymentProvidersBottomViewProtocol.html">PaymentProvidersBottomViewProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/PaymentReviewScreenTrackingDelegate.html">PaymentReviewScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/URLOpenerProtocol.html">URLOpenerProtocol</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ButtonConfiguration.html">ButtonConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DataForReview.html">DataForReview</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Structs.html#/s:13GiniHealthSDK27PageCollectionCellViewModelV">PageCollectionCellViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PaymentComponentConfiguration.html">PaymentComponentConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PaymentInfo.html">PaymentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Price.html">Price</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/TextFieldConfiguration.html">TextFieldConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/TrackingEvent.html">TrackingEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/URLOpener.html">URLOpener</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Type Aliases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/GiniOpenLinkCompletionBlock">GiniOpenLinkCompletionBlock</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:13GiniHealthSDK0A23OpenLinkCompletionBlocka">GiniOpenLinkCompletionBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            
+            <h1 id='integration' class='heading'>Integration</h1>
+
+<p>The Gini Health SDK for iOS provides all the UI and functionality needed to use the Gini Health API in your app to extract payment and health information from invoices. The payment information can be reviewed and then the invoice can be paid using any available payment provider app (e.g., banking app).</p>
+
+<p>The Gini Health API provides an information extraction service for analyzing health invoices. Specifically, it extracts information such as the document sender or the payment relevant information (amount to pay, IBAN, etc.). In addition it also provides a secure channel for sharing payment related information between clients. </p>
+
+<blockquote>
+<p>⚠️  <strong>Important:</strong>
+For supporting each payment provider you need to specify <code>LSApplicationQueriesSchemes</code> in your <code>Info.plist</code> file. App schemes for specification will be provided by Gini.</p>
+</blockquote>
+<h2 id='ginihealthapi-initialization' class='heading'>GiniHealthAPI initialization</h2>
+
+<blockquote>
+<p>⚠️  <strong>Important:</strong>
+You should have received Gini Health API client credentials from us. Please get in touch with us in case you don&rsquo;t have them.</p>
+</blockquote>
+
+<p>You can easy initialize <code>GiniHealthAPI</code> with the client credentials:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">apiLib</span> <span class="o">=</span> <span class="kt">GiniHealthAPI</span><span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+</code></pre>
+
+<p>If you want to use a transparent proxy with your own authentication you can specify your own domain and add <code>AlternativeTokenSource</code> protocol implementation:</p>
+<pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">apiLib</span> <span class="o">=</span>  <span class="kt">GiniHealthAPI</span><span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">customApiDomain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
+                                 <span class="nv">alternativeTokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">)</span>
+                                 <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+</code></pre>
+
+<p>The token your provide will be added as a bearer token to all api.custom.net requests.</p>
+
+<blockquote>
+<p>⚠️  <strong>Important:</strong></p>
+</blockquote>
+
+<p>When you implement <code>AlternativeTokenSource</code> protocol make sure that you call the completion in one specific thread</p>
+<pre class="highlight swift"><code><span class="kd">private</span> <span class="kd">class</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">:</span> <span class="kt">AlternativeTokenSource</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">fetchToken</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Token</span><span class="p">,</span> <span class="kt">GiniError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// fetch token from any thread</span>
+        <span class="c1">// then call the completion in one specific thread</span>
+        <span class="nf">completion</span><span class="p">(</span><span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="kt">Token</span><span class="p">()))</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<h2 id='certificate-pinning-optional' class='heading'>Certificate pinning (optional)</h2>
+
+<p>If you want to use <em>Certificate pinning</em>, provide metadata for the upload process, you can pass both your public key pinning configuration as follows:</p>
+<pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">yourPublicPinningConfig</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">"health-api.gini.net"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="c1">// old *.gini.net public key</span>
+            <span class="s">"cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU="</span><span class="p">,</span>
+            <span class="c1">// new *.gini.net public key, active from around June 2020</span>
+            <span class="s">"zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s">"user.gini.net"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="c1">// old *.gini.net public key</span>
+            <span class="s">"cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU="</span><span class="p">,</span>
+            <span class="c1">// new *.gini.net public key, active from around June 2020</span>
+            <span class="s">"zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">]</span>
+    <span class="k">let</span> <span class="nv">apiLib</span> <span class="o">=</span> <span class="kt">GiniHealthAPI</span>
+        <span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="kt">Client</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"your-id"</span><span class="p">,</span>
+                                <span class="nv">secret</span><span class="p">:</span> <span class="s">"your-secret"</span><span class="p">,</span>
+                                <span class="nv">domain</span><span class="p">:</span> <span class="s">"your-domain"</span><span class="p">),</span>
+                 <span class="nv">api</span><span class="p">:</span> <span class="o">.</span><span class="k">default</span><span class="p">,</span>
+                 <span class="nv">pinningConfig</span><span class="p">:</span> <span class="n">yourPublicPinningConfig</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+</code></pre>
+<h2 id='ginihealth-initialization' class='heading'>GiniHealth initialization</h2>
+
+<p>Now that the <code>GiniHealthAPI</code> has been initialized, you can initialize <code><a href="Classes/GiniHealth.html">GiniHealth</a></code>:</p>
+<pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">healthSDK</span> <span class="o">=</span> <span class="kt">GiniHealth</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">giniApiLib</span><span class="p">)</span>
+</code></pre>
+<h2 id='document-upload' class='heading'>Document upload</h2>
+
+<p>For the document upload if you plan to do it with <code><a href="Classes/GiniHealth.html">GiniHealth</a></code>. First you need get document service and create partial document.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">documentService</span><span class="p">:</span> <span class="kt">DefaultDocumentService</span> <span class="o">=</span> <span class="n">healthSDK</span><span class="o">.</span><span class="nf">documentService</span><span class="p">()</span>
+<span class="n">documentService</span><span class="o">.</span><span class="nf">createDocument</span><span class="p">(</span><span class="nv">fileName</span><span class="p">:</span><span class="s">"ginipay-partial"</span><span class="p">,</span>
+                               <span class="nv">docType</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span>
+                               <span class="nv">type</span><span class="p">:</span> <span class="o">.</span><span class="nf">partial</span><span class="p">(</span><span class="n">documentData</span><span class="p">),</span>
+                               <span class="nv">metadata</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+
+<p>The method above returns the completion block with partial <code>Document</code> in success case.</p>
+
+<p>After receiving the partial document in completion you can get actual composite document:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">partialDocs</span> <span class="o">=</span> <span class="p">[</span><span class="kt">PartialDocumentInfo</span><span class="p">(</span><span class="nv">document</span><span class="p">:</span> <span class="n">createdDocument</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">document</span><span class="p">)]</span>
+<span class="k">self</span><span class="o">.</span><span class="n">healthSDK</span><span class="o">.</span><span class="n">documentService</span>
+            <span class="o">.</span><span class="nf">createDocument</span><span class="p">(</span><span class="nv">fileName</span><span class="p">:</span> <span class="s">"ginipay-composite"</span><span class="p">,</span>
+                            <span class="nv">docType</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span>
+                            <span class="nv">type</span><span class="p">:</span> <span class="o">.</span><span class="nf">composite</span><span class="p">(</span><span class="kt">CompositeDocumentInfo</span><span class="p">(</span><span class="nv">partialDocuments</span><span class="p">:</span> <span class="n">partialDocs</span><span class="p">)),</span>
+                            <span class="nv">metadata</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+
+</code></pre>
+<h2 id='check-which-documents-invoices-are-payable' class='heading'>Check which documents/invoices are payable</h2>
+
+<p>We provide 2 ways of doing this.</p>
+
+<ol>
+<li><p>GiniHealth provides a variable for checking if the document is payable or not. You can look for <code>payment_state</code> of the document/invoice. The document/invoice is payable if <code>payment_state</code> is <code>Payable</code> </p></li>
+<li><p>GiniHealth provides a method for checking if the document is payable or not.</p></li>
+</ol>
+<pre class="highlight swift"><code><span class="n">healthSDK</span><span class="o">.</span><span class="nf">checkIfDocumentIsPayable</span><span class="p">(</span><span class="nv">docId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                                   <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">GiniHealthError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+</code></pre>
+
+<p>The method returns success and <code>true</code> value if <code>payment_state</code> was extracted.</p>
+
+<blockquote>
+
+<ul>
+<li>We recommend using a <code>DispatchGroup</code> for these requests, waiting till all of them are ready, and then, reloading the list.</li>
+</ul>
+</blockquote>
+<pre class="highlight swift"><code><span class="k">for</span> <span class="n">giniDocument</span> <span class="k">in</span> <span class="n">dataDocuments</span> <span class="p">{</span>
+   <span class="n">dispatchGroup</span><span class="o">.</span><span class="nf">enter</span><span class="p">()</span>
+   <span class="k">self</span><span class="o">.</span><span class="n">paymentComponentsController</span><span class="o">.</span><span class="nf">checkIfDocumentIsPayable</span><span class="p">(</span><span class="nv">docId</span><span class="p">:</span> <span class="n">createdDocument</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="n">result</span> <span class="k">in</span>
+       <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+       <span class="c1">// ...</span>
+       <span class="p">}</span>
+       <span class="k">self</span><span class="p">?</span><span class="o">.</span><span class="n">dispatchGroup</span><span class="o">.</span><span class="nf">leave</span><span class="p">()</span>
+   <span class="p">})</span>
+<span class="p">}</span>
+<span class="n">dispatchGroup</span><span class="o">.</span><span class="nf">notify</span><span class="p">(</span><span class="nv">queue</span><span class="p">:</span> <span class="o">.</span><span class="n">main</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Reload List</span>
+<span class="p">}</span>
+</code></pre>
+<h2 id='integrate-the-payment-component' class='heading'>Integrate the Payment component</h2>
+
+<p>We provide a custom payment component view to help users pay the invoice/document.
+Please follow the steps below for the payment component integration.</p>
+<h3 id='1-create-an-instance-of-the-code-paymentcomponentscontroller-code' class='heading'>1. Create an instance of the <code><a href="Classes/PaymentComponentsController.html">PaymentComponentsController</a></code>.</h3>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">paymentComponentsController</span> <span class="o">=</span> <span class="kt">PaymentComponentsController</span><span class="p">(</span><span class="nv">giniHealth</span><span class="p">:</span> <span class="n">health</span><span class="p">)</span>
+</code></pre>
+<h3 id='2-load-the-payment-providers' class='heading'>2. Load the payment providers</h3>
+
+<p>You will load the list of the payment providers by calling the <code>loadPaymentProviders</code> function from the <code><a href="Classes/PaymentComponentsController.html">PaymentComponentsController</a></code> and conform to the <code><a href="Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a></code>.</p>
+<pre class="highlight swift"><code><span class="n">paymentComponentsController</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span> <span class="c1">// where self is your viewController</span>
+<span class="n">paymentComponentsController</span><span class="o">.</span><span class="nf">loadPaymentProviders</span><span class="p">()</span>
+</code></pre>
+
+<ul>
+<li><p><code><a href="Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a></code> provides information when the <code><a href="Classes/PaymentComponentsController.html">PaymentComponentsController</a></code> is loading.
+You can show/hide an <code>UIActivityIndicator</code> based on that.</p></li>
+<li><p><code><a href="Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a></code> provides completion handlers when <code><a href="Classes/PaymentComponentsController.html">PaymentComponentsController</a></code> fetched successfully payment providers or when it failed with an error.</p></li>
+</ul>
+
+<blockquote>
+<p><strong>Note:</strong>
+It should be sufficient to call paymentComponentsController.loadPaymentProviderApps() only once when your app starts.</p>
+
+<ul>
+<li>We effectively handle situations where there are no payment providers available.</li>
+<li>Based on the payment provider&rsquo;s colors, the <code>UIView</code> will automatically change its color.</li>
+</ul>
+</blockquote>
+<h3 id='3-show-the-payment-component-view' class='heading'>3. Show the Payment Component view</h3>
+
+<p>In this step you will show a payment component view and conform to the <code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code>.</p>
+
+<p>Depending on the value of <code>isPayable</code>, incorporate the corresponding payment component view into your cells using this function:</p>
+<pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">paymentView</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UIView</span>
+</code></pre>
+
+<blockquote>
+
+<ul>
+<li>We suggest placing this <code>UIView</code> within a vertical <code>UIStackView</code>. Additionally, in the <code>prepareForReuse()</code> function of each cell, remove the payment component view if it exists.</li>
+<li>Furthermore, employing automatic dimension height in the <code>UITableView</code> containing the cells is recommended.</li>
+</ul>
+</blockquote>
+
+<ul>
+<li><code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code> is the view protocol and provides events handlers when the user tapped on various areas on the payment component view (more information icon, bank/payment provider picker, the pay invoice button and etc.).</li>
+</ul>
+
+<blockquote>
+
+<ul>
+<li>Make sure you properly link <code><a href="Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a></code> and <code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code> delegates to get notified.</li>
+</ul>
+</blockquote>
+<h2 id='show-paymentinfoviewcontroller' class='heading'>Show PaymentInfoViewController</h2>
+
+<p>The <code>PaymentInfoViewController</code> displays information and an FAQ section about the payment feature.
+It requires a <code><a href="Classes/PaymentComponentsController.html">PaymentComponentsController</a></code> instance (see <code>Integrate the Payment component</code> step 1).</p>
+
+<blockquote>
+<p><strong>Note:</strong> </p>
+
+<ul>
+<li>The <code>PaymentInfoViewController</code> can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigation around the provided views.</li>
+</ul>
+
+<p>⚠️  <strong>Important:</strong></p>
+
+<ul>
+<li>The <code>PaymentInfoViewController</code> presentation should happen in <code>func didTapOnMoreInformation(documentId: String?)</code> inside <code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code> implementation without animation since SDK handles the animation  during the presentation.(<code>Integrate the Payment component</code> step 3).</li>
+</ul>
+</blockquote>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didTapOnMoreInformation</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">paymentInfoViewController</span> <span class="o">=</span> <span class="n">paymentComponentsController</span><span class="o">.</span><span class="nf">paymentInfoViewController</span><span class="p">()</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">yourInvoicesListViewController</span><span class="o">.</span><span class="n">navigationController</span><span class="p">?</span><span class="o">.</span><span class="nf">pushViewController</span><span class="p">(</span><span class="n">paymentInfoViewController</span><span class="p">,</span>
+                                                                                 <span class="nv">animated</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+<h2 id='show-bankselectionbottomsheet' class='heading'>Show BankSelectionBottomSheet</h2>
+
+<p>The <code>BankSelectionBottomSheet</code> displays a list of available banks for the user to choose from.
+If a banking app is not installed it will also display its AppStore link.
+The <code>BankSelectionBottomSheet</code> presentation requires a <code><a href="Classes/PaymentComponentsController.html">PaymentComponentsController</a></code> instance from the <code>Integrate the Payment component</code> step 1.</p>
+
+<blockquote>
+<p><strong>Note:</strong> </p>
+
+<ul>
+<li>We strongly recommend to present <code>BankSelectionBottomSheet</code> modally with a <code>.overFullScreen</code> presentation style.</li>
+</ul>
+
+<p>⚠️  <strong>Important:</strong></p>
+
+<ul>
+<li>The <code>BankSelectionBottomSheet</code> presentation should happen in <code>func didTapOnBankPicker(documentId: String?)</code> inside
+<code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code> implementation without animation since SDK handles the animation during the presentation (see <code>Integrate the Payment component</code> step 3).</li>
+</ul>
+</blockquote>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didTapOnBankPicker</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">bankSelectionBottomSheet</span> <span class="o">=</span> <span class="n">paymentComponentsController</span><span class="o">.</span><span class="nf">bankSelectionBottomSheet</span><span class="p">()</span>
+    <span class="n">bankSelectionBottomSheet</span><span class="o">.</span><span class="n">modalPresentationStyle</span> <span class="o">=</span> <span class="o">.</span><span class="n">overFullScreen</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">yourInvoicesListViewController</span><span class="o">.</span><span class="nf">present</span><span class="p">(</span><span class="n">bankSelectionBottomSheet</span><span class="p">,</span>
+                                                <span class="nv">animated</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
+    <span class="p">}</span>
+</code></pre>
+<h2 id='show-paymentreviewviewcontroller' class='heading'>Show PaymentReviewViewController</h2>
+
+<p>The <code><a href="Classes/PaymentReviewViewController.html">PaymentReviewViewController</a></code> displays an invoice&rsquo;s pages and extractions. It also lets users pay the invoice with the bank they selected in the <code>BankSelectionBottomSheet</code>.</p>
+
+<p>The <code><a href="Classes/PaymentReviewViewController.html">PaymentReviewViewController</a></code> presentation requires a <code><a href="Classes/PaymentComponentsController.html">PaymentComponentsController</a></code> instance from the <code>Integrate the Payment component</code> step 1 and <code>documentId</code>.</p>
+
+<blockquote>
+<p><strong>Note:</strong> </p>
+
+<ul>
+<li>The <code><a href="Classes/PaymentReviewViewController.html">PaymentReviewViewController</a></code> can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigation around the provided views.</li>
+</ul>
+
+<p>⚠️  <strong>Important:</strong></p>
+
+<ul>
+<li>The <code><a href="Classes/PaymentReviewViewController.html">PaymentReviewViewController</a></code> presentation should happen in <code>func didTapOnBankPicker(documentId: String?)</code> inside
+<code><a href="Protocols/PaymentComponentViewProtocol.html">PaymentComponentViewProtocol</a></code> implementation without animation since SDK handles the animation during the presentation (see <code>Integrate the Payment component</code> step 3).</li>
+</ul>
+</blockquote>
+<pre class="highlight swift"><code>    <span class="kd">func</span> <span class="nf">didTapOnPayInvoice</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">documentId</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
+        <span class="n">paymentComponentsController</span><span class="o">.</span><span class="nf">loadPaymentReviewScreenFor</span><span class="p">(</span><span class="nv">documentID</span><span class="p">:</span> <span class="n">documentId</span><span class="p">,</span> <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="k">self</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="n">viewController</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+            <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="p">{</span>
+                <span class="k">self</span><span class="p">?</span><span class="o">.</span><span class="nf">showErrorsIfAny</span><span class="p">()</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="k">let</span> <span class="nv">viewController</span> <span class="p">{</span>
+                <span class="n">viewController</span><span class="o">.</span><span class="n">modalTransitionStyle</span> <span class="o">=</span> <span class="o">.</span><span class="n">coverVertical</span>
+                <span class="n">viewController</span><span class="o">.</span><span class="n">modalPresentationStyle</span> <span class="o">=</span> <span class="o">.</span><span class="n">overCurrentContext</span>
+                <span class="k">self</span><span class="p">?</span><span class="o">.</span><span class="n">yourInvoicesListViewController</span><span class="o">.</span><span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre>
+
+<blockquote>
+<p><strong>Note:</strong> </p>
+
+<ul>
+<li>PaymentReviewViewController contains the following configuration options:</li>
+<li>paymentReviewStatusBarStyle: Sets the status bar style on the payment review screen. Only if <code>View controller-based status bar appearance</code> = <code>YES</code> in <code>Info.plist</code>.</li>
+<li>showPaymentReviewCloseButton: If set to true, a floating close button will be shown in the top right corner of the screen.
+Default value is false.</li>
+</ul>
+</blockquote>
+
+<p>For enabling <code>showPaymentReviewCloseButton</code>:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">giniConfiguration</span> <span class="o">=</span> <span class="kt">GiniHealthConfiguration</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">showPaymentReviewCloseButton</span> <span class="o">=</span>  <span class="kc">true</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="n">healthSDK</span><span class="o">.</span><span class="nf">setConfiguration</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</code></pre>
+
+          </div>
+        </section>
+
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2024 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2024-10-18)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
