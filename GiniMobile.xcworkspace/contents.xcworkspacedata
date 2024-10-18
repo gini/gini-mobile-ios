@@ -5,7 +5,7 @@
       location = "container:"
       name = "GiniComponents">
       <FileRef
-         location = "group:/Users/caprapaditu/Documents/GitHub/gini-mobile-ios/GiniComponents/GiniInternalPaymentSDK">
+         location = "group:GiniComponents/GiniInternalPaymentSDK">
       </FileRef>
       <FileRef
          location = "group:GiniComponents/GiniUtilites">
