@@ -16,7 +16,8 @@ class SkontoAlertFactory {
     private var edgeCaseMessage: String? {
         switch viewModel.edgeCase {
         case .expired:
-            let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.infobanner.edgecase.expired.alert.title",
+            let expiredAlertTitleKey = "ginibank.skonto.infobanner.edgecase.expired.alert.title"
+            let text = NSLocalizedStringPreferredGiniBankFormat(expiredAlertTitleKey,
                                                                 comment: "This invoice contained...")
             return String.localizedStringWithFormat(text, viewModel.formattedPercentageDiscounted)
         case .paymentToday:
