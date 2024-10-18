@@ -21,7 +21,7 @@ public protocol PaymentComponentsControllerProtocol: AnyObject {
 }
 
 public protocol PaymentProvidersBottomViewProtocol: AnyObject {
-    func didSelectPaymentProvider(paymentProvider: PaymentProvider)
+    func didSelectPaymentProvider(paymentProvider: PaymentProvider, documentId: String?)
     func didTapOnClose()
     func didTapOnMoreInformation()
     func didTapOnContinueOnShareBottomSheet()
@@ -69,11 +69,9 @@ protocol PaymentComponentsProtocol {
     var selectedPaymentProvider: PaymentProvider? { get set }
     func loadPaymentProviders()
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
-    func paymentView(documentId: String) -> UIView
     func paymentView(documentId: String?) -> UIView
-    func bankSelectionBottomSheet() -> UIViewController
-    func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
-    func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
+    func bankSelectionBottomSheet(documentId: String?) -> UIViewController
+    func loadPaymentReviewScreenFor(documentId: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
     func paymentInfoViewController() -> UIViewController
     func paymentViewBottomSheet(documentID: String?) -> UIViewController
 }
@@ -200,7 +198,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
      - Parameters:
      - Returns: a custom view
      */
-    public func paymentView(documentId: String) -> UIView {
+    func paymentView(documentId: String?) -> UIView {
         let paymentComponentViewModel = PaymentComponentViewModel(
             paymentProvider: healthSelectedPaymentProvider,
             primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
@@ -219,17 +217,13 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
         return PaymentComponentView(viewModel: paymentComponentViewModel)
     }
 
-    func paymentView(documentId: String?) -> UIView {
-        paymentView(documentId: documentId ?? "")
-    }
-
     public func paymentViewBottomSheet(documentID: String?) -> UIViewController {
         previousPresentedView = .paymentComponent
         let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return paymentComponentBottomView
     }
 
-    public func bankSelectionBottomSheet() -> UIViewController {
+    public func bankSelectionBottomSheet(documentId: String?) -> UIViewController {
         previousPresentedView = .bankPicker
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
@@ -240,34 +234,19 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings)
         paymentProvidersBottomViewModel.viewDelegate = self
+        paymentProvidersBottomViewModel.documentId = documentId
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
-    
-    public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
-        // In order to use invoice without document flow, please use the `public func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)` function
-        previousPresentedView = nil
-        self.isLoading = true
-        self.giniSDK.fetchDataForReview(documentId: documentID) { [weak self] result in
-            self?.isLoading = false
-            switch result {
-            case .success(let data):
-                self?.preparePaymentReviewViewController(data: data, paymentInfo: nil, completion: completion)
-                self?.trackingDelegate = trackingDelegate
-            case .failure(let error):
-                completion(nil, error)
-            }
-        }
-    }
 
-    public func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+    public func loadPaymentReviewScreenFor(documentId: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         previousPresentedView = nil
         if !GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
-            guard let documentID else {
+            guard let documentId else {
                 completion(nil, nil)
                 return
             }
             self.isLoading = true
-            self.giniSDK.fetchDataForReview(documentId: documentID) { [weak self] result in
+            self.giniSDK.fetchDataForReview(documentId: documentId) { [weak self] result in
                 self?.isLoading = false
                 switch result {
                     case .success(let data):
@@ -377,11 +356,11 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
 }
 
 extension PaymentComponentsController: BanksSelectionProtocol {
-    public func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider) {
+    public func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider, documentId: String?) {
         selectedPaymentProvider = PaymentProvider(healthPaymentProvider: paymentProvider)
         if let provider = selectedPaymentProvider {
             storeDefaultPaymentProvider(paymentProvider: provider)
-            bottomViewDelegate?.didSelectPaymentProvider(paymentProvider: provider)
+            bottomViewDelegate?.didSelectPaymentProvider(paymentProvider: provider, documentId: documentId)
         }
     }
 
@@ -413,10 +392,10 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
 }
 
 extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
-    public func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
+    public func didSelectPaymentProvider(paymentProvider: PaymentProvider, documentId: String?) {
         selectedPaymentProvider = paymentProvider
         storeDefaultPaymentProvider(paymentProvider: paymentProvider)
-        bottomViewDelegate?.didSelectPaymentProvider(paymentProvider: paymentProvider)
+        bottomViewDelegate?.didSelectPaymentProvider(paymentProvider: paymentProvider, documentId: documentId)
     }
     
     public func didTapOnClose() {

@@ -557,7 +557,7 @@ extension PaymentComponentsController: BanksSelectionProtocol {
         viewDelegate?.didTapOnMoreInformation(documentId: nil)
     }
 
-    public func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider) {
+    public func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider, documentId: String?) {
         selectedPaymentProvider = PaymentProvider(healthPaymentProvider: paymentProvider)
         if let provider = selectedPaymentProvider {
             storeDefaultPaymentProvider(paymentProvider: provider)

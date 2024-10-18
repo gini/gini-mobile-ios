@@ -43,7 +43,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      Set to `true` to use the payment component view as bottom view
      */
-    public var useBottomPaymentComponentView = false
+    public var useBottomPaymentComponentView = true
 
     /**
     Height of the buttons from the Payment Component View
@@ -61,7 +61,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      Set to `false` to hide the payment review screen and jump straight to payment
      */
-    public var showPaymentReviewScreen = true
+    public var showPaymentReviewScreen = false
 
     // MARK: - Button configuration options
     /**
@@ -138,7 +138,7 @@ public final class GiniHealthConfiguration: NSObject {
     }
 
     // We will switch this option internally to stil handle documents with extractions on GiniHealthSDK and still handle invoices without document on GiniHealthSDK
-    var useInvoiceWithoutDocument: Bool = true
+    var useInvoiceWithoutDocument: Bool = false
 
     /**
     Custom localization configuration for localizable strings.

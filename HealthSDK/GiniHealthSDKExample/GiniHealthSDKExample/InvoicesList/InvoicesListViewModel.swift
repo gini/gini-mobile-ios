@@ -225,19 +225,19 @@ extension InvoicesListViewModel {
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
         if GiniHealthConfiguration.shared.useBottomPaymentComponentView {
             if self.coordinator.invoicesListViewController.presentedViewController is PaymentComponentBottomView {
-                dismissAndPresent(viewController: bankSelectionBottomSheet(), animated: false)
+                dismissAndPresent(viewController: bankSelectionBottomSheet(documentId: documentId), animated: false)
             } else {
-                let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
+                let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: documentId ?? "")
                 paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
                 self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: false)
             }
         } else {
-            dismissAndPresent(viewController: bankSelectionBottomSheet(), animated: false)
+            dismissAndPresent(viewController: bankSelectionBottomSheet(documentId: documentId), animated: false)
         }
     }
 
-    func bankSelectionBottomSheet() -> UIViewController {
-        let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
+    func bankSelectionBottomSheet(documentId: String?) -> UIViewController {
+        let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet(documentId: documentId)
         bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
         return bankSelectionBottomSheet
     }
@@ -247,14 +247,14 @@ extension InvoicesListViewModel {
         documentIdToRefetch = documentId
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
         if giniHealthConfiguration.showPaymentReviewScreen {
-            paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId ?? "", trackingDelegate: self) { [weak self] viewController, error in
+            paymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: nil, trackingDelegate: self) { [weak self] viewController, error in
                 if let error {
                     self?.errors.append(error.localizedDescription)
                     self?.showErrorsIfAny()
                 } else if let viewController {
                     viewController.modalTransitionStyle = .coverVertical
                     viewController.modalPresentationStyle = .overCurrentContext
-                    self?.coordinator.invoicesListViewController.present(viewController, animated: true)
+                    self?.dismissAndPresent(viewController: viewController, animated: true)
                 }
             }
         } else {
@@ -343,10 +343,9 @@ extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
         //
     }
 
-    func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
+    func didSelectPaymentProvider(paymentProvider: PaymentProvider, documentId: String?) {
         DispatchQueue.main.async {
-            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
-            self.coordinator.invoicesListViewController.reloadTableView()
+            self.didTapOnBankPicker(documentId: documentId)
         }
     }
     

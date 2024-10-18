@@ -72,7 +72,7 @@ public struct DataForReview {
     private var bankProviders: [PaymentProvider] = []
 
     public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
-                                  showPaymentComponentInOneRow: true,
+                                  showPaymentComponentInOneRow: false,
                                   hideInfoForReturningUser: true)
 
 

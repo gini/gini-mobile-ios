@@ -11,7 +11,7 @@ import GiniUtilites
 import GiniHealthAPILibrary
 
 public protocol BanksSelectionProtocol: AnyObject {
-    func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider)
+    func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider, documentId: String?)
     func didTapOnMoreInformation()
     func didTapOnClose()
     func didTapOnContinueOnShareBottomSheet()
@@ -31,6 +31,7 @@ public final class BanksBottomViewModel {
     let poweredByGiniViewModel: PoweredByGiniViewModel
     let moreInformationViewModel: MoreInformationViewModel
     public weak var viewDelegate: BanksSelectionProtocol?
+    public var documentId: String?
 
     var paymentProviders: [PaymentProviderAdditionalInfo] = []
     private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider?

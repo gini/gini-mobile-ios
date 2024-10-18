@@ -46,8 +46,4 @@ final class InvoiceTableViewCellModel {
     var shouldShowPaymentComponent: Bool {
         invoice.isPayable ?? false
     }
-    
-    var paymentComponentView: UIView {
-        return paymentComponentsController.paymentView(documentId: invoice.documentId)
-    }
 }

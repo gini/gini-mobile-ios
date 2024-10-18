@@ -118,9 +118,16 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
                                                                                            paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
         cell.cellViewModel = invoiceTableViewCellModel
+        cell.action = { [weak self] in
+            self?.tapOnAction(documentID: self?.viewModel.invoices[indexPath.row].documentId ?? "")
+        }
         return cell
     }
-    
+
+    private func tapOnAction(documentID: String) {
+        viewModel.didTapOnBankPicker(documentId: documentID)
+    }
+
     func numberOfSections(in tableView: UITableView) -> Int {
         if viewModel.invoices.isEmpty {
             let label = UILabel()
@@ -169,6 +176,6 @@ extension InvoicesListViewController {
     private enum Constants {
         static let padding: CGFloat = 8
         static let cornerRadius: CGFloat = 16
-        static let rowHeight: CGFloat = 40
+        static let rowHeight: CGFloat = 80
     }
 }
