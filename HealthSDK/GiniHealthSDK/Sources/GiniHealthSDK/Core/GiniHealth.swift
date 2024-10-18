@@ -98,8 +98,7 @@ public struct DataForReview {
         self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
     }
 
-    //For Testing
-    internal init(giniApiLib: GiniHealthAPI) {
+    public init(giniApiLib: GiniHealthAPI) {
         self.giniApiLib = giniApiLib
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: .default, apiVersion: Constants.defaultVersionAPI)

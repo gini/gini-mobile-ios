@@ -48,11 +48,9 @@ extension GiniHealthColorPalette {
         if let mainBundleColor = UIColor(named: name, in: Bundle.main, compatibleWith: nil) {
             return mainBundleColor
         }
-
         guard let color = UIColor(named: name, in: giniHealthBundleResource(), compatibleWith: nil) else {
             fatalError("The color named '\(name)' does not exist.")
         }
-
         return color
     }
 }
