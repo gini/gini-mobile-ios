@@ -84,6 +84,7 @@
 		847B68CA2C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */; };
 		847B68CC2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */; };
 		84C53D5E2C87477D00A908BB /* AttachmentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */; };
+		84C5AA962CC1379D00F6EF85 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C5AA952CC1379D00F6EF85 /* SettingsViewModel.swift */; };
 		84CD074D2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */; };
 		84CD074F2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD074E2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
@@ -246,6 +247,7 @@
 		847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
 		847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentsTableViewCell.swift; sourceTree = "<group>"; };
+		84C5AA952CC1379D00F6EF85 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
 		84CD074E2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
@@ -549,6 +551,7 @@
 				28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */,
 				289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */,
 				289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */,
+				84C5AA952CC1379D00F6EF85 /* SettingsViewModel.swift */,
 			);
 			path = SettingsViewController;
 			sourceTree = "<group>";
@@ -997,6 +1000,7 @@
 				28B898D02CA324CD00C79231 /* CodeLoading.swift in Sources */,
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
 				284F520A2BD959F300CF70AD /* UIColor.swift in Sources */,
+				84C5AA962CC1379D00F6EF85 /* SettingsViewModel.swift in Sources */,
 				84CD074D2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift in Sources */,
 				768100372996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				28B587462A373A72008CB210 /* SwitchOptionTableViewCell.swift in Sources */,
