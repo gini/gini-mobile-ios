@@ -78,12 +78,12 @@ final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewCo
         tableView.register(
             UINib(
                 nibName: "HelpTipCell",
-                bundle: giniCaptureBundle()),
+                bundle: giniCaptureResourceBundle()),
             forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
         tableView.register(
             UINib(
                 nibName: "HelpFormatSectionHeader",
-                bundle: giniCaptureBundle()),
+                bundle: giniCaptureResourceBundle()),
             forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight

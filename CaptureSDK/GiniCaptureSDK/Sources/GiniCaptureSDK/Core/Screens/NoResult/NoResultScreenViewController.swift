@@ -213,19 +213,19 @@ final class NoResultScreenViewController: UIViewController {
             tableView.register(
                 UINib(
                     nibName: "HelpFormatCell",
-                    bundle: giniCaptureBundle()),
+                    bundle: giniCaptureResourceBundle()),
                 forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
         case .image, .custom(_):
             tableView.register(
                 UINib(
                     nibName: "HelpTipCell",
-                    bundle: giniCaptureBundle()),
+                    bundle: giniCaptureResourceBundle()),
                 forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
         }
         tableView.register(
             UINib(
                 nibName: "HelpFormatSectionHeader",
-                bundle: giniCaptureBundle()),
+                bundle: giniCaptureResourceBundle()),
             forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
     }
 

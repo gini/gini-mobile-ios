@@ -20,22 +20,22 @@ final class SupportedFormatsViewControllerTests: XCTestCase {
         var sections: [HelpFormatsCollectionSection] =  [
             (NSLocalizedString(
                 "ginicapture.help.supportedFormats.section.1.title",
-                bundle: giniCaptureBundle(),
+                bundle: giniCaptureResourceBundle(),
                 comment: ""),
              [
                 NSLocalizedString(
                     "ginicapture.help.supportedFormats.section.1.item.1",
-                    bundle: giniCaptureBundle(),
+                    bundle: giniCaptureResourceBundle(),
                     comment: "")],
              UIImageNamedPreferred(named: "supportedFormatsIcon")),
             (NSLocalizedString(
                 "ginicapture.help.supportedFormats.section.2.title",
-                bundle: giniCaptureBundle(),
+                bundle: giniCaptureResourceBundle(),
                 comment: ""),
              [
                 NSLocalizedString(
                     "ginicapture.help.supportedFormats.section.2.item.1",
-                    bundle: giniCaptureBundle(),
+                    bundle: giniCaptureResourceBundle(),
                     comment: "")],
              UIImageNamedPreferred(named: "nonSupportedFormatsIcon"))
         ]

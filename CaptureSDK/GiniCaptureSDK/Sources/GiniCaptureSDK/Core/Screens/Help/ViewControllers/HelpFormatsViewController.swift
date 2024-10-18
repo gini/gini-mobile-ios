@@ -71,12 +71,12 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
         tableView.register(
             UINib(
                 nibName: "HelpFormatCell",
-                bundle: giniCaptureBundle()),
+                bundle: giniCaptureResourceBundle()),
             forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
         tableView.register(
             UINib(
                 nibName: "HelpFormatSectionHeader",
-                bundle: giniCaptureBundle()),
+                bundle: giniCaptureResourceBundle()),
             forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
         tableView.delegate = self.dataSource
         tableView.dataSource = self.dataSource

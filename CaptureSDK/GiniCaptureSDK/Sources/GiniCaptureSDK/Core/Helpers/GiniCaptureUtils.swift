@@ -8,8 +8,8 @@
 
 import UIKit
 
-public func giniCaptureBundle() -> Bundle {
-    Bundle.resource
+public func giniCaptureResourceBundle() -> Bundle {
+    Bundle.resourceBundle
 }
 
 /**
@@ -33,7 +33,7 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
     }
 
     return UIImage(named: name,
-                   in: giniCaptureBundle(),
+                   in: giniCaptureResourceBundle(),
                    compatibleWith: nil)
 }
 
@@ -59,7 +59,7 @@ public func UIColorPreferred(named name: String) -> UIColor {
     }
 
     if let color = UIColor(named: name,
-                           in: giniCaptureBundle(),
+                           in: giniCaptureResourceBundle(),
                            compatibleWith: nil) {
         return color
     } else {
@@ -117,8 +117,8 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
 private func giniLocalizedString(_ key: String,
                                  fallbackKey: String,
                                  comment: String) -> String {
-    let giniBundle = giniCaptureBundle()
-    
+    let giniBundle = giniCaptureResourceBundle()
+
     var defaultFormat = NSLocalizedString(key,
                                           bundle: giniBundle,
                                           comment: comment)
@@ -241,10 +241,7 @@ extension Foundation.Bundle {
      The resource bundle associated with the current module.
      - important: When `GiniCaptureSDK` is distributed via Swift Package Manager, it will be synthesized automatically in the name of `Bundle.module`.
      */
-#if SWIFT_PACKAGE
-    static let resource = Bundle.module
-#else
-    static var resource: Bundle = {
+    static var resourceBundle: Bundle = {
         let moduleName = "GiniCaptureSDK"
         let bundleName = "\(moduleName)_\(moduleName)"
         let candidates = [
@@ -265,7 +262,6 @@ extension Foundation.Bundle {
         }
         return Bundle(for: GiniCapture.self)
     }()
-#endif
 }
 
 public struct RoundedCorners {

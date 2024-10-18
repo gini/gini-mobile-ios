@@ -83,9 +83,9 @@ final class CameraViewController: UIViewController {
         self.cameraLensSwitcherView.isHidden = true
 
         if UIDevice.current.isIphone {
-            super.init(nibName: "CameraPhone", bundle: giniCaptureBundle())
+            super.init(nibName: "CameraPhone", bundle: giniCaptureResourceBundle())
         } else {
-            super.init(nibName: "CameraiPad", bundle: giniCaptureBundle())
+            super.init(nibName: "CameraiPad", bundle: giniCaptureResourceBundle())
         }
 
         self.cameraLensSwitcherView.delegate = self
