@@ -266,15 +266,12 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
 
 extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
     func didTapOnContinueOnShareBottomSheet() {
-        //
     }
     
     func didTapForwardOnInstallBottomSheet() {
-        //
     }
     
     func didTapOnPayButton() {
-        //
     }
 
     func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
