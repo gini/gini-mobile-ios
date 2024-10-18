@@ -5,9 +5,13 @@
 //
 
 
+
 import XCTest
+@testable import GiniCaptureSDK
+@testable import GiniBankSDK
 
 class GiniBankSDKExampleUITests: XCTestCase {
+
     var app: XCUIApplication!
     var mainScreen: MainScreen!
     var helpScreen: HelpScreen!
@@ -19,9 +23,13 @@ class GiniBankSDKExampleUITests: XCTestCase {
     var skontoScreen: SkontoScreen!
     var returnAssistantScreen: ReturnAssistantScreen!
     var reviewScreen: ReviewScreen!
-
+    var isSimulator = true
+    
     override func setUpWithError() throws {
-
+        
+        if isSimulator == true {
+            throw XCTSkip("Skipping test")
+        }
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["-testing"]
@@ -39,12 +47,14 @@ class GiniBankSDKExampleUITests: XCTestCase {
         returnAssistantScreen = ReturnAssistantScreen(app: app, locale: currentLocale)
         reviewScreen = ReviewScreen(app: app, locale: currentLocale)
     }
-
+    
     override func tearDownWithError() throws  {
         let screenshot = XCUIScreen.main.screenshot()
         let attachment = XCTAttachment(screenshot: screenshot)
-        attachment.lifetime = .deleteOnSuccess
-        add(attachment)
-        app.terminate()
+        if isSimulator == false {
+            attachment.lifetime = .deleteOnSuccess
+            add(attachment)
+            app.terminate()
+        }
     }
 }
