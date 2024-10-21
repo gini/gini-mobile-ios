@@ -1,13 +1,10 @@
 name: Check Bank API Library
 on:
-  push:
-   paths:
-      - 'BankAPILibrary/**'
-   tags-ignore:
-      - '**'
   pull_request:
-   paths:
+    types: [opened, edited, reopened, synchronize]
+    paths:
       - 'BankAPILibrary/**'
+
   workflow_call:
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:
