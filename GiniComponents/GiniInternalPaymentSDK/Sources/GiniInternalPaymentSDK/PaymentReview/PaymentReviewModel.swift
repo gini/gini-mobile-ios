@@ -12,6 +12,7 @@ import GiniUtilites
 protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController)
+    func presentBanksPicker(bottomSheet: BottomSheetViewController)
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest()
 }
@@ -19,6 +20,7 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
 public protocol BottomSheetsProviderProtocol: AnyObject {
     func installAppBottomSheet() -> BottomSheetViewController
     func shareInvoiceBottomSheet() -> BottomSheetViewController
+    func bankSelectionBottomSheet(documentId: String?) -> UIViewController
 }
 
 public typealias PaymentReviewProtocol = PaymentReviewAPIProtocol & PaymentReviewTrackingProtocol & PaymentReviewSupportedFormatsProtocol
@@ -192,6 +194,13 @@ public class PaymentReviewModel: NSObject {
         viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: shareInvoiceBottomSheet)
     }
 
+    func openBanksPickerBottomSheet() {
+        guard let banksPickerBottomSheet = bottomSheetsProvider?.bankSelectionBottomSheet(documentId: documentId) as? BanksBottomView else { return }
+        banksPickerBottomSheet.modalPresentationStyle = .overFullScreen
+        banksPickerBottomSheet.viewModel.viewDelegate = self
+        viewModelDelegate?.presentBanksPicker(bottomSheet: banksPickerBottomSheet)
+    }
+
     func openPaymentProviderApp(requestId: String, universalLink: String) {
         delegate?.openPaymentProviderApp(requestId: requestId, universalLink: universalLink)
     }
@@ -268,6 +277,23 @@ extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
     public func didTapOnContinueToShareInvoice() {
         viewModelDelegate?.obtainPDFFromPaymentRequest()
     }
+}
+
+extension PaymentReviewModel: BanksSelectionProtocol {
+    public func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider, documentId: String?) {
+        selectedPaymentProvider = paymentProvider
+    }
+
+    public func didTapOnMoreInformation() {}
+
+    public func didTapOnClose() {}
+
+    public func didTapOnContinueOnShareBottomSheet() {}
+
+    public func didTapForwardOnInstallBottomSheet() {}
+
+    public func didTapOnPayButton() {}
+
 }
 
 /**

@@ -74,7 +74,8 @@ public final class PaymentReviewContainerView: UIView {
     private var coupledErrorLabels: [UILabel] = []
     private let viewModel: PaymentReviewContainerViewModel
     public var onPayButtonClicked: (() -> Void)?
-    
+    public var onBanksPickerButtonClicked: (() -> Void)?
+
     public init(viewModel: PaymentReviewContainerViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -471,7 +472,7 @@ public final class PaymentReviewContainerView: UIView {
 
     @objc
     private func tapOnBankPicker() {
-//        viewModel.tapOnBankPicker()
+        onBanksPickerButtonClicked?()
     }
 
     fileprivate func configurePayButtonInitialState() {

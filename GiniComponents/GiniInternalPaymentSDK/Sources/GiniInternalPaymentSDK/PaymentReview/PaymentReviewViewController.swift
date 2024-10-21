@@ -310,6 +310,9 @@ fileprivate extension PaymentReviewViewController {
         containerView.onPayButtonClicked = { [weak self] in
             self?.payButtonClicked()
         }
+        containerView.onBanksPickerButtonClicked = { [weak self] in
+            self?.model.openBanksPickerBottomSheet()
+        }
         return containerView
     }
 

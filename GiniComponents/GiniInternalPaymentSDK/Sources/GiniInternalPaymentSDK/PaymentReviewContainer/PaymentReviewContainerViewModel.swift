@@ -13,7 +13,7 @@ import UIKit
 
 public final class PaymentReviewContainerViewModel {
     var onExtractionFetched: (() -> Void)?
-    let selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
+    var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
     let configuration: PaymentReviewContainerConfiguration
     let strings: PaymentReviewContainerStrings
     let primaryButtonConfiguration: ButtonConfiguration

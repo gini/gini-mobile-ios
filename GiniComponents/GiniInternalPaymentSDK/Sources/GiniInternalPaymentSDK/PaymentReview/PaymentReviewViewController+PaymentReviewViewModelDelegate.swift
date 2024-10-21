@@ -28,4 +28,9 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     func obtainPDFFromPaymentRequest() {
         model.delegate?.obtainPDFURLFromPaymentRequest(paymentInfo: paymentInfoContainerView.obtainPaymentInfo(), viewController: self)
     }
+
+    func presentBanksPicker(bottomSheet: BottomSheetViewController) {
+        bottomSheet.minHeight = Constants.inputContainerHeight
+        presentBottomSheet(viewController: bottomSheet)
+    }
 }
