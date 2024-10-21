@@ -107,15 +107,15 @@ final class SettingsViewController: UIViewController {
 
 extension SettingsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.contentDataSectioned.count
+        return viewModel.contentData.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.contentDataSectioned[section].items.count
+        return viewModel.contentData[section].items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = viewModel.contentDataSectioned[indexPath.section].items[indexPath.row]
+        let item = viewModel.contentData[indexPath.section].items[indexPath.row]
         switch item {
         case .info(let message):
             return cell(for: message)
@@ -182,7 +182,7 @@ extension SettingsViewController: UITableViewDelegate {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: SettingsHeaderView.identifier) as? SettingsHeaderView else {
             return nil
         }
-        let title = viewModel.contentDataSectioned[section].title
+        let title = viewModel.contentData[section].title
         headerView.configure(with: title)
         return headerView
     }
@@ -204,7 +204,7 @@ extension SettingsViewController: SwitchOptionTableViewCellDelegate {
 extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
     func didSegmentedControlValueChanged(in cell: SegmentedOptionTableViewCell) {
         let indexPath = cell.indexPath
-        let item = viewModel.contentDataSectioned[indexPath.section].items[indexPath.row]
+        let item = viewModel.contentData[indexPath.section].items[indexPath.row]
         guard case .segmentedOption(let data) = item else { return }
         var newData = data
         newData.selectedIndex = cell.selectedSegmentIndex
