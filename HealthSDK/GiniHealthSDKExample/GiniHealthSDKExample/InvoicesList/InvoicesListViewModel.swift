@@ -209,6 +209,14 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
 
 extension InvoicesListViewModel {
 
+    func didTapOnOpenFlow(documentId: String?) {
+        if paymentComponentsController.selectedPaymentProvider == nil {
+            presentPaymentViewBottomSheet(documentId)
+        } else {
+            didTapOnPayInvoice(documentId: documentId)
+        }
+    }
+
     func didTapOnMoreInformation(documentId: String?) {
         print("Tapped on More Information")
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
@@ -222,18 +230,16 @@ extension InvoicesListViewModel {
         }
     }
     
+    fileprivate func presentPaymentViewBottomSheet(_ documentId: String?) {
+        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: documentId ?? "")
+        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
+        self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: false)
+    }
+    
     func didTapOnBankPicker(documentId: String?) {
         print("Tapped on Bank Picker on :\(documentId ?? "")")
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
         if GiniHealthConfiguration.shared.useBottomPaymentComponentView {
-            if self.coordinator.invoicesListViewController.presentedViewController is PaymentComponentBottomView {
-                dismissAndPresent(viewController: bankSelectionBottomSheet(documentId: documentId), animated: false)
-            } else {
-                let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: documentId ?? "")
-                paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
-                self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: false)
-            }
-        } else {
             dismissAndPresent(viewController: bankSelectionBottomSheet(documentId: documentId), animated: false)
         }
     }
@@ -267,7 +273,6 @@ extension InvoicesListViewModel {
                     self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
                 } else {
                     if let index = invoices.firstIndex(where: { $0.documentId == documentId }) {
-
                         paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(for: index), viewController: self.coordinator.invoicesListViewController)
                     }
                 }
@@ -346,7 +351,7 @@ extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
 
     func didSelectPaymentProvider(paymentProvider: PaymentProvider, documentId: String?) {
         DispatchQueue.main.async {
-            self.didTapOnBankPicker(documentId: documentId)
+            self.presentPaymentViewBottomSheet(documentId)
         }
     }
     

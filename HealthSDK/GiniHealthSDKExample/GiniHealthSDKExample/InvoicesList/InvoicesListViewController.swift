@@ -125,7 +125,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     private func tapOnAction(documentID: String) {
-        viewModel.didTapOnBankPicker(documentId: documentID)
+        viewModel.didTapOnOpenFlow(documentId: documentID)
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
