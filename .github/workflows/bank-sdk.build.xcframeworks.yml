@@ -83,8 +83,8 @@ jobs:
               "resources_path": "../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources",
               "ci": "true"
             }
-            - name: Archiving project (iphonesimulator)
-            run: |
+      - name: Archiving project (iphonesimulator)
+        run: |
               xcodebuild archive \
               -project BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj \
               -scheme GiniBankSDKPinning \
