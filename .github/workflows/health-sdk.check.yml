@@ -1,12 +1,7 @@
 name: Check Health SDK
 on:
-  push:
-    paths:
-      - 'HealthSDK/**'
-      - 'HealthAPILibrary/**'
-    tags-ignore:
-      - '**'
   pull_request:
+    types: [opened, edited, reopened, synchronize]
     paths:
       - 'HealthSDK/**'
       - 'HealthAPILibrary/**'
