@@ -188,7 +188,7 @@ extension SettingsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
+        return 48
     }
 }
 // MARK: - SwitchOptionTableViewCellDelegate

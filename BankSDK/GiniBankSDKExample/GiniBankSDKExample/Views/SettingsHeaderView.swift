@@ -11,8 +11,8 @@ class SettingsHeaderView: UITableViewHeaderFooterView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 17)
-        label.textColor = .red
+        label.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.footnoteBold)
+        label.textColor = ColorPalette.raspberryPunch
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -24,7 +24,7 @@ class SettingsHeaderView: UITableViewHeaderFooterView {
         contentView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 
@@ -34,7 +34,7 @@ class SettingsHeaderView: UITableViewHeaderFooterView {
 
     // Configure the header view with a title
     func configure(with title: String) {
-        titleLabel.text = title
+        titleLabel.text = title.uppercased()
     }
 }
 
