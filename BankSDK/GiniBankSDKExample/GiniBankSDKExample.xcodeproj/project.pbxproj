@@ -87,6 +87,8 @@
 		84C5AA962CC1379D00F6EF85 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C5AA952CC1379D00F6EF85 /* SettingsViewModel.swift */; };
 		84CD074D2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */; };
 		84CD074F2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD074E2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift */; };
+		84E4BA6A2CC50E330058F6CA /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E4BA692CC50E330058F6CA /* SettingsHeaderView.swift */; };
+		84E4BA6C2CC6708E0058F6CA /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E4BA6B2CC6708E0058F6CA /* SettingsSection.swift */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
 		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
 		F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F426ABF0289AB1D7007F4EB6 /* Colors.xcassets */; };
@@ -250,6 +252,8 @@
 		84C5AA952CC1379D00F6EF85 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
 		84CD074E2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
+		84E4BA692CC50E330058F6CA /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
+		84E4BA6B2CC6708E0058F6CA /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAnalysisHelper.swift; sourceTree = "<group>"; };
@@ -377,6 +381,7 @@
 				5D5328852C63F59C00DEA203 /* CredentialsTableViewCell.xib */,
 				5D5328872C63F71100DEA203 /* CredentialsTableViewCell.swift */,
 				28B448CD2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift */,
+				84E4BA692CC50E330058F6CA /* SettingsHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -552,6 +557,7 @@
 				289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */,
 				289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */,
 				84C5AA952CC1379D00F6EF85 /* SettingsViewModel.swift */,
+				84E4BA6B2CC6708E0058F6CA /* SettingsSection.swift */,
 			);
 			path = SettingsViewController;
 			sourceTree = "<group>";
@@ -960,6 +966,7 @@
 				28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */,
 				83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */,
 				76EFD4D629B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift in Sources */,
+				84E4BA6A2CC50E330058F6CA /* SettingsHeaderView.swift in Sources */,
 				76810039299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift in Sources */,
 				28B448CE2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift in Sources */,
 				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,
@@ -972,6 +979,7 @@
 				834735F32940999500C3B5F3 /* CustomAnalysisError.swift in Sources */,
 				F4AD00DC25DFDCE400C34E15 /* TransactionSummaryTableViewController.swift in Sources */,
 				28F62F9E2AB21B1700D47866 /* DemoScreenStrings.swift in Sources */,
+				84E4BA6C2CC6708E0058F6CA /* SettingsSection.swift in Sources */,
 				F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */,
 				28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */,
 				F4AD00C225DED43200C34E15 /* DemoViewController.swift in Sources */,

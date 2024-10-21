@@ -23,6 +23,8 @@ final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
 	@IBOutlet private weak var messageLabel: UILabel!
 	@IBOutlet private weak var optionSwitch: UISwitch!
 	
+    var indexPath: IndexPath = .init(row: 0, section: 0)
+    
 	weak var delegate: SwitchOptionTableViewCellDelegate?
 	
 	var isSwitchOn: Bool = false {
