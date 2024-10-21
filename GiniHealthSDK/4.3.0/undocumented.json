@@ -9,14 +9,14 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/Extensions/String.swift",
-      "line": 26,
+      "line": 25,
       "symbol": "String.numberValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/Extensions/String.swift",
-      "line": 32,
+      "line": 31,
       "symbol": "String.rgbaHexFrom(rgbHex:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
