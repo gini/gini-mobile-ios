@@ -322,11 +322,6 @@ final class SettingsViewModel {
                                          buttonActive: alwaysAttachDocsValue))
         sections.append(transactionDocsSection)
 
-        // Skonto
-        var skontoSection = SettingsSection(title: "Skonto", items: [])
-        
-        sections.append(skontoSection)
-
         // General UI customization
         var uiCustomizationSection = SettingsSection(title: "General UI Customization", items: [])
         uiCustomizationSection.items.append(.switchOption(data: .init(type: .primaryButtonConfiguration,
