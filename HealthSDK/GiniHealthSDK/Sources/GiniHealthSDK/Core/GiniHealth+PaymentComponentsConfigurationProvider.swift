@@ -36,7 +36,11 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             errorLabelTextColor: GiniColor.feedback1.uiColor(),
             errorLabelFont: GiniHealthConfiguration.shared.font(for: .captions2),
             lockIcon: GiniHealthImage.lock.preferredUIImage(),
-            lockedFields: false
+            lockedFields: false,
+            showBanksPicker: true,
+            chevronDownIcon: GiniHealthImage.chevronDown.preferredUIImage(),
+            chevronDownIconColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light1).uiColor()
+
         )
     }
 

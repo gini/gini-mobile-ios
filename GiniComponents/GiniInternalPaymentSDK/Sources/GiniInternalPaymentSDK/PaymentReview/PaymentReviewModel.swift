@@ -103,6 +103,7 @@ public class PaymentReviewModel: NSObject {
     let errorStyleInputFieldConfiguration: TextFieldConfiguration
     let selectionStyleInputFieldConfiguration: TextFieldConfiguration
     let primaryButtonConfiguration: ButtonConfiguration
+    let secondaryButtonConfiguration: ButtonConfiguration
     let poweredByGiniConfiguration: PoweredByGiniConfiguration
     let poweredByGiniStrings: PoweredByGiniStrings
     let bottomSheetConfiguration: BottomSheetConfiguration
@@ -123,6 +124,7 @@ public class PaymentReviewModel: NSObject {
                 errorStyleInputFieldConfiguration: TextFieldConfiguration,
                 selectionStyleInputFieldConfiguration: TextFieldConfiguration,
                 primaryButtonConfiguration: ButtonConfiguration,
+                secondaryButtonConfiguration: ButtonConfiguration,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
                 bottomSheetConfiguration: BottomSheetConfiguration,
@@ -142,6 +144,7 @@ public class PaymentReviewModel: NSObject {
         self.containerConfiguration = containerConfiguration
         self.containerStrings = containerStrings
         self.primaryButtonConfiguration = primaryButtonConfiguration
+        self.secondaryButtonConfiguration = secondaryButtonConfiguration
         self.defaultStyleInputFieldConfiguration = defaultStyleInputFieldConfiguration
         self.errorStyleInputFieldConfiguration = errorStyleInputFieldConfiguration
         self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
@@ -245,6 +248,7 @@ public class PaymentReviewModel: NSObject {
                                         configuration: containerConfiguration,
                                         strings: containerStrings,
                                         primaryButtonConfiguration: primaryButtonConfiguration,
+                                        secondaryButtonConfiguration: secondaryButtonConfiguration,
                                         defaultStyleInputFieldConfiguration: defaultStyleInputFieldConfiguration,
                                         errorStyleInputFieldConfiguration: errorStyleInputFieldConfiguration,
                                         selectionStyleInputFieldConfiguration: selectionStyleInputFieldConfiguration,

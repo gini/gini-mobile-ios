@@ -9,6 +9,7 @@
 import Foundation
 import GiniHealthAPILibrary
 import GiniUtilites
+import UIKit
 
 public final class PaymentReviewContainerViewModel {
     var onExtractionFetched: (() -> Void)?
@@ -16,11 +17,13 @@ public final class PaymentReviewContainerViewModel {
     let configuration: PaymentReviewContainerConfiguration
     let strings: PaymentReviewContainerStrings
     let primaryButtonConfiguration: ButtonConfiguration
+    let secondaryButtonConfiguration: ButtonConfiguration
     let defaultStyleInputFieldConfiguration: TextFieldConfiguration
     let errorStyleInputFieldConfiguration: TextFieldConfiguration
     let selectionStyleInputFieldConfiguration: TextFieldConfiguration
     let poweredByGiniViewModel: PoweredByGiniViewModel
     var dispayMode: DisplayMode = .bottomSheet
+    let bankImageIcon: UIImage?
 
     public var extractions: [Extraction]? {
         didSet {
@@ -40,6 +43,7 @@ public final class PaymentReviewContainerViewModel {
                 configuration: PaymentReviewContainerConfiguration,
                 strings: PaymentReviewContainerStrings,
                 primaryButtonConfiguration: ButtonConfiguration,
+                secondaryButtonConfiguration: ButtonConfiguration,
                 defaultStyleInputFieldConfiguration: TextFieldConfiguration,
                 errorStyleInputFieldConfiguration: TextFieldConfiguration,
                 selectionStyleInputFieldConfiguration: TextFieldConfiguration,
@@ -52,10 +56,13 @@ public final class PaymentReviewContainerViewModel {
         self.configuration = configuration
         self.strings = strings
         self.primaryButtonConfiguration = primaryButtonConfiguration
+        self.secondaryButtonConfiguration = secondaryButtonConfiguration
         self.defaultStyleInputFieldConfiguration = defaultStyleInputFieldConfiguration
         self.errorStyleInputFieldConfiguration = errorStyleInputFieldConfiguration
         self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.dispayMode = displayMode
+
+        self.bankImageIcon = selectedPaymentProvider.iconData.toImage
     }
 }

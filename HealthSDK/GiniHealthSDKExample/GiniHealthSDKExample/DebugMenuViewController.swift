@@ -25,7 +25,7 @@ class DebugMenuViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Gini Merchant"
+        label.text = "Gini Health"
         label.textAlignment = .center
         label.font = .preferredFont(forTextStyle: .largeTitle)
         return label

@@ -288,6 +288,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                            errorStyleInputFieldConfiguration: configurationProvider.errorStyleInputFieldConfiguration,
                                            selectionStyleInputFieldConfiguration: configurationProvider.selectionStyleInputFieldConfiguration,
                                            primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
+                                           secondaryButtonConfiguration: configurationProvider.secondaryButtonConfiguration,
                                            poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                            bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,

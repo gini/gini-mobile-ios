@@ -107,7 +107,7 @@ public extension PaymentSecondaryButton {
         titleLabel.font = configuration.titleFont
     }
 
-    func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: UIImage?, rightImageTintColor: UIColor, shouldShowLabel: Bool) {
+    func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: UIImage?, rightImageTintColor: UIColor?, shouldShowLabel: Bool) {
         if let leftImageIcon {
             leftImageView.image = leftImageIcon
             leftImageView.isHidden = false

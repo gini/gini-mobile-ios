@@ -61,7 +61,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      Set to `false` to hide the payment review screen and jump straight to payment
      */
-    public var showPaymentReviewScreen = false
+    public var showPaymentReviewScreen = true
 
     // MARK: - Button configuration options
     /**

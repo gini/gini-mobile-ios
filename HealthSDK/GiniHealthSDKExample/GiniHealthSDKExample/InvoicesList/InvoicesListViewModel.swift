@@ -262,7 +262,13 @@ extension InvoicesListViewModel {
                 } else if let viewController {
                     viewController.modalTransitionStyle = .coverVertical
                     viewController.modalPresentationStyle = .overCurrentContext
-                    self?.dismissAndPresent(viewController: viewController, animated: true)
+                    if let presentedViewController = self?.coordinator.invoicesListViewController.presentedViewController {
+                        presentedViewController.dismiss(animated: true) {
+                            self?.coordinator.invoicesListNavigationController.pushViewController(viewController, animated: true)
+                        }
+                    } else {
+                        self?.coordinator.invoicesListNavigationController.pushViewController(viewController, animated: true)
+                    }
                 }
             }
         } else {

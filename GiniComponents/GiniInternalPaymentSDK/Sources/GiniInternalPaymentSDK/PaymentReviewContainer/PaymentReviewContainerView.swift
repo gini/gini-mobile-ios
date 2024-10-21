@@ -41,6 +41,14 @@ public final class PaymentReviewContainerView: UIView {
 
     private let buttonsView = EmptyView()
 
+    private lazy var selectBankButton: PaymentSecondaryButton = {
+        let button = PaymentSecondaryButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configure(with: viewModel.secondaryButtonConfiguration)
+        button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.buttonViewHeight)
+        return button
+    }()
+
     private lazy var payInvoiceButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +57,7 @@ public final class PaymentReviewContainerView: UIView {
     }()
 
     private let bottomView = EmptyView()
-    private let buttonsStackView = EmptyStackView().orientation(.horizontal)
+    private let buttonsStackView = EmptyStackView().orientation(.horizontal).spacing(Constants.buttonsSpacing)
     private let bottomStackView = EmptyStackView().orientation(.horizontal)
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
@@ -101,6 +109,9 @@ public final class PaymentReviewContainerView: UIView {
         usageStackView.addArrangedSubview(usageTextFieldView)
         usageStackView.addArrangedSubview(usageErrorLabel)
 
+        if viewModel.configuration.showBanksPicker {
+            buttonsStackView.addArrangedSubview(selectBankButton)
+        }
         buttonsStackView.addArrangedSubview(payInvoiceButton)
         buttonsView.addSubview(buttonsStackView)
 
@@ -144,6 +155,7 @@ public final class PaymentReviewContainerView: UIView {
         setupViewModel()
         configurePaymentInputFields()
         configurePayButtonInitialState()
+        configureSelectBanksButton()
         hideErrorLabels()
         fillInInputFields()
         addDoneButtonForNumPad(amountTextFieldView)
@@ -445,6 +457,23 @@ public final class PaymentReviewContainerView: UIView {
         updateAmountIbanErrorState()
     }
 
+    fileprivate func configureSelectBanksButton() {
+        selectBankButton.customConfigure(labelText: "",
+                                         leftImageIcon: viewModel.bankImageIcon,
+                                         rightImageIcon: viewModel.configuration.chevronDownIcon,
+                                         rightImageTintColor: viewModel.configuration.chevronDownIconColor,
+                                         shouldShowLabel: false)
+
+        selectBankButton.didTapButton = { [weak self] in
+            self?.tapOnBankPicker()
+        }
+    }
+
+    @objc
+    private func tapOnBankPicker() {
+//        viewModel.tapOnBankPicker()
+    }
+
     fileprivate func configurePayButtonInitialState() {
         payInvoiceButton.configure(with: viewModel.primaryButtonConfiguration)
         payInvoiceButton.customConfigure(text: viewModel.strings.payInvoiceLabelText,
@@ -683,19 +712,20 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
 
 extension PaymentReviewContainerView {
     enum Constants {
-            static let buttonViewHeight = 56.0
-            static let leftRightPaymentInfoContainerPadding = 8.0
-            static let topBottomPaymentInfoContainerPadding = 16.0
-            static let textFieldHeight = 56.0
-            static let errorLabelHeight = 12.0
-            static let amountWidth = 95.0
-            static let animationDuration: CGFloat = 0.3
-            static let topAnchorPoweredByGiniConstraint = 5.0
-            static let heightToolbar = 40.0
-            static let stackViewSpacing = 10.0
-            static let payInvoiceInactiveAlpha = 0.4
-            static let bottomViewHeight = 20.0
-            static let errorTopMargin = 9.0
-            static let lockIconHeight = 11.0
-        }
+        static let buttonViewHeight = 56.0
+        static let leftRightPaymentInfoContainerPadding = 8.0
+        static let topBottomPaymentInfoContainerPadding = 16.0
+        static let textFieldHeight = 56.0
+        static let errorLabelHeight = 12.0
+        static let amountWidth = 95.0
+        static let animationDuration: CGFloat = 0.3
+        static let topAnchorPoweredByGiniConstraint = 5.0
+        static let heightToolbar = 40.0
+        static let stackViewSpacing = 10.0
+        static let payInvoiceInactiveAlpha = 0.4
+        static let bottomViewHeight = 20.0
+        static let errorTopMargin = 9.0
+        static let lockIconHeight = 11.0
+        static let buttonsSpacing = 8.0
+    }
 }

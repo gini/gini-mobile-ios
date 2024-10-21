@@ -12,15 +12,24 @@ public struct PaymentReviewContainerConfiguration {
     let errorLabelFont: UIFont
     let lockIcon: UIImage
     let lockedFields: Bool
+    let showBanksPicker: Bool
+    let chevronDownIcon: UIImage?
+    let chevronDownIconColor: UIColor?
 
     public init(errorLabelTextColor: UIColor,
                 errorLabelFont: UIFont,
                 lockIcon: UIImage,
-                lockedFields: Bool) {
+                lockedFields: Bool,
+                showBanksPicker: Bool,
+                chevronDownIcon: UIImage?,
+                chevronDownIconColor: UIColor?) {
         self.errorLabelTextColor = errorLabelTextColor
         self.errorLabelFont = errorLabelFont
         self.lockIcon = lockIcon
         self.lockedFields = lockedFields
+        self.showBanksPicker = showBanksPicker
+        self.chevronDownIcon = chevronDownIcon
+        self.chevronDownIconColor = chevronDownIconColor
     }
 }
 

@@ -54,7 +54,6 @@ final class AppCoordinator: Coordinator {
     private lazy var giniHealthConfiguration: GiniHealthConfiguration = {
         let configuration = GiniHealthConfiguration()
         // Show the close button to dismiss the payment review screen
-        configuration.showPaymentReviewCloseButton = true
         configuration.paymentReviewStatusBarStyle = .lightContent
         return configuration
     }()
