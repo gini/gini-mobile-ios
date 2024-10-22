@@ -79,6 +79,8 @@ protocol PaymentComponentsProtocol {
  The `PaymentComponentsController` class allows control over the payment components.
  */
 public final class PaymentComponentsController: PaymentComponentsProtocol, BottomSheetsProviderProtocol {
+
+    
     /// handling the Payment Component Controller delegate
     public weak var delegate: PaymentComponentsControllerProtocol?
     /// handling the Payment Component view delegate
@@ -362,6 +364,21 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
         return shareInvoiceBottomView
     }
 
+    public func bankSelectionBottomSheet(documentId: String?) -> UIViewController {
+        previousPresentedView = .bankPicker
+        let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
+                                                                   selectedPaymentProvider: healthSelectedPaymentProvider,
+                                                                   configuration: configurationProvider.bankSelectionConfiguration,
+                                                                   strings: stringsProvider.banksBottomStrings,
+                                                                   poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
+                                                                   poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                                   moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
+                                                                   moreInformationStrings: stringsProvider.moreInformationStrings)
+        paymentProvidersBottomViewModel.viewDelegate = self
+        paymentProvidersBottomViewModel.documentId = documentId
+        return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
+    }
+
     // MARK: - Helping functions
     public func canOpenPaymentProviderApp() -> Bool {
         if supportsGPC() {
@@ -641,6 +658,10 @@ extension PaymentComponentsController: PaymentReviewProtocol {
         var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onToTheBankButtonClicked)
         event.info = ["paymentProvider": providerName]
         trackingDelegate?.onPaymentReviewScreenEvent(event: event)
+    }
+
+    public func updatedPaymentProvider(_ paymentProvider: GiniHealthAPILibrary.PaymentProvider) {
+        self.selectedPaymentProvider = PaymentProvider(healthPaymentProvider: paymentProvider)
     }
 }
 

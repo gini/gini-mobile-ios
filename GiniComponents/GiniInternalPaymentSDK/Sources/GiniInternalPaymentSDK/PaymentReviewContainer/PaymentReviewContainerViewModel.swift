@@ -23,7 +23,7 @@ public final class PaymentReviewContainerViewModel {
     let selectionStyleInputFieldConfiguration: TextFieldConfiguration
     let poweredByGiniViewModel: PoweredByGiniViewModel
     var dispayMode: DisplayMode = .bottomSheet
-    let bankImageIcon: UIImage?
+    var bankImageIcon: UIImage?
 
     public var extractions: [Extraction]? {
         didSet {

@@ -31,7 +31,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     private var keyboardWillShowCalled = false
 
     public let model: PaymentReviewModel
-    private let selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
+    private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
 
     init(viewModel: PaymentReviewModel,
          selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
@@ -74,6 +74,10 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
 
         if model.displayMode == .documentCollection {
             setupViewModelWithDocument()
+        }
+
+        model.onNewPaymentProvider = { [weak self] () in
+            self?.updatePaymentInfoContainerView()
         }
 
         model.viewModelDelegate = self
@@ -332,6 +336,13 @@ fileprivate extension PaymentReviewViewController {
                 paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor)
             ])
         }
+    }
+
+    func updatePaymentInfoContainerView() {
+        self.presentedViewController?.dismiss(animated: true)
+        self.selectedPaymentProvider = model.selectedPaymentProvider
+        paymentInfoContainerView.updateSelectedPaymentProvider(model.selectedPaymentProvider)
+        
     }
 }
 

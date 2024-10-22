@@ -357,11 +357,7 @@ extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
 
     func didSelectPaymentProvider(paymentProvider: PaymentProvider, documentId: String?) {
         DispatchQueue.main.async {
-            if self.coordinator.invoicesListNavigationController.topViewController is PaymentReviewViewController {
-                self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
-            } else {
-                self.presentPaymentViewBottomSheet(documentId)
-            }
+            self.presentPaymentViewBottomSheet(documentId)
         }
     }
     

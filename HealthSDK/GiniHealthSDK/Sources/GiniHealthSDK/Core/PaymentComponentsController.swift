@@ -614,6 +614,10 @@ extension PaymentComponentsController: PaymentReviewProtocol {
             }
         }
     }
+
+    public func updatedPaymentProvider(_ paymentProvider: GiniHealthAPILibrary.PaymentProvider) {
+        self.selectedPaymentProvider = PaymentProvider(healthPaymentProvider: paymentProvider)
+    }
 }
 
 extension PaymentComponentsController {

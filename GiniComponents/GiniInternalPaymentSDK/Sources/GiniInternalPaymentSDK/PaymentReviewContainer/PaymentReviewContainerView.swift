@@ -8,6 +8,7 @@
 
 import UIKit
 import GiniUtilites
+import GiniHealthAPILibrary
 
 public enum TextFieldType: Int {
     case recipientFieldTag = 1
@@ -608,6 +609,13 @@ public extension PaymentReviewContainerView {
         case .usageFieldTag:
             return usageTextFieldView.text
         }
+    }
+
+    func updateSelectedPaymentProvider(_ paymentProvider: PaymentProvider) {
+        viewModel.selectedPaymentProvider = paymentProvider
+        viewModel.bankImageIcon = paymentProvider.iconData.toImage
+        configureSelectBanksButton()
+        configurePayButtonInitialState()
     }
 }
 

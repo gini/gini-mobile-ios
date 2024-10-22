@@ -23,7 +23,7 @@ public protocol BottomSheetsProviderProtocol: AnyObject {
     func bankSelectionBottomSheet(documentId: String?) -> UIViewController
 }
 
-public typealias PaymentReviewProtocol = PaymentReviewAPIProtocol & PaymentReviewTrackingProtocol & PaymentReviewSupportedFormatsProtocol
+public typealias PaymentReviewProtocol = PaymentReviewAPIProtocol & PaymentReviewTrackingProtocol & PaymentReviewSupportedFormatsProtocol & PaymentReviewActionProtocol
 
 public protocol PaymentReviewAPIProtocol: AnyObject {
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void)
@@ -46,6 +46,10 @@ public protocol PaymentReviewSupportedFormatsProtocol {
     func shouldShowOnboardingScreenFor() -> Bool
 }
 
+public protocol PaymentReviewActionProtocol {
+    func updatedPaymentProvider(_ paymentProvider: PaymentProvider)
+}
+
 /**
  View model class for review screen
  */
@@ -60,6 +64,8 @@ public class PaymentReviewModel: NSObject {
 
     var onCreatePaymentRequestErrorHandling: (() -> Void)?
 
+    var onNewPaymentProvider: (() -> Void)?
+
     weak var viewModelDelegate: PaymentReviewViewModelDelegate?
     weak var delegate: PaymentReviewProtocol?
     weak var bottomSheetsProvider: BottomSheetsProviderProtocol?
@@ -73,7 +79,7 @@ public class PaymentReviewModel: NSObject {
     public var paymentInfo: PaymentInfo?
 
     public var documentId: String?
-    private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
+    var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
@@ -282,6 +288,8 @@ extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
 extension PaymentReviewModel: BanksSelectionProtocol {
     public func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider, documentId: String?) {
         selectedPaymentProvider = paymentProvider
+        delegate?.updatedPaymentProvider(paymentProvider)
+        onNewPaymentProvider?()
     }
 
     public func didTapOnMoreInformation() {}
