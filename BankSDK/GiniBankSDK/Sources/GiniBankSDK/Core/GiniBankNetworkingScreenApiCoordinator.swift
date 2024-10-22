@@ -48,9 +48,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             case .eps4mobile:
                 deliverExtractionResult(for: QRCodesExtractor.epsCodeUrlKey, document: qrCodeDocument)
                 return
-            case .giniQRCode:
-                deliverExtractionResult(for: QRCodesExtractor.giniCodeUrlKey, document: qrCodeDocument)
-                return
             default:
                 break
             }
