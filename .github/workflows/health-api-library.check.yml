@@ -1,11 +1,7 @@
 name: Check Health API Library
 on:
-  push:
-   paths:
-      - 'HealthAPILibrary/**'
-   tags-ignore:
-      - '**'
   pull_request:
+   types: [opened, edited, reopened, synchronize]
    paths:
       - 'HealthAPILibrary/**'
   workflow_call:

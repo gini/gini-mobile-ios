@@ -1,12 +1,7 @@
 name: Check Capture SDK
 on:
-  push:
-    paths:
-      - 'CaptureSDK/**'
-      - 'BankAPILibrary/**'
-    tags-ignore:
-      - '**'
   pull_request:
+    types: [opened, edited, reopened, synchronize]
     paths:
       - 'CaptureSDK/**'
       - 'BankAPILibrary/**'

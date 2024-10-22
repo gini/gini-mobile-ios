@@ -1,11 +1,7 @@
 name: Check Merchant SDK
 on:
-  push:
-    paths:
-      - 'MerchantSDK/**'
-    tags-ignore:
-      - '**'
   pull_request:
+    types: [opened, edited, reopened, synchronize]
     paths:
       - 'MerchantSDK/**'
   workflow_call:
