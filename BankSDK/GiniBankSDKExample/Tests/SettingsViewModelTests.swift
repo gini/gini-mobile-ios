@@ -11,7 +11,7 @@ import AVFoundation
 @testable import GiniBankSDK
 @testable import GiniCaptureSDK
 
-final class SettingsViewControllerTests: XCTestCase {
+final class SettingsViewModelTests: XCTestCase {
 	private lazy var configuration: GiniBankConfiguration = {
 		let configuration = GiniBankConfiguration()
 		configuration.fileImportSupportedTypes = .pdf_and_images
@@ -76,134 +76,17 @@ final class SettingsViewControllerTests: XCTestCase {
 										isSwitchOn: false)
 	}()
 	
-	private var settingsViewController: SettingsViewController?
-	private var contentData = [SettingsViewController.CellType]()
-	
+    private var viewModel: SettingsViewModel?
+    private var contentData: [SettingsSection] {
+        return viewModel?.contentData ?? []
+    }
+    
 	override func setUp() {
 		super.setUp()
-        settingsViewController = SettingsViewController(apiEnvironment: .production,
-                                                        giniConfiguration: configuration,
-														settingsButtonStates: settingsButtonStates,
-														documentValidationsState: documentValidationsState)
-		
-		contentData.append(.switchOption(data: .init(type: .openWith,
-													 isSwitchOn: configuration.openWithEnabled)))
-		contentData.append(.switchOption(data: .init(type: .qrCodeScanning,
-													 isSwitchOn: configuration.qrCodeScanningEnabled)))
-		contentData.append(.switchOption(data: .init(type: .qrCodeScanningOnly,
-													 isSwitchOn: configuration.onlyQRCodeScanningEnabled)))
-		contentData.append(.switchOption(data: .init(type: .multipage,
-													 isSwitchOn: configuration.multipageEnabled)))
-		if flashToggleSettingEnabled {
-			contentData.append(.switchOption(data: .init(type: .flashToggle,
-														 isSwitchOn: configuration.flashToggleEnabled)))
-			contentData.append(.switchOption(data: .init(type: .flashOnByDefault,
-														 isSwitchOn: configuration.flashToggleEnabled)))
-		}
-		contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
-													 isSwitchOn: configuration.bottomNavigationBarEnabled)))
-        contentData.append(.switchOption(data: .init(type: .skontoNavigationBarBottomAdapter,
-                                                     isSwitchOn: configuration.skontoNavigationBarBottomAdapter != nil)))
-        contentData.append(.switchOption(data: .init(type: .skontoHelpNavigationBarBottomAdapter,
-                                                     isSwitchOn: configuration.skontoHelpNavigationBarBottomAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
-													 isSwitchOn: configuration.helpNavigationBarBottomAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .cameraNavigationBarBottomAdapter,
-													 isSwitchOn: configuration.cameraNavigationBarBottomAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .reviewNavigationBarBottomAdapter,
-													 isSwitchOn: configuration.reviewNavigationBarBottomAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .imagePickerNavigationBarBottomAdapter,
-													 isSwitchOn: configuration.imagePickerNavigationBarBottomAdapter != nil)))
-		
-		contentData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
-													 isSwitchOn: configuration.onboardingShowAtLaunch)))
-		
-		contentData.append(.switchOption(data: .init(type: .onboardingShowAtFirstLaunch,
-													 isSwitchOn: configuration.onboardingShowAtFirstLaunch)))
-		contentData.append(.switchOption(data: .init(type: .onboardingAlignCornersIllustrationAdapter,
-													 isSwitchOn: configuration.onboardingAlignCornersIllustrationAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .onboardingLightingIllustrationAdapter,
-													 isSwitchOn: configuration.onboardingLightingIllustrationAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .onboardingQRCodeIllustrationAdapter,
-													 isSwitchOn: configuration.onboardingQRCodeIllustrationAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .onboardingMultiPageIllustrationAdapter,
-													 isSwitchOn: configuration.onboardingMultiPageIllustrationAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .onboardingNavigationBarBottomAdapter,
-													 isSwitchOn: configuration.onboardingNavigationBarBottomAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .customOnboardingPages,
-													 isSwitchOn: configuration.customOnboardingPages != nil)))
-
-		contentData.append(.switchOption(data: .init(type: .onButtonLoadingIndicator,
-													 isSwitchOn: configuration.onButtonLoadingIndicator != nil)))
-		contentData.append(.switchOption(data: .init(type: .customLoadingIndicator,
-													 isSwitchOn: configuration.customLoadingIndicator != nil)))
-		
-		contentData.append(.switchOption(data: .init(type: .shouldShowSupportedFormatsScreen,
-													 isSwitchOn: configuration.shouldShowSupportedFormatsScreen)))
-		contentData.append(.switchOption(data: .init(type: .customMenuItems,
-													 isSwitchOn: !configuration.customMenuItems.isEmpty)))
-		
-		contentData.append(.switchOption(data: .init(type: .customNavigationController,
-													 isSwitchOn: configuration.customNavigationController != nil)))
-		
-		contentData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
-													 isSwitchOn: configuration.shouldShowDragAndDropTutorial)))
-		
-		contentData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingIllustrationAdapter,
-													 isSwitchOn: configuration.digitalInvoiceOnboardingIllustrationAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .digitalInvoiceHelpNavigationBarBottomAdapter,
-													 isSwitchOn: configuration.digitalInvoiceHelpNavigationBarBottomAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingNavigationBarBottomAdapter,
-													 isSwitchOn: configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)))
-		contentData.append(.switchOption(data: .init(type: .digitalInvoiceNavigationBarBottomAdapter,
-													 isSwitchOn: configuration.digitalInvoiceNavigationBarBottomAdapter != nil)))
-        contentData.append(.switchOption(data: .init(type: .digitalInvoiceSkontoNavigationBarBottomAdapter,
-                                                     isSwitchOn: configuration.digitalInvoiceSkontoNavigationBarBottomAdapter != nil)))
-
-		contentData.append(.switchOption(data: .init(type: .primaryButtonConfiguration,
-													 isSwitchOn: settingsButtonStates.primaryButtonState.isSwitchOn)))
-		
-		contentData.append(.switchOption(data: .init(type: .secondaryButtonConfiguration,
-													 isSwitchOn: settingsButtonStates.secondaryButtonState.isSwitchOn)))
-		
-		contentData.append(.switchOption(data: .init(type: .transparentButtonConfiguration,
-													 isSwitchOn: settingsButtonStates.transparentButtonState.isSwitchOn)))
-		
-		contentData.append(.switchOption(data: .init(type: .cameraControlButtonConfiguration,
-													 isSwitchOn: settingsButtonStates.cameraControlButtonState.isSwitchOn)))
-		
-		contentData.append(.switchOption(data: .init(type: .addPageButtonConfiguration,
-													 isSwitchOn: settingsButtonStates.addPageButtonState.isSwitchOn)))
-		contentData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
-													 isSwitchOn: configuration.returnAssistantEnabled)))
-		contentData.append(.switchOption(data: .init(type: .enableReturnReasons,
-													 isSwitchOn: configuration.enableReturnReasons)))
-        contentData.append(.switchOption(data: .init(type: .skontoEnabled,
-                                                     isSwitchOn: configuration.skontoEnabled)))
-        contentData.append(.switchOption(data: .init(type: .transactionDocsEnabled,
-                                                     isSwitchOn: configuration.transactionDocsEnabled)))
-		contentData.append(.switchOption(data: .init(type: .customDocumentValidations,
-													 isSwitchOn: documentValidationsState.isSwitchOn)))
-		contentData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
-													 isSwitchOn: configuration.giniErrorLoggerIsOn)))
-		contentData.append(.switchOption(data: .init(type: .customGiniErrorLogger,
-													 isSwitchOn: configuration.customGiniErrorLoggerDelegate != nil)))
-		contentData.append(.switchOption(data: .init(type: .debugModeOn,
-													 isSwitchOn: configuration.debugModeOn)))
-
-        contentData.append(.switchOption(data: .init(type: .customResourceProvider,
-                                                     isSwitchOn: configuration.customResourceProvider != nil)))
-
-		var selectedSegmentIndex = 0
-		switch configuration.fileImportSupportedTypes {
-		case .none:
-			selectedSegmentIndex = 0
-		case .pdf:
-			selectedSegmentIndex = 1
-		case .pdf_and_images:
-			selectedSegmentIndex = 2
-		}
-        contentData.append(.segmentedOption(data: FileImportSegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
+        viewModel = SettingsViewModel(apiEnvironment: .production,
+                                      giniConfiguration: configuration,
+                                      settingsButtonStates: settingsButtonStates,
+                                      documentValidationsState: documentValidationsState)
 	}
 	
 	private var flashToggleSettingEnabled: Bool = {
@@ -237,37 +120,53 @@ final class SettingsViewControllerTests: XCTestCase {
         }
     }
 	
-	private func getSwitchOptionIndex(for type: SwitchOptionModel.OptionType) -> Int? {
-		return contentData.firstIndex { section in
-			guard case .switchOption(let data) = section, data.type == type else {
-				return false
-			}
-			return true
-		}
-	}
-	
-	private func getFileImportOptionIndex() -> Int? {
-		return contentData.firstIndex { section in
-			guard case .segmentedOption = section else {
-				return false
-			}
-			return true
-		}
-	}
-    
-    private func getEntryPointIndex() -> Int? {
-        return contentData.firstIndex { section in
-            guard case .segmentedOption = section else {
-                return false
+    private func getSwitchOptionIndex(for type: SwitchOptionModel.OptionType) -> IndexPath? {
+        for (sectionIndex, section) in contentData.enumerated() {
+            if let rowIndex = section.items.firstIndex(where: {
+                guard case .switchOption(let data) = $0, data.type == type else {
+                    return false
+                }
+                return true
+            }) {
+                return IndexPath(row: rowIndex, section: sectionIndex)
             }
-            return true
         }
+        return nil
     }
+
+    private func getFileImportOptionIndex() -> IndexPath? {
+        for (sectionIndex, section) in contentData.enumerated() {
+            if let rowIndex = section.items.firstIndex(where: {
+                guard case .segmentedOption = $0 else {
+                    return false
+                }
+                return true
+            }) {
+                return IndexPath(row: rowIndex, section: sectionIndex)
+            }
+        }
+        return nil
+    }
+
+    private func getEntryPointIndex() -> IndexPath? {
+        for (sectionIndex, section) in contentData.enumerated() {
+            if let rowIndex = section.items.firstIndex(where: {
+                guard case .segmentedOption = $0 else {
+                    return false
+                }
+                return true
+            }) {
+                return IndexPath(row: rowIndex, section: sectionIndex)
+            }
+        }
+        return nil
+    }
+
 }
 
 // MARK: - Tests
 
-extension SettingsViewControllerTests {
+extension SettingsViewModelTests {
 	
 	//MARK: - OpenWith
 	
@@ -277,7 +176,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 			
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .openWith else {
 				XCTFail("Expected type `openWith`, found a different one: \(data.type)")
 				return
@@ -296,7 +195,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .openWith else {
 				XCTFail("Expected type `openWith`, found a different one: \(data.type)")
 				return
@@ -317,7 +216,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .qrCodeScanning else {
 				XCTFail("Expected type `qrCodeScanning`, found a different one: \(data.type)")
 				return
@@ -336,7 +235,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .qrCodeScanning else {
 				XCTFail("Expected type `qrCodeScanning`, found a different one: \(data.type)")
 				return
@@ -357,7 +256,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .qrCodeScanningOnly else {
 				XCTFail("Expected type `qrCodeScanningOnly`, found a different one: \(data.type)")
 				return
@@ -376,7 +275,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .qrCodeScanningOnly else {
 				XCTFail("Expected type `qrCodeScanningOnly`, found a different one: \(data.type)")
 				return
@@ -397,7 +296,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .multipage else {
 				XCTFail("Expected type `multipage`, found a different one: \(data.type)")
 				return
@@ -416,7 +315,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .multipage else {
 				XCTFail("Expected type `multipage`, found a different one: \(data.type)")
 				return
@@ -437,7 +336,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .flashToggle else {
 				XCTFail("Expected type `flashToggle`, found a different one: \(data.type)")
 				return
@@ -456,7 +355,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .flashToggle else {
 				XCTFail("Expected type `flashToggle`, found a different one: \(data.type)")
 				return
@@ -477,7 +376,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .flashOnByDefault else {
 				XCTFail("Expected type `flashOnByDefault`, found a different one: \(data.type)")
 				return
@@ -496,7 +395,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .flashOnByDefault else {
 				XCTFail("Expected type `flashOnByDefault`, found a different one: \(data.type)")
 				return
@@ -517,7 +416,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .bottomNavigationBar else {
 				XCTFail("Expected type `bottomNaviagtionBar`, found a different one: \(data.type)")
 				return
@@ -536,7 +435,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .bottomNavigationBar else {
 				XCTFail("Expected type `bottomNavigationBar`, found a different one: \(data.type)")
 				return
@@ -557,7 +456,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .helpNavigationBarBottomAdapter else {
 				XCTFail("Expected type `helpNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -576,7 +475,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .helpNavigationBarBottomAdapter else {
 				XCTFail("Expected type `helpNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -598,7 +497,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .cameraNavigationBarBottomAdapter else {
 				XCTFail("Expected type `cameraNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -617,7 +516,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .cameraNavigationBarBottomAdapter else {
 				XCTFail("Expected type `cameraNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -639,7 +538,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .reviewNavigationBarBottomAdapter else {
 				XCTFail("Expected type `reviewNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -658,7 +557,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .reviewNavigationBarBottomAdapter else {
 				XCTFail("Expected type `reviewNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -680,7 +579,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .imagePickerNavigationBarBottomAdapter else {
 				XCTFail("Expected type `imagePickerNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -699,7 +598,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .imagePickerNavigationBarBottomAdapter else {
 				XCTFail("Expected type `imagePickerNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -720,7 +619,7 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-        guard case .segmentedOption(var data) = contentData[index]  else { return }
+        guard case .segmentedOption(var data) = contentData[index.section].items[index.row]  else { return }
 		data.selectedIndex = 0
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		
@@ -734,7 +633,7 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-		guard case .segmentedOption(var data) = contentData[index] else { return }
+		guard case .segmentedOption(var data) = contentData[index.section].items[index.row] else { return }
 		data.selectedIndex = 1
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		XCTAssertEqual(configuration.fileImportSupportedTypes,
@@ -747,7 +646,7 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-		guard case .segmentedOption(var data) = contentData[index] else { return }
+		guard case .segmentedOption(var data) = contentData[index.section].items[index.row] else { return }
 		data.selectedIndex = 2
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		XCTAssertEqual(configuration.fileImportSupportedTypes,
@@ -763,7 +662,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingShowAtLaunch else {
 				XCTFail("Expected type `onboardingShowAtLaunch`, found a different one: \(data.type)")
 				return
@@ -782,7 +681,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingShowAtLaunch else {
 				XCTFail("Expected type `onboardingShowAtLaunch`, found a different one: \(data.type)")
 				return
@@ -803,7 +702,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingNavigationBarBottomAdapter else {
 				XCTFail("Expected type `onboardingNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -822,7 +721,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingNavigationBarBottomAdapter else {
 				XCTFail("Expected type `onboardingNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -844,7 +743,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingMultiPageIllustrationAdapter else {
 				XCTFail("Expected type `onboardingMultiPageIllustrationAdapter`, found a different one: \(data.type)")
 				return
@@ -863,7 +762,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingMultiPageIllustrationAdapter else {
 				XCTFail("Expected type `onboardingMultiPageIllustrationAdapter`, found a different one: \(data.type)")
 				return
@@ -886,7 +785,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingQRCodeIllustrationAdapter else {
 				XCTFail("Expected type `onboardingQRCodeIllustrationAdapter`, found a different one: \(data.type)")
 				return
@@ -905,7 +804,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingQRCodeIllustrationAdapter else {
 				XCTFail("Expected type `onboardingQRCodeIllustrationAdapter`, found a different one: \(data.type)")
 				return
@@ -928,7 +827,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingLightingIllustrationAdapter else {
 				XCTFail("Expected type `onboardingLightingIllustrationAdapter`, found a different one: \(data.type)")
 				return
@@ -947,7 +846,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingLightingIllustrationAdapter else {
 				XCTFail("Expected type `onboardingLightingIllustrationAdapter`, found a different one: \(data.type)")
 				return
@@ -970,7 +869,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingAlignCornersIllustrationAdapter else {
 				XCTFail("Expected type `onboardingAlignCornersIllustrationAdapter`, found a different one: \(data.type)")
 				return
@@ -989,7 +888,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingAlignCornersIllustrationAdapter else {
 				XCTFail("Expected type `onboardingAlignCornersIllustrationAdapter`, found a different one: \(data.type)")
 				return
@@ -1012,7 +911,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingShowAtFirstLaunch else {
 				XCTFail("Expected type `onboardingShowAtFirstLaunch`, found a different one: \(data.type)")
 				return
@@ -1031,7 +930,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onboardingShowAtFirstLaunch else {
 				XCTFail("Expected type `onboardingShowAtFirstLaunch`, found a different one: \(data.type)")
 				return
@@ -1052,7 +951,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customOnboardingPages else {
 				XCTFail("Expected type `customOnboardingPages`, found a different one: \(data.type)")
 				return
@@ -1071,7 +970,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customOnboardingPages else {
 				XCTFail("Expected type `customOnboardingPages`, found a different one: \(data.type)")
 				return
@@ -1095,7 +994,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onButtonLoadingIndicator else {
 				XCTFail("Expected type `onButtonLoadingIndicator`, found a different one: \(data.type)")
 				return
@@ -1114,7 +1013,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .onButtonLoadingIndicator else {
 				XCTFail("Expected type `onButtonLoadingIndicator`, found a different one: \(data.type)")
 				return
@@ -1135,7 +1034,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customLoadingIndicator else {
 				XCTFail("Expected type `customLoadingIndicator`, found a different one: \(data.type)")
 				return
@@ -1154,7 +1053,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customLoadingIndicator else {
 				XCTFail("Expected type `customLoadingIndicator`, found a different one: \(data.type)")
 				return
@@ -1175,7 +1074,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .shouldShowSupportedFormatsScreen else {
 				XCTFail("Expected type `shouldShowSupportedFormatsScreen`, found a different one: \(data.type)")
 				return
@@ -1194,7 +1093,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .shouldShowSupportedFormatsScreen else {
 				XCTFail("Expected type `shouldShowSupportedFormatsScreen`, found a different one: \(data.type)")
 				return
@@ -1215,7 +1114,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customMenuItems else {
 				XCTFail("Expected type `customMenuItems`, found a different one: \(data.type)")
 				return
@@ -1235,7 +1134,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customMenuItems else {
 				XCTFail("Expected type `customMenuItems`, found a different one: \(data.type)")
 				return
@@ -1256,7 +1155,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customNavigationController else {
 				XCTFail("Expected type `customNavigationController`, found a different one: \(data.type)")
 				return
@@ -1277,7 +1176,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customNavigationController else {
 				XCTFail("Expected type `customNavigationController`, found a different one: \(data.type)")
 				return
@@ -1292,13 +1191,15 @@ extension SettingsViewControllerTests {
 	
 	// MARK: - DragAndDrop
 	
-	func testDragAndDropSwitchOn() {
+	func testDragAndDropSwitchOn() throws {
+        try XCTSkipIf(!UIDevice.current.isIpad, "This test is only supported on iPad.")
+
 		guard let index = getSwitchOptionIndex(for: .shouldShowDragAndDropTutorial) else {
 			XCTFail("`shouldShowDragAndDropTutorial` option not found in sectionData")
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .shouldShowDragAndDropTutorial else {
 				XCTFail("Expected type `shouldShowDragAndDropTutorial`, found a different one: \(data.type)")
 				return
@@ -1311,13 +1212,15 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testDragAndDropSwitchOff() {
+	func testDragAndDropSwitchOff() throws {
+        try XCTSkipIf(!UIDevice.current.isIpad, "This test is only supported on iPad.")
+        
 		guard let index = getSwitchOptionIndex(for: .shouldShowDragAndDropTutorial) else {
 			XCTFail("`shouldShowDragAndDropTutorial` option not found in sectionData")
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .shouldShowDragAndDropTutorial else {
 				XCTFail("Expected type `shouldShowDragAndDropTutorial`, found a different one: \(data.type)")
 				return
@@ -1338,7 +1241,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .digitalInvoiceOnboardingIllustrationAdapter else {
 				XCTFail("Expected type `digitalInvoiceOnboardingIllustrationAdapter`, found a different one: \(data.type)")
 				return
@@ -1359,7 +1262,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .digitalInvoiceOnboardingIllustrationAdapter else {
 				XCTFail("Expected type `digitalInvoiceOnboardingIllustrationAdapter`, found a different one: \(data.type)")
 				return
@@ -1380,7 +1283,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .digitalInvoiceHelpNavigationBarBottomAdapter else {
 				XCTFail("Expected type `digitalInvoiceHelpNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -1400,7 +1303,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .digitalInvoiceHelpNavigationBarBottomAdapter else {
 				XCTFail("Expected type `digitalInvoiceHelpNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -1421,7 +1324,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .digitalInvoiceOnboardingNavigationBarBottomAdapter else {
 				XCTFail("Expected type `digitalInvoiceOnboardingNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -1441,7 +1344,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .digitalInvoiceOnboardingNavigationBarBottomAdapter else {
 				XCTFail("Expected type `digitalInvoiceOnboardingNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -1462,7 +1365,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .digitalInvoiceNavigationBarBottomAdapter else {
 				XCTFail("Expected type `digitalInvoiceNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -1482,7 +1385,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .digitalInvoiceNavigationBarBottomAdapter else {
 				XCTFail("Expected type `digitalInvoiceNavigationBarBottomAdapter`, found a different one: \(data.type)")
 				return
@@ -1503,7 +1406,7 @@ extension SettingsViewControllerTests {
             return
         }
         
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .digitalInvoiceSkontoNavigationBarBottomAdapter else {
                 XCTFail("Expected type `digitalInvoiceSkontoNavigationBarBottomAdapter`, found a different one: \(data.type)")
                 return
@@ -1523,7 +1426,7 @@ extension SettingsViewControllerTests {
             return
         }
         
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .digitalInvoiceSkontoNavigationBarBottomAdapter else {
                 XCTFail("Expected type `digitalInvoiceSkontoNavigationBarBottomAdapter`, found a different one: \(data.type)")
                 return
@@ -1544,7 +1447,7 @@ extension SettingsViewControllerTests {
             return
         }
         
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .skontoNavigationBarBottomAdapter else {
                 XCTFail("Expected type `skontoNavigationBarBottomAdapter`, found a different one: \(data.type)")
                 return
@@ -1564,7 +1467,7 @@ extension SettingsViewControllerTests {
             return
         }
         
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .skontoNavigationBarBottomAdapter else {
                 XCTFail("Expected type `skontoNavigationBarBottomAdapter`, found a different one: \(data.type)")
                 return
@@ -1585,7 +1488,7 @@ extension SettingsViewControllerTests {
             return
         }
         
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .skontoHelpNavigationBarBottomAdapter else {
                 XCTFail("Expected type `skontoHelpNavigationBarBottomAdapter`, found a different one: \(data.type)")
                 return
@@ -1604,7 +1507,7 @@ extension SettingsViewControllerTests {
             return
         }
         
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .skontoHelpNavigationBarBottomAdapter else {
                 XCTFail("Expected type `skontoHelpNavigationBarBottomAdapter`, found a different one: \(data.type)")
                 return
@@ -1626,7 +1529,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .primaryButtonConfiguration else {
 				XCTFail("Expected type `primaryButtonConfiguration`, found a different one: \(data.type)")
 				return
@@ -1654,7 +1557,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .primaryButtonConfiguration else {
 				XCTFail("Expected type `primaryButtonConfiguration`, found a different one: \(data.type)")
 				return
@@ -1676,7 +1579,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .secondaryButtonConfiguration else {
 				XCTFail("Expected type `secondaryButtonConfiguration`, found a different one: \(data.type)")
 				return
@@ -1704,7 +1607,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .secondaryButtonConfiguration else {
 				XCTFail("Expected type `secondaryButtonConfiguration`, found a different one: \(data.type)")
 				return
@@ -1726,7 +1629,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .transparentButtonConfiguration else {
 				XCTFail("Expected type `transparentButtonConfiguration`, found a different one: \(data.type)")
 				return
@@ -1754,7 +1657,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .transparentButtonConfiguration else {
 				XCTFail("Expected type `transparentButtonConfiguration`, found a different one: \(data.type)")
 				return
@@ -1777,7 +1680,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .cameraControlButtonConfiguration else {
 				XCTFail("Expected type `cameraControlButtonConfiguration`, found a different one: \(data.type)")
 				return
@@ -1805,7 +1708,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .cameraControlButtonConfiguration else {
 				XCTFail("Expected type `cameraControlButtonConfiguration`, found a different one: \(data.type)")
 				return
@@ -1827,7 +1730,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .addPageButtonConfiguration else {
 				XCTFail("Expected type `addPageButtonConfiguration`, found a different one: \(data.type)")
 				return
@@ -1855,7 +1758,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .addPageButtonConfiguration else {
 				XCTFail("Expected type `addPageButtonConfiguration`, found a different one: \(data.type)")
 				return
@@ -1877,7 +1780,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .returnAssistantEnabled else {
 				XCTFail("Expected type `returnAssistantEnabled`, found a different one: \(data.type)")
 				return
@@ -1896,7 +1799,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .returnAssistantEnabled else {
 				XCTFail("Expected type `returnAssistantEnabled`, found a different one: \(data.type)")
 				return
@@ -1917,7 +1820,7 @@ extension SettingsViewControllerTests {
             return
         }
 
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .enableReturnReasons else {
                 XCTFail("Expected type `enableReturnReasons`, found a different one: \(data.type)")
                 return
@@ -1936,7 +1839,7 @@ extension SettingsViewControllerTests {
             return
         }
 
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .enableReturnReasons else {
                 XCTFail("Expected type `enableReturnReasons`, found a different one: \(data.type)")
                 return
@@ -1957,7 +1860,7 @@ extension SettingsViewControllerTests {
             return
         }
         
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .skontoEnabled else {
                 XCTFail("Expected type `skontoEnabled`, found a different one: \(data.type)")
                 return
@@ -1976,7 +1879,7 @@ extension SettingsViewControllerTests {
             return
         }
         
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .skontoEnabled else {
                 XCTFail("Expected type `skontoEnabled`, found a different one: \(data.type)")
                 return
@@ -1997,7 +1900,7 @@ extension SettingsViewControllerTests {
             return
         }
 
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .transactionDocsEnabled else {
                 XCTFail("Expected type `transactionDocsEnabled`, found a different one: \(data.type)")
                 return
@@ -2016,7 +1919,7 @@ extension SettingsViewControllerTests {
             return
         }
 
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .transactionDocsEnabled else {
                 XCTFail("Expected type `transactionDocsEnabled`, found a different one: \(data.type)")
                 return
@@ -2037,7 +1940,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customDocumentValidations else {
 				XCTFail("Expected type `customDocumentValidations`, found a different one: \(data.type)")
 				return
@@ -2066,7 +1969,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customDocumentValidations else {
 				XCTFail("Expected type `customDocumentValidations`, found a different one: \(data.type)")
 				return
@@ -2088,7 +1991,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .giniErrorLoggerIsOn else {
 				XCTFail("Expected type `giniErrorLoggerIsOn`, found a different one: \(data.type)")
 				return
@@ -2107,7 +2010,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .giniErrorLoggerIsOn else {
 				XCTFail("Expected type `giniErrorLoggerIsOn`, found a different one: \(data.type)")
 				return
@@ -2128,7 +2031,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customGiniErrorLogger else {
 				XCTFail("Expected type `customGiniErrorLogger`, found a different one: \(data.type)")
 				return
@@ -2147,7 +2050,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .customGiniErrorLogger else {
 				XCTFail("Expected type `customGiniErrorLogger`, found a different one: \(data.type)")
 				return
@@ -2168,7 +2071,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .debugModeOn else {
 				XCTFail("Expected type `debugModeOn`, found a different one: \(data.type)")
 				return
@@ -2187,7 +2090,7 @@ extension SettingsViewControllerTests {
 			return
 		}
 		
-		if case .switchOption(var data) = contentData[index] {
+		if case .switchOption(var data) = contentData[index.section].items[index.row] {
 			guard data.type == .debugModeOn else {
 				XCTFail("Expected type `debugModeOn`, found a different one: \(data.type)")
 				return
@@ -2208,7 +2111,7 @@ extension SettingsViewControllerTests {
             return
         }
 
-        if case .switchOption(var data) = contentData[index] {
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .customResourceProvider else {
                 XCTFail("Expected type `customResourceProvider`, found a different one: \(data.type)")
                 return
@@ -2224,7 +2127,7 @@ extension SettingsViewControllerTests {
 
 }
 
-extension SettingsViewControllerTests: GiniCaptureErrorLoggerDelegate {
+extension SettingsViewModelTests: GiniCaptureErrorLoggerDelegate {
 	func handleErrorLog(error: GiniCaptureSDK.ErrorLog) {
 		print("💻 custom - log error event called")
 	}

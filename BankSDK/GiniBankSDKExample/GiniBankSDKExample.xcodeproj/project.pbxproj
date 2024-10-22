@@ -108,7 +108,7 @@
 		F45D7F112800566900C73C63 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F062800566900C73C63 /* testPDF.pdf */; };
 		F45D7F122800566900C73C63 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F072800566900C73C63 /* Gini_invoice_example.pdf */; };
 		F45D7F132800566900C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F082800566900C73C63 /* result_Gini_invoice_example_after_feedback.json */; };
-		F45D7F152800566900C73C63 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F0A2800566900C73C63 /* SettingsViewControllerTests.swift */; };
+		F45D7F152800566900C73C63 /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F0A2800566900C73C63 /* SettingsViewModelTests.swift */; };
 		F45D7F172800583300C73C63 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F052800566900C73C63 /* result_Gini_invoice_example.json */; };
 		F45D7F182800583500C73C63 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F062800566900C73C63 /* testPDF.pdf */; };
 		F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F072800566900C73C63 /* Gini_invoice_example.pdf */; };
@@ -274,7 +274,7 @@
 		F45D7F062800566900C73C63 /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = testPDF.pdf; sourceTree = "<group>"; };
 		F45D7F072800566900C73C63 /* Gini_invoice_example.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example.pdf; sourceTree = "<group>"; };
 		F45D7F082800566900C73C63 /* result_Gini_invoice_example_after_feedback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_after_feedback.json; sourceTree = "<group>"; };
-		F45D7F0A2800566900C73C63 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
+		F45D7F0A2800566900C73C63 /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTests.swift; sourceTree = "<group>"; };
 		F45D7F0B2800566900C73C63 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4807C34263C20BA00F30FF3 /* GiniBankSDKExampleBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniBankSDKExampleBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4807C36263C20BA00F30FF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -569,7 +569,7 @@
 				F45D7F002800566900C73C63 /* TransferSummaryIntegrationTest.swift */,
 				F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */,
 				F45D7F022800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift */,
-				F45D7F0A2800566900C73C63 /* SettingsViewControllerTests.swift */,
+				F45D7F0A2800566900C73C63 /* SettingsViewModelTests.swift */,
 				28B203FC2BB2E6EE00C78740 /* FileLoader.swift */,
 				28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */,
 				F45D7F0B2800566900C73C63 /* Info.plist */,
@@ -1030,7 +1030,7 @@
 			files = (
 				28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */,
 				F45D7F0E2800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
-				F45D7F152800566900C73C63 /* SettingsViewControllerTests.swift in Sources */,
+				F45D7F152800566900C73C63 /* SettingsViewModelTests.swift in Sources */,
 				F45D7F0C2800566900C73C63 /* TransferSummaryIntegrationTest.swift in Sources */,
 				28B605D02BC42A8500FCF4DE /* GiniSetupHelper.swift in Sources */,
 				F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */,
