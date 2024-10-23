@@ -432,63 +432,37 @@ final class SettingsViewModel {
     }
 
     private func createCustomButtonConfiguration(for type: SettingsButtonStates.ButtonType) -> ButtonConfiguration {
+        var backgroundColor: UIColor
+        var borderColor: UIColor
+
         switch type {
         case .primary:
-            return ButtonConfiguration(
-                backgroundColor: .yellow,
-                borderColor: .red,
-                titleColor: .green,
-                shadowColor: .clear,
-                cornerRadius: 22,
-                borderWidth: 4,
-                shadowRadius: 0,
-                withBlurEffect: false
-            )
+            backgroundColor = .yellow
+            borderColor = .red
         case .secondary:
-            return ButtonConfiguration(
-                backgroundColor: .cyan,
-                borderColor: .blue,
-                titleColor: .green,
-                shadowColor: .clear,
-                cornerRadius: 22,
-                borderWidth: 4,
-                shadowRadius: 0,
-                withBlurEffect: false
-            )
+            backgroundColor = .cyan
+            borderColor = .blue
         case .transparent:
-            return ButtonConfiguration(
-                backgroundColor: .green,
-                borderColor: .yellow,
-                titleColor: .green,
-                shadowColor: .clear,
-                cornerRadius: 22,
-                borderWidth: 4,
-                shadowRadius: 0,
-                withBlurEffect: false
-            )
+            backgroundColor = .green
+            borderColor = .yellow
         case .cameraControl:
-            return ButtonConfiguration(
-                backgroundColor: .magenta,
-                borderColor: .lightGray,
-                titleColor: .green,
-                shadowColor: .clear,
-                cornerRadius: 22,
-                borderWidth: 4,
-                shadowRadius: 0,
-                withBlurEffect: false
-            )
+            backgroundColor = .magenta
+            borderColor = .lightGray
         case .addPage:
-            return ButtonConfiguration(
-                backgroundColor: .white,
-                borderColor: .red,
-                titleColor: .green,
-                shadowColor: .clear,
-                cornerRadius: 22,
-                borderWidth: 4,
-                shadowRadius: 0,
-                withBlurEffect: false
-            )
+            backgroundColor = .white
+            borderColor = .red
         }
+
+        return ButtonConfiguration(
+            backgroundColor: backgroundColor,
+            borderColor: borderColor,
+            titleColor: .green,
+            shadowColor: .clear,
+            cornerRadius: 22,
+            borderWidth: 4,
+            shadowRadius: 0,
+            withBlurEffect: false
+        )
     }
 
     private func updateCustomDocumentValidations(isSwitchOn: Bool) {
