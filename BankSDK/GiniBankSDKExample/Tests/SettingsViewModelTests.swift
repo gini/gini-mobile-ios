@@ -1102,7 +1102,7 @@ extension SettingsViewModelTests {
 			let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
 			configuration.customMenuItems = [customMenuItem]
 			
-			XCTAssertTrue(configuration.customMenuItems.isEmpty,
+			XCTAssertTrue(!configuration.customMenuItems.isEmpty,
 						  "customMenuItems should be enabled in the gini configuration")
 		}
 	}
@@ -1121,7 +1121,7 @@ extension SettingsViewModelTests {
 			data.isSwitchOn = false
 			configuration.customMenuItems = []
 			
-			XCTAssertFalse(configuration.customMenuItems.isEmpty,
+			XCTAssertFalse(!configuration.customMenuItems.isEmpty,
 						   "customMenuItems should not be enabled in the gini configuration")
 		}
 	}
