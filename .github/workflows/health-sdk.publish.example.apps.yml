@@ -5,6 +5,11 @@ on:
       - 'HealthSDK/**'
       - 'HealthAPILibrary/**'
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+
 jobs:
   check:
     uses: gini/gini-mobile-ios/.github/workflows/health-sdk.check.yml@main
