@@ -194,6 +194,7 @@ class OnboardingViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         pagesCollection.collectionViewLayout.invalidateLayout()
+        dataSource.isProgrammaticScroll = true
     }
 
     override func viewWillLayoutSubviews() {
