@@ -113,17 +113,6 @@ final class SettingsViewModelTests: XCTestCase {
 		default: return .none
 		}
 	}
-    
-    private func giniEntryPoint(selectedIndex: Int) -> GiniCaptureSDK.GiniConfiguration.GiniEntryPoint {
-        switch selectedIndex {
-        case 0:
-            return .button
-        case 1:
-            return .field
-        default:
-            return .button
-        }
-    }
 	
     private func getSwitchOptionIndex(for type: SwitchOptionModel.OptionType) -> IndexPath? {
         for (sectionIndex, section) in contentData.enumerated() {
@@ -152,21 +141,6 @@ final class SettingsViewModelTests: XCTestCase {
         }
         return nil
     }
-
-    private func getEntryPointIndex() -> IndexPath? {
-        for (sectionIndex, section) in contentData.enumerated() {
-            if let rowIndex = section.items.firstIndex(where: {
-                guard case .segmentedOption = $0 else {
-                    return false
-                }
-                return true
-            }) {
-                return IndexPath(row: rowIndex, section: sectionIndex)
-            }
-        }
-        return nil
-    }
-
 }
 
 // MARK: - Tests
@@ -621,7 +595,7 @@ extension SettingsViewModelTests {
 	
 	func testSegmentedControlNone() {
 		guard let index = getFileImportOptionIndex() else {
-			XCTFail("`fileImportType` option not found in sectionData")
+			XCTFail("None: `fileImportType` option not found in sectionData")
 			return
 		}
         guard case .segmentedOption(var data) = contentData[index.section].items[index.row]  else { return }
@@ -635,7 +609,7 @@ extension SettingsViewModelTests {
 	
 	func testSegmentedControlPDF() {
 		guard let index = getFileImportOptionIndex() else {
-			XCTFail("`fileImportType` option not found in sectionData")
+			XCTFail("PDF: `fileImportType` option not found in sectionData")
 			return
 		}
 		guard case .segmentedOption(var data) = contentData[index.section].items[index.row] else { return }
@@ -648,7 +622,7 @@ extension SettingsViewModelTests {
 	
 	func testSegmentedControlPDFAndImages() {
 		guard let index = getFileImportOptionIndex() else {
-			XCTFail("`fileImportType` option not found in sectionData")
+			XCTFail("PDF and images: `fileImportType` option not found in sectionData")
 			return
 		}
 		guard case .segmentedOption(var data) = contentData[index.section].items[index.row] else { return }
@@ -1128,7 +1102,7 @@ extension SettingsViewModelTests {
 			let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
 			configuration.customMenuItems = [customMenuItem]
 			
-			XCTAssertTrue(configuration.customMenuItems.isEmpty == false,
+			XCTAssertTrue(configuration.customMenuItems.isEmpty,
 						  "customMenuItems should be enabled in the gini configuration")
 		}
 	}
@@ -1147,7 +1121,7 @@ extension SettingsViewModelTests {
 			data.isSwitchOn = false
 			configuration.customMenuItems = []
 			
-			XCTAssertFalse(configuration.customMenuItems.isEmpty == false,
+			XCTAssertFalse(configuration.customMenuItems.isEmpty,
 						   "customMenuItems should not be enabled in the gini configuration")
 		}
 	}
@@ -1242,7 +1216,7 @@ extension SettingsViewModelTests {
 	
 	func testDigitalInvoiceOnboardingCustomIllustrationSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .digitalInvoiceOnboardingIllustrationAdapter) else {
-			XCTFail("`customNavigationController` option not found in sectionData")
+			XCTFail("`digitalInvoiceOnboardingIllustrationAdapter` option not found in sectionData")
 			return
 		}
 		
