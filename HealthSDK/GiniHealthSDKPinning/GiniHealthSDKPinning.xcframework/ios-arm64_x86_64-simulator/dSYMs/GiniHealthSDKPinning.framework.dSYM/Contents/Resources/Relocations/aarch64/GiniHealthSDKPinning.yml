@@ -1,0 +1,7 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/home/Library/Developer/Xcode/DerivedData/GiniHealthSDKPinning-bbjitnznhdfdutfbjcopgedsvvuf/Build/Intermediates.noindex/ArchiveIntermediates/GiniHealthSDKPinning/InstallationBuildProductsLocation/Library/Frameworks/GiniHealthSDKPinning.framework/GiniHealthSDKPinning'
+relocations:
+  - { offsetInCU: 0x27, offset: 0x91, size: 0x8, addend: 0x0, symName: '_$s20GiniHealthSDKPinning0abC7VersionSSvg', symObjAddr: 0x0, symBinAddr: 0x2F98, symSize: 0x14 }
+  - { offsetInCU: 0x3D, offset: 0xA7, size: 0x8, addend: 0x0, symName: '_$s20GiniHealthSDKPinning0abC7VersionSSvg', symObjAddr: 0x0, symBinAddr: 0x2F98, symSize: 0x14 }
+...

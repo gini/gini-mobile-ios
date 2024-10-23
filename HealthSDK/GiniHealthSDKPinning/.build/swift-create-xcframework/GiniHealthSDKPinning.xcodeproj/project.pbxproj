@@ -1,0 +1,1528 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		"ginihealthsdkpinning::GiniHealthSDKPinningPackageTests::ProductTarget" /* GiniHealthSDKPinningPackageTests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = OBJ_285 /* Build configuration list for PBXAggregateTarget "GiniHealthSDKPinningPackageTests" */;
+			buildPhases = (
+			);
+			dependencies = (
+				OBJ_288 /* PBXTargetDependency */,
+			);
+			name = GiniHealthSDKPinningPackageTests;
+			productName = GiniHealthSDKPinningPackageTests;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		F4DAD6952CC2A40700129FB2 /* BankSelection.storyboard in Sources */ = {isa = PBXBuildFile; fileRef = F4DAD68B2CC2A35700129FB2 /* BankSelection.storyboard */; };
+		F4DAD6962CC2A40700129FB2 /* BankSelectionTableViewCell.xib in Sources */ = {isa = PBXBuildFile; fileRef = F4DAD68A2CC2A35700129FB2 /* BankSelectionTableViewCell.xib */; };
+		F4DAD6972CC2A40700129FB2 /* Localizable.strings in Sources */ = {isa = PBXBuildFile; fileRef = F4DAD6902CC2A35700129FB2 /* Localizable.strings */; };
+		F4DAD6982CC2A40700129FB2 /* Localizable.strings in Sources */ = {isa = PBXBuildFile; fileRef = F4DAD68D2CC2A35700129FB2 /* Localizable.strings */; };
+		F4DAD6992CC2A40700129FB2 /* GiniColors.xcassets in Sources */ = {isa = PBXBuildFile; fileRef = F4DAD6922CC2A35700129FB2 /* GiniColors.xcassets */; };
+		F4DAD69A2CC2A40700129FB2 /* GiniImages.xcassets in Sources */ = {isa = PBXBuildFile; fileRef = F4DAD6932CC2A35700129FB2 /* GiniImages.xcassets */; };
+		F4DAD69B2CC2A40700129FB2 /* PaymentReview.storyboard in Sources */ = {isa = PBXBuildFile; fileRef = F4DAD6942CC2A35700129FB2 /* PaymentReview.storyboard */; };
+		OBJ_150 /* APIMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_90 /* APIMethod.swift */; };
+		OBJ_151 /* APIResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_91 /* APIResource.swift */; };
+		OBJ_152 /* CompositeDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_92 /* CompositeDocument.swift */; };
+		OBJ_153 /* CompositeDocumentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_93 /* CompositeDocumentInfo.swift */; };
+		OBJ_154 /* CompoundExtractionsFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_94 /* CompoundExtractionsFeedback.swift */; };
+		OBJ_155 /* AlternativeTokenSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_97 /* AlternativeTokenSource.swift */; };
+		OBJ_156 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_98 /* AuthHelper.swift */; };
+		OBJ_157 /* SessionManager+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_99 /* SessionManager+Auth.swift */; };
+		OBJ_158 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_100 /* Token.swift */; };
+		OBJ_159 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_101 /* User.swift */; };
+		OBJ_160 /* UserMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_102 /* UserMethod.swift */; };
+		OBJ_161 /* UserResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_103 /* UserResource.swift */; };
+		OBJ_162 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_104 /* Client.swift */; };
+		OBJ_163 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_105 /* ContentType.swift */; };
+		OBJ_164 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_107 /* Collection.swift */; };
+		OBJ_165 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_108 /* Data.swift */; };
+		OBJ_166 /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_109 /* URLQueryItem.swift */; };
+		OBJ_167 /* GiniError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_110 /* GiniError.swift */; };
+		OBJ_168 /* GiniHealthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_111 /* GiniHealthAPI.swift */; };
+		OBJ_169 /* KeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_112 /* KeyStore.swift */; };
+		OBJ_170 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_113 /* Logger.swift */; };
+		OBJ_171 /* RequestParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_114 /* RequestParameters.swift */; };
+		OBJ_172 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_115 /* Resource.swift */; };
+		OBJ_173 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_116 /* SessionManager.swift */; };
+		OBJ_174 /* DefaultDocumentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_117 /* DefaultDocumentService.swift */; };
+		OBJ_175 /* Document+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_118 /* Document+Layout.swift */; };
+		OBJ_176 /* Document+Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_119 /* Document+Page.swift */; };
+		OBJ_177 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_120 /* Document.swift */; };
+		OBJ_178 /* DocumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_121 /* DocumentList.swift */; };
+		OBJ_179 /* DocumentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_122 /* DocumentService.swift */; };
+		OBJ_180 /* Extraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_123 /* Extraction.swift */; };
+		OBJ_181 /* ExtractionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_124 /* ExtractionResult.swift */; };
+		OBJ_182 /* ExtractionsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_125 /* ExtractionsContainer.swift */; };
+		OBJ_183 /* ExtractionsFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_126 /* ExtractionsFeedback.swift */; };
+		OBJ_184 /* PartialDocumentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_127 /* PartialDocumentInfo.swift */; };
+		OBJ_185 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_129 /* Payment.swift */; };
+		OBJ_186 /* PaymentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_130 /* PaymentProvider.swift */; };
+		OBJ_187 /* PaymentProviderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_131 /* PaymentProviderResponse.swift */; };
+		OBJ_188 /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_132 /* PaymentRequest.swift */; };
+		OBJ_189 /* PaymentRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_133 /* PaymentRequestBody.swift */; };
+		OBJ_190 /* PaymentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_134 /* PaymentService.swift */; };
+		OBJ_191 /* GiniHealthAPILibraryVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_135 /* GiniHealthAPILibraryVersion.swift */; };
+		OBJ_198 /* GiniHealthAPI+Pinning.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_82 /* GiniHealthAPI+Pinning.swift */; };
+		OBJ_199 /* GiniHealthAPILibraryPinningVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_83 /* GiniHealthAPILibraryPinningVersion.swift */; };
+		OBJ_200 /* GiniSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_84 /* GiniSessionDelegate.swift */; };
+		OBJ_201 /* SSLPinningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_85 /* SSLPinningManager.swift */; };
+		OBJ_203 /* GiniHealthAPILibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ginihealthapilibrary::GiniHealthAPILibrary::Product" /* GiniHealthAPILibrary.framework */; };
+		OBJ_210 /* ButtonConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* ButtonConfiguration.swift */; };
+		OBJ_211 /* CollectionFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* CollectionFlowLayout.swift */; };
+		OBJ_212 /* GiniHealthColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* GiniHealthColors.swift */; };
+		OBJ_213 /* NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* NSAttributedString.swift */; };
+		OBJ_214 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* String.swift */; };
+		OBJ_215 /* UIColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* UIColor+Utils.swift */; };
+		OBJ_216 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* UIFont.swift */; };
+		OBJ_217 /* UITapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* UITapGestureRecognizer.swift */; };
+		OBJ_218 /* UITextField+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* UITextField+Utils.swift */; };
+		OBJ_219 /* UIView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* UIView+Utils.swift */; };
+		OBJ_220 /* GiniColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* GiniColor.swift */; };
+		OBJ_221 /* GiniHealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* GiniHealth.swift */; };
+		OBJ_222 /* GiniHealthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* GiniHealthConfiguration.swift */; };
+		OBJ_223 /* GiniHealthUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* GiniHealthUtils.swift */; };
+		OBJ_224 /* GiniLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* GiniLocalization.swift */; };
+		OBJ_225 /* IBANValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* IBANValidator.swift */; };
+		OBJ_226 /* PageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* PageCollectionViewCell.swift */; };
+		OBJ_227 /* BankSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* BankSelectionTableViewCell.swift */; };
+		OBJ_228 /* BankSelectionTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* BankSelectionTableViewCellModel.swift */; };
+		OBJ_229 /* BanksBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* BanksBottomView.swift */; };
+		OBJ_230 /* BanksBottomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* BanksBottomViewModel.swift */; };
+		OBJ_231 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* BottomSheetViewController.swift */; };
+		OBJ_232 /* EmptyStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* EmptyStackView.swift */; };
+		OBJ_233 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* EmptyView.swift */; };
+		OBJ_234 /* InstallAppBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* InstallAppBottomView.swift */; };
+		OBJ_235 /* InstallAppBottomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_45 /* InstallAppBottomViewModel.swift */; };
+		OBJ_236 /* MoreInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_46 /* MoreInformationView.swift */; };
+		OBJ_237 /* MoreInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_47 /* MoreInformationViewModel.swift */; };
+		OBJ_238 /* OnboardingShareInvoiceScreenCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* OnboardingShareInvoiceScreenCount.swift */; };
+		OBJ_239 /* PaymentComponentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* PaymentComponentConfiguration.swift */; };
+		OBJ_240 /* PaymentComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* PaymentComponentView.swift */; };
+		OBJ_241 /* PaymentComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_51 /* PaymentComponentViewModel.swift */; };
+		OBJ_242 /* PaymentComponentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_52 /* PaymentComponentsController.swift */; };
+		OBJ_243 /* PaymentInfoAnswerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_53 /* PaymentInfoAnswerTableViewCell.swift */; };
+		OBJ_244 /* PaymentInfoBankCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_54 /* PaymentInfoBankCollectionViewCell.swift */; };
+		OBJ_245 /* PaymentInfoQuestionHeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* PaymentInfoQuestionHeaderViewCell.swift */; };
+		OBJ_246 /* PaymentInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_56 /* PaymentInfoViewController.swift */; };
+		OBJ_247 /* PaymentInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_57 /* PaymentInfoViewModel.swift */; };
+		OBJ_248 /* PaymentPrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_58 /* PaymentPrimaryButton.swift */; };
+		OBJ_249 /* PaymentSecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_59 /* PaymentSecondaryButton.swift */; };
+		OBJ_250 /* PoweredByGiniView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_60 /* PoweredByGiniView.swift */; };
+		OBJ_251 /* PoweredByGiniViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_61 /* PoweredByGiniViewModel.swift */; };
+		OBJ_252 /* ShareInvoiceBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_62 /* ShareInvoiceBottomView.swift */; };
+		OBJ_253 /* ShareInvoiceBottomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_63 /* ShareInvoiceBottomViewModel.swift */; };
+		OBJ_254 /* ShareInvoiceSingleAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_64 /* ShareInvoiceSingleAppView.swift */; };
+		OBJ_255 /* PaymentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_65 /* PaymentInfo.swift */; };
+		OBJ_256 /* PaymentReviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_66 /* PaymentReviewModel.swift */; };
+		OBJ_257 /* PaymentReviewViewController+PaymentReviewViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* PaymentReviewViewController+PaymentReviewViewModelDelegate.swift */; };
+		OBJ_258 /* PaymentReviewViewController+UICollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_68 /* PaymentReviewViewController+UICollection.swift */; };
+		OBJ_259 /* PaymentReviewViewController+UITextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_69 /* PaymentReviewViewController+UITextFieldDelegate.swift */; };
+		OBJ_260 /* PaymentReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_70 /* PaymentReviewViewController.swift */; };
+		OBJ_261 /* TextFieldConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_71 /* TextFieldConfiguration.swift */; };
+		OBJ_262 /* TextFieldWithLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_72 /* TextFieldWithLabelView.swift */; };
+		OBJ_263 /* GiniHealthTrackingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_74 /* GiniHealthTrackingDelegate.swift */; };
+		OBJ_264 /* TrackingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_75 /* TrackingEvent.swift */; };
+		OBJ_265 /* URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_76 /* URLOpener.swift */; };
+		OBJ_266 /* ZoomedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_77 /* ZoomedImageView.swift */; };
+		OBJ_267 /* GiniHealthSDKVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_78 /* GiniHealthSDKVersion.swift */; };
+		OBJ_269 /* GiniHealthAPILibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ginihealthapilibrary::GiniHealthAPILibrary::Product" /* GiniHealthAPILibrary.framework */; };
+		OBJ_276 /* GiniHealthSDKPinningVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* GiniHealthSDKPinningVersion.swift */; };
+		OBJ_278 /* GiniHealthSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ginihealthsdk::GiniHealthSDK::Product" /* GiniHealthSDK.framework */; };
+		OBJ_279 /* GiniHealthAPILibraryPinning.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ginihealthapilibrarypinning::GiniHealthAPILibraryPinning::Product" /* GiniHealthAPILibraryPinning.framework */; };
+		OBJ_280 /* GiniHealthAPILibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ginihealthapilibrary::GiniHealthAPILibrary::Product" /* GiniHealthAPILibrary.framework */; };
+		OBJ_294 /* HealthSDKPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* HealthSDKPinningTests.swift */; };
+		OBJ_296 /* GiniHealthSDKPinning.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ginihealthsdkpinning::GiniHealthSDKPinning::Product" /* GiniHealthSDKPinning.framework */; };
+		OBJ_297 /* GiniHealthSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ginihealthsdk::GiniHealthSDK::Product" /* GiniHealthSDK.framework */; };
+		OBJ_298 /* GiniHealthAPILibraryPinning.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ginihealthapilibrarypinning::GiniHealthAPILibraryPinning::Product" /* GiniHealthAPILibraryPinning.framework */; };
+		OBJ_299 /* GiniHealthAPILibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ginihealthapilibrary::GiniHealthAPILibrary::Product" /* GiniHealthAPILibrary.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F4DAD6802CC2A1C100129FB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ginihealthsdkpinning::GiniHealthSDKPinning";
+			remoteInfo = GiniHealthSDKPinning;
+		};
+		F4DAD6812CC2A1C100129FB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ginihealthsdk::GiniHealthSDK";
+			remoteInfo = GiniHealthSDK;
+		};
+		F4DAD6822CC2A1C100129FB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ginihealthapilibrarypinning::GiniHealthAPILibraryPinning";
+			remoteInfo = GiniHealthAPILibraryPinning;
+		};
+		F4DAD6832CC2A1C100129FB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ginihealthapilibrary::GiniHealthAPILibrary";
+			remoteInfo = GiniHealthAPILibrary;
+		};
+		F4DAD6842CC2A1C100129FB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ginihealthsdk::GiniHealthSDK";
+			remoteInfo = GiniHealthSDK;
+		};
+		F4DAD6852CC2A1C100129FB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ginihealthapilibrarypinning::GiniHealthAPILibraryPinning";
+			remoteInfo = GiniHealthAPILibraryPinning;
+		};
+		F4DAD6862CC2A1C100129FB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ginihealthapilibrary::GiniHealthAPILibrary";
+			remoteInfo = GiniHealthAPILibrary;
+		};
+		F4DAD6872CC2A1C100129FB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ginihealthapilibrary::GiniHealthAPILibrary";
+			remoteInfo = GiniHealthAPILibrary;
+		};
+		F4DAD6882CC2A1C100129FB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ginihealthapilibrary::GiniHealthAPILibrary";
+			remoteInfo = GiniHealthAPILibrary;
+		};
+		F4DAD6892CC2A1C100129FB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ginihealthsdkpinning::GiniHealthSDKPinningTests";
+			remoteInfo = GiniHealthSDKPinningTests;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F4DAD68A2CC2A35700129FB2 /* BankSelectionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BankSelectionTableViewCell.xib; path = ../GiniHealthSDK/Sources/GiniHealthSDK/Resources/BankSelectionTableViewCell.xib; sourceTree = "<group>"; };
+		F4DAD68B2CC2A35700129FB2 /* BankSelection.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BankSelection.storyboard; path = ../GiniHealthSDK/Sources/GiniHealthSDK/Resources/BankSelection.storyboard; sourceTree = "<group>"; };
+		F4DAD68C2CC2A35700129FB2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
+		F4DAD68F2CC2A35700129FB2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Localizable.strings; sourceTree = "<group>"; };
+		F4DAD6922CC2A35700129FB2 /* GiniColors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = GiniColors.xcassets; path = ../GiniHealthSDK/Sources/GiniHealthSDK/Resources/GiniColors.xcassets; sourceTree = "<group>"; };
+		F4DAD6932CC2A35700129FB2 /* GiniImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = GiniImages.xcassets; path = ../GiniHealthSDK/Sources/GiniHealthSDK/Resources/GiniImages.xcassets; sourceTree = "<group>"; };
+		F4DAD6942CC2A35700129FB2 /* PaymentReview.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PaymentReview.storyboard; path = ../GiniHealthSDK/Sources/GiniHealthSDK/Resources/PaymentReview.storyboard; sourceTree = "<group>"; };
+		OBJ_100 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		OBJ_101 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		OBJ_102 /* UserMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMethod.swift; sourceTree = "<group>"; };
+		OBJ_103 /* UserResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResource.swift; sourceTree = "<group>"; };
+		OBJ_104 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		OBJ_105 /* ContentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentType.swift; sourceTree = "<group>"; };
+		OBJ_107 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		OBJ_108 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		OBJ_109 /* URLQueryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLQueryItem.swift; sourceTree = "<group>"; };
+		OBJ_110 /* GiniError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniError.swift; sourceTree = "<group>"; };
+		OBJ_111 /* GiniHealthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthAPI.swift; sourceTree = "<group>"; };
+		OBJ_112 /* KeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyStore.swift; sourceTree = "<group>"; };
+		OBJ_113 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		OBJ_114 /* RequestParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestParameters.swift; sourceTree = "<group>"; };
+		OBJ_115 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		OBJ_116 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		OBJ_117 /* DefaultDocumentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultDocumentService.swift; sourceTree = "<group>"; };
+		OBJ_118 /* Document+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Document+Layout.swift"; sourceTree = "<group>"; };
+		OBJ_119 /* Document+Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Document+Page.swift"; sourceTree = "<group>"; };
+		OBJ_12 /* HealthSDKPinningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSDKPinningTests.swift; sourceTree = "<group>"; };
+		OBJ_120 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		OBJ_121 /* DocumentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentList.swift; sourceTree = "<group>"; };
+		OBJ_122 /* DocumentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentService.swift; sourceTree = "<group>"; };
+		OBJ_123 /* Extraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extraction.swift; sourceTree = "<group>"; };
+		OBJ_124 /* ExtractionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResult.swift; sourceTree = "<group>"; };
+		OBJ_125 /* ExtractionsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionsContainer.swift; sourceTree = "<group>"; };
+		OBJ_126 /* ExtractionsFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionsFeedback.swift; sourceTree = "<group>"; };
+		OBJ_127 /* PartialDocumentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialDocumentInfo.swift; sourceTree = "<group>"; };
+		OBJ_129 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
+		OBJ_130 /* PaymentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentProvider.swift; sourceTree = "<group>"; };
+		OBJ_131 /* PaymentProviderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentProviderResponse.swift; sourceTree = "<group>"; };
+		OBJ_132 /* PaymentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRequest.swift; sourceTree = "<group>"; };
+		OBJ_133 /* PaymentRequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRequestBody.swift; sourceTree = "<group>"; };
+		OBJ_134 /* PaymentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentService.swift; sourceTree = "<group>"; };
+		OBJ_135 /* GiniHealthAPILibraryVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthAPILibraryVersion.swift; sourceTree = "<group>"; };
+		OBJ_136 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = "/Users/home/Documents/ios projects/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Package.swift"; sourceTree = "<group>"; };
+		OBJ_144 /* Distribution.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Distribution.xcconfig; path = ".build/swift-create-xcframework/Distribution.xcconfig"; sourceTree = "<group>"; };
+		OBJ_17 /* ButtonConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonConfiguration.swift; sourceTree = "<group>"; };
+		OBJ_18 /* CollectionFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionFlowLayout.swift; sourceTree = "<group>"; };
+		OBJ_20 /* GiniHealthColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthColors.swift; sourceTree = "<group>"; };
+		OBJ_21 /* NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedString.swift; sourceTree = "<group>"; };
+		OBJ_22 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		OBJ_23 /* UIColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Utils.swift"; sourceTree = "<group>"; };
+		OBJ_24 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		OBJ_25 /* UITapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITapGestureRecognizer.swift; sourceTree = "<group>"; };
+		OBJ_26 /* UITextField+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Utils.swift"; sourceTree = "<group>"; };
+		OBJ_27 /* UIView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Utils.swift"; sourceTree = "<group>"; };
+		OBJ_28 /* GiniColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniColor.swift; sourceTree = "<group>"; };
+		OBJ_29 /* GiniHealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealth.swift; sourceTree = "<group>"; };
+		OBJ_30 /* GiniHealthConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthConfiguration.swift; sourceTree = "<group>"; };
+		OBJ_31 /* GiniHealthUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthUtils.swift; sourceTree = "<group>"; };
+		OBJ_32 /* GiniLocalization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniLocalization.swift; sourceTree = "<group>"; };
+		OBJ_33 /* IBANValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBANValidator.swift; sourceTree = "<group>"; };
+		OBJ_34 /* PageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCollectionViewCell.swift; sourceTree = "<group>"; };
+		OBJ_36 /* BankSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankSelectionTableViewCell.swift; sourceTree = "<group>"; };
+		OBJ_37 /* BankSelectionTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankSelectionTableViewCellModel.swift; sourceTree = "<group>"; };
+		OBJ_38 /* BanksBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanksBottomView.swift; sourceTree = "<group>"; };
+		OBJ_39 /* BanksBottomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanksBottomViewModel.swift; sourceTree = "<group>"; };
+		OBJ_40 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
+		OBJ_42 /* EmptyStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStackView.swift; sourceTree = "<group>"; };
+		OBJ_43 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		OBJ_44 /* InstallAppBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallAppBottomView.swift; sourceTree = "<group>"; };
+		OBJ_45 /* InstallAppBottomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallAppBottomViewModel.swift; sourceTree = "<group>"; };
+		OBJ_46 /* MoreInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreInformationView.swift; sourceTree = "<group>"; };
+		OBJ_47 /* MoreInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreInformationViewModel.swift; sourceTree = "<group>"; };
+		OBJ_48 /* OnboardingShareInvoiceScreenCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingShareInvoiceScreenCount.swift; sourceTree = "<group>"; };
+		OBJ_49 /* PaymentComponentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentConfiguration.swift; sourceTree = "<group>"; };
+		OBJ_50 /* PaymentComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentView.swift; sourceTree = "<group>"; };
+		OBJ_51 /* PaymentComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentViewModel.swift; sourceTree = "<group>"; };
+		OBJ_52 /* PaymentComponentsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentsController.swift; sourceTree = "<group>"; };
+		OBJ_53 /* PaymentInfoAnswerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentInfoAnswerTableViewCell.swift; sourceTree = "<group>"; };
+		OBJ_54 /* PaymentInfoBankCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentInfoBankCollectionViewCell.swift; sourceTree = "<group>"; };
+		OBJ_55 /* PaymentInfoQuestionHeaderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentInfoQuestionHeaderViewCell.swift; sourceTree = "<group>"; };
+		OBJ_56 /* PaymentInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentInfoViewController.swift; sourceTree = "<group>"; };
+		OBJ_57 /* PaymentInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentInfoViewModel.swift; sourceTree = "<group>"; };
+		OBJ_58 /* PaymentPrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentPrimaryButton.swift; sourceTree = "<group>"; };
+		OBJ_59 /* PaymentSecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSecondaryButton.swift; sourceTree = "<group>"; };
+		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		OBJ_60 /* PoweredByGiniView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredByGiniView.swift; sourceTree = "<group>"; };
+		OBJ_61 /* PoweredByGiniViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredByGiniViewModel.swift; sourceTree = "<group>"; };
+		OBJ_62 /* ShareInvoiceBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInvoiceBottomView.swift; sourceTree = "<group>"; };
+		OBJ_63 /* ShareInvoiceBottomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInvoiceBottomViewModel.swift; sourceTree = "<group>"; };
+		OBJ_64 /* ShareInvoiceSingleAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInvoiceSingleAppView.swift; sourceTree = "<group>"; };
+		OBJ_65 /* PaymentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentInfo.swift; sourceTree = "<group>"; };
+		OBJ_66 /* PaymentReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentReviewModel.swift; sourceTree = "<group>"; };
+		OBJ_67 /* PaymentReviewViewController+PaymentReviewViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaymentReviewViewController+PaymentReviewViewModelDelegate.swift"; sourceTree = "<group>"; };
+		OBJ_68 /* PaymentReviewViewController+UICollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaymentReviewViewController+UICollection.swift"; sourceTree = "<group>"; };
+		OBJ_69 /* PaymentReviewViewController+UITextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaymentReviewViewController+UITextFieldDelegate.swift"; sourceTree = "<group>"; };
+		OBJ_70 /* PaymentReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentReviewViewController.swift; sourceTree = "<group>"; };
+		OBJ_71 /* TextFieldConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldConfiguration.swift; sourceTree = "<group>"; };
+		OBJ_72 /* TextFieldWithLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabelView.swift; sourceTree = "<group>"; };
+		OBJ_74 /* GiniHealthTrackingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthTrackingDelegate.swift; sourceTree = "<group>"; };
+		OBJ_75 /* TrackingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingEvent.swift; sourceTree = "<group>"; };
+		OBJ_76 /* URLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLOpener.swift; sourceTree = "<group>"; };
+		OBJ_77 /* ZoomedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomedImageView.swift; sourceTree = "<group>"; };
+		OBJ_78 /* GiniHealthSDKVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthSDKVersion.swift; sourceTree = "<group>"; };
+		OBJ_79 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = "/Users/home/Documents/ios projects/gini-mobile-ios/HealthSDK/GiniHealthSDK/Package.swift"; sourceTree = "<group>"; };
+		OBJ_82 /* GiniHealthAPI+Pinning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GiniHealthAPI+Pinning.swift"; sourceTree = "<group>"; };
+		OBJ_83 /* GiniHealthAPILibraryPinningVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthAPILibraryPinningVersion.swift; sourceTree = "<group>"; };
+		OBJ_84 /* GiniSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniSessionDelegate.swift; sourceTree = "<group>"; };
+		OBJ_85 /* SSLPinningManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLPinningManager.swift; sourceTree = "<group>"; };
+		OBJ_86 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = "/Users/home/Documents/ios projects/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibraryPinning/Package.swift"; sourceTree = "<group>"; };
+		OBJ_9 /* GiniHealthSDKPinningVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthSDKPinningVersion.swift; sourceTree = "<group>"; };
+		OBJ_90 /* APIMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIMethod.swift; sourceTree = "<group>"; };
+		OBJ_91 /* APIResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResource.swift; sourceTree = "<group>"; };
+		OBJ_92 /* CompositeDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeDocument.swift; sourceTree = "<group>"; };
+		OBJ_93 /* CompositeDocumentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeDocumentInfo.swift; sourceTree = "<group>"; };
+		OBJ_94 /* CompoundExtractionsFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompoundExtractionsFeedback.swift; sourceTree = "<group>"; };
+		OBJ_97 /* AlternativeTokenSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeTokenSource.swift; sourceTree = "<group>"; };
+		OBJ_98 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
+		OBJ_99 /* SessionManager+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionManager+Auth.swift"; sourceTree = "<group>"; };
+		"ginihealthapilibrary::GiniHealthAPILibrary::Product" /* GiniHealthAPILibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GiniHealthAPILibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"ginihealthapilibrarypinning::GiniHealthAPILibraryPinning::Product" /* GiniHealthAPILibraryPinning.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GiniHealthAPILibraryPinning.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"ginihealthsdk::GiniHealthSDK::Product" /* GiniHealthSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GiniHealthSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"ginihealthsdkpinning::GiniHealthSDKPinning::Product" /* GiniHealthSDKPinning.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GiniHealthSDKPinning.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"ginihealthsdkpinning::GiniHealthSDKPinningTests::Product" /* GiniHealthSDKPinningTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = GiniHealthSDKPinningTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		OBJ_192 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_202 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_203 /* GiniHealthAPILibrary.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_268 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_269 /* GiniHealthAPILibrary.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_277 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_278 /* GiniHealthSDK.framework in Frameworks */,
+				OBJ_279 /* GiniHealthAPILibraryPinning.framework in Frameworks */,
+				OBJ_280 /* GiniHealthAPILibrary.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_295 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_296 /* GiniHealthSDKPinning.framework in Frameworks */,
+				OBJ_297 /* GiniHealthSDK.framework in Frameworks */,
+				OBJ_298 /* GiniHealthAPILibraryPinning.framework in Frameworks */,
+				OBJ_299 /* GiniHealthAPILibrary.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F4DAD68E2CC2A35700129FB2 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				F4DAD68D2CC2A35700129FB2 /* Localizable.strings */,
+			);
+			name = en.lproj;
+			path = ../GiniHealthSDK/Sources/GiniHealthSDK/Resources/en.lproj;
+			sourceTree = "<group>";
+		};
+		F4DAD6912CC2A35700129FB2 /* de.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				F4DAD6902CC2A35700129FB2 /* Localizable.strings */,
+			);
+			name = de.lproj;
+			path = ../GiniHealthSDK/Sources/GiniHealthSDK/Resources/de.lproj;
+			sourceTree = "<group>";
+		};
+		OBJ_10 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_11 /* GiniHealthSDKPinningTests */,
+			);
+			name = Tests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_106 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_107 /* Collection.swift */,
+				OBJ_108 /* Data.swift */,
+				OBJ_109 /* URLQueryItem.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		OBJ_11 /* GiniHealthSDKPinningTests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_12 /* HealthSDKPinningTests.swift */,
+			);
+			name = GiniHealthSDKPinningTests;
+			path = Tests/GiniHealthSDKPinningTests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_128 /* Payments */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_129 /* Payment.swift */,
+				OBJ_130 /* PaymentProvider.swift */,
+				OBJ_131 /* PaymentProviderResponse.swift */,
+				OBJ_132 /* PaymentRequest.swift */,
+				OBJ_133 /* PaymentRequestBody.swift */,
+				OBJ_134 /* PaymentService.swift */,
+			);
+			path = Payments;
+			sourceTree = "<group>";
+		};
+		OBJ_13 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_14 /* GiniHealthSDK */,
+				OBJ_80 /* GiniHealthAPILibraryPinning */,
+				OBJ_87 /* GiniHealthAPILibrary */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		OBJ_137 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				"ginihealthapilibrary::GiniHealthAPILibrary::Product" /* GiniHealthAPILibrary.framework */,
+				"ginihealthapilibrarypinning::GiniHealthAPILibraryPinning::Product" /* GiniHealthAPILibraryPinning.framework */,
+				"ginihealthsdk::GiniHealthSDK::Product" /* GiniHealthSDK.framework */,
+				"ginihealthsdkpinning::GiniHealthSDKPinning::Product" /* GiniHealthSDKPinning.framework */,
+				"ginihealthsdkpinning::GiniHealthSDKPinningTests::Product" /* GiniHealthSDKPinningTests.xctest */,
+			);
+			name = Products;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		OBJ_14 /* GiniHealthSDK */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_15 /* GiniHealthSDK */,
+				OBJ_79 /* Package.swift */,
+			);
+			name = GiniHealthSDK;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_143 /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_144 /* Distribution.xcconfig */,
+			);
+			name = Configs;
+			sourceTree = "<group>";
+		};
+		OBJ_15 /* GiniHealthSDK */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_16 /* Core */,
+				OBJ_78 /* GiniHealthSDKVersion.swift */,
+			);
+			name = GiniHealthSDK;
+			path = ../GiniHealthSDK/Sources/GiniHealthSDK;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_16 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_17 /* ButtonConfiguration.swift */,
+				OBJ_18 /* CollectionFlowLayout.swift */,
+				OBJ_19 /* Extensions */,
+				OBJ_28 /* GiniColor.swift */,
+				OBJ_29 /* GiniHealth.swift */,
+				OBJ_30 /* GiniHealthConfiguration.swift */,
+				OBJ_31 /* GiniHealthUtils.swift */,
+				OBJ_32 /* GiniLocalization.swift */,
+				OBJ_33 /* IBANValidator.swift */,
+				OBJ_34 /* PageCollectionViewCell.swift */,
+				OBJ_35 /* PaymentComponent */,
+				OBJ_65 /* PaymentInfo.swift */,
+				OBJ_66 /* PaymentReviewModel.swift */,
+				OBJ_67 /* PaymentReviewViewController+PaymentReviewViewModelDelegate.swift */,
+				OBJ_68 /* PaymentReviewViewController+UICollection.swift */,
+				OBJ_69 /* PaymentReviewViewController+UITextFieldDelegate.swift */,
+				OBJ_70 /* PaymentReviewViewController.swift */,
+				OBJ_71 /* TextFieldConfiguration.swift */,
+				OBJ_72 /* TextFieldWithLabelView.swift */,
+				OBJ_73 /* Tracking */,
+				OBJ_76 /* URLOpener.swift */,
+				OBJ_77 /* ZoomedImageView.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		OBJ_19 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_20 /* GiniHealthColors.swift */,
+				OBJ_21 /* NSAttributedString.swift */,
+				OBJ_22 /* String.swift */,
+				OBJ_23 /* UIColor+Utils.swift */,
+				OBJ_24 /* UIFont.swift */,
+				OBJ_25 /* UITapGestureRecognizer.swift */,
+				OBJ_26 /* UITextField+Utils.swift */,
+				OBJ_27 /* UIView+Utils.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		OBJ_35 /* PaymentComponent */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_36 /* BankSelectionTableViewCell.swift */,
+				OBJ_37 /* BankSelectionTableViewCellModel.swift */,
+				OBJ_38 /* BanksBottomView.swift */,
+				OBJ_39 /* BanksBottomViewModel.swift */,
+				OBJ_40 /* BottomSheetViewController.swift */,
+				OBJ_41 /* HelpingViews */,
+				OBJ_44 /* InstallAppBottomView.swift */,
+				OBJ_45 /* InstallAppBottomViewModel.swift */,
+				OBJ_46 /* MoreInformationView.swift */,
+				OBJ_47 /* MoreInformationViewModel.swift */,
+				OBJ_48 /* OnboardingShareInvoiceScreenCount.swift */,
+				OBJ_49 /* PaymentComponentConfiguration.swift */,
+				OBJ_50 /* PaymentComponentView.swift */,
+				OBJ_51 /* PaymentComponentViewModel.swift */,
+				OBJ_52 /* PaymentComponentsController.swift */,
+				OBJ_53 /* PaymentInfoAnswerTableViewCell.swift */,
+				OBJ_54 /* PaymentInfoBankCollectionViewCell.swift */,
+				OBJ_55 /* PaymentInfoQuestionHeaderViewCell.swift */,
+				OBJ_56 /* PaymentInfoViewController.swift */,
+				OBJ_57 /* PaymentInfoViewModel.swift */,
+				OBJ_58 /* PaymentPrimaryButton.swift */,
+				OBJ_59 /* PaymentSecondaryButton.swift */,
+				OBJ_60 /* PoweredByGiniView.swift */,
+				OBJ_61 /* PoweredByGiniViewModel.swift */,
+				OBJ_62 /* ShareInvoiceBottomView.swift */,
+				OBJ_63 /* ShareInvoiceBottomViewModel.swift */,
+				OBJ_64 /* ShareInvoiceSingleAppView.swift */,
+			);
+			path = PaymentComponent;
+			sourceTree = "<group>";
+		};
+		OBJ_41 /* HelpingViews */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_42 /* EmptyStackView.swift */,
+				OBJ_43 /* EmptyView.swift */,
+			);
+			path = HelpingViews;
+			sourceTree = "<group>";
+		};
+		OBJ_5 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				F4DAD68B2CC2A35700129FB2 /* BankSelection.storyboard */,
+				F4DAD68A2CC2A35700129FB2 /* BankSelectionTableViewCell.xib */,
+				F4DAD6912CC2A35700129FB2 /* de.lproj */,
+				F4DAD68E2CC2A35700129FB2 /* en.lproj */,
+				F4DAD6922CC2A35700129FB2 /* GiniColors.xcassets */,
+				F4DAD6932CC2A35700129FB2 /* GiniImages.xcassets */,
+				F4DAD6942CC2A35700129FB2 /* PaymentReview.storyboard */,
+				OBJ_6 /* Package.swift */,
+				OBJ_7 /* Sources */,
+				OBJ_10 /* Tests */,
+				OBJ_13 /* Dependencies */,
+				OBJ_137 /* Products */,
+				OBJ_143 /* Configs */,
+			);
+			name = "";
+			sourceTree = "<group>";
+		};
+		OBJ_7 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_8 /* GiniHealthSDKPinning */,
+			);
+			name = Sources;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_73 /* Tracking */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_74 /* GiniHealthTrackingDelegate.swift */,
+				OBJ_75 /* TrackingEvent.swift */,
+			);
+			path = Tracking;
+			sourceTree = "<group>";
+		};
+		OBJ_8 /* GiniHealthSDKPinning */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_9 /* GiniHealthSDKPinningVersion.swift */,
+			);
+			name = GiniHealthSDKPinning;
+			path = Sources/GiniHealthSDKPinning;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_80 /* GiniHealthAPILibraryPinning */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_81 /* GiniHealthAPILibraryPinning */,
+				OBJ_86 /* Package.swift */,
+			);
+			name = GiniHealthAPILibraryPinning;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_81 /* GiniHealthAPILibraryPinning */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_82 /* GiniHealthAPI+Pinning.swift */,
+				OBJ_83 /* GiniHealthAPILibraryPinningVersion.swift */,
+				OBJ_84 /* GiniSessionDelegate.swift */,
+				OBJ_85 /* SSLPinningManager.swift */,
+			);
+			name = GiniHealthAPILibraryPinning;
+			path = ../../HealthAPILibrary/GiniHealthAPILibraryPinning/Sources/GiniHealthAPILibraryPinning;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_87 /* GiniHealthAPILibrary */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_88 /* GiniHealthAPILibrary */,
+				OBJ_136 /* Package.swift */,
+			);
+			name = GiniHealthAPILibrary;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_88 /* GiniHealthAPILibrary */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_89 /* Documents */,
+				OBJ_135 /* GiniHealthAPILibraryVersion.swift */,
+			);
+			name = GiniHealthAPILibrary;
+			path = ../../HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_89 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_90 /* APIMethod.swift */,
+				OBJ_91 /* APIResource.swift */,
+				OBJ_92 /* CompositeDocument.swift */,
+				OBJ_93 /* CompositeDocumentInfo.swift */,
+				OBJ_94 /* CompoundExtractionsFeedback.swift */,
+				OBJ_95 /* Core */,
+				OBJ_117 /* DefaultDocumentService.swift */,
+				OBJ_118 /* Document+Layout.swift */,
+				OBJ_119 /* Document+Page.swift */,
+				OBJ_120 /* Document.swift */,
+				OBJ_121 /* DocumentList.swift */,
+				OBJ_122 /* DocumentService.swift */,
+				OBJ_123 /* Extraction.swift */,
+				OBJ_124 /* ExtractionResult.swift */,
+				OBJ_125 /* ExtractionsContainer.swift */,
+				OBJ_126 /* ExtractionsFeedback.swift */,
+				OBJ_127 /* PartialDocumentInfo.swift */,
+				OBJ_128 /* Payments */,
+			);
+			path = Documents;
+			sourceTree = "<group>";
+		};
+		OBJ_95 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_96 /* Auth */,
+				OBJ_104 /* Client.swift */,
+				OBJ_105 /* ContentType.swift */,
+				OBJ_106 /* Extensions */,
+				OBJ_110 /* GiniError.swift */,
+				OBJ_111 /* GiniHealthAPI.swift */,
+				OBJ_112 /* KeyStore.swift */,
+				OBJ_113 /* Logger.swift */,
+				OBJ_114 /* RequestParameters.swift */,
+				OBJ_115 /* Resource.swift */,
+				OBJ_116 /* SessionManager.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		OBJ_96 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_97 /* AlternativeTokenSource.swift */,
+				OBJ_98 /* AuthHelper.swift */,
+				OBJ_99 /* SessionManager+Auth.swift */,
+				OBJ_100 /* Token.swift */,
+				OBJ_101 /* User.swift */,
+				OBJ_102 /* UserMethod.swift */,
+				OBJ_103 /* UserResource.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		"ginihealthapilibrary::GiniHealthAPILibrary" /* GiniHealthAPILibrary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_146 /* Build configuration list for PBXNativeTarget "GiniHealthAPILibrary" */;
+			buildPhases = (
+				OBJ_149 /* Sources */,
+				OBJ_192 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GiniHealthAPILibrary;
+			productName = GiniHealthAPILibrary;
+			productReference = "ginihealthapilibrary::GiniHealthAPILibrary::Product" /* GiniHealthAPILibrary.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"ginihealthapilibrarypinning::GiniHealthAPILibraryPinning" /* GiniHealthAPILibraryPinning */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_194 /* Build configuration list for PBXNativeTarget "GiniHealthAPILibraryPinning" */;
+			buildPhases = (
+				OBJ_197 /* Sources */,
+				OBJ_202 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_204 /* PBXTargetDependency */,
+			);
+			name = GiniHealthAPILibraryPinning;
+			productName = GiniHealthAPILibraryPinning;
+			productReference = "ginihealthapilibrarypinning::GiniHealthAPILibraryPinning::Product" /* GiniHealthAPILibraryPinning.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"ginihealthsdk::GiniHealthSDK" /* GiniHealthSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_206 /* Build configuration list for PBXNativeTarget "GiniHealthSDK" */;
+			buildPhases = (
+				OBJ_209 /* Sources */,
+				OBJ_268 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_270 /* PBXTargetDependency */,
+			);
+			name = GiniHealthSDK;
+			productName = GiniHealthSDK;
+			productReference = "ginihealthsdk::GiniHealthSDK::Product" /* GiniHealthSDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"ginihealthsdkpinning::GiniHealthSDKPinning" /* GiniHealthSDKPinning */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_272 /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinning" */;
+			buildPhases = (
+				OBJ_275 /* Sources */,
+				OBJ_277 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_281 /* PBXTargetDependency */,
+				OBJ_282 /* PBXTargetDependency */,
+				OBJ_283 /* PBXTargetDependency */,
+			);
+			name = GiniHealthSDKPinning;
+			productName = GiniHealthSDKPinning;
+			productReference = "ginihealthsdkpinning::GiniHealthSDKPinning::Product" /* GiniHealthSDKPinning.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"ginihealthsdkpinning::GiniHealthSDKPinningTests" /* GiniHealthSDKPinningTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_290 /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningTests" */;
+			buildPhases = (
+				OBJ_293 /* Sources */,
+				OBJ_295 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_300 /* PBXTargetDependency */,
+				OBJ_301 /* PBXTargetDependency */,
+				OBJ_302 /* PBXTargetDependency */,
+				OBJ_303 /* PBXTargetDependency */,
+			);
+			name = GiniHealthSDKPinningTests;
+			productName = GiniHealthSDKPinningTests;
+			productReference = "ginihealthsdkpinning::GiniHealthSDKPinningTests::Product" /* GiniHealthSDKPinningTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		OBJ_1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftMigration = 9999;
+				LastUpgradeCheck = 9999;
+			};
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "GiniHealthSDKPinning" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				de,
+			);
+			mainGroup = OBJ_5 /*  */;
+			productRefGroup = OBJ_137 /* Products */;
+			projectDirPath = ../..;
+			projectRoot = "";
+			targets = (
+				"ginihealthapilibrary::GiniHealthAPILibrary" /* GiniHealthAPILibrary */,
+				"ginihealthapilibrarypinning::GiniHealthAPILibraryPinning" /* GiniHealthAPILibraryPinning */,
+				"ginihealthsdk::GiniHealthSDK" /* GiniHealthSDK */,
+				"ginihealthsdkpinning::GiniHealthSDKPinning" /* GiniHealthSDKPinning */,
+				"ginihealthsdkpinning::GiniHealthSDKPinningPackageTests::ProductTarget" /* GiniHealthSDKPinningPackageTests */,
+				"ginihealthsdkpinning::GiniHealthSDKPinningTests" /* GiniHealthSDKPinningTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		OBJ_149 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_150 /* APIMethod.swift in Sources */,
+				OBJ_151 /* APIResource.swift in Sources */,
+				OBJ_152 /* CompositeDocument.swift in Sources */,
+				OBJ_153 /* CompositeDocumentInfo.swift in Sources */,
+				OBJ_154 /* CompoundExtractionsFeedback.swift in Sources */,
+				OBJ_155 /* AlternativeTokenSource.swift in Sources */,
+				OBJ_156 /* AuthHelper.swift in Sources */,
+				OBJ_157 /* SessionManager+Auth.swift in Sources */,
+				OBJ_158 /* Token.swift in Sources */,
+				OBJ_159 /* User.swift in Sources */,
+				OBJ_160 /* UserMethod.swift in Sources */,
+				OBJ_161 /* UserResource.swift in Sources */,
+				OBJ_162 /* Client.swift in Sources */,
+				OBJ_163 /* ContentType.swift in Sources */,
+				OBJ_164 /* Collection.swift in Sources */,
+				OBJ_165 /* Data.swift in Sources */,
+				OBJ_166 /* URLQueryItem.swift in Sources */,
+				OBJ_167 /* GiniError.swift in Sources */,
+				OBJ_168 /* GiniHealthAPI.swift in Sources */,
+				OBJ_169 /* KeyStore.swift in Sources */,
+				OBJ_170 /* Logger.swift in Sources */,
+				OBJ_171 /* RequestParameters.swift in Sources */,
+				OBJ_172 /* Resource.swift in Sources */,
+				OBJ_173 /* SessionManager.swift in Sources */,
+				OBJ_174 /* DefaultDocumentService.swift in Sources */,
+				OBJ_175 /* Document+Layout.swift in Sources */,
+				OBJ_176 /* Document+Page.swift in Sources */,
+				OBJ_177 /* Document.swift in Sources */,
+				OBJ_178 /* DocumentList.swift in Sources */,
+				OBJ_179 /* DocumentService.swift in Sources */,
+				OBJ_180 /* Extraction.swift in Sources */,
+				OBJ_181 /* ExtractionResult.swift in Sources */,
+				OBJ_182 /* ExtractionsContainer.swift in Sources */,
+				OBJ_183 /* ExtractionsFeedback.swift in Sources */,
+				OBJ_184 /* PartialDocumentInfo.swift in Sources */,
+				OBJ_185 /* Payment.swift in Sources */,
+				OBJ_186 /* PaymentProvider.swift in Sources */,
+				OBJ_187 /* PaymentProviderResponse.swift in Sources */,
+				OBJ_188 /* PaymentRequest.swift in Sources */,
+				OBJ_189 /* PaymentRequestBody.swift in Sources */,
+				OBJ_190 /* PaymentService.swift in Sources */,
+				OBJ_191 /* GiniHealthAPILibraryVersion.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_197 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_198 /* GiniHealthAPI+Pinning.swift in Sources */,
+				OBJ_199 /* GiniHealthAPILibraryPinningVersion.swift in Sources */,
+				OBJ_200 /* GiniSessionDelegate.swift in Sources */,
+				OBJ_201 /* SSLPinningManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_209 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				F4DAD6952CC2A40700129FB2 /* BankSelection.storyboard in Sources */,
+				F4DAD6962CC2A40700129FB2 /* BankSelectionTableViewCell.xib in Sources */,
+				F4DAD6972CC2A40700129FB2 /* Localizable.strings in Sources */,
+				F4DAD6982CC2A40700129FB2 /* Localizable.strings in Sources */,
+				F4DAD6992CC2A40700129FB2 /* GiniColors.xcassets in Sources */,
+				F4DAD69A2CC2A40700129FB2 /* GiniImages.xcassets in Sources */,
+				F4DAD69B2CC2A40700129FB2 /* PaymentReview.storyboard in Sources */,
+				OBJ_210 /* ButtonConfiguration.swift in Sources */,
+				OBJ_211 /* CollectionFlowLayout.swift in Sources */,
+				OBJ_212 /* GiniHealthColors.swift in Sources */,
+				OBJ_213 /* NSAttributedString.swift in Sources */,
+				OBJ_214 /* String.swift in Sources */,
+				OBJ_215 /* UIColor+Utils.swift in Sources */,
+				OBJ_216 /* UIFont.swift in Sources */,
+				OBJ_217 /* UITapGestureRecognizer.swift in Sources */,
+				OBJ_218 /* UITextField+Utils.swift in Sources */,
+				OBJ_219 /* UIView+Utils.swift in Sources */,
+				OBJ_220 /* GiniColor.swift in Sources */,
+				OBJ_221 /* GiniHealth.swift in Sources */,
+				OBJ_222 /* GiniHealthConfiguration.swift in Sources */,
+				OBJ_223 /* GiniHealthUtils.swift in Sources */,
+				OBJ_224 /* GiniLocalization.swift in Sources */,
+				OBJ_225 /* IBANValidator.swift in Sources */,
+				OBJ_226 /* PageCollectionViewCell.swift in Sources */,
+				OBJ_227 /* BankSelectionTableViewCell.swift in Sources */,
+				OBJ_228 /* BankSelectionTableViewCellModel.swift in Sources */,
+				OBJ_229 /* BanksBottomView.swift in Sources */,
+				OBJ_230 /* BanksBottomViewModel.swift in Sources */,
+				OBJ_231 /* BottomSheetViewController.swift in Sources */,
+				OBJ_232 /* EmptyStackView.swift in Sources */,
+				OBJ_233 /* EmptyView.swift in Sources */,
+				OBJ_234 /* InstallAppBottomView.swift in Sources */,
+				OBJ_235 /* InstallAppBottomViewModel.swift in Sources */,
+				OBJ_236 /* MoreInformationView.swift in Sources */,
+				OBJ_237 /* MoreInformationViewModel.swift in Sources */,
+				OBJ_238 /* OnboardingShareInvoiceScreenCount.swift in Sources */,
+				OBJ_239 /* PaymentComponentConfiguration.swift in Sources */,
+				OBJ_240 /* PaymentComponentView.swift in Sources */,
+				OBJ_241 /* PaymentComponentViewModel.swift in Sources */,
+				OBJ_242 /* PaymentComponentsController.swift in Sources */,
+				OBJ_243 /* PaymentInfoAnswerTableViewCell.swift in Sources */,
+				OBJ_244 /* PaymentInfoBankCollectionViewCell.swift in Sources */,
+				OBJ_245 /* PaymentInfoQuestionHeaderViewCell.swift in Sources */,
+				OBJ_246 /* PaymentInfoViewController.swift in Sources */,
+				OBJ_247 /* PaymentInfoViewModel.swift in Sources */,
+				OBJ_248 /* PaymentPrimaryButton.swift in Sources */,
+				OBJ_249 /* PaymentSecondaryButton.swift in Sources */,
+				OBJ_250 /* PoweredByGiniView.swift in Sources */,
+				OBJ_251 /* PoweredByGiniViewModel.swift in Sources */,
+				OBJ_252 /* ShareInvoiceBottomView.swift in Sources */,
+				OBJ_253 /* ShareInvoiceBottomViewModel.swift in Sources */,
+				OBJ_254 /* ShareInvoiceSingleAppView.swift in Sources */,
+				OBJ_255 /* PaymentInfo.swift in Sources */,
+				OBJ_256 /* PaymentReviewModel.swift in Sources */,
+				OBJ_257 /* PaymentReviewViewController+PaymentReviewViewModelDelegate.swift in Sources */,
+				OBJ_258 /* PaymentReviewViewController+UICollection.swift in Sources */,
+				OBJ_259 /* PaymentReviewViewController+UITextFieldDelegate.swift in Sources */,
+				OBJ_260 /* PaymentReviewViewController.swift in Sources */,
+				OBJ_261 /* TextFieldConfiguration.swift in Sources */,
+				OBJ_262 /* TextFieldWithLabelView.swift in Sources */,
+				OBJ_263 /* GiniHealthTrackingDelegate.swift in Sources */,
+				OBJ_264 /* TrackingEvent.swift in Sources */,
+				OBJ_265 /* URLOpener.swift in Sources */,
+				OBJ_266 /* ZoomedImageView.swift in Sources */,
+				OBJ_267 /* GiniHealthSDKVersion.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_275 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_276 /* GiniHealthSDKPinningVersion.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_293 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_294 /* HealthSDKPinningTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		OBJ_204 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "ginihealthapilibrary::GiniHealthAPILibrary" /* GiniHealthAPILibrary */;
+			targetProxy = F4DAD6882CC2A1C100129FB2 /* PBXContainerItemProxy */;
+		};
+		OBJ_270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "ginihealthapilibrary::GiniHealthAPILibrary" /* GiniHealthAPILibrary */;
+			targetProxy = F4DAD6872CC2A1C100129FB2 /* PBXContainerItemProxy */;
+		};
+		OBJ_281 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "ginihealthsdk::GiniHealthSDK" /* GiniHealthSDK */;
+			targetProxy = F4DAD6842CC2A1C100129FB2 /* PBXContainerItemProxy */;
+		};
+		OBJ_282 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "ginihealthapilibrarypinning::GiniHealthAPILibraryPinning" /* GiniHealthAPILibraryPinning */;
+			targetProxy = F4DAD6852CC2A1C100129FB2 /* PBXContainerItemProxy */;
+		};
+		OBJ_283 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "ginihealthapilibrary::GiniHealthAPILibrary" /* GiniHealthAPILibrary */;
+			targetProxy = F4DAD6862CC2A1C100129FB2 /* PBXContainerItemProxy */;
+		};
+		OBJ_288 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "ginihealthsdkpinning::GiniHealthSDKPinningTests" /* GiniHealthSDKPinningTests */;
+			targetProxy = F4DAD6892CC2A1C100129FB2 /* PBXContainerItemProxy */;
+		};
+		OBJ_300 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "ginihealthsdkpinning::GiniHealthSDKPinning" /* GiniHealthSDKPinning */;
+			targetProxy = F4DAD6802CC2A1C100129FB2 /* PBXContainerItemProxy */;
+		};
+		OBJ_301 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "ginihealthsdk::GiniHealthSDK" /* GiniHealthSDK */;
+			targetProxy = F4DAD6812CC2A1C100129FB2 /* PBXContainerItemProxy */;
+		};
+		OBJ_302 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "ginihealthapilibrarypinning::GiniHealthAPILibraryPinning" /* GiniHealthAPILibraryPinning */;
+			targetProxy = F4DAD6822CC2A1C100129FB2 /* PBXContainerItemProxy */;
+		};
+		OBJ_303 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "ginihealthapilibrary::GiniHealthAPILibrary" /* GiniHealthAPILibrary */;
+			targetProxy = F4DAD6832CC2A1C100129FB2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F4DAD68D2CC2A35700129FB2 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4DAD68C2CC2A35700129FB2 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		F4DAD6902CC2A35700129FB2 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4DAD68F2CC2A35700129FB2 /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		OBJ_147 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj/GiniHealthAPILibrary_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = GiniHealthAPILibrary;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TARGET_NAME = GiniHealthAPILibrary;
+			};
+			name = Debug;
+		};
+		OBJ_148 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj/GiniHealthAPILibrary_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = GiniHealthAPILibrary;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TARGET_NAME = GiniHealthAPILibrary;
+			};
+			name = Release;
+		};
+		OBJ_195 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj/GiniHealthAPILibraryPinning_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = GiniHealthAPILibraryPinning;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TARGET_NAME = GiniHealthAPILibraryPinning;
+			};
+			name = Debug;
+		};
+		OBJ_196 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj/GiniHealthAPILibraryPinning_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = GiniHealthAPILibraryPinning;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TARGET_NAME = GiniHealthAPILibraryPinning;
+			};
+			name = Release;
+		};
+		OBJ_207 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj/GiniHealthSDK_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = GiniHealthSDK;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TARGET_NAME = GiniHealthSDK;
+			};
+			name = Debug;
+		};
+		OBJ_208 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj/GiniHealthSDK_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = GiniHealthSDK;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TARGET_NAME = GiniHealthSDK;
+			};
+			name = Release;
+		};
+		OBJ_273 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = OBJ_144 /* Distribution.xcconfig */;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj/GiniHealthSDKPinning_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = GiniHealthSDKPinning;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TARGET_NAME = GiniHealthSDKPinning;
+			};
+			name = Debug;
+		};
+		OBJ_274 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = OBJ_144 /* Distribution.xcconfig */;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj/GiniHealthSDKPinning_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = GiniHealthSDKPinning;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TARGET_NAME = GiniHealthSDKPinning;
+			};
+			name = Release;
+		};
+		OBJ_286 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SKIP_INSTALL = NO;
+			};
+			name = Debug;
+		};
+		OBJ_287 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SKIP_INSTALL = NO;
+			};
+			name = Release;
+		};
+		OBJ_291 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj/GiniHealthSDKPinningTests_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TARGET_NAME = GiniHealthSDKPinningTests;
+			};
+			name = Debug;
+		};
+		OBJ_292 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj/GiniHealthSDKPinningTests_Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TARGET_NAME = GiniHealthSDKPinningTests;
+			};
+			name = Release;
+		};
+		OBJ_3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+					"DEBUG=1",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		OBJ_4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		OBJ_146 /* Build configuration list for PBXNativeTarget "GiniHealthAPILibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_147 /* Debug */,
+				OBJ_148 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_194 /* Build configuration list for PBXNativeTarget "GiniHealthAPILibraryPinning" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_195 /* Debug */,
+				OBJ_196 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_2 /* Build configuration list for PBXProject "GiniHealthSDKPinning" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_3 /* Debug */,
+				OBJ_4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_206 /* Build configuration list for PBXNativeTarget "GiniHealthSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_207 /* Debug */,
+				OBJ_208 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_272 /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinning" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_273 /* Debug */,
+				OBJ_274 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_285 /* Build configuration list for PBXAggregateTarget "GiniHealthSDKPinningPackageTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_286 /* Debug */,
+				OBJ_287 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_290 /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_291 /* Debug */,
+				OBJ_292 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = OBJ_1 /* Project object */;
+}

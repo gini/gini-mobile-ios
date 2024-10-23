@@ -1,0 +1,52 @@
+{
+  "object" : {
+    "artifacts" : [
+
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "ginihealthapilibrary",
+          "kind" : "fileSystem",
+          "location" : "/Users/home/Documents/ios projects/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary",
+          "name" : "GiniHealthAPILibrary"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/home/Documents/ios projects/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary"
+        },
+        "subpath" : "ginihealthapilibrary"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "ginihealthapilibrarypinning",
+          "kind" : "fileSystem",
+          "location" : "/Users/home/Documents/ios projects/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibraryPinning",
+          "name" : "GiniHealthAPILibraryPinning"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/home/Documents/ios projects/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibraryPinning"
+        },
+        "subpath" : "ginihealthapilibrarypinning"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "ginihealthsdk",
+          "kind" : "fileSystem",
+          "location" : "/Users/home/Documents/ios projects/gini-mobile-ios/HealthSDK/GiniHealthSDK",
+          "name" : "GiniHealthSDK"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/home/Documents/ios projects/gini-mobile-ios/HealthSDK/GiniHealthSDK"
+        },
+        "subpath" : "ginihealthsdk"
+      }
+    ]
+  },
+  "version" : 6
+}

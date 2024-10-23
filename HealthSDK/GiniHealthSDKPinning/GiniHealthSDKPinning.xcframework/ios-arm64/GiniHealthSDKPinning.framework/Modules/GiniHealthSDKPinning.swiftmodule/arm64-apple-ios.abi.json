@@ -1,0 +1,65 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Var",
+        "name": "GiniHealthSDKPinningVersion",
+        "printedName": "GiniHealthSDKPinningVersion",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "String",
+            "printedName": "Swift.String",
+            "usr": "s:SS"
+          }
+        ],
+        "declKind": "Var",
+        "usr": "s:20GiniHealthSDKPinning0abC7VersionSSvp",
+        "mangledName": "$s20GiniHealthSDKPinning0abC7VersionSSvp",
+        "moduleName": "GiniHealthSDKPinning",
+        "declAttributes": [
+          "HasInitialValue",
+          "HasStorage",
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "isLet": true,
+        "hasStorage": true,
+        "accessors": [
+          {
+            "kind": "Accessor",
+            "name": "Get",
+            "printedName": "Get()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Accessor",
+            "usr": "s:20GiniHealthSDKPinning0abC7VersionSSvg",
+            "mangledName": "$s20GiniHealthSDKPinning0abC7VersionSSvg",
+            "moduleName": "GiniHealthSDKPinning",
+            "implicit": true,
+            "accessorKind": "get"
+          }
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/home\/Documents\/ios projects\/gini-mobile-ios\/HealthSDK\/GiniHealthSDKPinning\/Sources\/GiniHealthSDKPinning\/GiniHealthSDKPinningVersion.swift",
+      "kind": "StringLiteral",
+      "offset": 148,
+      "length": 7,
+      "value": "\"4.3.0\""
+    }
+  ]
+}
