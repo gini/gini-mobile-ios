@@ -243,11 +243,11 @@ final class SettingsViewModel {
         data.isSwitchOn = isSwitchOn
         contentData[indexPath.section].items[indexPath.row] = .switchOption(data: data)
         
-        updateGiniConfiguration(for: data, at: indexPath)
+        updateGiniConfiguration(for: data)
         handleSwitchDependencies(for: data, at: indexPath)
     }
 
-    private func updateGiniConfiguration(for data: SwitchOptionModel, at indexPath: IndexPath) {
+    private func updateGiniConfiguration(for data: SwitchOptionModel) {
         switch data.type {
         case .openWith:
             giniConfiguration.openWithEnabled = data.isSwitchOn
