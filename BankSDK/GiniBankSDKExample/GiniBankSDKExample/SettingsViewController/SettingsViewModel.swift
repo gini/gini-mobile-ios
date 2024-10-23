@@ -243,115 +243,57 @@ final class SettingsViewModel {
         data.isSwitchOn = isSwitchOn
         contentData[indexPath.section].items[indexPath.row] = .switchOption(data: data)
         
+        updateGiniConfiguration(for: data, at: indexPath)
+        handleSwitchDependencies(for: data, at: indexPath)
+    }
+
+    private func updateGiniConfiguration(for data: SwitchOptionModel, at indexPath: IndexPath) {
         switch data.type {
         case .openWith:
             giniConfiguration.openWithEnabled = data.isSwitchOn
         case .qrCodeScanning:
-            // TODO: check if flash logic correctly removed
             giniConfiguration.qrCodeScanningEnabled = data.isSwitchOn
-            if !data.isSwitchOn && giniConfiguration.onlyQRCodeScanningEnabled {
-                // if `qrCodeScanningEnabled` is disabled and `onlyQRCodeScanningEnabled` is enabled,
-                // make `onlyQRCodeScanningEnabled` disabled
-                // onlyQRCodeScanningEnabled cell is right after
-                let option = SettingsViewController.CellType.switchOption(data:(SwitchOptionModel(type: .qrCodeScanningOnly, isSwitchOn: data.isSwitchOn)))
-                contentData[indexPath.section].items[indexPath.row + 1] = option
-                delegate?.contentDataUpdated()
-                giniConfiguration.onlyQRCodeScanningEnabled = data.isSwitchOn
-            }
         case .qrCodeScanningOnly:
             giniConfiguration.onlyQRCodeScanningEnabled = data.isSwitchOn
-            if data.isSwitchOn && !giniConfiguration.qrCodeScanningEnabled {
-                // if `onlyQRCodeScanningEnabled` is enabled and `qrCodeScanningEnabled` is disabled, make `qrCodeScanningEnabled` enabled
-                // qrCodeScanningEnabled cell is right above this
-                let option = SettingsViewController.CellType.switchOption(data:(SwitchOptionModel(type: .qrCodeScanning, isSwitchOn: data.isSwitchOn)))
-                contentData[indexPath.section].items[indexPath.row - 1] = option
-                delegate?.contentDataUpdated()
-                giniConfiguration.qrCodeScanningEnabled = data.isSwitchOn
-            }
         case .multipage:
             giniConfiguration.multipageEnabled = data.isSwitchOn
         case .flashToggle:
             giniConfiguration.flashToggleEnabled = data.isSwitchOn
-            if !data.isSwitchOn && giniConfiguration.flashOnByDefault {
-                // if `flashToggle` is disabled and `flashOnByDefault` is enabled, make `flashOnByDefault` disabled
-                // flashOnByDefault cell is right after
-                let option = SettingsViewController.CellType.switchOption(data:(SwitchOptionModel(type: .flashOnByDefault, isSwitchOn: data.isSwitchOn)))
-                contentData[indexPath.section].items[indexPath.row + 1] = option
-                delegate?.contentDataUpdated()
-                giniConfiguration.flashOnByDefault = data.isSwitchOn
-            }
         case .flashOnByDefault:
             giniConfiguration.flashOnByDefault = data.isSwitchOn
-            if data.isSwitchOn && !giniConfiguration.flashToggleEnabled {
-                // if `flashOnByDefault` is enabled and `flashToggle` is disabled, make `flashToggle` enabled
-                // flashToggle cell is right above this
-                let option = SettingsViewController.CellType.switchOption(data:(SwitchOptionModel(type: .flashToggle, isSwitchOn: data.isSwitchOn)))
-                contentData[indexPath.section].items[indexPath.row - 1] = option
-                delegate?.contentDataUpdated()
-                giniConfiguration.flashToggleEnabled = data.isSwitchOn
-            }
         case .customResourceProvider:
-            let customProvider = GiniBankCustomResourceProvider()
-            giniConfiguration.customResourceProvider = data.isSwitchOn ? customProvider : nil
+            giniConfiguration.customResourceProvider = data.isSwitchOn ? GiniBankCustomResourceProvider() : nil
         case .bottomNavigationBar:
             giniConfiguration.bottomNavigationBarEnabled = data.isSwitchOn
         case .helpNavigationBarBottomAdapter:
-            let customAdapter = CustomBottomNavigationBarAdapter()
-            giniConfiguration.helpNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.helpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
         case .cameraNavigationBarBottomAdapter:
-            let customAdapter = CustomCameraBottomNavigationBarAdapter()
-            giniConfiguration.cameraNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.cameraNavigationBarBottomAdapter = data.isSwitchOn ? CustomCameraBottomNavigationBarAdapter() : nil
         case .reviewNavigationBarBottomAdapter:
-            let customAdapter = CustomReviewScreenBottomNavigationBarAdapter()
-            giniConfiguration.reviewNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.reviewNavigationBarBottomAdapter = data.isSwitchOn ? CustomReviewScreenBottomNavigationBarAdapter() : nil
         case .imagePickerNavigationBarBottomAdapter:
-            let customAdapter = CustomBottomNavigationBarAdapter()
-            giniConfiguration.imagePickerNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.imagePickerNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
         case .onboardingShowAtLaunch:
             giniConfiguration.onboardingShowAtLaunch = data.isSwitchOn
         case .onboardingShowAtFirstLaunch:
             giniConfiguration.onboardingShowAtFirstLaunch = data.isSwitchOn
-            let onboardingShowedUserDefault = UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed")
-            if !data.isSwitchOn && onboardingShowedUserDefault {
-                UserDefaults.standard.removeObject(forKey: "ginicapture.defaults.onboardingShowed")
-            }
+            clearOnboardingDefaultsIfNeeded(isSwitchOn: data.isSwitchOn)
         case .customOnboardingPages:
-            let customPage1 = OnboardingPage(imageName: "captureSuggestion1",
-                                             title: "Page 1",
-                                             description: "Description for page 1")
-            let customPage2 = OnboardingPage(imageName: "captureSuggestion2",
-                                             title: "Page 2",
-                                             description: "Description for page 2")
-            let customPage3 = OnboardingPage(imageName: "captureSuggestion3",
-                                             title: "Page 3",
-                                             description: "Description for page 3")
-            let customPage4 = OnboardingPage(imageName: "captureSuggestion4",
-                                             title: "Page 4",
-                                             description: "Description for page 4")
-            let customPage5 = OnboardingPage(imageName: "captureSuggestion1",
-                                             title: "Page 5",
-                                             description: "Description for page 5")
-            let customOnboardingPages = data.isSwitchOn ? [customPage1, customPage2, customPage3, customPage4, customPage5] : nil
-            giniConfiguration.customOnboardingPages = customOnboardingPages
+            giniConfiguration.customOnboardingPages = data.isSwitchOn ? createCustomOnboardingPages() : nil
         case .onboardingAlignCornersIllustrationAdapter:
-            let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation",
-                                                                    backgroundColor: .red)
-            giniConfiguration.onboardingAlignCornersIllustrationAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.onboardingAlignCornersIllustrationAdapter = createCustomIllustrationAdapter(
+                isSwitchOn: data.isSwitchOn, animationName: "page1Animation", color: .red)
         case .onboardingLightingIllustrationAdapter:
-            let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "cameraAnimation",
-                                                                    backgroundColor: .yellow)
-            giniConfiguration.onboardingLightingIllustrationAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.onboardingLightingIllustrationAdapter = createCustomIllustrationAdapter(
+                isSwitchOn: data.isSwitchOn, animationName: "cameraAnimation", color: .yellow)
         case .onboardingQRCodeIllustrationAdapter:
-            let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation",
-                                                                    backgroundColor: .blue)
-            giniConfiguration.onboardingQRCodeIllustrationAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.onboardingQRCodeIllustrationAdapter = createCustomIllustrationAdapter(
+                isSwitchOn: data.isSwitchOn, animationName: "magicAnimation", color: .blue)
         case .onboardingMultiPageIllustrationAdapter:
-            let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "uploadAnimation",
-                                                                    backgroundColor: .green)
-            giniConfiguration.onboardingMultiPageIllustrationAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.onboardingMultiPageIllustrationAdapter = createCustomIllustrationAdapter(
+                isSwitchOn: data.isSwitchOn, animationName: "uploadAnimation", color: .green)
         case .onboardingNavigationBarBottomAdapter:
-            let customAdapter = CustomOnboardingBottomNavigationBarAdapter()
-            giniConfiguration.onboardingNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.onboardingNavigationBarBottomAdapter = data.isSwitchOn ? CustomOnboardingBottomNavigationBarAdapter() : nil
         case .onButtonLoadingIndicator:
             giniConfiguration.onButtonLoadingIndicator = data.isSwitchOn ? OnButtonLoading() : nil
         case .customLoadingIndicator:
@@ -359,12 +301,9 @@ final class SettingsViewModel {
         case .shouldShowSupportedFormatsScreen:
             giniConfiguration.shouldShowSupportedFormatsScreen = data.isSwitchOn
         case .customMenuItems:
-            let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
-            giniConfiguration.customMenuItems = data.isSwitchOn ? [customMenuItem] : []
+            giniConfiguration.customMenuItems = data.isSwitchOn ? [HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())] : []
         case .customNavigationController:
-            let navigationViewController = UINavigationController()
-            navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
-            giniConfiguration.customNavigationController = data.isSwitchOn ? navigationViewController : nil
+            giniConfiguration.customNavigationController = data.isSwitchOn ? createCustomNavigationController() : nil
         case .shouldShowDragAndDropTutorial:
             giniConfiguration.shouldShowDragAndDropTutorial = data.isSwitchOn
         case .returnAssistantEnabled:
@@ -378,128 +317,199 @@ final class SettingsViewModel {
         case .giniErrorLoggerIsOn:
             giniConfiguration.giniErrorLoggerIsOn = data.isSwitchOn
         case .customGiniErrorLogger:
-            if data.isSwitchOn && giniConfiguration.giniErrorLoggerIsOn {
-                giniConfiguration.customGiniErrorLoggerDelegate = self
-            } else {
-                giniConfiguration.customGiniErrorLoggerDelegate = nil
-            }
-            
+            updateCustomGiniErrorLogger(isSwitchOn: data.isSwitchOn)
         case .debugModeOn:
             giniConfiguration.debugModeOn = data.isSwitchOn
         case .digitalInvoiceOnboardingIllustrationAdapter:
-            let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation",
-                                                                    backgroundColor: UIColor.blue)
-            giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter = createCustomIllustrationAdapter(
+                isSwitchOn: data.isSwitchOn, animationName: "magicAnimation", color: .blue)
         case .digitalInvoiceHelpNavigationBarBottomAdapter:
-            let customAdapter = CustomBottomNavigationBarAdapter()
-            giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
         case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
-            let customAdapter = CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter()
-            giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter = data.isSwitchOn ? CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter() : nil
         case .digitalInvoiceNavigationBarBottomAdapter:
-            let customAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
-            giniConfiguration.digitalInvoiceNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.digitalInvoiceNavigationBarBottomAdapter = data.isSwitchOn ? CustomDigitalInvoiceBottomNavigationBarAdapter() : nil
         case .digitalInvoiceSkontoNavigationBarBottomAdapter:
-            let customAdapter = CustomDigitalInvoiceSkontoBottomNavigationBarAdapter()
-            giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.digitalInvoiceSkontoNavigationBarBottomAdapter = data.isSwitchOn ? CustomDigitalInvoiceSkontoBottomNavigationBarAdapter() : nil
         case .primaryButtonConfiguration:
-            guard data.isSwitchOn else {
-                giniConfiguration.primaryButtonConfiguration = settingsButtonStates.primaryButtonState.configuration
-                return
-            }
-            settingsButtonStates.primaryButtonState.isSwitchOn = data.isSwitchOn
-            
-            let buttonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
-                                                          borderColor: .red,
-                                                          titleColor: .green,
-                                                          shadowColor: .clear,
-                                                          cornerRadius: 22,
-                                                          borderWidth: 4,
-                                                          shadowRadius: 0,
-                                                          withBlurEffect: false)
-            giniConfiguration.primaryButtonConfiguration = buttonConfiguration
+            updateButtonConfiguration(for: &giniConfiguration.primaryButtonConfiguration, state: &settingsButtonStates.primaryButtonState, isSwitchOn: data.isSwitchOn)
         case .secondaryButtonConfiguration:
-            guard data.isSwitchOn else {
-                giniConfiguration.secondaryButtonConfiguration = settingsButtonStates.secondaryButtonState.configuration
-                return
-            }
-            settingsButtonStates.secondaryButtonState.isSwitchOn = data.isSwitchOn
-            let buttonConfiguration = ButtonConfiguration(backgroundColor: .cyan,
-                                                          borderColor: .blue,
-                                                          titleColor: .green,
-                                                          shadowColor: .clear,
-                                                          cornerRadius: 22,
-                                                          borderWidth: 4,
-                                                          shadowRadius: 0,
-                                                          withBlurEffect: false)
-            giniConfiguration.secondaryButtonConfiguration = buttonConfiguration
+            updateButtonConfiguration(for: &giniConfiguration.secondaryButtonConfiguration, state: &settingsButtonStates.secondaryButtonState, isSwitchOn: data.isSwitchOn)
         case .transparentButtonConfiguration:
-            guard data.isSwitchOn else {
-                giniConfiguration.transparentButtonConfiguration = settingsButtonStates.transparentButtonState.configuration
-                return
-            }
-            settingsButtonStates.transparentButtonState.isSwitchOn = data.isSwitchOn
-            let buttonConfiguration = ButtonConfiguration(backgroundColor: .green,
-                                                          borderColor: .yellow,
-                                                          titleColor: .green,
-                                                          shadowColor: .clear,
-                                                          cornerRadius: 22,
-                                                          borderWidth: 4,
-                                                          shadowRadius: 0,
-                                                          withBlurEffect: false)
-            giniConfiguration.transparentButtonConfiguration = buttonConfiguration
+            updateButtonConfiguration(for: &giniConfiguration.transparentButtonConfiguration, state: &settingsButtonStates.transparentButtonState, isSwitchOn: data.isSwitchOn)
         case .cameraControlButtonConfiguration:
-            guard data.isSwitchOn else {
-                giniConfiguration.cameraControlButtonConfiguration = settingsButtonStates.cameraControlButtonState.configuration
-                return
-            }
-            settingsButtonStates.cameraControlButtonState.isSwitchOn = data.isSwitchOn
-            let buttonConfiguration = ButtonConfiguration(backgroundColor: .magenta,
-                                                          borderColor: .lightGray,
-                                                          titleColor: .green,
-                                                          shadowColor: .clear,
-                                                          cornerRadius: 22,
-                                                          borderWidth: 4,
-                                                          shadowRadius: 0,
-                                                          withBlurEffect: false)
-            giniConfiguration.cameraControlButtonConfiguration = buttonConfiguration
+            updateButtonConfiguration(for: &giniConfiguration.cameraControlButtonConfiguration, state: &settingsButtonStates.cameraControlButtonState, isSwitchOn: data.isSwitchOn)
         case .addPageButtonConfiguration:
-            guard data.isSwitchOn else {
-                giniConfiguration.addPageButtonConfiguration = settingsButtonStates.addPageButtonState.configuration
-                return
-            }
-            settingsButtonStates.addPageButtonState.isSwitchOn = data.isSwitchOn
-            let buttonConfiguration = ButtonConfiguration(backgroundColor: .white,
-                                                          borderColor: .red,
-                                                          titleColor: .green,
-                                                          shadowColor: .clear,
-                                                          cornerRadius: 22,
-                                                          borderWidth: 4,
-                                                          shadowRadius: 0,
-                                                          withBlurEffect: false)
-            giniConfiguration.addPageButtonConfiguration = buttonConfiguration
+            updateButtonConfiguration(for: &giniConfiguration.addPageButtonConfiguration, state: &settingsButtonStates.addPageButtonState, isSwitchOn: data.isSwitchOn)
         case .customDocumentValidations:
-            guard data.isSwitchOn else {
-                giniConfiguration.customDocumentValidations = documentValidationsState.validations
-                return
-            }
-            documentValidationsState.isSwitchOn = data.isSwitchOn
-            giniConfiguration.customDocumentValidations = { document in
-                // As an example of custom document validation, we add a more strict check for file size
-                let maxFileSize = 0.5 * 1024 * 1024
-                if document.data.count > Int(maxFileSize) {
-                    let error = CustomDocumentValidationError(message: "Diese Datei ist leider größer als \(maxFileSize)MB")
-                    return CustomDocumentValidationResult.failure(withError: error)
-                }
-                return CustomDocumentValidationResult.success()
-            }
+            updateCustomDocumentValidations(isSwitchOn: data.isSwitchOn)
         case .skontoNavigationBarBottomAdapter:
-            let customAdapter = CustomSkontoNavigationBarBottomAdapter()
-            giniConfiguration.skontoNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.skontoNavigationBarBottomAdapter = data.isSwitchOn ? CustomSkontoNavigationBarBottomAdapter() : nil
         case .skontoHelpNavigationBarBottomAdapter:
-            let customAdapter = CustomBottomNavigationBarAdapter()
-            giniConfiguration.skontoHelpNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
+            giniConfiguration.skontoHelpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
         }
+    }
+
+    private func handleSwitchDependencies(for data: SwitchOptionModel, at indexPath: IndexPath) {
+        switch data.type {
+        case .qrCodeScanning:
+            if !data.isSwitchOn && giniConfiguration.onlyQRCodeScanningEnabled {
+                updateQRCodeScanningOnlyOption(isSwitchOn: false, at: indexPath)
+            }
+        case .qrCodeScanningOnly:
+            if data.isSwitchOn && !giniConfiguration.qrCodeScanningEnabled {
+                updateQRCodeScanningOption(isSwitchOn: true, at: indexPath)
+            }
+        case .flashToggle:
+            if !data.isSwitchOn && giniConfiguration.flashOnByDefault {
+                updateFlashOnByDefaultOption(isSwitchOn: false, at: indexPath)
+            }
+        case .flashOnByDefault:
+            if data.isSwitchOn && !giniConfiguration.flashToggleEnabled {
+                updateFlashToggleOption(isSwitchOn: true, at: indexPath)
+            }
+        default:
+            break
+        }
+    }
+
+    private func updateQRCodeScanningOnlyOption(isSwitchOn: Bool, at indexPath: IndexPath) {
+        let option = SettingsViewController.CellType.switchOption(data: SwitchOptionModel(type: .qrCodeScanningOnly, isSwitchOn: isSwitchOn))
+        contentData[indexPath.section].items[indexPath.row + 1] = option
+        delegate?.contentDataUpdated()
+        giniConfiguration.onlyQRCodeScanningEnabled = isSwitchOn
+    }
+
+    private func updateQRCodeScanningOption(isSwitchOn: Bool, at indexPath: IndexPath) {
+        let option = SettingsViewController.CellType.switchOption(data: SwitchOptionModel(type: .qrCodeScanning, isSwitchOn: isSwitchOn))
+        contentData[indexPath.section].items[indexPath.row - 1] = option
+        delegate?.contentDataUpdated()
+        giniConfiguration.qrCodeScanningEnabled = isSwitchOn
+    }
+
+    private func updateFlashOnByDefaultOption(isSwitchOn: Bool, at indexPath: IndexPath) {
+        let option = SettingsViewController.CellType.switchOption(data: SwitchOptionModel(type: .flashOnByDefault, isSwitchOn: isSwitchOn))
+        contentData[indexPath.section].items[indexPath.row + 1] = option
+        delegate?.contentDataUpdated()
+        giniConfiguration.flashOnByDefault = isSwitchOn
+    }
+
+    private func updateFlashToggleOption(isSwitchOn: Bool, at indexPath: IndexPath) {
+        let option = SettingsViewController.CellType.switchOption(data: SwitchOptionModel(type: .flashToggle, isSwitchOn: isSwitchOn))
+        contentData[indexPath.section].items[indexPath.row - 1] = option
+        delegate?.contentDataUpdated()
+        giniConfiguration.flashToggleEnabled = isSwitchOn
+    }
+
+    private func clearOnboardingDefaultsIfNeeded(isSwitchOn: Bool) {
+        let onboardingShowedUserDefault = UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed")
+        if !isSwitchOn && onboardingShowedUserDefault {
+            UserDefaults.standard.removeObject(forKey: "ginicapture.defaults.onboardingShowed")
+        }
+    }
+
+    private func createCustomIllustrationAdapter(isSwitchOn: Bool, animationName: String, color: UIColor) -> CustomOnboardingIllustrationAdapter? {
+        return isSwitchOn ? CustomOnboardingIllustrationAdapter(animationName: animationName, backgroundColor: color) : nil
+    }
+
+    private func createCustomNavigationController() -> UINavigationController {
+        let navigationViewController = UINavigationController()
+        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
+        return navigationViewController
+    }
+
+    private func updateCustomGiniErrorLogger(isSwitchOn: Bool) {
+        giniConfiguration.customGiniErrorLoggerDelegate = isSwitchOn && giniConfiguration.giniErrorLoggerIsOn ? self : nil
+    }
+
+    private func updateButtonConfiguration(for configuration: inout ButtonConfiguration, state: inout SettingsButtonStates.ButtonState, isSwitchOn: Bool) {
+        guard isSwitchOn else {
+            configuration = state.configuration
+            return
+        }
+        state.isSwitchOn = isSwitchOn
+        configuration = createCustomButtonConfiguration(for: state.type)
+    }
+
+    private func createCustomButtonConfiguration(for type: SettingsButtonStates.ButtonType) -> ButtonConfiguration {
+        switch type {
+        case .primary:
+            return ButtonConfiguration(
+                backgroundColor: .yellow,
+                borderColor: .red,
+                titleColor: .green,
+                shadowColor: .clear,
+                cornerRadius: 22,
+                borderWidth: 4,
+                shadowRadius: 0,
+                withBlurEffect: false
+            )
+        case .secondary:
+            return ButtonConfiguration(
+                backgroundColor: .cyan,
+                borderColor: .blue,
+                titleColor: .green,
+                shadowColor: .clear,
+                cornerRadius: 22,
+                borderWidth: 4,
+                shadowRadius: 0,
+                withBlurEffect: false
+            )
+        case .transparent:
+            return ButtonConfiguration(
+                backgroundColor: .green,
+                borderColor: .yellow,
+                titleColor: .green,
+                shadowColor: .clear,
+                cornerRadius: 22,
+                borderWidth: 4,
+                shadowRadius: 0,
+                withBlurEffect: false
+            )
+        case .cameraControl:
+            return ButtonConfiguration(
+                backgroundColor: .magenta,
+                borderColor: .lightGray,
+                titleColor: .green,
+                shadowColor: .clear,
+                cornerRadius: 22,
+                borderWidth: 4,
+                shadowRadius: 0,
+                withBlurEffect: false
+            )
+        case .addPage:
+            return ButtonConfiguration(
+                backgroundColor: .white,
+                borderColor: .red,
+                titleColor: .green,
+                shadowColor: .clear,
+                cornerRadius: 22,
+                borderWidth: 4,
+                shadowRadius: 0,
+                withBlurEffect: false
+            )
+        }
+    }
+
+    private func updateCustomDocumentValidations(isSwitchOn: Bool) {
+        giniConfiguration.customDocumentValidations = isSwitchOn ? { document in
+            let maxFileSize = 0.5 * 1024 * 1024
+            if document.data.count > Int(maxFileSize) {
+                let error = CustomDocumentValidationError(message: "Diese Datei ist leider größer als \(maxFileSize)MB")
+                return CustomDocumentValidationResult.failure(withError: error)
+            }
+            return CustomDocumentValidationResult.success()
+        } : documentValidationsState.validations
+    }
+
+    private func createCustomOnboardingPages() -> [OnboardingPage] {
+        return [
+            OnboardingPage(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1"),
+            OnboardingPage(imageName: "captureSuggestion2", title: "Page 2", description: "Description for page 2"),
+            OnboardingPage(imageName: "captureSuggestion3", title: "Page 3", description: "Description for page 3"),
+            OnboardingPage(imageName: "captureSuggestion4", title: "Page 4", description: "Description for page 4"),
+            OnboardingPage(imageName: "captureSuggestion1", title: "Page 5", description: "Description for page 5")
+        ]
     }
     
     func handleFileImportOption(fileImportIndex: Int) {

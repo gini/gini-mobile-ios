@@ -54,16 +54,21 @@ final class SettingsViewModelTests: XCTestCase {
 	}()
 	
 	private lazy var settingsButtonStates: SettingsButtonStates = {
-		let primaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.primaryButtonConfiguration,
-																  isSwitchOn: false)
-		let secondaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.secondaryButtonConfiguration,
-																	isSwitchOn: false)
-		let transparentButtonState = SettingsButtonStates.ButtonState(configuration: configuration.transparentButtonConfiguration,
-																	  isSwitchOn: false)
-		let cameraControlButtonState = SettingsButtonStates.ButtonState(configuration: configuration.cameraControlButtonConfiguration,
-																		isSwitchOn: false)
-		let addPageButtonState = SettingsButtonStates.ButtonState(configuration: configuration.addPageButtonConfiguration,
-																  isSwitchOn: false)
+        let primaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.primaryButtonConfiguration,
+                                                                  isSwitchOn: false,
+                                                                  type: .primary)
+        let secondaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.secondaryButtonConfiguration,
+                                                                    isSwitchOn: false,
+                                                                    type: .secondary)
+        let transparentButtonState = SettingsButtonStates.ButtonState(configuration: configuration.transparentButtonConfiguration,
+                                                                      isSwitchOn: false,
+                                                                      type: .transparent)
+        let cameraControlButtonState = SettingsButtonStates.ButtonState(configuration: configuration.cameraControlButtonConfiguration,
+                                                                        isSwitchOn: false,
+                                                                        type: .cameraControl)
+        let addPageButtonState = SettingsButtonStates.ButtonState(configuration: configuration.addPageButtonConfiguration,
+                                                                  isSwitchOn: false,
+                                                                  type: .addPage)
 		return SettingsButtonStates(primaryButtonState: primaryButtonState,
 									secondaryButtonState: secondaryButtonState,
 									transparentButtonState: transparentButtonState,
