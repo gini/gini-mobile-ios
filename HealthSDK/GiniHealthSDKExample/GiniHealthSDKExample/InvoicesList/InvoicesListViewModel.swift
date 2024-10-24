@@ -213,7 +213,11 @@ extension InvoicesListViewModel {
         if paymentComponentsController.selectedPaymentProvider == nil {
             presentPaymentViewBottomSheet(documentId)
         } else {
-            didTapOnPayInvoice(documentId: documentId)
+            if giniHealthConfiguration.showPaymentReviewScreen {
+                didTapOnPayInvoice(documentId: documentId)
+            } else {
+                presentPaymentViewBottomSheet(documentId)
+            }
         }
     }
 
