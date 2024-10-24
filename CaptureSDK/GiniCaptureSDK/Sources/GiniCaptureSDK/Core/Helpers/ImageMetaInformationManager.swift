@@ -10,6 +10,7 @@ import UIKit
 import ImageIO
 import AVFoundation
 import MobileCoreServices
+import GiniBankAPILibrary
 
 typealias MetaInformation = NSDictionary
 
@@ -92,13 +93,7 @@ final class ImageMetaInformationManager {
     // user comment fields
     let userCommentRotation = "RotDeltaDeg"
     let userCommentContentId = "ContentId"
-    let userCommentPlatform = "Platform"
-    let userCommentOSVer = "OSVer"
-    let userCommentGiniVersionVer = "GiniCaptureVer"
     let userCommentDeviceOrientation = "DeviceOrientation"
-    let userCommentSource = "Source"
-    let userCommentImportMethod = "ImportMethod"
-    let userCommentEntryPoint = "EntryPoint"
 
     var imageData: Data?
     var metaInformation: MetaInformation?
@@ -232,43 +227,23 @@ final class ImageMetaInformationManager {
         return nil
     }
 
-    fileprivate func entryFieldString(_ entryPoint: GiniConfiguration.GiniEntryPoint) -> String {
-            switch entryPoint {
-            case .button:
-                return "button"
-            case .field:
-                return "field"
-            }
-        }
-
     fileprivate func userComment(rotationDegrees: Int? = nil) -> String {
-        let platform = "iOS"
-        let osVersion = UIDevice.current.systemVersion
-        let GiniCaptureVersion = GiniCapture.versionString
-        let uuid = imageUUID()
-        let entryPoint = entryFieldString(GiniConfiguration.shared.entryPoint)
-        var comment = "\(userCommentPlatform)=\(platform)," +
-            "\(userCommentOSVer)=\(osVersion)," +
-            "\(userCommentGiniVersionVer)=\(GiniCaptureVersion)," +
-            "\(userCommentContentId)=\(uuid)," +
-        "\(userCommentSource)=\(imageSource.value)," +
-        "\(userCommentEntryPoint)=\(entryPoint)"
-
-        if let imageImportMethod = imageImportMethod, imageSource.value != DocumentSource.camera.value {
-            comment += ",\(userCommentImportMethod)=\(imageImportMethod.rawValue)"
-        }
-
+        var rotationNorm = ""
         if let rotationDegrees = rotationDegrees {
-            // normalize the rotation to 0-360
-            let rotation = imageRotationDeltaDegrees() + rotationDegrees
-            let rotationNorm = normalizedDegrees(imageRotation: rotation)
-            comment += ",\(userCommentRotation)=\(rotationNorm)"
+            rotationNorm = "\(normalizedDegrees(imageRotation: imageRotationDeltaDegrees() + rotationDegrees))"
         }
-
-        if let deviceOrientationOnCapture = deviceOrientationOnCapture {
-            comment += ",\(userCommentDeviceOrientation)=\(deviceOrientationOnCapture)"
-        }
-        return comment
+        return Document.UploadMetadata.constructComment(
+            osVersion: UIDevice.current.systemVersion,
+            giniVersion: GiniCapture.versionString,
+            contentId: imageUUID(),
+            source: imageSource.value,
+            entryPoint: GiniConfiguration.shared.entryPoint.stringValue,
+            importMethod: imageSource.value != DocumentSource.camera.value
+            ? imageImportMethod?.rawValue ?? ""
+            : "",
+            deviceOrientation: deviceOrientationOnCapture ?? "",
+            rotation: rotationNorm
+        )
     }
 
     fileprivate func imageUUID() -> String {

@@ -246,7 +246,11 @@ extension Document {
          * - Parameter branchId:            The branch id (i.e: the BLZ of a Bank in Germany)
          * - Parameter additionalHeaders:   Additional headers for the metadata. i.e: ["customerId":"123456"]
          */
-        public init(branchId: String? = nil, uploadMetadata: UploadMetadata? = nil, additionalHeaders: [String: String]? = nil) {
+        public init(
+            branchId: String? = nil,
+            uploadMetadata: UploadMetadata? = nil,
+            additionalHeaders: [String: String]? = nil
+        ) {
             if let branchId = branchId {
                 headers[Document.Metadata.headerKeyPrefix + Document.Metadata.branchIdHeaderKey] = branchId
             }
@@ -273,60 +277,6 @@ extension Document {
         /// Checks if upload metadata is present
         public func hasUploadMetadata() -> Bool {
             headers.keys.contains(Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey)
-        }
-    }
-
-    /**
-     * The metadata contains document upload metadata
-     */
-    @objc public class UploadMetadata: NSObject {
-        var userComment: String
-        let userCommentPlatform = "Platform"
-        let userCommentOSVer = "OSVer"
-        let userCommentGiniVersionVer = "GiniCaptureVer"
-        let userCommentDeviceOrientation = "DeviceOrientation"
-        let userCommentSource = "Source"
-        let userCommentImportMethod = "ImportMethod"
-        let userCommentEntryPoint = "EntryPoint"
-
-        /**
-         * The document upload metadata initializer
-         * headers.
-         *
-         * - Parameter giniCaptureVersion:   GiniCapture version
-         * - Parameter deviceOrientation:    Device orientation, portrait or landscape
-         * - Parameter source:               Source of the document
-         * - Parameter importMethod:         Import method
-         * - Parameter entryPoint:           Entry point
-         * - Parameter osVersion:            OS version
-         */
-        public init(
-            giniCaptureVersion: String,
-            deviceOrientation: String,
-            source: String,
-            importMethod: String,
-            entryPoint: String,
-            osVersion: String
-        ) {
-            let platform = "iOS"
-            var comment = "\(userCommentPlatform)=\(platform)," +
-            "\(userCommentOSVer)=\(osVersion)"
-            if !giniCaptureVersion.isEmpty {
-                comment += ",\(userCommentGiniVersionVer)=\(giniCaptureVersion)"
-            }
-            if !source.isEmpty {
-                comment += ",\(userCommentSource)=\(source)"
-            }
-            if !entryPoint.isEmpty {
-                comment += ",\(userCommentEntryPoint)=\(entryPoint)"
-            }
-            if !importMethod.isEmpty {
-                comment += ",\(userCommentImportMethod)=\(importMethod)"
-            }
-            if !deviceOrientation.isEmpty {
-                comment += ",\(userCommentDeviceOrientation)=\(deviceOrientation)"
-            }
-            userComment = comment
         }
     }
 }
