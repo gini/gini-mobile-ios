@@ -88,7 +88,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         return view
     }
     
-    func bankSelectionBottomSheet() -> UIViewController {
+    func bankSelectionBottomSheet(documentId: String?) -> UIViewController {
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders.map { $0.toHealthPaymentProvider() },
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                    configuration: configurationProvider.bankSelectionConfiguration,
@@ -125,7 +125,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         paymentView(documentId: documentId ?? "")
     }
 
-    func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: GiniInternalPaymentSDK.PaymentInfo?, trackingDelegate: (any GiniHealthSDK.GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthSDK.GiniHealthError?) -> Void) {
+    func loadPaymentReviewScreenFor(documentId documentID: String?, paymentInfo: GiniInternalPaymentSDK.PaymentInfo?, trackingDelegate: (any GiniHealthSDK.GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthSDK.GiniHealthError?) -> Void) {
         switch documentID {
         case MockSessionManager.payableDocumentID:
             completion(UIViewController(), nil)
