@@ -48,6 +48,7 @@ public protocol PaymentReviewSupportedFormatsProtocol {
 
 public protocol PaymentReviewActionProtocol {
     func updatedPaymentProvider(_ paymentProvider: PaymentProvider)
+    func openMoreInformationViewController()
 }
 
 /**
@@ -295,7 +296,7 @@ extension PaymentReviewModel: BanksSelectionProtocol {
     }
 
     public func didTapOnMoreInformation() {
-
+        delegate?.openMoreInformationViewController()
     }
 
     public func didTapOnClose() {}

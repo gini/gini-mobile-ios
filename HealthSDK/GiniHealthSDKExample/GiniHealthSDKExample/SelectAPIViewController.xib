@@ -111,7 +111,7 @@
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="ePy-pl-SKY"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                            <state key="normal" title="Invoices list">
+                            <state key="normal" title="Invoices list with document">
                                 <color key="titleColor" red="0.0" green="0.61960784310000006" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <userDefinedRuntimeAttributes>
@@ -131,7 +131,7 @@
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="WIB-Ua-aXH"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                            <state key="normal" title="Orders list">
+                            <state key="normal" title="Orders list without document">
                                 <color key="titleColor" red="0.0" green="0.61960784310000006" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <userDefinedRuntimeAttributes>
