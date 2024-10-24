@@ -350,7 +350,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
         return installAppBottomView
     }
 
-    public func shareInvoiceBottomSheet() -> BottomSheetViewController {
+    public func shareInvoiceBottomSheet(documentId: String?) -> BottomSheetViewController {
         previousPresentedView = nil
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
@@ -560,7 +560,7 @@ extension PaymentComponentsController: BanksSelectionProtocol {
         print("Tapped Forward on Install Bottom Sheet")
     }
 
-    public func didTapOnContinueOnShareBottomSheet() {
+    public func didTapOnContinueOnShareBottomSheet(documentId: String?) {
         print("Tapped Continue on Share Bottom Sheet")
     }
 
@@ -586,7 +586,7 @@ extension PaymentComponentsController: BanksSelectionProtocol {
 }
 
 extension PaymentComponentsController: ShareInvoiceBottomViewProtocol {
-    public func didTapOnContinueToShareInvoice() {
+    public func didTapOnContinueToShareInvoice(documentId: String?) {
         bottomViewDelegate?.didTapOnContinueOnShareBottomSheet()
     }
 }
