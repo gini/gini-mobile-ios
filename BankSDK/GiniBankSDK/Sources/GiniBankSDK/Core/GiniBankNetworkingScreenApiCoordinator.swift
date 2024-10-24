@@ -44,12 +44,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         // they are ready to be delivered after capturing them.
         if let qrCodeDocument = document as? GiniQRCodeDocument,
            let format = qrCodeDocument.qrCodeFormat {
-            switch format {
-            case .eps4mobile:
+            if format == .eps4mobile {
                 deliverExtractionResult(for: QRCodesExtractor.epsCodeUrlKey, document: qrCodeDocument)
                 return
-            default:
-                break
             }
         }
 
