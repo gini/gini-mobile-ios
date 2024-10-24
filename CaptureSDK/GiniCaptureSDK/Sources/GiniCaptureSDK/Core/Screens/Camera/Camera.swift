@@ -428,22 +428,10 @@ fileprivate extension Camera {
 
     func generateUploadMetadata() -> Document.UploadMetadata {
         Document.UploadMetadata(
-            giniCaptureVersion: GiniCaptureSDKVersion,
-            deviceOrientation: UIDevice.current.orientation.isLandscape ? "landscape" : "portrait",
-            source: DocumentSource.camera.value,
-            importMethod: "",
-            entryPoint: entryFieldString(GiniConfiguration.shared.entryPoint),
-            osVersion: UIDevice.current.systemVersion
+            deviceOrientation: UIDevice.current.orientation,
+            documentSource: .camera,
+            importMethod: nil
         )
-    }
-
-    func entryFieldString(_ entryPoint: GiniConfiguration.GiniEntryPoint) -> String {
-        switch entryPoint {
-        case .button:
-            return "button"
-        case .field:
-            return "field"
-        }
     }
 }
 
