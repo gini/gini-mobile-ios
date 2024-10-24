@@ -165,7 +165,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             createPaymentRequest()
         } else if model.delegate?.supportsOpenWith() ?? false {
             if model.delegate?.shouldShowOnboardingScreenFor() ?? false {
-                model.openOnboardingShareInvoiceBottomSheet()
+                model.openOnboardingShareInvoiceBottomSheet(documentId: model.documentId)
             } else {
                 obtainPDFFromPaymentRequest()
             }

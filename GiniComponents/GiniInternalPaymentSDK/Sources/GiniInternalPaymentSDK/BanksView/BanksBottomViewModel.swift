@@ -14,7 +14,7 @@ public protocol BanksSelectionProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider, documentId: String?)
     func didTapOnMoreInformation()
     func didTapOnClose()
-    func didTapOnContinueOnShareBottomSheet()
+    func didTapOnContinueOnShareBottomSheet(documentId: String?)
     func didTapForwardOnInstallBottomSheet()
     func didTapOnPayButton()
 }

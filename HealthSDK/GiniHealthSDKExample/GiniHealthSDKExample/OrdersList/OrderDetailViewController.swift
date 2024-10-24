@@ -197,7 +197,7 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
         } else {
             if paymentComponentsController.supportsOpenWith() {
                 if paymentComponentsController.shouldShowOnboardingScreenFor() {
-                    let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet()
+                    let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet(documentId: documentId)
                     shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
                     self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
                 } else {
@@ -323,7 +323,7 @@ extension OrderDetailViewController: PaymentProvidersBottomViewProtocol {
         }
     }
 
-    func didTapOnContinueOnShareBottomSheet() {
+    func didTapOnContinueOnShareBottomSheet(documentId: String?) {
         paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(), viewController: self)
     }
 

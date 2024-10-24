@@ -278,7 +278,7 @@ extension InvoicesListViewModel {
         } else {
             if paymentComponentsController.supportsOpenWith() {
                 if paymentComponentsController.shouldShowOnboardingScreenFor() {
-                    let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet()
+                    let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet(documentId: documentId)
                     shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
                     self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
                 } else {
@@ -354,7 +354,10 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
 }
 
 extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
-    func didTapOnContinueOnShareBottomSheet() {
+    func didTapOnContinueOnShareBottomSheet(documentId: String?) {
+        if let index = invoices.firstIndex(where: { $0.documentId == documentId }) {
+            paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(for: index), viewController: self.coordinator.invoicesListViewController)
+        }
     }
     
     func didTapForwardOnInstallBottomSheet() {

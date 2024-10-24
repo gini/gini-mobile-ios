@@ -10,7 +10,7 @@ import UIKit
 import GiniHealthAPILibrary
 
 public protocol ShareInvoiceBottomViewProtocol: AnyObject {
-    func didTapOnContinueToShareInvoice()
+    func didTapOnContinueToShareInvoice(documentId: String?)
 }
 
 struct SingleApp {
@@ -35,6 +35,8 @@ public final class ShareInvoiceBottomViewModel {
     let descriptionLabelText: String
     let tipLabelText: String
     let bankImageIcon: UIImage
+
+    public var documentId: String?
 
     var appsMocked: [SingleApp] = []
 
@@ -69,6 +71,6 @@ public final class ShareInvoiceBottomViewModel {
     }
     
     func didTapOnContinue() {
-        viewDelegate?.didTapOnContinueToShareInvoice()
+        viewDelegate?.didTapOnContinueToShareInvoice(documentId: documentId)
     }
 }

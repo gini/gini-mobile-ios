@@ -19,7 +19,7 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
 
 public protocol BottomSheetsProviderProtocol: AnyObject {
     func installAppBottomSheet() -> BottomSheetViewController
-    func shareInvoiceBottomSheet() -> BottomSheetViewController
+    func shareInvoiceBottomSheet(documentId: String?) -> BottomSheetViewController
     func bankSelectionBottomSheet(documentId: String?) -> UIViewController
 }
 
@@ -189,13 +189,15 @@ public class PaymentReviewModel: NSObject {
     }
 
     func openInstallAppBottomSheet() {
-        guard let installAppBottomSheet = bottomSheetsProvider?.installAppBottomSheet() else { return }
+        guard let installAppBottomSheet = bottomSheetsProvider?.installAppBottomSheet() as? InstallAppBottomView else { return }
+        installAppBottomSheet.viewModel.viewDelegate = self
         installAppBottomSheet.modalPresentationStyle = .overFullScreen
         viewModelDelegate?.presentInstallAppBottomSheet(bottomSheet: installAppBottomSheet)
     }
 
-    func openOnboardingShareInvoiceBottomSheet() {
-        guard let shareInvoiceBottomSheet = bottomSheetsProvider?.shareInvoiceBottomSheet() else { return }
+    func openOnboardingShareInvoiceBottomSheet(documentId: String?) {
+        guard let shareInvoiceBottomSheet = bottomSheetsProvider?.shareInvoiceBottomSheet(documentId: documentId) as? ShareInvoiceBottomView else { return }
+        shareInvoiceBottomSheet.viewModel.viewDelegate = self
         shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
         viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: shareInvoiceBottomSheet)
     }
@@ -280,7 +282,7 @@ extension PaymentReviewModel: InstallAppBottomViewProtocol {
 }
 
 extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
-    public func didTapOnContinueToShareInvoice() {
+    public func didTapOnContinueToShareInvoice(documentId: String?) {
         viewModelDelegate?.obtainPDFFromPaymentRequest()
     }
 }
@@ -292,13 +294,17 @@ extension PaymentReviewModel: BanksSelectionProtocol {
         onNewPaymentProvider?()
     }
 
-    public func didTapOnMoreInformation() {}
+    public func didTapOnMoreInformation() {
+
+    }
 
     public func didTapOnClose() {}
 
-    public func didTapOnContinueOnShareBottomSheet() {}
+    public func didTapOnContinueOnShareBottomSheet(documentId: String?) {}
 
-    public func didTapForwardOnInstallBottomSheet() {}
+    public func didTapForwardOnInstallBottomSheet() {
+
+    }
 
     public func didTapOnPayButton() {}
 
