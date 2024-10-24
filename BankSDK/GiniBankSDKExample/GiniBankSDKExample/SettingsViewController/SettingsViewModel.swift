@@ -353,52 +353,46 @@ final class SettingsViewModel {
     private func handleSwitchDependencies(for data: SwitchOptionModel, at indexPath: IndexPath) {
         switch data.type {
         case .qrCodeScanning:
-            if !data.isSwitchOn && giniConfiguration.onlyQRCodeScanningEnabled {
-                updateQRCodeScanningOnlyOption(isSwitchOn: false, at: indexPath)
-            }
+            handleQRCodeScanningDependency(data: data, at: indexPath)
         case .qrCodeScanningOnly:
-            if data.isSwitchOn && !giniConfiguration.qrCodeScanningEnabled {
-                updateQRCodeScanningOption(isSwitchOn: true, at: indexPath)
-            }
+            handleQRCodeScanningOnlyDependency(data: data, at: indexPath)
         case .flashToggle:
-            if !data.isSwitchOn && giniConfiguration.flashOnByDefault {
-                updateFlashOnByDefaultOption(isSwitchOn: false, at: indexPath)
-            }
+            handleFlashToggleDependency(data: data, at: indexPath)
         case .flashOnByDefault:
-            if data.isSwitchOn && !giniConfiguration.flashToggleEnabled {
-                updateFlashToggleOption(isSwitchOn: true, at: indexPath)
-            }
+            handleFlashOnByDefaultDependency(data: data, at: indexPath)
         default:
             break
         }
     }
 
-    private func updateQRCodeScanningOnlyOption(isSwitchOn: Bool, at indexPath: IndexPath) {
-        let option = SettingsViewController.CellType.switchOption(data: SwitchOptionModel(type: .qrCodeScanningOnly, isSwitchOn: isSwitchOn))
-        contentData[indexPath.section].items[indexPath.row + 1] = option
-        delegate?.contentDataUpdated()
-        giniConfiguration.onlyQRCodeScanningEnabled = isSwitchOn
+    private func handleQRCodeScanningDependency(data: SwitchOptionModel, at indexPath: IndexPath) {
+        guard !data.isSwitchOn, giniConfiguration.onlyQRCodeScanningEnabled else { return }
+        giniConfiguration.onlyQRCodeScanningEnabled = false
+        updateOption(type: .qrCodeScanningOnly, isSwitchOn: false, indexOffset: 1, at: indexPath)
     }
 
-    private func updateQRCodeScanningOption(isSwitchOn: Bool, at indexPath: IndexPath) {
-        let option = SettingsViewController.CellType.switchOption(data: SwitchOptionModel(type: .qrCodeScanning, isSwitchOn: isSwitchOn))
-        contentData[indexPath.section].items[indexPath.row - 1] = option
-        delegate?.contentDataUpdated()
-        giniConfiguration.qrCodeScanningEnabled = isSwitchOn
+    private func handleQRCodeScanningOnlyDependency(data: SwitchOptionModel, at indexPath: IndexPath) {
+        guard data.isSwitchOn, !giniConfiguration.qrCodeScanningEnabled else { return }
+        giniConfiguration.qrCodeScanningEnabled = true
+        updateOption(type: .qrCodeScanning, isSwitchOn: true, indexOffset: -1, at: indexPath)
     }
 
-    private func updateFlashOnByDefaultOption(isSwitchOn: Bool, at indexPath: IndexPath) {
-        let option = SettingsViewController.CellType.switchOption(data: SwitchOptionModel(type: .flashOnByDefault, isSwitchOn: isSwitchOn))
-        contentData[indexPath.section].items[indexPath.row + 1] = option
-        delegate?.contentDataUpdated()
-        giniConfiguration.flashOnByDefault = isSwitchOn
+    private func handleFlashToggleDependency(data: SwitchOptionModel, at indexPath: IndexPath) {
+        guard !data.isSwitchOn, giniConfiguration.flashOnByDefault else { return }
+        giniConfiguration.flashOnByDefault = false
+        updateOption(type: .flashOnByDefault, isSwitchOn: false, indexOffset: 1, at: indexPath)
     }
 
-    private func updateFlashToggleOption(isSwitchOn: Bool, at indexPath: IndexPath) {
-        let option = SettingsViewController.CellType.switchOption(data: SwitchOptionModel(type: .flashToggle, isSwitchOn: isSwitchOn))
-        contentData[indexPath.section].items[indexPath.row - 1] = option
+    private func handleFlashOnByDefaultDependency(data: SwitchOptionModel, at indexPath: IndexPath) {
+        guard data.isSwitchOn, !giniConfiguration.flashToggleEnabled else { return }
+        giniConfiguration.flashToggleEnabled = true
+        updateOption(type: .flashToggle, isSwitchOn: true, indexOffset: -1, at: indexPath)
+    }
+
+    private func updateOption(type: SwitchOptionModel.OptionType, isSwitchOn: Bool, indexOffset: Int, at indexPath: IndexPath) {
+        let option = SettingsViewController.CellType.switchOption(data: SwitchOptionModel(type: type, isSwitchOn: isSwitchOn))
+        contentData[indexPath.section].items[indexPath.row + indexOffset] = option
         delegate?.contentDataUpdated()
-        giniConfiguration.flashToggleEnabled = isSwitchOn
     }
 
     private func clearOnboardingDefaultsIfNeeded(isSwitchOn: Bool) {
