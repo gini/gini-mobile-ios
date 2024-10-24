@@ -107,27 +107,11 @@ public class GiniCaptureDocumentBuilder: NSObject {
     }
 
     public func generateUploadMetadata() -> Document.UploadMetadata {
-        var deviceOrientation = ""
-        if let isLandscape = self.deviceOrientation?.isLandscape {
-            deviceOrientation = isLandscape ? "landscape" : "portrait"
-        }
         return Document.UploadMetadata(
-            giniCaptureVersion: GiniCaptureSDKVersion,
-            deviceOrientation: deviceOrientation,
-            source: documentSource.value,
-            importMethod: importMethod.rawValue,
-            entryPoint: entryFieldString(GiniConfiguration.shared.entryPoint),
-            osVersion: UIDevice.current.systemVersion
+            interfaceOrientation: deviceOrientation ?? .portrait,
+            documentSource: documentSource,
+            importMethod: importMethod
         )
-    }
-
-    fileprivate func entryFieldString(_ entryPoint: GiniConfiguration.GiniEntryPoint) -> String {
-        switch entryPoint {
-        case .button:
-            return "button"
-        case .field:
-            return "field"
-        }
     }
 }
 

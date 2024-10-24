@@ -294,24 +294,16 @@ extension GalleryCoordinator: ImagePickerViewControllerDelegate {
                 data = imageData
             }
         }
-        let uploadMeta = Document.UploadMetadata(
-            giniCaptureVersion: GiniCaptureSDKVersion,
-            deviceOrientation: "",
-            source: DocumentSource.external.value,
-            importMethod: DocumentImportMethod.picker.rawValue,
-            entryPoint: {
-                switch GiniConfiguration.shared.entryPoint {
-                case .button: "button"
-                case .field: "field"
-                }
-            }(),
-            osVersion: UIDevice.current.systemVersion
+        let uploadMetadata = Document.UploadMetadata(
+            interfaceOrientation: .portrait,
+            documentSource: .external,
+            importMethod: .picker
         )
         let imageDocument = GiniImageDocument(data: data,
                                               imageSource: .external,
                                               imageImportMethod: .picker,
                                               deviceOrientation: nil,
-                                              uploadMetadata: uploadMeta)
+                                              uploadMetadata: uploadMetadata)
 
         selectedImageDocuments.append((assetId: asset.identifier,
                                        imageDocument: imageDocument))
