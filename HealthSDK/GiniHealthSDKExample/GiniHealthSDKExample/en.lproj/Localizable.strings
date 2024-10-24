@@ -14,3 +14,12 @@
 "gini.health.paymentcomponent.payment.info.gini.privacypolicy.link" = "https://www.google.com/"; // This should be overwrited by client with their privacy policy link
 "giniHealthSDKExample.error.contains.multiple.invoices" = "Document contains multiple invoices";
 "giniHealthSDKExample.error.invoice.not.payable" = "Invoice is not payable";
+"example.order.detail.Alert.FieldError" = "Payment details are incomplete";
+"example.order.detail.Alert.Ok" = "Ok";
+"example.order.detail.Amount" = "Amount";
+"example.order.detail.IBAN" = "IBAN";
+"example.order.detail.Pay" = "Pay";
+"example.order.detail.Purpose" = "Purpose";
+"example.order.detail.Recipient" = "Recipient";
+"example.order.navigation.orderdetails" = "Order Details";
+"example.uploadInvoices.button.title" = "Custom Order";

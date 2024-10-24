@@ -26,6 +26,7 @@ enum GiniCaptureAPIType {
     case component
     case paymentReview
     case invoicesList
+    case ordersList
 }
 
 /**
@@ -39,7 +40,8 @@ final class SelectAPIViewController: UIViewController {
     @IBOutlet private weak var startWithTestDocumentButton: UIButton!
     @IBOutlet private weak var startWithGiniCaptureButton: UIButton!
     @IBOutlet private weak var invoicesListButton: UIButton!
-    
+    @IBOutlet private weak var ordersListButton: UIButton!
+
     weak var delegate: SelectAPIViewControllerDelegate?
     weak var debugMenuPresenter: DebugMenuPresenter?
     
@@ -72,6 +74,10 @@ final class SelectAPIViewController: UIViewController {
     
     @IBAction func launchInvoicesList(_ sender: Any) {
         delegate?.selectAPI(viewController: self, didSelectApi: .invoicesList)
+    }
+    
+    @IBAction func launchOrdersList(_ sender: Any) {
+        delegate?.selectAPI(viewController: self, didSelectApi: .ordersList)
     }
     
     @objc private func showDebugMenu() {

@@ -274,8 +274,8 @@ final class AppCoordinator: Coordinator {
         DispatchQueue.main.async {
             self.selectAPIViewController.hideActivityIndicator()
         }
-        let configuration = GiniHealthConfiguration()
-        
+
+        giniHealthConfiguration.useInvoiceWithoutDocument = false
         health.setConfiguration(giniHealthConfiguration)
         health.delegate = self
 
@@ -290,6 +290,25 @@ final class AppCoordinator: Coordinator {
             self.add(childCoordinator: invoicesListCoordinator)
             self.rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
         }
+    }
+
+    fileprivate func showOrdersList(orders: [Order]? = nil) {
+        DispatchQueue.main.async {
+            self.selectAPIViewController.hideActivityIndicator()
+        }
+
+        giniHealthConfiguration.useInvoiceWithoutDocument = true
+        health.setConfiguration(giniHealthConfiguration)
+        health.delegate = self
+        
+        let orderListCoordinator = OrderListCoordinator()
+        paymentComponentsController = PaymentComponentsController(giniHealth: health)
+        orderListCoordinator.start(documentService: health.documentService,
+                                   hardcodedOrdersController: HardcodedOrdersController(),
+                                   paymentComponentsController: paymentComponentsController,
+                                   orders: orders)
+        add(childCoordinator: orderListCoordinator)
+        rootViewController.present(orderListCoordinator.rootViewController, animated: true)
     }
 }
 
@@ -306,6 +325,8 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
             showPaymentReviewWithTestDocument()
         case .invoicesList:
             showInvoicesList()
+        case .ordersList:
+            showOrdersList()
         }
     }
 }

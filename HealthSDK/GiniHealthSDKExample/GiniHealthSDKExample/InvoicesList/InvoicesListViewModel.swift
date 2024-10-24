@@ -288,9 +288,13 @@ extension InvoicesListViewModel {
                         paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo(for: index)) { [weak self] result in
                             switch result {
                             case .success(let paymentRequestID):
-                                self?.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true, completion: {
+                                if self?.coordinator.invoicesListViewController.presentedViewController != nil {
+                                    self?.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true, completion: {
+                                        self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                                    })
+                                } else {
                                     self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
-                                })
+                                }
                             case .failure(let error):
                                 self?.errors.append(error.localizedDescription)
                                 self?.showErrorsIfAny()

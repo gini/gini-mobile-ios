@@ -138,7 +138,7 @@ public final class GiniHealthConfiguration: NSObject {
     }
 
     // We will switch this option internally to stil handle documents with extractions on GiniHealthSDK and still handle invoices without document on GiniHealthSDK
-    var useInvoiceWithoutDocument: Bool = false
+    public var useInvoiceWithoutDocument: Bool = true
 
     /**
     Custom localization configuration for localizable strings.

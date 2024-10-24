@@ -481,7 +481,7 @@ public final class PaymentReviewContainerView: UIView {
         payInvoiceButton.customConfigure(text: viewModel.strings.payInvoiceLabelText,
                                          textColor: viewModel.selectedPaymentProvider.colors.text.toColor(),
                                          backgroundColor: viewModel.selectedPaymentProvider.colors.background.toColor(),
-                                         leftImageData: viewModel.selectedPaymentProvider.iconData)
+                                         leftImageData: viewModel.configuration.showBanksPicker ? nil : viewModel.selectedPaymentProvider.iconData)
         disablePayButtonIfNeeded()
         payInvoiceButton.didTapButton = { [weak self] in
             self?.payButtonClicked()
