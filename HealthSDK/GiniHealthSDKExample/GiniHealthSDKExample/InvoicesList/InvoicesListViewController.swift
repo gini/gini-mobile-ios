@@ -137,7 +137,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let documentID = viewModel.invoices[indexPath.row].documentID
+        let documentID = viewModel.invoices[indexPath.row].documentId
         viewModel.checkForErrors(documentID: documentID)
     }
 }

@@ -1,0 +1,194 @@
+{
+    "extractions": {
+        "medical_service_provider": {
+            "entity": "text",
+            "value": "DR. SOMMER TEAM"
+        },
+        "amount_to_pay": {
+            "entity": "amount",
+            "value": "172.21:EUR",
+            "box": {
+                "top": 570.55,
+                "left": 2003.55,
+                "width": 116.89999999999986,
+                "height": 39.0,
+                "page": 2
+            }
+        },
+        "bic": {
+            "entity": "bic",
+            "value": "SOLADEST600",
+            "box": {
+                "top": 2909.3,
+                "left": 1883.3,
+                "width": 261.0000000000002,
+                "height": 29.0,
+                "page": 1
+            }
+        },
+        "payment_due_date": {
+            "entity": "date",
+            "value": "2020-05-13",
+            "box": {
+                "top": 710.2,
+                "left": 1196.2,
+                "width": 184.0,
+                "height": 47.0,
+                "page": 2
+            },
+            "candidates": "dates"
+        },
+        "payment_recipient": {
+            "entity": "text",
+            "value": "DR. SOMMER TEAM"
+        },
+        "payment_state": {
+            "entity": "text",
+            "value": "Payable"
+        },
+        "payment_purpose": {
+            "entity": "text",
+            "value": "ReNr 9088/4499"
+        },
+        "invoice_date": {
+            "entity": "date",
+            "value": "2020-04-22",
+            "box": {
+                "top": 1167.8,
+                "left": 1798.8,
+                "width": 193.0,
+                "height": 36.0,
+                "page": 1
+            },
+            "candidates": "dates"
+        },
+        "iban": {
+            "entity": "iban",
+            "value": "DE33600501017871001994",
+            "box": {
+                "top": 2908.2,
+                "left": 1492.2,
+                "width": 325.0,
+                "height": 33.0,
+                "page": 1
+            }
+        }
+    },
+    "compoundExtractions": {
+        "payment": [
+            {
+                "amount_to_pay": {
+                    "entity": "amount",
+                    "value": "172.21:EUR",
+                    "box": {
+                        "top": 570.55,
+                        "left": 2003.55,
+                        "width": 116.89999999999986,
+                        "height": 39.0,
+                        "page": 2
+                    }
+                },
+                "bic": {
+                    "entity": "bic",
+                    "value": "SOLADEST600",
+                    "box": {
+                        "top": 2909.3,
+                        "left": 1883.3,
+                        "width": 261.0000000000002,
+                        "height": 29.0,
+                        "page": 1
+                    }
+                },
+                "payment_recipient": {
+                    "entity": "text",
+                    "value": "DR. SOMMER TEAM"
+                },
+                "payment_purpose": {
+                    "entity": "text",
+                    "value": "ReNr 9088/4499"
+                },
+                "iban": {
+                    "entity": "iban",
+                    "value": "DE33600501017871001994",
+                    "box": {
+                        "top": 2908.2,
+                        "left": 1492.2,
+                        "width": 325.0,
+                        "height": 33.0,
+                        "page": 1
+                    }
+                }
+            }
+        ]
+    },
+    "candidates": {
+        "dates": [
+            {
+                "entity": "date",
+                "value": "2020-04-22",
+                "box": {
+                    "top": 1167.8,
+                    "left": 1798.8,
+                    "width": 193.0,
+                    "height": 36.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "date",
+                "value": "1985-09-07",
+                "box": {
+                    "top": 1347.75,
+                    "left": 640.75,
+                    "width": 194.5,
+                    "height": 31.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "date",
+                "value": "2020-04-22",
+                "box": {
+                    "top": 1514.95,
+                    "left": 817.95,
+                    "width": 181.0,
+                    "height": 37.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "date",
+                "value": "2020-04-22",
+                "box": {
+                    "top": 1969.2,
+                    "left": 271.2,
+                    "width": 135.59999999999997,
+                    "height": 33.0,
+                    "page": 1
+                }
+            },
+            {
+                "entity": "date",
+                "value": "2020-04-22",
+                "box": {
+                    "top": 392.45,
+                    "left": 130.45,
+                    "width": 138.09999999999997,
+                    "height": 30.0,
+                    "page": 2
+                }
+            },
+            {
+                "entity": "date",
+                "value": "2020-05-13",
+                "box": {
+                    "top": 710.2,
+                    "left": 1196.2,
+                    "width": 184.0,
+                    "height": 47.0,
+                    "page": 2
+                }
+            }
+        ]
+    }
+}

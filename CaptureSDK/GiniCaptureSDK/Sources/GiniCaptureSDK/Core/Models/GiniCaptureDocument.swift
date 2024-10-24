@@ -121,7 +121,10 @@ private extension GiniCaptureDocumentBuilder {
             self.data = data
         }
 
-        override func writeContents(_ contents: Any, to url: URL, for saveOperation: UIDocument.SaveOperation, originalContentsURL: URL?) throws {
+        override func writeContents(_ contents: Any,
+                                    to url: URL,
+                                    for saveOperation: UIDocument.SaveOperation,
+                                    originalContentsURL: URL?) throws {
             if (contents as? Data) == nil, (contents as? FileWrapper) == nil {
                 throw DocumentError.unrecognizedContent
             }

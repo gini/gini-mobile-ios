@@ -94,8 +94,9 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func sendAnalyticsScreenShown() {
+        let documentTypeAnalyticsValue = GiniAnalyticsMapper.documentTypeAnalytics(from: documentType)
         var eventProperties = [GiniAnalyticsProperty(key: .documentType,
-                                                     value: GiniAnalyticsMapper.documentTypeAnalytics(from: documentType))]
+                                                     value: documentTypeAnalyticsValue)]
 
         let errorAnalytics = errorType.errorAnalytics()
         eventProperties.append(GiniAnalyticsProperty(key: .errorType, value: errorAnalytics.type))

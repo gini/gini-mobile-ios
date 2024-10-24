@@ -1,0 +1,26 @@
+{
+    "id": "626626a0-749f-11e2-bfd6-000000000005",
+    "creationDate": 1515932941.2839971,
+    "expirationDate": 1515932941.2839971,
+    "name": "scanned.jpg",
+    "progress": "COMPLETED",
+    "origin": "UPLOAD",
+    "sourceClassification": "SCANNED",
+    "pageCount": 1,
+    "pages" : [
+        {
+            "images" : {
+                "750x900" : "http://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000004/pages/1/750x900",
+                "1280x1810" : "http://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000004/pages/1/1280x1810"
+            },
+            "pageNumber" : 1
+        }
+    ],
+    "_links": {
+        "extractions": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000004/extractions",
+        "layout": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000004/layout",
+        "document": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000004",
+        "processed": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000004/processed",
+        "pages": "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000004/pages"
+    }
+}

@@ -5,7 +5,7 @@
       location = "container:"
       name = "GiniComponents">
       <FileRef
-         location = "group:GiniComponents/GiniPaymentComponents">
+         location = "group:GiniComponents/GiniInternalPaymentSDK">
       </FileRef>
       <FileRef
          location = "group:GiniComponents/GiniUtilites">
