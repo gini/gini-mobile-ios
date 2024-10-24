@@ -553,6 +553,13 @@ import GiniBankAPILibrary
         case button
         // Must be used when the user launches the SDK from a text field.
         case field
+
+        var stringValue: String {
+            switch self {
+            case .button: "button"
+            case .field: "field"
+            }
+        }
     }
 
     /**

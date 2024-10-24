@@ -6,6 +6,7 @@
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
+import GiniBankAPILibrary
 import UIKit
 
 /**
@@ -14,6 +15,7 @@ import UIKit
 
 @objc public protocol GiniCaptureDocument: AnyObject {
     var type: GiniCaptureDocumentType { get }
+    var uploadMetadata: Document.UploadMetadata? { get }
     var data: Data { get }
     var id: String { get }
     var previewImage: UIImage? { get }
@@ -74,12 +76,13 @@ public class GiniCaptureDocumentBuilder: NSObject {
      */
     public func build(with data: Data, fileName: String?) -> GiniCaptureDocument? {
         if data.isPDF {
-            return GiniPDFDocument(data: data, fileName: fileName)
+            return GiniPDFDocument(data: data, fileName: fileName, uploadMetadata: generateUploadMetadata())
         } else if data.isImage {
             return GiniImageDocument(data: data,
                                      imageSource: documentSource,
                                      imageImportMethod: importMethod,
-                                     deviceOrientation: deviceOrientation)
+                                     deviceOrientation: deviceOrientation,
+                                     uploadMetadata: generateUploadMetadata())
         }
         return nil
     }
@@ -101,6 +104,14 @@ public class GiniCaptureDocumentBuilder: NSObject {
 
             completion(self.build(with: data, fileName: openURL.lastPathComponent))
         }
+    }
+
+    public func generateUploadMetadata() -> Document.UploadMetadata {
+        return Document.UploadMetadata(
+            interfaceOrientation: deviceOrientation ?? .portrait,
+            documentSource: documentSource,
+            importMethod: importMethod
+        )
     }
 }
 

@@ -237,7 +237,8 @@ extension Document {
         var headers: [String: String] = [:]
         static let headerKeyPrefix = "X-Document-Metadata-"
         static let branchIdHeaderKey = "BranchId"
-        
+        static let uploadHeaderKey = "Upload"
+
         /**
          * The document metadata initializer with the branch ID (i.e: the BLZ of a Bank in Germany) and additional
          * headers.
@@ -245,14 +246,37 @@ extension Document {
          * - Parameter branchId:            The branch id (i.e: the BLZ of a Bank in Germany)
          * - Parameter additionalHeaders:   Additional headers for the metadata. i.e: ["customerId":"123456"]
          */
-        public init(branchId: String? = nil, additionalHeaders: [String: String]? = nil) {
+        public init(
+            branchId: String? = nil,
+            uploadMetadata: UploadMetadata? = nil,
+            additionalHeaders: [String: String]? = nil
+        ) {
             if let branchId = branchId {
                 headers[Document.Metadata.headerKeyPrefix + Document.Metadata.branchIdHeaderKey] = branchId
             }
-            
+
+            if let uploadMetadata {
+                headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] = uploadMetadata.userComment
+            }
+
             if let additionalHeaders = additionalHeaders {
                 additionalHeaders.forEach { headers["\(Document.Metadata.headerKeyPrefix)\($0)"] = $1 }
             }
+        }
+
+        /**
+         * Adds upload metadata
+         *
+         * - Parameter branchId:            The branch id (i.e: the BLZ of a Bank in Germany)
+         * - Parameter additionalHeaders:   Additional headers for the metadata. i.e: ["customerId":"123456"]
+         */
+        public mutating func addUploadMetadata(_ uploadMetadata: UploadMetadata) {
+            headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] = uploadMetadata.userComment
+        }
+
+        /// Checks if upload metadata is present
+        public func hasUploadMetadata() -> Bool {
+            headers.keys.contains(Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey)
         }
     }
 }
