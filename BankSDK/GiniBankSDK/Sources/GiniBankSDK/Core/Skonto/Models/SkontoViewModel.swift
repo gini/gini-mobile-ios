@@ -126,7 +126,7 @@ class SkontoViewModel {
 
     weak var delegate: SkontoViewModelDelegate?
 
-    init(skontoDiscounts: SkontoDiscounts, isWithDiscountSwitchAvailable: Bool = false) {
+    init(skontoDiscounts: SkontoDiscounts, isWithDiscountSwitchAvailable: Bool = true) {
         self.skontoDiscounts = skontoDiscounts
         self.isWithDiscountSwitchAvailable = isWithDiscountSwitchAvailable
 
