@@ -73,7 +73,7 @@ public struct DataForReview {
 
     public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
                                   showPaymentComponentInOneRow: false,
-                                  hideInfoForReturningUser: true)
+                                                                                                            hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
 
 
     /**
