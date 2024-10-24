@@ -26,6 +26,7 @@ class SkontoViewModel {
     var proceedAction: (() -> Void)?
 
     private let skontoDiscounts: SkontoDiscounts
+    private (set) var isWithDiscountSwitchAvailable: Bool = false
     private var skontoPercentage: Double
 
     private (set) var isSkontoApplied: Bool = true
@@ -125,8 +126,9 @@ class SkontoViewModel {
 
     weak var delegate: SkontoViewModelDelegate?
 
-    init(skontoDiscounts: SkontoDiscounts) {
+    init(skontoDiscounts: SkontoDiscounts, isWithDiscountSwitchAvailable: Bool = false) {
         self.skontoDiscounts = skontoDiscounts
+        self.isWithDiscountSwitchAvailable = isWithDiscountSwitchAvailable
 
         // For now multiple Skonto discounts aren't handle
         let skontoDiscountDetails = skontoDiscounts.discounts[0]
