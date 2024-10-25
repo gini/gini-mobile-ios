@@ -26,7 +26,7 @@ class SkontoViewModel {
     var proceedAction: (() -> Void)?
 
     private let skontoDiscounts: SkontoDiscounts
-    private (set) var isWithDiscountSwitchAvailable: Bool = false
+    private (set) var isWithDiscountSwitchAvailable: Bool
     private var skontoPercentage: Double
 
     private (set) var isSkontoApplied: Bool = true
