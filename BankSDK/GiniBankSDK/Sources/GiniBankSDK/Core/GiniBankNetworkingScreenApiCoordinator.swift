@@ -151,6 +151,26 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         self.trackingDelegate = trackingDelegate
     }
 
+    public init(alternativeTokenSource tokenSource: TokenSource,
+                resultsDelegate: GiniCaptureResultsDelegate,
+                configuration: GiniBankConfiguration,
+                documentMetadata: Document.Metadata?,
+                api: APIDomain,
+                trackingDelegate: GiniCaptureTrackingDelegate?,
+                lib: GiniBankAPI) {
+        documentService = DocumentService(lib: lib, metadata: documentMetadata)
+        configurationService = lib.configurationService()
+        let captureConfiguration = configuration.captureConfiguration()
+        super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
+
+        visionDelegate = self
+        GiniBank.setConfiguration(configuration)
+        giniBankConfiguration = configuration
+        giniBankConfiguration.documentService = documentService
+        self.resultsDelegate = resultsDelegate
+        self.trackingDelegate = trackingDelegate
+    }
+
     public init(resultsDelegate: GiniCaptureResultsDelegate,
                 configuration: GiniBankConfiguration,
                 documentMetadata: Document.Metadata?,
@@ -185,6 +205,26 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             .build()
 
         self.init(client: client,
+                  resultsDelegate: resultsDelegate,
+                  configuration: configuration,
+                  documentMetadata: documentMetadata,
+                  api: api,
+                  trackingDelegate: trackingDelegate,
+                  lib: lib)
+    }
+
+    convenience init(alternativeTokenSource tokenSource: TokenSource,
+                     resultsDelegate: GiniCaptureResultsDelegate,
+                     configuration: GiniBankConfiguration,
+                     documentMetadata: Document.Metadata?,
+                     api: APIDomain,
+                     userApi: UserDomain,
+                     trackingDelegate: GiniCaptureTrackingDelegate?) {
+        let lib = GiniBankAPI
+            .Builder(client: Client(id: tokenSource.id, secret: tokenSource.secret, domain: tokenSource.domain), api: api, userApi: userApi)
+            .build()
+
+        self.init(alternativeTokenSource: tokenSource,
                   resultsDelegate: resultsDelegate,
                   configuration: configuration,
                   documentMetadata: documentMetadata,

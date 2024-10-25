@@ -24,3 +24,9 @@ public struct Client {
         self.domain = domain
     }
 }
+
+public protocol TokenSource {
+    var domain: String { get }
+    var id: String { get }
+    var secret: String { get }
+}
