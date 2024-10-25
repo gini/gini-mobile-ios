@@ -211,6 +211,7 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
 extension InvoicesListViewModel {
 
     func didTapOnOpenFlow(documentId: String?) {
+        documentIdToRefetch = documentId
         if paymentComponentsController.selectedPaymentProvider == nil {
             presentPaymentViewBottomSheet(documentId)
         } else {
@@ -284,7 +285,13 @@ extension InvoicesListViewModel {
                     self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
                 } else {
                     if let index = invoices.firstIndex(where: { $0.documentId == documentId }) {
-                        paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(for: index), viewController: self.coordinator.invoicesListViewController)
+                        if self.coordinator.invoicesListViewController.presentedViewController != nil {
+                            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true, completion: {
+                                self.paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: self.obtainPaymentInfo(for: index), viewController: self.coordinator.invoicesListViewController)
+                            })
+                        } else {
+                            self.paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(for: index), viewController: self.coordinator.invoicesListViewController)
+                        }
                     }
                 }
             } else if paymentComponentsController.supportsGPC() {
@@ -365,6 +372,7 @@ extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
     }
     
     func didTapOnPayButton() {
+        presentPaymentViewBottomSheet(documentIdToRefetch)
     }
 
     func didSelectPaymentProvider(paymentProvider: PaymentProvider, documentId: String?) {
