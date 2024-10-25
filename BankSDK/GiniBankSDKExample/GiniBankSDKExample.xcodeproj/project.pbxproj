@@ -32,6 +32,7 @@
 		28B605D02BC42A8500FCF4DE /* GiniSetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */; };
 		28B605D12BC42E6F00FCF4DE /* GiniSetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */; };
 		28B898D02CA324CD00C79231 /* CodeLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B898CF2CA324CD00C79231 /* CodeLoading.swift */; };
+		28B9C3D02CCBB5760034F862 /* UITableView+HeaderFooterViewRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B9C3CF2CCBB5760034F862 /* UITableView+HeaderFooterViewRegistration.swift */; };
 		28C8E4B12BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4AF2BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf */; };
 		28C8E4B22BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4AF2BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf */; };
 		28C8E4B32BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4B02BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json */; };
@@ -200,6 +201,7 @@
 		28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegmentedOptionTableViewCell.xib; sourceTree = "<group>"; };
 		28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniSetupHelper.swift; sourceTree = "<group>"; };
 		28B898CF2CA324CD00C79231 /* CodeLoading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeLoading.swift; sourceTree = "<group>"; };
+		28B9C3CF2CCBB5760034F862 /* UITableView+HeaderFooterViewRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+HeaderFooterViewRegistration.swift"; sourceTree = "<group>"; };
 		28C8E4AF2BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_line_items_with_discount.pdf; sourceTree = "<group>"; };
 		28C8E4B02BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_line_items_with_discount.json; sourceTree = "<group>"; };
 		28CDB8222A38A5E40016A81C /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
@@ -541,6 +543,7 @@
 			children = (
 				28EC10722AB345400080FD4F /* UIImage+TintColor.swift */,
 				28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */,
+				28B9C3CF2CCBB5760034F862 /* UITableView+HeaderFooterViewRegistration.swift */,
 				28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */,
 			);
 			path = Extensions;
@@ -1000,6 +1003,7 @@
 				F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */,
 				837EEFB3291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift in Sources */,
 				28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */,
+				28B9C3D02CCBB5760034F862 /* UITableView+HeaderFooterViewRegistration.swift in Sources */,
 				833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */,
 				289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */,
 				28B605D12BC42E6F00FCF4DE /* GiniSetupHelper.swift in Sources */,

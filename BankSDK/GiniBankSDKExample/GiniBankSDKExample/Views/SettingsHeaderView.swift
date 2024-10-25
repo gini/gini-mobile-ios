@@ -6,8 +6,7 @@
 
 import UIKit
 
-class SettingsHeaderView: UITableViewHeaderFooterView {
-    static let identifier = "SettingsHeaderView"
+class SettingsHeaderView: UITableViewHeaderFooterView, CodeLoadableView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
