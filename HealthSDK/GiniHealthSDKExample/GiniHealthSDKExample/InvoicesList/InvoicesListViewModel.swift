@@ -237,7 +237,7 @@ extension InvoicesListViewModel {
     }
     
     fileprivate func presentPaymentViewBottomSheet(_ documentId: String?) {
-        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: documentId ?? "")
+        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentId: documentId ?? "")
         paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
         self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: false)
     }

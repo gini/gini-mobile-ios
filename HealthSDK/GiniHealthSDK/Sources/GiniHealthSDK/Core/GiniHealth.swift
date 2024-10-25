@@ -20,9 +20,9 @@ public protocol GiniHealthDelegate: AnyObject {
     /**
      Called when the payment request was successfully created
      
-     - parameter paymentRequestID: Id of created payment request.
+     - parameter paymentRequestId: Id of created payment request.
      */
-    func didCreatePaymentRequest(paymentRequestID: String)
+    func didCreatePaymentRequest(paymentRequestId: String)
     
     /**
      Error handling. If delegate is set and error is going to  be handled internally the method should return true.
@@ -72,9 +72,8 @@ public struct DataForReview {
     private var bankProviders: [PaymentProvider] = []
 
     public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
-                                  showPaymentComponentInOneRow: false,
+                                                                                                            showPaymentComponentInOneRow: false,
                                                                                                             hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
-
 
     /**
      Initializes a new instance of GiniHealth.

@@ -100,8 +100,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
     
-    func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: (any GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
-        switch documentID {
+    func loadPaymentReviewScreenFor(documentId: String, trackingDelegate: (any GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+        switch documentId {
         case MockSessionManager.payableDocumentID:
             completion(UIViewController(), nil)
         case MockSessionManager.missingDocumentID:
@@ -125,8 +125,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         paymentView(documentId: documentId ?? "")
     }
 
-    func loadPaymentReviewScreenFor(documentId documentID: String?, paymentInfo: GiniInternalPaymentSDK.PaymentInfo?, trackingDelegate: (any GiniHealthSDK.GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthSDK.GiniHealthError?) -> Void) {
-        switch documentID {
+    func loadPaymentReviewScreenFor(documentId: String?, paymentInfo: GiniInternalPaymentSDK.PaymentInfo?, trackingDelegate: (any GiniHealthSDK.GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthSDK.GiniHealthError?) -> Void) {
+        switch documentId {
         case MockSessionManager.payableDocumentID:
             completion(UIViewController(), nil)
         case MockSessionManager.missingDocumentID:
@@ -136,8 +136,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         }
     }
 
-    func paymentViewBottomSheet(documentID: String?) -> UIViewController {
-        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID),
+    func paymentViewBottomSheet(documentId: String?) -> UIViewController {
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentId),
                                                                     bottomSheetConfiguration: giniHealth.bottomSheetConfiguration)
         return paymentComponentBottomView
     }

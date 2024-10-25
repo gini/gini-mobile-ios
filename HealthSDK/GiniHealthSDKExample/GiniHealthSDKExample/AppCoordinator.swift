@@ -352,8 +352,8 @@ extension AppCoordinator: GiniHealthDelegate {
         return true
     }
     
-    func didCreatePaymentRequest(paymentRequestID: String) {
-        GiniUtilites.Log("✅ Created payment request with id \(paymentRequestID)", event: .success)
+    func didCreatePaymentRequest(paymentRequestId: String) {
+        GiniUtilites.Log("✅ Created payment request with id \(paymentRequestId)", event: .success)
         DispatchQueue.main.async {
             guard let invoicesListCoordinator = self.childCoordinators.first as? InvoicesListCoordinator else {
                 return

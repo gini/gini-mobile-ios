@@ -14,3 +14,12 @@
 "giniHealthSDKExample.error.contains.multiple.invoices" = "Dokument enthält mehrere Rechnungen";
 "giniHealthSDKExample.error.invoice.not.payable" = "Rechnung ist nicht zahlbar";
 "gini.health.paymentcomponent.payment.info.gini.privacypolicy.link" = "https://www.google.com/"; // This should be overwrited by client with their privacy policy link
+"giniHealthSDKExample.order.detail.Alert.FieldError" = "Die Zahlungsdetails sind unvollständig";
+"giniHealthSDKExample.order.detail.Alert.Ok" = "Ok";
+"giniHealthSDKExample.order.detail.Amount" = "Betrag";
+"giniHealthSDKExample.order.detail.IBAN" = "IBAN";
+"giniHealthSDKExample.order.detail.Pay" = "Bezahlen";
+"giniHealthSDKExample.order.detail.Purpose" = "Verwendungszweck";
+"giniHealthSDKExample.order.detail.Recipient" = "Empfänger";
+"giniHealthSDKExample.order.navigation.orderdetails" = "Bestelldetails";
+"giniHealthSDKExample.uploadInvoices.button.title" = "Kunden Bestellung";

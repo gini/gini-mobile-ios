@@ -73,7 +73,7 @@ protocol PaymentComponentsProtocol {
     func bankSelectionBottomSheet(documentId: String?) -> UIViewController
     func loadPaymentReviewScreenFor(documentId: String?, paymentInfo: PaymentInfo?, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
     func paymentInfoViewController() -> UIViewController
-    func paymentViewBottomSheet(documentID: String?) -> UIViewController
+    func paymentViewBottomSheet(documentId: String?) -> UIViewController
 }
 
 /**
@@ -150,7 +150,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                 self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
-                print("Couldn't load payment providers: \(error.localizedDescription)")
+                GiniUtilites.Log("Couldn't load payment providers: \(error.localizedDescription)", event: .error)
             }
         }
     }
@@ -161,7 +161,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
             let data = try encoder.encode(paymentProvider)
             UserDefaults.standard.set(data, forKey: Constants.kDefaultPaymentProvider)
         } catch {
-            print("Unable to encode payment provider: (\(error))")
+            GiniUtilites.Log("Unable to encode payment provider: (\(error))", event: .error)
         }
     }
     
@@ -174,7 +174,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                     return paymentProvider
                 }
             } catch {
-                print("Unable to decode payment provider: (\(error))")
+                GiniUtilites.Log("Unable to decode payment provider: (\(error))", event: .error)
             }
         }
         return nil
@@ -217,9 +217,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
         return PaymentComponentView(viewModel: paymentComponentViewModel)
     }
 
-    public func paymentViewBottomSheet(documentID: String?) -> UIViewController {
+    public func paymentViewBottomSheet(documentId: String?) -> UIViewController {
         previousPresentedView = .paymentComponent
-        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentId), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return paymentComponentBottomView
     }
 
@@ -367,11 +367,11 @@ extension PaymentComponentsController: BanksSelectionProtocol {
     }
 
     public func didTapOnContinueOnShareBottomSheet(documentId: String?) {
-        print("Tapped Continue on Share Bottom Sheet")
+        GiniUtilites.Log("Tapped Continue on Share Bottom Sheet", event: .success)
     }
 
     public func didTapForwardOnInstallBottomSheet() {
-        print("Tapped Forward on Install Bottom Sheet")
+        GiniUtilites.Log("Tapped Forward on Install Bottom Sheet", event: .success)
     }
 
     public func didTapOnPayButton() {
@@ -426,8 +426,8 @@ extension PaymentComponentsController: PaymentReviewProtocol {
         let info = PaymentInfo(paymentConponentsInfo: paymentInfo)
         giniSDK.createPaymentRequest(paymentInfo: info, completion: { result in
             switch result {
-            case .success(let paymentRequestID):
-                completion(.success(paymentRequestID))
+            case .success(let paymentRequestId):
+                completion(.success(paymentRequestId))
             case .failure(let error):
                 let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
                 completion(.failure(healthError))
@@ -462,8 +462,8 @@ extension PaymentComponentsController: PaymentReviewProtocol {
     public func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController) {
         createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
             switch result {
-                case .success(let paymentRequestID):
-                    self?.loadPDFData(paymentRequestID: paymentRequestID, viewController: viewController)
+                case .success(let paymentRequestId):
+                    self?.loadPDFData(paymentRequestId: paymentRequestId, viewController: viewController)
                 case .failure:
                     break
             }
@@ -525,29 +525,29 @@ extension PaymentComponentsController: PaymentReviewProtocol {
         trackingDelegate?.onPaymentReviewScreenEvent(event: event)
     }
 
-    private func loadPDFData(paymentRequestID: String, viewController: UIViewController) {
-        self.loadPDF(paymentRequestID: paymentRequestID, completion: { [weak self] pdfData in
-            let pdfPath = self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestID)
+    private func loadPDFData(paymentRequestId: String, viewController: UIViewController) {
+        self.loadPDF(paymentRequestId: paymentRequestId, completion: { [weak self] pdfData in
+            let pdfPath = self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestId)
 
             guard let pdfPath else {
-                print("Couldn't retrieve pdf URL")
+                GiniUtilites.Log("Couldn't retrieve pdf URL", event: .warning)
                 return
             }
 
-            self?.sharePDF(pdfURL: pdfPath, paymentRequestID: paymentRequestID, viewController: viewController) { [weak self] (activity, _, _, _) in
+            self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, _, _, _) in
                 guard activity != nil else {
                     return
                 }
 
                 // Publish the payment request id only after a user has picked an activity (app)
-                self?.giniSDK.delegate?.didCreatePaymentRequest(paymentRequestID: paymentRequestID)
+                self?.giniSDK.delegate?.didCreatePaymentRequest(paymentRequestId: paymentRequestId)
             }
         })
     }
 
-    private func loadPDF(paymentRequestID: String, completion: @escaping (Data) -> ()) {
+    private func loadPDF(paymentRequestId: String, completion: @escaping (Data) -> ()) {
         isLoading = true
-        giniSDK.paymentService.pdfWithQRCode(paymentRequestId: paymentRequestID) { [weak self] result in
+        giniSDK.paymentService.pdfWithQRCode(paymentRequestId: paymentRequestId) { [weak self] result in
             self?.isLoading = false
             switch result {
                 case .success(let data):
@@ -567,12 +567,12 @@ extension PaymentComponentsController: PaymentReviewProtocol {
             try data.write(to: pdfPath)
             return pdfPath
         } catch {
-            print("Error while write pdf file to location: \(error.localizedDescription)")
+            GiniUtilites.Log("Error while write pdf file to location: \(error.localizedDescription)", event: .error)
             return nil
         }
     }
 
-    private func sharePDF(pdfURL: URL, paymentRequestID: String, viewController: UIViewController,
+    private func sharePDF(pdfURL: URL, paymentRequestId: String, viewController: UIViewController,
                           completionWithItemsHandler: @escaping UIActivityViewController.CompletionWithItemsHandler) {
         // Create UIActivityViewController with the PDF file
         let activityViewController = UIActivityViewController(activityItems: [pdfURL], applicationActivities: nil)

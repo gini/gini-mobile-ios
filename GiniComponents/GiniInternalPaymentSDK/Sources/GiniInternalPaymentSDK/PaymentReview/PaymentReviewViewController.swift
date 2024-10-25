@@ -342,7 +342,6 @@ fileprivate extension PaymentReviewViewController {
         self.presentedViewController?.dismiss(animated: true)
         self.selectedPaymentProvider = model.selectedPaymentProvider
         paymentInfoContainerView.updateSelectedPaymentProvider(model.selectedPaymentProvider)
-        
     }
 }
 

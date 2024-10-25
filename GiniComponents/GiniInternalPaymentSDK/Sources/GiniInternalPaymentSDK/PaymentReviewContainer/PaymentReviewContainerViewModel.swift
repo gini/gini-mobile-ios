@@ -62,7 +62,6 @@ public final class PaymentReviewContainerViewModel {
         self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.dispayMode = displayMode
-
         self.bankImageIcon = selectedPaymentProvider.iconData.toImage
     }
 }

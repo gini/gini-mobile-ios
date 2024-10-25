@@ -174,7 +174,7 @@ public class PaymentReviewModel: NSObject {
         delegate?.submitFeedback(for: document, updatedExtractions: updatedExtractions, completion: nil)
     }
 
-    func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestID: String) -> ())? = nil) {
+    func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestId: String) -> ())? = nil) {
         isLoading = true
         delegate?.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] result in
             self?.isLoading = false
@@ -303,9 +303,7 @@ extension PaymentReviewModel: BanksSelectionProtocol {
 
     public func didTapOnContinueOnShareBottomSheet(documentId: String?) {}
 
-    public func didTapForwardOnInstallBottomSheet() {
-
-    }
+    public func didTapForwardOnInstallBottomSheet() {}
 
     public func didTapOnPayButton() {}
 

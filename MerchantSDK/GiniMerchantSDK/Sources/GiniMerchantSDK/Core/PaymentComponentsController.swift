@@ -664,8 +664,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
         self.selectedPaymentProvider = PaymentProvider(healthPaymentProvider: paymentProvider)
     }
 
-    public func openMoreInformationViewController() {
-    }
+    public func openMoreInformationViewController() {}
 }
 
 extension PaymentComponentsController {

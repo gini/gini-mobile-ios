@@ -40,7 +40,6 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             showBanksPicker: true,
             chevronDownIcon: GiniHealthImage.chevronDown.preferredUIImage(),
             chevronDownIconColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light1).uiColor()
-
         )
     }
 

@@ -465,7 +465,6 @@ public final class PaymentReviewContainerView: UIView {
                                          rightImageIcon: viewModel.configuration.chevronDownIcon,
                                          rightImageTintColor: viewModel.configuration.chevronDownIconColor,
                                          shouldShowLabel: false)
-
         selectBankButton.didTapButton = { [weak self] in
             self?.tapOnBankPicker()
         }
