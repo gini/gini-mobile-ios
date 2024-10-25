@@ -11,7 +11,7 @@ extension Document {
     /**
      * The metadata contains document upload metadata
      */
-    @objc public class UploadMetadata: NSObject {
+    public class UploadMetadata: NSObject {
         var userComment: String
         static let userCommentRotation = "RotDeltaDeg"
         static let userCommentContentId = "ContentId"
