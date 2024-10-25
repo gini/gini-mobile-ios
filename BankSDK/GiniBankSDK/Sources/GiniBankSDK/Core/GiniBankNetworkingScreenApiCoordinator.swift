@@ -43,11 +43,10 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         // The EPS QR codes are a special case, since they don0t have to be analyzed by the Gini Bank API and therefore,
         // they are ready to be delivered after capturing them.
         if let qrCodeDocument = document as? GiniQRCodeDocument,
-           let format = qrCodeDocument.qrCodeFormat {
-            if format == .eps4mobile {
-                deliverExtractionResult(for: QRCodesExtractor.epsCodeUrlKey, document: qrCodeDocument)
-                return
-            }
+           let format = qrCodeDocument.qrCodeFormat,
+           format == .eps4mobile {
+            deliverExtractionResult(for: QRCodesExtractor.epsCodeUrlKey, document: qrCodeDocument)
+            return
         }
 
         // When an non reviewable document or an image in multipage mode is captured,
