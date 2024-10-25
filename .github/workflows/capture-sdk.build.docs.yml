@@ -1,13 +1,11 @@
 name: Builds docs for Capture SDK
 
 on:
-  push:
-    paths:
-      - 'CaptureSDK/**'
   workflow_dispatch:
     tags-ignore:
       - '**'
   pull_request:
+    types: [opened, edited, reopened, synchronize]
     paths:
       - 'CaptureSDK/**'
   
