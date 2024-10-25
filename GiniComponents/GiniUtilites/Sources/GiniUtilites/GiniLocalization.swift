@@ -19,7 +19,7 @@ public enum GiniLocalization: String, CaseIterable {
 /**
  A utility for retrieving localized strings from the client's bundle or SDK bundle.
  */
-enum GiniLocalized {
+public enum GiniLocalized {
 
     /**
      Retrieves a localized string for the given key. According localization GiniHealthConfiguration localization field and with check for client app locallizaton
@@ -31,8 +31,8 @@ enum GiniLocalized {
 
      - Returns: The localized string for the given key.
      */
-    static func string(_ key: String, fallbackKey: String? = nil, comment: String, locale: String, bundle: Bundle) -> String {
-        let locale = locale
+    public static func string(_ key: String, fallbackKey: String? = nil, comment: String, locale: String?, bundle: Bundle) -> String {
+        let locale = locale ?? getLanguageCode() ?? GiniLocalization.en.rawValue
         let clientAppBundle = Bundle.main
 
         if let clientString = overridedString(key, locale: locale, comment: comment, bundle: clientAppBundle) {
@@ -92,5 +92,16 @@ enum GiniLocalized {
             return nil
         }
         return bundle
+    }
+
+    /**
+        Retrieve the default language code of the system
+     */
+    private static func getLanguageCode() -> String? {
+        let locale = Locale.current
+        if let languageCode = locale.languageCode {
+            return languageCode
+        }
+        return nil
     }
 }
