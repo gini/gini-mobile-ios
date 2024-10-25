@@ -8,6 +8,10 @@ on:
     types: [opened, edited, reopened, synchronize]
     paths:
       - 'CaptureSDK/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
   
 jobs:
   documentation:
