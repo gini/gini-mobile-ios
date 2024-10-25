@@ -398,4 +398,9 @@ extension AppCoordinator: DebugMenuDelegate {
             giniHealthConfiguration.useBottomPaymentComponentView = isOn
         }
     }
+
+    func didPickNewLocalization(localization: GiniLocalization) {
+        giniHealthConfiguration.customLocalization = localization
+        health.setConfiguration(giniHealthConfiguration)
+    }
 }

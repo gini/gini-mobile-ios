@@ -7,6 +7,7 @@
 import UIKit
 import GiniHealthSDK
 import GiniInternalPaymentSDK
+import GiniUtilites
 
 enum SwitchType {
     case showReviewScreen
@@ -16,6 +17,7 @@ enum SwitchType {
 
 protocol DebugMenuDelegate: AnyObject {
     func didChangeSwitchValue(type: SwitchType, isOn: Bool)
+    func didPickNewLocalization(localization: GiniLocalization)
 }
 
 class DebugMenuViewController: UIViewController {
@@ -25,11 +27,23 @@ class DebugMenuViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Gini Merchant"
+        label.text = "Gini Health"
         label.textAlignment = .center
         label.font = .preferredFont(forTextStyle: .largeTitle)
         return label
     }()
+
+    private lazy var localizationTitleLabel: UILabel = rowTitle("Localization")
+
+    private lazy var localizationPicker: UIPickerView = {
+        let picker = UIPickerView()
+        picker.delegate = self
+        picker.dataSource = self
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        return picker
+    }()
+
+    private lazy var localizationRow: UIStackView = stackView(axis: .horizontal, subviews: [localizationTitleLabel, localizationPicker])
 
     private lazy var reviewScreenOptionLabel: UILabel = rowTitle("Show Review Screen")
     private var reviewScreenSwitch: UISwitch!
@@ -64,13 +78,17 @@ class DebugMenuViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        if let localization = GiniHealthConfiguration.shared.customLocalization, let index = GiniLocalization.allCases.firstIndex(of: localization) {
+            localizationPicker.selectRow(index, inComponent: 0, animated: true)
+        }
     }
 
     private func setupUI() {
         view.backgroundColor = UIColor(named: "background")
 
         let spacer = UIView()
-        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, reviewScreenRow, brandedEditableRow, bottomPaymentComponentEditableRow, spacer])
+        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, brandedEditableRow, bottomPaymentComponentEditableRow, spacer])
         view.addSubview(mainStackView)
 
         NSLayoutConstraint.activate([
@@ -79,8 +97,10 @@ class DebugMenuViewController: UIViewController {
             mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: spacing),
             mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -spacing),
 
+            localizationRow.heightAnchor.constraint(equalToConstant: rowHeight),
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
-            brandedEditableRow.heightAnchor.constraint(equalToConstant: rowHeight)
+            brandedEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
+            bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
     }
 }
@@ -107,6 +127,24 @@ private extension DebugMenuViewController {
         mySwitch.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
         mySwitch.isOn = isOn
         return mySwitch
+    }
+}
+
+extension DebugMenuViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return GiniLocalization.allCases.count
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return GiniLocalization.allCases[row].rawValue
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        delegate?.didPickNewLocalization(localization: GiniLocalization.allCases[row])
     }
 }
 

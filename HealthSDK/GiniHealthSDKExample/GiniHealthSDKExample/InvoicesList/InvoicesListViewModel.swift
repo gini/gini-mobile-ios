@@ -222,7 +222,7 @@ extension InvoicesListViewModel {
     }
     
     func didTapOnBankPicker(documentId: String?) {
-        print("Tapped on Bank Picker on :\(documentId ?? "")")
+        GiniUtilites.Log("Tapped on Bank Picker on :\(documentId ?? "")", event: .success)
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
         if GiniHealthConfiguration.shared.useBottomPaymentComponentView {
             if self.coordinator.invoicesListViewController.presentedViewController is PaymentComponentBottomView {
