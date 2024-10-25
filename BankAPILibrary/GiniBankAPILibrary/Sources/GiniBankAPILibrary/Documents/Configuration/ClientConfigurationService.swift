@@ -51,7 +51,7 @@ extension ClientConfigurationService {
        - resourceHandler: A handler responsible for processing the API resource data.
        - completion: A closure to be called upon completion of the fetch operation. The closure takes a `CompletionResult<Configuration>` as its parameter.
      
-     This method constructs an `APIResource` object with the required parameters and utilizes the resource handler to perform the network request. The result is then passed to the completion handler.
+     This method constructs an `APIResource` object with the required parameters and utilizes the resource handler to perform the network request. The result is then saved into UserDefaults and passed to the completion handler.
      */
     func fetchConfigurations(resourceHandler: ResourceDataHandler<APIResource<ClientConfiguration>>,
                              completion: @escaping CompletionResult<ClientConfiguration>) {

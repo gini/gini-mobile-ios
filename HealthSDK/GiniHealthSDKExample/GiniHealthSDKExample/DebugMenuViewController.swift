@@ -6,6 +6,7 @@
 
 import UIKit
 import GiniHealthSDK
+import GiniUtilites
 
 protocol DebugMenuDelegate: AnyObject {
     func didChangeBrandedSwitchValue(isOn: Bool)

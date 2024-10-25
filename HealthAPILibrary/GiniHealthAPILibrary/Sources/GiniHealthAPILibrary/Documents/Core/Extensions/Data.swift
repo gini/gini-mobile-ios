@@ -45,7 +45,7 @@ extension Data {
         }
     }
 
-    func isImage() -> Bool {
+    public func isImage() -> Bool {
         return UIImage(data: self) != nil
     }
 

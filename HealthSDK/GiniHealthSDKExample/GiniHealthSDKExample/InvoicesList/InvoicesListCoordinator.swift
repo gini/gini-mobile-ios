@@ -6,7 +6,6 @@
 
 
 import UIKit
-import GiniHealthAPILibrary
 import GiniHealthSDK
 
 final class InvoicesListCoordinator: NSObject, Coordinator {

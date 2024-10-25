@@ -6,7 +6,7 @@
 
 import UIKit
 import GiniMerchantSDK
-import GiniPaymentComponents
+import GiniInternalPaymentSDK
 
 enum SwitchType {
     case showReviewScreen

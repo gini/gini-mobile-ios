@@ -7,6 +7,8 @@
 
 import UIKit
 import GiniHealthAPILibrary
+import GiniUtilites
+import GiniInternalPaymentSDK
 
 /**
  Delegate to inform about the current status of the Gini Health SDK.
@@ -64,18 +66,42 @@ public struct DataForReview {
     public var documentService: DefaultDocumentService
     /// reponsible for the payment processing.
     public var paymentService: PaymentService
-    private var bankProviders: [PaymentProvider] = []
+    /// delegate to inform about the current status of the Gini Health SDK.
     public weak var delegate: GiniHealthDelegate?
-    
+
+    private var bankProviders: [PaymentProvider] = []
+
+    public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
+                                  showPaymentComponentInOneRow: true,
+                                  hideInfoForReturningUser: true)
+
+
     /**
-     Returns a GiniHealth instance
-     
-     - parameter giniApiLib: GiniHealthAPI initialized with client's credentials
+     Initializes a new instance of GiniHealth.
+
+     This initializer creates a GiniHealth instance by first constructing a Client object with the provided client credentials (id, secret, domain)
+
+     - Parameters:
+     - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
+     - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
+     - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
+     - logLevel: The log level. `LogLevel.none` by default.
      */
-    public init(with giniApiLib: GiniHealthAPI){
+    public init(id: String,
+                secret: String,
+                domain: String,
+                apiVersion: Int = Constants.defaultVersionAPI,
+                logLevel: LogLevel = .none) {
+        let client = Client(id: id, secret: secret, domain: domain)
+        self.giniApiLib = GiniHealthAPI.Builder(client: client, api: .default, logLevel: logLevel.toHealthLogLevel()).build()
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
+        self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
+    }
+
+    public init(giniApiLib: GiniHealthAPI) {
         self.giniApiLib = giniApiLib
-        self.documentService = giniApiLib.documentService()
-        self.paymentService = giniApiLib.paymentService()
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
+        self.paymentService = giniApiLib.paymentService(apiDomain: .default, apiVersion: Constants.defaultVersionAPI)
     }
 
     /**
@@ -91,32 +117,31 @@ public struct DataForReview {
      */
     private func fetchInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
         fetchBankingApps { result in
-            switch result {
-            case .success(let providers):
-                for provider in providers {
-                    DispatchQueue.main.async {
-                        if let url = URL(string:provider.appSchemeIOS) {
-                            if UIApplication.shared.canOpenURL(url) {
-                                self.bankProviders.append(provider)
-                            }
-                        }
-                    }
-                }
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let providers):
+                    self.updateBankProviders(providers: providers)
+
                     if self.bankProviders.count > 0 {
                         completion(.success(self.bankProviders))
                     } else {
                         completion(.failure(.noInstalledApps))
                     }
-                }
-            case let .failure(error):
-                DispatchQueue.main.async {
-                    completion(.failure(error))
+                case let .failure(error):
+                    completion(.failure(GiniHealthError.apiError(error)))
                 }
             }
         }
     }
-    
+
+    private func updateBankProviders(providers: PaymentProviders) {
+        for provider in providers {
+            if let url = URL(string:provider.appSchemeIOS), UIApplication.shared.canOpenURL(url) {
+                self.bankProviders.append(provider)
+            }
+        }
+    }
+
     /**
      Getting a list of the banking apps supported by SDK
      
@@ -127,14 +152,14 @@ public struct DataForReview {
      In case of failure error provided by API.
      */
     
-    public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
+    public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniError>) -> Void) {
         paymentService.paymentProviders { result in
             switch result {
             case let .success(providers):
-                self.bankProviders = providers
+                self.bankProviders = providers.map { PaymentProvider(healthPaymentProvider: $0) }
                 completion(.success(self.bankProviders))
             case let .failure(error):
-                completion(.failure(.apiError(error)))
+                completion(.failure(GiniError.decorator(error)))
             }
         }
     }
@@ -255,7 +280,7 @@ public struct DataForReview {
      In case of failure in case of failure error from the server side.
      
      */
-    public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void){
+    public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
         documentService.fetchDocument(with: docId) { result in
             switch result {
             case let .success(createdDocument):
@@ -282,7 +307,41 @@ public struct DataForReview {
             }
         }
     }
-        
+
+    /**
+     Get all extractions for the document. Medical information included.
+
+     - parameter docId: Id of the uploaded document.
+     - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
+     Completion block called on main thread.
+     In success case it includes array of extractions.
+     In case of failure in case of failure error from the server side.
+
+     */
+    public func getAllExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
+        documentService.fetchDocument(with: docId) { result in
+            switch result {
+            case let .success(createdDocument):
+                self.documentService
+                        .extractions(for: createdDocument,
+                                     cancellationToken: CancellationToken()) { result in
+                            DispatchQueue.main.async {
+                                switch result {
+                                case let .success(extractionResult):
+                                    completion(.success(extractionResult.extractions))
+                                case let .failure(error):
+                                    completion(.failure(.apiError(error)))
+                                }
+                            }
+                        }
+            case let .failure(error):
+                DispatchQueue.main.async {
+                    completion(.failure(.apiError(error)))
+                }
+            }
+        }
+    }
+
     /**
      Creates a payment request
      
@@ -294,14 +353,14 @@ public struct DataForReview {
         In case of failure error from the server side.
      
      */
-    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniHealthError>) -> Void) {
+    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
         paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: paymentInfo.paymentProviderId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, bic: "", amount: paymentInfo.amount, purpose: paymentInfo.purpose) { result in
             DispatchQueue.main.async {
                 switch result {
                 case let .success(requestId):
                     completion(.success(requestId))
                 case let .failure(error):
-                    completion(.failure(.apiError(error)))
+                    completion(.failure(GiniError.decorator(error)))
                 }
             }
         }
@@ -315,8 +374,8 @@ public struct DataForReview {
         - requestId: Id of the created payment request.
         - universalLink: Universal link for the selected payment provider
      */
-    public func openPaymentProviderApp(requestId: String, universalLink: String, urlOpener: URLOpener = URLOpener(UIApplication.shared), completion: ((Bool) -> Void)? = nil) {
-        let queryItems = [URLQueryItem(name: "id", value: requestId)]
+    public func openPaymentProviderApp(requestID: String, universalLink: String, urlOpener: URLOpener = URLOpener(UIApplication.shared), completion: GiniOpenLinkCompletionBlock? = nil) {
+        let queryItems = [URLQueryItem(name: "id", value: requestID)]
         let urlString = universalLink + "://payment"
         var urlComponents = URLComponents(string: urlString)!
         urlComponents.queryItems = queryItems
@@ -398,11 +457,15 @@ public struct DataForReview {
             }
         }
     }
-}
 
-extension GiniHealth {
-    private enum Constants {
-        static let hasMultipleDocuments = "true"
+    public static var versionString: String {
+        return GiniHealthSDKVersion
     }
 }
 
+extension GiniHealth {
+    public enum Constants {
+        public static let defaultVersionAPI = 4
+        static let hasMultipleDocuments = "true"
+    }
+}

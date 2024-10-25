@@ -7,18 +7,18 @@
 
 import UIKit
 import GiniUtilites
-import GiniPaymentComponents
+import GiniInternalPaymentSDK
 
 extension GiniMerchant: PaymentComponentsConfigurationProvider {
-    public var defaultStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration {
+    public var defaultStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration {
         GiniMerchantConfiguration.shared.defaultStyleInputFieldConfiguration
     }
     
-    public var errorStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration {
+    public var errorStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration {
         GiniMerchantConfiguration.shared.errorStyleInputFieldConfiguration
     }
     
-    public var selectionStyleInputFieldConfiguration: GiniPaymentComponents.TextFieldConfiguration {
+    public var selectionStyleInputFieldConfiguration: GiniInternalPaymentSDK.TextFieldConfiguration {
         GiniMerchantConfiguration.shared.selectionStyleInputFieldConfiguration
     }
     
@@ -34,7 +34,8 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
         PaymentReviewContainerConfiguration(
             errorLabelTextColor: GiniColor.feedback1.uiColor(),
             errorLabelFont: GiniMerchantConfiguration.shared.font(for: .captions2),
-            lockIcon: GiniMerchantImage.lock.preferredUIImage()
+            lockIcon: GiniMerchantImage.lock.preferredUIImage(),
+            lockedFields: true
         )
     }
     
@@ -167,11 +168,11 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
         )
     }
     
-    public var primaryButtonConfiguration: GiniPaymentComponents.ButtonConfiguration {
+    public var primaryButtonConfiguration: GiniInternalPaymentSDK.ButtonConfiguration {
         GiniMerchantConfiguration.shared.primaryButtonConfiguration
     }
     
-    public var secondaryButtonConfiguration: GiniPaymentComponents.ButtonConfiguration {
+    public var secondaryButtonConfiguration: GiniInternalPaymentSDK.ButtonConfiguration {
         GiniMerchantConfiguration.shared.secondaryButtonConfiguration
     }
 }

@@ -6,7 +6,8 @@
 
 
 import Foundation
-import GiniHealthAPILibrary
+import GiniHealthSDK
+import GiniUtilites
 
 protocol HardcodedInvoicesControllerProtocol: AnyObject {
     func obtainInvoicePhotosHardcoded(completion: @escaping (([Data]) -> Void))
