@@ -2,6 +2,10 @@ name: Publish GiniMerchantSDKExample to Firebase Distribution
 on:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+
 jobs:
   check:
     uses: ./.github/workflows/merchant-sdk.check.yml
