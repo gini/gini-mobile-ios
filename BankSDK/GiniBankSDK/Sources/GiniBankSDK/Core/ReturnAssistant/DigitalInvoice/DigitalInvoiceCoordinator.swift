@@ -54,7 +54,8 @@ final class DigitalInvoiceCoordinator: Coordinator {
         let extractionResult = digitalInvoice.extractionResult
         if let skontoDiscounts = try? SkontoDiscounts(extractions: extractionResult),
            GiniBankConfiguration.shared.skontoEnabled {
-            let skontoViewModel = SkontoViewModel(skontoDiscounts: skontoDiscounts)
+            let skontoViewModel = SkontoViewModel(skontoDiscounts: skontoDiscounts,
+                                                  isWithDiscountSwitchAvailable: false)
             skontoViewModel.delegate = self
             self.digitalInvoiceViewModel?.skontoViewModel = skontoViewModel
         }
