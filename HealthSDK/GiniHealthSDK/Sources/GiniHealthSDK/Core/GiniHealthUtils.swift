@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniUtilites
 /**
   Returns the GiniHealth bundle.
  */
@@ -47,25 +48,7 @@ func NSLocalizedStringPreferredFormat(_ key: String,
                                       fallbackKey: String = "",
                                       comment: String,
                                       isCustomizable: Bool = true) -> String {
-    let clientString = NSLocalizedString(key, comment: comment)
-    let fallbackClientString = NSLocalizedString(fallbackKey, comment: comment)
-    let format: String
-    if (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased())
-        && isCustomizable {
-        format = clientString
-    } else {
-        let bundle = giniHealthBundle()
-
-        var defaultFormat = NSLocalizedString(key, bundle: bundle, comment: comment)
-
-        if defaultFormat.lowercased() == key.lowercased() {
-            defaultFormat = NSLocalizedString(fallbackKey, bundle: bundle, comment: comment)
-        }
-
-        format = defaultFormat
-    }
-
-    return format
+    GiniLocalized.string(key, fallbackKey: fallbackKey, comment: comment, locale: GiniHealthConfiguration.shared.customLocalization?.rawValue, bundle: giniHealthBundle())
 }
 
 /**

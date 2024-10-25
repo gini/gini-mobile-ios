@@ -11,6 +11,7 @@ import GiniCaptureSDK
 import GiniHealthAPILibrary
 import GiniHealthSDK
 import GiniInternalPaymentSDK
+import GiniUtilites
 
 final class AppCoordinator: Coordinator {
     
@@ -158,16 +159,16 @@ final class AppCoordinator: Coordinator {
                     self.health.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
                         switch result {
                         case let .success(extractionResult):
-                            print("✅Successfully fetched extractions for id: \(document.id)")
+                            GiniUtilites.Log("✅Successfully fetched extractions for id: \(document.id)", event: .success)
                             let invoice = DocumentWithExtractions(documentId: document.id,
                                                                   extractionResult: extractionResult)
                             self?.showInvoicesList(invoices: [invoice])
                         case let .failure(error):
-                            print("❌Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))")
+                            GiniUtilites.Log("❌Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))", event: .error)
                         }
                     }
                 case .failure(let error):
-                    print("❌ Document data fetching failed: \(String(describing: error))")
+                    GiniUtilites.Log("❌ Document data fetching failed: \(String(describing: error))", event: .error)
                     self.selectAPIViewController.hideActivityIndicator()
                 }
             }
@@ -200,26 +201,26 @@ final class AppCoordinator: Coordinator {
                                     self?.health.documentService.extractions(for: compositeDocument, cancellationToken: CancellationToken()) { [weak self] result in
                                         switch result {
                                         case let .success(extractionResult):
-                                            print("✅Successfully fetched extractions for id: \(compositeDocument.id)")
+                                            GiniUtilites.Log("✅Successfully fetched extractions for id: \(compositeDocument.id)", event: .success)
                                             let invoice = DocumentWithExtractions(documentId: compositeDocument.id,
                                                                                   extractionResult: extractionResult)
                                             self?.showInvoicesList(invoices: [invoice])
                                         case let .failure(error):
-                                            print("❌Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))")
+                                            GiniUtilites.Log("❌Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))", event: .error)
                                         }
                                     }
                                 case .failure(let error):
-                                    print("❌ Setting document for review failed: \(String(describing: error))")
+                                    GiniUtilites.Log("❌ Setting document for review failed: \(String(describing: error))", event: .error)
                                     self?.selectAPIViewController.hideActivityIndicator()
                                 }
                             }
                         case .failure(let error):
-                            print("❌ Document creation failed: \(String(describing: error))")
+                            GiniUtilites.Log("❌ Document creation failed: \(String(describing: error))", event: .error)
                             self?.selectAPIViewController.hideActivityIndicator()
                         }
                     }
                 case .failure(let error):
-                    print("❌ Document creation failed: \(String(describing: error))")
+                    GiniUtilites.Log("❌ Document creation failed: \(String(describing: error))", event: .error)
                     self.selectAPIViewController.hideActivityIndicator()
                 }
             }
@@ -352,7 +353,7 @@ extension AppCoordinator: GiniHealthDelegate {
     }
     
     func didCreatePaymentRequest(paymentRequestID: String) {
-        print("✅ Created payment request with id \(paymentRequestID)")
+        GiniUtilites.Log("✅ Created payment request with id \(paymentRequestID)", event: .success)
         DispatchQueue.main.async {
             guard let invoicesListCoordinator = self.childCoordinators.first as? InvoicesListCoordinator else {
                 return
@@ -368,11 +369,11 @@ extension AppCoordinator: GiniHealthTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
         switch event.type {
         case .onToTheBankButtonClicked:
-            print("📝 To the banking app button was tapped,\(String(describing: event.info))")
+            GiniUtilites.Log("📝 To the banking app button was tapped,\(String(describing: event.info))", event: .success)
         case .onCloseButtonClicked:
-            print("📝 Close screen was triggered")
+            GiniUtilites.Log("📝 Close screen was triggered", event: .success)
         case .onCloseKeyboardButtonClicked:
-            print("📝 Close keyboard was triggered")
+            GiniUtilites.Log("📝 Close keyboard was triggered", event: .success)
         }
     }
 }
@@ -416,5 +417,10 @@ extension AppCoordinator: DebugMenuDelegate {
         case .useBottomPaymentComponent:
             giniHealthConfiguration.useBottomPaymentComponentView = isOn
         }
+    }
+
+    func didPickNewLocalization(localization: GiniLocalization) {
+        giniHealthConfiguration.customLocalization = localization
+        health.setConfiguration(giniHealthConfiguration)
     }
 }

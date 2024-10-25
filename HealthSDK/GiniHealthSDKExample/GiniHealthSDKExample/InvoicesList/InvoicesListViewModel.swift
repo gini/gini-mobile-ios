@@ -9,6 +9,7 @@ import UIKit
 import GiniCaptureSDK
 import GiniHealthSDK
 import GiniInternalPaymentSDK
+import GiniUtilites
 
 struct DocumentWithExtractions: Codable {
     var documentId: String
@@ -156,22 +157,22 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
                                                 metadata: nil) { [weak self] result in
                 switch result {
                 case .success(let createdDocument):
-                    print("Successfully created document with id: \(createdDocument.id)")
+                    GiniUtilites.Log("Successfully created document with id: \(createdDocument.id)", event: .success)
                     self?.documentService.extractions(for: createdDocument,
                                                       cancellationToken: CancellationToken()) { [weak self] result in
                         switch result {
                         case let .success(extractionResult):
-                            print("Successfully fetched extractions for id: \(createdDocument.id)")
+                            GiniUtilites.Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
                             self?.invoices.append(DocumentWithExtractions(documentId: createdDocument.id,
                                                                           extractionResult: extractionResult))
                         case let .failure(error):
-                            print("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))")
+                            GiniUtilites.Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))", event: .error)
                             self?.errors.append(error.message)
                         }
                         self?.dispatchGroup.leave()
                     }
                 case .failure(let error):
-                    print("Document creation failed: \(String(describing: error))")
+                    GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
                     self?.errors.append(error.message)
                     self?.dispatchGroup.leave()
                 }
@@ -222,7 +223,7 @@ extension InvoicesListViewModel {
     }
 
     func didTapOnMoreInformation(documentId: String?) {
-        print("Tapped on More Information")
+        GiniUtilites.Log("Tapped on More Information", event: .success)
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
         if let presentedViewController = self.coordinator.invoicesListViewController.presentedViewController {
@@ -241,7 +242,7 @@ extension InvoicesListViewModel {
     }
     
     func didTapOnBankPicker(documentId: String?) {
-        print("Tapped on Bank Picker on :\(documentId ?? "")")
+        GiniUtilites.Log("Tapped on Bank Picker on :\(documentId ?? "")", event: .success)
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
         if GiniHealthConfiguration.shared.useBottomPaymentComponentView {
             dismissAndPresent(viewController: bankSelectionBottomSheet(documentId: documentId), animated: false)
@@ -255,7 +256,7 @@ extension InvoicesListViewModel {
     }
 
     func didTapOnPayInvoice(documentId: String?) {
-        print("Tapped on Pay Invoice on :\(documentId ?? "")")
+        GiniUtilites.Log("Tapped on Pay Invoice on :\(documentId ?? "")", event: .success)
         documentIdToRefetch = documentId
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
         if giniHealthConfiguration.showPaymentReviewScreen {
@@ -384,12 +385,12 @@ extension InvoicesListViewModel: GiniHealthTrackingDelegate {
         switch event.type {
         case .onToTheBankButtonClicked:
             self.shouldRefetchExtractions = true
-            print("To the banking app button was tapped,\(String(describing: event.info))")
+            GiniUtilites.Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
         case .onCloseButtonClicked:
             refetchExtractions()
-            print("Close screen was triggered")
+            GiniUtilites.Log("Close screen was triggered", event: .success)
         case .onCloseKeyboardButtonClicked:
-            print("Close keyboard was triggered")
+            GiniUtilites.Log("Close keyboard was triggered", event: .success)
         }
     }
 }
