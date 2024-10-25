@@ -89,7 +89,7 @@ final class SettingsViewController: UIViewController {
         tableView.register(InfoTableViewCell.self)
         tableView.register(CredentialsTableViewCell.self)
         tableView.register(UpdateUserDefaultsCell.self)
-        tableView.register(SettingsHeaderView.self, forHeaderFooterViewReuseIdentifier: SettingsHeaderView.identifier)
+        tableView.registerHeaderFooter(SettingsHeaderView.self)
     }
 
     // MARK: - Actions
@@ -179,9 +179,7 @@ extension SettingsViewController: UITableViewDataSource {
 extension SettingsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: SettingsHeaderView.identifier) as? SettingsHeaderView else {
-            return nil
-        }
+        let headerView: SettingsHeaderView = tableView.dequeueReusableHeaderFooter()
         let title = viewModel.contentData[section].title
         headerView.configure(with: title)
         return headerView
