@@ -14,6 +14,14 @@ public func giniHealthBundle() -> Bundle {
     Bundle.module
 }
 
+/**
+ Returns an optional `UIImage` instance with the given `name` preferably from the client's bundle.
+
+ - parameter name: The name of the image file without file extension.
+
+ - returns: Image if found with name.
+ */
+
 func UIImageNamedPreferred(named name: String) -> UIImage? {
     if let clientImage = UIImage(named: name) {
         return clientImage
