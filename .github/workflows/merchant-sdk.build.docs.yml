@@ -1,15 +1,16 @@
 name: Builds docs for Merchant SDK
 
 on:
-  push:
-    paths:
-      - 'MerchantSDK/**'
-    tags-ignore:
-      - '**'
   pull_request:
+    types: [opened, edited, reopened, synchronize]
     paths:
       - 'MerchantSDK/**'
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+
 jobs:
   documentation:
     runs-on: macos-latest    
