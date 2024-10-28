@@ -1,12 +1,7 @@
 name: Check Capture SDK
 on:
-  push:
-    paths:
-      - 'CaptureSDK/**'
-      - 'BankAPILibrary/**'
-    tags-ignore:
-      - '**'
   pull_request:
+    types: [opened, edited, reopened, synchronize]
     paths:
       - 'CaptureSDK/**'
       - 'BankAPILibrary/**'
@@ -16,6 +11,9 @@ on:
         required: true
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
   
 jobs:
   check:
