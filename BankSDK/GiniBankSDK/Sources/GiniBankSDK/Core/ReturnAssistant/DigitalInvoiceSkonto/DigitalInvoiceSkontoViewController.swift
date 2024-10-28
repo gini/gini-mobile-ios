@@ -82,7 +82,8 @@ class DigitalInvoiceSkontoViewController: UIViewController {
 
     private var firstAppearance = true
 
-    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor
+                                                    .constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel

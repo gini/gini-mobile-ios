@@ -1,13 +1,7 @@
 name: Check Bank SDK
 on:
-  push:
-    paths:
-      - 'BankSDK/**'
-      - 'CaptureSDK/**'
-      - 'BankAPILibrary/**'
-    tags-ignore:
-      - '**'
   pull_request:
+    types: [opened, edited, reopened, synchronize]
     paths:
       - 'BankSDK/**'
       - 'CaptureSDK/**'
@@ -17,6 +11,10 @@ on:
       GINI_MOBILE_TEST_CLIENT_SECRET:
         required: true
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
   check:
