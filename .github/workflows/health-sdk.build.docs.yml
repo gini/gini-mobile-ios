@@ -1,15 +1,17 @@
 name: Builds docs for Health SDK
 
 on:
-  push:
-    paths:
-      - 'HealthSDK/**'
   workflow_dispatch:
     tags-ignore:
       - '**'
   pull_request:
+    types: [opened, edited, reopened, synchronize]
     paths:
       - 'HealthSDK/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
   
 jobs:
   documentation:

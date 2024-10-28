@@ -1,0 +1,321 @@
+{
+    "extractions": {
+        "amountToPay": {
+            "entity": "amount",
+            "value": "105.20:EUR",
+            "box": {
+                "top": 1647.2,
+                "left": 2297.2,
+                "width": 96.59999999999991,
+                "height": 33.0,
+                "page": 1
+            },
+            "candidates": "amounts"
+        },
+        "iban": {
+            "entity": "iban",
+            "value": "DE75201207003100124444",
+            "box": {
+                "top": 2597.35,
+                "left": 732.35,
+                "width": 590.9999999999999,
+                "height": 34.0,
+                "page": 1
+            },
+            "candidates": "ibans"
+        },
+        "paymentRecipient": {
+            "entity": "companyname",
+            "value": "OTTO GMBH & CO KG",
+            "candidates": "paymentRecipients"
+        },
+        "paymentPurpose": {
+            "entity": "reference",
+            "value": "RF3237872952"
+        },
+        "bic": {
+            "entity": "bic",
+            "value": "HSTBDEHHXXX",
+            "box": {
+                "top": 2597.35,
+                "left": 1342.35,
+                "width": 316.0,
+                "height": 34.0,
+                "page": 1
+            },
+            "candidates": "bics"
+        },
+        "amountsAreConsistent": {
+            "entity": "text",
+            "value": "true"
+        },
+        "docType": {
+            "entity": "doctype",
+            "value": "Invoice"
+        }
+    },
+    "compoundExtractions": {
+        "skontoDiscounts": [
+            {
+                "skontoAmountToPay": {
+                    "entity": "amount",
+                    "value": "102.04:EUR",
+                    "box": {
+                        "top": 1960.75,
+                        "left": 433.75,
+                        "width": 127.0,
+                        "height": 31.0,
+                        "page": 1
+                    }
+                },
+                "skontoDueDateCalculated": {
+                    "entity": "date",
+                    "value": "2025-10-11"
+                },
+                "skontoAmountToPayCalculated": {
+                    "entity": "amount",
+                    "value": "102.04:EUR",
+                    "box": {
+                        "top": 1960.75,
+                        "left": 433.75,
+                        "width": 127.0,
+                        "height": 31.0,
+                        "page": 1
+                    }
+                },
+                "skontoAmountDiscountedCalculated": {
+                    "entity": "amount",
+                    "value": "3.15:EUR",
+                    "box": {
+                        "top": 1960.75,
+                        "left": 288.75,
+                        "width": 91.0,
+                        "height": 31.0,
+                        "page": 1
+                    }
+                },
+                "skontoAmountDiscounted": {
+                    "entity": "amount",
+                    "value": "3.15:EUR",
+                    "box": {
+                        "top": 1960.75,
+                        "left": 288.75,
+                        "width": 91.0,
+                        "height": 31.0,
+                        "page": 1
+                    }
+                },
+                "skontoPaymentMethod": {
+                    "entity": "text",
+                    "value": "Unspecified"
+                },
+                "skontoPercentageDiscounted": {
+                    "entity": "numeric",
+                    "value": "3.0",
+                    "box": {
+                        "top": 1911.95,
+                        "left": 1965.95,
+                        "width": 427.9999999999998,
+                        "height": 37.0,
+                        "page": 1
+                    }
+                },
+                "skontoRemainingDays": {
+                    "entity": "numeric",
+                    "value": "365"
+                },
+                "skontoDuePeriod": {
+                    "entity": "timeperiod",
+                    "value": "14:day",
+                    "box": {
+                        "top": 1911.95,
+                        "left": 1797.95,
+                        "width": 149.0,
+                        "height": 37.0,
+                        "page": 1
+                    }
+                },
+                "skontoPercentageDiscountedCalculated": {
+                    "entity": "numeric",
+                    "value": "3.0",
+                    "box": {
+                        "top": 1911.95,
+                        "left": 1965.95,
+                        "width": 427.9999999999998,
+                        "height": 37.0,
+                        "page": 1
+                    }
+                }
+            }
+        ],
+        "lineItems": [
+            {
+                "quantity": {
+                    "entity": "numeric",
+                    "value": "1"
+                },
+                "baseGross": {
+                    "entity": "amount",
+                    "value": "52.60:EUR"
+                },
+                "artNumber": {
+                    "entity": "text",
+                    "value": "5869440049"
+                },
+                "description": {
+                    "entity": "text",
+                    "value": "Bettwäsche 2tg"
+                }
+            },
+            {
+                "quantity": {
+                    "entity": "numeric",
+                    "value": "1"
+                },
+                "baseGross": {
+                    "entity": "amount",
+                    "value": "52.60:EUR"
+                },
+                "artNumber": {
+                    "entity": "text",
+                    "value": "5869440049"
+                },
+                "description": {
+                    "entity": "text",
+                    "value": "Bettwäsche 2tg"
+                }
+            }
+        ]
+    },
+    "returnReasons": [
+        {
+            "de": "Anders als im Bild",
+            "en": "Looks different from site image",
+            "id": "r1"
+        },
+        {
+            "de": "Schlechte Qualität",
+            "en": "Poor quality",
+            "id": "r2"
+        },
+        {
+            "de": "Defekt",
+            "en": "Defect",
+            "id": "r3"
+        },
+        {
+            "de": "Passt nicht richtig",
+            "en": "Doesn't suit me",
+            "id": "r4"
+        },
+        {
+            "de": "Falsches Produkt empfangen",
+            "en": "Received wrong item",
+            "id": "r5"
+        },
+        {
+            "de": "Paket wurde beschädigt",
+            "en": "Parcel was damaged",
+            "id": "r6"
+        },
+        {
+            "de": "Lieferung zu spät angekommen",
+            "en": "Arrived too late",
+            "id": "r7"
+        }
+    ],
+    "candidates": {
+        "bics": [
+            {
+                "entity": "bic",
+                "value": "HSTBDEHHXXX",
+                "box": {
+                    "top": 2597.35,
+                    "left": 1342.35,
+                    "width": 316.0,
+                    "height": 34.0,
+                    "page": 1
+                }
+            }
+        ],
+        "ibans": [
+            {
+                "entity": "iban",
+                "value": "DE75201207003100124444",
+                "box": {
+                    "top": 2597.35,
+                    "left": 732.35,
+                    "width": 590.9999999999999,
+                    "height": 34.0,
+                    "page": 1
+                }
+            }
+        ],
+        "paymentRecipients": [
+            {
+                "entity": "companyname",
+                "value": "Otto (GmbH Co KG)"
+            },
+            {
+                "entity": "companyname",
+                "value": "OTTO GMBH CO KG"
+            },
+            {
+                "entity": "companyname",
+                "value": "OTTO"
+            },
+            {
+                "entity": "companyname",
+                "value": "Otto GmbH Co KG"
+            },
+            {
+                "entity": "companyname",
+                "value": "Otto (GmbH & Co KG)"
+            },
+            {
+                "entity": "companyname",
+                "value": "OTTO GMBH & CO KG"
+            },
+            {
+                "entity": "companyname",
+                "value": "OTTO GmbH"
+            },
+            {
+                "entity": "companyname",
+                "value": "Otto"
+            },
+            {
+                "entity": "companyname",
+                "value": "OTTO GMBH"
+            },
+            {
+                "entity": "companyname",
+                "value": "Otto GmbH"
+            },
+            {
+                "entity": "companyname",
+                "value": "OTTO GMBH & CO KG,",
+                "box": {
+                    "top": 2597.35,
+                    "left": 240.35,
+                    "width": 354.0,
+                    "height": 34.0,
+                    "page": 1
+                }
+            }
+        ],
+        "amounts": [
+            {
+                "entity": "amount",
+                "value": "105.20:EUR",
+                "box": {
+                    "top": 1647.2,
+                    "left": 2297.2,
+                    "width": 96.59999999999991,
+                    "height": 33.0,
+                    "page": 1
+                }
+            }
+        ]
+    }
+}
