@@ -1,11 +1,7 @@
 name: Check Merchant SDK
 on:
-  push:
-    paths:
-      - 'MerchantSDK/**'
-    tags-ignore:
-      - '**'
   pull_request:
+    types: [opened, edited, reopened, synchronize]
     paths:
       - 'MerchantSDK/**'
   workflow_call:
@@ -13,6 +9,10 @@ on:
       GINI_MOBILE_TEST_CLIENT_SECRET:
         required: true
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
   check:
