@@ -160,8 +160,9 @@ class SkontoViewModel {
     func setSkontoAmountToPayPrice(_ price: String) {
         guard let price = convertPriceStringToPrice(price: price),
               price.value <= amountToPay.value else {
-            // TODO: PP-680 message
-            setErrorMessage("Skonto is more than Full amount")
+            let errorMessage = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.validation",
+                                                                        comment: "Discounted value cannot exceed initial value")
+            setErrorMessage(errorMessage)
             notifyStateChangeHandlers()
             return
         }
@@ -174,11 +175,12 @@ class SkontoViewModel {
     func setAmountToPayPrice(_ price: String) {
         guard let price = convertPriceStringToPrice(price: price),
               price.value <= maximumAmountToPayValue else {
-            // TODO: PP-680 message
-                  setErrorMessage("Maximum amount to pay is \(maximumAmountToPayValue)")
-                  notifyStateChangeHandlers()
-                  return
-              }
+            let errorMessage = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.validation",
+                                                                        comment: "Discounted value cannot exceed initial value")
+            setErrorMessage(errorMessage)
+            notifyStateChangeHandlers()
+            return
+        }
         amountToPay = price
         recalculateAmountToPayWithSkonto()
         updateDocumentPagesModelData()

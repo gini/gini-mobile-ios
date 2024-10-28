@@ -99,6 +99,10 @@
 "ginibank.skonto.withoutdiscount.title" = "Ohne Skonto";
 "ginibank.skonto.withoutdiscount.price.title" = "Betrag ohne Abzug";
 
+"ginibank.skonto.withdiscount.validation" = "Der Betrag mit Skonto darf nicht höher sein als ohne";
+// TODO: 680 finalise string
+"ginibank.skonto.withoutdiscount.validation" = "Der Betrag mit Skonto darf nicht höher sein als ohne";
+
 "ginibank.skonto.total.title" = "Gesamtpreis";
 "ginibank.skonto.total.savings" = "%@ sparen";
 "ginibank.skonto.total.skontopercentage" = "%@ Skonto";
