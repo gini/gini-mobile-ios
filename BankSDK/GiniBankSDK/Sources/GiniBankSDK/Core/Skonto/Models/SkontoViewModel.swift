@@ -41,6 +41,8 @@ class SkontoViewModel {
 
     private (set) var documentPagesViewModel: SkontoDocumentPagesViewModel?
 
+    private var maximumAmountToPayValue: Decimal
+
     var finalAmountToPay: Price {
         return isSkontoApplied ? skontoAmountToPay : amountToPay
     }
@@ -123,10 +125,14 @@ class SkontoViewModel {
         return text
     }
 
+    private var errorMessage: String?
+
     weak var delegate: SkontoViewModelDelegate?
 
-    init(skontoDiscounts: SkontoDiscounts) {
+    init(skontoDiscounts: SkontoDiscounts,
+         maximumAmountToPayValue: Decimal = 99999.99) {
         self.skontoDiscounts = skontoDiscounts
+        self.maximumAmountToPayValue = maximumAmountToPayValue
 
         // For now multiple Skonto discounts aren't handle
         let skontoDiscountDetails = skontoDiscounts.discounts[0]
@@ -151,6 +157,8 @@ class SkontoViewModel {
     func setSkontoAmountToPayPrice(_ price: String) {
         guard let price = convertPriceStringToPrice(price: price),
               price.value <= amountToPay.value else {
+            // TODO: PP-680 message
+            setErrorMessage("Skonto is more than Full amount")
             notifyStateChangeHandlers()
             return
         }
@@ -161,7 +169,13 @@ class SkontoViewModel {
     }
 
     func setAmountToPayPrice(_ price: String) {
-        guard let price = convertPriceStringToPrice(price: price) else { return }
+        guard let price = convertPriceStringToPrice(price: price),
+              price.value <= maximumAmountToPayValue else {
+            // TODO: PP-680 message
+                  setErrorMessage("Maximum amount to pay is \(maximumAmountToPayValue)")
+                  notifyStateChangeHandlers()
+                  return
+              }
         amountToPay = price
         recalculateAmountToPayWithSkonto()
         updateDocumentPagesModelData()
@@ -329,5 +343,14 @@ class SkontoViewModel {
         default:
             isSkontoApplied = true
         }
+    }
+
+    func setErrorMessage(_ message: String) {
+        errorMessage = message
+    }
+
+    func getErrorMessageAndClear() -> String? {
+        defer { errorMessage = nil }
+        return errorMessage
     }
 }
