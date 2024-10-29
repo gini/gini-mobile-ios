@@ -107,8 +107,7 @@
 "ginibank.skonto.withoutdiscount.price.title" = "Full amount";
 
 "ginibank.skonto.withdiscount.validation" = "Discounted value cannot exceed initial value";
-// TODO: 680 finalise string
-"ginibank.skonto.withoutdiscount.validation" = "Discounted value cannot exceed initial value";
+"ginibank.skonto.withoutdiscount.validation" = "Your transfer limit has been exceeded: %@";
 
 "ginibank.skonto.total.title" = "Total";
 "ginibank.skonto.total.savings" = "Save %@";
