@@ -1,12 +1,7 @@
 name: Check Health SDK
 on:
-  push:
-    paths:
-      - 'HealthSDK/**'
-      - 'HealthAPILibrary/**'
-    tags-ignore:
-      - '**'
   pull_request:
+    types: [opened, edited, reopened, synchronize]
     paths:
       - 'HealthSDK/**'
       - 'HealthAPILibrary/**'
@@ -15,6 +10,10 @@ on:
       GINI_MOBILE_TEST_CLIENT_SECRET:
         required: true
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
   check:

@@ -5,6 +5,11 @@ on:
       - 'BankSDK/**'
       - 'CaptureSDK/**'
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+
 jobs:
   check:
     uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main

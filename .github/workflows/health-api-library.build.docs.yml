@@ -1,15 +1,17 @@
 name: Builds docs for Health API Library
 
 on:
-  push:
-    paths:
-      - 'HealthAPILibrary/**'
   workflow_dispatch:
     tags-ignore:
       - '**'
   pull_request:
+    types: [opened, edited, reopened, synchronize]
     paths:
       - 'HealthAPILibrary/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
   
 jobs:
   documentation:

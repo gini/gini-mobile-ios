@@ -1,11 +1,7 @@
 name: Check Health API Library
 on:
-  push:
-   paths:
-      - 'HealthAPILibrary/**'
-   tags-ignore:
-      - '**'
   pull_request:
+   types: [opened, edited, reopened, synchronize]
    paths:
       - 'HealthAPILibrary/**'
   workflow_call:
@@ -13,6 +9,10 @@ on:
       GINI_MOBILE_TEST_CLIENT_SECRET:
         required: true
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
   check:
