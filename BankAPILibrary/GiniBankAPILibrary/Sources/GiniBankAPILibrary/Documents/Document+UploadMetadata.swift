@@ -13,15 +13,15 @@ extension Document {
      */
     public class UploadMetadata: NSObject {
         var userComment: String
-        static let userCommentRotation = "RotDeltaDeg"
-        static let userCommentContentId = "ContentId"
-        static let userCommentPlatform = "Platform"
-        static let userCommentOSVer = "OSVer"
-        static let userCommentGiniVersionVer = "GiniCaptureVer"
-        static let userCommentDeviceOrientation = "DeviceOrientation"
-        static let userCommentSource = "Source"
-        static let userCommentImportMethod = "ImportMethod"
-        static let userCommentEntryPoint = "EntryPoint"
+        private static let userCommentRotation = "RotDeltaDeg"
+        private static let userCommentContentId = "ContentId"
+        private static let userCommentPlatform = "Platform"
+        private static let userCommentOSVer = "OSVer"
+        private static let userCommentGiniVersionVer = "GiniCaptureVer"
+        private static let userCommentDeviceOrientation = "DeviceOrientation"
+        private static let userCommentSource = "Source"
+        private static let userCommentImportMethod = "ImportMethod"
+        private static let userCommentEntryPoint = "EntryPoint"
 
         /**
          * The document upload metadata initializer

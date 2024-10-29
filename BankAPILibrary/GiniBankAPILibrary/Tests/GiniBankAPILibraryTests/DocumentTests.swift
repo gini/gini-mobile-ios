@@ -120,18 +120,20 @@ final class GiniDocumentTests: XCTestCase {
             entryPoint: "unit-test",
             osVersion: "ios 99"
         )
+        let expectedComment = Document.UploadMetadata.constructComment(
+            osVersion: "ios 99",
+            giniVersion: "99.99.99",
+            contentId: "",
+            source: "source",
+            entryPoint: "unit-test",
+            importMethod: "import",
+            deviceOrientation: "deviceOrientation",
+            rotation: ""
+        )
         XCTAssertEqual(
             metadata.userComment,
-            Document.UploadMetadata.constructComment(
-                osVersion: "ios 99",
-                giniVersion: "99.99.99",
-                contentId: "",
-                source: "source",
-                entryPoint: "unit-test",
-                importMethod: "import",
-                deviceOrientation: "deviceOrientation",
-                rotation: ""
-            )
+            expectedComment,
+            "Upload metadata(userComment) should match; expected \"\(expectedComment)\", got \"\(metadata.userComment)\""
         )
     }
     func testAddUploadMetadata() {
@@ -145,7 +147,12 @@ final class GiniDocumentTests: XCTestCase {
             osVersion: "ios 99"
         )
         metadata.addUploadMetadata(uploadMetadata)
-        XCTAssertEqual(metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey], uploadMetadata.userComment)
+        let metadataValue = metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] ?? ""
+        XCTAssertEqual(
+            metadataValue,
+            uploadMetadata.userComment,
+            "userComment should match; expected \"\(uploadMetadata.userComment)\", got \"\(metadataValue)\""
+        )
     }
     func testInitWithUploadMetadata() {
         let uploadMetadata = Document.UploadMetadata.init(
@@ -157,7 +164,12 @@ final class GiniDocumentTests: XCTestCase {
             osVersion: "ios 99"
         )
         let metadata = Document.Metadata(uploadMetadata: uploadMetadata)
-        XCTAssertEqual(metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey], uploadMetadata.userComment)
+        let metadataValue = metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] ?? ""
+        XCTAssertEqual(
+            metadataValue,
+            uploadMetadata.userComment,
+            "userComment should match; expected \"\(uploadMetadata.userComment)\", got \"\(metadataValue)\""
+        )
     }
 }
 

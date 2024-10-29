@@ -442,16 +442,18 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
         if let metadataObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
            metadataObj.type == AVMetadataObject.ObjectType.qr, let metaString = metadataObj.stringValue {
             let qrDocument = GiniQRCodeDocument(scannedString: metaString, uploadMetadata: generateUploadMetadata())
-            do {
-                try GiniCaptureDocumentValidator.validate(qrDocument, withConfig: giniConfiguration)
-                DispatchQueue.main.async { [weak self] in
-                    self?.didDetectQR?(qrDocument)
-                }
-            } catch DocumentValidationError.qrCodeFormatNotValid {
-                DispatchQueue.main.async { [weak self] in
-                    self?.didDetectInvalidQR?(qrDocument)
-                }
-            } catch {}
+            if giniConfiguration.qrCodeScanningEnabled || qrDocument.qrCodeFormat == .giniQRCode {
+                do {
+                    try GiniCaptureDocumentValidator.validate(qrDocument, withConfig: giniConfiguration)
+                    DispatchQueue.main.async { [weak self] in
+                        self?.didDetectQR?(qrDocument)
+                    }
+                } catch DocumentValidationError.qrCodeFormatNotValid {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.didDetectInvalidQR?(qrDocument)
+                    }
+                } catch {}
+            }
         }
     }
 }

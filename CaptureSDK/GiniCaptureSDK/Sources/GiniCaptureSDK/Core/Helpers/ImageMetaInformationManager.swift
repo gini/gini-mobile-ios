@@ -232,15 +232,16 @@ final class ImageMetaInformationManager {
         if let rotationDegrees = rotationDegrees {
             rotationNorm = "\(normalizedDegrees(imageRotation: imageRotationDeltaDegrees() + rotationDegrees))"
         }
+        let importMethod = imageSource.value != DocumentSource.camera.value
+                                ? imageImportMethod?.rawValue ?? ""
+                                : ""
         return Document.UploadMetadata.constructComment(
             osVersion: UIDevice.current.systemVersion,
             giniVersion: GiniCapture.versionString,
             contentId: imageUUID(),
             source: imageSource.value,
             entryPoint: GiniConfiguration.shared.entryPoint.stringValue,
-            importMethod: imageSource.value != DocumentSource.camera.value
-            ? imageImportMethod?.rawValue ?? ""
-            : "",
+            importMethod: importMethod,
             deviceOrientation: deviceOrientationOnCapture ?? "",
             rotation: rotationNorm
         )
