@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-publish
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
