@@ -183,6 +183,11 @@ class SkontoViewModel {
         }
     }
 
+    func setMaximumAmountToPayValue(_ value: Decimal?) {
+        guard let value else { return }
+        maximumAmountToPayValue = value
+    }
+
     private func setPrice(_ price: String, maxValue: Decimal, errorMessage: String, completion: (Price) -> Void) {
         let validationMessage = validatePrice(price, maxValue: maxValue, errorMessage: errorMessage)
         if let validationMessage {

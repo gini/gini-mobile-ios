@@ -71,6 +71,13 @@ public struct DigitalInvoice {
             return amountToPay
         }
     }
+
+    var maximumAvailablePrice: Decimal {
+        let maxPricePerItem = 99999.99
+        let totalMaxValue = maxPricePerItem * Double(lineItems.count)
+        let roundedValue = (totalMaxValue * 100).rounded(.up) / 100
+        return Decimal(roundedValue)
+    }
 }
 
 extension DigitalInvoice {
