@@ -24,6 +24,7 @@ import GiniCaptureSDK
      - parameter giniApiLib: GiniBankAPI initialized with client's credentials
      */
     public init(with giniApiLib: GiniBankAPI) {
+        var test = ""
         self.giniApiLib = giniApiLib
         paymentService = giniApiLib.paymentService()
     }
