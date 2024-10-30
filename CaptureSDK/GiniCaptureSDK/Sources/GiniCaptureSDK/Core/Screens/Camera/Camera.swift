@@ -104,13 +104,7 @@ final class Camera: NSObject, CameraProtocol {
         setupPhotoCaptureOutput()
         configureVideoDataOutput()
         session.commitConfiguration()
-        if giniConfiguration.qrCodeScanningEnabled {
-            setupQRScanningOutput(completion: completion)
-        } else {
-            DispatchQueue.main.async {
-                completion(nil)
-            }
-        }
+        setupQRScanningOutput(completion: completion)
     }
 
     // MARK: - Text detection
@@ -439,16 +433,19 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
         if let metadataObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
            metadataObj.type == AVMetadataObject.ObjectType.qr, let metaString = metadataObj.stringValue {
             let qrDocument = GiniQRCodeDocument(scannedString: metaString)
-            do {
-                try GiniCaptureDocumentValidator.validate(qrDocument, withConfig: giniConfiguration)
-                DispatchQueue.main.async { [weak self] in
-                    self?.didDetectQR?(qrDocument)
-                }
-            } catch DocumentValidationError.qrCodeFormatNotValid {
-                DispatchQueue.main.async { [weak self] in
-                    self?.didDetectInvalidQR?(qrDocument)
-                }
-            } catch {}
+            
+            if giniConfiguration.qrCodeScanningEnabled || qrDocument.qrCodeFormat == .giniQRCode {
+                do {
+                    try GiniCaptureDocumentValidator.validate(qrDocument, withConfig: giniConfiguration)
+                    DispatchQueue.main.async { [weak self] in
+                        self?.didDetectQR?(qrDocument)
+                    }
+                } catch DocumentValidationError.qrCodeFormatNotValid {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.didDetectInvalidQR?(qrDocument)
+                    }
+                } catch {}
+            }
         }
     }
 }
