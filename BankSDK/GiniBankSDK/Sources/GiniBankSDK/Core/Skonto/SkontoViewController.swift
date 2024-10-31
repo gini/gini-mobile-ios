@@ -377,10 +377,16 @@ extension SkontoViewController {
             return
         }
 
-        let contentOffset = keyboardFrame.height - proceedContainerView.frame.height + Constants.containerPadding
+        let targetView = viewModel.isSkontoApplied ? withDiscountContainerView : withoutDiscountContainerView
+        let targetFrameInScrollView = scrollView.convert(targetView.frame, from: targetView.superview)
+        let keyboardHeight = keyboardFrame.height
+        let scrollViewBottomMarginDifference = (scrollView.superview?.bounds.height ?? 0) - scrollView.frame.maxY
+        let keyboardOffsetOverProceedView = keyboardHeight + Constants.containerPadding - scrollViewBottomMarginDifference
+        let contentOffsetY = max(0, targetFrameInScrollView.maxY - scrollView.bounds.height + keyboardOffsetOverProceedView)
         UIView.animate(withDuration: animationDuration) {
-            self.scrollView.contentInset.bottom = contentOffset
-            self.scrollView.scrollIndicatorInsets.bottom = contentOffset
+            self.scrollView.contentInset.bottom = keyboardHeight
+            self.scrollView.scrollIndicatorInsets.bottom = keyboardHeight
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: contentOffsetY), animated: true)
         }
     }
 
