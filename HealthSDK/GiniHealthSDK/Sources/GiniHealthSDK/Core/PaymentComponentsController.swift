@@ -769,6 +769,11 @@ extension PaymentComponentsController: PaymentReviewProtocol {
         viewDelegate?.didTapOnMoreInformation()
     }
 
+    /**
+     Fetches bank logos for the available payment providers.
+
+     - Returns: A tuple containing an array of logo data and the count of additional banks, if any.
+     */
     public func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
         guard !paymentProviders.isEmpty else { return ([], nil)}
         let paymentProvidersShownCount = paymentProviders.count == 1 ? 1 : 2
