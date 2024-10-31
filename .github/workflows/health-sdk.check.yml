@@ -31,11 +31,13 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Check package GiniHealthSDK
+      if: ${{ matrix.target == 'GiniHealthSDK' }}
       run: |
            cd HealthSDK/GiniHealthSDK
            swift package update
 
     - name: Check package GiniHealthSDKPinning
+      if: ${{ matrix.target == 'GiniHealthSDKPinning' }}
       run: |
            cd HealthSDK/GiniHealthSDKPinning
            swift package update
