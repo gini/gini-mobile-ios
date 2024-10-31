@@ -32,11 +32,13 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Check package GiniBankSDK
+      if: ${{ matrix.target == 'GiniBankSDK' }}
       run: |
            cd BankSDK/GiniBankSDK
            swift package update
 
     - name: Check package GiniBankSDKPinning
+      if: ${{ matrix.target == 'GiniBankSDKPinning' }}
       run: |
            cd BankSDK/GiniBankSDKPinning
            swift package update
