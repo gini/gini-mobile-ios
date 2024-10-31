@@ -55,26 +55,20 @@ extension GiniBank {
      - parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
      - parameter configuration: The configuration to set.
      - parameter documentMetadata: Additional HTTP headers to send when uploading documents
-     - parameter api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
-     - parameter userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
      - parameter trackingDelegate: A delegate object to receive user events
 
      - returns: A presentable view controller.
      */
-    public class func viewController(withAlternativeTokenSource tokenSource: TokenSource,
+    public class func viewController(withAlternativeTokenSource tokenSource: AlternativeTokenSource,
                                      importedDocuments: [GiniCaptureDocument]? = nil,
                                      configuration: GiniBankConfiguration,
                                      resultsDelegate: GiniCaptureResultsDelegate,
                                      documentMetadata: Document.Metadata? = nil,
-                                     api: APIDomain = .default,
-                                     userApi: UserDomain = .default,
                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
         let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(alternativeTokenSource: tokenSource,
                                                                        resultsDelegate: resultsDelegate,
                                                                        configuration: configuration,
                                                                        documentMetadata: documentMetadata,
-                                                                       api: api,
-                                                                       userApi: userApi,
                                                                        trackingDelegate: trackingDelegate)
         return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }

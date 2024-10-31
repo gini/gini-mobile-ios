@@ -151,11 +151,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         self.trackingDelegate = trackingDelegate
     }
 
-    public init(alternativeTokenSource tokenSource: TokenSource,
-                resultsDelegate: GiniCaptureResultsDelegate,
+    public init(resultsDelegate: GiniCaptureResultsDelegate,
                 configuration: GiniBankConfiguration,
                 documentMetadata: Document.Metadata?,
-                api: APIDomain,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 lib: GiniBankAPI) {
         documentService = DocumentService(lib: lib, metadata: documentMetadata)
@@ -213,22 +211,18 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                   lib: lib)
     }
 
-    convenience init(alternativeTokenSource tokenSource: TokenSource,
+    convenience init(alternativeTokenSource tokenSource: AlternativeTokenSource,
                      resultsDelegate: GiniCaptureResultsDelegate,
                      configuration: GiniBankConfiguration,
                      documentMetadata: Document.Metadata?,
-                     api: APIDomain,
-                     userApi: UserDomain,
                      trackingDelegate: GiniCaptureTrackingDelegate?) {
         let lib = GiniBankAPI
-            .Builder(client: Client(id: tokenSource.id, secret: tokenSource.secret, domain: tokenSource.domain), api: api, userApi: userApi)
+            .Builder(alternativeTokenSource: tokenSource)
             .build()
 
-        self.init(alternativeTokenSource: tokenSource,
-                  resultsDelegate: resultsDelegate,
+        self.init(resultsDelegate: resultsDelegate,
                   configuration: configuration,
                   documentMetadata: documentMetadata,
-                  api: api,
                   trackingDelegate: trackingDelegate,
                   lib: lib)
     }
