@@ -16,11 +16,11 @@ final class OrderListViewModel {
     private var documentService: GiniHealthSDK.DefaultDocumentService
     private let hardcodedOrdersController: HardcodedOrdersControllerProtocol
 
-    let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
-    let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
-    let customOrderText = NSLocalizedString("giniHealthSDKExample.custom.order.button.title", comment: "")
-    let cancelText = NSLocalizedString("giniHealthSDKExample.cancel.button.title", comment: "")
-    let errorTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.error", comment: "")
+    let noInvoicesText = NSLocalizedString("gini.health.example.invoicesList.missingInvoices.text", comment: "")
+    let titleText = NSLocalizedString("gini.health.example.invoicesList.title", comment: "")
+    let customOrderText = NSLocalizedString("gini.health.example.custom.order.button.title", comment: "")
+    let cancelText = NSLocalizedString("gini.health.example.cancel.button.title", comment: "")
+    let errorTitleText = NSLocalizedString("gini.health.example.invoicesList.error", comment: "")
 
     private var errors: [String] = []
 

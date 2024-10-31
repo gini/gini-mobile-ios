@@ -10,6 +10,10 @@ import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
 
+/**
+ An enumeration representing the types of text fields used in the payment review interface.
+ Each case corresponds to a specific text field and is assigned a unique integer tag.
+ */
 public enum TextFieldType: Int {
     case recipientFieldTag = 1
     case ibanFieldTag
@@ -17,6 +21,7 @@ public enum TextFieldType: Int {
     case usageFieldTag
 }
 
+/// The container for oayment review textfields
 public final class PaymentReviewContainerView: UIView {
     private let ibanValidator = IBANValidator()
 
@@ -74,8 +79,10 @@ public final class PaymentReviewContainerView: UIView {
     private var paymentInputFieldsErrorLabels: [UILabel] = []
     private var coupledErrorLabels: [UILabel] = []
     private let viewModel: PaymentReviewContainerViewModel
+    /// A closure that is called when the pay button is clicked.
     public var onPayButtonClicked: (() -> Void)?
-    public var onBanksPickerButtonClicked: (() -> Void)?
+    /// A closure that is called when the banks selection button is clicked.
+    public var onBankSelectionButtonClicked: (() -> Void)?
 
     public init(viewModel: PaymentReviewContainerViewModel) {
         self.viewModel = viewModel
@@ -472,7 +479,7 @@ public final class PaymentReviewContainerView: UIView {
 
     @objc
     private func tapOnBankPicker() {
-        onBanksPickerButtonClicked?()
+        onBankSelectionButtonClicked?()
     }
 
     fileprivate func configurePayButtonInitialState() {

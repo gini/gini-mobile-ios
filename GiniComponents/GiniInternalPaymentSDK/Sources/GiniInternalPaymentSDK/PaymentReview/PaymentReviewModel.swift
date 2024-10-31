@@ -12,19 +12,22 @@ import GiniUtilites
 protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController)
-    func presentBanksPicker(bottomSheet: BottomSheetViewController)
+    func presentBankSelectionBottomSheet(bottomSheet: BottomSheetViewController)
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest()
 }
 
+/// BottomSheetsProviderProtocol defines methods for providing custom bottom sheets.
 public protocol BottomSheetsProviderProtocol: AnyObject {
     func installAppBottomSheet() -> BottomSheetViewController
     func shareInvoiceBottomSheet(documentId: String?) -> BottomSheetViewController
     func bankSelectionBottomSheet(documentId: String?) -> UIViewController
 }
 
+/// PaymentReviewProtocol combines the functionalities of PaymentReviewAPIProtocol, PaymentReviewTrackingProtocol, PaymentReviewSupportedFormatsProtocol, and PaymentReviewActionProtocol for comprehensive payment review management.
 public typealias PaymentReviewProtocol = PaymentReviewAPIProtocol & PaymentReviewTrackingProtocol & PaymentReviewSupportedFormatsProtocol & PaymentReviewActionProtocol
 
+/// PaymentReviewAPIProtocol defines methods for handling payment review processes.
 public protocol PaymentReviewAPIProtocol: AnyObject {
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void)
     func shouldHandleErrorInternally(error: GiniError) -> Bool
@@ -34,18 +37,21 @@ public protocol PaymentReviewAPIProtocol: AnyObject {
     func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController)
 }
 
+/// PaymentReviewTrackingProtocol defines methods for tracking user interactions during the payment review process.
 public protocol PaymentReviewTrackingProtocol {
     func trackOnPaymentReviewCloseKeyboardClicked()
     func trackOnPaymentReviewCloseButtonClicked()
     func trackOnPaymentReviewBankButtonClicked(providerName: String)
 }
 
+/// PaymentReviewSupportedFormatsProtocol defines methods for checking supported formats in the payment review process.
 public protocol PaymentReviewSupportedFormatsProtocol {
     func supportsGPC() -> Bool
     func supportsOpenWith() -> Bool
     func shouldShowOnboardingScreenFor() -> Bool
 }
 
+/// PaymentReviewActionProtocol defines actions related to payment review processes.
 public protocol PaymentReviewActionProtocol {
     func updatedPaymentProvider(_ paymentProvider: PaymentProvider)
     func openMoreInformationViewController()
@@ -203,11 +209,11 @@ public class PaymentReviewModel: NSObject {
         viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: shareInvoiceBottomSheet)
     }
 
-    func openBanksPickerBottomSheet() {
+    func openBankSelectionBottomSheet() {
         guard let banksPickerBottomSheet = bottomSheetsProvider?.bankSelectionBottomSheet(documentId: documentId) as? BanksBottomView else { return }
         banksPickerBottomSheet.modalPresentationStyle = .overFullScreen
         banksPickerBottomSheet.viewModel.viewDelegate = self
-        viewModelDelegate?.presentBanksPicker(bottomSheet: banksPickerBottomSheet)
+        viewModelDelegate?.presentBankSelectionBottomSheet(bottomSheet: banksPickerBottomSheet)
     }
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
@@ -289,12 +295,27 @@ extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
 }
 
 extension PaymentReviewModel: BanksSelectionProtocol {
+    /**
+     Called when a payment provider is selected by the user.
+     
+     - Parameters:
+       - paymentProvider: The `PaymentProvider` object representing the selected payment provider.
+       - documentId: An optional `String` identifier for the document associated with this payment. If `nil`, no document is associated.
+     
+     This function updates the current selected payment provider, notifies the delegate of the new provider,
+     and triggers any associated callback for handling the change in payment provider.
+     */
     public func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider, documentId: String?) {
         selectedPaymentProvider = paymentProvider
         delegate?.updatedPaymentProvider(paymentProvider)
         onNewPaymentProvider?()
     }
 
+    /**
+     Called when the user taps on the "More Information" button was tapped on BanksSelection view
+     
+     This function notifies the delegate to open the "More Information" view controller.
+     */
     public func didTapOnMoreInformation() {
         delegate?.openMoreInformationViewController()
     }

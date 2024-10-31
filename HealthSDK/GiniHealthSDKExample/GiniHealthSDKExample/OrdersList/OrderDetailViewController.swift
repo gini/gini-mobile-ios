@@ -12,10 +12,10 @@ import GiniUtilites
 import GiniHealthSDK
 
 enum Fields: String, CaseIterable {
-    case recipient = "giniHealthSDKExample.order.detail.Recipient"
-    case iban = "giniHealthSDKExample.order.detail.IBAN"
-    case amountToPay = "giniHealthSDKExample.order.detail.Amount"
-    case purpose = "giniHealthSDKExample.order.detail.Purpose"
+    case recipient = "gini.health.example.order.detail.recipient"
+    case iban = "gini.health.example.order.detail.iban"
+    case amountToPay = "gini.health.example.order.detail.amount"
+    case purpose = "gini.health.example.order.detail.purpose"
 }
 
 final class OrderDetailViewController: UIViewController {
@@ -26,7 +26,7 @@ final class OrderDetailViewController: UIViewController {
     private let giniHealthConfiguration = GiniHealthConfiguration.shared
 
     private var errors: [String] = []
-    private let errorTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.error", comment: "")
+    private let errorTitleText = NSLocalizedString("gini.health.example.invoicesList.error", comment: "")
 
     private var rowItems: [(String, String)] {
         [(Fields.recipient.rawValue, order.recipient),
@@ -64,7 +64,7 @@ final class OrderDetailViewController: UIViewController {
     private lazy var payButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(NSLocalizedString("giniHealthSDKExample.order.detail.Pay", comment: ""), for: .normal)
+        button.setTitle(NSLocalizedString("gini.health.example.order.detail.pay", comment: ""), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = Constants.payButtonCornerRadius
@@ -80,7 +80,7 @@ final class OrderDetailViewController: UIViewController {
         paymentComponentsController.viewDelegate = self
         paymentComponentsController.bottomViewDelegate = self
 
-        title = NSLocalizedString("giniHealthSDKExample.order.navigation.orderdetails", comment: "")
+        title = NSLocalizedString("gini.health.example.order.navigation.order.details", comment: "")
 
         view.backgroundColor = .secondarySystemBackground
         view.addSubview(detailView)
@@ -144,7 +144,7 @@ final class OrderDetailViewController: UIViewController {
                 self.presentPaymentViewBottomSheet(nil)
             }
         } else {
-            showErrorAlertView(error: NSLocalizedString("giniHealthSDKExample.order.detail.Alert.FieldError", comment: ""))
+            showErrorAlertView(error: NSLocalizedString("gini.health.example.order.detail.alert.field.error", comment: ""))
         }
     }
 
@@ -266,7 +266,7 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
                                                 message: error,
                                                 preferredStyle: .alert)
         alertController.addAction(
-            UIAlertAction(title: NSLocalizedString("giniHealthSDKExample.order.detail.Alert.Ok", comment: ""),
+            UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""),
                           style: .default)
         )
         self.present(alertController, animated: true)

@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Configuration settings for the Payment Review container view.
 public struct PaymentReviewContainerConfiguration {
     let errorLabelTextColor: UIColor
     let errorLabelFont: UIFont
@@ -16,6 +17,18 @@ public struct PaymentReviewContainerConfiguration {
     let chevronDownIcon: UIImage?
     let chevronDownIconColor: UIColor?
 
+    /**
+     Initializes a new configuration for the Payment Review container view.
+     
+     - Parameters:
+       - errorLabelTextColor: The color of the error label text.
+       - errorLabelFont: The font used for the error label.
+       - lockIcon: The icon displayed to indicate locked fields.
+       - lockedFields: A flag indicating whether specific fields are locked for editing.
+       - showBanksPicker: A flag indicating whether the bank picker should be shown.
+       - chevronDownIcon: The icon for the chevron pointing downward, used in the UI.
+       - chevronDownIconColor: The color of the chevron down icon.
+     */
     public init(errorLabelTextColor: UIColor,
                 errorLabelFont: UIFont,
                 lockIcon: UIImage,

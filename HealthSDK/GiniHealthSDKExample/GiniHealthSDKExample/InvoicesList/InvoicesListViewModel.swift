@@ -44,11 +44,11 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
 
     var invoices: [DocumentWithExtractions]
 
-    let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
-    let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
-    let uploadInvoicesText = NSLocalizedString("giniHealthSDKExample.uploadInvoices.button.title", comment: "")
-    let cancelText = NSLocalizedString("giniHealthSDKExample.cancel.button.title", comment: "")
-    let errorTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.error", comment: "")
+    let noInvoicesText = NSLocalizedString("gini.health.example.invoicesList.missingInvoices.text", comment: "")
+    let titleText = NSLocalizedString("gini.health.example.invoicesList.title", comment: "")
+    let uploadInvoicesText = NSLocalizedString("gini.health.example.uploadInvoices.button.title", comment: "")
+    let cancelText = NSLocalizedString("gini.health.example.cancel.button.title", comment: "")
+    let errorTitleText = NSLocalizedString("gini.health.example.invoicesList.error", comment: "")
 
     let backgroundColor: UIColor = GiniColor(light: .white, 
                                              dark: .black).uiColor()
@@ -189,7 +189,7 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
     private func checkDocumentIsPayable(documentID: String) {
         if let document = invoices.first(where: { $0.documentId == documentID }) {
             if !(document.isPayable ?? false) {
-                errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.invoice.not.payable", comment: ""))")
+                errors.append("\(NSLocalizedStringPreferredFormat("gini.health.example.error.invoice.not.payable", comment: ""))")
                 showErrorsIfAny()
             }
         }
@@ -199,7 +199,7 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
     private func checkDocumentForMultipleInvoices(documentID: String) -> Bool {
         if let document = invoices.first(where: { $0.documentId == documentID }) {
             if document.hasMultipleDocuments ?? false {
-                errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.contains.multiple.invoices", comment: ""))")
+                errors.append("\(NSLocalizedStringPreferredFormat("gini.health.example.error.contains.multiple.invoices", comment: ""))")
                 showErrorsIfAny()
                 return true
             }
@@ -212,14 +212,14 @@ extension InvoicesListViewModel {
 
     func didTapOnOpenFlow(documentId: String?) {
         documentIdToRefetch = documentId
-        if paymentComponentsController.selectedPaymentProvider == nil {
+        guard let _ = paymentComponentsController.selectedPaymentProvider else {
             presentPaymentViewBottomSheet(documentId)
+            return
+        }
+        if giniHealthConfiguration.showPaymentReviewScreen {
+            didTapOnPayInvoice(documentId: documentId)
         } else {
-            if giniHealthConfiguration.showPaymentReviewScreen {
-                didTapOnPayInvoice(documentId: documentId)
-            } else {
-                presentPaymentViewBottomSheet(documentId)
-            }
+            presentPaymentViewBottomSheet(documentId)
         }
     }
 

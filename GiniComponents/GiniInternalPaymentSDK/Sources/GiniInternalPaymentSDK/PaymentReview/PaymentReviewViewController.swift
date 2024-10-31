@@ -9,11 +9,13 @@ import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
 
+/// Modes for displaying PayemtnReview content in the UI.
 public enum DisplayMode: Int {
     case bottomSheet
     case documentCollection
 }
 
+/// A view controller for reviewing payment details
 public final class PaymentReviewViewController: BottomSheetViewController, UIGestureRecognizerDelegate {
     private lazy var mainView = buildMainView()
     private lazy var closeButton = buildCloseButton()
@@ -30,6 +32,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     private var showInfoBarOnce = true
     private var keyboardWillShowCalled = false
 
+    /// The model instance containing data and methods for handling the payment review process.
     public let model: PaymentReviewModel
     private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
 
@@ -157,14 +160,15 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
 
         guard paymentInfoContainerView.noErrorsFound() else { return }
         guard paymentInfoContainerView.inputFieldsHaveNoErrors() else { return }
-        if model.delegate?.supportsGPC() ?? false {
+        guard let delegate = model.delegate else { return }
+        if delegate.supportsGPC() {
             guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
                 model.openInstallAppBottomSheet()
                 return
             }
             createPaymentRequest()
-        } else if model.delegate?.supportsOpenWith() ?? false {
-            if model.delegate?.shouldShowOnboardingScreenFor() ?? false {
+        } else if delegate.supportsOpenWith() {
+            if delegate.shouldShowOnboardingScreenFor() {
                 model.openOnboardingShareInvoiceBottomSheet(documentId: model.documentId)
             } else {
                 obtainPDFFromPaymentRequest()
@@ -314,8 +318,8 @@ fileprivate extension PaymentReviewViewController {
         containerView.onPayButtonClicked = { [weak self] in
             self?.payButtonClicked()
         }
-        containerView.onBanksPickerButtonClicked = { [weak self] in
-            self?.model.openBanksPickerBottomSheet()
+        containerView.onBankSelectionButtonClicked = { [weak self] in
+            self?.model.openBankSelectionBottomSheet()
         }
         return containerView
     }

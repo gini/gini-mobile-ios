@@ -10,6 +10,9 @@ import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
 
+/**
+    BanksSelectionProtocol provides trigger events for the actions happening in the BankSelection view
+ */
 public protocol BanksSelectionProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider, documentId: String?)
     func didTapOnMoreInformation()
