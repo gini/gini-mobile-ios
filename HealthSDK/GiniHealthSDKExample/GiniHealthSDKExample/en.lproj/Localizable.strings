@@ -6,20 +6,20 @@
 
 */
 
-"giniHealthSDKExample.invoicesList.title" = "Invoices List";
-"giniHealthSDKExample.uploadInvoices.button.title" = "↑ Invoices";
-"giniHealthSDKExample.invoicesList.missingInvoices.text" = "No invoices";
-"giniHealthSDKExample.invoicesList.error" = "Error";
-"giniHealthSDKExample.cancel.button.title" = "Cancel";
+"gini.health.example.invoicesList.title" = "Invoices List";
+"gini.health.example.uploadInvoices.button.title" = "↑ Invoices";
+"gini.health.example.invoicesList.missingInvoices.text" = "No invoices";
+"gini.health.example.invoicesList.error" = "Error";
+"gini.health.example.cancel.button.title" = "Cancel";
 "gini.health.paymentcomponent.payment.info.gini.privacypolicy.link" = "https://www.google.com/"; // This should be overwrited by client with their privacy policy link
-"giniHealthSDKExample.error.contains.multiple.invoices" = "Document contains multiple invoices";
-"giniHealthSDKExample.error.invoice.not.payable" = "Invoice is not payable";
-"giniHealthSDKExample.order.detail.Alert.FieldError" = "Payment details are incomplete";
-"giniHealthSDKExample.order.detail.Alert.Ok" = "Ok";
-"giniHealthSDKExample.order.detail.Amount" = "Amount";
-"giniHealthSDKExample.order.detail.IBAN" = "IBAN";
-"giniHealthSDKExample.order.detail.Pay" = "Pay";
-"giniHealthSDKExample.order.detail.Purpose" = "Purpose";
-"giniHealthSDKExample.order.detail.Recipient" = "Recipient";
-"giniHealthSDKExample.order.navigation.orderdetails" = "Order Details";
-"giniHealthSDKExample.uploadInvoices.button.title" = "Custom Order";
+"gini.health.example.error.contains.multiple.invoices" = "Document contains multiple invoices";
+"gini.health.example.error.invoice.not.payable" = "Invoice is not payable";
+"gini.health.example.order.detail.alert.field.error" = "Payment details are incomplete";
+"gini.health.example.order.detail.alert.ok" = "Ok";
+"gini.health.example.order.detail.amount" = "Amount";
+"gini.health.example.order.detail.iban" = "IBAN";
+"gini.health.example.order.detail.pay" = "Pay";
+"gini.health.example.order.detail.purpose" = "Purpose";
+"gini.health.example.order.detail.recipient" = "Recipient";
+"gini.health.example.order.navigation.order.details" = "Order Details";
+"gini.health.example.custom.order.button.title" = "Custom Order";

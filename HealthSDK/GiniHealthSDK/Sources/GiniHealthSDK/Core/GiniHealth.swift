@@ -71,6 +71,7 @@ public struct DataForReview {
 
     private var bankProviders: [PaymentProvider] = []
 
+    /// Configuration for the payment component, controlling its branding and display options.
     public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
                                                                                                             showPaymentComponentInOneRow: false,
                                                                                                             hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
@@ -97,6 +98,11 @@ public struct DataForReview {
         self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
     }
 
+    /**
+     Initializes a new instance of GiniHealth.
+
+     - Parameter giniApiLib: The GiniHealthAPI instance used for document and payment services.
+     */
     public init(giniApiLib: GiniHealthAPI) {
         self.giniApiLib = giniApiLib
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
@@ -457,6 +463,7 @@ public struct DataForReview {
         }
     }
 
+    /// A static string representing the current version of the Gini Health SDK.
     public static var versionString: String {
         return GiniHealthSDKVersion
     }

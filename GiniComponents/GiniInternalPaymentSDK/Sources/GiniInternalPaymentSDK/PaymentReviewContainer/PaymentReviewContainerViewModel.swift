@@ -11,6 +11,7 @@ import GiniHealthAPILibrary
 import GiniUtilites
 import UIKit
 
+/// The view model for the Payment Review container view.
 public final class PaymentReviewContainerViewModel {
     var onExtractionFetched: (() -> Void)?
     var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
@@ -25,18 +26,38 @@ public final class PaymentReviewContainerViewModel {
     var dispayMode: DisplayMode = .bottomSheet
     var bankImageIcon: UIImage?
 
+    /// An optional array of `Extraction` objects fetched during the payment review process. We use optional because we can rather have extractions fetched or payment information provided by user
     public var extractions: [Extraction]? {
         didSet {
             self.onExtractionFetched?()
         }
     }
 
+    /// An optional `PaymentInfo` object containing details about the payment. We use optional because we can rather have extractions fetched or payment information provided by user
     public var paymentInfo: PaymentInfo? {
         didSet {
             self.onExtractionFetched?()
         }
     }
 
+    /**
+     Initializes a new instance of `PaymentReviewContainerViewModel`.
+
+     - Parameters:
+       - extractions: An optional array of `Extraction` objects representing fetched data.
+       - paymentInfo: An optional `PaymentInfo` object containing details about the payment.
+       - selectedPaymentProvider: The selected payment provider from the Gini Health API.
+       - configuration: The configuration settings for the payment review container.
+       - strings: The string resources for localizing the payment review UI.
+       - primaryButtonConfiguration: Configuration for the primary button in the UI.
+       - secondaryButtonConfiguration: Configuration for the secondary button in the UI.
+       - defaultStyleInputFieldConfiguration: Configuration for default-styled input fields.
+       - errorStyleInputFieldConfiguration: Configuration for input fields that display errors.
+       - selectionStyleInputFieldConfiguration: Configuration for input fields with selection styles.
+       - poweredByGiniConfiguration: Configuration settings for the "Powered by Gini" branding.
+       - poweredByGiniStrings: The string resources for localizing "Powered by Gini" UI elements.
+       - displayMode: The display mode indicating how the payment review interface should be presented.
+     */
     public init(extractions: [Extraction]?,
                 paymentInfo: PaymentInfo?,
                 selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider,
