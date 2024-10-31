@@ -147,6 +147,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
             switch result {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders.map{ $0.toHealthPaymentProvider() }
+                self?.sortPaymentProviders()
                 self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
@@ -622,6 +623,21 @@ extension PaymentComponentsController: PaymentReviewProtocol {
 
     public func openMoreInformationViewController() {
         viewDelegate?.didTapOnMoreInformation()
+    }
+
+    public func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
+        guard !paymentProviders.isEmpty else { return ([], nil)}
+        let paymentProvidersShownCount = paymentProviders.count == 1 ? 1 : 2
+        let additionalBankCount = paymentProviders.count > 2 ? paymentProviders.count - 2 : nil
+        return (paymentProviders.prefix(paymentProvidersShownCount).map { $0.iconData }, additionalBankCount)
+    }
+
+    private func sortPaymentProviders() {
+        guard !paymentProviders.isEmpty else { return }
+        self.paymentProviders = paymentProviders
+            .filter { $0.gpcSupportedPlatforms.contains(.ios) || $0.openWithSupportedPlatforms.contains(.ios) }
+            .sorted(by: { ($0.index ?? 0 < $1.index ?? 0) })
+            .sorted(by: { ( $0.appSchemeIOS.canOpenURLString() && !$1.appSchemeIOS.canOpenURLString() ) })
     }
 }
 

@@ -22,4 +22,4 @@
 "giniHealthSDKExample.order.detail.Purpose" = "Purpose";
 "giniHealthSDKExample.order.detail.Recipient" = "Recipient";
 "giniHealthSDKExample.order.navigation.orderdetails" = "Order Details";
-"giniHealthSDKExample.uploadInvoices.button.title" = "Custom Order";
+"giniHealthSDKExample.custom.order.button.title" = "Custom Order";

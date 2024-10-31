@@ -22,4 +22,4 @@
 "giniHealthSDKExample.order.detail.Purpose" = "Verwendungszweck";
 "giniHealthSDKExample.order.detail.Recipient" = "Empfänger";
 "giniHealthSDKExample.order.navigation.orderdetails" = "Bestelldetails";
-"giniHealthSDKExample.uploadInvoices.button.title" = "Kunden Bestellung";
+"giniHealthSDKExample.custom.order.button.title" = "Kunden Bestellung";
