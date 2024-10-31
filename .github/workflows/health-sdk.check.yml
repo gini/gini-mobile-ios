@@ -54,8 +54,7 @@ jobs:
       run: |
         xcodebuild -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKPinningExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
 
-    - name: Build example app and run integration tests
-      if: ${{ matrix.target == 'GiniHealthSDK' }}
+    - name: Build pinning example app and run integration tests
       run: >
         xcodebuild clean test
         -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
@@ -67,10 +66,7 @@ jobs:
         ONLY_ACTIVE_ARCH=NO
         CLIENT_ID="gini-mobile-test"
         CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
-
-    - name: Build pinning example app and run integration tests
-      if: ${{ matrix.target == 'GiniHealthSDKPinning' }}
-      run: >
+        &&
         xcodebuild clean test
         -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
         -scheme "GiniHealthSDKPinningExampleTests"
