@@ -115,6 +115,7 @@ jobs:
           app: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
           credentials: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           groups: testers
+          cache: false
           release-notes: |
               ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
               ${{ github.event.head_commit.message }}
