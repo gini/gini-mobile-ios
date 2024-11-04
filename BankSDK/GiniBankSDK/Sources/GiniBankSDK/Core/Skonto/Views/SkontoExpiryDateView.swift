@@ -27,7 +27,6 @@ class SkontoExpiryDateView: UIView {
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.adjustsFontForContentSizeCategory = true
-        textField.adjustsFontSizeToFitWidth = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()

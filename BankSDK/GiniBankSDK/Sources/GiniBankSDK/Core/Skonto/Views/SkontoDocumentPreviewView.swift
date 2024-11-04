@@ -33,6 +33,7 @@ class SkontoDocumentPreviewView: UIView {
         label.accessibilityValue = title
         label.textColor = .giniColorScheme().text.primary.uiColor()
         label.font = configuration.textStyleFonts[.footnoteBold]
+        label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -45,6 +46,7 @@ class SkontoDocumentPreviewView: UIView {
         label.accessibilityValue = title
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.font = configuration.textStyleFonts[.footnote]
+        label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
