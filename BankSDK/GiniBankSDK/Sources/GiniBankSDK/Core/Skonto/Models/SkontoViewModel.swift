@@ -158,11 +158,12 @@ class SkontoViewModel {
     }
 
     func setSkontoAmountToPayPrice(_ price: String) {
+        let errorMessage = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.validation",
+                                                                    comment: "Discounted value cannot exceed initial...")
         setPrice(
             price,
             maxValue: amountToPay.value,
-            errorMessage: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.validation",
-                                                                   comment: "Discounted value cannot exceed initial...")
+            errorMessage: errorMessage
         ) { validatedPrice in
             skontoAmountToPay = validatedPrice
             updateDocumentPagesModelData()
@@ -171,11 +172,12 @@ class SkontoViewModel {
     }
 
     func setAmountToPayPrice(_ price: String) {
+        let errorMessage = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.validation",
+                                                                    comment: "Your transfer limit has been exceeded: %@")
         setPrice(
             price,
             maxValue: maximumAmountToPayValue,
-            errorMessage: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.validation",
-                                                                   comment: "Your transfer limit has been exceeded: %@")
+            errorMessage: errorMessage
         ) { validatedPrice in
             amountToPay = validatedPrice
             recalculateAmountToPayWithSkonto()
@@ -183,7 +185,10 @@ class SkontoViewModel {
         }
     }
 
-    private func setPrice(_ price: String, maxValue: Decimal, errorMessage: String, completion: (Price) -> Void) {
+    private func setPrice(_ price: String,
+                          maxValue: Decimal,
+                          errorMessage: String,
+                          completion: (Price) -> Void) {
         let validationMessage = validatePrice(price, maxValue: maxValue, errorMessage: errorMessage)
         if let validationMessage {
             setErrorMessage(validationMessage)
