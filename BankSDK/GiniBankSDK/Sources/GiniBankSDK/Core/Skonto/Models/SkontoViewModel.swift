@@ -131,11 +131,9 @@ class SkontoViewModel {
     weak var delegate: SkontoViewModelDelegate?
 
     init(skontoDiscounts: SkontoDiscounts,
-         isWithDiscountSwitchAvailable: Bool = true,
-         maximumAmountToPayValue: Decimal) {
+         isWithDiscountSwitchAvailable: Bool = true) {
         self.skontoDiscounts = skontoDiscounts
         self.isWithDiscountSwitchAvailable = isWithDiscountSwitchAvailable
-        self.maximumAmountToPayValue = maximumAmountToPayValue
 
         // For now multiple Skonto discounts aren't handle
         let skontoDiscountDetails = skontoDiscounts.discounts[0]
