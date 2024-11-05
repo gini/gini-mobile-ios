@@ -587,6 +587,27 @@ extension PaymentComponentsController: PaymentReviewProtocol {
             }
         }
     }
+    
+    /**
+     Submits feedback for the specified document and its updated extractions. Method used to update the information extracted from a document.
+
+     - Parameters:
+       - document: The document for which feedback is being submitted.
+       - updatedExtractions: The updated extractions related to the document.
+       - completion: An optional closure to be executed upon completion, containing the result of the submission.
+     */
+    public func submitFeedback(for documentId: String, updatedExtractions: [GiniHealthAPILibrary.Extraction], completion: ((Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)?) {
+        let extractions = updatedExtractions.map { Extraction(healthExtraction: $0) }
+        giniSDK.documentService.submitFeedback(forDocumentId: documentId, with: [], and: ["payment": [extractions]]) { result in
+            switch result {
+            case .success(let result):
+                completion?(.success(result))
+            case .failure(let error):
+                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                completion?(.failure(healthError))
+            }
+        }
+    }
 
     /**
      Determines if the specified error should be handled internally by the SDK.
