@@ -42,7 +42,7 @@ class SkontoViewModel {
 
     private (set) var documentPagesViewModel: SkontoDocumentPagesViewModel?
 
-    private var maximumAmountToPayValue: Decimal
+    private var maximumAmountToPayValue: Decimal = 99999.99
 
     var finalAmountToPay: Price {
         return isSkontoApplied ? skontoAmountToPay : amountToPay
@@ -132,7 +132,7 @@ class SkontoViewModel {
 
     init(skontoDiscounts: SkontoDiscounts,
          isWithDiscountSwitchAvailable: Bool = true,
-         maximumAmountToPayValue: Decimal = 99999.99) {
+         maximumAmountToPayValue: Decimal) {
         self.skontoDiscounts = skontoDiscounts
         self.isWithDiscountSwitchAvailable = isWithDiscountSwitchAvailable
         self.maximumAmountToPayValue = maximumAmountToPayValue
