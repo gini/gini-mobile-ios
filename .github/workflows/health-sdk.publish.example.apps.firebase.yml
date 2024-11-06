@@ -8,7 +8,7 @@ concurrency:
 
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/health-sdk.check.yml@main
+    uses: ./.github/workflows/health-sdk.check.yml
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 

@@ -46,6 +46,17 @@ jobs:
       run: |
         xcodebuild -project MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample.xcodeproj -scheme "GiniMerchantSDKExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
 
+    - name: Extract Device Name
+      id: extract_name
+      run: |
+        DEVICE_NAME=$(echo "${{ matrix.destination }}" | sed -n 's/.*name=\([^,]*\).*/\1/p')
+        echo "DEVICE_NAME=${DEVICE_NAME}" >> $GITHUB_ENV        
+
+    - name: Start iOS Simulator
+      run: |
+        xcrun simctl boot "$DEVICE_NAME"
+        xcrun simctl bootstatus "$DEVICE_NAME" -b                
+
     - name: Build example app and run integration tests
       run: >
         xcodebuild clean test
