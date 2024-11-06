@@ -25,10 +25,15 @@ class SkontoWithDiscountPriceView: UIView {
         super.init(frame: .zero)
         setupView()
         bindViewModel()
+        setupKeyboardObservers()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     private func setupView() {
@@ -58,6 +63,22 @@ class SkontoWithDiscountPriceView: UIView {
         let isSkontoApplied = viewModel.isSkontoApplied
         amountView.configure(isEditable: isSkontoApplied,
                              price: viewModel.skontoAmountToPay)
+        if isSkontoApplied, let errorMessage = viewModel.getErrorMessageAndClear() {
+            amountView.updateValidationMessage(errorMessage)
+        } else {
+            amountView.hideValidationMessage()
+        }
+    }
+
+    private func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    @objc private func keyboardWillHide() {
+        amountView.hideValidationMessage()
     }
 }
 
