@@ -42,7 +42,7 @@ class SkontoViewModel {
 
     private (set) var documentPagesViewModel: SkontoDocumentPagesViewModel?
 
-    private var maximumAmountToPayValue: Decimal
+    private var maximumAmountToPayValue: Decimal = 99999.99
 
     var finalAmountToPay: Price {
         return isSkontoApplied ? skontoAmountToPay : amountToPay
@@ -131,11 +131,9 @@ class SkontoViewModel {
     weak var delegate: SkontoViewModelDelegate?
 
     init(skontoDiscounts: SkontoDiscounts,
-         isWithDiscountSwitchAvailable: Bool = true,
-         maximumAmountToPayValue: Decimal = 99999.99) {
+         isWithDiscountSwitchAvailable: Bool = true) {
         self.skontoDiscounts = skontoDiscounts
         self.isWithDiscountSwitchAvailable = isWithDiscountSwitchAvailable
-        self.maximumAmountToPayValue = maximumAmountToPayValue
 
         // For now multiple Skonto discounts aren't handle
         let skontoDiscountDetails = skontoDiscounts.discounts[0]
@@ -158,11 +156,11 @@ class SkontoViewModel {
     }
 
     func setSkontoAmountToPayPrice(_ price: String) {
-        setPrice(
-            price,
-            maxValue: amountToPay.value,
-            errorMessage: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.validation",
-                                                                   comment: "Discounted value cannot exceed initial...")
+        let errorMessage = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.validation",
+                                                                    comment: "Discounted value cannot exceed...")
+        setPrice(price,
+                 maxValue: amountToPay.value,
+                 errorMessage: errorMessage
         ) { validatedPrice in
             skontoAmountToPay = validatedPrice
             updateDocumentPagesModelData()
@@ -171,11 +169,11 @@ class SkontoViewModel {
     }
 
     func setAmountToPayPrice(_ price: String) {
-        setPrice(
-            price,
-            maxValue: maximumAmountToPayValue,
-            errorMessage: NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.validation",
-                                                                   comment: "Your transfer limit has been exceeded: %@")
+        let errorMessage = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.validation",
+                                                                    comment: "Your transfer limit has been exceed...")
+        setPrice(price,
+                 maxValue: maximumAmountToPayValue,
+                 errorMessage: errorMessage
         ) { validatedPrice in
             amountToPay = validatedPrice
             recalculateAmountToPayWithSkonto()
@@ -188,7 +186,10 @@ class SkontoViewModel {
         maximumAmountToPayValue = value
     }
 
-    private func setPrice(_ price: String, maxValue: Decimal, errorMessage: String, completion: (Price) -> Void) {
+    private func setPrice(_ price: String,
+                          maxValue: Decimal,
+                          errorMessage: String,
+                          completion: (Price) -> Void) {
         let validationMessage = validatePrice(price, maxValue: maxValue, errorMessage: errorMessage)
         if let validationMessage {
             setErrorMessage(validationMessage)
