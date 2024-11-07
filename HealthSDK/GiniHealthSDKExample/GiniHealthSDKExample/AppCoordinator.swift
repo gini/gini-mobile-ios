@@ -107,10 +107,32 @@ final class AppCoordinator: Coordinator {
         }
     }
     
-    func processBankUrl() {
+    func processBankUrl(url: URL) {
         rootViewController.dismiss(animated: true)
-        showReturnMessage()
         
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
+        
+        if let queryItems = components.queryItems {
+            if let _ = queryItems.first(where: { $0.name == "paymentRequestId" })?.value, let paymentStatus = queryItems.first(where: { $0.name == "status" })?.value {
+                showReturnMessage(message: messageFor(status: PaymentStatus(rawValue: paymentStatus)))
+            }
+        }
+    }
+    
+    enum PaymentStatus: String {
+        case paid
+        case paidAdjusted = "paid_adjusted"
+    }
+
+    func messageFor(status: PaymentStatus?) -> String {
+        switch status {
+        case .paid:
+            return "Payment was successful 🎉"
+        case .paidAdjusted:
+            return "Payment was successful 🎉 with adjusted amount"
+        default:
+            return "Payment was unsuccessful 😢"
+        }
     }
     
     fileprivate func showSelectAPIScreen() {
@@ -252,9 +274,9 @@ final class AppCoordinator: Coordinator {
         rootViewController.present(alertViewController, animated: true)
     }
     
-    fileprivate func showReturnMessage() {
+    fileprivate func showReturnMessage(message: String) {
         let alertViewController = UIAlertController(title: "Congratulations",
-                                                    message: "Payment was successful 🎉",
+                                                    message: message,
                                                     preferredStyle: .alert)
         
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
