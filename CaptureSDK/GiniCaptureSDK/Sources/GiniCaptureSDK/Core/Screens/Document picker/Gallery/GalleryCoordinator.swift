@@ -5,6 +5,7 @@
 //  Created by Enrique del Pozo Gómez on 2/27/18.
 //
 
+import GiniBankAPILibrary
 import UIKit
 import Photos
 import PhotosUI
@@ -293,10 +294,16 @@ extension GalleryCoordinator: ImagePickerViewControllerDelegate {
                 data = imageData
             }
         }
+        let uploadMetadata = Document.UploadMetadata(
+            interfaceOrientation: .portrait,
+            documentSource: .external,
+            importMethod: .picker
+        )
         let imageDocument = GiniImageDocument(data: data,
                                               imageSource: .external,
                                               imageImportMethod: .picker,
-                                              deviceOrientation: nil)
+                                              deviceOrientation: nil,
+                                              uploadMetadata: uploadMetadata)
 
         selectedImageDocuments.append((assetId: asset.identifier,
                                        imageDocument: imageDocument))
