@@ -40,7 +40,6 @@ final class SkontoHelpItemView: UIView {
     private func setupView(with content: SkontoHelpItem, hideDivider: Bool) {
         backgroundColor = .clear
         iconImageView.image = content.icon
-        iconImageView.accessibilityValue = content.title
         titleLabel.text = content.title
         titleLabel.accessibilityValue = content.title
 

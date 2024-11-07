@@ -58,7 +58,6 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                             comment: "Total")
         label.text = text
-        label.accessibilityValue = text
         return label
     }()
 
@@ -134,12 +133,10 @@ final class DefaultSkontoBottomNavigationBar: UIView {
 
     func updatePrice(with price: String?) {
         totalValueLabel.text = price
-        totalValueLabel.accessibilityValue = price
     }
 
     func updateDiscountValue(with discount: String?) {
         skontoBadgeLabel.text = discount
-        skontoBadgeLabel.accessibilityValue = discount
     }
 
     func updateDiscountBadge(hidden: Bool) {
@@ -148,7 +145,6 @@ final class DefaultSkontoBottomNavigationBar: UIView {
 
     func updateInvoiceSkontoSavings(with text: String?) {
         savingsAmountLabel.text = text
-        savingsAmountLabel.accessibilityValue = text
     }
 
     func displayInvoiceSkontoSavingsBadge(hidden: Bool) {

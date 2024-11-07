@@ -30,7 +30,6 @@ class SkontoDocumentPreviewView: UIView {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.invoice.title",
                                                              comment: "Invoice")
         label.text = title
-        label.accessibilityValue = title
         label.textColor = .giniColorScheme().text.primary.uiColor()
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.adjustsFontForContentSizeCategory = true
@@ -43,7 +42,6 @@ class SkontoDocumentPreviewView: UIView {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.invoice.subtitle",
                                                              comment: "Tap to view")
         label.text = title
-        label.accessibilityValue = title
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.font = configuration.textStyleFonts[.footnote]
         label.adjustsFontForContentSizeCategory = true
@@ -83,6 +81,8 @@ class SkontoDocumentPreviewView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
+        isAccessibilityElement = true
+        accessibilityValue = "\(titleLabel.text ?? "") \(subtitleLabel.text ?? "")"
         addSubview(imageContainerView)
         imageContainerView.addSubview(documentPreviewImageView)
         textStackView.addArrangedSubview(titleLabel)

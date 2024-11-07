@@ -64,6 +64,7 @@ class SkontoAmountToPayView: UIView {
         view.layer.borderColor = UIColor.giniColorScheme().textField.border.uiColor().cgColor
         view.layer.borderWidth = isEditable ? 1 : 0
         view.layer.cornerRadius = Constants.cornerRadius
+        view.isAccessibilityElement = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -159,7 +160,9 @@ class SkontoAmountToPayView: UIView {
         ])
     }
 
-    func configure(isEditable: Bool, price: Price) {
+    func configure(isEditable: Bool,
+                   price: Price,
+                   accessibilityValue: String) {
         if isEditable {
             textField.text = price.localizedStringWithoutCurrencyCode ?? ""
         } else {
@@ -167,6 +170,7 @@ class SkontoAmountToPayView: UIView {
         }
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
+        containerView.accessibilityValue = accessibilityValue
         textField.isUserInteractionEnabled = isEditable
         currencyLabel.isHidden = !isEditable
     }

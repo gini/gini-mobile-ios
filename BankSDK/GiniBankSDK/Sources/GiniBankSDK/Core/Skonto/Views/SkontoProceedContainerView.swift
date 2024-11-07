@@ -37,7 +37,6 @@ class SkontoProceedContainerView: UIView {
         let labelText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                                   comment: "Total")
         label.text = labelText
-        label.accessibilityValue = labelText
         return label
     }()
 
@@ -48,7 +47,6 @@ class SkontoProceedContainerView: UIView {
         label.textColor = .giniColorScheme().text.primary.uiColor()
         let labelText = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
         label.text = labelText
-        label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -64,7 +62,6 @@ class SkontoProceedContainerView: UIView {
         let labelText = String.localizedStringWithFormat(skontoTitle,
                                                          viewModel.formattedPercentageDiscounted)
         label.text = labelText
-        label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -89,7 +86,6 @@ class SkontoProceedContainerView: UIView {
         label.textColor = .giniColorScheme().badge.background.uiColor()
         let labelText = viewModel.savingsAmountString
         label.text = labelText
-        label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         return label

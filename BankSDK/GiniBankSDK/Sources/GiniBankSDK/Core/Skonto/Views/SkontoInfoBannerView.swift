@@ -41,6 +41,7 @@ class SkontoInfoBannerView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
+        isAccessibilityElement = true
         backgroundColor = .giniColorScheme().message.backgroundSuccess.uiColor()
         layer.cornerRadius = Constants.cornerRadius
         layer.masksToBounds = true
@@ -88,7 +89,7 @@ class SkontoInfoBannerView: UIView {
     private func updateLabelText() {
         let text = viewModel.localizedBannerInfoMessage
         label.text = text
-        label.accessibilityValue = text
+        accessibilityValue = text
     }
 
     private func updateColors() {
