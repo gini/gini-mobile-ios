@@ -9,7 +9,7 @@ import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
 
-/// Modes for displaying PayemtnReview content in the UI.
+/// Modes for displaying PaymentReview content in the UI.
 public enum DisplayMode: Int {
     case bottomSheet
     case documentCollection

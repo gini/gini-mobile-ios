@@ -797,17 +797,23 @@ extension PaymentComponentsController: PaymentReviewProtocol {
      */
     public func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
         guard !paymentProviders.isEmpty else { return ([], nil)}
-        let paymentProvidersShownCount = paymentProviders.count == 1 ? 1 : 2
+        let maxShownProviders = min(paymentProviders.count, 2)
         let additionalBankCount = paymentProviders.count > 2 ? paymentProviders.count - 2 : nil
-        return (paymentProviders.prefix(paymentProvidersShownCount).map { $0.iconData }, additionalBankCount)
+        return (paymentProviders.prefix(maxShownProviders).map { $0.iconData }, additionalBankCount)
     }
 
     private func sortPaymentProviders() {
         guard !paymentProviders.isEmpty else { return }
         self.paymentProviders = paymentProviders
             .filter { $0.gpcSupportedPlatforms.contains(.ios) || $0.openWithSupportedPlatforms.contains(.ios) }
-            .sorted(by: { ($0.index ?? 0 < $1.index ?? 0) })
-            .sorted(by: { ( $0.appSchemeIOS.canOpenURLString() && !$1.appSchemeIOS.canOpenURLString() ) })
+            .sorted {
+                // First sort by whether the app scheme can be opened
+                if $0.appSchemeIOS.canOpenURLString() != $1.appSchemeIOS.canOpenURLString() {
+                    return $0.appSchemeIOS.canOpenURLString() && !$1.appSchemeIOS.canOpenURLString()
+                }
+                // Then sort by the index if the app scheme condition is the same
+                return ($0.index ?? 0) < ($1.index ?? 0)
+            }
     }
 }
 
