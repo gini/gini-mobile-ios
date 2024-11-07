@@ -776,9 +776,9 @@ extension PaymentComponentsController: PaymentReviewProtocol {
      */
     public func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
         guard !paymentProviders.isEmpty else { return ([], nil)}
-        let paymentProvidersShownCount = paymentProviders.count == 1 ? 1 : 2
+        let maxShownProviders = min(paymentProviders.count, 2)
         let additionalBankCount = paymentProviders.count > 2 ? paymentProviders.count - 2 : nil
-        return (paymentProviders.prefix(paymentProvidersShownCount).map { $0.iconData }, additionalBankCount)
+        return (paymentProviders.prefix(maxShownProviders).map { $0.iconData }, additionalBankCount)
     }
 
     private func sortPaymentProviders() {
