@@ -151,7 +151,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         self.trackingDelegate = trackingDelegate
     }
 
-    public init(resultsDelegate: GiniCaptureResultsDelegate,
+    private init(resultsDelegate: GiniCaptureResultsDelegate,
                 configuration: GiniBankConfiguration,
                 documentMetadata: Document.Metadata?,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
