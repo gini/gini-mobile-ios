@@ -109,13 +109,12 @@ jobs:
           fail: true
       
       - name: Distribute health-sdk example ipa to Firebase App Distribution
-        uses: nickwph/firebase-app-distribution-action@v1
+        uses: emertozd/Firebase-Distribution-Github-Action@v2
         with:
-          file: GiniHealthSDKExample.ipa
-          app: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
-          credentials: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
+          appId: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          cache: false
-          release-notes: |
+          file: GiniHealthSDKExample.ipa
+          releaseNotes: |
               ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
               ${{ github.event.head_commit.message }}
