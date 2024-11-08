@@ -104,8 +104,7 @@ import GiniCaptureSDK
 
      */
     public func returnBackToBusinessAppHandler(resolvedPaymentRequest: ResolvedPaymentRequest) {
-        let finalURL = "\(resolvedPaymentRequest.requesterUri)&status=\(resolvedPaymentRequest.status)"
-        if let resultUrl = URL(string: finalURL) {
+        if let resultUrl = URL(string: resolvedPaymentRequest.requesterUri) {
             DispatchQueue.main.async {
                 UIApplication.shared.open(resultUrl, options: [:], completionHandler: nil)
             }
