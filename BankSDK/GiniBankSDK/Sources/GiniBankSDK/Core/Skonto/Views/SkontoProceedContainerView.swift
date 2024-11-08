@@ -22,7 +22,6 @@ class SkontoProceedContainerView: UIView {
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.proceedbutton.title",
                                                                    comment: "Continue to pay")
-        button.accessibilityValue = buttonTitle
         button.setTitle(buttonTitle, for: .normal)
         button.addTarget(self, action: #selector(proceedButtonTapped), for: .touchUpInside)
         return button
@@ -52,6 +51,16 @@ class SkontoProceedContainerView: UIView {
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return label
+    }()
+
+    private lazy var totalAmountStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [totalStringLabel, finalAmountToPayLabel])
+        stackView.axis = .vertical
+        stackView.spacing = Constants.totalValueLabelTopPadding
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isAccessibilityElement = true
+        stackView.accessibilityLabel = "\(totalStringLabel.text ?? "") \(finalAmountToPayLabel.text ?? "")"
+        return stackView
     }()
 
     private lazy var skontoPercentageLabel: UILabel = {
@@ -121,8 +130,7 @@ class SkontoProceedContainerView: UIView {
 
         addSubview(contentView)
         addSubview(dividerView)
-        contentView.addSubview(totalStringLabel)
-        contentView.addSubview(finalAmountToPayLabel)
+        contentView.addSubview(totalAmountStackView)
         contentView.addSubview(skontoBadgeView)
         contentView.addSubview(savingsAmountLabel)
         contentView.addSubview(proceedButton)
@@ -145,18 +153,10 @@ class SkontoProceedContainerView: UIView {
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
-            totalStringLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-            totalStringLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                      constant: Constants.padding),
-            totalStringLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
-                                                       constant: -Constants.badgeHorizontalPadding),
-
-            finalAmountToPayLabel.topAnchor.constraint(equalTo: totalStringLabel.bottomAnchor,
-                                                       constant: Constants.totalValueLabelTopPadding),
-            finalAmountToPayLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                           constant: Constants.padding),
-            finalAmountToPayLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
-                                                            constant: -Constants.padding),
+            totalAmountStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
+            totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
+            totalAmountStackView.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
+                                                           constant: -Constants.badgeHorizontalPadding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
                                                     constant: Constants.savingsAmountLabelTopPadding),

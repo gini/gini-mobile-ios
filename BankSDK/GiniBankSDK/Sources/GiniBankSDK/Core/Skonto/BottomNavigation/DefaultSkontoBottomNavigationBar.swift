@@ -24,7 +24,6 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.proceedbutton.title",
                                                              comment: "Proceed")
         button.setTitle(title, for: .normal)
-        button.accessibilityValue = title
         button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         button.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         button.addTarget(self, action: #selector(proceedButtonClicked), for: .touchUpInside)
@@ -71,6 +70,16 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return label
+    }()
+
+    private lazy var totalAmountStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [totalLabel, totalValueLabel])
+        stackView.axis = .vertical
+        stackView.spacing = Constants.totalValueLabelTopPadding
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isAccessibilityElement = true
+        stackView.accessibilityLabel = "\(totalLabel.text ?? "") \(totalValueLabel.text ?? "")"
+        return stackView
     }()
 
     private lazy var skontoBadgeLabel: UILabel = {
@@ -159,8 +168,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         addSubview(backButton.buttonView)
         addSubview(helpButton.buttonView)
         addSubview(proceedButton)
-        contentView.addSubview(totalLabel)
-        contentView.addSubview(totalValueLabel)
+        contentView.addSubview(totalAmountStackView)
         contentView.addSubview(skontoBadgeView)
         contentView.addSubview(savingsAmountLabel)
     }
@@ -178,18 +186,10 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
-            totalLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-            totalLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                constant: Constants.padding),
-            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
-                                                 constant: -Constants.badgeHorizontalPadding),
-
-            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
-                                                 constant: Constants.totalValueLabelTopPadding),
-            totalValueLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                     constant: Constants.padding),
-            totalValueLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
-                                                      constant: -Constants.padding),
+            totalAmountStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
+            totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
+            totalAmountStackView.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
+                                                           constant: -Constants.badgeHorizontalPadding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
                                                   constant: Constants.savingsAmountLabelTopPadding),
