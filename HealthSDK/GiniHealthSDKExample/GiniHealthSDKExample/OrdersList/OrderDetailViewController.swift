@@ -130,14 +130,18 @@ final class OrderDetailViewController: UIViewController {
         let paymentInfo = obtainPaymentInfo()
         if paymentInfo.isComplete && order.price.value != .zero {
             if giniHealthConfiguration.showPaymentReviewScreen {
-                paymentComponentsController.loadPaymentReviewScreenFor(documentId: "", paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
-                    if let error {
-                        self?.errors.append(error.localizedDescription)
-                        self?.showErrorsIfAny()
-                    } else if let viewController {
-                        viewController.modalTransitionStyle = .coverVertical
-                        viewController.modalPresentationStyle = .overCurrentContext
-                        self?.dismissAndPresent(viewController: viewController, animated: true)
+                if paymentComponentsController.selectedPaymentProvider == nil {
+                    self.presentPaymentViewBottomSheet(nil)
+                } else {
+                    paymentComponentsController.loadPaymentReviewScreenFor(documentId: "", paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
+                        if let error {
+                            self?.errors.append(error.localizedDescription)
+                            self?.showErrorsIfAny()
+                        } else if let viewController {
+                            viewController.modalTransitionStyle = .coverVertical
+                            viewController.modalPresentationStyle = .overCurrentContext
+                            self?.dismissAndPresent(viewController: viewController, animated: true)
+                        }
                     }
                 }
             } else {
