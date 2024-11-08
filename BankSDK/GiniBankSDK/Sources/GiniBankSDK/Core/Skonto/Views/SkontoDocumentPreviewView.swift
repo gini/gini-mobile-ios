@@ -7,6 +7,10 @@
 import UIKit
 import GiniCaptureSDK
 
+protocol SkontoDocumentPreviewViewDelegate: AnyObject {
+    func documentPreviewTapped(in view: SkontoDocumentPreviewView)
+}
+
 class SkontoDocumentPreviewView: UIView {
     private lazy var imageContainerView: UIView = {
         let view = UIView()
@@ -65,9 +69,20 @@ class SkontoDocumentPreviewView: UIView {
         return stackView
     }()
 
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .giniColorScheme().background.secondary.uiColor()
+        view.layer.cornerRadius = Constants.groupCornerRadius
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(documentPreviewTapped))
+        view.addGestureRecognizer(tapGesture)
+        return view
+    }()
+
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
+    weak var delegate: SkontoDocumentPreviewViewDelegate?
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -83,16 +98,22 @@ class SkontoDocumentPreviewView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         isAccessibilityElement = true
         accessibilityValue = "\(titleLabel.text ?? "") \(subtitleLabel.text ?? "")"
-        addSubview(imageContainerView)
+        addSubview(contentView)
+        contentView.addSubview(imageContainerView)
         imageContainerView.addSubview(documentPreviewImageView)
         textStackView.addArrangedSubview(titleLabel)
         textStackView.addArrangedSubview(subtitleLabel)
-        addSubview(textStackView)
-        addSubview(chevronImageView)
+        contentView.addSubview(textStackView)
+        contentView.addSubview(chevronImageView)
 
         NSLayoutConstraint.activate([
-            imageContainerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.imageViewLeading),
-            imageContainerView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            contentView.topAnchor.constraint(equalTo: topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            imageContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                        constant: Constants.imageViewLeading),
+            imageContainerView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             imageContainerView.widthAnchor.constraint(equalToConstant: Constants.imageViewSize),
             imageContainerView.heightAnchor.constraint(equalToConstant: Constants.imageViewSize),
 
@@ -105,15 +126,21 @@ class SkontoDocumentPreviewView: UIView {
             documentPreviewImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor,
                                                              constant: -Constants.imageViewPadding),
 
-            textStackView.topAnchor.constraint(equalTo: topAnchor),
+            textStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                               constant: Constants.topPadding),
             textStackView.leadingAnchor.constraint(equalTo: imageContainerView.trailingAnchor,
                                                    constant: Constants.stackViewLeading),
             textStackView.trailingAnchor.constraint(lessThanOrEqualTo: chevronImageView.leadingAnchor),
-            textStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            textStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
-            chevronImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.chevronTrailing),
-            chevronImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            chevronImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                       constant: -Constants.chevronTrailing),
+            chevronImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
+    }
+
+    @objc private func documentPreviewTapped() {
+        delegate?.documentPreviewTapped(in: self)
     }
 }
 
@@ -121,10 +148,12 @@ private extension SkontoDocumentPreviewView {
     enum Constants {
         static let stackViewSpacing: CGFloat = 0
         static let imageViewSize: CGFloat = 40
-        static let imageViewLeading: CGFloat = 0
+        static let imageViewLeading: CGFloat = 12
         static let stackViewLeading: CGFloat = 12
-        static let chevronTrailing: CGFloat = 8
+        static let chevronTrailing: CGFloat = 20
         static let imageViewPadding: CGFloat = 7
         static let imageViewCornerRadius: CGFloat = 6
+        static let groupCornerRadius: CGFloat = 8
+        static let topPadding: CGFloat = 12
     }
 }
