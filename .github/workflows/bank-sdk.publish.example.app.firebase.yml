@@ -120,7 +120,7 @@ jobs:
         uses: emertozd/Firebase-Distribution-Github-Action@v2
         with:
           appId: ${{ secrets.GINI_BANK_SDK_EXAMPLE_APP_FIREBASE_ID }}
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: GiniBankSDKExample.ipa
           releaseNotes: |
