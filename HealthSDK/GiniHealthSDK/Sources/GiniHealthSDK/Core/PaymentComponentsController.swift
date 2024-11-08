@@ -815,6 +815,24 @@ extension PaymentComponentsController: PaymentReviewProtocol {
                 return ($0.index ?? 0) < ($1.index ?? 0)
             }
     }
+    
+    /**
+        Retrieves a payment request using the provided payment request ID.
+
+        - Parameter id:         The ID of the payment request to retrieve.
+        - Parameter completion: A closure to be executed once the retrieval is completed, containing the result of the operation as a `PaymentRequest` object on success or a `GiniError` on failure.
+    */
+    public func getPaymentRequest(by id: String, completion: @escaping (Result<PaymentRequest, GiniHealthAPILibrary.GiniError>) -> Void) {
+        giniSDK.getPaymentRequest(by: id) { result in
+            switch result {
+            case .success(let paymentRequest):
+                completion(.success(paymentRequest))
+            case .failure(let error):
+                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                completion(.failure(healthError))
+            }
+        }
+    }
 }
 
 extension PaymentComponentsController {

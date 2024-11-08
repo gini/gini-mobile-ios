@@ -113,18 +113,32 @@ final class AppCoordinator: Coordinator {
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
         
         if let queryItems = components.queryItems {
-            if let _ = queryItems.first(where: { $0.name == "paymentRequestId" })?.value, let paymentStatus = queryItems.first(where: { $0.name == "status" })?.value {
-                showReturnMessage(message: messageFor(status: PaymentStatus(rawValue: paymentStatus)))
+            if let paymentRequestId = queryItems.first(where: { $0.name == "paymentRequestId" })?.value {
+                selectAPIViewController.showActivityIndicator()
+                paymentComponentsController.getPaymentRequest(by: paymentRequestId) { [weak self] result in
+                    DispatchQueue.main.async {
+                        self?.selectAPIViewController.hideActivityIndicator()
+                    }
+                    switch result {
+                    case .success(let paymentRequest):
+                        GiniUtilites.Log("Successfully obtained payment request", event: .success)
+                        DispatchQueue.main.async {
+                            self?.showReturnMessage(message: self?.messageFor(status: PaymentStatus(rawValue: paymentRequest.status)) ?? "")
+                        }
+                    case .failure(let error):
+                        GiniUtilites.Log("Failed to retrieve payment request: \(error.localizedDescription)", event: .error)
+                    }
+                }
             }
         }
     }
     
-    enum PaymentStatus: String {
+    private enum PaymentStatus: String {
         case paid
         case paidAdjusted = "paid_adjusted"
     }
 
-    func messageFor(status: PaymentStatus?) -> String {
+    private func messageFor(status: PaymentStatus?) -> String {
         switch status {
         case .paid:
             return "Payment was successful 🎉"
@@ -181,16 +195,16 @@ final class AppCoordinator: Coordinator {
                     self.health.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
                         switch result {
                         case let .success(extractionResult):
-                            GiniUtilites.Log("✅Successfully fetched extractions for id: \(document.id)", event: .success)
+                            GiniUtilites.Log("Successfully fetched extractions for id: \(document.id)", event: .success)
                             let invoice = DocumentWithExtractions(documentId: document.id,
                                                                   extractionResult: extractionResult)
                             self?.showInvoicesList(invoices: [invoice])
                         case let .failure(error):
-                            GiniUtilites.Log("❌Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))", event: .error)
+                            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))", event: .error)
                         }
                     }
                 case .failure(let error):
-                    GiniUtilites.Log("❌ Document data fetching failed: \(String(describing: error))", event: .error)
+                    GiniUtilites.Log("Document data fetching failed: \(String(describing: error))", event: .error)
                     self.selectAPIViewController.hideActivityIndicator()
                 }
             }
@@ -223,26 +237,26 @@ final class AppCoordinator: Coordinator {
                                     self?.health.documentService.extractions(for: compositeDocument, cancellationToken: CancellationToken()) { [weak self] result in
                                         switch result {
                                         case let .success(extractionResult):
-                                            GiniUtilites.Log("✅Successfully fetched extractions for id: \(compositeDocument.id)", event: .success)
+                                            GiniUtilites.Log("Successfully fetched extractions for id: \(compositeDocument.id)", event: .success)
                                             let invoice = DocumentWithExtractions(documentId: compositeDocument.id,
                                                                                   extractionResult: extractionResult)
                                             self?.showInvoicesList(invoices: [invoice])
                                         case let .failure(error):
-                                            GiniUtilites.Log("❌Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))", event: .error)
+                                            GiniUtilites.Log("Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))", event: .error)
                                         }
                                     }
                                 case .failure(let error):
-                                    GiniUtilites.Log("❌ Setting document for review failed: \(String(describing: error))", event: .error)
+                                    GiniUtilites.Log("Setting document for review failed: \(String(describing: error))", event: .error)
                                     self?.selectAPIViewController.hideActivityIndicator()
                                 }
                             }
                         case .failure(let error):
-                            GiniUtilites.Log("❌ Document creation failed: \(String(describing: error))", event: .error)
+                            GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
                             self?.selectAPIViewController.hideActivityIndicator()
                         }
                     }
                 case .failure(let error):
-                    GiniUtilites.Log("❌ Document creation failed: \(String(describing: error))", event: .error)
+                    GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
                     self.selectAPIViewController.hideActivityIndicator()
                 }
             }
@@ -375,7 +389,7 @@ extension AppCoordinator: GiniHealthDelegate {
     }
     
     func didCreatePaymentRequest(paymentRequestId: String) {
-        GiniUtilites.Log("✅ Created payment request with id \(paymentRequestId)", event: .success)
+        GiniUtilites.Log("Created payment request with id \(paymentRequestId)", event: .success)
         DispatchQueue.main.async {
             guard let invoicesListCoordinator = self.childCoordinators.first as? InvoicesListCoordinator else {
                 return
