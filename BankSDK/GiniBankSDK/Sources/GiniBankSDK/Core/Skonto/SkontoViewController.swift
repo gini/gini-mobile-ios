@@ -142,6 +142,7 @@ final class SkontoViewController: UIViewController {
             navigationItem.rightBarButtonItem = helpButton.barButton
 
             let backButton = GiniBarButton(ofType: .back(title: backButtonTitle))
+            backButton.buttonView.accessibilityValue = backButtonTitle
             backButton.addAction(self, #selector(backButtonTapped))
             navigationItem.leftBarButtonItem = backButton.barButton
         } else {
