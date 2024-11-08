@@ -598,7 +598,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
      */
     public func submitFeedback(for documentId: String, updatedExtractions: [GiniHealthAPILibrary.Extraction], completion: ((Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)?) {
         let extractions = updatedExtractions.map { Extraction(healthExtraction: $0) }
-        giniSDK.documentService.submitFeedback(forDocumentId: documentId, with: [], and: ["payment": [extractions]]) { result in
+        giniSDK.documentService.submitFeedback(for: documentId, with: [], and: ["payment": [extractions]]) { result in
             switch result {
             case .success(let result):
                 completion?(.success(result))

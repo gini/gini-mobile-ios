@@ -165,24 +165,21 @@ public final class DefaultDocumentService {
     /// Private helper function to handle feedback submission.
     ///
     /// - Parameters:
-    ///   - documentId: The ID of the document for which feedback should be sent.
-    ///   - extractions: The document's updated extractions.
-    ///   - compoundExtractions: The document's updated compound extractions, if any.
-    ///   - completion: A completion callback.
-    private func submitFeedback(
-        documentId: String,
-        extractions: [Extraction],
-        compoundExtractions: [String: [[Extraction]]]? = nil,
-        completion: @escaping CompletionResult<Void>
-    ) {
+    ///   - documentId:             The ID of the document for which feedback should be sent.
+    ///   - extractions:            The document's updated extractions.
+    ///   - compoundExtractions:    The document's updated compound extractions, if any.
+    ///   - completion:             A completion callback.
+    private func submitFeedback(documentId: String,
+                                extractions: [Extraction],
+                                compoundExtractions: [String: [[Extraction]]]? = nil,
+                                completion: @escaping CompletionResult<Void>) {
         let healthExtractions = extractions.map { $0.toHealthExtraction() }
         let healthCompoundExtractions = compoundExtractions?.mapValues { mapCompoundExtraction($0) } ?? [:]
         
-        docService.submitFeedback(
-            forDocumentId: documentId,
-            with: healthExtractions,
-            and: healthCompoundExtractions,
-            completion: { result in
+        docService.submitFeedback(for: documentId,
+                                  with: healthExtractions,
+                                  and: healthCompoundExtractions,
+                                  completion: { result in
                 switch result {
                 case .success:
                     completion(.success(()))
@@ -196,83 +193,67 @@ public final class DefaultDocumentService {
     /**
      * Submits the analysis feedback for a given document.
      *
-     * - Parameter document: The document for which feedback should be sent.
-     * - Parameter extractions: The document's updated extractions.
-     * - Parameter completion: A completion callback.
+     * - Parameter document:        The document for which feedback should be sent.
+     * - Parameter extractions:     The document's updated extractions.
+     * - Parameter completion:      A completion callback.
      */
-    public func submitFeedback(
-        for document: Document,
-        with extractions: [Extraction],
-        completion: @escaping CompletionResult<Void>
-    ) {
-        submitFeedback(
-            documentId: document.id,
-            extractions: extractions,
-            completion: completion
-        )
+    public func submitFeedback(for document: Document,
+                               with extractions: [Extraction],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(documentId: document.id,
+                       extractions: extractions,
+                       completion: completion)
     }
 
     /**
      * Submits the analysis feedback with compound extractions (e.g., "line items") for a given document.
      *
-     * - Parameter document: The document for which feedback should be sent.
-     * - Parameter extractions: The document's updated extractions.
+     * - Parameter document:            The document for which feedback should be sent.
+     * - Parameter extractions:         The document's updated extractions.
      * - Parameter compoundExtractions: The document's updated compound extractions.
-     * - Parameter completion: A completion callback.
+     * - Parameter completion:          A completion callback.
      */
-    public func submitFeedback(
-        for document: Document,
-        with extractions: [Extraction],
-        and compoundExtractions: [String: [[Extraction]]],
-        completion: @escaping CompletionResult<Void>
-    ) {
-        submitFeedback(
-            documentId: document.id,
-            extractions: extractions,
-            compoundExtractions: compoundExtractions,
-            completion: completion
-        )
+    public func submitFeedback(for document: Document,
+                               with extractions: [Extraction],
+                               and compoundExtractions: [String: [[Extraction]]],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(documentId: document.id,
+                       extractions: extractions,
+                       compoundExtractions: compoundExtractions,
+                       completion: completion)
     }
 
     /**
      * Submits the analysis feedback for a document using only its ID.
      *
-     * - Parameter documentId: The ID of the document for which feedback should be sent.
-     * - Parameter extractions: The document's updated extractions.
-     * - Parameter completion: A completion callback.
+     * - Parameter documentId:      The ID of the document for which feedback should be sent.
+     * - Parameter extractions:     The document's updated extractions.
+     * - Parameter completion:      A completion callback.
      */
-    public func submitFeedback(
-        forDocumentId documentId: String,
-        with extractions: [Extraction],
-        completion: @escaping CompletionResult<Void>
-    ) {
-        submitFeedback(
-            documentId: documentId,
-            extractions: extractions,
-            completion: completion
-        )
+    public func submitFeedback(for documentId: String,
+                               with extractions: [Extraction],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(documentId: documentId,
+                       extractions: extractions,
+                       completion: completion)
     }
 
     /**
      * Submits the analysis feedback with compound extractions for a document using only its ID.
      *
-     * - Parameter documentId: The ID of the document for which feedback should be sent.
-     * - Parameter extractions: The document's updated extractions.
+     * - Parameter documentId:          The ID of the document for which feedback should be sent.
+     * - Parameter extractions:         The document's updated extractions.
      * - Parameter compoundExtractions: The document's updated compound extractions.
-     * - Parameter completion: A completion callback.
+     * - Parameter completion:          A completion callback.
      */
-    public func submitFeedback(
-        forDocumentId documentId: String,
-        with extractions: [Extraction],
-        and compoundExtractions: [String: [[Extraction]]],
-        completion: @escaping CompletionResult<Void>
-    ) {
-        submitFeedback(
-            documentId: documentId,
-            extractions: extractions,
-            compoundExtractions: compoundExtractions,
-            completion: completion
-        )
+    public func submitFeedback(for documentId: String,
+                               with extractions: [Extraction],
+                               and compoundExtractions: [String: [[Extraction]]],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(documentId: documentId,
+                       extractions: extractions,
+                       compoundExtractions: compoundExtractions,
+                       completion: completion)
     }
 
 
