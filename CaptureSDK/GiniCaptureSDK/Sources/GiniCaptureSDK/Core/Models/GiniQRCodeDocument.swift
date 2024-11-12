@@ -5,6 +5,7 @@
 //  Created by Enrique del Pozo Gómez on 12/5/17.
 //
 
+import GiniBankAPILibrary
 import UIKit
 
 /**
@@ -27,6 +28,7 @@ import UIKit
     }()
     public var isReviewable: Bool = false
     public var isImported: Bool = false
+    public var uploadMetadata: Document.UploadMetadata?
 
     fileprivate lazy var paymentInformation: Data? = {
         var jsonDict: [String: Any] = ["qrcode": self.scannedString]
@@ -65,8 +67,9 @@ import UIKit
         }
     }()
 
-    init(scannedString: String) {
+    init(scannedString: String, uploadMetadata: Document.UploadMetadata? = nil) {
         self.scannedString = scannedString
+        self.uploadMetadata = uploadMetadata
         self.id = UUID().uuidString
         super.init()
     }

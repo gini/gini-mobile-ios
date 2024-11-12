@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.destination }}-${{ matrix.target }}-check
+  group: ${{ github.workflow }}-${{ github.ref }}-check
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
@@ -31,11 +31,13 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Check package GiniHealthSDK
+      if: ${{ matrix.target == 'GiniHealthSDK' }}
       run: |
            cd HealthSDK/GiniHealthSDK
            swift package update
 
     - name: Check package GiniHealthSDKPinning
+      if: ${{ matrix.target == 'GiniHealthSDKPinning' }}
       run: |
            cd HealthSDK/GiniHealthSDKPinning
            swift package update
@@ -51,6 +53,17 @@ jobs:
     - name: Build example app
       run: |
         xcodebuild -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKPinningExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
+
+    - name: Extract Device Name
+      id: extract_name
+      run: |
+        DEVICE_NAME=$(echo "${{ matrix.destination }}" | sed -n 's/.*name=\([^,]*\).*/\1/p')
+        echo "DEVICE_NAME=${DEVICE_NAME}" >> $GITHUB_ENV        
+
+    - name: Start iOS Simulator
+      run: |
+        xcrun simctl boot "$DEVICE_NAME"
+        xcrun simctl bootstatus "$DEVICE_NAME" -b        
 
     - name: Build pinning example app and run integration tests
       run: >
