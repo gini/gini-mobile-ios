@@ -9,7 +9,6 @@ import UIKit
 import GiniBankAPILibrary
 import GiniBankSDK
 import GiniCaptureSDK
-import AVFoundation
 
 protocol SettingsViewControllerDelegate: AnyObject {
     func didTapCloseButton()
