@@ -8,7 +8,7 @@ concurrency:
 
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
+    uses: ./.github/workflows/bank-sdk.check.yml
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
@@ -117,12 +117,12 @@ jobs:
           fail: true
 
       - name: Distribute bank-sdk example ipa to Firebase App Distribution
-        uses: nickwph/firebase-app-distribution-action@v1
+        uses: emertozd/Firebase-Distribution-Github-Action@v2
         with:
-          file: GiniBankSDKExample.ipa
-          app: ${{ secrets.GINI_BANK_SDK_EXAMPLE_APP_FIREBASE_ID }}
-          credentials: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
+          appId: ${{ secrets.GINI_BANK_SDK_EXAMPLE_APP_FIREBASE_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          release-notes: |
+          file: GiniBankSDKExample.ipa
+          releaseNotes: |
               ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
               ${{ github.event.head_commit.message }}

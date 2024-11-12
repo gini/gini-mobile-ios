@@ -10,6 +10,7 @@ import GiniBankAPILibrary
 import GiniBankSDK
 import GiniCaptureSDK
 import UIKit
+import AVFoundation
 
 protocol SettingsViewModelDelegate: AnyObject {
     func contentDataUpdated()

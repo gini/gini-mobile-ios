@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import GiniBankAPILibrary
 import UIKit
 
 public final class CameraButtonsViewModel {
@@ -84,11 +85,17 @@ public final class CameraButtonsViewModel {
             giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
             return nil
         }
+        let uploadMetadata = Document.UploadMetadata(
+            interfaceOrientation: orientation,
+            documentSource: .camera,
+            importMethod: nil
+        )
         let imageDocument = GiniImageDocument(
             data: imageData,
             processedImageData: processedImageData,
             imageSource: .camera,
-            deviceOrientation: orientation)
+            deviceOrientation: orientation,
+            uploadMetadata: uploadMetadata)
         return imageDocument
     }
 }

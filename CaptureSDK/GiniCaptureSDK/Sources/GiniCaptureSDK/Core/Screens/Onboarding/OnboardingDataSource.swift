@@ -182,6 +182,10 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             isInitialScroll = false
             return
         }
+
+        guard !isProgrammaticScroll else {
+            return
+        }
         guard scrollView.frame.width > 0 else { return }
 
         let pageWidth = scrollView.frame.width
