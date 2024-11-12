@@ -19,7 +19,6 @@ protocol PaymentProvidersBottomViewProtocol: AnyObject {
     func didTapOnPayButton()
 }
 
-
 extension PaymentComponentsController {
     
     // MARK: - Payment Provider Selection

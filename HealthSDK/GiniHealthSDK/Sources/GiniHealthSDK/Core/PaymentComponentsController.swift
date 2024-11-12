@@ -20,6 +20,18 @@ public protocol PaymentComponentsControllerProtocol: AnyObject {
     func didFetchedPaymentProviders()
 }
 
+protocol PaymentComponentsProtocol {
+    var isLoading: Bool { get set }
+    var selectedPaymentProvider: PaymentProvider? { get set }
+    func loadPaymentProviders()
+    func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
+    func paymentView() -> UIView
+    func bankSelectionBottomSheet() -> UIViewController
+    func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
+    func paymentInfoViewController() -> UIViewController
+    func paymentViewBottomSheet() -> UIViewController
+}
+
 /// A protocol that provides configuration settings for various payment components.
 public protocol PaymentComponentsConfigurationProvider {
     var paymentReviewContainerConfiguration: PaymentReviewContainerConfiguration { get }

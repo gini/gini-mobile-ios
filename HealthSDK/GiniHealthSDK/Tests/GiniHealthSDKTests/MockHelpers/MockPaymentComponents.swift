@@ -24,6 +24,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     private let giniHealthConfiguration = GiniHealthConfiguration.shared
     private let configurationProvider: PaymentComponentsConfigurationProvider
     private let stringsProvider: PaymentComponentsStringsProvider
+    var documentId: String?
 
     init(giniHealth: GiniHealth & PaymentComponentsConfigurationProvider & PaymentComponentsStringsProvider) {
         self.giniHealth = giniHealth
@@ -69,7 +70,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         }
     }
 
-    func paymentView(documentId: String) -> UIView {
+    func paymentView() -> UIView {
         let paymentComponentViewModel = PaymentComponentViewModel(
             paymentProvider: healthSelectedPaymentProvider,
             primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
@@ -83,12 +84,12 @@ class MockPaymentComponents: PaymentComponentsProtocol {
             minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
             paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration
         )
-        paymentComponentViewModel.documentId = documentId
+        paymentComponentViewModel.documentId = MockSessionManager.payableDocumentID
         let view = PaymentComponentView(viewModel: paymentComponentViewModel)
         return view
     }
     
-    func bankSelectionBottomSheet(documentId: String?) -> UIViewController {
+    func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders.map { $0.toHealthPaymentProvider() },
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                    configuration: configurationProvider.bankSelectionConfiguration,
@@ -100,15 +101,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
     
-    func loadPaymentReviewScreenFor(documentId: String, trackingDelegate: (any GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
-        switch documentId {
-        case MockSessionManager.payableDocumentID:
-            completion(UIViewController(), nil)
-        case MockSessionManager.missingDocumentID:
-            completion(nil, .apiError(GiniError.decorator(.noResponse)))
-        default:
-            fatalError("Document id not handled in tests")
-        }
+    func loadPaymentReviewScreenFor(trackingDelegate: (any GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+        completion(UIViewController(), nil)
     }
     
     func paymentInfoViewController() -> UIViewController {
@@ -121,23 +115,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         return paymentInfoViewController
     }
 
-    func paymentView(documentId: String?) -> UIView {
-        paymentView(documentId: documentId ?? "")
-    }
-
-    func loadPaymentReviewScreenFor(documentId: String?, paymentInfo: GiniInternalPaymentSDK.PaymentInfo?, trackingDelegate: (any GiniHealthSDK.GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthSDK.GiniHealthError?) -> Void) {
-        switch documentId {
-        case MockSessionManager.payableDocumentID:
-            completion(UIViewController(), nil)
-        case MockSessionManager.missingDocumentID:
-            completion(nil, .apiError(GiniError.decorator(.noResponse)))
-        default:
-            fatalError("Document id not handled in tests")
-        }
-    }
-
-    func paymentViewBottomSheet(documentId: String?) -> UIViewController {
-        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentId),
+    func paymentViewBottomSheet() -> UIViewController {
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(),
                                                                     bottomSheetConfiguration: giniHealth.bottomSheetConfiguration)
         return paymentComponentBottomView
     }
