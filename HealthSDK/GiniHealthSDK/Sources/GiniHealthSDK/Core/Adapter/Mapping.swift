@@ -233,8 +233,8 @@ extension LogLevel {
 
 //MARK: - PaymentProvider
 
-extension PaymentInfo {
-    init(paymentConponentsInfo: GiniInternalPaymentSDK.PaymentInfo) {
+extension GiniInternalPaymentSDK.PaymentInfo {
+    init(paymentConponentsInfo: GiniHealthSDK.PaymentInfo) {
         self.init(recipient: paymentConponentsInfo.recipient,
                   iban: paymentConponentsInfo.iban,
                   bic: paymentConponentsInfo.bic,

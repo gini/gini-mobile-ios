@@ -11,7 +11,7 @@ import GiniHealthAPILibrary
 
 /// A protocol for handling actions from the Onboarding Share Invoice bottom view
 public protocol ShareInvoiceBottomViewProtocol: AnyObject {
-    func didTapOnContinueToShareInvoice(documentId: String?)
+    func didTapOnContinueToShareInvoice()
 }
 
 struct SingleApp {
@@ -86,6 +86,6 @@ public final class ShareInvoiceBottomViewModel {
     }
     
     func didTapOnContinue() {
-        viewDelegate?.didTapOnContinueToShareInvoice(documentId: documentId)
+        viewDelegate?.didTapOnContinueToShareInvoice()
     }
 }

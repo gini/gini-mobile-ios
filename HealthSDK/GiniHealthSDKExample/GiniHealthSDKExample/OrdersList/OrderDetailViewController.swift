@@ -77,9 +77,6 @@ final class OrderDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        paymentComponentsController.viewDelegate = self
-        paymentComponentsController.bottomViewDelegate = self
-
         title = NSLocalizedString("gini.health.example.order.navigation.order.details", comment: "")
 
         view.backgroundColor = .secondarySystemBackground
@@ -99,7 +96,6 @@ final class OrderDetailViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
         saveTextFieldData()
     }
 
@@ -129,24 +125,8 @@ final class OrderDetailViewController: UIViewController {
 
         let paymentInfo = obtainPaymentInfo()
         if paymentInfo.isComplete && order.price.value != .zero {
-            if giniHealthConfiguration.showPaymentReviewScreen {
-                if paymentComponentsController.selectedPaymentProvider == nil {
-                    self.presentPaymentViewBottomSheet(nil)
-                } else {
-                    paymentComponentsController.loadPaymentReviewScreenFor(documentId: "", paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
-                        if let error {
-                            self?.errors.append(error.localizedDescription)
-                            self?.showErrorsIfAny()
-                        } else if let viewController {
-                            viewController.modalTransitionStyle = .coverVertical
-                            viewController.modalPresentationStyle = .overCurrentContext
-                            self?.dismissAndPresent(viewController: viewController, animated: true)
-                        }
-                    }
-                }
-            } else {
-                self.presentPaymentViewBottomSheet(nil)
-            }
+            guard let navigationController else { return }
+            paymentComponentsController.openPaymentFlow(documentId: nil, paymentInfo: obtainPaymentInfo(), navigationController: navigationController, trackingDelegate: self)
         } else {
             showErrorAlertView(error: NSLocalizedString("gini.health.example.order.detail.alert.field.error", comment: ""))
         }
@@ -154,75 +134,6 @@ final class OrderDetailViewController: UIViewController {
 
     @objc private func didTapOnView() {
         view.endEditing(true)
-    }
-
-    fileprivate func presentPaymentViewBottomSheet(_ documentId: String?) {
-        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentId: documentId ?? "")
-        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
-        self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: false)
-    }
-}
-
-extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentViewProtocol {
-    func didTapOnMoreInformation(documentId: String?) {
-        GiniUtilites.Log("Tapped on More Information", event: .success)
-        let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
-        if let presentedViewController = self.presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                self.navigationController?.pushViewController(paymentInfoViewController, animated: true)
-            }
-        } else {
-            self.navigationController?.pushViewController(paymentInfoViewController, animated: true)
-        }
-    }
-
-    func didTapOnBankPicker(documentId: String?) {
-        GiniUtilites.Log("Tapped on Bank Picker on :\(documentId ?? "")", event: .success)
-        let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet(documentId: documentId)
-        bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
-        self.dismissAndPresent(viewController: bankSelectionBottomSheet, animated: false)
-    }
-
-    func didTapOnPayInvoice(documentId: String?) {
-        GiniUtilites.Log("Tapped on Pay Order", event: .success)
-        if giniHealthConfiguration.showPaymentReviewScreen {
-            paymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
-                if let error {
-                    self?.errors.append(error.localizedDescription)
-                    self?.showErrorsIfAny()
-                } else if let viewController {
-                    viewController.modalTransitionStyle = .coverVertical
-                    viewController.modalPresentationStyle = .overCurrentContext
-                    self?.dismissAndPresent(viewController: viewController, animated: true)
-                }
-            }
-        } else {
-            if paymentComponentsController.supportsOpenWith() {
-                if paymentComponentsController.shouldShowOnboardingScreenFor() {
-                    let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet(documentId: documentId)
-                    shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
-                    self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
-                } else {
-                    paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(), viewController: self)
-                }
-            } else if paymentComponentsController.supportsGPC() {
-                if paymentComponentsController.canOpenPaymentProviderApp() {
-                    paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] result in
-                        switch result {
-                        case .success(let paymentRequestID):
-                            self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
-                        case .failure(let error):
-                            self?.errors.append(error.localizedDescription)
-                            self?.showErrorsIfAny()
-                        }
-                    }
-                } else {
-                    let installAppBottomSheet = paymentComponentsController.installAppBottomSheet()
-                    installAppBottomSheet.modalPresentationStyle = .overFullScreen
-                    self.dismissAndPresent(viewController: installAppBottomSheet, animated: false)
-                }
-            }
-        }
     }
 
     private func saveTextFieldData() {
@@ -243,7 +154,7 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
         }
     }
 
-    private func obtainPaymentInfo() -> PaymentInfo {
+    private func obtainPaymentInfo() -> GiniHealthSDK.PaymentInfo {
         saveTextFieldData()
 
         return PaymentInfo(recipient: order.recipient,
@@ -275,16 +186,6 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
         )
         self.present(alertController, animated: true)
     }
-
-    private func dismissAndPresent(viewController: UIViewController, animated: Bool) {
-        if let presentedViewController = self.presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                self.present(viewController, animated: animated)
-            }
-        } else {
-            self.present(viewController, animated: animated)
-        }
-    }
 }
 
 extension OrderDetailViewController: GiniHealthTrackingDelegate {
@@ -297,53 +198,6 @@ extension OrderDetailViewController: GiniHealthTrackingDelegate {
         case .onCloseKeyboardButtonClicked:
             GiniUtilites.Log("Close keyboard was triggered", event: .success)
         }
-    }
-}
-
-extension OrderDetailViewController: PaymentProvidersBottomViewProtocol {
-    func didSelectPaymentProvider(paymentProvider: GiniHealthSDK.PaymentProvider, documentId: String?) {
-        DispatchQueue.main.async {
-            self.presentPaymentViewBottomSheet(documentId)
-        }
-    }
-    
-    func didTapOnMoreInformation() {
-        didTapOnMoreInformation(documentId: nil)
-    }
-
-    func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
-        DispatchQueue.main.async {
-            self.presentedViewController?.dismiss(animated: true, completion: {
-                self.payButtonTapped()
-            })
-        }
-    }
-
-    func didTapOnClose() {
-        DispatchQueue.main.async {
-            self.presentedViewController?.dismiss(animated: true)
-        }
-    }
-
-    func didTapOnContinueOnShareBottomSheet(documentId: String?) {
-        paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(), viewController: self)
-    }
-
-    func didTapForwardOnInstallBottomSheet() {
-        paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] result in
-            switch result {
-            case .success(let paymentRequestID):
-                self?.dismiss(animated: true, completion: {
-                    self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
-                })
-            case .failure(let error):
-                self?.errors.append(error.localizedDescription)
-            }
-        }
-    }
-
-    func didTapOnPayButton() {
-        payButtonTapped()
     }
 }
 

@@ -8,7 +8,6 @@
 import UIKit
 import GiniCaptureSDK
 import GiniHealthSDK
-import GiniInternalPaymentSDK
 import GiniUtilites
 
 struct DocumentWithExtractions: Codable {
@@ -33,7 +32,7 @@ struct DocumentWithExtractions: Codable {
     }
 }
 
-final class InvoicesListViewModel: PaymentComponentViewProtocol {
+final class InvoicesListViewModel {
     
     private let coordinator: InvoicesListCoordinator
     private var documentService: GiniHealthSDK.DefaultDocumentService
@@ -73,8 +72,6 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
         self.paymentComponentsController.delegate = self
-        self.paymentComponentsController.viewDelegate = self
-        self.paymentComponentsController.bottomViewDelegate = self
     }
     
     func viewDidLoad() {
@@ -209,130 +206,16 @@ final class InvoicesListViewModel: PaymentComponentViewProtocol {
 }
 
 extension InvoicesListViewModel {
-
     func didTapOnOpenFlow(documentId: String?) {
         documentIdToRefetch = documentId
-        guard let _ = paymentComponentsController.selectedPaymentProvider else {
-            presentPaymentViewBottomSheet(documentId)
-            return
-        }
-        if giniHealthConfiguration.showPaymentReviewScreen {
-            didTapOnPayInvoice(documentId: documentId)
-        } else {
-            presentPaymentViewBottomSheet(documentId)
-        }
-    }
-
-    func didTapOnMoreInformation(documentId: String?) {
-        GiniUtilites.Log("Tapped on More Information", event: .success)
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
-        let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
-        if let presentedViewController = self.coordinator.invoicesListViewController.presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
-            }
-        } else {
-            self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
-        }
-    }
-    
-    fileprivate func presentPaymentViewBottomSheet(_ documentId: String?) {
-        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentId: documentId ?? "")
-        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
-        self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: false)
-    }
-    
-    func didTapOnBankPicker(documentId: String?) {
-        GiniUtilites.Log("Tapped on Bank Picker on :\(documentId ?? "")", event: .success)
-        guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
-        if GiniHealthConfiguration.shared.useBottomPaymentComponentView {
-            dismissAndPresent(viewController: bankSelectionBottomSheet(documentId: documentId), animated: false)
-        }
+        paymentComponentsController.openPaymentFlow(documentId: documentId, paymentInfo: obtainPaymentInfo(for: documentId), navigationController: self.coordinator.invoicesListNavigationController, trackingDelegate: self)
     }
 
-    func bankSelectionBottomSheet(documentId: String?) -> UIViewController {
-        let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet(documentId: documentId)
-        bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
-        return bankSelectionBottomSheet
-    }
-
-    func didTapOnPayInvoice(documentId: String?) {
-        GiniUtilites.Log("Tapped on Pay Invoice on :\(documentId ?? "")", event: .success)
-        documentIdToRefetch = documentId
-        guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
-        if giniHealthConfiguration.showPaymentReviewScreen {
-            paymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: nil, trackingDelegate: self) { [weak self] viewController, error in
-                if let error {
-                    self?.errors.append(error.localizedDescription)
-                    self?.showErrorsIfAny()
-                } else if let viewController {
-                    viewController.modalTransitionStyle = .coverVertical
-                    viewController.modalPresentationStyle = .overCurrentContext
-                    if let presentedViewController = self?.coordinator.invoicesListViewController.presentedViewController {
-                        presentedViewController.dismiss(animated: true) {
-                            self?.coordinator.invoicesListNavigationController.pushViewController(viewController, animated: true)
-                        }
-                    } else {
-                        self?.coordinator.invoicesListNavigationController.pushViewController(viewController, animated: true)
-                    }
-                }
-            }
-        } else {
-            if paymentComponentsController.supportsOpenWith() {
-                if paymentComponentsController.shouldShowOnboardingScreenFor() {
-                    let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet(documentId: documentId)
-                    shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
-                    self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
-                } else {
-                    if let index = invoices.firstIndex(where: { $0.documentId == documentId }) {
-                        if self.coordinator.invoicesListViewController.presentedViewController != nil {
-                            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true, completion: {
-                                self.paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: self.obtainPaymentInfo(for: index), viewController: self.coordinator.invoicesListViewController)
-                            })
-                        } else {
-                            self.paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(for: index), viewController: self.coordinator.invoicesListViewController)
-                        }
-                    }
-                }
-            } else if paymentComponentsController.supportsGPC() {
-                if paymentComponentsController.canOpenPaymentProviderApp() {
-                    if let index = invoices.firstIndex(where: { $0.documentId == documentId }) {
-                        paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo(for: index)) { [weak self] result in
-                            switch result {
-                            case .success(let paymentRequestID):
-                                if self?.coordinator.invoicesListViewController.presentedViewController != nil {
-                                    self?.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true, completion: {
-                                        self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
-                                    })
-                                } else {
-                                    self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
-                                }
-                            case .failure(let error):
-                                self?.errors.append(error.localizedDescription)
-                                self?.showErrorsIfAny()
-                            }
-                        }
-                    }
-                } else {
-                    let installAppBottomSheet = paymentComponentsController.installAppBottomSheet()
-                    installAppBottomSheet.modalPresentationStyle = .overFullScreen
-                    self.dismissAndPresent(viewController: installAppBottomSheet, animated: false)
-                }
-            }
+    private func obtainPaymentInfo(for documentId: String?) -> PaymentInfo? {
+        guard let index = invoices.firstIndex(where: { $0.documentId == documentId }) else {
+            return nil
         }
-    }
-
-    private func dismissAndPresent(viewController: UIViewController, animated: Bool) {
-        if let presentedViewController = self.coordinator.invoicesListViewController.presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                self.coordinator.invoicesListViewController.present(viewController, animated: animated)
-            }
-        } else {
-            self.coordinator.invoicesListViewController.present(viewController, animated: animated)
-        }
-    }
-
-    private func obtainPaymentInfo(for index: Int) -> GiniInternalPaymentSDK.PaymentInfo {
         return PaymentInfo(recipient: invoices[index].recipient ?? "",
                            iban: invoices[index].iban ?? "",
                            bic: "",
@@ -357,33 +240,6 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
             } else {
                 self.coordinator.invoicesListViewController.hideActivityIndicator()
             }
-        }
-    }
-}
-
-extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
-    func didTapOnContinueOnShareBottomSheet(documentId: String?) {
-        if let index = invoices.firstIndex(where: { $0.documentId == documentId }) {
-            paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(for: index), viewController: self.coordinator.invoicesListViewController)
-        }
-    }
-    
-    func didTapForwardOnInstallBottomSheet() {
-    }
-    
-    func didTapOnPayButton() {
-        presentPaymentViewBottomSheet(documentIdToRefetch)
-    }
-
-    func didSelectPaymentProvider(paymentProvider: PaymentProvider, documentId: String?) {
-        DispatchQueue.main.async {
-            self.presentPaymentViewBottomSheet(documentId)
-        }
-    }
-    
-    func didTapOnClose() {
-        DispatchQueue.main.async {
-            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
         }
     }
 }

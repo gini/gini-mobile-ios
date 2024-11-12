@@ -403,7 +403,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
      - Parameter documentId: An optional identifier for the document associated with the invoice.
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
-    public func shareInvoiceBottomSheet(documentId: String?) -> BottomSheetViewController {
+    public func shareInvoiceBottomSheet() -> BottomSheetViewController {
         previousPresentedView = nil
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
@@ -646,7 +646,7 @@ extension PaymentComponentsController: BanksSelectionProtocol {
     }
 
     /// Handles the action when the continue button is tapped on the share bottom sheet.
-    public func didTapOnContinueOnShareBottomSheet(documentId: String?) {
+    public func didTapOnContinueOnShareBottomSheet() {
         print("Tapped Continue on Share Bottom Sheet")
     }
 
@@ -666,7 +666,7 @@ extension PaymentComponentsController: BanksSelectionProtocol {
     }
 
     /// Updates the selected payment provider from the bank selection bottom view and notifies the delegate with the selected provider and document ID.
-    public func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider, documentId: String?) {
+    public func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider) {
         selectedPaymentProvider = PaymentProvider(healthPaymentProvider: paymentProvider)
         if let provider = selectedPaymentProvider {
             storeDefaultPaymentProvider(paymentProvider: provider)
@@ -677,7 +677,7 @@ extension PaymentComponentsController: BanksSelectionProtocol {
 
 extension PaymentComponentsController: ShareInvoiceBottomViewProtocol {
     /// Notifies the delegate to continue sharing the invoice with the provided document ID.
-    public func didTapOnContinueToShareInvoice(documentId: String?) {
+    public func didTapOnContinueToShareInvoice() {
         bottomViewDelegate?.didTapOnContinueOnShareBottomSheet()
     }
 }

@@ -399,21 +399,6 @@ extension AppCoordinator: GiniHealthDelegate {
     }
 }
 
-// MARK: GiniHealthTrackingDelegate
-
-extension AppCoordinator: GiniHealthTrackingDelegate {
-    func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
-        switch event.type {
-        case .onToTheBankButtonClicked:
-            GiniUtilites.Log("📝 To the banking app button was tapped,\(String(describing: event.info))", event: .success)
-        case .onCloseButtonClicked:
-            GiniUtilites.Log("📝 Close screen was triggered", event: .success)
-        case .onCloseKeyboardButtonClicked:
-            GiniUtilites.Log("📝 Close keyboard was triggered", event: .success)
-        }
-    }
-}
-
 // MARK: PaymentComponentControllerDelegate
 
 extension AppCoordinator: PaymentComponentsControllerProtocol {
