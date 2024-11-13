@@ -19,7 +19,7 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
         //Enable Onboarding screens at every launch
         mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: true)
         //Disable Onboarding at first launch switch
-        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: false)
+        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingAtFirstLaunchSwitch, enabled: false)
         settingScreen.closeButton.tap()
     //Test Case
         //Tap Photopaymen button
@@ -48,7 +48,7 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
         //Enable Onboarding at every launch switch
         mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: true)
         //Disable Onboarding at first launch switch
-        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: false)
+        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingAtFirstLaunchSwitch, enabled: false)
         settingScreen.closeButton.tap()
         
     //Test Case
@@ -72,7 +72,7 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
         //Enable Onboarding at every launch switch
         mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: true)
         //Disable Onboarding at first launch switch
-        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: false)
+        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingAtFirstLaunchSwitch, enabled: false)
         settingScreen.closeButton.tap()
     //Test Case
         //Tap Photopaymen button
@@ -101,7 +101,7 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
         //Enable Onboarding at every launch switch
         mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: true)
         //Disable Onboarding at first launch switch
-        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: false)
+        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingAtFirstLaunchSwitch, enabled: false)
         settingScreen.closeButton.tap()
     //Test Case
         //Tap Photopaymen button
@@ -130,7 +130,7 @@ class GiniOnboardingScreenUITest: GiniBankSDKExampleUITests {
         //Enable Onboarding at every launch switch
         mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: true)
         //Disable Onboarding at first launch switch
-        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingEveryLaunchSwitch, enabled: false)
+        mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingAtFirstLaunchSwitch, enabled: false)
         //Disable Onboarding at first launch switch
         mainScreen.tapSwitchNextToTextElement(text: settingScreen.onboardingCustomBottomNavBar, enabled: true)
         settingScreen.closeButton.tap()
