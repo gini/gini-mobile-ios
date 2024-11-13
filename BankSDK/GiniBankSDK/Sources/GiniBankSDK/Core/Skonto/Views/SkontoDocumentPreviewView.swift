@@ -113,6 +113,8 @@ class SkontoDocumentPreviewView: UIView {
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
             imageContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                         constant: Constants.imageViewLeading),
+            imageContainerView.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                                    constant: Constants.imageViewVerticalPadding),
             imageContainerView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             imageContainerView.widthAnchor.constraint(equalToConstant: Constants.imageViewSize),
             imageContainerView.heightAnchor.constraint(equalToConstant: Constants.imageViewSize),
@@ -149,6 +151,7 @@ private extension SkontoDocumentPreviewView {
         static let stackViewSpacing: CGFloat = 0
         static let imageViewSize: CGFloat = 40
         static let imageViewLeading: CGFloat = 12
+        static let imageViewVerticalPadding: CGFloat = 12
         static let stackViewLeading: CGFloat = 12
         static let chevronTrailing: CGFloat = 20
         static let imageViewPadding: CGFloat = 7
