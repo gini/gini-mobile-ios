@@ -70,7 +70,7 @@ class SkontoWithDiscountHeaderView: UIView {
                                                name: UIContentSizeCategory.didChangeNotification,
                                                object: nil)
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self,
                                                   name: UIContentSizeCategory.didChangeNotification,
@@ -101,7 +101,7 @@ class SkontoWithDiscountHeaderView: UIView {
                                                 constant: Constants.discountSwitchTopPadding),
             discountSwitch.centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
             discountSwitch.trailingAnchor.constraint(equalTo: trailingAnchor),
-            discountSwitch.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.trailingAnchor,
+            discountSwitch.leadingAnchor.constraint(equalTo: stackView.trailingAnchor,
                                                     constant: Constants.discountSwitchLeadingPadding),
             discountSwitch.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
         ])
@@ -135,6 +135,7 @@ class SkontoWithDiscountHeaderView: UIView {
 
     @objc private func discountSwitchToggled(_ sender: UISwitch) {
         viewModel.toggleDiscount()
+        adjustStackViewLayout()
     }
 
     @objc private func handleContentSizeCategoryDidChange() {
