@@ -71,12 +71,9 @@ final class InvoicesListViewModel {
         self.invoices = invoices ?? hardcodedInvoicesController.getInvoicesWithExtractions()
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
-        self.paymentComponentsController.delegate = self
     }
     
-    func viewDidLoad() {
-        paymentComponentsController.loadPaymentProviders()
-    }
+    func viewDidLoad() {}
     
     func refetchExtractions() {
         guard shouldRefetchExtractions else { return }
@@ -209,7 +206,7 @@ extension InvoicesListViewModel {
     func didTapOnOpenFlow(documentId: String?) {
         documentIdToRefetch = documentId
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
-        paymentComponentsController.openPaymentFlow(documentId: documentId, paymentInfo: obtainPaymentInfo(for: documentId), navigationController: self.coordinator.invoicesListNavigationController, trackingDelegate: self)
+        paymentComponentsController.startPaymentFlow(documentId: documentId, paymentInfo: obtainPaymentInfo(for: documentId), navigationController: self.coordinator.invoicesListNavigationController, trackingDelegate: self)
     }
 
     private func obtainPaymentInfo(for documentId: String?) -> PaymentInfo? {
@@ -223,24 +220,6 @@ extension InvoicesListViewModel {
                            purpose: "",
                            paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
                            paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
-    }
-}
-
-extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
-    func didFetchedPaymentProviders() {
-        DispatchQueue.main.async {
-            self.coordinator.invoicesListViewController.reloadTableView()
-        }
-    }
-
-    func isLoadingStateChanged(isLoading: Bool) {
-        DispatchQueue.main.async {
-            if isLoading {
-                self.coordinator.invoicesListViewController.showActivityIndicator()
-            } else {
-                self.coordinator.invoicesListViewController.hideActivityIndicator()
-            }
-        }
     }
 }
 

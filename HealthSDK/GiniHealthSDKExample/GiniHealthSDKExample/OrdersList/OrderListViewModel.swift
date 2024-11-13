@@ -37,28 +37,7 @@ final class OrderListViewModel {
         self.orders = orders ?? hardcodedOrdersController.orders
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
-        self.paymentComponentsController.delegate = self
     }
     
-    func viewDidLoad() {
-        paymentComponentsController.loadPaymentProviders()
-    }
-}
-
-extension OrderListViewModel: PaymentComponentsControllerProtocol {
-    func didFetchedPaymentProviders() {
-        DispatchQueue.main.async {
-            self.coordinator.orderListViewController.reloadTableView()
-        }
-    }
-
-    func isLoadingStateChanged(isLoading: Bool) {
-        DispatchQueue.main.async {
-            if isLoading {
-                self.coordinator.orderListViewController.showActivityIndicator()
-            } else {
-                self.coordinator.orderListViewController.hideActivityIndicator()
-            }
-        }
-    }
+    func viewDidLoad() {}
 }

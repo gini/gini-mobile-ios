@@ -126,7 +126,7 @@ final class OrderDetailViewController: UIViewController {
         let paymentInfo = obtainPaymentInfo()
         if paymentInfo.isComplete && order.price.value != .zero {
             guard let navigationController else { return }
-            paymentComponentsController.openPaymentFlow(documentId: nil, paymentInfo: obtainPaymentInfo(), navigationController: navigationController, trackingDelegate: self)
+            paymentComponentsController.startPaymentFlow(documentId: nil, paymentInfo: obtainPaymentInfo(), navigationController: navigationController, trackingDelegate: self)
         } else {
             showErrorAlertView(error: NSLocalizedString("gini.health.example.order.detail.alert.field.error", comment: ""))
         }

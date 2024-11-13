@@ -22,6 +22,27 @@ protocol PaymentProvidersBottomViewProtocol: AnyObject {
 extension PaymentComponentsController {
     
     // MARK: - Payment Provider Selection
+    
+    /**
+     Loads the payment providers list and stores them.
+     - note: Also triggers a function that checks if the payment providers are installed.
+     */
+    func loadPaymentProviders() {
+        self.isLoading = true
+        self.giniSDK.fetchBankingApps { [weak self] result in
+            self?.isLoading = false
+            switch result {
+            case let .success(paymentProviders):
+                self?.paymentProviders = paymentProviders.map{ $0.toHealthPaymentProvider() }
+                self?.sortPaymentProviders()
+                self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
+                self?.delegate?.didFetchedPaymentProviders()
+            case let .failure(error):
+                GiniUtilites.Log("Couldn't load payment providers: \(error.localizedDescription)", event: .error)
+            }
+        }
+    }
+    
     /**
      Retrieves the default installed payment provider, if available.
      - Returns: a Payment Provider object.
@@ -472,6 +493,96 @@ extension PaymentComponentsController {
         return count < Constants.numberOfTimesOnboardingShareScreenShouldAppear
     }
 
+    // MARK: - Payment Review Screen functions
+    
+    /**
+     Creates a payment request using the provided payment information.
+
+     - Parameter paymentInfo: The payment information to be used for the request.
+     - Parameter completion: A closure to be executed once the request is completed, containing the result of the operation.
+     */
+    public func createPaymentRequest(paymentInfo: GiniInternalPaymentSDK.PaymentInfo, completion: @escaping (Result<String, GiniHealthAPILibrary.GiniError>) -> Void) {
+        giniSDK.createPaymentRequest(paymentInfo: paymentInfo, completion: { result in
+            switch result {
+            case .success(let paymentRequestId):
+                completion(.success(paymentRequestId))
+            case .failure(let error):
+                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                completion(.failure(healthError))
+            }
+        })
+    }
+    
+    /**
+     Submits feedback for the specified document and its updated extractions. Method used to update the information extracted from a document.
+
+     - Parameters:
+       - document: The document for which feedback is being submitted.
+       - updatedExtractions: The updated extractions related to the document.
+       - completion: An optional closure to be executed upon completion, containing the result of the submission.
+     */
+    public func submitFeedback(for document: GiniHealthAPILibrary.Document, updatedExtractions: [GiniHealthAPILibrary.Extraction], completion: ((Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)?) {
+        let newDocument = Document(healthDocument: document)
+        let extractions = updatedExtractions.map { Extraction(healthExtraction: $0) }
+        giniSDK.documentService.submitFeedback(for: newDocument, with: [], and: ["payment": [extractions]]) { result in
+            switch result {
+            case .success(let result):
+                completion?(.success(result))
+            case .failure(let error):
+                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                completion?(.failure(healthError))
+            }
+        }
+    }
+    
+    /**
+     Retrieves a preview for the specified document and page number.
+
+     - Parameters:
+       - documentId: The ID of the document to preview.
+       - pageNumber: The page number of the document to retrieve.
+       - completion: A closure that gets called with the result containing either the preview data or an error.
+     */
+    public func preview(for documentId: String, pageNumber: Int, completion: @escaping (Result<Data, GiniHealthAPILibrary.GiniError>) -> Void) {
+        giniSDK.documentService.preview(for: documentId, pageNumber: pageNumber) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                completion(.failure(healthError))
+            }
+        }
+    }
+    
+    /**
+     Opens the payment provider app using the specified request ID and universal link.
+
+     - Parameters:
+       - requestId: The ID of the payment request.
+       - universalLink: The universal link to open the payment provider app.
+     */
+    public func openPaymentProviderApp(requestId: String, universalLink: String) {
+        giniSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
+    }
+    
+    /**
+        Retrieves a payment request using the provided payment request ID.
+
+        - Parameter id:         The ID of the payment request to retrieve.
+        - Parameter completion: A closure to be executed once the retrieval is completed, containing the result of the operation as a `PaymentRequest` object on success or a `GiniError` on failure.
+    */
+    public func getPaymentRequest(by id: String, completion: @escaping (Result<PaymentRequest, GiniHealthAPILibrary.GiniError>) -> Void) {
+        giniSDK.getPaymentRequest(by: id) { result in
+            switch result {
+            case .success(let paymentRequest):
+                completion(.success(paymentRequest))
+            case .failure(let error):
+                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                completion(.failure(healthError))
+            }
+        }
+    }
 }
 
 extension PaymentComponentsController: BanksSelectionProtocol {
