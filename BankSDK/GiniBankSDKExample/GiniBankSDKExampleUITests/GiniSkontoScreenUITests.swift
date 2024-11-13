@@ -126,7 +126,7 @@ class GiniSkontoScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload photo button
         captureScreen.uploadFilesButton.tap()
         //tap Skonto document
-        mainScreen.tapFileWithName(fileName: skontoValidFileName")
+        mainScreen.tapFileWithName(fileName: skontoValidFileName)
         //tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert that Got it button is displayed
