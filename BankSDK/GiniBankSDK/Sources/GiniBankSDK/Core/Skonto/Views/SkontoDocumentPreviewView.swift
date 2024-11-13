@@ -72,7 +72,7 @@ class SkontoDocumentPreviewView: UIView {
     private lazy var contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().background.secondary.uiColor()
+        view.backgroundColor = .giniColorScheme().container.background.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(documentPreviewTapped))
         view.addGestureRecognizer(tapGesture)
