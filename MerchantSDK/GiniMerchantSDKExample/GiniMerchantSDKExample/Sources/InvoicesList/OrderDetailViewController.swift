@@ -178,7 +178,7 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
         } else {
             if paymentComponentsController.supportsOpenWith() {
                 if paymentComponentsController.shouldShowOnboardingScreenFor() {
-                    let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet(documentId: documentId)
+                    let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet()
                     shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
                     self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
                 } else {
