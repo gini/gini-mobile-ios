@@ -130,7 +130,7 @@ class MainScreen {
     
     func tapSwitchNextToTextElement(text: String, enabled: Bool) {
         // Locate the cell containing the specified text element
-        var cell = app.cells.containing(.staticText, identifier: text).element
+        let cell = app.cells.containing(.staticText, identifier: text).element
         XCTAssertTrue(cell.exists, "Cell containing text '\(text)' does not exist")
         // Locate the switch within the found cell
         var switchElement = cell.switches.element
