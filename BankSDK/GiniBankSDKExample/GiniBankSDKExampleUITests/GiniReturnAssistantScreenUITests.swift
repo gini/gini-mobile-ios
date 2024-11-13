@@ -17,6 +17,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
      Please upload to device: 
         "Return Assistant Testrechnung" PDF file
      */
+    let returnAssistantFileName = "Return Assistant Testrechnung"
     
     func testReturnAssistant() {
         
@@ -31,7 +32,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: "Return Assistant Testrechnung")
+        mainScreen.tapFileWithName(fileName: returnAssistantFileName)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert Get started button is displayed
@@ -62,7 +63,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: "Return Assistant Testrechnung")
+        mainScreen.tapFileWithName(fileName: returnAssistantFileName)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert Get started button is displayed
@@ -103,7 +104,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: "Return Assistant Testrechnung")
+        mainScreen.tapFileWithName(fileName: returnAssistantFileName)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert Get started button is displayed
@@ -150,7 +151,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: "Return Assistant Testrechnung")
+        mainScreen.tapFileWithName(fileName: returnAssistantFileName)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert Get started button is displayed
@@ -197,7 +198,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: "Return Assistant Testrechnung")
+        mainScreen.tapFileWithName(fileName: returnAssistantFileName)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert Get started button is displayed
@@ -230,7 +231,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: "Return Assistant Testrechnung")
+        mainScreen.tapFileWithName(fileName: returnAssistantFileName)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert Get started button is displayed
@@ -256,7 +257,7 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         //Tap Upload files button
         captureScreen.uploadFilesButton.tap()
         //Tap RA document
-        mainScreen.tapFileWithName(fileName: "Return Assistant Testrechnung")
+        mainScreen.tapFileWithName(fileName: returnAssistantFileName)
         //Tap Open button
         captureScreen.openGalleryButton.tap()
         //Assert Get started button is displayed
