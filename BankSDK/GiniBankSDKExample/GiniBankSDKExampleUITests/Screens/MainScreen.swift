@@ -128,15 +128,18 @@ class MainScreen {
         }
     }
     
-    func tapSwitchNextToTextElement(text: String) {
+    func tapSwitchNextToTextElement(text: String, enabled: Bool) {
         // Locate the cell containing the specified text element
-        let cell = app.cells.containing(.staticText, identifier: text).element
+        var cell = app.cells.containing(.staticText, identifier: text).element
         XCTAssertTrue(cell.exists, "Cell containing text '\(text)' does not exist")
         // Locate the switch within the found cell
-        let switchElement = cell.switches.element
+        var switchElement = cell.switches.element
         XCTAssertTrue(switchElement.exists, "Switch next to text '\(text)' does not exist")
-        // Tap the switch
+        // Scroll to switch
         switchElement.tap()
+        // Tap the switch
+        handleConfigurationSetting(element: switchElement,enabled: enabled)
+        
     }
     
     func clearInputField(element: XCUIElement) {
