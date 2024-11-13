@@ -63,8 +63,7 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
             app.resetAuthorizationStatus(for: .camera)
         }
     }
-    /*
-    // This test need to be fixed because is crashing -> cameraAccessScreen.giveAccessButton.firstMatch.tap()
+    
     func testCameraAccessScreenGiveAccessButton() throws {
         
         //Reset Camera Access
@@ -90,6 +89,5 @@ class GiniCameraAccessScreenUITests: GiniBankSDKExampleUITests {
             app.resetAuthorizationStatus(for: .camera)
         }
     }
-     */
 }
 
