@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-publish
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
@@ -111,15 +111,15 @@ jobs:
           fail: true
 
       - name: Distribute merchant-sdk example ipa to Firebase App Distribution
-        uses: nickwph/firebase-app-distribution-action@v1
+        uses: emertozd/Firebase-Distribution-Github-Action@v2
         with:
-          file: GiniMerchantSDKExample.ipa
-          app: ${{ secrets.GINI_MERCHANT_SDK_EXAMPLE_APP_FIREBASE_ID }}
-          credentials: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
+          appId: ${{ secrets.GINI_MERCHANT_SDK_EXAMPLE_APP_FIREBASE_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          release-notes: |
+          file: GiniMerchantSDKExample.ipa
+          releaseNotes: |
               ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
-              ${{ github.event.head_commit.message }}
+              ${{ github.event.head_commit.message }}              
 
 
           
