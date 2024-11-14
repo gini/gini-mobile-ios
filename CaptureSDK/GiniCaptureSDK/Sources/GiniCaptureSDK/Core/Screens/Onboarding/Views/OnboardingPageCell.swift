@@ -25,13 +25,16 @@ class OnboardingPageCell: UICollectionViewCell {
         titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
                                          dark: UIColor.GiniCapture.light1).uiColor()
         titleLabel.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.minimumScaleFactor = 0.1
         titleLabel.isAccessibilityElement = true
 
         descriptionLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
                                                dark: UIColor.GiniCapture.dark7).uiColor()
         descriptionLabel.font = GiniConfiguration.shared.textStyleFonts[.subheadline]
         descriptionLabel.isAccessibilityElement = true
-
+        descriptionLabel.adjustsFontSizeToFitWidth = true
+        descriptionLabel.minimumScaleFactor = 0.1
     }
 
     private func calculateIconMargin() -> CGFloat {
