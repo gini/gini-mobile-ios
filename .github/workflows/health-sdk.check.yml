@@ -21,7 +21,8 @@ jobs:
     strategy:
       matrix:
         target: [GiniHealthSDK, GiniHealthSDKPinning]
-        destination: ['platform=iOS Simulator,OS=17.2,name=iPhone SE (3rd generation)', 'platform=iOS Simulator,OS=18.1,name=iPhone 14']
+        destination: ['platform=iOS Simulator,OS=17.2,name=iPhone SE (3rd generation)', 'platform=iOS Simulator,OS=17.5,name=iPhone 15']
+
     steps:
     - uses: maxim-lobanov/setup-xcode@v1.6.0
       with:
