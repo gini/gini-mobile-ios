@@ -147,6 +147,7 @@
 
 "ginibank.transactionDocs.componentView.title" = "Attachments";
 "ginibank.transactionDocs.document.accessibilitylabel" = "Tap to view %@";
+"ginibank.transactionDocs.document.optionbutton.accessibilitylabel" = "Options";
 
 "ginibank.transactionDocs.bottomSheet.action.delete" = "Delete";
 "ginibank.transactionDocs.bottomSheet.action.cancel" = "Cancel";

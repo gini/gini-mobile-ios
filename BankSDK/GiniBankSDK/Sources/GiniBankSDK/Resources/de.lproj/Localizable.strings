@@ -140,6 +140,7 @@
 
 "ginibank.transactionDocs.componentView.title" = "Anhänge";
 "ginibank.transactionDocs.document.accessibilitylabel" = "Zur Ansicht hier tippen %@";
+"ginibank.transactionDocs.document.optionbutton.accessibilitylabel" = "Optionen";
 
 "ginibank.transactionDocs.bottomSheet.action.delete" = "Löschen";
 "ginibank.transactionDocs.bottomSheet.action.cancel" = "Abbrechen";
