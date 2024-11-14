@@ -20,7 +20,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        target: [GiniHealthSDK]
+        target: [GiniHealthSDK, GiniHealthSDKPinning]
         destination: ['platform=iOS Simulator,OS=17.2,name=iPhone SE (3rd generation)', 'platform=iOS Simulator,OS=17.5,name=iPhone 15']
 
     steps:
