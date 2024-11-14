@@ -62,6 +62,8 @@ class TransactionDocsItemView: UIView {
     private func configure(with transactionDoc: TransactionDoc) {
         iconImageView.image = transactionDoc.type.icon
         fileNameLabel.text = transactionDoc.fileName
+
+        setupAccessibility(with: transactionDoc.fileName)
     }
 
     private func setupViews() {
@@ -69,6 +71,17 @@ class TransactionDocsItemView: UIView {
         addSubview(imageContainerView)
         addSubview(fileNameLabel)
         addSubview(optionsButton)
+    }
+
+    private func setupAccessibility(with fileName: String) {
+        imageContainerView.isAccessibilityElement = false
+        fileNameLabel.isAccessibilityElement = false
+        optionsButton.isAccessibilityElement = false
+        isAccessibilityElement = true
+        let documentAccessibilityLabel = NSLocalizedStringPreferredGiniBankFormat(
+            "ginibank.transactionDocs.document.accessibilitylabel",
+            comment: "Tap to view")
+        accessibilityLabel = String.localizedStringWithFormat(documentAccessibilityLabel, fileName)
     }
 
     private func setupConstraints() {

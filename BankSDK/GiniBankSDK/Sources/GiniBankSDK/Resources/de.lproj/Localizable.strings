@@ -139,6 +139,7 @@
 "ginibank.transactionDocs.alert.action.doNotAttach" = "Nicht anhängen";
 
 "ginibank.transactionDocs.componentView.title" = "Anhänge";
+"ginibank.transactionDocs.document.accessibilitylabel" = "Zur Ansicht hier tippen %@";
 
 "ginibank.transactionDocs.bottomSheet.action.delete" = "Löschen";
 "ginibank.transactionDocs.bottomSheet.action.cancel" = "Abbrechen";
@@ -146,3 +147,4 @@
 "ginibank.transactionDocs.preview.iban" = "IBAN";
 "ginibank.transactionDocs.preview.expiryDate" = "Rechnungsfälligkeitsdatum";
 "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle" = "Versuch's nochmal";
+
