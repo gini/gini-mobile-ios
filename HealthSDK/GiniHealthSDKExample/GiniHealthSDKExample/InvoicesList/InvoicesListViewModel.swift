@@ -71,6 +71,7 @@ final class InvoicesListViewModel {
         self.invoices = invoices ?? hardcodedInvoicesController.getInvoicesWithExtractions()
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
+        self.paymentComponentsController.delegate = self
     }
     
     func viewDidLoad() {}
@@ -220,6 +221,24 @@ extension InvoicesListViewModel {
                            purpose: "",
                            paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
                            paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
+    }
+}
+
+extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
+    func didFetchedPaymentProviders() {
+        DispatchQueue.main.async {
+            self.coordinator.invoicesListViewController.reloadTableView()
+        }
+    }
+
+    func isLoadingStateChanged(isLoading: Bool) {
+        DispatchQueue.main.async {
+            if isLoading {
+                self.coordinator.invoicesListViewController.showActivityIndicator()
+            } else {
+                self.coordinator.invoicesListViewController.hideActivityIndicator()
+            }
+        }
     }
 }
 
