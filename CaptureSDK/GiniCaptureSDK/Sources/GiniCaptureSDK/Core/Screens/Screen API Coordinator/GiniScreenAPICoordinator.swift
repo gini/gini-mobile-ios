@@ -175,7 +175,7 @@ extension GiniScreenAPICoordinator {
         }
 
         if pages.type == .image {
-            reviewViewController.updateCollections(with: self.pages, finishedUpload: true)
+            reviewViewController.updateCollections(with: self.pages, finishedUpload: pages.allSatisfy(\.isUploaded))
         }
     }
 

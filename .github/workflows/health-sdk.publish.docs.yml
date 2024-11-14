@@ -33,7 +33,7 @@ jobs:
         branch_ref=$(git branch -r --contains "${{ github.ref }}")
         # Remove "origin/" prefix from branch_ref and trim whitespace
         branch_name=$(echo ${branch_ref/origin\/} | tr -d '[:space:]')
-        echo "::set-output name=branch_name::$branch_name"
+        echo "{branch_name}={branch_name}" >> $GITHUB_OUTPUT
         echo "branch_name: $branch_name"
 
     - name: setup ruby
