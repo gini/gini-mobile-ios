@@ -102,4 +102,13 @@ final class GiniQRCodeDocumentTests: XCTestCase {
                                                                   withConfig: giniConfiguration),
                          "should not throw an error since qr code is valid")
     }
+
+    func testGiniQRCode() {
+        let scannedString = "https://pay.gini.net/482a6cc2-8247-4724-af5d-24cc44408254"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(qrDocument,
+                                                                  withConfig: giniConfiguration),
+                         "should not throw an error since qr code is valid")
+        XCTAssertEqual(qrDocument.qrCodeFormat, .giniQRCode)
+    }
 }

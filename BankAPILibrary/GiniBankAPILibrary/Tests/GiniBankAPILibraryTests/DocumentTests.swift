@@ -111,6 +111,65 @@ final class GiniDocumentTests: XCTestCase {
                        "additionalValue",
                        "additional header should match")
     }
-    
+    func testUploadMetadata() {
+        let metadata = Document.UploadMetadata.init(
+            giniCaptureVersion: "99.99.99",
+            deviceOrientation: "deviceOrientation",
+            source: "source",
+            importMethod: "import",
+            entryPoint: "unit-test",
+            osVersion: "ios 99"
+        )
+        let expectedComment = Document.UploadMetadata.constructComment(
+            osVersion: "ios 99",
+            giniVersion: "99.99.99",
+            contentId: "",
+            source: "source",
+            entryPoint: "unit-test",
+            importMethod: "import",
+            deviceOrientation: "deviceOrientation",
+            rotation: ""
+        )
+        XCTAssertEqual(
+            metadata.userComment,
+            expectedComment,
+            "Upload metadata(userComment) should match; expected \"\(expectedComment)\", got \"\(metadata.userComment)\""
+        )
+    }
+    func testAddUploadMetadata() {
+        var metadata = Document.Metadata()
+        let uploadMetadata = Document.UploadMetadata.init(
+            giniCaptureVersion: "99.99.99",
+            deviceOrientation: "deviceOrientation",
+            source: "source",
+            importMethod: "import",
+            entryPoint: "unit-test",
+            osVersion: "ios 99"
+        )
+        metadata.addUploadMetadata(uploadMetadata)
+        let metadataValue = metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] ?? ""
+        XCTAssertEqual(
+            metadataValue,
+            uploadMetadata.userComment,
+            "userComment should match; expected \"\(uploadMetadata.userComment)\", got \"\(metadataValue)\""
+        )
+    }
+    func testInitWithUploadMetadata() {
+        let uploadMetadata = Document.UploadMetadata.init(
+            giniCaptureVersion: "99.99.99",
+            deviceOrientation: "deviceOrientation",
+            source: "source",
+            importMethod: "import",
+            entryPoint: "unit-test",
+            osVersion: "ios 99"
+        )
+        let metadata = Document.Metadata(uploadMetadata: uploadMetadata)
+        let metadataValue = metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] ?? ""
+        XCTAssertEqual(
+            metadataValue,
+            uploadMetadata.userComment,
+            "userComment should match; expected \"\(uploadMetadata.userComment)\", got \"\(metadataValue)\""
+        )
+    }
 }
 
