@@ -24,6 +24,7 @@
 		289D3DB42A4EC857002A6681 /* InfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */; };
 		28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */; };
 		28A411302A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A4112E2A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift */; };
+		28A46A8D2CD14BAA00800CA6 /* GiniSetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A46A8C2CD14BAA00800CA6 /* GiniSetupHelper.swift */; };
 		28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */; };
 		28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B203FC2BB2E6EE00C78740 /* FileLoader.swift */; };
 		28B448CE2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B448CD2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift */; };
@@ -34,8 +35,6 @@
 		28B587492A373FCB008CB210 /* SettingsViewController+CellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B587482A373FCB008CB210 /* SettingsViewController+CellType.swift */; };
 		28B5874C2A374730008CB210 /* SegmentedOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5874A2A374730008CB210 /* SegmentedOptionTableViewCell.swift */; };
 		28B5874D2A374730008CB210 /* SegmentedOptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */; };
-		28B605D02BC42A8500FCF4DE /* GiniSetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */; };
-		28B605D12BC42E6F00FCF4DE /* GiniSetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */; };
 		28B898D02CA324CD00C79231 /* CodeLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B898CF2CA324CD00C79231 /* CodeLoading.swift */; };
 		28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CDB8222A38A5E40016A81C /* ColorPalette.swift */; };
 		28D0DB102CB803E7003CA3B7 /* SkontoIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D0DB0F2CB803E7003CA3B7 /* SkontoIntegrationTests.swift */; };
@@ -202,6 +201,7 @@
 		289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoTableViewCell.xib; sourceTree = "<group>"; };
 		28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SettingsButtonStates.swift"; sourceTree = "<group>"; };
 		28A4112E2A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+DocumentValidationsState.swift"; sourceTree = "<group>"; };
+		28A46A8C2CD14BAA00800CA6 /* GiniSetupHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniSetupHelper.swift; sourceTree = "<group>"; };
 		28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+LoadNib.swift"; sourceTree = "<group>"; };
 		28B203FC2BB2E6EE00C78740 /* FileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileLoader.swift; sourceTree = "<group>"; };
 		28B448CD2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserDefaultsCell.swift; sourceTree = "<group>"; };
@@ -212,7 +212,6 @@
 		28B587482A373FCB008CB210 /* SettingsViewController+CellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+CellType.swift"; sourceTree = "<group>"; };
 		28B5874A2A374730008CB210 /* SegmentedOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedOptionTableViewCell.swift; sourceTree = "<group>"; };
 		28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegmentedOptionTableViewCell.xib; sourceTree = "<group>"; };
-		28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniSetupHelper.swift; sourceTree = "<group>"; };
 		28B898CF2CA324CD00C79231 /* CodeLoading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeLoading.swift; sourceTree = "<group>"; };
 		28CDB8222A38A5E40016A81C /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		28D0DB0F2CB803E7003CA3B7 /* SkontoIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkontoIntegrationTests.swift; sourceTree = "<group>"; };
@@ -519,7 +518,7 @@
 			isa = PBXGroup;
 			children = (
 				28B203FC2BB2E6EE00C78740 /* FileLoader.swift */,
-				28B605CF2BC42A8500FCF4DE /* GiniSetupHelper.swift */,
+				28A46A8C2CD14BAA00800CA6 /* GiniSetupHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1129,7 +1128,6 @@
 				28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */,
 				833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */,
 				289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */,
-				28B605D12BC42E6F00FCF4DE /* GiniSetupHelper.swift in Sources */,
 				2883DE062AB89F4000AE3A9C /* GiniCaptureSDKColors.swift in Sources */,
 				284F52082BD954B200CF70AD /* GiniBankCustomResourceProvider.swift in Sources */,
 				28B898D02CA324CD00C79231 /* CodeLoading.swift in Sources */,
@@ -1162,9 +1160,9 @@
 				2870683C2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift in Sources */,
 				28D0DB272CB91F5B003CA3B7 /* DocumentCreationTests.swift in Sources */,
 				28DAC20B2CB6D94F008B85E0 /* BaseIntegrationTest.swift in Sources */,
+				28A46A8D2CD14BAA00800CA6 /* GiniSetupHelper.swift in Sources */,
 				28D0DB102CB803E7003CA3B7 /* SkontoIntegrationTests.swift in Sources */,
 				F45D7F0C2800566900C73C63 /* TransferSummaryIntegrationTest.swift in Sources */,
-				28B605D02BC42A8500FCF4DE /* GiniSetupHelper.swift in Sources */,
 				F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */,
 				289918002BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift in Sources */,
 			);

@@ -132,6 +132,16 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
     func upload(document: GiniCaptureDocument,
                 metadata: Document.Metadata?,
                 completion: @escaping UploadDocumentCompletion) {
+        let documentMetadata: Document.Metadata? = {
+            guard let uploadMetadata = document.uploadMetadata else {
+                return metadata
+            }
+            guard var metadata else {
+                return Document.Metadata(uploadMetadata: uploadMetadata)
+            }
+            metadata.addUploadMetadata(uploadMetadata)
+            return metadata
+        }()
         Log(message: "Creating document...", event: "📝")
 
         let fileName = "Partial-\(NSDate().timeIntervalSince1970)"
@@ -139,7 +149,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
         documentService.createDocument(fileName: fileName,
                                        docType: nil,
                                        type: .partial(document.data),
-                                       metadata: metadata) { result in
+                                       metadata: documentMetadata) { result in
             switch result {
             case let .success(createdDocument):
                 Log(message: "Created document with id: \(createdDocument.id) " +
