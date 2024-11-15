@@ -59,6 +59,7 @@ class GiniReviewScreenUITests: GiniBankSDKExampleUITests {
         captureScreen.openGalleryButton.tap()
         //Assert that Proceed button is displayed
         XCTAssertTrue(reviewScreen.processButton.waitForExistence(timeout: 10))
+        reviewScreen.waitForElementToBecomeEnabled(reviewScreen.processButton)
         //Tap Process button
         reviewScreen.processButton.tap()
         //Tap Only for this transaction

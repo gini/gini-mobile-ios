@@ -38,4 +38,14 @@ class ReviewScreen {
             fatalError("Locale \(locale) is not supported")
         }
     }
+    
+    func waitForElementToBecomeEnabled(_ element: XCUIElement, timeout: TimeInterval = 10) {
+        let expectation = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isEnabled == true"), object: element)
+        let result = XCTWaiter().wait(for: [expectation], timeout: timeout)
+
+        if result != .completed {
+            XCTFail("\(element) did not become enabled within \(timeout) seconds")
+        }
+    }
+
 }
