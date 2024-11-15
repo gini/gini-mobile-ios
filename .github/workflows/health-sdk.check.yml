@@ -20,7 +20,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        target: [GiniHealthSDK, GiniHealthSDKPinning]
+        target: [GiniHealthSDK]
         destination: ['platform=iOS Simulator,OS=17.2,name=iPhone SE (3rd generation)', 'platform=iOS Simulator,OS=17.5,name=iPhone 15']
 
     steps:
@@ -36,13 +36,7 @@ jobs:
       run: |
            cd HealthSDK/GiniHealthSDK
            swift package update
-
-    - name: Check package GiniHealthSDKPinning
-      if: ${{ matrix.target == 'GiniHealthSDKPinning' }}
-      run: |
-           cd HealthSDK/GiniHealthSDKPinning
-           swift package update
-
+           
     - name: Build sdk targets
       run: |
         xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
@@ -53,7 +47,7 @@ jobs:
    
     - name: Build example app
       run: |
-        xcodebuild -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKPinningExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
+        xcodebuild -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
 
     - name: Extract Device Name
       id: extract_name
