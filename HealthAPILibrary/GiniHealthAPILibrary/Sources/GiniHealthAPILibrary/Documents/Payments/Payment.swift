@@ -9,7 +9,7 @@ import Foundation
 /**
  Struct for payment response
  */
-public struct Payment {
+public struct Payment: Decodable {
     /**
      An initializer for a `Payment` structure
 
@@ -47,24 +47,6 @@ public struct Payment {
         case links = "_links"
     }
 
-}
-
-/**
- Struct for links in payment response
- */
-public struct PaymentLinks: Codable {
-    var paymentRequest, sourceDocumentLocation, linksSelf: String?
-
-    enum CodingKeys: String, CodingKey {
-        case paymentRequest, sourceDocumentLocation
-        case linksSelf = "self"
-    }
-}
-
-// MARK: - Decodable
-
-extension Payment: Decodable {
-
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.paidAt = try container.decode(String.self, forKey: .paidAt)
@@ -80,5 +62,17 @@ extension Payment: Decodable {
         self.amount = try container.decode(String.self, forKey: .amount)
         self.purpose = try container.decode(String.self, forKey: .purpose)
         self.links = try container.decode(PaymentLinks.self, forKey: .links)
+    }
+}
+
+/**
+ Struct for links in payment response
+ */
+public struct PaymentLinks: Codable {
+    var paymentRequest, sourceDocumentLocation, linksSelf: String?
+
+    enum CodingKeys: String, CodingKey {
+        case paymentRequest, sourceDocumentLocation
+        case linksSelf = "self"
     }
 }

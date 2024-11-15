@@ -28,8 +28,7 @@ archive()
 	-archivePath $outputPath \
 	-derivedDataPath $derivedDataPath \
 	SKIP_INSTALL=NO \
-    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
-    OTHER_SWIFT_FLAGS=-no-verify-emitted-module-interface # for some reason it generates .swiftinterface that seems broken to the validator, so we're disabling that validator here
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES
 
 	# copy .swiftmodule's manually, due to archives seeming to only have runtime artefacts
 	cp-modules "GiniHealthSDK" $modulesPath $resultFrameworksPath
