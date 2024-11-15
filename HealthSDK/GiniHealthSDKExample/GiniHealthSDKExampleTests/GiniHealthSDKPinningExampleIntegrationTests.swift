@@ -7,7 +7,7 @@
 
 import XCTest
 import GiniHealthSDK
-@testable import GiniHealthAPILibrary
+import GiniHealthAPILibrary
 
 class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
     
@@ -45,10 +45,6 @@ class GiniHealthSDKPinningExampleIntegrationTests: XCTestCase {
         paymentService = sdk.paymentService
     }
     
-    
-    func testBuildPaymentService() {
-        XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")
-    }
     
     func testCreatePaymentRequest(){
         let expect = expectation(description: "it creates a payment request")

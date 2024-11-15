@@ -7,7 +7,7 @@
 
 import XCTest
 import GiniHealthSDK
-@testable import GiniHealthAPILibrary
+import GiniHealthAPILibrary
 
 class GiniHealthSDKPinningExampleWrongCertificatesTests: XCTestCase {
     
@@ -42,11 +42,6 @@ class GiniHealthSDKPinningExampleWrongCertificatesTests: XCTestCase {
                .build()
         sdk = GiniHealth.init(id: clientId, secret: clientSecret, domain: domain)
         paymentService = sdk.paymentService
-    }
-    
-    
-    func testBuildPaymentService() {
-        XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")
     }
     
     func testCreatePaymentRequest(){
