@@ -215,7 +215,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
      This method notifies the tracking delegate about the close button click event.
      */
     public func trackOnPaymentReviewCloseButtonClicked() {
-        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseButtonClicked))
+        // Not anymore tracked on HealthSDK
     }
 
     /**

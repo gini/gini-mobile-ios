@@ -23,7 +23,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
     }
 
     public var showPaymentReviewCloseButton: Bool {
-        GiniHealthConfiguration.shared.showPaymentReviewCloseButton
+        false
     }
     
 
