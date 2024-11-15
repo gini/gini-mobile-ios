@@ -64,7 +64,7 @@ jobs:
       run: >
         xcodebuild clean test
         -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
-        -scheme "GiniHealthSDKPinningExampleTests"
+        -scheme "GiniHealthSDKExample"
         -destination "${{ matrix.destination }}"
         -skip-testing:GiniHealthSDKPinningExampleTests/GiniHealthSDKPinningExampleWrongCertificatesTests
         CODE_SIGN_IDENTITY=""
@@ -75,7 +75,7 @@ jobs:
         &&
         xcodebuild clean test
         -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
-        -scheme "GiniHealthSDKPinningExampleTests"
+        -scheme "GiniHealthSDKExample"
         -destination "${{ matrix.destination }}"
         -only-testing:GiniHealthSDKPinningExampleTests/GiniHealthSDKPinningExampleWrongCertificatesTests
         CODE_SIGN_IDENTITY=""
