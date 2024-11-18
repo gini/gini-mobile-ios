@@ -113,7 +113,7 @@ class SkontoDocumentPreviewView: UIView {
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
             imageContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                         constant: Constants.imageViewLeading),
-            imageContainerView.topAnchor.constraint(equalTo: contentView.topAnchor,
+            imageContainerView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor,
                                                     constant: Constants.imageViewVerticalPadding),
             imageContainerView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             imageContainerView.widthAnchor.constraint(equalToConstant: Constants.imageViewSize),
@@ -128,7 +128,7 @@ class SkontoDocumentPreviewView: UIView {
             documentPreviewImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor,
                                                              constant: -Constants.imageViewPadding),
 
-            textStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
+            textStackView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor,
                                                constant: Constants.topPadding),
             textStackView.leadingAnchor.constraint(equalTo: imageContainerView.trailingAnchor,
                                                    constant: Constants.stackViewLeading),
