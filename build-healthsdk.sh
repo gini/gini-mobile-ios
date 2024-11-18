@@ -30,6 +30,15 @@ archive()
 	SKIP_INSTALL=NO \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES
 
+	xcodebuild archive -workspace $srcPath \
+	-scheme GiniHealthSDK \
+	-configuration Release \
+	-destination "$platform" \
+	-archivePath $outputPath \
+	-derivedDataPath $derivedDataPath \
+	SKIP_INSTALL=NO \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES
+
 	# copy .swiftmodule's manually, due to archives seeming to only have runtime artefacts
 	cp-modules "GiniHealthSDK" $modulesPath $resultFrameworksPath
 	cp-modules "GiniHealthAPILibrary" $modulesPath $resultFrameworksPath
