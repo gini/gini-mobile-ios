@@ -139,7 +139,7 @@ public final class GiniBarButton {
 
         imageView.image = icon?.tintedImageWithColor(.GiniCapture.accent1)
 
-        // Set up title if available and accessibilit value for the stackview
+        // Set up title if available and accessibility value for the stackview
         if let buttonTitle = buttonTitle {
             titleLabel.attributedText = NSAttributedString(string: buttonTitle, attributes: textAttributes())
 
