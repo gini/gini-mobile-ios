@@ -18,7 +18,7 @@ class SkontoWithoutDiscountView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -32,8 +32,8 @@ class SkontoWithoutDiscountView: UIView {
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = UIColor.giniColorScheme().text.success.uiColor()
         label.adjustsFontForContentSizeCategory = true
-        label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -59,6 +59,16 @@ class SkontoWithoutDiscountView: UIView {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupView()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleContentSizeCategoryDidChange),
+                                               name: UIContentSizeCategory.didChangeNotification,
+                                               object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIContentSizeCategory.didChangeNotification,
+                                                  object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -72,6 +82,7 @@ class SkontoWithoutDiscountView: UIView {
         addSubview(priceView)
         setupConstraints()
         bindViewModel()
+        adjustStackViewLayout()
     }
 
     private func setupConstraints() {
@@ -98,6 +109,21 @@ class SkontoWithoutDiscountView: UIView {
 
     private func configure() {
         activeLabel.isHidden = viewModel.isSkontoApplied
+    }
+
+    private func adjustStackViewLayout() {
+        guard !UIDevice.current.isIpad else { return }
+
+        let isAccessibilityCategory = UIApplication.shared.preferredContentSizeCategory >= .accessibilityMedium
+        let isSmallDevice = UIScreen.main.bounds.width <= 320
+        let shouldUseVerticalLayout = isAccessibilityCategory || isSmallDevice
+
+        stackView.axis = shouldUseVerticalLayout ? .vertical : .horizontal
+        stackView.alignment = shouldUseVerticalLayout ? .leading : .center
+    }
+
+    @objc private func handleContentSizeCategoryDidChange() {
+        adjustStackViewLayout()
     }
 }
 
