@@ -822,7 +822,8 @@ extension PaymentComponentsController: PaymentReviewProtocol {
         - Parameter id:         The ID of the payment request to retrieve.
         - Parameter completion: A closure to be executed once the retrieval is completed, containing the result of the operation as a `PaymentRequest` object on success or a `GiniError` on failure.
     */
-    public func getPaymentRequest(by id: String, completion: @escaping (Result<PaymentRequest, GiniHealthAPILibrary.GiniError>) -> Void) {
+    public func getPaymentRequest(by id: String,
+                                  completion: @escaping (Result<PaymentRequest, GiniHealthAPILibrary.GiniError>) -> Void) {
         giniSDK.getPaymentRequest(by: id) { result in
             switch result {
             case .success(let paymentRequest):

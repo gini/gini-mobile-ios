@@ -466,15 +466,16 @@ public struct DataForReview {
     /**
         Retrieves a payment request by ID.
          
-        - Parameters:
-           - id: The ID of the payment request to retrieve.
-           - completion: An action for processing asynchronous data received from the service with Result type as a parameter. Result is a value that represents either a success or a failure, including an associated value in each case.
-           Completion block called on main thread.
-           In success, it includes the retrieved payment request.
-           In case of failure, error from the server side.
-         
-        */
-    public func getPaymentRequest(by id: String, completion: @escaping (Result<PaymentRequest, GiniError>) -> Void) {
+    - Parameters:
+       - id: The ID of the payment request to retrieve.
+       - completion: An action for processing asynchronous data received from the service with Result type as a parameter. Result is a value that represents either a success or a failure, including an associated value in each case.
+       Completion block called on main thread.
+       In success, it includes the retrieved payment request.
+       In case of failure, error from the server side.
+     
+    */
+    public func getPaymentRequest(by id: String,
+                                  completion: @escaping (Result<PaymentRequest, GiniError>) -> Void) {
         paymentService.paymentRequest(id: id) { result in
             DispatchQueue.main.async {
                 switch result {
