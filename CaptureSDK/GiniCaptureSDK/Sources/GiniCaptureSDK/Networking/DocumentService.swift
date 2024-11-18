@@ -35,8 +35,18 @@ public final class DocumentService: DocumentServiceProtocol {
     
     public func upload(document: GiniCaptureDocument,
                        completion: UploadDocumentCompletion?) {
+        let documentMetadata: Document.Metadata? = {
+            guard let uploadMetadata = document.uploadMetadata else {
+                return metadata
+            }
+            guard var metadata else {
+                return Document.Metadata(uploadMetadata: uploadMetadata)
+            }
+            metadata.addUploadMetadata(uploadMetadata)
+            return metadata
+        }()
 
-        captureNetworkService.upload(document: document, metadata: metadata) { result in
+        captureNetworkService.upload(document: document, metadata: documentMetadata) { result in
             switch result {
             case .success(let createdDocument):
                 self.updatePartialDocuments(for: document, with: createdDocument)
