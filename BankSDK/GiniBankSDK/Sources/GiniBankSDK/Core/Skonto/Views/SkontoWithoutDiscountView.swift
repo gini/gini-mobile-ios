@@ -12,7 +12,6 @@ class SkontoWithoutDiscountView: UIView {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.title",
                                                              comment: "Without Skonto discount")
         label.text = title
-        label.accessibilityValue = title
         label.textColor = .giniColorScheme().text.primary.uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
@@ -28,7 +27,6 @@ class SkontoWithoutDiscountView: UIView {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.active",
                                                              comment: "• Active")
         label.text = title
-        label.accessibilityValue = title
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = UIColor.giniColorScheme().text.success.uiColor()
         label.adjustsFontForContentSizeCategory = true

@@ -9,10 +9,7 @@ import UIKit
 class SkontoExpiryDateView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.expirydate.title",
-                                                             comment: "Due date")
         label.text = title
-        label.accessibilityValue = title
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
@@ -48,6 +45,8 @@ class SkontoExpiryDateView: UIView {
         return view
     }()
 
+    private let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.expirydate.title",
+                                                                 comment: "Due date")
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
@@ -64,6 +63,7 @@ class SkontoExpiryDateView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
+        isAccessibilityElement = true
         backgroundColor = .giniColorScheme().textField.background.uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
@@ -121,11 +121,13 @@ class SkontoExpiryDateView: UIView {
     }
 
     private func configure() {
+        let dueDateString = viewModel.dueDate.currentShortString
+        accessibilityValue = "\(title): \(dueDateString)"
         let isSkontoApplied = viewModel.isSkontoApplied
         containerView.layer.borderWidth = isSkontoApplied ? 1 : 0
         textField.isUserInteractionEnabled = isSkontoApplied
         calendarImageView.isHidden = !isSkontoApplied
-        textField.text = viewModel.dueDate.currentShortString
+        textField.text = dueDateString
     }
 
     private func configureDatePicker() {

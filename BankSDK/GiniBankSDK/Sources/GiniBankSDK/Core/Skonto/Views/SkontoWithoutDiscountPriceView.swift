@@ -8,12 +8,13 @@ import UIKit
 
 class SkontoWithoutDiscountPriceView: UIView {
     private lazy var amountView: SkontoAmountToPayView = {
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.price.title",
-                                                             comment: "Full amount")
         let view = SkontoAmountToPayView(title: title, price: viewModel.amountToPay)
         view.delegate = self
         return view
     }()
+
+    private let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.price.title",
+                                                                 comment: "Full amount")
 
     private let configuration = GiniBankConfiguration.shared
 
@@ -60,8 +61,10 @@ class SkontoWithoutDiscountPriceView: UIView {
 
     private func configure() {
         let isSkontoApplied = viewModel.isSkontoApplied
+        let accessibilityValue = "\(title): \(viewModel.amountToPay.localizedStringWithCurrencyCode ?? "")"
         amountView.configure(isEditable: !isSkontoApplied,
-                            price: viewModel.amountToPay)
+                             price: viewModel.amountToPay,
+                             accessibilityValue: accessibilityValue)
         if !isSkontoApplied, let errorMessage = viewModel.getErrorMessageAndClear() {
             amountView.updateValidationMessage(errorMessage)
         } else {

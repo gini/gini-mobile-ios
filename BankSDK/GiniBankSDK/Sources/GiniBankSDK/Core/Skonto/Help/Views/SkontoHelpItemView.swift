@@ -10,8 +10,6 @@ final class SkontoHelpItemView: UIView {
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.isAccessibilityElement = true
-        imageView.accessibilityTraits = .none
         return imageView
     }()
 
@@ -40,9 +38,8 @@ final class SkontoHelpItemView: UIView {
     private func setupView(with content: SkontoHelpItem, hideDivider: Bool) {
         backgroundColor = .clear
         iconImageView.image = content.icon
-        iconImageView.accessibilityValue = content.title
         titleLabel.text = content.title
-        titleLabel.accessibilityValue = content.title
+        setupAccessibility(with: content.title)
 
         addSubview(iconImageView)
         addSubview(titleLabel)
@@ -51,6 +48,14 @@ final class SkontoHelpItemView: UIView {
         }
     }
 
+    private func setupAccessibility(with text: String) {
+        iconImageView.isAccessibilityElement = false
+        iconImageView.accessibilityTraits = .none
+        titleLabel.isAccessibilityElement = false
+        isAccessibilityElement = true
+        accessibilityLabel = text
+    }
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             iconImageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor,
