@@ -41,6 +41,11 @@ public final class GiniHealthConfiguration: NSObject {
     // MARK: - Payment component view
 
     /**
+     Set to `true` to use the payment component view as bottom view
+     */
+    public var useBottomPaymentComponentView = true
+
+    /**
     Height of the buttons from the Payment Component View
      */
     public var paymentComponentButtonsHeight: CGFloat = Constants.defaultButtonsHeight {
@@ -89,7 +94,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      A default style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var defaultStyleInputFieldConfiguration = GiniInternalPaymentSDK.TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+    public lazy var defaultStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
                                                                                  borderColor: GiniColor.standard5.uiColor(),
                                                                                  textColor: GiniColor.standard1.uiColor(),
                                                                                  textFont: font(for: .captions2),
@@ -99,7 +104,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      A error style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var errorStyleInputFieldConfiguration = GiniInternalPaymentSDK.TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+    public lazy var errorStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
                                                                                borderColor: GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1).uiColor(),
                                                                                textColor: GiniColor.standard1.uiColor(),
                                                                                textFont: font(for: .captions2),
@@ -109,7 +114,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      A selection style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var selectionStyleInputFieldConfiguration = GiniInternalPaymentSDK.TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
+    public lazy var selectionStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor.standard6.uiColor(),
                                                                                    borderColor: GiniColor.accent1.uiColor(),
                                                                                    textColor: GiniColor.standard1.uiColor(),
                                                                                    textFont: font(for: .captions2),
@@ -133,7 +138,7 @@ public final class GiniHealthConfiguration: NSObject {
     }
 
     // We will switch this option internally to stil handle documents with extractions on GiniHealthSDK and still handle invoices without document on GiniHealthSDK
-    var useInvoiceWithoutDocument: Bool = true
+    public var useInvoiceWithoutDocument: Bool = true
 
     /**
     Custom localization configuration for localizable strings.

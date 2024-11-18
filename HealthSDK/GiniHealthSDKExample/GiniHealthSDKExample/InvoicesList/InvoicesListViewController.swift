@@ -118,9 +118,16 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
                                                                                            paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
         cell.cellViewModel = invoiceTableViewCellModel
+        cell.action = { [weak self] in
+            self?.tapOnAction(documentID: self?.viewModel.invoices[indexPath.row].documentId ?? "")
+        }
         return cell
     }
-    
+
+    private func tapOnAction(documentID: String) {
+        viewModel.didTapOnOpenFlow(documentId: documentID)
+    }
+
     func numberOfSections(in tableView: UITableView) -> Int {
         if viewModel.invoices.isEmpty {
             let label = UILabel()
@@ -157,7 +164,17 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
     }
     
     func showErrorAlertView(error: String) {
-        let alertController = UIAlertController(title: viewModel.errorTitleText, 
+        if presentedViewController != nil {
+            self.presentedViewController?.dismiss(animated: true, completion: {
+                self.presentAlerViewController(error: error)
+            })
+        } else {
+            presentAlerViewController(error: error)
+        }
+    }
+
+    private func presentAlerViewController(error: String) {
+        let alertController = UIAlertController(title: viewModel.errorTitleText,
                                                 message: error,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))

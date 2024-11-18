@@ -5,16 +5,17 @@
 //
 
 
+
 import UIKit
 import GiniInternalPaymentSDK
 import GiniUtilites
-import GiniMerchantSDK
+import GiniHealthSDK
 
 enum Fields: String, CaseIterable {
-    case recipient = "example.order.detail.Recipient"
-    case iban = "example.order.detail.IBAN"
-    case amountToPay = "example.order.detail.Amount"
-    case purpose = "example.order.detail.Purpose"
+    case recipient = "gini.health.example.order.detail.recipient"
+    case iban = "gini.health.example.order.detail.iban"
+    case amountToPay = "gini.health.example.order.detail.amount"
+    case purpose = "gini.health.example.order.detail.purpose"
 }
 
 final class OrderDetailViewController: UIViewController {
@@ -22,11 +23,11 @@ final class OrderDetailViewController: UIViewController {
     private var order: Order
 
     private let paymentComponentsController: PaymentComponentsController
-    private let giniMerchantConfiguration = GiniMerchantConfiguration.shared
+    private let giniHealthConfiguration = GiniHealthConfiguration.shared
 
     private var errors: [String] = []
-    private let errorTitleText = NSLocalizedString("example.invoicesList.error", comment: "")
-    
+    private let errorTitleText = NSLocalizedString("gini.health.example.invoicesList.error", comment: "")
+
     private var rowItems: [(String, String)] {
         [(Fields.recipient.rawValue, order.recipient),
          (Fields.iban.rawValue, order.iban),
@@ -63,9 +64,9 @@ final class OrderDetailViewController: UIViewController {
     private lazy var payButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(NSLocalizedString("example.order.detail.Pay", comment: ""), for: .normal)
+        button.setTitle(NSLocalizedString("gini.health.example.order.detail.pay", comment: ""), for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(named: "payButtonColor")
+        button.backgroundColor = .systemBlue
         button.layer.cornerRadius = Constants.payButtonCornerRadius
         button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
@@ -79,7 +80,7 @@ final class OrderDetailViewController: UIViewController {
         paymentComponentsController.viewDelegate = self
         paymentComponentsController.bottomViewDelegate = self
 
-        title = NSLocalizedString("example.order.navigation.orderdetails", comment: "")
+        title = NSLocalizedString("gini.health.example.order.navigation.order.details", comment: "")
 
         view.backgroundColor = .secondarySystemBackground
         view.addSubview(detailView)
@@ -123,28 +124,48 @@ final class OrderDetailViewController: UIViewController {
     }
 
     @objc private func payButtonTapped() {
-        print("✅ Tapped on Pay")
+        GiniUtilites.Log("Tapped on Pay", event: .success)
         view.endEditing(true)
-
-        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
-        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
 
         let paymentInfo = obtainPaymentInfo()
         if paymentInfo.isComplete && order.price.value != .zero {
-            present(paymentViewBottomSheet, animated: false)
+            if giniHealthConfiguration.showPaymentReviewScreen {
+                if paymentComponentsController.selectedPaymentProvider == nil {
+                    self.presentPaymentViewBottomSheet(nil)
+                } else {
+                    paymentComponentsController.loadPaymentReviewScreenFor(documentId: "", paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
+                        if let error {
+                            self?.errors.append(error.localizedDescription)
+                            self?.showErrorsIfAny()
+                        } else if let viewController {
+                            viewController.modalTransitionStyle = .coverVertical
+                            viewController.modalPresentationStyle = .overCurrentContext
+                            self?.dismissAndPresent(viewController: viewController, animated: true)
+                        }
+                    }
+                }
+            } else {
+                self.presentPaymentViewBottomSheet(nil)
+            }
         } else {
-            showErrorAlertView(error: NSLocalizedString("example.order.detail.Alert.FieldError", comment: ""))
+            showErrorAlertView(error: NSLocalizedString("gini.health.example.order.detail.alert.field.error", comment: ""))
         }
     }
 
     @objc private func didTapOnView() {
         view.endEditing(true)
     }
+
+    fileprivate func presentPaymentViewBottomSheet(_ documentId: String?) {
+        let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentId: documentId ?? "")
+        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
+        self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: false)
+    }
 }
 
 extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentViewProtocol {
     func didTapOnMoreInformation(documentId: String?) {
-        print("✅ Tapped on More Information")
+        GiniUtilites.Log("Tapped on More Information", event: .success)
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
         if let presentedViewController = self.presentedViewController {
             presentedViewController.dismiss(animated: true) {
@@ -156,16 +177,16 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
     }
 
     func didTapOnBankPicker(documentId: String?) {
-        print("✅ Tapped on Bank Picker on :\(documentId ?? "")")
-        let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
+        GiniUtilites.Log("Tapped on Bank Picker on :\(documentId ?? "")", event: .success)
+        let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet(documentId: documentId)
         bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
         self.dismissAndPresent(viewController: bankSelectionBottomSheet, animated: false)
     }
 
     func didTapOnPayInvoice(documentId: String?) {
-        print("✅ Tapped on Pay Order")
-        if giniMerchantConfiguration.showPaymentReviewScreen {
-            paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
+        GiniUtilites.Log("Tapped on Pay Order", event: .success)
+        if giniHealthConfiguration.showPaymentReviewScreen {
+            paymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: obtainPaymentInfo(), trackingDelegate: self) { [weak self] viewController, error in
                 if let error {
                     self?.errors.append(error.localizedDescription)
                     self?.showErrorsIfAny()
@@ -186,12 +207,13 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
                 }
             } else if paymentComponentsController.supportsGPC() {
                 if paymentComponentsController.canOpenPaymentProviderApp() {
-                    paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] paymentRequestID, error in
-                        if let error {
+                    paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] result in
+                        switch result {
+                        case .success(let paymentRequestID):
+                            self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
+                        case .failure(let error):
                             self?.errors.append(error.localizedDescription)
                             self?.showErrorsIfAny()
-                        } else if let paymentRequestID {
-                            self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
                         }
                     }
                 } else {
@@ -221,7 +243,7 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
         }
     }
 
-    private func obtainPaymentInfo() -> GiniInternalPaymentSDK.PaymentInfo {
+    private func obtainPaymentInfo() -> PaymentInfo {
         saveTextFieldData()
 
         return PaymentInfo(recipient: order.recipient,
@@ -248,7 +270,7 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
                                                 message: error,
                                                 preferredStyle: .alert)
         alertController.addAction(
-            UIAlertAction(title: NSLocalizedString("example.order.detail.Alert.Ok", comment: ""),
+            UIAlertAction(title: NSLocalizedString("gini.health.example.order.detail.alert.ok", comment: ""),
                           style: .default)
         )
         self.present(alertController, animated: true)
@@ -265,20 +287,26 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
     }
 }
 
-extension OrderDetailViewController: GiniMerchantTrackingDelegate {
+extension OrderDetailViewController: GiniHealthTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
         switch event.type {
         case .onToTheBankButtonClicked:
-            print("📝 To the banking app button was tapped,\(String(describing: event.info))")
+            GiniUtilites.Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
         case .onCloseButtonClicked:
-            print("📝 Close screen was triggered")
+            GiniUtilites.Log("Close screen was triggered", event: .success)
         case .onCloseKeyboardButtonClicked:
-            print("📝 Close keyboard was triggered")
+            GiniUtilites.Log("Close keyboard was triggered", event: .success)
         }
     }
 }
 
 extension OrderDetailViewController: PaymentProvidersBottomViewProtocol {
+    func didSelectPaymentProvider(paymentProvider: GiniHealthSDK.PaymentProvider, documentId: String?) {
+        DispatchQueue.main.async {
+            self.presentPaymentViewBottomSheet(documentId)
+        }
+    }
+    
     func didTapOnMoreInformation() {
         didTapOnMoreInformation(documentId: nil)
     }
@@ -297,19 +325,19 @@ extension OrderDetailViewController: PaymentProvidersBottomViewProtocol {
         }
     }
 
-    func didTapOnContinueOnShareBottomSheet() {
+    func didTapOnContinueOnShareBottomSheet(documentId: String?) {
         paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(), viewController: self)
     }
 
     func didTapForwardOnInstallBottomSheet() {
-        paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] paymentRequestID, error in
-            if let error {
-                self?.errors.append(error.localizedDescription)
-                self?.showErrorsIfAny()
-            } else if let paymentRequestID {
+        paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] result in
+            switch result {
+            case .success(let paymentRequestID):
                 self?.dismiss(animated: true, completion: {
                     self?.paymentComponentsController.openPaymentProviderApp(requestId: paymentRequestID, universalLink: self?.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "")
                 })
+            case .failure(let error):
+                self?.errors.append(error.localizedDescription)
             }
         }
     }

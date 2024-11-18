@@ -55,7 +55,6 @@ final class AppCoordinator: Coordinator {
     private lazy var giniHealthConfiguration: GiniHealthConfiguration = {
         let configuration = GiniHealthConfiguration()
         // Show the close button to dismiss the payment review screen
-        configuration.showPaymentReviewCloseButton = true
         configuration.paymentReviewStatusBarStyle = .lightContent
         return configuration
     }()
@@ -276,8 +275,8 @@ final class AppCoordinator: Coordinator {
         DispatchQueue.main.async {
             self.selectAPIViewController.hideActivityIndicator()
         }
-        let configuration = GiniHealthConfiguration()
-        
+
+        giniHealthConfiguration.useInvoiceWithoutDocument = false
         health.setConfiguration(giniHealthConfiguration)
         health.delegate = self
 
@@ -292,6 +291,25 @@ final class AppCoordinator: Coordinator {
             self.add(childCoordinator: invoicesListCoordinator)
             self.rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
         }
+    }
+
+    fileprivate func showOrdersList(orders: [Order]? = nil) {
+        DispatchQueue.main.async {
+            self.selectAPIViewController.hideActivityIndicator()
+        }
+
+        giniHealthConfiguration.useInvoiceWithoutDocument = true
+        health.setConfiguration(giniHealthConfiguration)
+        health.delegate = self
+        
+        let orderListCoordinator = OrderListCoordinator()
+        paymentComponentsController = PaymentComponentsController(giniHealth: health)
+        orderListCoordinator.start(documentService: health.documentService,
+                                   hardcodedOrdersController: HardcodedOrdersController(),
+                                   paymentComponentsController: paymentComponentsController,
+                                   orders: orders)
+        add(childCoordinator: orderListCoordinator)
+        rootViewController.present(orderListCoordinator.rootViewController, animated: true)
     }
 }
 
@@ -308,6 +326,8 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
             showPaymentReviewWithTestDocument()
         case .invoicesList:
             showInvoicesList()
+        case .ordersList:
+            showOrdersList()
         }
     }
 }
@@ -332,8 +352,8 @@ extension AppCoordinator: GiniHealthDelegate {
         return true
     }
     
-    func didCreatePaymentRequest(paymentRequestID: String) {
-        GiniUtilites.Log("✅ Created payment request with id \(paymentRequestID)", event: .success)
+    func didCreatePaymentRequest(paymentRequestId: String) {
+        GiniUtilites.Log("✅ Created payment request with id \(paymentRequestId)", event: .success)
         DispatchQueue.main.async {
             guard let invoicesListCoordinator = self.childCoordinators.first as? InvoicesListCoordinator else {
                 return
@@ -378,9 +398,9 @@ extension AppCoordinator: PaymentComponentsControllerProtocol {
 
 extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
-        let debugMenuViewController = DebugMenuViewController(giniHealth: health,
-                                                              giniHealthConfiguration: giniHealthConfiguration,
-                                                              isBrandedPaymentComponent: isBrandedPaymentComponent)
+        let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
+                                                              useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
+                                                              paymentComponentConfiguration: health.paymentComponentConfiguration)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -388,7 +408,19 @@ extension AppCoordinator: DebugMenuPresenter {
 
 //MARK: - DebugMenuDelegate
 extension AppCoordinator: DebugMenuDelegate {
-    func didChangeBrandedSwitchValue(isOn: Bool) {
-        isBrandedPaymentComponent = isOn
+    func didChangeSwitchValue(type: SwitchType, isOn: Bool) {
+        switch type {
+        case .showReviewScreen:
+            giniHealthConfiguration.showPaymentReviewScreen = isOn
+        case .showBrandedView:
+            health.paymentComponentConfiguration.isPaymentComponentBranded = isOn
+        case .useBottomPaymentComponent:
+            giniHealthConfiguration.useBottomPaymentComponentView = isOn
+        }
+    }
+
+    func didPickNewLocalization(localization: GiniLocalization) {
+        giniHealthConfiguration.customLocalization = localization
+        health.setConfiguration(giniHealthConfiguration)
     }
 }

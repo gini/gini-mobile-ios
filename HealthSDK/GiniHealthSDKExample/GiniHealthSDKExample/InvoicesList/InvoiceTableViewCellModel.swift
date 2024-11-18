@@ -32,7 +32,14 @@ final class InvoiceTableViewCellModel {
     }
     
     var dueDateText: String {
-        [invoice.paymentDueDate ?? "", invoice.doctorName ?? ""].joined(separator: ", ")
+        var textToReturn: [String] = []
+        if let paymentDueDate = invoice.paymentDueDate {
+            textToReturn.append(paymentDueDate)
+        }
+        if let doctorName = invoice.doctorName {
+            textToReturn.append(doctorName)
+        }
+        return textToReturn.joined(separator: ", ")
     }
     
     var isDueDataLabelHidden: Bool {
@@ -45,9 +52,5 @@ final class InvoiceTableViewCellModel {
     
     var shouldShowPaymentComponent: Bool {
         invoice.isPayable ?? false
-    }
-    
-    var paymentComponentView: UIView {
-        return paymentComponentsController.paymentView(documentId: invoice.documentId)
     }
 }

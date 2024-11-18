@@ -110,7 +110,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
     
     func testBankSelectionBottomSheet_ReturnsViewController() {
         // When
-        let viewController = mockPaymentComponentsController.bankSelectionBottomSheet()
+        let viewController = mockPaymentComponentsController.bankSelectionBottomSheet(documentId: nil)
 
         // Then
         XCTAssertTrue(viewController is BanksBottomView)
@@ -128,7 +128,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniHealthError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: nil, trackingDelegate: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }
@@ -145,7 +145,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniHealthError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: nil, trackingDelegate: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }

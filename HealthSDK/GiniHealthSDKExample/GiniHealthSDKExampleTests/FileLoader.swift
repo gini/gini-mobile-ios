@@ -6,11 +6,12 @@
 
 
 import Foundation
+import GiniUtilites
 
 struct FileLoader {
     static func loadFile(withName mockFileName: String, ofType fileType: String) -> Data? {
         guard let filePath = Bundle.main.path(forResource: mockFileName, ofType: fileType) else {
-            print("File not found.")
+            GiniUtilites.Log("File not found.", event: .warning)
             return nil
         }
 
@@ -19,7 +20,7 @@ struct FileLoader {
             let data = try Data(contentsOf: fileURL)
             return data
         } catch {
-            print("Error loading file:", error)
+            GiniUtilites.Log("Error loading file: \(error)", event: .error)
             return nil
         }
     }

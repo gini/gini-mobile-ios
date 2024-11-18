@@ -201,10 +201,12 @@ extension BanksBottomView: MoreInformationViewProtocol {
 }
 
 extension BanksBottomView: UITableViewDataSource, UITableViewDelegate {
+    /// We indicate the number of rows we show in bank selection view
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.paymentProviders.count
     }
 
+    /// We create the bank selection cell
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: BankSelectionTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         let invoiceTableViewCellModel = viewModel.paymentProvidersViewModel(paymentProvider: viewModel.paymentProviders[indexPath.row])
@@ -212,11 +214,13 @@ extension BanksBottomView: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    /// We indicate the height of a bank row
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         viewModel.rowHeight
     }
     
+    /// BanksBottomView event when a bank is selected from the list
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.viewDelegate?.didSelectPaymentProvider(paymentProvider: viewModel.paymentProviders[indexPath.row].paymentProvider)
+        viewModel.viewDelegate?.didSelectPaymentProvider(paymentProvider: viewModel.paymentProviders[indexPath.row].paymentProvider, documentId: viewModel.documentId)
     }
 }

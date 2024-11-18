@@ -45,7 +45,7 @@ public final class TextFieldWithLabelView: UIView {
         self.layer.borderWidth = configuration.borderWidth
         self.layer.borderColor = configuration.borderColor.cgColor
         self.backgroundColor = configuration.backgroundColor
-        self.textField.textColor = configuration.textColor
+        self.textField.textColor = isUserInteractionEnabled ? configuration.textColor : configuration.placeholderForegroundColor
         self.textField.attributedPlaceholder = NSAttributedString(string: "",
                                                                   attributes: [.foregroundColor: configuration.placeholderForegroundColor])
         self.titleLabel.textColor = configuration.placeholderForegroundColor

@@ -9,11 +9,13 @@ import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
 
+/// Modes for displaying PaymentReview content in the UI.
 public enum DisplayMode: Int {
     case bottomSheet
     case documentCollection
 }
 
+/// A view controller for reviewing payment details
 public final class PaymentReviewViewController: BottomSheetViewController, UIGestureRecognizerDelegate {
     private lazy var mainView = buildMainView()
     private lazy var closeButton = buildCloseButton()
@@ -30,8 +32,9 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     private var showInfoBarOnce = true
     private var keyboardWillShowCalled = false
 
+    /// The model instance containing data and methods for handling the payment review process.
     public let model: PaymentReviewModel
-    private let selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
+    private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
 
     init(viewModel: PaymentReviewModel,
          selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
@@ -74,6 +77,10 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
 
         if model.displayMode == .documentCollection {
             setupViewModelWithDocument()
+        }
+
+        model.onNewPaymentProvider = { [weak self] () in
+            self?.updatePaymentInfoContainerView()
         }
 
         model.viewModelDelegate = self
@@ -153,15 +160,16 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
 
         guard paymentInfoContainerView.noErrorsFound() else { return }
         guard paymentInfoContainerView.inputFieldsHaveNoErrors() else { return }
-        if model.delegate?.supportsGPC() ?? false {
+        guard let delegate = model.delegate else { return }
+        if delegate.supportsGPC() {
             guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
                 model.openInstallAppBottomSheet()
                 return
             }
             createPaymentRequest()
-        } else if model.delegate?.supportsOpenWith() ?? false {
-            if model.delegate?.shouldShowOnboardingScreenFor() ?? false {
-                model.openOnboardingShareInvoiceBottomSheet()
+        } else if delegate.supportsOpenWith() {
+            if delegate.shouldShowOnboardingScreenFor() {
+                model.openOnboardingShareInvoiceBottomSheet(documentId: model.documentId)
             } else {
                 obtainPDFFromPaymentRequest()
             }
@@ -310,6 +318,9 @@ fileprivate extension PaymentReviewViewController {
         containerView.onPayButtonClicked = { [weak self] in
             self?.payButtonClicked()
         }
+        containerView.onBankSelectionButtonClicked = { [weak self] in
+            self?.model.openBankSelectionBottomSheet()
+        }
         return containerView
     }
 
@@ -329,6 +340,12 @@ fileprivate extension PaymentReviewViewController {
                 paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor)
             ])
         }
+    }
+
+    func updatePaymentInfoContainerView() {
+        self.presentedViewController?.dismiss(animated: true)
+        self.selectedPaymentProvider = model.selectedPaymentProvider
+        paymentInfoContainerView.updateSelectedPaymentProvider(model.selectedPaymentProvider)
     }
 }
 

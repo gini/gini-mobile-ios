@@ -12,17 +12,22 @@ import GiniUtilites
 protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController)
+    func presentBankSelectionBottomSheet(bottomSheet: BottomSheetViewController)
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest()
 }
 
+/// BottomSheetsProviderProtocol defines methods for providing custom bottom sheets.
 public protocol BottomSheetsProviderProtocol: AnyObject {
     func installAppBottomSheet() -> BottomSheetViewController
-    func shareInvoiceBottomSheet() -> BottomSheetViewController
+    func shareInvoiceBottomSheet(documentId: String?) -> BottomSheetViewController
+    func bankSelectionBottomSheet(documentId: String?) -> UIViewController
 }
 
-public typealias PaymentReviewProtocol = PaymentReviewAPIProtocol & PaymentReviewTrackingProtocol & PaymentReviewSupportedFormatsProtocol
+/// PaymentReviewProtocol combines the functionalities of PaymentReviewAPIProtocol, PaymentReviewTrackingProtocol, PaymentReviewSupportedFormatsProtocol, and PaymentReviewActionProtocol for comprehensive payment review management.
+public typealias PaymentReviewProtocol = PaymentReviewAPIProtocol & PaymentReviewTrackingProtocol & PaymentReviewSupportedFormatsProtocol & PaymentReviewActionProtocol
 
+/// PaymentReviewAPIProtocol defines methods for handling payment review processes.
 public protocol PaymentReviewAPIProtocol: AnyObject {
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void)
     func shouldHandleErrorInternally(error: GiniError) -> Bool
@@ -32,16 +37,24 @@ public protocol PaymentReviewAPIProtocol: AnyObject {
     func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController)
 }
 
+/// PaymentReviewTrackingProtocol defines methods for tracking user interactions during the payment review process.
 public protocol PaymentReviewTrackingProtocol {
     func trackOnPaymentReviewCloseKeyboardClicked()
     func trackOnPaymentReviewCloseButtonClicked()
     func trackOnPaymentReviewBankButtonClicked(providerName: String)
 }
 
+/// PaymentReviewSupportedFormatsProtocol defines methods for checking supported formats in the payment review process.
 public protocol PaymentReviewSupportedFormatsProtocol {
     func supportsGPC() -> Bool
     func supportsOpenWith() -> Bool
     func shouldShowOnboardingScreenFor() -> Bool
+}
+
+/// PaymentReviewActionProtocol defines actions related to payment review processes.
+public protocol PaymentReviewActionProtocol {
+    func updatedPaymentProvider(_ paymentProvider: PaymentProvider)
+    func openMoreInformationViewController()
 }
 
 /**
@@ -58,6 +71,8 @@ public class PaymentReviewModel: NSObject {
 
     var onCreatePaymentRequestErrorHandling: (() -> Void)?
 
+    var onNewPaymentProvider: (() -> Void)?
+
     weak var viewModelDelegate: PaymentReviewViewModelDelegate?
     weak var delegate: PaymentReviewProtocol?
     weak var bottomSheetsProvider: BottomSheetsProviderProtocol?
@@ -71,7 +86,7 @@ public class PaymentReviewModel: NSObject {
     public var paymentInfo: PaymentInfo?
 
     public var documentId: String?
-    private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
+    var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
@@ -103,6 +118,7 @@ public class PaymentReviewModel: NSObject {
     let errorStyleInputFieldConfiguration: TextFieldConfiguration
     let selectionStyleInputFieldConfiguration: TextFieldConfiguration
     let primaryButtonConfiguration: ButtonConfiguration
+    let secondaryButtonConfiguration: ButtonConfiguration
     let poweredByGiniConfiguration: PoweredByGiniConfiguration
     let poweredByGiniStrings: PoweredByGiniStrings
     let bottomSheetConfiguration: BottomSheetConfiguration
@@ -123,6 +139,7 @@ public class PaymentReviewModel: NSObject {
                 errorStyleInputFieldConfiguration: TextFieldConfiguration,
                 selectionStyleInputFieldConfiguration: TextFieldConfiguration,
                 primaryButtonConfiguration: ButtonConfiguration,
+                secondaryButtonConfiguration: ButtonConfiguration,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
                 bottomSheetConfiguration: BottomSheetConfiguration,
@@ -142,6 +159,7 @@ public class PaymentReviewModel: NSObject {
         self.containerConfiguration = containerConfiguration
         self.containerStrings = containerStrings
         self.primaryButtonConfiguration = primaryButtonConfiguration
+        self.secondaryButtonConfiguration = secondaryButtonConfiguration
         self.defaultStyleInputFieldConfiguration = defaultStyleInputFieldConfiguration
         self.errorStyleInputFieldConfiguration = errorStyleInputFieldConfiguration
         self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
@@ -162,7 +180,7 @@ public class PaymentReviewModel: NSObject {
         delegate?.submitFeedback(for: document, updatedExtractions: updatedExtractions, completion: nil)
     }
 
-    func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestID: String) -> ())? = nil) {
+    func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestId: String) -> ())? = nil) {
         isLoading = true
         delegate?.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] result in
             self?.isLoading = false
@@ -178,15 +196,24 @@ public class PaymentReviewModel: NSObject {
     }
 
     func openInstallAppBottomSheet() {
-        guard let installAppBottomSheet = bottomSheetsProvider?.installAppBottomSheet() else { return }
+        guard let installAppBottomSheet = bottomSheetsProvider?.installAppBottomSheet() as? InstallAppBottomView else { return }
+        installAppBottomSheet.viewModel.viewDelegate = self
         installAppBottomSheet.modalPresentationStyle = .overFullScreen
         viewModelDelegate?.presentInstallAppBottomSheet(bottomSheet: installAppBottomSheet)
     }
 
-    func openOnboardingShareInvoiceBottomSheet() {
-        guard let shareInvoiceBottomSheet = bottomSheetsProvider?.shareInvoiceBottomSheet() else { return }
+    func openOnboardingShareInvoiceBottomSheet(documentId: String?) {
+        guard let shareInvoiceBottomSheet = bottomSheetsProvider?.shareInvoiceBottomSheet(documentId: documentId) as? ShareInvoiceBottomView else { return }
+        shareInvoiceBottomSheet.viewModel.viewDelegate = self
         shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
         viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: shareInvoiceBottomSheet)
+    }
+
+    func openBankSelectionBottomSheet() {
+        guard let banksPickerBottomSheet = bottomSheetsProvider?.bankSelectionBottomSheet(documentId: documentId) as? BanksBottomView else { return }
+        banksPickerBottomSheet.modalPresentationStyle = .overFullScreen
+        banksPickerBottomSheet.viewModel.viewDelegate = self
+        viewModelDelegate?.presentBankSelectionBottomSheet(bottomSheet: banksPickerBottomSheet)
     }
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
@@ -245,6 +272,7 @@ public class PaymentReviewModel: NSObject {
                                         configuration: containerConfiguration,
                                         strings: containerStrings,
                                         primaryButtonConfiguration: primaryButtonConfiguration,
+                                        secondaryButtonConfiguration: secondaryButtonConfiguration,
                                         defaultStyleInputFieldConfiguration: defaultStyleInputFieldConfiguration,
                                         errorStyleInputFieldConfiguration: errorStyleInputFieldConfiguration,
                                         selectionStyleInputFieldConfiguration: selectionStyleInputFieldConfiguration,
@@ -261,9 +289,45 @@ extension PaymentReviewModel: InstallAppBottomViewProtocol {
 }
 
 extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
-    public func didTapOnContinueToShareInvoice() {
+    public func didTapOnContinueToShareInvoice(documentId: String?) {
         viewModelDelegate?.obtainPDFFromPaymentRequest()
     }
+}
+
+extension PaymentReviewModel: BanksSelectionProtocol {
+    /**
+     Called when a payment provider is selected by the user.
+     
+     - Parameters:
+       - paymentProvider: The `PaymentProvider` object representing the selected payment provider.
+       - documentId: An optional `String` identifier for the document associated with this payment. If `nil`, no document is associated.
+     
+     This function updates the current selected payment provider, notifies the delegate of the new provider,
+     and triggers any associated callback for handling the change in payment provider.
+     */
+    public func didSelectPaymentProvider(paymentProvider: GiniHealthAPILibrary.PaymentProvider, documentId: String?) {
+        selectedPaymentProvider = paymentProvider
+        delegate?.updatedPaymentProvider(paymentProvider)
+        onNewPaymentProvider?()
+    }
+
+    /**
+     Called when the user taps on the "More Information" button was tapped on BanksSelection view
+     
+     This function notifies the delegate to open the "More Information" view controller.
+     */
+    public func didTapOnMoreInformation() {
+        delegate?.openMoreInformationViewController()
+    }
+
+    public func didTapOnClose() {}
+
+    public func didTapOnContinueOnShareBottomSheet(documentId: String?) {}
+
+    public func didTapForwardOnInstallBottomSheet() {}
+
+    public func didTapOnPayButton() {}
+
 }
 
 /**

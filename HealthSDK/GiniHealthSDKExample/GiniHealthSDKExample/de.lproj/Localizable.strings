@@ -6,11 +6,20 @@
 
 */
 
-"giniHealthSDKExample.invoicesList.title" = "Rechnungsliste";
-"giniHealthSDKExample.uploadInvoices.button.title" = "↑ Rechnungen";
-"giniHealthSDKExample.invoicesList.missingInvoices.text" = "Keine Rechnungen";
-"giniHealthSDKExample.invoicesList.error" = "Fehler";
-"giniHealthSDKExample.cancel.button.title" = "Abbrechen";
-"giniHealthSDKExample.error.contains.multiple.invoices" = "Dokument enthält mehrere Rechnungen";
-"giniHealthSDKExample.error.invoice.not.payable" = "Rechnung ist nicht zahlbar";
+"gini.health.example.invoicesList.title" = "Rechnungsliste";
+"gini.health.example.uploadInvoices.button.title" = "↑ Rechnungen";
+"gini.health.example.invoicesList.missingInvoices.text" = "Keine Rechnungen";
+"gini.health.example.invoicesList.error" = "Fehler";
+"gini.health.example.cancel.button.title" = "Abbrechen";
+"gini.health.example.error.contains.multiple.invoices" = "Dokument enthält mehrere Rechnungen";
+"gini.health.example.error.invoice.not.payable" = "Rechnung ist nicht zahlbar";
 "gini.health.paymentcomponent.payment.info.gini.privacypolicy.link" = "https://www.google.com/"; // This should be overwrited by client with their privacy policy link
+"gini.health.example.order.detail.alert.field.error" = "Die Zahlungsdetails sind unvollständig";
+"gini.health.example.order.detail.alert.ok" = "Ok";
+"gini.health.example.order.detail.amount" = "Betrag";
+"gini.health.example.order.detail.iban" = "IBAN";
+"gini.health.example.order.detail.pay" = "Bezahlen";
+"gini.health.example.order.detail.purpose" = "Verwendungszweck";
+"gini.health.example.order.detail.recipient" = "Empfänger";
+"gini.health.example.order.navigation.order.details" = "Bestelldetails";
+"gini.health.example.custom.order.button.title" = "Kunden Bestellung";

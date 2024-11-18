@@ -20,9 +20,9 @@ public protocol GiniHealthDelegate: AnyObject {
     /**
      Called when the payment request was successfully created
      
-     - parameter paymentRequestID: Id of created payment request.
+     - parameter paymentRequestId: Id of created payment request.
      */
-    func didCreatePaymentRequest(paymentRequestID: String)
+    func didCreatePaymentRequest(paymentRequestId: String)
     
     /**
      Error handling. If delegate is set and error is going to  be handled internally the method should return true.
@@ -71,10 +71,10 @@ public struct DataForReview {
 
     private var bankProviders: [PaymentProvider] = []
 
+    /// Configuration for the payment component, controlling its branding and display options.
     public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
-                                  showPaymentComponentInOneRow: true,
-                                  hideInfoForReturningUser: true)
-
+                                                                                                            showPaymentComponentInOneRow: false,
+                                                                                                            hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
 
     /**
      Initializes a new instance of GiniHealth.
@@ -98,6 +98,11 @@ public struct DataForReview {
         self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
     }
 
+    /**
+     Initializes a new instance of GiniHealth.
+
+     - Parameter giniApiLib: The GiniHealthAPI instance used for document and payment services.
+     */
     public init(giniApiLib: GiniHealthAPI) {
         self.giniApiLib = giniApiLib
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
@@ -458,6 +463,7 @@ public struct DataForReview {
         }
     }
 
+    /// A static string representing the current version of the Gini Health SDK.
     public static var versionString: String {
         return GiniHealthSDKVersion
     }
