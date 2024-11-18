@@ -67,8 +67,14 @@ public final class BanksBottomViewModel {
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
                                                  paymentProvider: $0)})
             .filter { $0.paymentProvider.gpcSupportedPlatforms.contains(.ios) || $0.paymentProvider.openWithSupportedPlatforms.contains(.ios) }
-            .sorted(by: { ($0.paymentProvider.index ?? 0 < $1.paymentProvider.index ?? 0) })
-            .sorted(by: { ($0.isInstalled && !$1.isInstalled) })
+            .sorted {
+                // First, sort by isInstalled
+                if $0.isInstalled != $1.isInstalled {
+                    return $0.isInstalled && !$1.isInstalled
+                }
+                // Then sort by paymentProvider.index if both have the same isInstalled value
+                return ($0.paymentProvider.index ?? 0) < ($1.paymentProvider.index ?? 0)
+            }
         self.calculateHeights()
     }
 

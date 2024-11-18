@@ -53,4 +53,12 @@ final class InvoiceTableViewCellModel {
     var shouldShowPaymentComponent: Bool {
         invoice.isPayable ?? false
     }
+
+    var bankLogosToShow: [Data]? {
+        paymentComponentsController.fetchBankLogos().logos
+    }
+
+    var additionalBankNumberToShow: Int? {
+        paymentComponentsController.fetchBankLogos().additionalBankCount
+    }
 }
