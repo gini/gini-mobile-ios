@@ -587,6 +587,27 @@ extension PaymentComponentsController: PaymentReviewProtocol {
             }
         }
     }
+    
+    /**
+     Submits feedback for the specified document and its updated extractions. Method used to update the information extracted from a document.
+
+     - Parameters:
+       - document: The document for which feedback is being submitted.
+       - updatedExtractions: The updated extractions related to the document.
+       - completion: An optional closure to be executed upon completion, containing the result of the submission.
+     */
+    public func submitFeedback(for documentId: String, updatedExtractions: [GiniHealthAPILibrary.Extraction], completion: ((Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)?) {
+        let extractions = updatedExtractions.map { Extraction(healthExtraction: $0) }
+        giniSDK.documentService.submitFeedback(for: documentId, with: [], and: ["payment": [extractions]]) { result in
+            switch result {
+            case .success(let result):
+                completion?(.success(result))
+            case .failure(let error):
+                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                completion?(.failure(healthError))
+            }
+        }
+    }
 
     /**
      Determines if the specified error should be handled internally by the SDK.
@@ -793,6 +814,25 @@ extension PaymentComponentsController: PaymentReviewProtocol {
                 // Then sort by the index if the app scheme condition is the same
                 return ($0.index ?? 0) < ($1.index ?? 0)
             }
+    }
+    
+    /**
+        Retrieves a payment request using the provided payment request ID.
+
+        - Parameter id:         The ID of the payment request to retrieve.
+        - Parameter completion: A closure to be executed once the retrieval is completed, containing the result of the operation as a `PaymentRequest` object on success or a `GiniError` on failure.
+    */
+    public func getPaymentRequest(by id: String,
+                                  completion: @escaping (Result<PaymentRequest, GiniHealthAPILibrary.GiniError>) -> Void) {
+        giniSDK.getPaymentRequest(by: id) { result in
+            switch result {
+            case .success(let paymentRequest):
+                completion(.success(paymentRequest))
+            case .failure(let error):
+                let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
+                completion(.failure(healthError))
+            }
+        }
     }
 }
 

@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         
         if (url.host == "payment-requester") {
-            coordinator.processBankUrl()
+            coordinator.processBankUrl(url: url)
         } else {
             coordinator.processExternalDocument(withUrl: url, sourceApplication: options[.sourceApplication] as? String)
         }
