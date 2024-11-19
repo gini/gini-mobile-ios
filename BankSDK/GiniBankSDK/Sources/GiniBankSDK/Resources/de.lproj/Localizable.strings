@@ -99,6 +99,9 @@
 "ginibank.skonto.withoutdiscount.title" = "Ohne Skonto";
 "ginibank.skonto.withoutdiscount.price.title" = "Betrag ohne Abzug";
 
+"ginibank.skonto.withdiscount.validation" = "Der Betrag mit Skonto darf nicht höher sein als ohne";
+"ginibank.skonto.withoutdiscount.validation" = "Ihr Überweisungslimit wurde überschritten: %@";
+
 "ginibank.skonto.total.title" = "Gesamtpreis";
 "ginibank.skonto.total.savings" = "%@ sparen";
 "ginibank.skonto.total.skontopercentage" = "%@ Skonto";
@@ -136,6 +139,8 @@
 "ginibank.transactionDocs.alert.action.doNotAttach" = "Nicht anhängen";
 
 "ginibank.transactionDocs.componentView.title" = "Anhänge";
+"ginibank.transactionDocs.document.accessibilitylabel" = "Zur Ansicht hier tippen %@";
+"ginibank.transactionDocs.document.optionbutton.accessibilitylabel" = "Optionen";
 
 "ginibank.transactionDocs.bottomSheet.action.delete" = "Löschen";
 "ginibank.transactionDocs.bottomSheet.action.cancel" = "Abbrechen";

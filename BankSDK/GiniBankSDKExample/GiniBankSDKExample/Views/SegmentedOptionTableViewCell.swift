@@ -23,6 +23,8 @@ final class SegmentedOptionTableViewCell: UITableViewCell, NibLoadableView {
 	@IBOutlet private weak var titleLabel: UILabel!
 	@IBOutlet private weak var segmentedControl: UISegmentedControl!
 
+    var indexPath: IndexPath = .init(row: 0, section: 0)
+    
 	private (set) var selectedSegmentIndex: Int = 0 {
 		didSet {
 			guard oldValue != selectedSegmentIndex else { return }

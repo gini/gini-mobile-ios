@@ -126,53 +126,55 @@ public final class GiniBarButton {
     }
 
     private func setupContent(basedOnType type: BarButtonType) {
-        var buttonTitle: String?
-        var icon: UIImage?
+        let (buttonTitle, icon) = titleAndIcon(for: type)
 
-        switch type {
-        case .cancel:
-            buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.back",
-                                                           comment: "Cancel")
-            icon = UIImageNamedPreferred(named: "barButton_cancel")
-        case .help:
-            buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.camera.help",
-                                                           comment: "Help")
-            icon = UIImageNamedPreferred(named: "barButton_help")
-        case .back(title: let title):
-            buttonTitle = title
-            let backString = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.accessibility.back",
-                                                              comment: "Back")
-            if title.trimmingCharacters(in: .whitespaces).isNotEmpty {
-                stackView.accessibilityValue = "\(title) \(backString)"
-            } else {
-                stackView.accessibilityValue = backString
-            }
-            icon = UIImageNamedPreferred(named: "barButton_back")
-        case .done:
-            buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.imagepicker.openbutton",
-                                                           comment: "Done")
-            icon = UIImageNamedPreferred(named: "barButton_done")
-        case .skip:
-            buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
-                                                           comment: "Skip button")
-        }
-
-        let buttonTitleIsEmpty = buttonTitle == nil || buttonTitle!.isEmpty
-
-        // If there is no image nor any text for the button, the app will crash in debug mode.
-        if buttonTitleIsEmpty && icon == nil {
-            assertionFailure("You need to provide at least a valid string or an icon" +
-                             " for the navigation bar button of type: \(type)")
+        // Ensure there’s at least a title or icon to avoid a crash
+        guard buttonTitle != nil || icon != nil else {
+            assertionFailure("""
+    You need to provide at least a valid string or an icon \
+    for the navigation bar button of type: \(type)
+    """)
+            return
         }
 
         imageView.image = icon?.tintedImageWithColor(.GiniCapture.accent1)
 
+        // Set up title if available and accessibility value for the stackview
         if let buttonTitle = buttonTitle {
-            titleLabel.attributedText = NSAttributedString(string: buttonTitle,
-                                                           attributes: textAttributes())
-            if stackView.accessibilityValue == nil {
+            titleLabel.attributedText = NSAttributedString(string: buttonTitle, attributes: textAttributes())
+
+            // Add accessibility value with backString only for the back button when title is not equal to backString
+            if case .back = type {
+                let backString = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.accessibility.back",
+                                                                  comment: "Back")
+                stackView.accessibilityValue = (buttonTitle == backString) ? buttonTitle :
+                "\(buttonTitle) \(backString)"
+            } else {
                 stackView.accessibilityValue = buttonTitle
             }
+        }
+    }
+
+    private func titleAndIcon(for type: BarButtonType) -> (String?, UIImage?) {
+        switch type {
+        case .cancel:
+            return (NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.back",
+                                                    comment: "Cancel"),
+                    UIImageNamedPreferred(named: "barButton_cancel"))
+        case .help:
+            return (NSLocalizedStringPreferredFormat("ginicapture.navigationbar.camera.help",
+                                                    comment: "Help"),
+                    UIImageNamedPreferred(named: "barButton_help"))
+        case .back(let title):
+            return (title, UIImageNamedPreferred(named: "barButton_back"))
+        case .done:
+            return (NSLocalizedStringPreferredFormat("ginicapture.imagepicker.openbutton",
+                                                    comment: "Done"),
+                    UIImageNamedPreferred(named: "barButton_done"))
+        case .skip:
+            return (NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
+                                                    comment: "Skip button"),
+                    nil)
         }
     }
 

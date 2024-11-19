@@ -1,26 +1,22 @@
 {
   "images" : [
     {
-      "filename" : "Frame 2608638.png",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "filename" : "transactionDocs_attached_document_options_icon_light.pdf",
+      "idiom" : "universal"
     },
     {
-      "filename" : "Frame 2608638@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "Frame 2608638@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "transactionDocs_attached_document_options_icon-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "template-rendering-intent" : "template"
   }
 }

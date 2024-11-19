@@ -148,6 +148,10 @@
 		84C53D5E2C87477D00A908BB /* AttachmentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */; };
 		84CD074D2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */; };
 		84CD074F2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD074E2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift */; };
+		84F2FD142CD0FABC00DAE5B4 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD132CD0FABC00DAE5B4 /* SettingsHeaderView.swift */; };
+		84F2FD172CD0FAC600DAE5B4 /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD152CD0FAC600DAE5B4 /* SettingsSection.swift */; };
+		84F2FD182CD0FAC600DAE5B4 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD162CD0FAC600DAE5B4 /* SettingsViewModel.swift */; };
+		84F2FD1A2CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2FD192CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
 		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
 		F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F426ABF0289AB1D7007F4EB6 /* Colors.xcassets */; };
@@ -356,6 +360,10 @@
 		84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentsTableViewCell.swift; sourceTree = "<group>"; };
 		84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
 		84CD074E2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
+		84F2FD132CD0FABC00DAE5B4 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
+		84F2FD152CD0FAC600DAE5B4 /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
+		84F2FD162CD0FAC600DAE5B4 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		84F2FD192CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+HeaderFooterViewRegistration.swift"; sourceTree = "<group>"; };
 		D7E50A5F2C32D0AD004C1CBF /* GiniBankSDKExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
@@ -499,6 +507,7 @@
 		28B5873F2A37288D008CB210 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				84F2FD132CD0FABC00DAE5B4 /* SettingsHeaderView.swift */,
 				768B017D28D1E54E009A2124 /* CustomLoadingIndicator.swift */,
 				28B587442A373A72008CB210 /* SwitchOptionTableViewCell.swift */,
 				28B587452A373A72008CB210 /* SwitchOptionTableViewCell.xib */,
@@ -833,6 +842,7 @@
 		F441DC9325E53A6F00AAB09A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				84F2FD192CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift */,
 				28EC10722AB345400080FD4F /* UIImage+TintColor.swift */,
 				28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */,
 				28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */,
@@ -843,6 +853,8 @@
 		F459606E2A813CB1004B0112 /* SettingsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				84F2FD152CD0FAC600DAE5B4 /* SettingsSection.swift */,
+				84F2FD162CD0FAC600DAE5B4 /* SettingsViewModel.swift */,
 				289570912A30CD7600CC2C56 /* SettingsViewController.swift */,
 				289570922A30CD7600CC2C56 /* SettingsViewController.xib */,
 				28B587482A373FCB008CB210 /* SettingsViewController+CellType.swift */,
@@ -1330,6 +1342,8 @@
 				84C53D5E2C87477D00A908BB /* AttachmentsTableViewCell.swift in Sources */,
 				28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */,
 				83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */,
+				84F2FD172CD0FAC600DAE5B4 /* SettingsSection.swift in Sources */,
+				84F2FD182CD0FAC600DAE5B4 /* SettingsViewModel.swift in Sources */,
 				28DAF4C72CD3A8620035A1FF /* ReviewScreen.swift in Sources */,
 				28DAF4B82CD293BF0035A1FF /* GiniErrorScreenUITests.swift in Sources */,
 				76EFD4D629B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift in Sources */,
@@ -1352,6 +1366,7 @@
 				F4AD00DC25DFDCE400C34E15 /* TransactionSummaryTableViewController.swift in Sources */,
 				28F62F9E2AB21B1700D47866 /* DemoScreenStrings.swift in Sources */,
 				F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */,
+				84F2FD142CD0FABC00DAE5B4 /* SettingsHeaderView.swift in Sources */,
 				28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */,
 				F4AD00C225DED43200C34E15 /* DemoViewController.swift in Sources */,
 				28F62FA92AB319A000D47866 /* TextField.swift in Sources */,
@@ -1379,6 +1394,7 @@
 				84CD074F2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift in Sources */,
 				F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */,
 				837EEFB3291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift in Sources */,
+				84F2FD1A2CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift in Sources */,
 				28DAF4C32CD3A8580035A1FF /* ErrorScreen.swift in Sources */,
 				28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */,
 				833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */,

@@ -30,5 +30,14 @@ final class SettingsButtonStates {
 	struct ButtonState {
 		var configuration: ButtonConfiguration
 		var isSwitchOn: Bool
+        var type: ButtonType
 	}
+    
+    enum ButtonType {
+        case primary
+        case secondary
+        case transparent
+        case cameraControl
+        case addPage
+    }
 }

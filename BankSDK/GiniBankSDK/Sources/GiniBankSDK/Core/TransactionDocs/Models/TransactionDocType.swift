@@ -11,11 +11,9 @@ enum TransactionDocType {
     case document
 
     var icon: UIImage? {
-        switch self {
-        case .image:
-            return GiniImages.transactionDocsImageIcon.image
-        case .document:
+        if self == .document {
             return GiniImages.transactionDocsFileIcon.image
         }
+        return nil
     }
 }
