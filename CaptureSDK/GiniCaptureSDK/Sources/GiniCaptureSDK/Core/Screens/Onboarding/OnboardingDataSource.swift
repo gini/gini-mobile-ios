@@ -21,8 +21,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     weak var delegate: OnboardingScreen?
     var isProgrammaticScroll = false
-    var isSystemScroll = false
-
+    
     private let giniConfiguration: GiniConfiguration
     private (set) var currentPageIndex = 0
     private var isInitialScroll = true
@@ -184,9 +183,6 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             return
         }
 
-        guard !isSystemScroll else {
-            return
-        }
         guard scrollView.frame.width > 0 else { return }
 
         let pageWidth = scrollView.frame.width
@@ -199,12 +195,10 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         isProgrammaticScroll = false
-        isSystemScroll = false
     }
 
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         isProgrammaticScroll = false
-        isSystemScroll = false
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout

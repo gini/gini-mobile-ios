@@ -157,7 +157,6 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func pageControlSelectionAction(_ sender: UIPageControl) {
-        dataSource.isSystemScroll = false
         let index = IndexPath(item: sender.currentPage, section: 0)
         pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
     }
@@ -165,7 +164,6 @@ class OnboardingViewController: UIViewController {
     @objc private func nextPage() {
         let currentPageIndex = dataSource.currentPageIndex
         if currentPageIndex < dataSource.pageModels.count - 1 {
-            dataSource.isSystemScroll = false
             // Next button tapped
             track(event: .nextStepTapped, for: currentPageIndex)
             let index = IndexPath(item: currentPageIndex + 1, section: 0)
@@ -195,8 +193,26 @@ class OnboardingViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+
+        // Calculate the current visible page index
+        let visiblePageIndex = Int(round(pagesCollection.contentOffset.x / pagesCollection.bounds.width))
+
+        dataSource.isProgrammaticScroll = true
+        // Invalidate layout before the rotation begins
         pagesCollection.collectionViewLayout.invalidateLayout()
-        dataSource.isSystemScroll = true
+
+        // Use the coordinator to synchronize your changes with the system's rotation animation
+        coordinator.animate(alongsideTransition: { _ in
+            // Perform adjustments within the animation block to avoid jumps or flickers
+            UIView.performWithoutAnimation {
+                // Update the collection view's offset for the new orientation
+                let newOffset = CGPoint(x: CGFloat(visiblePageIndex) * size.width, y: 0)
+                self.pagesCollection.setContentOffset(newOffset, animated: false)
+            }
+        }) { _ in
+            // Reset the flag after the transition completes
+            self.dataSource.isProgrammaticScroll = false
+        }
     }
 
     override func viewWillLayoutSubviews() {
