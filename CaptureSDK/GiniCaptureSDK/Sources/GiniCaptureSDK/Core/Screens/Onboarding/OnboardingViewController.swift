@@ -157,6 +157,7 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func pageControlSelectionAction(_ sender: UIPageControl) {
+        dataSource.isSystemScroll = false
         let index = IndexPath(item: sender.currentPage, section: 0)
         pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
     }
@@ -164,6 +165,7 @@ class OnboardingViewController: UIViewController {
     @objc private func nextPage() {
         let currentPageIndex = dataSource.currentPageIndex
         if currentPageIndex < dataSource.pageModels.count - 1 {
+            dataSource.isSystemScroll = false
             // Next button tapped
             track(event: .nextStepTapped, for: currentPageIndex)
             let index = IndexPath(item: currentPageIndex + 1, section: 0)
@@ -194,7 +196,7 @@ class OnboardingViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         pagesCollection.collectionViewLayout.invalidateLayout()
-        dataSource.isProgrammaticScroll = true
+        dataSource.isSystemScroll = true
     }
 
     override func viewWillLayoutSubviews() {
