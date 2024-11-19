@@ -778,9 +778,7 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     }
     
     /// Notifies the delegate when the close button is tapped on bank selection bottom view
-    public func didTapOnClose() {
-//        didTapOnClose()
-    }
+    public func didTapOnClose() {}
     
     /// Notifies the delegate when the more information button is tapped on the bank selection bottom view
     public func didTapOnMoreInformation() {
