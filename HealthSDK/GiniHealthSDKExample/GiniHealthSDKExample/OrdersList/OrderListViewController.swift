@@ -93,7 +93,7 @@ final class OrderListViewController: UIViewController {
         let newOrder = Order(amountToPay: "", recipient: "", iban: "", purpose: "")
         viewModel.orders.append(newOrder)
 
-        let orderViewController = OrderDetailViewController(newOrder, paymentComponentsController: viewModel.paymentComponentsController)
+        let orderViewController = OrderDetailViewController(newOrder, health: viewModel.health)
         self.navigationController?.pushViewController(orderViewController, animated: true)
     }
 
@@ -125,7 +125,7 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
         let order = viewModel.orders[indexPath.row]
 
         // Instantiate InvoiceViewController with the Order instance
-        let orderViewController = OrderDetailViewController(order, paymentComponentsController: viewModel.paymentComponentsController)
+        let orderViewController = OrderDetailViewController(order, health: viewModel.health)
 
         // Present InvoiceViewController
         self.navigationController?.pushViewController(orderViewController, animated: true)

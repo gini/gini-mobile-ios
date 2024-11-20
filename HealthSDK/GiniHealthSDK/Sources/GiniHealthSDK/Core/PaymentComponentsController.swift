@@ -247,7 +247,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
 
      - Returns: A tuple containing an array of logo data and the count of additional banks, if any.
      */
-    public func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
+    func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
         guard !paymentProviders.isEmpty else { return ([], nil)}
         let maxShownProviders = min(paymentProviders.count, 2)
         let additionalBankCount = paymentProviders.count > 2 ? paymentProviders.count - 2 : nil

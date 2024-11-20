@@ -21,14 +21,14 @@ final class OrderListCoordinator: NSObject, Coordinator {
 
     func start(documentService: GiniHealthSDK.DefaultDocumentService,
                hardcodedOrdersController: HardcodedOrdersControllerProtocol,
-               paymentComponentsController: PaymentComponentsController,
+               health: GiniHealth,
                orders: [Order]? = nil) {
         self.orderListViewController = OrderListViewController()
         orderListViewController.viewModel = OrderListViewModel(coordinator: self,
                                                                orders: orders,
                                                                documentService: documentService,
                                                                hardcodedOrdersController: hardcodedOrdersController,
-                                                               paymentComponentsController: paymentComponentsController)
+                                                               health: health)
         orderListNavigationController = RootNavigationController(rootViewController: orderListViewController)
         orderListNavigationController.modalPresentationStyle = .fullScreen
         orderListNavigationController.interactivePopGestureRecognizer?.delegate = nil

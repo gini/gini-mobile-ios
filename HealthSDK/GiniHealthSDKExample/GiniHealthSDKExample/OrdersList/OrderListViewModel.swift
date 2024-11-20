@@ -24,19 +24,19 @@ final class OrderListViewModel {
 
     private var errors: [String] = []
 
-    var paymentComponentsController: PaymentComponentsController
+    var health: GiniHealth
     var orders: [Order]
 
     init(coordinator: OrderListCoordinator,
          orders: [Order]? = nil,
          documentService: GiniHealthSDK.DefaultDocumentService,
          hardcodedOrdersController: HardcodedOrdersControllerProtocol,
-         paymentComponentsController: PaymentComponentsController) {
+         health: GiniHealth) {
         self.coordinator = coordinator
         self.hardcodedOrdersController = hardcodedOrdersController
         self.orders = orders ?? hardcodedOrdersController.orders
         self.documentService = documentService
-        self.paymentComponentsController = paymentComponentsController
+        self.health = health
     }
     
     func viewDidLoad() {}
