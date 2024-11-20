@@ -349,6 +349,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
                 let result = AnalysisResult(extractions: extractions,
                                             lineItems: result.lineItems,
+                                            skontoDiscounts: result.skontoDiscounts,
                                             images: images,
                                             document: documentService.document,
                                             candidates: result.candidates)
@@ -356,6 +357,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
                 self.giniBankConfiguration.lineItems = result.lineItems
+                self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()

@@ -670,13 +670,31 @@ public final class GiniBankConfiguration: NSObject {
                                                 bicExtraction,
                                                 amountExtraction]
 
-        if let lineItems = lineItems {
-            documentService.sendFeedback(with: updatedExtractions,
-                                         updatedCompoundExtractions: ["lineItems": lineItems])
-        } else {
-            documentService.sendFeedback(with: updatedExtractions,
-                                         updatedCompoundExtractions: nil)
+        var updatedCompoundExtractions: [String: [[Extraction]]]?
+
+        if let skontoDiscounts = skontoDiscounts?.first {
+            let skontoAmountToPayExtraction = skontoDiscounts.first(where: { $0.name == "skontoAmountToPayCalculated" })
+            if skontoAmountToPayExtraction?.value == amountToPayString {
+                let filteredSkontoDiscounts = skontoDiscounts.filter {
+                    $0.name == "skontoAmountToPayCalculated" ||
+                    $0.name == "skontoPercentageDiscountedCalculated" ||
+                    $0.name == "skontoDueDateCalculated"
+                }
+                if !filteredSkontoDiscounts.isEmpty {
+                    updatedCompoundExtractions = ["skontoDiscounts": [filteredSkontoDiscounts]]
+                }
+            }
         }
+
+        if let lineItems = lineItems {
+            if updatedCompoundExtractions == nil {
+                updatedCompoundExtractions = [:]
+            }
+            updatedCompoundExtractions?["lineItems"] = lineItems
+        }
+
+        documentService.sendFeedback(with: updatedExtractions,
+                                     updatedCompoundExtractions: updatedCompoundExtractions)
     }
 
     /**
