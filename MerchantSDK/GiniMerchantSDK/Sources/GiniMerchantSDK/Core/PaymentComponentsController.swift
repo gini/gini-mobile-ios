@@ -403,17 +403,18 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
      - Parameter documentId: An optional identifier for the document associated with the invoice.
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
-    public func shareInvoiceBottomSheet() -> BottomSheetViewController {
+    public func shareInvoiceBottomSheet(qrCodeData: Data) -> BottomSheetViewController {
         previousPresentedView = nil
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
                                                                       strings: stringsProvider.shareInvoiceStrings,
                                                                       primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
                                                                       poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                                      poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                                      poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                                      qrCodeData: qrCodeData,
+                                                                      paymentInfo: nil)
         shareInvoiceBottomViewModel.viewDelegate = self
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
-        incrementOnboardingCountFor(paymentProvider: healthSelectedPaymentProvider)
         return shareInvoiceBottomView
     }
 
@@ -498,17 +499,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
         }
     }
 
-    /**
-     Determines if the onboarding screen should be shown based on the presentation count for the selected payment provider.
-
-     - Returns: A Boolean value indicating whether the onboarding screen should be displayed.
-     */
-    public func shouldShowOnboardingScreenFor() -> Bool {
-        let onboardingCounts = OnboardingShareInvoiceScreenCount.load()
-        let count = onboardingCounts.presentationCount(forProvider: selectedPaymentProvider?.name)
-        return count < Constants.numberOfTimesOnboardingShareScreenShouldAppear
-    }
-
     private func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(paymentInfoDissapeared), name: .paymentInfoDissapeared, object: nil)
     }
@@ -542,11 +532,6 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
 }
 
 extension PaymentComponentsController {
-    private func incrementOnboardingCountFor(paymentProvider: GiniHealthAPILibrary.PaymentProvider?) {
-        var onboardingCounts = OnboardingShareInvoiceScreenCount.load()
-        onboardingCounts.incrementPresentationCount(forProvider: paymentProvider?.name)
-    }
-
     private func loadPDFData(paymentRequestID: String, viewController: UIViewController) {
         self.loadPDF(paymentRequestID: paymentRequestID, completion: { [weak self] pdfData in
             let pdfPath = self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestID)
@@ -690,6 +675,10 @@ extension PaymentComponentsController: InstallAppBottomViewProtocol {
 }
 
 extension PaymentComponentsController: PaymentReviewProtocol {
+    public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {
+        //
+    }
+    
     /**
      Submits feedback for the specified document and its updated extractions. Method used to update the information extracted from a document.
 

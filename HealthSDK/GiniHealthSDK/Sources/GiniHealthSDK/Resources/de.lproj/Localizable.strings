@@ -55,10 +55,10 @@
 "gini.health.paymentcomponent.install.app.bottom.sheet.notes.description" = "Hinweis: Bitte aktualisieren oder installieren Sie zunächst die [BANK]-App aus dem App-Store.";
 "gini.health.paymentcomponent.install.app.bottom.sheet.tip.description" = "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.";
 "gini.health.paymentcomponent.install.app.bottom.sheet.continue.button.text" = "Weiter";
-"gini.health.paymentcomponent.share.invoice.bottom.sheet.title" = "Rechnungsdaten bereit zum Teilen mit der [BANK]";
-"gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Im nächsten Schritt wählen Sie die [BANK]-App auf der Seite aus, um Ihre Zahlung in der [BANK]-App abzuschließen.";
+"gini.health.paymentcomponent.share.invoice.bottom.sheet.title" = "Teilen Sie diesen QR-Zahlungscode mit Ihrer Banking-App";
+"gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Alternativ können Sin ein Screenshot von dieser Seite machen mit der Fotoüberweisung Funktion der [BANK] öffnen.";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.app" = "App";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.more" = "Mehr";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.tip.description" = "Tipp: Wenn Sie die App nicht sehen, scrollen Sie oder tippen Sie auf \"Mehr\", bis Sie die [BANK]-App finden. Wenn Sie die [BANK]-App noch nicht installiert haben, laden Sie sie im Store herunter.";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.tip.underlined.part" = "laden Sie sie im Store herunter";
-"gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Weiter";
+"gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Mit der [BANK]-App teilen";
