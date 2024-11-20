@@ -20,7 +20,6 @@ protocol PaymentProvidersBottomViewProtocol: AnyObject {
 }
 
 extension PaymentComponentsController {
-    
     // MARK: - Payment Provider Selection
     
     /**
@@ -90,9 +89,7 @@ extension PaymentComponentsController {
             }
     }
     
-    
     // MARK: - Bottom sheets
-    
     /**
      Provides a custom Gini for the payment view that is going to be presented as a bottom sheet.
 
@@ -243,7 +240,6 @@ extension PaymentComponentsController {
         completion(vc, nil)
     }
 
-    
     /**
      Provides a custom Gini view for displaying payment more information view.
 
@@ -327,7 +323,6 @@ extension PaymentComponentsController {
     }
     
     // MARK: - Other helpers
-
     private func incrementOnboardingCountFor(paymentProvider: PaymentProvider?) {
         var onboardingCounts = OnboardingShareInvoiceScreenCount.load()
         onboardingCounts.incrementPresentationCount(forProvider: paymentProvider?.name)
@@ -356,7 +351,6 @@ extension PaymentComponentsController {
         }
         return false
     }
-
 
     /// Checks if the selected payment provider supports the "Open With" feature on iOS.
     public func supportsOpenWith() -> Bool {
@@ -494,7 +488,6 @@ extension PaymentComponentsController {
     }
 
     // MARK: - Payment Review Screen functions
-    
     /**
      Creates a payment request using the provided payment information.
 
@@ -785,8 +778,6 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
         openMoreInformationViewController()
     }
 }
-
-
 
 extension PaymentComponentsController: ShareInvoiceBottomViewProtocol {
     /// Notifies the delegate to continue sharing the invoice with the provided document ID.
