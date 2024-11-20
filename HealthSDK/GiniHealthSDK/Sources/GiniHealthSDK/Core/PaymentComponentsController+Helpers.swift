@@ -97,7 +97,7 @@ extension PaymentComponentsController {
      - Returns: A configured `UIViewController` for displaying the payment bottom view.
      */
     public func paymentViewBottomSheet(documentId: String?) -> UIViewController {
-        previousPresentedView = .paymentComponent
+        previousPresentedView = [.paymentComponent]
         let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return paymentComponentBottomView
     }
@@ -150,7 +150,10 @@ extension PaymentComponentsController {
      - Returns: A configured `UIViewController` for displaying the bank selection options.
      */
     public func bankSelectionBottomSheet() -> UIViewController {
-        previousPresentedView = .bankPicker
+        if previousPresentedView.first != .paymentReview {
+            previousPresentedView.removeAll()
+        }
+        previousPresentedView.append(.bankPicker)
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                    configuration: configurationProvider.bankSelectionConfiguration,
@@ -179,7 +182,7 @@ extension PaymentComponentsController {
          `GiniHealthError` once the loading process is complete.
      */
     func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
-        previousPresentedView = nil
+        previousPresentedView.append(.paymentReview)
         if !GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
             guard let documentId else {
                 completion(nil, nil)
@@ -205,7 +208,6 @@ extension PaymentComponentsController {
     }
     
     private func loadPaymentReviewScreenWithoutDocument(paymentInfo: GiniInternalPaymentSDK.PaymentInfo?, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
-        previousPresentedView = nil
         preparePaymentReviewViewController(data: nil, paymentInfo: paymentInfo, completion: completion)
     }
 
@@ -266,7 +268,7 @@ extension PaymentComponentsController {
      - Returns: A configured `BottomSheetViewController` for the app installation process.
      */
     public func installAppBottomSheet() -> BottomSheetViewController {
-        previousPresentedView = nil
+        previousPresentedView.removeAll()
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                   installAppConfiguration: configurationProvider.installAppConfiguration,
                                                                   strings: stringsProvider.installAppStrings,
@@ -289,7 +291,7 @@ extension PaymentComponentsController {
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
     public func shareInvoiceBottomSheet() -> BottomSheetViewController {
-        previousPresentedView = nil
+        previousPresentedView.removeAll()
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
                                                                       strings: stringsProvider.shareInvoiceStrings,
@@ -334,12 +336,17 @@ extension PaymentComponentsController {
     
     @objc
     private func paymentInfoDissapeared() {
-        if previousPresentedView == .bankPicker {
-            didTapOnBankPicker()
-        } else if previousPresentedView == .paymentComponent {
-            didTapOnPayButton()
+        switch previousPresentedView.first {
+        case .bankPicker:
+            didTapOnBankPicker(documentId: documentId)
+        case .paymentComponent:
+            presentPaymentViewBottomSheet()
+        case .paymentReview:
+            didTapOnPayInvoice()
+        default:
+            break
         }
-        previousPresentedView = nil
+        previousPresentedView.removeAll()
     }
     
     /// Checks if the payment provider app can be opened based on the selected payment provider and GPC(Gini Pay Connect) support.
@@ -612,9 +619,23 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     }
     
     private func pushOrDismissAndPush(_ viewController: UIViewController) {
-        if let presentedVC = navigationControllerProvided?.presentedViewController {
+        if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
+            doublePresentedVC.dismiss(animated: true) { [weak self] in
+                if let presentedVC = self?.navigationControllerProvided?.presentedViewController {
+                    presentedVC.dismiss(animated: true) { [weak self] in
+                        self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
+                    }
+                }
+            }
+        } else if let presentedVC = navigationControllerProvided?.presentedViewController {
             presentedVC.dismiss(animated: true) { [weak self] in
-                self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
+                if self?.navigationControllerProvided?.viewControllers.last is PaymentReviewViewController {
+                    self?.navigationControllerProvided?.popViewController(animated: true, completion: {
+                        self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
+                    })
+                } else {
+                    self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
+                }
             }
         } else {
             navigationControllerProvided?.pushViewController(viewController, animated: true)

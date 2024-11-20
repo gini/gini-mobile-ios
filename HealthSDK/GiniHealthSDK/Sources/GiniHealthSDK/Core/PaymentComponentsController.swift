@@ -98,7 +98,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     }
 
     /// Previous presented view
-    var previousPresentedView: PaymentComponentScreenType?
+    var previousPresentedView: [PaymentComponentScreenType] = []
     // Client's navigation controller provided in order to handle all HealthSDK flows
     weak var navigationControllerProvided: UINavigationController?
     // Payment Information from the invoice that contains a document or not
