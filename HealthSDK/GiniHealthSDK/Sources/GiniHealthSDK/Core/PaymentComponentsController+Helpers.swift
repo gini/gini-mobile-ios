@@ -313,6 +313,9 @@ extension PaymentComponentsController {
      */
     public func updatedPaymentProvider(_ paymentProvider: GiniHealthAPILibrary.PaymentProvider) {
         self.selectedPaymentProvider = PaymentProvider(healthPaymentProvider: paymentProvider)
+        if let provider = selectedPaymentProvider {
+            storeDefaultPaymentProvider(paymentProvider: provider)
+        }
     }
 
     /**
