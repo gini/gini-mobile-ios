@@ -658,7 +658,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     /// Handles the action when the pay invoice button is tapped on the payment component view, using the provided document ID.
     public func didTapOnPayInvoice(documentId: String?) {
         GiniUtilites.Log("Tapped on Pay Invoice on :\(documentId ?? "")", event: .success)
-        if GiniHealthConfiguration.shared.showPaymentReviewScreen {
+        if GiniHealthConfiguration.shared.showPaymentReviewScreen || !GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
             loadPaymentReviewScreenFor(trackingDelegate: self) { [weak self] viewController, error in
                 if let error = error {
                     self?.errors.append(error.localizedDescription)

@@ -147,10 +147,14 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
             presentPaymentViewBottomSheet()
             return
         }
-        if GiniHealthConfiguration.shared.showPaymentReviewScreen {
-            didTapOnPayInvoice(documentId: documentId)
+        if GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
+            if GiniHealthConfiguration.shared.showPaymentReviewScreen {
+                didTapOnPayInvoice(documentId: documentId)
+            } else {
+                presentPaymentViewBottomSheet()
+            }
         } else {
-            presentPaymentViewBottomSheet()
+            didTapOnPayInvoice(documentId: documentId)
         }
     }
 
