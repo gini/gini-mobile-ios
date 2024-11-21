@@ -9,6 +9,7 @@ import UIKit
 public enum PaymentComponentScreenType {
     case paymentComponent
     case bankPicker
+    case paymentReview
 }
 
 public struct PaymentComponentsConfiguration {

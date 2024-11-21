@@ -50,7 +50,6 @@ final class AppCoordinator: Coordinator {
     }()
 
     private lazy var health = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain)
-    private lazy var paymentComponentsController = PaymentComponentsController(giniHealth: health)
 
     private lazy var giniHealthConfiguration: GiniHealthConfiguration = {
         let configuration = GiniHealthConfiguration()
@@ -163,7 +162,7 @@ final class AppCoordinator: Coordinator {
                                                                                             domain: clientDomain),
                                                                                             documentMetadata: metadata,
                                                         hardcodedInvoicesController: HardcodedInvoicesController(),
-                                                        paymentComponentController: paymentComponentsController)
+                                                        paymentComponentController: health.paymentComponentsController)
         
         screenAPICoordinator.delegate = self
         
@@ -315,12 +314,11 @@ final class AppCoordinator: Coordinator {
         health.delegate = self
 
         let invoicesListCoordinator = InvoicesListCoordinator()
-        paymentComponentsController = PaymentComponentsController(giniHealth: health)
         health.paymentComponentConfiguration.isPaymentComponentBranded = isBrandedPaymentComponent
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
                                           hardcodedInvoicesController: HardcodedInvoicesController(),
-                                          paymentComponentsController: self.paymentComponentsController,
+                                          health: self.health,
                                           invoices: invoices)
             self.add(childCoordinator: invoicesListCoordinator)
             self.rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
@@ -337,10 +335,9 @@ final class AppCoordinator: Coordinator {
         health.delegate = self
         
         let orderListCoordinator = OrderListCoordinator()
-        paymentComponentsController = PaymentComponentsController(giniHealth: health)
         orderListCoordinator.start(documentService: health.documentService,
                                    hardcodedOrdersController: HardcodedOrdersController(),
-                                   paymentComponentsController: paymentComponentsController,
+                                   health: health,
                                    orders: orders)
         add(childCoordinator: orderListCoordinator)
         rootViewController.present(orderListCoordinator.rootViewController, animated: true)

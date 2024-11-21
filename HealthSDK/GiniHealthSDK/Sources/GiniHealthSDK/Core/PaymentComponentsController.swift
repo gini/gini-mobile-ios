@@ -98,7 +98,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     }
 
     /// Previous presented view
-    var previousPresentedView: PaymentComponentScreenType?
+    var previousPresentedView: [PaymentComponentScreenType] = []
     // Client's navigation controller provided in order to handle all HealthSDK flows
     weak var navigationControllerProvided: UINavigationController?
     // Payment Information from the invoice that contains a document or not
@@ -147,10 +147,14 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
             presentPaymentViewBottomSheet()
             return
         }
-        if GiniHealthConfiguration.shared.showPaymentReviewScreen {
-            didTapOnPayInvoice(documentId: documentId)
+        if GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
+            if GiniHealthConfiguration.shared.showPaymentReviewScreen {
+                didTapOnPayInvoice(documentId: documentId)
+            } else {
+                presentPaymentViewBottomSheet()
+            }
         } else {
-            presentPaymentViewBottomSheet()
+            didTapOnPayInvoice(documentId: documentId)
         }
     }
 
@@ -247,7 +251,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
 
      - Returns: A tuple containing an array of logo data and the count of additional banks, if any.
      */
-    public func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
+    func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
         guard !paymentProviders.isEmpty else { return ([], nil)}
         let maxShownProviders = min(paymentProviders.count, 2)
         let additionalBankCount = paymentProviders.count > 2 ? paymentProviders.count - 2 : nil
