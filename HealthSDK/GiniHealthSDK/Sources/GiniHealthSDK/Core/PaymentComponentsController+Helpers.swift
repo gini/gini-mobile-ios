@@ -97,7 +97,7 @@ extension PaymentComponentsController {
      - Returns: A configured `UIViewController` for displaying the payment bottom view.
      */
     public func paymentViewBottomSheet(documentId: String?) -> UIViewController {
-        previousPresentedView = [.paymentComponent]
+        previousPresentedViews = [.paymentComponent]
         let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(), bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return paymentComponentBottomView
     }
@@ -150,10 +150,10 @@ extension PaymentComponentsController {
      - Returns: A configured `UIViewController` for displaying the bank selection options.
      */
     public func bankSelectionBottomSheet() -> UIViewController {
-        if previousPresentedView.first != .paymentReview {
-            previousPresentedView.removeAll()
+        if previousPresentedViews.count > 0, previousPresentedViews.first != .paymentReview {
+            previousPresentedViews.removeAll()
         }
-        previousPresentedView.append(.bankPicker)
+        previousPresentedViews.insert(.bankPicker)
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                    configuration: configurationProvider.bankSelectionConfiguration,
@@ -182,7 +182,7 @@ extension PaymentComponentsController {
          `GiniHealthError` once the loading process is complete.
      */
     func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
-        previousPresentedView.append(.paymentReview)
+        previousPresentedViews.insert(.paymentReview)
         if !GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
             guard let documentId else {
                 completion(nil, nil)
@@ -268,7 +268,7 @@ extension PaymentComponentsController {
      - Returns: A configured `BottomSheetViewController` for the app installation process.
      */
     public func installAppBottomSheet() -> BottomSheetViewController {
-        previousPresentedView.removeAll()
+        previousPresentedViews.removeAll()
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                   installAppConfiguration: configurationProvider.installAppConfiguration,
                                                                   strings: stringsProvider.installAppStrings,
@@ -291,7 +291,7 @@ extension PaymentComponentsController {
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
     public func shareInvoiceBottomSheet(qrCodeData: Data) -> BottomSheetViewController {
-        previousPresentedView.removeAll()
+        previousPresentedViews.removeAll()
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
                                                                       strings: stringsProvider.shareInvoiceStrings,
@@ -335,17 +335,19 @@ extension PaymentComponentsController {
     
     @objc
     private func paymentInfoDissapeared() {
-        switch previousPresentedView.first {
+        switch previousPresentedViews.first {
         case .bankPicker:
+            previousPresentedViews.removeAll()
             didTapOnBankPicker(documentId: documentId)
         case .paymentComponent:
+            previousPresentedViews.removeAll()
             presentPaymentViewBottomSheet()
         case .paymentReview:
             didTapOnPayInvoice()
         default:
             break
         }
-        previousPresentedView.removeAll()
+        
     }
     
     /// Checks if the payment provider app can be opened based on the selected payment provider and GPC(Gini Pay Connect) support.
