@@ -166,14 +166,14 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
     func showErrorAlertView(error: String) {
         if presentedViewController != nil {
             self.presentedViewController?.dismiss(animated: true, completion: {
-                self.presentAlerViewController(error: error)
+                self.presentAlertViewController(error: error)
             })
         } else {
-            presentAlerViewController(error: error)
+            presentAlertViewController(error: error)
         }
     }
 
-    private func presentAlerViewController(error: String) {
+    private func presentAlertViewController(error: String) {
         let alertController = UIAlertController(title: viewModel.errorTitleText,
                                                 message: error,
                                                 preferredStyle: .alert)

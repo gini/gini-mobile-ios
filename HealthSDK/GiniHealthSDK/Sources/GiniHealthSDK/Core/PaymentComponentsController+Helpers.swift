@@ -763,14 +763,14 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     func showErrorAlertView(error: String) {
         if navigationControllerProvided?.presentedViewController != nil {
             self.navigationControllerProvided?.presentedViewController?.dismiss(animated: true, completion: {
-                self.presentAlerViewController(error: error)
+                self.presentAlertViewController(error: error)
             })
         } else {
-            presentAlerViewController(error: error)
+            presentAlertViewController(error: error)
         }
     }
 
-    private func presentAlerViewController(error: String) {
+    private func presentAlertViewController(error: String) {
         let alertController = UIAlertController(title: "Error",
                                                 message: error,
                                                 preferredStyle: .alert)
