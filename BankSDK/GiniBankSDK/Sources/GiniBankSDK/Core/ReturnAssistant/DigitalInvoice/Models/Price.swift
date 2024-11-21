@@ -96,7 +96,14 @@ struct Price {
         guard let number = NumberFormatter.twoDecimalPriceFormatter.number(from: trimmedString) else {
             return nil
         }
-        return number.decimalValue
+        return roundToTwoDecimalPlaces(number.decimalValue)
+    }
+
+    private static func roundToTwoDecimalPlaces(_ value: Decimal) -> Decimal {
+        var roundedValue = Decimal()
+        var originalValue = value
+        NSDecimalRound(&roundedValue, &originalValue, 2, .bankers)
+        return roundedValue
     }
 
     static func localizedStringWithoutCurrencyCode(from decimal: Decimal) -> String? {
