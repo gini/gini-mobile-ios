@@ -19,6 +19,7 @@ extension GiniBank {
      all screens and transitions out of the box, including the networking.
 
      - parameter client: `GiniClient` with the information needed to enable document analysis
+     - parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
      - parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
      - parameter configuration: The configuration to set.
      - parameter documentMetadata: Additional HTTP headers to send when uploading documents
@@ -51,7 +52,8 @@ extension GiniBank {
      It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
      all screens and transitions out of the box, including the networking.
 
-     - parameter alternativeTokenSource: Alternative token source
+     - parameter tokenSource: Alternative token source
+     - parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
      - parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
      - parameter configuration: The configuration to set.
      - parameter documentMetadata: Additional HTTP headers to send when uploading documents
