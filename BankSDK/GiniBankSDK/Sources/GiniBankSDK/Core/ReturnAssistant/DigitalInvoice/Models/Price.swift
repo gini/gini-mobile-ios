@@ -98,7 +98,27 @@ struct Price {
         }
         return roundToTwoDecimalPlaces(number.decimalValue)
     }
+    
+    /**
+     Rounds a Decimal value to two decimal places using "bankers' rounding" (round half to even).
+     
+     - Parameter value: The Decimal value to be rounded.
+     - Returns: The rounded Decimal value to two decimal places.
+     
+     ### How Bankers' Rounding Works:
+     Bankers' rounding minimizes rounding bias by rounding to the nearest even number when the value is exactly halfway between two possible outcomes.
+     
+     ### Examples:
+     ```swift
+     // Rounding away from halfway points:
+     let rounded1 = roundToTwoDecimalPlaces(1.234) // Output: 1.23 (less than halfway, rounds down)
+     let rounded2 = roundToTwoDecimalPlaces(1.236) // Output: 1.24 (greater than halfway, rounds up)
+     
+     // Rounding exactly halfway:
+     let rounded3 = roundToTwoDecimalPlaces(1.245) // Output: 1.24 (halfway, rounds to even)
+     let rounded4 = roundToTwoDecimalPlaces(1.255) // Output: 1.26 (halfway, rounds to even)
 
+     */
     private static func roundToTwoDecimalPlaces(_ value: Decimal) -> Decimal {
         var roundedValue = Decimal()
         var originalValue = value
