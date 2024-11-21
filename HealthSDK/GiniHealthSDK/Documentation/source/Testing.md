@@ -30,7 +30,7 @@ After you've set the client credentials in the example banking app and installed
 #### Payment component
 
 After following the integration steps above you'll arrive at the `Payment Invoice list screen`, which already has integrated the `Payment Component`.
-The following screenshot shows a sample list of invoices where the `PaymentComponent` is shown for each invoice.
+The following screenshot shows a sample list of invoices. Tapping on a CTA button will show the `Payment Component` in a bottom sheet if a payment provider isn't selected already.
 
 <br>
 <center><img src="img/Integration guide/InvoiceListWithPaymentComponent.png" height="500"/></center>
@@ -38,7 +38,7 @@ The following screenshot shows a sample list of invoices where the `PaymentCompo
 
 #### Bank Selection Bottom sheet 
 
-You should see the `Gini-Test-Payment-Provider` preselected in every payment component view. By clicking the picker you should see the `BankSelectionBottomSheet` with the list of available banking apps (including `Gini-Test-Payment-Provider` and other testing and production apps).
+By clicking the picker you should see the `BankSelectionBottomSheet` with the list of available banking apps (including `Gini-Test-Payment-Provider` and other testing and production apps).
 
 <br>
 <center><img src="img/Integration guide/BankSelectionBottomSheet.png" height="500"/></center>
@@ -46,7 +46,7 @@ You should see the `Gini-Test-Payment-Provider` preselected in every payment com
 
 #### More information and FAQ
 
-By clicking either the more information or the info icon on the `Payment Component` view you should see the `Payment feature Info screen` with information about the payment feature and an FAQ section.
+By clicking the more information in the bottom `Payment Component` view you should see the `Payment feature Info screen` with information about the payment feature and an FAQ section.
 
 <br>
 <center><img src="img/Integration guide/PaymentFeatureInformationScreen.png" height="500"/></center>
@@ -54,9 +54,9 @@ By clicking either the more information or the info icon on the `Payment Compone
 
 #### Payment Review
 
-By clicking the `Pay the invoice` button on a `Payment Component` view you should see the `Payment Review screen`, which shows the invoice's pages and the payment information. It also allows editing the payment information. The `To the banking app` button should have the icon and colors of the banking app, which was selected in the payment component view.
+By clicking the `Continue to overview` button on a bottom `Payment Component` view you should see the `Payment Review screen`, which shows the invoice's pages and the payment information. It also allows editing the payment information. The `To the banking app` button should have the colors of the banking app, which was selected in the payment component view. There should also be a bank picker with selected payment provider in the left down part of the view. You can tap on it and change the payment provider.
 
-Check that the extractions and the document preview are shown and then press the `Pay` button:
+Check that the extractions and the document preview are shown and then press the `To the banking app` button:
 
 <br>
 <center><img src="img/Integration guide/PaymentReviewScreen.png" height="500"/></center>
@@ -89,9 +89,30 @@ The following is an example for the url `gini-pay://payment-requester`:
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         if url.host == "payment-requester" {
+            processBankUrl(url: url)
             // hadle incoming url from the banking app
         }
         return true
+    }
+```
+
+Here you can optain the paymentRequestId and check the payment status:
+
+```swift
+func processBankUrl(url: URL) {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
+        if let queryItems = components.queryItems {
+            if let paymentRequestId = queryItems.first(where: { $0.name == "paymentRequestId" })?.value {
+                health.getPaymentRequest(by: paymentRequestId) { [weak self] result in
+                    switch result {
+                    case .success(let paymentRequest):
+                        print("paymentStatus: \(PaymentStatus(rawValue: paymentRequest.status))")
+                    case .failure(let error):
+                        print("Failed to retrieve payment request: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
     }
 ```
 
