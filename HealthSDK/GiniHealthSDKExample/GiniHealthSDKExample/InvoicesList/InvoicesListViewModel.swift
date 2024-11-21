@@ -19,6 +19,7 @@ struct DocumentWithExtractions: Codable {
     var hasMultipleDocuments: Bool?
     var doctorName: String?
     var iban: String?
+    var purpose: String?
 
     init(documentId: String, extractionResult: GiniHealthSDK.ExtractionResult) {
         self.documentId = documentId
@@ -29,6 +30,7 @@ struct DocumentWithExtractions: Codable {
         self.hasMultipleDocuments = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value == true.description
         self.doctorName = extractionResult.extractions.first(where: { $0.name == ExtractionType.doctorName.rawValue })?.value
         self.iban = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.iban.rawValue })?.value
+        self.purpose = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.paymentPurpose.rawValue })?.value
     }
 }
 
@@ -218,7 +220,7 @@ extension InvoicesListViewModel {
                            iban: invoices[index].iban ?? "",
                            bic: "",
                            amount: invoices[index].amountToPay ?? "",
-                           purpose: "",
+                           purpose: invoices[index].purpose ?? "",
                            paymentUniversalLink: health.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
                            paymentProviderId: health.paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }

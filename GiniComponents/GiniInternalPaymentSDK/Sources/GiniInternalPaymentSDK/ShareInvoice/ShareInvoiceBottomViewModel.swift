@@ -36,11 +36,13 @@ public final class ShareInvoiceBottomViewModel {
     let bankToReplaceString = "[BANK]"
     let titleText: String
     let descriptionLabelText: String
-    let tipLabelText: String
-    let bankImageIcon: UIImage
+    let bankImageIcon: Data
+    let qrCodeData: Data
+    let continueButtonText: String
 
     /// An optional identifier for the document ID being shared in order to pass it back to the delegates
     public var documentId: String?
+    public var paymentInfo: PaymentInfo?
 
     var appsMocked: [SingleApp] = []
 
@@ -56,33 +58,26 @@ public final class ShareInvoiceBottomViewModel {
        - poweredByGiniStrings: String resources for localizing "Powered by Gini" UI elements.
      */
     public init(selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider?,
-         configuration: ShareInvoiceConfiguration,
-         strings: ShareInvoiceStrings,
-         primaryButtonConfiguration: ButtonConfiguration,
-         poweredByGiniConfiguration: PoweredByGiniConfiguration,
-         poweredByGiniStrings: PoweredByGiniStrings) {
+                configuration: ShareInvoiceConfiguration,
+                strings: ShareInvoiceStrings,
+                primaryButtonConfiguration: ButtonConfiguration,
+                poweredByGiniConfiguration: PoweredByGiniConfiguration,
+                poweredByGiniStrings: PoweredByGiniStrings,
+                qrCodeData: Data,
+                paymentInfo: PaymentInfo?) {
         self.selectedPaymentProvider = selectedPaymentProvider
-        self.bankImageIcon = selectedPaymentProvider?.iconData.toImage ?? UIImage()
+        self.bankImageIcon = selectedPaymentProvider?.iconData ?? Data()
         self.paymentProviderColors = selectedPaymentProvider?.colors
         self.configuration = configuration
         self.strings = strings
         self.primaryButtonConfiguration = primaryButtonConfiguration
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
+        self.qrCodeData = qrCodeData
+        self.paymentInfo = paymentInfo
 
         titleText = strings.titleTextPattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
         descriptionLabelText = strings.descriptionTextPattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
-        tipLabelText = strings.tipLabelPattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
-
-        self.generateAppMockedElements()
-    }
-    
-    private func generateAppMockedElements() {
-        for _ in 0..<2 {
-            self.appsMocked.append(SingleApp(title: strings.singleAppTitle, isMoreButton: false))
-        }
-        self.appsMocked.append(SingleApp(title: selectedPaymentProvider?.name ?? "", image: bankImageIcon, isMoreButton: false))
-        self.appsMocked.append(SingleApp(title: strings.singleAppTitle, isMoreButton: false))
-        self.appsMocked.append(SingleApp(title: strings.singleAppMore, image: configuration.moreIcon, isMoreButton: true))
+        continueButtonText = strings.continueLabelText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
     }
     
     func didTapOnContinue() {

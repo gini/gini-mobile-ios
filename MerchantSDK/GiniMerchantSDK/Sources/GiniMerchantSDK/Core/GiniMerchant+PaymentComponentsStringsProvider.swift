@@ -64,20 +64,20 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
     
     public var shareInvoiceStrings: ShareInvoiceStrings {
         ShareInvoiceStrings(
-            tipActionablePartText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.tip.underlined.part",
-                                                                    comment: "Text for tip actionable part from the label"),
             continueLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.continue.button.text",
                                                                 comment: "Title label used for the Continue button"),
-            singleAppTitle: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.app",
-                                                             comment: "Text for the sigle App"),
-            singleAppMore: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.more",
-                                                            comment: "Text for the single App more"),
             titleTextPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.title",
                                                                comment: "Share Invoice Bottom sheet title"),
             descriptionTextPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.description",
                                                                      comment: "Text description for share bottom sheet"),
-            tipLabelPattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.bottom.sheet.tip.description",
-                                                              comment: "Text for tip label")
+            recipientLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.recipient.placeholder",
+                                                                 comment: "placeholder text for recipient input field"),
+            amountLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.amount.placeholder",
+                                                              comment: "placeholder text for amount input field"),
+            ibanLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder",
+                                                            comment: "placeholder text for iban input field"),
+            purposeLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
+                                                               comment: "placeholder text for usage input field")
         )
     }
     

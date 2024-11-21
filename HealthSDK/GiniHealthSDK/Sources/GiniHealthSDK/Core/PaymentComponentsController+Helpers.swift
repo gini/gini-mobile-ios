@@ -290,18 +290,19 @@ extension PaymentComponentsController {
      - Parameter documentId: An optional identifier for the document associated with the invoice.
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
-    public func shareInvoiceBottomSheet() -> BottomSheetViewController {
+    public func shareInvoiceBottomSheet(qrCodeData: Data) -> BottomSheetViewController {
         previousPresentedView.removeAll()
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
                                                                       strings: stringsProvider.shareInvoiceStrings,
                                                                       primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
                                                                       poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                                      poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                                      poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                                      qrCodeData: qrCodeData,
+                                                                      paymentInfo: paymentInfo)
         shareInvoiceBottomViewModel.viewDelegate = self
         shareInvoiceBottomViewModel.documentId = documentId
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
-        incrementOnboardingCountFor(paymentProvider: selectedPaymentProvider)
         return shareInvoiceBottomView
     }
     
@@ -328,11 +329,6 @@ extension PaymentComponentsController {
     }
     
     // MARK: - Other helpers
-    private func incrementOnboardingCountFor(paymentProvider: PaymentProvider?) {
-        var onboardingCounts = OnboardingShareInvoiceScreenCount.load()
-        onboardingCounts.incrementPresentationCount(forProvider: paymentProvider?.name)
-    }
-
     func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(paymentInfoDissapeared), name: .paymentInfoDissapeared, object: nil)
     }
@@ -484,17 +480,6 @@ extension PaymentComponentsController {
                 viewController.present(activityViewController, animated: true, completion: nil)
             }
         }
-    }
-
-    /**
-     Determines if the onboarding screen should be shown based on the presentation count for the selected payment provider.
-
-     - Returns: A Boolean value indicating whether the onboarding screen should be displayed.
-     */
-    public func shouldShowOnboardingScreenFor() -> Bool {
-        let onboardingCounts = OnboardingShareInvoiceScreenCount.load()
-        let count = onboardingCounts.presentationCount(forProvider: selectedPaymentProvider?.name)
-        return count < Constants.numberOfTimesOnboardingShareScreenShouldAppear
     }
 
     // MARK: - Payment Review Screen functions
@@ -661,19 +646,16 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         if GiniHealthConfiguration.shared.showPaymentReviewScreen || !GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
             loadPaymentReviewScreenFor(trackingDelegate: self) { [weak self] viewController, error in
                 if let error = error {
-                    self?.errors.append(error.localizedDescription)
-                    self?.showErrorsIfAny()
+                    self?.handleError(error)
                 } else if let viewController = viewController {
                     self?.presentOrPushPaymentReviewScreen(viewController)
                 }
             }
         } else {
             if supportsOpenWith() {
-                if shouldShowOnboardingScreenFor() {
-                    presentShareInvoiceBottomSheet(documentId: documentId)
-                } else {
-                    guard let paymentInfo else { return }
-                    handleDismissalAndPDFURL(paymentInfo: paymentInfo)
+                guard let paymentInfo else { return }
+                createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
+                    self?.handlePaymentRequestResult(result)
                 }
             } else if supportsGPC() {
                 if canOpenPaymentProviderApp() {
@@ -706,10 +688,21 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         }
     }
     
-    private func presentShareInvoiceBottomSheet(documentId: String?) {
-        let shareInvoiceBottomSheet = shareInvoiceBottomSheet()
-        shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
-        self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
+    public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {
+        self.paymentInfo = paymentInfo
+        giniSDK.paymentService.qrCodeImage(paymentRequestId: paymentRequestId) { [weak self] result in
+            switch result {
+            case .success(let image):
+                DispatchQueue.main.async {
+                    let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet(qrCodeData: image)
+                    shareInvoiceBottomSheet?.modalPresentationStyle = .overFullScreen
+                    guard let shareInvoiceBottomSheet else { return }
+                    self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
+                }
+            case .failure(let error):
+                self?.handleError(error)
+            }
+        }
     }
     
     private func handleDismissalAndPDFURL(paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {
@@ -730,8 +723,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             case .success(let paymentRequestID):
                 self?.handleSuccessfulPaymentRequest(paymentRequestID: paymentRequestID)
             case .failure(let error):
-                self?.errors.append(error.localizedDescription)
-                self?.showErrorsIfAny()
+                self?.handleError(error)
             }
         }
     }
@@ -771,19 +763,53 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     func showErrorAlertView(error: String) {
         if navigationControllerProvided?.presentedViewController != nil {
             self.navigationControllerProvided?.presentedViewController?.dismiss(animated: true, completion: {
-                self.presentAlerViewController(error: error)
+                self.presentAlertViewController(error: error)
             })
         } else {
-            presentAlerViewController(error: error)
+            presentAlertViewController(error: error)
         }
     }
 
-    private func presentAlerViewController(error: String) {
-        let alertController = UIAlertController(title: "Error test",
+    private func presentAlertViewController(error: String) {
+        let alertController = UIAlertController(title: "Error",
                                                 message: error,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))
         self.navigationControllerProvided?.present(alertController, animated: true)
+    }
+    
+    private func handlePaymentRequestResult(_ result: Result<String, GiniHealthAPILibrary.GiniError>) {
+        switch result {
+        case .success(let paymentRequestId):
+            fetchQRCodeImage(for: paymentRequestId)
+        case .failure(let error):
+            handleError(error)
+        }
+    }
+
+    private func fetchQRCodeImage(for paymentRequestId: String) {
+        giniSDK.paymentService.qrCodeImage(paymentRequestId: paymentRequestId) { [weak self] result in
+            switch result {
+            case .success(let image):
+                self?.presentShareInvoiceBottomSheet(with: image)
+            case .failure(let error):
+                self?.handleError(error)
+            }
+        }
+    }
+
+    private func presentShareInvoiceBottomSheet(with qrCodeData: Data) {
+        DispatchQueue.main.async { [weak self] in
+            let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet(qrCodeData: qrCodeData)
+            shareInvoiceBottomSheet?.modalPresentationStyle = .overFullScreen
+            guard let shareInvoiceBottomSheet else { return }
+            self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
+        }
+    }
+
+    private func handleError(_ error: Error) {
+        errors.append(error.localizedDescription)
+        showErrorsIfAny()
     }
 }
 

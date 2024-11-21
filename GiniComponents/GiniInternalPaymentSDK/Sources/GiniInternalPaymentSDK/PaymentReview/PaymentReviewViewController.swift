@@ -168,16 +168,18 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             }
             createPaymentRequest()
         } else if delegate.supportsOpenWith() {
-            if delegate.shouldShowOnboardingScreenFor() {
-                model.openOnboardingShareInvoiceBottomSheet(documentId: model.documentId)
-            } else {
-                obtainPDFFromPaymentRequest()
+            if !paymentInfoContainerView.isTextFieldEmpty(textFieldType: .amountFieldTag) {
+                let paymentInfo = paymentInfoContainerView.obtainPaymentInfo()
+                model.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
+                    self?.model.openOnboardingShareInvoiceBottomSheet(paymentRequestId: requestId, paymentInfo: paymentInfo)
+                })
+                sendFeedback(paymentInfo: paymentInfo)
             }
         }
     }
 
     func createPaymentRequest() {
-        if !paymentInfoContainerView.isTextFieldEmpty(texFieldType: .amountFieldTag) {
+        if !paymentInfoContainerView.isTextFieldEmpty(textFieldType: .amountFieldTag) {
             let paymentInfo = paymentInfoContainerView.obtainPaymentInfo()
             model.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
                 self?.model.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)

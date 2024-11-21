@@ -26,6 +26,12 @@ public enum APIDomain {
     
 }
 
+enum MimeSubtype: String {
+    case pdf = "qr+pdf"
+    case png = "qr+png"
+    case json = "json"
+}
+
 struct APIResource<T: Decodable>: Resource {
     var fullUrlString: String?
     
@@ -104,39 +110,54 @@ struct APIResource<T: Decodable>: Resource {
             return urlString
         case .payment(let id):
             return "/paymentRequests/\(id)/payment"
-        case .pdfWithQRCode(paymentRequestId: let paymentRequestId):
+        case .pdfWithQRCode(let paymentRequestId, _):
             return "/paymentRequests/\(paymentRequestId)"
         }
     }
     
     var defaultHeaders: HTTPHeaders {
+        // Define common headers
+        let acceptHeader = ["Accept": ContentType.content(
+            version: apiVersion,
+            subtype: nil,
+            mimeSubtype: MimeSubtype.json.rawValue
+        ).value]
+
+        // Helper method to construct Content-Type header
+        func contentTypeHeader(subtype: String?, mimeSubtype: String) -> HTTPHeaders {
+            return ["Content-Type": ContentType.content(
+                version: apiVersion,
+                subtype: subtype,
+                mimeSubtype: mimeSubtype
+            ).value]
+        }
+
         switch method {
-        case .createDocument(_, _, let mimeSubType, let documentType):
-            return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: nil,
-                                                  mimeSubtype: "json").value,
-                    "Content-Type": ContentType.content(version: apiVersion,
-                                                        subtype: documentType?.name,
-                                                        mimeSubtype: mimeSubType).value
-            ]
-        case .file(_):
-            return [:]
-        case .paymentProviders, .paymentProvider(_), .paymentRequests(_, _) :
-        return ["Accept": ContentType.content(version: apiVersion,
-                                              subtype: nil,
-                                              mimeSubtype: "json").value]
-        case .pdfWithQRCode(_):
-            return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: nil,
-                                                  mimeSubtype: "qr+pdf").value]
-        default:
-            return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: nil,
-                                                  mimeSubtype: "json").value,
-                    "Content-Type": ContentType.content(version: apiVersion,
-                                                         subtype: nil,
-                                                         mimeSubtype: "json").value
-            ]
+            case .createDocument(_, _, let mimeSubType, let documentType):
+                return acceptHeader.merging(contentTypeHeader(
+                    subtype: documentType?.name,
+                    mimeSubtype: mimeSubType.rawValue
+                )) { _, new in new }
+
+            case .file(_):
+                return [:]
+
+            case .paymentProviders, .paymentProvider(_), .paymentRequests(_, _):
+                return acceptHeader
+
+            case .pdfWithQRCode(_, let mimeSubtype):
+                return ["Accept": ContentType.content(
+                    version: apiVersion,
+                    subtype: nil,
+                    mimeSubtype: mimeSubtype.rawValue
+                ).value]
+
+            default:
+                // Default headers for other cases
+                return acceptHeader.merging(contentTypeHeader(
+                    subtype: nil,
+                    mimeSubtype: MimeSubtype.json.rawValue
+                )) { _, new in new }
         }
     }
     

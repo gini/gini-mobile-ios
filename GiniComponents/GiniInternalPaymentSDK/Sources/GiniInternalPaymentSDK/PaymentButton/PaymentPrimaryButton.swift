@@ -34,6 +34,15 @@ public final class PaymentPrimaryButton: UIView {
         return imageView
     }()
     
+    private lazy var rightImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.frame = CGRect(x: 0, y: 0, width: Constants.bankIconSize, height: Constants.bankIconSize)
+        return imageView
+    }()
+    
+    private var trailingConstraint: NSLayoutConstraint?
+    
     public init() {
         super.init(frame: .zero)
         addSubview(contentView)
@@ -46,6 +55,7 @@ public final class PaymentPrimaryButton: UIView {
     }
     
     private func setupConstraints() {
+        trailingConstraint = contentView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor)
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -53,8 +63,8 @@ public final class PaymentPrimaryButton: UIView {
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
             contentView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             contentView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor)
         ])
+        trailingConstraint?.isActive = true
     }
         
     private func setupLeftImageConstraints() {
@@ -62,6 +72,15 @@ public final class PaymentPrimaryButton: UIView {
         leftImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         leftImageView.widthAnchor.constraint(equalToConstant: leftImageView.frame.width).isActive = true
         leftImageView.heightAnchor.constraint(equalToConstant: leftImageView.frame.height).isActive = true
+    }
+    
+    private func setupRightImageConstraints() {
+        rightImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.contentTrailingPadding).isActive = true
+        rightImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        rightImageView.widthAnchor.constraint(equalToConstant: rightImageView.frame.width).isActive = true
+        rightImageView.heightAnchor.constraint(equalToConstant: rightImageView.frame.height).isActive = true
+        trailingConstraint?.isActive = false
+        titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -(Constants.contentTrailingPadding + Constants.bankIconSize)).isActive = true
     }
         
     @objc private func tapOnPayInvoiceView() {
@@ -80,18 +99,31 @@ public extension PaymentPrimaryButton {
         self.titleLabel.font = configuration.titleFont
     }
     
-    func customConfigure(text: String, textColor: UIColor?, backgroundColor: UIColor?, leftImageData: Data? = nil) {
+    func customConfigure(text: String,
+                         textColor: UIColor?,
+                         backgroundColor: UIColor?,
+                         leftImageData: Data? = nil,
+                         rightImageData: Data? = nil) {
         contentView.backgroundColor = backgroundColor
         contentView.isUserInteractionEnabled = true
         
         titleLabel.text = text
         titleLabel.textColor = textColor
-        // Left image appears only on Payment Review Screen
+        
+        // Configure left image if provided
         if let leftImageData {
             contentView.addSubview(leftImageView)
             setupLeftImageConstraints()
             leftImageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
             leftImageView.image = UIImage(data: leftImageData)
+        }
+        
+        // Configure right image if provided
+        if let rightImageData {
+            contentView.addSubview(rightImageView)
+            setupRightImageConstraints()
+            rightImageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
+            rightImageView.image = UIImage(data: rightImageData)
         }
     }
 }
@@ -101,5 +133,6 @@ extension PaymentPrimaryButton {
         static let bankIconSize: CGFloat = 36
         static let bankIconCornerRadius: CGFloat = 8
         static let contentLeadingPadding: CGFloat = 19
+        static let contentTrailingPadding: CGFloat = 8
     }
 }

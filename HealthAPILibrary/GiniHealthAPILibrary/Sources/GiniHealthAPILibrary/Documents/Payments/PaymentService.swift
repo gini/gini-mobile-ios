@@ -122,6 +122,21 @@ public final class PaymentService: PaymentServiceProtocol {
     public func pdfWithQRCode(paymentRequestId: String,
                                completion: @escaping CompletionResult<Data>){
         pdfWithQRCode(paymentRequestId: paymentRequestId,
+                      mimeSubtype: .pdf,
+                      resourceHandler: sessionManager.data,
+                      completion: completion)
+    }
+    
+    /**
+     *  Returns a QR Code image with a payment request in PNG format.
+     *
+     * - Parameter paymentRequestId: The payment request's unique identifier.
+     * - Parameter completion:       A completion callback, returning the QR Code image in PNG format on success.
+     */
+    public func qrCodeImage(paymentRequestId: String,
+                            completion: @escaping CompletionResult<Data>) {
+        pdfWithQRCode(paymentRequestId: paymentRequestId,
+                      mimeSubtype: .png,
                       resourceHandler: sessionManager.data,
                       completion: completion)
     }
@@ -358,10 +373,12 @@ extension PaymentService {
     }
 
     func pdfWithQRCode(paymentRequestId: String,
+                       mimeSubtype: MimeSubtype,
                        resourceHandler: ResourceDataHandler<APIResource<Data>>,
                        completion: @escaping CompletionResult<Data>) {
-        let resource = APIResource<Data>(method: .pdfWithQRCode(paymentRequestId: paymentRequestId),
-                                         apiDomain: apiDomain, 
+        let resource = APIResource<Data>(method: .pdfWithQRCode(paymentRequestId: paymentRequestId,
+                                                                mimeSubtype: mimeSubtype),
+                                         apiDomain: apiDomain,
                                          apiVersion: apiVersion,
                                          httpMethod: .get)
         resourceHandler(resource, { result in

@@ -64,20 +64,20 @@ extension GiniHealth: PaymentComponentsStringsProvider {
 
     public var shareInvoiceStrings: ShareInvoiceStrings {
         ShareInvoiceStrings(
-            tipActionablePartText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.share.invoice.bottom.sheet.tip.underlined.part",
-                                                                    comment: "Text for tip actionable part from the label"),
             continueLabelText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text",
                                                                 comment: "Title label used for the Continue button"),
-            singleAppTitle: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.share.invoice.bottom.sheet.app",
-                                                             comment: "Text for the sigle App"),
-            singleAppMore: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.share.invoice.bottom.sheet.more",
-                                                            comment: "Text for the single App more"),
             titleTextPattern: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.share.invoice.bottom.sheet.title",
                                                                comment: "Share Invoice Bottom sheet title"),
             descriptionTextPattern: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.share.invoice.bottom.sheet.description",
                                                                      comment: "Text description for share bottom sheet"),
-            tipLabelPattern: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.share.invoice.bottom.sheet.tip.description",
-                                                              comment: "Text for tip label")
+            recipientLabelText: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.recipient.placeholder",
+                                                                 comment: "placeholder text for recipient input field"),
+            amountLabelText: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.amount.placeholder",
+                                                              comment: "placeholder text for amount input field"),
+            ibanLabelText: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.iban.placeholder",
+                                                            comment: "placeholder text for iban input field"),
+            purposeLabelText: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.usage.placeholder",
+                                                               comment: "placeholder text for usage input field")
         )
     }
 
