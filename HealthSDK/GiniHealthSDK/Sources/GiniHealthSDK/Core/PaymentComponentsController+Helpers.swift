@@ -771,8 +771,8 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     }
 
     private func presentAlertViewController(error: String) {
-        let alertController = UIAlertController(title: "Error",
-                                                message: error,
+        let alertController = UIAlertController(title: NSLocalizedStringPreferredFormat("gini.health.errors.default", comment: ""),
+                                                message: "",
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))
         self.navigationControllerProvided?.present(alertController, animated: true)

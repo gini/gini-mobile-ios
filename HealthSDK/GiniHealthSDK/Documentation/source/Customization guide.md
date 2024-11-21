@@ -18,7 +18,7 @@ We provide a global color palette `GiniColors.xcassets` which you are free to ov
 For example, if you want to override Accent01 color you need to create an Accent01.colorset with your wished value in your main bundle.
 The custom colors are then applied to all screens.
 
-Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8905-975&t=vNb6FqqGtzIAVdJl-1)).
+Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation)).
 
 ### Images
 

@@ -100,20 +100,20 @@ Here you can optain the paymentRequestId and check the payment status:
 
 ```swift
 func processBankUrl(url: URL) {
-        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
-        if let queryItems = components.queryItems {
-            if let paymentRequestId = queryItems.first(where: { $0.name == "paymentRequestId" })?.value {
-                health.getPaymentRequest(by: paymentRequestId) { [weak self] result in
-                    switch result {
-                    case .success(let paymentRequest):
-                        print("paymentStatus: \(PaymentStatus(rawValue: paymentRequest.status))")
-                    case .failure(let error):
-                        print("Failed to retrieve payment request: \(error.localizedDescription)")
-                    }
+    guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
+    if let queryItems = components.queryItems {
+        if let paymentRequestId = queryItems.first(where: { $0.name == "paymentRequestId" })?.value {
+            health.getPaymentRequest(by: paymentRequestId) { [weak self] result in
+                switch result {
+                case .success(let paymentRequest):
+                    print("paymentStatus: \(PaymentStatus(rawValue: paymentRequest.status))")
+                case .failure(let error):
+                    print("Failed to retrieve payment request: \(error.localizedDescription)")
                 }
             }
         }
     }
+}
 ```
 
 With these steps completed you have verified that your app, the Gini Health API, the Gini Health SDK and the Gini
