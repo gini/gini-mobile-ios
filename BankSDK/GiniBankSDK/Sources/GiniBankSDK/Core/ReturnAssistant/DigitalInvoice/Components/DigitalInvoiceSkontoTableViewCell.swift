@@ -51,6 +51,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         button.setTitle(title, for: .normal)
         button.setTitleColor(.GiniBank.accent1, for: .normal)
         button.titleLabel?.font = GiniBankConfiguration.shared.textStyleFonts[.body]
+        button.contentHorizontalAlignment = .left
         return button
     }()
 
@@ -98,7 +99,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     // MARK: - Setup Methods
     private func setupViews() {
         selectionStyle = .none
-        backgroundColor = .giniColorScheme().background.secondary.uiColor()
+        backgroundColor = .giniColorScheme().container.background.uiColor()
         clipsToBounds = true
         layer.cornerRadius = 8
         layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
@@ -115,7 +116,8 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
                                                constant: Constants.stackViewVerticalSpacing),
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
                                                   constant: -Constants.stackViewVerticalSpacing),
-            titleLabel.heightAnchor.constraint(greaterThanOrEqualTo: toggleSwitch.heightAnchor)
+            titleLabel.heightAnchor.constraint(greaterThanOrEqualTo: toggleSwitch.heightAnchor),
+            editButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.editButtonMinWidth)
         ])
     }
 
@@ -166,5 +168,6 @@ private extension DigitalInvoiceSkontoTableViewCell {
         static let toggleSwitchSpacing: CGFloat = 16.0
         static let labelsEditButtonSpacing: CGFloat = 12.0
         static let stackViewVerticalSpacing: CGFloat = 16.0
+        static let editButtonMinWidth: CGFloat = 80.0
     }
 }
