@@ -193,8 +193,26 @@ class OnboardingViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        pagesCollection.collectionViewLayout.invalidateLayout()
+
+        // Calculate the current visible page index
+        let visiblePageIndex = Int(round(pagesCollection.contentOffset.x / pagesCollection.bounds.width))
+
         dataSource.isProgrammaticScroll = true
+        // Invalidate layout before the rotation begins
+        pagesCollection.collectionViewLayout.invalidateLayout()
+
+        // Use the coordinator to synchronize your changes with the system's rotation animation
+        coordinator.animate(alongsideTransition: { _ in
+            // Perform adjustments within the animation block to avoid jumps or flickers
+            UIView.performWithoutAnimation {
+                // Update the collection view's offset for the new orientation
+                let newOffset = CGPoint(x: CGFloat(visiblePageIndex) * size.width, y: 0)
+                self.pagesCollection.setContentOffset(newOffset, animated: false)
+            }
+        }) { _ in
+            // Reset the flag after the transition completes
+            self.dataSource.isProgrammaticScroll = false
+        }
     }
 
     override func viewWillLayoutSubviews() {

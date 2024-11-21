@@ -75,16 +75,16 @@ class IntegrationTests: XCTestCase {
     }
     
     func testResolvePaymentRequest(){
-        let expect = expectation(description: "it resolves the payment request")
+        let message = "You can't resolve the previously resolved payment request"
+        let expect = expectation(description: message)
 
         let paymentService = giniBankAPILib.paymentService()
         paymentService.resolvePaymentRequest(id: paymentRequestID, recipient: "Dr. med. Hackler", iban: "DE13760700120500154000", bic: "", amount: "335.50:EUR", purpose: "ReNr AZ356789Z"){ result in
             switch result {
             case .success(let resolvedRequest):
-                XCTAssertEqual(resolvedRequest.links?.payment, "https://pay-api.gini.net/paymentRequests/a6466506-acf1-4896-94c8-9b398d4e0ee1/payment")
-                expect.fulfill()
+                XCTFail(message)
             case .failure(let error):
-                XCTFail(String(describing: error))
+                expect.fulfill()
             }
         }
         wait(for: [expect], timeout: 10)
