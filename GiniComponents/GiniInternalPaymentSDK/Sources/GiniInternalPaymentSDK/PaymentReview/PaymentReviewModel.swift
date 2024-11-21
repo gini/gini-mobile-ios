@@ -201,8 +201,8 @@ public class PaymentReviewModel: NSObject {
         viewModelDelegate?.presentInstallAppBottomSheet(bottomSheet: installAppBottomSheet)
     }
 
-    func openOnboardingShareInvoiceBottomSheet(paymentRquestId: String, paymentInfo: PaymentInfo) {
-        delegate?.presentShareInvoiceBottomSheet(paymentRequestId: paymentRquestId, paymentInfo: paymentInfo)
+    func openOnboardingShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: PaymentInfo) {
+        delegate?.presentShareInvoiceBottomSheet(paymentRequestId: paymentRequestId, paymentInfo: paymentInfo)
     }
 
     func openBankSelectionBottomSheet() {
