@@ -193,8 +193,6 @@ extension OrderDetailViewController: GiniHealthTrackingDelegate {
         switch event.type {
         case .onToTheBankButtonClicked:
             GiniUtilites.Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
-        case .onCloseButtonClicked:
-            GiniUtilites.Log("Close screen was triggered", event: .success)
         case .onCloseKeyboardButtonClicked:
             GiniUtilites.Log("Close keyboard was triggered", event: .success)
         }
