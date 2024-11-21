@@ -675,10 +675,6 @@ extension PaymentComponentsController: InstallAppBottomViewProtocol {
 }
 
 extension PaymentComponentsController: PaymentReviewProtocol {
-    public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {
-        //
-    }
-    
     /**
      Submits feedback for the specified document and its updated extractions. Method used to update the information extracted from a document.
 
@@ -810,6 +806,8 @@ extension PaymentComponentsController: PaymentReviewProtocol {
     public func openMoreInformationViewController() {
         viewDelegate?.didTapOnMoreInformation()
     }
+    
+    public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {}
 }
 
 extension PaymentComponentsController {
