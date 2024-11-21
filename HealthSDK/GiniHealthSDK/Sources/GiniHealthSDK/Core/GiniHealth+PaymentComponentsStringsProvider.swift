@@ -57,7 +57,7 @@ extension GiniHealth: PaymentComponentsStringsProvider {
                                                                         comment: "Text for tip information label"),
             moreInformationNotePattern: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.install.app.bottom.sheet.notes.description",
                                                                          comment: "Text for notes information label"),
-            continueLabelText: NSLocalizedStringPreferredFormat("c",
+            continueLabelText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.install.app.bottom.sheet.continue.button.text",
                                                                 comment: "Title label used for the Continue button")
         )
     }
