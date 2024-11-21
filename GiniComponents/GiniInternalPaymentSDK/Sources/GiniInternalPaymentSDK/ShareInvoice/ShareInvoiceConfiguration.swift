@@ -12,81 +12,57 @@ public struct ShareInvoiceConfiguration {
     public let descriptionFont: UIFont
     public let descriptionTextColor: UIColor
     public let descriptionAccentColor: UIColor
-    public let tipIcon: UIImage
-    public let tipFont: UIFont
-    public let tipLinkFont: UIFont
-    public let tipAccentColor: UIColor
-    public let tipTextColor: UIColor
-    public let moreIcon: UIImage
-    public let bankIconBorderColor: UIColor
-    public let appsBackgroundColor: UIColor
-
-    public let singleAppTitleFont: UIFont
-    public let singleAppTitleColor: UIColor
-    public let singleAppIconBorderColor: UIColor
-    public let singleAppIconBackgroundColor: UIColor
+    public let paymentInfoBorderColor: UIColor
+    public let titlePaymentInfoTextColor: UIColor
+    public let titlePaymentInfoFont: UIFont
+    public let subtitlePaymentInfoTextColor: UIColor
+    public let subtitlePaymentInfoFont: UIFont
 
     public init(titleFont: UIFont,
                 titleAccentColor: UIColor,
                 descriptionFont: UIFont,
                 descriptionTextColor: UIColor,
                 descriptionAccentColor: UIColor,
-                tipIcon: UIImage,
-                tipFont: UIFont,
-                tipLinkFont: UIFont,
-                tipAccentColor: UIColor,
-                tipTextColor: UIColor,
-                moreIcon: UIImage,
-                bankIconBorderColor: UIColor,
-                appsBackgroundColor: UIColor,
-                singleAppTitleFont: UIFont,
-                singleAppTitleColor: UIColor,
-                singleAppIconBorderColor: UIColor,
-                singleAppIconBackgroundColor: UIColor) {
+                paymentInfoBorderColor: UIColor,
+                titlePaymentInfoTextColor: UIColor,
+                subtitlePaymentInfoTextColor: UIColor,
+                titlepaymentInfoFont: UIFont,
+                subtitlePaymentInfoFont: UIFont) {
         self.titleFont = titleFont
         self.titleAccentColor = titleAccentColor
         self.descriptionFont = descriptionFont
         self.descriptionTextColor = descriptionTextColor
         self.descriptionAccentColor = descriptionAccentColor
-        self.tipIcon = tipIcon
-        self.tipFont = tipFont
-        self.tipLinkFont = tipLinkFont
-        self.tipAccentColor = tipAccentColor
-        self.tipTextColor = tipTextColor
-        self.moreIcon = moreIcon
-        self.bankIconBorderColor = bankIconBorderColor
-        self.appsBackgroundColor = appsBackgroundColor
-        self.singleAppTitleFont = singleAppTitleFont
-        self.singleAppTitleColor = singleAppTitleColor
-        self.singleAppIconBorderColor = singleAppIconBorderColor
-        self.singleAppIconBackgroundColor = singleAppIconBackgroundColor
+        self.paymentInfoBorderColor = paymentInfoBorderColor
+        self.titlePaymentInfoTextColor = titlePaymentInfoTextColor
+        self.subtitlePaymentInfoTextColor = subtitlePaymentInfoTextColor
+        self.titlePaymentInfoFont = titlepaymentInfoFont
+        self.subtitlePaymentInfoFont = subtitlePaymentInfoFont
     }
 }
 
 public struct ShareInvoiceStrings {
-    let tipActionablePartText: String
     let continueLabelText: String
-    let singleAppTitle: String
-    let singleAppMore: String
     let titleTextPattern: String
     let descriptionTextPattern: String
-    let tipLabelPattern: String
+    let recipientLabelText: String
+    let amountLabelText: String
+    let ibanLabelText: String
+    let purposeLabelText: String
 
-    public init(tipActionablePartText: String,
-                continueLabelText: String,
-                singleAppTitle: String,
-                singleAppMore: String,
+    public init(continueLabelText: String,
                 titleTextPattern: String,
                 descriptionTextPattern: String,
-                tipLabelPattern: String) {
-        self.tipActionablePartText = tipActionablePartText
+                recipientLabelText: String,
+                amountLabelText: String,
+                ibanLabelText: String,
+                purposeLabelText: String) {
         self.continueLabelText = continueLabelText
-        self.singleAppTitle = singleAppTitle
-        self.singleAppMore = singleAppMore
         self.titleTextPattern = titleTextPattern
         self.descriptionTextPattern = descriptionTextPattern
-        self.tipLabelPattern = tipLabelPattern
+        self.recipientLabelText = recipientLabelText
+        self.amountLabelText = amountLabelText
+        self.ibanLabelText = ibanLabelText
+        self.purposeLabelText = purposeLabelText
     }
 }
-
-

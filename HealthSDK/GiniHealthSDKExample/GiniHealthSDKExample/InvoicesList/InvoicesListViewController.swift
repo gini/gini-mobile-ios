@@ -116,7 +116,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
             return UITableViewCell()
         }
         let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
-                                                                                           paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
+                                                                                           health: viewModel.health) }[indexPath.row]
         cell.cellViewModel = invoiceTableViewCellModel
         cell.action = { [weak self] in
             self?.tapOnAction(documentID: self?.viewModel.invoices[indexPath.row].documentId ?? "")

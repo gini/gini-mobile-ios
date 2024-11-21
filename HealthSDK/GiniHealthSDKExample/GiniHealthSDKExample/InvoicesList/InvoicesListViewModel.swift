@@ -19,6 +19,7 @@ struct DocumentWithExtractions: Codable {
     var hasMultipleDocuments: Bool?
     var doctorName: String?
     var iban: String?
+    var purpose: String?
 
     init(documentId: String, extractionResult: GiniHealthSDK.ExtractionResult) {
         self.documentId = documentId
@@ -29,6 +30,7 @@ struct DocumentWithExtractions: Codable {
         self.hasMultipleDocuments = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value == true.description
         self.doctorName = extractionResult.extractions.first(where: { $0.name == ExtractionType.doctorName.rawValue })?.value
         self.iban = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.iban.rawValue })?.value
+        self.purpose = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.paymentPurpose.rawValue })?.value
     }
 }
 
@@ -38,7 +40,7 @@ final class InvoicesListViewModel {
     private var documentService: GiniHealthSDK.DefaultDocumentService
 
     private let hardcodedInvoicesController: HardcodedInvoicesControllerProtocol
-    var paymentComponentsController: PaymentComponentsController
+    var health: GiniHealth
     private let giniHealthConfiguration = GiniHealthConfiguration.shared
 
     var invoices: [DocumentWithExtractions]
@@ -65,13 +67,13 @@ final class InvoicesListViewModel {
          invoices: [DocumentWithExtractions]? = nil,
          documentService: GiniHealthSDK.DefaultDocumentService,
          hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
-         paymentComponentsController: PaymentComponentsController) {
+         health: GiniHealth) {
         self.coordinator = coordinator
         self.hardcodedInvoicesController = hardcodedInvoicesController
         self.invoices = invoices ?? hardcodedInvoicesController.getInvoicesWithExtractions()
         self.documentService = documentService
-        self.paymentComponentsController = paymentComponentsController
-        self.paymentComponentsController.delegate = self
+        self.health = health
+        self.health.paymentDelegate = self
     }
     
     func viewDidLoad() {}
@@ -207,7 +209,7 @@ extension InvoicesListViewModel {
     func didTapOnOpenFlow(documentId: String?) {
         documentIdToRefetch = documentId
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
-        paymentComponentsController.startPaymentFlow(documentId: documentId, paymentInfo: obtainPaymentInfo(for: documentId), navigationController: self.coordinator.invoicesListNavigationController, trackingDelegate: self)
+        health.startPaymentFlow(documentId: documentId, paymentInfo: obtainPaymentInfo(for: documentId), navigationController: self.coordinator.invoicesListNavigationController, trackingDelegate: self)
     }
 
     private func obtainPaymentInfo(for documentId: String?) -> PaymentInfo? {
@@ -218,9 +220,9 @@ extension InvoicesListViewModel {
                            iban: invoices[index].iban ?? "",
                            bic: "",
                            amount: invoices[index].amountToPay ?? "",
-                           purpose: "",
-                           paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
-                           paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
+                           purpose: invoices[index].purpose ?? "",
+                           paymentUniversalLink: health.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
+                           paymentProviderId: health.paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
 }
 

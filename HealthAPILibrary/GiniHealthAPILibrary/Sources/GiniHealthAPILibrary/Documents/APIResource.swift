@@ -26,6 +26,12 @@ public enum APIDomain {
     
 }
 
+enum MimeSubtype: String {
+    case pdf = "qr+pdf"
+    case png = "qr+png"
+    case json = "json"
+}
+
 struct APIResource<T: Decodable>: Resource {
     var fullUrlString: String?
     
@@ -104,7 +110,7 @@ struct APIResource<T: Decodable>: Resource {
             return urlString
         case .payment(let id):
             return "/paymentRequests/\(id)/payment"
-        case .pdfWithQRCode(paymentRequestId: let paymentRequestId):
+        case .pdfWithQRCode(let paymentRequestId, _):
             return "/paymentRequests/\(paymentRequestId)"
         }
     }
@@ -114,28 +120,28 @@ struct APIResource<T: Decodable>: Resource {
         case .createDocument(_, _, let mimeSubType, let documentType):
             return ["Accept": ContentType.content(version: apiVersion,
                                                   subtype: nil,
-                                                  mimeSubtype: "json").value,
+                                                  mimeSubtype: MimeSubtype.json.rawValue).value,
                     "Content-Type": ContentType.content(version: apiVersion,
                                                         subtype: documentType?.name,
-                                                        mimeSubtype: mimeSubType).value
+                                                        mimeSubtype: mimeSubType.rawValue).value
             ]
         case .file(_):
             return [:]
         case .paymentProviders, .paymentProvider(_), .paymentRequests(_, _) :
         return ["Accept": ContentType.content(version: apiVersion,
                                               subtype: nil,
-                                              mimeSubtype: "json").value]
-        case .pdfWithQRCode(_):
+                                              mimeSubtype: MimeSubtype.json.rawValue).value]
+        case .pdfWithQRCode(_, let mimeSubtype):
             return ["Accept": ContentType.content(version: apiVersion,
                                                   subtype: nil,
-                                                  mimeSubtype: "qr+pdf").value]
+                                                  mimeSubtype: mimeSubtype.rawValue).value]
         default:
             return ["Accept": ContentType.content(version: apiVersion,
                                                   subtype: nil,
-                                                  mimeSubtype: "json").value,
+                                                  mimeSubtype: MimeSubtype.json.rawValue).value,
                     "Content-Type": ContentType.content(version: apiVersion,
                                                          subtype: nil,
-                                                         mimeSubtype: "json").value
+                                                         mimeSubtype: MimeSubtype.json.rawValue).value
             ]
         }
     }

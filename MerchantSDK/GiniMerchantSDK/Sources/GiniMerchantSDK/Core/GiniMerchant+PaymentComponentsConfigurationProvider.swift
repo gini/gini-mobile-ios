@@ -70,18 +70,11 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             descriptionFont: GiniMerchantConfiguration.shared.font(for: .captions1),
             descriptionTextColor: GiniColor.standard3.uiColor(),
             descriptionAccentColor: GiniColor.standard3.uiColor(),
-            tipIcon: GiniMerchantImage.info.preferredUIImage(),
-            tipFont: GiniMerchantConfiguration.shared.font(for: .captions1),
-            tipLinkFont: GiniMerchantConfiguration.shared.font(for: .linkBold),
-            tipAccentColor: GiniColor.standard2.uiColor(),
-            tipTextColor: GiniColor.standard4.uiColor(),
-            moreIcon: GiniMerchantImage.more.preferredUIImage(),
-            bankIconBorderColor: GiniColor.standard5.uiColor(),
-            appsBackgroundColor: GiniColor.standard6.uiColor(),
-            singleAppTitleFont: GiniMerchantConfiguration.shared.font(for: .captions2),
-            singleAppTitleColor: GiniColor.standard3.uiColor(),
-            singleAppIconBorderColor: GiniColor.standard3.uiColor(),
-            singleAppIconBackgroundColor: GiniColor(lightModeColor: .white, darkModeColor: GiniMerchantColorPalette.light3.preferredColor()).uiColor()
+            paymentInfoBorderColor: GiniColor.standard5.uiColor(),
+            titlePaymentInfoTextColor: GiniColor.standard4.uiColor(),
+            subtitlePaymentInfoTextColor: GiniColor.standard1.uiColor(),
+            titlepaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .captions2),
+            subtitlePaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .body2)
         )
     }
     

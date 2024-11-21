@@ -68,6 +68,8 @@ public struct DataForReview {
     public var paymentService: PaymentService
     /// delegate to inform about the current status of the Gini Health SDK.
     public weak var delegate: GiniHealthDelegate?
+    /// delegate to inform about the changes into PaymentComponentsController
+    public weak var paymentDelegate: PaymentComponentsControllerProtocol?
 
     private var bankProviders: [PaymentProvider] = []
 
@@ -75,6 +77,8 @@ public struct DataForReview {
     public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
                                                                                                             showPaymentComponentInOneRow: false,
                                                                                                             hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
+    
+    public var paymentComponentsController: PaymentComponentsController!
 
     /**
      Initializes a new instance of GiniHealth.
@@ -96,6 +100,9 @@ public struct DataForReview {
         self.giniApiLib = GiniHealthAPI.Builder(client: client, api: .default, logLevel: logLevel.toHealthLogLevel()).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
+        super.init()
+        self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
+        self.paymentComponentsController.delegate = self
     }
 
     /**
@@ -107,8 +114,34 @@ public struct DataForReview {
         self.giniApiLib = giniApiLib
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: .default, apiVersion: Constants.defaultVersionAPI)
+        super.init()
+        self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
     }
+    
+    /**
+         Initiates the payment flow for a specified document and payment information.
 
+         - Parameters:
+           - documentId: An optional identifier for the document associated with the payment flow.
+           - paymentInfo: An optional `PaymentInfo` object containing the payment details.
+           - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
+         
+         This method sets up the payment flow by storing the provided document ID, payment information, and navigation controller.
+         If a `selectedPaymentProvider` is available, it either presents the payment review screen or the payment view bottom sheet,
+         depending on the configuration. If no payment provider is selected, it directly presents the payment view bottom sheet.
+     */
+    public func startPaymentFlow(documentId: String?, paymentInfo: GiniHealthSDK.PaymentInfo?, navigationController: UINavigationController, trackingDelegate: GiniHealthTrackingDelegate?) {
+        paymentComponentsController.startPaymentFlow(documentId: documentId, paymentInfo: paymentInfo, navigationController: navigationController, trackingDelegate: trackingDelegate)
+    }
+    
+    /**
+     Fetches bank logos for the available payment providers.
+
+     - Returns: A tuple containing an array of logo data and the count of additional banks, if any.
+     */
+    public func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
+        return paymentComponentsController.fetchBankLogos()
+    }
     /**
      Getting a list of the installed banking apps which support Gini Pay Connect functionality.
      
@@ -466,15 +499,16 @@ public struct DataForReview {
     /**
         Retrieves a payment request by ID.
          
-        - Parameters:
-           - id: The ID of the payment request to retrieve.
-           - completion: An action for processing asynchronous data received from the service with Result type as a parameter. Result is a value that represents either a success or a failure, including an associated value in each case.
-           Completion block called on main thread.
-           In success, it includes the retrieved payment request.
-           In case of failure, error from the server side.
-         
-        */
-    public func getPaymentRequest(by id: String, completion: @escaping (Result<PaymentRequest, GiniError>) -> Void) {
+    - Parameters:
+       - id: The ID of the payment request to retrieve.
+       - completion: An action for processing asynchronous data received from the service with Result type as a parameter. Result is a value that represents either a success or a failure, including an associated value in each case.
+       Completion block called on main thread.
+       In success, it includes the retrieved payment request.
+       In case of failure, error from the server side.
+     
+    */
+    public func getPaymentRequest(by id: String,
+                                  completion: @escaping (Result<PaymentRequest, GiniError>) -> Void) {
         paymentService.paymentRequest(id: id) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -491,6 +525,18 @@ public struct DataForReview {
     public static var versionString: String {
         return GiniHealthSDKVersion
     }
+}
+
+extension GiniHealth: PaymentComponentsControllerProtocol {
+    public func isLoadingStateChanged(isLoading: Bool) {
+        paymentDelegate?.isLoadingStateChanged(isLoading: isLoading)
+    }
+    
+    public func didFetchedPaymentProviders() {
+        paymentDelegate?.didFetchedPaymentProviders()
+    }
+    
+    
 }
 
 extension GiniHealth {

@@ -11,7 +11,6 @@ import GiniUtilites
 
 protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
-    func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController)
     func presentBankSelectionBottomSheet(bottomSheet: BottomSheetViewController)
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest()
@@ -20,7 +19,7 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
 /// BottomSheetsProviderProtocol defines methods for providing custom bottom sheets.
 public protocol BottomSheetsProviderProtocol: AnyObject {
     func installAppBottomSheet() -> BottomSheetViewController
-    func shareInvoiceBottomSheet() -> BottomSheetViewController
+    func shareInvoiceBottomSheet(qrCodeData: Data) -> BottomSheetViewController
     func bankSelectionBottomSheet() -> UIViewController
 }
 
@@ -48,13 +47,13 @@ public protocol PaymentReviewTrackingProtocol {
 public protocol PaymentReviewSupportedFormatsProtocol {
     func supportsGPC() -> Bool
     func supportsOpenWith() -> Bool
-    func shouldShowOnboardingScreenFor() -> Bool
 }
 
 /// PaymentReviewActionProtocol defines actions related to payment review processes.
 public protocol PaymentReviewActionProtocol {
     func updatedPaymentProvider(_ paymentProvider: PaymentProvider)
     func openMoreInformationViewController()
+    func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: PaymentInfo)
 }
 
 /**
@@ -202,11 +201,8 @@ public class PaymentReviewModel: NSObject {
         viewModelDelegate?.presentInstallAppBottomSheet(bottomSheet: installAppBottomSheet)
     }
 
-    func openOnboardingShareInvoiceBottomSheet(documentId: String?) {
-        guard let shareInvoiceBottomSheet = bottomSheetsProvider?.shareInvoiceBottomSheet() as? ShareInvoiceBottomView else { return }
-        shareInvoiceBottomSheet.viewModel.viewDelegate = self
-        shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
-        viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: shareInvoiceBottomSheet)
+    func openOnboardingShareInvoiceBottomSheet(paymentRquestId: String, paymentInfo: PaymentInfo) {
+        delegate?.presentShareInvoiceBottomSheet(paymentRequestId: paymentRquestId, paymentInfo: paymentInfo)
     }
 
     func openBankSelectionBottomSheet() {

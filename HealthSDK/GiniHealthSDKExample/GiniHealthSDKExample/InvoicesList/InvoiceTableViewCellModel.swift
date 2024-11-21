@@ -12,12 +12,12 @@ import UIKit
 
 final class InvoiceTableViewCellModel {
     private var invoice: DocumentWithExtractions
-    private var paymentComponentsController: PaymentComponentsController
+    private var health: GiniHealth
 
     init(invoice: DocumentWithExtractions,
-         paymentComponentsController: PaymentComponentsController) {
+         health: GiniHealth) {
         self.invoice = invoice
-        self.paymentComponentsController = paymentComponentsController
+        self.health = health
     }
     
     var recipientNameText: String {
@@ -55,10 +55,10 @@ final class InvoiceTableViewCellModel {
     }
 
     var bankLogosToShow: [Data]? {
-        paymentComponentsController.fetchBankLogos().logos
+        health.fetchBankLogos().logos
     }
 
     var additionalBankNumberToShow: Int? {
-        paymentComponentsController.fetchBankLogos().additionalBankCount
+        health.fetchBankLogos().additionalBankCount
     }
 }

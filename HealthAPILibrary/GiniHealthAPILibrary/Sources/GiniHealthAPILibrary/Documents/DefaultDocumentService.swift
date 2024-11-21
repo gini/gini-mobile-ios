@@ -56,7 +56,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         case .composite(let compositeDocumentInfo):
             let resource = APIResource<String>.init(method: .createDocument(fileName: fileName,
                                                                             docType: docType,
-                                                                            mimeSubType: "json",
+                                                                            mimeSubType: .json,
                                                                             documentType: type),
                                                     apiDomain: apiDomain, 
                                                     apiVersion: apiVersion,
@@ -67,7 +67,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
         case .partial(let data):
             let resource = APIResource<String>.init(method: .createDocument(fileName: fileName,
                                                                             docType: docType,
-                                                                            mimeSubType: "json",
+                                                                            mimeSubType: .json,
                                                                             documentType: type),
                                                     apiDomain: apiDomain, 
                                                     apiVersion: apiVersion,

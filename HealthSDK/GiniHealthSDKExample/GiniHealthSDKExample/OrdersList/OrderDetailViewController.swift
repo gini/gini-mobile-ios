@@ -22,7 +22,7 @@ final class OrderDetailViewController: UIViewController {
 
     private var order: Order
 
-    private let paymentComponentsController: PaymentComponentsController
+    private let health: GiniHealth
     private let giniHealthConfiguration = GiniHealthConfiguration.shared
 
     private var errors: [String] = []
@@ -43,9 +43,9 @@ final class OrderDetailViewController: UIViewController {
         detailView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.paddingLeadingTrailing)]
     }
 
-    init(_ order: Order, paymentComponentsController: PaymentComponentsController) {
+    init(_ order: Order, health: GiniHealth) {
         self.order = order
-        self.paymentComponentsController = paymentComponentsController
+        self.health = health
         super.init(nibName: nil, bundle: nil)
 
         detailView.order = order
@@ -126,7 +126,7 @@ final class OrderDetailViewController: UIViewController {
         let paymentInfo = obtainPaymentInfo()
         if paymentInfo.isComplete && order.price.value != .zero {
             guard let navigationController else { return }
-            paymentComponentsController.startPaymentFlow(documentId: nil, paymentInfo: obtainPaymentInfo(), navigationController: navigationController, trackingDelegate: self)
+            health.startPaymentFlow(documentId: nil, paymentInfo: obtainPaymentInfo(), navigationController: navigationController, trackingDelegate: self)
         } else {
             showErrorAlertView(error: NSLocalizedString("gini.health.example.order.detail.alert.field.error", comment: ""))
         }
@@ -162,8 +162,8 @@ final class OrderDetailViewController: UIViewController {
                            bic: "",
                            amount: order.amountToPay,
                            purpose: order.purpose,
-                           paymentUniversalLink: paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
-                           paymentProviderId: paymentComponentsController.selectedPaymentProvider?.id ?? "")
+                           paymentUniversalLink: health.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
+                           paymentProviderId: health.paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
 
     private func showErrorsIfAny() {
