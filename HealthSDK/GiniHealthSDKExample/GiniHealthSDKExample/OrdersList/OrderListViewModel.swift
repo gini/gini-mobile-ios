@@ -38,6 +38,5 @@ final class OrderListViewModel {
         self.documentService = documentService
         self.health = health
     }
-    
-    func viewDidLoad() {}
+
 }

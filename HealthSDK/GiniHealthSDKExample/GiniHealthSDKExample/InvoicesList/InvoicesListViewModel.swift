@@ -76,8 +76,6 @@ final class InvoicesListViewModel {
         self.health.paymentDelegate = self
     }
     
-    func viewDidLoad() {}
-    
     func refetchExtractions() {
         guard shouldRefetchExtractions else { return }
         guard let documentIdToRefetch else { return }

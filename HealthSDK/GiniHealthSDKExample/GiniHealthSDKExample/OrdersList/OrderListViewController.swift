@@ -41,9 +41,7 @@ final class OrderListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .systemBackground
-        viewModel.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
