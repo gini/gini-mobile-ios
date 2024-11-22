@@ -45,7 +45,7 @@ private class MyAlternativeTokenSource: AlternativeTokenSource {
 
 ## Certificate pinning (optional)
 
-If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration for more information)
+If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass your public key pinning configuration as follows:
 ```swift
     private lazy var health = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain, pinningConfig: ["PinnedDomains" : ["PublicKeyHashes"]])
 ```
@@ -151,7 +151,7 @@ Initiates the payment flow for a specified document and payment information.
 ```
 
 ### Optional:
-We also provide some trust markers information for creating a subview with the banks available and the numbers of them. See Figma [here](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12906-13711&node-type=instance&t=fLL9Yl3dPpmV51U0-0)
+We also provide trust marker information for creating a subview that displays the available banks and their respective numbers. See Figma [here](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12906-13711&node-type=instance&t=fLL9Yl3dPpmV51U0-0)
 For that please call next method:
 ```swift
     let logos = health.fetchBankLogos().logos // for the first two payment providers available

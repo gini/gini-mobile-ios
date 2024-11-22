@@ -96,7 +96,7 @@ The following is an example for the url `gini-pay://payment-requester`:
     }
 ```
 
-Here you can optain the paymentRequestId and check the payment status:
+Here you can obtain the `paymentRequestId` and check the payment status:
 
 ```swift
 func processBankUrl(url: URL) {
