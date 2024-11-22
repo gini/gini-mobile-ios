@@ -146,11 +146,6 @@ public final class GiniHealthConfiguration: NSObject {
    public var customLocalization: GiniLocalization?
 
     /**
-     Set to `true` to show a close button on the payment review screen.
-     */
-    @objc public var showPaymentReviewCloseButton = false
-
-    /**
      Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
      */
     @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default

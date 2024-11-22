@@ -25,7 +25,17 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         label.font = viewModel.configuration.titleFont
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
+        label.textAlignment = .center
         return label
+    }()
+    
+    private let qrCodeView = EmptyView()
+    
+    private lazy var qrImageView: UIImageView =  {
+        let imageView = UIImageView(image: viewModel.qrCodeData.toImage)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.frame = CGRect(x: 0, y: 0, width: Constants.qrCodeImageSize, height: Constants.qrCodeImageSize)
+        return imageView
     }()
     
     private let descriptionView = EmptyView()
@@ -38,78 +48,8 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         label.font = viewModel.configuration.descriptionFont
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
+        label.textAlignment = .center
         return label
-    }()
-    
-    private lazy var appsView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = viewModel.configuration.appsBackgroundColor
-        return view
-    }()
-    
-    private lazy var appsStackView: UIStackView = {
-        let stackView = EmptyStackView().orientation(.horizontal)
-        stackView.distribution = .fillEqually
-        stackView.spacing = Constants.appsViewSpacing
-        return stackView
-    }()
-    
-    private lazy var bankIconImageView: UIImageView = {
-        let imageView = UIImageView(image: viewModel.bankImageIcon)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.frame = CGRect(x: 0, y: 0, width: Constants.bankIconSize, height: Constants.bankIconSize)
-        imageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
-        imageView.layer.borderWidth = Constants.bankIconBorderWidth
-        imageView.layer.borderColor = viewModel.configuration.bankIconBorderColor.cgColor
-        return imageView
-    }()
-    
-    private let tipView = EmptyView()
-    
-    private lazy var tipStackView: UIStackView = {
-        let stackView = EmptyStackView().orientation(.horizontal)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = Constants.viewPaddingConstraint
-        stackView.distribution = .fillProportionally
-        return stackView
-    }()
-    
-    private lazy var tipLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = viewModel.configuration.tipAccentColor
-        label.font = viewModel.configuration.tipFont
-        label.numberOfLines = 0
-        label.text = viewModel.tipLabelText
-        
-        let tipActionableAttributtedString = NSMutableAttributedString(string: viewModel.tipLabelText)
-        let tipPartString = (viewModel.tipLabelText as NSString).range(of: viewModel.strings.tipActionablePartText)
-        tipActionableAttributtedString.addAttribute(.foregroundColor,
-                                                    value: viewModel.configuration.tipAccentColor,
-                                                    range: tipPartString)
-        tipActionableAttributtedString.addAttribute(NSAttributedString.Key.underlineStyle,
-                                                    value: NSUnderlineStyle.single.rawValue,
-                                                    range: tipPartString)
-        tipActionableAttributtedString.addAttribute(NSAttributedString.Key.font,
-                                                    value: viewModel.configuration.tipLinkFont,
-                                                    range: tipPartString)
-        let tapOnMoreInformation = UITapGestureRecognizer(target: self,
-                                                          action: #selector(tapOnLabelAction(gesture:)))
-        label.isUserInteractionEnabled = true
-        label.addGestureRecognizer(tapOnMoreInformation)
-        label.attributedText = tipActionableAttributtedString
-        return label
-    }()
-    
-    private lazy var tipButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(viewModel.configuration.tipIcon, for: .normal)
-        button.tintColor = viewModel.configuration.tipAccentColor
-        button.isUserInteractionEnabled = false
-        button.imageView?.contentMode = .scaleAspectFit
-        return button
     }()
     
     private let continueView = EmptyView()
@@ -118,18 +58,31 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: viewModel.primaryButtonConfiguration)
-        button.customConfigure(text: viewModel.strings.continueLabelText,
+        button.customConfigure(text: viewModel.continueButtonText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
-                               backgroundColor: viewModel.paymentProviderColors?.background.toColor())
+                               backgroundColor: viewModel.paymentProviderColors?.background.toColor(),
+                               rightImageData: viewModel.bankImageIcon)
         return button
     }()
 
-    private let bottomView = EmptyView()
-    private let bottomStackView = EmptyStackView().orientation(.horizontal)
+    private let brandView = EmptyView()
+    private let brandStackView = EmptyStackView().orientation(.horizontal).distribution(.fillEqually)
     
     private lazy var poweredByGiniView: PoweredByGiniView = {
         PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
     }()
+    
+    private let bottomView = EmptyView()
+    private lazy var paymentInfoView: UIView = {
+        let emptyView = EmptyView()
+        emptyView.roundCorners(corners: .allCorners, radius: Constants.paymentInfoCornerRadius)
+        emptyView.layer.borderColor = viewModel.configuration.paymentInfoBorderColor.cgColor
+        emptyView.layer.borderWidth = Constants.paymentInfoBorderWidth
+        emptyView.backgroundColor = .clear
+        return emptyView
+    }()
+    
+    private lazy var paymentInfoStackView = generatePaymentInfoViews()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -152,35 +105,82 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     }
 
     private func setupViewHierarchy() {
+        // Create and configure the UIScrollView
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.bounces = true
+        
+        // Add contentStackView to the UIScrollView
+        scrollView.addSubview(contentStackView)
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Apply constraints for contentStackView
+        setupContentStackViewConstraints(in: scrollView)
+        
+        // Set up the content hierarchy
         titleView.addSubview(titleLabel)
         contentStackView.addArrangedSubview(titleView)
-        descriptionView.addSubview(descriptionLabel)
-        contentStackView.addArrangedSubview(descriptionView)
-        generateAppViews().forEach { appView in
-            appsStackView.addArrangedSubview(appView)
-        }
-        appsView.addSubview(appsStackView)
-        contentStackView.addArrangedSubview(appsView)
-        tipStackView.addArrangedSubview(tipButton)
-        tipStackView.addArrangedSubview(tipLabel)
-        tipView.addSubview(tipStackView)
-        contentStackView.addArrangedSubview(tipView)
+        
+        qrCodeView.addSubview(qrImageView)
+        contentStackView.addArrangedSubview(qrCodeView)
+        
+        brandStackView.addArrangedSubview(UIView())
+        brandStackView.addArrangedSubview(poweredByGiniView)
+        brandStackView.addArrangedSubview(UIView())
+        brandView.addSubview(brandStackView)
+        contentStackView.addArrangedSubview(brandView)
+        
         continueView.addSubview(continueButton)
         contentStackView.addArrangedSubview(continueView)
-        bottomStackView.addArrangedSubview(UIView())
-        bottomStackView.addArrangedSubview(poweredByGiniView)
-        bottomView.addSubview(bottomStackView)
+        
+        descriptionView.addSubview(descriptionLabel)
+        contentStackView.addArrangedSubview(descriptionView)
+        
+        paymentInfoView.addSubview(paymentInfoStackView)
+        bottomView.addSubview(paymentInfoView)
         contentStackView.addArrangedSubview(bottomView)
-        self.setContent(content: contentStackView)
+        
+        // Calculate and update scrollView height dynamically
+        DispatchQueue.main.async {
+            self.updateScrollViewHeight(scrollView: scrollView)
+        }
+        // Add the UIScrollView to the main container
+        self.setContent(content: scrollView)
     }
+    
+    private func setupContentStackViewConstraints(in scrollView: UIScrollView) {
+        NSLayoutConstraint.activate([
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+    }
+
+    // Function to dynamically update scrollView height
+    private func updateScrollViewHeight(scrollView: UIScrollView) {
+        // Force layout to calculate the content size
+        scrollView.layoutIfNeeded()
+        let contentHeight = contentStackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        
+        // Adjust the scrollView height
+        let scrollViewHeight = contentHeight + (2 * Constants.viewPaddingConstraint)
+        scrollView.heightAnchor.constraint(equalToConstant: scrollViewHeight).isActive = true
+        
+        // If needed, adjust bottom sheet constraints or animations
+        self.view.layoutIfNeeded()
+    }
+
 
     private func setupLayout() {
         setupTitleViewConstraints()
+        setupQRCodeImageConstraints()
         setupDescriptionViewConstraints()
-        setupAppsView()
-        setupTipViewConstraints()
         setupContinueButtonConstraints()
         setupPoweredByGiniConstraints()
+        setupPaymentInfoViewConstraints()
     }
     
     private func setButtonsState() {
@@ -198,32 +198,22 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         ])
     }
     
+    private func setupQRCodeImageConstraints() {
+        NSLayoutConstraint.activate([
+            qrImageView.centerXAnchor.constraint(equalTo: qrCodeView.centerXAnchor),
+            qrImageView.widthAnchor.constraint(equalToConstant: Constants.qrCodeImageSize),
+            qrImageView.heightAnchor.constraint(equalToConstant: Constants.qrCodeImageSize),
+            qrImageView.topAnchor.constraint(equalTo: qrCodeView.topAnchor),
+            qrImageView.bottomAnchor.constraint(equalTo: qrCodeView.bottomAnchor)
+        ])
+    }
+    
     private func setupDescriptionViewConstraints() {
         NSLayoutConstraint.activate([
             descriptionLabel.leadingAnchor.constraint(equalTo: descriptionView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             descriptionLabel.trailingAnchor.constraint(equalTo: descriptionView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             descriptionLabel.topAnchor.constraint(equalTo: descriptionView.topAnchor, constant: Constants.topBottomPaddingConstraint),
             descriptionLabel.bottomAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: -Constants.bottomDescriptionConstraint)
-        ])
-    }
-    
-    private func setupAppsView() {
-        NSLayoutConstraint.activate([
-            appsView.heightAnchor.constraint(equalToConstant: Constants.appsViewHeight),
-            appsStackView.leadingAnchor.constraint(equalTo: appsView.leadingAnchor),
-            appsStackView.topAnchor.constraint(equalTo: appsView.topAnchor, constant: Constants.topAnchorAppsViewConstraint),
-            appsStackView.bottomAnchor.constraint(equalTo: appsView.bottomAnchor, constant: -Constants.viewPaddingConstraint),
-            appsStackView.trailingAnchor.constraint(equalTo: appsView.trailingAnchor, constant: Constants.trailingAppsViewConstraint)
-        ])
-    }
-    
-    private func setupTipViewConstraints() {
-        NSLayoutConstraint.activate([
-            tipStackView.leadingAnchor.constraint(equalTo: tipView.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            tipStackView.trailingAnchor.constraint(equalTo: tipView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            tipStackView.topAnchor.constraint(equalTo: tipView.topAnchor, constant: Constants.topAnchorTipViewConstraint),
-            tipStackView.bottomAnchor.constraint(equalTo: tipView.bottomAnchor, constant: -Constants.topBottomPaddingConstraint),
-            tipButton.widthAnchor.constraint(equalToConstant: Constants.tipIconSize)
         ])
     }
 
@@ -239,11 +229,25 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
 
     private func setupPoweredByGiniConstraints() {
         NSLayoutConstraint.activate([
-            bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
-            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
-            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
+            brandStackView.leadingAnchor.constraint(equalTo: brandView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            brandStackView.trailingAnchor.constraint(equalTo: brandView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            brandStackView.topAnchor.constraint(equalTo: brandView.topAnchor),
+            brandStackView.bottomAnchor.constraint(equalTo: brandView.bottomAnchor),
+            brandStackView.heightAnchor.constraint(equalToConstant: Constants.brandViewHeight)
+        ])
+    }
+    
+    private func setupPaymentInfoViewConstraints() {
+        NSLayoutConstraint.activate([
+            paymentInfoView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            paymentInfoView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            paymentInfoView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
+            paymentInfoView.topAnchor.constraint(equalTo: bottomView.topAnchor),
+            paymentInfoView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight),
+            paymentInfoStackView.leadingAnchor.constraint(equalTo: paymentInfoView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            paymentInfoStackView.trailingAnchor.constraint(equalTo: paymentInfoView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            paymentInfoStackView.topAnchor.constraint(equalTo: paymentInfoView.topAnchor, constant: Constants.viewPaddingConstraint),
+            paymentInfoStackView.bottomAnchor.constraint(equalTo: paymentInfoView.bottomAnchor, constant: -Constants.viewPaddingConstraint)
         ])
     }
     
@@ -257,14 +261,6 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         openPaymentProvidersAppStoreLink(urlString: viewModel.selectedPaymentProvider?.appStoreUrlIOS)
     }
     
-    @objc
-    private func tapOnLabelAction(gesture: UITapGestureRecognizer) {
-        if gesture.didTapAttributedTextInLabel(label: tipLabel,
-                                               targetText: viewModel.strings.tipActionablePartText) {
-            tapOnAppStoreButton()
-        }
-    }
-    
     private func openPaymentProvidersAppStoreLink(urlString: String?) {
         guard let urlString = urlString else {
             print("AppStore link unavailable for this payment provider")
@@ -275,20 +271,48 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         }
     }
     
-    private func generateAppViews() -> [ShareInvoiceSingleAppView] {
-        var viewsToReturn: [ShareInvoiceSingleAppView] = []
-        viewModel.appsMocked.forEach { singleApp in
-            let view = ShareInvoiceSingleAppView()
-            view.configure(image: singleApp.image,
-                           imageBorderColor: viewModel.configuration.singleAppIconBorderColor,
-                           imageBackgroundColor: viewModel.configuration.singleAppIconBackgroundColor,
-                           title: singleApp.title,
-                           titleColor: viewModel.configuration.singleAppTitleColor,
-                           titleFont: viewModel.configuration.singleAppTitleFont,
-                           isMoreButton: singleApp.isMoreButton)
-            viewsToReturn.append(view)
-        }
-        return viewsToReturn
+    private func generatePaymentInfoViews() -> UIStackView {
+        let paymentInfoStackView = createStackView(distribution: .fillEqually, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
+        [
+            generateInfoStackView(title: viewModel.strings.recipientLabelText, subtitle: viewModel.paymentInfo?.recipient),
+            generateInfoStackView(title: viewModel.strings.ibanLabelText, subtitle: viewModel.paymentInfo?.iban),
+            generateAmountPurposeStackView()
+        ].forEach { paymentInfoStackView.addArrangedSubview($0) }
+        return paymentInfoStackView
+    }
+
+    private func generateInfoStackView(title: String, subtitle: String?) -> UIStackView {
+        let stackView = createStackView(distribution: .fill, spacing: Constants.paymentInfoFieldsSpacing, orientation: .vertical)
+        stackView.addArrangedSubview(createLabel(text: title, isTitle: true))
+        stackView.addArrangedSubview(createLabel(text: subtitle ?? "", isTitle: false))
+        return stackView
+    }
+
+    private func generateAmountPurposeStackView() -> UIStackView {
+        let amountPurposeStackView = createStackView(distribution: .fillEqually, spacing: Constants.viewPaddingConstraint, orientation: .horizontal)
+        
+        let amountStackView = generateInfoStackView(title: viewModel.strings.amountLabelText, subtitle: viewModel.paymentInfo?.amount)
+        let purposeStackView = generateInfoStackView(title: viewModel.strings.purposeLabelText, subtitle: viewModel.paymentInfo?.purpose)
+        
+        [amountStackView, purposeStackView].forEach { amountPurposeStackView.addArrangedSubview($0) }
+        return amountPurposeStackView
+    }
+
+    private func createLabel(text: String, isTitle: Bool) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.textAlignment = .left
+        label.font = isTitle ? viewModel.configuration.titlePaymentInfoFont : viewModel.configuration.subtitlePaymentInfoFont
+        label.textColor = isTitle ? viewModel.configuration.titlePaymentInfoTextColor : viewModel.configuration.subtitlePaymentInfoTextColor
+        return label
+    }
+
+    private func createStackView(distribution: UIStackView.Distribution, spacing: CGFloat, orientation: NSLayoutConstraint.Axis) -> UIStackView {
+        let stackView = EmptyStackView()
+        stackView.distribution = distribution
+        stackView.spacing = spacing
+        stackView.axis = orientation
+        return stackView
     }
 }
 
@@ -297,17 +321,15 @@ extension ShareInvoiceBottomView {
         static let viewPaddingConstraint = 16.0
         static let topBottomPaddingConstraint = 10.0
         static let bottomDescriptionConstraint = 20.0
-        static let bankIconSize = 36
-        static let bankIconCornerRadius = 6.0
-        static let bankIconBorderWidth = 1.0
         static let continueButtonViewHeight = 56.0
-        static let appsViewSpacing: CGFloat = -20
-        static let appsViewHeight: CGFloat = 112.0
         static let topAnchorAppsViewConstraint = 20.0
         static let trailingAppsViewConstraint = 40.0
         static let topAnchorTipViewConstraint = 5.0
-        static let topAnchorPoweredByGiniConstraint = 5.0
-        static let tipIconSize = 24.0
-        static let bottomViewHeight = 44.0
+        static let brandViewHeight = 44.0
+        static let bottomViewHeight = 190.0
+        static let qrCodeImageSize = 208.0
+        static let paymentInfoBorderWidth = 1.0
+        static let paymentInfoCornerRadius = 16.0
+        static let paymentInfoFieldsSpacing = 4.0
     }
 }

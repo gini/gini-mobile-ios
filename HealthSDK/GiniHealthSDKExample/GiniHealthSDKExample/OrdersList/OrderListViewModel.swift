@@ -24,41 +24,19 @@ final class OrderListViewModel {
 
     private var errors: [String] = []
 
-    var paymentComponentsController: PaymentComponentsController
+    var health: GiniHealth
     var orders: [Order]
 
     init(coordinator: OrderListCoordinator,
          orders: [Order]? = nil,
          documentService: GiniHealthSDK.DefaultDocumentService,
          hardcodedOrdersController: HardcodedOrdersControllerProtocol,
-         paymentComponentsController: PaymentComponentsController) {
+         health: GiniHealth) {
         self.coordinator = coordinator
         self.hardcodedOrdersController = hardcodedOrdersController
         self.orders = orders ?? hardcodedOrdersController.orders
         self.documentService = documentService
-        self.paymentComponentsController = paymentComponentsController
-        self.paymentComponentsController.delegate = self
-    }
-    
-    func viewDidLoad() {
-        paymentComponentsController.loadPaymentProviders()
-    }
-}
-
-extension OrderListViewModel: PaymentComponentsControllerProtocol {
-    func didFetchedPaymentProviders() {
-        DispatchQueue.main.async {
-            self.coordinator.orderListViewController.reloadTableView()
-        }
+        self.health = health
     }
 
-    func isLoadingStateChanged(isLoading: Bool) {
-        DispatchQueue.main.async {
-            if isLoading {
-                self.coordinator.orderListViewController.showActivityIndicator()
-            } else {
-                self.coordinator.orderListViewController.hideActivityIndicator()
-            }
-        }
-    }
 }

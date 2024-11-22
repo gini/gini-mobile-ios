@@ -20,17 +20,17 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     
     func start(documentService: DefaultDocumentService,
                hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
-               paymentComponentsController: PaymentComponentsController,
+               health: GiniHealth,
                invoices: [DocumentWithExtractions]? = nil) {
         self.invoicesListViewController = InvoicesListViewController()
         invoicesListViewController.viewModel = InvoicesListViewModel(coordinator: self,
                                                                      invoices: invoices,
                                                                      documentService: documentService,
                                                                      hardcodedInvoicesController: hardcodedInvoicesController,
-                                                                     paymentComponentsController: paymentComponentsController)
+                                                                     health: health)
         invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .white
+        appearance.backgroundColor = UIColor(named: "background")
         invoicesListNavigationController.navigationBar.standardAppearance = appearance
         invoicesListNavigationController.navigationBar.scrollEdgeAppearance = appearance
         invoicesListNavigationController.navigationBar.tintColor = .label

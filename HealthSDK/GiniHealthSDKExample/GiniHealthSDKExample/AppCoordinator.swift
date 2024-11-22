@@ -50,7 +50,6 @@ final class AppCoordinator: Coordinator {
     }()
 
     private lazy var health = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain)
-    private lazy var paymentComponentsController = PaymentComponentsController(giniHealth: health)
 
     private lazy var giniHealthConfiguration: GiniHealthConfiguration = {
         let configuration = GiniHealthConfiguration()
@@ -76,8 +75,6 @@ final class AppCoordinator: Coordinator {
     
     func start() {
         self.showSelectAPIScreen()
-        paymentComponentsController.delegate = self
-        paymentComponentsController.loadPaymentProviders()
     }
     
     func processExternalDocument(withUrl url: URL, sourceApplication: String?) {
@@ -115,7 +112,7 @@ final class AppCoordinator: Coordinator {
         if let queryItems = components.queryItems {
             if let paymentRequestId = queryItems.first(where: { $0.name == "paymentRequestId" })?.value {
                 selectAPIViewController.showActivityIndicator()
-                paymentComponentsController.getPaymentRequest(by: paymentRequestId) { [weak self] result in
+                health.getPaymentRequest(by: paymentRequestId) { [weak self] result in
                     DispatchQueue.main.async {
                         self?.selectAPIViewController.hideActivityIndicator()
                     }
@@ -165,7 +162,7 @@ final class AppCoordinator: Coordinator {
                                                                                             domain: clientDomain),
                                                                                             documentMetadata: metadata,
                                                         hardcodedInvoicesController: HardcodedInvoicesController(),
-                                                        paymentComponentController: paymentComponentsController)
+                                                        paymentComponentController: health.paymentComponentsController)
         
         screenAPICoordinator.delegate = self
         
@@ -317,12 +314,11 @@ final class AppCoordinator: Coordinator {
         health.delegate = self
 
         let invoicesListCoordinator = InvoicesListCoordinator()
-        paymentComponentsController = PaymentComponentsController(giniHealth: health)
         health.paymentComponentConfiguration.isPaymentComponentBranded = isBrandedPaymentComponent
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
                                           hardcodedInvoicesController: HardcodedInvoicesController(),
-                                          paymentComponentsController: self.paymentComponentsController,
+                                          health: self.health,
                                           invoices: invoices)
             self.add(childCoordinator: invoicesListCoordinator)
             self.rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
@@ -339,10 +335,9 @@ final class AppCoordinator: Coordinator {
         health.delegate = self
         
         let orderListCoordinator = OrderListCoordinator()
-        paymentComponentsController = PaymentComponentsController(giniHealth: health)
         orderListCoordinator.start(documentService: health.documentService,
                                    hardcodedOrdersController: HardcodedOrdersController(),
-                                   paymentComponentsController: paymentComponentsController,
+                                   health: health,
                                    orders: orders)
         add(childCoordinator: orderListCoordinator)
         rootViewController.present(orderListCoordinator.rootViewController, animated: true)
@@ -396,37 +391,6 @@ extension AppCoordinator: GiniHealthDelegate {
             }
             invoicesListCoordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
         }
-    }
-}
-
-// MARK: GiniHealthTrackingDelegate
-
-extension AppCoordinator: GiniHealthTrackingDelegate {
-    func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
-        switch event.type {
-        case .onToTheBankButtonClicked:
-            GiniUtilites.Log("📝 To the banking app button was tapped,\(String(describing: event.info))", event: .success)
-        case .onCloseButtonClicked:
-            GiniUtilites.Log("📝 Close screen was triggered", event: .success)
-        case .onCloseKeyboardButtonClicked:
-            GiniUtilites.Log("📝 Close keyboard was triggered", event: .success)
-        }
-    }
-}
-
-// MARK: PaymentComponentControllerDelegate
-
-extension AppCoordinator: PaymentComponentsControllerProtocol {
-    func isLoadingStateChanged(isLoading: Bool) {
-        if isLoading {
-            selectAPIViewController.showActivityIndicator()
-        } else {
-            selectAPIViewController.hideActivityIndicator()
-        }
-    }
-    
-    func didFetchedPaymentProviders() {
-        //
     }
 }
 

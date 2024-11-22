@@ -97,7 +97,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let expectedView = PaymentComponentView(viewModel: expectedViewModel)
         expectedViewModel.documentId = documentId
         // When
-        let view = mockPaymentComponentsController.paymentView(documentId: documentId)
+        let view = mockPaymentComponentsController.paymentView()
 
         // Then
         XCTAssertTrue(view is PaymentComponentView)
@@ -105,12 +105,11 @@ final class PaymentComponentsControllerTests: XCTestCase {
             XCTFail("Error finding correct view.")
             return
         }
-        XCTAssertEqual(view.viewModel.documentId, expectedView.viewModel.documentId)
     }
     
     func testBankSelectionBottomSheet_ReturnsViewController() {
         // When
-        let viewController = mockPaymentComponentsController.bankSelectionBottomSheet(documentId: nil)
+        let viewController = mockPaymentComponentsController.bankSelectionBottomSheet()
 
         // Then
         XCTAssertTrue(viewController is BanksBottomView)
@@ -128,7 +127,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniHealthError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: nil, trackingDelegate: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(trackingDelegate: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }
@@ -136,24 +135,6 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // Then
         XCTAssertNil(receivedError)
         XCTAssertNotNil(receivedViewController)
-    }
-    
-    func testLoadPaymentReviewScreenFor_Failure() {
-        // Given
-        let documentId = MockSessionManager.missingDocumentID
-
-        // When
-        var receivedViewController: UIViewController?
-        var receivedError: GiniHealthError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(documentId: documentId, paymentInfo: nil, trackingDelegate: nil) { viewController, error in
-            receivedViewController = viewController
-            receivedError = error
-        }
-
-        // Then
-        XCTAssertNotNil(receivedError)
-        XCTAssertNil(receivedViewController)
-        XCTAssertEqual(receivedError, .apiError(.decorator(.noResponse)))
     }
     
     func testPaymentInfoViewController_ReturnsCorrectViewController() {

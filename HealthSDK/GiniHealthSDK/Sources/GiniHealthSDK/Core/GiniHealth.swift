@@ -68,6 +68,8 @@ public struct DataForReview {
     public var paymentService: PaymentService
     /// delegate to inform about the current status of the Gini Health SDK.
     public weak var delegate: GiniHealthDelegate?
+    /// delegate to inform about the changes into PaymentComponentsController
+    public weak var paymentDelegate: PaymentComponentsControllerProtocol?
 
     private var bankProviders: [PaymentProvider] = []
 
@@ -75,6 +77,8 @@ public struct DataForReview {
     public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
                                                                                                             showPaymentComponentInOneRow: false,
                                                                                                             hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
+    
+    public var paymentComponentsController: PaymentComponentsController!
 
     /**
      Initializes a new instance of GiniHealth.
@@ -96,6 +100,38 @@ public struct DataForReview {
         self.giniApiLib = GiniHealthAPI.Builder(client: client, api: .default, logLevel: logLevel.toHealthLogLevel()).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
+        super.init()
+        self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
+        self.paymentComponentsController.delegate = self
+    }
+    
+    /**
+     Initializes a new instance of GiniHealth.
+     
+     This initializer creates a GiniHealth instance by first constructing a Client object with the provided client credentials (id, secret, domain)
+     
+     - Parameters:
+     - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
+     - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
+     - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
+     - pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+     - logLevel: The log level. `LogLevel.none` by default.
+     */
+    public init(id: String,
+                secret: String,
+                domain: String,
+                apiVersion: Int = Constants.defaultVersionAPI,
+                pinningConfig: [String: [String]],
+                logLevel: LogLevel = .none) {
+        let client = Client(id: id, secret: secret, domain: domain, apiVersion: apiVersion)
+        self.giniApiLib = GiniHealthAPI.Builder(client: client,
+                                                pinningConfig: pinningConfig,
+                                                logLevel: logLevel.toHealthLogLevel()).build()
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
+        self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
+        super.init()
+        self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
+        self.paymentComponentsController.delegate = self
     }
 
     /**
@@ -107,8 +143,35 @@ public struct DataForReview {
         self.giniApiLib = giniApiLib
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: .default, apiVersion: Constants.defaultVersionAPI)
+        super.init()
+        self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
     }
+    
+    /**
+         Initiates the payment flow for a specified document and payment information.
 
+         - Parameters:
+           - documentId: An optional identifier for the document associated id with the payment flow.
+           - paymentInfo: An optional `PaymentInfo` object containing the payment details.
+           - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
+           - trackingDelegate: The `GiniHealthTrackingDelegate` provides event information that happens on PaymentReviewScreen.
+         
+         This method sets up the payment flow by storing the provided document ID, payment information, and navigation controller.
+         If a `selectedPaymentProvider` is available, it either presents the payment review screen or the payment view bottom sheet,
+         depending on the configuration. If no payment provider is selected, it directly presents the payment view bottom sheet.
+     */
+    public func startPaymentFlow(documentId: String?, paymentInfo: GiniHealthSDK.PaymentInfo?, navigationController: UINavigationController, trackingDelegate: GiniHealthTrackingDelegate?) {
+        paymentComponentsController.startPaymentFlow(documentId: documentId, paymentInfo: paymentInfo, navigationController: navigationController, trackingDelegate: trackingDelegate)
+    }
+    
+    /**
+     Fetches bank logos for the available payment providers.
+
+     - Returns: A tuple containing an array of logo data and the count of additional banks, if any.
+     */
+    public func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
+        return paymentComponentsController.fetchBankLogos()
+    }
     /**
      Getting a list of the installed banking apps which support Gini Pay Connect functionality.
      
@@ -358,7 +421,7 @@ public struct DataForReview {
         In case of failure error from the server side.
      
      */
-    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
+    public func createPaymentRequest(paymentInfo: GiniInternalPaymentSDK.PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
         paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: paymentInfo.paymentProviderId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, bic: "", amount: paymentInfo.amount, purpose: paymentInfo.purpose) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -492,6 +555,18 @@ public struct DataForReview {
     public static var versionString: String {
         return GiniHealthSDKVersion
     }
+}
+
+extension GiniHealth: PaymentComponentsControllerProtocol {
+    public func isLoadingStateChanged(isLoading: Bool) {
+        paymentDelegate?.isLoadingStateChanged(isLoading: isLoading)
+    }
+    
+    public func didFetchedPaymentProviders() {
+        paymentDelegate?.didFetchedPaymentProviders()
+    }
+    
+    
 }
 
 extension GiniHealth {

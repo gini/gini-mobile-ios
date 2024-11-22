@@ -52,6 +52,11 @@ final class InvoiceTableViewCell: UITableViewCell {
         super.awakeFromNib()
         selectionStyle = .none
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        removeAllViews(from: rightStackView)
+    }
 
     private func addTrustMarkersView() {
         if let bankLogosToShow = cellViewModel?.bankLogosToShow {
@@ -118,6 +123,13 @@ final class InvoiceTableViewCell: UITableViewCell {
         ])
 
         return badgeView
+    }
+    
+    func removeAllViews(from stackView: UIStackView) {
+        for view in stackView.arrangedSubviews {
+            stackView.removeArrangedSubview(view) // Remove from layout management
+            view.removeFromSuperview()           // Remove from view hierarchy
+        }
     }
 }
 

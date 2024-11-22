@@ -441,7 +441,7 @@ public final class PaymentReviewContainerView: UIView {
     // MARK: - Pay button
 
     fileprivate func disablePayButtonIfNeeded() {
-        payInvoiceButton.superview?.alpha = paymentInputFields.allSatisfy({ !$0.isReallyEmpty }) && amountToPay.value > 0 ? 1 : Constants.payInvoiceInactiveAlpha
+        payInvoiceButton.alpha = paymentInputFields.allSatisfy({ !$0.isReallyEmpty }) && amountToPay.value > 0 ? 1 : Constants.payInvoiceInactiveAlpha
     }
 
     fileprivate func showValidationErrorLabel(textFieldTag: TextFieldType) {
@@ -535,8 +535,8 @@ public final class PaymentReviewContainerView: UIView {
 
     // MARK: - Helping functions
 
-    func textFieldText(texFieldType: TextFieldType) -> String? {
-        switch texFieldType {
+    func textFieldText(textFieldType: TextFieldType) -> String? {
+        switch textFieldType {
         case .recipientFieldTag:
             return recipientTextFieldView.text
         case .ibanFieldTag:
@@ -591,8 +591,8 @@ public extension PaymentReviewContainerView {
         return paymentInfo
     }
 
-    func isTextFieldEmpty(texFieldType: TextFieldType) -> Bool {
-        switch texFieldType {
+    func isTextFieldEmpty(textFieldType: TextFieldType) -> Bool {
+        switch textFieldType {
         case .recipientFieldTag:
             return recipientTextFieldView.isReallyEmpty
         case .ibanFieldTag:
@@ -601,19 +601,6 @@ public extension PaymentReviewContainerView {
             return amountTextFieldView.isReallyEmpty
         case .usageFieldTag:
             return usageTextFieldView.isReallyEmpty
-        }
-    }
-
-    func textFieldText(textFieldType: TextFieldType) -> String? {
-        switch textFieldType {
-        case .recipientFieldTag:
-            return recipientTextFieldView.text
-        case .ibanFieldTag:
-            return ibanTextFieldView.text
-        case .amountFieldTag:
-            return amountTextFieldView.text
-        case .usageFieldTag:
-            return usageTextFieldView.text
         }
     }
 
