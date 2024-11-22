@@ -151,6 +151,24 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         self.trackingDelegate = trackingDelegate
     }
 
+    private init(resultsDelegate: GiniCaptureResultsDelegate,
+                configuration: GiniBankConfiguration,
+                documentMetadata: Document.Metadata?,
+                trackingDelegate: GiniCaptureTrackingDelegate?,
+                lib: GiniBankAPI) {
+        documentService = DocumentService(lib: lib, metadata: documentMetadata)
+        configurationService = lib.configurationService()
+        let captureConfiguration = configuration.captureConfiguration()
+        super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
+
+        visionDelegate = self
+        GiniBank.setConfiguration(configuration)
+        giniBankConfiguration = configuration
+        giniBankConfiguration.documentService = documentService
+        self.resultsDelegate = resultsDelegate
+        self.trackingDelegate = trackingDelegate
+    }
+
     public init(resultsDelegate: GiniCaptureResultsDelegate,
                 configuration: GiniBankConfiguration,
                 documentMetadata: Document.Metadata?,
@@ -189,6 +207,22 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                   configuration: configuration,
                   documentMetadata: documentMetadata,
                   api: api,
+                  trackingDelegate: trackingDelegate,
+                  lib: lib)
+    }
+
+    convenience init(alternativeTokenSource tokenSource: AlternativeTokenSource,
+                     resultsDelegate: GiniCaptureResultsDelegate,
+                     configuration: GiniBankConfiguration,
+                     documentMetadata: Document.Metadata?,
+                     trackingDelegate: GiniCaptureTrackingDelegate?) {
+        let lib = GiniBankAPI
+            .Builder(alternativeTokenSource: tokenSource)
+            .build()
+
+        self.init(resultsDelegate: resultsDelegate,
+                  configuration: configuration,
+                  documentMetadata: documentMetadata,
                   trackingDelegate: trackingDelegate,
                   lib: lib)
     }

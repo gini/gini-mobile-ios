@@ -7,8 +7,7 @@
 
 import Foundation
 
-public final class Token {
-    
+public final class Token: Hashable {
     var expiration: Date
     var scope: String?
     var type: String?
@@ -28,6 +27,16 @@ public final class Token {
         case accessToken = "access_token"
     }
 
+    public static func == (lhs: Token, rhs: Token) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(expiration)
+        hasher.combine(scope)
+        hasher.combine(type)
+        hasher.combine(accessToken)
+    }
 }
 
 extension Token: Decodable {
