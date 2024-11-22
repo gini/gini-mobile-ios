@@ -1,6 +1,6 @@
 //
 //  GiniHealthSDKPinningExampleWrongCertificatesTests.swift
-//  GiniHealthSDKPinningExampleTests
+//  GiniHealthSDKExampleTests
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //

@@ -6,7 +6,7 @@
       "options" : {
         "targetForVariableExpansion" : {
           "containerPath" : "container:GiniHealthSDKExample.xcodeproj",
-          "identifier" : "F4EC38D3273C21E6007045DC",
+          "identifier" : "F4EC38BE273C21E4007045DC",
           "name" : "GiniHealthSDKExample"
         }
       }
