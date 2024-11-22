@@ -104,6 +104,35 @@ public struct DataForReview {
         self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
         self.paymentComponentsController.delegate = self
     }
+    
+    /**
+     Initializes a new instance of GiniHealth.
+     
+     This initializer creates a GiniHealth instance by first constructing a Client object with the provided client credentials (id, secret, domain)
+     
+     - Parameters:
+     - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
+     - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
+     - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
+     - pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+     - logLevel: The log level. `LogLevel.none` by default.
+     */
+    public init(id: String,
+                secret: String,
+                domain: String,
+                apiVersion: Int = Constants.defaultVersionAPI,
+                pinningConfig: [String: [String]],
+                logLevel: LogLevel = .none) {
+        let client = Client(id: id, secret: secret, domain: domain, apiVersion: apiVersion)
+        self.giniApiLib = GiniHealthAPI.Builder(client: client,
+                                                pinningConfig: pinningConfig,
+                                                logLevel: logLevel.toHealthLogLevel()).build()
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
+        self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
+        super.init()
+        self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
+        self.paymentComponentsController.delegate = self
+    }
 
     /**
      Initializes a new instance of GiniHealth.
@@ -125,6 +154,7 @@ public struct DataForReview {
            - documentId: An optional identifier for the document associated id with the payment flow.
            - paymentInfo: An optional `PaymentInfo` object containing the payment details.
            - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
+           - trackingDelegate: The `GiniHealthTrackingDelegate` provides event information that happens on PaymentReviewScreen.
          
          This method sets up the payment flow by storing the provided document ID, payment information, and navigation controller.
          If a `selectedPaymentProvider` is available, it either presents the payment review screen or the payment view bottom sheet,

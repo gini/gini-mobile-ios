@@ -39,7 +39,7 @@ extension GiniHealth: PaymentComponentsStringsProvider {
         PaymentComponentsStrings(
             selectYourBankLabelText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.select.your.bank.label",
                                                                       comment: "Text for the select your bank label that's above the payment provider picker"),
-            placeholderBankNameText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.select.bank.label",
+            placeholderBankNameText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.your.bank.label",
                                                                       comment: "Placeholder text used when there isn't a payment provider app installed"),
             ctaLabelText: GiniHealthConfiguration.shared.showPaymentReviewScreen ?
                 NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.continue.to.overview.label",

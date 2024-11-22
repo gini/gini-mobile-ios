@@ -105,6 +105,20 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     }
 
     private func setupViewHierarchy() {
+        // Create and configure the UIScrollView
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.bounces = true
+        
+        // Add contentStackView to the UIScrollView
+        scrollView.addSubview(contentStackView)
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Apply constraints for contentStackView
+        setupContentStackViewConstraints(in: scrollView)
+        
+        // Set up the content hierarchy
         titleView.addSubview(titleLabel)
         contentStackView.addArrangedSubview(titleView)
         
@@ -126,9 +140,39 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         paymentInfoView.addSubview(paymentInfoStackView)
         bottomView.addSubview(paymentInfoView)
         contentStackView.addArrangedSubview(bottomView)
-
-        self.setContent(content: contentStackView)
+        
+        // Calculate and update scrollView height dynamically
+        DispatchQueue.main.async {
+            self.updateScrollViewHeight(scrollView: scrollView)
+        }
+        // Add the UIScrollView to the main container
+        self.setContent(content: scrollView)
     }
+    
+    private func setupContentStackViewConstraints(in scrollView: UIScrollView) {
+        NSLayoutConstraint.activate([
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+    }
+
+    // Function to dynamically update scrollView height
+    private func updateScrollViewHeight(scrollView: UIScrollView) {
+        // Force layout to calculate the content size
+        scrollView.layoutIfNeeded()
+        let contentHeight = contentStackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        
+        // Adjust the scrollView height
+        let scrollViewHeight = contentHeight + (2 * Constants.viewPaddingConstraint)
+        scrollView.heightAnchor.constraint(equalToConstant: scrollViewHeight).isActive = true
+        
+        // If needed, adjust bottom sheet constraints or animations
+        self.view.layoutIfNeeded()
+    }
+
 
     private func setupLayout() {
         setupTitleViewConstraints()

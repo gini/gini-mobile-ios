@@ -24,12 +24,13 @@
 
 "gini.health.paymentcomponent.more.information.label" = "Bezahldaten an Banking-App übergeben und dort direkt bezahlen. Mehr Informationen.";
 "gini.health.paymentcomponent.more.information.underlined.part" = "Mehr Informationen.";
+"gini.health.paymentcomponent.select.bank.label" = "Bank auswählen";
 "gini.health.paymentcomponent.select.your.bank.label" = "Bank auswählen und bezahlen";
 "gini.health.paymentcomponent.pay.invoice.label" = "Rechnung bezahlen";
 "gini.health.paymentcomponent.to.banking.app.label" = "Zur Banking App";
 "gini.health.paymentcomponent.continue.to.overview.label" = "Weiter zur Übersicht";
 "gini.health.paymentcomponent.powered.by.gini.label" = "Powered by";
-"gini.health.paymentcomponent.select.bank.label" = "Bank auswählen";
+"gini.health.paymentcomponent.your.bank.label" = "Ihre Bank";
 "gini.health.paymentcomponent.payment.providers.list.description" = "Sie können die Rechnung nur bezahlen, wenn Sie ein Konto bei einer der unten aufgeführten Banken haben.";
 "gini.health.paymentcomponent.payment.info.title.label" = "Mehr Informationen";
 "gini.health.paymentcomponent.payment.info.pay.bills.title.label" = "Rechnungen ganz einfach mit der Banking-App bezahlen.";
@@ -57,8 +58,4 @@
 "gini.health.paymentcomponent.install.app.bottom.sheet.continue.button.text" = "Weiter";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.title" = "Teilen Sie diesen QR-Zahlungscode mit Ihrer Banking-App";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Alternativ können Sin ein Screenshot von dieser Seite machen mit der Fotoüberweisung Funktion der [BANK] öffnen.";
-"gini.health.paymentcomponent.share.invoice.bottom.sheet.app" = "App";
-"gini.health.paymentcomponent.share.invoice.bottom.sheet.more" = "Mehr";
-"gini.health.paymentcomponent.share.invoice.bottom.sheet.tip.description" = "Tipp: Wenn Sie die App nicht sehen, scrollen Sie oder tippen Sie auf \"Mehr\", bis Sie die [BANK]-App finden. Wenn Sie die [BANK]-App noch nicht installiert haben, laden Sie sie im Store herunter.";
-"gini.health.paymentcomponent.share.invoice.bottom.sheet.tip.underlined.part" = "laden Sie sie im Store herunter";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Mit der [BANK]-App teilen";

@@ -30,7 +30,7 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
                                                                      health: health)
         invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .white
+        appearance.backgroundColor = UIColor(named: "background")
         invoicesListNavigationController.navigationBar.standardAppearance = appearance
         invoicesListNavigationController.navigationBar.scrollEdgeAppearance = appearance
         invoicesListNavigationController.navigationBar.tintColor = .label

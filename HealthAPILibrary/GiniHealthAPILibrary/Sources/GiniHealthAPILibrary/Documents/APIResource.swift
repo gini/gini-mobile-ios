@@ -30,6 +30,7 @@ enum MimeSubtype: String {
     case pdf = "qr+pdf"
     case png = "qr+png"
     case json = "json"
+    case jpeg = "jpeg"
 }
 
 struct APIResource<T: Decodable>: Resource {

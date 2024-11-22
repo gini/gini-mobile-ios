@@ -441,7 +441,7 @@ public final class PaymentReviewContainerView: UIView {
     // MARK: - Pay button
 
     fileprivate func disablePayButtonIfNeeded() {
-        payInvoiceButton.superview?.alpha = paymentInputFields.allSatisfy({ !$0.isReallyEmpty }) && amountToPay.value > 0 ? 1 : Constants.payInvoiceInactiveAlpha
+        payInvoiceButton.alpha = paymentInputFields.allSatisfy({ !$0.isReallyEmpty }) && amountToPay.value > 0 ? 1 : Constants.payInvoiceInactiveAlpha
     }
 
     fileprivate func showValidationErrorLabel(textFieldTag: TextFieldType) {
