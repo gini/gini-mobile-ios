@@ -331,6 +331,7 @@ fileprivate extension PaymentReviewViewController {
         
         let container = model.displayMode == .bottomSheet ? (view ?? UIView()) : mainView
         container.addSubview(paymentInfoContainerView)
+        container.backgroundColor = .clear
 
         NSLayoutConstraint.activate([
             paymentInfoContainerView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
@@ -393,7 +394,7 @@ fileprivate extension PaymentReviewViewController {
             containerCollectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
             containerCollectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
             containerCollectionView.topAnchor.constraint(equalTo: mainView.topAnchor),
-            containerCollectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor),
+            containerCollectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.collectionViewBottomPadding),
 
             pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight),
             collectionView.widthAnchor.constraint(equalTo: containerCollectionView.widthAnchor),
@@ -537,5 +538,6 @@ extension PaymentReviewViewController {
         static let inputContainerHeight = 375.0
         static let cornerRadius = 12.0
         static let moveHeightInfoBar = 24.0
+        static let collectionViewBottomPadding = 10.0
     }
 }
