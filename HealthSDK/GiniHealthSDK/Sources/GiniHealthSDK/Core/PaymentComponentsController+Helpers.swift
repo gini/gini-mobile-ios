@@ -365,18 +365,12 @@ extension PaymentComponentsController {
 
     /// Checks if the selected payment provider supports the "Open With" feature on iOS.
     public func supportsOpenWith() -> Bool {
-        if healthSelectedPaymentProvider?.openWithSupportedPlatforms.contains(.ios) == true {
-            return true
-        }
-        return false
+        healthSelectedPaymentProvider?.openWithSupportedPlatforms.contains(.ios) == true
     }
 
     /// Checks if the selected payment provider supports GPC(Gini Pay Connect) on iOS.
     public func supportsGPC() -> Bool {
-        if healthSelectedPaymentProvider?.gpcSupportedPlatforms.contains(.ios) == true {
-            return true
-        }
-        return false
+        healthSelectedPaymentProvider?.gpcSupportedPlatforms.contains(.ios) == true
     }
 
     /**
