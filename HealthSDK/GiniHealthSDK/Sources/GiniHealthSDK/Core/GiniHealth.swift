@@ -122,7 +122,7 @@ public struct DataForReview {
          Initiates the payment flow for a specified document and payment information.
 
          - Parameters:
-           - documentId: An optional identifier for the document associated with the payment flow.
+           - documentId: An optional identifier for the document associated id with the payment flow.
            - paymentInfo: An optional `PaymentInfo` object containing the payment details.
            - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
          

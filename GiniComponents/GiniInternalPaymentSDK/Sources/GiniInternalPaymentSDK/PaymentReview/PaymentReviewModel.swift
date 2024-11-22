@@ -296,7 +296,7 @@ extension PaymentReviewModel: BanksSelectionProtocol {
      
      - Parameters:
        - paymentProvider: The `PaymentProvider` object representing the selected payment provider.
-       - documentId: An optional `String` identifier for the document associated with this payment. If `nil`, no document is associated.
+       - documentId: An optional `String` identifier for the document associated id with this payment. If `nil`, no document is associated.
      
      This function updates the current selected payment provider, notifies the delegate of the new provider,
      and triggers any associated callback for handling the change in payment provider.

@@ -52,11 +52,6 @@ final class InvoicesListViewController: UIViewController {
     var viewModel: InvoicesListViewModel!
     
     // MARK: - Functions
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        viewModel.viewDidLoad()
-    }
-
     override func loadView() {
         super.loadView()
         title = viewModel.titleText

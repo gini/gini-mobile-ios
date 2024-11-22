@@ -91,9 +91,9 @@ extension PaymentComponentsController {
     
     // MARK: - Bottom sheets
     /**
-     Provides a custom Gini for the payment view that is going to be presented as a bottom sheet.
+     Provides a custom Gini view for the payment view that is going to be presented as a bottom sheet.
 
-     - Parameter documentId: An optional identifier for the document associated with the payment.
+     - Parameter documentId: An optional identifier for the document associated id with the payment.
      - Returns: A configured `UIViewController` for displaying the payment bottom view.
      */
     public func paymentViewBottomSheet(documentId: String?) -> UIViewController {
@@ -103,10 +103,12 @@ extension PaymentComponentsController {
     }
     
     /**
-     Provides a custom Gini view that contains more information, bank selection if available and a tappable button to pay the document/invoice
-
-     - Parameters:
-     - Returns: a custom view
+     Provides a custom Gini payment view.
+     This method creates and returns a custom view for handling payments. The view includes:
+     - Additional information
+     - A bank selection option (if available).
+     - A tappable button for initiating the payment process.
+     - Returns: A UIView instance representing the payment component.
      */
     func paymentView() -> UIView {
         let paymentComponentViewModel = PaymentComponentViewModel(
@@ -146,7 +148,6 @@ extension PaymentComponentsController {
     /**
      Provides a custom Gini view for the bank selection bottom sheet.
 
-     - Parameter documentId: An optional identifier for the document associated with the bank selection.
      - Returns: A configured `UIViewController` for displaying the bank selection options.
      */
     public func bankSelectionBottomSheet() -> UIViewController {
@@ -175,13 +176,12 @@ extension PaymentComponentsController {
      using the provided payment information provided.
 
      - Parameters:
-       - documentId: An optional identifier for the document being reviewed.
-       - paymentInfo: An optional `PaymentInfo` object containing details about the payment.
        - trackingDelegate: An optional delegate for tracking events related to Gini Health.
        - completion: A closure that is called with the resulting `UIViewController` and an optional
          `GiniHealthError` once the loading process is complete.
      */
-    func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+    func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?,
+                                    completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         previousPresentedView.append(.paymentReview)
         if !GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
             guard let documentId else {
@@ -207,11 +207,17 @@ extension PaymentComponentsController {
         }
     }
     
-    private func loadPaymentReviewScreenWithoutDocument(paymentInfo: GiniInternalPaymentSDK.PaymentInfo?, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
-        preparePaymentReviewViewController(data: nil, paymentInfo: paymentInfo, completion: completion)
+    private func loadPaymentReviewScreenWithoutDocument(paymentInfo: GiniInternalPaymentSDK.PaymentInfo?,
+                                                        trackingDelegate: GiniHealthTrackingDelegate?,
+                                                        completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+        preparePaymentReviewViewController(data: nil,
+                                           paymentInfo: paymentInfo,
+                                           completion: completion)
     }
 
-    private func preparePaymentReviewViewController(data: DataForReview?, paymentInfo: GiniInternalPaymentSDK.PaymentInfo?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+    private func preparePaymentReviewViewController(data: DataForReview?,
+                                                    paymentInfo: GiniInternalPaymentSDK.PaymentInfo?,
+                                                    completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         guard let healthSelectedPaymentProvider else {
             completion(nil, nil)
             return
@@ -281,13 +287,13 @@ extension PaymentComponentsController {
     }
     
     /**
-     Provides a custom Gini view for onboarding the user about the sharing invoices flow.
+     Provides a custom Gini view to onboard the user about the sharing invoices flow.
 
      This method initializes a `ShareInvoiceBottomViewModel` with the necessary configurations and
      localized strings, and returns a `ShareInvoiceBottomView` configured with the view model.
      It also increments the onboarding count for the selected payment provider.
 
-     - Parameter documentId: An optional identifier for the document associated with the invoice.
+     - Parameter qrCodeData: A qrCode data information for the document associated payment request generated by the payment details.
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
     public func shareInvoiceBottomSheet(qrCodeData: Data) -> BottomSheetViewController {
@@ -350,12 +356,9 @@ extension PaymentComponentsController {
     
     /// Checks if the payment provider app can be opened based on the selected payment provider and GPC(Gini Pay Connect) support.
     public func canOpenPaymentProviderApp() -> Bool {
-        if supportsGPC() {
-            if healthSelectedPaymentProvider?.appSchemeIOS.canOpenURLString() == true {
-                return true
-            }
-        }
-        return false
+        guard supportsGPC() else { return false }
+        guard let appScheme = healthSelectedPaymentProvider?.appSchemeIOS else { return false }
+        return appScheme.canOpenURLString()
     }
 
     /// Checks if the selected payment provider supports the "Open With" feature on iOS.
@@ -594,9 +597,7 @@ extension PaymentComponentsController: BanksSelectionProtocol {
     }
 
     /// Handles the action when the pay button is tapped on install bottom sheet.
-    public func didTapOnPayButton() {
-        //
-    }
+    public func didTapOnPayButton() {}
 }
 
 extension PaymentComponentsController: PaymentComponentViewProtocol {
