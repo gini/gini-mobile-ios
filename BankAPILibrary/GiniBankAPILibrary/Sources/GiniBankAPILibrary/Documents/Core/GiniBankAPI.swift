@@ -92,7 +92,7 @@ extension GiniBankAPI {
         /**
          * Creates a Gini Bank API Library to be used with a transparent proxy and a custom api access token source.
          */
-        public init(customApiDomain: String,
+        public init(customApiDomain: String = APIDomain.default.domainString,
                     alternativeTokenSource: AlternativeTokenSource,
                     logLevel: LogLevel = .none,
                     sessionDelegate: URLSessionDelegate? = nil) {
@@ -134,6 +134,7 @@ extension GiniBankAPI {
         }
         
         private func save(_ client: Client) {
+            guard !runningUnitTests() else { return }
             do {
                 try KeychainStore().save(item: KeychainManagerItem(key: .clientId,
                                                                    value: client.id,
@@ -148,6 +149,13 @@ extension GiniBankAPI {
                 preconditionFailure("There was an error using the Keychain. " +
                     "Check that the Keychain capability is enabled in your project")
             }
+        }
+
+        private func runningUnitTests() -> Bool {
+            #if canImport(XCTest)
+            return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+            #endif
+            return false
         }
     }
 }
