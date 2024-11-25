@@ -7,6 +7,6 @@
 
 import Foundation
 
-let clientID = ""
-let clientPassword = ""
-let clientDomain = ""
+let clientID = "client_id"
+let clientPassword = "client_password"
+let clientDomain = "client_domain"
