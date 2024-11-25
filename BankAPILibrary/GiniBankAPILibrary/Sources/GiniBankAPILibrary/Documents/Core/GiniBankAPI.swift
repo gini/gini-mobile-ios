@@ -134,7 +134,6 @@ extension GiniBankAPI {
         }
         
         private func save(_ client: Client) {
-            guard !runningUnitTests() else { return }
             do {
                 try KeychainStore().save(item: KeychainManagerItem(key: .clientId,
                                                                    value: client.id,
@@ -149,14 +148,6 @@ extension GiniBankAPI {
                 preconditionFailure("There was an error using the Keychain. " +
                     "Check that the Keychain capability is enabled in your project")
             }
-        }
-
-        private func runningUnitTests() -> Bool {
-            #if canImport(XCTest)
-            return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
-            #else
-            return false
-            #endif
         }
     }
 }
