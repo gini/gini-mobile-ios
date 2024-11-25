@@ -154,8 +154,9 @@ extension GiniBankAPI {
         private func runningUnitTests() -> Bool {
             #if canImport(XCTest)
             return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
-            #endif
+            #else
             return false
+            #endif
         }
     }
 }
