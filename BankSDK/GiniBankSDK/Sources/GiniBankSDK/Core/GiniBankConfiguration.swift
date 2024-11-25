@@ -629,9 +629,65 @@ public final class GiniBankConfiguration: NSObject {
                                     amountToPay: ExtractionAmount) {
         guard let documentService = documentService else { return }
 
-        let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"
-        let amountToPayString = "\(formattedPriceValue)" + ":" + amountToPay.currency.rawValue
+        let amountToPayString = formatAmountToPay(amountToPay)
+        let updatedExtractions = createFeedbackBasicExtractions(paymentRecipient: paymentRecipient,
+                                                                paymentReference: paymentReference,
+                                                                paymentPurpose: paymentPurpose,
+                                                                iban: iban,
+                                                                bic: bic,
+                                                                amountToPayString: amountToPayString)
+        sendFeedback(updatedExtractions: updatedExtractions, amountToPayString: amountToPayString)
+    }
 
+    func sendTransferSummaryWithSkonto(extractions: [String: Extraction]) {
+        guard let documentService = documentService else { return }
+
+        guard let amountToPay = extractAmountToPay(from: extractions) else { return }
+        let amountToPayString = formatAmountToPay(amountToPay)
+        let amountExtraction = createAmountExtraction(value: amountToPayString)
+
+        sendFeedback(updatedExtractions: [amountExtraction], amountToPayString: amountToPayString)
+    }
+
+    func sendTransferSummaryWithSkontoAndRA(extractions: [String: Extraction]) {
+        guard let documentService = documentService else { return }
+
+        guard let amountToPay = extractAmountToPay(from: extractions),
+              let skontoDiscounts = skontoDiscounts?.first,
+              skontoDiscounts.contains(where: { $0.name == "skontoAmountToPayCalculated" && $0.value == formatAmountToPay(amountToPay) }) else { return }
+
+        let amountToPayString = formatAmountToPay(amountToPay)
+        let amountExtraction = createAmountExtraction(value: amountToPayString)
+
+        sendFeedback(updatedExtractions: [amountExtraction], amountToPayString: amountToPayString)
+    }
+
+    private func formatAmountToPay(_ amount: ExtractionAmount) -> String {
+        let formattedValue = amount.value.stringValue(withDecimalPoint: 2) ?? "\(amount.value)"
+        return "\(formattedValue):\(amount.currency.rawValue)"
+    }
+
+    private func extractAmountToPay(from extractions: [String: Extraction]) -> ExtractionAmount? {
+        guard let amountValue = extractions["amountToPay"]?.value,
+              let amountComponents = amountValue.split(separator: ":").first,
+              let value = Decimal(string: String(amountComponents)) else { return nil }
+        return ExtractionAmount(value: value, currency: .EUR)
+    }
+
+    private func createAmountExtraction(value: String) -> Extraction {
+        return Extraction(box: nil,
+                          candidates: nil,
+                          entity: "amount",
+                          value: value,
+                          name: "amountToPay")
+    }
+
+    private func createFeedbackBasicExtractions(paymentRecipient: String,
+                                                paymentReference: String,
+                                                paymentPurpose: String,
+                                                iban: String,
+                                                bic: String,
+                                                amountToPayString: String) -> [Extraction] {
         let paymentRecipientExtraction = Extraction(box: nil,
                                                     candidates: nil,
                                                     entity: "companyname",
@@ -662,39 +718,37 @@ public final class GiniBankConfiguration: NSObject {
                                           entity: "amount",
                                           value: amountToPayString,
                                           name: "amountToPay")
+        return [paymentRecipientExtraction,
+                paymentReferenceExtraction,
+                paymentPurposeExtraction,
+                ibanExtraction,
+                bicExtraction,
+                amountExtraction]
+    }
 
-        let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
-                                                paymentReferenceExtraction,
-                                                paymentPurposeExtraction,
-                                                ibanExtraction,
-                                                bicExtraction,
-                                                amountExtraction]
+    private func sendFeedback(updatedExtractions: [Extraction], amountToPayString: String) {
+        var updatedCompoundExtractions = addFeedbackSkontoDiscountsIfApplicable(extractions: updatedExtractions, amountToPayString: amountToPayString)
+        updatedCompoundExtractions = addFeedbackLineItemsIfAvailable(to: updatedCompoundExtractions)
 
-        var updatedCompoundExtractions: [String: [[Extraction]]]?
+        documentService?.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: updatedCompoundExtractions)
+    }
 
-        if let skontoDiscounts = skontoDiscounts?.first {
-            let skontoAmountToPayExtraction = skontoDiscounts.first(where: { $0.name == "skontoAmountToPayCalculated" })
-            if skontoAmountToPayExtraction?.value == amountToPayString {
-                let filteredSkontoDiscounts = skontoDiscounts.filter {
-                    $0.name == "skontoAmountToPayCalculated" ||
-                    $0.name == "skontoPercentageDiscountedCalculated" ||
-                    $0.name == "skontoDueDateCalculated"
-                }
-                if !filteredSkontoDiscounts.isEmpty {
-                    updatedCompoundExtractions = ["skontoDiscounts": [filteredSkontoDiscounts]]
-                }
-            }
+    private func addFeedbackSkontoDiscountsIfApplicable(extractions: [Extraction], amountToPayString: String) -> [String: [[Extraction]]]? {
+        guard let skontoDiscounts = skontoDiscounts?.first else { return nil }
+        guard skontoDiscounts.contains(where: { $0.name == "skontoAmountToPayCalculated" && $0.value == amountToPayString }) else { return nil }
+        let filteredDiscounts = skontoDiscounts.filter {
+            $0.name == "skontoAmountToPayCalculated" ||
+            $0.name == "skontoPercentageDiscountedCalculated" ||
+            $0.name == "skontoDueDateCalculated"
         }
+        return filteredDiscounts.isEmpty ? nil : ["skontoDiscounts": [filteredDiscounts]]
+    }
 
-        if let lineItems = lineItems {
-            if updatedCompoundExtractions == nil {
-                updatedCompoundExtractions = [:]
-            }
-            updatedCompoundExtractions?["lineItems"] = lineItems
-        }
-
-        documentService.sendFeedback(with: updatedExtractions,
-                                     updatedCompoundExtractions: updatedCompoundExtractions)
+    private func addFeedbackLineItemsIfAvailable(to compoundExtractions: [String: [[Extraction]]]? = nil) -> [String: [[Extraction]]]? {
+        guard let lineItems = lineItems else { return compoundExtractions }
+        var updatedCompoundExtractions = compoundExtractions ?? [:]
+        updatedCompoundExtractions["lineItems"] = lineItems
+        return updatedCompoundExtractions
     }
 
     /**

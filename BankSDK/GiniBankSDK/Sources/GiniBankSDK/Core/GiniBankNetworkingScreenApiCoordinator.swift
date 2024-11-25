@@ -357,7 +357,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
                 self.giniBankConfiguration.lineItems = result.lineItems
-                self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
+                if let skontoDiscounts = result.skontoDiscounts {
+                    self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
+                    self.giniBankConfiguration.sendTransferSummaryWithSkontoAndRA(extractions: extractions)
+                }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
@@ -460,6 +463,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
                 self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
+                self.giniBankConfiguration.sendTransferSummaryWithSkonto(extractions: extractions)
             } else {
                 analysisDelegate?.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
