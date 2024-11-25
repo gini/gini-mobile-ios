@@ -80,7 +80,7 @@ jobs:
             sed -i '' \
             -e 's/clientID = "client_id"/clientID = "gini-mobile-test"/' \
             -e 's/clientPassword = "client_password"/clientPassword = "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"/' \
-            MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample/CredentialsManager.swift
+            HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
                 
       - name: Archiving project
         run: |
