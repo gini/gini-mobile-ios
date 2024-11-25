@@ -77,10 +77,26 @@ jobs:
 
       - name: Setup Credentials
         run: |
-            sed -i '' \
-            -e 's/clientID = "client_id"/clientID = "gini-mobile-test"/' \
-            -e 's/clientPassword = "client_password"/clientPassword = "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"/' \
-            HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
+          if [ -f HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift ]; then
+              echo "File found, proceeding with replacement.";
+          else
+              echo "CredentialsManager.swift not found.";
+              exit 1;
+          fi
+    
+          sed -i \
+              -e 's/clientID = "client_id"/clientID = "gini-mobile-test"/' \
+              -e 's/clientPassword = "client_password"/clientPassword = "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"/' \
+              HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
+          if [ $? -ne 0 ]; then
+          echo "Error occurred while updating the credentials.";
+          exit 1;
+          else
+              echo "Credentials updated successfully.";
+          fi
+
+          grep -q 'clientID = "gini-mobile-test"' HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift && echo "clientID updated." || echo "clientID update failed."
+          grep -q 'clientPassword = "' HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift && echo "clientPassword updated." || echo "clientPassword update failed."
 
       - name: Archiving project
         run: |
