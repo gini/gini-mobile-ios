@@ -366,6 +366,7 @@ fileprivate extension PaymentReviewViewController {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumInteritemSpacing = Constants.collectionViewPadding
         flowLayout.minimumLineSpacing = Constants.collectionViewPadding
+        flowLayout.scrollDirection = .horizontal // Enable horizontal scrolling
 
         let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
         collection.backgroundColor = model.configuration.backgroundColor
