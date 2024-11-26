@@ -256,39 +256,22 @@ platform :ios do
       to_be_released = []
 
       # Create release tags for packages which have different versions than their latest release tag
-      # Create release tags for packages which have different versions than their latest release tag
       packages.each do |package|
-        latest_version = get_latest_version_from_release_tags(package[:package_folder], UI)
-
-        if latest_version.nil?
-          UI.message("No release tags found for #{package[:package_folder]}, treating as a new package.")
-          # Treat the package as new and create a release tag
+        if package[:version] == get_latest_version_from_release_tags(package[:package_folder], UI)
+          # The current package version is the same as the one in the latest release tag
+          up_to_date.push package
+        elsif git_has_release_tag(package[:package_folder], package[:version])
+          # The current package version has already been released
+          up_to_date.push package
+        else
           to_be_released.push package
           git_create_release_tag(package[:package_folder], package[:version])
 
           if UI.confirm("Push release tag?")
             git_push_release_tag(package[:package_folder], package[:version])
           end
-        elsif package[:version] == latest_version
-          # The current package version is the same as the one in the latest release tag
-          UI.message("#{package[:package_folder]} is up to date with version #{package[:version]}.")
-          up_to_date.push package
-        elsif git_has_release_tag(package[:package_folder], package[:version])
-          # The current package version has already been released
-          UI.message("#{package[:package_folder]} version #{package[:version]} has already been released.")
-          up_to_date.push package
-        else
-          # The package version needs a new release tag
-          UI.message("#{package[:package_folder]} version #{package[:version]} will be tagged as a new release.")
-          to_be_released.push package
-          git_create_release_tag(package[:package_folder], package[:version])
-
-        if UI.confirm("Push release tag?")
-          git_push_release_tag(package[:package_folder], package[:version])
-         end
         end
       end
-
 
       if to_be_released.empty?
         UI.success "All packages are up-to-date. No release tags needed."
