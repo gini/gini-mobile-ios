@@ -24,6 +24,7 @@ public protocol DocumentServiceProtocol: AnyObject {
     func remove(document: GiniCaptureDocument)
     func resetToInitialState()
     func sendFeedback(with updatedExtractions: [Extraction], updatedCompoundExtractions: [String: [[Extraction]]]?)
+    func sendSkontoFeedback(with updatedExtractions: [Extraction], updatedCompoundExtractions: [String: [[Extraction]]]?, retryCount: Int)
     func startAnalysis(completion: @escaping AnalysisCompletion)
     func sortDocuments(withSameOrderAs documents: [GiniCaptureDocument])
     func upload(document: GiniCaptureDocument,
@@ -36,4 +37,12 @@ public protocol DocumentServiceProtocol: AnyObject {
     func documentPage(pageNumber: Int,
                       size: Document.Page.Size,
                       completion: @escaping DocumentPagePreviewCompletion)
+}
+
+public extension DocumentServiceProtocol {
+    func sendSkontoFeedback(with updatedExtractions: [Extraction],
+                      updatedCompoundExtractions: [String: [[Extraction]]]?,
+                      retryCount: Int) {
+        // Default implementation is empty
+    }
 }

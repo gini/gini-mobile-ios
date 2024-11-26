@@ -152,7 +152,19 @@ public final class DocumentService: DocumentServiceProtocol {
         attemptFeedback(document: document,
                         updatedExtractions: updatedExtractions,
                         updatedCompoundExtractions: updatedCompoundExtractions,
-                        retryCount: 3)
+                        retryCount: 0)
+    }
+    
+    public func sendSkontoFeedback(with updatedExtractions: [Extraction], updatedCompoundExtractions: [String: [[Extraction]]]?, retryCount: Int) {
+        Log(message: "Sending feedback", event: "💬")
+        guard let document = document else {
+            Log(message: "Cannot send feedback: no document", event: .error)
+            return
+        }
+        attemptFeedback(document: document,
+                        updatedExtractions: updatedExtractions,
+                        updatedCompoundExtractions: updatedCompoundExtractions,
+                        retryCount: retryCount)
     }
 
     private func attemptFeedback(document: Document,
