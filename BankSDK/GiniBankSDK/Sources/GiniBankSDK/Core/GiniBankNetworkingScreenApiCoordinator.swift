@@ -359,13 +359,20 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 self.giniBankConfiguration.lineItems = result.lineItems
                 if let skontoDiscounts = result.skontoDiscounts {
                     self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
-                    self.giniBankConfiguration.sendTransferSummaryWithSkontoAndRA(extractions: extractions)
+                    self.sendSkontoFeedbackForReturnAssistant(extractions: extractions)
                 }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
             }
         }
+    }
+    
+    private func sendSkontoFeedbackForReturnAssistant(extractions: [String: Extraction]) {
+        guard let amountToPay = extractAmountToPay(from: extractions) else { return }
+        let amountToPayString = formatAmountToPay(amountToPay)
+        let amountExtraction = createAmountExtraction(value: amountToPayString)
+        self.giniBankConfiguration.sendTransferSummaryWithSkontoAndRA(amountExtraction: amountExtraction, amountToPayString: amountToPayString)
     }
 
     private func showDigitalInvoiceScreen(digitalInvoice: DigitalInvoice, analysisDelegate: AnalysisDelegate) {
@@ -463,12 +470,39 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
                 self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
-                self.giniBankConfiguration.sendTransferSummaryWithSkonto(extractions: extractions)
+                self.sendSkontoFeedback(extractions: extractions)
             } else {
                 analysisDelegate?.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
             }
         }
+    }
+    
+    private func sendSkontoFeedback(extractions: [String: Extraction]) {
+        guard let amountToPay = extractAmountToPay(from: extractions) else { return }
+        let amountToPayString = formatAmountToPay(amountToPay)
+        let amountExtraction = createAmountExtraction(value: amountToPayString)
+        self.giniBankConfiguration.sendTransferSummaryWithSkonto(amountExtraction: amountExtraction, amountToPayString: amountToPayString)
+    }
+    
+    private func formatAmountToPay(_ amount: ExtractionAmount) -> String {
+        let formattedValue = amount.value.stringValue(withDecimalPoint: 2) ?? "\(amount.value)"
+        return "\(formattedValue):\(amount.currency.rawValue)"
+    }
+
+    private func extractAmountToPay(from extractions: [String: Extraction]) -> ExtractionAmount? {
+        guard let amountValue = extractions["amountToPay"]?.value,
+              let amountComponents = amountValue.split(separator: ":").first,
+              let value = Decimal(string: String(amountComponents)) else { return nil }
+        return ExtractionAmount(value: value, currency: .EUR)
+    }
+    
+    private func createAmountExtraction(value: String) -> Extraction {
+        return Extraction(box: nil,
+                          candidates: nil,
+                          entity: "amount",
+                          value: value,
+                          name: "amountToPay")
     }
 
     private func showSkontoScreen(skontoDiscounts: SkontoDiscounts, documentId: String) {

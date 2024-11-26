@@ -627,7 +627,8 @@ public final class GiniBankConfiguration: NSObject {
                                     iban: String,
                                     bic: String,
                                     amountToPay: ExtractionAmount) {
-        let amountToPayString = formatAmountToPay(amountToPay)
+        let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"
+        let amountToPayString = "\(formattedPriceValue)" + ":" + amountToPay.currency.rawValue
         let updatedExtractions = createFeedbackBasicExtractions(paymentRecipient: paymentRecipient,
                                                                 paymentReference: paymentReference,
                                                                 paymentPurpose: paymentPurpose,
@@ -635,56 +636,6 @@ public final class GiniBankConfiguration: NSObject {
                                                                 bic: bic,
                                                                 amountToPayString: amountToPayString)
         sendFeedback(updatedExtractions: updatedExtractions, amountToPayString: amountToPayString, retryCount: 0)
-    }
-
-    private func sendFeedback(updatedExtractions: [Extraction], amountToPayString: String, retryCount: Int) {
-        var updatedCompoundExtractions = addFeedbackSkontoDiscountsIfApplicable(extractions: updatedExtractions,
-                                                                                amountToPayString: amountToPayString)
-        updatedCompoundExtractions = addFeedbackLineItemsIfAvailable(to: updatedCompoundExtractions)
-
-        documentService?.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: updatedCompoundExtractions)
-    }
-
-    func sendTransferSummaryWithSkonto(extractions: [String: Extraction]) {
-        guard let amountToPay = extractAmountToPay(from: extractions) else { return }
-        let amountToPayString = formatAmountToPay(amountToPay)
-        let amountExtraction = createAmountExtraction(value: amountToPayString)
-
-        sendSkontoFeedback(updatedExtractions: [amountExtraction], amountToPayString: amountToPayString, retryCount: 3)
-    }
-
-    func sendTransferSummaryWithSkontoAndRA(extractions: [String: Extraction]) {
-        guard let skontoDiscounts = skontoDiscounts?.first,
-                let amountToPay = extractAmountToPay(from: extractions) else { return }
-        let amountToPayString = formatAmountToPay(amountToPay)
-
-        guard skontoDiscounts.contains(where: {
-            $0.name == "skontoAmountToPayCalculated" && $0.value == amountToPayString
-        }) else { return }
-
-        let amountExtraction = createAmountExtraction(value: amountToPayString)
-
-        sendSkontoFeedback(updatedExtractions: [amountExtraction], amountToPayString: amountToPayString, retryCount: 3)
-    }
-
-    private func formatAmountToPay(_ amount: ExtractionAmount) -> String {
-        let formattedValue = amount.value.stringValue(withDecimalPoint: 2) ?? "\(amount.value)"
-        return "\(formattedValue):\(amount.currency.rawValue)"
-    }
-
-    private func extractAmountToPay(from extractions: [String: Extraction]) -> ExtractionAmount? {
-        guard let amountValue = extractions["amountToPay"]?.value,
-              let amountComponents = amountValue.split(separator: ":").first,
-              let value = Decimal(string: String(amountComponents)) else { return nil }
-        return ExtractionAmount(value: value, currency: .EUR)
-    }
-
-    private func createAmountExtraction(value: String) -> Extraction {
-        return Extraction(box: nil,
-                          candidates: nil,
-                          entity: "amount",
-                          value: value,
-                          name: "amountToPay")
     }
 
     private func createFeedbackBasicExtractions(paymentRecipient: String,
@@ -729,6 +680,26 @@ public final class GiniBankConfiguration: NSObject {
                 ibanExtraction,
                 bicExtraction,
                 amountExtraction]
+    }
+
+    private func sendFeedback(updatedExtractions: [Extraction], amountToPayString: String, retryCount: Int) {
+        var updatedCompoundExtractions = addFeedbackSkontoDiscountsIfApplicable(extractions: updatedExtractions,
+                                                                                amountToPayString: amountToPayString)
+        updatedCompoundExtractions = addFeedbackLineItemsIfAvailable(to: updatedCompoundExtractions)
+
+        documentService?.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: updatedCompoundExtractions)
+    }
+
+    func sendTransferSummaryWithSkonto(amountExtraction: Extraction, amountToPayString: String) {
+        sendSkontoFeedback(updatedExtractions: [amountExtraction], amountToPayString: amountToPayString, retryCount: 3)
+    }
+
+    func sendTransferSummaryWithSkontoAndRA(amountExtraction: Extraction, amountToPayString: String) {
+        guard let skontoDiscounts = skontoDiscounts?.first, skontoDiscounts.contains(where: {
+            $0.name == "skontoAmountToPayCalculated" && $0.value == amountToPayString
+        }) else { return }
+
+        sendSkontoFeedback(updatedExtractions: [amountExtraction], amountToPayString: amountToPayString, retryCount: 3)
     }
 
     private func sendSkontoFeedback(updatedExtractions: [Extraction], amountToPayString: String, retryCount: Int) {
