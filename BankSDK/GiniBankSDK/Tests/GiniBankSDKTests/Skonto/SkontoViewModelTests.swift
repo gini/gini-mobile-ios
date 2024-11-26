@@ -316,6 +316,26 @@ class SkontoViewModelTests: XCTestCase {
                           initialSavings,
                           "Skonto savings amount should be updated when the Skonto amount to pay changes, reflecting a change in the Skonto percentage.")
     }
+    
+    func testValueCappedAtMaxDigits() {
+        let initialValue = viewModel.amountToPay
+        let newPrice = 1234567.89
+        viewModel.setAmountToPayPrice(formatValue(newPrice))
+        let updatedValue = viewModel.amountToPay
+        XCTAssertEqual(updatedValue,
+                       initialValue,
+                       "Expected value to ignore amount which is greater than 99999.99 and stay with: \(initialValue)")
+    }
+    
+    func testMaxAllowedAmountToPay() {
+        let newPrice = 99999.98
+        viewModel.setAmountToPayPrice(formatValue(newPrice))
+        let updatedValue = viewModel.amountToPay.value
+        let expectedValue = Decimal(newPrice)
+        XCTAssertEqual(updatedValue,
+                       expectedValue,
+                       "Expected value to be equal to: \(newPrice)")
+    }
 
     private func formatValue(_ value: Double) -> String {
         return NumberFormatter.twoDecimalPriceFormatter.string(from: NSNumber(value: value)) ?? ""

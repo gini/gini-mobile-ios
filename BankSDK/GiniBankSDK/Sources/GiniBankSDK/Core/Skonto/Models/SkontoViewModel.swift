@@ -26,6 +26,7 @@ class SkontoViewModel {
     var proceedAction: (() -> Void)?
 
     private let skontoDiscounts: SkontoDiscounts
+    private (set) var isWithDiscountSwitchAvailable: Bool
     private var skontoPercentage: Double
 
     private (set) var isSkontoApplied: Bool = true
@@ -40,6 +41,8 @@ class SkontoViewModel {
     private (set) var edgeCase: SkontoEdgeCase?
 
     private (set) var documentPagesViewModel: SkontoDocumentPagesViewModel?
+
+    private var maximumAmountToPayValue: Decimal = 99999.99
 
     var finalAmountToPay: Price {
         return isSkontoApplied ? skontoAmountToPay : amountToPay
@@ -123,10 +126,14 @@ class SkontoViewModel {
         return text
     }
 
+    private var errorMessage: String?
+
     weak var delegate: SkontoViewModelDelegate?
 
-    init(skontoDiscounts: SkontoDiscounts) {
+    init(skontoDiscounts: SkontoDiscounts,
+         isWithDiscountSwitchAvailable: Bool = true) {
         self.skontoDiscounts = skontoDiscounts
+        self.isWithDiscountSwitchAvailable = isWithDiscountSwitchAvailable
 
         // For now multiple Skonto discounts aren't handle
         let skontoDiscountDetails = skontoDiscounts.discounts[0]
@@ -149,23 +156,60 @@ class SkontoViewModel {
     }
 
     func setSkontoAmountToPayPrice(_ price: String) {
-        guard let price = convertPriceStringToPrice(price: price),
-              price.value <= amountToPay.value else {
-            notifyStateChangeHandlers()
-            return
+        let errorMessage = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withdiscount.validation",
+                                                                    comment: "Discounted value cannot exceed...")
+        setPrice(price,
+                 maxValue: amountToPay.value,
+                 errorMessage: errorMessage
+        ) { validatedPrice in
+            skontoAmountToPay = validatedPrice
+            updateDocumentPagesModelData()
+            recalculateSkontoPercentage()
         }
-        skontoAmountToPay = price
-        updateDocumentPagesModelData()
-        recalculateSkontoPercentage()
-        notifyStateChangeHandlers()
     }
 
     func setAmountToPayPrice(_ price: String) {
-        guard let price = convertPriceStringToPrice(price: price) else { return }
-        amountToPay = price
-        recalculateAmountToPayWithSkonto()
-        updateDocumentPagesModelData()
+        let errorMessage = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.validation",
+                                                                    comment: "Your transfer limit has been exceed...")
+        setPrice(price,
+                 maxValue: maximumAmountToPayValue,
+                 errorMessage: errorMessage
+        ) { validatedPrice in
+            amountToPay = validatedPrice
+            recalculateAmountToPayWithSkonto()
+            updateDocumentPagesModelData()
+        }
+    }
+
+    func setMaximumAmountToPayValue(_ value: Decimal?) {
+        guard let value else { return }
+        maximumAmountToPayValue = value
+    }
+
+    private func setPrice(_ price: String,
+                          maxValue: Decimal,
+                          errorMessage: String,
+                          completion: (Price) -> Void) {
+        let validationMessage = validatePrice(price, maxValue: maxValue, errorMessage: errorMessage)
+        if let validationMessage {
+            setErrorMessage(validationMessage)
+            notifyStateChangeHandlers()
+            return
+        }
+        guard let validatedPrice = convertPriceStringToPrice(price: price) else { return }
+        completion(validatedPrice)
         notifyStateChangeHandlers()
+    }
+
+    private func validatePrice(_ price: String, maxValue: Decimal, errorMessage: String) -> String? {
+        guard let convertedPrice = convertPriceStringToPrice(price: price), convertedPrice.value <= maxValue else {
+            let formatter = NumberFormatter.twoDecimalPriceFormatter
+            if let maxPriceString = formatter.string(from: NSDecimalNumber(decimal: maxValue)) {
+                return String.localizedStringWithFormat(errorMessage, maxPriceString)
+            }
+            return errorMessage
+        }
+        return nil
     }
 
     func setExpiryDate(_ date: Date) {
@@ -329,5 +373,14 @@ class SkontoViewModel {
         default:
             isSkontoApplied = true
         }
+    }
+
+    func setErrorMessage(_ message: String) {
+        errorMessage = message
+    }
+
+    func getErrorMessageAndClear() -> String? {
+        defer { errorMessage = nil }
+        return errorMessage
     }
 }

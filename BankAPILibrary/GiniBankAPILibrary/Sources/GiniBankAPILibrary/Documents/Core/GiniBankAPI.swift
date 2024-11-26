@@ -92,7 +92,7 @@ extension GiniBankAPI {
         /**
          * Creates a Gini Bank API Library to be used with a transparent proxy and a custom api access token source.
          */
-        public init(customApiDomain: String,
+        public init(customApiDomain: String = APIDomain.default.domainString,
                     alternativeTokenSource: AlternativeTokenSource,
                     logLevel: LogLevel = .none,
                     sessionDelegate: URLSessionDelegate? = nil) {

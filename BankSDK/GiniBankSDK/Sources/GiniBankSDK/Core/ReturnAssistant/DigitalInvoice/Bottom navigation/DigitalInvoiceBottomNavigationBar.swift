@@ -70,7 +70,7 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
+        label.textColor = .giniColorScheme().badge.content.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -80,7 +80,7 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
 
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
+        view.backgroundColor = .giniColorScheme().badge.background.uiColor()
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.isHidden = true
@@ -93,7 +93,7 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
+        label.textColor = .giniColorScheme().text.success.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -101,7 +101,7 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
 
     private lazy var dividerView: UIView = {
         let dividerView = UIView()
-        dividerView.backgroundColor = .giniColorScheme().bg.divider.uiColor()
+        dividerView.backgroundColor = .giniColorScheme().bottomBar.border.uiColor()
         dividerView.translatesAutoresizingMaskIntoConstraints = false
         return dividerView
     }()
@@ -156,7 +156,7 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        backgroundColor = .giniColorScheme().background.secondary.uiColor()
 
         addSubview(contentView)
         addSubview(dividerView)

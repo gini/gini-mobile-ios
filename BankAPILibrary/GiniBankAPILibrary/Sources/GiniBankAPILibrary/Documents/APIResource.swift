@@ -13,7 +13,7 @@ public enum APIDomain {
     /// A custom domain with optional path and custom token source
     case custom(domain: String, path: String? = nil, tokenSource: AlternativeTokenSource?)
     
-    var domainString: String {
+    public var domainString: String {
         switch self {
         case .default: return "pay-api.gini.net"
         case .custom(let domain, _, _): return domain

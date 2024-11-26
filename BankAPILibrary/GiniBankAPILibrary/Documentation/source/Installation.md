@@ -10,14 +10,14 @@ Once you have your Swift package set up, adding `GiniBankAPILibrary` as a depend
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/bank-api-library-ios.git", .exact("3.3.1"))
+    .package(url: "https://github.com/gini/bank-api-library-ios.git", .exact("3.4.0"))
 ]
 ```
 
 In case that you want to use the certificate pinning in the library, add `GiniBankAPILibraryPinning`:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/bank-api-library-pinning-ios.git", .exact("3.3.1"))
+    .package(url: "https://github.com/gini/bank-api-library-pinning-ios.git", .exact("3.4.0"))
 ]
 ```
 
