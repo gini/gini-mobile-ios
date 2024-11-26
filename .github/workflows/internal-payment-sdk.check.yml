@@ -1,0 +1,33 @@
+name: Check Gini Internal Payment SDK
+on:
+  push:
+   paths:
+      - 'GiniComponents/GiniInternalPaymentSDK/**'
+   tags-ignore:
+      - '**'
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        target: [GiniInternalPaymentSDK]
+        destination: ['platform=iOS Simulator,OS=17.2,name=iPhone SE (3rd generation)', 'platform=iOS Simulator,OS=17.5,name=iPhone 15']
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1.6.0
+      with:
+        xcode-version: '15.3'
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Check package GiniInternalPaymentSDK
+      run: |
+           cd GiniComponents/GiniInternalPaymentSDK
+           swift package update
+
+    - name: Build sdk targets
+      run: |
+        xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
