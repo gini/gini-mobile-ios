@@ -10,16 +10,7 @@ import GiniCaptureSDK
 class DigitalInvoiceSkontoViewController: UIViewController {
     private lazy var documentPreviewView: SkontoDocumentPreviewView = {
         let view = SkontoDocumentPreviewView(viewModel: viewModel)
-        return view
-    }()
-
-    private lazy var documentPreviewContainerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
-        view.layer.cornerRadius = Constants.groupCornerRadius
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(documentPreviewTapped))
-        view.addGestureRecognizer(tapGesture)
+        view.delegate = self
         return view
     }()
 
@@ -43,7 +34,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     private lazy var withDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        view.backgroundColor = .giniColorScheme().container.background.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()
@@ -82,7 +73,8 @@ class DigitalInvoiceSkontoViewController: UIViewController {
 
     private var firstAppearance = true
 
-    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor
+                                                    .constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -119,7 +111,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
         let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
                                                                        comment: "Back")
         edgesForExtendedLayout = []
-        view.backgroundColor = .giniColorScheme().bg.background.uiColor()
+        view.backgroundColor = .giniColorScheme().background.primary.uiColor()
         if !configuration.bottomNavigationBarEnabled {
             let helpButton = GiniBarButton(ofType: .help)
             helpButton.addAction(self, #selector(helpButtonTapped))
@@ -133,9 +125,8 @@ class DigitalInvoiceSkontoViewController: UIViewController {
         }
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
-        stackView.addArrangedSubview(documentPreviewContainerView)
+        stackView.addArrangedSubview(documentPreviewView)
         stackView.addArrangedSubview(withDiscountContainerView)
-        documentPreviewContainerView.addSubview(documentPreviewView)
         withDiscountContainerView.addSubview(withDiscountHeaderView)
         withDiscountContainerView.addSubview(infoBannerView)
         withDiscountContainerView.addSubview(withDiscountPriceView)
@@ -149,7 +140,6 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     private func setupConstraints() {
         setupScrollViewConstraints()
         setupStackViewConstraints()
-        setupInvoiceGroupViewConstraints()
         setupWithDiscountGroupViewConstraints()
     }
 
@@ -175,19 +165,6 @@ class DigitalInvoiceSkontoViewController: UIViewController {
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
                                              constant: -2 * Constants.containerPadding)
-        ])
-    }
-
-    private func setupInvoiceGroupViewConstraints() {
-        NSLayoutConstraint.activate([
-            documentPreviewView.topAnchor.constraint(equalTo: documentPreviewContainerView.topAnchor, constant:
-                                                        Constants.verticalPadding),
-            documentPreviewView.leadingAnchor.constraint(equalTo: documentPreviewContainerView.leadingAnchor,
-                                                         constant: Constants.horizontalPadding),
-            documentPreviewView.trailingAnchor.constraint(equalTo: documentPreviewContainerView.trailingAnchor,
-                                                          constant: -Constants.horizontalPadding),
-            documentPreviewView.bottomAnchor.constraint(equalTo: documentPreviewContainerView.bottomAnchor,
-                                                        constant: -Constants.verticalPadding)
         ])
     }
 
@@ -283,8 +260,10 @@ class DigitalInvoiceSkontoViewController: UIViewController {
         guard let alert = alertFactory.createEdgeCaseAlert() else { return }
         present(alert, animated: true, completion: nil)
     }
+}
 
-    @objc private func documentPreviewTapped() {
+extension DigitalInvoiceSkontoViewController: SkontoDocumentPreviewViewDelegate {
+    func documentPreviewTapped(in view: SkontoDocumentPreviewView) {
         viewModel.documentPreviewTapped()
     }
 }

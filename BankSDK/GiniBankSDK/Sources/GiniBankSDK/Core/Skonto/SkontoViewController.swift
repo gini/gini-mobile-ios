@@ -10,16 +10,7 @@ import GiniCaptureSDK
 final class SkontoViewController: UIViewController {
     private lazy var documentPreviewView: SkontoDocumentPreviewView = {
         let view = SkontoDocumentPreviewView(viewModel: viewModel)
-        return view
-    }()
-
-    private lazy var documentPreviewContainerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
-        view.layer.cornerRadius = Constants.groupCornerRadius
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(documentPreviewTapped))
-        view.addGestureRecognizer(tapGesture)
+        view.delegate = self
         return view
     }()
 
@@ -43,7 +34,7 @@ final class SkontoViewController: UIViewController {
     private lazy var withDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        view.backgroundColor = .giniColorScheme().container.background.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()
@@ -61,7 +52,7 @@ final class SkontoViewController: UIViewController {
     private lazy var withoutDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        view.backgroundColor = .giniColorScheme().container.background.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()
@@ -135,7 +126,7 @@ final class SkontoViewController: UIViewController {
         let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
                                                                        comment: "Back")
         edgesForExtendedLayout = []
-        view.backgroundColor = .giniColorScheme().bg.background.uiColor()
+        view.backgroundColor = .giniColorScheme().background.primary.uiColor()
         if !configuration.bottomNavigationBarEnabled {
             let helpButton = GiniBarButton(ofType: .help)
             helpButton.addAction(self, #selector(helpButtonTapped))
@@ -149,10 +140,9 @@ final class SkontoViewController: UIViewController {
         }
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
-        stackView.addArrangedSubview(documentPreviewContainerView)
+        stackView.addArrangedSubview(documentPreviewView)
         stackView.addArrangedSubview(withDiscountContainerView)
         stackView.addArrangedSubview(withoutDiscountContainerView)
-        documentPreviewContainerView.addSubview(documentPreviewView)
         withDiscountContainerView.addSubview(withDiscountHeaderView)
         withDiscountContainerView.addSubview(infoBannerView)
         withDiscountContainerView.addSubview(withDiscountPriceView)
@@ -168,7 +158,6 @@ final class SkontoViewController: UIViewController {
     private func setupConstraints() {
         setupScrollViewConstraints()
         setupStackViewConstraints()
-        setupInvoiceGroupViewConstraints()
         setupWithDiscountGroupViewConstraints()
         setupNotAppliedGroupViewConstraints()
         setupProceedContainerViewConstraints()
@@ -196,19 +185,6 @@ final class SkontoViewController: UIViewController {
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
                                              constant: -2 * Constants.containerPadding)
-        ])
-    }
-
-    private func setupInvoiceGroupViewConstraints() {
-        NSLayoutConstraint.activate([
-            documentPreviewView.topAnchor.constraint(equalTo: documentPreviewContainerView.topAnchor, constant:
-                                                        Constants.verticalPadding),
-            documentPreviewView.leadingAnchor.constraint(equalTo: documentPreviewContainerView.leadingAnchor,
-                                                         constant: Constants.horizontalPadding),
-            documentPreviewView.trailingAnchor.constraint(equalTo: documentPreviewContainerView.trailingAnchor,
-                                                          constant: -Constants.horizontalPadding),
-            documentPreviewView.bottomAnchor.constraint(equalTo: documentPreviewContainerView.bottomAnchor,
-                                                        constant: -Constants.verticalPadding)
         ])
     }
 
@@ -343,8 +319,10 @@ final class SkontoViewController: UIViewController {
         guard let alert = alertFactory.createEdgeCaseAlert() else { return }
         present(alert, animated: true, completion: nil)
     }
+}
 
-    @objc private func documentPreviewTapped() {
+extension SkontoViewController: SkontoDocumentPreviewViewDelegate {
+    func documentPreviewTapped(in view: SkontoDocumentPreviewView) {
         viewModel.documentPreviewTapped()
     }
 }
@@ -377,10 +355,16 @@ extension SkontoViewController {
             return
         }
 
-        let contentOffset = keyboardFrame.height - proceedContainerView.frame.height + Constants.containerPadding
+        let targetView = viewModel.isSkontoApplied ? withDiscountContainerView : withoutDiscountContainerView
+        let targetFrameInScrollView = scrollView.convert(targetView.frame, from: targetView.superview)
+        let keyboardHeight = keyboardFrame.height
+        let scrollViewBottomMarginDifference = (scrollView.superview?.bounds.height ?? 0) - scrollView.frame.maxY
+        let keyboardOffsetOverProceedView = keyboardHeight + Constants.containerPadding - scrollViewBottomMarginDifference
+        let contentOffsetY = max(0, targetFrameInScrollView.maxY - scrollView.bounds.height + keyboardOffsetOverProceedView)
         UIView.animate(withDuration: animationDuration) {
-            self.scrollView.contentInset.bottom = contentOffset
-            self.scrollView.scrollIndicatorInsets.bottom = contentOffset
+            self.scrollView.contentInset.bottom = keyboardHeight
+            self.scrollView.scrollIndicatorInsets.bottom = keyboardHeight
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: contentOffsetY), animated: true)
         }
     }
 

@@ -61,11 +61,37 @@ class SkontoAmountToPayView: UIView {
 
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderColor = UIColor.giniColorScheme().bg.border.uiColor().cgColor
+        view.layer.borderColor = UIColor.giniColorScheme().textField.border.uiColor().cgColor
         view.layer.borderWidth = isEditable ? 1 : 0
         view.layer.cornerRadius = Constants.cornerRadius
+        view.isAccessibilityElement = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+
+    private lazy var validationLabelContainer: UIView = {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(validationLabel)
+        return container
+    }()
+
+    private lazy var validationLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .giniColorScheme().textField.supportingError.uiColor()
+        label.font = configuration.textStyleFonts[.caption1]
+        label.numberOfLines = 0
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private lazy var mainStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [containerView, validationLabelContainer])
+        stackView.axis = .vertical
+        stackView.spacing = Constants.stackViewSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
 
     private let titleLabelText: String
@@ -92,8 +118,8 @@ class SkontoAmountToPayView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().bg.inputUnfocused.uiColor()
-        addSubview(containerView)
+        backgroundColor = .giniColorScheme().textField.background.uiColor()
+        addSubview(mainStackView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(stackView)
         setupConstraints()
@@ -101,26 +127,42 @@ class SkontoAmountToPayView: UIView {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            mainStackView.topAnchor.constraint(equalTo: topAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.padding),
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding),
+            containerView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
 
-            stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.padding),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor,
+                                            constant: Constants.padding),
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
+                                                constant: Constants.padding),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
+                                                 constant: -Constants.padding),
+
+            stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+                                           constant: Constants.padding),
             stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
-                                                        constant: Constants.padding),
+                                               constant: Constants.padding),
             stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
-                                                         constant: -Constants.padding),
+                                                constant: -Constants.padding),
             stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor,
-                                                       constant: -Constants.padding)
+                                              constant: -Constants.padding),
+
+            validationLabel.topAnchor.constraint(equalTo: validationLabelContainer.topAnchor),
+            validationLabel.leadingAnchor.constraint(equalTo: validationLabelContainer.leadingAnchor,
+                                                     constant: Constants.padding),
+            validationLabel.trailingAnchor.constraint(equalTo: validationLabelContainer.trailingAnchor,
+                                                      constant: -Constants.padding),
+            validationLabel.bottomAnchor.constraint(equalTo: validationLabelContainer.bottomAnchor)
         ])
     }
 
-    func configure(isEditable: Bool, price: Price) {
+    func configure(isEditable: Bool,
+                   price: Price,
+                   accessibilityValue: String) {
         if isEditable {
             textField.text = price.localizedStringWithoutCurrencyCode ?? ""
         } else {
@@ -128,8 +170,22 @@ class SkontoAmountToPayView: UIView {
         }
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
+        containerView.accessibilityValue = accessibilityValue
         textField.isUserInteractionEnabled = isEditable
         currencyLabel.isHidden = !isEditable
+    }
+
+    func updateValidationMessage(_ message: String) {
+        guard validationLabel.isHidden else {
+            return
+        }
+        validationLabel.text = message
+        validationLabel.isHidden = false
+    }
+
+    func hideValidationMessage() {
+        validationLabel.text = ""
+        validationLabel.isHidden = true
     }
 
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {

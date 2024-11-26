@@ -19,6 +19,7 @@ final class DigitalInvoiceViewModel {
     weak var delegate: DigitalInvoiceViewModelDelagate?
     var invoice: DigitalInvoice? {
         didSet {
+            skontoViewModel?.setMaximumAmountToPayValue(invoice?.maximumAvailablePrice)
             skontoViewModel?.setAmountToPayPrice(invoice?.total?.stringWithoutSymbol ?? "")
         }
     }

@@ -5,4 +5,4 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-public let GiniCaptureSDKVersion = "3.10.1"
+public let GiniCaptureSDKVersion = "3.11.0"

@@ -106,6 +106,9 @@
 "ginibank.skonto.withoutdiscount.title" = "Without Skonto discount";
 "ginibank.skonto.withoutdiscount.price.title" = "Full amount";
 
+"ginibank.skonto.withdiscount.validation" = "Discounted value cannot exceed initial value";
+"ginibank.skonto.withoutdiscount.validation" = "Your transfer limit has been exceeded: %@";
+
 "ginibank.skonto.total.title" = "Total";
 "ginibank.skonto.total.savings" = "Save %@";
 "ginibank.skonto.total.skontopercentage" = "%@ Skonto discount";
@@ -143,6 +146,8 @@
 "ginibank.transactionDocs.alert.action.doNotAttach" = "Don't attach";
 
 "ginibank.transactionDocs.componentView.title" = "Attachments";
+"ginibank.transactionDocs.document.accessibilitylabel" = "Tap to view %@";
+"ginibank.transactionDocs.document.optionbutton.accessibilitylabel" = "Options";
 
 "ginibank.transactionDocs.bottomSheet.action.delete" = "Delete";
 "ginibank.transactionDocs.bottomSheet.action.cancel" = "Cancel";

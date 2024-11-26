@@ -10,7 +10,7 @@ import GiniCaptureSDK
 class TransactionDocsItemView: UIView {
     private lazy var imageContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
+        view.backgroundColor = .giniColorScheme().placeholder.background.uiColor()
         view.layer.cornerRadius = Constants.imageViewCornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -19,7 +19,7 @@ class TransactionDocsItemView: UIView {
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .giniColorScheme().icons.standardTertiary.uiColor()
+        imageView.tintColor = .giniColorScheme().placeholder.tint.uiColor()
         return imageView
     }()
 
@@ -36,9 +36,18 @@ class TransactionDocsItemView: UIView {
     private lazy var optionsButton: UIButton = {
         let button = UIButton()
         button.setImage(GiniImages.transactionDocsOptionsIcon.image, for: .normal)
-        button.tintColor = .giniColorScheme().icons.standardPrimary.uiColor()
+        button.tintColor = .giniColorScheme().icon.primary.uiColor()
         button.addTarget(self, action: #selector(optionsButtonTapped), for: .touchUpInside)
         return button
+    }()
+
+    private lazy var containerStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [imageContainerView, fileNameLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = Constants.stackViewSpacing
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
 
     private let configuration = GiniBankConfiguration.shared
@@ -62,13 +71,33 @@ class TransactionDocsItemView: UIView {
     private func configure(with transactionDoc: TransactionDoc) {
         iconImageView.image = transactionDoc.type.icon
         fileNameLabel.text = transactionDoc.fileName
+
+        setupAccessibility(with: transactionDoc.fileName)
     }
 
     private func setupViews() {
         imageContainerView.addSubview(iconImageView)
-        addSubview(imageContainerView)
-        addSubview(fileNameLabel)
+        addSubview(containerStackView)
         addSubview(optionsButton)
+    }
+
+    private func setupAccessibility(with fileName: String) {
+        optionsButton.isAccessibilityElement = true
+        optionsButton.accessibilityTraits = .button
+        optionsButton.accessibilityLabel = NSLocalizedStringPreferredGiniBankFormat(
+            "ginibank.transactionDocs.document.optionbutton.accessibilitylabel",
+            comment: "Option button")
+
+        imageContainerView.isAccessibilityElement = false
+        fileNameLabel.isAccessibilityElement = false
+
+        containerStackView.isAccessibilityElement = true
+        let documentAccessibilityLabel = NSLocalizedStringPreferredGiniBankFormat(
+            "ginibank.transactionDocs.document.accessibilitylabel",
+            comment: "Tap to view")
+        containerStackView.accessibilityLabel = String.localizedStringWithFormat(documentAccessibilityLabel, fileName)
+
+        accessibilityElements = [containerStackView, optionsButton]
     }
 
     private func setupConstraints() {
@@ -77,34 +106,27 @@ class TransactionDocsItemView: UIView {
         optionsButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            imageContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            imageContainerView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            imageContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor,
-                                                    constant: Constants.minimalTopAnchor),
-            imageContainerView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor,
-                                                       constant: Constants.minimalBottomAnchor),
             imageContainerView.widthAnchor.constraint(equalToConstant: Constants.imageViewSize),
             imageContainerView.heightAnchor.constraint(equalToConstant: Constants.imageViewSize),
 
             iconImageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor,
-                                                              constant: Constants.imageViewPadding),
+                                                   constant: Constants.imageViewPadding),
             iconImageView.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor,
-                                                               constant: -Constants.imageViewPadding),
+                                                    constant: -Constants.imageViewPadding),
             iconImageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor,
-                                                          constant: Constants.imageViewPadding),
+                                               constant: Constants.imageViewPadding),
             iconImageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor,
-                                                             constant: -Constants.imageViewPadding),
+                                                  constant: -Constants.imageViewPadding),
 
-            fileNameLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor,
-                                                   constant: Constants.fileNameLabelLeadingAnchor),
-            fileNameLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            fileNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: optionsButton.leadingAnchor,
-                                                    constant: Constants.fileNameLabelTrailingAnchor),
-            fileNameLabel.topAnchor.constraint(greaterThanOrEqualTo: topAnchor,
-                                                          constant: Constants.minimalTopAnchor),
-            fileNameLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor,
-                                                             constant: Constants.minimalBottomAnchor),
+            containerStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            containerStackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor,
+                                                    constant: Constants.minimalTopAnchor),
+            containerStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor,
+                                                       constant: Constants.minimalBottomAnchor),
 
+            optionsButton.leadingAnchor.constraint(equalTo: containerStackView.trailingAnchor,
+                                                   constant: Constants.optionsButtonLeftPaddig),
             optionsButton.trailingAnchor.constraint(equalTo: trailingAnchor),
             optionsButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             optionsButton.widthAnchor.constraint(equalToConstant: Constants.optionsButtonSize),
@@ -128,9 +150,11 @@ private extension TransactionDocsItemView {
         static let minimalTopAnchor: CGFloat = 8
         static let minimalBottomAnchor: CGFloat = -8
         static let optionsButtonSize: CGFloat = 30
+        static let optionsButtonLeftPaddig: CGFloat = 22
         static let viewMinimalHeight: CGFloat = 44
         static let imageViewPadding: CGFloat = 8
         static let imageViewCornerRadius: CGFloat = 6
         static let imageViewSize: CGFloat = 40
+        static let stackViewSpacing: CGFloat = 8
     }
 }

@@ -28,8 +28,9 @@ class PriceTextField: UITextField, UITextFieldDelegate {
 
     override func paste(_ sender: Any?) {
         if let pastedText = UIPasteboard.general.string {
-            let filteredText = filterAndTrimInput(pastedText)
-            if let decimal = Decimal(string: filteredText) {
+            let filteredText = filterTextInput(pastedText)
+            let cleanInput = String(filteredText.prefix(7))
+            if let decimal = Decimal(string: cleanInput) {
                 let formattedText = formatDecimal(decimal)
                 updateTextField(with: formattedText, originalText: self.text ?? "")
             }
@@ -44,7 +45,7 @@ class PriceTextField: UITextField, UITextFieldDelegate {
         }
 
         let updatedText = text.replacingCharacters(in: textRange, with: string)
-        let filteredText = filterAndTrimInput(updatedText)
+        let filteredText = filterTextInput(updatedText)
 
         guard let decimal = Decimal(string: filteredText) else {
             return false
@@ -56,8 +57,8 @@ class PriceTextField: UITextField, UITextFieldDelegate {
         return false
     }
 
-    private func filterAndTrimInput(_ text: String) -> String {
-        return String(text.trimmingCharacters(in: .whitespaces).filter { $0.isNumber }.prefix(7))
+    private func filterTextInput(_ text: String) -> String {
+        return text.trimmingCharacters(in: .whitespaces).filter { $0.isNumber }
     }
 
     private func formatDecimal(_ decimal: Decimal) -> String? {

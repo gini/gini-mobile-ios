@@ -51,16 +51,6 @@ class PriceTextFieldTests: XCTestCase, PriceTextFieldDelegate {
                        "Expected formatted value of \(expectedValue) when user inputs '\(input)'")
     }
 
-    func testExceedingMaxDigitsBeforeDecimal() {
-        let input = "123456789"
-        let expectedValue = formatValue(12345.67)
-
-        simulateTextInput(input)
-        XCTAssertEqual(priceTextField.text,
-                       expectedValue,
-                       "Expected value to stop at 5 digits before the decimal point: \(expectedValue)")
-    }
-
     func testMaxPositiveValue() {
         let input = "99999.99"
         let expectedValue = formatValue(99999.99)
@@ -69,16 +59,6 @@ class PriceTextFieldTests: XCTestCase, PriceTextFieldDelegate {
         XCTAssertEqual(priceTextField.text,
                        expectedValue,
                        "Expected maximum positive value to be \(expectedValue)")
-    }
-
-    func testValueCappedAtMaxDigits() {
-        let input = "100000.00"
-        let expectedValue = formatValue(10000.00)
-
-        simulateTextInput(input)
-        XCTAssertEqual(priceTextField.text,
-                       expectedValue,
-                       "Expected value to be capped at \(expectedValue) after input exceeding max digits")
     }
 
     func testDeletingTwoDigits() {
@@ -147,16 +127,6 @@ class PriceTextFieldTests: XCTestCase, PriceTextFieldDelegate {
         XCTAssertEqual(priceTextField.text,
                        expectedValue,
                        "Expected commas to be ignored, resulting in \(expectedValue)")
-    }
-
-    func testInputWithExcessiveTrailingZeros() {
-        let input = "123400000000"
-        let expectedValue = formatValue(12340.00)
-
-        simulateTextInput(input)
-        XCTAssertEqual(priceTextField.text,
-                       expectedValue,
-                       "Expected trailing zeros after the decimal point to be handled, resulting in \(expectedValue)")
     }
 
     func testAllZerosInput() {

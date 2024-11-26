@@ -22,7 +22,6 @@ class SkontoProceedContainerView: UIView {
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.proceedbutton.title",
                                                                    comment: "Continue to pay")
-        button.accessibilityValue = buttonTitle
         button.setTitle(buttonTitle, for: .normal)
         button.addTarget(self, action: #selector(proceedButtonTapped), for: .touchUpInside)
         return button
@@ -37,7 +36,6 @@ class SkontoProceedContainerView: UIView {
         let labelText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                                   comment: "Total")
         label.text = labelText
-        label.accessibilityValue = labelText
         return label
     }()
 
@@ -48,7 +46,6 @@ class SkontoProceedContainerView: UIView {
         label.textColor = .giniColorScheme().text.primary.uiColor()
         let labelText = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
         label.text = labelText
-        label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -56,15 +53,24 @@ class SkontoProceedContainerView: UIView {
         return label
     }()
 
+    private lazy var totalAmountStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [totalStringLabel, finalAmountToPayLabel])
+        stackView.axis = .vertical
+        stackView.spacing = Constants.totalValueLabelTopPadding
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isAccessibilityElement = true
+        stackView.accessibilityLabel = "\(totalStringLabel.text ?? "") \(finalAmountToPayLabel.text ?? "")"
+        return stackView
+    }()
+
     private lazy var skontoPercentageLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().chips.textSuggestionEnabled.uiColor()
+        label.textColor = .giniColorScheme().badge.content.uiColor()
         let labelText = String.localizedStringWithFormat(skontoTitle,
                                                          viewModel.formattedPercentageDiscounted)
         label.text = labelText
-        label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -74,7 +80,7 @@ class SkontoProceedContainerView: UIView {
 
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
+        view.backgroundColor = .giniColorScheme().badge.background.uiColor()
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -86,10 +92,9 @@ class SkontoProceedContainerView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().chips.suggestionEnabled.uiColor()
+        label.textColor = .giniColorScheme().badge.background.uiColor()
         let labelText = viewModel.savingsAmountString
         label.text = labelText
-        label.accessibilityValue = labelText
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -97,7 +102,7 @@ class SkontoProceedContainerView: UIView {
 
     private lazy var dividerView: UIView = {
         let dividerView = UIView()
-        dividerView.backgroundColor = .giniColorScheme().bg.divider.uiColor()
+        dividerView.backgroundColor = .giniColorScheme().bottomBar.border.uiColor()
         dividerView.translatesAutoresizingMaskIntoConstraints = false
         return dividerView
     }()
@@ -120,13 +125,12 @@ class SkontoProceedContainerView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .giniColorScheme().bg.surface.uiColor()
+        backgroundColor = .giniColorScheme().bottomBar.background.uiColor()
         translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(contentView)
         addSubview(dividerView)
-        contentView.addSubview(totalStringLabel)
-        contentView.addSubview(finalAmountToPayLabel)
+        contentView.addSubview(totalAmountStackView)
         contentView.addSubview(skontoBadgeView)
         contentView.addSubview(savingsAmountLabel)
         contentView.addSubview(proceedButton)
@@ -149,18 +153,10 @@ class SkontoProceedContainerView: UIView {
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
-            totalStringLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-            totalStringLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                      constant: Constants.padding),
-            totalStringLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
-                                                       constant: -Constants.badgeHorizontalPadding),
-
-            finalAmountToPayLabel.topAnchor.constraint(equalTo: totalStringLabel.bottomAnchor,
-                                                       constant: Constants.totalValueLabelTopPadding),
-            finalAmountToPayLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                           constant: Constants.padding),
-            finalAmountToPayLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
-                                                            constant: -Constants.padding),
+            totalAmountStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
+            totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
+            totalAmountStackView.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
+                                                           constant: -Constants.badgeHorizontalPadding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
                                                     constant: Constants.savingsAmountLabelTopPadding),
