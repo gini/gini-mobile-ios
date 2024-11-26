@@ -45,6 +45,7 @@ extension Document {
      - parameter id: The document's unique identifier.
      - parameter name: The document's file name.
      - parameter links: Links to related resources, such as extractions, document, processed, layout or pages.
+     - parameter pageCount: The document's number of pages.
      - parameter sourceClassification: The document's source classification. We recommend to use `scanned` or `composite`.
      - parameter expirationDate: The document's expiration date.
 
@@ -54,6 +55,7 @@ extension Document {
                 id: String,
                 name: String,
                 links: Links,
+                pageCount: Int,
                 sourceClassification: SourceClassification,
                 expirationDate: Date?) {
         self.init(compositeDocuments: [],
@@ -61,7 +63,7 @@ extension Document {
                   id: id,
                   name: name,
                   origin: .upload,
-                  pageCount: 1,
+                  pageCount: pageCount,
                   pages: [],
                   links: links,
                   partialDocuments: [],
