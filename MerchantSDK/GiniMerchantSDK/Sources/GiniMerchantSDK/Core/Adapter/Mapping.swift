@@ -135,6 +135,7 @@ extension Document {
                                       id: id,
                                       name: name,
                                       links: GiniHealthAPILibrary.Document.Links(giniAPIDocumentURL: links.extractions),
+                                      pageCount: pageCount,
                                       sourceClassification: GiniHealthAPILibrary.Document.SourceClassification(rawValue: sourceClassification.rawValue) ?? .scanned,
                                       expirationDate: expirationDate)
     }
