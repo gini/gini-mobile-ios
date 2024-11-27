@@ -77,8 +77,10 @@ jobs:
 
       - name: Setup Credentials
         run: |
-            plutil -replace client_id -string "gini-mobile-test" HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/Credentials.plist
-            plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/Credentials.plist
+            sed -i '' \
+            -e 's/clientID = "client_id"/clientID = "gini-mobile-test"/' \
+            -e 's/clientPassword = "client_password"/clientPassword = "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"/' \
+            HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
                 
       - name: Archiving project
         run: |

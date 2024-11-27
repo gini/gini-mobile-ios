@@ -21,7 +21,8 @@ class HealthNetworkingService: GiniCaptureNetworkService {
                                              id: doc.id,
                                              name: doc.name,
                                              links: links,
-                                             sourceClassification: sourceClassification, 
+                                             pageCount: doc.pageCount,
+                                             sourceClassification: sourceClassification,
                                              expirationDate: nil)
     }
     

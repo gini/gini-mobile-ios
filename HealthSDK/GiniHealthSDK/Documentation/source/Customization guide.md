@@ -18,7 +18,7 @@ We provide a global color palette `GiniColors.xcassets` which you are free to ov
 For example, if you want to override Accent01 color you need to create an Accent01.colorset with your wished value in your main bundle.
 The custom colors are then applied to all screens.
 
-Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8905-975&t=vNb6FqqGtzIAVdJl-1)).
+Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation)).
 
 ### Images
 
@@ -30,7 +30,7 @@ If you want to override specific SDK images:
 ### Typography
 
 We provide global typography based on text appearance styles from UIFont.TextStyle.
-Preview our typography and find the names of the style resources (you can also view it in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8906-1104&t=vNb6FqqGtzIAVdJl-1)).
+Preview our typography and find the names of the style resources (you can also view it in Figma [here](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12906-11636&t=vzclpYe0B8kEePKJ-4)).
 
 In the example below you can see to override a font for `.body1`
 
@@ -44,10 +44,10 @@ health.setConfiguration(configuration)
 ### Text
 
 Text customization is done via overriding of string resources.
-For example you would like to customize pay invoice button label in the Payment Component:
+For example you would like to customize pay invoice button label in the Payment Review screen:
 
 1. Find a string key for a text that you would like to customize.
-For the [Pay the invoice button label](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8987-2854&t=vNb6FqqGtzIAVdJl-1) in the Payment Component we use `ginihealth.paymentcomponent.payInvoice.label`. 
+For the [To the banking app button label](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12909-10929&t=vzclpYe0B8kEePKJ-4) in the Payment Review screen we use `gini.health.paymentcomponent.to.banking.app.label`. 
 2. Add the string key with a desired value to `Localizable.strings` in your app.
 
 ### Supporting dark mode
@@ -56,7 +56,7 @@ We support dark mode in our SDK. If you decide to customize the color palette, p
 
 ## Payment Component
  
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=8987-2854&t=vNb6FqqGtzIAVdJl-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12906-23094&t=vzclpYe0B8kEePKJ-4).
 
 For configuring the the payment component height use `paymentComponentButtonsHeight` configuration option:
 
@@ -71,46 +71,35 @@ healthSDK.setConfiguration(config)
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D8987-2854%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12906-23094&embed-host=share" allowfullscreen></iframe>
 
 ## Bank Selection Bottom Sheet
 
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=9008-1654&t=vNb6FqqGtzIAVdJl-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12907-10274&t=vzclpYe0B8kEePKJ-4).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D9008-1654%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12907-10274&embed-host=share" allowfullscreen></iframe>
 
 ## Payment Feature Info Screen
 
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=9044-1582&t=vNb6FqqGtzIAVdJl-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12907-11429&t=vzclpYe0B8kEePKJ-4).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D9044-1582%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12907-11429&embed-host=share" allowfullscreen></iframe>
 
 ## Payment Review screen
  
-You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/wBBjc38iihjxrKMnLfbOD4/iOS-Gini-Health-SDK-4.1-UI-Customisation?node-id=9008-1300&t=vNb6FqqGtzIAVdJl-1).
+You can also view the UI customisation guide in Figma [here](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12907-12507&t=vzclpYe0B8kEePKJ-4).
 
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwBBjc38iihjxrKMnLfbOD4%2FiOS-Gini-Health-SDK-4.1-UI-Customisation%3Fnode-id%3D9008-1300%26t%3DvNb6FqqGtzIAVdJl-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12907-12507&embed-host=share" allowfullscreen></iframe>
 
 > **Note:** 
 > - PaymentReviewViewController contains the following configuration options:
 > - paymentReviewStatusBarStyle: Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in `Info.plist`.
-> - showPaymentReviewCloseButton: If set to true, a floating close button will be shown in the top right corner of the screen.
-Default value is false.
-
-For enabling `showPaymentReviewCloseButton`:
-
-```swift
-let giniConfiguration = GiniHealthConfiguration()
-config.showPaymentReviewCloseButton =  true
-healthSDK.setConfiguration(config)
-```
-

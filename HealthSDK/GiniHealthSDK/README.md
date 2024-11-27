@@ -23,17 +23,17 @@ We are providing example app for Swift. This app demonstrates how to integrate t
 
 An example banking app is available in the [Gini Mobile iOS Monorepo](https://github.com/gini/gini-mobile-ios/tree/main/BankSDK/GiniBankSDKExample) repository.
 To check the redirection to the Banking app please run Bank example before the Health example. You can use the same Gini Health API client credentials in the example banking app as in your app, if not otherwise specified.
-To inject your API credentials into the Health and Bank example apps you need to fill in your credentials in [Credentials.plist](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist) and [Credentials.plist](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/Credentials.plist), respectively.
+To inject your API credentials into the Health and Bank example apps you need to fill in your credentials in [Credentials.plist](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist) and [CredentialsManager.swift](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift), respectively.
 
 ## Requirements
 
-- iOS 12+
+- iOS 13+
 - Xcode 15+
 
 **Note:**
 In order to have better analysis results it is highly recommended to enable only devices with 8MP camera and flash. These devices would be:
 
-* iPhones with iOS 12 or higher.
+* iPhones with iOS 13 or higher.
 * iPad Pro devices (iPad Air 2 and iPad Mini 4 have 8MP camera but no flash).
 
 ## Author

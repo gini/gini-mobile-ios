@@ -1,19 +1,27 @@
 //
 //  GiniHealthUtils.swift
-//  GiniHealth
+//  GiniHealthSDK
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
+import GiniUtilites
+/**
+  Returns the GiniHealth bundle.
+ */
+public func giniHealthBundle() -> Bundle {
+    Bundle.module
+}
 
 /**
  Returns an optional `UIImage` instance with the given `name` preferably from the client's bundle.
- 
+
  - parameter name: The name of the image file without file extension.
- 
+
  - returns: Image if found with name.
  */
+
 func UIImageNamedPreferred(named name: String) -> UIImage? {
     if let clientImage = UIImage(named: name) {
         return clientImage
@@ -37,80 +45,18 @@ func decimal(from inputFieldString: String) -> Decimal? {
 }
 
 /**
-   A help price structure with decimal value and currency code, used in amout inpur field.
- */
+ Returns a localized string resource preferably from the client's bundle.
 
-public struct Price {
-    // Decimal value
-    var value: Decimal
-    // Currency code
-    let currencyCode: String
-    
-    /**
-     Returns a price structure with decimal value and  currency code from extraction string
-     
-     - parameter extractionString: extracted string
-     */
-    
-    init(value: Decimal, currencyCode: String) {
-        self.value = value
-        self.currencyCode = currencyCode
-    }
-  
-    /**
-     Returns a price structure with decimal value and  currency code from extraction string
-     
-     - parameter extractionString: extracted string
-     */
-    
-    public init?(extractionString: String) {
-       
-        let components = extractionString.components(separatedBy: ":")
-        
-        guard components.count == 2 else { return nil }
-        
-        guard let decimal = Decimal(string: components.first ?? "", locale: Locale(identifier: "en")),
-            let currencyCode = components.last?.lowercased() else {
-                return nil
-        }
-        
-        self.value = decimal
-        self.currencyCode = currencyCode
-    }
-    
-    // Formatted string with currency code for sending to the Gini Health Api
-    var extractionString: String {
-        return "\(value):\(currencyCode.uppercased())"
-    }
-    
-    // Currency symbol
-    var currencySymbol: String? {
-        return (Locale.current as NSLocale).displayName(forKey: NSLocale.Key.currencySymbol,
-                                                        value: currencyCode.uppercased())
-    }
-    
-    // Formatted string with currency symbol
-    public var string: String? {
-        
-        let result = (Price.stringWithoutSymbol(from: value) ?? "") + " " + (currencySymbol ?? "")
-        
-        if result.isEmpty { return nil }
-        
-        return result
-    }
-    // Formatted string without currency symbol
-    var stringWithoutSymbol: String? {
-        return Price.stringWithoutSymbol(from: value)
-    }
-    
-    static func stringWithoutSymbol(from value: Decimal) -> String? {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencySymbol = ""
-        let formattedString = formatter.string(from: NSDecimalNumber(decimal: value))
-        let trimmedFormattedStringWithoutCurrency = formattedString?.trimmingCharacters(in: .whitespaces)
-        return trimmedFormattedStringWithoutCurrency
-    }
+ - parameter key:     The key to search for in the strings file.
+ - parameter comment: The corresponding comment.
+
+ - returns: String resource for the given key.
+ */
+func NSLocalizedStringPreferredFormat(_ key: String,
+                                      fallbackKey: String = "",
+                                      comment: String,
+                                      isCustomizable: Bool = true) -> String {
+    GiniLocalized.string(key, fallbackKey: fallbackKey, comment: comment, locale: GiniHealthConfiguration.shared.customLocalization?.rawValue, bundle: giniHealthBundle())
 }
 
 /**

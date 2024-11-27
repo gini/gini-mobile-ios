@@ -1,62 +1,61 @@
-/* 
-  File.strings
+/*
+  Localizable.strings
   Pods
 
  //  Copyright © 2024 Gini GmbH. All rights reserved.
 
 */
-"ginihealth.reviewscreen.recipient.placeholder" = "Recipient";
-"ginihealth.reviewscreen.iban.placeholder" = "IBAN";
-"ginihealth.reviewscreen.amount.placeholder" = "Amount";
-"ginihealth.reviewscreen.usage.placeholder" = "Reference number";
-"ginihealth.reviewscreen.banking.app.button.label" = "To the banking app";
-"ginihealth.reviewscreen.infobar.message" = "Please check the pre-filled data.";
-"ginihealth.errors.default" = "Oops something went wrong. Please try again.";
-"ginihealth.errors.failed.payment.request.creation" = "Oops something went wrong. Please try again.";
-"ginihealth.errors.failed.recipient.non.empty.check" = "Recipient is required.";
-"ginihealth.errors.failed.iban.non.empty.check" = "IBAN is required.";
-"ginihealth.errors.failed.iban.validation.check" = "IBAN is not valid.";
-"ginihealth.errors.failed.amount.non.empty.check" = "Invalid.";
-"ginihealth.errors.failed.purpose.non.empty.check" = "Purpose is required.";
-"ginihealth.errors.failed.default.textfield.validation.check" = "The field is not valid.";
+"gini.health.reviewscreen.recipient.placeholder" = "Recipient";
+"gini.health.reviewscreen.iban.placeholder" = "IBAN";
+"gini.health.reviewscreen.amount.placeholder" = "Amount";
+"gini.health.reviewscreen.usage.placeholder" = "Reference number";
+"gini.health.reviewscreen.banking.app.button.label" = "To the banking app";
+"gini.health.reviewscreen.infobar.message" = "Please check the pre-filled data.";
+"gini.health.errors.default" = "Oops something went wrong. Please try again.";
+"gini.health.errors.failed.payment.request.creation" = "Oops something went wrong. Please try again.";
+"gini.health.errors.failed.recipient.non.empty.check" = "Recipient is required.";
+"gini.health.errors.failed.iban.non.empty.check" = "IBAN is required.";
+"gini.health.errors.failed.iban.validation.check" = "IBAN is not valid.";
+"gini.health.errors.failed.amount.non.empty.check" = "Invalid.";
+"gini.health.errors.failed.purpose.non.empty.check" = "Purpose is required.";
+"gini.health.errors.failed.default.textfield.validation.check" = "The field is not valid.";
 
-"ginihealth.alert.ok.title" = "OK";
+"gini.health.alert.ok.title" = "OK";
 
-"ginihealth.paymentcomponent.moreInformation.label" = "Transfer payment data to the banking app and pay there directly. More information.";
-"ginihealth.paymentcomponent.moreInformation.underlined.part" = "More information.";
-"ginihealth.paymentcomponent.selectYourBank.label" = "Select your bank to pay";
-"ginihealth.paymentcomponent.payInvoice.label" = "Pay the invoice";
-"ginihealth.paymentcomponent.poweredByGini.label" = "Powered by";
-"ginihealth.paymentcomponent.selectBank.label" = "Your bank";
-"ginihealth.paymentcomponent.paymentproviderslist.description" = "You can only pay the bill if you have an account with one of the banks listed below.";
-"ginihealth.paymentcomponent.paymentinfo.title.label" = "More information";
-"ginihealth.paymentcomponent.paymentinfo.payBills.title.label" = "Pay bills easily with the banking app.";
-"ginihealth.paymentcomponent.paymentinfo.payBills.description.label" = "Medical bills and other submitted receipts can now be paid very easily.\nThe payment data such as IBAN, amount, recipient and purpose are seamlessly transferred to the banking app, and the payment only needs to be confirmed there.\nYou can also park the invoice and pay it within 3 months after uploading.\nThe data is encrypted and transferred securely to your banking app. The data protection regulations of your bank apply.\nSupported by the largest banks. Integration by Gini[LINK].";
-"ginihealth.paymentcomponent.paymentinfo.payBills.description.clickable.text" = "Gini[LINK]";
-"ginihealth.paymentcomponent.paymentinfo.questions.title.label" = "Frequently asked questions";
-"ginihealth.paymentcomponent.paymentinfo.questions.question.1" = "Can I submit invoices and pay them later?";
-"ginihealth.paymentcomponent.paymentinfo.questions.question.2" = "Is the service free of charge?";
-"ginihealth.paymentcomponent.paymentinfo.questions.question.3" = "Is my data secure?";
-"ginihealth.paymentcomponent.paymentinfo.questions.question.4" = "Who or what is Gini?";
-"ginihealth.paymentcomponent.paymentinfo.questions.question.5" = "What format must the submitted invoice have?";
-"ginihealth.paymentcomponent.paymentinfo.questions.question.6" = "How do I know which banks are supported?";
-"ginihealth.paymentcomponent.paymentinfo.questions.answer.1" = "Yes, this is possible. Larger amounts in particular can be paid after the reimbursement has been made.";
-"ginihealth.paymentcomponent.paymentinfo.questions.answer.2" = "Yes, transferring the payment data to the selected banking app is free of charge. Charges may apply for the actual transfer, depending on the account model - please contact your bank for further details.";
-"ginihealth.paymentcomponent.paymentinfo.questions.answer.3" = "Yes, the data is transferred to the banking app in encrypted form via a Gini server. Gini receives the payment data and forwards it to the banking app. There you always have the option of checking the payment data before the transfer is executed. Gini has concluded contracts with the insurance company and the banks for this purpose, and both regularly audit us.";
-"ginihealth.paymentcomponent.paymentinfo.questions.answer.4" = "Gini makes simplifies payments. The Munich-based company behind the photo payment works with the leading German banks and insurance companies to enable direct payment with your bank.\nGini is ISO 27001 certified for maximum data security and operates its own server machines in an ISO 27001 certified data center in Germany. Further information can be found in the privacy policy[LINK] and on the Gini[LINK] website.";
-"ginihealth.paymentcomponent.paymentinfo.questions.answer.5" = "Whether a photo of an invoice, screenshot or digital PDF - any format is suitable. Please just make sure that all payment information such as IBAN, recipient, purpose and amount are visible and not cut off.";
-"ginihealth.paymentcomponent.paymentinfo.questions.answer.6" = "The banks that support the Gini payment function are displayed in the bank selection menu. To use it, you must have installed your bank's mobile banking app on the same smartphone or tablet on which you use the insurance app. If you have not installed any of the banking apps, you can download them from the Apple App Store or Google Playstore. Subsequent activation of the banking app may be necessary.";
-"ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text" = "privacy policy[LINK]";
-"ginihealth.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/en/";
-"ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
-"ginihealth.paymentcomponent.installAppBottomSheet.title" = "Invoice data ready to share with the [BANK] bank";
-"ginihealth.paymentcomponent.installAppBottomSheet.notes.description" = "Note: You must first update or install the [BANK] app from the App store";
-"ginihealth.paymentcomponent.installAppBottomSheet.tip.description" = "Tip: Tap 'Forward' to complete the payment in the [BANK] app.";
-"ginihealth.paymentcomponent.installAppBottomSheet.continue.button.text" = "Forward";
-"ginihealth.paymentcomponent.shareInvoiceBottomSheet.title" = "Invoice data ready to share";
-"ginihealth.paymentcomponent.shareInvoiceBottomSheet.description" = "In the next step, select the [BANK] app to open and complete your payment in the banking app.";
-"ginihealth.paymentcomponent.shareInvoiceBottomSheet.app" = "App";
-"ginihealth.paymentcomponent.shareInvoiceBottomSheet.more" = "More";
-"ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.description" = "Tip: If you don't see the app, scroll or tap \"More\" until you find the [BANK] app. If you haven't installed the [BANK] app yet, download it from the store.";
-"ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.underlined.part" = "download it from the store";
-"ginihealth.paymentcomponent.shareInvoiceBottomSheet.continue.button.text" = "Forward";
+"gini.health.paymentcomponent.more.information.label" = "Transfer payment data to the banking app and pay there directly. More information.";
+"gini.health.paymentcomponent.more.information.underlined.part" = "More information.";
+"gini.health.paymentcomponent.select.bank.label" = "Select bank";
+"gini.health.paymentcomponent.select.your.bank.label" = "Select your bank to pay";
+"gini.health.paymentcomponent.pay.invoice.label" = "Pay the invoice";
+"gini.health.paymentcomponent.to.banking.app.label" = "To the banking app";
+"gini.health.paymentcomponent.continue.to.overview.label" = "Continue to overview";
+"gini.health.paymentcomponent.powered.by.gini.label" = "Powered by";
+"gini.health.paymentcomponent.your.bank.label" = "Your bank";
+"gini.health.paymentcomponent.payment.providers.list.description" = "You can only pay the bill if you have an account with one of the banks listed below.";
+"gini.health.paymentcomponent.payment.info.title.label" = "More information";
+"gini.health.paymentcomponent.payment.info.pay.bills.title.label" = "Pay bills easily with the banking app.";
+"gini.health.paymentcomponent.payment.info.pay.bills.description.label" = "Medical bills and other submitted receipts can now be paid very easily.\nThe payment data such as IBAN, amount, recipient and purpose are seamlessly transferred to the banking app, and the payment only needs to be confirmed there.\nYou can also park the invoice and pay it within 3 months after uploading.\nThe data is encrypted and transferred securely to your banking app. The data protection regulations of your bank apply.\nSupported by the largest banks. Integration by Gini[LINK].";
+"gini.health.paymentcomponent.payment.info.pay.bills.description.clickable.text" = "Gini[LINK]";
+"gini.health.paymentcomponent.paymentinfo.questions.title.label" = "Frequently asked questions";
+"gini.health.paymentcomponent.payment.info.questions.question.1" = "Can I submit invoices and pay them later?";
+"gini.health.paymentcomponent.payment.info.questions.question.2" = "Is the service free of charge?";
+"gini.health.paymentcomponent.payment.info.questions.question.3" = "Is my data secure?";
+"gini.health.paymentcomponent.payment.info.questions.question.4" = "Who or what is Gini?";
+"gini.health.paymentcomponent.payment.info.questions.question.5" = "What format must the submitted invoice have?";
+"gini.health.paymentcomponent.payment.info.questions.question.6" = "How do I know which banks are supported?";
+"gini.health.paymentcomponent.payment.info.questions.answer.1" = "Yes, this is possible. Larger amounts in particular can be paid after the reimbursement has been made.";
+"gini.health.paymentcomponent.payment.info.questions.answer.2" = "Yes, transferring the payment data to the selected banking app is free of charge. Charges may apply for the actual transfer, depending on the account model - please contact your bank for further details.";
+"gini.health.paymentcomponent.payment.info.questions.answer.3" = "Yes, the data is transferred to the banking app in encrypted form via a Gini server. Gini receives the payment data and forwards it to the banking app. There you always have the option of checking the payment data before the transfer is executed. Gini has concluded contracts with the insurance company and the banks for this purpose, and both regularly audit us.";
+"gini.health.paymentcomponent.payment.info.questions.answer.4" = "Gini makes simplifies payments. The Munich-based company behind the photo payment works with the leading German banks and insurance companies to enable direct payment with your bank.\nGini is ISO 27001 certified for maximum data security and operates its own server machines in an ISO 27001 certified data center in Germany. Further information can be found in the privacy policy[LINK] and on the Gini[LINK] website.";
+"gini.health.paymentcomponent.payment.info.questions.answer.5" = "Whether a photo of an invoice, screenshot or digital PDF - any format is suitable. Please just make sure that all payment information such as IBAN, recipient, purpose and amount are visible and not cut off.";
+"gini.health.paymentcomponent.payment.info.questions.answer.6" = "The banks that support the Gini payment function are displayed in the bank selection menu. To use it, you must have installed your bank's mobile banking app on the same smartphone or tablet on which you use the insurance app. If you have not installed any of the banking apps, you can download them from the Apple App Store or Google Playstore. Subsequent activation of the banking app may be necessary.";
+"gini.health.paymentcomponent.payment.info.questions.answer.clickable.text" = "privacy policy[LINK]";
+"gini.health.paymentcomponent.payment.info.gini.link" = "https://gini.net/en/";
+"gini.health.paymentcomponent.payment.info.gini.privacypolicy.link" = "";
+"gini.health.paymentcomponent.install.app.bottom.sheet.title" = "Invoice data ready to share with the [BANK] bank";
+"gini.health.paymentcomponent.install.app.bottom.sheet.notes.description" = "Note: You must first update or install the [BANK] app from the App store";
+"gini.health.paymentcomponent.install.app.bottom.sheet.tip.description" = "Tip: Tap 'Forward' to complete the payment in the [BANK] app.";
+"gini.health.paymentcomponent.install.app.bottom.sheet.continue.button.text" = "Forward";
+"gini.health.paymentcomponent.share.invoice.bottom.sheet.title" = "Share this QR payment code with your banking app";
+"gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Or take a screenshot and upload it directly in your [BANK] app using the Photo Payment functionality";
+"gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Share with [BANK] app";

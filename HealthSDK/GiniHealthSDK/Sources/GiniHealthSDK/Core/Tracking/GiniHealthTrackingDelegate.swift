@@ -24,8 +24,6 @@ Event types relating to the payment review screen.
 public enum PaymentReviewScreenEventType: String {
     /// User tapped "To the banking app"  button and ready to be redirected to the banking app
     case onToTheBankButtonClicked
-    /// User tapped "close" button and closed the screen
-    case onCloseButtonClicked
     /// User tapped "close" button and keyboard will be hidden
     case onCloseKeyboardButtonClicked
 }

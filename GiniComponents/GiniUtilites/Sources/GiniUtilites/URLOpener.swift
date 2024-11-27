@@ -20,7 +20,7 @@ public struct URLOpener {
     public init(_ application: URLOpenerProtocol) {
         self.application = application
     }
-    
+
     /// Opens AppStore with the provided URL
     ///
     /// - Parameters:
@@ -28,16 +28,23 @@ public struct URLOpener {
     ///   - completion: called after opening is completed
     ///                 param is true if website was opened successfully
     ///                 param is false if opening failed
+
     public func openLink(url: URL, completion: GiniOpenLinkCompletionBlock?) {
         if application.canOpenURL(url) {
             application.open(url, options: [:], completionHandler: completion)
         } else {
-            Task { @MainActor in
-                completion?(false)
+            if #available(iOS 13, *) {
+                Task { @MainActor in
+                    completion?(false)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion?(false)
+                }
             }
         }
     }
-    
+
     public func canOpenLink(url: URL) -> Bool {
         application.canOpenURL(url)
     }

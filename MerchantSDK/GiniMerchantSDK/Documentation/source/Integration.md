@@ -20,7 +20,7 @@ private lazy var merchant = GiniMerchant(id: clientID, secret: clientPassword, d
 
 ## Certificate pinning (optional)
 
-If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration for more information)
+If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass your public key pinning configuration as follows
 ```swift
     private lazy var mechant = GiniMerchant(id: clientID, secret: clientPassword, domain: clientDomain, pinningConfig: ["PinnedDomains" : ["PublicKeyHashes"]])
 ```
