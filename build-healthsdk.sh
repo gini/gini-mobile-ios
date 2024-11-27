@@ -28,7 +28,10 @@ archive()
 	-archivePath $outputPath \
 	-derivedDataPath $derivedDataPath \
 	SKIP_INSTALL=NO \
-    BUILD_LIBRARY_FOR_DISTRIBUTION=YES
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    CODE_SIGNING_ALLOWED=YES \
+    CODE_SIGNING_REQUIRED=NO
+
 
 	# copy .swiftmodule's manually, due to archives seeming to only have runtime artefacts
 	cp-modules "GiniHealthSDK" $modulesPath $resultFrameworksPath
