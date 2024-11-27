@@ -57,8 +57,6 @@ final class AppCoordinator: Coordinator {
         configuration.paymentReviewStatusBarStyle = .lightContent
         return configuration
     }()
-    
-    var isBrandedPaymentComponent = true
 
     private var documentMetadata: GiniHealthSDK.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
@@ -314,7 +312,6 @@ final class AppCoordinator: Coordinator {
         health.delegate = self
 
         let invoicesListCoordinator = InvoicesListCoordinator()
-        health.paymentComponentConfiguration.isPaymentComponentBranded = isBrandedPaymentComponent
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
                                           hardcodedInvoicesController: HardcodedInvoicesController(),
