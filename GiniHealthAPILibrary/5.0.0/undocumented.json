@@ -1,0 +1,929 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/APIResource.swift",
+      "line": 10,
+      "symbol": "APIDomain",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/CompositeDocumentInfo.swift",
+      "line": 16,
+      "symbol": "CompositeDocumentInfo.init(partialDocuments:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Auth/AlternativeTokenSource.swift",
+      "line": 10,
+      "symbol": "AlternativeTokenSource",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Auth/AlternativeTokenSource.swift",
+      "line": 12,
+      "symbol": "AlternativeTokenSource.fetchToken(completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Auth/Token.swift",
+      "line": 10,
+      "symbol": "Token",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Auth/Token.swift",
+      "line": 15,
+      "symbol": "Token.accessToken",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Auth/Token.swift",
+      "line": 17,
+      "symbol": "Token.init(expiration:scope:type:accessToken:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Auth/Token.swift",
+      "line": 33,
+      "symbol": "Token",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Auth/UserResource.swift",
+      "line": 10,
+      "symbol": "UserDomain",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Client.swift",
+      "line": 15,
+      "symbol": "Client.apiVersion",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Client.swift",
+      "line": 23,
+      "symbol": "Client.init(id:secret:domain:apiVersion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Extensions/Data.swift",
+      "line": 48,
+      "symbol": "Data.isImage()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 10,
+      "symbol": "GiniErrorProtocol",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 11,
+      "symbol": "GiniErrorProtocol.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 12,
+      "symbol": "GiniErrorProtocol.response",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 13,
+      "symbol": "GiniErrorProtocol.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 16,
+      "symbol": "GiniError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 17,
+      "symbol": "GiniError.badRequest(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 18,
+      "symbol": "GiniError.notAcceptable(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 19,
+      "symbol": "GiniError.notFound(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 20,
+      "symbol": "GiniError.noResponse",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 21,
+      "symbol": "GiniError.parseError(message:response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 22,
+      "symbol": "GiniError.requestCancelled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 23,
+      "symbol": "GiniError.tooManyRequests(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 24,
+      "symbol": "GiniError.unauthorized(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 25,
+      "symbol": "GiniError.unknown(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 27,
+      "symbol": "GiniError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 50,
+      "symbol": "GiniError.response",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniError.swift",
+      "line": 65,
+      "symbol": "GiniError.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniHealthAPI.swift",
+      "line": 16,
+      "symbol": "GiniHealthAPI.sessionDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniHealthAPI.swift",
+      "line": 64,
+      "symbol": "GiniHealthAPI.Builder.sessionDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniHealthAPI.swift",
+      "line": 144,
+      "symbol": "GiniHealthAPI.Builder.build()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniHealthAPI.swift",
+      "line": 197,
+      "symbol": "GiniHealthAPI.Constants",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/GiniHealthAPI.swift",
+      "line": 198,
+      "symbol": "GiniHealthAPI.Constants.defaultVersionAPI",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Logger.swift",
+      "line": 11,
+      "symbol": "LogEvent",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Logger.swift",
+      "line": 12,
+      "symbol": "LogEvent.error",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Logger.swift",
+      "line": 13,
+      "symbol": "LogEvent.success",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Logger.swift",
+      "line": 14,
+      "symbol": "LogEvent.warning",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Logger.swift",
+      "line": 15,
+      "symbol": "LogEvent.custom(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Logger.swift",
+      "line": 27,
+      "symbol": "LogLevel",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Logger.swift",
+      "line": 28,
+      "symbol": "LogLevel.none",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Logger.swift",
+      "line": 29,
+      "symbol": "LogLevel.debug",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/Logger.swift",
+      "line": 32,
+      "symbol": "Log(_:event:)",
+      "symbol_kind": "source.lang.swift.decl.function.free",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Core/SessionManager.swift",
+      "line": 111,
+      "symbol": "CancellationToken.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/DefaultDocumentService.swift",
+      "line": 18,
+      "symbol": "DefaultDocumentService.apiDomain",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/DefaultDocumentService.swift",
+      "line": 19,
+      "symbol": "DefaultDocumentService.apiVersion",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document+Layout.swift",
+      "line": 45,
+      "symbol": "Document.Layout.TextZone.paragraphs",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 99,
+      "symbol": "Document.DocType.bankStatement",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 100,
+      "symbol": "Document.DocType.contract",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 101,
+      "symbol": "Document.DocType.invoice",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 102,
+      "symbol": "Document.DocType.receipt",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 103,
+      "symbol": "Document.DocType.reminder",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 104,
+      "symbol": "Document.DocType.remittanceSlip",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 105,
+      "symbol": "Document.DocType.travelExpenseReport",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 106,
+      "symbol": "Document.DocType.other",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 127,
+      "symbol": "Document.Links.extractions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 128,
+      "symbol": "Document.Links.layout",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 129,
+      "symbol": "Document.Links.processed",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 130,
+      "symbol": "Document.Links.document",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Document.swift",
+      "line": 131,
+      "symbol": "Document.Links.pages",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/DocumentService.swift",
+      "line": 14,
+      "symbol": "DocumentService",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/DocumentService.swift",
+      "line": 16,
+      "symbol": "DocumentService.apiDomain",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/DocumentService.swift",
+      "line": 17,
+      "symbol": "DocumentService.apiVersion",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 28,
+      "symbol": "Extraction.Box.height",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 29,
+      "symbol": "Extraction.Box.left",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 30,
+      "symbol": "Extraction.Box.page",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 31,
+      "symbol": "Extraction.Box.top",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 32,
+      "symbol": "Extraction.Box.width",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 34,
+      "symbol": "Extraction.Box.init(height:left:page:top:width:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 45,
+      "symbol": "Extraction.Candidate.box",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 46,
+      "symbol": "Extraction.Candidate.entity",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 47,
+      "symbol": "Extraction.Candidate.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 49,
+      "symbol": "Extraction.Candidate.init(box:entity:value:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 56,
+      "symbol": "Extraction.init(box:candidates:entity:value:name:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 76,
+      "symbol": "Extraction.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 90,
+      "symbol": "Extraction.debugDescription",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 97,
+      "symbol": "Extraction.Box.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Extraction.swift",
+      "line": 111,
+      "symbol": "Extraction.Candidate.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/ExtractionResult.swift",
+      "line": 24,
+      "symbol": "ExtractionResult.init(extractions:payment:lineItems:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/ExtractionsContainer.swift",
+      "line": 10,
+      "symbol": "ExtractionsContainer",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/ExtractionsContainer.swift",
+      "line": 24,
+      "symbol": "ExtractionsContainer",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/PartialDocumentInfo.swift",
+      "line": 28,
+      "symbol": "PartialDocumentInfo.init(document:rotationDelta:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/Payment.swift",
+      "line": 40,
+      "symbol": "Payment.iban",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/Payment.swift",
+      "line": 40,
+      "symbol": "Payment.paidAt",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/Payment.swift",
+      "line": 40,
+      "symbol": "Payment.recipient",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/Payment.swift",
+      "line": 41,
+      "symbol": "Payment.bic",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/Payment.swift",
+      "line": 42,
+      "symbol": "Payment.amount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/Payment.swift",
+      "line": 42,
+      "symbol": "Payment.purpose",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 13,
+      "symbol": "PaymentProvider.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 14,
+      "symbol": "PaymentProvider.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 15,
+      "symbol": "PaymentProvider.appSchemeIOS",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 16,
+      "symbol": "PaymentProvider.colors",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 17,
+      "symbol": "PaymentProvider.minAppVersion",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 18,
+      "symbol": "PaymentProvider.iconData",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 19,
+      "symbol": "PaymentProvider.appStoreUrlIOS",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 20,
+      "symbol": "PaymentProvider.universalLinkIOS",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 21,
+      "symbol": "PaymentProvider.index",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 22,
+      "symbol": "PaymentProvider.gpcSupportedPlatforms",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 23,
+      "symbol": "PaymentProvider.openWithSupportedPlatforms",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 25,
+      "symbol": "PaymentProvider.init(id:name:appSchemeIOS:minAppVersion:colors:iconData:appStoreUrlIOS:universalLinkIOS:index:gpcSupportedPlatforms:openWithSupportedPlatforms:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProvider.swift",
+      "line": 39,
+      "symbol": "PaymentProviders",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 16,
+      "symbol": "MinAppVersions.init(ios:android:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 26,
+      "symbol": "ProviderColors.background",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 27,
+      "symbol": "ProviderColors.text",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 28,
+      "symbol": "ProviderColors.init(background:text:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 38,
+      "symbol": "PlatformSupported.ios",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 39,
+      "symbol": "PlatformSupported.android",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 45,
+      "symbol": "PaymentProviderResponse.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 46,
+      "symbol": "PaymentProviderResponse.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 47,
+      "symbol": "PaymentProviderResponse.appSchemeIOS",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 48,
+      "symbol": "PaymentProviderResponse.colors",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 49,
+      "symbol": "PaymentProviderResponse.minAppVersion",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 50,
+      "symbol": "PaymentProviderResponse.iconLocation",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 51,
+      "symbol": "PaymentProviderResponse.appStoreUrlIOS",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 52,
+      "symbol": "PaymentProviderResponse.universalLinkIOS",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 53,
+      "symbol": "PaymentProviderResponse.index",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 54,
+      "symbol": "PaymentProviderResponse.gpcSupportedPlatforms",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 55,
+      "symbol": "PaymentProviderResponse.openWithSupportedPlatforms",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentProviderResponse.swift",
+      "line": 57,
+      "symbol": "PaymentProviderResponse.init(id:name:appSchemeIOS:minAppVersion:colors:iconLocation:appStoreUrlIOS:universalLinkIOS:index:gpcSupportedPlatforms:openWithSupportedPlatforms:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 13,
+      "symbol": "PaymentRequest.paymentProvider",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 14,
+      "symbol": "PaymentRequest.requesterURI",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 15,
+      "symbol": "PaymentRequest.iban",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 16,
+      "symbol": "PaymentRequest.bic",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 17,
+      "symbol": "PaymentRequest.amount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 17,
+      "symbol": "PaymentRequest.createdAt",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 17,
+      "symbol": "PaymentRequest.purpose",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 17,
+      "symbol": "PaymentRequest.recipient",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 18,
+      "symbol": "PaymentRequest.status",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 42,
+      "symbol": "PaymentRequests",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentService.swift",
+      "line": 102,
+      "symbol": "PaymentService.apiDomain",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/Documents/Payments/PaymentService.swift",
+      "line": 103,
+      "symbol": "PaymentService.apiVersion",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/GiniHealthAPILibraryVersion.swift",
+      "line": 8,
+      "symbol": "GiniHealthAPILibraryVersion",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios"
+}
