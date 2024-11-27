@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284A534F2A86493100183EA7 /* SelectAPIViewController.xib */; };
+		504435172C5AE5D300105D0B /* GiniHealthSDKPinningExampleIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DB6420283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift */; };
+		504435182C5AE5D300105D0B /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DB642728354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift */; };
 		50ED3DA52C34A16D004FC25C /* DebugMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ED3DA42C34A16D004FC25C /* DebugMenuViewController.swift */; };
 		7D6161C62BE1327E0091000B /* test_pdf.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 7D6161C52BE1327E0091000B /* test_pdf.pdf */; };
 		7DB661832B554622004537AA /* InvoicesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661822B554622004537AA /* InvoicesListCoordinator.swift */; };
@@ -22,6 +24,14 @@
 		7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7DB661942B5687F7004537AA /* health-invoice-5.jpg */; };
 		7DB6619B2B56AE80004537AA /* InvoicesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6619A2B56AE80004537AA /* InvoicesListViewModel.swift */; };
 		7DB6619D2B56C0B7004537AA /* InvoiceTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6619C2B56C0B7004537AA /* InvoiceTableViewCellModel.swift */; };
+		8A142EAF2CC7C38D007B268A /* HardcodedOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EAE2CC7C38D007B268A /* HardcodedOrders.swift */; };
+		8A142EB22CC7C4A5007B268A /* OrderListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EB12CC7C4A5007B268A /* OrderListCoordinator.swift */; };
+		8A142EB42CC7C4C6007B268A /* OrderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EB32CC7C4C6007B268A /* OrderListViewController.swift */; };
+		8A142EB62CC7C4DA007B268A /* OrderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EB52CC7C4DA007B268A /* OrderListViewModel.swift */; };
+		8A142EB82CC7C4F6007B268A /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EB72CC7C4F6007B268A /* OrderTableViewCell.swift */; };
+		8A142EBA2CC7C4FE007B268A /* OrderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EB92CC7C4FE007B268A /* OrderCellViewModel.swift */; };
+		8A142EBC2CC7C50D007B268A /* OrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBB2CC7C50D007B268A /* OrderDetailViewController.swift */; };
+		8A142EBE2CC7C528007B268A /* OrderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBD2CC7C528007B268A /* OrderDetailView.swift */; };
 		8A77DA1E2C2BF6130049FE10 /* UploadDocumentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A77DA1D2C2BF6130049FE10 /* UploadDocumentsTests.swift */; };
 		8ADEE2F02C2BF9E4006D3526 /* GiniSetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEE2EF2C2BF9E4006D3526 /* GiniSetupHelper.swift */; };
 		8ADEE2F92C2C4822006D3526 /* FileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEE2F82C2C4822006D3526 /* FileLoader.swift */; };
@@ -33,16 +43,6 @@
 		F4206BC22A1D012E00E5E101 /* HealthNetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BC12A1D012E00E5E101 /* HealthNetworkingService.swift */; };
 		F42377262799ABB000FAC3D6 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42377252799ABB000FAC3D6 /* CloudKit.framework */; };
 		F464B17627CD2147001735B9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F464B17827CD2147001735B9 /* Localizable.strings */; };
-		F466A5DF270F2F9500FB1364 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F466A5E1270F2F9500FB1364 /* Localizable.strings */; };
-		F4C36A8C270C6EBF00CCC69C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C36A8B270C6EBF00CCC69C /* AppDelegate.swift */; };
-		F4C36A8E270C6EBF00CCC69C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C36A8D270C6EBF00CCC69C /* SceneDelegate.swift */; };
-		F4C36A90270C6EBF00CCC69C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C36A8F270C6EBF00CCC69C /* ViewController.swift */; };
-		F4C36A93270C6EBF00CCC69C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C36A91270C6EBF00CCC69C /* Main.storyboard */; };
-		F4C36A95270C6EC200CCC69C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4C36A94270C6EC200CCC69C /* Assets.xcassets */; };
-		F4C36A98270C6EC200CCC69C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C36A96270C6EC200CCC69C /* LaunchScreen.storyboard */; };
-		F4CEC7ED270CB06D004A862F /* GiniHealthSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */; };
-		F4DB6421283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DB6420283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift */; };
-		F4DB642828354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DB642728354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift */; };
 		F4EC38C2273C21E4007045DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38C1273C21E4007045DC /* AppDelegate.swift */; };
 		F4EC38C4273C21E4007045DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38C3273C21E4007045DC /* SceneDelegate.swift */; };
 		F4EC38C6273C21E4007045DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38C5273C21E4007045DC /* ViewController.swift */; };
@@ -50,7 +50,6 @@
 		F4EC38D9273C21E6007045DC /* GiniHealthSDKExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38D8273C21E6007045DC /* GiniHealthSDKExampleTests.swift */; };
 		F4EC38F5273C2311007045DC /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38EF273C2310007045DC /* UIViewController+Utils.swift */; };
 		F4EC38F8273C2311007045DC /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38F2273C2311007045DC /* CredentialsManager.swift */; };
-		F4EC38F9273C2311007045DC /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4EC38F3273C2311007045DC /* Credentials.plist */; };
 		F4EC38FA273C2311007045DC /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = F4EC38F4273C2311007045DC /* Base.lproj */; };
 		F4EC3900273C245E007045DC /* GiniHealthSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4EC38FF273C245E007045DC /* GiniHealthSDK */; };
 		F4EC390A273C2622007045DC /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC3903273C2621007045DC /* AppCoordinator.swift */; };
@@ -62,13 +61,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		F4DB6422283546960027681C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F4C36A80270C6EBF00CCC69C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F4C36A87270C6EBF00CCC69C;
-			remoteInfo = GiniHealthSDKPinningExample;
-		};
 		F4EC38D5273C21E6007045DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F4C36A80270C6EBF00CCC69C /* Project object */;
@@ -80,6 +72,7 @@
 
 /* Begin PBXFileReference section */
 		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
+		3AC824B42CA2B16500DE37C0 /* GiniHealthSDKExampleTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GiniHealthSDKExampleTests.xctestplan; sourceTree = "<group>"; };
 		50ED3DA42C34A16D004FC25C /* DebugMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuViewController.swift; sourceTree = "<group>"; };
 		7D6161C52BE1327E0091000B /* test_pdf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = test_pdf.pdf; sourceTree = "<group>"; };
 		7DB661822B554622004537AA /* InvoicesListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListCoordinator.swift; sourceTree = "<group>"; };
@@ -94,6 +87,14 @@
 		7DB661942B5687F7004537AA /* health-invoice-5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-5.jpg"; sourceTree = "<group>"; };
 		7DB6619A2B56AE80004537AA /* InvoicesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListViewModel.swift; sourceTree = "<group>"; };
 		7DB6619C2B56C0B7004537AA /* InvoiceTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCellModel.swift; sourceTree = "<group>"; };
+		8A142EAE2CC7C38D007B268A /* HardcodedOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardcodedOrders.swift; sourceTree = "<group>"; };
+		8A142EB12CC7C4A5007B268A /* OrderListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListCoordinator.swift; sourceTree = "<group>"; };
+		8A142EB32CC7C4C6007B268A /* OrderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewController.swift; sourceTree = "<group>"; };
+		8A142EB52CC7C4DA007B268A /* OrderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewModel.swift; sourceTree = "<group>"; };
+		8A142EB72CC7C4F6007B268A /* OrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
+		8A142EB92CC7C4FE007B268A /* OrderCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCellViewModel.swift; sourceTree = "<group>"; };
+		8A142EBB2CC7C50D007B268A /* OrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewController.swift; sourceTree = "<group>"; };
+		8A142EBD2CC7C528007B268A /* OrderDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailView.swift; sourceTree = "<group>"; };
 		8A77DA1D2C2BF6130049FE10 /* UploadDocumentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadDocumentsTests.swift; sourceTree = "<group>"; };
 		8ADEE2EF2C2BF9E4006D3526 /* GiniSetupHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniSetupHelper.swift; sourceTree = "<group>"; };
 		8ADEE2F22C2C3CCC006D3526 /* invoice-12MB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invoice-12MB.png"; sourceTree = "<group>"; };
@@ -106,17 +107,6 @@
 		F4366E62273D183C0054923F /* GiniHealthSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniHealthSDKExample.entitlements; sourceTree = "<group>"; };
 		F464B17727CD2147001735B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F464B17927CD214A001735B9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		F466A5E0270F2F9500FB1364 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		F466A5E2270F2FB300FB1364 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniHealthSDKPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F4C36A8B270C6EBF00CCC69C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F4C36A8D270C6EBF00CCC69C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F4C36A8F270C6EBF00CCC69C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F4C36A92270C6EBF00CCC69C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		F4C36A94270C6EC200CCC69C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F4C36A97270C6EC200CCC69C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		F4C36A99270C6EC200CCC69C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F4DB641E283546960027681C /* GiniHealthSDKPinningExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniHealthSDKPinningExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4DB6420283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthSDKPinningExampleIntegrationTests.swift; sourceTree = "<group>"; };
 		F4DB642728354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthSDKPinningExampleWrongCertificatesTests.swift; sourceTree = "<group>"; };
 		F4EC38BF273C21E4007045DC /* GiniHealthSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniHealthSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,7 +119,6 @@
 		F4EC38D8273C21E6007045DC /* GiniHealthSDKExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthSDKExampleTests.swift; sourceTree = "<group>"; };
 		F4EC38EF273C2310007045DC /* UIViewController+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
 		F4EC38F2273C2311007045DC /* CredentialsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
-		F4EC38F3273C2311007045DC /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		F4EC38F4273C2311007045DC /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
 		F4EC38FB273C240F007045DC /* GiniHealthSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthSDK; path = ../GiniHealthSDK; sourceTree = "<group>"; };
 		F4EC38FC273C2432007045DC /* GiniCaptureSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniCaptureSDK; path = ../../CaptureSDK/GiniCaptureSDK; sourceTree = "<group>"; };
@@ -139,25 +128,9 @@
 		F4EC3907273C2621007045DC /* SelectAPIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAPIViewController.swift; sourceTree = "<group>"; };
 		F4EC3908273C2622007045DC /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		F4EC3912273C2B41007045DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F4F9E5C5270E003600C6FBA3 /* GiniHealthSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthSDKPinning; path = ../GiniHealthSDKPinning; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		F4C36A85270C6EBF00CCC69C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F4CEC7ED270CB06D004A862F /* GiniHealthSDKPinning in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F4DB641B283546960027681C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		F4EC38BC273C21E4007045DC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -206,6 +179,21 @@
 			path = HardcodedInvoices;
 			sourceTree = "<group>";
 		};
+		8A142EB02CC7C484007B268A /* OrdersList */ = {
+			isa = PBXGroup;
+			children = (
+				8A142EAE2CC7C38D007B268A /* HardcodedOrders.swift */,
+				8A142EB12CC7C4A5007B268A /* OrderListCoordinator.swift */,
+				8A142EB32CC7C4C6007B268A /* OrderListViewController.swift */,
+				8A142EB52CC7C4DA007B268A /* OrderListViewModel.swift */,
+				8A142EB72CC7C4F6007B268A /* OrderTableViewCell.swift */,
+				8A142EB92CC7C4FE007B268A /* OrderCellViewModel.swift */,
+				8A142EBB2CC7C50D007B268A /* OrderDetailViewController.swift */,
+				8A142EBD2CC7C528007B268A /* OrderDetailView.swift */,
+			);
+			path = OrdersList;
+			sourceTree = "<group>";
+		};
 		8ADEE2F12C2C3C9B006D3526 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,10 +207,8 @@
 			isa = PBXGroup;
 			children = (
 				F4C36A9F270C6F6B00CCC69C /* Packages */,
-				F4C36A8A270C6EBF00CCC69C /* GiniHealthSDKPinningExample */,
 				F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */,
 				F4EC38D7273C21E6007045DC /* GiniHealthSDKExampleTests */,
-				F4DB641F283546960027681C /* GiniHealthSDKPinningExampleTests */,
 				F4C36A89270C6EBF00CCC69C /* Products */,
 				F4C36AA1270C6F9C00CCC69C /* Frameworks */,
 			);
@@ -231,33 +217,15 @@
 		F4C36A89270C6EBF00CCC69C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */,
 				F4EC38BF273C21E4007045DC /* GiniHealthSDKExample.app */,
 				F4EC38D4273C21E6007045DC /* GiniHealthSDKExampleTests.xctest */,
-				F4DB641E283546960027681C /* GiniHealthSDKPinningExampleTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		F4C36A8A270C6EBF00CCC69C /* GiniHealthSDKPinningExample */ = {
-			isa = PBXGroup;
-			children = (
-				F4C36A8B270C6EBF00CCC69C /* AppDelegate.swift */,
-				F4C36A8D270C6EBF00CCC69C /* SceneDelegate.swift */,
-				F466A5E1270F2F9500FB1364 /* Localizable.strings */,
-				F4C36A8F270C6EBF00CCC69C /* ViewController.swift */,
-				F4C36A91270C6EBF00CCC69C /* Main.storyboard */,
-				F4C36A94270C6EC200CCC69C /* Assets.xcassets */,
-				F4C36A96270C6EC200CCC69C /* LaunchScreen.storyboard */,
-				F4C36A99270C6EC200CCC69C /* Info.plist */,
-			);
-			path = GiniHealthSDKPinningExample;
 			sourceTree = "<group>";
 		};
 		F4C36A9F270C6F6B00CCC69C /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				F4F9E5C5270E003600C6FBA3 /* GiniHealthSDKPinning */,
 				F4EC38FB273C240F007045DC /* GiniHealthSDK */,
 				F4EC38FC273C2432007045DC /* GiniCaptureSDK */,
 			);
@@ -270,15 +238,6 @@
 				F42377252799ABB000FAC3D6 /* CloudKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F4DB641F283546960027681C /* GiniHealthSDKPinningExampleTests */ = {
-			isa = PBXGroup;
-			children = (
-				F4DB6420283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift */,
-				F4DB642728354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift */,
-			);
-			path = GiniHealthSDKPinningExampleTests;
 			sourceTree = "<group>";
 		};
 		F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */ = {
@@ -297,9 +256,9 @@
 				50ED3DA42C34A16D004FC25C /* DebugMenuViewController.swift */,
 				284A534F2A86493100183EA7 /* SelectAPIViewController.xib */,
 				F4EC3907273C2621007045DC /* SelectAPIViewController.swift */,
+				8A142EB02CC7C484007B268A /* OrdersList */,
 				7DB661882B554A79004537AA /* InvoicesList */,
 				F4EC38F4273C2311007045DC /* Base.lproj */,
-				F4EC38F3273C2311007045DC /* Credentials.plist */,
 				F4EC38F2273C2311007045DC /* CredentialsManager.swift */,
 				F4EC38EF273C2310007045DC /* UIViewController+Utils.swift */,
 				F4EC38C3273C21E4007045DC /* SceneDelegate.swift */,
@@ -315,6 +274,9 @@
 		F4EC38D7273C21E6007045DC /* GiniHealthSDKExampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				3AC824B42CA2B16500DE37C0 /* GiniHealthSDKExampleTests.xctestplan */,
+				F4DB6420283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift */,
+				F4DB642728354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift */,
 				F4EC38D8273C21E6007045DC /* GiniHealthSDKExampleTests.swift */,
 				8A77DA1D2C2BF6130049FE10 /* UploadDocumentsTests.swift */,
 				8ADEE2F82C2C4822006D3526 /* FileLoader.swift */,
@@ -326,44 +288,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F4C36A87270C6EBF00CCC69C /* GiniHealthSDKPinningExample */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F4C36A9C270C6EC200CCC69C /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningExample" */;
-			buildPhases = (
-				F4C36A84270C6EBF00CCC69C /* Sources */,
-				F4C36A85270C6EBF00CCC69C /* Frameworks */,
-				F4C36A86270C6EBF00CCC69C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = GiniHealthSDKPinningExample;
-			packageProductDependencies = (
-				F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */,
-			);
-			productName = HealthSDKPinningExample;
-			productReference = F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */;
-			productType = "com.apple.product-type.application";
-		};
-		F4DB641D283546960027681C /* GiniHealthSDKPinningExampleTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F4DB6426283546960027681C /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningExampleTests" */;
-			buildPhases = (
-				F4DB641A283546960027681C /* Sources */,
-				F4DB641B283546960027681C /* Frameworks */,
-				F4DB641C283546960027681C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				F4DB6423283546960027681C /* PBXTargetDependency */,
-			);
-			name = GiniHealthSDKPinningExampleTests;
-			productName = GiniHealthSDKPinningExampleTests;
-			productReference = F4DB641E283546960027681C /* GiniHealthSDKPinningExampleTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		F4EC38BE273C21E4007045DC /* GiniHealthSDKExample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4EC38EC273C21E6007045DC /* Build configuration list for PBXNativeTarget "GiniHealthSDKExample" */;
@@ -413,13 +337,6 @@
 				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
-					F4C36A87270C6EBF00CCC69C = {
-						CreatedOnToolsVersion = 13.0;
-					};
-					F4DB641D283546960027681C = {
-						CreatedOnToolsVersion = 13.3.1;
-						TestTargetID = F4C36A87270C6EBF00CCC69C;
-					};
 					F4EC38BE273C21E4007045DC = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -443,33 +360,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F4C36A87270C6EBF00CCC69C /* GiniHealthSDKPinningExample */,
 				F4EC38BE273C21E4007045DC /* GiniHealthSDKExample */,
 				F4EC38D3273C21E6007045DC /* GiniHealthSDKExampleTests */,
-				F4DB641D283546960027681C /* GiniHealthSDKPinningExampleTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		F4C36A86270C6EBF00CCC69C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F4C36A98270C6EC200CCC69C /* LaunchScreen.storyboard in Resources */,
-				F466A5DF270F2F9500FB1364 /* Localizable.strings in Resources */,
-				F4C36A95270C6EC200CCC69C /* Assets.xcassets in Resources */,
-				F4C36A93270C6EBF00CCC69C /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F4DB641C283546960027681C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		F4EC38BD273C21E4007045DC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -480,7 +377,6 @@
 				F464B17627CD2147001735B9 /* Localizable.strings in Resources */,
 				F4EC38FA273C2311007045DC /* Base.lproj in Resources */,
 				7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */,
-				F4EC38F9273C2311007045DC /* Credentials.plist in Resources */,
 				8ADEE2FA2C2CB2E4006D3526 /* invoice-12MB.png in Resources */,
 				8ADEE2FB2C2CB302006D3526 /* invoice-13MB.pdf in Resources */,
 				284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */,
@@ -502,25 +398,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		F4C36A84270C6EBF00CCC69C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F4C36A90270C6EBF00CCC69C /* ViewController.swift in Sources */,
-				F4C36A8C270C6EBF00CCC69C /* AppDelegate.swift in Sources */,
-				F4C36A8E270C6EBF00CCC69C /* SceneDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F4DB641A283546960027681C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F4DB642828354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift in Sources */,
-				F4DB6421283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		F4EC38BB273C21E4007045DC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -530,20 +407,28 @@
 				F4206BC22A1D012E00E5E101 /* HealthNetworkingService.swift in Sources */,
 				F4EC390D273C2622007045DC /* Coordinator.swift in Sources */,
 				F4EC38F8273C2311007045DC /* CredentialsManager.swift in Sources */,
+				8A142EBA2CC7C4FE007B268A /* OrderCellViewModel.swift in Sources */,
 				7DB6618B2B554ADF004537AA /* InvoiceTableViewCell.swift in Sources */,
 				F4EC38F5273C2311007045DC /* UIViewController+Utils.swift in Sources */,
 				F4EC38C6273C21E4007045DC /* ViewController.swift in Sources */,
 				7DB6618E2B5687B4004537AA /* HardcodedInvoices.swift in Sources */,
 				F4EC3910273C2622007045DC /* UIViewController.swift in Sources */,
 				7DB6619B2B56AE80004537AA /* InvoicesListViewModel.swift in Sources */,
+				8A142EBC2CC7C50D007B268A /* OrderDetailViewController.swift in Sources */,
 				F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */,
+				8A142EAF2CC7C38D007B268A /* HardcodedOrders.swift in Sources */,
 				F4EC38C2273C21E4007045DC /* AppDelegate.swift in Sources */,
 				7DB661862B554A6F004537AA /* InvoicesListViewController.swift in Sources */,
+				8A142EB62CC7C4DA007B268A /* OrderListViewModel.swift in Sources */,
+				8A142EB82CC7C4F6007B268A /* OrderTableViewCell.swift in Sources */,
 				F4EC38C4273C21E4007045DC /* SceneDelegate.swift in Sources */,
 				50ED3DA52C34A16D004FC25C /* DebugMenuViewController.swift in Sources */,
+				8A142EB22CC7C4A5007B268A /* OrderListCoordinator.swift in Sources */,
 				F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */,
 				F4EC390A273C2622007045DC /* AppCoordinator.swift in Sources */,
+				8A142EB42CC7C4C6007B268A /* OrderListViewController.swift in Sources */,
 				F4EC390E273C2622007045DC /* PartialDocument.swift in Sources */,
+				8A142EBE2CC7C528007B268A /* OrderDetailView.swift in Sources */,
 				7DB6619D2B56C0B7004537AA /* InvoiceTableViewCellModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -554,7 +439,9 @@
 			files = (
 				8ADEE2F02C2BF9E4006D3526 /* GiniSetupHelper.swift in Sources */,
 				8A77DA1E2C2BF6130049FE10 /* UploadDocumentsTests.swift in Sources */,
+				504435172C5AE5D300105D0B /* GiniHealthSDKPinningExampleIntegrationTests.swift in Sources */,
 				8ADEE2F92C2C4822006D3526 /* FileLoader.swift in Sources */,
+				504435182C5AE5D300105D0B /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift in Sources */,
 				F4EC38D9273C21E6007045DC /* GiniHealthSDKExampleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -562,11 +449,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		F4DB6423283546960027681C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F4C36A87270C6EBF00CCC69C /* GiniHealthSDKPinningExample */;
-			targetProxy = F4DB6422283546960027681C /* PBXContainerItemProxy */;
-		};
 		F4EC38D6273C21E6007045DC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F4EC38BE273C21E4007045DC /* GiniHealthSDKExample */;
@@ -582,31 +464,6 @@
 				F464B17927CD214A001735B9 /* de */,
 			);
 			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		F466A5E1270F2F9500FB1364 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F466A5E0270F2F9500FB1364 /* en */,
-				F466A5E2270F2FB300FB1364 /* de */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		F4C36A91270C6EBF00CCC69C /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4C36A92270C6EBF00CCC69C /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		F4C36A96270C6EC200CCC69C /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4C36A97270C6EC200CCC69C /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 		F4EC38CC273C21E5007045DC /* LaunchScreen.storyboard */ = {
@@ -673,7 +530,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -730,125 +587,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		F4C36A9D270C6EC200CCC69C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GiniHealthSDKPinningExample/Info.plist;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.healthsdk.pinning.example;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		F4C36A9E270C6EC200CCC69C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GiniHealthSDKPinningExample/Info.plist;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.healthsdk.pinning.example;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		F4DB6424283546960027681C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.healthsdk.GiniHealthSDKPinningExampleTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniHealthSDKPinningExample.app/GiniHealthSDKPinningExample";
-			};
-			name = Debug;
-		};
-		F4DB6425283546960027681C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JA825X8F7Z;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.healthsdk.GiniHealthSDKPinningExampleTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniHealthSDKPinningExample.app/GiniHealthSDKPinningExample";
 			};
 			name = Release;
 		};
@@ -876,7 +621,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -919,7 +664,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1008,24 +753,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F4C36A9C270C6EC200CCC69C /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningExample" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F4C36A9D270C6EC200CCC69C /* Debug */,
-				F4C36A9E270C6EC200CCC69C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		F4DB6426283546960027681C /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningExampleTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F4DB6424283546960027681C /* Debug */,
-				F4DB6425283546960027681C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		F4EC38EC273C21E6007045DC /* Build configuration list for PBXNativeTarget "GiniHealthSDKExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1050,10 +777,6 @@
 		F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniCaptureSDK;
-		};
-		F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GiniHealthSDKPinning;
 		};
 		F4EC38FF273C245E007045DC /* GiniHealthSDK */ = {
 			isa = XCSwiftPackageProductDependency;

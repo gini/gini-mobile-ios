@@ -184,7 +184,7 @@ public func receivePaymentRequestId(url: URL, completion: @escaping (Result<Stri
 
     if let requestId = params.first(where: { $0.name == "id" })?.value {
         completion(.success(requestId))
-        print("requestID = \(requestId)")
+        print("requestId = \(requestId)")
     } else {
         completion(.failure(.noRequestId))
         print("Request id is missing")

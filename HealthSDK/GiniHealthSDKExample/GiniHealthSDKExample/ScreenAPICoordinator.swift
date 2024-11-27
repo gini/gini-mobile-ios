@@ -9,6 +9,8 @@ import GiniBankAPILibrary
 import GiniCaptureSDK
 import GiniHealthSDK
 import GiniHealthAPILibrary
+import GiniInternalPaymentSDK
+import GiniUtilites
 import UIKit
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
@@ -93,9 +95,9 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
                     healthSdk.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
                         switch result {
                         case let .success(extractionResult):
-                            print("✅Successfully fetched extractions for id: \(docId)")
+                            GiniUtilites.Log("✅Successfully fetched extractions for id: \(docId)", event: .success)
                             // Store invoice/document into Invoices list
-                            let invoice = DocumentWithExtractions(documentID: docId,
+                            let invoice = DocumentWithExtractions(documentId: docId,
                                                                   extractionResult: extractionResult)
                             self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
                             DispatchQueue.main.async {
@@ -104,11 +106,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
                                 })
                             }
                         case let .failure(error):
-                            print("❌Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))")
+                            GiniUtilites.Log("❌Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))", event: .error)
                         }
                     }
                 case .failure(let error):
-                    print("❌ Document data fetching failed: \(String(describing: error))")
+                    GiniUtilites.Log("❌ Document data fetching failed: \(String(describing: error))", event: .error)
                 }
             }
         }

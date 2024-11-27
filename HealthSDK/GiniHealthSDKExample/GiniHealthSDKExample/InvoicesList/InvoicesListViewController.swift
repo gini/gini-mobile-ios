@@ -52,11 +52,6 @@ final class InvoicesListViewController: UIViewController {
     var viewModel: InvoicesListViewModel!
     
     // MARK: - Functions
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        viewModel.viewDidLoad()
-    }
-
     override func loadView() {
         super.loadView()
         title = viewModel.titleText
@@ -116,11 +111,18 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
             return UITableViewCell()
         }
         let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
-                                                                                           paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
+                                                                                           health: viewModel.health) }[indexPath.row]
         cell.cellViewModel = invoiceTableViewCellModel
+        cell.action = { [weak self] in
+            self?.tapOnAction(documentID: self?.viewModel.invoices[indexPath.row].documentId ?? "")
+        }
         return cell
     }
-    
+
+    private func tapOnAction(documentID: String) {
+        viewModel.didTapOnOpenFlow(documentId: documentID)
+    }
+
     func numberOfSections(in tableView: UITableView) -> Int {
         if viewModel.invoices.isEmpty {
             let label = UILabel()
@@ -137,7 +139,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let documentID = viewModel.invoices[indexPath.row].documentID
+        let documentID = viewModel.invoices[indexPath.row].documentId
         viewModel.checkForErrors(documentID: documentID)
     }
 }
@@ -157,7 +159,17 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
     }
     
     func showErrorAlertView(error: String) {
-        let alertController = UIAlertController(title: viewModel.errorTitleText, 
+        if presentedViewController != nil {
+            self.presentedViewController?.dismiss(animated: true, completion: {
+                self.presentAlertViewController(error: error)
+            })
+        } else {
+            presentAlertViewController(error: error)
+        }
+    }
+
+    private func presentAlertViewController(error: String) {
+        let alertController = UIAlertController(title: viewModel.errorTitleText,
                                                 message: error,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))

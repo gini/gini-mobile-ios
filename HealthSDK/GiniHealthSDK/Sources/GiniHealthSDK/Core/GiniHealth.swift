@@ -7,6 +7,8 @@
 
 import UIKit
 import GiniHealthAPILibrary
+import GiniUtilites
+import GiniInternalPaymentSDK
 
 /**
  Delegate to inform about the current status of the Gini Health SDK.
@@ -18,9 +20,9 @@ public protocol GiniHealthDelegate: AnyObject {
     /**
      Called when the payment request was successfully created
      
-     - parameter paymentRequestID: Id of created payment request.
+     - parameter paymentRequestId: Id of created payment request.
      */
-    func didCreatePaymentRequest(paymentRequestID: String)
+    func didCreatePaymentRequest(paymentRequestId: String)
     
     /**
      Error handling. If delegate is set and error is going to  be handled internally the method should return true.
@@ -64,20 +66,112 @@ public struct DataForReview {
     public var documentService: DefaultDocumentService
     /// reponsible for the payment processing.
     public var paymentService: PaymentService
-    private var bankProviders: [PaymentProvider] = []
+    /// delegate to inform about the current status of the Gini Health SDK.
     public weak var delegate: GiniHealthDelegate?
+    /// delegate to inform about the changes into PaymentComponentsController
+    public weak var paymentDelegate: PaymentComponentsControllerProtocol?
+
+    private var bankProviders: [PaymentProvider] = []
+
+    /// Configuration for the payment component, controlling its branding and display options.
+    public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
+                                                                                                            showPaymentComponentInOneRow: false,
+                                                                                                            hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
+    
+    public var paymentComponentsController: PaymentComponentsController!
+
+    /**
+     Initializes a new instance of GiniHealth.
+
+     This initializer creates a GiniHealth instance by first constructing a Client object with the provided client credentials (id, secret, domain)
+
+     - Parameters:
+     - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
+     - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
+     - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
+     - logLevel: The log level. `LogLevel.none` by default.
+     */
+    public init(id: String,
+                secret: String,
+                domain: String,
+                apiVersion: Int = Constants.defaultVersionAPI,
+                logLevel: LogLevel = .none) {
+        let client = Client(id: id, secret: secret, domain: domain)
+        self.giniApiLib = GiniHealthAPI.Builder(client: client, api: .default, logLevel: logLevel.toHealthLogLevel()).build()
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
+        self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
+        super.init()
+        self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
+        self.paymentComponentsController.delegate = self
+    }
     
     /**
-     Returns a GiniHealth instance
+     Initializes a new instance of GiniHealth.
      
-     - parameter giniApiLib: GiniHealthAPI initialized with client's credentials
+     This initializer creates a GiniHealth instance by first constructing a Client object with the provided client credentials (id, secret, domain)
+     
+     - Parameters:
+     - id: The client ID provided by Gini when you register your application. This is a unique identifier for your application.
+     - secret: The client secret provided by Gini alongside the client ID. This is used to authenticate your application to the Gini API.
+     - domain: The domain associated with your client credentials. This is used to scope the client credentials to a specific domain.
+     - pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+     - logLevel: The log level. `LogLevel.none` by default.
      */
-    public init(with giniApiLib: GiniHealthAPI){
-        self.giniApiLib = giniApiLib
-        self.documentService = giniApiLib.documentService()
-        self.paymentService = giniApiLib.paymentService()
+    public init(id: String,
+                secret: String,
+                domain: String,
+                apiVersion: Int = Constants.defaultVersionAPI,
+                pinningConfig: [String: [String]],
+                logLevel: LogLevel = .none) {
+        let client = Client(id: id, secret: secret, domain: domain, apiVersion: apiVersion)
+        self.giniApiLib = GiniHealthAPI.Builder(client: client,
+                                                pinningConfig: pinningConfig,
+                                                logLevel: logLevel.toHealthLogLevel()).build()
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
+        self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
+        super.init()
+        self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
+        self.paymentComponentsController.delegate = self
     }
 
+    /**
+     Initializes a new instance of GiniHealth.
+
+     - Parameter giniApiLib: The GiniHealthAPI instance used for document and payment services.
+     */
+    public init(giniApiLib: GiniHealthAPI) {
+        self.giniApiLib = giniApiLib
+        self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
+        self.paymentService = giniApiLib.paymentService(apiDomain: .default, apiVersion: Constants.defaultVersionAPI)
+        super.init()
+        self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
+    }
+    
+    /**
+         Initiates the payment flow for a specified document and payment information.
+
+         - Parameters:
+           - documentId: An optional identifier for the document associated id with the payment flow.
+           - paymentInfo: An optional `PaymentInfo` object containing the payment details.
+           - navigationController: The `UINavigationController` used to present subsequent view controllers in the payment flow.
+           - trackingDelegate: The `GiniHealthTrackingDelegate` provides event information that happens on PaymentReviewScreen.
+         
+         This method sets up the payment flow by storing the provided document ID, payment information, and navigation controller.
+         If a `selectedPaymentProvider` is available, it either presents the payment review screen or the payment view bottom sheet,
+         depending on the configuration. If no payment provider is selected, it directly presents the payment view bottom sheet.
+     */
+    public func startPaymentFlow(documentId: String?, paymentInfo: GiniHealthSDK.PaymentInfo?, navigationController: UINavigationController, trackingDelegate: GiniHealthTrackingDelegate?) {
+        paymentComponentsController.startPaymentFlow(documentId: documentId, paymentInfo: paymentInfo, navigationController: navigationController, trackingDelegate: trackingDelegate)
+    }
+    
+    /**
+     Fetches bank logos for the available payment providers.
+
+     - Returns: A tuple containing an array of logo data and the count of additional banks, if any.
+     */
+    public func fetchBankLogos() -> (logos: [Data]?, additionalBankCount: Int?) {
+        return paymentComponentsController.fetchBankLogos()
+    }
     /**
      Getting a list of the installed banking apps which support Gini Pay Connect functionality.
      
@@ -91,32 +185,31 @@ public struct DataForReview {
      */
     private func fetchInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
         fetchBankingApps { result in
-            switch result {
-            case .success(let providers):
-                for provider in providers {
-                    DispatchQueue.main.async {
-                        if let url = URL(string:provider.appSchemeIOS) {
-                            if UIApplication.shared.canOpenURL(url) {
-                                self.bankProviders.append(provider)
-                            }
-                        }
-                    }
-                }
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let providers):
+                    self.updateBankProviders(providers: providers)
+
                     if self.bankProviders.count > 0 {
                         completion(.success(self.bankProviders))
                     } else {
                         completion(.failure(.noInstalledApps))
                     }
-                }
-            case let .failure(error):
-                DispatchQueue.main.async {
-                    completion(.failure(error))
+                case let .failure(error):
+                    completion(.failure(GiniHealthError.apiError(error)))
                 }
             }
         }
     }
-    
+
+    private func updateBankProviders(providers: PaymentProviders) {
+        for provider in providers {
+            if let url = URL(string:provider.appSchemeIOS), UIApplication.shared.canOpenURL(url) {
+                self.bankProviders.append(provider)
+            }
+        }
+    }
+
     /**
      Getting a list of the banking apps supported by SDK
      
@@ -127,14 +220,14 @@ public struct DataForReview {
      In case of failure error provided by API.
      */
     
-    public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
+    public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniError>) -> Void) {
         paymentService.paymentProviders { result in
             switch result {
             case let .success(providers):
-                self.bankProviders = providers
+                self.bankProviders = providers.map { PaymentProvider(healthPaymentProvider: $0) }
                 completion(.success(self.bankProviders))
             case let .failure(error):
-                completion(.failure(.apiError(error)))
+                completion(.failure(GiniError.decorator(error)))
             }
         }
     }
@@ -328,14 +421,14 @@ public struct DataForReview {
         In case of failure error from the server side.
      
      */
-    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniHealthError>) -> Void) {
+    public func createPaymentRequest(paymentInfo: GiniInternalPaymentSDK.PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void) {
         paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: paymentInfo.paymentProviderId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, bic: "", amount: paymentInfo.amount, purpose: paymentInfo.purpose) { result in
             DispatchQueue.main.async {
                 switch result {
-                case let .success(requestID):
-                    completion(.success(requestID))
+                case let .success(requestId):
+                    completion(.success(requestId))
                 case let .failure(error):
-                    completion(.failure(.apiError(error)))
+                    completion(.failure(GiniError.decorator(error)))
                 }
             }
         }
@@ -346,7 +439,7 @@ public struct DataForReview {
         openUrl called on main thread.
      
      - Parameters:
-        - requestID: Id of the created payment request.
+        - requestId: Id of the created payment request.
         - universalLink: Universal link for the selected payment provider
      */
     public func openPaymentProviderApp(requestID: String, universalLink: String, urlOpener: URLOpener = URLOpener(UIApplication.shared), completion: GiniOpenLinkCompletionBlock? = nil) {
@@ -432,11 +525,53 @@ public struct DataForReview {
             }
         }
     }
-}
+    
+    /**
+        Retrieves a payment request by ID.
+         
+    - Parameters:
+       - id: The ID of the payment request to retrieve.
+       - completion: An action for processing asynchronous data received from the service with Result type as a parameter. Result is a value that represents either a success or a failure, including an associated value in each case.
+       Completion block called on main thread.
+       In success, it includes the retrieved payment request.
+       In case of failure, error from the server side.
+     
+    */
+    public func getPaymentRequest(by id: String,
+                                  completion: @escaping (Result<PaymentRequest, GiniError>) -> Void) {
+        paymentService.paymentRequest(id: id) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(paymentRequest):
+                    completion(.success(paymentRequest))
+                case let .failure(error):
+                    completion(.failure(GiniError.decorator(error)))
+                }
+            }
+        }
+    }
 
-extension GiniHealth {
-    private enum Constants {
-        static let hasMultipleDocuments = "true"
+    /// A static string representing the current version of the Gini Health SDK.
+    public static var versionString: String {
+        return GiniHealthSDKVersion
     }
 }
 
+extension GiniHealth: PaymentComponentsControllerProtocol {
+    public func isLoadingStateChanged(isLoading: Bool) {
+        paymentDelegate?.isLoadingStateChanged(isLoading: isLoading)
+    }
+    
+    public func didFetchedPaymentProviders() {
+        paymentDelegate?.didFetchedPaymentProviders()
+    }
+    
+    
+}
+
+extension GiniHealth {
+    public enum Constants {
+        public static let defaultVersionAPI = 4
+        static let hasMultipleDocuments = "true"
+    }
+}

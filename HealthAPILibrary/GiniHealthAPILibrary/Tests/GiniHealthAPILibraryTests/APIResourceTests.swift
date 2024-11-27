@@ -67,7 +67,7 @@ final class APIResourceTests: XCTestCase {
     func testDocumentCreation() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: "invoice.jpg",
                                                                        docType: .invoice,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,
                                                apiVersion: versionAPI,
@@ -80,7 +80,7 @@ final class APIResourceTests: XCTestCase {
     func testDocumentCreationWithoutFilename() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
                                                                        docType: .invoice,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,
                                                apiVersion: versionAPI,
@@ -93,7 +93,7 @@ final class APIResourceTests: XCTestCase {
     func testDocumentCreationWithoutDoctype() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: "invoice.jpg",
                                                                        docType: nil,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,
                                                apiVersion: versionAPI,
@@ -106,7 +106,7 @@ final class APIResourceTests: XCTestCase {
     func testDocumentCreationWithoutQueryParameters() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
                                                                        docType: nil,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,
                                                apiVersion: versionAPI,
@@ -119,7 +119,7 @@ final class APIResourceTests: XCTestCase {
     func testDocumentCreationContentTypeV3() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
                                                                        docType: nil,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: nil),
                                                apiDomain: .default,
                                                apiVersion: versionAPI,
@@ -131,7 +131,7 @@ final class APIResourceTests: XCTestCase {
     func testDocumentCreationContentTypeV3Partial() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
                                                                        docType: nil,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .partial(Data(count: 0))),
                                                apiDomain: .default,
                                                apiVersion: versionAPI,
@@ -144,7 +144,7 @@ final class APIResourceTests: XCTestCase {
         let compositeDocumentInfo = CompositeDocumentInfo(partialDocuments: [])
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
                                                                        docType: nil,
-                                                                       mimeSubType: "jpeg",
+                                                                       mimeSubType: .jpeg,
                                                                        documentType: .composite(compositeDocumentInfo)),
                                                apiDomain: .default,
                                                apiVersion: versionAPI,
