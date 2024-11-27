@@ -635,7 +635,7 @@ public final class GiniBankConfiguration: NSObject {
                                                                 iban: iban,
                                                                 bic: bic,
                                                                 amountToPayString: amountToPayString)
-        sendFeedback(updatedExtractions: updatedExtractions, amountToPayString: amountToPayString, retryCount: 0)
+        sendFeedback(updatedExtractions: updatedExtractions)
     }
 
     private func createFeedbackBasicExtractions(paymentRecipient: String,
@@ -682,9 +682,8 @@ public final class GiniBankConfiguration: NSObject {
                 amountExtraction]
     }
 
-    private func sendFeedback(updatedExtractions: [Extraction], amountToPayString: String, retryCount: Int) {
-        var updatedCompoundExtractions = addFeedbackSkontoDiscountsIfApplicable(extractions: updatedExtractions,
-                                                                                amountToPayString: amountToPayString)
+    private func sendFeedback(updatedExtractions: [Extraction]) {
+        var updatedCompoundExtractions: [String: [[Extraction]]]? = [:]
         updatedCompoundExtractions = addFeedbackLineItemsIfAvailable(to: updatedCompoundExtractions)
 
         documentService?.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: updatedCompoundExtractions)
