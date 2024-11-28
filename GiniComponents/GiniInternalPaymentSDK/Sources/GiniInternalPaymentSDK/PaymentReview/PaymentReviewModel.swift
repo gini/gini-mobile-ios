@@ -54,6 +54,7 @@ public protocol PaymentReviewActionProtocol {
     func updatedPaymentProvider(_ paymentProvider: PaymentProvider)
     func openMoreInformationViewController()
     func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: PaymentInfo)
+    func paymentReviewClosed()
 }
 
 /**

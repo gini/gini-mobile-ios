@@ -802,6 +802,8 @@ extension PaymentComponentsController: PaymentReviewProtocol {
     }
     
     public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {}
+    
+    public func paymentReviewClosed() {}
 }
 
 extension PaymentComponentsController {

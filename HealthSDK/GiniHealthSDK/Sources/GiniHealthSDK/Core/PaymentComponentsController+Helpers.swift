@@ -309,6 +309,7 @@ extension PaymentComponentsController {
         shareInvoiceBottomViewModel.viewDelegate = self
         shareInvoiceBottomViewModel.documentId = documentId
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
+        self.shareInvoiceBottomSheet = shareInvoiceBottomView
         return shareInvoiceBottomView
     }
     
@@ -323,6 +324,13 @@ extension PaymentComponentsController {
         if let provider = selectedPaymentProvider {
             storeDefaultPaymentProvider(paymentProvider: provider)
         }
+    }
+    
+    /**
+     Notifies the controller that the Payment Review Screen has closed, allowing us to clean up stored data used for managing various flows.
+     */
+    public func paymentReviewClosed() {
+        self.shareInvoiceBottomSheet = nil
     }
 
     /**
@@ -399,7 +407,12 @@ extension PaymentComponentsController {
                 return
             }
 
-            self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, _, _, _) in
+            self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, actionOnShareSheet, _, _) in
+                if actionOnShareSheet == false {
+                    guard let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet else { return }
+                    self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
+                }
+                
                 guard activity != nil else {
                     return
                 }

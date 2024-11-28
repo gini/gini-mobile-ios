@@ -107,7 +107,9 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     var documentId: String?
     // Errors stack received from API. We will show them for the clients
     var errors: [String] = []
-
+    
+    // Store Share Bottom Sheet for dismissed native share modal
+    var shareInvoiceBottomSheet: ShareInvoiceBottomView?
     /**
      Initializer of the Payment Component Controller class.
 
