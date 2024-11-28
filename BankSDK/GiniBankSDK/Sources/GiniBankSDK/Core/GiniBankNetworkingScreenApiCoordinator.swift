@@ -393,20 +393,13 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 self.giniBankConfiguration.lineItems = result.lineItems
                 if let skontoDiscounts = result.skontoDiscounts {
                     self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
-                    self.sendSkontoFeedbackForReturnAssistant(extractions: extractions)
+                    self.sendSkontoFeedback(extractions: extractions)
                 }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
             }
         }
-    }
-    
-    private func sendSkontoFeedbackForReturnAssistant(extractions: [String: Extraction]) {
-        guard let amountToPay = extractAmountToPay(from: extractions) else { return }
-        let amountToPayString = formatAmountToPay(amountToPay)
-        let amountExtraction = createAmountExtraction(value: amountToPayString)
-        self.giniBankConfiguration.sendTransferSummaryWithSkontoAndRA(amountExtraction: amountExtraction, amountToPayString: amountToPayString)
     }
 
     private func showDigitalInvoiceScreen(digitalInvoice: DigitalInvoice, analysisDelegate: AnalysisDelegate) {
