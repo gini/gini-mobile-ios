@@ -149,7 +149,29 @@ public final class DocumentService: DocumentServiceProtocol {
             Log(message: "Cannot send feedback: no document", event: .error)
             return
         }
-        captureNetworkService.sendFeedback(document: document, 
+        attemptFeedback(document: document,
+                        updatedExtractions: updatedExtractions,
+                        updatedCompoundExtractions: updatedCompoundExtractions,
+                        retryCount: 0)
+    }
+    
+    public func sendSkontoFeedback(with updatedExtractions: [Extraction], updatedCompoundExtractions: [String: [[Extraction]]]?, retryCount: Int) {
+        Log(message: "Sending feedback", event: "💬")
+        guard let document = document else {
+            Log(message: "Cannot send feedback: no document", event: .error)
+            return
+        }
+        attemptFeedback(document: document,
+                        updatedExtractions: updatedExtractions,
+                        updatedCompoundExtractions: updatedCompoundExtractions,
+                        retryCount: retryCount)
+    }
+
+    private func attemptFeedback(document: Document,
+                                 updatedExtractions: [Extraction],
+                                 updatedCompoundExtractions: [String: [[Extraction]]]?,
+                                 retryCount: Int) {
+        captureNetworkService.sendFeedback(document: document,
                                            updatedExtractions: updatedExtractions,
                                            updatedCompoundExtractions: updatedCompoundExtractions) { result in
             switch result {
@@ -157,10 +179,20 @@ public final class DocumentService: DocumentServiceProtocol {
                 Log(message: "Feedback sent with \(updatedExtractions.count) extractions and \(updatedCompoundExtractions?.count ?? 0) compound extractions",
                     event: "🚀")
             case .failure(let error):
-                let message = "Error sending feedback for document with id: \(document.id) error: \(error)"
-                Log(message: message, event: .error)
-                let errorLog = ErrorLog(description: message, error: error)
-                GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
+                if retryCount > 0 {
+                    Log(message: "Retrying feedback due to error: \(error). Remaining retries: \(retryCount - 1)", event: .warning)
+                    DispatchQueue.global().asyncAfter(deadline: .now() + 5) {
+                        self.attemptFeedback(document: document,
+                                             updatedExtractions: updatedExtractions,
+                                             updatedCompoundExtractions: updatedCompoundExtractions,
+                                             retryCount: retryCount - 1)
+                    }
+                } else {
+                    let message = "Error sending feedback for document with id: \(document.id) error: \(error)"
+                    Log(message: message, event: .error)
+                    let errorLog = ErrorLog(description: message, error: error)
+                    GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
+                }
             }
         }
     }
