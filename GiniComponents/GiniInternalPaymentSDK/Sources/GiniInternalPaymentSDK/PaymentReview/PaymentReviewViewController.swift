@@ -393,11 +393,13 @@ fileprivate extension PaymentReviewViewController {
         mainView.addSubview(containerCollectionView)
         mainView.sendSubviewToBack(containerCollectionView)
         containerCollectionView.addSubview(pageControl)
+        
+        let navigationBarHeight = self.navigationController?.navigationBar.frame.maxY ?? 0
 
         NSLayoutConstraint.activate([
             containerCollectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
             containerCollectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
-            containerCollectionView.topAnchor.constraint(equalTo: mainView.topAnchor),
+            containerCollectionView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: navigationBarHeight),
             containerCollectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.collectionViewBottomPadding),
 
             pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight),
