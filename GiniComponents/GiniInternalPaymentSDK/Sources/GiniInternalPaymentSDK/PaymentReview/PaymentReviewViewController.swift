@@ -356,7 +356,7 @@ fileprivate extension PaymentReviewViewController {
 //MARK: - Collection View Container
 fileprivate extension PaymentReviewViewController {
     func buildContainerCollectionView() -> UIStackView {
-        let container = UIStackView(arrangedSubviews: [collectionView, pageControl])
+        let container = UIStackView(arrangedSubviews: [collectionView])
         container.spacing = 0
         container.axis = .vertical
         container.distribution = .fill
@@ -381,7 +381,7 @@ fileprivate extension PaymentReviewViewController {
         let control = UIPageControl()
         control.pageIndicatorTintColor = model.configuration.pageIndicatorTintColor
         control.currentPageIndicatorTintColor = model.configuration.currentPageIndicatorTintColor
-        control.backgroundColor = model.configuration.backgroundColor
+        control.backgroundColor = .clear
         control.hidesForSinglePage = true
         control.numberOfPages = model.document?.pageCount ?? 0
         return control
@@ -389,8 +389,10 @@ fileprivate extension PaymentReviewViewController {
 
     func layoutContainerCollectionView() {
         containerCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
         mainView.addSubview(containerCollectionView)
         mainView.sendSubviewToBack(containerCollectionView)
+        containerCollectionView.addSubview(pageControl)
 
         NSLayoutConstraint.activate([
             containerCollectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
@@ -399,6 +401,8 @@ fileprivate extension PaymentReviewViewController {
             containerCollectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.collectionViewBottomPadding),
 
             pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight),
+            pageControl.bottomAnchor.constraint(equalTo: containerCollectionView.bottomAnchor, constant: -Constants.collectionViewPadding),
+            pageControl.centerXAnchor.constraint(equalTo: mainView.centerXAnchor),
             collectionView.widthAnchor.constraint(equalTo: containerCollectionView.widthAnchor),
             collectionView.heightAnchor.constraint(equalTo: containerCollectionView.heightAnchor),
             paymentInfoContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
