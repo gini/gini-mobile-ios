@@ -159,8 +159,7 @@ final class AppCoordinator: Coordinator {
                                                                                             secret: clientPassword,
                                                                                             domain: clientDomain),
                                                                                             documentMetadata: metadata,
-                                                        hardcodedInvoicesController: HardcodedInvoicesController(),
-                                                        paymentComponentController: health.paymentComponentsController)
+                                                        hardcodedInvoicesController: HardcodedInvoicesController())
         
         screenAPICoordinator.delegate = self
         
@@ -363,6 +362,10 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
 // MARK: ScreenAPICoordinatorDelegate
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
+    func presentError(title: String, message: String) {
+        self.rootViewController.showError(title, message: message)
+    }
+    
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true)
         self.remove(childCoordinator: coordinator)

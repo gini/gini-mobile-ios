@@ -16,6 +16,7 @@ import UIKit
 protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ())
     func presentInvoicesList(invoices: [DocumentWithExtractions]?)
+    func presentError(title: String, message: String)
 }
 
 final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDelegate, GiniCaptureResultsDelegate {
@@ -36,7 +37,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     var visionConfiguration: GiniConfiguration
     private var captureExtractedResults: [GiniBankAPILibrary.Extraction] = []
     private var hardcodedInvoicesController: HardcodedInvoicesController
-    private var paymentComponentController: PaymentComponentsController
     
     // {extraction name} : {entity name}
     private let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "bic" : "bic", "amountToPay" : "amount"]
@@ -45,14 +45,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
          importedDocuments documents: [GiniCaptureDocument]?,
          client: GiniHealthAPILibrary.Client,
          documentMetadata: GiniHealthAPILibrary.Document.Metadata?,
-         hardcodedInvoicesController: HardcodedInvoicesController,
-         paymentComponentController: PaymentComponentsController) {
+         hardcodedInvoicesController: HardcodedInvoicesController) {
         visionConfiguration = configuration
         visionDocuments = documents
         self.client = client
         self.documentMetadata = documentMetadata
         self.hardcodedInvoicesController = hardcodedInvoicesController
-        self.paymentComponentController = paymentComponentController
         super.init()
     }
     
@@ -81,40 +79,82 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     }
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-        var healthExtractions: [GiniHealthAPILibrary.Extraction] = []
-        captureExtractedResults = result.extractions.map { $0.value}
-        for extraction in captureExtractedResults {
-            healthExtractions.append(GiniHealthAPILibrary.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
-        }
+        captureExtractedResults = result.extractions.map { $0.value }
 
-        if let healthSdk = self.giniHealth, let docId = result.document?.id {
-            // this step needed since we've got 2 different Document structures
-            healthSdk.fetchDataForReview(documentId: docId) { [weak self] resultReview in
-                switch resultReview {
-                case .success(let data):
-                    healthSdk.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
-                        switch result {
-                        case let .success(extractionResult):
-                            GiniUtilites.Log("✅Successfully fetched extractions for id: \(docId)", event: .success)
-                            // Store invoice/document into Invoices list
-                            let invoice = DocumentWithExtractions(documentId: docId,
-                                                                  extractionResult: extractionResult)
-                            self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
-                            DispatchQueue.main.async {
-                                self?.rootViewController.dismiss(animated: true, completion: {
-                                    self?.delegate?.presentInvoicesList(invoices: [invoice])
-                                })
-                            }
-                        case let .failure(error):
-                            GiniUtilites.Log("❌Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))", event: .error)
-                        }
-                    }
-                case .failure(let error):
-                    GiniUtilites.Log("❌ Document data fetching failed: \(String(describing: error))", event: .error)
-                }
+        let healthExtractions = createHealthExtractions(from: captureExtractedResults)
+
+        guard let healthSdk = self.giniHealth, let docId = result.document?.id else { return }
+
+        checkIfDocumentIsPayable(for: docId, using: healthSdk) { [weak self] isPayable in
+            guard isPayable else {
+                self?.presentErrorForNonPayableDocument()
+                return
+            }
+
+            self?.fetchDocumentDataForReview(docId: docId, using: healthSdk)
+        }
+    }
+
+    private func createHealthExtractions(from extractions: [GiniBankAPILibrary.Extraction]) -> [GiniHealthAPILibrary.Extraction] {
+        return extractions.map { extraction in
+            GiniHealthAPILibrary.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name)
+        }
+    }
+
+    private func checkIfDocumentIsPayable(for docId: String, using healthSdk: GiniHealth, completion: @escaping (Bool) -> Void) {
+        healthSdk.checkIfDocumentIsPayable(docId: docId) { resultPayable in
+            switch resultPayable {
+            case .success(let payable):
+                completion(payable)
+            case .failure(let error):
+                GiniUtilites.Log("Check if document is payable failed with: \(String(describing: error))", event: .error)
+                completion(false)
             }
         }
     }
+
+    private func fetchDocumentDataForReview(docId: String, using healthSdk: GiniHealth) {
+        healthSdk.fetchDataForReview(documentId: docId) { [weak self] resultReview in
+            switch resultReview {
+            case .success(let data):
+                self?.fetchExtractions(for: data.document, healthSdk: healthSdk, docId: docId)
+            case .failure(let error):
+                GiniUtilites.Log("Document data fetching failed: \(String(describing: error))", event: .error)
+            }
+        }
+    }
+
+    private func fetchExtractions(for document: GiniHealthSDK.Document, healthSdk: GiniHealth, docId: String) {
+        healthSdk.documentService.extractions(for: document, cancellationToken: CancellationToken()) { [weak self] result in
+            switch result {
+            case .success(let extractionResult):
+                GiniUtilites.Log("Successfully fetched extractions for id: \(docId)", event: .success)
+                self?.handleSuccessfulExtractions(extractionResult, for: docId)
+            case .failure(let error):
+                GiniUtilites.Log("Obtaining extractions from document with id \(docId) failed with error: \(String(describing: error))", event: .error)
+            }
+        }
+    }
+
+    private func handleSuccessfulExtractions(_ extractionResult: GiniHealthSDK.ExtractionResult, for docId: String) {
+        let invoice = DocumentWithExtractions(documentId: docId, extractionResult: extractionResult)
+        self.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
+
+        DispatchQueue.main.async {
+            self.rootViewController.dismiss(animated: true) {
+                self.delegate?.presentInvoicesList(invoices: [invoice])
+            }
+        }
+    }
+
+    private func presentErrorForNonPayableDocument() {
+        DispatchQueue.main.async {
+            self.rootViewController.dismiss(animated: true) {
+                self.delegate?.presentError(title: NSLocalizedString("gini.health.example.error.invoice.not.payable", comment: ""), message: "")
+            }
+        }
+    }
+
 }
 // MARK: - UINavigationControllerDelegate
 
