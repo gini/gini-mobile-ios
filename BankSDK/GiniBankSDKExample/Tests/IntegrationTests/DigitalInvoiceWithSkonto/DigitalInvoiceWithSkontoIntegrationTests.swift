@@ -18,7 +18,7 @@ class DigitalInvoiceWithSkontoIntegrationTests: BaseIntegrationTest {
         let captureDelegate = CaptureResultsDelegate(testCase: self, expect: expect)
         uploadAndAnalyzeDocument(fileName: mockedInvoiceName,
                                  delegate: captureDelegate)
-        wait(for: [expect], timeout: 60)
+        wait(for: [expect], timeout: 30)
     }
 
     class CaptureResultsDelegate: GiniCaptureResultsDelegate {
