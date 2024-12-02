@@ -275,7 +275,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
-                                                               showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+                                                               showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
+                                                               previousPaymentComponentScreentType: nil)
 
                             let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                                              selectedPaymentProvider: healthSelectedPaymentProvider)
@@ -314,7 +315,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                            poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                            bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
-                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
+                                           previousPaymentComponentScreentType: nil)
 
         let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                          selectedPaymentProvider: healthSelectedPaymentProvider)
