@@ -1,5 +1,43 @@
 #!/bin/bash
 
+# help message
+if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+	echo "./build-healthsdk.sh usage:"
+	echo "	Build XCFrameworks: ./build-healthsdk.sh"
+	echo "	Build XCFrameworks, no cleanup: ./build-healthsdk.sh [--no-cleanup|-n]"
+	echo "	Print this message: ./build-healthsdk.sh [--help|-h]"
+	exit 0
+fi
+
+# constants
+iphonesimulatorArchivePath="iphonesimulatorHealth.xcarchive"
+iphonesimulatorBuildDir="build-health-iphonesimulator"
+
+iphoneosArchivePath="iphoneosHealth.xcarchive"
+iphoneosBuildDir="build-health-iphoneos"
+
+
+# check if cleanup is disabled in arguments
+if [[ "$1" == "--no-cleanup" || "$1" == "-n" ]]; then
+    echo "warning: running without cleaning up"
+else
+	echo "Cleaning up intermediate caches and artefacts..."
+
+	# cleaning archives
+	rm -rf $iphonesimulatorArchivePath
+	rm -rf $iphoneosArchivePath
+
+	# cleaning build dirs
+	rm -rf $iphoneosBuildDir
+	rm -rf $iphonesimulatorBuildDir
+
+	# cleaning up xcframeworks
+	rm -rf "GiniHealthSDK.xcframework"
+	rm -rf "GiniHealthAPILibrary.xcframework"
+	rm -rf "GiniUtilites.xcframework"
+	rm -rf "GiniInternalPaymentSDK.xcframework"
+fi
+
 # Function to copy .swiftmodule files manually
 cp-modules() {
     local frName=$1
@@ -64,21 +102,37 @@ make-xcframework() {
         -output "$frName.xcframework"
 }
 
+# telling swift packages in the environment that they need to produce dynamic libraries
+export GINI_FORCE_DYNAMIC_LIBRARY=1
+
 # Archive for iOS and iOS Simulator
 archive "HealthSDK/GiniHealthSDK" \
     "iOS" \
     "iphoneos" \
-    "build-health-iphoneos" \
-    "iphoneosHealth.xcarchive"
+    $iphoneosBuildDir \
+    $iphoneosArchivePath
 
 archive "HealthSDK/GiniHealthSDK" \
     "iOS Simulator" \
     "iphonesimulator" \
-    "build-health-iphonesimulator" \
-    "iphonesimulatorHealth.xcarchive"
+    $iphonesimulatorBuildDir \
+    $iphonesimulatorArchivePath
 
-# Create XCFrameworks
-make-xcframework "GiniHealthSDK" "iphoneosHealth.xcarchive" "iphonesimulatorHealth.xcarchive"
-make-xcframework "GiniHealthAPILibrary" "iphoneosHealth.xcarchive" "iphonesimulatorHealth.xcarchive"
-make-xcframework "GiniInternalPaymentSDK" "iphoneosHealth.xcarchive" "iphonesimulatorHealth.xcarchive"
-make-xcframework "GiniUtilites" "iphoneosHealth.xcarchive" "iphonesimulatorHealth.xcarchive"
+make-xcframework "GiniHealthSDK" \
+    $iphoneosArchivePath \
+    $iphonesimulatorArchivePath
+
+make-xcframework "GiniHealthAPILibrary" \
+    $iphoneosArchivePath \
+    $iphonesimulatorArchivePath
+
+make-xcframework "GiniInternalPaymentSDK" \
+    $iphoneosArchivePath \
+    $iphonesimulatorArchivePath
+
+make-xcframework "GiniUtilites" \
+    $iphoneosArchivePath \
+    $iphonesimulatorArchivePath
+
+# swift package checks for "1" so making it empty is enough to clean it
+export GINI_FORCE_DYNAMIC_LIBRARY=""

@@ -3,7 +3,7 @@
 ## Building XCFrameworks
 
 1. In terminal, run `./build-healthsdk.sh`. If it says `Permission denied`, try running `chmod +x build-healthsdk.sh` to add permission to execute
-**Note: If you ran the script before, run `rm -rf GiniUtilities.xcframework GiniHealthSDK.xcframework GiniHealthAPILibrary.xcframework GiniInternalPaymentSDK.xcframework build-health-iphoneos build-health-iphonesimulator iphonesimulatorHealth.xcarchive iphoneosHealth.xcarchive`, to delete temporary files**
+**Note: running this will cleanup all intermediates and artefacts from the previous run, unless you specify `--no-cleanup` in arguments. You can run `./build-healthsdk.sh --help` for more info about how to use the script**
 
 2. After the script from the step above has finished, there should be `GiniHealthSDK.xcframework`, `GiniHealthAPILibrary.xcframework`, `GiniInternalPaymentSDK.xcframework`, and `GiniUtilites.xcframework` available.
 
