@@ -127,7 +127,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniHealthError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(trackingDelegate: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(trackingDelegate: nil, previousPaymentComponentScreentType: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }

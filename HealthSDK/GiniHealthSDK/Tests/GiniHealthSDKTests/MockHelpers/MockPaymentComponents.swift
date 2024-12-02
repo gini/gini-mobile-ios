@@ -100,11 +100,11 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings)
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
-    
-    func loadPaymentReviewScreenFor(trackingDelegate: (any GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+
+    func loadPaymentReviewScreenFor(trackingDelegate: (any GiniHealthSDK.GiniHealthTrackingDelegate)?, previousPaymentComponentScreentType: GiniInternalPaymentSDK.PaymentComponentScreenType?, completion: @escaping (UIViewController?, GiniHealthSDK.GiniHealthError?) -> Void) {
         completion(UIViewController(), nil)
     }
-    
+
     func paymentInfoViewController() -> UIViewController {
         let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders.map { $0.toHealthPaymentProvider() },
                                                         configuration: giniHealth.paymentInfoConfiguration,
