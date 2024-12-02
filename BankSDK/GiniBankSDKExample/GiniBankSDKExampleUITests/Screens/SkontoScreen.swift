@@ -31,14 +31,14 @@ class SkontoScreen {
             helpButton = app.buttons["Help"]
             proceedButton = app.buttons["Proceed"]
             skontoTitleText = app.buttons["Discount"]
-            backButtonNavigation = app.buttons["Back Back"]
+            backButtonNavigation = app.buttons["Back"]
             gotItButton = app.buttons["Understood"]
             
         case "de":
             helpButton = app.buttons["Hilfe"]
             proceedButton = app.buttons["Zahlung fortsetzen"]
             skontoTitleText = app.buttons["Skonto"]
-            backButtonNavigation = app.buttons["Zurück Zurück"]
+            backButtonNavigation = app.buttons["Zurück"]
             gotItButton = app.buttons["Verstanden"]
 
         default:

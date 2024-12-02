@@ -22,7 +22,7 @@ public class TransactionDocsScreen {
     
     public init(app: XCUIApplication, locale: String) {
         self.app = app
-        documentName = app.staticTexts["Document"]
+        documentName = app.staticTexts["Tap to view Document"]
         editButton = app.buttons["transactionDocs attached docum"]
         editButtonPreview = app.navigationBars.buttons["transactionDocs attached docum"]
 
