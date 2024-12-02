@@ -81,8 +81,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
         captureExtractedResults = result.extractions.map { $0.value }
 
-        let healthExtractions = createHealthExtractions(from: captureExtractedResults)
-
         guard let healthSdk = self.giniHealth, let docId = result.document?.id else { return }
 
         checkIfDocumentIsPayable(for: docId, using: healthSdk) { [weak self] isPayable in
@@ -91,7 +89,22 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
                 return
             }
 
-            self?.fetchDocumentDataForReview(docId: docId, using: healthSdk)
+            self?.checkIfDocumentContainsMultipleInvoices(docId: docId, using: healthSdk)
+        }
+    }
+
+    private func checkIfDocumentContainsMultipleInvoices(docId: String, using healthSdk: GiniHealth) {
+        healthSdk.checkIfDocumentContainsMultipleInvoices(docId: docId) { [weak self] result in
+            switch result {
+            case .success(let multipleInvoices):
+                if !multipleInvoices {
+                    self?.fetchDocumentDataForReview(docId: docId, using: healthSdk)
+                } else {
+                    self?.presentErrorForMultipleInvoicesInDocument()
+                }
+            case .failure(let error):
+                GiniUtilites.Log("Check if document contains multiple invoices failed with: \(String(describing: error))", event: .error)
+            }
         }
     }
 
@@ -155,6 +168,13 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
         }
     }
 
+    private func presentErrorForMultipleInvoicesInDocument() {
+        DispatchQueue.main.async {
+            self.rootViewController.dismiss(animated: true) {
+                self.delegate?.presentError(title: NSLocalizedString("gini.health.example.error.contains.multiple.invoices", comment: ""), message: "")
+            }
+        }
+    }
 }
 // MARK: - UINavigationControllerDelegate
 
