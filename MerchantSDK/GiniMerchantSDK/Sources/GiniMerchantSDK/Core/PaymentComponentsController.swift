@@ -458,7 +458,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
 
     /// Checks if the selected payment provider supports GPC(Gini Pay Connect) on iOS.
     public func supportsGPC() -> Bool {
-        healthSelectedPaymentProvider?.openWithSupportedPlatforms.contains(.ios) == true
+        healthSelectedPaymentProvider?.gpcSupportedPlatforms.contains(.ios) == true
     }
 
     /**

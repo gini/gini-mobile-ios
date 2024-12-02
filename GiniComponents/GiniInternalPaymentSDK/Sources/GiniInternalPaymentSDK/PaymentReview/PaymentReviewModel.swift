@@ -124,6 +124,7 @@ public class PaymentReviewModel: NSObject {
     let bottomSheetConfiguration: BottomSheetConfiguration
     let showPaymentReviewCloseButton: Bool
     var displayMode: DisplayMode
+    var previousPaymentComponentScreentType: PaymentComponentScreenType?
 
     public init(delegate: PaymentReviewProtocol,
                 bottomSheetsProvider: BottomSheetsProviderProtocol,
@@ -143,7 +144,8 @@ public class PaymentReviewModel: NSObject {
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
                 bottomSheetConfiguration: BottomSheetConfiguration,
-                showPaymentReviewCloseButton: Bool) {
+                showPaymentReviewCloseButton: Bool,
+                previousPaymentComponentScreentType: PaymentComponentScreenType?) {
         self.delegate = delegate
         self.bottomSheetsProvider = bottomSheetsProvider
         self.configuration = configuration
@@ -165,6 +167,7 @@ public class PaymentReviewModel: NSObject {
         self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
         self.bottomSheetConfiguration = bottomSheetConfiguration
         self.displayMode = document != nil ? .documentCollection : .bottomSheet
+        self.previousPaymentComponentScreentType = previousPaymentComponentScreentType
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> PageCollectionCellViewModel {

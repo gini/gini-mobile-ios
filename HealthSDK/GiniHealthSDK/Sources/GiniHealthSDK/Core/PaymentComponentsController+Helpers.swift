@@ -183,6 +183,7 @@ extension PaymentComponentsController {
     func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?,
                                     completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         previousPresentedViews.insert(.paymentReview)
+        let previousPaymentComponentScreenType: PaymentComponentScreenType? = previousPresentedViews.contains(.bankPicker) ? .bankPicker : nil
         if !GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
             guard let documentId else {
                 completion(nil, nil)
@@ -197,26 +198,29 @@ extension PaymentComponentsController {
                             completion(nil, nil)
                             return
                         }
-                        self.preparePaymentReviewViewController(data: data, paymentInfo: nil, completion: completion)
+                        self.preparePaymentReviewViewController(data: data, paymentInfo: nil, previousPaymentComponentScreentType: previousPaymentComponentScreenType, completion: completion)
                     case .failure(let error):
                         completion(nil, error)
                 }
             }
         } else {
-            loadPaymentReviewScreenWithoutDocument(paymentInfo: paymentInfo, trackingDelegate: trackingDelegate, completion: completion)
+            loadPaymentReviewScreenWithoutDocument(paymentInfo: paymentInfo, trackingDelegate: trackingDelegate, previousPaymentComponentScreentType: previousPaymentComponentScreenType, completion: completion)
         }
     }
     
     private func loadPaymentReviewScreenWithoutDocument(paymentInfo: GiniInternalPaymentSDK.PaymentInfo?,
                                                         trackingDelegate: GiniHealthTrackingDelegate?,
+                                                        previousPaymentComponentScreentType: PaymentComponentScreenType? = nil,
                                                         completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         preparePaymentReviewViewController(data: nil,
                                            paymentInfo: paymentInfo,
+                                           previousPaymentComponentScreentType: previousPaymentComponentScreentType,
                                            completion: completion)
     }
 
     private func preparePaymentReviewViewController(data: DataForReview?,
                                                     paymentInfo: GiniInternalPaymentSDK.PaymentInfo?,
+                                                    previousPaymentComponentScreentType: PaymentComponentScreenType? = nil,
                                                     completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         guard let healthSelectedPaymentProvider else {
             completion(nil, nil)
@@ -240,7 +244,8 @@ extension PaymentComponentsController {
                                            poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                            bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
-                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
+                                           previousPaymentComponentScreentType: previousPaymentComponentScreentType)
 
         let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                          selectedPaymentProvider: healthSelectedPaymentProvider)

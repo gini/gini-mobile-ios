@@ -27,7 +27,7 @@ protocol PaymentComponentsProtocol {
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
     func paymentView() -> UIView
     func bankSelectionBottomSheet() -> UIViewController
-    func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
+    func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?, previousPaymentComponentScreentType: PaymentComponentScreenType?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
     func paymentInfoViewController() -> UIViewController
     func paymentViewBottomSheet() -> UIViewController
 }
