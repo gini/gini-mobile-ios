@@ -23,6 +23,10 @@ public protocol GiniCaptureNetworkService: AnyObject  {
                       updatedExtractions: [Extraction],
                       updatedCompoundExtractions: [String: [[Extraction]]]?,
                       completion: @escaping (Result<Void, GiniError>) -> Void)
+    func sendFeedback(documentId: String,
+                      updatedExtractions: [Extraction],
+                      updatedCompoundExtractions: [String: [[Extraction]]]?,
+                      completion: @escaping (Result<Void, GiniError>) -> Void)
     func log(errorEvent: ErrorEvent,
              completion: @escaping (Result<Void, GiniError>) -> Void)
 
@@ -71,6 +75,13 @@ public extension GiniCaptureNetworkService {
                       pageNumber: Int,
                       size: Document.Page.Size,
                       completion: @escaping DocumentPagePreviewCompletion) {
+        // Default implementation is empty
+    }
+    
+    func sendFeedback(documentId: String,
+                      updatedExtractions: [Extraction],
+                      updatedCompoundExtractions: [String: [[Extraction]]]?,
+                      completion: @escaping (Result<Void, GiniError>) -> Void) {
         // Default implementation is empty
     }
 }
@@ -173,12 +184,22 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                       updatedExtractions: [Extraction],
                       updatedCompoundExtractions: [String: [[Extraction]]]?,
                       completion: @escaping (Result<Void, GiniError>) -> Void) {
+        sendFeedback(documentId: document.id,
+                     updatedExtractions: updatedExtractions,
+                     updatedCompoundExtractions: updatedCompoundExtractions,
+                     completion: completion)
+    }
+    
+    func sendFeedback(documentId: String,
+                      updatedExtractions: [Extraction],
+                      updatedCompoundExtractions: [String: [[Extraction]]]?,
+                      completion: @escaping (Result<Void, GiniError>) -> Void) {
         if let updatedCompoundExtractions = updatedCompoundExtractions {
-            documentService.submitFeedback(for: document, with: updatedExtractions, and: updatedCompoundExtractions) { result in
+            documentService.submitFeedback(for: documentId, with: updatedExtractions, and: updatedCompoundExtractions) { result in
                 completion(result)
             }
         } else {
-            documentService.submitFeedback(for: document, with: updatedExtractions) { result in
+            documentService.submitFeedback(for: documentId, with: updatedExtractions) { result in
                 completion(result)
             }
         }
