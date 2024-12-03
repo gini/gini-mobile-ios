@@ -284,15 +284,15 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     public func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController) {
-        createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] paymentRequestID, error in
+        createPaymentRequest(paymentInfo: paymentInfo, notifyDelegate: false, completion: { [weak self] paymentRequestID, error in
             if let paymentRequestID {
                 self?.loadPDFData(paymentRequestID: paymentRequestID, viewController: viewController)
             }
         })
     }
 
-    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (_ paymentRequestID: String?, _ error: GiniMerchantError?) -> Void) {
-        giniMerchant.createPaymentRequest(paymentInfo: paymentInfo) { result in
+    public func createPaymentRequest(paymentInfo: PaymentInfo, notifyDelegate: Bool = true, completion: @escaping (_ paymentRequestID: String?, _ error: GiniMerchantError?) -> Void) {
+        giniMerchant.createPaymentRequest(paymentInfo: paymentInfo, notifyDelegate: notifyDelegate) { result in
             switch result {
             case let .success(requestId):
                 completion(requestId, nil)
