@@ -352,7 +352,7 @@ extension DocumentService {
 
 
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
-                        for document: Document,
+                        for documentId: String,
                         with extractions: [Extraction],
                         completion: @escaping CompletionResult<Void>) {
         guard let json = try? JSONEncoder().encode(ExtractionsFeedback(feedback: extractions)) else {
@@ -360,7 +360,7 @@ extension DocumentService {
             return
         }
         
-        let resource = APIResource<String>(method: .feedback(forDocumentId: document.id),
+        let resource = APIResource<String>(method: .feedback(forDocumentId: documentId),
                                            apiDomain: apiDomain,
                                            httpMethod: .post,
                                            body: json)
@@ -377,7 +377,7 @@ extension DocumentService {
     }
     
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
-                        for document: Document,
+                        for documentId: String,
                         with extractions: [Extraction],
                         and compoundExtractions: [String: [[Extraction]]],
                         completion: @escaping CompletionResult<Void>) {
@@ -388,7 +388,7 @@ extension DocumentService {
                 return
         }
         
-        let resource = APIResource<String>(method: .feedback(forDocumentId: document.id),
+        let resource = APIResource<String>(method: .feedback(forDocumentId: documentId),
                                            apiDomain: apiDomain,
                                            httpMethod: .post,
                                            body: json)
@@ -403,7 +403,29 @@ extension DocumentService {
             
         })
     }
-    
+
+    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                        for document: Document,
+                        with extractions: [Extraction],
+                        completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: resourceHandler,
+                       for: document.id,
+                       with: extractions,
+                       completion: completion)
+    }
+
+    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                        for document: Document,
+                        with extractions: [Extraction],
+                        and compoundExtractions: [String: [[Extraction]]],
+                        completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: resourceHandler,
+                       for: document.id,
+                       with: extractions,
+                       and: compoundExtractions,
+                       completion: completion)
+    }
+
     func log(resourceHandler: ResourceDataHandler<APIResource<String>>,
              errorEvent: ErrorEvent,
              completion: @escaping CompletionResult<Void>) {
