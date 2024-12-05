@@ -14,8 +14,8 @@ public final class PaymentComponentBottomView: BottomSheetViewController {
 
     private let contentView = EmptyView()
 
-    var portraitConstraints: [NSLayoutConstraint] = []
-    var landscapeConstraints: [NSLayoutConstraint] = []
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +44,7 @@ public final class PaymentComponentBottomView: BottomSheetViewController {
     }
 
     // Detect and setup initial layout based on the current orientation
-    func setupInitialLayout() {
+    private func setupInitialLayout() {
         let deviceOrientation = UIDevice.current.orientation
 
         if deviceOrientation == .portrait || deviceOrientation == .portraitUpsideDown {
@@ -55,7 +55,7 @@ public final class PaymentComponentBottomView: BottomSheetViewController {
     }
 
     // Portrait Layout Constraints
-    func setupPortraitConstraints() {
+    private func setupPortraitConstraints() {
         NSLayoutConstraint.deactivate(landscapeConstraints)
         portraitConstraints = [
             paymentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.portraitPadding),
@@ -65,7 +65,7 @@ public final class PaymentComponentBottomView: BottomSheetViewController {
     }
 
     // Landscape Layout Constraints
-    func setupLandscapeConstraints() {
+    private func setupLandscapeConstraints() {
         NSLayoutConstraint.deactivate(portraitConstraints)
         landscapeConstraints = [
             paymentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.landscapePadding),
