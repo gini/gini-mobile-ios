@@ -7,8 +7,8 @@
 
 
 import XCTest
-@testable import GiniCaptureSDK
-@testable import GiniBankSDK
+import GiniCaptureSDK
+import GiniBankSDK
 
 class GiniBankSDKExampleUITests: XCTestCase {
 
