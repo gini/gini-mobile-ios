@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ExtractionsContainer {
+public struct ExtractionsContainer: Decodable {
     let extractions: [Extraction]
     let compoundExtractions: [String : [[Extraction]]]?
     let candidates: [Extraction.Candidate]
@@ -17,11 +17,6 @@ public struct ExtractionsContainer {
         case compoundExtractions
         case candidates
     }
-}
-
-// MARK: - Decodable
-
-extension ExtractionsContainer: Decodable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

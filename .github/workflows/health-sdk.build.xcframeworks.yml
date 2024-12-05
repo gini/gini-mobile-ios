@@ -18,85 +18,18 @@ on:
 jobs:
   prepare-frameworks:
     name: Create Release
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
-          xcode-version: '14.3.1'
+          xcode-version: '15.4'
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Mint
-        uses: fabasoad/setup-mint-action@main
-
-      - name: Setup swift-create-xcframework
+      - name: Archiving project and creating XCFrameworks
         run: |
-          /usr/local/bin/brew install mint
-          /usr/local/bin/mint install unsignedapps/swift-create-xcframework@v2.3.0
-
-      - name: GiniHealthSDKPinning Project File
-        run: |
-          cd HealthSDK/GiniHealthSDKPinning
-          /usr/local/bin/mint run swift-create-xcframework
-
-      - name: setup ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2.0'
-          bundler-cache: true
-    
-      - name: Add resources to HealthSDK target for generated Xcode project
-        uses: maierj/fastlane-action@v3.1.0
-        with:
-          lane: 'add_resources'
-          options: >
-            { 
-              "project_path": "../HealthSDK/GiniHealthSDKPinning/.build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj",
-              "resource_name": "HealthSDKResources",
-              "target_name": "GiniHealthSDK",
-              "resources_path": "../HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Resources",
-              "ci": "true"
-            }
-          
-      - name: Archiving project
-        run: |
-          xcodebuild archive -project HealthSDK/GiniHealthSDKPinning/.build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj \
-          -scheme GiniHealthSDKPinning \
-          -sdk iphonesimulator \
-          -xcconfig Distribution.xcconfig \
-          -configuration Release \
-          -destination="iOS" \
-          -archivePath "iphonesimulatorPinning.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
-
-          xcodebuild clean archive -project HealthSDK/GiniHealthSDKPinning/.build/swift-create-xcframework/GiniHealthSDKPinning.xcodeproj \
-          -scheme GiniHealthSDKPinning -sdk iphoneos \
-          -xcconfig Distribution.xcconfig \
-          -configuration Release \
-          -destination generic/platform=iOS \
-          -archivePath "iphoneosPinning.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
-
-      - name: Generate XCFrameworks
-        run: |
-          xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniHealthAPILibrary.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniHealthAPILibrary.framework \
-          -output GiniHealthAPILibrary.xcframework &&\
-          \
-          xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniHealthSDK.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniHealthSDK.framework \
-          -output GiniHealthSDK.xcframework &&\
-          \
-          xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniHealthAPILibraryPinning.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniHealthAPILibraryPinning.framework \
-          -output GiniHealthAPILibraryPinning.xcframework && \
-          \
-          xcodebuild -create-xcframework \
-          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniHealthSDKPinning.framework \
-          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniHealthSDKPinning.framework \
-          -output GiniHealthSDKPinning.xcframework
+          ./build-healthsdk.sh
       
       - name: Sign the XCFrameworks
         env:
@@ -131,8 +64,8 @@ jobs:
           # sign xcframeworks
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthAPILibrary.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthSDK.xcframework && \
-          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthAPILibraryPinning.xcframework && \
-          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthSDKPinning.xcframework
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniInternalPaymentSDK.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites.xcframework
 
       - name: archive frameworks GiniHealthAPILibrary
         uses: actions/upload-artifact@v4
@@ -141,6 +74,6 @@ jobs:
           path: |
             GiniHealthAPILibrary.xcframework
             GiniHealthSDK.xcframework
-            GiniHealthSDKPinning.xcframework
-            GiniHealthAPILibraryPinning.xcframework
+            GiniInternalPaymentSDK.xcframework
+            GiniUtilites.xcframework
 
