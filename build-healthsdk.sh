@@ -16,27 +16,32 @@ iphonesimulatorBuildDir="build-health-iphonesimulator"
 iphoneosArchivePath="iphoneosHealth.xcarchive"
 iphoneosBuildDir="build-health-iphoneos"
 
+# Function to cleanup simulator and iOS archives
+cleanup-artefacts() {
+    # check if cleanup is disabled in arguments
+    if [[ "$1" == "--no-cleanup" || "$1" == "-n" ]]; then
+        echo "warning: running without cleaning up"
+    else
+        echo "Cleaning up intermediate caches and artefacts..."
 
-# check if cleanup is disabled in arguments
-if [[ "$1" == "--no-cleanup" || "$1" == "-n" ]]; then
-    echo "warning: running without cleaning up"
-else
-	echo "Cleaning up intermediate caches and artefacts..."
+        # cleaning archives
+        rm -rf $iphonesimulatorArchivePath
+        rm -rf $iphoneosArchivePath
 
-	# cleaning archives
-	rm -rf $iphonesimulatorArchivePath
-	rm -rf $iphoneosArchivePath
+        # cleaning build dirs
+        rm -rf $iphoneosBuildDir
+        rm -rf $iphonesimulatorBuildDir
 
-	# cleaning build dirs
-	rm -rf $iphoneosBuildDir
-	rm -rf $iphonesimulatorBuildDir
+    fi
+}
 
-	# cleaning up xcframeworks
-	rm -rf "GiniHealthSDK.xcframework"
-	rm -rf "GiniHealthAPILibrary.xcframework"
-	rm -rf "GiniUtilites.xcframework"
-	rm -rf "GiniInternalPaymentSDK.xcframework"
-fi
+cleanup-frameworks() {
+    # cleaning up xcframeworks
+    rm -rf "GiniHealthSDK.xcframework"
+    rm -rf "GiniHealthAPILibrary.xcframework"
+    rm -rf "GiniUtilites.xcframework"
+    rm -rf "GiniInternalPaymentSDK.xcframework"
+}
 
 # Function to copy .swiftmodule files manually
 cp-modules() {
@@ -102,6 +107,10 @@ make-xcframework() {
         -output "$frName.xcframework"
 }
 
+# Pre-cleanup
+cleanup-artefacts
+cleanup-frameworks
+
 # telling swift packages in the environment that they need to produce dynamic libraries
 export GINI_FORCE_DYNAMIC_LIBRARY=1
 
@@ -136,3 +145,6 @@ make-xcframework "GiniUtilites" \
 
 # swift package checks for "1" so making it empty is enough to clean it
 export GINI_FORCE_DYNAMIC_LIBRARY=""
+
+# Post-cleanup
+cleanup-artefacts
