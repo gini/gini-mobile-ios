@@ -19,7 +19,7 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
                                  delegate: CaptureResultsDelegateForTransferSummaryTest(testCase: self, 
                                                                                         expect: expect),
                                  sendTransferSummaryIfNeeded: true)
-        wait(for: [expect], timeout: 60)
+        wait(for: [expect], timeout: 30)
     }
 
     class CaptureResultsDelegateForTransferSummaryTest: GiniCaptureResultsDelegate {
