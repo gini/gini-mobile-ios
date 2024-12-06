@@ -12,6 +12,9 @@ import GiniUtilites
 public final class PaymentInfoViewController: UIViewController {
     let viewModel: PaymentInfoViewModel
 
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
+
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -140,6 +143,7 @@ public final class PaymentInfoViewController: UIViewController {
         setupViewHierarchy()
         setupViewAttributes()
         setupViewConstraints()
+        setupInitialLayout()
     }
     
     private func setupViewHierarchy() {
@@ -164,19 +168,53 @@ public final class PaymentInfoViewController: UIViewController {
         setupPayBillsConstraints()
         setupQuestionsConstraints()
     }
-    
+
+    private func setupInitialLayout() {
+        updateLayoutForCurrentOrientation()
+    }
+
+    // Portrait Layout Constraints
+    private func setupPortraitConstraints() {
+        NSLayoutConstraint.deactivate(landscapeConstraints)
+        portraitConstraints = [
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ]
+        NSLayoutConstraint.activate(portraitConstraints)
+    }
+
+    // Landscape Layout Constraints
+    private func setupLandscapeConstraints() {
+        NSLayoutConstraint.deactivate(portraitConstraints)
+        landscapeConstraints = [
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.viewPaddingLandscape),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.viewPaddingLandscape)
+        ]
+        NSLayoutConstraint.activate(landscapeConstraints)
+    }
+
+    private func updateLayoutForCurrentOrientation() {
+        let deviceOrientation = UIDevice.current.orientation
+        switch deviceOrientation {
+        case .portrait:
+            setupPortraitConstraints()
+        case .landscapeLeft, .landscapeRight:
+            setupLandscapeConstraints()
+        default:
+            break
+        }
+    }
+
     private func setupContentViewConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor),
-            contentView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor),
+            contentView.leadingAnchor.constraint(greaterThanOrEqualTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor)
         ])
     }
     
@@ -232,6 +270,17 @@ public final class PaymentInfoViewController: UIViewController {
         heightsQuestionsTableView = [questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: questionsTableView.contentSize.height)]
         NSLayoutConstraint.activate(heightsQuestionsTableView)
     }
+
+    // Handle orientation change
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        updateLayoutForCurrentOrientation()
+
+        // Perform layout updates with animation
+        coordinator.animate(alongsideTransition: { context in
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
 }
 
 extension PaymentInfoViewController: UICollectionViewDataSource {
@@ -264,17 +313,17 @@ extension PaymentInfoViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let cellCount = Double(viewModel.paymentProviders.count)
         if cellCount > 0 {
-                let cellWidth = Constants.bankIconsWidth
-                
-                let totalCellWidth = cellWidth * cellCount + Constants.bankIconsSpacing * (cellCount - 1)
-                let contentWidth = collectionView.frame.size.width - (2 * Constants.leftRightPadding)
-                
-                if totalCellWidth < contentWidth {
-                    let padding = (contentWidth - totalCellWidth) / 2.0
-                    return UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
-                } else {
-                    return UIEdgeInsets(top: 0, left: Constants.leftRightPadding, bottom: 0, right: Constants.leftRightPadding)
-                }
+            let cellWidth = Constants.bankIconsWidth
+
+            let totalCellWidth = cellWidth * cellCount + Constants.bankIconsSpacing * (cellCount - 1)
+            let contentWidth = collectionView.frame.size.width - (2 * Constants.leftRightPadding)
+
+            if totalCellWidth < contentWidth {
+                let padding = (contentWidth - totalCellWidth) / 2.0
+                return UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
+            } else {
+                return UIEdgeInsets(top: 0, left: Constants.leftRightPadding, bottom: 0, right: Constants.leftRightPadding)
+            }
         }
         return UIEdgeInsets.zero
     }
@@ -358,5 +407,7 @@ extension PaymentInfoViewController {
         static let questionSectionSeparatorHeight = 1.0
         
         static let estimatedAnswerHeight = 250.0
+
+        static let viewPaddingLandscape = 126.0
     }
 }
