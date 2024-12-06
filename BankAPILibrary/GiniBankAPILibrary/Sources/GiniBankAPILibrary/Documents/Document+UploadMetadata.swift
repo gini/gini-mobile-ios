@@ -81,5 +81,19 @@ extension Document {
             }
             return comment
         }
+        static func userComment(_ existingComment: String?, addingIfNotPresent value: String, forKey key: String) -> String {
+            let newValueString = "\(key)=\(value)"
+            guard let existingComment, existingComment.isNotEmpty else {
+                return newValueString
+            }
+            // checking if the key doesn't exist already
+            guard !existingComment
+                .split(separator: ",").map(String.init)
+                .split(separator: "=").map(String.init)
+                .contains(key) else {
+                return existingComment
+            }
+            return existingComment + "," + newValueString
+        }
     }
 }
