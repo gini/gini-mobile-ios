@@ -44,8 +44,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         }
     }
 
-    func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
-        switch docId {
+    func checkIfDocumentIsPayable(documentId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+        switch documentId {
         case MockSessionManager.payableDocumentID:
             completion(.success(true))
         case MockSessionManager.notPayableDocumentID:
@@ -57,8 +57,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         }
     }
 
-    func checkIfDocumentContainsMultipleInvoices(docId: String, completion: @escaping (Result<Bool, GiniHealthSDK.GiniHealthError>) -> Void) {
-        switch docId {
+    func checkIfDocumentContainsMultipleInvoices(documentId: String, completion: @escaping (Result<Bool, GiniHealthSDK.GiniHealthError>) -> Void) {
+        switch documentId {
         case MockSessionManager.payableDocumentID:
             completion(.success(false))
         case MockSessionManager.notPayableDocumentID:
@@ -100,11 +100,13 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings)
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
-    
-    func loadPaymentReviewScreenFor(trackingDelegate: (any GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+
+    func loadPaymentReviewScreenFor(trackingDelegate: (any GiniHealthSDK.GiniHealthTrackingDelegate)?,
+                                    previousPaymentComponentScreenType: GiniInternalPaymentSDK.PaymentComponentScreenType?,
+                                    completion: @escaping (UIViewController?, GiniHealthSDK.GiniHealthError?) -> Void) {
         completion(UIViewController(), nil)
     }
-    
+
     func paymentInfoViewController() -> UIViewController {
         let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders.map { $0.toHealthPaymentProvider() },
                                                         configuration: giniHealth.paymentInfoConfiguration,

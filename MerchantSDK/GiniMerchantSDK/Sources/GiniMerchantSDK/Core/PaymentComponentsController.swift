@@ -275,7 +275,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
-                                                               showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+                                                               showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
+                                                               previousPaymentComponentScreenType: nil)
 
                             let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                                              selectedPaymentProvider: healthSelectedPaymentProvider)
@@ -314,7 +315,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                            poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                            bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
-                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
+                                           previousPaymentComponentScreenType: nil)
 
         let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                          selectedPaymentProvider: healthSelectedPaymentProvider)
@@ -458,7 +460,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
 
     /// Checks if the selected payment provider supports GPC(Gini Pay Connect) on iOS.
     public func supportsGPC() -> Bool {
-        healthSelectedPaymentProvider?.openWithSupportedPlatforms.contains(.ios) == true
+        healthSelectedPaymentProvider?.gpcSupportedPlatforms.contains(.ios) == true
     }
 
     /**
@@ -802,6 +804,8 @@ extension PaymentComponentsController: PaymentReviewProtocol {
     }
     
     public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {}
+    
+    public func paymentReviewClosed() {}
 }
 
 extension PaymentComponentsController {
