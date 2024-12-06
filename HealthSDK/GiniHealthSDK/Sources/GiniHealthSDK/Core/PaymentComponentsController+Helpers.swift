@@ -198,29 +198,35 @@ extension PaymentComponentsController {
                             completion(nil, nil)
                             return
                         }
-                        self.preparePaymentReviewViewController(data: data, paymentInfo: nil, previousPaymentComponentScreentType: previousPaymentComponentScreenType, completion: completion)
+                        self.preparePaymentReviewViewController(data: data,
+                                                                paymentInfo: nil,
+                                                                previousPaymentComponentScreenType: previousPaymentComponentScreenType,
+                                                                completion: completion)
                     case .failure(let error):
                         completion(nil, error)
                 }
             }
         } else {
-            loadPaymentReviewScreenWithoutDocument(paymentInfo: paymentInfo, trackingDelegate: trackingDelegate, previousPaymentComponentScreentType: previousPaymentComponentScreenType, completion: completion)
+            loadPaymentReviewScreenWithoutDocument(paymentInfo: paymentInfo,
+                                                   trackingDelegate: trackingDelegate,
+                                                   previousPaymentComponentScreenType: previousPaymentComponentScreenType,
+                                                   completion: completion)
         }
     }
     
     private func loadPaymentReviewScreenWithoutDocument(paymentInfo: GiniInternalPaymentSDK.PaymentInfo?,
                                                         trackingDelegate: GiniHealthTrackingDelegate?,
-                                                        previousPaymentComponentScreentType: PaymentComponentScreenType? = nil,
+                                                        previousPaymentComponentScreenType: PaymentComponentScreenType? = nil,
                                                         completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         preparePaymentReviewViewController(data: nil,
                                            paymentInfo: paymentInfo,
-                                           previousPaymentComponentScreentType: previousPaymentComponentScreentType,
+                                           previousPaymentComponentScreenType: previousPaymentComponentScreenType,
                                            completion: completion)
     }
 
     private func preparePaymentReviewViewController(data: DataForReview?,
                                                     paymentInfo: GiniInternalPaymentSDK.PaymentInfo?,
-                                                    previousPaymentComponentScreentType: PaymentComponentScreenType? = nil,
+                                                    previousPaymentComponentScreenType: PaymentComponentScreenType? = nil,
                                                     completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         guard let healthSelectedPaymentProvider else {
             completion(nil, nil)
@@ -245,7 +251,7 @@ extension PaymentComponentsController {
                                            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                            bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
                                            showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
-                                           previousPaymentComponentScreentType: previousPaymentComponentScreentType)
+                                           previousPaymentComponentScreenType: previousPaymentComponentScreenType)
 
         let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                          selectedPaymentProvider: healthSelectedPaymentProvider)
@@ -314,7 +320,7 @@ extension PaymentComponentsController {
         shareInvoiceBottomViewModel.viewDelegate = self
         shareInvoiceBottomViewModel.documentId = documentId
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
-        self.shareInvoiceBottomSheet = shareInvoiceBottomView
+        shareInvoiceBottomSheet = shareInvoiceBottomView
         return shareInvoiceBottomView
     }
     
@@ -332,10 +338,10 @@ extension PaymentComponentsController {
     }
     
     /**
-     Notifies the controller that the Payment Review Screen has closed, allowing us to clean up stored data used for managing various flows.
+     Notifies the controller that the Payment Review Screen has closed, enabling the cleanup of stored data used to manage various flows.
      */
     public func paymentReviewClosed() {
-        self.shareInvoiceBottomSheet = nil
+        shareInvoiceBottomSheet = nil
     }
 
     /**

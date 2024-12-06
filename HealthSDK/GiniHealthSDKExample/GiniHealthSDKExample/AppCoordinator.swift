@@ -194,7 +194,8 @@ final class AppCoordinator: Coordinator {
                                                                   extractionResult: extractionResult)
                             self?.showInvoicesList(invoices: [invoice])
                         case let .failure(error):
-                            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))", event: .error)
+                            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))",
+                                             event: .error)
                         }
                     }
                 case .failure(let error):
@@ -236,7 +237,8 @@ final class AppCoordinator: Coordinator {
                                                                                   extractionResult: extractionResult)
                                             self?.showInvoicesList(invoices: [invoice])
                                         case let .failure(error):
-                                            GiniUtilites.Log("Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))", event: .error)
+                                            GiniUtilites.Log("Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))",
+                                                             event: .error)
                                         }
                                     }
                                 case .failure(let error):

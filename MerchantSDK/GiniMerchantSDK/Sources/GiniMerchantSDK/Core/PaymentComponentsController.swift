@@ -276,7 +276,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
                                                                showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
-                                                               previousPaymentComponentScreentType: nil)
+                                                               previousPaymentComponentScreenType: nil)
 
                             let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                                              selectedPaymentProvider: healthSelectedPaymentProvider)
@@ -316,7 +316,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                            bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
                                            showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
-                                           previousPaymentComponentScreentType: nil)
+                                           previousPaymentComponentScreenType: nil)
 
         let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                          selectedPaymentProvider: healthSelectedPaymentProvider)

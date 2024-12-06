@@ -47,7 +47,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let expectedResult: Result<Bool, GiniHealthError> = .success(true)
         // When
         var receivedResult: Result<Bool, GiniHealthError>?
-        mockPaymentComponentsController.checkIfDocumentIsPayable(docId: MockSessionManager.payableDocumentID) { result in
+        mockPaymentComponentsController.checkIfDocumentIsPayable(documentId: MockSessionManager.payableDocumentID) { result in
             receivedResult = result
         }
 
@@ -59,7 +59,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let expectedResult: Result<Bool, GiniHealthError> = .success(false)
         // When
         var receivedResult: Result<Bool, GiniHealthError>?
-        mockPaymentComponentsController.checkIfDocumentIsPayable(docId: MockSessionManager.notPayableDocumentID) { result in
+        mockPaymentComponentsController.checkIfDocumentIsPayable(documentId: MockSessionManager.notPayableDocumentID) { result in
             receivedResult = result
         }
 
@@ -71,7 +71,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let expectedResult: Result<Bool, GiniHealthError> = .failure(.apiError(.decorator(.noResponse)))
         // When
         var receivedResult: Result<Bool, GiniHealthError>?
-        mockPaymentComponentsController.checkIfDocumentIsPayable(docId: MockSessionManager.missingDocumentID) { result in
+        mockPaymentComponentsController.checkIfDocumentIsPayable(documentId: MockSessionManager.missingDocumentID) { result in
             receivedResult = result
         }
 
@@ -127,7 +127,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         // When
         var receivedViewController: UIViewController?
         var receivedError: GiniHealthError?
-        mockPaymentComponentsController.loadPaymentReviewScreenFor(trackingDelegate: nil, previousPaymentComponentScreentType: nil) { viewController, error in
+        mockPaymentComponentsController.loadPaymentReviewScreenFor(trackingDelegate: nil, previousPaymentComponentScreenType: nil) { viewController, error in
             receivedViewController = viewController
             receivedError = error
         }

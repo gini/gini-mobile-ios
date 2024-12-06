@@ -21,7 +21,6 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     private lazy var closeButton = buildCloseButton()
     private lazy var infoBar = buildInfoBar()
     private lazy var infoBarLabel = buildInfoBarLabel()
-    private lazy var containerCollectionView = buildContainerCollectionView()
     private var isInfoBarHidden = true
     lazy var paymentInfoContainerView = buildPaymentInfoContainerView()
     lazy var collectionView = buildCollectionView()
@@ -62,9 +61,9 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             showInfoBar()
             showInfoBarOnce = false
         }
-        if model.previousPaymentComponentScreentType == .bankPicker {
+        if model.previousPaymentComponentScreenType == .bankPicker {
             model.openBankSelectionBottomSheet()
-            model.previousPaymentComponentScreentType = nil
+            model.previousPaymentComponentScreenType = nil
         }
     }
 
@@ -359,14 +358,6 @@ fileprivate extension PaymentReviewViewController {
 
 //MARK: - Collection View Container
 fileprivate extension PaymentReviewViewController {
-    func buildContainerCollectionView() -> UIStackView {
-        let container = UIStackView(arrangedSubviews: [collectionView])
-        container.spacing = 0
-        container.axis = .vertical
-        container.distribution = .fill
-        return container
-    }
-
     func buildCollectionView() -> UICollectionView {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumInteritemSpacing = Constants.collectionViewPadding
@@ -392,25 +383,25 @@ fileprivate extension PaymentReviewViewController {
     }
 
     func layoutContainerCollectionView() {
-        containerCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         pageControl.translatesAutoresizingMaskIntoConstraints = false
-        mainView.addSubview(containerCollectionView)
-        mainView.sendSubviewToBack(containerCollectionView)
-        containerCollectionView.addSubview(pageControl)
-        
+        mainView.addSubview(collectionView)
+        mainView.sendSubviewToBack(collectionView)
+        collectionView.addSubview(pageControl)
+
         let navigationBarHeight = self.navigationController?.navigationBar.frame.maxY ?? 0
 
         NSLayoutConstraint.activate([
-            containerCollectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
-            containerCollectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
-            containerCollectionView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: navigationBarHeight),
-            containerCollectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.collectionViewBottomPadding),
+            collectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: navigationBarHeight),
+            collectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.collectionViewBottomPadding),
 
             pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight),
-            pageControl.bottomAnchor.constraint(equalTo: containerCollectionView.bottomAnchor, constant: -Constants.collectionViewPadding),
+            pageControl.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -Constants.collectionViewPadding),
             pageControl.centerXAnchor.constraint(equalTo: mainView.centerXAnchor),
-            collectionView.widthAnchor.constraint(equalTo: containerCollectionView.widthAnchor),
-            collectionView.heightAnchor.constraint(equalTo: containerCollectionView.heightAnchor),
+            collectionView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
+            collectionView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
             paymentInfoContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             paymentInfoContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])

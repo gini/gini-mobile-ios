@@ -100,7 +100,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Checking if document is payable")
         var isDocumentPayable: Bool?
-        giniHealth.checkIfDocumentIsPayable(docId: MockSessionManager.payableDocumentID) { result in
+        giniHealth.checkIfDocumentIsPayable(documentId: MockSessionManager.payableDocumentID) { result in
             switch result {
             case .success(let isPayable):
                 isDocumentPayable = isPayable
@@ -129,7 +129,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Checking if document is not payable")
         var isDocumentPayable: Bool?
-        giniHealth.checkIfDocumentIsPayable(docId: MockSessionManager.notPayableDocumentID) { result in
+        giniHealth.checkIfDocumentIsPayable(documentId: MockSessionManager.notPayableDocumentID) { result in
             switch result {
             case .success(let isPayable):
                 isDocumentPayable = isPayable
@@ -148,7 +148,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Checking if request fails")
         var isDocumentPayable: Bool?
-        giniHealth.checkIfDocumentIsPayable(docId: MockSessionManager.failurePayableDocumentID) { result in
+        giniHealth.checkIfDocumentIsPayable(documentId: MockSessionManager.failurePayableDocumentID) { result in
             switch result {
             case .success(let isPayable):
                 isDocumentPayable = isPayable
@@ -167,7 +167,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Checking if document contains multiple invoices")
         var hasMultipleInvoices: Bool?
-        giniHealth.checkIfDocumentContainsMultipleInvoices(docId: MockSessionManager.notPayableDocumentID) { result in
+        giniHealth.checkIfDocumentContainsMultipleInvoices(documentId: MockSessionManager.notPayableDocumentID) { result in
             switch result {
             case .success(let containsMultipleDocs):
                 hasMultipleInvoices = containsMultipleDocs
@@ -186,7 +186,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Checking if document don't contain multiple invoices")
         var hasMultipleInvoices: Bool?
-        giniHealth.checkIfDocumentContainsMultipleInvoices(docId: MockSessionManager.payableDocumentID) { result in
+        giniHealth.checkIfDocumentContainsMultipleInvoices(documentId: MockSessionManager.payableDocumentID) { result in
             switch result {
             case .success(let containsMultipleDocs):
                     hasMultipleInvoices = containsMultipleDocs
@@ -205,7 +205,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Checking if request fails")
         var hasMultipleInvoices: Bool?
-        giniHealth.checkIfDocumentContainsMultipleInvoices(docId: MockSessionManager.failurePayableDocumentID) { result in
+        giniHealth.checkIfDocumentContainsMultipleInvoices(documentId: MockSessionManager.failurePayableDocumentID) { result in
             switch result {
             case .success(let containsMultipleDocs):
                 hasMultipleInvoices = containsMultipleDocs
@@ -228,7 +228,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Polling document")
         var receivedDocument: GiniHealthSDK.Document?
-        giniHealth.pollDocument(docId: MockSessionManager.payableDocumentID) { result in
+        giniHealth.pollDocument(documentId: MockSessionManager.payableDocumentID) { result in
             switch result {
             case .success(let document):
                 receivedDocument = document
@@ -248,7 +248,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Polling failure document")
         var receivedDocument: GiniHealthSDK.Document?
-        giniHealth.pollDocument(docId: MockSessionManager.missingDocumentID) { result in
+        giniHealth.pollDocument(documentId: MockSessionManager.missingDocumentID) { result in
             switch result {
             case .success(let document):
                 receivedDocument = document
@@ -276,7 +276,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Getting extractions")
         var receivedExtractions: [GiniHealthSDK.Extraction]?
-        giniHealth.getExtractions(docId: MockSessionManager.extractionsWithPaymentDocumentID) { result in
+        giniHealth.getExtractions(documentId: MockSessionManager.extractionsWithPaymentDocumentID) { result in
             switch result {
             case .success(let extractions):
                 receivedExtractions = extractions
@@ -296,7 +296,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Extraction failure")
         var receivedExtractions: [GiniHealthSDK.Extraction]?
-        giniHealth.getExtractions(docId: MockSessionManager.failurePayableDocumentID) { result in
+        giniHealth.getExtractions(documentId: MockSessionManager.failurePayableDocumentID) { result in
             switch result {
             case .success(let extractions):
                 receivedExtractions = extractions
@@ -462,7 +462,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Getting all extractions")
         var receivedExtractions: [GiniHealthSDK.Extraction]?
-        giniHealth.getAllExtractions(docId: MockSessionManager.doctorsNameDocumentID) { result in
+        giniHealth.getAllExtractions(documentId: MockSessionManager.doctorsNameDocumentID) { result in
             switch result {
             case .success(let extractions):
                 receivedExtractions = extractions
@@ -482,7 +482,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Extraction failure")
         var receivedExtractions: [GiniHealthSDK.Extraction]?
-        giniHealth.getAllExtractions(docId: MockSessionManager.failurePayableDocumentID) { result in
+        giniHealth.getAllExtractions(documentId: MockSessionManager.failurePayableDocumentID) { result in
             switch result {
             case .success(let extractions):
                 receivedExtractions = extractions
@@ -504,7 +504,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Getting doctor name extractions")
         var receivedDoctorExtraction: GiniHealthSDK.Extraction?
-        giniHealth.getAllExtractions(docId: MockSessionManager.doctorsNameDocumentID) { result in
+        giniHealth.getAllExtractions(documentId: MockSessionManager.doctorsNameDocumentID) { result in
             switch result {
             case .success(let extractions):
                 receivedDoctorExtraction = extractions.first(where: { $0.name == ExtractionType.doctorName.rawValue })
