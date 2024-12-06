@@ -549,9 +549,6 @@ public final class GiniBankConfiguration: NSObject {
                         amountToPay: ExtractionAmount) {
         guard let documentService = documentService else { return }
 
-        let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"
-        let amountToPayString = "\(formattedPriceValue)" + ":" + amountToPay.currency.rawValue
-
         let paymentRecipientExtraction = Extraction(box: nil,
                                                     candidates: nil,
                                                     entity: "companyname",
@@ -580,7 +577,7 @@ public final class GiniBankConfiguration: NSObject {
         let amountExtraction = Extraction(box: nil,
                                           candidates: nil,
                                           entity: "amount",
-                                          value: amountToPayString,
+                                          value: amountToPay.formattedString(),
                                           name: "amountToPay")
 
         let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
@@ -627,15 +624,13 @@ public final class GiniBankConfiguration: NSObject {
                                     iban: String,
                                     bic: String,
                                     amountToPay: ExtractionAmount) {
-        let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"
-        let amountToPayString = "\(formattedPriceValue)" + ":" + amountToPay.currency.rawValue
         let updatedExtractions = createFeedbackBasicExtractions(paymentRecipient: paymentRecipient,
                                                                 paymentReference: paymentReference,
                                                                 paymentPurpose: paymentPurpose,
                                                                 iban: iban,
                                                                 bic: bic,
-                                                                amountToPayString: amountToPayString)
-        sendFeedback(updatedExtractions: updatedExtractions)
+                                                                amountToPayString: amountToPay.formattedString())
+        sendTransferSummary(updatedExtractions: updatedExtractions)
     }
 
     private func createFeedbackBasicExtractions(paymentRecipient: String,
@@ -682,7 +677,7 @@ public final class GiniBankConfiguration: NSObject {
                 amountExtraction]
     }
 
-    private func sendFeedback(updatedExtractions: [Extraction]) {
+    private func sendTransferSummary(updatedExtractions: [Extraction]) {
         var updatedCompoundExtractions: [String: [[Extraction]]]? = [:]
         updatedCompoundExtractions = addFeedbackLineItemsIfAvailable(to: updatedCompoundExtractions)
         documentService?.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: updatedCompoundExtractions)
@@ -693,10 +688,10 @@ public final class GiniBankConfiguration: NSObject {
             $0.name == "skontoAmountToPayCalculated" && $0.value == amountToPayString
         }) else { return }
 
-        sendSkontoFeedback(updatedExtractions: [amountExtraction], amountToPayString: amountToPayString, retryCount: 3)
+        sendSkontoTransferSummary(updatedExtractions: [amountExtraction], amountToPayString: amountToPayString, retryCount: 3)
     }
 
-    private func sendSkontoFeedback(updatedExtractions: [Extraction], amountToPayString: String, retryCount: Int) {
+    private func sendSkontoTransferSummary(updatedExtractions: [Extraction], amountToPayString: String, retryCount: Int) {
         var updatedCompoundExtractions = addFeedbackSkontoDiscountsIfAvailable(extractions: updatedExtractions,
                                                                                amountToPayString: amountToPayString)
         updatedCompoundExtractions = addFeedbackLineItemsIfAvailable(to: updatedCompoundExtractions)
