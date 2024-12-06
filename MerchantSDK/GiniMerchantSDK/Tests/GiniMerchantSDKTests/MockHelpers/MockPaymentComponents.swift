@@ -7,6 +7,7 @@
 
 import UIKit
 @testable import GiniMerchantSDK
+@testable import GiniInternalPaymentSDK
 @testable import GiniHealthAPILibrary
 
 class MockPaymentComponents: PaymentComponentsProtocol {
@@ -63,25 +64,41 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         }
     }
     
+
     func paymentView(documentId: String?) -> UIView {
-        let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniMerchantConfiguration: giniMerchantConfiguration)
+        let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider?.toHealthPaymentProvider(),
+                                                  primaryButtonConfiguration: giniMerchant.primaryButtonConfiguration,
+                                                  secondaryButtonConfiguration: giniMerchant.secondaryButtonConfiguration,
+                                                  configuration: giniMerchant.paymentComponentsConfiguration,
+                                                  strings: giniMerchant.paymentComponentsStrings,
+                                                  poweredByGiniConfiguration: giniMerchant.poweredByGiniConfiguration,
+                                                  poweredByGiniStrings: giniMerchant.poweredByGiniStrings,
+                                                  moreInformationConfiguration: giniMerchant.moreInformationConfiguration,
+                                                  moreInformationStrings: giniMerchant.moreInformationStrings, 
+                                                  minimumButtonsHeight: giniMerchant.paymentComponentButtonsHeight, 
+                                                  paymentComponentConfiguration: giniMerchant.paymentComponentConfiguration)
         viewModel.documentId = documentId
-        let view = PaymentComponentView()
-        view.viewModel = viewModel
+        let view = PaymentComponentView(viewModel: viewModel)
         return view
     }
     
     func bankSelectionBottomSheet() -> UIViewController {
-        let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
-                                                                   selectedPaymentProvider: selectedPaymentProvider)
-        let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel)
+        let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders.map { $0.toHealthPaymentProvider() },
+                                                                   selectedPaymentProvider: selectedPaymentProvider?.toHealthPaymentProvider(),
+                                                                   configuration: giniMerchant.bankSelectionConfiguration,
+                                                                   strings: giniMerchant.banksBottomStrings,
+                                                                   poweredByGiniConfiguration: giniMerchant.poweredByGiniConfiguration,
+                                                                   poweredByGiniStrings: giniMerchant.poweredByGiniStrings,
+                                                                   moreInformationConfiguration: giniMerchant.moreInformationConfiguration,
+                                                                   moreInformationStrings: giniMerchant.moreInformationStrings)
+        let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: giniMerchant.bottomSheetConfiguration)
         return paymentProvidersBottomView
     }
     
-    func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: GiniMerchantSDK.PaymentInfo?, trackingDelegate: (any GiniMerchantSDK.GiniMerchantTrackingDelegate)?, completion: @escaping (UIViewController?, GiniMerchantSDK.GiniMerchantError?) -> Void) {
+    func loadPaymentReviewScreenFor(documentID: String?, paymentInfo: PaymentInfo?, trackingDelegate: (any GiniMerchantSDK.GiniMerchantTrackingDelegate)?, completion: @escaping (UIViewController?, GiniMerchantSDK.GiniMerchantError?) -> Void) {
         switch documentID {
         case MockSessionManager.payableDocumentID:
-            completion(PaymentReviewViewController(), nil)
+            completion(UIViewController(), nil)
         case MockSessionManager.missingDocumentID:
             completion(nil, .apiError(GiniError.decorator(.noResponse)))
         default:
@@ -90,14 +107,18 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     }
     
     func paymentInfoViewController() -> UIViewController {
-        let paymentInfoViewController = PaymentInfoViewController()
-        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders)
-        paymentInfoViewController.viewModel = paymentInfoViewModel
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders.map { $0.toHealthPaymentProvider() },
+                                                        configuration: giniMerchant.paymentInfoConfiguration,
+                                                        strings: giniMerchant.paymentInfoStrings,
+                                                        poweredByGiniConfiguration: giniMerchant.poweredByGiniConfiguration,
+                                                        poweredByGiniStrings: giniMerchant.poweredByGiniStrings)
+        let paymentInfoViewController = PaymentInfoViewController(viewModel: paymentInfoViewModel)
         return paymentInfoViewController
     }
-
+	
     func paymentViewBottomSheet(documentID: String?) -> UIViewController {
-        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID))
+        let paymentComponentBottomView = PaymentComponentBottomView(paymentView: paymentView(documentId: documentID),
+                                                                    bottomSheetConfiguration: giniMerchant.bottomSheetConfiguration)
         return paymentComponentBottomView
     }
 }

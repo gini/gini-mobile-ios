@@ -6,45 +6,50 @@
 
 
 import UIKit
-import GiniHealthAPILibrary
 import GiniCaptureSDK
 import GiniHealthSDK
+import GiniUtilites
 
 struct DocumentWithExtractions: Codable {
-    var documentID: String
+    var documentId: String
     var amountToPay: String?
     var paymentDueDate: String?
     var recipient: String?
     var isPayable: Bool?
     var hasMultipleDocuments: Bool?
     var doctorName: String?
+    var iban: String?
+    var purpose: String?
 
-    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
-        self.documentID = documentID
+    init(documentId: String, extractionResult: GiniHealthSDK.ExtractionResult) {
+        self.documentId = documentId
         self.amountToPay = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.amountToPay.rawValue })?.value
         self.paymentDueDate = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentDueDate.rawValue })?.value
         self.recipient = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.paymentRecipient.rawValue })?.value
         self.isPayable = extractionResult.extractions.first(where: { $0.name == ExtractionType.paymentState.rawValue })?.value == PaymentState.payable.rawValue
         self.hasMultipleDocuments = extractionResult.extractions.first(where: { $0.name == ExtractionType.containsMultipleDocs.rawValue })?.value == true.description
         self.doctorName = extractionResult.extractions.first(where: { $0.name == ExtractionType.doctorName.rawValue })?.value
+        self.iban = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.iban.rawValue })?.value
+        self.purpose = extractionResult.payment?.first?.first(where: { $0.name == ExtractionType.paymentPurpose.rawValue })?.value
     }
 }
 
 final class InvoicesListViewModel {
     
     private let coordinator: InvoicesListCoordinator
-    private var documentService: GiniHealthAPILibrary.DefaultDocumentService
+    private var documentService: GiniHealthSDK.DefaultDocumentService
 
     private let hardcodedInvoicesController: HardcodedInvoicesControllerProtocol
-    var paymentComponentsController: PaymentComponentsController
+    var health: GiniHealth
+    private let giniHealthConfiguration = GiniHealthConfiguration.shared
 
     var invoices: [DocumentWithExtractions]
 
-    let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
-    let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
-    let uploadInvoicesText = NSLocalizedString("giniHealthSDKExample.uploadInvoices.button.title", comment: "")
-    let cancelText = NSLocalizedString("giniHealthSDKExample.cancel.button.title", comment: "")
-    let errorTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.error", comment: "")
+    let noInvoicesText = NSLocalizedString("gini.health.example.invoicesList.missingInvoices.text", comment: "")
+    let titleText = NSLocalizedString("gini.health.example.invoicesList.title", comment: "")
+    let uploadInvoicesText = NSLocalizedString("gini.health.example.uploadInvoices.button.title", comment: "")
+    let cancelText = NSLocalizedString("gini.health.example.cancel.button.title", comment: "")
+    let errorTitleText = NSLocalizedString("gini.health.example.invoicesList.error", comment: "")
 
     let backgroundColor: UIColor = GiniColor(light: .white, 
                                              dark: .black).uiColor()
@@ -56,42 +61,36 @@ final class InvoicesListViewModel {
 
     let dispatchGroup = DispatchGroup()
     var shouldRefetchExtractions = false
-    var documentIDToRefetch: String?
+    var documentIdToRefetch: String?
 
     init(coordinator: InvoicesListCoordinator,
          invoices: [DocumentWithExtractions]? = nil,
-         documentService: GiniHealthAPILibrary.DefaultDocumentService,
+         documentService: GiniHealthSDK.DefaultDocumentService,
          hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
-         paymentComponentsController: PaymentComponentsController) {
+         health: GiniHealth) {
         self.coordinator = coordinator
         self.hardcodedInvoicesController = hardcodedInvoicesController
         self.invoices = invoices ?? hardcodedInvoicesController.getInvoicesWithExtractions()
         self.documentService = documentService
-        self.paymentComponentsController = paymentComponentsController
-        self.paymentComponentsController.delegate = self
-        self.paymentComponentsController.viewDelegate = self
-        self.paymentComponentsController.bottomViewDelegate = self
-    }
-    
-    func viewDidLoad() {
-        paymentComponentsController.loadPaymentProviders()
+        self.health = health
+        self.health.paymentDelegate = self
     }
     
     func refetchExtractions() {
         guard shouldRefetchExtractions else { return }
-        guard let documentIDToRefetch else { return }
+        guard let documentIdToRefetch else { return }
         DispatchQueue.main.async {
             self.coordinator.invoicesListViewController?.showActivityIndicator()
         }
-        self.documentService.fetchDocument(with: documentIDToRefetch) { [weak self] result in
+        self.documentService.fetchDocument(with: documentIdToRefetch) { [weak self] result in
             switch result {
             case .success(let document):
                 self?.documentService.extractions(for: document, cancellationToken: CancellationToken()) { resultExtractions in
                     switch resultExtractions {
                     case .success(let extractions):
                         self?.shouldRefetchExtractions = false
-                        self?.documentIDToRefetch = nil
-                        self?.hardcodedInvoicesController.updateDocumentExtractions(documentID: document.id, extractions: extractions)
+                        self?.documentIdToRefetch = nil
+                        self?.hardcodedInvoicesController.updateDocumentExtractions(documentId: document.id, extractions: extractions)
                         self?.invoices = self?.hardcodedInvoicesController.getInvoicesWithExtractions() ?? []
                         DispatchQueue.main.async {
                             self?.coordinator.invoicesListViewController?.hideActivityIndicator()
@@ -124,6 +123,7 @@ final class InvoicesListViewModel {
         if !errors.isEmpty {
             let uniqueErrorMessages = Array(Set(errors))
             DispatchQueue.main.async {
+                self.coordinator.invoicesListViewController.hideActivityIndicator()
                 self.coordinator.invoicesListViewController.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
             }
             errors = []
@@ -152,22 +152,22 @@ final class InvoicesListViewModel {
                                                 metadata: nil) { [weak self] result in
                 switch result {
                 case .success(let createdDocument):
-                    Log("Successfully created document with id: \(createdDocument.id)", event: .success)
+                    GiniUtilites.Log("Successfully created document with id: \(createdDocument.id)", event: .success)
                     self?.documentService.extractions(for: createdDocument,
                                                       cancellationToken: CancellationToken()) { [weak self] result in
                         switch result {
                         case let .success(extractionResult):
-                            Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
-                            self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id,
+                            GiniUtilites.Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
+                            self?.invoices.append(DocumentWithExtractions(documentId: createdDocument.id,
                                                                           extractionResult: extractionResult))
                         case let .failure(error):
-                            Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))", event: .error)
+                            GiniUtilites.Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))", event: .error)
                             self?.errors.append(error.message)
                         }
                         self?.dispatchGroup.leave()
                     }
                 case .failure(let error):
-                    Log("Document creation failed: \(String(describing: error))", event: .error)
+                    GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
                     self?.errors.append(error.message)
                     self?.dispatchGroup.leave()
                 }
@@ -182,9 +182,9 @@ final class InvoicesListViewModel {
     }
 
     private func checkDocumentIsPayable(documentID: String) {
-        if let document = invoices.first(where: { $0.documentID == documentID }) {
+        if let document = invoices.first(where: { $0.documentId == documentID }) {
             if !(document.isPayable ?? false) {
-                errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.invoice.not.payable", comment: ""))")
+                errors.append("\(NSLocalizedStringPreferredFormat("gini.health.example.error.invoice.not.payable", comment: ""))")
                 showErrorsIfAny()
             }
         }
@@ -192,9 +192,9 @@ final class InvoicesListViewModel {
 
     @discardableResult
     private func checkDocumentForMultipleInvoices(documentID: String) -> Bool {
-        if let document = invoices.first(where: { $0.documentID == documentID }) {
+        if let document = invoices.first(where: { $0.documentId == documentID }) {
             if document.hasMultipleDocuments ?? false {
-                errors.append("\(NSLocalizedStringPreferredFormat("giniHealthSDKExample.error.contains.multiple.invoices", comment: ""))")
+                errors.append("\(NSLocalizedStringPreferredFormat("gini.health.example.error.contains.multiple.invoices", comment: ""))")
                 showErrorsIfAny()
                 return true
             }
@@ -203,45 +203,24 @@ final class InvoicesListViewModel {
     }
 }
 
-extension InvoicesListViewModel: PaymentComponentViewProtocol {
-
-    func didTapOnMoreInformation(documentId: String?) {
-        Log("Tapped on More Information", event: .success)
+extension InvoicesListViewModel {
+    func didTapOnOpenFlow(documentId: String?) {
+        documentIdToRefetch = documentId
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
-        let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
-        if let presentedViewController = self.coordinator.invoicesListViewController.presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
-            }
-        } else {
-            self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
-        }
-    }
-    
-    func didTapOnBankPicker(documentId: String?) {
-        guard let documentId else { return }
-        guard !checkDocumentForMultipleInvoices(documentID: documentId) else { return }
-        Log("Tapped on Bank Picker on :\(documentId)", event: .success)
-        let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
-        bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
-        self.coordinator.invoicesListViewController.present(bankSelectionBottomSheet, animated: false)
+        health.startPaymentFlow(documentId: documentId, paymentInfo: obtainPaymentInfo(for: documentId), navigationController: self.coordinator.invoicesListNavigationController, trackingDelegate: self)
     }
 
-    func didTapOnPayInvoice(documentId: String?) {
-        guard let documentId else { return }
-        guard !checkDocumentForMultipleInvoices(documentID: documentId) else { return }
-        Log("Tapped on Pay Invoice on :\(documentId)", event: .success)
-        documentIDToRefetch = documentId
-        paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
-            if let error {
-                self?.errors.append(error.localizedDescription)
-                self?.showErrorsIfAny()
-            } else if let viewController {
-                viewController.modalTransitionStyle = .coverVertical
-                viewController.modalPresentationStyle = .overCurrentContext
-                self?.coordinator.invoicesListViewController.present(viewController, animated: true)
-            }
+    private func obtainPaymentInfo(for documentId: String?) -> PaymentInfo? {
+        guard let index = invoices.firstIndex(where: { $0.documentId == documentId }) else {
+            return nil
         }
+        return PaymentInfo(recipient: invoices[index].recipient ?? "",
+                           iban: invoices[index].iban ?? "",
+                           bic: "",
+                           amount: invoices[index].amountToPay ?? "",
+                           purpose: invoices[index].purpose ?? "",
+                           paymentUniversalLink: health.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
+                           paymentProviderId: health.paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
 }
 
@@ -263,32 +242,14 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
     }
 }
 
-extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
-    func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
-        DispatchQueue.main.async {
-            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
-            self.coordinator.invoicesListViewController.reloadTableView()
-        }
-    }
-    
-    func didTapOnClose() {
-        DispatchQueue.main.async {
-            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
-        }
-    }
-}
-
 extension InvoicesListViewModel: GiniHealthTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
         switch event.type {
         case .onToTheBankButtonClicked:
             self.shouldRefetchExtractions = true
-            Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
-        case .onCloseButtonClicked:
-            refetchExtractions()
-            Log("Close screen was triggered", event: .success)
+            GiniUtilites.Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
         case .onCloseKeyboardButtonClicked:
-            Log("Close keyboard was triggered", event: .success)
+            GiniUtilites.Log("Close keyboard was triggered", event: .success)
         }
     }
 }

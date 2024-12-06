@@ -7,6 +7,7 @@
 
 import Foundation
 import GiniHealthAPILibrary
+import GiniInternalPaymentSDK
 
 //MARK: - Mapping Extraction
 extension Extraction {
@@ -74,12 +75,34 @@ extension PaymentProvider {
                   gpcSupportedPlatforms: gpcSupportedPlatforms,
                   openWithSupportedPlatforms: openWithPlatforms)
     }
+
+    func toHealthPaymentProvider() -> GiniHealthAPILibrary.PaymentProvider {
+        let gpcSupportedPlatforms = self.gpcSupportedPlatforms.compactMap { GiniHealthAPILibrary.PlatformSupported(rawValue: $0.rawValue) }
+        let openWithPlatforms = openWithSupportedPlatforms.compactMap { GiniHealthAPILibrary.PlatformSupported(rawValue: $0.rawValue) }
+
+        return GiniHealthAPILibrary.PaymentProvider(id: id,
+                                                    name: name,
+                                                    appSchemeIOS: appSchemeIOS,
+                                                    minAppVersion: minAppVersion?.healthMinAppVersions,
+                                                    colors: colors.toHealthProviderColors(),
+                                                    iconData: iconData,
+                                                    appStoreUrlIOS: appStoreUrlIOS,
+                                                    universalLinkIOS: universalLinkIOS,
+                                                    index: index,
+                                                    gpcSupportedPlatforms: gpcSupportedPlatforms,
+                                                    openWithSupportedPlatforms:openWithPlatforms)
+    }
 }
 
 extension ProviderColors {
     init(healthProviderColors: GiniHealthAPILibrary.ProviderColors) {
         self.init(background: healthProviderColors.background,
                   text: healthProviderColors.text)
+    }
+
+    func toHealthProviderColors() -> GiniHealthAPILibrary.ProviderColors {
+        return GiniHealthAPILibrary.ProviderColors(background: background,
+                                                   text: text)
     }
 }
 
@@ -112,6 +135,7 @@ extension Document {
                                       id: id,
                                       name: name,
                                       links: GiniHealthAPILibrary.Document.Links(giniAPIDocumentURL: links.extractions),
+                                      pageCount: pageCount,
                                       sourceClassification: GiniHealthAPILibrary.Document.SourceClassification(rawValue: sourceClassification.rawValue) ?? .scanned,
                                       expirationDate: expirationDate)
     }
@@ -204,5 +228,19 @@ extension LogLevel {
         case .none:
             return .none
         }
+    }
+}
+
+//MARK: - PaymentProvider
+
+extension PaymentInfo {
+    init(paymentConponentsInfo: GiniInternalPaymentSDK.PaymentInfo) {
+        self.init(recipient: paymentConponentsInfo.recipient,
+                  iban: paymentConponentsInfo.iban,
+                  bic: paymentConponentsInfo.bic,
+                  amount: paymentConponentsInfo.amount, 
+                  purpose: paymentConponentsInfo.purpose,
+                  paymentUniversalLink: paymentConponentsInfo.paymentUniversalLink,
+                  paymentProviderId: paymentConponentsInfo.paymentProviderId)
     }
 }

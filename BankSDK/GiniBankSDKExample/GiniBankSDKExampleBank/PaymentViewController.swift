@@ -332,7 +332,7 @@ extension PaymentViewController {
             errorLabel = recipientErrorLabel
         case .ibanFieldTag:
             errorLabel = ibanErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("ginipaybusiness.errors.failed.iban.validation.check",
+            errorMessage = NSLocalizedStringPreferredFormat("ginipaybank.errors.failed.iban.validation.check",
                                                             comment: "iban failed validation check")
         case .amountFieldTag:
             errorLabel = amountErrorLabel

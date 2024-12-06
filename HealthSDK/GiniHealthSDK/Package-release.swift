@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "GiniHealthSDK",
     defaultLocalization: "en",
-    platforms: [.iOS(.v12)],
+    platforms: [.iOS(.v13)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -16,7 +16,9 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(name: "GiniHealthAPILibrary", url: "https://github.com/gini/health-api-library-ios.git", .exact("4.3.1")),
+        .package(name: "GiniHealthAPILibrary", url: "https://github.com/gini/health-api-library-ios.git", .exact("5.0.0")),
+        .package(name: "GiniInternalPaymentSDK", url: "https://github.com/gini/internal-payment-sdk-ios", .exact("1.0.0")),
+        .package(name: "GiniUtilites", url: "https://github.com/gini/utilites-ios.git", .exact("1.1.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -24,7 +26,7 @@ let package = Package(
         
         .target(
             name: "GiniHealthSDK",
-            dependencies: ["GiniHealthAPILibrary"]),
+            dependencies: ["GiniHealthAPILibrary", "GiniInternalPaymentSDK", "GiniUtilites"]),
         .testTarget(
             name: "GiniHealthSDKTests",
             dependencies: ["GiniHealthSDK"]),

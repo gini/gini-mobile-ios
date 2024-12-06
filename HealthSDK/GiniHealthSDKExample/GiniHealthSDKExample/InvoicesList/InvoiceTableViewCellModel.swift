@@ -6,18 +6,18 @@
 
 
 import Foundation
-import GiniHealthAPILibrary
 import GiniHealthSDK
+import GiniUtilites
 import UIKit
 
 final class InvoiceTableViewCellModel {
     private var invoice: DocumentWithExtractions
-    private var paymentComponentsController: PaymentComponentsController
+    private var health: GiniHealth
 
     init(invoice: DocumentWithExtractions,
-         paymentComponentsController: PaymentComponentsController) {
+         health: GiniHealth) {
         self.invoice = invoice
-        self.paymentComponentsController = paymentComponentsController
+        self.health = health
     }
     
     var recipientNameText: String {
@@ -32,7 +32,14 @@ final class InvoiceTableViewCellModel {
     }
     
     var dueDateText: String {
-        [invoice.paymentDueDate ?? "", invoice.doctorName ?? ""].joined(separator: ", ")
+        var textToReturn: [String] = []
+        if let paymentDueDate = invoice.paymentDueDate {
+            textToReturn.append(paymentDueDate)
+        }
+        if let doctorName = invoice.doctorName {
+            textToReturn.append(doctorName)
+        }
+        return textToReturn.joined(separator: ", ")
     }
     
     var isDueDataLabelHidden: Bool {
@@ -46,8 +53,12 @@ final class InvoiceTableViewCellModel {
     var shouldShowPaymentComponent: Bool {
         invoice.isPayable ?? false
     }
-    
-    var paymentComponentView: UIView {
-        return paymentComponentsController.paymentView(documentId: invoice.documentID)
+
+    var bankLogosToShow: [Data]? {
+        health.fetchBankLogos().logos
+    }
+
+    var additionalBankNumberToShow: Int? {
+        health.fetchBankLogos().additionalBankCount
     }
 }

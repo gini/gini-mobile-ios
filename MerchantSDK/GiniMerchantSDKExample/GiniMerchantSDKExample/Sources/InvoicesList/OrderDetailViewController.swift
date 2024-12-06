@@ -6,8 +6,9 @@
 
 
 import UIKit
-import GiniMerchantSDK
+import GiniInternalPaymentSDK
 import GiniUtilites
+import GiniMerchantSDK
 
 enum Fields: String, CaseIterable {
     case recipient = "example.order.detail.Recipient"
@@ -141,7 +142,7 @@ final class OrderDetailViewController: UIViewController {
     }
 }
 
-extension OrderDetailViewController: PaymentComponentViewProtocol {
+extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentViewProtocol {
     func didTapOnMoreInformation(documentId: String?) {
         print("✅ Tapped on More Information")
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
@@ -176,13 +177,10 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
             }
         } else {
             if paymentComponentsController.supportsOpenWith() {
-                if paymentComponentsController.shouldShowOnboardingScreenFor() {
-                    let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet()
-                    shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
-                    self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
-                } else {
-                    paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(), viewController: self)
-                }
+                // TODO: Fix share onboarding flow in MerchantSDK
+                let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet(qrCodeData: Data())
+                shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
+                self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
             } else if paymentComponentsController.supportsGPC() {
                 if paymentComponentsController.canOpenPaymentProviderApp() {
                     paymentComponentsController.createPaymentRequest(paymentInfo: obtainPaymentInfo()) { [weak self] paymentRequestID, error in
@@ -220,7 +218,7 @@ extension OrderDetailViewController: PaymentComponentViewProtocol {
         }
     }
 
-    private func obtainPaymentInfo() -> PaymentInfo {
+    private func obtainPaymentInfo() -> GiniInternalPaymentSDK.PaymentInfo {
         saveTextFieldData()
 
         return PaymentInfo(recipient: order.recipient,
@@ -278,6 +276,10 @@ extension OrderDetailViewController: GiniMerchantTrackingDelegate {
 }
 
 extension OrderDetailViewController: PaymentProvidersBottomViewProtocol {
+    func didTapOnMoreInformation() {
+        didTapOnMoreInformation(documentId: nil)
+    }
+
     func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
         DispatchQueue.main.async {
             self.presentedViewController?.dismiss(animated: true, completion: {

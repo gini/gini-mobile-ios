@@ -10,6 +10,8 @@ import UIKit
 import GiniCaptureSDK
 import GiniHealthAPILibrary
 import GiniHealthSDK
+import GiniInternalPaymentSDK
+import GiniUtilites
 
 final class AppCoordinator: Coordinator {
     
@@ -23,7 +25,7 @@ final class AppCoordinator: Coordinator {
         let selectAPIViewController = SelectAPIViewController()
         selectAPIViewController.delegate = self
         selectAPIViewController.debugMenuPresenter = self
-        selectAPIViewController.clientId = self.client.id
+        selectAPIViewController.clientId = clientID
         return selectAPIViewController
     }()
     
@@ -46,22 +48,19 @@ final class AppCoordinator: Coordinator {
         }
         return giniConfiguration
     }()
-    
-    private lazy var client: GiniHealthAPILibrary.Client = CredentialsManager.fetchClientFromBundle()
-    private lazy var apiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
-    private lazy var health = GiniHealth(with: apiLib)
-    private lazy var paymentComponentsController = PaymentComponentsController(giniHealth: health)
+
+    private lazy var health = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain)
+
     private lazy var giniHealthConfiguration: GiniHealthConfiguration = {
         let configuration = GiniHealthConfiguration()
         // Show the close button to dismiss the payment review screen
-        configuration.showPaymentReviewCloseButton = true
         configuration.paymentReviewStatusBarStyle = .lightContent
         return configuration
     }()
     
     var isBrandedPaymentComponent = true
 
-    private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
+    private var documentMetadata: GiniHealthSDK.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
     
@@ -69,16 +68,13 @@ final class AppCoordinator: Coordinator {
         self.window = window
         print("------------------------------------\n\n",
               "📸 Gini Capture SDK for iOS (\(GiniCapture.versionString))\n\n",
-              "      - Client id:  \(client.id)\n",
-              "      - Client email domain:  \(client.domain)",
+              "      - Client id:  \(clientID)\n",
+              "      - Client email domain:  \(clientDomain)",
               "\n\n------------------------------------\n")
     }
     
     func start() {
         self.showSelectAPIScreen()
-        paymentComponentsController.delegate = self
-        paymentComponentsController.loadPaymentProviders()
-//        try! apiLib.removeStoredCredentials()
     }
     
     func processExternalDocument(withUrl url: URL, sourceApplication: String?) {
@@ -108,10 +104,46 @@ final class AppCoordinator: Coordinator {
         }
     }
     
-    func processBankUrl() {
+    func processBankUrl(url: URL) {
         rootViewController.dismiss(animated: true)
-        showReturnMessage()
         
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
+        
+        if let queryItems = components.queryItems {
+            if let paymentRequestId = queryItems.first(where: { $0.name == "paymentRequestId" })?.value {
+                selectAPIViewController.showActivityIndicator()
+                health.getPaymentRequest(by: paymentRequestId) { [weak self] result in
+                    DispatchQueue.main.async {
+                        self?.selectAPIViewController.hideActivityIndicator()
+                    }
+                    switch result {
+                    case .success(let paymentRequest):
+                        GiniUtilites.Log("Successfully obtained payment request", event: .success)
+                        DispatchQueue.main.async {
+                            self?.showReturnMessage(message: self?.messageFor(status: PaymentStatus(rawValue: paymentRequest.status)) ?? "")
+                        }
+                    case .failure(let error):
+                        GiniUtilites.Log("Failed to retrieve payment request: \(error.localizedDescription)", event: .error)
+                    }
+                }
+            }
+        }
+    }
+    
+    private enum PaymentStatus: String {
+        case paid
+        case paidAdjusted = "paid_adjusted"
+    }
+
+    private func messageFor(status: PaymentStatus?) -> String {
+        switch status {
+        case .paid:
+            return "Payment was successful 🎉"
+        case .paidAdjusted:
+            return "Payment was successful 🎉 with adjusted amount"
+        default:
+            return "Payment was unsuccessful 😢"
+        }
     }
     
     fileprivate func showSelectAPIScreen() {
@@ -125,27 +157,28 @@ final class AppCoordinator: Coordinator {
 
         let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
                                                         importedDocuments: pages?.map { $0.document },
-                                                        client: GiniHealthAPILibrary.Client(id: self.client.id,
-                                                                                            secret: self.client.secret,
-                                                                                            domain: self.client.domain),
+                                                        client: GiniHealthAPILibrary.Client(id: clientID,
+                                                                                            secret: clientPassword,
+                                                                                            domain: clientDomain),
                                                                                             documentMetadata: metadata,
                                                         hardcodedInvoicesController: HardcodedInvoicesController(),
-                                                        paymentComponentController: paymentComponentsController)
+                                                        paymentComponentController: health.paymentComponentsController)
         
         screenAPICoordinator.delegate = self
         
         health.delegate = self
         screenAPICoordinator.giniHealth = health
         
+        let apiLib = health.giniApiLib
         screenAPICoordinator.start(healthAPI: apiLib)
         add(childCoordinator: screenAPICoordinator)
         
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
     
-    private var testDocument: GiniHealthAPILibrary.Document?
-    private var testDocumentExtractions: [GiniHealthAPILibrary.Extraction]?
-    
+    private var testDocument: GiniHealthSDK.Document?
+    private var testDocumentExtractions: [GiniHealthSDK.Extraction]?
+
     fileprivate func showPaymentReviewWithTestDocument() {
         health.delegate = self
         health.setConfiguration(giniHealthConfiguration)
@@ -159,16 +192,16 @@ final class AppCoordinator: Coordinator {
                     self.health.documentService.extractions(for: data.document, cancellationToken: CancellationToken()) { [weak self] result in
                         switch result {
                         case let .success(extractionResult):
-                            print("✅Successfully fetched extractions for id: \(document.id)")
-                            let invoice = DocumentWithExtractions(documentID: document.id,
+                            GiniUtilites.Log("Successfully fetched extractions for id: \(document.id)", event: .success)
+                            let invoice = DocumentWithExtractions(documentId: document.id,
                                                                   extractionResult: extractionResult)
                             self?.showInvoicesList(invoices: [invoice])
                         case let .failure(error):
-                            print("❌Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))")
+                            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))", event: .error)
                         }
                     }
                 case .failure(let error):
-                    print("❌ Document data fetching failed: \(String(describing: error))")
+                    GiniUtilites.Log("Document data fetching failed: \(String(describing: error))", event: .error)
                     self.selectAPIViewController.hideActivityIndicator()
                 }
             }
@@ -185,7 +218,7 @@ final class AppCoordinator: Coordinator {
                                                        metadata: nil) { result in
                 switch result {
                 case .success(let createdDocument):
-                    let partialDocInfo = GiniHealthAPILibrary.PartialDocumentInfo(document: createdDocument.links.document)
+                    let partialDocInfo = GiniHealthSDK.PartialDocumentInfo(document: createdDocument.links.document)
                     self.health.documentService.createDocument(fileName: nil,
                                                                docType: nil,
                                                                type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
@@ -201,26 +234,26 @@ final class AppCoordinator: Coordinator {
                                     self?.health.documentService.extractions(for: compositeDocument, cancellationToken: CancellationToken()) { [weak self] result in
                                         switch result {
                                         case let .success(extractionResult):
-                                            print("✅Successfully fetched extractions for id: \(compositeDocument.id)")
-                                            let invoice = DocumentWithExtractions(documentID: compositeDocument.id,
+                                            GiniUtilites.Log("Successfully fetched extractions for id: \(compositeDocument.id)", event: .success)
+                                            let invoice = DocumentWithExtractions(documentId: compositeDocument.id,
                                                                                   extractionResult: extractionResult)
                                             self?.showInvoicesList(invoices: [invoice])
                                         case let .failure(error):
-                                            print("❌Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))")
+                                            GiniUtilites.Log("Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))", event: .error)
                                         }
                                     }
                                 case .failure(let error):
-                                    print("❌ Setting document for review failed: \(String(describing: error))")
+                                    GiniUtilites.Log("Setting document for review failed: \(String(describing: error))", event: .error)
                                     self?.selectAPIViewController.hideActivityIndicator()
                                 }
                             }
                         case .failure(let error):
-                            print("❌ Document creation failed: \(String(describing: error))")
+                            GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
                             self?.selectAPIViewController.hideActivityIndicator()
                         }
                     }
                 case .failure(let error):
-                    print("❌ Document creation failed: \(String(describing: error))")
+                    GiniUtilites.Log("Document creation failed: \(String(describing: error))", event: .error)
                     self.selectAPIViewController.hideActivityIndicator()
                 }
             }
@@ -252,9 +285,9 @@ final class AppCoordinator: Coordinator {
         rootViewController.present(alertViewController, animated: true)
     }
     
-    fileprivate func showReturnMessage() {
+    fileprivate func showReturnMessage(message: String) {
         let alertViewController = UIAlertController(title: "Congratulations",
-                                                    message: "Payment was successful 🎉",
+                                                    message: message,
                                                     preferredStyle: .alert)
         
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
@@ -275,23 +308,39 @@ final class AppCoordinator: Coordinator {
         DispatchQueue.main.async {
             self.selectAPIViewController.hideActivityIndicator()
         }
-        let configuration = GiniHealthConfiguration()
-        
+
+        giniHealthConfiguration.useInvoiceWithoutDocument = false
         health.setConfiguration(giniHealthConfiguration)
         health.delegate = self
 
         let invoicesListCoordinator = InvoicesListCoordinator()
-        paymentComponentsController = PaymentComponentsController(giniHealth: health)
-        let paymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: isBrandedPaymentComponent)
-        paymentComponentsController.paymentComponentConfiguration = paymentComponentConfiguration
+        health.paymentComponentConfiguration.isPaymentComponentBranded = isBrandedPaymentComponent
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
                                           hardcodedInvoicesController: HardcodedInvoicesController(),
-                                          paymentComponentsController: self.paymentComponentsController,
+                                          health: self.health,
                                           invoices: invoices)
             self.add(childCoordinator: invoicesListCoordinator)
             self.rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
         }
+    }
+
+    fileprivate func showOrdersList(orders: [Order]? = nil) {
+        DispatchQueue.main.async {
+            self.selectAPIViewController.hideActivityIndicator()
+        }
+
+        giniHealthConfiguration.useInvoiceWithoutDocument = true
+        health.setConfiguration(giniHealthConfiguration)
+        health.delegate = self
+        
+        let orderListCoordinator = OrderListCoordinator()
+        orderListCoordinator.start(documentService: health.documentService,
+                                   hardcodedOrdersController: HardcodedOrdersController(),
+                                   health: health,
+                                   orders: orders)
+        add(childCoordinator: orderListCoordinator)
+        rootViewController.present(orderListCoordinator.rootViewController, animated: true)
     }
 }
 
@@ -308,6 +357,8 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
             showPaymentReviewWithTestDocument()
         case .invoicesList:
             showInvoicesList()
+        case .ordersList:
+            showOrdersList()
         }
     }
 }
@@ -332,8 +383,8 @@ extension AppCoordinator: GiniHealthDelegate {
         return true
     }
     
-    func didCreatePaymentRequest(paymentRequestID: String) {
-        print("✅ Created payment request with id \(paymentRequestID)")
+    func didCreatePaymentRequest(paymentRequestId: String) {
+        GiniUtilites.Log("Created payment request with id \(paymentRequestId)", event: .success)
         DispatchQueue.main.async {
             guard let invoicesListCoordinator = self.childCoordinators.first as? InvoicesListCoordinator else {
                 return
@@ -343,44 +394,13 @@ extension AppCoordinator: GiniHealthDelegate {
     }
 }
 
-// MARK: GiniHealthTrackingDelegate
-
-extension AppCoordinator: GiniHealthTrackingDelegate {
-    func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
-        switch event.type {
-        case .onToTheBankButtonClicked:
-            print("📝 To the banking app button was tapped,\(String(describing: event.info))")
-        case .onCloseButtonClicked:
-            print("📝 Close screen was triggered")
-        case .onCloseKeyboardButtonClicked:
-            print("📝 Close keyboard was triggered")
-        }
-    }
-}
-
-// MARK: PaymentComponentControllerDelegate
-
-extension AppCoordinator: PaymentComponentsControllerProtocol {
-    func isLoadingStateChanged(isLoading: Bool) {
-        if isLoading {
-            selectAPIViewController.showActivityIndicator()
-        } else {
-            selectAPIViewController.hideActivityIndicator()
-        }
-    }
-    
-    func didFetchedPaymentProviders() {
-        //
-    }
-}
-
 //MARK: - DebugMenuPresenterDelegate
 
 extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
-        let debugMenuViewController = DebugMenuViewController(giniHealth: health,
-                                                              giniHealthConfiguration: giniHealthConfiguration,
-                                                              isBrandedPaymentComponent: isBrandedPaymentComponent)
+        let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
+                                                              useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
+                                                              paymentComponentConfiguration: health.paymentComponentConfiguration)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -388,7 +408,19 @@ extension AppCoordinator: DebugMenuPresenter {
 
 //MARK: - DebugMenuDelegate
 extension AppCoordinator: DebugMenuDelegate {
-    func didChangeBrandedSwitchValue(isOn: Bool) {
-        isBrandedPaymentComponent = isOn
+    func didChangeSwitchValue(type: SwitchType, isOn: Bool) {
+        switch type {
+        case .showReviewScreen:
+            giniHealthConfiguration.showPaymentReviewScreen = isOn
+        case .showBrandedView:
+            health.paymentComponentConfiguration.isPaymentComponentBranded = isOn
+        case .useBottomPaymentComponent:
+            giniHealthConfiguration.useBottomPaymentComponentView = isOn
+        }
+    }
+
+    func didPickNewLocalization(localization: GiniLocalization) {
+        giniHealthConfiguration.customLocalization = localization
+        health.setConfiguration(giniHealthConfiguration)
     }
 }

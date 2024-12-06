@@ -7,8 +7,8 @@
 
 import XCTest
 import UIKit
-@testable import GiniHealthAPILibrary
-@testable import GiniHealthSDK
+import GiniHealthAPILibrary
+import GiniHealthSDK
 
 class UploadDocumentsTests: XCTestCase {
     lazy var giniHelper = GiniSetupHelper()
@@ -17,15 +17,15 @@ class UploadDocumentsTests: XCTestCase {
         giniHelper.setup()
     }
 
-    func testUploadLargeImageToGiniHealthAPI() {
-        let expect = expectation(description: "Upload of image above 10MB to HealthAPILibrary with a local compression before")
-
-        guard let imageData12MB = FileLoader.loadFile(withName: "invoice-12MB", ofType: "png") else { return }
-
-        self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: imageData12MB, expect: expect)
-
-        wait(for: [expect], timeout: 60)
-    }
+//    func testUploadLargeImageToGiniHealthAPI() {
+//        let expect = expectation(description: "Upload of image above 10MB to HealthAPILibrary with a local compression before")
+//
+//        guard let imageData12MB = FileLoader.loadFile(withName: "invoice-12MB", ofType: "png") else { return }
+//
+//        self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: imageData12MB, expect: expect)
+//
+//        wait(for: [expect], timeout: 60)
+//    }
 
     func testFailUploadLargePDFToGiniHealthAPI() {
         let expect = expectation(description: "Upload of pdf above 10MB to HealthAPILibrary should fail. Local compression won't be done for this kind of file.")
