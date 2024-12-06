@@ -15,137 +15,226 @@ class SkontoTransferSummaryIntegrationTest: BaseIntegrationTest {
     func testSendSkontoTransferSummary() {
         let mockedInvoiceName = "Gini_invoice_example_skonto"
         let expect = expectation(description: "Transfer summary was correctly sent and extractions were updated")
-        let skontoTransferSummaryHandler = SkontoTransferSummaryHandler(testCase: self,
-                                                                        mockedInvoiceResultName: "result_Gini_invoice_example_skonto",
-                                                                        mockedInvoiceResultAfterFeedbackName: "result_Gini_invoice_example_skonto_after_transfer_summary",
-                                                                        expect: expect)
-        uploadAndAnalyzeDocument(fileName: mockedInvoiceName,
-                                 delegate: skontoTransferSummaryHandler)
+        
+        let handler = SkontoTransferSummaryHandler(
+            testCase: self,
+            mockedInvoiceResultName: "result_Gini_invoice_example_skonto",
+            mockedInvoiceResultAfterFeedbackName: "result_Gini_invoice_example_skonto_after_transfer_summary",
+            expect: expect
+        )
+        
+        uploadAndAnalyzeDocument(fileName: mockedInvoiceName, delegate: handler)
         wait(for: [expect], timeout: 60)
     }
+}
+
+class SkontoNotAppliedTransferSummaryIntegrationTest: BaseIntegrationTest {
     
-    class SkontoTransferSummaryHandler: GiniCaptureResultsDelegate {
-        let testCase: SkontoTransferSummaryIntegrationTest
-        let mockedInvoiceResultName: String
-        let mockedInvoiceResultAfterFeedbackName: String
-        let expect: XCTestExpectation
+    func testSendSkontoTransferSummary() {
+        let mockedInvoiceName = "Gini_invoice_example_skonto"
+        let expect = expectation(description: "Transfer summary was correctly sent and extractions were updated")
+        
+        let handler = SkontoNotAppliedTransferSummaryHandler(
+            testCase: self,
+            mockedInvoiceResultName: "result_Gini_invoice_example_skonto",
+            mockedInvoiceResultAfterFeedbackName: "result_Gini_invoice_example_skonto",
+            expect: expect
+        )
+        
+        uploadAndAnalyzeDocument(fileName: mockedInvoiceName, delegate: handler)
+        wait(for: [expect], timeout: 60)
+    }
+}
 
-        init(testCase: SkontoTransferSummaryIntegrationTest,
-             mockedInvoiceResultName: String,
-             mockedInvoiceResultAfterFeedbackName: String,
-             expect: XCTestExpectation) {
-            self.testCase = testCase
-            self.mockedInvoiceResultName = mockedInvoiceResultName
-            self.mockedInvoiceResultAfterFeedbackName = mockedInvoiceResultAfterFeedbackName
-            self.expect = expect
+// MARK: - Base Handler
+
+class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptureResultsDelegate {
+    let testCase: TestCase
+    let mockedInvoiceResultName: String
+    let mockedInvoiceResultAfterFeedbackName: String
+    let expect: XCTestExpectation
+
+    init(testCase: TestCase,
+         mockedInvoiceResultName: String,
+         mockedInvoiceResultAfterFeedbackName: String,
+         expect: XCTestExpectation) {
+        self.testCase = testCase
+        self.mockedInvoiceResultName = mockedInvoiceResultName
+        self.mockedInvoiceResultAfterFeedbackName = mockedInvoiceResultAfterFeedbackName
+        self.expect = expect
+    }
+
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
+        guard let fixtureExtractionsContainer = testCase.loadFixtureExtractionsContainer(from: mockedInvoiceResultName) else {
+            return
         }
 
-        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-            let mockedInvoice = mockedInvoiceResultName
-            // Use the helper method to load the fixture extractions container
-            guard let fixtureExtractionsContainer = testCase.loadFixtureExtractionsContainer(from: mockedInvoice) else {
-                return
-            }
+        testCase.verifyExtractions(result: result, fixtureContainer: fixtureExtractionsContainer)
+        applySkontoAdjustmentsIfNeeded(result: result)
+        sendTransferSummary(result: result)
+        updateAndVerifyTransferSummary(result: result, mockedInvoiceUpdatedResultName: mockedInvoiceResultAfterFeedbackName, expect: expect)
+    }
 
-            // Verify the extractions
-            testCase.verifyExtractions(result: result, fixtureContainer: fixtureExtractionsContainer)
-            
-            guard  let skontoDiscountExtraction = result.skontoDiscounts?.first else {
-                return
-            }
-            let updatedAmountToPayString = "1000.00:EUR"
-            let updatedPercentage = "50.0"
-            result.extractions["amountToPay"]?.value = updatedAmountToPayString
-            let modifiedSkontoExtractions = skontoDiscountExtraction.map { extraction -> Extraction in
-                let modifiedExtraction = extraction
-                switch modifiedExtraction.name {
-                case "skontoAmountToPay", "skontoAmountToPayCalculated":
-                    modifiedExtraction.value = updatedAmountToPayString
-                case "skontoPercentageDiscounted", "skontoPercentageDiscountedCalculated":
-                    modifiedExtraction.value = updatedPercentage
-                default:
-                    break
+    func giniCaptureDidCancelAnalysis() {
+        // not tested
+    }
+
+    func giniCaptureDidEnterManually() {
+        // not tested
+    }
+
+    // MARK: - Methods to override or customize in subclasses if needed
+
+    /// Override this method in subclasses to apply any skonto-related modifications.
+    func applySkontoAdjustmentsIfNeeded(result: AnalysisResult) {
+        // Default: no adjustments
+    }
+
+    /// Override this method in subclasses if the transfer summary should be sent differently.
+    func sendTransferSummary(result: AnalysisResult) {
+        guard let amountToPayString = result.extractions["amountToPay"]?.value else { return }
+        let amountExtraction = createAmountExtraction(value: amountToPayString)
+        GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(
+            amountExtraction: amountExtraction,
+            amountToPayString: amountToPayString
+        )
+    }
+
+    // MARK: - Common logic
+
+    func updateAndVerifyTransferSummary(result: AnalysisResult,
+                                        mockedInvoiceUpdatedResultName: String,
+                                        expect: XCTestExpectation) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
+            guard let self = self else { return }
+            self.testCase.getUpdatedExtractionsFromGiniBankSDK(for: result.document!) { updatedResult in
+                switch updatedResult {
+                case let .success(extractionResult):
+                    self.handleSuccessfulTransferSummary(
+                        extractionResult: extractionResult,
+                        mockedInvoiceUpdatedResultName: mockedInvoiceUpdatedResultName,
+                        expect: expect,
+                        result: result
+                    )
+                case let .failure(error):
+                    XCTFail("Error updating transfer summary: \(error)")
                 }
-                return modifiedExtraction
             }
-            GiniBankConfiguration.shared.skontoDiscounts = [modifiedSkontoExtractions]
-            
-            let amountExtraction = self.createAmountExtraction(value: updatedAmountToPayString)
-            GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(amountExtraction: amountExtraction,
-                                                                       amountToPayString: updatedAmountToPayString)
-            
-            // Call the updateAndVerifyTransferSummary method to handle the transfer summary update
-            self.updateAndVerifyTransferSummary(result: result, mockedInvoiceUpdatedResultName: mockedInvoiceResultAfterFeedbackName, expect: expect)
+        }
+    }
+
+    func handleSuccessfulTransferSummary(extractionResult: ExtractionResult,
+                                         mockedInvoiceUpdatedResultName: String,
+                                         expect: XCTestExpectation,
+                                         result: AnalysisResult) {
+        let extractionsAfterFeedback = extractionResult.extractions
+        guard let fixtureExtractionsAfterFeedbackContainer = testCase.loadFixtureExtractionsContainer(from: mockedInvoiceUpdatedResultName) else {
+            return
         }
 
-        func giniCaptureDidCancelAnalysis() {
-            // nothing to test here
-        }
+        // Validate basic extractions
+        XCTAssertEqual(
+            fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
+            extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value
+        )
+        
+        let paymentRecipientExtraction = extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })
+        testCase.verifyPaymentRecipient(paymentRecipientExtraction)
+        
+        XCTAssertEqual(
+            fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
+            extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value
+        )
+        
+        XCTAssertEqual(
+            fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
+            extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value
+        )
 
-        func giniCaptureDidEnterManually() {
-            // nothing to test heretestCase
+        // Validate skonto discounts if applicable
+        validateSkontoDiscounts(
+            fixtureContainer: fixtureExtractionsAfterFeedbackContainer,
+            extractionResult: extractionResult
+        )
+
+        // Cleanup
+        GiniBankConfiguration.shared.cleanup()
+        XCTAssertNil(GiniBankConfiguration.shared.documentService)
+        
+        expect.fulfill()
+    }
+
+    func validateSkontoDiscounts(fixtureContainer: ExtractionsContainer,
+                                 extractionResult: ExtractionResult) {
+        let fixtureSkontoDiscounts = fixtureContainer.compoundExtractions?.skontoDiscounts?.first
+        if let fixtureSkontoDiscountsAfterFeedback = extractionResult.skontoDiscounts?.first {
+            XCTAssertEqual(
+                fixtureSkontoDiscounts?.first(where: { $0.name == "skontoAmountToPayCalculated" })?.value,
+                fixtureSkontoDiscountsAfterFeedback.first(where: { $0.name == "skontoAmountToPayCalculated" })?.value
+            )
+        }
+    }
+
+    func createAmountExtraction(value: String) -> Extraction {
+        Extraction(box: nil,
+                   candidates: nil,
+                   entity: "amount",
+                   value: value,
+                   name: "amountToPay")
+    }
+}
+
+// MARK: - Specific Handlers
+
+class SkontoTransferSummaryHandler: BaseSkontoTransferSummaryHandler<SkontoTransferSummaryIntegrationTest> {
+
+    override func applySkontoAdjustmentsIfNeeded(result: AnalysisResult) {
+        guard let skontoDiscountExtraction = result.skontoDiscounts?.first else { return }
+
+        let updatedAmountToPayString = "1000.00:EUR"
+        let updatedPercentage = "50.0"
+
+        // Modify result extractions
+        result.extractions["amountToPay"]?.value = updatedAmountToPayString
+        let modifiedSkontoExtractions = skontoDiscountExtraction.map { extraction -> Extraction in
+            let modifiedExtraction = extraction
+            switch modifiedExtraction.name {
+            case "skontoAmountToPay", "skontoAmountToPayCalculated":
+                modifiedExtraction.value = updatedAmountToPayString
+            case "skontoPercentageDiscounted", "skontoPercentageDiscountedCalculated":
+                modifiedExtraction.value = updatedPercentage
+            default:
+                break
+            }
+            return modifiedExtraction
         }
         
-        private func createAmountExtraction(value: String) -> Extraction {
-            return Extraction(box: nil,
-                              candidates: nil,
-                              entity: "amount",
-                              value: value,
-                              name: "amountToPay")
-        }
-        
-        func updateAndVerifyTransferSummary(result: AnalysisResult,
-                                            mockedInvoiceUpdatedResultName: String,
-                                            expect: XCTestExpectation) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
-                self?.testCase.getUpdatedExtractionsFromGiniBankSDK(for: result.document!) { updatedResult in
-                    switch updatedResult {
-                        case let .success(extractionResult):
-                            self?.handleSuccessfulTransferSummary(extractionResult: extractionResult,
-                                                                       mockedInvoiceUpdatedResultName: mockedInvoiceUpdatedResultName,
-                                                                       expect: expect,
-                                                                       result: result)
-                        case let .failure(error):
-                            XCTFail("Error updating transfer summary: \(error)")
-                    }
-                }
-            }
-        }
+        GiniBankConfiguration.shared.skontoDiscounts = [modifiedSkontoExtractions]
+    }
 
-        private func handleSuccessfulTransferSummary(extractionResult: ExtractionResult,
-                                                           mockedInvoiceUpdatedResultName: String,
-                                                           expect: XCTestExpectation,
-                                                           result: AnalysisResult) {
-            let extractionsAfterFeedback = extractionResult.extractions
-            // Load the expected fixture after feedback
-            guard let fixtureExtractionsAfterFeedbackContainer = testCase.loadFixtureExtractionsContainer(from: mockedInvoiceUpdatedResultName) else {
-                return
-            }
+    override func sendTransferSummary(result: AnalysisResult) {
+        guard let updatedAmountToPayString = result.extractions["amountToPay"]?.value else { return }
+        let amountExtraction = createAmountExtraction(value: updatedAmountToPayString)
+        GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(
+            amountExtraction: amountExtraction,
+            amountToPayString: updatedAmountToPayString
+        )
+    }
+}
 
-            // Validate the updated extractions against the fixture
-            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
-                           extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
+class SkontoNotAppliedTransferSummaryHandler: BaseSkontoTransferSummaryHandler<SkontoNotAppliedTransferSummaryIntegrationTest> {
 
-            let paymentRecipientExtraction = extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })
-            testCase.verifyPaymentRecipient(paymentRecipientExtraction)
+    override func applySkontoAdjustmentsIfNeeded(result: AnalysisResult) {
+        guard let skontoDiscountExtraction = result.skontoDiscounts?.first else { return }
+        GiniBankConfiguration.shared.skontoDiscounts = [skontoDiscountExtraction]
+    }
 
-            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
-                           extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
-            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
-                           extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
-
-            // Validate line items if applicable
-            let fixtureSkontoDiscounts = fixtureExtractionsAfterFeedbackContainer.compoundExtractions?.skontoDiscounts?.first
-            if let fixtureSkontoDiscountsAfterFeedback = extractionResult.skontoDiscounts?.first {
-                XCTAssertEqual(fixtureSkontoDiscounts?.first(where: { $0.name == "skontoAmountToPayCalculated" })?.value,
-                               fixtureSkontoDiscountsAfterFeedback.first(where: { $0.name == "skontoAmountToPayCalculated" })?.value)
-            }
-
-            // Free resources and cleanup
-            GiniBankConfiguration.shared.cleanup()
-            XCTAssertNil(GiniBankConfiguration.shared.documentService)
-
-            expect.fulfill()
-        }
+    override func sendTransferSummary(result: AnalysisResult) {
+        let amountToPayString = result.extractions["amountToPay"]?.value ?? ""
+        let amountExtraction = createAmountExtraction(value: amountToPayString)
+        GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(
+            amountExtraction: amountExtraction,
+            amountToPayString: amountToPayString
+        )
     }
 }
