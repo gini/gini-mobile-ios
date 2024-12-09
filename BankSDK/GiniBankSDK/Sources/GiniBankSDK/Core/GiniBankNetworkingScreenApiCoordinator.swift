@@ -509,7 +509,8 @@ extension GiniBankNetworkingScreenApiCoordinator {
         guard let extractionAmount = ExtractionAmount.extract(from: extractions) else { return }
         let amountToPayString = extractionAmount.formattedString()
         let amountExtraction = createAmountExtraction(value: amountToPayString)
-        self.giniBankConfiguration.sendTransferSummaryWithSkonto(amountExtraction: amountExtraction, amountToPayString: amountToPayString)
+        giniBankConfiguration.sendTransferSummaryWithSkonto(amountToPayExtraction: amountExtraction,
+                                                            amountToPayString: amountToPayString)
     }
 
     private func createAmountExtraction(value: String) -> Extraction {

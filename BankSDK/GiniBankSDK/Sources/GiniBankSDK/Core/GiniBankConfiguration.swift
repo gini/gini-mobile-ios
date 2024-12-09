@@ -678,29 +678,34 @@ public final class GiniBankConfiguration: NSObject {
     }
 
     private func sendTransferSummary(updatedExtractions: [Extraction]) {
-        var updatedCompoundExtractions: [String: [[Extraction]]]? = [:]
-        updatedCompoundExtractions = addFeedbackLineItemsIfAvailable(to: updatedCompoundExtractions)
+        let updatedCompoundExtractions = addLineItems(to: [:])
         documentService?.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: updatedCompoundExtractions)
     }
 
-    func sendTransferSummaryWithSkonto(amountExtraction: Extraction, amountToPayString: String) {
+    func sendTransferSummaryWithSkonto(amountToPayExtraction: Extraction, amountToPayString: String) {
+        // The following guard ensures that a Skonto discount is actually applied before proceeding.
         guard let skontoDiscounts = skontoDiscounts?.first, skontoDiscounts.contains(where: {
             $0.name == "skontoAmountToPayCalculated" && $0.value == amountToPayString
         }) else { return }
 
-        sendSkontoTransferSummary(updatedExtractions: [amountExtraction], amountToPayString: amountToPayString, retryCount: 3)
+        sendSkontoTransferSummary(updatedExtractions: [amountToPayExtraction],
+                                  amountToPayString: amountToPayString,
+                                  retryCount: 3)
     }
 
-    private func sendSkontoTransferSummary(updatedExtractions: [Extraction], amountToPayString: String, retryCount: Int) {
-        var updatedCompoundExtractions = addFeedbackSkontoDiscountsIfAvailable(extractions: updatedExtractions,
-                                                                               amountToPayString: amountToPayString)
-        updatedCompoundExtractions = addFeedbackLineItemsIfAvailable(to: updatedCompoundExtractions)
-        documentService?.sendSkontoFeedback(with: updatedExtractions, updatedCompoundExtractions:
-                                                updatedCompoundExtractions, retryCount: retryCount)
+    private func sendSkontoTransferSummary(updatedExtractions: [Extraction],
+                                           amountToPayString: String,
+                                           retryCount: Int) {
+        var updatedCompoundExtractions = addSkontoDiscounts(to: updatedExtractions,
+                                                            amountToPayString: amountToPayString)
+        updatedCompoundExtractions = addLineItems(to: updatedCompoundExtractions)
+        documentService?.sendSkontoFeedback(with: updatedExtractions,
+                                            updatedCompoundExtractions: updatedCompoundExtractions,
+                                            retryCount: retryCount)
     }
 
-    private func addFeedbackSkontoDiscountsIfAvailable(extractions: [Extraction],
-                                                       amountToPayString: String) -> [String: [[Extraction]]]? {
+    private func addSkontoDiscounts(to extractions: [Extraction],
+                                    amountToPayString: String) -> [String: [[Extraction]]]? {
         guard let skontoDiscounts = skontoDiscounts?.first else { return nil }
 
         let filteredDiscounts = skontoDiscounts.filter {
@@ -711,7 +716,7 @@ public final class GiniBankConfiguration: NSObject {
         return filteredDiscounts.isEmpty ? nil : ["skontoDiscounts": [filteredDiscounts]]
     }
 
-    private func addFeedbackLineItemsIfAvailable(to compoundExtractions: [String: [[Extraction]]]?) -> [String: [[Extraction]]]? {
+    private func addLineItems(to compoundExtractions: [String: [[Extraction]]]?) -> [String: [[Extraction]]]? {
         guard let lineItems = lineItems else { return compoundExtractions }
         var updatedCompoundExtractions = compoundExtractions ?? [:]
         updatedCompoundExtractions["lineItems"] = lineItems
