@@ -81,24 +81,24 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
         captureExtractedResults = result.extractions.map { $0.value }
 
-        guard let healthSDK = self.giniHealth, let documentId = result.document?.id else { return }
+        guard let healthSDK = self.giniHealth, let docId = result.document?.id else { return }
 
-        checkIfDocumentIsPayable(for: documentId, using: healthSDK) { [weak self] isPayable in
+        checkIfDocumentIsPayable(for: docId, using: healthSDK) { [weak self] isPayable in
             guard isPayable else {
                 self?.presentErrorForNonPayableDocument()
                 return
             }
 
-            self?.checkIfDocumentContainsMultipleInvoices(documentId: documentId, using: healthSDK)
+            self?.checkIfDocumentContainsMultipleInvoices(docId: docId, using: healthSDK)
         }
     }
 
-    private func checkIfDocumentContainsMultipleInvoices(documentId: String, using healthSDK: GiniHealth) {
-        healthSDK.checkIfDocumentContainsMultipleInvoices(docId: documentId) { [weak self] result in
+    private func checkIfDocumentContainsMultipleInvoices(docId: String, using healthSDK: GiniHealth) {
+        healthSDK.checkIfDocumentContainsMultipleInvoices(docId: docId) { [weak self] result in
             switch result {
             case .success(let multipleInvoices):
                 if !multipleInvoices {
-                    self?.fetchDocumentDataForReview(documentId: documentId, using: healthSDK)
+                    self?.fetchDocumentDataForReview(docId: docId, using: healthSDK)
                 } else {
                     self?.presentErrorForMultipleInvoicesInDocument()
                 }
@@ -119,8 +119,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
         }
     }
 
-    private func checkIfDocumentIsPayable(for documentId: String, using healthSDK: GiniHealth, completion: @escaping (Bool) -> Void) {
-        healthSDK.checkIfDocumentIsPayable(docId: documentId) { resultPayable in
+    private func checkIfDocumentIsPayable(for docId: String, using healthSDK: GiniHealth, completion: @escaping (Bool) -> Void) {
+        healthSDK.checkIfDocumentIsPayable(docId: docId) { resultPayable in
             switch resultPayable {
             case .success(let payable):
                 completion(payable)
@@ -132,8 +132,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
         }
     }
 
-    private func fetchDocumentDataForReview(documentId: String, using healthSDK: GiniHealth) {
-        healthSDK.fetchDataForReview(documentId: documentId) { [weak self] resultReview in
+    private func fetchDocumentDataForReview(docId: String, using healthSDK: GiniHealth) {
+        healthSDK.fetchDataForReview(documentId: docId) { [weak self] resultReview in
             switch resultReview {
             case .success(let data):
                 self?.fetchExtractions(for: data.document, healthSDK: healthSDK)
