@@ -504,26 +504,15 @@ extension GiniBankNetworkingScreenApiCoordinator {
             }
         }
     }
-    
+
     private func sendSkontoFeedback(extractions: [String: Extraction]) {
-        guard let amountToPay = extractAmountToPay(from: extractions) else { return }
-        let amountToPayString = formatAmountToPay(amountToPay)
+        guard let extractionAmount = ExtractionAmount.extract(from: extractions) else { return }
+        let amountToPayString = extractionAmount.formattedString()
         let amountExtraction = createAmountExtraction(value: amountToPayString)
-        self.giniBankConfiguration.sendTransferSummaryWithSkonto(amountExtraction: amountExtraction, amountToPayString: amountToPayString)
-    }
-    
-    private func formatAmountToPay(_ amount: ExtractionAmount) -> String {
-        let formattedValue = amount.value.stringValue(withDecimalPoint: 2) ?? "\(amount.value)"
-        return "\(formattedValue):\(amount.currency.rawValue)"
+        giniBankConfiguration.sendTransferSummaryWithSkonto(amountToPayExtraction: amountExtraction,
+                                                            amountToPayString: amountToPayString)
     }
 
-    private func extractAmountToPay(from extractions: [String: Extraction]) -> ExtractionAmount? {
-        guard let amountValue = extractions["amountToPay"]?.value,
-              let amountComponents = amountValue.split(separator: ":").first,
-              let value = Decimal(string: String(amountComponents)) else { return nil }
-        return ExtractionAmount(value: value, currency: .EUR)
-    }
-    
     private func createAmountExtraction(value: String) -> Extraction {
         return Extraction(box: nil,
                           candidates: nil,
