@@ -161,7 +161,8 @@ final class InvoicesListViewModel {
                             self?.invoices.append(DocumentWithExtractions(documentId: createdDocument.id,
                                                                           extractionResult: extractionResult))
                         case let .failure(error):
-                            GiniUtilites.Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))", event: .error)
+                            GiniUtilites.Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))",
+                                             event: .error)
                             self?.errors.append(error.message)
                         }
                         self?.dispatchGroup.leave()
