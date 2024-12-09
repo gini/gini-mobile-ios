@@ -155,7 +155,9 @@ public final class DocumentService: DocumentServiceProtocol {
                         retryCount: 0)
     }
     
-    public func sendSkontoFeedback(with updatedExtractions: [Extraction], updatedCompoundExtractions: [String: [[Extraction]]]?, retryCount: Int) {
+    public func sendSkontoFeedback(with updatedExtractions: [Extraction],
+                                   updatedCompoundExtractions: [String: [[Extraction]]]?,
+                                   retryCount: Int) {
         Log(message: "Sending feedback", event: "💬")
         guard let document = document else {
             Log(message: "Cannot send feedback: no document", event: .error)
@@ -173,28 +175,46 @@ public final class DocumentService: DocumentServiceProtocol {
                                  retryCount: Int) {
         captureNetworkService.sendFeedback(document: document,
                                            updatedExtractions: updatedExtractions,
-                                           updatedCompoundExtractions: updatedCompoundExtractions) { result in
+                                           updatedCompoundExtractions: updatedCompoundExtractions) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success:
                 Log(message: "Feedback sent with \(updatedExtractions.count) extractions and \(updatedCompoundExtractions?.count ?? 0) compound extractions",
                     event: "🚀")
             case .failure(let error):
-                if retryCount > 0 {
-                    Log(message: "Retrying feedback due to error: \(error). Remaining retries: \(retryCount - 1)", event: .warning)
-                    DispatchQueue.global().asyncAfter(deadline: .now() + 5) {
-                        self.attemptFeedback(document: document,
-                                             updatedExtractions: updatedExtractions,
-                                             updatedCompoundExtractions: updatedCompoundExtractions,
-                                             retryCount: retryCount - 1)
-                    }
-                } else {
-                    let message = "Error sending feedback for document with id: \(document.id) error: \(error)"
-                    Log(message: message, event: .error)
-                    let errorLog = ErrorLog(description: message, error: error)
-                    GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
-                }
+                self.handleFeedbackFailure(document: document,
+                                           updatedExtractions: updatedExtractions,
+                                           updatedCompoundExtractions: updatedCompoundExtractions,
+                                           error: error,
+                                           retryCount: retryCount)
             }
         }
+    }
+
+    private func handleFeedbackFailure(document: Document,
+                                       updatedExtractions: [Extraction],
+                                       updatedCompoundExtractions: [String: [[Extraction]]]?,
+                                       error: Error,
+                                       retryCount: Int) {
+        if retryCount > 0 {
+            Log(message: "Retrying feedback due to error: \(error). Remaining retries: \(retryCount - 1)", event: .warning)
+            DispatchQueue.global().asyncAfter(deadline: .now() + 5) { [weak self] in
+                self?.attemptFeedback(document: document,
+                                      updatedExtractions: updatedExtractions,
+                                      updatedCompoundExtractions: updatedCompoundExtractions,
+                                      retryCount: retryCount - 1)
+            }
+        } else {
+            handleFeedbackError(document: document, error: error)
+        }
+    }
+
+    private func handleFeedbackError(document: Document, error: Error) {
+        let message = "Error sending feedback for document with id: \(document.id) error: \(error)"
+        Log(message: message, event: .error)
+        let errorLog = ErrorLog(description: message, error: error)
+        GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
     }
     
     public func sortDocuments(withSameOrderAs documents: [GiniCaptureDocument]) {
