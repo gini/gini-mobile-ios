@@ -228,7 +228,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Polling document")
         var receivedDocument: GiniHealthSDK.Document?
-        giniHealth.pollDocument(documentId: MockSessionManager.payableDocumentID) { result in
+        giniHealth.pollDocument(docId: MockSessionManager.payableDocumentID) { result in
             switch result {
             case .success(let document):
                 receivedDocument = document
@@ -248,7 +248,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Polling failure document")
         var receivedDocument: GiniHealthSDK.Document?
-        giniHealth.pollDocument(documentId: MockSessionManager.missingDocumentID) { result in
+        giniHealth.pollDocument(docId: MockSessionManager.missingDocumentID) { result in
             switch result {
             case .success(let document):
                 receivedDocument = document
@@ -462,7 +462,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Getting all extractions")
         var receivedExtractions: [GiniHealthSDK.Extraction]?
-        giniHealth.getAllExtractions(documentId: MockSessionManager.doctorsNameDocumentID) { result in
+        giniHealth.getAllExtractions(docId: MockSessionManager.doctorsNameDocumentID) { result in
             switch result {
             case .success(let extractions):
                 receivedExtractions = extractions
@@ -482,7 +482,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Extraction failure")
         var receivedExtractions: [GiniHealthSDK.Extraction]?
-        giniHealth.getAllExtractions(documentId: MockSessionManager.failurePayableDocumentID) { result in
+        giniHealth.getAllExtractions(docId: MockSessionManager.failurePayableDocumentID) { result in
             switch result {
             case .success(let extractions):
                 receivedExtractions = extractions
@@ -504,7 +504,7 @@ final class GiniHealthTests: XCTestCase {
         // When
         let expectation = self.expectation(description: "Getting doctor name extractions")
         var receivedDoctorExtraction: GiniHealthSDK.Extraction?
-        giniHealth.getAllExtractions(documentId: MockSessionManager.doctorsNameDocumentID) { result in
+        giniHealth.getAllExtractions(docId: MockSessionManager.doctorsNameDocumentID) { result in
             switch result {
             case .success(let extractions):
                 receivedDoctorExtraction = extractions.first(where: { $0.name == ExtractionType.doctorName.rawValue })
