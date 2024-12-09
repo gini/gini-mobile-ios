@@ -44,7 +44,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         }
     }
 
-    func checkIfDocumentIsPayable(documentId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+    func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
         switch documentId {
         case MockSessionManager.payableDocumentID:
             completion(.success(true))

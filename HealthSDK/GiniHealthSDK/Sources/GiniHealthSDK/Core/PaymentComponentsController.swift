@@ -24,7 +24,7 @@ protocol PaymentComponentsProtocol {
     var isLoading: Bool { get set }
     var selectedPaymentProvider: PaymentProvider? { get set }
     func loadPaymentProviders()
-    func checkIfDocumentIsPayable(documentId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
+    func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
     func paymentView() -> UIView
     func bankSelectionBottomSheet() -> UIViewController
     func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?,
@@ -165,13 +165,13 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     /**
      Checks if the document is payable by extracting the IBAN.
      - Parameters:
-         - documentId: The ID of the uploaded document.
+         - docId: The ID of the uploaded document.
          - completion: A closure for processing asynchronous data received from the service. It has a Result type parameter, representing either success or failure. The completion block is called on the main thread.
          In the case of success, it includes a boolean value indicating whether the IBAN was extracted successfully.
          In case of failure, it returns an error from the server side.
      */
-    public func checkIfDocumentIsPayable(documentId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
-        giniSDK.checkIfDocumentIsPayable(documentId: documentId, completion: completion)
+    public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+        giniSDK.checkIfDocumentIsPayable(docId: docId, completion: completion)
     }
 }
 

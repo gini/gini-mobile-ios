@@ -94,7 +94,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     }
 
     private func checkIfDocumentContainsMultipleInvoices(documentId: String, using healthSDK: GiniHealth) {
-        healthSDK.checkIfDocumentContainsMultipleInvoices(documentId: documentId) { [weak self] result in
+        healthSDK.checkIfDocumentContainsMultipleInvoices(docId: documentId) { [weak self] result in
             switch result {
             case .success(let multipleInvoices):
                 if !multipleInvoices {
@@ -120,7 +120,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     }
 
     private func checkIfDocumentIsPayable(for documentId: String, using healthSDK: GiniHealth, completion: @escaping (Bool) -> Void) {
-        healthSDK.checkIfDocumentIsPayable(documentId: documentId) { resultPayable in
+        healthSDK.checkIfDocumentIsPayable(docId: documentId) { resultPayable in
             switch resultPayable {
             case .success(let payable):
                 completion(payable)
