@@ -68,7 +68,7 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
         }
 
         testCase.verifyExtractions(result: result, fixtureContainer: fixtureExtractionsContainer)
-        applySkontoAdjustmentsIfNeeded(result: result)
+        applySkontoChangesIfNeeded(result: result)
         sendTransferSummary(result: result)
         updateAndVerifyTransferSummary(result: result,
                                        mockedInvoiceUpdatedResultName: mockedInvoiceResultAfterFeedbackName,
@@ -86,8 +86,8 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
     // MARK: - Methods to override or customize in subclasses if needed
 
     /// Override this method in subclasses to apply any skonto-related modifications.
-    func applySkontoAdjustmentsIfNeeded(result: AnalysisResult) {
-        // Default: no adjustments
+    func applySkontoChangesIfNeeded(result: AnalysisResult) {
+        // Default: no changes
     }
 
     /// Override this method in subclasses if the transfer summary should be sent differently.
@@ -108,11 +108,10 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
             self.testCase.getUpdatedExtractionsFromGiniBankSDK(for: result.document!) { updatedResult in
                 switch updatedResult {
                 case let .success(extractionResult):
-                    self.handleSuccessfulTransferSummary(
-                        extractionResult: extractionResult,
-                        mockedInvoiceUpdatedResultName: mockedInvoiceUpdatedResultName,
-                        expect: expect,
-                        result: result)
+                    self.handleSuccessfulTransferSummary(extractionResult: extractionResult,
+                                                         mockedInvoiceUpdatedResultName: mockedInvoiceUpdatedResultName,
+                                                         expect: expect,
+                                                         result: result)
                 case let .failure(error):
                     XCTFail("Error updating transfer summary: \(error)")
                 }
@@ -175,7 +174,7 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
 
 class SkontoTransferSummaryHandler: BaseSkontoTransferSummaryHandler<SkontoTransferSummaryIntegrationTest> {
 
-    override func applySkontoAdjustmentsIfNeeded(result: AnalysisResult) {
+    override func applySkontoChangesIfNeeded(result: AnalysisResult) {
         guard let skontoDiscountExtraction = result.skontoDiscounts?.first else { return }
 
         let updatedAmountToPayString = "1000.00:EUR"
@@ -209,7 +208,7 @@ class SkontoTransferSummaryHandler: BaseSkontoTransferSummaryHandler<SkontoTrans
 
 class SkontoNotAppliedTransferSummaryHandler: BaseSkontoTransferSummaryHandler<SkontoNotAppliedTransferSummaryIntegrationTest> {
 
-    override func applySkontoAdjustmentsIfNeeded(result: AnalysisResult) {
+    override func applySkontoChangesIfNeeded(result: AnalysisResult) {
         guard let skontoDiscountExtraction = result.skontoDiscounts?.first else { return }
         GiniBankConfiguration.shared.skontoDiscounts = [skontoDiscountExtraction]
     }
