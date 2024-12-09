@@ -134,8 +134,9 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     }
 
     override public func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         unsubscribeFromNotifications()
-        model.delegate?.paymentReviewClosed()
+        model.viewDidDisappear()
     }
 
     public override var preferredStatusBarStyle: UIStatusBarStyle {

@@ -154,7 +154,6 @@ extension PaymentComponentsController {
         if previousPresentedViews.count > 0, previousPresentedViews.first != .paymentReview {
             previousPresentedViews.removeAll()
         }
-        previousPresentedViews.insert(.bankPicker)
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                    configuration: configurationProvider.bankSelectionConfiguration,
@@ -340,8 +339,13 @@ extension PaymentComponentsController {
     /**
      Notifies the controller that the Payment Review Screen has closed, enabling the cleanup of stored data used to manage various flows.
      */
-    public func paymentReviewClosed() {
+    public func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {
         shareInvoiceBottomSheet = nil
+        if previousPresentedView == .bankPicker {
+            previousPresentedViews.insert(.bankPicker)
+        } else {
+            previousPresentedViews.removeAll()
+        }
     }
 
     /**

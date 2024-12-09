@@ -54,7 +54,7 @@ public protocol PaymentReviewActionProtocol {
     func updatedPaymentProvider(_ paymentProvider: PaymentProvider)
     func openMoreInformationViewController()
     func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: PaymentInfo)
-    func paymentReviewClosed()
+    func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?)
 }
 
 /**
@@ -168,6 +168,10 @@ public class PaymentReviewModel: NSObject {
         self.bottomSheetConfiguration = bottomSheetConfiguration
         self.displayMode = document != nil ? .documentCollection : .bottomSheet
         self.previousPaymentComponentScreenType = previousPaymentComponentScreenType
+    }
+
+    func viewDidDisappear() {
+        delegate?.paymentReviewClosed(with: previousPaymentComponentScreenType)
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> PageCollectionCellViewModel {
@@ -317,6 +321,7 @@ extension PaymentReviewModel: BanksSelectionProtocol {
      This function notifies the delegate to open the "More Information" view controller.
      */
     public func didTapOnMoreInformation() {
+        previousPaymentComponentScreenType = .bankPicker
         delegate?.openMoreInformationViewController()
     }
 
