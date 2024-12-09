@@ -12,7 +12,11 @@ import GiniUtilites
 public final class InstallAppBottomView: BottomSheetViewController {
 
     var viewModel: InstallAppBottomViewModel
-    
+
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
+
+    private let contentView = EmptyView()
     private let contentStackView = EmptyStackView().orientation(.vertical)
 
     private let titleView = EmptyView()
@@ -99,6 +103,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupInitialLayout()
     }
 
     deinit {
@@ -138,7 +143,8 @@ public final class InstallAppBottomView: BottomSheetViewController {
         bottomStackView.addArrangedSubview(poweredByGiniView)
         bottomView.addSubview(bottomStackView)
         contentStackView.addArrangedSubview(bottomView)
-        self.setContent(content: contentStackView)
+        contentView.addSubview(contentStackView)
+        self.setContent(content: contentView)
     }
 
     private func setupLayout() {
@@ -156,7 +162,43 @@ public final class InstallAppBottomView: BottomSheetViewController {
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
     }
-    
+
+    private func setupInitialLayout() {
+        updateLayoutForCurrentOrientation()
+    }
+
+    private func updateLayoutForCurrentOrientation() {
+        let deviceOrientation = UIDevice.current.orientation
+        switch deviceOrientation {
+        case .portrait:
+            setupPortraitConstraints()
+        case .landscapeLeft, .landscapeRight:
+            setupLandscapeConstraints()
+        default:
+            break
+        }
+    }
+
+    // Portrait Layout Constraints
+    private func setupPortraitConstraints() {
+        NSLayoutConstraint.deactivate(landscapeConstraints)
+        portraitConstraints = [
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        ]
+        NSLayoutConstraint.activate(portraitConstraints)
+    }
+
+    // Landscape Layout Constraints
+    private func setupLandscapeConstraints() {
+        NSLayoutConstraint.deactivate(portraitConstraints)
+        landscapeConstraints = [
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.landscapePadding),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.landscapePadding)
+        ]
+        NSLayoutConstraint.activate(landscapeConstraints)
+    }
+
     @objc private func willEnterForeground() {
         setButtonsState()
     }
@@ -268,5 +310,6 @@ extension InstallAppBottomView {
         static let moreInformationBottomAnchorConstraint = 8.0
         static let infoIconSize = 24.0
         static let bottomViewHeight = 44.0
+        static let landscapePadding = 126.0
     }
 }
