@@ -20,8 +20,7 @@ class SkontoTransferSummaryIntegrationTest: BaseIntegrationTest {
             testCase: self,
             mockedInvoiceResultName: "result_Gini_invoice_example_skonto",
             mockedInvoiceResultAfterFeedbackName: "result_Gini_invoice_example_skonto_after_transfer_summary",
-            expect: expect
-        )
+            expect: expect)
         
         uploadAndAnalyzeDocument(fileName: mockedInvoiceName, delegate: handler)
         wait(for: [expect], timeout: 60)
@@ -38,8 +37,7 @@ class SkontoNotAppliedTransferSummaryIntegrationTest: BaseIntegrationTest {
             testCase: self,
             mockedInvoiceResultName: "result_Gini_invoice_example_skonto",
             mockedInvoiceResultAfterFeedbackName: "result_Gini_invoice_example_skonto",
-            expect: expect
-        )
+            expect: expect)
         
         uploadAndAnalyzeDocument(fileName: mockedInvoiceName, delegate: handler)
         wait(for: [expect], timeout: 60)
@@ -72,7 +70,9 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
         testCase.verifyExtractions(result: result, fixtureContainer: fixtureExtractionsContainer)
         applySkontoAdjustmentsIfNeeded(result: result)
         sendTransferSummary(result: result)
-        updateAndVerifyTransferSummary(result: result, mockedInvoiceUpdatedResultName: mockedInvoiceResultAfterFeedbackName, expect: expect)
+        updateAndVerifyTransferSummary(result: result,
+                                       mockedInvoiceUpdatedResultName: mockedInvoiceResultAfterFeedbackName,
+                                       expect: expect)
     }
 
     func giniCaptureDidCancelAnalysis() {
@@ -94,10 +94,8 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
     func sendTransferSummary(result: AnalysisResult) {
         guard let amountToPayString = result.extractions["amountToPay"]?.value else { return }
         let amountExtraction = createAmountExtraction(value: amountToPayString)
-        GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(
-            amountExtraction: amountExtraction,
-            amountToPayString: amountToPayString
-        )
+        GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(amountToPayExtraction: amountExtraction,
+                                                                   amountToPayString: amountToPayString)
     }
 
     // MARK: - Common logic
@@ -114,8 +112,7 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
                         extractionResult: extractionResult,
                         mockedInvoiceUpdatedResultName: mockedInvoiceUpdatedResultName,
                         expect: expect,
-                        result: result
-                    )
+                        result: result)
                 case let .failure(error):
                     XCTFail("Error updating transfer summary: \(error)")
                 }
@@ -133,29 +130,21 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
         }
 
         // Validate basic extractions
-        XCTAssertEqual(
-            fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
-            extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value
-        )
+        XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
+                       extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
         
         let paymentRecipientExtraction = extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })
         testCase.verifyPaymentRecipient(paymentRecipientExtraction)
         
-        XCTAssertEqual(
-            fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
-            extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value
-        )
+        XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
+                       extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
         
-        XCTAssertEqual(
-            fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
-            extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value
-        )
+        XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
+                       extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
 
         // Validate skonto discounts if applicable
-        validateSkontoDiscounts(
-            fixtureContainer: fixtureExtractionsAfterFeedbackContainer,
-            extractionResult: extractionResult
-        )
+        validateSkontoDiscounts(fixtureContainer: fixtureExtractionsAfterFeedbackContainer,
+                                extractionResult: extractionResult)
 
         // Cleanup
         GiniBankConfiguration.shared.cleanup()
@@ -168,10 +157,8 @@ class BaseSkontoTransferSummaryHandler<TestCase: BaseIntegrationTest>: GiniCaptu
                                  extractionResult: ExtractionResult) {
         let fixtureSkontoDiscounts = fixtureContainer.compoundExtractions?.skontoDiscounts?.first
         if let fixtureSkontoDiscountsAfterFeedback = extractionResult.skontoDiscounts?.first {
-            XCTAssertEqual(
-                fixtureSkontoDiscounts?.first(where: { $0.name == "skontoAmountToPayCalculated" })?.value,
-                fixtureSkontoDiscountsAfterFeedback.first(where: { $0.name == "skontoAmountToPayCalculated" })?.value
-            )
+            XCTAssertEqual(fixtureSkontoDiscounts?.first(where: { $0.name == "skontoAmountToPayCalculated" })?.value,
+                           fixtureSkontoDiscountsAfterFeedback.first(where: { $0.name == "skontoAmountToPayCalculated" })?.value)
         }
     }
 
@@ -215,10 +202,8 @@ class SkontoTransferSummaryHandler: BaseSkontoTransferSummaryHandler<SkontoTrans
     override func sendTransferSummary(result: AnalysisResult) {
         guard let updatedAmountToPayString = result.extractions["amountToPay"]?.value else { return }
         let amountExtraction = createAmountExtraction(value: updatedAmountToPayString)
-        GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(
-            amountExtraction: amountExtraction,
-            amountToPayString: updatedAmountToPayString
-        )
+        GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(amountToPayExtraction: amountExtraction,
+                                                                   amountToPayString: updatedAmountToPayString)
     }
 }
 
@@ -232,9 +217,7 @@ class SkontoNotAppliedTransferSummaryHandler: BaseSkontoTransferSummaryHandler<S
     override func sendTransferSummary(result: AnalysisResult) {
         let amountToPayString = result.extractions["amountToPay"]?.value ?? ""
         let amountExtraction = createAmountExtraction(value: amountToPayString)
-        GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(
-            amountExtraction: amountExtraction,
-            amountToPayString: amountToPayString
-        )
+        GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(amountToPayExtraction: amountExtraction,
+                                                                   amountToPayString: amountToPayString)
     }
 }
