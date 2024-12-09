@@ -44,8 +44,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         }
     }
 
-    func checkIfDocumentIsPayable(documentId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
-        switch documentId {
+    func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+        switch docId {
         case MockSessionManager.payableDocumentID:
             completion(.success(true))
         case MockSessionManager.notPayableDocumentID:
@@ -57,8 +57,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         }
     }
 
-    func checkIfDocumentContainsMultipleInvoices(documentId: String, completion: @escaping (Result<Bool, GiniHealthSDK.GiniHealthError>) -> Void) {
-        switch documentId {
+    func checkIfDocumentContainsMultipleInvoices(docId: String, completion: @escaping (Result<Bool, GiniHealthSDK.GiniHealthError>) -> Void) {
+        switch docId {
         case MockSessionManager.payableDocumentID:
             completion(.success(false))
         case MockSessionManager.notPayableDocumentID:

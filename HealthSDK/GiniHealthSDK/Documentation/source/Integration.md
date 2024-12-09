@@ -90,7 +90,7 @@ We provide 2 ways of doing this.
 2. GiniHealth provides a method for checking if the document is payable or not.
 
 ```swift
-healthSDK.checkIfDocumentIsPayable(documentId: String,
+healthSDK.checkIfDocumentIsPayable(docId: String,
                                    completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
 ```
 
@@ -101,7 +101,7 @@ The method returns success and `true` value if `payment_state` was extracted.
 ```swift
 for giniDocument in dataDocuments {
    dispatchGroup.enter()
-   self.health.checkIfDocumentIsPayable(documentId: createdDocument.id, completion: { [weak self] result in
+   self.health.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
        switch result {
        // ...
        }
