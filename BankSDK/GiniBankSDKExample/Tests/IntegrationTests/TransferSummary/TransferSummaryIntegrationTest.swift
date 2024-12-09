@@ -15,24 +15,42 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
     func testSendTransferSummaryFeedback() {
         let mockedInvoiceName = "Gini_invoice_example_payment_reference"
         let expect = expectation(description: "Transfer summary was correctly sent and extractions were updated")
+        let delegate = CaptureResultsDelegateForTransferSummaryTest(testCase: self,
+                                                                    mockedInvoiceResultName: "result_Gini_invoice_example_payment_reference",
+                                                                    mockedInvoiceResultAfterFeedbackName: "result_Gini_invoice_example_payment_reference_after_feedback",
+                                                                    expect: expect)
         uploadAndAnalyzeDocument(fileName: mockedInvoiceName,
-                                 delegate: CaptureResultsDelegateForTransferSummaryTest(testCase: self, 
-                                                                                        expect: expect),
-                                 sendTransferSummaryIfNeeded: true)
+                                 delegate: delegate)
         wait(for: [expect], timeout: 60)
     }
-
+    
     class CaptureResultsDelegateForTransferSummaryTest: GiniCaptureResultsDelegate {
         let testCase: TransferSummaryIntegrationTest
+        let mockedInvoiceResultName: String
+        let mockedInvoiceResultAfterFeedbackName: String
         let expect: XCTestExpectation
 
-        init(testCase: TransferSummaryIntegrationTest, expect: XCTestExpectation) {
+        init(testCase: TransferSummaryIntegrationTest,
+             mockedInvoiceResultName: String,
+             mockedInvoiceResultAfterFeedbackName: String,
+             expect: XCTestExpectation) {
             self.testCase = testCase
+            self.mockedInvoiceResultName = mockedInvoiceResultName
+            self.mockedInvoiceResultAfterFeedbackName = mockedInvoiceResultAfterFeedbackName
             self.expect = expect
         }
 
         func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-            let mockedInvoice = "result_Gini_invoice_example_payment_reference"
+            GiniBankConfiguration.shared.sendTransferSummary(
+                paymentRecipient: result.extractions["paymentRecipient"]?.value ?? "",
+                paymentReference: result.extractions["paymentReference"]?.value ?? "",
+                paymentPurpose: result.extractions["paymentPurpose"]?.value ?? "",
+                iban: result.extractions["iban"]?.value ?? "",
+                bic: result.extractions["bic"]?.value ?? "",
+                amountToPay: ExtractionAmount(value: 950.00, currency: .EUR)
+            )
+            
+            let mockedInvoice = mockedInvoiceResultName
             // Use the helper method to load the fixture extractions container
             guard let fixtureExtractionsContainer = testCase.loadFixtureExtractionsContainer(from: mockedInvoice) else {
                 return
@@ -42,7 +60,9 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
             testCase.verifyExtractions(result: result, fixtureContainer: fixtureExtractionsContainer)
 
             // Call the updateAndVerifyTransferSummary method to handle the transfer summary update
-            testCase.updateAndVerifyTransferSummary(result: result, expect: expect)
+            testCase.updateAndVerifyTransferSummary(result: result,
+                                                    mockedInvoiceUpdatedResultName: mockedInvoiceResultAfterFeedbackName,
+                                                    expect: expect)
         }
 
         func giniCaptureDidCancelAnalysis() {
