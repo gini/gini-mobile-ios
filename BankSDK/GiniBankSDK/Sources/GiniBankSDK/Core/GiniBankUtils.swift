@@ -73,7 +73,7 @@ private func clientLocalizedString(_ key: String,
 private func giniLocalizedString(_ key: String,
                                  fallbackKey: String,
                                  comment: String) -> String {
-    let giniBundle = giniBankBundle()
+    let giniBundle = giniBankBundleResource()
 
     var defaultFormat = NSLocalizedString(key,
                                           bundle: giniBundle,
@@ -88,7 +88,7 @@ private func giniLocalizedString(_ key: String,
     return defaultFormat
 }
 
-func giniBankBundle() -> Bundle {
+func giniBankBundleResource() -> Bundle {
     Bundle.resource
 }
 
@@ -113,7 +113,7 @@ func prefferedImage(named name: String) -> UIImage? {
     }
 
     return UIImage(named: name,
-                   in: giniBankBundle(),
+                   in: giniBankBundleResource(),
                    compatibleWith: nil)
 }
 /**
@@ -138,7 +138,7 @@ func prefferedColor(named name: String) -> UIColor {
     }
 
     if let color = UIColor(named: name,
-                           in: giniBankBundle(),
+                           in: giniBankBundleResource(),
                            compatibleWith: nil) {
         return color
     } else {

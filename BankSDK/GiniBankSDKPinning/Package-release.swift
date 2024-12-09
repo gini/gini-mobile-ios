@@ -17,7 +17,9 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(name: "GiniCaptureSDKPinning", url: "https://github.com/gini/capture-sdk-pinning-ios.git", .exact("3.11.0")),
+        .package(name: "GiniBankAPILibraryPinning", url: "https://github.com/gini/bank-api-library-pinning-ios.git", .exact("3.4.0")),
         .package(name: "GiniBankSDK", url: "https://github.com/gini/bank-sdk-ios.git", .exact("3.12.0")),
+        .package(name: "TrustKit", url: "https://github.com/datatheorem/TrustKit.git" , from: "2.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -25,7 +27,7 @@ let package = Package(
         
         .target(
             name: "GiniBankSDKPinning",
-            dependencies: ["GiniCaptureSDKPinning","GiniBankSDK"]),
+            dependencies: ["GiniCaptureSDKPinning", "GiniBankAPILibraryPinning", "GiniBankSDK", "TrustKit"]),
         .testTarget(
             name: "GiniBankSDKPinningTests",
             dependencies: ["GiniBankSDKPinning"])

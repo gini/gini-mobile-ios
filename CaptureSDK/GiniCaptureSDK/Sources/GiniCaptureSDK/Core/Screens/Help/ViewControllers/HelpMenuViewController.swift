@@ -90,7 +90,7 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
         tableView.register(
             UINib(
                 nibName: "HelpMenuCell",
-                bundle: giniCaptureBundle()),
+                bundle: giniCaptureBundleResource()),
             forCellReuseIdentifier: HelpMenuCell.reuseIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight

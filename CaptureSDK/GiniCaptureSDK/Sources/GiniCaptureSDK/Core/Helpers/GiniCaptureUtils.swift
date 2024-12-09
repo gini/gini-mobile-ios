@@ -7,7 +7,7 @@
 
 import UIKit
 
-public func giniCaptureBundle() -> Bundle {
+public func giniCaptureBundleResource() -> Bundle {
     Bundle.resource
 }
 
@@ -32,7 +32,7 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
     }
 
     return UIImage(named: name,
-                   in: giniCaptureBundle(),
+                   in: giniCaptureBundleResource(),
                    compatibleWith: nil)
 }
 
@@ -58,7 +58,7 @@ public func UIColorPreferred(named name: String) -> UIColor {
     }
 
     if let color = UIColor(named: name,
-                           in: giniCaptureBundle(),
+                           in: giniCaptureBundleResource(),
                            compatibleWith: nil) {
         return color
     } else {
@@ -116,7 +116,7 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
 private func giniLocalizedString(_ key: String,
                                  fallbackKey: String,
                                  comment: String) -> String {
-    let giniBundle = giniCaptureBundle()
+    let giniBundle = giniCaptureBundleResource()
 
     var defaultFormat = NSLocalizedString(key,
                                           bundle: giniBundle,
