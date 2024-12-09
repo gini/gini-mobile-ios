@@ -183,7 +183,7 @@ public final class DocumentService: DocumentServiceProtocol {
                 Log(message: "Feedback sent with \(updatedExtractions.count) extractions and \(updatedCompoundExtractions?.count ?? 0) compound extractions",
                     event: "🚀")
             case .failure(let error):
-                self.handleFeedbackFailure(document: document,
+                self.handleFeedbackFailure(documentId: documentId,
                                            updatedExtractions: updatedExtractions,
                                            updatedCompoundExtractions: updatedCompoundExtractions,
                                            error: error,
@@ -192,7 +192,7 @@ public final class DocumentService: DocumentServiceProtocol {
         }
     }
 
-    private func handleFeedbackFailure(document: Document,
+    private func handleFeedbackFailure(documentId: String,
                                        updatedExtractions: [Extraction],
                                        updatedCompoundExtractions: [String: [[Extraction]]]?,
                                        error: Error,
@@ -200,18 +200,18 @@ public final class DocumentService: DocumentServiceProtocol {
         if retryCount > 0 {
             Log(message: "Retrying feedback due to error: \(error). Remaining retries: \(retryCount - 1)", event: .warning)
             DispatchQueue.global().asyncAfter(deadline: .now() + 5) { [weak self] in
-                self?.attemptFeedback(document: document,
+                self?.attemptFeedback(documentId: documentId,
                                       updatedExtractions: updatedExtractions,
                                       updatedCompoundExtractions: updatedCompoundExtractions,
                                       retryCount: retryCount - 1)
             }
         } else {
-            handleFeedbackError(document: document, error: error)
+            handleFeedbackError(documentId: documentId, error: error)
         }
     }
 
-    private func handleFeedbackError(document: Document, error: Error) {
-        let message = "Error sending feedback for document with id: \(document.id) error: \(error)"
+    private func handleFeedbackError(documentId: String, error: Error) {
+        let message = "Error sending feedback for document with id: \(documentId) error: \(error)"
         Log(message: message, event: .error)
         let errorLog = ErrorLog(description: message, error: error)
         GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
