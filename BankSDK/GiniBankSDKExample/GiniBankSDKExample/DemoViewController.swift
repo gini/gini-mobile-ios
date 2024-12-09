@@ -10,7 +10,7 @@ import GiniCaptureSDK
 import GiniBankSDK
 
 protocol DemoViewControllerDelegate: AnyObject {
-    func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint)
+    func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint, selfDealloc: Bool)
     func didSelectSettings()
 }
 
@@ -24,6 +24,7 @@ final class DemoViewController: UIViewController {
     @IBOutlet private weak var welcomeTitlte: UILabel!
     @IBOutlet private weak var photoPaymentButton: GiniButton!
     
+    @IBOutlet private weak var selfDeallocToggle: UISwitch!
     @IBOutlet private weak var giniLogoTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var welcomeTitleTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var stackViewTopConstraint: NSLayoutConstraint!
@@ -153,7 +154,7 @@ final class DemoViewController: UIViewController {
         unsubscribeFromKeyboardNotifications()
         // we should hide the keyboard if the SDK is presented
         dismissKeyboard()
-        delegate?.didSelectEntryPoint(entryPoint)
+        delegate?.didSelectEntryPoint(entryPoint, selfDealloc: selfDeallocToggle.isOn)
     }
     
     // MARK: - User interactions

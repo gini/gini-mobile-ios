@@ -10,6 +10,12 @@ import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
 extension GiniBank {
+    /**
+     Aborts the current GiniBankSDK session
+     */
+    public class func cancelCurrentSDK() {
+        GiniBankNetworkingScreenApiCoordinator.cancelSDK()
+    }
 
     // MARK: - Screen API with Default Networking - Initializers for 'UIViewController'
 

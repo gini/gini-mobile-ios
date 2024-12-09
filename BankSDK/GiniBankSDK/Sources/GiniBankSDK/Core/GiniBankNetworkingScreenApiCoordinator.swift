@@ -15,6 +15,7 @@ protocol Coordinator: AnyObject {
 }
 
 open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, GiniCaptureDelegate {
+    static var currentCoordinator: GiniBankNetworkingScreenApiCoordinator?
     var childCoordinators: [Coordinator] = []
 
     // MARK: - GiniCaptureDelegate
@@ -266,6 +267,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
      SDK with the provided documents.
      */
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
+        Self.currentCoordinator = self
         setupAnalytics(withDocuments: documents)
         configurationService?.fetchConfigurations(completion: { result in
             switch result {
@@ -282,6 +284,15 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             }
         })
         return self.start(withDocuments: documents, animated: animated)
+    }
+
+    public func cancelSDK() {
+        finishWithCancellation()
+    }
+
+    public static func cancelSDK() {
+        currentCoordinator?.cancelSDK()
+        currentCoordinator = nil
     }
 }
 
