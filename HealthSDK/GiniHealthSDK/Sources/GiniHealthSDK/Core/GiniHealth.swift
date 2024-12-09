@@ -248,14 +248,14 @@ public struct DataForReview {
     Checks if the document is payable, looks for iban extraction.
 
     - Parameters:
-       - docId: Id of uploaded document.
+       - documentId: Id of uploaded document.
        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
        In success case it includes a boolean value and returns true if paymentState is payable.
        In case of failure in case of failure error from the server side.
 
     */
-   public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
-       documentService.fetchDocument(with: docId) { result in
+   public func checkIfDocumentIsPayable(documentId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+       documentService.fetchDocument(with: documentId) { result in
            switch result {
            case let .success(createdDocument):
                self.documentService.extractions(for: createdDocument,
@@ -283,14 +283,14 @@ public struct DataForReview {
     Checks if the document contains multiple invoices.
 
     - Parameters:
-       - docId: Id of uploaded document.
+       - documentId: Id of uploaded document.
        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
        In success case it includes a boolean value and returns true if contains multiple documents is true or false
        In case of failure in case of failure error from the server side.
 
     */
-    public func checkIfDocumentContainsMultipleInvoices(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
+    public func checkIfDocumentContainsMultipleInvoices(documentId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+        documentService.fetchDocument(with: documentId) { result in
             switch result {
             case let .success(createdDocument):
                 self.documentService.extractions(for: createdDocument,
@@ -318,15 +318,15 @@ public struct DataForReview {
      Polls the document via document id.
      
      - Parameters:
-        - docId: Id of uploaded document.
+        - documentId: Id of uploaded document.
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
         Completion block called on main thread.
         In success returns the polled document.
         In case of failure error from the server side.
 
      */
-    public func pollDocument(docId: String, completion: @escaping (Result<Document, GiniHealthError>) -> Void){
-        documentService.fetchDocument(with: docId) { result in
+    public func pollDocument(documentId: String, completion: @escaping (Result<Document, GiniHealthError>) -> Void){
+        documentService.fetchDocument(with: documentId) { result in
             DispatchQueue.main.async {
                 switch result {
                 case let .success(document):
@@ -341,15 +341,15 @@ public struct DataForReview {
     /**
      Get extractions for the document.
      
-     - parameter docId: Id of the uploaded document.
+     - parameter documentId: Id of the uploaded document.
      - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
      Completion block called on main thread.
      In success case it includes array of extractions.
      In case of failure in case of failure error from the server side.
      
      */
-    public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
+    public func getExtractions(documentId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
+        documentService.fetchDocument(with: documentId) { result in
             switch result {
             case let .success(createdDocument):
                 self.documentService
@@ -379,15 +379,15 @@ public struct DataForReview {
     /**
      Get all extractions for the document. Medical information included.
 
-     - parameter docId: Id of the uploaded document.
+     - parameter documentId: Id of the uploaded document.
      - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
      Completion block called on main thread.
      In success case it includes array of extractions.
      In case of failure in case of failure error from the server side.
 
      */
-    public func getAllExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
-        documentService.fetchDocument(with: docId) { result in
+    public func getAllExtractions(documentId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
+        documentService.fetchDocument(with: documentId) { result in
             switch result {
             case let .success(createdDocument):
                 self.documentService
@@ -469,7 +469,7 @@ public struct DataForReview {
         documentService.fetchDocument(with: documentId) { result in
             switch result {
             case .success(let document):
-                self.getExtractions(docId: document.id) { result in
+                self.getExtractions(documentId: document.id) { result in
                     switch result{
                     case .success(let extractions):
                         completion(.success(extractions))

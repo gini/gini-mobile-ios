@@ -66,7 +66,7 @@ public struct PaymentInfoConfiguration {
 }
 
 public struct PaymentInfoStrings {
-    let giniWebsiteText : String
+    let giniWebsiteText: String
     let giniURLText: String
 
     let questionsTitleText: String

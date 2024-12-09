@@ -24,10 +24,12 @@ protocol PaymentComponentsProtocol {
     var isLoading: Bool { get set }
     var selectedPaymentProvider: PaymentProvider? { get set }
     func loadPaymentProviders()
-    func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
+    func checkIfDocumentIsPayable(documentId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
     func paymentView() -> UIView
     func bankSelectionBottomSheet() -> UIViewController
-    func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
+    func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?,
+                                    previousPaymentComponentScreenType: PaymentComponentScreenType?,
+                                    completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
     func paymentInfoViewController() -> UIViewController
     func paymentViewBottomSheet() -> UIViewController
 }
@@ -107,7 +109,9 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     var documentId: String?
     // Errors stack received from API. We will show them for the clients
     var errors: [String] = []
-
+    
+    // Store Share Bottom Sheet for dismissed native share modal
+    var shareInvoiceBottomSheet: ShareInvoiceBottomView?
     /**
      Initializer of the Payment Component Controller class.
 
@@ -161,13 +165,13 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     /**
      Checks if the document is payable by extracting the IBAN.
      - Parameters:
-         - docId: The ID of the uploaded document.
+         - documentId: The ID of the uploaded document.
          - completion: A closure for processing asynchronous data received from the service. It has a Result type parameter, representing either success or failure. The completion block is called on the main thread.
          In the case of success, it includes a boolean value indicating whether the IBAN was extracted successfully.
          In case of failure, it returns an error from the server side.
      */
-    public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
-        giniSDK.checkIfDocumentIsPayable(docId: docId, completion: completion)
+    public func checkIfDocumentIsPayable(documentId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+        giniSDK.checkIfDocumentIsPayable(documentId: documentId, completion: completion)
     }
 }
 

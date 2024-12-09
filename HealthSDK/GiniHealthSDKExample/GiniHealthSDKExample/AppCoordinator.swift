@@ -57,8 +57,6 @@ final class AppCoordinator: Coordinator {
         configuration.paymentReviewStatusBarStyle = .lightContent
         return configuration
     }()
-    
-    var isBrandedPaymentComponent = true
 
     private var documentMetadata: GiniHealthSDK.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
@@ -161,8 +159,7 @@ final class AppCoordinator: Coordinator {
                                                                                             secret: clientPassword,
                                                                                             domain: clientDomain),
                                                                                             documentMetadata: metadata,
-                                                        hardcodedInvoicesController: HardcodedInvoicesController(),
-                                                        paymentComponentController: health.paymentComponentsController)
+                                                        hardcodedInvoicesController: HardcodedInvoicesController())
         
         screenAPICoordinator.delegate = self
         
@@ -197,7 +194,8 @@ final class AppCoordinator: Coordinator {
                                                                   extractionResult: extractionResult)
                             self?.showInvoicesList(invoices: [invoice])
                         case let .failure(error):
-                            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))", event: .error)
+                            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))",
+                                             event: .error)
                         }
                     }
                 case .failure(let error):
@@ -239,7 +237,8 @@ final class AppCoordinator: Coordinator {
                                                                                   extractionResult: extractionResult)
                                             self?.showInvoicesList(invoices: [invoice])
                                         case let .failure(error):
-                                            GiniUtilites.Log("Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))", event: .error)
+                                            GiniUtilites.Log("Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))",
+                                                             event: .error)
                                         }
                                     }
                                 case .failure(let error):
@@ -314,7 +313,6 @@ final class AppCoordinator: Coordinator {
         health.delegate = self
 
         let invoicesListCoordinator = InvoicesListCoordinator()
-        health.paymentComponentConfiguration.isPaymentComponentBranded = isBrandedPaymentComponent
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
                                           hardcodedInvoicesController: HardcodedInvoicesController(),
@@ -366,6 +364,10 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
 // MARK: ScreenAPICoordinatorDelegate
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
+    func presentError(title: String, message: String) {
+        self.rootViewController.showError(title, message: message)
+    }
+    
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true)
         self.remove(childCoordinator: coordinator)
