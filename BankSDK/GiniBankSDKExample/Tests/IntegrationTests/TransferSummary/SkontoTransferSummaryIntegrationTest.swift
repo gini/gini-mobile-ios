@@ -197,13 +197,6 @@ class SkontoTransferSummaryHandler: BaseSkontoTransferSummaryHandler<SkontoTrans
         
         GiniBankConfiguration.shared.skontoDiscounts = [modifiedSkontoExtractions]
     }
-
-    override func sendTransferSummary(result: AnalysisResult) {
-        guard let updatedAmountToPayString = result.extractions["amountToPay"]?.value else { return }
-        let amountExtraction = createAmountExtraction(value: updatedAmountToPayString)
-        GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(amountToPayExtraction: amountExtraction,
-                                                                   amountToPayString: updatedAmountToPayString)
-    }
 }
 
 class SkontoNotAppliedTransferSummaryHandler: BaseSkontoTransferSummaryHandler<SkontoNotAppliedTransferSummaryIntegrationTest> {
@@ -211,12 +204,5 @@ class SkontoNotAppliedTransferSummaryHandler: BaseSkontoTransferSummaryHandler<S
     override func applySkontoChangesIfNeeded(result: AnalysisResult) {
         guard let skontoDiscountExtraction = result.skontoDiscounts?.first else { return }
         GiniBankConfiguration.shared.skontoDiscounts = [skontoDiscountExtraction]
-    }
-
-    override func sendTransferSummary(result: AnalysisResult) {
-        let amountToPayString = result.extractions["amountToPay"]?.value ?? ""
-        let amountExtraction = createAmountExtraction(value: amountToPayString)
-        GiniBankConfiguration.shared.sendTransferSummaryWithSkonto(amountToPayExtraction: amountExtraction,
-                                                                   amountToPayString: amountToPayString)
     }
 }
