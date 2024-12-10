@@ -624,21 +624,21 @@ public final class GiniBankConfiguration: NSObject {
                                     iban: String,
                                     bic: String,
                                     amountToPay: ExtractionAmount) {
-        let updatedExtractions = createFeedbackBasicExtractions(paymentRecipient: paymentRecipient,
-                                                                paymentReference: paymentReference,
-                                                                paymentPurpose: paymentPurpose,
-                                                                iban: iban,
-                                                                bic: bic,
-                                                                amountToPayString: amountToPay.formattedString())
+        let updatedExtractions = generateBasicExtractions(paymentRecipient: paymentRecipient,
+                                                          paymentReference: paymentReference,
+                                                          paymentPurpose: paymentPurpose,
+                                                          iban: iban,
+                                                          bic: bic,
+                                                          amountToPayString: amountToPay.formattedString())
         sendTransferSummary(updatedExtractions: updatedExtractions)
     }
 
-    private func createFeedbackBasicExtractions(paymentRecipient: String,
-                                                paymentReference: String,
-                                                paymentPurpose: String,
-                                                iban: String,
-                                                bic: String,
-                                                amountToPayString: String) -> [Extraction] {
+    private func generateBasicExtractions(paymentRecipient: String,
+                                          paymentReference: String,
+                                          paymentPurpose: String,
+                                          iban: String,
+                                          bic: String,
+                                          amountToPayString: String) -> [Extraction] {
         let paymentRecipientExtraction = Extraction(box: nil,
                                                     candidates: nil,
                                                     entity: "companyname",
