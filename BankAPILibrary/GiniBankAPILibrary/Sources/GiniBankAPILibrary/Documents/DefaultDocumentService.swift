@@ -237,7 +237,10 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     public func submitFeedback(for document: Document,
                                with extractions: [Extraction],
                                completion: @escaping CompletionResult<Void>) {
-        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions, completion: completion)
+        submitFeedback(resourceHandler: sessionManager.data,
+                       for: document.id,
+                       with: extractions,
+                       completion: completion)
     }
     
     /**
@@ -252,7 +255,52 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                                with extractions: [Extraction],
                                and compoundExtractions: [String: [[Extraction]]],
                                completion: @escaping CompletionResult<Void>) {
-        submitFeedback(resourceHandler: sessionManager.data, for: document, with: extractions, and: compoundExtractions, completion: completion)
+        submitFeedback(resourceHandler: sessionManager.data,
+                       for: document.id,
+                       with: extractions,
+                       and: compoundExtractions,
+                       completion: completion)
+    }
+    
+    /**
+     *  Submits the analysis feedback for a given document id.
+     *
+     * - Parameter documentId:          The ID of the document for which feedback should be sent.
+     * - Parameter extractions:         The document's updated extractions
+     * - Parameter completion:          A completion callback
+     *
+     * - Note: This method is preferred over the `sendFeedback(document:updatedExtractions:completion:)`,
+     *         as it requires only the `documentId` instead of the entire document object, making it more lightweight and flexible.
+     */
+    public func submitFeedback(for documentId: String,
+                               with extractions: [Extraction],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: sessionManager.data,
+                       for: documentId,
+                       with: extractions,
+                       completion: completion)
+    }
+    
+    /**
+     *  Submits the analysis feedback with compound extractions (e.g., "line items") for a given document.
+     *
+     * - Parameter documentId:          The ID of the document for which feedback should be sent.
+     * - Parameter extractions:         The document's updated extractions
+     * - Parameter compoundExtractions: The document's updated compound extractions
+     * - Parameter completion:          A completion callback
+     *
+     * - Note: This method is preferred over the `sendFeedback(document:updatedExtractions:updatedCompoundExtractions:completion:)`,
+     *         as it requires only the `documentId` instead of the entire document object, making it more lightweight and flexible.
+     */
+    public func submitFeedback(for documentId: String,
+                               with extractions: [Extraction],
+                               and compoundExtractions: [String: [[Extraction]]],
+                               completion: @escaping CompletionResult<Void>) {
+        submitFeedback(resourceHandler: sessionManager.data,
+                       for: documentId,
+                       with: extractions,
+                       and: compoundExtractions,
+                       completion: completion)
     }
 
     /**
