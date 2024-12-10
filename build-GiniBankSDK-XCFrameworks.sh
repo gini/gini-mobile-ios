@@ -10,20 +10,13 @@ iphoneosBuildDir="build-ginibanksdk-iphoneos"
 
 # Function to cleanup simulator and iOS archives
 cleanup-artefacts() {
-    # check if cleanup is disabled in arguments
     if [[ "$1" == "--no-cleanup" || "$1" == "-n" ]]; then
         echo "warning: running without cleaning up"
     else
         echo "Cleaning up intermediate caches and artefacts..."
-
-        # cleaning archives
-        rm -rf $iphonesimulatorArchivePath
-        rm -rf $iphoneosArchivePath
-
-        # cleaning build dirs
-        rm -rf $iphoneosBuildDir
-        rm -rf $iphonesimulatorBuildDir
-
+        rm -rf $iphonesimulatorArchivePath $iphoneosArchivePath
+        rm -rf $iphoneosBuildDir $iphonesimulatorBuildDir
+        rm -rf *.xcframework
     fi
 }
 
@@ -33,12 +26,37 @@ cp-modules() {
     local srcPath=$2
     local dstPath=$3
 
-    echo "Copying modules and resources for $frName from $srcPath to $dstPath"
+    echo "Copying modules for $frName from $srcPath to $dstPath"
     mkdir -p "$dstPath/$frName.framework/Modules"
     cp -a "$srcPath/$frName.swiftmodule" "$dstPath/$frName.framework/Modules/$frName.swiftmodule"
 }
 
-# Function to archive a Swift Package
+# Function to copy specific resource bundles
+
+copy-resources() {
+    local schemeName=$1
+    local derivedDataPath=$2
+    local dstPath=$3
+    local bundlePath=$4
+
+    echo "Copying resources for $schemeName from DerivedDataPath to $dstPath"
+
+    # Create the destination directory if it doesn't exist
+    mkdir -p "$dstPath/$schemeName.framework"
+
+    # Construct paths for source and destination
+    local srcBundlePath="$bundlePath/${schemeName}_${schemeName}.bundle"
+    local dstBundlePath="$dstPath/$schemeName.framework/${schemeName}_${schemeName}.bundle"
+
+    # Copy the resource bundle
+    if [ -d "$srcBundlePath" ]; then
+        echo "Copying resource bundle from $srcBundlePath to $dstBundlePath"
+        cp -r "$srcBundlePath" "$dstBundlePath"
+    else
+        echo "Error: Resource bundle not found at $srcBundlePath"
+    fi
+}
+
 archive() {
     local srcPath=$1
     local platform=$2
@@ -58,15 +76,23 @@ archive() {
         CODE_SIGNING_ALLOWED=YES \
         CODE_SIGNING_REQUIRED=NO
 
+
     # Copy modules
     local resultFrameworksPath="$outputPath/Products/usr/local/lib"
     local modulesPath="$derivedDataPath/Build/Intermediates.noindex/ArchiveIntermediates/GiniBankSDK/BuildProductsPath/Release-$sdk"
 
-    cp-modules "GiniBankSDK" "$modulesPath" "$resultFrameworksPath"
-    cp-modules "GiniCaptureSDK" "$modulesPath" "$resultFrameworksPath"
-    cp-modules "GiniBankAPILibrary" "$modulesPath" "$resultFrameworksPath"
+    frameworks=("GiniBankAPILibrary" "GiniCaptureSDK" "GiniBankSDK")
 
+    for framework in "${frameworks[@]}"; do
+        cp-modules "$framework" "$modulesPath" "$resultFrameworksPath"
+    done
+    
+    for framework in "${frameworks[@]}"; do
+        # Call copy-resources to handle resource bundles
+        copy-resources "$framework" "$derivedDataPath" "$outputPath/Products/usr/local/lib" "$modulesPath"
+    done
 }
+
 
 # XCFramework Creation Function
 make-xcframework() {
@@ -77,19 +103,9 @@ make-xcframework() {
     local frameworkPath="$srcPath/Products/usr/local/lib/$frName.framework"
     local frameworkPathSim="$srcPathSim/Products/usr/local/lib/$frName.framework"
 
-      # Debugging: Display constructed framework paths
+     # Debugging: Display constructed framework paths
     echo "Framework Path (iPhone): $frameworkPath"
     echo "Framework Path (Simulator): $frameworkPathSim"
-
-    # Validate paths
-    if [[ ! -d "$frameworkPath" ]]; then
-        echo "Error: Framework path does not exist: $frameworkPath"
-        return 1
-    fi
-    if [[ ! -d "$frameworkPathSim" ]]; then
-        echo "Error: Framework path does not exist: $frameworkPathSim"
-        return 1
-    fi
 
     # Create the XCFramework
     echo "Creating XCFramework for $frName"
@@ -118,18 +134,12 @@ archive "BankSDK/GiniBankSDK" \
     $iphonesimulatorBuildDir \
     $iphonesimulatorArchivePath
 
-# Create XCFrameworks
-make-xcframework "GiniBankAPILibrary" \
-    "$iphoneosArchivePath" \
-    "$iphonesimulatorArchivePath"
+#"TrustKit" "GiniBankAPILibraryPinning" "GiniCaptureSDKPinning" "GiniBankSDKPinning"
+frameworks=("GiniBankAPILibrary" "GiniCaptureSDK" "GiniBankSDK")
 
-make-xcframework "GiniCaptureSDK" \
-    "$iphoneosArchivePath" \
-    "$iphonesimulatorArchivePath"
-
-make-xcframework "GiniBankSDK" \
-    "$iphoneosArchivePath" \
-    "$iphonesimulatorArchivePath"
+for framework in "${frameworks[@]}"; do
+    make-xcframework "$framework" "$iphoneosArchivePath" "$iphonesimulatorArchivePath"
+done
     
 # swift package checks for "1" so making it empty is enough to clean it
 export GINI_FORCE_DYNAMIC_LIBRARY=""
