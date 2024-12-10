@@ -87,8 +87,8 @@ public extension GiniCaptureNetworkService {
      * - Parameter completion:                  A completion callback that returns a `Result<Void, GiniError>`.
      *                                          On success, it returns `Void`. On failure, it returns an error.
      *
-     * - Note: Prefer using this method over `sendFeedback(document:updatedExtractions:updatedCompoundExtractions:completion:)`
-     *         when the `documentId` is available, as it avoids unnecessary use of the `Document` object.
+     *  - Note: This method is preferred over the `sendFeedback(document:updatedExtractions:updatedCompoundExtractions:completion:)`,
+     *          as it requires only the `documentId` instead of the entire document object, making it more lightweight and flexible.
      */
     func sendFeedback(documentId: String,
                       updatedExtractions: [Extraction],
