@@ -269,7 +269,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
      * - Parameter extractions:         The document's updated extractions
      * - Parameter completion:          A completion callback
      *
-     * - Note: This method is preferred over the `sendFeedback(document:updatedExtractions:updatedCompoundExtractions:completion:)`,
+     * - Note: This method is preferred over the `sendFeedback(document:updatedExtractions:completion:)`,
      *         as it requires only the `documentId` instead of the entire document object, making it more lightweight and flexible.
      */
     public func submitFeedback(for documentId: String,
@@ -288,6 +288,9 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
      * - Parameter extractions:         The document's updated extractions
      * - Parameter compoundExtractions: The document's updated compound extractions
      * - Parameter completion:          A completion callback
+     *
+     * - Note: This method is preferred over the `sendFeedback(document:updatedExtractions:updatedCompoundExtractions:completion:)`,
+     *         as it requires only the `documentId` instead of the entire document object, making it more lightweight and flexible.
      */
     public func submitFeedback(for documentId: String,
                                with extractions: [Extraction],
