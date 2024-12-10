@@ -383,6 +383,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
                 let result = AnalysisResult(extractions: extractions,
                                             lineItems: result.lineItems,
+                                            skontoDiscounts: result.skontoDiscounts,
                                             images: images,
                                             document: documentService.document,
                                             candidates: result.candidates)
@@ -390,6 +391,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
                 self.giniBankConfiguration.lineItems = result.lineItems
+                if let skontoDiscounts = result.skontoDiscounts {
+                    self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
+                    self.sendSkontoTransferSummary(extractions: extractions)
+                }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
@@ -492,11 +497,28 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
                 self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
+                self.sendSkontoTransferSummary(extractions: extractions)
             } else {
                 analysisDelegate?.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
             }
         }
+    }
+
+    private func sendSkontoTransferSummary(extractions: [String: Extraction]) {
+        guard let extractionAmount = ExtractionAmount.extract(from: extractions) else { return }
+        let amountToPayString = extractionAmount.formattedString()
+        let amountExtraction = createAmountExtraction(value: amountToPayString)
+        giniBankConfiguration.sendTransferSummaryWithSkonto(amountToPayExtraction: amountExtraction,
+                                                            amountToPayString: amountToPayString)
+    }
+
+    private func createAmountExtraction(value: String) -> Extraction {
+        return Extraction(box: nil,
+                          candidates: nil,
+                          entity: "amount",
+                          value: value,
+                          name: "amountToPay")
     }
 
     private func showSkontoScreen(skontoDiscounts: SkontoDiscounts, documentId: String) {
