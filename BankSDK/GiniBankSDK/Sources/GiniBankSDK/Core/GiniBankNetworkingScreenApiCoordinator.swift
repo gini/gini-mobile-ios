@@ -393,7 +393,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 self.giniBankConfiguration.lineItems = result.lineItems
                 if let skontoDiscounts = result.skontoDiscounts {
                     self.giniBankConfiguration.skontoDiscounts = skontoDiscounts
-                    self.sendSkontoFeedback(extractions: extractions)
+                    self.sendSkontoTransferSummary(extractions: extractions)
                 }
             } else {
                 analysisDelegate.tryDisplayNoResultsScreen()
@@ -497,7 +497,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
                 self.giniBankConfiguration.skontoDiscounts = result.skontoDiscounts
-                self.sendSkontoFeedback(extractions: extractions)
+                self.sendSkontoTransferSummary(extractions: extractions)
             } else {
                 analysisDelegate?.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
@@ -505,7 +505,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
-    private func sendSkontoFeedback(extractions: [String: Extraction]) {
+    private func sendSkontoTransferSummary(extractions: [String: Extraction]) {
         guard let extractionAmount = ExtractionAmount.extract(from: extractions) else { return }
         let amountToPayString = extractionAmount.formattedString()
         let amountExtraction = createAmountExtraction(value: amountToPayString)
