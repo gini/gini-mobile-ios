@@ -78,6 +78,18 @@ public extension GiniCaptureNetworkService {
         // Default implementation is empty
     }
     
+    /**
+     *  Sends feedback for a document based on the provided document ID, updated extractions, and updated compound extractions.
+     *
+     * - Parameter documentId:                  The unique identifier of the document for which feedback is being sent.
+     * - Parameter updatedExtractions:          An array of updated extractions to be included in the feedback.
+     * - Parameter updatedCompoundExtractions:  A dictionary of updated compound extractions to be included in the feedback.
+     * - Parameter completion:                  A completion callback that returns a `Result<Void, GiniError>`.
+     *                                          On success, it returns `Void`. On failure, it returns an error.
+     *
+     * - Note: Prefer using this method over `sendFeedback(document:updatedExtractions:updatedCompoundExtractions:completion:)`
+     *         when the `documentId` is available, as it avoids unnecessary use of the `Document` object.
+     */
     func sendFeedback(documentId: String,
                       updatedExtractions: [Extraction],
                       updatedCompoundExtractions: [String: [[Extraction]]]?,
