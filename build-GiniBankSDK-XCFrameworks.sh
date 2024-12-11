@@ -27,6 +27,13 @@ cleanup-artefacts() {
     fi
 }
 
+cleanup-frameworks() {
+    # cleaning up xcframeworks
+    rm -rf "GiniBankSDK.xcframework"
+    rm -rf "GiniBankAPILibrary.xcframework"
+    rm -rf "GiniCaptureSDK.xcframework"
+}
+
 # Function to copy .swiftmodule
 cp-modules() {
     local frName=$1
@@ -66,6 +73,20 @@ archive() {
     cp-modules "GiniCaptureSDK" "$modulesPath" "$resultFrameworksPath"
     cp-modules "GiniBankAPILibrary" "$modulesPath" "$resultFrameworksPath"
 
+    # Copy bundle resources
+    local bankBundlePath="$modulesPath/../../IntermediateBuildFilesPath/UninstalledProducts/$sdk/GiniBankSDK_GiniBankSDK.bundle"
+    if [ -d "$bankBundlePath" ]; then
+        cp -a "$bankBundlePath" "$resultFrameworksPath/GiniBankSDK.framework/GiniBankSDK_GiniBankSDK.bundle"
+    else
+        echo "GiniBank resource bundle not found: $bankBundlePath"
+    fi
+
+    local captureBundlePath="$modulesPath/../../IntermediateBuildFilesPath/UninstalledProducts/$sdk/GiniCaptureSDK_GiniCaptureSDK.bundle"
+    if [ -d "$captureBundlePath" ]; then
+        cp -a "$captureBundlePath" "$resultFrameworksPath/GiniCaptureSDK.framework/GiniCaptureSDK_GiniCaptureSDK.bundle"
+    else
+        echo "GiniCapture resource bundle not found: $captureBundlePath"
+    fi
 }
 
 # XCFramework Creation Function
@@ -101,6 +122,7 @@ make-xcframework() {
 
 # Pre-cleanup
 cleanup-artefacts
+cleanup-frameworks
 
 # telling swift packages in the environment that they need to produce dynamic libraries
 export GINI_FORCE_DYNAMIC_LIBRARY=1
