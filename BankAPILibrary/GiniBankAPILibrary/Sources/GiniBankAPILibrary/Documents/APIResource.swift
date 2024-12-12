@@ -123,6 +123,8 @@ struct APIResource<T: Decodable>: Resource {
             return "/events/error"
         case .configurations:
             return "/configurations"
+        case .analyticsEvent:
+            return "/events/batch"
         }
     }
     
@@ -142,6 +144,10 @@ struct APIResource<T: Decodable>: Resource {
         return ["Accept": ContentType.content(version: apiVersion,
                                               subtype: nil,
                                               mimeSubtype: "json").value]
+        case .analyticsEvent:
+            return ["Accept": ContentType.json.value,
+                    "Content-Type": "application/vnd.gini.v1.events.amplitude"
+            ]
         default:
             return ["Accept": ContentType.content(version: apiVersion,
                                                   subtype: nil,
