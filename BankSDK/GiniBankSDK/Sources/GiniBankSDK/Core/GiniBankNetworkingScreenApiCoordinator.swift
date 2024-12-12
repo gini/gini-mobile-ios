@@ -121,6 +121,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
     private var configurationService: ClientConfigurationServiceProtocol?
+    private var analyticsService: AnalyticsServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
     /// Internal coordinator for managing transaction documents, conforming to `TransactionDocsDataInternalProtocol`.
@@ -140,6 +141,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 lib: GiniBankAPI) {
         documentService = DocumentService(lib: lib, metadata: documentMetadata)
         configurationService = lib.configurationService()
+        analyticsService = lib.analyticService()
         let captureConfiguration = configuration.captureConfiguration()
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
 
@@ -158,6 +160,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 lib: GiniBankAPI) {
         documentService = DocumentService(lib: lib, metadata: documentMetadata)
         configurationService = lib.configurationService()
+        analyticsService = lib.analyticService()
         let captureConfiguration = configuration.captureConfiguration()
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
 
@@ -318,7 +321,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
                                                   .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons,
                                                   .bankSDKVersion: GiniBankSDKVersion])
-        GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
+        GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration, analyticsAPIService: analyticsService)
     }
 
     private func sendAnalyticsEventSDKClose() {
