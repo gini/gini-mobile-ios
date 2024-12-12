@@ -45,13 +45,11 @@ public final class InstallAppBottomView: BottomSheetViewController {
     
     private let moreInformationView = EmptyView()
     
-    private lazy var moreInformationStackView: UIStackView = {
-        let stackView = EmptyStackView().orientation(.horizontal)
-        stackView.spacing = Constants.viewPaddingConstraint
-        stackView.distribution = .fillProportionally
-        return stackView
-    }()
-    
+    private lazy var moreInformationStackView = EmptyStackView()
+        .orientation(.horizontal)
+        .spacing(Constants.viewPaddingConstraint)
+        .distribution(.fillProportionally)
+
     private lazy var moreInformationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -93,8 +91,6 @@ public final class InstallAppBottomView: BottomSheetViewController {
     private let buttonsView: UIView = EmptyView()
     
     private let bottomView = EmptyView()
-    
-    private let bottomStackView = EmptyStackView().orientation(.horizontal)
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
         PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
@@ -131,17 +127,12 @@ public final class InstallAppBottomView: BottomSheetViewController {
         contentStackView.addArrangedSubview(titleView)
         bankView.addSubview(bankIconImageView)
         contentStackView.addArrangedSubview(bankView)
-        moreInformationStackView.addArrangedSubview(moreInformationButton)
-        moreInformationStackView.addArrangedSubview(moreInformationLabel)
         moreInformationView.addSubview(moreInformationStackView)
         contentStackView.addArrangedSubview(moreInformationView)
         buttonsView.addSubview(continueButton)
         buttonsView.addSubview(appStoreImageView)
         contentStackView.addArrangedSubview(buttonsView)
-        contentStackView.addArrangedSubview(UIView())
-        bottomStackView.addArrangedSubview(UIView())
-        bottomStackView.addArrangedSubview(poweredByGiniView)
-        bottomView.addSubview(bottomStackView)
+        bottomView.addSubview(poweredByGiniView)
         contentStackView.addArrangedSubview(bottomView)
         contentView.addSubview(contentStackView)
         self.setContent(content: contentView)
@@ -182,9 +173,13 @@ public final class InstallAppBottomView: BottomSheetViewController {
     // Portrait Layout Constraints
     private func setupPortraitConstraints() {
         NSLayoutConstraint.deactivate(landscapeConstraints)
+        updateMoreInformationStackView(for: .portrait)
+
         portraitConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            moreInformationStackView.topAnchor.constraint(equalTo: moreInformationView.topAnchor, constant: Constants.viewPaddingConstraint),
+            poweredByGiniView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint)
         ]
         NSLayoutConstraint.activate(portraitConstraints)
     }
@@ -192,11 +187,43 @@ public final class InstallAppBottomView: BottomSheetViewController {
     // Landscape Layout Constraints
     private func setupLandscapeConstraints() {
         NSLayoutConstraint.deactivate(portraitConstraints)
+        updateMoreInformationStackView(for: .landscape)
+
         landscapeConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.landscapePadding),
-            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.landscapePadding)
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.landscapePadding),
+            moreInformationStackView.topAnchor.constraint(equalTo: moreInformationView.topAnchor, constant: Constants.moreInformationTopPaddingLandscape),
+            poweredByGiniView.centerXAnchor.constraint(equalTo: bottomView.centerXAnchor)
         ]
         NSLayoutConstraint.activate(landscapeConstraints)
+    }
+
+    // Enum to Represent Layout Types
+    private enum LayoutType {
+        case portrait
+        case landscape
+    }
+
+    // Helper Method to Update More Information Stack View
+    private func updateMoreInformationStackView(for layout: LayoutType) {
+        moreInformationStackView.removeAllArrangedSubviews()
+
+        switch layout {
+        case .portrait:
+            titleLabel.textAlignment = .left
+            moreInformationStackView.alignment = .leading
+            moreInformationLabel.textAlignment = .left
+            moreInformationStackView.addArrangedSubview(moreInformationButton)
+            moreInformationStackView.addArrangedSubview(moreInformationLabel)
+        case .landscape:
+            titleLabel.textAlignment = .center
+            moreInformationStackView.alignment = .center
+            moreInformationLabel.textAlignment = .center
+            moreInformationStackView.addArrangedSubview(UIView())
+            moreInformationStackView.addArrangedSubview(moreInformationButton)
+            moreInformationStackView.addArrangedSubview(moreInformationLabel)
+            moreInformationStackView.addArrangedSubview(UIView())
+        }
     }
 
     @objc private func willEnterForeground() {
@@ -215,9 +242,11 @@ public final class InstallAppBottomView: BottomSheetViewController {
 
     private func setupTitleViewConstraints() {
         NSLayoutConstraint.activate([
+            contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.topBottomPaddingConstraint),
+            titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.viewPaddingConstraint),
             titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor, constant: -Constants.topBottomPaddingConstraint)
         ])
     }
@@ -236,7 +265,6 @@ public final class InstallAppBottomView: BottomSheetViewController {
         NSLayoutConstraint.activate([
             moreInformationStackView.leadingAnchor.constraint(equalTo: moreInformationView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             moreInformationStackView.trailingAnchor.constraint(equalTo: moreInformationView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            moreInformationStackView.topAnchor.constraint(equalTo: moreInformationView.topAnchor, constant: Constants.viewPaddingConstraint),
             moreInformationStackView.bottomAnchor.constraint(equalTo: moreInformationView.bottomAnchor, constant: Constants.moreInformationBottomAnchorConstraint),
             moreInformationButton.widthAnchor.constraint(equalToConstant: Constants.infoIconSize)
         ])
@@ -265,11 +293,8 @@ public final class InstallAppBottomView: BottomSheetViewController {
 
     private func setupPoweredByGiniConstraints() {
         NSLayoutConstraint.activate([
-            bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
-            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
-            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
+            poweredByGiniView.centerYAnchor.constraint(equalTo: bottomView.centerYAnchor),
+            bottomView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
     }
     
@@ -292,6 +317,17 @@ public final class InstallAppBottomView: BottomSheetViewController {
             UIApplication.shared.open(url)
         }
     }
+
+    // Handle orientation change
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        updateLayoutForCurrentOrientation()
+
+        // Perform layout updates with animation
+        coordinator.animate(alongsideTransition: { context in
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
 }
 
 extension InstallAppBottomView {
@@ -309,7 +345,8 @@ extension InstallAppBottomView {
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let moreInformationBottomAnchorConstraint = 8.0
         static let infoIconSize = 24.0
-        static let bottomViewHeight = 44.0
+        static let bottomViewHeight = 22.0
         static let landscapePadding = 126.0
+        static let moreInformationTopPaddingLandscape = 32.0
     }
 }

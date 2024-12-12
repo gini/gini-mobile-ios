@@ -93,10 +93,9 @@ public extension BottomSheetViewController {
     // Handle orientation change
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        updateLayoutForCurrentOrientation()
-        // Perform layout updates with animation
-        coordinator.animate(alongsideTransition: { context in
-            self.view.layoutIfNeeded()
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            self?.updateLayoutForCurrentOrientation()
+            self?.view.layoutIfNeeded()
         }, completion: nil)
     }
 }
@@ -121,9 +120,6 @@ private extension BottomSheetViewController {
             mainContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             mainContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        if minHeight > 0 {
-            mainContainerView.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: obtainTopAnchorMinHeightConstraint()).isActive = true
-        }
         
         // Top draggable bar view
         mainContainerView.addSubview(topBarView)
@@ -160,7 +156,6 @@ private extension BottomSheetViewController {
     }
 
     func setupInitialLayout() {
-        guard minHeight <= 0 else { return }
         updateLayoutForCurrentOrientation()
     }
 
@@ -179,14 +174,22 @@ private extension BottomSheetViewController {
     // Portrait Layout Constraints
     func setupPortraitConstraints() {
         landscapeTopConstraint?.isActive = false
-        portraitTopConstraint = mainContainerView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.minTopSpacingPortrait)
+        if minHeight > 0 {
+            portraitTopConstraint = mainContainerView.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: obtainTopAnchorMinHeightConstraint())
+        } else {
+            portraitTopConstraint = mainContainerView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.minTopSpacingPortrait)
+        }
         portraitTopConstraint?.isActive = true
     }
 
     // Landscape Layout Constraints
     func setupLandscapeConstraints() {
         portraitTopConstraint?.isActive = false
-        landscapeTopConstraint = mainContainerView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.minTopSpacingLandscape)
+        if minHeight > 0 {
+            landscapeTopConstraint = mainContainerView.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: obtainTopAnchorMinHeightConstraint())
+        } else {
+            landscapeTopConstraint = mainContainerView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.minTopSpacingLandscape)
+        }
         landscapeTopConstraint?.isActive = true
     }
 

@@ -539,7 +539,8 @@ extension PaymentReviewViewController {
         static let infoBarLabelPadding = 8.0
         static let pageControlHeight = 20.0
         static let collectionViewPadding = 10.0
-        static let inputContainerHeight = 375.0
+        static let inputContainerHeightPortait = 375.0
+        static let inputContainerHeightLandscape = 307.0
         static let cornerRadius = 12.0
         static let moveHeightInfoBar = 24.0
         static let collectionViewBottomPadding = 10.0
