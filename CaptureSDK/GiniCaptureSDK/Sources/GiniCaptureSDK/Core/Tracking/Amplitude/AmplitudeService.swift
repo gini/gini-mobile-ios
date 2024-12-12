@@ -6,6 +6,7 @@
 
 import Foundation
 import UIKit
+import GiniBankAPILibrary
 
 /**
  A service for tracking and uploading events to the Amplitude analytics platform using directly Ampltitude API.
@@ -43,13 +44,15 @@ final class AmplitudeService {
     private let eventUploadInterval: TimeInterval = 5.0
     private let apiURL = "https://api.eu.amplitude.com/batch"
     private let queue = DispatchQueue(label: "com.amplitude.service.queue")
+    private var analyticsAPIService: AnalyticsServiceProtocol?
 
     /**
      * Initializes the AmplitudeService with an optional API key.
      * - Parameter apiKey: The API key for Amplitude.
      */
-    init(apiKey: String?) {
+    init(apiKey: String?, analyticsAPIService: AnalyticsServiceProtocol?) {
         self.apiKey = apiKey
+        self.analyticsAPIService = analyticsAPIService
         setupObservers()
         startEventUploadTimer()
     }
@@ -76,42 +79,18 @@ final class AmplitudeService {
      * - Parameter events: The events to be uploaded.
      */
     private func uploadEvents(events: [EventWrapper]) {
-        guard let url = URL(string: apiURL), let apiKey, !events.isEmpty else { return }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let payload = AmplitudeEventsBatchPayload(apiKey: apiKey, events: events.map { $0.event })
-
-        do {
-            let jsonData = try JSONEncoder().encode(payload)
-            request.httpBody = jsonData
-
-            let task = URLSession.shared.dataTask(with: request) { [weak self] _, response, error in
-                guard let self = self else { return }
-                if let error = error {
-                    print("❌ Error uploading events: \(error)")
-                    self.handleUploadFailure(events: events)
-                    return
-                }
-
-                if let httpResponse = response as? HTTPURLResponse {
-                    if httpResponse.statusCode == 200 {
-                        print("✅ Successfully uploaded events")
-                        self.markEventsAsSent(events: events)
-                        self.resetAndCleanup()
-                    } else {
-                        print("❌ Failed to upload events: \(httpResponse.statusCode)")
-                        self.handleUploadFailure(events: events)
-                    }
-                }
+        let payload = AmplitudeEventsBatchPayload(events: events.map { $0.event })
+        analyticsAPIService?.sendEventsPayload(payload: payload, completion: { result in
+            switch result {
+            case .success(_):
+                print("✅ Successfully uploaded events")
+                self.markEventsAsSent(events: events)
+                self.resetAndCleanup()
+            case .failure(let error):
+                print("❌ Failed to upload events: \(error)")
+                self.handleUploadFailure(events: events)
             }
-            task.resume()
-        } catch {
-            print("❌ Error encoding events: \(error)")
-            handleUploadFailure(events: events)
-        }
+        })
     }
 
     /**

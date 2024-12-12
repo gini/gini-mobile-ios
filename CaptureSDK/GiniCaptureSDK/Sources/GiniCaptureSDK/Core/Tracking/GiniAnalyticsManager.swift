@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniBankAPILibrary
 
 public final class GiniAnalyticsManager {
     private static var amplitudeService: AmplitudeService? {
@@ -21,12 +22,12 @@ public final class GiniAnalyticsManager {
     private static var giniClientID: String?
     private static var eventId: Int64 = 0
 
-    public static func initializeAnalytics(with configuration: GiniAnalyticsConfiguration) {
+    public static func initializeAnalytics(with configuration: GiniAnalyticsConfiguration, analyticsAPIService: AnalyticsServiceProtocol?) {
         guard configuration.userJourneyAnalyticsEnabled,
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
 
         giniClientID = configuration.clientID
-        initializeAmplitude(with: configuration.amplitudeApiKey)
+        initializeAmplitude(with: configuration.amplitudeApiKey, analyticsAPIService: analyticsAPIService)
     }
 
     public static func cleanManager() {
@@ -44,8 +45,8 @@ public final class GiniAnalyticsManager {
 
     // MARK: Initialization
 
-    private static func initializeAmplitude(with apiKey: String?) {
-        amplitudeService = AmplitudeService(apiKey: apiKey)
+    private static func initializeAmplitude(with apiKey: String?, analyticsAPIService: AnalyticsServiceProtocol?) {
+        amplitudeService = AmplitudeService(apiKey: apiKey, analyticsAPIService: analyticsAPIService)
     }
 
     private static func handleAnalyticsSDKsInit() {
