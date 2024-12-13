@@ -27,7 +27,7 @@ public final class GiniAnalyticsManager {
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
 
         giniClientID = configuration.clientID
-        initializeAmplitude(with: configuration.amplitudeApiKey, analyticsAPIService: analyticsAPIService)
+        initializeAmplitude(analyticsAPIService: analyticsAPIService)
     }
 
     public static func cleanManager() {
@@ -45,8 +45,8 @@ public final class GiniAnalyticsManager {
 
     // MARK: Initialization
 
-    private static func initializeAmplitude(with apiKey: String?, analyticsAPIService: AnalyticsServiceProtocol?) {
-        amplitudeService = AmplitudeService(apiKey: apiKey, analyticsAPIService: analyticsAPIService)
+    private static func initializeAmplitude(analyticsAPIService: AnalyticsServiceProtocol?) {
+        amplitudeService = AmplitudeService(analyticsAPIService: analyticsAPIService)
     }
 
     private static func handleAnalyticsSDKsInit() {

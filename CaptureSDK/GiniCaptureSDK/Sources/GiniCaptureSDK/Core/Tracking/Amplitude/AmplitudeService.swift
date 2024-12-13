@@ -37,7 +37,6 @@ final class AmplitudeService {
     }
 
     private var eventQueue: [EventWrapper] = []
-    private var apiKey: String?
     private var timer: Timer?
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private let maxRetryAttempts = 3
@@ -46,12 +45,7 @@ final class AmplitudeService {
     private let queue = DispatchQueue(label: "com.amplitude.service.queue")
     private var analyticsAPIService: AnalyticsServiceProtocol?
 
-    /**
-     * Initializes the AmplitudeService with an optional API key.
-     * - Parameter apiKey: The API key for Amplitude.
-     */
-    init(apiKey: String?, analyticsAPIService: AnalyticsServiceProtocol?) {
-        self.apiKey = apiKey
+    init(analyticsAPIService: AnalyticsServiceProtocol?) {
         self.analyticsAPIService = analyticsAPIService
         setupObservers()
         startEventUploadTimer()
