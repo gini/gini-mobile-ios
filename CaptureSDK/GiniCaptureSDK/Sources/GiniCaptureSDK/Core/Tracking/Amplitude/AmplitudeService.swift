@@ -41,7 +41,6 @@ final class AmplitudeService {
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private let maxRetryAttempts = 3
     private let eventUploadInterval: TimeInterval = 5.0
-    private let apiURL = "https://api.eu.amplitude.com/batch"
     private let queue = DispatchQueue(label: "com.amplitude.service.queue")
     private var analyticsAPIService: AnalyticsServiceProtocol?
 
