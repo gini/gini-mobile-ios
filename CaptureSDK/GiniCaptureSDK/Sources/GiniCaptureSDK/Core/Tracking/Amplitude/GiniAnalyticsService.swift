@@ -9,12 +9,14 @@ import UIKit
 import GiniBankAPILibrary
 
 /**
- A service for tracking and uploading events to the Amplitude analytics platform using directly Ampltitude API.
+ A service for tracking and uploading events to Gini's analytics endpoint, which
+ then proxies these events to the Amplitude analytics platform.
 
  This service manages an event queue and handles the periodic uploading of events
- to the Amplitude server. It supports automatic retries with exponential backoff
- in case of upload failures. The service also observes application lifecycle events
- to manage background tasks appropriately.
+ to Gini's backend. From there, the events are forwarded to Amplitude. The service
+ supports automatic retries with exponential backoff in case of upload failures.
+ It also observes application lifecycle events to manage background tasks and
+ ensure that events are uploaded even when the app transitions to the background.
  */
 
 final class GiniAnalyticsService {
@@ -68,7 +70,7 @@ final class GiniAnalyticsService {
     }
 
     /**
-     * Uploads a list of events to the Amplitude server.
+     * Uploads a list of events to the Gini server.
      * - Parameter events: The events to be uploaded.
      */
     private func uploadEvents(events: [EventWrapper]) {
