@@ -43,7 +43,7 @@ final class GiniAnalyticsService {
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private let maxRetryAttempts = 3
     private let eventUploadInterval: TimeInterval = 5.0
-    private let queue = DispatchQueue(label: "com.amplitude.service.queue")
+    private let queue = DispatchQueue(label: "com.analytics.service.queue")
     private var analyticsAPIService: AnalyticsServiceProtocol?
 
     init(analyticsAPIService: AnalyticsServiceProtocol?) {
