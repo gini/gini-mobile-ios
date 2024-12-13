@@ -30,8 +30,9 @@ final class SkontoDocumentPagesViewModel: DocumentPagesViewModelProtocol {
     private(set) var processedImages = [UIImage]()
     static var screenTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.document.pages.screen.title",
                                                                               comment: "Skonto discount details")
-    static var errorButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.document.pages.error.buttonTitle",
-                                                                           comment: "Try again")
+    static var errorButtonTitle = NSLocalizedStringPreferredGiniBankFormat(
+        "ginibank.skonto.document.pages.error.tryAgain.buttonTitle",
+        comment: "Try again")
     var bottomInfoItems: [String] {
         return [expiryDateString, withDiscountPriceString, withoutDiscountPriceString]
     }
