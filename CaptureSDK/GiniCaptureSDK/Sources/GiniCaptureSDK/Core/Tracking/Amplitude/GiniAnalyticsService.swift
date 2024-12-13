@@ -17,7 +17,7 @@ import GiniBankAPILibrary
  to manage background tasks appropriately.
  */
 
-final class AmplitudeService {
+final class GiniAnalyticsService {
     /**
      * The state of an event in the queue.
      */

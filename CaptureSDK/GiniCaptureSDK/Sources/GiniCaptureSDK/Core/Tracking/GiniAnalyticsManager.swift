@@ -8,7 +8,7 @@ import UIKit
 import GiniBankAPILibrary
 
 public final class GiniAnalyticsManager {
-    private static var amplitudeService: AmplitudeService? {
+    private static var analyticsService: GiniAnalyticsService? {
         didSet {
             handleAnalyticsSDKsInit()
         }
@@ -27,7 +27,7 @@ public final class GiniAnalyticsManager {
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
 
         giniClientID = configuration.clientID
-        initializeAmplitude(analyticsAPIService: analyticsAPIService)
+        initializeAnalyticsService(analyticsAPIService: analyticsAPIService)
     }
 
     public static func cleanManager() {
@@ -45,12 +45,12 @@ public final class GiniAnalyticsManager {
 
     // MARK: Initialization
 
-    private static func initializeAmplitude(analyticsAPIService: AnalyticsServiceProtocol?) {
-        amplitudeService = AmplitudeService(analyticsAPIService: analyticsAPIService)
+    private static func initializeAnalyticsService(analyticsAPIService: AnalyticsServiceProtocol?) {
+        analyticsService = GiniAnalyticsService(analyticsAPIService: analyticsAPIService)
     }
 
     private static func handleAnalyticsSDKsInit() {
-        guard amplitudeService != nil else { return }
+        guard analyticsService != nil else { return }
         userProperties[.captureSDKVersion] = GiniCapture.versionString
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
@@ -98,7 +98,7 @@ public final class GiniAnalyticsManager {
         eventsQueue.append(queuedEvent)
 
         // Process the event queue if AmplitudeService is initialized
-        if amplitudeService != nil {
+        if analyticsService != nil {
             processEventsQueue()
         }
     }
@@ -114,7 +114,7 @@ public final class GiniAnalyticsManager {
             }
         }
 
-        amplitudeService?.trackEvents(baseEvents)
+        analyticsService?.trackEvents(baseEvents)
     }
 
     /// Converts a `GiniQueuedAnalyticsEvent` to a `AmplitudeBaseEvent`
