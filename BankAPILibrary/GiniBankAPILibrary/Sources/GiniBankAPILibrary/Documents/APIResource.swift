@@ -129,33 +129,29 @@ struct APIResource<T: Decodable>: Resource {
     }
     
     var defaultHeaders: HTTPHeaders {
+        let acceptKey = "Accept"
+        let contentTypeKey = "Content-Type"
+        
+        let jsonAcceptValue = ContentType.content(version: apiVersion, subtype: nil, mimeSubtype: "json").value
+        let jsonContentTypeValue = ContentType.content(version: apiVersion, subtype: nil, mimeSubtype: "json").value
+        let amplitudeEventsValue = "application/vnd.gini.v1.events.amplitude"
+        
         switch method {
         case .createDocument(_, _, let mimeSubType, let documentType):
-            return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: nil,
-                                                  mimeSubtype: "json").value,
-                    "Content-Type": ContentType.content(version: apiVersion,
-                                                        subtype: documentType?.name,
-                                                        mimeSubtype: mimeSubType).value
-            ]
+            let dynamicContentType = ContentType.content(version: apiVersion, subtype: documentType?.name, mimeSubtype: mimeSubType).value
+            return [acceptKey: jsonAcceptValue, contentTypeKey: dynamicContentType]
+            
         case .page, .pagePreview, .documentPage:
             return [:]
+            
         case .paymentRequests:
-        return ["Accept": ContentType.content(version: apiVersion,
-                                              subtype: nil,
-                                              mimeSubtype: "json").value]
+            return [acceptKey: jsonAcceptValue]
+            
         case .analyticsEvent:
-            return ["Accept": ContentType.json.value,
-                    "Content-Type": "application/vnd.gini.v1.events.amplitude"
-            ]
+            return [acceptKey: ContentType.json.value, contentTypeKey: amplitudeEventsValue]
+            
         default:
-            return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: nil,
-                                                  mimeSubtype: "json").value,
-                    "Content-Type": ContentType.content(version: apiVersion,
-                                                         subtype: nil,
-                                                         mimeSubtype: "json").value
-            ]
+            return [acceptKey: jsonAcceptValue, contentTypeKey: jsonContentTypeValue]
         }
     }
     
