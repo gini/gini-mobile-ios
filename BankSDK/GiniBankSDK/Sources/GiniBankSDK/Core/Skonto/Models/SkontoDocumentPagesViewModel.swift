@@ -27,9 +27,12 @@ final class SkontoDocumentPagesViewModel: DocumentPagesViewModelProtocol {
     private var expiryDate: Date
 
     // Information to be displayed in the screen after highlighting Skonto details
-    private (set) var processedImages = [UIImage]()
+    private(set) var processedImages = [UIImage]()
     static var screenTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.document.pages.screen.title",
                                                                               comment: "Skonto discount details")
+    static var errorButtonTitle = NSLocalizedStringPreferredGiniBankFormat(
+        "ginibank.skonto.document.pages.error.tryAgain.buttonTitle",
+        comment: "Try again")
     var bottomInfoItems: [String] {
         return [expiryDateString, withDiscountPriceString, withoutDiscountPriceString]
     }

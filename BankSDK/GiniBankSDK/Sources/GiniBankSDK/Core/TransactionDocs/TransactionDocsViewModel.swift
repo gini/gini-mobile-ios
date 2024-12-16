@@ -56,7 +56,10 @@ public class TransactionDocsViewModel {
     func handlePreviewDocument(for documentId: String) {
         let transactionDoc = transactionDocs.first(where: { $0.documentId == documentId })
         let screenTitle = transactionDoc?.fileName ?? ""
-        let viewController = DocumentPagesViewController(screenTitle: screenTitle)
+        let errorButtonTitle = NSLocalizedStringPreferredGiniBankFormat(
+            "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle",
+            comment: "Try again")
+        let viewController = DocumentPagesViewController(screenTitle: screenTitle, errorButtonTitle: errorButtonTitle)
         viewController.modalPresentationStyle = .overCurrentContext
         documentPagesViewController = viewController
         presentingViewController?.present(viewController, animated: true)
