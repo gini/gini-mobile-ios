@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# constants
+# Constants
 iphonesimulatorArchivePath="iphonesimulatorGiniBankSDK.xcarchive"
 iphonesimulatorBuildDir="build-ginibanksdk-iphonesimulator"
 
 iphoneosArchivePath="iphoneosGiniBankSDK.xcarchive"
 iphoneosBuildDir="build-ginibanksdk-iphoneos"
 
+
+frameworks=("GiniBankAPILibrary" "GiniCaptureSDK" "GiniBankSDK") #"TrustKit" "GiniBankAPILibraryPinning" "GiniCaptureSDKPinning" "GiniBankSDKPinning")
 
 # Function to cleanup simulator and iOS archives
 cleanup-artefacts() {
@@ -81,7 +83,7 @@ archive() {
     local resultFrameworksPath="$outputPath/Products/usr/local/lib"
     local modulesPath="$derivedDataPath/Build/Intermediates.noindex/ArchiveIntermediates/GiniBankSDK/BuildProductsPath/Release-$sdk"
 
-    frameworks=("GiniBankAPILibrary" "GiniCaptureSDK" "GiniBankSDK")
+    # frameworks=("GiniBankAPILibrary" "GiniCaptureSDK" "GiniBankSDK")
 
     for framework in "${frameworks[@]}"; do
         cp-modules "$framework" "$modulesPath" "$resultFrameworksPath"
@@ -133,9 +135,6 @@ archive "BankSDK/GiniBankSDK" \
     "iphonesimulator" \
     $iphonesimulatorBuildDir \
     $iphonesimulatorArchivePath
-
-#"TrustKit" "GiniBankAPILibraryPinning" "GiniCaptureSDKPinning" "GiniBankSDKPinning"
-frameworks=("GiniBankAPILibrary" "GiniCaptureSDK" "GiniBankSDK")
 
 for framework in "${frameworks[@]}"; do
     make-xcframework "$framework" "$iphoneosArchivePath" "$iphonesimulatorArchivePath"

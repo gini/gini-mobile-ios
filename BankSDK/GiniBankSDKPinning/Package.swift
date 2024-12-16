@@ -16,12 +16,12 @@ let package = Package(
             targets: ["GiniBankSDKPinning"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+        .package(name: "TrustKit", url: "https://github.com/datatheorem/TrustKit.git", from: "2.0.0"),
+        .package(name: "GiniCaptureSDK", path: "../../CaptureSDK/GiniCaptureSDK"),
         .package(name: "GiniCaptureSDKPinning", path: "../../CaptureSDK/GiniCaptureSDKPinning"),
+        .package(name: "GiniBankAPILibrary", path: "../../BankAPILibrary/GiniBankAPILibrary"),
         .package(name: "GiniBankAPILibraryPinning", path: "../../BankAPILibrary/GiniBankAPILibraryPinning"),
-        .package(name: "GiniBankSDK", path: "../GiniBankSDK"),
-        .package(name: "TrustKit", url: "https://github.com/datatheorem/TrustKit.git" , from: "2.0.0"),
+        .package(name: "GiniBankSDK", path: "../GiniBankSDK")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -29,7 +29,12 @@ let package = Package(
         
         .target(
             name: "GiniBankSDKPinning",
-            dependencies: ["GiniCaptureSDKPinning", "GiniBankAPILibraryPinning", "GiniBankSDK", "TrustKit"]),
+            dependencies: ["GiniCaptureSDKPinning",
+                           "GiniCaptureSDK",
+                           "GiniBankAPILibraryPinning",
+                           "GiniBankSDK",
+                           "TrustKit",
+                           "GiniBankAPILibrary"]),
         .testTarget(
             name: "GiniBankSDKPinningTests",
             dependencies: ["GiniBankSDKPinning"])

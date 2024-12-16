@@ -27,11 +27,11 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "GiniBankAPILibraryPinning",
-            dependencies: ["GiniBankAPILibrary", "TrustKit"],
-            swiftSettings: [
-                .define("BUILD_LIBRARY_FOR_DISTRIBUTION")
-            ]),
-
+            dependencies: [
+                .product(name: "TrustKit", package: "TrustKit"), // Explicit product usage
+                "GiniBankAPILibrary"
+            ]
+        ),
         .testTarget(
             name: "GiniBankAPILibraryPinningTests",
             dependencies: ["GiniBankAPILibraryPinning"]),
