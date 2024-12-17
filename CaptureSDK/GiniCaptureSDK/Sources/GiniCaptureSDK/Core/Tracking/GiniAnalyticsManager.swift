@@ -22,12 +22,13 @@ public final class GiniAnalyticsManager {
     private static var giniClientID: String?
     private static var eventId: Int64 = 0
 
-    public static func initializeAnalytics(with configuration: GiniAnalyticsConfiguration, analyticsAPIService: AnalyticsServiceProtocol?) {
+    public static func initializeAnalytics(with configuration: GiniAnalyticsConfiguration,
+                                           analyticsAPIService: AnalyticsServiceProtocol?) {
         guard configuration.userJourneyAnalyticsEnabled,
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
 
         giniClientID = configuration.clientID
-        initializeAnalyticsService(analyticsAPIService: analyticsAPIService)
+        analyticsService = GiniAnalyticsService(analyticsAPIService: analyticsAPIService)
     }
 
     public static func cleanManager() {
@@ -41,12 +42,6 @@ public final class GiniAnalyticsManager {
     public static func setSessionId() {
         // Generate a new session identifier
         sessionId = Date.berlinTimestamp()
-    }
-
-    // MARK: Initialization
-
-    private static func initializeAnalyticsService(analyticsAPIService: AnalyticsServiceProtocol?) {
-        analyticsService = GiniAnalyticsService(analyticsAPIService: analyticsAPIService)
     }
 
     private static func handleAnalyticsSDKsInit() {

@@ -70,22 +70,22 @@ final class GiniAnalyticsService {
     }
 
     /**
-     * Uploads a list of events to the Gini server.
+     * Uploads a list of events to the Amplitude platform via Gini server.
      * - Parameter events: The events to be uploaded.
      */
     private func uploadEvents(events: [EventWrapper]) {
         let payload = AmplitudeEventsBatchPayload(events: events.map { $0.event })
-        analyticsAPIService?.sendEventsPayload(payload: payload, completion: { result in
+        analyticsAPIService?.sendEventsPayload(payload: payload) { result in
             switch result {
             case .success(_):
-                print("✅ Successfully uploaded events")
+                print("✅ Successfully uploaded analytics events")
                 self.markEventsAsSent(events: events)
                 self.resetAndCleanup()
             case .failure(let error):
-                print("❌ Failed to upload events: \(error)")
+                print("❌ Failed to upload analytics events: \(error)")
                 self.handleUploadFailure(events: events)
             }
-        })
+        }
     }
 
     /**
