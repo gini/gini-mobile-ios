@@ -23,17 +23,17 @@ public struct AmplitudeEventOptions {
 
     /// Initializes a new instance of the `AmplitudeEventOptions` struct.
     public init(userId: String? = nil,
-         deviceId: String? = nil,
-         time: Int64? = nil,
-         sessionId: Int64? = nil,
-         platform: String? = nil,
-         osVersion: String? = nil,
-         osName: String? = nil,
-         language: String? = nil,
-         ip: String? = nil,
-         eventId: Int64? = nil,
-         deviceModel: String? = nil,
-         deviceBrand: String? = nil) {
+                deviceId: String? = nil,
+                time: Int64? = nil,
+                sessionId: Int64? = nil,
+                platform: String? = nil,
+                osVersion: String? = nil,
+                osName: String? = nil,
+                language: String? = nil,
+                ip: String? = nil,
+                eventId: Int64? = nil,
+                deviceModel: String? = nil,
+                deviceBrand: String? = nil) {
         self.userId = userId
         self.deviceId = deviceId
         self.time = time

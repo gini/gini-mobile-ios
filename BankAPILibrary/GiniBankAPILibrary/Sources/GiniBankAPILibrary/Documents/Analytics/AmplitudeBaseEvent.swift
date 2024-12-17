@@ -37,9 +37,9 @@ public struct AmplitudeBaseEvent: Encodable, Equatable {
 
     /// Initializes a new instance of the `AmplitudeBaseEvent` struct.
     public init(eventType: String,
-         eventProperties: [String: Any]? = nil,
-         userProperties: [String: Any]? = nil,
-         eventOptions: AmplitudeEventOptions) {
+                eventProperties: [String: Any]? = nil,
+                userProperties: [String: Any]? = nil,
+                eventOptions: AmplitudeEventOptions) {
         self.eventType = eventType
         self.eventProperties = eventProperties
         self.userProperties = userProperties
