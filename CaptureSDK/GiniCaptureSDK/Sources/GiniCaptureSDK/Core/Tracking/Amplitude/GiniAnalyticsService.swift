@@ -1,22 +1,25 @@
 //
-//  AmplitudeService.swift
+//  GiniAnalyticsService.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 import UIKit
+import GiniBankAPILibrary
 
 /**
- A service for tracking and uploading events to the Amplitude analytics platform using directly Ampltitude API.
+ A service for tracking and uploading events to Gini's analytics endpoint, which
+ then proxies these events to the Amplitude analytics platform.
 
  This service manages an event queue and handles the periodic uploading of events
- to the Amplitude server. It supports automatic retries with exponential backoff
- in case of upload failures. The service also observes application lifecycle events
- to manage background tasks appropriately.
+ to Gini's backend. From there, the events are forwarded to Amplitude. The service
+ supports automatic retries with exponential backoff in case of upload failures.
+ It also observes application lifecycle events to manage background tasks and
+ ensure that events are uploaded even when the app transitions to the background.
  */
 
-final class AmplitudeService {
+final class GiniAnalyticsService {
     /**
      * The state of an event in the queue.
      */
@@ -36,20 +39,15 @@ final class AmplitudeService {
     }
 
     private var eventQueue: [EventWrapper] = []
-    private var apiKey: String?
     private var timer: Timer?
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private let maxRetryAttempts = 3
     private let eventUploadInterval: TimeInterval = 5.0
-    private let apiURL = "https://api.eu.amplitude.com/batch"
-    private let queue = DispatchQueue(label: "com.amplitude.service.queue")
+    private let queue = DispatchQueue(label: "com.analytics.service.queue")
+    private var analyticsAPIService: AnalyticsServiceProtocol?
 
-    /**
-     * Initializes the AmplitudeService with an optional API key.
-     * - Parameter apiKey: The API key for Amplitude.
-     */
-    init(apiKey: String?) {
-        self.apiKey = apiKey
+    init(analyticsAPIService: AnalyticsServiceProtocol?) {
+        self.analyticsAPIService = analyticsAPIService
         setupObservers()
         startEventUploadTimer()
     }
@@ -72,45 +70,21 @@ final class AmplitudeService {
     }
 
     /**
-     * Uploads a list of events to the Amplitude server.
+     * Uploads a list of events to the Amplitude platform via Gini server.
      * - Parameter events: The events to be uploaded.
      */
     private func uploadEvents(events: [EventWrapper]) {
-        guard let url = URL(string: apiURL), let apiKey, !events.isEmpty else { return }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let payload = AmplitudeEventsBatchPayload(apiKey: apiKey, events: events.map { $0.event })
-
-        do {
-            let jsonData = try JSONEncoder().encode(payload)
-            request.httpBody = jsonData
-
-            let task = URLSession.shared.dataTask(with: request) { [weak self] _, response, error in
-                guard let self = self else { return }
-                if let error = error {
-                    print("❌ Error uploading events: \(error)")
-                    self.handleUploadFailure(events: events)
-                    return
-                }
-
-                if let httpResponse = response as? HTTPURLResponse {
-                    if httpResponse.statusCode == 200 {
-                        print("✅ Successfully uploaded events")
-                        self.markEventsAsSent(events: events)
-                        self.resetAndCleanup()
-                    } else {
-                        print("❌ Failed to upload events: \(httpResponse.statusCode)")
-                        self.handleUploadFailure(events: events)
-                    }
-                }
+        let payload = AmplitudeEventsBatchPayload(events: events.map { $0.event })
+        analyticsAPIService?.sendEventsPayload(payload: payload) { result in
+            switch result {
+            case .success(_):
+                print("✅ Successfully uploaded analytics events")
+                self.markEventsAsSent(events: events)
+                self.resetAndCleanup()
+            case .failure(let error):
+                print("❌ Failed to upload analytics events: \(error)")
+                self.handleUploadFailure(events: events)
             }
-            task.resume()
-        } catch {
-            print("❌ Error encoding events: \(error)")
-            handleUploadFailure(events: events)
         }
     }
 

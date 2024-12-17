@@ -53,10 +53,12 @@ extension ClientConfigurationService {
      
      This method constructs an `APIResource` object with the required parameters and utilizes the resource handler to perform the network request. The result is then saved into UserDefaults and passed to the completion handler.
      */
-    func fetchConfigurations(resourceHandler: ResourceDataHandler<APIResource<ClientConfiguration>>,
-                             completion: @escaping CompletionResult<ClientConfiguration>) {
-        let resource = APIResource<ClientConfiguration>(method: .configurations, apiDomain: apiDomain, httpMethod: .get)
-        
+    private func fetchConfigurations(resourceHandler: ResourceDataHandler<APIResource<ClientConfiguration>>,
+                                     completion: @escaping CompletionResult<ClientConfiguration>) {
+        let resource = APIResource<ClientConfiguration>(method: .configurations, 
+                                                        apiDomain: apiDomain,
+                                                        httpMethod: .get)
+
         resourceHandler(resource, { result in
             switch result {
             case let .success(configuration):
