@@ -9,7 +9,7 @@ import Foundation
  A struct representing the payload for batching events to be sent to the server.
 
  This struct conforms to the `Encodable` protocol to facilitate easy encoding
- to JSON format. It includes the API key and an array of events to be uploaded.
+ to JSON format. It includes an array of events to be uploaded.
 
  - Parameters:
  - events: An array of `AmplitudeBaseEvent` objects to be included in the batch upload.
