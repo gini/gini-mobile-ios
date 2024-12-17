@@ -320,12 +320,14 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
                                                   .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons,
                                                   .bankSDKVersion: GiniBankSDKVersion])
-        GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration, analyticsAPIService: analyticsService)
+        GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration, 
+                                                 analyticsAPIService: analyticsService)
     }
 
     private func sendAnalyticsEventSDKClose() {
         GiniAnalyticsManager.track(event: .sdkClosed,
-                                   properties: [GiniAnalyticsProperty(key: .status, value: "successful")])
+                                   properties: [GiniAnalyticsProperty(key: .status, 
+                                                                      value: "successful")])
     }
 }
 
