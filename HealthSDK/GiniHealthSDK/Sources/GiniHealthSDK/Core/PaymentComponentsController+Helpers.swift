@@ -181,7 +181,7 @@ extension PaymentComponentsController {
      */
     func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?,
                                     completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
-        previousPresentedViews.insert(.paymentReview)
+        previousPresentedViews.append(.paymentReview)
         let previousPaymentComponentScreenType: PaymentComponentScreenType? = previousPresentedViews.contains(.bankPicker) ? .bankPicker : nil
         if !GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
             guard let documentId else {
@@ -342,7 +342,7 @@ extension PaymentComponentsController {
     public func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {
         shareInvoiceBottomSheet = nil
         if previousPresentedView == .bankPicker {
-            previousPresentedViews.insert(.bankPicker)
+            previousPresentedViews.append(.bankPicker)
         } else {
             previousPresentedViews.removeAll()
         }
