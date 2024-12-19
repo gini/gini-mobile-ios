@@ -423,7 +423,7 @@ extension PaymentComponentsController {
             }
 
             self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, actionOnShareSheet, _, _) in
-                if actionOnShareSheet == false {
+                if !actionOnShareSheet {
                     guard let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet else { return }
                     self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
                 }

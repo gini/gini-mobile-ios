@@ -97,11 +97,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
         healthSDK.checkIfDocumentContainsMultipleInvoices(docId: docId) { [weak self] result in
             switch result {
             case .success(let multipleInvoices):
-                if !multipleInvoices {
-                    self?.fetchDocumentDataForReview(docId: docId, using: healthSDK)
-                } else {
-                    self?.presentErrorForMultipleInvoicesInDocument()
-                }
+                self?.handleSuccessMultipleInvoicesResponse(multipleInvoices: multipleInvoices, docId: docId, using: healthSDK)
             case .failure(let error):
                 GiniUtilites.Log("Check if document contains multiple invoices failed with: \(String(describing: error))",
                                  event: .error)
@@ -109,13 +105,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
         }
     }
 
-    private func createHealthExtractions(from extractions: [GiniBankAPILibrary.Extraction]) -> [GiniHealthAPILibrary.Extraction] {
-        return extractions.map { extraction in
-            GiniHealthAPILibrary.Extraction(box: nil,
-                                            candidates: extraction.candidates,
-                                            entity: extraction.entity,
-                                            value: extraction.value,
-                                            name: extraction.name)
+    private func handleSuccessMultipleInvoicesResponse(multipleInvoices: Bool, docId: String, using healthSDK: GiniHealth) {
+        if !multipleInvoices {
+            self.fetchDocumentDataForReview(docId: docId, using: healthSDK)
+        } else {
+            self.presentErrorForMultipleInvoicesInDocument()
         }
     }
 

@@ -805,7 +805,9 @@ extension PaymentComponentsController: PaymentReviewProtocol {
     
     public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {}
     
-    public func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {}
+    public func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {
+        // TODO: This method is going to be handled later in GiniMerchantSDK 
+    }
 }
 
 extension PaymentComponentsController {
