@@ -386,9 +386,11 @@ fileprivate extension PaymentReviewViewController {
     func layoutContainerCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         pageControl.translatesAutoresizingMaskIntoConstraints = false
+        mainView.addSubview(pageControl)
+        mainView.sendSubviewToBack(pageControl)
+
         mainView.addSubview(collectionView)
         mainView.sendSubviewToBack(collectionView)
-        collectionView.addSubview(pageControl)
 
         let navigationBarHeight = self.navigationController?.navigationBar.frame.maxY ?? 0
 
