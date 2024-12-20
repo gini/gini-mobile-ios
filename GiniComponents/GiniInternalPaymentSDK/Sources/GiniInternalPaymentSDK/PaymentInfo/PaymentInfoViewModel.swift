@@ -76,11 +76,13 @@ public final class PaymentInfoViewModel {
         let attributedString = attributedString
         let giniRange = (attributedString.string as NSString).range(of: strings.giniWebsiteText)
         attributedString.addLinkToRange(link: strings.giniURLText,
+                                        color: configuration.linksColor,
                                         range: giniRange,
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)
         let privacyPolicyRange = (attributedString.string as NSString).range(of: strings.answerPrivacyPolicyText)
         attributedString.addLinkToRange(link: strings.privacyPolicyURLText,
+                                        color: configuration.linksColor,
                                         range: privacyPolicyRange,
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)

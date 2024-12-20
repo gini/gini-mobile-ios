@@ -54,6 +54,7 @@ public protocol PaymentReviewActionProtocol {
     func updatedPaymentProvider(_ paymentProvider: PaymentProvider)
     func openMoreInformationViewController()
     func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: PaymentInfo)
+    func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?)
 }
 
 /**
@@ -123,6 +124,7 @@ public class PaymentReviewModel: NSObject {
     let bottomSheetConfiguration: BottomSheetConfiguration
     let showPaymentReviewCloseButton: Bool
     var displayMode: DisplayMode
+    var previousPaymentComponentScreenType: PaymentComponentScreenType?
 
     public init(delegate: PaymentReviewProtocol,
                 bottomSheetsProvider: BottomSheetsProviderProtocol,
@@ -142,7 +144,8 @@ public class PaymentReviewModel: NSObject {
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
                 bottomSheetConfiguration: BottomSheetConfiguration,
-                showPaymentReviewCloseButton: Bool) {
+                showPaymentReviewCloseButton: Bool,
+                previousPaymentComponentScreenType: PaymentComponentScreenType?) {
         self.delegate = delegate
         self.bottomSheetsProvider = bottomSheetsProvider
         self.configuration = configuration
@@ -164,6 +167,11 @@ public class PaymentReviewModel: NSObject {
         self.selectionStyleInputFieldConfiguration = selectionStyleInputFieldConfiguration
         self.bottomSheetConfiguration = bottomSheetConfiguration
         self.displayMode = document != nil ? .documentCollection : .bottomSheet
+        self.previousPaymentComponentScreenType = previousPaymentComponentScreenType
+    }
+
+    func viewDidDisappear() {
+        delegate?.paymentReviewClosed(with: previousPaymentComponentScreenType)
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> PageCollectionCellViewModel {
@@ -313,6 +321,7 @@ extension PaymentReviewModel: BanksSelectionProtocol {
      This function notifies the delegate to open the "More Information" view controller.
      */
     public func didTapOnMoreInformation() {
+        previousPaymentComponentScreenType = .bankPicker
         delegate?.openMoreInformationViewController()
     }
 

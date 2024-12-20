@@ -154,7 +154,6 @@ extension PaymentComponentsController {
         if previousPresentedViews.count > 0, previousPresentedViews.first != .paymentReview {
             previousPresentedViews.removeAll()
         }
-        previousPresentedViews.insert(.bankPicker)
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                    configuration: configurationProvider.bankSelectionConfiguration,
@@ -182,7 +181,8 @@ extension PaymentComponentsController {
      */
     func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?,
                                     completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
-        previousPresentedViews.insert(.paymentReview)
+        previousPresentedViews.append(.paymentReview)
+        let previousPaymentComponentScreenType: PaymentComponentScreenType? = previousPresentedViews.contains(.bankPicker) ? .bankPicker : nil
         if !GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
             guard let documentId else {
                 completion(nil, nil)
@@ -197,26 +197,35 @@ extension PaymentComponentsController {
                             completion(nil, nil)
                             return
                         }
-                        self.preparePaymentReviewViewController(data: data, paymentInfo: nil, completion: completion)
+                        self.preparePaymentReviewViewController(data: data,
+                                                                paymentInfo: nil,
+                                                                previousPaymentComponentScreenType: previousPaymentComponentScreenType,
+                                                                completion: completion)
                     case .failure(let error):
                         completion(nil, error)
                 }
             }
         } else {
-            loadPaymentReviewScreenWithoutDocument(paymentInfo: paymentInfo, trackingDelegate: trackingDelegate, completion: completion)
+            loadPaymentReviewScreenWithoutDocument(paymentInfo: paymentInfo,
+                                                   trackingDelegate: trackingDelegate,
+                                                   previousPaymentComponentScreenType: previousPaymentComponentScreenType,
+                                                   completion: completion)
         }
     }
     
     private func loadPaymentReviewScreenWithoutDocument(paymentInfo: GiniInternalPaymentSDK.PaymentInfo?,
                                                         trackingDelegate: GiniHealthTrackingDelegate?,
+                                                        previousPaymentComponentScreenType: PaymentComponentScreenType? = nil,
                                                         completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         preparePaymentReviewViewController(data: nil,
                                            paymentInfo: paymentInfo,
+                                           previousPaymentComponentScreenType: previousPaymentComponentScreenType,
                                            completion: completion)
     }
 
     private func preparePaymentReviewViewController(data: DataForReview?,
                                                     paymentInfo: GiniInternalPaymentSDK.PaymentInfo?,
+                                                    previousPaymentComponentScreenType: PaymentComponentScreenType? = nil,
                                                     completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         guard let healthSelectedPaymentProvider else {
             completion(nil, nil)
@@ -240,7 +249,8 @@ extension PaymentComponentsController {
                                            poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                            bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
-                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
+                                           previousPaymentComponentScreenType: previousPaymentComponentScreenType)
 
         let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                          selectedPaymentProvider: healthSelectedPaymentProvider)
@@ -309,6 +319,7 @@ extension PaymentComponentsController {
         shareInvoiceBottomViewModel.viewDelegate = self
         shareInvoiceBottomViewModel.documentId = documentId
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
+        shareInvoiceBottomSheet = shareInvoiceBottomView
         return shareInvoiceBottomView
     }
     
@@ -322,6 +333,18 @@ extension PaymentComponentsController {
         self.selectedPaymentProvider = PaymentProvider(healthPaymentProvider: paymentProvider)
         if let provider = selectedPaymentProvider {
             storeDefaultPaymentProvider(paymentProvider: provider)
+        }
+    }
+    
+    /**
+     Notifies the controller that the Payment Review Screen has closed, enabling the cleanup of stored data used to manage various flows.
+     */
+    public func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {
+        shareInvoiceBottomSheet = nil
+        if previousPresentedView == .bankPicker {
+            previousPresentedViews.append(.bankPicker)
+        } else {
+            previousPresentedViews.removeAll()
         }
     }
 
@@ -399,7 +422,12 @@ extension PaymentComponentsController {
                 return
             }
 
-            self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, _, _, _) in
+            self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, actionOnShareSheet, _, _) in
+                if !actionOnShareSheet {
+                    guard let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet else { return }
+                    self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
+                }
+                
                 guard activity != nil else {
                     return
                 }
