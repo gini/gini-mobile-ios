@@ -114,6 +114,8 @@ final class SkontoViewController: UIViewController {
             showAlertIfNeeded()
             firstAppearance = false
         }
+
+        sendAnalyticsScreenShown()
     }
 
     deinit {
@@ -296,6 +298,18 @@ final class SkontoViewController: UIViewController {
         navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
         let localizedStringWithCurrencyCode = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
         navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
+    }
+
+    func sendAnalyticsScreenShown() {
+        let isSkontoApplied = viewModel.isSkontoApplied
+        var eventProperties: [GiniAnalyticsProperty] = [GiniAnalyticsProperty(key: .switchActive,
+                                                                              value: isSkontoApplied)]
+        if let edgeCaseAnalyticsValue = viewModel.edgeCase?.analyticsValue {
+            eventProperties.append(GiniAnalyticsProperty(key: .edgeCaseType,
+                                                         value: edgeCaseAnalyticsValue))
+        }
+
+        GiniAnalyticsManager.trackScreenShown(screenName: .skonto, properties: eventProperties)
     }
 
     @objc private func helpButtonTapped() {
