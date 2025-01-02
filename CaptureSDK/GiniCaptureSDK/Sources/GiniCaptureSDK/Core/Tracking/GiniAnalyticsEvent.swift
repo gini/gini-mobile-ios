@@ -55,4 +55,11 @@ public enum GiniAnalyticsEvent: String {
     case editTapped = "edit_tapped"
     case itemSwitchTapped = "item_switch_tapped"
     case proceedTapped = "proceed_tapped"
+
+    // MARK: - Skonto
+    case skontoSwitchTapped = "skonto_switch_tapped"
+    case finalAmountTapped = "final_amount_tapped"
+    case fullAmountTapped = "full_amount_tapped"
+    case dueDateTapped = "due_date_tapped"
+    case invoicePreviewTapped = "invoice_preview_tapped"
 }
