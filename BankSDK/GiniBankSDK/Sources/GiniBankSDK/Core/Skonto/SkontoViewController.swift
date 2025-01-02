@@ -313,10 +313,12 @@ final class SkontoViewController: UIViewController {
     }
 
     @objc private func helpButtonTapped() {
+        GiniAnalyticsManager.track(event: .helpTapped, screenName: .skonto)
         viewModel.helpButtonTapped()
     }
 
     @objc private func backButtonTapped() {
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .skonto)
         viewModel.backButtonTapped()
     }
 
