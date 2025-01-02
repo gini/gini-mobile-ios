@@ -11,6 +11,7 @@ public enum GiniAnalyticsEvent: String {
     case closeTapped = "close_tapped"
     case sdkOpened = "sdk_opened"
     case sdkClosed = "sdk_closed"
+    case proceedTapped = "proceed_tapped"
 
     // MARK: - Camera
     case captureTapped = "capture_tapped"
@@ -29,7 +30,6 @@ public enum GiniAnalyticsEvent: String {
     case giveAccessTapped = "give_access_tapped"
 
     // MARK: - Review
-    case processTapped = "process_tapped"
     case deletePagesTapped = "delete_pages_tapped"
     case addPagesTapped = "add_pages_tapped"
     case pageSwiped = "page_swiped"
@@ -54,7 +54,6 @@ public enum GiniAnalyticsEvent: String {
     case saveTapped = "save_tapped"
     case editTapped = "edit_tapped"
     case itemSwitchTapped = "item_switch_tapped"
-    case proceedTapped = "proceed_tapped"
 
     // MARK: - Skonto
     case skontoSwitchTapped = "skonto_switch_tapped"
