@@ -343,6 +343,7 @@ final class SkontoViewController: UIViewController {
 
 extension SkontoViewController: SkontoDocumentPreviewViewDelegate {
     func documentPreviewTapped(in view: SkontoDocumentPreviewView) {
+        GiniAnalyticsManager.track(event: .invoicePreviewTapped, screenName: .skonto)
         viewModel.documentPreviewTapped()
     }
 }
