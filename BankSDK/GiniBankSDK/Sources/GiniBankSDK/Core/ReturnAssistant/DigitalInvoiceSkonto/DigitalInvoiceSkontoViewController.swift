@@ -253,10 +253,12 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     }
 
     @objc private func helpButtonTapped() {
+        GiniAnalyticsManager.track(event: .helpTapped, screenName: .returnAssistantSkonto)
         viewModel.helpButtonTapped()
     }
 
     @objc private func backButtonTapped() {
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .returnAssistantSkonto)
         viewModel.backButtonTapped()
     }
 
