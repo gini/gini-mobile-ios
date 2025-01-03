@@ -300,7 +300,7 @@ final class SkontoViewController: UIViewController {
         navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
     }
 
-    func sendAnalyticsScreenShown() {
+    private func sendAnalyticsScreenShown() {
         let isSkontoApplied = viewModel.isSkontoApplied
         var eventProperties: [GiniAnalyticsProperty] = [GiniAnalyticsProperty(key: .switchActive,
                                                                               value: isSkontoApplied)]
