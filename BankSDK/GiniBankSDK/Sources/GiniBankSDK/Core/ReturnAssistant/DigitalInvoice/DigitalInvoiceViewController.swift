@@ -365,6 +365,7 @@ extension DigitalInvoiceViewController: DigitalInvoiceSkontoTableViewCellDelegat
     func editTapped(cell: DigitalInvoiceSkontoTableViewCell) {
         guard let skontoViewModel = viewModel.skontoViewModel else { return }
         let vc = DigitalInvoiceSkontoViewController(viewModel: skontoViewModel)
+        GiniAnalyticsManager.track(event: .editTapped, screenName: .returnAssistant)
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
