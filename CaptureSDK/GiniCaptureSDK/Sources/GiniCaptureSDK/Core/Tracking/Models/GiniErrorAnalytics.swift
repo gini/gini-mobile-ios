@@ -7,9 +7,9 @@
 import Foundation
 
 public struct GiniErrorAnalytics {
-    let type: String
-    let code: Int?
-    let reason: String?
+    public let type: String
+    public let code: Int?
+    public let reason: String?
 
     init(type: String, code: Int? = nil, reason: String? = nil) {
         self.type = type
