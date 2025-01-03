@@ -152,8 +152,6 @@ class SkontoViewModel {
 
     func toggleDiscount() {
         isSkontoApplied.toggle()
-        sendAnalyticsSwitchTapped()
-
         endEditingAction?()
         notifyStateChangeHandlers()
     }
@@ -185,13 +183,6 @@ class SkontoViewModel {
     func setMaximumAmountToPayValue(_ value: Decimal?) {
         guard let value else { return }
         maximumAmountToPayValue = value
-    }
-
-    private func sendAnalyticsSwitchTapped() {
-        let eventProperties = [GiniAnalyticsProperty(key: .switchActive, value: isSkontoApplied)]
-        GiniAnalyticsManager.track(event: .skontoSwitchTapped,
-                                   screenName: .skonto,
-                                   properties: eventProperties)
     }
 
     private func setPrice(_ price: String,
