@@ -91,6 +91,8 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
     }
 
     func didTapPay(on viewModel: DigitalInvoiceViewModel) {
+        GiniAnalyticsManager.track(event: .proceedTapped, screenName: .returnAssistant)
+
         if let analysisDelegate = self.analysisDelegate {
             self.delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
         }

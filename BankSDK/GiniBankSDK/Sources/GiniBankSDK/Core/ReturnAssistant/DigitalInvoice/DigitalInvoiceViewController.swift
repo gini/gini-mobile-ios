@@ -164,7 +164,6 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func payButtonTapped() {
-        GiniAnalyticsManager.track(event: .proceedTapped, screenName: .returnAssistant)
         viewModel.didTapPay()
     }
 
