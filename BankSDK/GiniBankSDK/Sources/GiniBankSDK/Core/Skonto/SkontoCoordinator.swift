@@ -61,6 +61,14 @@ extension SkontoCoordinator: SkontoViewModelDelegate {
     }
 
     func didTapProceed(on viewModel: SkontoViewModel) {
-        self.delegate?.didFinishAnalysis(self, viewModel.editedExtractionResult)
+        var eventProperties: [GiniAnalyticsProperty] = []
+        if let edgeCaseAnalyticsValue = viewModel.edgeCase?.analyticsValue {
+            eventProperties.append(GiniAnalyticsProperty(key: .edgeCaseType,
+                                                         value: edgeCaseAnalyticsValue))
+        }
+        GiniAnalyticsManager.track(event: .proceedTapped,
+                                   screenName: .skonto,
+                                   properties: eventProperties)
+        delegate?.didFinishAnalysis(self, viewModel.editedExtractionResult)
     }
 }

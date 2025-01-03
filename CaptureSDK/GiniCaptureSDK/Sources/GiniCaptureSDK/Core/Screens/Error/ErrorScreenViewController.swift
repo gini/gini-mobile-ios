@@ -113,9 +113,8 @@ class ErrorScreenViewController: UIViewController {
     }
 
     func setupView() {
-        title = NSLocalizedStringPreferredFormat(
-            "ginicapture.error.title",
-            comment: "Error screen title")
+        title = NSLocalizedStringPreferredFormat("ginicapture.error.title",
+                                                 comment: "Error screen title")
         configureErrorHeader()
         configureErrorContent()
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()

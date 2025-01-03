@@ -640,7 +640,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             } else {
                 self?.transactionDocsDataCoordinator?.transactionDocs = []
             }
-            
+
             deliveryFunction(extractionResult)
         })
     }
@@ -668,7 +668,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         }
     }
     private func createDocumentPageViewModel(from skontoViewModel: SkontoViewModel,
-                                             completion: @escaping (Result<SkontoDocumentPagesViewModel, 
+                                             completion: @escaping (Result<SkontoDocumentPagesViewModel,
                                                                     GiniError>) -> Void) {
         let dispatchGroup = DispatchGroup()
         var originalSizes: [DocumentPageSize] = []

@@ -24,4 +24,8 @@ public enum GiniAnalyticsScreen: String {
     case editReturnAssistant = "edit_return_assistant"
     case cameraPermissionView = "camera_permission_view"
     case cameraAccess = "camera_access"
+    case skonto
+    case returnAssistantSkonto = "return_assistant_skonto"
+    case skontoInvoicePreview = "skonto_invoice_preview"
+    case skontoInvoicePreviewError = "skonto_invoice_preview_error"
 }
