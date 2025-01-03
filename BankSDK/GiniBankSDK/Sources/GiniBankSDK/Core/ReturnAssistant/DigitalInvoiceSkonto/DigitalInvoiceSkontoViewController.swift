@@ -233,7 +233,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
             ])
         }
     }
-    
+
     private func sendAnalyticsScreenShown() {
         let isSkontoApplied = viewModel.isSkontoApplied
         var eventProperties: [GiniAnalyticsProperty] = [GiniAnalyticsProperty(key: .switchActive,
@@ -279,6 +279,8 @@ class DigitalInvoiceSkontoViewController: UIViewController {
 
 extension DigitalInvoiceSkontoViewController: SkontoDocumentPreviewViewDelegate {
     func documentPreviewTapped(in view: SkontoDocumentPreviewView) {
+        GiniAnalyticsManager.track(event: .invoicePreviewTapped,
+                                   screenName: .returnAssistantSkonto)
         viewModel.documentPreviewTapped()
     }
 }
