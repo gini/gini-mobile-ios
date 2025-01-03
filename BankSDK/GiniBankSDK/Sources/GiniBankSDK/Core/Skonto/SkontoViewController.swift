@@ -28,6 +28,7 @@ final class SkontoViewController: UIViewController {
 
     private lazy var withDiscountPriceView: SkontoWithDiscountPriceView = {
         let view = SkontoWithDiscountPriceView(viewModel: viewModel)
+        view.delegate = self
         return view
     }()
 
@@ -41,6 +42,7 @@ final class SkontoViewController: UIViewController {
 
     private lazy var expiryDateView: SkontoExpiryDateView = {
         let view = SkontoExpiryDateView(viewModel: viewModel)
+        view.delegate = self
         return view
     }()
 
@@ -345,6 +347,18 @@ extension SkontoViewController: SkontoDocumentPreviewViewDelegate {
     func documentPreviewTapped(in view: SkontoDocumentPreviewView) {
         GiniAnalyticsManager.track(event: .invoicePreviewTapped, screenName: .skonto)
         viewModel.documentPreviewTapped()
+    }
+}
+
+extension SkontoViewController: SkontoExpiryDateViewDelegate {
+    func expiryDateTextFieldTapped() {
+        GiniAnalyticsManager.track(event: .dueDateTapped, screenName: .skonto)
+    }
+}
+
+extension SkontoViewController: SkontoWithDiscountPriceViewDelegate {
+    func withDiscountPriceTextFieldTapped() {
+        GiniAnalyticsManager.track(event: .finalAmountTapped, screenName: .skonto)
     }
 }
 

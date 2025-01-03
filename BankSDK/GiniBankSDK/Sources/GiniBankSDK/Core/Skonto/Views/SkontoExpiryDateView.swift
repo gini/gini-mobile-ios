@@ -7,6 +7,10 @@
 import UIKit
 import GiniCaptureSDK
 
+protocol SkontoExpiryDateViewDelegate: AnyObject {
+    func expiryDateTextFieldTapped()
+}
+
 class SkontoExpiryDateView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -51,6 +55,7 @@ class SkontoExpiryDateView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
+    weak var delegate: SkontoExpiryDateViewDelegate?
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -154,7 +159,7 @@ class SkontoExpiryDateView: UIView {
     }
 
     @objc private func textFieldTapped() {
-        GiniAnalyticsManager.track(event: .dueDateTapped, screenName: .skonto)
+        delegate?.expiryDateTextFieldTapped()
     }
 }
 
