@@ -6,6 +6,7 @@
 
 import Foundation
 import GiniBankAPILibrary
+import GiniCaptureSDK
 
 protocol SkontoViewModelDelegate: AnyObject {
     func didTapHelp()
@@ -151,6 +152,8 @@ class SkontoViewModel {
 
     func toggleDiscount() {
         isSkontoApplied.toggle()
+        sendAnalyticsSwitchTapped()
+
         endEditingAction?()
         notifyStateChangeHandlers()
     }
@@ -160,8 +163,7 @@ class SkontoViewModel {
                                                                     comment: "Discounted value cannot exceed...")
         setPrice(price,
                  maxValue: amountToPay.value,
-                 errorMessage: errorMessage
-        ) { validatedPrice in
+                 errorMessage: errorMessage) { validatedPrice in
             skontoAmountToPay = validatedPrice
             updateDocumentPagesModelData()
             recalculateSkontoPercentage()
@@ -173,8 +175,7 @@ class SkontoViewModel {
                                                                     comment: "Your transfer limit has been exceed...")
         setPrice(price,
                  maxValue: maximumAmountToPayValue,
-                 errorMessage: errorMessage
-        ) { validatedPrice in
+                 errorMessage: errorMessage) { validatedPrice in
             amountToPay = validatedPrice
             recalculateAmountToPayWithSkonto()
             updateDocumentPagesModelData()
@@ -184,6 +185,13 @@ class SkontoViewModel {
     func setMaximumAmountToPayValue(_ value: Decimal?) {
         guard let value else { return }
         maximumAmountToPayValue = value
+    }
+
+    private func sendAnalyticsSwitchTapped() {
+        let eventProperties = [GiniAnalyticsProperty(key: .switchActive, value: isSkontoApplied)]
+        GiniAnalyticsManager.track(event: .skontoSwitchTapped,
+                                   screenName: .skonto,
+                                   properties: eventProperties)
     }
 
     private func setPrice(_ price: String,
