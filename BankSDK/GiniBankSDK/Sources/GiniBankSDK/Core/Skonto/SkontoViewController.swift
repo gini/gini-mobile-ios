@@ -252,7 +252,7 @@ final class SkontoViewController: UIViewController {
         }
 
         navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
-            self?.viewModel.proceedButtonTapped()
+            self?.proceedButtonTapped()
         }
 
         navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
@@ -320,6 +320,10 @@ final class SkontoViewController: UIViewController {
     @objc private func backButtonTapped() {
         GiniAnalyticsManager.track(event: .closeTapped, screenName: .skonto)
         viewModel.backButtonTapped()
+    }
+
+    @objc private func proceedButtonTapped() {
+        viewModel.proceedButtonTapped()
     }
 
     private func setupTapGesture() {
