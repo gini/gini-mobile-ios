@@ -200,6 +200,10 @@ final class DigitalInvoiceViewController: UIViewController {
         if let documentId = configuration.documentService?.document?.id {
             eventProperties.append(GiniAnalyticsProperty(key: .documentId, value: documentId))
         }
+        if viewModel.hasSkonto {
+            eventProperties.append(GiniAnalyticsProperty(key: .skontoActive,
+                                                         value: viewModel.skontoViewModel?.isSkontoApplied ?? false))
+        }
         GiniAnalyticsManager.trackScreenShown(screenName: .returnAssistant, properties: eventProperties)
     }
 }
@@ -244,12 +248,13 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             if let cell = tableView.dequeueReusableCell(withIdentifier: DigitalLineItemTableViewCell.reuseIdentifier,
                                                         for: indexPath) as? DigitalLineItemTableViewCell {
                 if let invoice = viewModel.invoice {
+                    let maxCharactersCount = Constants.nameMaxCharactersCount
                     cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
                                                                            index: indexPath.row,
                                                                            invoiceNumTotal: invoice.numTotal,
                                                                            invoiceLineItemsCount:
                                                                            invoice.lineItems.count,
-                                                                           nameMaxCharactersCount: Constants.nameMaxCharactersCount)
+                                                                           nameMaxCharactersCount: maxCharactersCount)
                 }
                 cell.delegate = self
                 return cell

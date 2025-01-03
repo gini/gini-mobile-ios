@@ -202,7 +202,7 @@ extension SkontoAmountToPayView: PriceTextFieldDelegate {
     func priceTextFieldTapped() {
         delegate?.textFieldTapped()
     }
-  
+
     func priceTextField(_ textField: PriceTextField, didChangePrice editedText: String) {
         delegate?.textFieldPriceChanged(editedText: editedText)
     }
