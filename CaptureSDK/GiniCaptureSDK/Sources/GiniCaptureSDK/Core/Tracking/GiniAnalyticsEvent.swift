@@ -7,11 +7,15 @@
 import Foundation
 
 public enum GiniAnalyticsEvent: String {
+    // MARK: - Shared
     case screenShown = "screen_shown"
     case closeTapped = "close_tapped"
     case sdkOpened = "sdk_opened"
     case sdkClosed = "sdk_closed"
     case proceedTapped = "proceed_tapped"
+    case previewZoomed = "preview_zoomed"
+    case invoicePreviewTapped = "invoice_preview_tapped"
+    case tryAgainTapped = "try_again_tapped"
 
     // MARK: - Camera
     case captureTapped = "capture_tapped"
@@ -24,7 +28,7 @@ public enum GiniAnalyticsEvent: String {
     case errorDialogShown = "error_dialog_shown"
     case qr_code_scanned = "qr_code_scanned"
 
-    // MARK: Camera permission
+    // MARK: - Camera permission
     case cameraPermissionShown = "camera_permission_shown"
     case cameraPermissionTapped = "camera_permission_tapped"
     case giveAccessTapped = "give_access_tapped"
@@ -34,7 +38,6 @@ public enum GiniAnalyticsEvent: String {
     case addPagesTapped = "add_pages_tapped"
     case pageSwiped = "page_swiped"
     case fullScreenPageTapped = "full_screen_page_tapped"
-    case previewZoomed = "preview_zoomed"
 
     // MARK: - No Results and Error
     case enterManuallyTapped = "enter_manually_tapped"
@@ -60,5 +63,4 @@ public enum GiniAnalyticsEvent: String {
     case finalAmountTapped = "final_amount_tapped"
     case fullAmountTapped = "full_amount_tapped"
     case dueDateTapped = "due_date_tapped"
-    case invoicePreviewTapped = "invoice_preview_tapped"
 }
