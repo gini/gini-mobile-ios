@@ -99,6 +99,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
             showAlertIfNeeded()
             firstAppearance = false
         }
+        sendAnalyticsScreenShown()
     }
 
     deinit {
@@ -231,6 +232,18 @@ class DigitalInvoiceSkontoViewController: UIViewController {
                 navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
             ])
         }
+    }
+    
+    private func sendAnalyticsScreenShown() {
+        let isSkontoApplied = viewModel.isSkontoApplied
+        var eventProperties: [GiniAnalyticsProperty] = [GiniAnalyticsProperty(key: .switchActive,
+                                                                              value: isSkontoApplied)]
+        if let edgeCaseAnalyticsValue = viewModel.edgeCase?.analyticsValue {
+            eventProperties.append(GiniAnalyticsProperty(key: .edgeCaseType,
+                                                         value: edgeCaseAnalyticsValue))
+        }
+
+        GiniAnalyticsManager.trackScreenShown(screenName: .returnAssistantSkonto, properties: eventProperties)
     }
 
     private func bindViewModel() {
