@@ -325,6 +325,11 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         GiniAnalyticsManager.track(event: .sdkClosed,
                                    properties: [GiniAnalyticsProperty(key: .status, value: "successful")])
     }
+
+    private func setDcoumentIdAsUserProperty() {
+        guard let documentId = documentService.document?.id else { return }
+        GiniAnalyticsManager.registerSuperProperties([.documentId: documentId])
+    }
 }
 
 // MARK: - Return Assistant
@@ -337,7 +342,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
             switch result {
             case let .success(extractionResult):
-
+                    self.setDcoumentIdAsUserProperty()
                 DispatchQueue.main.async {
                     if GiniBankConfiguration.shared.returnAssistantEnabled && extractionResult.lineItems != nil {
                         self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
