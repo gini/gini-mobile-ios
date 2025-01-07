@@ -197,11 +197,7 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     func sendAnalyticsScreenShown() {
-        var eventProperties: [GiniAnalyticsProperty] = []
-        if let documentId = configuration.documentService?.document?.id {
-            eventProperties.append(GiniAnalyticsProperty(key: .documentId, value: documentId))
-        }
-        GiniAnalyticsManager.trackScreenShown(screenName: .returnAssistant, properties: eventProperties)
+        GiniAnalyticsManager.trackScreenShown(screenName: .returnAssistant)
     }
 }
 
