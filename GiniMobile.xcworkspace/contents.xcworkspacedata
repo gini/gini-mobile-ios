@@ -51,12 +51,6 @@
       location = "container:"
       name = "GiniBankAPILibrary">
       <FileRef
-         location = "group:BankAPILibrary/GiniBankAPILibraryPinningExample/GiniBankAPILibraryPinningExample.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:BankAPILibrary/GiniBankAPILibraryExample/GiniBankAPILibraryExample.xcodeproj">
-      </FileRef>
-      <FileRef
          location = "group:BankAPILibrary/GiniBankAPILibraryPinning">
       </FileRef>
       <FileRef
