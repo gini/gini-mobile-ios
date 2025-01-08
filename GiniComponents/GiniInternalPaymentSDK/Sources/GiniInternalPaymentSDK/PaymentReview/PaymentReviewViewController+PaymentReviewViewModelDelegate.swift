@@ -21,7 +21,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
 
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController) {
-        bottomSheet.minHeight = Constants.inputContainerHeightPortait
+//        bottomSheet.minHeight = Constants.inputContainerHeightPortait
         presentBottomSheet(viewController: bottomSheet)
     }
 

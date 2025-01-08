@@ -91,11 +91,11 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         return emptyView
     }()
     
-    private lazy var paymentInfoStackView = generatePaymentInfoViews()
+    private lazy var paymentInfoStackView = generatePaymentInfoViews(orientation: .horizontal)
 
-    private let topStackView = EmptyStackView().orientation(.vertical)
+    private let topStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let bottomStackView = EmptyStackView().orientation(.vertical)
-    private let splitStacKView = EmptyStackView()
+    private let splitStacKView = EmptyStackView().distribution(.fill)
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,7 +128,6 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
 
         // Set up the content hierarchy
         titleView.addSubview(titleLabel)
-        contentStackView.addArrangedSubview(titleView)
         
         qrCodeView.addSubview(qrImageView)
 
@@ -138,27 +137,35 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         continueView.addSubview(continueButton)
         
         descriptionView.addSubview(descriptionLabel)
-        
         paymentInfoView.addSubview(paymentInfoStackView)
         bottomView.addSubview(paymentInfoView)
 
         topStackView.addArrangedSubview(qrCodeView)
         topStackView.addArrangedSubview(brandView)
+        topStackView.addArrangedSubview(EmptyView())
 
         bottomStackView.addArrangedSubview(continueView)
         bottomStackView.addArrangedSubview(descriptionView)
-//        bottomStackView.addArrangedSubview(bottomView)
-
+        bottomStackView.addArrangedSubview(bottomView)
+    
+        setupSplitStackViewHierarchy()
+        // Add the UIScrollView to the main container
+        self.setContent(content: scrollView)
+    }
+    
+    fileprivate func setupSplitStackViewHierarchy() {
+        splitStacKView.removeAllArrangedSubviews()
+        contentStackView.removeAllArrangedSubviews()
+        
         splitStacKView.addArrangedSubview(topStackView)
         splitStacKView.addArrangedSubview(bottomStackView)
+        contentStackView.addArrangedSubview(titleView)
         contentStackView.addArrangedSubview(splitStacKView)
-
+        
         // Calculate and update scrollView height dynamically
         DispatchQueue.main.async {
             self.updateScrollViewHeight(scrollView: self.scrollView)
         }
-        // Add the UIScrollView to the main container
-        self.setContent(content: scrollView)
     }
     
     private func setupContentStackViewConstraints(in scrollView: UIScrollView) {
@@ -188,7 +195,10 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     private func setupPortraitConstraints() {
         NSLayoutConstraint.deactivate(landscapeConstraints)
 
+        setupSplitStackViewHierarchy()
         splitStacKView.orientation(.vertical).spacing(0)
+        paymentInfoStackView = generatePaymentInfoViews(orientation: .vertical)
+
         portraitConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
@@ -207,7 +217,9 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     private func setupLandscapeConstraints() {
         NSLayoutConstraint.deactivate(portraitConstraints)
 
-        splitStacKView.orientation(.horizontal).spacing(Constants.viewPaddingConstraint)
+        paymentInfoStackView = generatePaymentInfoViews(orientation: .horizontal)
+        setupSplitStackViewHierarchy()
+        splitStacKView.orientation(.horizontal).spacing(75)
 
         landscapeConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.landscapePadding),
@@ -330,20 +342,32 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         }
     }
     
-    private func generatePaymentInfoViews() -> UIStackView {
-        let paymentInfoStackView = createStackView(distribution: .fillEqually, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
+    private func generatePaymentInfoViews(orientation: NSLayoutConstraint.Axis) -> UIStackView {
+        let paymentInfoStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
         [
-            generateInfoStackView(title: viewModel.strings.recipientLabelText, subtitle: viewModel.paymentInfo?.recipient),
-            generateInfoStackView(title: viewModel.strings.ibanLabelText, subtitle: viewModel.paymentInfo?.iban),
+            generateRecipientIbanStackView(orientation: orientation),
             generateAmountPurposeStackView()
         ].forEach { paymentInfoStackView.addArrangedSubview($0) }
         return paymentInfoStackView
     }
+    
+    private func generateRecipientIbanStackView(orientation: NSLayoutConstraint.Axis) -> UIStackView {
+        let recipientIBANStackView = createStackView(distribution: .fillEqually, spacing: Constants.viewPaddingConstraint, orientation: orientation)
+        
+        let recipientStackView = generateInfoStackView(title: viewModel.strings.recipientLabelText, subtitle: viewModel.paymentInfo?.recipient)
+        let ibanStackView = generateInfoStackView(title: viewModel.strings.ibanLabelText, subtitle: viewModel.paymentInfo?.iban)
+        
+        [recipientStackView, ibanStackView].forEach { recipientIBANStackView.addArrangedSubview($0) }
+        return recipientIBANStackView
+    }
 
     private func generateInfoStackView(title: String, subtitle: String?) -> UIStackView {
-        let stackView = createStackView(distribution: .fill, spacing: Constants.paymentInfoFieldsSpacing, orientation: .vertical)
+        let stackView = createStackView(distribution: .fillEqually, spacing: Constants.paymentInfoFieldsSpacing, orientation: .vertical)
         stackView.addArrangedSubview(createLabel(text: title, isTitle: true))
         stackView.addArrangedSubview(createLabel(text: subtitle ?? "", isTitle: false))
+        NSLayoutConstraint.activate([
+            stackView.heightAnchor.constraint(equalToConstant: 42) // Set the height constraint
+        ])
         return stackView
     }
 
