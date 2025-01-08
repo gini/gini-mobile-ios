@@ -77,9 +77,6 @@
       location = "container:"
       name = "GiniCaptureSDK">
       <FileRef
-         location = "group:CaptureSDK/GiniCaptureSDKPinningExample/GiniCaptureSDKPinningExample.xcodeproj">
-      </FileRef>
-      <FileRef
          location = "group:CaptureSDK/GiniCaptureSDKPinning">
       </FileRef>
       <FileRef
