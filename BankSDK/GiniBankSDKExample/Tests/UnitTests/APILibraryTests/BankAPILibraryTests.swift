@@ -10,20 +10,22 @@ import XCTest
 final class BankAPILibraryTests: XCTestCase {
 
     private let client = Client(id: "", secret: "", domain: "")
+    private let customDomain = "custom-api.domain.com"
+    private let cutomUserDomain = "custom-user.domain.com"
 
     func testBuildWithCustomApiDomain() {
-        let api = APIDomain.custom(domain: "custom-api.domain.com", tokenSource: nil)
+        let api = APIDomain.custom(domain: customDomain, tokenSource: nil)
         let giniBankAPILib = GiniBankAPI.Builder(client: client,
                                                  api: api,
                                                  logLevel: .none)
             .build()
 
         let documentService = giniBankAPILib.documentService() as DefaultDocumentService
-        XCTAssertEqual(documentService.apiDomain.domainString, "custom-api.domain.com")
+        XCTAssertEqual(documentService.apiDomain.domainString, customDomain)
     }
 
     func testBuildWithCustomUserDomain() {
-        let userApi = UserDomain.custom(domain: "custom-user.domain.com")
+        let userApi = UserDomain.custom(domain: customDomain)
         let giniBankAPILib = GiniBankAPI.Builder(client: client,
                                                  userApi: userApi,
                                                  logLevel: .none)
@@ -31,12 +33,12 @@ final class BankAPILibraryTests: XCTestCase {
 
         let documentService = giniBankAPILib.documentService() as DefaultDocumentService
         let sessionManager = documentService.sessionManager as! SessionManager
-        XCTAssertEqual(sessionManager.userDomain.domainString, "custom-user.domain.com")
+        XCTAssertEqual(sessionManager.userDomain.domainString, cutomUserDomain)
     }
 
     func testBuildWithCustomApiAndUserDomain() {
-        let api = APIDomain.custom(domain: "custom-api.domain.com", tokenSource: nil)
-        let userApi = UserDomain.custom(domain: "custom-user.domain.com")
+        let api = APIDomain.custom(domain: customDomain, tokenSource: nil)
+        let userApi = UserDomain.custom(domain: cutomUserDomain)
         let giniBankAPILib = GiniBankAPI.Builder(client: client,
                                                  api: api,
                                                  userApi: userApi,
@@ -44,22 +46,23 @@ final class BankAPILibraryTests: XCTestCase {
             .build()
 
         let documentService = giniBankAPILib.documentService() as DefaultDocumentService
-        XCTAssertEqual(documentService.apiDomain.domainString, "custom-api.domain.com")
+        XCTAssertEqual(documentService.apiDomain.domainString, customDomain)
 
         let sessionManager = documentService.sessionManager as! SessionManager
-        XCTAssertEqual(sessionManager.userDomain.domainString, "custom-user.domain.com")
+        XCTAssertEqual(sessionManager.userDomain.domainString, cutomUserDomain)
     }
 
     func testWithCustomApiDomainAndAlternativeTokenSource() {
         let tokenSource = TokenSource()
-        let apiWithTokenSource = APIDomain.custom(domain: "custom-api.domain.com", tokenSource: tokenSource)
+        let apiWithTokenSource = APIDomain.custom(domain: customDomain, 
+                                                  tokenSource: tokenSource)
         let giniBankAPILib = GiniBankAPI.Builder(client: client,
                                                  api: apiWithTokenSource,
                                                  logLevel: .none)
             .build()
 
         let documentService = giniBankAPILib.documentService() as DefaultDocumentService
-        XCTAssertEqual(documentService.apiDomain.domainString, "custom-api.domain.com")
+        XCTAssertEqual(documentService.apiDomain.domainString, customDomain)
 
         let sessionManager = documentService.sessionManager as! SessionManager
         XCTAssertNotNil(sessionManager.alternativeTokenSource)
