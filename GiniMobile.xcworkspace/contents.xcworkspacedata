@@ -80,9 +80,6 @@
          location = "group:CaptureSDK/GiniCaptureSDKPinningExample/GiniCaptureSDKPinningExample.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:CaptureSDK/GiniCaptureSDKExample/GiniCaptureSDKExample.xcodeproj">
-      </FileRef>
-      <FileRef
          location = "group:CaptureSDK/GiniCaptureSDKPinning">
       </FileRef>
       <FileRef
