@@ -39,6 +39,11 @@
 		28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CDB8222A38A5E40016A81C /* ColorPalette.swift */; };
 		28D0DB102CB803E7003CA3B7 /* SkontoIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D0DB0F2CB803E7003CA3B7 /* SkontoIntegrationTests.swift */; };
 		28D0DB272CB91F5B003CA3B7 /* DocumentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D0DB262CB91F5B003CA3B7 /* DocumentCreationTests.swift */; };
+		28D1B44A2D2E9172002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4442D2E9172002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift */; };
+		28D1B44C2D2E9172002EE0DA /* AlbumsPickerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4452D2E9172002EE0DA /* AlbumsPickerViewControllerTests.swift */; };
+		28D1B44E2D2E9172002EE0DA /* GalleryCoordinatorDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4462D2E9172002EE0DA /* GalleryCoordinatorDelegateTests.swift */; };
+		28D1B4502D2E9172002EE0DA /* GalleryCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4472D2E9172002EE0DA /* GalleryCoordinatorTests.swift */; };
+		28D1B4522D2E9172002EE0DA /* GalleryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4482D2E9172002EE0DA /* GalleryManagerTests.swift */; };
 		28D77C482CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */; };
 		28D77C492CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */; };
 		28D77C4A2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json in Resources */ = {isa = PBXBuildFile; fileRef = 28D77C3F2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json */; };
@@ -277,6 +282,11 @@
 		28CDB8222A38A5E40016A81C /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		28D0DB0F2CB803E7003CA3B7 /* SkontoIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkontoIntegrationTests.swift; sourceTree = "<group>"; };
 		28D0DB262CB91F5B003CA3B7 /* DocumentCreationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCreationTests.swift; sourceTree = "<group>"; };
+		28D1B4442D2E9172002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumsPickerViewControllerDelegateTests.swift; sourceTree = "<group>"; };
+		28D1B4452D2E9172002EE0DA /* AlbumsPickerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumsPickerViewControllerTests.swift; sourceTree = "<group>"; };
+		28D1B4462D2E9172002EE0DA /* GalleryCoordinatorDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCoordinatorDelegateTests.swift; sourceTree = "<group>"; };
+		28D1B4472D2E9172002EE0DA /* GalleryCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCoordinatorTests.swift; sourceTree = "<group>"; };
+		28D1B4482D2E9172002EE0DA /* GalleryManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryManagerTests.swift; sourceTree = "<group>"; };
 		28D77C3E2CBE99FC00F815DB /* Gini_invoice_example_skonto.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_skonto.pdf; sourceTree = "<group>"; };
 		28D77C3F2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_skonto.json; sourceTree = "<group>"; };
 		28D77C412CBE99FC00F815DB /* Gini_invoice_example_payment_reference.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_payment_reference.pdf; sourceTree = "<group>"; };
@@ -532,6 +542,18 @@
 			path = TransactionSummary;
 			sourceTree = "<group>";
 		};
+		28D1B4432D2E912D002EE0DA /* CaptureSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				28D1B4442D2E9172002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift */,
+				28D1B4452D2E9172002EE0DA /* AlbumsPickerViewControllerTests.swift */,
+				28D1B4462D2E9172002EE0DA /* GalleryCoordinatorDelegateTests.swift */,
+				28D1B4472D2E9172002EE0DA /* GalleryCoordinatorTests.swift */,
+				28D1B4482D2E9172002EE0DA /* GalleryManagerTests.swift */,
+			);
+			path = CaptureSDKTests;
+			sourceTree = "<group>";
+		};
 		28D77C402CBE99FC00F815DB /* Skonto */ = {
 			isa = PBXGroup;
 			children = (
@@ -618,6 +640,7 @@
 		28D77C622CBEC09500F815DB /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				28D1B4432D2E912D002EE0DA /* CaptureSDKTests */,
 				F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */,
 				F45D7F022800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift */,
 				F45D7F0A2800566900C73C63 /* SettingsViewControllerTests.swift */,
@@ -1430,17 +1453,22 @@
 			files = (
 				28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */,
 				F45D7F0E2800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
+				28D1B44E2D2E9172002EE0DA /* GalleryCoordinatorDelegateTests.swift in Sources */,
 				28D77C582CBEA85100F815DB /* BaseIntegrationTest+Skonto.swift in Sources */,
 				28D77C5B2CBEA8B100F815DB /* BaseIntegrationTest+TransferSummary.swift in Sources */,
 				F45D7F152800566900C73C63 /* SettingsViewControllerTests.swift in Sources */,
 				2870683C2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift in Sources */,
 				28D0DB272CB91F5B003CA3B7 /* DocumentCreationTests.swift in Sources */,
+				28D1B44C2D2E9172002EE0DA /* AlbumsPickerViewControllerTests.swift in Sources */,
 				28DAC20B2CB6D94F008B85E0 /* BaseIntegrationTest.swift in Sources */,
 				28A46A8D2CD14BAA00800CA6 /* GiniSetupHelper.swift in Sources */,
 				28D0DB102CB803E7003CA3B7 /* SkontoIntegrationTests.swift in Sources */,
 				F45D7F0C2800566900C73C63 /* TransferSummaryIntegrationTest.swift in Sources */,
+				28D1B4502D2E9172002EE0DA /* GalleryCoordinatorTests.swift in Sources */,
+				28D1B4522D2E9172002EE0DA /* GalleryManagerTests.swift in Sources */,
 				F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */,
 				289918002BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift in Sources */,
+				28D1B44A2D2E9172002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
