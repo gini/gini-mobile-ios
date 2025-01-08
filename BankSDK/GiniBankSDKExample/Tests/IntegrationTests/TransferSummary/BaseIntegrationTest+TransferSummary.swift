@@ -92,8 +92,8 @@ extension BaseIntegrationTest {
      * It is assumed that transfer summary was sent, and we retrieve the updated extractions for verification.
      */
     private func getUpdatedExtractionsFromGiniBankSDK(for document: Document, completion: @escaping AnalysisCompletion) {
-        self.giniHelper.giniBankAPIDocumentService.extractions(for: document,
-                                                               cancellationToken: CancellationToken()) { result in
+        giniHelper.giniBankAPIDocumentService.extractions(for: document,
+                                                          cancellationToken: CancellationToken()) { result in
             switch result {
                 case let .success(extractionResult):
                     completion(.success(extractionResult))
