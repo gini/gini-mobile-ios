@@ -13,8 +13,8 @@ extension GiniBank {
     /**
      Aborts the current GiniBankSDK session
      */
-    public class func cancelCurrentSDK() {
-        GiniBankNetworkingScreenApiCoordinator.cancelSDK()
+    public class func closeCurrentSDK() {
+        GiniBankNetworkingScreenApiCoordinator.closeSDK()
     }
 
     // MARK: - Screen API with Default Networking - Initializers for 'UIViewController'
