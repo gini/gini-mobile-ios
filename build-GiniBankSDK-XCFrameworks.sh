@@ -8,7 +8,7 @@ iphoneosArchivePath="iphoneosGiniBankSDK.xcarchive"
 iphoneosBuildDir="build-ginibanksdk-iphoneos"
 
 
-frameworks=("GiniBankAPILibrary" "GiniCaptureSDK" "GiniBankSDK") #"TrustKit" "GiniBankAPILibraryPinning" "GiniCaptureSDKPinning" "GiniBankSDKPinning")
+frameworks=("GiniBankAPILibrary" "GiniCaptureSDK" "GiniBankSDK")
 
 # Function to cleanup simulator and iOS archives
 cleanup-artefacts() {
@@ -18,8 +18,12 @@ cleanup-artefacts() {
         echo "Cleaning up intermediate caches and artefacts..."
         rm -rf $iphonesimulatorArchivePath $iphoneosArchivePath
         rm -rf $iphoneosBuildDir $iphonesimulatorBuildDir
-        rm -rf *.xcframework
     fi
+}
+
+cleanup-frameworks() {
+    # cleaning up xcframeworks
+    rm -rf *.xcframework
 }
 
 # Function to copy .swiftmodule
@@ -83,8 +87,6 @@ archive() {
     local resultFrameworksPath="$outputPath/Products/usr/local/lib"
     local modulesPath="$derivedDataPath/Build/Intermediates.noindex/ArchiveIntermediates/GiniBankSDK/BuildProductsPath/Release-$sdk"
 
-    # frameworks=("GiniBankAPILibrary" "GiniCaptureSDK" "GiniBankSDK")
-
     for framework in "${frameworks[@]}"; do
         cp-modules "$framework" "$modulesPath" "$resultFrameworksPath"
     done
@@ -119,6 +121,7 @@ make-xcframework() {
 
 # Pre-cleanup
 cleanup-artefacts
+cleanup-frameworks
 
 # telling swift packages in the environment that they need to produce dynamic libraries
 export GINI_FORCE_DYNAMIC_LIBRARY=1
@@ -144,4 +147,4 @@ done
 export GINI_FORCE_DYNAMIC_LIBRARY=""
 
 # Post-cleanup
-# cleanup-artefacts
+cleanup-artefacts
