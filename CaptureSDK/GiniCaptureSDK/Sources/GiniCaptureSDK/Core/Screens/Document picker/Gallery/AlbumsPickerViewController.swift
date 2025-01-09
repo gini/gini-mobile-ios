@@ -32,6 +32,10 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
 
     private lazy var tableViewHeightAnchor =
         albumsTableView.heightAnchor.constraint(equalToConstant: tableViewContentHeight)
+    private lazy var tableViewLeadingConstraint =
+        albumsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding * 2)
+    private lazy var tableViewTrailingConstraint =
+        albumsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding * 2)
 
     // MARK: - Views
 
@@ -82,8 +86,8 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
 
         NSLayoutConstraint.activate([
             albumsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding * 2),
-            albumsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding * 2),
-            albumsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding * 2),
+            tableViewLeadingConstraint,
+            tableViewTrailingConstraint,
             albumsTableView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                     constant: -Constants.padding * 2),
             tableViewHeightAnchor
@@ -132,6 +136,12 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
             }
         }
         tableViewHeightAnchor.constant = tableViewContentHeight
+        if UIDevice.current.isIphone {
+            let isLandscape = currentInterfaceOrientation?.isLandscape == true
+            let padding = isLandscape ? Constants.paddingHorizontal * 2 : Constants.padding * 2
+            tableViewLeadingConstraint.constant = padding
+            tableViewTrailingConstraint.constant = -padding
+        }
         view.layoutIfNeeded()
     }
 
@@ -227,6 +237,7 @@ extension AlbumsPickerViewController: UITableViewDelegate {
 extension AlbumsPickerViewController {
     private enum Constants {
         static let padding: CGFloat = 8
+        static let paddingHorizontal: CGFloat = 28
         static let cornerRadius: CGFloat = 16
     }
 }
