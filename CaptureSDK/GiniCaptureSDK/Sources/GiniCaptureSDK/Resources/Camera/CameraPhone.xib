@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_5" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_5" orientation="landscape" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -13,20 +14,22 @@
             <connections>
                 <outlet property="bottomButtonsConstraints" destination="h0v-6y-Xer" id="RbT-MB-uE6"/>
                 <outlet property="bottomPaneConstraint" destination="XnW-wu-lup" id="A43-Li-iA3"/>
-                <outlet property="cameraPane" destination="qey-Uj-2J2" id="fnE-94-RbB"/>
+                <outlet property="cameraPane" destination="qey-Uj-2J2" id="Gxs-T1-DKF"/>
+                <outlet property="cameraPaneHorizontal" destination="Ute-r6-LLu" id="pDg-GO-GnY"/>
+                <outlet property="cameraPaneHorizontalBottomConstraint" destination="n1C-hr-HhE" id="EKX-xs-Pa2"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Rqx-4l-iKM"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="qey-Uj-2J2" customClass="CameraPane" customModule="GiniCaptureSDK">
-                    <rect key="frame" x="0.0" y="690" width="414" height="206"/>
+                    <rect key="frame" x="0.0" y="294" width="896" height="120"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQe-NY-Bi9">
-                            <rect key="frame" x="172" y="73" width="70" height="70"/>
+                            <rect key="frame" x="413" y="36.666666666666686" width="70" height="70"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="70" id="Flv-NK-4aP"/>
                                 <constraint firstAttribute="width" constant="70" id="gVb-eK-08y"/>
@@ -38,7 +41,7 @@
                             </buttonConfiguration>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" horizontalCompressionResistancePriority="755" verticalCompressionResistancePriority="800" text="Scan an invoice or a QR code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="lfm-sA-fAL">
-                            <rect key="frame" x="96.333333333333329" y="7.9999999999999982" width="221.66666666666669" height="20.333333333333329"/>
+                            <rect key="frame" x="337.33333333333331" y="7.9999999999999982" width="221.66666666666669" height="20.333333333333329"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Q1y-Qr-XQo"/>
                             </constraints>
@@ -47,27 +50,27 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="zFz-gY-AMg">
-                            <rect key="frame" x="8" y="44.333333333333378" width="138" height="127.66666666666669"/>
+                            <rect key="frame" x="8" y="44.333333333333314" width="379" height="54.666666666666657"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oxa-p6-f53" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="0.0" y="0.0" width="64" height="127.66666666666667"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="184.66666666666666" height="54.666666666666664"/>
                                     <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wph-4w-azi" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="74" y="0.0" width="64" height="127.66666666666667"/>
+                                    <rect key="frame" x="194.66666666666663" y="0.0" width="184.33333333333337" height="54.666666666666664"/>
                                     <color key="backgroundColor" systemColor="systemGreenColor"/>
                                     <color key="tintColor" systemColor="tintColor"/>
                                 </view>
                             </subviews>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="XkD-wl-s7a">
-                            <rect key="frame" x="242" y="82" width="164" height="52"/>
+                            <rect key="frame" x="483" y="45.666666666666686" width="405" height="52"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="12N-wP-hsO">
-                                    <rect key="frame" x="0.0" y="0.0" width="164" height="52"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="405" height="52"/>
                                     <subviews>
                                         <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Yg-3y-VKg" customClass="ThumbnailView" customModule="GiniCaptureSDK">
-                                            <rect key="frame" x="60" y="0.0" width="44" height="52"/>
+                                            <rect key="frame" x="180.66666666666663" y="0.0" width="44" height="52"/>
                                             <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="52" id="aV8-ZL-Eg8"/>
@@ -114,17 +117,97 @@
                         <outlet property="thumbnailView" destination="0Yg-3y-VKg" id="6JD-sz-z55"/>
                     </connections>
                 </view>
+                <view contentMode="scaleToFill" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="Ute-r6-LLu" customClass="CameraPaneHorizontal" customModule="GiniCaptureSDK">
+                    <rect key="frame" x="810" y="0.0" width="86" height="414"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cE7-Jo-KKj">
+                            <rect key="frame" x="8" y="172" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="4R1-i3-mDZ"/>
+                                <constraint firstAttribute="width" constant="70" id="HD8-8q-hp7"/>
+                            </constraints>
+                            <color key="tintColor" systemColor="systemIndigoColor"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="cameraCaptureButton" title=" ">
+                                <color key="baseForegroundColor" systemColor="tertiaryLabelColor"/>
+                            </buttonConfiguration>
+                        </button>
+                        <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="3jm-6s-w6K">
+                            <rect key="frame" x="11" y="248" width="64" height="160"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uRs-sc-vyq" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
+                                    <rect key="frame" x="0.0" y="0.0" width="64" height="75"/>
+                                    <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O0T-uv-xh8" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
+                                    <rect key="frame" x="0.0" y="85" width="64" height="75"/>
+                                    <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                    <color key="tintColor" systemColor="tintColor"/>
+                                </view>
+                            </subviews>
+                        </stackView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="oJn-3w-qw1">
+                            <rect key="frame" x="17" y="8" width="52" height="156"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6FG-8O-8ez">
+                                    <rect key="frame" x="0.0" y="0.0" width="52" height="156"/>
+                                    <subviews>
+                                        <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Yv-Ty-r8m" customClass="ThumbnailView" customModule="GiniCaptureSDK">
+                                            <rect key="frame" x="4" y="52" width="44" height="52"/>
+                                            <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="44" id="oD5-gV-99T"/>
+                                                <constraint firstAttribute="height" constant="52" id="rTH-Dp-ey7"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstItem="7Yv-Ty-r8m" firstAttribute="centerY" secondItem="6FG-8O-8ez" secondAttribute="centerY" id="AV6-pf-mvm"/>
+                                        <constraint firstItem="7Yv-Ty-r8m" firstAttribute="centerX" secondItem="6FG-8O-8ez" secondAttribute="centerX" id="MDA-Gy-PUO"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="oJn-3w-qw1" firstAttribute="top" secondItem="Ute-r6-LLu" secondAttribute="top" constant="8" id="4Ut-d3-r3C"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="86" id="6rI-g6-ukE"/>
+                        <constraint firstItem="cE7-Jo-KKj" firstAttribute="centerX" secondItem="Ute-r6-LLu" secondAttribute="centerX" id="DoM-9l-iIG"/>
+                        <constraint firstItem="3jm-6s-w6K" firstAttribute="leading" secondItem="Ute-r6-LLu" secondAttribute="leading" constant="11" id="MJ7-DF-tly"/>
+                        <constraint firstItem="3jm-6s-w6K" firstAttribute="top" secondItem="cE7-Jo-KKj" secondAttribute="bottom" constant="6" id="Ob8-27-0b6"/>
+                        <constraint firstAttribute="bottom" secondItem="3jm-6s-w6K" secondAttribute="bottom" constant="6" id="cJh-ZN-KeQ"/>
+                        <constraint firstItem="cE7-Jo-KKj" firstAttribute="centerY" secondItem="Ute-r6-LLu" secondAttribute="centerY" id="d9a-8b-LRL"/>
+                        <constraint firstItem="oJn-3w-qw1" firstAttribute="leading" secondItem="Ute-r6-LLu" secondAttribute="leading" constant="17" id="fWd-bA-FT1"/>
+                        <constraint firstItem="cE7-Jo-KKj" firstAttribute="leading" secondItem="Ute-r6-LLu" secondAttribute="leadingMargin" id="hQM-MH-Jvr"/>
+                        <constraint firstAttribute="trailing" secondItem="3jm-6s-w6K" secondAttribute="trailing" constant="11" id="jjH-O1-ldh"/>
+                        <constraint firstItem="cE7-Jo-KKj" firstAttribute="top" secondItem="oJn-3w-qw1" secondAttribute="bottom" constant="8" id="kaZ-Ct-xlR"/>
+                        <constraint firstAttribute="trailing" secondItem="oJn-3w-qw1" secondAttribute="trailing" constant="17" id="opO-bk-1f6"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="captureButton" destination="cE7-Jo-KKj" id="rzm-I3-E0y"/>
+                        <outlet property="fileUploadButton" destination="uRs-sc-vyq" id="tea-3r-oZd"/>
+                        <outlet property="flashButton" destination="O0T-uv-xh8" id="GJi-hS-Gtn"/>
+                        <outlet property="leftButtonsStack" destination="3jm-6s-w6K" id="wDv-kG-uLn"/>
+                        <outlet property="thumbnailView" destination="7Yv-Ty-r8m" id="8dX-1T-WgZ"/>
+                    </connections>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="qey-Uj-2J2" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.23" priority="999" id="5pL-4z-ODy"/>
+                <constraint firstItem="Ute-r6-LLu" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="UIb-55-BMH"/>
                 <constraint firstAttribute="bottom" secondItem="qey-Uj-2J2" secondAttribute="bottom" id="XnW-wu-lup"/>
                 <constraint firstAttribute="trailing" secondItem="qey-Uj-2J2" secondAttribute="trailing" id="f3h-fH-BYP"/>
+                <constraint firstAttribute="trailing" secondItem="Ute-r6-LLu" secondAttribute="trailing" id="fTH-9p-W1g"/>
                 <constraint firstItem="zFz-gY-AMg" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="h0v-6y-Xer"/>
+                <constraint firstAttribute="bottom" secondItem="Ute-r6-LLu" secondAttribute="bottom" id="n1C-hr-HhE"/>
                 <constraint firstItem="qey-Uj-2J2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ujq-KI-fiR"/>
             </constraints>
-            <point key="canvasLocation" x="136.23188405797103" y="101.11607142857143"/>
+            <point key="canvasLocation" x="135.9375" y="100.00000000000001"/>
         </view>
     </objects>
     <resources>
