@@ -95,6 +95,8 @@ import UIKit
         return overlayView
     }()
 
+    private var centerYConstraint = NSLayoutConstraint()
+
     /**
      Designated intitializer for the `AnalysisViewController`.
      
@@ -143,6 +145,14 @@ import UIKit
         let documentTypeAnalytics = GiniAnalyticsMapper.documentTypeAnalytics(from: document.type)
         GiniAnalyticsManager.registerSuperProperties([.documentType: documentTypeAnalytics])
         GiniAnalyticsManager.trackScreenShown(screenName: .analysis)
+    }
+
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.current.isIphone, document is GiniImageDocument {
+            let isLandscape = currentInterfaceOrientation?.isLandscape == true
+            centerYConstraint.constant = isLandscape ? -96 / 2 : 0
+        }
     }
 
     // MARK: Toggle animation
@@ -252,10 +262,10 @@ import UIKit
             loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(container)
             container.addSubview(loadingIndicator)
-
+            centerYConstraint = container.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             NSLayoutConstraint.activate([
                 container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                container.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                centerYConstraint,
                 container.heightAnchor.constraint(equalToConstant: Constants.loadingIndicatorContainerHeight),
                 container.widthAnchor.constraint(equalTo: container.heightAnchor),
                 loadingIndicator.centerXAnchor.constraint(equalTo: container.centerXAnchor),

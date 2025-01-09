@@ -71,7 +71,6 @@ class OnboardingViewController: UIViewController {
         NSLayoutConstraint.activate([
             navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 46),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])

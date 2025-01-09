@@ -52,6 +52,11 @@ class ErrorScreenViewController: UIViewController {
     let viewModel: BottomButtonsViewModel
     private let errorType: ErrorType
     private var buttonsHeightConstraint: NSLayoutConstraint?
+    private var headeriPhoneLeadingConstraint: NSLayoutConstraint?
+    private var buttonsiPhoneLeadingConstraint: NSLayoutConstraint?
+    private var buttonsiPhoneTrailingConstraint: NSLayoutConstraint?
+    private var textiPhoneLeadingConstraint: NSLayoutConstraint?
+    private var textiPhoneTrailingConstraint: NSLayoutConstraint?
     private var numberOfButtons: Int {
         return [
             viewModel.isEnterManuallyHidden(),
@@ -88,6 +93,24 @@ class ErrorScreenViewController: UIViewController {
         setupView()
 
         sendAnalyticsScreenShown()
+    }
+
+    override func viewDidLayoutSubviews() {
+        if UIDevice.current.isIphone {
+            let isLandscape = currentInterfaceOrientation?.isLandscape == true
+            headeriPhoneLeadingConstraint?.constant = isLandscape ? Constants.sidePaddingHorizontal : Constants.sidePadding
+            buttonsView.buttonsView.axis = isLandscape ? .horizontal : .vertical
+            buttonsHeightConstraint?.constant = getButtonsMinHeight(numberOfButtons: isLandscape ? 1 : numberOfButtons)
+
+            let margin = isLandscape ? GiniMargins.marginHorizontal : GiniMargins.margin
+            buttonsiPhoneLeadingConstraint?.constant = margin
+            buttonsiPhoneTrailingConstraint?.constant = -margin
+
+            let textMargin = isLandscape ? Constants.textContentMarginHorizontal : Constants.textContentMargin
+            textiPhoneLeadingConstraint?.constant = textMargin
+            textiPhoneTrailingConstraint?.constant = -textMargin
+        }
+        super.viewDidLayoutSubviews()
     }
 
     private func sendAnalyticsScreenShown() {
@@ -206,9 +229,10 @@ class ErrorScreenViewController: UIViewController {
                 errorHeader.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
+            headeriPhoneLeadingConstraint = errorHeader.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                                                       constant: Constants.sidePadding)
             NSLayoutConstraint.activate([
-                errorHeader.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                                 constant: Constants.sidePadding),
+                headeriPhoneLeadingConstraint!,
                 errorHeader.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                                   constant: -Constants.sidePadding)
             ])
@@ -254,11 +278,13 @@ class ErrorScreenViewController: UIViewController {
                                                       constant: -GiniMargins.margin)
             ])
         } else {
+            buttonsiPhoneLeadingConstraint = buttonsView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                                                  constant: GiniMargins.margin)
+            buttonsiPhoneTrailingConstraint = buttonsView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
+                                                                                    constant: -GiniMargins.margin)
             NSLayoutConstraint.activate([
-                buttonsView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                     constant: GiniMargins.margin),
-                buttonsView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
-                                                      constant: -GiniMargins.margin)
+                buttonsiPhoneLeadingConstraint!,
+                buttonsiPhoneTrailingConstraint!
             ])
         }
     }
@@ -271,11 +297,13 @@ class ErrorScreenViewController: UIViewController {
                                                     multiplier: Constants.iPadWidthMultiplier)
             ])
         } else {
+            textiPhoneLeadingConstraint = errorContent.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                                                constant: Constants.textContentMargin)
+            textiPhoneTrailingConstraint = errorContent.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                                                 constant: -Constants.textContentMargin)
             NSLayoutConstraint.activate([
-                errorContent.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                      constant: Constants.textContentMargin),
-                errorContent.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                       constant: -Constants.textContentMargin)
+                textiPhoneLeadingConstraint!,
+                textiPhoneTrailingConstraint!
             ])
         }
 
@@ -293,10 +321,12 @@ class ErrorScreenViewController: UIViewController {
         static let singleButtonHeight: CGFloat = 50
         static let twoButtonsHeight: CGFloat = 112
         static let textContentMargin: CGFloat = 24
+        static let textContentMarginHorizontal: CGFloat = 56
         static let errorHeaderMinHeight: CGFloat = 64
         static let errorHeaderHeightMultiplier: CGFloat = 0.3
         static let errorContentBottomMargin: CGFloat = 13
         static let sidePadding: CGFloat = 24
+        static let sidePaddingHorizontal: CGFloat = 56
         static let iPadWidthMultiplier: CGFloat = 0.7
         static let iPadButtonsWidth: CGFloat = 280
     }

@@ -39,6 +39,11 @@ class ButtonsView: UIView {
     let firstButtonTitle: String
     let secondButtonTitle: String
 
+    var axis: NSLayoutConstraint.Axis {
+        get { buttonsView.axis }
+        set { buttonsView.axis = newValue }
+    }
+
     init(firstTitle: String, secondTitle: String) {
         firstButtonTitle = firstTitle
         secondButtonTitle = secondTitle

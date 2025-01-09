@@ -142,8 +142,7 @@ final class SkontoHelpViewController: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()

@@ -329,8 +329,7 @@ extension ReviewViewController {
         NSLayoutConstraint.activate([
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: Constants.bottomNavigationBarHeight)
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()

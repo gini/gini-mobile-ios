@@ -51,6 +51,8 @@ final class ImagePickerViewController: UIViewController {
         return contentView
     }()
 
+    private var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
+
     // MARK: - Initializers
 
     init(album: Album,
@@ -66,6 +68,10 @@ final class ImagePickerViewController: UIViewController {
         fatalError("init(giniConfiguration:) has not been implemented")
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(collectionView)
+    }
+
     // MARK: - UIViewController
 
     override func viewDidLoad() {
@@ -76,6 +82,20 @@ final class ImagePickerViewController: UIViewController {
         setupConstraints()
 
         scrollToBottom()
+        NotificationCenter.default.addObserver(
+            collectionView,
+            selector: #selector(collectionView.layoutSubviews),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.current.isIphone {
+            let isLandscape = currentInterfaceOrientation?.isLandscape == true
+            bottomNavigationBarHeightConstraint?.constant = isLandscape ? Constants.navigationBarHeightHorizontal : Constants.navigationBarHeight
+        }
     }
 
     private func setupView() {
@@ -178,12 +198,13 @@ final class ImagePickerViewController: UIViewController {
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(navigationBar)
+        bottomNavigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
         NSLayoutConstraint.activate([
             contentView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
+            bottomNavigationBarHeightConstraint!
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
@@ -222,7 +243,7 @@ extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return ImagePickerCollectionViewCell.size(itemsInARow: 4,
+        return ImagePickerCollectionViewCell.size(itemsInARow: currentInterfaceOrientation?.isLandscape == true ? 5 : 4,
                                                   collectionViewLayout: collectionViewLayout)
     }
 
@@ -240,5 +261,6 @@ extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
 private extension ImagePickerViewController {
     enum Constants {
         static let navigationBarHeight: CGFloat = 114
+        static let navigationBarHeightHorizontal: CGFloat = 62
     }
 }

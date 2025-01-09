@@ -35,7 +35,6 @@ extension HelpBottomBarEnabledViewController {
             bottomNavigationBar.bottomAnchor.constraint(equalTo: superView.bottomAnchor),
             bottomNavigationBar.leadingAnchor.constraint(equalTo: superView.leadingAnchor),
             bottomNavigationBar.trailingAnchor.constraint(equalTo: superView.trailingAnchor),
-            bottomNavigationBar.heightAnchor.constraint(equalToConstant: bottomNavigationBar.frame.height),
             view.bottomAnchor.constraint(equalTo: bottomNavigationBar.topAnchor)
         ])
         superView.layoutSubviews()

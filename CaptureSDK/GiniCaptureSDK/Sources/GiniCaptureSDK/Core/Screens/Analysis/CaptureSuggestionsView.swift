@@ -19,6 +19,8 @@ final class CaptureSuggestionsView: UIView {
     private let containerHeight: CGFloat = 96
     private var itemSeparationConstraint: NSLayoutConstraint = NSLayoutConstraint()
     private var bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var leadingiPhondConstraint = NSLayoutConstraint()
+    private var trailingiPhoneConstraint = NSLayoutConstraint()
     private let repeatInterval: TimeInterval = 5
     private let superViewBottomAnchor: NSLayoutYAxisAnchor
 
@@ -86,6 +88,16 @@ final class CaptureSuggestionsView: UIView {
         fatalError("You should use init() initializer")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if UIDevice.current.isIphone {
+            let isLandscape = currentInterfaceOrientation?.isLandscape == true
+            let margin: CGFloat = isLandscape ? 56 : 20
+            leadingiPhondConstraint.constant = margin
+            trailingiPhoneConstraint.constant = -margin
+        }
+    }
+
     private func addConstraints() {
         guard let superview = superview, let suggestionContainer = suggestionContainer else { return }
 
@@ -110,9 +122,9 @@ final class CaptureSuggestionsView: UIView {
                               attr: .width, multiplier: 0.7)
             Constraints.active(item: suggestionContainer, attr: .centerX, relatedBy: .equal, to: self, attr: .centerX)
         } else {
-            Constraints.active(item: suggestionContainer, attr: .leading, relatedBy: .equal, to: self, attr: .leading,
+            leadingiPhondConstraint = Constraints.active(item: suggestionContainer, attr: .leading, relatedBy: .equal, to: self, attr: .leading,
                               constant: 20)
-            Constraints.active(item: suggestionContainer, attr: .trailing, relatedBy: .equal, to: self, attr: .trailing,
+            trailingiPhoneConstraint = Constraints.active(item: suggestionContainer, attr: .trailing, relatedBy: .equal, to: self, attr: .trailing,
                               constant: -20)
         }
     }

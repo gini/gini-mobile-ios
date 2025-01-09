@@ -74,6 +74,9 @@ final class NoResultScreenViewController: UIViewController {
     private let type: NoResultType
     private let viewModel: BottomButtonsViewModel
     private var buttonsHeightConstraint: NSLayoutConstraint?
+    private var headeriPhoneLeadingConstraint: NSLayoutConstraint?
+    private var tableViewiPhoneLeadingConstraint: NSLayoutConstraint?
+    private var tableViewiPhoneTrailingConstraint: NSLayoutConstraint?
     private var numberOfButtons: Int {
         return [
             viewModel.isEnterManuallyHidden(),
@@ -129,6 +132,19 @@ final class NoResultScreenViewController: UIViewController {
                 left: 0,
                 bottom: GiniMargins.margin,
                 right: 0)
+        }
+
+        if UIDevice.current.isIphone {
+            let isLandscape = currentInterfaceOrientation?.isLandscape == true
+            headeriPhoneLeadingConstraint?.constant = isLandscape ? Constants.sidePaddingHorizontal : Constants.sidePadding
+            buttonsView.axis = isLandscape ? .horizontal : .vertical
+            buttonsHeightConstraint?.constant = getButtonsMinHeight(numberOfButtons: isLandscape ? 1 : numberOfButtons)
+            buttonsView.buttonsView.axis = isLandscape ? .horizontal : .vertical
+            buttonsHeightConstraint?.constant = getButtonsMinHeight(numberOfButtons: isLandscape ? 1 : numberOfButtons)
+
+            let margin = isLandscape ? GiniMargins.marginHorizontal : GiniMargins.margin
+            tableViewiPhoneLeadingConstraint?.constant = margin
+            tableViewiPhoneTrailingConstraint?.constant = -margin
         }
     }
 
@@ -268,9 +284,10 @@ final class NoResultScreenViewController: UIViewController {
                 header.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
+            headeriPhoneLeadingConstraint = header.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                                                        constant: Constants.sidePadding)
             NSLayoutConstraint.activate([
-                header.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                            constant: Constants.sidePadding),
+                headeriPhoneLeadingConstraint!,
                 header.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                              constant: -Constants.sidePadding)
             ])
@@ -328,13 +345,15 @@ final class NoResultScreenViewController: UIViewController {
                                                  multiplier: Constants.iPadWidthMultiplier)
             ])
         } else {
+            tableViewiPhoneLeadingConstraint = tableView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: GiniMargins.margin)
+            tableViewiPhoneTrailingConstraint = tableView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -GiniMargins.margin)
             NSLayoutConstraint.activate([
-                tableView.leadingAnchor.constraint(
-                    equalTo: view.leadingAnchor,
-                    constant: GiniMargins.margin),
-                tableView.trailingAnchor.constraint(
-                    equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.margin)
+                tableViewiPhoneLeadingConstraint!,
+                tableViewiPhoneTrailingConstraint!
             ])
         }
         NSLayoutConstraint.activate([
@@ -351,6 +370,7 @@ final class NoResultScreenViewController: UIViewController {
         static let tableRowHeight: CGFloat = 44
         static let sectionHeight: CGFloat = 70
         static let sidePadding: CGFloat = 24
+        static let sidePaddingHorizontal: CGFloat = 56
         static let contentTopMargin: CGFloat = 13
         static let contentBottomMargin: CGFloat = 16
         static let contentHeight: CGFloat = 62

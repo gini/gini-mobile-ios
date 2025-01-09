@@ -18,6 +18,7 @@ final class CameraViewController: UIViewController {
     var detectedQRCodeDocument: GiniQRCodeDocument?
     var cameraNeedsInitializing: Bool { !cameraPreviewViewController.hasInitialized }
     var shouldShowHelp: Bool { isPresentedOnScreen && !validQRCodeProcessing }
+    var topNavBarAnchor: NSLayoutYAxisAnchor? { bottomNavigationBar?.topAnchor }
 
     lazy var cameraPreviewViewController: CameraPreviewViewController = {
         let cameraPreviewViewController = CameraPreviewViewController()
@@ -55,6 +56,8 @@ final class CameraViewController: UIViewController {
         return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
     }()
 
+    @IBOutlet var cameraPaneHorizontalBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var cameraPaneHorizontal: CameraPaneHorizontal!
     @IBOutlet weak var cameraPane: CameraPane!
     private let cameraButtonsViewModel: CameraButtonsViewModel
     private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
@@ -89,10 +92,18 @@ final class CameraViewController: UIViewController {
         }
 
         self.cameraLensSwitcherView.delegate = self
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(configureCameraPanesBasedOnOrientation),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewDidLoad() {
@@ -107,6 +118,8 @@ final class CameraViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         cameraPane.toggleCaptureButtonActivation(state: true)
+        cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
+        cameraPaneHorizontal?.setupTitlesHidden(isHidden: giniConfiguration.bottomNavigationBarEnabled)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -148,6 +161,20 @@ final class CameraViewController: UIViewController {
         }
     }
 
+    @objc private func configureCameraPanesBasedOnOrientation() {
+        if !UIDevice.current.isIpad, currentInterfaceOrientation?.isLandscape == true {
+            if !cameraPane.isHidden {
+                cameraPane.setupAuthorization(isHidden: true)
+                cameraPaneHorizontal.setupAuthorization(isHidden: false)
+            }
+        } else {
+            if !UIDevice.current.isIpad, !cameraPaneHorizontal.isHidden {
+                cameraPane.setupAuthorization(isHidden: false)
+                cameraPaneHorizontal.setupAuthorization(isHidden: true)
+            }
+        }
+    }
+
     private func setupView() {
         edgesForExtendedLayout = []
         view.backgroundColor = UIColor.GiniCapture.dark1
@@ -166,6 +193,7 @@ final class CameraViewController: UIViewController {
 
         if qrCodeScanningOnlyEnabled {
             cameraPane.alpha = 0
+            cameraPaneHorizontal?.alpha = 0
             if giniConfiguration.bottomNavigationBarEnabled {
                 configureCustomTopNavigationBar(containsImage: false)
             } else {
@@ -279,12 +307,12 @@ final class CameraViewController: UIViewController {
             view.removeConstraints([bottomPaneConstraint, bottomButtonsConstraints])
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(navigationBar)
+            cameraPaneHorizontalBottomConstraint.constant = 62
             NSLayoutConstraint.activate([
                 navigationBar.topAnchor.constraint(equalTo: cameraPane.bottomAnchor),
                 navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
                 navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
                 cameraPane.leftButtonsStack.bottomAnchor.constraint(equalTo: cameraPane.bottomAnchor)
             ])
         }
@@ -293,11 +321,13 @@ final class CameraViewController: UIViewController {
     }
 
     private func configureCameraPaneButtons() {
-        cameraPane.setupAuthorization(isHidden: false)
+        cameraPane.setupAuthorization(isHidden: !(currentInterfaceOrientation?.isPortrait == true))
+        cameraPaneHorizontal?.setupAuthorization(isHidden: !(UIDevice.current.isIphone && currentInterfaceOrientation?.isLandscape == true))
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
             self?.sendGiniAnalyticsEventCapture()
             self?.cameraPane.toggleCaptureButtonActivation(state: false)
+            self?.cameraPaneHorizontal?.toggleCaptureButtonActivation(state: false)
             self?.cameraPreviewViewController.captureImage { [weak self] data, error in
                 guard let self = self else { return }
                 var processedImageData = data
@@ -319,10 +349,14 @@ final class CameraViewController: UIViewController {
                     self.didPick(image)
                 }
                 self.cameraPane.toggleCaptureButtonActivation(state: true)
+                self.cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
             }
         }
 
         cameraPane.captureButton.addTarget(cameraButtonsViewModel,
+                                           action: #selector(cameraButtonsViewModel.capturePressed),
+                                           for: .touchUpInside)
+        cameraPaneHorizontal?.captureButton.addTarget(cameraButtonsViewModel,
                                            action: #selector(cameraButtonsViewModel.capturePressed),
                                            for: .touchUpInside)
         cameraButtonsViewModel.imageStackAction = { [weak self] in
@@ -333,8 +367,10 @@ final class CameraViewController: UIViewController {
         cameraButtonsViewModel.imagesUpdated = { [weak self] images in
             if let lastImage = images.last {
                 self?.cameraPane.thumbnailView.updateStackStatus(to: .filled(count: images.count, lastImage: lastImage))
+                self?.cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: .filled(count: images.count, lastImage: lastImage))
             } else {
                 self?.cameraPane.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
+                self?.cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
             }
             if self?.giniConfiguration.bottomNavigationBarEnabled == true {
                 self?.updateCustomNavigationBars(containsImage: images.last != nil)
@@ -342,6 +378,9 @@ final class CameraViewController: UIViewController {
         }
         cameraButtonsViewModel.imagesUpdated?(cameraButtonsViewModel.images)
         cameraPane.thumbnailView.thumbnailButton.addTarget(cameraButtonsViewModel,
+                                                           action: #selector(cameraButtonsViewModel.thumbnailPressed),
+                                                           for: .touchUpInside)
+        cameraPaneHorizontal?.thumbnailView.thumbnailButton.addTarget(cameraButtonsViewModel,
                                                            action: #selector(cameraButtonsViewModel.thumbnailPressed),
                                                            for: .touchUpInside)
     }
@@ -367,6 +406,7 @@ final class CameraViewController: UIViewController {
     private func configureUploadButton() {
         if giniConfiguration.fileImportSupportedTypes != .none {
             cameraPane.fileUploadButton.isHidden = false
+            cameraPaneHorizontal?.fileUploadButton.isHidden = false
             cameraButtonsViewModel.importAction = { [weak self] in
                 self?.showImportFileSheet()
             }
@@ -374,21 +414,34 @@ final class CameraViewController: UIViewController {
                 cameraButtonsViewModel,
                 action: #selector(cameraButtonsViewModel.importPressed),
                 for: .touchUpInside)
+            cameraPaneHorizontal?.fileUploadButton.actionButton.addTarget(
+                cameraButtonsViewModel,
+                action: #selector(cameraButtonsViewModel.importPressed),
+                for: .touchUpInside)
         } else {
             cameraPane.fileUploadButton.isHidden = true
+            cameraPaneHorizontal?.fileUploadButton.isHidden = true
         }
     }
 
     private func configureFlashButton() {
         cameraPane.toggleFlashButtonActivation(
             state: cameraPreviewViewController.isFlashSupported)
+        cameraPaneHorizontal?.toggleFlashButtonActivation(
+            state: cameraPreviewViewController.isFlashSupported)
         cameraButtonsViewModel.isFlashOn = cameraPreviewViewController.isFlashOn
         cameraPane.setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
+        cameraPaneHorizontal?.setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
         cameraButtonsViewModel.flashAction = { [weak self] isFlashOn in
             self?.cameraPreviewViewController.isFlashOn = isFlashOn
             self?.cameraPane.setupFlashButton(state: isFlashOn)
+            self?.cameraPaneHorizontal?.setupFlashButton(state: isFlashOn)
         }
         cameraPane.flashButton.actionButton.addTarget(
+            cameraButtonsViewModel,
+            action: #selector(cameraButtonsViewModel.toggleFlash),
+            for: .touchUpInside)
+        cameraPaneHorizontal?.flashButton.actionButton.addTarget(
             cameraButtonsViewModel,
             action: #selector(cameraButtonsViewModel.toggleFlash),
             for: .touchUpInside)
@@ -573,6 +626,7 @@ final class CameraViewController: UIViewController {
 
         validQRCodeProcessing = true
         cameraPane.isUserInteractionEnabled = false
+        cameraPaneHorizontal?.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3) {
             self.qrCodeOverLay.isHidden = false
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.success2)
@@ -639,6 +693,7 @@ final class CameraViewController: UIViewController {
                 self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.light1)
                 self.qrCodeOverLay.isHidden = true
                 self.cameraPane.isUserInteractionEnabled = true
+                self.cameraPaneHorizontal?.isUserInteractionEnabled = true
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetQRCodeTask!)
@@ -659,13 +714,15 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
         if !qrCodeScanningOnlyEnabled {
             cameraPreviewViewController.cameraFrameView.isHidden = false
             cameraPane.toggleCaptureButtonActivation(state: true)
+            cameraPaneHorizontal?.toggleCaptureButtonActivation(state: true)
         }
 
         cameraLensSwitcherView.isHidden = true
 
         cameraPreviewViewController.updatePreviewViewOrientation()
         UIView.animate(withDuration: 1.0) {
-            self.cameraPane.setupAuthorization(isHidden: false)
+            self.cameraPane.setupAuthorization(isHidden: !(self.currentInterfaceOrientation?.isPortrait == true))
+            self.cameraPaneHorizontal?.setupAuthorization(isHidden: !(UIDevice.current.isIphone && self.currentInterfaceOrientation?.isLandscape == true))
             self.cameraPreviewViewController.previewView.alpha = 1
         }
     }
@@ -682,6 +739,7 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
 
     func notAuthorized() {
         cameraPane.setupAuthorization(isHidden: true)
+        cameraPaneHorizontal?.setupAuthorization(isHidden: true)
         cameraPreviewViewController.cameraFrameView.isHidden = true
         cameraLensSwitcherView.isHidden = true
     }

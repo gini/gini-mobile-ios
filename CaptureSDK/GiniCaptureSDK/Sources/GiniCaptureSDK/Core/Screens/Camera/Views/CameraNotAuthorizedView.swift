@@ -60,6 +60,9 @@ final class CameraNotAuthorizedView: UIView {
         return button
     }()
 
+    private var descriptionWidthConstraint: NSLayoutConstraint?
+    private var descriptionWidthLandscapeConstraint: NSLayoutConstraint?
+
     private var contentView = UIView()
 
     private let configuration = GiniConfiguration.shared
@@ -78,6 +81,13 @@ final class CameraNotAuthorizedView: UIView {
 
         // Add constraints
         addConstraints()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let isLandscape = currentInterfaceOrientation?.isLandscape == true
+        descriptionWidthConstraint?.isActive = !isLandscape
+        descriptionWidthLandscapeConstraint?.isActive = isLandscape
     }
 
     /**
@@ -103,6 +113,10 @@ final class CameraNotAuthorizedView: UIView {
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         button.translatesAutoresizingMaskIntoConstraints = false
 
+        descriptionWidthConstraint = descriptionLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor,
+                                                                             multiplier: Constants.widthCoefficient)
+        descriptionWidthLandscapeConstraint = descriptionLabel.widthAnchor.constraint(equalToConstant: Constants.descriptionWidthIphoneLandscape)
+
         NSLayoutConstraint.activate([
             contentView.bottomAnchor.constraint(lessThanOrEqualTo: button.topAnchor, constant: Constants.padding),
             contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -121,8 +135,7 @@ final class CameraNotAuthorizedView: UIView {
             // descriptionLabel
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.padding),
             descriptionLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            descriptionLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor,
-                                                    multiplier: Constants.widthCoefficient),
+            descriptionWidthConstraint!,
             descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             // button
             button.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
@@ -138,6 +151,7 @@ extension CameraNotAuthorizedView {
     private enum Constants {
         static let padding: CGFloat = 16
         static let widthCoefficient: CGFloat = 0.7
+        static let descriptionWidthIphoneLandscape: CGFloat = 276
         static let imageSize: CGSize = CGSize(width: 50, height: 50)
         static let maximumFontSize: CGFloat = 36
     }

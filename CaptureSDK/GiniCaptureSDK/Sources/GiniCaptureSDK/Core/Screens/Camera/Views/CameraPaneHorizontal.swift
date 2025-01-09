@@ -2,20 +2,16 @@
 //  CameraPane.swift
 //  
 //
-//  Created by Krzysztof Kryniecki on 14/09/2022.
 //
 
 import UIKit
 
-final class CameraPane: UIView {
-    @IBOutlet weak var cameraTitleLabel: UILabel!
+final class CameraPaneHorizontal: UIView {
     @IBOutlet weak var captureButton: UIButton!
     @IBOutlet weak var fileUploadButton: BottomLabelButton!
     @IBOutlet weak var flashButton: BottomLabelButton!
     @IBOutlet weak var thumbnailView: ThumbnailView!
     @IBOutlet weak var leftButtonsStack: UIView!
-    @IBOutlet weak var thumbnailConstraint: NSLayoutConstraint!
-    @IBOutlet weak var leftStackViewMargin: NSLayoutConstraint!
 
     private var shouldShowFlashButton: Bool = false
     override func awakeFromNib() {
@@ -47,35 +43,10 @@ final class CameraPane: UIView {
 
         flashButton.configure(with: giniConfiguration.cameraControlButtonConfiguration)
         fileUploadButton.configure(with: giniConfiguration.cameraControlButtonConfiguration)
-
-        if cameraTitleLabel != nil {
-            configureTitle(giniConfiguration: giniConfiguration)
-        }
         captureButton.accessibilityLabel = ""
         captureButton.accessibilityValue =  NSLocalizedStringPreferredFormat(
             "ginicapture.camera.capturebutton",
             comment: "Capture")
-    }
-
-    private func configureTitle(giniConfiguration: GiniConfiguration) {
-        var title: String?
-
-        if !giniConfiguration.qrCodeScanningEnabled {
-            title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.invoice",
-                                                     comment: "Info label")
-        } else {
-            title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.invoice.and.qr",
-                                                     comment: "Info label")
-        }
-        cameraTitleLabel.text = title
-        cameraTitleLabel.adjustsFontForContentSizeCategory = true
-        cameraTitleLabel.adjustsFontSizeToFitWidth = true
-        cameraTitleLabel.numberOfLines = 1
-        cameraTitleLabel.minimumScaleFactor = 5/UIFont.labelFontSize
-        cameraTitleLabel.font = giniConfiguration.textStyleFonts[.footnote]
-        cameraTitleLabel.textColor = GiniColor(
-            light: UIColor.GiniCapture.light1,
-            dark: UIColor.GiniCapture.light1).uiColor()
     }
 
     func setupFlashButton(state: Bool) {
@@ -114,9 +85,6 @@ final class CameraPane: UIView {
         if shouldShowFlashButton {
             flashButton.isHidden = isHidden
         }
-        if cameraTitleLabel != nil {
-            cameraTitleLabel.isHidden = isHidden
-        }
         if giniConfiguration.fileImportSupportedTypes != .none {
             fileUploadButton.isHidden = isHidden
         }
@@ -125,4 +93,8 @@ final class CameraPane: UIView {
         }
     }
 
+    func setupTitlesHidden(isHidden: Bool) {
+        flashButton.actionLabel.isHidden = isHidden
+        fileUploadButton.actionLabel.isHidden = isHidden
+    }
 }
