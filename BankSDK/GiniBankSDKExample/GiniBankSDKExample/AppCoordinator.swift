@@ -326,7 +326,7 @@ extension AppCoordinator: DemoViewControllerDelegate {
         GiniBankConfiguration.shared.entryPoint = entryPoint
         if selfDealloc {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-                GiniBank.cancelCurrentSDK()
+                GiniBank.closeCurrentSDK()
             }
         }
         showScreenAPI()

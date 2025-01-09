@@ -286,12 +286,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         return self.start(withDocuments: documents, animated: animated)
     }
 
-    public func cancelSDK() {
+    public func closeSDK() {
         finishWithCancellation()
     }
 
-    public static func cancelSDK() {
-        currentCoordinator?.cancelSDK()
+    public static func closeSDK() {
+        currentCoordinator?.closeSDK()
         currentCoordinator = nil
     }
 }
