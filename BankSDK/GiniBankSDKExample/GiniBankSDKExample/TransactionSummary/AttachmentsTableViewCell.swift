@@ -8,8 +8,7 @@ import UIKit
 import GiniBankSDK
 import GiniCaptureSDK
 
-class AttachmentsTableViewCell: UITableViewCell {
-    static let reuseIdentifier = "AttachmentsTableViewCell"
+class AttachmentsTableViewCell: UITableViewCell, CodeLoadableView {
     
     private lazy var containerView: UIView = {
         let view = UIView()

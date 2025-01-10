@@ -112,37 +112,26 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? TransactionSummaryTableViewController)!
 
-        customResultsScreen.tableView.estimatedRowHeight = 75
-        
-        configuration.transactionDocsDataCoordinator.presentingViewController = customResultsScreen
+        customResultsScreen.delegate = self
 
+        configuration.transactionDocsDataCoordinator.presentingViewController = customResultsScreen
         customResultsScreen.result = results
 		customResultsScreen.editableFields = editableSpecificExtractions
-        customResultsScreen.navigationItem.setHidesBackButton(true, animated: true)
-        let title =
-        NSLocalizedStringPreferredFormat("results.sendfeedback.button.title", 
-                                         fallbackKey: "Send feedback and close",
-                                         comment: "title for send feedback button",
-                                         isCustomizable: true)
-        customResultsScreen.navigationItem
-            .rightBarButtonItem = UIBarButtonItem(title: title,
-                                                  style: .plain,
-                                                  target: self,
-                                                  action: #selector(closeSreenAPIAndSendTransferSummary))
+
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
                 if let config = self?.configuration.captureConfiguration(),
-                 config.customNavigationController == nil {
+                   config.customNavigationController == nil {
                     self?.screenAPIViewController.applyStyle(withConfiguration: config)
                 }
-             }
+            }
             self?.screenAPIViewController.setNavigationBarHidden(false, animated: false)
             
             self?.screenAPIViewController.pushViewController(customResultsScreen, animated: true)
         }
     }
     
-    @objc private func closeSreenAPIAndSendTransferSummary() {
+    private func closeSreenAPIAndSendTransferSummary() {
         var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
         if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
             if amountValue.split(separator: ":").count > 0 {
@@ -172,6 +161,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 
         alert.addAction(ok)
         rootViewController.present(alert, animated: true)
+    }
+}
+// MARK: - TransactionSummaryTableViewControllerDelegate
+extension ScreenAPICoordinator: TransactionSummaryTableViewControllerDelegate {
+    func didTapCloseAndSendTransferSummary() {
+        closeSreenAPIAndSendTransferSummary()
     }
 }
 
