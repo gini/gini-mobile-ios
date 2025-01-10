@@ -12,6 +12,7 @@ import GiniBankSDK
 protocol DemoViewControllerDelegate: AnyObject {
     func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint)
     func didSelectSettings()
+    func didTapTransactionList()
 }
 
 final class DemoViewController: UIViewController {
@@ -23,7 +24,8 @@ final class DemoViewController: UIViewController {
     @IBOutlet private weak var descriptionTitle: UILabel!
     @IBOutlet private weak var welcomeTitlte: UILabel!
     @IBOutlet private weak var photoPaymentButton: GiniButton!
-    
+    @IBOutlet private weak var transactionListButton: GiniButton!
+
     @IBOutlet private weak var giniLogoTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var welcomeTitleTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var stackViewTopConstraint: NSLayoutConstraint!
@@ -50,6 +52,7 @@ final class DemoViewController: UIViewController {
         }
         configureIbanTextField()
         configurePhotoPaymentButton()
+        configureTransactionListButton()
         configureAlternativeTitle()
         configureMetaTitle()
 
@@ -131,7 +134,18 @@ final class DemoViewController: UIViewController {
         photoPaymentButton.setTitleColor(textColor, for: .normal)
         photoPaymentButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue
     }
-    
+
+    private func configureTransactionListButton() {
+        transactionListButton.backgroundColor = GiniColor.init(light: giniCaptureColor("Light01"),
+                                                               dark: giniCaptureColor("Dark04")).uiColor()
+        transactionListButton.setTitle(DemoScreenStrings.transactionListButtonTitle.localized, for: .normal)
+        let textColor = GiniColor(light: giniCaptureColor("Dark06"),
+                                  dark: giniCaptureColor("Light01")).uiColor()
+        transactionListButton.setTitleColor(textColor, for: .normal)
+        transactionListButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.transactionListButton.rawValue
+        transactionListButton.addTarget(self, action: #selector(transactionListButtonapped), for: .touchUpInside)
+    }
+
     private func configureScreenDescriptionTitle() {
         descriptionTitle.text = DemoScreenStrings.screenDescription.localized
         descriptionTitle.textColor = textColor
@@ -169,7 +183,12 @@ final class DemoViewController: UIViewController {
     @objc func ibanCameraIconTapped(_ sender: Any) {
         startSDK(entryPoint: .field)
     }
-    
+
+    @objc func transactionListButtonapped(_ sender: Any) {
+        delegate?.didTapTransactionList()
+    }
+
+
     // MARK: - Notifications
     
     private func subscribeOnKeyboardNotifications() {

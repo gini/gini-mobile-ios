@@ -8,6 +8,7 @@
 import Foundation
 public enum MainScreenAccessibilityIdentifiers: String {
     case photoPaymentButton = "photoPaymentButtonIdentifier"
+    case transactionListButton = "transactionListButtonIdentifier"
     case cameraIconButton = "cameraIconButtonIdentifier"
     case ibanTextField = "ibanTextFieldIdentifier"
     case welcomeTextTitle = "welcomeTextTitleIdentifier"

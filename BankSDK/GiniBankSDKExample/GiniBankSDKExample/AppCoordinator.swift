@@ -330,6 +330,10 @@ extension AppCoordinator: DemoViewControllerDelegate {
 	func didSelectSettings() {
 		showSettings()
 	}
+
+    func didTapTransactionList() {
+
+    }
 }
 
 extension AppCoordinator: SettingsViewControllerDelegate {
