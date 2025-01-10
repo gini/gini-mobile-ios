@@ -15,6 +15,9 @@
 		287068462CB9519000D5F2C9 /* result_Gini_invoice_example_RA_Skonto.json in Resources */ = {isa = PBXBuildFile; fileRef = 287068402CB94FDD00D5F2C9 /* result_Gini_invoice_example_RA_Skonto.json */; };
 		287068472CB9519200D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2870683E2CB94F7500D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf */; };
 		2883DE062AB89F4000AE3A9C /* GiniCaptureSDKColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2883DE052AB89F4000AE3A9C /* GiniCaptureSDKColors.swift */; };
+		288E78B12D3161A7004ACB9B /* FileManagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288E78B02D3161A7004ACB9B /* FileManagerHelper.swift */; };
+		288E78B32D316219004ACB9B /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288E78B22D316219004ACB9B /* Transaction.swift */; };
+		288E78B72D316259004ACB9B /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288E78B62D316259004ACB9B /* Attachment.swift */; };
 		289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */; };
 		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
 		289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289570912A30CD7600CC2C56 /* SettingsViewController.swift */; };
@@ -253,6 +256,9 @@
 		2870683E2CB94F7500D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_RA_Skonto.pdf; sourceTree = "<group>"; };
 		287068402CB94FDD00D5F2C9 /* result_Gini_invoice_example_RA_Skonto.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_RA_Skonto.json; sourceTree = "<group>"; };
 		2883DE052AB89F4000AE3A9C /* GiniCaptureSDKColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniCaptureSDKColors.swift; sourceTree = "<group>"; };
+		288E78B02D3161A7004ACB9B /* FileManagerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerHelper.swift; sourceTree = "<group>"; };
+		288E78B22D316219004ACB9B /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		288E78B62D316259004ACB9B /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SwitchOptionModel.swift"; sourceTree = "<group>"; };
 		289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SegmentedOptionModel.swift"; sourceTree = "<group>"; };
 		289570912A30CD7600CC2C56 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -487,6 +493,23 @@
 			path = DigitalInvoiceWithSkonto;
 			sourceTree = "<group>";
 		};
+		288E78B42D316220004ACB9B /* TransactionDocs */ = {
+			isa = PBXGroup;
+			children = (
+				288E78B52D31624E004ACB9B /* Models */,
+			);
+			path = TransactionDocs;
+			sourceTree = "<group>";
+		};
+		288E78B52D31624E004ACB9B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				288E78B22D316219004ACB9B /* Transaction.swift */,
+				288E78B62D316259004ACB9B /* Attachment.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		28B5873A2A37270F008CB210 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -500,6 +523,7 @@
 				28DB2C812A39AF5000F5B304 /* GiniButton.swift */,
 				284F52092BD959F300CF70AD /* UIColor.swift */,
 				28F62F9A2AB21ABE00D47866 /* Localization */,
+				288E78B02D3161A7004ACB9B /* FileManagerHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -990,6 +1014,7 @@
 				F441DD1225E5706F00AAB09A /* Info.plist */,
 				4C84B5DC264ED55100853F33 /* Credentials.plist */,
 				5DCC9FA02C769A0900C1B76A /* APIEnvironment.swift */,
+				288E78B42D316220004ACB9B /* TransactionDocs */,
 			);
 			path = GiniBankSDKExample;
 			sourceTree = "<group>";
@@ -1343,6 +1368,7 @@
 				28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */,
 				83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */,
 				84F2FD172CD0FAC600DAE5B4 /* SettingsSection.swift in Sources */,
+				288E78B12D3161A7004ACB9B /* FileManagerHelper.swift in Sources */,
 				84F2FD182CD0FAC600DAE5B4 /* SettingsViewModel.swift in Sources */,
 				28DAF4C72CD3A8620035A1FF /* ReviewScreen.swift in Sources */,
 				28DAF4B82CD293BF0035A1FF /* GiniErrorScreenUITests.swift in Sources */,
@@ -1359,6 +1385,7 @@
 				289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */,
 				28DAF4BA2CD293C40035A1FF /* GiniMainScreenUITests.swift in Sources */,
 				76610BEA298D5448004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift in Sources */,
+				288E78B32D316219004ACB9B /* Transaction.swift in Sources */,
 				28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */,
 				F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */,
 				F490C7E525DE873900D8CA6F /* AppDelegate.swift in Sources */,
@@ -1402,6 +1429,7 @@
 				2883DE062AB89F4000AE3A9C /* GiniCaptureSDKColors.swift in Sources */,
 				284F52082BD954B200CF70AD /* GiniBankCustomResourceProvider.swift in Sources */,
 				28B898D02CA324CD00C79231 /* CodeLoading.swift in Sources */,
+				288E78B72D316259004ACB9B /* Attachment.swift in Sources */,
 				28DAF4B92CD293C10035A1FF /* GiniHelpScreenUITests.swift in Sources */,
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
 				284F520A2BD959F300CF70AD /* UIColor.swift in Sources */,

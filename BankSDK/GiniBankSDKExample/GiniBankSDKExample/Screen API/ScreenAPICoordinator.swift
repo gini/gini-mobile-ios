@@ -133,21 +133,51 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     
     private func closeSreenAPIAndSendTransferSummary() {
         var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
+        var extractionAmountString = ""
         if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
             if amountValue.split(separator: ":").count > 0 {
-                extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0,
+                let value = Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0
+                extractionAmount = ExtractionAmount(value: value,
                                                     currency: .EUR)
+                extractionAmountString = "\(amountValue.split(separator: ":")[0]) EUR"
             }
         }
 
-        configuration.sendTransferSummary(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
-                                          paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
-                                          paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
-                                          iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
-                                          bic: extractedResults.first(where: { $0.name == "bic"})?.value ?? "",
-                                          amountToPay: extractionAmount)
+        let paymentRecipient = extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? ""
+        let paymentReference = extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? ""
+        let paymentPurpose = extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? ""
+        let iban = extractedResults.first(where: { $0.name == "iban"})?.value ?? ""
+        let bic = extractedResults.first(where: { $0.name == "bic"})?.value ?? ""
+        let amoutToPay = extractionAmount
+        configuration.sendTransferSummary(paymentRecipient: paymentRecipient,
+                                          paymentReference: paymentReference,
+                                          paymentPurpose: paymentPurpose,
+                                          iban: iban,
+                                          bic: bic,
+                                          amountToPay: amoutToPay)
+
+
+        let transactionDocIDs = configuration.transactionDocsDataCoordinator.transactionDocIDs
+        print("DEBUg-------- transaction docs = ", transactionDocIDs)
+        let transaction = Transaction(documentId: transactionDocIDs[0],
+                                      date: Date(),
+                                      paiedAmount: extractionAmountString,
+                                      paymentPurpose: paymentPurpose,
+                                      paymentRecipient: paymentRecipient,
+                                      iban: iban,
+                                      paymentReference: paymentReference,
+                                      attachments: [])
+        updateJSONFileWithTransaction(transaction)
         configuration.cleanup()
         delegate?.screenAPI(coordinator: self, didFinish: ())
+    }
+
+    private func updateJSONFileWithTransaction(_ transaction: Transaction) {
+        let fileManager = FileManagerHelper(fileName: "transaction_list.json")
+
+        // Read transactions (automatically creates an empty file if it doesn't exist)
+        let transactions: [Transaction] = fileManager.read()
+        fileManager.append([transaction])
     }
 
     private func showAlertOnDidEnterManually(){
