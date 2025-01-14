@@ -63,8 +63,8 @@ extension Document {
             deviceOrientation: String,
             rotation: String
         ) -> String {
-            var comment = "\(userCommentPlatform)=iOS"
             let data = [
+                (userCommentPlatform, "iOS"),
                 (userCommentOSVer, osVersion),
                 (userCommentGiniVersionVer, giniVersion),
                 (userCommentContentId, contentId),
@@ -74,23 +74,47 @@ extension Document {
                 (userCommentDeviceOrientation, deviceOrientation),
                 (userCommentRotation, rotation)
             ]
+            return Self.userComment(createFrom: data)
+        }
+
+        static func userComment(createFrom data: [(key: String, value: String)]) -> String {
+            var comment = ""
             for (paramName, value) in data {
-                if !value.isEmpty {
-                    comment += ",\(paramName)=\(value)"
+                guard !paramName.isEmpty, !value.isEmpty else { continue }
+                if !comment.isEmpty {
+                    comment += ","
                 }
+                comment += "\(paramName)=\(value)"
             }
             return comment
         }
+
+        static func userComment(_ existingComment: String, valueAtKey wantedKey: String) -> String? {
+            let keyValues = existingComment
+                .split(separator: ",")
+                .map { $0.split(separator: "=") }
+                .filter { $0.count == 2 }
+                .map { ($0[0], $0[1]) }
+            let keyValuesStrings = keyValues
+                .map { (String($0.0), String($0.1)) }
+            guard let value = keyValuesStrings.first(where: { $0.0 == wantedKey })?.1 else {
+                return nil
+            }
+
+            return value
+        }
+
+        static func userComment(_ existingComment: String, valuePresentAtKey value: String) -> Bool {
+            return userComment(existingComment, valueAtKey: value) != nil
+        }
+
         static func userComment(_ existingComment: String?, addingIfNotPresent value: String, forKey key: String) -> String {
             let newValueString = "\(key)=\(value)"
             guard let existingComment, existingComment.isNotEmpty else {
                 return newValueString
             }
-            // checking if the key doesn't exist already
-            guard !existingComment
-                .split(separator: ",").map(String.init)
-                .split(separator: "=").map(String.init)
-                .contains(key) else {
+
+            guard !userComment(existingComment, valuePresentAtKey: key) else {
                 return existingComment
             }
             return existingComment + "," + newValueString

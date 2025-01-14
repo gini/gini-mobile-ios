@@ -235,7 +235,7 @@ extension Document {
      */
     public struct Metadata {
         var headers: [String: String] = [:]
-        var giniBankVersion: String?
+        var giniBankSDKVersion: String?
         static let headerKeyPrefix = "X-Document-Metadata-"
         static let branchIdHeaderKey = "BranchId"
         static let uploadHeaderKey = "Upload"
@@ -256,7 +256,7 @@ extension Document {
             if let branchId = branchId {
                 headers[Document.Metadata.headerKeyPrefix + Document.Metadata.branchIdHeaderKey] = branchId
             }
-            self.giniBankVersion = bankSDKVersion
+            self.giniBankSDKVersion = bankSDKVersion
             var comment = uploadMetadata?.userComment
             if let bankSDKVersion {
                 comment = UploadMetadata.userComment(comment, addingIfNotPresent: bankSDKVersion, forKey: "GiniBankVer")
@@ -271,25 +271,25 @@ extension Document {
         /**
          * Adds GiniBankSDK version to upload metadata
          *
-         * - Parameter giniBankVersion:  GiniBankSDKVersion
+         * - Parameter giniBankSDKVersion:  GiniBankSDKVersion
          */
-        public mutating func addGiniBankSDKVersion(_ giniBankVersion: String) {
-            self.giniBankVersion = giniBankVersion
+        public mutating func addGiniBankSDKVersion(_ giniBankSDKVersion: String) {
+            self.giniBankSDKVersion = giniBankSDKVersion
             let key = Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey
             let existingValue = headers[key]
 
-            headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] = UploadMetadata.userComment(existingValue, addingIfNotPresent: giniBankVersion, forKey: "GiniBankVer")
+            headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] = UploadMetadata.userComment(existingValue, addingIfNotPresent: giniBankSDKVersion, forKey: "GiniBankVer")
         }
 
         /**
          * Adds upload metadata
          *
-         * - Parameter uploadMetadata:  Upload datadata
+         * - Parameter uploadMetadata:  Upload metadata
          */
         public mutating func addUploadMetadata(_ uploadMetadata: UploadMetadata) {
             var comment = uploadMetadata.userComment
-            if let giniBankVersion {
-                comment = UploadMetadata.userComment(comment, addingIfNotPresent: giniBankVersion, forKey: "GiniBankVer")
+            if let giniBankSDKVersion {
+                comment = UploadMetadata.userComment(comment, addingIfNotPresent: giniBankSDKVersion, forKey: "GiniBankVer")
             }
             headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] = comment
         }
