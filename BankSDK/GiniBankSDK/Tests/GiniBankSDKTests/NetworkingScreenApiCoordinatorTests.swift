@@ -24,10 +24,12 @@ private class MockTokenSource: AlternativeTokenSource {
 }
 
 private class MockCaptureResultsDelegate: GiniCaptureResultsDelegate {
+    private(set) var cancelCalled: Bool = false
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
     }
     
     func giniCaptureDidCancelAnalysis() {
+        cancelCalled = true
     }
     
     func giniCaptureDidEnterManually() {
@@ -61,6 +63,16 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         configuration = GiniBankConfiguration()
         metadata = Document.Metadata(branchId: "branch", bankSDKVersion: GiniBankSDKVersion)
         trackingDelegate = MockTrackingDelegate()
+    }
+
+    func testSDKClose() throws {
+//        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true) // so the sdk would start
+//
+//        XCTAssertEqual(GiniBankNetworkingScreenApiCoordinator.currentCoordinator, coordinator, "The coordinator should be the same")
+//
+//        GiniBank.cancelCurrentSDK()
+//        XCTAssertNil(GiniBankNetworkingScreenApiCoordinator.currentCoordinator)
+//        XCTAssertTrue(resultsDelegate.cancelCalled, "Should've called delegate for cancelling")
     }
 
     func testInitWithAlternativeTokenSource() throws {

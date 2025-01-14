@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,7 +18,6 @@
                 <outlet property="ibanTextField" destination="gd1-hD-wGc" id="jsd-y1-kfn"/>
                 <outlet property="metaInformationLabel" destination="XL3-gG-0gj" id="Jsz-OI-GgR"/>
                 <outlet property="photoPaymentButton" destination="RLh-IQ-fQj" id="Nbe-ks-uJ8"/>
-                <outlet property="selfDeallocToggle" destination="sWE-W0-gMU" id="Pni-a3-yFe"/>
                 <outlet property="stackViewTopConstraint" destination="sBV-Eo-YJh" id="ifr-7c-bvf"/>
                 <outlet property="view" destination="iN0-l3-epB" id="JM4-at-p3p"/>
                 <outlet property="welcomeTitleTopConstraint" destination="Urs-yn-N33" id="x9o-hR-LLm"/>
@@ -33,10 +32,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WY9-aL-ZTI" userLabel="Content View">
-                    <rect key="frame" x="0.0" y="59" width="393" height="654"/>
+                    <rect key="frame" x="0.0" y="59" width="393" height="677"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gini_logo" translatesAutoresizingMaskIntoConstraints="NO" id="wSX-y0-8u1">
-                            <rect key="frame" x="140" y="132" width="113" height="72"/>
+                            <rect key="frame" x="139.66666666666666" y="132" width="114" height="72"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Gini" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e12-iy-pw9">
                             <rect key="frame" x="113.66666666666667" y="252.00000000000003" width="165.66666666666663" height="26.333333333333343"/>
@@ -118,37 +117,26 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="QRX-Mq-lHn">
-                    <rect key="frame" x="54" y="721" width="285" height="31"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="self-dealloc after 10 seconds" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhN-Fd-6Cn">
-                            <rect key="frame" x="0.0" y="0.0" width="220" height="31"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sWE-W0-gMU">
-                            <rect key="frame" x="236" y="0.0" width="51" height="31"/>
-                        </switch>
-                    </subviews>
-                </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="XL3-gG-0gj" firstAttribute="top" secondItem="QRX-Mq-lHn" secondAttribute="bottom" constant="8" id="5IJ-eI-AdO"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="XL3-gG-0gj" secondAttribute="bottom" constant="14" id="5qR-oB-piW"/>
                 <constraint firstItem="WY9-aL-ZTI" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="HXO-6z-Z5z"/>
-                <constraint firstItem="QRX-Mq-lHn" firstAttribute="top" secondItem="WY9-aL-ZTI" secondAttribute="bottom" constant="8" id="Lcg-wt-weU"/>
-                <constraint firstItem="QRX-Mq-lHn" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="QWM-bR-eBS"/>
                 <constraint firstItem="XL3-gG-0gj" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="50" id="Wy8-BX-Xdc"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="XL3-gG-0gj" secondAttribute="trailing" constant="50" id="ebs-a8-OOY"/>
                 <constraint firstItem="WY9-aL-ZTI" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="jDv-2X-EMg"/>
+                <constraint firstItem="XL3-gG-0gj" firstAttribute="top" secondItem="WY9-aL-ZTI" secondAttribute="bottom" constant="24" id="mmN-rh-qn6"/>
                 <constraint firstItem="WY9-aL-ZTI" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="wQB-GE-HMd"/>
             </constraints>
             <point key="canvasLocation" x="139.69465648854961" y="19.718309859154932"/>
         </view>
     </objects>
+    <designables>
+        <designable name="RLh-IQ-fQj">
+            <size key="intrinsicContentSize" width="117" height="33"/>
+        </designable>
+    </designables>
     <resources>
         <image name="gini_logo" width="114" height="72"/>
         <systemColor name="quaternarySystemFillColor">
