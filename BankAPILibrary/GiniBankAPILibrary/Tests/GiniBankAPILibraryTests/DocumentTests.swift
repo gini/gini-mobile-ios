@@ -22,6 +22,8 @@ final class GiniDocumentTests: XCTestCase {
         return giniDocument!
     }()
     
+    let expectedValue = "k1=v1,k2=v2"
+
     func testDocumentDecoding() {
         XCTAssertNoThrow(try JSONDecoder().decode(Document.self, from: documentJson))
     }
@@ -180,28 +182,25 @@ final class GiniDocumentTests: XCTestCase {
             ("", "v4"), // invalid key
             ("", "") // invalid everything
         ]
-        let expectedValue = "k1=v1,k2=v2"
         XCTAssertEqual(Document.UploadMetadata.userComment(createFrom: data), expectedValue, "The string should be in correct format")
     }
 
     func testUploadMetadaUserCommentKeyExistence() {
-        let data = "k1=v1,k2=v2"
-        XCTAssertTrue(Document.UploadMetadata.userComment(data, valuePresentAtKey: "k1"), "The key should exist")
-        XCTAssertEqual(Document.UploadMetadata.userComment(data, valueAtKey: "k1"), "v1", "The values should be equal")
+        XCTAssertTrue(Document.UploadMetadata.userComment(expectedValue, valuePresentAtKey: "k1"), "The key should exist")
+        XCTAssertEqual(Document.UploadMetadata.userComment(expectedValue, valueAtKey: "k1"), "v1", "The values should be equal")
 
-        XCTAssertFalse(Document.UploadMetadata.userComment(data, valuePresentAtKey: "v1"), "The value should not be treated as key")
-        XCTAssertNil(Document.UploadMetadata.userComment(data, valueAtKey: "v1"), "The value should not be treated as key and shall not exist")
+        XCTAssertFalse(Document.UploadMetadata.userComment(expectedValue, valuePresentAtKey: "v1"), "The value should not be treated as key")
+        XCTAssertNil(Document.UploadMetadata.userComment(expectedValue, valueAtKey: "v1"), "The value should not be treated as key and shall not exist")
 
-        XCTAssertFalse(Document.UploadMetadata.userComment(data, valuePresentAtKey: "keyThatNeverDidDoesAndWillNotExist"), "The key should not exist")
-        XCTAssertNil(Document.UploadMetadata.userComment(data, valueAtKey: "keyThatNeverDidDoesAndWillNotExist"), "The value should not exist")
+        XCTAssertFalse(Document.UploadMetadata.userComment(expectedValue, valuePresentAtKey: "keyThatNeverDidDoesAndWillNotExist"), "The key should not exist")
+        XCTAssertNil(Document.UploadMetadata.userComment(expectedValue, valueAtKey: "keyThatNeverDidDoesAndWillNotExist"), "The value should not exist")
     }
 
     func testUploadMetadataUserCommentKeyAddingIfNotPresent() {
-        let data = "k1=v1,k2=v2"
-        XCTAssertEqual(Document.UploadMetadata.userComment(data, addingIfNotPresent: "v3", forKey: "k1"), data, "The data should not be changed")
+        XCTAssertEqual(Document.UploadMetadata.userComment(expectedValue, addingIfNotPresent: "v3", forKey: "k1"), expectedValue, "The data should not be changed")
 
         let expectedData = "k1=v1,k2=v2,k3=v3"
-        XCTAssertEqual(Document.UploadMetadata.userComment(data, addingIfNotPresent: "v3", forKey: "k3"), expectedData, "The data should be changed")
+        XCTAssertEqual(Document.UploadMetadata.userComment(expectedValue, addingIfNotPresent: "v3", forKey: "k3"), expectedData, "The data should be changed")
     }
 }
 
