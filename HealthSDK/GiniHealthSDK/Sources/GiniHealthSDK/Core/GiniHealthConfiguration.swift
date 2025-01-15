@@ -8,6 +8,7 @@
 import UIKit
 import GiniUtilites
 import GiniInternalPaymentSDK
+import GiniHealthAPILibrary
 
 /**
  The `GiniHealthConfiguration` class allows customizations to the look of the Gini Health SDK.
@@ -149,6 +150,11 @@ public final class GiniHealthConfiguration: NSObject {
      Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
      */
     @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
+    
+    /**
+     Client's configuration provided from the server
+     */
+    public var clientConfiguration: ClientConfiguration?
 }
 
 extension GiniHealthConfiguration {

@@ -47,6 +47,7 @@ public protocol PaymentComponentsConfigurationProvider {
     var poweredByGiniConfiguration: PoweredByGiniConfiguration { get }
     var moreInformationConfiguration: MoreInformationConfiguration { get }
     var paymentComponentConfiguration: PaymentComponentConfiguration { get set }
+    var clientConfiguration: ClientConfiguration? { get set }
 
     var primaryButtonConfiguration: ButtonConfiguration { get }
     var secondaryButtonConfiguration: ButtonConfiguration { get }
@@ -83,7 +84,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
 
     var paymentProviders: GiniHealthAPILibrary.PaymentProviders = []
 
-    let configurationProvider: PaymentComponentsConfigurationProvider
+    var configurationProvider: PaymentComponentsConfigurationProvider
     let stringsProvider: PaymentComponentsStringsProvider
 
     /// storing the current selected payment provider
@@ -126,6 +127,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
         self.stringsProvider = giniHealth
         setupObservers()
         loadPaymentProviders()
+        fetchAndConfigureClientConfiguration()
     }
     
     /**

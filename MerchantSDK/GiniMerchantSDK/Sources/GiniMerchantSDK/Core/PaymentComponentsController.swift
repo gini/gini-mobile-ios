@@ -216,7 +216,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
             moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
             moreInformationStrings: stringsProvider.moreInformationStrings,
             minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
-            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration
+            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration,
+            clientConfiguration: nil
         )
         paymentComponentViewModel.delegate = self
         paymentComponentViewModel.documentId = documentId

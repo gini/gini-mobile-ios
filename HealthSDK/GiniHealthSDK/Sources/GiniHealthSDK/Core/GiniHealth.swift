@@ -66,6 +66,8 @@ public struct DataForReview {
     public var documentService: DefaultDocumentService
     /// reponsible for the payment processing.
     public var paymentService: PaymentService
+    /// responsible for the client configuration processing
+    public var clientConfigurationService: DefaultClientConfigurationService
     /// delegate to inform about the current status of the Gini Health SDK.
     public weak var delegate: GiniHealthDelegate?
     /// delegate to inform about the changes into PaymentComponentsController
@@ -74,9 +76,9 @@ public struct DataForReview {
     private var bankProviders: [PaymentProvider] = []
 
     /// Configuration for the payment component, controlling its branding and display options.
-    public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(isPaymentComponentBranded: true,
-                                                                                                            showPaymentComponentInOneRow: false,
+    public var paymentComponentConfiguration: PaymentComponentConfiguration = PaymentComponentConfiguration(showPaymentComponentInOneRow: false,
                                                                                                             hideInfoForReturningUser: (GiniHealthConfiguration.shared.showPaymentReviewScreen ? false : true))
+    public var clientConfiguration: ClientConfiguration? = GiniHealthConfiguration.shared.clientConfiguration
     
     public var paymentComponentsController: PaymentComponentsController!
 
@@ -100,6 +102,7 @@ public struct DataForReview {
         self.giniApiLib = GiniHealthAPI.Builder(client: client, api: .default, logLevel: logLevel.toHealthLogLevel()).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
+        self.clientConfigurationService = DefaultClientConfigurationService(clientConfigurationService: giniApiLib.clientConfigurationService())
         super.init()
         self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
         self.paymentComponentsController.delegate = self
@@ -129,6 +132,7 @@ public struct DataForReview {
                                                 logLevel: logLevel.toHealthLogLevel()).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
+        self.clientConfigurationService = DefaultClientConfigurationService(clientConfigurationService: giniApiLib.clientConfigurationService())
         super.init()
         self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
         self.paymentComponentsController.delegate = self
@@ -143,6 +147,7 @@ public struct DataForReview {
         self.giniApiLib = giniApiLib
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: .default, apiVersion: Constants.defaultVersionAPI)
+        self.clientConfigurationService = DefaultClientConfigurationService(clientConfigurationService: giniApiLib.clientConfigurationService())
         super.init()
         self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
     }
@@ -242,6 +247,7 @@ public struct DataForReview {
      */
     public func setConfiguration(_ configuration: GiniHealthConfiguration) {
         GiniHealthConfiguration.shared = configuration
+        paymentComponentsController.configurationProvider.clientConfiguration = configuration.clientConfiguration
     }
 
     /**

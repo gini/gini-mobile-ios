@@ -34,7 +34,10 @@ extension PaymentComponentsController {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders.map{ $0.toHealthPaymentProvider() }
                 self?.sortPaymentProviders()
+                #if DEBUG
+                #else
                 self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
+                #endif
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
                 GiniUtilites.Log("Couldn't load payment providers: \(error.localizedDescription)", event: .error)
@@ -89,6 +92,19 @@ extension PaymentComponentsController {
             }
     }
     
+    // MARK: - Client Configuration Service
+    func fetchAndConfigureClientConfiguration() {
+        giniSDK.clientConfigurationService.fetchConfigurations { result in
+            switch result {
+            case let .success(clientConfiguration):
+                GiniHealthConfiguration.shared.clientConfiguration = clientConfiguration
+                self.giniSDK.setConfiguration(GiniHealthConfiguration.shared)
+            case let .failure(error):
+                GiniUtilites.Log("Couldn't load client configuration: \(error.localizedDescription)", event: .error)
+            }
+        }
+    }
+    
     // MARK: - Bottom sheets
     /**
      Provides a custom Gini view for the payment view that is going to be presented as a bottom sheet.
@@ -122,7 +138,8 @@ extension PaymentComponentsController {
             moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
             moreInformationStrings: stringsProvider.moreInformationStrings,
             minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
-            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration
+            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration,
+            clientConfiguration: configurationProvider.clientConfiguration
         )
         paymentComponentViewModel.delegate = self
         paymentComponentViewModel.documentId = documentId
@@ -161,7 +178,8 @@ extension PaymentComponentsController {
                                                                    poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
-                                                                   moreInformationStrings: stringsProvider.moreInformationStrings)
+                                                                   moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   clientConfiguration: configurationProvider.clientConfiguration)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
@@ -250,7 +268,8 @@ extension PaymentComponentsController {
                                            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                            bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
                                            showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
-                                           previousPaymentComponentScreenType: previousPaymentComponentScreenType)
+                                           previousPaymentComponentScreenType: previousPaymentComponentScreenType,
+                                           clientConfiguration: configurationProvider.clientConfiguration)
 
         let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                          selectedPaymentProvider: healthSelectedPaymentProvider)
