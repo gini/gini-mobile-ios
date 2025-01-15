@@ -48,7 +48,7 @@ public final class GiniHealthAPI {
      * The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
      *
      */
-    public func clientConfigurationService(apiDomain: APIDomain = .default, apiVersion: Int = Constants.defaultVersionAPI) -> ClientConfigurationServiceProtocol? {
+    public func clientConfigurationService() -> ClientConfigurationServiceProtocol? {
         return configurationService
     }
     

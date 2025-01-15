@@ -6,28 +6,6 @@
 
 
 import Foundation
-
-/**
- An enumeration representing the tone of communication.
-
- Use this enum to specify whether the communication style should be formal or informal.
- */
-public enum ComunicationToneEnum: String, Codable {
-    case formal = "FORMAL"
-    case informal = "INFORMAL"
-}
-
-/**
- An enumeration representing the visibility type of an ingredient brand.
-
- Use this enum to indicate how the ingredient brand is displayed.
- */
-public enum IngredientBrandTypeEnum: String, Codable {
-    case fullVisible = "FULL_VISIBLE"
-    case paymentComponent = "PAYMENT_COMPONENT"
-    case invisible = "INVISIBLE"
-}
-
 /**
  A struct representing configuration settings.
  
