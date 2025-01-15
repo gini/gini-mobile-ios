@@ -76,45 +76,45 @@ struct APIResource<T: Decodable>: Resource {
     var path: String {
         switch method {
         case .composite:
-            return APIEndpoint.composite
+            return "/documents/composite"
         case .documents, .createDocument:
-            return APIEndpoint.documents
+            return "/documents/"
         case .document(let id):
-            return APIEndpoint.document(id)
+            return "/documents/\(id)"
         case .errorReport(let id, _, _):
-            return APIEndpoint.errorReport(id)
+            return "/documents/\(id)/errorreport"
         case .extractions(let id):
-            return APIEndpoint.extractions(id)
+            return "/documents/\(id)/extractions"
         case .extraction(let label, let documentId):
-            return APIEndpoint.extraction(label, documentId)
+            return "/documents/\(documentId)/extractions/\(label)"
         case .feedback(let id):
-            return APIEndpoint.feedback(id)
+            return "/documents/\(id)/extractions"
         case .layout(let id):
-            return APIEndpoint.layout(id)
+            return "/documents/\(id)/layout"
         case .pages(let id):
-            return APIEndpoint.pages(id)
+            return "/documents/\(id)/pages"
         case .partial:
-            return APIEndpoint.partial
+            return "/documents/partial"
         case .processedDocument(let id):
-            return APIEndpoint.processedDocument(id)
+            return "/documents/\(id)/processed"
         case .paymentProviders:
-            return APIEndpoint.paymentProviders
+            return "/paymentProviders"
         case .paymentProvider(let id):
-            return APIEndpoint.paymentProvider(id)
+            return "/paymentProviders/\(id)"
         case .createPaymentRequest:
-            return APIEndpoint.createPaymentRequest
+            return "/paymentRequests"
         case .paymentRequest(let id):
-            return APIEndpoint.paymentRequest(id)
+            return "/paymentRequests/\(id)"
         case .paymentRequests(_, _):
-            return APIEndpoint.paymentRequests
+            return "/paymentRequests"
         case .file(urlString: let urlString):
-            return APIEndpoint.file(urlString)
+            return urlString
         case .payment(let id):
-            return APIEndpoint.payment(id)
+            return "/paymentRequests/\(id)/payment"
         case .pdfWithQRCode(let paymentRequestId, _):
-            return APIEndpoint.pdfWithQRCode(paymentRequestId)
+            return "/paymentRequests/\(paymentRequestId)"
         case .configurations:
-            return APIEndpoint.configurations
+            return "/configurations"
         }
     }
     
