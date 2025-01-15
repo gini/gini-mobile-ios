@@ -67,7 +67,7 @@ public struct DataForReview {
     /// reponsible for the payment processing.
     public var paymentService: PaymentService
     /// responsible for the client configuration processing
-    public var clientConfigurationService: DefaultClientConfigurationService
+    public var clientConfigurationService: ClientConfigurationServiceProtocol?
     /// delegate to inform about the current status of the Gini Health SDK.
     public weak var delegate: GiniHealthDelegate?
     /// delegate to inform about the changes into PaymentComponentsController
@@ -102,7 +102,7 @@ public struct DataForReview {
         self.giniApiLib = GiniHealthAPI.Builder(client: client, api: .default, logLevel: logLevel.toHealthLogLevel()).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
-        self.clientConfigurationService = DefaultClientConfigurationService(clientConfigurationService: giniApiLib.clientConfigurationService())
+        self.clientConfigurationService = giniApiLib.clientConfigurationService()
         super.init()
         self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
         self.paymentComponentsController.delegate = self
@@ -132,7 +132,7 @@ public struct DataForReview {
                                                 logLevel: logLevel.toHealthLogLevel()).build()
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: APIDomain.default, apiVersion: apiVersion)
-        self.clientConfigurationService = DefaultClientConfigurationService(clientConfigurationService: giniApiLib.clientConfigurationService())
+        self.clientConfigurationService =  giniApiLib.clientConfigurationService()
         super.init()
         self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
         self.paymentComponentsController.delegate = self
@@ -147,7 +147,7 @@ public struct DataForReview {
         self.giniApiLib = giniApiLib
         self.documentService = DefaultDocumentService(docService: giniApiLib.documentService())
         self.paymentService = giniApiLib.paymentService(apiDomain: .default, apiVersion: Constants.defaultVersionAPI)
-        self.clientConfigurationService = DefaultClientConfigurationService(clientConfigurationService: giniApiLib.clientConfigurationService())
+        self.clientConfigurationService =  giniApiLib.clientConfigurationService()
         super.init()
         self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
     }

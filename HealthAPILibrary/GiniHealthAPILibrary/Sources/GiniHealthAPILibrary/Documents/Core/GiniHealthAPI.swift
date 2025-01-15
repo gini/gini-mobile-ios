@@ -12,15 +12,15 @@ public final class GiniHealthAPI {
     
     private var docService: DocumentService!
     private var payService: PaymentService?
-    private var clientConfigurationService: ClientConfigurationService?
+    private var configurationService: ClientConfigurationServiceProtocol?
     static var logLevel: LogLevel = .none
     public var sessionDelegate: URLSessionDelegate? = nil
 
-    init<T: DocumentService>(documentService: T, paymentService: PaymentService?, clientConfigurationService: ClientConfigurationService?)
+    init<T: DocumentService>(documentService: T, paymentService: PaymentService?, clientConfigurationService: ClientConfigurationServiceProtocol?)
     {
         self.docService = documentService
         self.payService = paymentService
-        self.clientConfigurationService = clientConfigurationService
+        self.configurationService = clientConfigurationService
     }
     
     /**
@@ -48,8 +48,8 @@ public final class GiniHealthAPI {
      * The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
      *
      */
-    public func clientConfigurationService(apiDomain: APIDomain = .default, apiVersion: Int = Constants.defaultVersionAPI) -> ClientConfigurationService {
-        return clientConfigurationService ?? ClientConfigurationService(sessionManager: SessionManager(userDomain: .default), apiDomain: apiDomain, apiVersion: apiVersion)
+    public func clientConfigurationService(apiDomain: APIDomain = .default, apiVersion: Int = Constants.defaultVersionAPI) -> ClientConfigurationServiceProtocol? {
+        return configurationService
     }
     
     /// Removes the user stored credentials. Recommended when logging a different user in your app.

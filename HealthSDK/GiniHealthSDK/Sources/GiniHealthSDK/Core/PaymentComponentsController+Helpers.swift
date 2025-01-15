@@ -94,7 +94,7 @@ extension PaymentComponentsController {
     
     // MARK: - Client Configuration Service
     func fetchAndConfigureClientConfiguration() {
-        giniSDK.clientConfigurationService.fetchConfigurations { result in
+        giniSDK.clientConfigurationService?.fetchConfigurations { result in
             switch result {
             case let .success(clientConfiguration):
                 GiniHealthConfiguration.shared.clientConfiguration = clientConfiguration
