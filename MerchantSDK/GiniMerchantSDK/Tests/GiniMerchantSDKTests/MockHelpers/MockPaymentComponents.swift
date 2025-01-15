@@ -76,7 +76,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                   moreInformationConfiguration: giniMerchant.moreInformationConfiguration,
                                                   moreInformationStrings: giniMerchant.moreInformationStrings, 
                                                   minimumButtonsHeight: giniMerchant.paymentComponentButtonsHeight, 
-                                                  paymentComponentConfiguration: giniMerchant.paymentComponentConfiguration)
+                                                  paymentComponentConfiguration: giniMerchant.paymentComponentConfiguration,
+                                                  clientConfiguration: nil)
         viewModel.documentId = documentId
         let view = PaymentComponentView(viewModel: viewModel)
         return view
@@ -90,7 +91,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                                    poweredByGiniConfiguration: giniMerchant.poweredByGiniConfiguration,
                                                                    poweredByGiniStrings: giniMerchant.poweredByGiniStrings,
                                                                    moreInformationConfiguration: giniMerchant.moreInformationConfiguration,
-                                                                   moreInformationStrings: giniMerchant.moreInformationStrings)
+                                                                   moreInformationStrings: giniMerchant.moreInformationStrings,
+                                                                   clientConfiguration: nil)
         let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: giniMerchant.bottomSheetConfiguration)
         return paymentProvidersBottomView
     }
