@@ -93,7 +93,7 @@ final class ImagePickerViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if UIDevice.current.isIphone {
-            let isLandscape = currentInterfaceOrientation?.isLandscape == true
+            let isLandscape = currentInterfaceOrientation.isLandscape
             bottomNavigationBarHeightConstraint?.constant = isLandscape ? Constants.navigationBarHeightHorizontal : Constants.navigationBarHeight
         }
     }
@@ -243,7 +243,7 @@ extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return ImagePickerCollectionViewCell.size(itemsInARow: currentInterfaceOrientation?.isLandscape == true ? 5 : 4,
+        return ImagePickerCollectionViewCell.size(itemsInARow: currentInterfaceOrientation.isLandscape ? 5 : 4,
                                                   collectionViewLayout: collectionViewLayout)
     }
 

@@ -112,6 +112,8 @@ final class QRCodeOverlay: UIView {
         return view
     }()
 
+    private var incorrectQRTrailingConstraint: NSLayoutConstraint?
+    private var incorrectQRWidthConstraint: NSLayoutConstraint?
     private lazy var incorrectQRFeedback: IncorrectQRCodeTextContainer = {
         let view = IncorrectQRCodeTextContainer()
         view.layer.cornerRadius = Constants.spacing
@@ -171,6 +173,19 @@ final class QRCodeOverlay: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func layoutSubviews() {
+        if UIDevice.current.isIphone,
+           let incorrectQRWidthConstraint,
+           let incorrectQRTrailingConstraint {
+            let isLandscape = currentInterfaceOrientation.isLandscape
+            let toBeDeactivated = isLandscape ? incorrectQRTrailingConstraint : incorrectQRWidthConstraint
+            let toBeActivated = isLandscape ? incorrectQRWidthConstraint : incorrectQRTrailingConstraint
+            toBeDeactivated.isActive = false
+            toBeActivated.isActive = true
+        }
+        super.layoutSubviews()
+    }
+
     private func addLoadingView() {
         let loadingIndicator: UIView
 
@@ -211,12 +226,14 @@ final class QRCodeOverlay: UIView {
     }
 
     private func layoutIncorrectQRCode(centeringBy cameraFrame: UIView) {
+        incorrectQRWidthConstraint = incorrectQRFeedback.widthAnchor.constraint(equalTo: cameraFrame.widthAnchor, multiplier: 327/453)
+        incorrectQRTrailingConstraint = incorrectQRFeedback.trailingAnchor.constraint(equalTo: cameraFrame.trailingAnchor,
+                                                                                      constant: -Constants.spacing)
         NSLayoutConstraint.activate([
             incorrectQRFeedback.topAnchor.constraint(equalTo: cameraFrame.topAnchor, constant: Constants.spacing),
             incorrectQRFeedback.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor,
                                                          constant: Constants.spacing),
-            incorrectQRFeedback.trailingAnchor.constraint(equalTo: cameraFrame.trailingAnchor,
-                                                          constant: -Constants.spacing)
+            incorrectQRTrailingConstraint!
         ])
     }
 

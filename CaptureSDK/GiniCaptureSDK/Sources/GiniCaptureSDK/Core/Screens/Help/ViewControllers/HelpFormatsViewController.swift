@@ -12,6 +12,7 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
 
     var bottomNavigationBar: UIView?
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
 
     lazy var tableView: UITableView = {
         var tableView: UITableView
@@ -27,6 +28,12 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
     private var giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
     private let sectionHeight: CGFloat = 70
+    private lazy var tableViewLeadingConstraint = tableView.leadingAnchor.constraint(
+        equalTo: view.leadingAnchor,
+        constant: GiniMargins.margin)
+    private lazy var tableViewTrailingConstraint = tableView.trailingAnchor.constraint(
+        equalTo: view.trailingAnchor,
+        constant: -GiniMargins.margin)
 
     init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
@@ -45,6 +52,13 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        updateBottomBarHeightBasedOnOrientation()
+        if UIDevice.current.isIphone {
+            let isLandscape = currentInterfaceOrientation.isLandscape
+            let margin = isLandscape ? GiniMargins.marginHorizontal : GiniMargins.margin
+            tableViewLeadingConstraint.constant = margin
+            tableViewTrailingConstraint.constant = -margin
+        }
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
         tableView.reloadData()
     }
@@ -112,12 +126,8 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
             ])
         } else {
             NSLayoutConstraint.activate([
-                tableView.leadingAnchor.constraint(
-                    equalTo: view.leadingAnchor,
-                    constant: GiniMargins.margin),
-                tableView.trailingAnchor.constraint(
-                    equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.margin)
+                tableViewLeadingConstraint,
+                tableViewTrailingConstraint
             ])
         }
         view.layoutSubviews()

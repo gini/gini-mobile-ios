@@ -91,7 +91,7 @@ final class CaptureSuggestionsView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         if UIDevice.current.isIphone {
-            let isLandscape = currentInterfaceOrientation?.isLandscape == true
+            let isLandscape = currentInterfaceOrientation.isLandscape
             let margin: CGFloat = isLandscape ? 56 : 20
             leadingiPhondConstraint.constant = margin
             trailingiPhoneConstraint.constant = -margin

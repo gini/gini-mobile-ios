@@ -97,7 +97,7 @@ class ErrorScreenViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         if UIDevice.current.isIphone {
-            let isLandscape = currentInterfaceOrientation?.isLandscape == true
+            let isLandscape = currentInterfaceOrientation.isLandscape
             headeriPhoneLeadingConstraint?.constant = isLandscape ? Constants.sidePaddingHorizontal : Constants.sidePadding
             buttonsView.buttonsView.axis = isLandscape ? .horizontal : .vertical
             buttonsHeightConstraint?.constant = getButtonsMinHeight(numberOfButtons: isLandscape ? 1 : numberOfButtons)

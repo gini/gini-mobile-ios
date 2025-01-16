@@ -137,7 +137,7 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
         }
         tableViewHeightAnchor.constant = tableViewContentHeight
         if UIDevice.current.isIphone {
-            let isLandscape = currentInterfaceOrientation?.isLandscape == true
+            let isLandscape = currentInterfaceOrientation.isLandscape
             let padding = isLandscape ? Constants.paddingHorizontal * 2 : Constants.padding * 2
             tableViewLeadingConstraint.constant = padding
             tableViewTrailingConstraint.constant = -padding

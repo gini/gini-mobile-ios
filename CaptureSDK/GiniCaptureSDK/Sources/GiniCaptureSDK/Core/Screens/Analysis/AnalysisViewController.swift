@@ -150,7 +150,7 @@ import UIKit
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if UIDevice.current.isIphone, document is GiniImageDocument {
-            let isLandscape = currentInterfaceOrientation?.isLandscape == true
+            let isLandscape = currentInterfaceOrientation.isLandscape
             centerYConstraint.constant = isLandscape ? -96 / 2 : 0
         }
     }

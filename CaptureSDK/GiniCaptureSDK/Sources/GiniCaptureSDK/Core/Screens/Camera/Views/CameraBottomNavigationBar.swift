@@ -25,7 +25,7 @@ class CameraBottomNavigationBar: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        heightConstraint.constant = currentInterfaceOrientation?.isLandscape == true ? 62 : 114
+        heightConstraint.constant = currentInterfaceOrientation.isLandscape ? 62 : 114
     }
 
     func setupView() {

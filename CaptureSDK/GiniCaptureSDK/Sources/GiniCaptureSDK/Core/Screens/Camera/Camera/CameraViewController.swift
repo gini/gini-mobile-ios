@@ -162,7 +162,7 @@ final class CameraViewController: UIViewController {
     }
 
     @objc private func configureCameraPanesBasedOnOrientation() {
-        if !UIDevice.current.isIpad, currentInterfaceOrientation?.isLandscape == true {
+        if !UIDevice.current.isIpad, currentInterfaceOrientation.isLandscape {
             if !cameraPane.isHidden {
                 cameraPane.setupAuthorization(isHidden: true)
                 cameraPaneHorizontal.setupAuthorization(isHidden: false)
@@ -321,8 +321,8 @@ final class CameraViewController: UIViewController {
     }
 
     private func configureCameraPaneButtons() {
-        cameraPane.setupAuthorization(isHidden: !(currentInterfaceOrientation?.isPortrait == true))
-        cameraPaneHorizontal?.setupAuthorization(isHidden: !(UIDevice.current.isIphone && currentInterfaceOrientation?.isLandscape == true))
+        cameraPane.setupAuthorization(isHidden: !currentInterfaceOrientation.isPortrait)
+        cameraPaneHorizontal?.setupAuthorization(isHidden: !(UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape))
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
             self?.sendGiniAnalyticsEventCapture()
@@ -721,8 +721,8 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
 
         cameraPreviewViewController.updatePreviewViewOrientation()
         UIView.animate(withDuration: 1.0) {
-            self.cameraPane.setupAuthorization(isHidden: !(self.currentInterfaceOrientation?.isPortrait == true))
-            self.cameraPaneHorizontal?.setupAuthorization(isHidden: !(UIDevice.current.isIphone && self.currentInterfaceOrientation?.isLandscape == true))
+            self.cameraPane.setupAuthorization(isHidden: !(UIDevice.current.isIpad || self.currentInterfaceOrientation.isPortrait))
+            self.cameraPaneHorizontal?.setupAuthorization(isHidden: !(UIDevice.current.isIphone && self.currentInterfaceOrientation.isLandscape))
             self.cameraPreviewViewController.previewView.alpha = 1
         }
     }

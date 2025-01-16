@@ -103,5 +103,5 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    var currentInterfaceOrientation: UIInterfaceOrientation? { view.currentInterfaceOrientation }
+    var currentInterfaceOrientation: UIInterfaceOrientation { view.currentInterfaceOrientation }
 }

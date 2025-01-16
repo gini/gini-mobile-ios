@@ -185,11 +185,15 @@ public final class ReviewViewController: UIViewController {
         return addPagesButton
     }()
 
-    private lazy var buttonContainer: UIView = {
-        let view = UIView()
+    private lazy var buttonContainer: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [processButton])
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.axis = .horizontal
+        view.spacing = Constants.padding
         return view
     }()
+
+    private var bottomNavigationBar: UIView?
 
     private var loadingIndicatorView: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView()
@@ -200,7 +204,7 @@ public final class ReviewViewController: UIViewController {
     }()
 
     private lazy var cellSize: CGSize = {
-        return calculatedCellSize()
+        return calculatedCellSize(isHorizontal: false)
     }()
 
     private lazy var collectionViewHeightConstraint = collectionView.heightAnchor.constraint(
@@ -239,6 +243,12 @@ public final class ReviewViewController: UIViewController {
         tipLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.titleHeight),
         tipLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.maxTitleHeight)]
 
+    private var trailingConstraints: [NSLayoutConstraint] {
+        [
+            collectionViewConstraints[2],
+            tipLabelConstraints[2]
+        ]
+    }
     private lazy var collectionViewConstraints: [NSLayoutConstraint] = [
         collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
         collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -250,19 +260,17 @@ public final class ReviewViewController: UIViewController {
         pageControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
         pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)]
 
-    private lazy var processButtonConstraints: [NSLayoutConstraint] = [
-        processButton.topAnchor.constraint(equalTo: buttonContainer.topAnchor),
-        processButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
-        processButton.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor),
-        processButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.height),
-        processButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8),
-        processButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainer.trailingAnchor)]
+    private lazy var pageControlHorizontalConstraints: [NSLayoutConstraint] = [
+        pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.padding * 2),
+        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.padding * 2),
+        pageControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -275)
+    ]
 
-    private lazy var addPagesButtonConstraints: [NSLayoutConstraint] =  [
-            addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-            addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor,
-                                                    constant: Constants.padding),
-            addPagesButton.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor)]
+    private lazy var processButtonConstraints: [NSLayoutConstraint] = [
+        processButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
+        processButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.height)
+    ]
 
     private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
         buttonContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.padding * 2),
@@ -270,6 +278,11 @@ public final class ReviewViewController: UIViewController {
         buttonContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
                                               constant: -Constants.bottomPadding),
         buttonContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor)
+    ]
+
+    private lazy var buttonContainerHorizontalConstraints: [NSLayoutConstraint] = [
+        buttonContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -85),
+        buttonContainer.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
     ]
 
     // MARK: - Init
@@ -324,6 +337,7 @@ extension ReviewViewController {
     }
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
+        bottomNavigationBar = navigationBar
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(navigationBar)
         NSLayoutConstraint.activate([
@@ -371,7 +385,7 @@ extension ReviewViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let size = calculatedCellSize()
+        let size = calculatedCellSize(isHorizontal: false)
         collectionViewHeightConstraint.constant = size.height + 4
         if UIDevice.current.isIpad {
             // cellSize needs to be updated when the screen is rotated
@@ -391,7 +405,23 @@ extension ReviewViewController {
                     self.setCellStatus(for: self.currentPage, isActive: true)
                 }
             }
+        } else if UIDevice.current.isIphone {
+            let isLandscape = currentInterfaceOrientation.isLandscape
+            buttonContainer.axis = isLandscape ? .vertical : .horizontal
+
+            trailingConstraints.forEach { $0.constant = isLandscape ? -275 : 0 }
+            let constraintsToActivate = isLandscape
+            ? buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
+            : buttonContainerConstraints + pageControlConstraints
+
+            let constraintsToDeactivate = isLandscape
+            ? buttonContainerConstraints + pageControlConstraints
+            : buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
+
+            NSLayoutConstraint.deactivate(constraintsToDeactivate)
+            NSLayoutConstraint.activate(constraintsToActivate)
         }
+        collectionView.reloadData()
     }
 
     private func setupView() {
@@ -404,12 +434,11 @@ extension ReviewViewController {
         contentView.addSubview(tipLabel)
         contentView.addSubview(collectionView)
         contentView.addSubview(pageControl)
+        if giniConfiguration.multipageEnabled {
+            buttonContainer.addSubview(addPagesButton)
+        }
         if !giniConfiguration.bottomNavigationBarEnabled {
             contentView.addSubview(buttonContainer)
-            buttonContainer.addSubview(processButton)
-            if giniConfiguration.multipageEnabled {
-                buttonContainer.addSubview(addPagesButton)
-            }
         }
         edgesForExtendedLayout = []
     }
@@ -517,7 +546,7 @@ extension ReviewViewController {
             NSLayoutConstraint.activate(buttonContainerConstraints)
             NSLayoutConstraint.activate(processButtonConstraints)
             if giniConfiguration.multipageEnabled {
-                NSLayoutConstraint.activate(addPagesButtonConstraints)
+                buttonContainer.addArrangedSubview(addPagesButton)
             }
         } else {
             NSLayoutConstraint.activate([
@@ -589,8 +618,9 @@ extension ReviewViewController {
         }
     }
 
-    private func calculatedCellSize() -> CGSize {
+    private func calculatedCellSize(isHorizontal: Bool) -> CGSize {
         let a4Ratio = 1.4142
+        let widthRatio: CGFloat = isHorizontal ? 1/a4Ratio : a4Ratio
         if UIDevice.current.isIpad {
             var height = self.view.bounds.height - 260
             if giniConfiguration.bottomNavigationBarEnabled {
@@ -602,12 +632,12 @@ extension ReviewViewController {
         } else {
             if view.safeAreaInsets.bottom > 0 {
                 let height = self.view.bounds.height * 0.6
-                let width = height / a4Ratio
+                let width = height / widthRatio
                 let cellSize = CGSize(width: width, height: height)
                 return cellSize
             } else {
                 let height = self.view.bounds.height * 0.5
-                let width = height / a4Ratio
+                let width = height / widthRatio
                 let cellSize = CGSize(width: width, height: height)
                 return cellSize
             }
@@ -660,13 +690,18 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellSize
+        let page = pages[indexPath.row]
+        let isHorizontal = {
+            guard let size = page.document.previewImage?.size, UIDevice.current.isIphone else { return false }
+            return size.width > size.height
+        }()
+        return calculatedCellSize(isHorizontal: false)
     }
 
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                insetForSectionAt section: Int) -> UIEdgeInsets {
-        let margin = (self.view.bounds.width - cellSize.width) / 2
+        let margin = (self.view.bounds.width - (currentInterfaceOrientation.isLandscape && UIDevice.current.isIphone ? 275 : 0) - cellSize.width) / 2
         return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
     }
 
@@ -682,7 +717,7 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
         let offset = scrollView.contentOffset
         let cellWidthIncludingSpacing = cellSize.width + layout.minimumLineSpacing
         let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
-        currentPage = Int(round(index))
+        currentPage = max(min(Int(round(index)), pages.count - 1), 0)
         self.pageControl.currentPage = currentPage
     }
 
