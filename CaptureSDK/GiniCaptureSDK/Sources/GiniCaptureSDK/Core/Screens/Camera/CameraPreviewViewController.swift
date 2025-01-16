@@ -57,14 +57,6 @@ final class CameraPreviewViewController: UIViewController {
         imageView.isHidden = true
         return imageView
     }()
-    private let cameraFocusHorizontalImage = UIImageNamedPreferred(named: "cameraFocusHorizontal")
-    lazy var cameraFrameViewHorizontal: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = cameraFocusHorizontalImage
-        imageView.contentMode = .scaleAspectFit
-        imageView.isHidden = true
-        return imageView
-    }()
 
     lazy var qrCodeFrameView: UIImageView = {
         let imageView = UIImageView()
@@ -142,7 +134,6 @@ final class CameraPreviewViewController: UIViewController {
         view.insertSubview(previewView, at: 0)
         view.addSubview(qrCodeFrameView)
         view.addSubview(cameraFrameView)
-        view.addSubview(cameraFrameViewHorizontal)
 
         addLoadingIndicator()
     }
@@ -182,12 +173,6 @@ final class CameraPreviewViewController: UIViewController {
         // videoPreviewLayer - used to translate detected IBANs bounding boxes to videoPreviewLayer frame coordinate system
         // visionToAVFTransform - transform Vision coordinate into AVF coordinate
 
-        let isIphone = UIDevice.current.isIphone
-        let isLandscape = currentInterfaceOrientation?.isLandscape == true
-//        cameraFrameViewHorizontal.isHidden = !isIphone || !isLandscape
-//        cameraFrameView.isHidden = isIphone && isLandscape
-        let frameView = isIphone && isLandscape ? cameraFrameViewHorizontal : cameraFrameView
-
         if cameraFrameView.frame != CGRect.zero && previewView.frame != CGRect.zero {
             camera.setupIBANDetection(textOrientation: textOrientation,
                                       regionOfInterest: cameraFrameView.frame,
@@ -210,7 +195,6 @@ final class CameraPreviewViewController: UIViewController {
 
     private func setupConstraints() {
         cameraFrameView.translatesAutoresizingMaskIntoConstraints = false
-//        cameraFrameViewHorizontal.translatesAutoresizingMaskIntoConstraints = false
         qrCodeFrameView.translatesAutoresizingMaskIntoConstraints = false
 
         if UIDevice.current.isIpad {
@@ -233,18 +217,7 @@ final class CameraPreviewViewController: UIViewController {
                                                          constant: Constants.padding),
                 cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 cameraFrameViewBottomConstrant,
-//                cameraFrameView.widthAnchor.constraint(equalTo: cameraFrameView.heightAnchor,
-//                                                       multiplier: 1 / Constants.a4AspectRatio),
                 cameraFrameViewHeightAnchorPortrait
-
-//                cameraFrameViewHorizontal.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
-//                cameraFrameViewHorizontal.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
-//                                                         constant: Constants.padding),
-//                cameraFrameViewHorizontal.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//                cameraFrameViewHorizontal.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
-//                                                        constant: -bottomControlHeight-Constants.padding),
-//                cameraFrameViewHorizontal.widthAnchor.constraint(equalTo: cameraFrameView.heightAnchor,
-//                                                       multiplier: Constants.a4AspectRatio)
             ])
         }
 
