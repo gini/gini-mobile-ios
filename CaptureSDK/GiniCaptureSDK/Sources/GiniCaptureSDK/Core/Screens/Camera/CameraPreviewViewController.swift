@@ -161,6 +161,13 @@ final class CameraPreviewViewController: UIViewController {
         if isViewLoaded {
             setupIBANDetectionIfViewsAreLoaded()
         }
+        if UIDevice.current.isIphone,
+           let defaultImageView,
+           let defaultImage,
+           let cgimage = defaultImage.cgImage
+        {
+            defaultImageView.image = UIImage(cgImage: cgimage, scale: 1, orientation: currentInterfaceOrientation.isLandscape ? .left : .up)
+        }
     }
 
     private func setupIBANDetectionIfViewsAreLoaded() {
@@ -321,6 +328,7 @@ final class CameraPreviewViewController: UIViewController {
                         self.isAuthorized = true
                         self.cameraFrameView.isHidden = false
                         self.addDefaultImage()
+                        self.updatePreviewViewOrientation()
                         #endif
                     } else {
                         self.isAuthorized = false
@@ -445,8 +453,12 @@ extension CameraPreviewViewController {
 
     /// Adds a default image to the canvas when no camera is available (DEBUG mode only)
     private func addDefaultImage() {
-        guard let defaultImage = defaultImage else { return }
-
+        guard let defaultImageCG = defaultImage?.cgImage else { return }
+        if let defaultImageView {
+            defaultImageView.removeFromSuperview()
+            self.defaultImageView = nil
+        }
+        let defaultImage = UIImage(cgImage: defaultImageCG, scale: 1, orientation: (UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape) ? .left : .up)
         defaultImageView = UIImageView(image: defaultImage)
         guard let defaultImageView = defaultImageView else { return }
         defaultImageView.alpha = 0.5
