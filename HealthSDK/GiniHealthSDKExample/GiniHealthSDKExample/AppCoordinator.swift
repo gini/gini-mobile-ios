@@ -401,8 +401,7 @@ extension AppCoordinator: GiniHealthDelegate {
 extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
         let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
-                                                              useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
-                                                              paymentComponentConfiguration: health.paymentComponentConfiguration)
+                                                              useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -423,6 +422,11 @@ extension AppCoordinator: DebugMenuDelegate {
 
     func didPickNewLocalization(localization: GiniLocalization) {
         giniHealthConfiguration.customLocalization = localization
+        health.setConfiguration(giniHealthConfiguration)
+    }
+    
+    func didPickNewIngredientBrandType(brandType: GiniUtilites.IngredientBrandTypeEnum) {
+        giniHealthConfiguration.clientConfiguration?.ingredientBrandType = GiniHealthAPILibrary.IngredientBrandTypeEnum(rawValue: brandType.rawValue)
         health.setConfiguration(giniHealthConfiguration)
     }
 }

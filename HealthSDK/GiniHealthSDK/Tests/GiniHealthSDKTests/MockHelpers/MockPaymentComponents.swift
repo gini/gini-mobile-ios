@@ -82,7 +82,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
             moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
             moreInformationStrings: stringsProvider.moreInformationStrings,
             minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
-            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration
+            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration,
+            clientConfiguration: nil
         )
         paymentComponentViewModel.documentId = MockSessionManager.payableDocumentID
         let view = PaymentComponentView(viewModel: paymentComponentViewModel)
@@ -97,7 +98,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                                    poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
-                                                                   moreInformationStrings: stringsProvider.moreInformationStrings)
+                                                                   moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   clientConfiguration: nil)
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
 

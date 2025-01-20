@@ -21,7 +21,7 @@ final class GiniMerchantTests: XCTestCase {
         let sessionManagerMock = MockSessionManager()
         let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiDomain: .merchant, apiVersion: versionAPI)
         let paymentService = PaymentService(sessionManager: sessionManagerMock, apiDomain: .merchant, apiVersion: versionAPI)
-        giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService)
+        giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService, clientConfigurationService: nil)
         giniMerchant = GiniMerchant(giniApiLib: giniHealthAPI)
     }
 

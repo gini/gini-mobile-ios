@@ -113,6 +113,8 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests/\(id)/payment"
         case .pdfWithQRCode(let paymentRequestId, _):
             return "/paymentRequests/\(paymentRequestId)"
+        case .configurations:
+            return "/configurations"
         }
     }
     

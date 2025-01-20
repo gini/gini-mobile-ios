@@ -125,6 +125,8 @@ public class PaymentReviewModel: NSObject {
     let showPaymentReviewCloseButton: Bool
     var displayMode: DisplayMode
     var previousPaymentComponentScreenType: PaymentComponentScreenType?
+    
+    var clientConfiguration: ClientConfiguration?
 
     public init(delegate: PaymentReviewProtocol,
                 bottomSheetsProvider: BottomSheetsProviderProtocol,
@@ -145,7 +147,8 @@ public class PaymentReviewModel: NSObject {
                 poweredByGiniStrings: PoweredByGiniStrings,
                 bottomSheetConfiguration: BottomSheetConfiguration,
                 showPaymentReviewCloseButton: Bool,
-                previousPaymentComponentScreenType: PaymentComponentScreenType?) {
+                previousPaymentComponentScreenType: PaymentComponentScreenType?,
+                clientConfiguration: ClientConfiguration?) {
         self.delegate = delegate
         self.bottomSheetsProvider = bottomSheetsProvider
         self.configuration = configuration
@@ -168,6 +171,7 @@ public class PaymentReviewModel: NSObject {
         self.bottomSheetConfiguration = bottomSheetConfiguration
         self.displayMode = document != nil ? .documentCollection : .bottomSheet
         self.previousPaymentComponentScreenType = previousPaymentComponentScreenType
+        self.clientConfiguration = clientConfiguration
     }
 
     func viewDidDisappear() {
@@ -282,7 +286,8 @@ public class PaymentReviewModel: NSObject {
                                         selectionStyleInputFieldConfiguration: selectionStyleInputFieldConfiguration,
                                         poweredByGiniConfiguration: poweredByGiniConfiguration,
                                         poweredByGiniStrings: poweredByGiniStrings,
-                                        displayMode: displayMode)
+                                        displayMode: displayMode,
+                                        clientConfiguration: clientConfiguration)
     }
 }
 

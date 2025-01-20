@@ -12,7 +12,8 @@ extension GiniMerchant {
     convenience init(documentService: GiniHealthAPILibrary.DocumentService,
          paymentService: GiniHealthAPILibrary.PaymentService) {
         let giniHealthAPI = GiniHealthAPI(documentService: documentService, 
-                                          paymentService: paymentService)
+                                          paymentService: paymentService,
+                                          clientConfigurationService: nil)
         self.init(giniApiLib: giniHealthAPI)
     }
 }

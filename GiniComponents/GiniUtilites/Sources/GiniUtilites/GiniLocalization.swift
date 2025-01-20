@@ -17,6 +17,17 @@ public enum GiniLocalization: String, CaseIterable {
 }
 
 /**
+ An enumeration representing the visibility type of an ingredient brand.
+
+ Use this enum to indicate how the ingredient brand is displayed.
+ */
+public enum IngredientBrandTypeEnum: String, Codable, CaseIterable {
+    case fullVisible = "FULL_VISIBLE"
+    case paymentComponent = "PAYMENT_COMPONENT"
+    case invisible = "INVISIBLE"
+}
+
+/**
  A utility for retrieving localized strings from the client's bundle or SDK bundle.
  */
 public enum GiniLocalized {
