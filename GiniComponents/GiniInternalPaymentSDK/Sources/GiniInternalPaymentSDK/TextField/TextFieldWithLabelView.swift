@@ -77,6 +77,10 @@ public final class TextFieldWithLabelView: UIView {
             textField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.topBottomPadding)
         ])
     }
+
+    func setKeyboardType(keyboardType: UIKeyboardType) {
+        textField.keyboardType = keyboardType
+    }
 }
 
 public extension TextFieldWithLabelView {
