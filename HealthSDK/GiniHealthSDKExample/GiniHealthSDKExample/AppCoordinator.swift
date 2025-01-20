@@ -402,7 +402,8 @@ extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
         let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
                                                               useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
-                                                              paymentComponentConfiguration: health.paymentComponentConfiguration)
+                                                              paymentComponentConfiguration: health.paymentComponentConfiguration,
+                                                              showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -418,6 +419,8 @@ extension AppCoordinator: DebugMenuDelegate {
             health.paymentComponentConfiguration.isPaymentComponentBranded = isOn
         case .useBottomPaymentComponent:
             giniHealthConfiguration.useBottomPaymentComponentView = isOn
+        case .showPaymentCloseButton:
+            giniHealthConfiguration.showPaymentReviewCloseButton = isOn
         }
     }
 
