@@ -203,6 +203,8 @@ public final class ReviewViewController: UIViewController {
         return indicatorView
     }()
 
+    private var loadingIndicator: UIView?
+
     private lazy var cellSize: CGSize = {
         return calculatedCellSize(isHorizontal: false)
     }()
@@ -409,14 +411,29 @@ extension ReviewViewController {
             let isLandscape = currentInterfaceOrientation.isLandscape
             buttonContainer.axis = isLandscape ? .vertical : .horizontal
 
+            if giniConfiguration.bottomNavigationBarEnabled {
+                if isLandscape {
+                    view.addSubview(buttonContainer)
+                    addLoadingView()
+                } else {
+                    loadingIndicator?.removeFromSuperview()
+                    buttonContainer.removeFromSuperview()
+                }
+            }
+
+            bottomNavigationBar?.alpha = isLandscape ? 0 : 1
+            bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
+
             trailingConstraints.forEach { $0.constant = isLandscape ? -275 : 0 }
             let constraintsToActivate = isLandscape
-            ? buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
-            : buttonContainerConstraints + pageControlConstraints
+                ? buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
+                : giniConfiguration.bottomNavigationBarEnabled
+                    ? []
+                    :  buttonContainerConstraints + pageControlConstraints
 
             let constraintsToDeactivate = isLandscape
-            ? buttonContainerConstraints + pageControlConstraints
-            : buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
+                ? buttonContainerConstraints + pageControlConstraints
+                : buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
 
             NSLayoutConstraint.deactivate(constraintsToDeactivate)
             NSLayoutConstraint.activate(constraintsToActivate)
@@ -435,7 +452,7 @@ extension ReviewViewController {
         contentView.addSubview(collectionView)
         contentView.addSubview(pageControl)
         if giniConfiguration.multipageEnabled {
-            buttonContainer.addSubview(addPagesButton)
+            buttonContainer.addArrangedSubview(addPagesButton)
         }
         if !giniConfiguration.bottomNavigationBarEnabled {
             contentView.addSubview(buttonContainer)
@@ -446,7 +463,11 @@ extension ReviewViewController {
     // MARK: - Loading indicator
 
     private func addLoadingView() {
-        guard !giniConfiguration.bottomNavigationBarEnabled else { return }
+        guard !giniConfiguration.bottomNavigationBarEnabled || (buttonContainer.superview != nil && UIDevice.current.isIphone) else { return }
+        if let loadingIndicator {
+            loadingIndicator.removeFromSuperview()
+            self.loadingIndicator = nil
+        }
         let loadingIndicator: UIView
 
         if let customLoadingIndicator = giniConfiguration.onButtonLoadingIndicator?.injectedView() {
@@ -465,6 +486,7 @@ extension ReviewViewController {
             loadingIndicator.widthAnchor.constraint(equalToConstant: 45),
             loadingIndicator.heightAnchor.constraint(equalToConstant: 45)
         ])
+        self.loadingIndicator = loadingIndicator
     }
 
     private func showAnimation() {
@@ -541,10 +563,10 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(tipLabelConstraints)
         NSLayoutConstraint.activate(collectionViewConstraints)
         NSLayoutConstraint.activate(pageControlConstraints)
+        NSLayoutConstraint.activate(processButtonConstraints)
 
         if !giniConfiguration.bottomNavigationBarEnabled {
             NSLayoutConstraint.activate(buttonContainerConstraints)
-            NSLayoutConstraint.activate(processButtonConstraints)
             if giniConfiguration.multipageEnabled {
                 buttonContainer.addArrangedSubview(addPagesButton)
             }
@@ -623,7 +645,7 @@ extension ReviewViewController {
         let widthRatio: CGFloat = isHorizontal ? 1/a4Ratio : a4Ratio
         if UIDevice.current.isIpad {
             var height = self.view.bounds.height - 260
-            if giniConfiguration.bottomNavigationBarEnabled {
+            if giniConfiguration.bottomNavigationBarEnabled, !(currentInterfaceOrientation.isLandscape && UIDevice.current.isIphone) {
                 height -= Constants.bottomNavigationBarHeight
                 height -= Constants.padding
             }
