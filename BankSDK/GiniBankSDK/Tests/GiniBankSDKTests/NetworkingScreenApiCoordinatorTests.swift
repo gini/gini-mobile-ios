@@ -66,7 +66,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         trackingDelegate = MockTrackingDelegate()
     }
 
-    func testSDKClose() throws {
+    func testCloseSDK() throws {
         let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true) // so the sdk would start
 
         XCTAssertEqual(GiniBankNetworkingScreenApiCoordinator.currentCoordinator, coordinator, "The coordinator should be the same")

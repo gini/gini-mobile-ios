@@ -7,7 +7,10 @@
 
 import Foundation
 
-// should only be used in tests
+/**
+Sets the default error logger. It is only used when giniErrorLoggerIsOn is true.
+- note: Internal usage only.
+**/
 var _GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE: Bool = false
 
 /// The Gini Bank API Library
