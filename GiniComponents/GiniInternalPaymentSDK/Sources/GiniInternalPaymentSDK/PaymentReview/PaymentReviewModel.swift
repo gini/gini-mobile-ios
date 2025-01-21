@@ -30,6 +30,7 @@ public typealias PaymentReviewProtocol = PaymentReviewAPIProtocol & PaymentRevie
 public protocol PaymentReviewAPIProtocol: AnyObject {
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void)
     func shouldHandleErrorInternally(error: GiniError) -> Bool
+    func didCreatePaymentRequest(paymentRequestId: String)
     func openPaymentProviderApp(requestId: String, universalLink: String)
     func submitFeedback(for document: Document, updatedExtractions: [Extraction], completion: ((Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)?)
     func preview(for documentId: String, pageNumber: Int, completion: @escaping (Result<Data, GiniHealthAPILibrary.GiniError>) -> Void)
@@ -194,6 +195,7 @@ public class PaymentReviewModel: NSObject {
             switch result {
             case let .success(requestId):
                 completion?(requestId)
+                self?.delegate?.didCreatePaymentRequest(paymentRequestId: requestId)
             case let .failure(error):
                 if self?.delegate?.shouldHandleErrorInternally(error: error) == true {
                     self?.onCreatePaymentRequestErrorHandling?()
