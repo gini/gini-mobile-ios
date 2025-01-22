@@ -194,8 +194,8 @@ public class PaymentReviewModel: NSObject {
             self?.isLoading = false
             switch result {
             case let .success(requestId):
-                completion?(requestId)
                 self?.delegate?.didCreatePaymentRequest(paymentRequestId: requestId)
+                completion?(requestId)
             case let .failure(error):
                 if self?.delegate?.shouldHandleErrorInternally(error: error) == true {
                     self?.onCreatePaymentRequestErrorHandling?()
