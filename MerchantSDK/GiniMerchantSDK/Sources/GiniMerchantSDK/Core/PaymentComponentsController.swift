@@ -485,10 +485,11 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
        - completion: A closure that is called with the payment request ID or an error.
      */
     public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (_ paymentRequestID: String?, _ error: GiniMerchantError?) -> Void) {
-        giniSDK.createPaymentRequest(paymentInfo: paymentInfo) { result in
+        giniSDK.createPaymentRequest(paymentInfo: paymentInfo) {[weak self] result in
             switch result {
             case let .success(requestId):
                 completion(requestId, nil)
+                self?.didCreatePaymentRequest(paymentRequestId: requestId)
             case let .failure(error):
                 completion(nil, GiniMerchantError.apiError(error))
             }
@@ -671,6 +672,15 @@ extension PaymentComponentsController: InstallAppBottomViewProtocol {
 }
 
 extension PaymentComponentsController: PaymentReviewProtocol {
+    /**
+     Called when the payment request was successfully created
+
+     - parameter paymentRequestId: Id of created payment request.
+     */
+    public func didCreatePaymentRequest(paymentRequestId: String) {
+        giniSDK.delegate?.didCreatePaymentRequest(paymentRequestID: paymentRequestId)
+    }
+    
     /**
      Submits feedback for the specified document and its updated extractions. Method used to update the information extracted from a document.
 
