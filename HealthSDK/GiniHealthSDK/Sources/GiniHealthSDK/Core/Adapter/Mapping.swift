@@ -252,3 +252,9 @@ extension GiniHealthAPILibrary.IngredientBrandTypeEnum {
         GiniUtilites.IngredientBrandTypeEnum(rawValue: rawValue) ?? .invisible
     }
 }
+
+extension GiniHealthAPILibrary.ComunicationToneEnum {
+    public func toHealthComunicationTone() -> GiniUtilites.ComunicationToneEnum {
+        GiniUtilites.ComunicationToneEnum(rawValue: rawValue) ?? .formal
+    }
+}
