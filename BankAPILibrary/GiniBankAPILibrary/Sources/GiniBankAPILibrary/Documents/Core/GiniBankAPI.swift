@@ -7,12 +7,6 @@
 
 import Foundation
 
-/**
-Sets the default error logger. It is only used when giniErrorLoggerIsOn is true.
-- note: Internal usage only.
-**/
-var _GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE: Bool = false
-
 /// The Gini Bank API Library
 public final class GiniBankAPI {
     
@@ -151,10 +145,8 @@ extension GiniBankAPI {
                                                                    value: client.domain,
                                                                    service: .auth))
             } catch {
-                if !_GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE {
-                    preconditionFailure("There was an error using the Keychain. " +
-                                        "Check that the Keychain capability is enabled in your project")
-                }
+                preconditionFailure("There was an error using the Keychain. " +
+                                    "Check that the Keychain capability is enabled in your project")
             }
         }
     }
