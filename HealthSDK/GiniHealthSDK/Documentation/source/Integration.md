@@ -113,6 +113,19 @@ dispatchGroup.notify(queue: .main) {
 }
 ```
 
+## Check if the document contains multiple invoices
+
+GiniHealth provides a method to check whether a document contains multiple invoices:
+
+```swift
+healthSDK.checkIfDocumentContainsMultipleInvoices(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
+```
+
+The method returns `true` in the success case if the `contains_multiple_docs` field was extracted and its value is `true`.
+
+> - Recommendation: Use this check in a specific order. First, call the `checkIfDocumentIsPayable` method, and then call `checkIfDocumentContainsMultipleInvoices` method.
+
+
 ## Integrate the Payment flow
 
 We provide a custom payment flow for the users to pay the invoice/document/digital payment  .
