@@ -746,6 +746,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
             switch result {
             case .success(let paymentRequestID):
+                self?.didCreatePaymentRequest(paymentRequestId: paymentRequestID)
                 self?.handleSuccessfulPaymentRequest(paymentRequestID: paymentRequestID)
             case .failure(let error):
                 self?.handleError(error)
