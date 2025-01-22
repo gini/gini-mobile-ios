@@ -41,6 +41,7 @@ final class GalleryCoordinator: NSObject, Coordinator {
     lazy fileprivate(set) var containerNavigationController: ContainerNavigationController = {
         let container = ContainerNavigationController(rootViewController: self.galleryNavigator,
                                                       giniConfiguration: self.giniConfiguration)
+        container.modalPresentationStyle = .pageSheet
         return container
     }()
 
