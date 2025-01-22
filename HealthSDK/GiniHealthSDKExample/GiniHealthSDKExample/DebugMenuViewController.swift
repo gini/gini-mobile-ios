@@ -19,6 +19,7 @@ protocol DebugMenuDelegate: AnyObject {
     func didChangeSwitchValue(type: SwitchType, isOn: Bool)
     func didPickNewLocalization(localization: GiniLocalization)
     func didPickNewIngredientBrandType(brandType: IngredientBrandTypeEnum)
+    func didPickNewComunicationTone(comunicationTone: ComunicationToneEnum)
 }
 
 class DebugMenuViewController: UIViewController {
@@ -65,6 +66,18 @@ class DebugMenuViewController: UIViewController {
     private lazy var bottomPaymentComponentOptionLabel: UILabel = rowTitle("Use bottom payment component")
     private var bottomPaymentComponentSwitch: UISwitch!
     private lazy var bottomPaymentComponentEditableRow: UIStackView = stackView(axis: .horizontal, subviews: [bottomPaymentComponentOptionLabel, bottomPaymentComponentSwitch])
+    
+    private lazy var comunicationToneTitleLabel: UILabel = rowTitle("Communication Tone")
+
+    private lazy var comunicationPicker: UIPickerView = {
+        let picker = UIPickerView()
+        picker.delegate = self
+        picker.dataSource = self
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        return picker
+    }()
+    
+    private lazy var comunicationToneRow: UIStackView = stackView(axis: .horizontal, subviews: [comunicationToneTitleLabel, comunicationPicker])
 
     weak var delegate: DebugMenuDelegate?
 
@@ -94,13 +107,17 @@ class DebugMenuViewController: UIViewController {
         if let ingredientType = GiniHealthConfiguration.shared.clientConfiguration?.ingredientBrandType?.toHealthIngredientBrandType(), let index = GiniUtilites.IngredientBrandTypeEnum.allCases.firstIndex(of: ingredientType) {
             brandedPicker.selectRow(index, inComponent: 0, animated: true)
         }
+        
+        if let comunicationTone = GiniHealthConfiguration.shared.clientConfiguration?.comunicationTone?.toHealthComunicationTone(), let index = GiniUtilites.ComunicationToneEnum.allCases.firstIndex(of: comunicationTone) {
+            comunicationPicker.selectRow(index, inComponent: 0, animated: true)
+        }
     }
 
     private func setupUI() {
         view.backgroundColor = UIColor(named: "background")
 
         let spacer = UIView()
-        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, brandedRow, bottomPaymentComponentEditableRow, spacer])
+        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, comunicationToneRow, reviewScreenRow, brandedRow, bottomPaymentComponentEditableRow, spacer])
         view.addSubview(mainStackView)
 
         NSLayoutConstraint.activate([
@@ -110,9 +127,11 @@ class DebugMenuViewController: UIViewController {
             mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -spacing),
 
             brandedPicker.widthAnchor.constraint(equalToConstant: view.frame.width/2),
+            comunicationPicker.widthAnchor.constraint(equalToConstant: view.frame.width/2),
             localizationRow.heightAnchor.constraint(equalToConstant: rowHeight),
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
             brandedRow.heightAnchor.constraint(equalToConstant: rowHeight),
+            comunicationToneRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
     }
@@ -154,6 +173,8 @@ extension DebugMenuViewController: UIPickerViewDelegate, UIPickerViewDataSource 
             return GiniLocalization.allCases.count
         case brandedPicker:
             return IngredientBrandTypeEnum.allCases.count
+        case comunicationPicker:
+            return ComunicationToneEnum.allCases.count
         default:
             return 0
         }
@@ -165,6 +186,8 @@ extension DebugMenuViewController: UIPickerViewDelegate, UIPickerViewDataSource 
             return GiniLocalization.allCases[row].rawValue
         case brandedPicker:
             return IngredientBrandTypeEnum.allCases[row].rawValue
+        case comunicationPicker:
+            return ComunicationToneEnum.allCases[row].rawValue
         default:
             return ""
         }
@@ -176,6 +199,8 @@ extension DebugMenuViewController: UIPickerViewDelegate, UIPickerViewDataSource 
             delegate?.didPickNewLocalization(localization: GiniLocalization.allCases[row])
         case brandedPicker:
             delegate?.didPickNewIngredientBrandType(brandType: IngredientBrandTypeEnum.allCases[row])
+        case comunicationPicker:
+            delegate?.didPickNewComunicationTone(comunicationTone: ComunicationToneEnum.allCases[row])
         default:
             break
         }
