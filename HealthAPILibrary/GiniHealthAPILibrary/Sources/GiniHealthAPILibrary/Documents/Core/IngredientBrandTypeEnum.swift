@@ -7,7 +7,6 @@
 import Foundation
 /**
  An enumeration representing the visibility type of an ingredient brand.
-
  Use this enum to indicate how the ingredient brand is displayed.
  */
 public enum IngredientBrandTypeEnum: String, Codable {

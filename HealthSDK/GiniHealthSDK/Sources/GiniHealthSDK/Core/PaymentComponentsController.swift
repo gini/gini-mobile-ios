@@ -127,7 +127,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
         self.stringsProvider = giniHealth
         setupObservers()
         loadPaymentProviders()
-        fetchAndConfigureClientConfiguration()
+        fetchAndUpdateClientConfiguration()
     }
     
     /**
