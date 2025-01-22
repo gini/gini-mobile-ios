@@ -808,6 +808,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         switch result {
         case .success(let paymentRequestId):
             fetchQRCodeImage(for: paymentRequestId)
+            self.didCreatePaymentRequest(paymentRequestId: paymentRequestId)
         case .failure(let error):
             handleError(error)
         }
