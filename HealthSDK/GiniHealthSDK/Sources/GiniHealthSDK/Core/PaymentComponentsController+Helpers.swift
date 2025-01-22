@@ -90,7 +90,7 @@ extension PaymentComponentsController {
     }
     
     // MARK: - Client Configuration Service
-    func fetchAndConfigureClientConfiguration() {
+    func fetchAndUpdateClientConfiguration() {
         giniSDK.clientConfigurationService?.fetchConfigurations { result in
             switch result {
             case let .success(clientConfiguration):
