@@ -18,7 +18,7 @@ class OnboardingViewController: UIViewController {
 
     init() {
         dataSource = OnboardingDataSource(configuration: configuration)
-        super.init(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
+        super.init(nibName: "OnboardingViewController", bundle: giniCaptureBundleResource())
     }
 
     required init?(coder: NSCoder) {
@@ -27,7 +27,7 @@ class OnboardingViewController: UIViewController {
 
     private func configureCollectionView() {
         pagesCollection.register(
-            UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()),
+            UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundleResource()),
             forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier)
         pagesCollection.isPagingEnabled = true
         pagesCollection.showsHorizontalScrollIndicator = false
