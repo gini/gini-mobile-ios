@@ -91,6 +91,15 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
     }
 
     func didTapPay(on viewModel: DigitalInvoiceViewModel) {
+        var eventProperties: [GiniAnalyticsProperty] = []
+        if let edgeCaseAnalyticsValue = viewModel.skontoViewModel?.edgeCase?.analyticsValue {
+            eventProperties.append(GiniAnalyticsProperty(key: .edgeCaseType,
+                                                         value: edgeCaseAnalyticsValue))
+        }
+        GiniAnalyticsManager.track(event: .proceedTapped,
+                                   screenName: .returnAssistant,
+                                   properties: eventProperties)
+
         if let analysisDelegate = self.analysisDelegate {
             self.delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
         }

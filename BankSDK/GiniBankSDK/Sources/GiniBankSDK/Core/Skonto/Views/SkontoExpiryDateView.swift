@@ -5,6 +5,11 @@
 //
 
 import UIKit
+import GiniCaptureSDK
+
+protocol SkontoExpiryDateViewDelegate: AnyObject {
+    func expiryDateTextFieldTapped()
+}
 
 class SkontoExpiryDateView: UIView {
     private lazy var titleLabel: UILabel = {
@@ -50,6 +55,7 @@ class SkontoExpiryDateView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
+    weak var delegate: SkontoExpiryDateViewDelegate?
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -70,6 +76,7 @@ class SkontoExpiryDateView: UIView {
         containerView.addSubview(textField)
         containerView.addSubview(calendarImageView)
         setupConstraints()
+        textField.addTarget(self, action: #selector(textFieldTapped), for: .editingDidBegin)
         configureDatePicker()
         bindViewModel()
     }
@@ -149,6 +156,10 @@ class SkontoExpiryDateView: UIView {
 
     @objc private func dateChanged(_ datePicker: UIDatePicker) {
         viewModel.setExpiryDate(datePicker.date)
+    }
+
+    @objc private func textFieldTapped() {
+        delegate?.expiryDateTextFieldTapped()
     }
 }
 
