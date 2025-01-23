@@ -68,6 +68,7 @@ final class DocumentPagesViewController: UIViewController {
     private var viewModel: DocumentPagesViewModelProtocol?
     private let configuration = GiniBankConfiguration.shared
     private let screenTitle: String?
+    private let errorButtonTitle: String
     private var errorView: DocumentPagesErrorView?
 
     // Constraints
@@ -76,8 +77,9 @@ final class DocumentPagesViewController: UIViewController {
     private var zoomAnalyticsEventSent: Bool = false
     
     // MARK: - Init
-    init(screenTitle: String? = nil) {
+    init(screenTitle: String? = nil, errorButtonTitle: String) {
         self.screenTitle = screenTitle
+        self.errorButtonTitle = errorButtonTitle
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -109,15 +111,11 @@ final class DocumentPagesViewController: UIViewController {
     }
 
     func setError(errorType: ErrorType, tryAgainAction: @escaping () -> Void) {
-        let buttonTitleLocalizableString = "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle"
-        let buttonTitle =  NSLocalizedStringPreferredGiniBankFormat(buttonTitleLocalizableString,
-                                                                    comment: "Try again")
         let errorView = DocumentPagesErrorView(errorType: errorType,
-                                               buttonTitle: buttonTitle,
+                                               buttonTitle: errorButtonTitle,
                                                buttonAction: { [weak self] in
             self?.handleTryAgainAction(tryAgainAction)
-        }
-        )
+        })
 
         sendAnalyticsErrorScreenShown(with: errorType)
         view.addSubview(errorView)
