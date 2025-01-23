@@ -6,11 +6,11 @@
 
 import UIKit
 
-enum TransactionDocType {
+public enum TransactionDocType {
     case image
     case document
 
-    var icon: UIImage? {
+    public var icon: UIImage? {
         if self == .document {
             return GiniImages.transactionDocsFileIcon.image
         }

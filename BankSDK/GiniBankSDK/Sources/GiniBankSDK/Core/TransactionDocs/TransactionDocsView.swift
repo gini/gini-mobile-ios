@@ -60,7 +60,7 @@ public class TransactionDocsView: UIView {
 
     private func commonInit() {
         guard let internalTransactionDocsDataCoordinator = internalTransactionDocsDataCoordinator else { return }
-        let transactionDocs = internalTransactionDocsDataCoordinator.transactionDocs
+        let transactionDocs = viewModel?.transactionDocs ?? []
         let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
         let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
         guard transactionDocsEnabled, configuration.transactionDocsEnabled, !transactionDocs.isEmpty else { return }
@@ -114,6 +114,7 @@ public class TransactionDocsView: UIView {
     private func createTransactionDocsItemView(for transactionDoc: TransactionDoc) -> TransactionDocsItemView {
         let transactionDocsItemView = TransactionDocsItemView(transactionDocsItem: transactionDoc)
 
+        // TODO: do I need to move this inside TransactionDocsItemView to be also available for TD list???
         let tapGestureRecognizer = UITapGestureRecognizer(target: self,
                                                           action: #selector(didTapToPreviewDocument(_:)))
         transactionDocsItemView.addGestureRecognizer(tapGestureRecognizer)

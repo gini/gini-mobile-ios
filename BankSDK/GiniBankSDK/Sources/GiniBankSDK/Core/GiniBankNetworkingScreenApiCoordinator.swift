@@ -602,19 +602,20 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 
         self.handleTransactionDocsAlertIfNeeded(on: navigationController,
                                                 defaultAction: { [weak self] in
-            self?.transactionDocsDataCoordinator?.transactionDocs = []
+            self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
             deliveryFunction(extractionResult)
         },
                                                 attachAction: { [weak self] in
             if let documentId = documentId {
-                self?.transactionDocsDataCoordinator?.transactionDocs = [.init(documentId: documentId,
-                                                                               fileName: "Document",
-                                                                               type: .document)]
+                self?.giniBankConfiguration.transactionDocsDataCoordinator
+                    .transactionDocs = [.init(documentId: documentId,
+                                              fileName: "Document",
+                                              type: .document)]
                 self?.setTransactionDocsDataToDisplay(with: extractionResult, for: documentId)
             } else {
-                self?.transactionDocsDataCoordinator?.transactionDocs = []
+                self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
             }
-            
+          
             deliveryFunction(extractionResult)
         })
     }

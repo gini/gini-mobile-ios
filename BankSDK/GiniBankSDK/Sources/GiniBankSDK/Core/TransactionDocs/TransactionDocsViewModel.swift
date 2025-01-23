@@ -41,7 +41,7 @@ public class TransactionDocsViewModel {
     public init(transactionDocsDataProtocol: TransactionDocsDataProtocol) {
         self.transactionDocsDataProtocol = transactionDocsDataProtocol
         // Access transactionDocs from the internal protocol if available
-        transactionDocs = (transactionDocsDataProtocol as? TransactionDocsDataInternalProtocol)?.transactionDocs ?? []
+        transactionDocs = transactionDocsDataProtocol.transactionDocs
     }
 
     /// Deletes a transaction document from the list.
