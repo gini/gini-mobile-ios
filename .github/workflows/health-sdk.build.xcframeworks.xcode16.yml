@@ -1,4 +1,4 @@
-name: Build HealthSDK XCFrameworks
+name: Build HealthSDK XCFrameworks XCode 16
 on:
   push:
     tags:
