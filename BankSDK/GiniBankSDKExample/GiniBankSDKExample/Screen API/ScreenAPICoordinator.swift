@@ -156,17 +156,21 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                           bic: bic,
                                           amountToPay: amoutToPay)
 
-
         let transactionDocIDs = configuration.transactionDocsDataCoordinator.transactionDocIDs
-        print("DEBUg-------- transaction docs = ", transactionDocIDs)
-        let transaction = Transaction(documentId: transactionDocIDs[0],
-                                      date: Date(),
+        print("DEBUG-------- transaction docs ids = ", transactionDocIDs)
+        let attachments = configuration.transactionDocsDataCoordinator.transactionDocs.map {
+            return Attachment(documentId: $0.documentId,
+                              filename: $0.fileName,
+                              type: $0.type == .document ? .document : .image)
+        }
+
+        let transaction = Transaction(date: Date(),
                                       paiedAmount: extractionAmountString,
                                       paymentPurpose: paymentPurpose,
                                       paymentRecipient: paymentRecipient,
                                       iban: iban,
                                       paymentReference: paymentReference,
-                                      attachments: [])
+                                      attachments: attachments)
         updateJSONFileWithTransaction(transaction)
         configuration.cleanup()
         delegate?.screenAPI(coordinator: self, didFinish: ())

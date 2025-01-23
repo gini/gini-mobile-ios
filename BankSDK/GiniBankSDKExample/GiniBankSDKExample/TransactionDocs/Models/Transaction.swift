@@ -8,7 +8,6 @@
 import Foundation
 
 struct Transaction: Codable {
-    let documentId: String
     let date: Date
     let paiedAmount: String
     let paymentPurpose: String

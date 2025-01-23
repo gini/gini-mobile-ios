@@ -332,7 +332,11 @@ extension AppCoordinator: DemoViewControllerDelegate {
 	}
 
     func didTapTransactionList() {
-
+        let transactionListViewController = TransactionListViewController()
+        let navigationController = UINavigationController(rootViewController: transactionListViewController)
+        navigationController.modalPresentationStyle = .overFullScreen
+        navigationController.modalTransitionStyle = .coverVertical
+        rootViewController.present(navigationController, animated: true)
     }
 }
 

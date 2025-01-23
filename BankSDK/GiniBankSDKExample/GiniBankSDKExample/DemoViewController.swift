@@ -143,7 +143,7 @@ final class DemoViewController: UIViewController {
                                   dark: giniCaptureColor("Light01")).uiColor()
         transactionListButton.setTitleColor(textColor, for: .normal)
         transactionListButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.transactionListButton.rawValue
-        transactionListButton.addTarget(self, action: #selector(transactionListButtonapped), for: .touchUpInside)
+        transactionListButton.addTarget(self, action: #selector(transactionListButtonTapped), for: .touchUpInside)
     }
 
     private func configureScreenDescriptionTitle() {
@@ -184,10 +184,9 @@ final class DemoViewController: UIViewController {
         startSDK(entryPoint: .field)
     }
 
-    @objc func transactionListButtonapped(_ sender: Any) {
+    @objc func transactionListButtonTapped(_ sender: Any) {
         delegate?.didTapTransactionList()
     }
-
 
     // MARK: - Notifications
     

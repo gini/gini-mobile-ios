@@ -117,9 +117,6 @@
                                     <real key="value" value="8"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="photoPaymentButtonTapped:" destination="-1" eventType="touchUpInside" id="XwD-Eo-neb"/>
-                            </connections>
                         </button>
                     </subviews>
                     <constraints>
