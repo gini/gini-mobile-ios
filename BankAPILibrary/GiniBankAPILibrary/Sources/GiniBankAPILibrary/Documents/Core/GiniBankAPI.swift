@@ -13,14 +13,18 @@ public final class GiniBankAPI {
     private let docService: DocumentService!
     private let payService: PaymentService?
     private let configService: ClientConfigurationServiceProtocol?
+    private let analyticsService: AnalyticsServiceProtocol?
+    
     static var logLevel: LogLevel = .none
 
     init<T: DocumentService>(documentService: T,
                              paymentService: PaymentService?,
-                             configurationService: ClientConfigurationServiceProtocol?) {
+                             configurationService: ClientConfigurationServiceProtocol?,
+                             analyticsService: AnalyticsServiceProtocol?) {
         self.docService = documentService
         self.payService = paymentService
         self.configService = configurationService
+        self.analyticsService = analyticsService
     }
     
     /**
@@ -46,6 +50,10 @@ public final class GiniBankAPI {
     
     public func configurationService() -> ClientConfigurationServiceProtocol? {
         return configService
+    }
+    
+    public func analyticService() -> AnalyticsServiceProtocol? {
+        return analyticsService
     }
 
     /// Removes the user stored credentials. Recommended when logging a different user in your app.
@@ -114,10 +122,12 @@ extension GiniBankAPI {
             let documentService = DefaultDocumentService(sessionManager: sessionManager, apiDomain: api)
             let paymentService = PaymentService(sessionManager: sessionManager, apiDomain: api)
             let configurationService = ClientConfigurationService(sessionManager: sessionManager, apiDomain: api)
-
-            return GiniBankAPI(documentService: documentService, 
+            let analyticsService = AnalyticsService(sessionManager: sessionManager, apiDomain: api)
+            
+            return GiniBankAPI(documentService: documentService,
                                paymentService: paymentService,
-                               configurationService: configurationService)
+                               configurationService: configurationService,
+                               analyticsService: analyticsService)
         }
         
         private func createSessionManager() -> SessionManager {
