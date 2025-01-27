@@ -79,6 +79,9 @@
 "import.startButtonTitle" = "Ja";
 "import.cancelButtonTitle" = "Nein";
 
+"transaction.list.title" = "Fotozahlungsverlauf";
+"transaction.details.title" = "Transaktionsdetails";
+
 //
 //"ginibank.digitalinvoice.backbutton" = "CM Schließen";
 //"ginibank.digitalinvoice.paybuttontitle.disabled" = "CM Bezahlen";
