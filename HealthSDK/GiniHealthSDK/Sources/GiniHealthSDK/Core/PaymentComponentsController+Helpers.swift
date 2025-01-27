@@ -433,6 +433,7 @@ extension PaymentComponentsController {
                 }
 
                 // Publish the payment request id only after a user has picked an activity (app)
+
                 self?.giniSDK.delegate?.didCreatePaymentRequest(paymentRequestId: paymentRequestId)
             }
         })
@@ -521,6 +522,7 @@ extension PaymentComponentsController {
             switch result {
             case .success(let paymentRequestId):
                 completion(.success(paymentRequestId))
+                self.giniSDK.delegate?.didCreatePaymentRequest(paymentRequestId: paymentRequestId)
             case .failure(let error):
                 let healthError = GiniHealthAPILibrary.GiniError.unknown(response: error.response, data: error.data)
                 completion(.failure(healthError))
@@ -746,7 +748,6 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
             switch result {
             case .success(let paymentRequestID):
-                self?.didCreatePaymentRequest(paymentRequestId: paymentRequestID)
                 self?.handleSuccessfulPaymentRequest(paymentRequestID: paymentRequestID)
             case .failure(let error):
                 self?.handleError(error)
@@ -808,7 +809,6 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         switch result {
         case .success(let paymentRequestId):
             fetchQRCodeImage(for: paymentRequestId)
-            self.didCreatePaymentRequest(paymentRequestId: paymentRequestId)
         case .failure(let error):
             handleError(error)
         }
