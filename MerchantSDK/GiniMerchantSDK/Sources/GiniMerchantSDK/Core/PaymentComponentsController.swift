@@ -25,7 +25,7 @@ public protocol PaymentProvidersBottomViewProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider)
     func didTapOnClose()
     func didTapOnMoreInformation()
-    func didTapOnContinueOnShareBottomSheet()
+    func didTapOnContinueOnShareBottomSheet(paymentRequestId: String)
     func didTapForwardOnInstallBottomSheet()
     func didTapOnPayButton()
 }
@@ -402,10 +402,11 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
      localized strings, and returns a `ShareInvoiceBottomView` configured with the view model.
      It also increments the onboarding count for the selected payment provider.
 
-     - Parameter documentId: An optional identifier for the document associated id with the invoice.
+     - Parameter qrCodeData: QR Data shown in the Share Invoice Bottom Sheet
+     - Parameter paymentRequestId: Payment request id generated from the payment info extracted from the order
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
-    public func shareInvoiceBottomSheet(qrCodeData: Data) -> BottomSheetViewController {
+    public func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> BottomSheetViewController {
         previousPresentedView = nil
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
@@ -414,7 +415,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                       poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                       poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                       qrCodeData: qrCodeData,
-                                                                      paymentInfo: nil)
+                                                                      paymentInfo: nil,
+                                                                      paymentRequestId: paymentRequestId)
         shareInvoiceBottomViewModel.viewDelegate = self
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return shareInvoiceBottomView
@@ -466,15 +468,11 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
     /**
      Creates a payment request and obtains the PDF URL using the provided payment information.
 
-     - Parameter paymentInfo: The payment information for the request.
      - Parameter viewController: The view controller used to present any necessary UI related to the request.
+     - Parameter paymentRequestId: The paymentRequestId generated from the payment info extracted from the order
      */
-    public func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController) {
-        createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] paymentRequestID, error in
-            if let paymentRequestID {
-                self?.loadPDFData(paymentRequestID: paymentRequestID, viewController: viewController)
-            }
-        })
+    public func obtainPDFURLFromPaymentRequest(viewController: UIViewController, paymentRequestId: String) {
+        self.loadPDFData(paymentRequestID: paymentRequestId, viewController: viewController)
     }
 
     /**
@@ -659,8 +657,8 @@ extension PaymentComponentsController: BanksSelectionProtocol {
 
 extension PaymentComponentsController: ShareInvoiceBottomViewProtocol {
     /// Notifies the delegate to continue sharing the invoice with the provided document ID.
-    public func didTapOnContinueToShareInvoice() {
-        bottomViewDelegate?.didTapOnContinueOnShareBottomSheet()
+    public func didTapOnContinueToShareInvoice(paymentRequestId: String) {
+        bottomViewDelegate?.didTapOnContinueOnShareBottomSheet(paymentRequestId: paymentRequestId)
     }
 }
 

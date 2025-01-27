@@ -103,7 +103,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func processBankUrl(url: URL) {
-        rootViewController.dismiss(animated: true)
+        rootViewController.navigationController?.popViewController(animated: true)
         
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
         
@@ -387,12 +387,6 @@ extension AppCoordinator: GiniHealthDelegate {
     
     func didCreatePaymentRequest(paymentRequestId: String) {
         GiniUtilites.Log("Created payment request with id \(paymentRequestId)", event: .success)
-        DispatchQueue.main.async {
-            guard let invoicesListCoordinator = self.childCoordinators.first as? InvoicesListCoordinator else {
-                return
-            }
-            invoicesListCoordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
-        }
     }
 }
 
