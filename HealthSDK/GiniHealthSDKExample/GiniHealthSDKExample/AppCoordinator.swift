@@ -103,7 +103,13 @@ final class AppCoordinator: Coordinator {
     }
     
     func processBankUrl(url: URL) {
-        rootViewController.navigationController?.popViewController(animated: true)
+        if let invoicesListCoordinator = childCoordinators.last as? InvoicesListCoordinator {
+            invoicesListCoordinator.invoicesListNavigationController.popViewController(animated: true)
+        } else if let orderListCoordinator = childCoordinators.last as? OrderListCoordinator {
+            orderListCoordinator.orderListViewController.presentedViewController?.dismiss(animated: true, completion: {
+                orderListCoordinator.orderListNavigationController.popViewController(animated: true)
+            })
+        }
         
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
         
