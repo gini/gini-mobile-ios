@@ -95,7 +95,7 @@ public final class ReviewViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 8
-        layout.minimumInteritemSpacing = 1
+        layout.minimumInteritemSpacing = 8
 
         var collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
@@ -185,11 +185,15 @@ public final class ReviewViewController: UIViewController {
         return addPagesButton
     }()
 
-    private lazy var buttonContainer: UIView = {
-        let view = UIView()
+    private lazy var buttonContainer: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [processButton])
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.axis = .horizontal
+        view.spacing = Constants.padding
         return view
     }()
+
+    private var bottomNavigationBar: UIView?
 
     private var loadingIndicatorView: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView()
@@ -199,9 +203,7 @@ public final class ReviewViewController: UIViewController {
         return indicatorView
     }()
 
-    private lazy var cellSize: CGSize = {
-        return calculatedCellSize()
-    }()
+    private var loadingIndicator: UIView?
 
     private lazy var collectionViewHeightConstraint = collectionView.heightAnchor.constraint(
                                                       equalToConstant: view.frame.height * 0.5)
@@ -239,6 +241,12 @@ public final class ReviewViewController: UIViewController {
         tipLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.titleHeight),
         tipLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.maxTitleHeight)]
 
+    private var trailingConstraints: [NSLayoutConstraint] {
+        [
+            collectionViewConstraints[2],
+            tipLabelConstraints[2]
+        ]
+    }
     private lazy var collectionViewConstraints: [NSLayoutConstraint] = [
         collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
         collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -250,19 +258,17 @@ public final class ReviewViewController: UIViewController {
         pageControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
         pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)]
 
-    private lazy var processButtonConstraints: [NSLayoutConstraint] = [
-        processButton.topAnchor.constraint(equalTo: buttonContainer.topAnchor),
-        processButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
-        processButton.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor),
-        processButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.height),
-        processButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8),
-        processButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainer.trailingAnchor)]
+    private lazy var pageControlHorizontalConstraints: [NSLayoutConstraint] = [
+        pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.padding * 2),
+        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.padding * 2),
+        pageControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -275)
+    ]
 
-    private lazy var addPagesButtonConstraints: [NSLayoutConstraint] =  [
-            addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-            addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor,
-                                                    constant: Constants.padding),
-            addPagesButton.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor)]
+    private lazy var processButtonConstraints: [NSLayoutConstraint] = [
+        processButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
+        processButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.height)
+    ]
 
     private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
         buttonContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.padding * 2),
@@ -270,6 +276,18 @@ public final class ReviewViewController: UIViewController {
         buttonContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
                                               constant: -Constants.bottomPadding),
         buttonContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor)
+    ]
+
+    private lazy var buttonContainerHorizontalConstraints: [NSLayoutConstraint] = [
+        buttonContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -85),
+        buttonContainer.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+    ]
+
+    private lazy var bottomNavigationBarAdditionalConstraints: [NSLayoutConstraint] = [
+        pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                            constant: -Constants.pageControlBottomPadding),
+        collectionView.bottomAnchor.constraint(greaterThanOrEqualTo: pageControl.topAnchor,
+                                               constant: -Constants.padding * 2)
     ]
 
     // MARK: - Init
@@ -324,13 +342,13 @@ extension ReviewViewController {
     }
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
+        bottomNavigationBar = navigationBar
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(navigationBar)
         NSLayoutConstraint.activate([
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: Constants.bottomNavigationBarHeight)
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
@@ -372,25 +390,51 @@ extension ReviewViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let size = calculatedCellSize()
+        let size = calculatedCellSize(isHorizontal: false)
         collectionViewHeightConstraint.constant = size.height + 4
-        if UIDevice.current.isIpad {
-            // cellSize needs to be updated when the screen is rotated
-            self.cellSize = size
+        if UIDevice.current.isIphone {
+            let isLandscape = currentInterfaceOrientation.isLandscape
+            buttonContainer.axis = isLandscape ? .vertical : .horizontal
 
-            DispatchQueue.main.async {
-                guard self.previousScreenHeight != UIScreen.main.bounds.height else { return }
-                guard self.pages.count > 1 else { return }
-                self.setCellStatus(for: self.currentPage, isActive: false)
-                self.collectionView.reloadData()
-
-                self.collectionView.scrollToItem(at: IndexPath(row: self.currentPage, section: 0),
-                                                  at: .centeredHorizontally, animated: true)
-
-                self.previousScreenHeight = UIScreen.main.bounds.height
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self.setCellStatus(for: self.currentPage, isActive: true)
+            if giniConfiguration.bottomNavigationBarEnabled {
+                if isLandscape {
+                    view.addSubview(buttonContainer)
+                    addLoadingView()
+                } else {
+                    loadingIndicator?.removeFromSuperview()
+                    buttonContainer.removeFromSuperview()
                 }
+            }
+
+            bottomNavigationBar?.alpha = isLandscape ? 0 : 1
+            bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
+
+            trailingConstraints.forEach { $0.constant = isLandscape ? -275 : 0 }
+            let constraintsToActivate = isLandscape
+                ? buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
+                : giniConfiguration.bottomNavigationBarEnabled
+                    ? bottomNavigationBarAdditionalConstraints
+                    : buttonContainerConstraints + pageControlConstraints
+
+            let constraintsToDeactivate = isLandscape
+                ? bottomNavigationBarAdditionalConstraints + buttonContainerConstraints + pageControlConstraints
+                : buttonContainerHorizontalConstraints + pageControlHorizontalConstraints + (giniConfiguration.bottomNavigationBarEnabled ? bottomNavigationBarAdditionalConstraints : [])
+
+            NSLayoutConstraint.deactivate(constraintsToDeactivate)
+            NSLayoutConstraint.activate(constraintsToActivate)
+        }
+        DispatchQueue.main.async {
+            guard self.previousScreenHeight != UIScreen.main.bounds.height else { return }
+            guard self.pages.count > 1 else { return }
+            self.setCellStatus(for: self.currentPage, isActive: false)
+            self.collectionView.reloadData()
+
+            self.collectionView.scrollToItem(at: IndexPath(row: self.currentPage, section: 0),
+                                              at: .centeredHorizontally, animated: true)
+
+            self.previousScreenHeight = UIScreen.main.bounds.height
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.setCellStatus(for: self.currentPage, isActive: true)
             }
         }
     }
@@ -405,12 +449,11 @@ extension ReviewViewController {
         contentView.addSubview(tipLabel)
         contentView.addSubview(collectionView)
         contentView.addSubview(pageControl)
+        if giniConfiguration.multipageEnabled {
+            buttonContainer.addArrangedSubview(addPagesButton)
+        }
         if !giniConfiguration.bottomNavigationBarEnabled {
             contentView.addSubview(buttonContainer)
-            buttonContainer.addSubview(processButton)
-            if giniConfiguration.multipageEnabled {
-                buttonContainer.addSubview(addPagesButton)
-            }
         }
         edgesForExtendedLayout = []
     }
@@ -418,7 +461,11 @@ extension ReviewViewController {
     // MARK: - Loading indicator
 
     private func addLoadingView() {
-        guard !giniConfiguration.bottomNavigationBarEnabled else { return }
+        guard !giniConfiguration.bottomNavigationBarEnabled || (buttonContainer.superview != nil && UIDevice.current.isIphone) else { return }
+        if let loadingIndicator {
+            loadingIndicator.removeFromSuperview()
+            self.loadingIndicator = nil
+        }
         let loadingIndicator: UIView
 
         if let customLoadingIndicator = giniConfiguration.onButtonLoadingIndicator?.injectedView() {
@@ -437,6 +484,7 @@ extension ReviewViewController {
             loadingIndicator.widthAnchor.constraint(equalToConstant: 45),
             loadingIndicator.heightAnchor.constraint(equalToConstant: 45)
         ])
+        self.loadingIndicator = loadingIndicator
     }
 
     private func showAnimation() {
@@ -513,20 +561,15 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(tipLabelConstraints)
         NSLayoutConstraint.activate(collectionViewConstraints)
         NSLayoutConstraint.activate(pageControlConstraints)
+        NSLayoutConstraint.activate(processButtonConstraints)
 
         if !giniConfiguration.bottomNavigationBarEnabled {
             NSLayoutConstraint.activate(buttonContainerConstraints)
-            NSLayoutConstraint.activate(processButtonConstraints)
             if giniConfiguration.multipageEnabled {
-                NSLayoutConstraint.activate(addPagesButtonConstraints)
+                buttonContainer.addArrangedSubview(addPagesButton)
             }
         } else {
-            NSLayoutConstraint.activate([
-                pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                                    constant: -Constants.pageControlBottomPadding),
-                collectionView.bottomAnchor.constraint(greaterThanOrEqualTo: pageControl.topAnchor,
-                                                       constant: -Constants.padding * 2)
-            ])
+            NSLayoutConstraint.activate(bottomNavigationBarAdditionalConstraints)
         }
     }
 
@@ -590,8 +633,9 @@ extension ReviewViewController {
         }
     }
 
-    private func calculatedCellSize() -> CGSize {
+    private func calculatedCellSize(isHorizontal: Bool) -> CGSize {
         let a4Ratio = 1.4142
+        let widthRatio: CGFloat = isHorizontal ? 1/a4Ratio : a4Ratio
         if UIDevice.current.isIpad {
             var height = self.view.bounds.height - 260
             if giniConfiguration.bottomNavigationBarEnabled {
@@ -603,12 +647,12 @@ extension ReviewViewController {
         } else {
             if view.safeAreaInsets.bottom > 0 {
                 let height = self.view.bounds.height * 0.6
-                let width = height / a4Ratio
+                let width = height / widthRatio
                 let cellSize = CGSize(width: width, height: height)
                 return cellSize
             } else {
                 let height = self.view.bounds.height * 0.5
-                let width = height / a4Ratio
+                let width = height / widthRatio
                 let cellSize = CGSize(width: width, height: height)
                 return cellSize
             }
@@ -661,13 +705,18 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellSize
+        let page = pages[indexPath.row]
+        let isHorizontal = {
+            guard let size = page.document.previewImage?.size, UIDevice.current.isIphone else { return false }
+            return size.width > size.height
+        }()
+        return calculatedCellSize(isHorizontal: UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape && isHorizontal)
     }
 
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                insetForSectionAt section: Int) -> UIEdgeInsets {
-        let margin = (self.view.bounds.width - cellSize.width) / 2
+        let margin = (self.view.bounds.width - (currentInterfaceOrientation.isLandscape && UIDevice.current.isIphone ? 275 : 0) - self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAt: IndexPath(row: 0, section: 0)).width) / 2
         return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
     }
 
@@ -681,9 +730,9 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
         else { return }
         let offset = scrollView.contentOffset
-        let cellWidthIncludingSpacing = cellSize.width + layout.minimumLineSpacing
+        let cellWidthIncludingSpacing = calculatedCellSize(isHorizontal: false).width + layout.minimumLineSpacing
         let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
-        currentPage = Int(round(index))
+        currentPage = max(min(Int(round(index)), pages.count - 1), 0)
         self.pageControl.currentPage = currentPage
     }
 
