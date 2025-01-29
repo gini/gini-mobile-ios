@@ -178,7 +178,7 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
         } else {
             if paymentComponentsController.supportsOpenWith() {
                 // TODO: Fix share onboarding flow in MerchantSDK
-                let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet(qrCodeData: Data())
+                let shareInvoiceBottomSheet = paymentComponentsController.shareInvoiceBottomSheet(qrCodeData: Data(), paymentRequestId: "")
                 shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
                 self.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
             } else if paymentComponentsController.supportsGPC() {
@@ -294,8 +294,9 @@ extension OrderDetailViewController: PaymentProvidersBottomViewProtocol {
         }
     }
 
-    func didTapOnContinueOnShareBottomSheet() {
-        paymentComponentsController.obtainPDFURLFromPaymentRequest(paymentInfo: obtainPaymentInfo(), viewController: self)
+    func didTapOnContinueOnShareBottomSheet(paymentRequestId: String) {
+        paymentComponentsController.obtainPDFURLFromPaymentRequest(viewController: self,
+                                                                   paymentRequestId: paymentRequestId)
     }
 
     func didTapForwardOnInstallBottomSheet() {
