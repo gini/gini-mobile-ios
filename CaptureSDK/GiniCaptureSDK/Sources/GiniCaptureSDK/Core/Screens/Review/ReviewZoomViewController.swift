@@ -4,6 +4,7 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
+
 import UIKit
 
 final class ReviewZoomViewController: UIViewController {
@@ -28,6 +29,7 @@ final class ReviewZoomViewController: UIViewController {
     init(page: GiniCapturePage) {
         self.page = page
         super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .pageSheet
     }
 
     @available(*, unavailable)
