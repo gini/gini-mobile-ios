@@ -19,11 +19,6 @@ public class TransactionDocsViewModel {
         }
     }
 
-    /// The current cache of document images.
-    /// The key is the `documentId` of the corresponding transaction document,
-    /// and the value is an array of `UIImage` representing the images for that document.
-    var cachedImages: [String: [UIImage]] = [:]
-
     private var presentingViewController: UIViewController? {
         return transactionDocsDataProtocol.presentingViewController
     }
@@ -34,7 +29,13 @@ public class TransactionDocsViewModel {
 
     private var documentPagesViewController: DocumentPagesViewController?
     private let transactionDocsDataProtocol: TransactionDocsDataProtocol
+
     public var onUpdate: (() -> Void)?
+
+    /// The current cache of document images.
+    /// The key is the `documentId` of the corresponding transaction document,
+    /// and the value is an array of `UIImage` representing the images for that document.
+    public var cachedImages: [String: [UIImage]] = [:]
 
     /// Initializes a new instance of `TransactionDocsViewModel`.
     /// - Parameter transactionDocsDataProtocol: The protocol responsible for managing attached documents.
@@ -78,8 +79,8 @@ public class TransactionDocsViewModel {
 
     /// Sets the document pages view model for the `DocumentPagesViewController`.
     /// - Parameter viewModel: The view model representing the document pages.
-    func setTransactionDocsDocumentPagesViewModel(_ viewModel: TransactionDocsDocumentPagesViewModel,
-                                                  for documentId: String) {
+    public func setTransactionDocsDocumentPagesViewModel(_ viewModel: TransactionDocsDocumentPagesViewModel,
+                                                         for documentId: String) {
         guard let documentPagesViewController else { return }
         let transactionDoc = transactionDocs.first(where: { $0.documentId == documentId })
         viewModel.rightBarButtonAction = { [weak self] in
@@ -102,7 +103,7 @@ public class TransactionDocsViewModel {
     /// - Parameters:
     ///   - error: The `GiniError` that occurred while previewing the document.
     ///   - tryAgainAction: A closure that is called when the user attempts to retry the document preview action.
-    func setPreviewDocumentError(error: GiniError, tryAgainAction: @escaping () -> Void) {
+   public func setPreviewDocumentError(error: GiniError, tryAgainAction: @escaping () -> Void) {
         guard let documentPagesViewController else { return }
         documentPagesViewController.stopLoadingIndicatorAnimation()
         documentPagesViewController.setError(errorType: .init(error: error),
