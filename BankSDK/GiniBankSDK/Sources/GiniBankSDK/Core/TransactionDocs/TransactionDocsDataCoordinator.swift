@@ -4,31 +4,8 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import GiniBankAPILibrary
-/// A protocol that defines methods and properties for managing the state of transaction documents in a photo payment flow.
-/// Conforming types are responsible for tracking, modifying, and handling the state related to attaching documents to a transaction.
-public protocol TransactionDocsDataProtocol: AnyObject {
-
-    /// The view controller responsible for presenting document-related views.
-    var presentingViewController: UIViewController? { get set }
-
-    // TODO: remove this if you add public access to transactionDocs
-    /// The list of attached transaction document ids.
-    var transactionDocIDs: [String] { get }
-
-    /// The list of attached transaction documents.
-    var transactionDocs: [TransactionDoc] { get set }
-
-    /// Retrieves the current value of the "Always Attach Documents" setting.
-    /// - Returns: A `Bool` representing whether documents should always be attached to the transaction.
-    func getAlwaysAttachDocsValue() -> Bool
-
-    /// Sets the "Always Attach Documents" setting to a given value.
-    /// - Parameter value: A `Bool` indicating whether documents should always be attached to the transaction.
-    func setAlwaysAttachDocs(_ value: Bool)
-}
 
 /// An internal protocol that defines methods and properties for managing the state
 /// of transaction documents used within the GiniBankSDK.
@@ -71,6 +48,9 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, Transa
         return TransactionDocsViewModel(transactionDocsDataProtocol: self)
     }()
 
+    /// A closure that handles loading document data.
+    var loadDocumentData: (() -> Void)?
+
     // MARK: - Initializer
     /// Initializes a new instance of the class.
     public init() {
@@ -81,9 +61,18 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, Transa
 
     /// The view controller responsible for presenting document-related views.
     public weak var presentingViewController: UIViewController?
+    /// Retrieves the current view model for transaction documents.
+    /// - Returns: An optional `TransactionDocsViewModel` instance if available.
+    public func getViewModel() -> TransactionDocsViewModel? {
+        return getTransactionDocsViewModel()
+    }
 
-    /// A closure that handles loading document data.
-    public var loadDocumentData: (() -> Void)?
+    /// A public closure that handles loading document data.
+    public var loadData: (() -> Void)? {
+        didSet {
+            loadDocumentData = loadData
+        }
+    }
 
     /// Retrieves the current value of the "Always Attach Documents" setting.
     /// - Returns: A `Bool` representing whether documents should always be attached to the transaction.
@@ -127,5 +116,15 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, Transa
     ///   - tryAgainAction: A closure that is called when the user attempts to retry the document preview action.
     func setPreviewDocumentError(error: GiniBankAPILibrary.GiniError, tryAgainAction: @escaping () -> Void) {
         transactionDocsViewModel?.setPreviewDocumentError(error: error, tryAgainAction: tryAgainAction)
+    }
+
+    private func updateTransactionDocsViewModel(with images: [UIImage],
+                                                extractions: [Extraction],
+                                                for documentId: String) {
+        let extractionInfo = TransactionDocsExtractions(extractions: extractions)
+        let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
+                                                              extractions: extractionInfo)
+        getTransactionDocsViewModel()?
+            .setTransactionDocsDocumentPagesViewModel(viewModel, for: documentId)
     }
 }

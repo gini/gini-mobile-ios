@@ -615,7 +615,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             } else {
                 self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
             }
-          
+
             deliveryFunction(extractionResult)
         })
     }
@@ -643,7 +643,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         }
     }
     private func createDocumentPageViewModel(from skontoViewModel: SkontoViewModel,
-                                             completion: @escaping (Result<SkontoDocumentPagesViewModel, 
+                                             completion: @escaping (Result<SkontoDocumentPagesViewModel,
                                                                     GiniError>) -> Void) {
         let dispatchGroup = DispatchGroup()
         var originalSizes: [DocumentPageSize] = []
@@ -769,16 +769,16 @@ extension GiniBankNetworkingScreenApiCoordinator {
             guard let viewModel = self?.transactionDocsDataCoordinator?.getTransactionDocsViewModel(),
                   let images = viewModel.cachedImages[documentId],
                   !images.isEmpty else {
-                self?.loadDocumentPagesAndHandleErrors(for: documentId, with: extractionResult)
+                self?.loadDocumentPagesAndHandleErrors(for: documentId, with: extractionResult.extractions)
                 return
             }
             self?.updateTransactionDocsViewModel(with: images,
-                                                 extractionResult: extractionResult,
+                                                 extractions: extractionResult.extractions,
                                                  for: documentId)
         }
     }
 
-    private func loadDocumentPagesAndHandleErrors(for documentId: String, with extractionResult: ExtractionResult) {
+    private func loadDocumentPagesAndHandleErrors(for documentId: String, with extractions: [Extraction]) {
         loadDocumentPages { [weak self] images, error in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -787,7 +787,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                     return
                 }
                 self.updateTransactionDocsViewModel(with: images,
-                                                    extractionResult: extractionResult,
+                                                    extractions: extractions,
                                                     for: documentId)
             }
         }
@@ -803,9 +803,9 @@ extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     private func updateTransactionDocsViewModel(with images: [UIImage],
-                                                extractionResult: ExtractionResult,
+                                                extractions: [Extraction],
                                                 for documentId: String) {
-        let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
+        let extractionInfo = TransactionDocsExtractions(extractions: extractions)
         let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
                                                               extractions: extractionInfo)
         transactionDocsDataCoordinator?

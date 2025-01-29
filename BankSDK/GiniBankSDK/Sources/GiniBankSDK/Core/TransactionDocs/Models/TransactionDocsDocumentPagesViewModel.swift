@@ -6,7 +6,7 @@
 
 import UIKit
 
-final class TransactionDocsDocumentPagesViewModel: DocumentPagesViewModelProtocol {
+public final class TransactionDocsDocumentPagesViewModel: DocumentPagesViewModelProtocol {
     private let originalImages: [UIImage]
     private var amountToPay: Price
     private var iban: String
@@ -14,7 +14,7 @@ final class TransactionDocsDocumentPagesViewModel: DocumentPagesViewModelProtoco
     private(set) var bottomInfoItems: [String] = []
     var rightBarButtonAction: (() -> Void)?
 
-    init(originalImages: [UIImage], extractions: TransactionDocsExtractions) {
+    public init(originalImages: [UIImage], extractions: TransactionDocsExtractions) {
         self.originalImages = originalImages
         self.amountToPay = extractions.amountToPay
         self.iban = extractions.iban
