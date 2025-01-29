@@ -43,6 +43,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     
     private lazy var qrImageView: UIImageView = {
         let imageView = UIImageView(image: viewModel.qrCodeData.toImage)
+        imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -75,7 +76,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     }()
 
     private let brandView = EmptyView()
-//    private let brandStackView = EmptyStackView().orientation(.horizontal).distribution(.fillEqually)
+    private let brandStackView = EmptyStackView().orientation(.horizontal).distribution(.fill)
     
     private lazy var poweredByGiniView: PoweredByGiniView = {
         PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
@@ -91,7 +92,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         return emptyView
     }()
     
-    private lazy var paymentInfoStackView = generatePaymentInfoViews(orientation: .horizontal)
+    private lazy var paymentInfoStackView = UIStackView()
 
     private let topStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let bottomStackView = EmptyStackView().orientation(.vertical)
@@ -131,13 +132,14 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         
         qrCodeView.addSubview(qrImageView)
 
-//        brandStackView.addArrangedSubview(poweredByGiniView)
-        brandView.addSubview(poweredByGiniView)
+        brandStackView.addArrangedSubview(UIView())
+        brandStackView.addArrangedSubview(poweredByGiniView)
+        brandStackView.addArrangedSubview(UIView())
+        brandView.addSubview(brandStackView)
 
         continueView.addSubview(continueButton)
         
         descriptionView.addSubview(descriptionLabel)
-        paymentInfoView.addSubview(paymentInfoStackView)
         bottomView.addSubview(paymentInfoView)
 
         topStackView.addArrangedSubview(qrCodeView)
@@ -191,48 +193,58 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         }
     }
 
-    // Portrait Layout Constraints
-    private func setupPortraitConstraints() {
-        NSLayoutConstraint.deactivate(landscapeConstraints)
+    private func setupConstraints(for orientation: NSLayoutConstraint.Axis) {
+        // Deactivate previous constraints
+        NSLayoutConstraint.deactivate(orientation == .vertical ? landscapeConstraints : portraitConstraints)
 
+        // Update the split stack view and payment info stack view
         setupSplitStackViewHierarchy()
-        splitStacKView.orientation(.vertical).spacing(0)
-        paymentInfoStackView = generatePaymentInfoViews(orientation: .vertical)
-
-        portraitConstraints = [
-            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            qrImageView.widthAnchor.constraint(equalToConstant: Constants.qrCodeImageSizePortrait),
-            qrImageView.heightAnchor.constraint(equalToConstant: Constants.qrCodeImageSizePortrait),
-            descriptionLabel.leadingAnchor.constraint(equalTo: descriptionView.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            descriptionLabel.trailingAnchor.constraint(equalTo: descriptionView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-//            brandStackView.leadingAnchor.constraint(equalTo: brandView.leadingAnchor, constant: Constants.viewPaddingConstraint),
-//            brandStackView.trailingAnchor.constraint(equalTo: brandView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+        splitStacKView.orientation(orientation).spacing(orientation == .vertical ? 0 : Constants.viewPaddingConstraint)
+        
+        paymentInfoStackView = generatePaymentInfoViews(orientation: orientation)
+        updatePaymentInfoView()
+        
+        let isPortrait = orientation == .vertical
+        
+        let qrCodeSize = isPortrait ? Constants.qrCodeImageSizePortrait : Constants.qrCodeImageSizeLandscape
+        let bottomViewHeight = isPortrait ? Constants.bottomViewPortraitHeight : Constants.bottomViewLandscapeHeight
+        let contentPadding = isPortrait ? 0 : Constants.landscapePadding
+        
+        let constraints = [
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: contentPadding),
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -contentPadding),
+            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * contentPadding),
+            qrImageView.widthAnchor.constraint(equalToConstant: qrCodeSize),
+            qrImageView.heightAnchor.constraint(equalToConstant: qrCodeSize),
+            descriptionLabel.leadingAnchor.constraint(equalTo: descriptionView.leadingAnchor, constant: isPortrait ? Constants.viewPaddingConstraint : 0),
+            descriptionLabel.trailingAnchor.constraint(equalTo: descriptionView.trailingAnchor, constant: isPortrait ? -Constants.viewPaddingConstraint : 0),
+            paymentInfoStackView.leadingAnchor.constraint(equalTo: paymentInfoView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            paymentInfoStackView.trailingAnchor.constraint(equalTo: paymentInfoView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            paymentInfoStackView.topAnchor.constraint(equalTo: paymentInfoView.topAnchor, constant: Constants.viewPaddingConstraint),
+            paymentInfoStackView.bottomAnchor.constraint(equalTo: paymentInfoView.bottomAnchor, constant: -Constants.viewPaddingConstraint),
+            paymentInfoView.heightAnchor.constraint(equalToConstant: bottomViewHeight)
         ]
-        NSLayoutConstraint.activate(portraitConstraints)
+
+        if isPortrait {
+            portraitConstraints = constraints
+            NSLayoutConstraint.activate(portraitConstraints)
+        } else {
+            landscapeConstraints = constraints
+            NSLayoutConstraint.activate(landscapeConstraints)
+        }
     }
-
-    // Landscape Layout Constraints
+    
+    private func updatePaymentInfoView() {
+        paymentInfoView.subviews.forEach { $0.removeFromSuperview() }
+        paymentInfoView.addSubview(paymentInfoStackView)
+    }
+    
+    private func setupPortraitConstraints() {
+        setupConstraints(for: .vertical)
+    }
+    
     private func setupLandscapeConstraints() {
-        NSLayoutConstraint.deactivate(portraitConstraints)
-
-        paymentInfoStackView = generatePaymentInfoViews(orientation: .horizontal)
-        setupSplitStackViewHierarchy()
-        splitStacKView.orientation(.horizontal).spacing(75)
-
-        landscapeConstraints = [
-            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.landscapePadding),
-            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: Constants.landscapePadding),
-            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -(2*Constants.landscapePadding)),
-            qrImageView.widthAnchor.constraint(equalToConstant: Constants.qrCodeImageSizeLandscape),
-            qrImageView.heightAnchor.constraint(equalToConstant: Constants.qrCodeImageSizeLandscape),
-            descriptionLabel.leadingAnchor.constraint(equalTo: descriptionView.leadingAnchor),
-            descriptionLabel.trailingAnchor.constraint(equalTo: descriptionView.trailingAnchor),
-//            brandStackView.leadingAnchor.constraint(equalTo: brandView.leadingAnchor),
-//            brandStackView.trailingAnchor.constraint(equalTo: brandView.trailingAnchor),
-        ]
-        NSLayoutConstraint.activate(landscapeConstraints)
+        setupConstraints(for: .horizontal)
     }
 
     // Function to dynamically update scrollView height
@@ -301,10 +313,13 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
 
     private func setupPoweredByGiniConstraints() {
         NSLayoutConstraint.activate([
-            poweredByGiniView.topAnchor.constraint(equalTo: brandView.topAnchor),
-            poweredByGiniView.bottomAnchor.constraint(equalTo: brandView.bottomAnchor),
+            brandStackView.leadingAnchor.constraint(equalTo: brandView.leadingAnchor),
+            brandStackView.trailingAnchor.constraint(equalTo: brandView.trailingAnchor),
+            brandStackView.topAnchor.constraint(equalTo: brandView.topAnchor),
+            brandStackView.bottomAnchor.constraint(equalTo: brandView.bottomAnchor),
             poweredByGiniView.heightAnchor.constraint(equalToConstant: Constants.brandViewHeight),
-            poweredByGiniView.centerXAnchor.constraint(equalTo: brandView.centerXAnchor)
+            poweredByGiniView.centerXAnchor.constraint(equalTo: qrImageView.centerXAnchor),
+            brandView.widthAnchor.constraint(equalTo: qrImageView.widthAnchor)
         ])
     }
     
@@ -314,11 +329,6 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
             paymentInfoView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             paymentInfoView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
             paymentInfoView.topAnchor.constraint(equalTo: bottomView.topAnchor),
-            paymentInfoView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight),
-            paymentInfoStackView.leadingAnchor.constraint(equalTo: paymentInfoView.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            paymentInfoStackView.trailingAnchor.constraint(equalTo: paymentInfoView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            paymentInfoStackView.topAnchor.constraint(equalTo: paymentInfoView.topAnchor, constant: Constants.viewPaddingConstraint),
-            paymentInfoStackView.bottomAnchor.constraint(equalTo: paymentInfoView.bottomAnchor, constant: -Constants.viewPaddingConstraint)
         ])
     }
     
@@ -421,7 +431,8 @@ extension ShareInvoiceBottomView {
         static let trailingAppsViewConstraint = 40.0
         static let topAnchorTipViewConstraint = 5.0
         static let brandViewHeight = 44.0
-        static let bottomViewHeight = 190.0
+        static let bottomViewPortraitHeight = 190.0
+        static let bottomViewLandscapeHeight = 132.0
         static let qrCodeImageSizePortrait = 208.0
         static let qrCodeImageSizeLandscape = 158.0
         static let paymentInfoBorderWidth = 1.0
