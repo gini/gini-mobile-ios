@@ -59,7 +59,6 @@ public class TransactionDocsView: UIView {
     }
 
     private func commonInit() {
-        guard let internalTransactionDocsDataCoordinator = internalTransactionDocsDataCoordinator else { return }
         let transactionDocs = viewModel?.transactionDocs ?? []
         let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
         let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
