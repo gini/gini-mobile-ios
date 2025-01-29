@@ -171,7 +171,17 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     public func pages(in document: Document, completion: @escaping CompletionResult<[Document.Page]>) {
         pages(resourceHandler: sessionManager.data, in: document, completion: completion)
     }
-    
+
+    /**
+     *  Retrieves the pages of a given document
+     *
+     * - Parameter documentId:          Document id from which to retrieve the pages
+     * - Parameter completion:          A completion callback, returning the requested document layout on success
+     */
+    public func pages(for documentId: String, completion: @escaping CompletionResult<[Document.Page]>) {
+        pages(resourceHandler: sessionManager.data, for: documentId, completion: completion)
+    }
+
     /**
      *  Retrieves the page preview of a document for a given page and size
      *
@@ -206,6 +216,25 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                 with: documentId,
                 pageNumber: pageNumber,
                 completion: completion)
+    }
+
+    /**
+     *  Retrieves the page data of a document for a given page number and size
+     *
+     * - Parameter documentId:          Document id to get the preview for
+     * - Parameter pageNumber:          The document's page number
+     * - Parameter size:                The size of the page to retrieve (e.g., large, medium)
+     * - Parameter completion:          A completion callback, returning the requested page preview on success, or an error on failure
+     */
+    public func documentPage(for documentId: String,
+                             pageNumber: Int,
+                             size: Document.Page.Size,
+                             completion: @escaping CompletionResult<Data>) {
+        documentPage(resourceHandler: sessionManager.download,
+                     in: documentId,
+                     pageNumber: pageNumber,
+                     size: size,
+                     completion: completion)
     }
 
     /**

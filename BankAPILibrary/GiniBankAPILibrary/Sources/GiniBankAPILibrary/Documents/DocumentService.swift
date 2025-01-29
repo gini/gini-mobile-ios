@@ -58,7 +58,7 @@ public protocol DocumentService: AnyObject {
     /**
      *  Retrieves the layout of a given document
      *
-     * - Parameter id:                  The document's unique identifier
+     * - Parameter document:            The document from which to retrieve the page data
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     func layout(for document: Document,
@@ -67,12 +67,21 @@ public protocol DocumentService: AnyObject {
     /**
      *  Retrieves the pages of a given document
      *
-     * - Parameter id:                  The document's unique identifier
+     * - Parameter document:            The document from which to retrieve the page data
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     func pages(in document: Document,
                completion: @escaping CompletionResult<[Document.Page]>)
-    
+
+    /**
+     *  Retrieves the pages of a given document
+     *
+     * - Parameter id:                  The document's unique identifier
+     * - Parameter completion:          A completion callback, returning the requested document layout on success
+     */
+    func pages(for documentId: String,
+               completion: @escaping CompletionResult<[Document.Page]>)
+
     /**
      *  Retrieves the page preview of a document for a given page and size
      *
@@ -254,7 +263,25 @@ extension DocumentService {
             }
         })
     }
-    
+
+    func pages(resourceHandler: ResourceDataHandler<APIResource<[Document.Page]>>,
+               for documentId: String,
+               completion: @escaping CompletionResult<[Document.Page]>) {
+        let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: documentId),
+                                                    apiDomain: apiDomain,
+                                                    httpMethod: .get)
+
+        resourceHandler(resource, { result in
+            switch result {
+                case .success(let pages):
+                    completion(.success(pages))
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        })
+    }
+
+
     func pagePreview(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
                      in document: Document,
                      pageNumber: Int,
@@ -350,6 +377,30 @@ extension DocumentService {
         }
     }
 
+    func documentPage(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
+                      in documentId: String,
+                      pageNumber: Int,
+                      size: Document.Page.Size,
+                      completion: @escaping CompletionResult<Data>) {
+        guard pageNumber > 0 else {
+            preconditionFailure("The page number starts at 1")
+        }
+
+        let resource = APIResource<Data>(method: .documentPage(forDocumentId: documentId,
+                                                               number: pageNumber,
+                                                               size: .medium),
+                                         apiDomain: apiDomain,
+                                         httpMethod: .get)
+
+        resourceHandler(resource) { result in
+            switch result {
+                case .success(let data):
+                    completion(.success(data))
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
 
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
                         for document: Document,
