@@ -23,7 +23,7 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-    private (set) var dataSource: HelpFormatsDataSource
+    private(set) var dataSource: HelpFormatsDataSource
     private var giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
     private let sectionHeight: CGFloat = 70

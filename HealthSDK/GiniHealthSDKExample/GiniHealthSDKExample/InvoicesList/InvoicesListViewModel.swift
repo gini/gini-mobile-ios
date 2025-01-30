@@ -251,6 +251,8 @@ extension InvoicesListViewModel: GiniHealthTrackingDelegate {
             GiniUtilites.Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
         case .onCloseKeyboardButtonClicked:
             GiniUtilites.Log("Close keyboard was triggered", event: .success)
+        case .onCloseButtonClicked:
+            GiniUtilites.Log("Close button was tapped", event: .success)
         }
     }
 }

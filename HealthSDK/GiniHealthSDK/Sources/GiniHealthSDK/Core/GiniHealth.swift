@@ -150,6 +150,7 @@ public struct DataForReview {
         self.clientConfigurationService =  giniApiLib.clientConfigurationService()
         super.init()
         self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
+        self.paymentComponentsController.delegate = self
     }
     
     /**
