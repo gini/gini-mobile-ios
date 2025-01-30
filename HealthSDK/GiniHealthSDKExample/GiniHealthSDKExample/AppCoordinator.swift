@@ -433,4 +433,9 @@ extension AppCoordinator: DebugMenuDelegate {
         giniHealthConfiguration.clientConfiguration?.ingredientBrandType = GiniHealthAPILibrary.IngredientBrandTypeEnum(rawValue: brandType.rawValue)
         health.setConfiguration(giniHealthConfiguration)
     }
+    
+    func didPickNewComunicationTone(comunicationTone: GiniUtilites.ComunicationToneEnum) {
+        giniHealthConfiguration.clientConfiguration?.comunicationTone = GiniHealthAPILibrary.ComunicationToneEnum(rawValue: comunicationTone.rawValue)
+        health.setConfiguration(giniHealthConfiguration)
+    }
 }
