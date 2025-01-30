@@ -97,6 +97,9 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     private let topStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let bottomStackView = EmptyStackView().orientation(.vertical)
     private let splitStacKView = EmptyStackView().distribution(.fill)
+    
+    // Add a property to store the height constraint
+    private var scrollViewHeightConstraint: NSLayoutConstraint?
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -253,14 +256,18 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         scrollView.layoutIfNeeded()
         let contentHeight = contentStackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         
+        // Deactivate the existing height constraint if it exists
+        if let existingConstraint = scrollViewHeightConstraint {
+            existingConstraint.isActive = false
+        }
         // Adjust the scrollView height
         let scrollViewHeight = contentHeight + (2 * Constants.viewPaddingConstraint)
-        scrollView.heightAnchor.constraint(equalToConstant: scrollViewHeight).isActive = true
+        scrollViewHeightConstraint = scrollView.heightAnchor.constraint(equalToConstant: scrollViewHeight)
+        scrollViewHeightConstraint?.isActive = true
         
         // If needed, adjust bottom sheet constraints or animations
         self.view.layoutIfNeeded()
     }
-
 
     private func setupLayout() {
         setupTitleViewConstraints()
