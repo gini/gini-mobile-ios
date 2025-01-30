@@ -42,7 +42,7 @@ public final class PaymentReviewContainerView: UIView {
 
     private lazy var recipientTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.recipientFieldTag.rawValue, isEditable: !viewModel.configuration.lockedFields)
     private lazy var ibanTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.ibanFieldTag.rawValue, isEditable: !viewModel.configuration.lockedFields)
-    private lazy var amountTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.amountFieldTag.rawValue, isEditable: true)
+    private lazy var amountTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.amountFieldTag.rawValue, isEditable: true, keyboardType: .numberPad)
     private lazy var usageTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.usageFieldTag.rawValue, isEditable: !viewModel.configuration.lockedFields)
 
     private let buttonsView = EmptyView()
@@ -557,10 +557,11 @@ public final class PaymentReviewContainerView: UIView {
         return label
     }
 
-    private func buildTextFieldWithLabelView(tag: Int, isEditable: Bool) -> TextFieldWithLabelView {
+    private func buildTextFieldWithLabelView(tag: Int, isEditable: Bool, keyboardType: UIKeyboardType = .default) -> TextFieldWithLabelView {
         let textFieldView = TextFieldWithLabelView()
         textFieldView.tag = tag
         textFieldView.isUserInteractionEnabled = isEditable
+        textFieldView.setKeyboardType(keyboardType: keyboardType)
         return textFieldView
     }
 }
