@@ -100,7 +100,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     }
 
     /// Previous presented view
-    var previousPresentedViews: Set<PaymentComponentScreenType> = []
+    var previousPresentedViews: [PaymentComponentScreenType] = []
     // Client's navigation controller provided in order to handle all HealthSDK flows
     weak var navigationControllerProvided: UINavigationController?
     // Payment Information from the invoice that contains a document or not
@@ -223,7 +223,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
      This method notifies the tracking delegate about the close button click event.
      */
     public func trackOnPaymentReviewCloseButtonClicked() {
-        // Not anymore tracked on HealthSDK
+        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseButtonClicked))
     }
 
     /**

@@ -15,7 +15,7 @@ final class BottomButtonsViewModel {
 
     init(retakeBlock: (() -> Void)? = nil,
          manuallyPressed: (() -> Void)? = nil,
-         cancelPressed: @escaping(() -> Void)) {
+         cancelPressed: @escaping (() -> Void)) {
         self.retakePressed = retakeBlock
         self.enterManuallyPressed = manuallyPressed
         self.cancelPressed = cancelPressed

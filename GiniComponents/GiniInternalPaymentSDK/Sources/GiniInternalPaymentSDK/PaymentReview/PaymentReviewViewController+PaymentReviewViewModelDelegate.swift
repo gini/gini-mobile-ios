@@ -25,8 +25,9 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
         presentBottomSheet(viewController: bottomSheet)
     }
 
-    func obtainPDFFromPaymentRequest() {
-        model.delegate?.obtainPDFURLFromPaymentRequest(paymentInfo: paymentInfoContainerView.obtainPaymentInfo(), viewController: self)
+    func obtainPDFFromPaymentRequest(paymentRequestId: String) {
+        model.delegate?.obtainPDFURLFromPaymentRequest(viewController: self,
+                                                       paymentRequestId: paymentRequestId)
     }
 
     func presentBankSelectionBottomSheet(bottomSheet: BottomSheetViewController) {
