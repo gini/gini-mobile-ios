@@ -18,6 +18,10 @@ import GiniCaptureSDK
     /// reponsible for the payment processing.
     public var paymentService: PaymentService
 
+    private var documentService: DefaultDocumentService {
+        return giniApiLib.documentService()
+    }
+
     /**
      Returns a GiniBank instance
 
@@ -109,6 +113,15 @@ import GiniCaptureSDK
                 UIApplication.shared.open(resultUrl, options: [:], completionHandler: nil)
             }
         }
+    }
+
+
+    // MARK: - Transaction Docs demo
+    
+    public func documentPagesRequest(documentId: String,
+                                    completion: @escaping ([UIImage], GiniError?) -> Void) {
+
+        loadDocumentPages(for: documentId, completion: completion)
     }
 
     // MARK: - Screen API without Networking - Initializers for 'UIViewController'
@@ -243,5 +256,106 @@ import GiniCaptureSDK
         GiniBankConfiguration.shared = configuration
         let captureConfiguration = GiniBankConfiguration.shared.captureConfiguration()
         GiniCapture.setConfiguration(captureConfiguration)
+    }
+}
+
+fileprivate extension GiniBank {
+    private func loadDocumentPages(for documentId: String, completion: @escaping ([UIImage], GiniError?) -> Void) {
+        getDocumentPages(for: documentId) { [weak self] result in
+            guard let self = self else {
+                completion([], nil)
+                return
+            }
+
+            switch result {
+                case .success(let pages):
+                    self.loadAllPages(for: documentId,
+                                      pages: pages) { images, error in
+                        completion(images, error)
+                    }
+                case .failure(let error):
+                    completion([], error)
+            }
+        }
+    }
+
+    private func loadAllPages(for documentId: String,
+                              pages: [Document.Page],
+                              completion: @escaping ([UIImage], GiniError?) -> Void) {
+        var images: [UIImage] = []
+        var loadError: GiniError?
+
+        func loadPage(at index: Int) {
+            guard index < pages.count else {
+                completion(images, nil)
+                return
+            }
+
+            let page = pages[index]
+            loadDocumentPage(for: documentId,
+                             startingAt: page.number,
+                             size: page.images[0].size) { pageImage, errors in
+                if let firstError = errors.first {
+                    loadError = firstError
+                    completion([], loadError)
+                } else {
+                    images.append(pageImage)
+                    loadPage(at: index + 1) // Load the next page
+                }
+            }
+        }
+
+        // Start loading the first page
+        loadPage(at: 0)
+    }
+
+    private func loadDocumentPage(for documentId: String,
+                                  startingAt pageNumber: Int,
+                                  size: Document.Page.Size,
+                                  completion: @escaping (UIImage, [GiniError]) -> Void) {
+        var errors = [GiniError]()
+        getDocumentPage(for: documentId,
+                        pageNumber: pageNumber,
+                        size: size) { result in
+            switch result {
+                case .success(let image):
+                    if let image {
+                        completion(image, [])
+                    }
+                case .failure(let error):
+                    errors.append(error)
+                    completion(UIImage(), errors)
+            }
+        }
+    }
+
+    private func getDocumentPages(for documentId: String, completion: @escaping (Result<[Document.Page], GiniError>) -> Void) {
+        documentService.pages(for: documentId, completion: completion)
+    }
+
+    private func getDocumentPage(for documentId: String,
+                                 pageNumber: Int,
+                                 size: Document.Page.Size,
+                                 completion: @escaping (Result<UIImage?, GiniError>) -> Void) {
+
+        documentService.documentPage(for: documentId, pageNumber: pageNumber,
+                                     size: size) { result in
+            switch result {
+                case let .success(data):
+                    DispatchQueue.main.async {
+                        // Convert the data to a UIImage
+                        if let image = UIImage(data: data) {
+                            // Successfully created an image
+                            completion(.success(image))
+                        } else {
+                            // Failed to create an image
+                            print("Failed to create image from data")
+                            completion(.success(nil))
+                        }
+                    }
+                case let .failure(error):
+                    completion(.failure(error))
+            }
+        }
     }
 }
