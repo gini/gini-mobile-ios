@@ -39,6 +39,11 @@ public final class PaymentReviewContainerViewModel {
             self.onExtractionFetched?()
         }
     }
+    
+    var clientConfiguration: ClientConfiguration?
+    var shouldShowBrandedView: Bool {
+         clientConfiguration?.ingredientBrandType == .fullVisible
+    }
 
     /**
      Initializes a new instance of `PaymentReviewContainerViewModel`.
@@ -57,6 +62,7 @@ public final class PaymentReviewContainerViewModel {
        - poweredByGiniConfiguration: Configuration settings for the "Powered by Gini" branding.
        - poweredByGiniStrings: The string resources for localizing "Powered by Gini" UI elements.
        - displayMode: The display mode indicating how the payment review interface should be presented.
+       - clientConfiguration: The client's configuration used to display view details.
      */
     public init(extractions: [Extraction]?,
                 paymentInfo: PaymentInfo?,
@@ -70,7 +76,8 @@ public final class PaymentReviewContainerViewModel {
                 selectionStyleInputFieldConfiguration: TextFieldConfiguration,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
-                displayMode: DisplayMode) {
+                displayMode: DisplayMode,
+                clientConfiguration: ClientConfiguration?) {
         self.extractions = extractions
         self.paymentInfo = paymentInfo
         self.selectedPaymentProvider = selectedPaymentProvider
@@ -84,5 +91,6 @@ public final class PaymentReviewContainerViewModel {
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.dispayMode = displayMode
         self.bankImageIcon = selectedPaymentProvider.iconData.toImage
+        self.clientConfiguration = clientConfiguration
     }
 }

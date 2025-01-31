@@ -8,6 +8,7 @@
 import UIKit
 import GiniUtilites
 import GiniInternalPaymentSDK
+import GiniHealthAPILibrary
 
 /**
  The `GiniHealthConfiguration` class allows customizations to the look of the Gini Health SDK.
@@ -153,7 +154,12 @@ public final class GiniHealthConfiguration: NSObject {
     /**
     Custom localization configuration for localizable strings.
     */
-    public var customLocalization: GiniLocalization?
+   public var customLocalization: GiniLocalization?
+    
+    /**
+     Client's configuration provided from the server
+     */
+    public var clientConfiguration: ClientConfiguration?
 }
 
 extension GiniHealthConfiguration {
