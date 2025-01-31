@@ -139,7 +139,6 @@ jobs:
           commit_message=$(git log -1 --pretty=%B)
           jira_ticket=$(echo "$commit_message" | awk 'NR > 1 && $0 != "" { print $0; exit }')
           echo "JIRA_TICKET_NAME=${jira_ticket}" >> $GITHUB_ENV
-          commit_message=$(git log -1 --pretty=%B)
 
       - name: Login to jira
         if: ${{ env.JIRA_TICKET_NAME != null }}
