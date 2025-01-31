@@ -392,37 +392,7 @@ extension ReviewViewController {
         super.viewDidLayoutSubviews()
         let size = calculatedCellSize(isHorizontal: false)
         collectionViewHeightConstraint.constant = size.height + 4
-        if UIDevice.current.isIphone {
-            let isLandscape = currentInterfaceOrientation.isLandscape
-            buttonContainer.axis = isLandscape ? .vertical : .horizontal
-
-            if giniConfiguration.bottomNavigationBarEnabled {
-                if isLandscape {
-                    view.addSubview(buttonContainer)
-                    addLoadingView()
-                } else {
-                    loadingIndicator?.removeFromSuperview()
-                    buttonContainer.removeFromSuperview()
-                }
-            }
-
-            bottomNavigationBar?.alpha = isLandscape ? 0 : 1
-            bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
-
-            trailingConstraints.forEach { $0.constant = isLandscape ? -275 : 0 }
-            let constraintsToActivate = isLandscape
-                ? buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
-                : giniConfiguration.bottomNavigationBarEnabled
-                    ? bottomNavigationBarAdditionalConstraints
-                    : buttonContainerConstraints + pageControlConstraints
-
-            let constraintsToDeactivate = isLandscape
-                ? bottomNavigationBarAdditionalConstraints + buttonContainerConstraints + pageControlConstraints
-                : buttonContainerHorizontalConstraints + pageControlHorizontalConstraints + (giniConfiguration.bottomNavigationBarEnabled ? bottomNavigationBarAdditionalConstraints : [])
-
-            NSLayoutConstraint.deactivate(constraintsToDeactivate)
-            NSLayoutConstraint.activate(constraintsToActivate)
-        }
+        updateLayoutBasedOnIphoneOrientation()
         DispatchQueue.main.async {
             guard self.previousScreenHeight != UIScreen.main.bounds.height else { return }
             guard self.pages.count > 1 else { return }
@@ -437,6 +407,44 @@ extension ReviewViewController {
                 self.setCellStatus(for: self.currentPage, isActive: true)
             }
         }
+    }
+
+    private func updateLayoutBasedOnIphoneOrientation() {
+        guard UIDevice.current.isIphone else {
+            return
+        }
+        let isLandscape = currentInterfaceOrientation.isLandscape
+        buttonContainer.axis = isLandscape ? .vertical : .horizontal
+
+        if giniConfiguration.bottomNavigationBarEnabled {
+            if isLandscape {
+                view.addSubview(buttonContainer)
+                addLoadingView()
+            } else {
+                loadingIndicator?.removeFromSuperview()
+                buttonContainer.removeFromSuperview()
+            }
+        }
+
+        bottomNavigationBar?.alpha = isLandscape ? 0 : 1
+        bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
+
+        trailingConstraints.forEach { $0.constant = isLandscape ? -275 : 0 }
+        let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
+                                                        ? bottomNavigationBarAdditionalConstraints
+                                                        : buttonContainerConstraints + pageControlConstraints
+        let constraintsToActivate = isLandscape
+            ? buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
+            : portraitConstraintsToActivate
+
+        let portraitBottomBarConstraintsToDeactivate = giniConfiguration.bottomNavigationBarEnabled ? bottomNavigationBarAdditionalConstraints : []
+        let portraitConstraintsToDeactivate = buttonContainerHorizontalConstraints + pageControlHorizontalConstraints + portraitBottomBarConstraintsToDeactivate
+        let constraintsToDeactivate = isLandscape
+            ? bottomNavigationBarAdditionalConstraints + buttonContainerConstraints + pageControlConstraints
+            : portraitConstraintsToDeactivate
+
+        NSLayoutConstraint.deactivate(constraintsToDeactivate)
+        NSLayoutConstraint.activate(constraintsToActivate)
     }
 
     private func setupView() {
