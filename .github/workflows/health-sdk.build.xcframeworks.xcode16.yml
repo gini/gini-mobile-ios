@@ -62,10 +62,10 @@ jobs:
           cp $PP_PATH1 ~/Library/MobileDevice/Provisioning\ Profiles
 
           # sign xcframeworks
-          codesign --timestamp -v --sign "iOS Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthAPILibrary.xcframework && \
-          codesign --timestamp -v --sign "iOS Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthSDK.xcframework && \
-          codesign --timestamp -v --sign "iOS Distribution: Gini GmbH (JA825X8F7Z)" GiniInternalPaymentSDK.xcframework && \
-          codesign --timestamp -v --sign "iOS Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites.xcframework
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthAPILibrary.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniHealthSDK.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniInternalPaymentSDK.xcframework && \
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites.xcframework
 
       - name: archive frameworks GiniHealthAPILibrary
         uses: actions/upload-artifact@v4
