@@ -9,9 +9,12 @@ extension String {
     func acronym() -> String {
         // Split the string into words based on spaces
         let words = self.split(separator: " ")
-        // Extract the first character of each word and join them as uppercase
-        return words.compactMap { $0.first }
-            .map { String($0).uppercased() }
+        // Take the first two words (if available)
+        let firstTwoLetters = words.prefix(2)
+            .compactMap { $0.first } // Get first letter of each word
+            .map { String($0).uppercased() } // Convert to uppercase
             .joined()
+
+        return firstTwoLetters
     }
 }
