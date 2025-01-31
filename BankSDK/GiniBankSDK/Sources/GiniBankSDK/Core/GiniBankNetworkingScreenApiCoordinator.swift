@@ -609,7 +609,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
             if let documentId = documentId {
                 self?.giniBankConfiguration.transactionDocsDataCoordinator
                     .transactionDocs = [.init(documentId: documentId,
-                                              fileName: "Document",
+                                              fileName: originalDocumentName ?? "Document",
                                               type: .document)]
                 self?.setTransactionDocsDataToDisplay(with: extractionResult, for: documentId)
             } else {
