@@ -81,6 +81,14 @@
 
 "transaction.list.title" = "Photo payment history";
 "transaction.details.title" = "Transaction details";
+
+"transaction.details.date" = "Transaction date";
+"transaction.details.amount" = "Amount";
+"transaction.details.purpose" = "Payment purpose";
+"transaction.details.recipient" = "Payment recipient";
+"transaction.details.iban" = "IBAN";
+"transaction.details.reference" = "Payment reference";
+
 //
 //"ginibank.digitalinvoice.backbutton" = "CM Back";
 //"ginibank.digitalinvoice.paybuttontitle.disabled" = "CM Pay";

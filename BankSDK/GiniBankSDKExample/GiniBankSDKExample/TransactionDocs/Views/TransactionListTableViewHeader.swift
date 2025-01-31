@@ -53,7 +53,10 @@ class TransactionListTableViewHeader: UITableViewCell, CodeLoadableView {
 private extension TransactionListTableViewHeader {
     enum Constants {
         static let titleFontSize: CGFloat = 22
-        static let titleText: String = "Fotozahlungsverlauf"
+        static let titleText: String = NSLocalizedStringPreferredFormat("transaction.list.title",
+                                                                        fallbackKey: "Payment history",
+                                                                        comment: "title for Payment history screen",
+                                                                        isCustomizable: true)
         static let titleLabelVerticalPadding: CGFloat = 8
         static let titleLabelLeadingPadding: CGFloat = 16
         static let titleLabelTrailingPadding: CGFloat = 8

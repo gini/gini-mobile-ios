@@ -6,12 +6,35 @@
 
 
 import UIKit
+import GiniBankSDK
 import GiniCaptureSDK
+import GiniBankAPILibrary
 
 class TransactionListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    private let tableView = UITableView()
-    private var transactions: [Transaction] = []
 
+    private let tableView = UITableView()
+    /**
+     The result collection from the analysis process.
+     */
+    var extractions: [Extraction] = [] {
+        didSet {
+            extractions.sort(by: { $0.name! < $1.name! })
+        }
+    }
+    private var transactions: [Transaction] = []
+    private var bankSDK: GiniBank
+
+    private let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
+
+    init() {
+        let apiLib = GiniBankAPI.Builder(client: CredentialsManager.fetchClientFromBundle()).build()
+        bankSDK = GiniBank(with: apiLib)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,7 +47,6 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         tableView.dataSource = self
         tableView.delegate = self
 
-        tableView.allowsSelection = false
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.rowHeight = UITableView.automaticDimension
@@ -61,6 +83,8 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         // Read transactions (automatically creates an empty file if it doesn't exist)
         let transactions: [Transaction] = fileManager.read()
         self.transactions = transactions
+
+       transactionDocsDataCoordinator.presentingViewController = navigationController
     }
 
     private func configureRoundedCorners(for cell: UITableViewCell, at indexPath: IndexPath, in tableView: UITableView) {
@@ -88,6 +112,12 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
             cell.contentView.layer.cornerRadius = cornerRadius
             cell.contentView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         }
+    }
+
+    private func displayTransactionDetails(for transaction: Transaction) {
+        let transactionDetailsViewController = TransactionDetailsViewController()
+        transactionDetailsViewController.transactionData = transaction
+        navigationController?.pushViewController(transactionDetailsViewController, animated: true)
     }
 
     // MARK: - TableViewDataSource and TableViewDelegate
@@ -130,6 +160,76 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         configureRoundedCorners(for: cell, at: indexPath, in: tableView)
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard Section(rawValue: indexPath.section) == .transactionCell else { return }
+        tableView.deselectRow(at: indexPath, animated: true)
+        let index = indexPath.row
+        let transaction = transactions[index]
+        transactionDocsDataCoordinator.transactionDocs = transaction.attachments.map { attachment in
+                let docType: TransactionDocType = (attachment.type == .image) ? .image : .document
+                return TransactionDoc(
+                    documentId: attachment.documentId,
+                    fileName: attachment.filename,
+                    type: docType
+                )
+            }
+
+        setTransactionDocsDataToDisplay(with: extractions,
+                                        for: transaction.attachments[0].documentId)
+        
+        displayTransactionDetails(for: transaction)
+    }
+
+
+    private func loadDocumentPagesAndHandleErrors(for documentId: String, with extractions: [Extraction]) {
+        bankSDK.documentPagesRequest(documentId: documentId) { [weak self] images, error in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.handlePreviewDocumentError(error: error)
+                    return
+                }
+                self.updateTransactionDocsViewModel(with: images,
+                                                    extractions: extractions,
+                                                    for: documentId)
+            }
+        }
+    }
+
+    private func setTransactionDocsDataToDisplay(with extractions: [Extraction], for documentId: String) {
+        transactionDocsDataCoordinator.loadData = { [weak self] in
+            guard let viewModel = self?.transactionDocsDataCoordinator.getViewModel(),
+                  let images = viewModel.cachedImages[documentId],
+                  !images.isEmpty else {
+                self?.loadDocumentPagesAndHandleErrors(for: documentId, with: extractions)
+                return
+            }
+            self?.updateTransactionDocsViewModel(with: images,
+                                                 extractions: extractions,
+                                                 for: documentId)
+        }
+    }
+
+    // MARK: - Helper Methods
+
+    private func handlePreviewDocumentError(error: GiniError) {
+        let viewModel = transactionDocsDataCoordinator.getViewModel()
+        viewModel?.setPreviewDocumentError(error: error) { [weak self] in
+            self?.transactionDocsDataCoordinator.loadData?()
+        }
+    }
+
+    private func updateTransactionDocsViewModel(with images: [UIImage],
+                                                extractions: [Extraction],
+                                                for documentId: String) {
+        let extractionInfo = TransactionDocsExtractions(extractions: extractions)
+        let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
+                                                              extractions: extractionInfo)
+        transactionDocsDataCoordinator
+            .getViewModel()?
+            .setTransactionDocsDocumentPagesViewModel(viewModel, for: documentId)
+    }
+
     @objc private func closeButtonTapped() {
         dismiss(animated: true)
     }
@@ -138,12 +238,6 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
 private extension TransactionListViewController {
     enum Constants {
         static let padding: CGFloat = 16
-        static let labelPadding: CGFloat = 24
-        static let tabletWidthMultiplier: CGFloat = 0.7
-        static let buttonContainerHeight: CGFloat = 160
-        static let payButtonHeight: CGFloat = 50
-        static let dividerViewHeight: CGFloat = 1
-        static let nameMaxCharactersCount: Int = 150
     }
 }
 

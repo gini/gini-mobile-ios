@@ -82,6 +82,14 @@
 "transaction.list.title" = "Fotozahlungsverlauf";
 "transaction.details.title" = "Transaktionsdetails";
 
+"transaction.details.date" = "Transaktionsdatum";
+"transaction.details.amount" = "Betrag";
+"transaction.details.purpose" = "Verwendungszweck";
+"transaction.details.recipient" = "Empfänger";
+"transaction.details.iban" = "IBAN";
+"transaction.details.reference" = "Referenz";
+
+
 //
 //"ginibank.digitalinvoice.backbutton" = "CM Schließen";
 //"ginibank.digitalinvoice.paybuttontitle.disabled" = "CM Bezahlen";

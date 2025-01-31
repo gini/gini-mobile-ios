@@ -20,6 +20,7 @@ class FileManagerHelper {
     }
 
     // Generic read method with auto-creation of file
+    @discardableResult
     func read<T: Codable>() -> [T] {
         guard let fileURL = fileURL() else { return [] }
 

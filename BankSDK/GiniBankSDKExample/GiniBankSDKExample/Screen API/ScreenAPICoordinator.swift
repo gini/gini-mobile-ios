@@ -11,7 +11,7 @@ import GiniBankSDK
 import GiniCaptureSDK
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
-    func screenAPI(coordinator: ScreenAPICoordinator, didFinish:())
+    func screenAPI(coordinator: ScreenAPICoordinator, didFinish:(), with extractions: [Extraction])
 }
 
 class TrackingDelegate: GiniCaptureTrackingDelegate {
@@ -173,7 +173,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                       attachments: attachments)
         updateJSONFileWithTransaction(transaction)
         configuration.cleanup()
-        delegate?.screenAPI(coordinator: self, didFinish: ())
+        delegate?.screenAPI(coordinator: self, didFinish: (), with: extractedResults)
     }
 
     private func updateJSONFileWithTransaction(_ transaction: Transaction) {
@@ -222,7 +222,7 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
     
     func giniCaptureDidCancelAnalysis() {
-        delegate?.screenAPI(coordinator: self, didFinish: ())
+        delegate?.screenAPI(coordinator: self, didFinish: (), with: [])
     }
 }
 
