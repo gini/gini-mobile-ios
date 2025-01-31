@@ -61,7 +61,13 @@ class AttachmentView: UIView {
 
     private func configure(with attachment: Attachment) {
         iconImageView.image = attachment.type.icon
-        fileNameLabel.text = attachment.filename + ".pdf"
+
+        //TODO: this is hardcoded for now, we need to get the filename from backend
+        if attachment.filename.contains("pdf") {
+            fileNameLabel.text = attachment.filename
+        } else {
+            fileNameLabel.text = attachment.filename + ".png"
+        }
     }
 
     private func setupViews() {

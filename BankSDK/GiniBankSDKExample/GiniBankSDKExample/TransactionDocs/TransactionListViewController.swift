@@ -166,13 +166,16 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         let index = indexPath.row
         let transaction = transactions[index]
         transactionDocsDataCoordinator.transactionDocs = transaction.attachments.map { attachment in
-                let docType: TransactionDocType = (attachment.type == .image) ? .image : .document
-                return TransactionDoc(
-                    documentId: attachment.documentId,
-                    fileName: attachment.filename,
-                    type: docType
-                )
+            //TODO: this is hardcoded for now, we need to get the filename from backend
+            var attachmentFileName = attachment.filename + ".png"
+            if attachment.filename.contains("pdf") {
+                attachmentFileName = attachment.filename
             }
+            let docType: TransactionDocType = (attachment.type == .image) ? .image : .document
+            return TransactionDoc(documentId: attachment.documentId,
+                                  fileName: attachmentFileName,
+                                  type: docType)
+        }
 
         setTransactionDocsDataToDisplay(with: extractions,
                                         for: transaction.attachments[0].documentId)
