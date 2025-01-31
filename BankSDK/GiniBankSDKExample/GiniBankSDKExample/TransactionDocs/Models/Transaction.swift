@@ -6,6 +6,7 @@
 
 
 import Foundation
+import GiniCaptureSDK
 
 struct Transaction: Codable {
     let date: Date
@@ -18,23 +19,35 @@ struct Transaction: Codable {
 
     var transactionInfo: [TransactionInfo] {
         [
-            TransactionInfo(title: NSLocalizedString("transaction.details.date",
-                                                     comment: "Transaction Date"),
+            TransactionInfo(title: NSLocalizedStringPreferredFormat("transaction.details.date",
+                                                                    fallbackKey: "Transaction Date",
+                                                                    comment: "Transaction Date",
+                                                                    isCustomizable: true),
                             value: date.toFormattedString()),
-            TransactionInfo(title: NSLocalizedString("transaction.details.amount",
-                                                     comment: "Amount"),
+            TransactionInfo(title: NSLocalizedStringPreferredFormat("transaction.details.amount",
+                                                                    fallbackKey: "Amount",
+                                                                    comment: "Amount",
+                                                                    isCustomizable: true),
                             value: paiedAmount),
-            TransactionInfo(title: NSLocalizedString("transaction.details.purpose",
-                                                     comment: "Payment Purpose"),
+            TransactionInfo(title: NSLocalizedStringPreferredFormat("transaction.details.purpose",
+                                                                    fallbackKey: "Payment Purpose",
+                                                                    comment: "Payment Purpose",
+                                                                    isCustomizable: true),
                             value: paymentPurpose),
-            TransactionInfo(title: NSLocalizedString("transaction.details.recipient",
-                                                     comment: "Recipient"),
+            TransactionInfo(title: NSLocalizedStringPreferredFormat("transaction.details.recipient",
+                                                                    fallbackKey: "Recipient",
+                                                                    comment: "Recipient",
+                                                                    isCustomizable: true),
                             value: paymentRecipient),
-            iban.map { TransactionInfo(title: NSLocalizedString("transaction.details.iban",
-                                                                comment: "IBAN"),
+            iban.map { TransactionInfo(title: NSLocalizedStringPreferredFormat("transaction.details.iban",
+                                                                               fallbackKey: "IBAN",
+                                                                               comment: "IBAN",
+                                                                               isCustomizable: true),
                                        value: $0) },
-            TransactionInfo(title: NSLocalizedString("transaction.details.reference",
-                                                     comment: "Reference"),
+            TransactionInfo(title: NSLocalizedStringPreferredFormat("transaction.details.reference",
+                                                                    fallbackKey: "Reference",
+                                                                    comment: "Reference",
+                                                                    isCustomizable: true),
                             value: paymentReference)
         ]
             .compactMap { $0 } // Remove nil values
