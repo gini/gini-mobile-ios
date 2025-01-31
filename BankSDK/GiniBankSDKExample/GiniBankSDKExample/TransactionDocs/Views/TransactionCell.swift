@@ -21,6 +21,7 @@ class TransactionCell: UITableViewCell, CodeLoadableView {
         return label
     }()
     private let paymentRecipientLabel = UILabel()
+    private let dateLabel = UILabel()
     private let amountLabel = UILabel()
     private let paymentDetailStackView: UIStackView = {
         let stackView = UIStackView()
@@ -69,6 +70,9 @@ class TransactionCell: UITableViewCell, CodeLoadableView {
         paymentReferenceLabel.font = UIFont.systemFont(ofSize: 13)
         paymentReferenceLabel.textColor = GiniColor(light: .GiniBank.light6, dark: .GiniBank.dark7).uiColor()
 
+        dateLabel.textColor = GiniColor(light: .GiniBank.light6, dark: .GiniBank.dark7).uiColor()
+        dateLabel.font = UIFont.systemFont(ofSize: 13)
+
         attachmentsStackView.axis = .horizontal
         attachmentsStackView.spacing = 4
         attachmentsStackView.distribution = .equalSpacing
@@ -85,6 +89,7 @@ class TransactionCell: UITableViewCell, CodeLoadableView {
         verticalStackView.axis = .vertical
         verticalStackView.spacing = 4
         verticalStackView.addArrangedSubview(paymentRecipientLabel)
+        verticalStackView.addArrangedSubview(dateLabel)
         verticalStackView.addArrangedSubview(paymentPurposeLabel)
         verticalStackView.addArrangedSubview(paymentReferenceLabel)
 
@@ -131,6 +136,7 @@ class TransactionCell: UITableViewCell, CodeLoadableView {
         paymentRecipientInitialsLabel.text = transaction.paymentRecipient.acronym()
         paymentRecipientLabel.text = transaction.paymentRecipient
         amountLabel.text = "-" + transaction.paiedAmount
+        dateLabel.text = transaction.date.toFormattedString()
         paymentPurposeLabel.text = transaction.paymentPurpose
         paymentReferenceLabel.text = transaction.paymentReference
         dividerView.isHidden = isLastCell

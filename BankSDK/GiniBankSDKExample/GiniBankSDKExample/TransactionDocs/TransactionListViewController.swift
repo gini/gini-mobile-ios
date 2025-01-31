@@ -82,7 +82,7 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         let fileManager = FileManagerHelper(fileName: "transaction_list.json")
         // Read transactions (automatically creates an empty file if it doesn't exist)
         let transactions: [Transaction] = fileManager.read()
-        self.transactions = transactions
+        self.transactions = transactions.sorted { $0.date > $1.date }
 
        transactionDocsDataCoordinator.presentingViewController = navigationController
     }
