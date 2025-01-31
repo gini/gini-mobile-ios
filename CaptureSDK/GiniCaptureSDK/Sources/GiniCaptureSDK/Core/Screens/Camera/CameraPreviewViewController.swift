@@ -214,10 +214,6 @@ final class CameraPreviewViewController: UIViewController {
                                                          constant: -Constants.cameraPaneWidth/2),
                 cameraFrameViewHeightAnchorPortrait])
         } else {
-            // The height of the bottom controls
-            let bottomControlHeight = view.frame.height * 0.23 +
-            (giniConfiguration.bottomNavigationBarEnabled ? Constants.bottomNavigationBarHeight : 0)
-
             NSLayoutConstraint.activate([
                 cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
                 cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
@@ -319,20 +315,9 @@ final class CameraPreviewViewController: UIViewController {
             if let error = error {
                 switch error {
                 case .notAuthorizedToUseDevice:
-                    self.isAuthorized = false
-                    self.addNotAuthorizedView(bottomAnchor: bottomAnchor)
-                    self.delegate?.notAuthorized()
+                    self.handleCameraNotAuthorizedSetup(bottomAnchor: bottomAnchor)
                 default:
-                    if self.giniConfiguration.debugModeOn {
-                        #if targetEnvironment(simulator)
-                        self.isAuthorized = true
-                        self.cameraFrameView.isHidden = false
-                        self.addDefaultImage()
-                        self.updatePreviewViewOrientation()
-                        #endif
-                    } else {
-                        self.isAuthorized = false
-                    }
+                    self.setupDebugImageOnCameraConfigureError()
                 }
             } else {
                 self.isAuthorized = true
@@ -433,6 +418,25 @@ final class CameraPreviewViewController: UIViewController {
 // MARK: - Default and not authorized views
 
 extension CameraPreviewViewController {
+    private func setupDebugImageOnCameraConfigureError() {
+        if self.giniConfiguration.debugModeOn {
+            #if targetEnvironment(simulator)
+            self.isAuthorized = true
+            self.cameraFrameView.isHidden = false
+            self.addDefaultImage()
+            self.updatePreviewViewOrientation()
+            #endif
+        } else {
+            self.isAuthorized = false
+        }
+    }
+
+    private func handleCameraNotAuthorizedSetup(bottomAnchor: NSLayoutYAxisAnchor) {
+        self.isAuthorized = false
+        self.addNotAuthorizedView(bottomAnchor: bottomAnchor)
+        self.delegate?.notAuthorized()
+    }
+
     private func addNotAuthorizedView(bottomAnchor: NSLayoutYAxisAnchor) {
         // Send the 'screen_shown' event every time the user returns to this screen.
         GiniAnalyticsManager.trackScreenShown(screenName: .cameraAccess)

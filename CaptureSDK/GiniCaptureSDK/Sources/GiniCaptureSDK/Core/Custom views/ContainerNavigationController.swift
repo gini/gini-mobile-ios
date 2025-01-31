@@ -24,7 +24,7 @@ final class ContainerNavigationController: UIViewController {
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIDevice.current.isIpad ? .all : .all
+        return .all
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
