@@ -10,6 +10,13 @@ import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
 extension GiniBank {
+    /**
+     Terminates the current GiniBankSDK session and releases associated resources.
+     Use this method to programmatically close the SDK session when it is no longer needed.
+     */
+    public class func closeCurrentSDK() {
+        GiniBankNetworkingScreenApiCoordinator.closeSDK()
+    }
 
     // MARK: - Screen API with Default Networking - Initializers for 'UIViewController'
 

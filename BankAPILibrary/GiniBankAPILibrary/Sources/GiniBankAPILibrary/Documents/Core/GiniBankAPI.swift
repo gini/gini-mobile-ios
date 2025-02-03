@@ -146,7 +146,7 @@ extension GiniBankAPI {
                                                                    service: .auth))
             } catch {
                 preconditionFailure("There was an error using the Keychain. " +
-                    "Check that the Keychain capability is enabled in your project")
+                                    "Check that the Keychain capability is enabled in your project")
             }
         }
     }
