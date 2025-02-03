@@ -115,11 +115,10 @@ import GiniCaptureSDK
         }
     }
 
-
     // MARK: - Transaction Docs demo
-    
+
     public func documentPagesRequest(documentId: String,
-                                    completion: @escaping ([UIImage], GiniError?) -> Void) {
+                                     completion: @escaping ([UIImage], GiniError?) -> Void) {
 
         loadDocumentPages(for: documentId, completion: completion)
     }
@@ -268,13 +267,13 @@ fileprivate extension GiniBank {
             }
 
             switch result {
-                case .success(let pages):
-                    self.loadAllPages(for: documentId,
-                                      pages: pages) { images, error in
-                        completion(images, error)
-                    }
-                case .failure(let error):
-                    completion([], error)
+            case .success(let pages):
+                self.loadAllPages(for: documentId,
+                                  pages: pages) { images, error in
+                    completion(images, error)
+                }
+            case .failure(let error):
+                completion([], error)
             }
         }
     }
@@ -318,18 +317,19 @@ fileprivate extension GiniBank {
                         pageNumber: pageNumber,
                         size: size) { result in
             switch result {
-                case .success(let image):
-                    if let image {
-                        completion(image, [])
-                    }
-                case .failure(let error):
-                    errors.append(error)
-                    completion(UIImage(), errors)
+            case.success(let image):
+                if let image {
+                    completion(image, [])
+                }
+            case.failure(let error):
+                errors.append(error)
+                completion(UIImage(), errors)
             }
         }
     }
 
-    private func getDocumentPages(for documentId: String, completion: @escaping (Result<[Document.Page], GiniError>) -> Void) {
+    private func getDocumentPages(for documentId: String,
+                                  completion: @escaping (Result<[Document.Page], GiniError>) -> Void) {
         documentService.pages(for: documentId, completion: completion)
     }
 
@@ -341,20 +341,20 @@ fileprivate extension GiniBank {
         documentService.documentPage(for: documentId, pageNumber: pageNumber,
                                      size: size) { result in
             switch result {
-                case let .success(data):
-                    DispatchQueue.main.async {
-                        // Convert the data to a UIImage
-                        if let image = UIImage(data: data) {
-                            // Successfully created an image
-                            completion(.success(image))
-                        } else {
-                            // Failed to create an image
-                            print("Failed to create image from data")
-                            completion(.success(nil))
-                        }
+            case let .success(data):
+                DispatchQueue.main.async {
+                    // Convert the data to a UIImage
+                    if let image = UIImage(data: data) {
+                        // Successfully created an image
+                        completion(.success(image))
+                    } else {
+                        // Failed to create an image
+                        print("Failed to create image from data")
+                        completion(.success(nil))
                     }
-                case let .failure(error):
-                    completion(.failure(error))
+                }
+            case let .failure(error):
+                completion(.failure(error))
             }
         }
     }
