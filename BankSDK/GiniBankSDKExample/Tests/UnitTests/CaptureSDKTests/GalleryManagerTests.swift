@@ -11,18 +11,29 @@ import Photos
 
 final class GalleryManagerMock: GalleryManagerProtocol {
     var isGalleryAccessLimited: Bool = false
-
-    var albums: [Album] = [Album(assets: [Asset(identifier: "Asset 1")],
-                                 title: "Album 1",
-                                 identifier: "Album 1"),
-                           Album(assets: [Asset(identifier: "Asset 1"), Asset(identifier: "Asset 2")],
-                                 title: "Album 2",
-                                 identifier: "Album 2"),
-                           Album(assets: [Asset(identifier: "Asset 1"), Asset(identifier: "Asset 2")],
-                                 title: "Album 3",
-                                 identifier: "Album 3")]
-
     var isCaching = false
+
+    private let defaultAssets = [
+        Asset(identifier: "Asset 1"),
+        Asset(identifier: "Asset 2")
+    ]
+
+    lazy var albums: [Album] = createMockAlbums()
+
+    private func createMockAlbums() -> [Album] {
+        return [
+            Album(assets: [defaultAssets[0]],
+                  title: "Album 1",
+                  identifier: "Album 1"),
+            Album(assets: defaultAssets,
+                  title: "Album 2",
+                  identifier: "Album 2"),
+            Album(assets: defaultAssets,
+                  title: "Album 3",
+                  identifier: "Album 3")
+        ]
+    }
+
 
     func reloadAlbums() {
     }
@@ -36,14 +47,18 @@ final class GalleryManagerMock: GalleryManagerProtocol {
     }
 
     func fetchImageData(from asset: Asset, completion: @escaping ((Data?) -> Void)) {
-        completion(Data(count: 10))
+        completion(mockData())
     }
 
     func fetchRemoteImageData(from asset: Asset, completion: @escaping ((Data?) -> Void)) {
-        completion(Data(count: 10))
+        completion(mockData())
     }
 
     func fetchImage(from asset: Asset, imageQuality: ImageQuality, completion: @escaping ((UIImage) -> Void)) {
+    }
+
+    private func mockData() -> Data? {
+        return Data(count: 10)
     }
 }
 
