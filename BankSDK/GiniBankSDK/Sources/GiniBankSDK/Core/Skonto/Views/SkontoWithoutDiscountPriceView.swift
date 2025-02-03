@@ -89,6 +89,7 @@ extension SkontoWithoutDiscountPriceView: SkontoAmountViewDelegate {
     func textFieldTapped() {
         GiniAnalyticsManager.track(event: .fullAmountTapped, screenName: .skonto)
     }
+
     func textFieldPriceChanged(editedText: String) {
         viewModel.setAmountToPayPrice(editedText)
     }
