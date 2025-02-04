@@ -7,13 +7,13 @@
 import Foundation
 
 /// The `AmplitudeBaseEvent` struct represents an event with various properties and implements encoding for serialization.
-struct AmplitudeBaseEvent: Encodable, Equatable {
+public struct AmplitudeBaseEvent: Encodable, Equatable {
     var eventType: String
     var eventProperties: [String: Any]?
     var userProperties: [String: Any]?
     var eventOptions: AmplitudeEventOptions
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case eventType = "event_type"
         case eventProperties = "event_properties"
         case userProperties = "user_properties"
@@ -36,10 +36,10 @@ struct AmplitudeBaseEvent: Encodable, Equatable {
     }
 
     /// Initializes a new instance of the `AmplitudeBaseEvent` struct.
-    init(eventType: String,
-         eventProperties: [String: Any]? = nil,
-         userProperties: [String: Any]? = nil,
-         eventOptions: AmplitudeEventOptions) {
+    public init(eventType: String,
+                eventProperties: [String: Any]? = nil,
+                userProperties: [String: Any]? = nil,
+                eventOptions: AmplitudeEventOptions) {
         self.eventType = eventType
         self.eventProperties = eventProperties
         self.userProperties = userProperties
@@ -50,7 +50,7 @@ struct AmplitudeBaseEvent: Encodable, Equatable {
     ///
     /// - Parameter encoder: The encoder to write data to.
     /// - Throws: An error if any values are invalid for the given encoder's format.
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(eventType, forKey: .eventType)
         try container.encodeIfPresent(eventProperties, forKey: .eventProperties)
@@ -69,7 +69,7 @@ struct AmplitudeBaseEvent: Encodable, Equatable {
         try container.encodeIfPresent(eventOptions.ip, forKey: .ip)
     }
 
-    static func == (lhs: AmplitudeBaseEvent, rhs: AmplitudeBaseEvent) -> Bool {
+    public static func == (lhs: AmplitudeBaseEvent, rhs: AmplitudeBaseEvent) -> Bool {
         return lhs.eventType == rhs.eventType && lhs.eventOptions.eventId == rhs.eventOptions.eventId
     }
 }

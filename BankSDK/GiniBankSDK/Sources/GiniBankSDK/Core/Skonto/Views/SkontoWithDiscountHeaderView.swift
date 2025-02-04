@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniCaptureSDK
 
 class SkontoWithDiscountHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
@@ -131,9 +132,18 @@ class SkontoWithDiscountHeaderView: UIView {
         stackView.alignment = shouldUseVerticalLayout ? .leading : .center
     }
 
+    private func sendAnalyticsSwitchTapped() {
+        let eventProperties = [GiniAnalyticsProperty(key: .switchActive,
+                                                     value: viewModel.isSkontoApplied)]
+        GiniAnalyticsManager.track(event: .skontoSwitchTapped,
+                                   screenName: .skonto,
+                                   properties: eventProperties)
+    }
+
     @objc private func discountSwitchToggled(_ sender: UISwitch) {
         viewModel.toggleDiscount()
         adjustStackViewLayout()
+        sendAnalyticsSwitchTapped()
     }
 
     @objc private func handleContentSizeCategoryDidChange() {

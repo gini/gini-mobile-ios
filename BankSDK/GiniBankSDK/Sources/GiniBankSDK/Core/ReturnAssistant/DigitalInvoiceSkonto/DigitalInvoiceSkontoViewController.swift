@@ -28,6 +28,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
 
     private lazy var withDiscountPriceView: SkontoWithDiscountPriceView = {
         let view = SkontoWithDiscountPriceView(viewModel: viewModel)
+        view.delegate = self
         return view
     }()
 
@@ -41,6 +42,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
 
     private lazy var expiryDateView: SkontoExpiryDateView = {
         let view = SkontoExpiryDateView(viewModel: viewModel)
+        view.delegate = self
         return view
     }()
 
@@ -99,6 +101,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
             showAlertIfNeeded()
             firstAppearance = false
         }
+        sendAnalyticsScreenShown()
     }
 
     deinit {
@@ -233,6 +236,18 @@ class DigitalInvoiceSkontoViewController: UIViewController {
         }
     }
 
+    private func sendAnalyticsScreenShown() {
+        let isSkontoApplied = viewModel.isSkontoApplied
+        var eventProperties: [GiniAnalyticsProperty] = [GiniAnalyticsProperty(key: .switchActive,
+                                                                              value: isSkontoApplied)]
+        if let edgeCaseAnalyticsValue = viewModel.edgeCase?.analyticsValue {
+            eventProperties.append(GiniAnalyticsProperty(key: .edgeCaseType,
+                                                         value: edgeCaseAnalyticsValue))
+        }
+
+        GiniAnalyticsManager.trackScreenShown(screenName: .returnAssistantSkonto, properties: eventProperties)
+    }
+
     private func bindViewModel() {
         viewModel.endEditingAction = {
             self.endEditing()
@@ -240,10 +255,12 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     }
 
     @objc private func helpButtonTapped() {
+        GiniAnalyticsManager.track(event: .helpTapped, screenName: .returnAssistantSkonto)
         viewModel.helpButtonTapped()
     }
 
     @objc private func backButtonTapped() {
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .returnAssistantSkonto)
         viewModel.backButtonTapped()
     }
 
@@ -264,7 +281,23 @@ class DigitalInvoiceSkontoViewController: UIViewController {
 
 extension DigitalInvoiceSkontoViewController: SkontoDocumentPreviewViewDelegate {
     func documentPreviewTapped(in view: SkontoDocumentPreviewView) {
+        GiniAnalyticsManager.track(event: .invoicePreviewTapped,
+                                   screenName: .returnAssistantSkonto)
         viewModel.documentPreviewTapped()
+    }
+}
+
+extension DigitalInvoiceSkontoViewController: SkontoExpiryDateViewDelegate {
+    func expiryDateTextFieldTapped() {
+        GiniAnalyticsManager.track(event: .dueDateTapped, 
+                                   screenName: .returnAssistantSkonto)
+    }
+}
+
+extension DigitalInvoiceSkontoViewController: SkontoWithDiscountPriceViewDelegate {
+    func withDiscountPriceTextFieldTapped() {
+        GiniAnalyticsManager.track(event: .finalAmountTapped,
+                                   screenName: .returnAssistantSkonto)
     }
 }
 
