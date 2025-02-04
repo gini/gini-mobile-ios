@@ -254,7 +254,8 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
                                                 for documentId: String) {
         let extractionInfo = TransactionDocsExtractions(extractions: extractions)
         let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
-                                                              extractions: extractionInfo)
+                                                              extractions: extractionInfo,
+                                                              transactionProceesed: true)
         transactionDocsDataCoordinator
             .getViewModel()?
             .setTransactionDocsDocumentPagesViewModel(viewModel, for: documentId)
