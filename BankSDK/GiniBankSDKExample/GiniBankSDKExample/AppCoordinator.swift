@@ -335,7 +335,6 @@ extension AppCoordinator: DemoViewControllerDelegate {
 
     func didTapTransactionList() {
         let transactionListViewController = TransactionListViewController()
-        transactionListViewController.extractions = extractions
         let navigationController = UINavigationController(rootViewController: transactionListViewController)
         navigationController.modalPresentationStyle = .overFullScreen
         navigationController.modalTransitionStyle = .coverVertical
@@ -368,8 +367,7 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
         rootViewController.present(coordinator.rootViewController, animated: false)
     }
     
-    func screenAPI(coordinator: ScreenAPICoordinator, didFinish: (), with extractions: [Extraction]) {
-        self.extractions = extractions
+    func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true)
         self.remove(childCoordinator: coordinator as Coordinator)
     }

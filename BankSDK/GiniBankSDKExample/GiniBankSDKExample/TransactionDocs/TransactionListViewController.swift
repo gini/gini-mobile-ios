@@ -13,14 +13,7 @@ import GiniBankAPILibrary
 class TransactionListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     private let tableView = UITableView()
-    /**
-     The result collection from the analysis process.
-     */
-    var extractions: [Extraction] = [] {
-        didSet {
-            extractions.sort(by: { $0.name! < $1.name! })
-        }
-    }
+
     private var transactions: [Transaction] = []
     private var bankSDK: GiniBank
 
@@ -177,41 +170,75 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
                                   type: docType)
         }
 
-        setTransactionDocsDataToDisplay(with: extractions,
-                                        for: transaction.attachments[0].documentId)
+        setTransactionDocsDataToDisplay(for: transaction.attachments[0].documentId)
         
         displayTransactionDetails(for: transaction)
     }
 
-
-    private func loadDocumentPagesAndHandleErrors(for documentId: String, with extractions: [Extraction]) {
-        bankSDK.documentPagesRequest(documentId: documentId) { [weak self] images, error in
+    private func setTransactionDocsDataToDisplay(for documentId: String) {
+        transactionDocsDataCoordinator.loadData = { [weak self] in
             guard let self = self else { return }
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.handlePreviewDocumentError(error: error)
-                    return
-                }
+            guard let viewModel = self.transactionDocsDataCoordinator.getViewModel(),
+                  let images = viewModel.cachedImages[documentId],
+                  !images.isEmpty else {
+                // No cached images, do both requests inside `loadDocumentPagesAndHandleErrors`
+                self.loadDocumentData(for: documentId)
+                return
+            }
+
+            // Cached images exist, but we still need to fetch extractions
+            self.loadDocumentExtractions(for: documentId) { extractionResult in
+                let updatedExtractions = extractionResult?.extractions ?? []
                 self.updateTransactionDocsViewModel(with: images,
-                                                    extractions: extractions,
+                                                    extractions: updatedExtractions,
                                                     for: documentId)
             }
         }
     }
 
-    private func setTransactionDocsDataToDisplay(with extractions: [Extraction], for documentId: String) {
-        transactionDocsDataCoordinator.loadData = { [weak self] in
-            guard let viewModel = self?.transactionDocsDataCoordinator.getViewModel(),
-                  let images = viewModel.cachedImages[documentId],
-                  !images.isEmpty else {
-                self?.loadDocumentPagesAndHandleErrors(for: documentId, with: extractions)
+    private func loadDocumentData(for documentId: String) {
+        let dispatchGroup = DispatchGroup()
+        var extractedData: [Extraction] = []
+        var documentImages: [UIImage] = []
+        var documentPagesError: GiniError?
+
+        // Fetch document pages
+        dispatchGroup.enter()
+        bankSDK.documentPagesRequest(documentId: documentId) { images, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    documentPagesError = error
+                } else {
+                    documentImages = images
+                }
+                dispatchGroup.leave()
+            }
+        }
+
+        // Fetch document extractions
+        dispatchGroup.enter()
+        loadDocumentExtractions(for: documentId) { result in
+            if let extractionResult = result {
+                extractedData = extractionResult.extractions
+            }
+            dispatchGroup.leave()
+        }
+
+        // Once both requests finish, update the UI or show errors
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+
+            if let error = documentPagesError {
+                self.handlePreviewDocumentError(error: error)
                 return
             }
-            self?.updateTransactionDocsViewModel(with: images,
-                                                 extractions: extractions,
-                                                 for: documentId)
+
+            self.updateTransactionDocsViewModel(with: documentImages,
+                                                extractions: extractedData,
+                                                for: documentId)
         }
     }
+
 
     // MARK: - Helper Methods
 
@@ -231,6 +258,21 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         transactionDocsDataCoordinator
             .getViewModel()?
             .setTransactionDocsDocumentPagesViewModel(viewModel, for: documentId)
+    }
+
+    private func loadDocumentExtractions(for documentId: String,
+                                         completion: @escaping (ExtractionResult?) -> Void) {
+        bankSDK.documentExtractionsRequest(documentId: documentId) { [weak self] extractionResult, error in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                if let error = error {
+                    // If this request fails, we call the completion with nil
+                    completion(nil)
+                } else {
+                    completion(extractionResult)
+                }
+            }
+        }
     }
 
     @objc private func closeButtonTapped() {

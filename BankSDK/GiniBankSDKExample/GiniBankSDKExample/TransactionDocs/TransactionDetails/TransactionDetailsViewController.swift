@@ -15,7 +15,7 @@ class TransactionDetailsViewController: UIViewController {
 
     private let tableView = UITableView()
     private var numberOfSections = 1
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
