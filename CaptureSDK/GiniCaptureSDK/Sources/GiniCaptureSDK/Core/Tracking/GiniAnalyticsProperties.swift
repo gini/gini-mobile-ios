@@ -67,4 +67,8 @@ public enum GiniAnalyticsPropertyKey: String {
     case switchActive = "switch_active"
     case permissionStatus = "permission_status"
     case status
+
+    // MARK: - Skonto property keys
+    case edgeCaseType = "edge_case_type"
+    case skontoActive = "skonto_switch_active"
 }

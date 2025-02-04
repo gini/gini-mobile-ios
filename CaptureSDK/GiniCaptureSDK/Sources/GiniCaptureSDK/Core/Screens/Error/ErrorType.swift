@@ -154,7 +154,7 @@ import GiniBankAPILibrary
 
      - Returns: An `GiniErrorAnalytics` object representing the error for the analytics
      */
-    func errorAnalytics() -> GiniErrorAnalytics {
+    public func errorAnalytics() -> GiniErrorAnalytics {
         // Define a default unknown error
         let unknownError = GiniErrorAnalytics(type: "Unknown", code: nil,
                                               reason: "Error analytics not found for \(self)")
