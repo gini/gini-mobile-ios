@@ -322,12 +322,13 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var skontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
 
-    // MAKR: - Transaction Docs feature
+
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the Skonto help screen
      */
     public var skontoHelpNavigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter?
 
+    // MAKR: - Transaction Docs feature
     /**
      Indicates whether the Return reasons feature is enabled or not. In the case of `true`,
      the users will be asked to select from a predefined list of reasons why they decided to return an item.

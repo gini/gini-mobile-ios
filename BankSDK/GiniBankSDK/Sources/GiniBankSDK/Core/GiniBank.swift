@@ -115,7 +115,7 @@ import GiniCaptureSDK
         }
     }
 
-    // MARK: - Transaction Docs demo
+    // MARK: - Transaction Docs
 
     public func documentPagesRequest(documentId: String,
                                      completion: @escaping ([UIImage], GiniError?) -> Void) {
