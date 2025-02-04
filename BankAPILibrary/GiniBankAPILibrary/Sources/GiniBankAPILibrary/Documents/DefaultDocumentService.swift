@@ -151,7 +151,19 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                     cancellationToken: cancellationToken,
                     completion: completion)
     }
-    
+    /**
+     *  Retrieves the extractions for a given documentId.
+     *
+     * - Parameter documentId:          Document id from which to get the extractions for
+     * - Parameter completion:          A completion callback, returning the extraction list on success
+     */
+    public func extractions(for documentId: String,
+                            completion: @escaping CompletionResult<ExtractionResult>) {
+        fetchDocumentExtractions(resourceHandler: sessionManager.data,
+                                 for: documentId,
+                                 completion: completion)
+    }
+
     /**
      *  Retrieves the layout of a given document
      *

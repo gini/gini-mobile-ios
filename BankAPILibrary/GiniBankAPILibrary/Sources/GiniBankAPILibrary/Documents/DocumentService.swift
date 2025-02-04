@@ -45,7 +45,17 @@ public protocol DocumentService: AnyObject {
     func extractions(for document: Document,
                      cancellationToken: CancellationToken,
                      completion: @escaping CompletionResult<ExtractionResult>)
-    
+
+    /**
+     *  Retrieves the extractions for a given documentId.
+     *
+     * - Parameter documentId:          The document's unique identifier
+     * - Parameter completion:          A completion callback, returning the extraction list on success
+     */
+    func extractions(for documentId: String,
+                     completion: @escaping CompletionResult<ExtractionResult>)
+
+
     /**
      *  Retrieves a document for a given document id
      *
@@ -207,7 +217,24 @@ extension DocumentService {
                 }
         }
     }
-    
+
+    func fetchDocumentExtractions(resourceHandler: @escaping ResourceDataHandler<APIResource<ExtractionsContainer>>,
+                                  for documentId: String,
+                                  completion: @escaping CompletionResult<ExtractionResult>) {
+        let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: documentId),
+                                                         apiDomain: self.apiDomain,
+                                                         httpMethod: .get)
+
+        resourceHandler(resource) { result in
+            switch result {
+                case .success(let extractionsContainer):
+                    completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
+
     func fetchDocument(resourceHandler: CancellableResourceDataHandler<APIResource<Document>>,
                        with id: String,
                        cancellationToken: CancellationToken? = nil,
