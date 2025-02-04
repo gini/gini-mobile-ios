@@ -197,14 +197,13 @@ final class DigitalInvoiceViewController: UIViewController {
 
     func sendAnalyticsScreenShown() {
         var eventProperties: [GiniAnalyticsProperty] = []
-        if let documentId = configuration.documentService?.document?.id {
-            eventProperties.append(GiniAnalyticsProperty(key: .documentId, value: documentId))
-        }
+
         if viewModel.hasSkonto {
             eventProperties.append(GiniAnalyticsProperty(key: .skontoActive,
                                                          value: viewModel.skontoViewModel?.isSkontoApplied ?? false))
         }
         GiniAnalyticsManager.trackScreenShown(screenName: .returnAssistant, properties: eventProperties)
+
     }
 }
 
