@@ -14,4 +14,5 @@ public enum MainScreenAccessibilityIdentifiers: String {
     case welcomeTextTitle = "welcomeTextTitleIdentifier"
     case descriptionTextTitle = "descriptionTextTitleIdentifier"
     case metaInformationLabel = "metaInformationLabelIdentifier"
+    case settingsButton = "settingButtonIdentifier"
 }

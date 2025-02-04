@@ -24,13 +24,16 @@ final class DemoViewController: UIViewController {
     @IBOutlet private weak var descriptionTitle: UILabel!
     @IBOutlet private weak var welcomeTitlte: UILabel!
     @IBOutlet private weak var photoPaymentButton: GiniButton!
+    @IBOutlet private weak var settingsButton: UIButton!
     @IBOutlet private weak var transactionListButton: GiniButton!
+    @IBOutlet private weak var entrypointContentStackView: UIStackView!
 
     @IBOutlet private weak var giniLogoTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var welcomeTitleTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var stackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private var stackViewMarginConstraints: [NSLayoutConstraint]!
-    
+    @IBOutlet private weak var metaInformationLabelTopConstraint: NSLayoutConstraint!
+
     weak var delegate: DemoViewControllerDelegate?
     private var focusedFormField: UITextField?
     private var cameraImageView: UIImageView?
@@ -42,7 +45,9 @@ final class DemoViewController: UIViewController {
         super.viewDidLoad()
         
         giniLogoTopConstraint.constant = Constants.giniLogoTopConstant
-        
+        metaInformationLabelTopConstraint.constant = Constants.metaInformationLabelTopConstant
+        entrypointContentStackView.spacing = Constants.entryPointContentStackViewSpacing
+
         configureWelcomeTitle()
         configureScreenDescriptionTitle()
         
@@ -55,6 +60,7 @@ final class DemoViewController: UIViewController {
         configureTransactionListButton()
         configureAlternativeTitle()
         configureMetaTitle()
+        configureSettingsButton()
 
         dismissKeyboardOnTap()
     }
@@ -76,7 +82,23 @@ final class DemoViewController: UIViewController {
         welcomeTitlte.text = DemoScreenStrings.welcomeTitle.localized
         welcomeTitlte.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.welcomeTextTitle.rawValue
     }
-    
+
+    private func configureSettingsButton() {
+        let settingsImage: UIImage?
+
+        if #available(iOS 13.0, *) {
+            settingsImage = UIImage(systemName: "gear")
+        } else {
+            settingsImage = UIImage(named: "settings") // Use a custom asset for iOS 12
+        }
+
+        settingsButton.setImage(settingsImage, for: .normal)
+        settingsButton.setTitle("", for: .normal)
+        settingsButton.setTitleColor(textColor, for: .normal)
+        settingsButton.addTarget(self, action: #selector(launchSettings), for: .touchUpInside)
+        settingsButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.settingsButton.rawValue
+    }
+
     private func configureIbanTextField() {
         if let cameraIcon = cameraInputImage {
             ibanTextField.delegate = self
@@ -157,8 +179,6 @@ final class DemoViewController: UIViewController {
         let metaTitle = "Gini Bank SDK: (\(GiniBankSDKVersion)) / Gini Capture SDK: (\(GiniCaptureSDKVersion)) / Client id: \(self.clientId ?? "")"
         metaInformationLabel.text = metaTitle
         metaInformationLabel.textColor = textColor
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.launchSettings))
-        metaInformationLabel.addGestureRecognizer(tapGesture)
         metaInformationLabel.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.metaInformationLabel.rawValue
     }
     
@@ -268,8 +288,10 @@ extension DemoViewController: UITextFieldDelegate {
 private extension DemoViewController {
     enum Constants {
         static let welcomeTitleTopConstant: CGFloat = Device.small ? 24 : UIDevice.current.isIpad ? 85 : 48
-        static let giniLogoTopConstant: CGFloat = Device.small ? 48 : UIDevice.current.isIpad ? 150 : 112
-        static let stackViewTopConstant: CGFloat = 72
+        static let giniLogoTopConstant: CGFloat = Device.small ? 24 : UIDevice.current.isIpad ? 150 : 112
+        static let stackViewTopConstant: CGFloat = Device.small ? 24 : 72
         static let stackViewMarginConstant: CGFloat = UIDevice.current.isIpad ? 64 : 16
+        static let entryPointContentStackViewSpacing: CGFloat = Device.small ? 16 : 24
+        static let metaInformationLabelTopConstant: CGFloat = Device.small ? 24 : 44
     }
 }
