@@ -123,6 +123,25 @@ import GiniCaptureSDK
         loadDocumentPages(for: documentId, completion: completion)
     }
 
+    public func documentExtractionsRequest(documentId: String,
+                                           completion: @escaping (ExtractionResult?, GiniError?) -> Void) {
+
+        getDocumentExtractions(for: documentId) { result in
+            switch result {
+            case let .success(extractionResult):
+                print("Finished analysis process with no errors")
+                    completion(extractionResult, nil)
+            case let .failure(error):
+                if error == .requestCancelled {
+                    print("Cancelled analysis process with error")
+                } else {
+                    print("Finished analysis process with error: \(error)")
+                }
+                completion(nil, error)
+            }
+        }
+    }
+
     // MARK: - Screen API without Networking - Initializers for 'UIViewController'
 
     /**
@@ -357,5 +376,10 @@ fileprivate extension GiniBank {
                 completion(.failure(error))
             }
         }
+    }
+
+    private func getDocumentExtractions(for documentId: String,
+                                        completion: @escaping (Result<ExtractionResult, GiniError>) -> Void) {
+        documentService.extractions(for: documentId, completion: completion)
     }
 }
