@@ -129,13 +129,13 @@ import GiniCaptureSDK
         getDocumentExtractions(for: documentId) { result in
             switch result {
             case let .success(extractionResult):
-                print("Finished analysis process with no errors")
-                    completion(extractionResult, nil)
+                GiniBankConfiguration.shared.logger.log(message: "Finished analysis process with no errors")
+                completion(extractionResult, nil)
             case let .failure(error):
                 if error == .requestCancelled {
-                    print("Cancelled analysis process with error")
+                    GiniBankConfiguration.shared.logger.log(message: "Cancelled analysis process with error")
                 } else {
-                    print("Finished analysis process with error: \(error)")
+                    GiniBankConfiguration.shared.logger.log(message: "Finished analysis process with error: \(error)")
                 }
                 completion(nil, error)
             }
