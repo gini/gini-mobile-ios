@@ -57,7 +57,7 @@ final class CameraViewController: UIViewController {
     }()
 
     @IBOutlet var cameraPaneHorizontalBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cameraPaneHorizontal: CameraPaneHorizontal!
+    @IBOutlet weak var cameraPaneHorizontal: CameraPane!
     @IBOutlet weak var cameraPane: CameraPane!
     private let cameraButtonsViewModel: CameraButtonsViewModel
     private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
