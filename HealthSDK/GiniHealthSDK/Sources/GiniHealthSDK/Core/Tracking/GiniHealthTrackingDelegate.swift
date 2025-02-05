@@ -26,6 +26,8 @@ public enum PaymentReviewScreenEventType: String {
     case onToTheBankButtonClicked
     /// User tapped "close" button and keyboard will be hidden
     case onCloseKeyboardButtonClicked
+    /// User tapped "close" button and keyboard will be hidden
+    case onCloseButtonClicked
 }
 
 /**

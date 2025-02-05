@@ -21,9 +21,9 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
                                                                     expect: expect)
         uploadAndAnalyzeDocument(fileName: mockedInvoiceName,
                                  delegate: delegate)
-        wait(for: [expect], timeout: 60)
+        wait(for: [expect], timeout: 30)
     }
-    
+
     class CaptureResultsDelegateForTransferSummaryTest: GiniCaptureResultsDelegate {
         let testCase: TransferSummaryIntegrationTest
         let mockedInvoiceResultName: String

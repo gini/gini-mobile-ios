@@ -198,18 +198,25 @@ public final class DocumentPickerCoordinator: NSObject {
 /// A UIDocumentPickerViewController that sets navigation bar buttons' tint color to a correct one, instead of using the accent color specified by app
 private class GiniDocumentPickerViewController: UIDocumentPickerViewController {
     var initialTintColor: UIColor? = navBarInstance.tintColor
+    var initialButtonTintColor: UIColor? = barButtonInstance.tintColor
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Self.navBarInstance.tintColor = .GiniCapture.accent1
+        Self.barButtonInstance.tintColor = .GiniCapture.accent1
     }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         // make sure to revert the tint color, otherwise it will affect document pickers/browsers from the host app
-        Self.navBarInstance.tintColor = initialTintColor
+        Self.navBarInstance.tintColor = initialTintColor ?? UINavigationBar.appearance().tintColor
+        Self.barButtonInstance.tintColor = initialButtonTintColor ?? UIBarButtonItem.appearance().tintColor
     }
     static var navBarInstance: UINavigationBar {
         UINavigationBar.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self])
+    }
+
+    static var barButtonInstance: UIBarButtonItem {
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UIDocumentBrowserViewController.self])
     }
 }
 

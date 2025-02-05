@@ -27,21 +27,21 @@ class SkontoViewModel {
     var proceedAction: (() -> Void)?
 
     private let skontoDiscounts: SkontoDiscounts
-    private (set) var isWithDiscountSwitchAvailable: Bool
+    private(set) var isWithDiscountSwitchAvailable: Bool
     private var skontoPercentage: Double
 
-    private (set) var isSkontoApplied: Bool = true
-    private (set) var amountToPay: Price
-    private (set) var skontoAmountToPay: Price
+    private(set) var isSkontoApplied: Bool = true
+    private(set) var amountToPay: Price
+    private(set) var skontoAmountToPay: Price
 
-    private (set) var dueDate: Date
-    private (set) var amountDiscounted: Price
-    private (set) var currencyCode: String
-    private (set) var remainingDays: Int
-    private (set) var paymentMethod: SkontoDiscountDetails.PaymentMethod
-    private (set) var edgeCase: SkontoEdgeCase?
+    private(set) var dueDate: Date
+    private(set) var amountDiscounted: Price
+    private(set) var currencyCode: String
+    private(set) var remainingDays: Int
+    private(set) var paymentMethod: SkontoDiscountDetails.PaymentMethod
+    private(set) var edgeCase: SkontoEdgeCase?
 
-    private (set) var documentPagesViewModel: SkontoDocumentPagesViewModel?
+    private(set) var documentPagesViewModel: SkontoDocumentPagesViewModel?
 
     private var maximumAmountToPayValue: Decimal = 99999.99
 

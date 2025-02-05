@@ -24,6 +24,7 @@
 		7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7DB661942B5687F7004537AA /* health-invoice-5.jpg */; };
 		7DB6619B2B56AE80004537AA /* InvoicesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6619A2B56AE80004537AA /* InvoicesListViewModel.swift */; };
 		7DB6619D2B56C0B7004537AA /* InvoiceTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6619C2B56C0B7004537AA /* InvoiceTableViewCellModel.swift */; };
+		7DD0B95E2CF75E9100C5176C /* invoice-13MB.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 7DD0B95D2CF75E9100C5176C /* invoice-13MB.pdf */; };
 		8A142EAF2CC7C38D007B268A /* HardcodedOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EAE2CC7C38D007B268A /* HardcodedOrders.swift */; };
 		8A142EB22CC7C4A5007B268A /* OrderListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EB12CC7C4A5007B268A /* OrderListCoordinator.swift */; };
 		8A142EB42CC7C4C6007B268A /* OrderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EB32CC7C4C6007B268A /* OrderListViewController.swift */; };
@@ -36,7 +37,6 @@
 		8ADEE2F02C2BF9E4006D3526 /* GiniSetupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEE2EF2C2BF9E4006D3526 /* GiniSetupHelper.swift */; };
 		8ADEE2F92C2C4822006D3526 /* FileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEE2F82C2C4822006D3526 /* FileLoader.swift */; };
 		8ADEE2FA2C2CB2E4006D3526 /* invoice-12MB.png in Resources */ = {isa = PBXBuildFile; fileRef = 8ADEE2F22C2C3CCC006D3526 /* invoice-12MB.png */; };
-		8ADEE2FB2C2CB302006D3526 /* invoice-13MB.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 8ADEE2F32C2C3CCC006D3526 /* invoice-13MB.pdf */; };
 		F4206BBC2A1B9C6900E5E101 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */; };
 		F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */; };
 		F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */; };
@@ -87,6 +87,7 @@
 		7DB661942B5687F7004537AA /* health-invoice-5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-5.jpg"; sourceTree = "<group>"; };
 		7DB6619A2B56AE80004537AA /* InvoicesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListViewModel.swift; sourceTree = "<group>"; };
 		7DB6619C2B56C0B7004537AA /* InvoiceTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCellModel.swift; sourceTree = "<group>"; };
+		7DD0B95D2CF75E9100C5176C /* invoice-13MB.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "invoice-13MB.pdf"; sourceTree = "<group>"; };
 		8A142EAE2CC7C38D007B268A /* HardcodedOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardcodedOrders.swift; sourceTree = "<group>"; };
 		8A142EB12CC7C4A5007B268A /* OrderListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListCoordinator.swift; sourceTree = "<group>"; };
 		8A142EB32CC7C4C6007B268A /* OrderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewController.swift; sourceTree = "<group>"; };
@@ -98,7 +99,6 @@
 		8A77DA1D2C2BF6130049FE10 /* UploadDocumentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadDocumentsTests.swift; sourceTree = "<group>"; };
 		8ADEE2EF2C2BF9E4006D3526 /* GiniSetupHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniSetupHelper.swift; sourceTree = "<group>"; };
 		8ADEE2F22C2C3CCC006D3526 /* invoice-12MB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invoice-12MB.png"; sourceTree = "<group>"; };
-		8ADEE2F32C2C3CCC006D3526 /* invoice-13MB.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "invoice-13MB.pdf"; path = "../../../../HealthAPILibrary/GiniHealthAPILibrary/Tests/GiniHealthAPILibraryTests/Resources/invoice-13MB.pdf"; sourceTree = "<group>"; };
 		8ADEE2F82C2C4822006D3526 /* FileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileLoader.swift; sourceTree = "<group>"; };
 		F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
@@ -197,8 +197,8 @@
 		8ADEE2F12C2C3C9B006D3526 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7DD0B95D2CF75E9100C5176C /* invoice-13MB.pdf */,
 				8ADEE2F22C2C3CCC006D3526 /* invoice-12MB.png */,
-				8ADEE2F32C2C3CCC006D3526 /* invoice-13MB.pdf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -376,9 +376,9 @@
 				7DB661952B5687F7004537AA /* health-invoice-2.jpg in Resources */,
 				F464B17627CD2147001735B9 /* Localizable.strings in Resources */,
 				F4EC38FA273C2311007045DC /* Base.lproj in Resources */,
+				7DD0B95E2CF75E9100C5176C /* invoice-13MB.pdf in Resources */,
 				7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */,
 				8ADEE2FA2C2CB2E4006D3526 /* invoice-12MB.png in Resources */,
-				8ADEE2FB2C2CB302006D3526 /* invoice-13MB.pdf in Resources */,
 				284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */,
 				7D6161C62BE1327E0091000B /* test_pdf.pdf in Resources */,
 				F4EC3913273C2B41007045DC /* Assets.xcassets in Resources */,
@@ -609,7 +609,7 @@
 				DEVELOPMENT_TEAM = JA825X8F7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniHealthSDKExample/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Health;
+				INFOPLIST_KEY_CFBundleDisplayName = GiniHealthSDKExample;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "for taking a picture of the document";
@@ -652,7 +652,7 @@
 				DEVELOPMENT_TEAM = JA825X8F7Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GiniHealthSDKExample/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Health;
+				INFOPLIST_KEY_CFBundleDisplayName = GiniHealthSDKExample;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "for taking a picture of the document";

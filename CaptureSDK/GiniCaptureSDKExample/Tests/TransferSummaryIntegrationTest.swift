@@ -48,7 +48,7 @@ class TransferSummaryIntegrationTest: XCTestCase {
         // (subsequent steps are in CaptureResultsDelegateForTransferSummaryTest)
         self.getExtractionsFromGiniCaptureSDK(delegate: CaptureResultsDelegateForTransferSummaryTest(integrationTest: self, expect: expect))
 
-        wait(for: [expect], timeout: 60)
+        wait(for: [expect], timeout: 30)
     }
 
     /**

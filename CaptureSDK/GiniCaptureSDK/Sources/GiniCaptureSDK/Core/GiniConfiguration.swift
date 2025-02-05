@@ -552,8 +552,10 @@ import GiniBankAPILibrary
 
         var stringValue: String {
             switch self {
-            case .button: "button"
-            case .field: "field"
+            case .button:
+                return "button"
+            case .field:
+                return "field"
             }
         }
     }

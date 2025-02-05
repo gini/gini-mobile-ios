@@ -15,7 +15,7 @@ class DigitalInvoiceIntegrationTests: BaseIntegrationTest {
         let mockedInvoiceName = "Gini_invoice_example_line_items_with_discount"
         uploadAndAnalyzeDocument(fileName: mockedInvoiceName,
                                  delegate: CaptureResultsDelegate(testCase: self, expect: expect))
-        wait(for: [expect], timeout: 60)
+        wait(for: [expect], timeout: 30)
     }
 
     class CaptureResultsDelegate: GiniCaptureResultsDelegate {
