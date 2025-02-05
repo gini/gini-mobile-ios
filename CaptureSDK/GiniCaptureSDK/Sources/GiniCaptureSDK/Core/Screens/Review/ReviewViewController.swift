@@ -390,7 +390,7 @@ extension ReviewViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let size = calculatedCellSize(isHorizontal: false)
+        let size = cellSize()
         collectionViewHeightConstraint.constant = size.height + 4
         updateLayoutBasedOnIphoneOrientation()
         DispatchQueue.main.async {
@@ -641,9 +641,9 @@ extension ReviewViewController {
         }
     }
 
-    private func calculatedCellSize(isHorizontal: Bool) -> CGSize {
+    private func cellSize() -> CGSize {
         let a4Ratio = 1.4142
-        let widthRatio: CGFloat = isHorizontal ? 1/a4Ratio : a4Ratio
+        let widthRatio: CGFloat = a4Ratio
         if UIDevice.current.isIpad {
             var height = self.view.bounds.height - 260
             if giniConfiguration.bottomNavigationBarEnabled {
@@ -713,12 +713,7 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let page = pages[indexPath.row]
-        let isHorizontal = {
-            guard let size = page.document.previewImage?.size, UIDevice.current.isIphone else { return false }
-            return size.width > size.height
-        }()
-        return calculatedCellSize(isHorizontal: UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape && isHorizontal)
+        return cellSize()
     }
 
     public func collectionView(_ collectionView: UICollectionView,
@@ -738,7 +733,7 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
         else { return }
         let offset = scrollView.contentOffset
-        let cellWidthIncludingSpacing = calculatedCellSize(isHorizontal: false).width + layout.minimumLineSpacing
+        let cellWidthIncludingSpacing = cellSize().width + layout.minimumLineSpacing
         let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
         currentPage = max(min(Int(round(index)), pages.count - 1), 0)
         self.pageControl.currentPage = currentPage
