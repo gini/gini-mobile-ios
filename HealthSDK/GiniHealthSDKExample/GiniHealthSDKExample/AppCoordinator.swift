@@ -57,8 +57,6 @@ final class AppCoordinator: Coordinator {
         configuration.paymentReviewStatusBarStyle = .lightContent
         return configuration
     }()
-    
-    var isBrandedPaymentComponent = true
 
     private var documentMetadata: GiniHealthSDK.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
@@ -105,7 +103,13 @@ final class AppCoordinator: Coordinator {
     }
     
     func processBankUrl(url: URL) {
-        rootViewController.dismiss(animated: true)
+        if let invoicesListCoordinator = childCoordinators.last as? InvoicesListCoordinator {
+            invoicesListCoordinator.invoicesListNavigationController.popViewController(animated: true)
+        } else if let orderListCoordinator = childCoordinators.last as? OrderListCoordinator {
+            orderListCoordinator.orderListViewController.presentedViewController?.dismiss(animated: true, completion: {
+                orderListCoordinator.orderListNavigationController.popViewController(animated: true)
+            })
+        }
         
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
         
@@ -161,8 +165,7 @@ final class AppCoordinator: Coordinator {
                                                                                             secret: clientPassword,
                                                                                             domain: clientDomain),
                                                                                             documentMetadata: metadata,
-                                                        hardcodedInvoicesController: HardcodedInvoicesController(),
-                                                        paymentComponentController: health.paymentComponentsController)
+                                                        hardcodedInvoicesController: HardcodedInvoicesController())
         
         screenAPICoordinator.delegate = self
         
@@ -197,7 +200,8 @@ final class AppCoordinator: Coordinator {
                                                                   extractionResult: extractionResult)
                             self?.showInvoicesList(invoices: [invoice])
                         case let .failure(error):
-                            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))", event: .error)
+                            GiniUtilites.Log("Obtaining extractions from document with id \(document.id) failed with error: \(String(describing: error))",
+                                             event: .error)
                         }
                     }
                 case .failure(let error):
@@ -239,7 +243,8 @@ final class AppCoordinator: Coordinator {
                                                                                   extractionResult: extractionResult)
                                             self?.showInvoicesList(invoices: [invoice])
                                         case let .failure(error):
-                                            GiniUtilites.Log("Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))", event: .error)
+                                            GiniUtilites.Log("Obtaining extractions from document with id \(compositeDocument.id) failed with error: \(String(describing: error))",
+                                                             event: .error)
                                         }
                                     }
                                 case .failure(let error):
@@ -314,7 +319,6 @@ final class AppCoordinator: Coordinator {
         health.delegate = self
 
         let invoicesListCoordinator = InvoicesListCoordinator()
-        health.paymentComponentConfiguration.isPaymentComponentBranded = isBrandedPaymentComponent
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
                                           hardcodedInvoicesController: HardcodedInvoicesController(),
@@ -366,6 +370,10 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
 // MARK: ScreenAPICoordinatorDelegate
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
+    func presentError(title: String, message: String) {
+        self.rootViewController.showError(title, message: message)
+    }
+    
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true)
         self.remove(childCoordinator: coordinator)
@@ -385,12 +393,6 @@ extension AppCoordinator: GiniHealthDelegate {
     
     func didCreatePaymentRequest(paymentRequestId: String) {
         GiniUtilites.Log("Created payment request with id \(paymentRequestId)", event: .success)
-        DispatchQueue.main.async {
-            guard let invoicesListCoordinator = self.childCoordinators.first as? InvoicesListCoordinator else {
-                return
-            }
-            invoicesListCoordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
-        }
     }
 }
 
@@ -400,7 +402,8 @@ extension AppCoordinator: DebugMenuPresenter {
     func presentDebugMenu() {
         let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
                                                               useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
-                                                              paymentComponentConfiguration: health.paymentComponentConfiguration)
+                                                              paymentComponentConfiguration: health.paymentComponentConfiguration,
+                                                              showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -416,6 +419,8 @@ extension AppCoordinator: DebugMenuDelegate {
             health.paymentComponentConfiguration.isPaymentComponentBranded = isOn
         case .useBottomPaymentComponent:
             giniHealthConfiguration.useBottomPaymentComponentView = isOn
+        case .showPaymentCloseButton:
+            giniHealthConfiguration.showPaymentReviewCloseButton = isOn
         }
     }
 

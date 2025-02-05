@@ -7,8 +7,8 @@
 
 import XCTest
 import UIKit
-@testable import GiniHealthAPILibrary
-@testable import GiniHealthSDK
+import GiniHealthAPILibrary
+import GiniHealthSDK
 
 class UploadDocumentsTests: XCTestCase {
     lazy var giniHelper = GiniSetupHelper()
@@ -34,7 +34,7 @@ class UploadDocumentsTests: XCTestCase {
 
         self.uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: pdfData13MB, expect: expect)
 
-        wait(for: [expect], timeout: 60)
+        wait(for: [expect], timeout: 30)
     }
 
     private func uploadDocumentAndGetExtractionFromGiniHealthAPILibrary(data: Data, expect: XCTestExpectation) {

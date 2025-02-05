@@ -28,7 +28,7 @@ final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewCo
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-    private (set) var dataSource: HelpTipsDataSource
+    private(set) var dataSource: HelpTipsDataSource
     private var giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 76
 

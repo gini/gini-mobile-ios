@@ -112,6 +112,6 @@ class TransferSummaryIntegrationTest: XCTestCase {
                 XCTFail(String(describing: error))
             }
         }
-        wait(for: [expect], timeout: 60)
+        wait(for: [expect], timeout: 30)
     }
 }

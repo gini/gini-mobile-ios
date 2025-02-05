@@ -73,9 +73,11 @@ jobs:
 
       - name: Setup Credentials
         run: |
-            plutil -replace client_id -string "gini-mobile-test" HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
-            plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
-                
+            sed -i '' \
+            -e 's/clientID = "client_id"/clientID = "gini-mobile-test"/' \
+            -e 's/clientPassword = "client_password"/clientPassword = "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"/' \
+            HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
+                            
       - name: Archiving project
         run: |
             xcodebuild clean archive \
@@ -107,14 +109,48 @@ jobs:
         with:
           files: "*.ipa"
           fail: true
-      
-      - name: Distribute health-sdk example ipa to Firebase App Distribution
-        uses: emertozd/Firebase-Distribution-Github-Action@v2
+
+      - name: Install Node.js 20.x
+        uses: actions/setup-node@v4
         with:
-          appId: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
-          groups: testers
-          file: GiniHealthSDKExample.ipa
-          releaseNotes: |
-              ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
-              ${{ github.event.head_commit.message }}
+          node-version: 20
+
+      - run: npm install -g firebase-tools@13.17.0
+        shell: bash
+
+      - name: Distribute health-sdk example ipa to Firebase App Distribution
+        id: distribute
+        run: |
+          chmod +x .github/publish_to_firebase.sh
+          .github/publish_to_firebase.sh
+        shell: bash
+        env:
+          INPUT_APPID: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
+          INPUT_SERVICECREDENTIALSFILECONTENT: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
+          INPUT_FILE: GiniHealthSDKExample.ipa
+          INPUT_GROUPS: testers
+          INPUT_RELEASENOTES: |
+            ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
+            ${{ github.event.head_commit.message }}
+
+      - name: Extract Jira ticket
+        id: extract_jira_ticket
+        run: |
+          commit_message=$(git log -1 --pretty=%B)
+          jira_ticket=$(echo "$commit_message" | awk 'NR > 1 && $0 != "" { print $0; exit }')
+          echo "JIRA_TICKET_NAME=${jira_ticket}" >> $GITHUB_ENV
+
+      - name: Login to jira
+        if: ${{ env.JIRA_TICKET_NAME != null }}
+        uses: justin-jhg/gajira-login@v1
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_KEY }}
+
+      - name: Comment on issue
+        if: ${{ env.JIRA_TICKET_NAME != null }}
+        uses: atlassian/gajira-comment@v3
+        with:
+          issue: ${{ env.JIRA_TICKET_NAME }}
+          comment: Build health example app ${{ steps.distribute.outputs.FIREBASE_CONSOLE_URI }}

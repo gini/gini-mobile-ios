@@ -22,7 +22,7 @@ protocol HelpMenuViewControllerDelegate: AnyObject {
 final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewController {
 
     weak var delegate: HelpMenuViewControllerDelegate?
-    private (set) var dataSource: HelpMenuDataSource
+    private(set) var dataSource: HelpMenuDataSource
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?

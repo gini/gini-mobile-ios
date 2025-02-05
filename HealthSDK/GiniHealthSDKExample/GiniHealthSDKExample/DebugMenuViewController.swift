@@ -13,6 +13,7 @@ enum SwitchType {
     case showReviewScreen
     case showBrandedView
     case useBottomPaymentComponent
+    case showPaymentCloseButton
 }
 
 protocol DebugMenuDelegate: AnyObject {
@@ -57,13 +58,21 @@ class DebugMenuViewController: UIViewController {
     private var bottomPaymentComponentSwitch: UISwitch!
     private lazy var bottomPaymentComponentEditableRow: UIStackView = stackView(axis: .horizontal, subviews: [bottomPaymentComponentOptionLabel, bottomPaymentComponentSwitch])
 
+    private lazy var closeButtonOptionLabel: UILabel = rowTitle("Show Payment Review Close Button")
+    private var closeButtonSwitch: UISwitch!
+    private lazy var closeButtonRow: UIStackView = stackView(axis: .horizontal, subviews: [closeButtonOptionLabel, closeButtonSwitch])
+
     weak var delegate: DebugMenuDelegate?
 
-    init(showReviewScreen: Bool, useBottomPaymentComponent: Bool, paymentComponentConfiguration: PaymentComponentConfiguration) {
+    init(showReviewScreen: Bool,
+         useBottomPaymentComponent: Bool,
+         paymentComponentConfiguration: PaymentComponentConfiguration,
+         showPaymentCloseButton: Bool) {
         super.init(nibName: nil, bundle: nil)
         self.reviewScreenSwitch = self.switchView(isOn: showReviewScreen)
         self.brandedSwitch = self.switchView(isOn: paymentComponentConfiguration.isPaymentComponentBranded)
         self.bottomPaymentComponentSwitch = self.switchView(isOn: useBottomPaymentComponent)
+        self.closeButtonSwitch = self.switchView(isOn: showPaymentCloseButton)
     }
 
     required init?(coder: NSCoder) {
@@ -88,7 +97,14 @@ class DebugMenuViewController: UIViewController {
         view.backgroundColor = UIColor(named: "background")
 
         let spacer = UIView()
-        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, brandedEditableRow, bottomPaymentComponentEditableRow, spacer])
+        let mainStackView = stackView(axis: .vertical,
+                                      subviews: [titleLabel,
+                                                 localizationRow,
+                                                 reviewScreenRow,
+                                                 brandedEditableRow,
+                                                 bottomPaymentComponentEditableRow,
+                                                 closeButtonRow,
+                                                 spacer])
         view.addSubview(mainStackView)
 
         NSLayoutConstraint.activate([
@@ -100,7 +116,8 @@ class DebugMenuViewController: UIViewController {
             localizationRow.heightAnchor.constraint(equalToConstant: rowHeight),
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
             brandedEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
-            bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight)
+            bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
+            closeButtonRow.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
     }
 }
@@ -158,6 +175,8 @@ private extension DebugMenuViewController {
                 delegate?.didChangeSwitchValue(type: .showBrandedView, isOn: sender.isOn)
             case bottomPaymentComponentSwitch:
                 delegate?.didChangeSwitchValue(type: .useBottomPaymentComponent, isOn: sender.isOn)
+            case closeButtonSwitch:
+                delegate?.didChangeSwitchValue(type: .showPaymentCloseButton, isOn: sender.isOn)
             default:
                 break
         }

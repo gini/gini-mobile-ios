@@ -23,9 +23,8 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
     }
 
     public var showPaymentReviewCloseButton: Bool {
-        false
+        GiniHealthConfiguration.shared.showPaymentReviewCloseButton
     }
-    
 
     public var paymentComponentButtonsHeight: CGFloat {
         GiniHealthConfiguration.shared.paymentComponentButtonsHeight

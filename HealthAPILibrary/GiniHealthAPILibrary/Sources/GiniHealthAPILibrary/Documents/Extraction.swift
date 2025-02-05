@@ -60,14 +60,50 @@ import Foundation
         self.value = value
         self.name = name
     }
-    
 }
 
 // MARK: - Decodable
 
-extension Extraction: Decodable {}
-extension Extraction.Box: Decodable {}
-extension Extraction.Candidate: Decodable {}
+extension Extraction: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case box, candidates, entity, value, name
+    }
+    public convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let box = try container.decodeIfPresent(Box.self, forKey: .box)
+        let candidates = try container.decodeIfPresent(String.self, forKey: .candidates)
+        let entity = try container.decode(String.self, forKey: .entity)
+        let value = try container.decode(String.self, forKey: .value)
+        let name = try container.decodeIfPresent(String.self, forKey: .name)
+        self.init(box: box, candidates: candidates, entity: entity, value: value, name: name)
+    }
+}
+extension Extraction.Box: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case height, left, page, top, width
+    }
+    public convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let height = try container.decode(Double.self, forKey: .height)
+        let left = try container.decode(Double.self, forKey: .left)
+        let page = try container.decode(Int.self, forKey: .page)
+        let top = try container.decode(Double.self, forKey: .top)
+        let width = try container.decode(Double.self, forKey: .width)
+        self.init(height: height, left: left, page: page, top: top, width: width)
+    }
+}
+extension Extraction.Candidate: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case box, entity, value
+    }
+    public convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let box = try container.decodeIfPresent(Extraction.Box.self, forKey: .box)
+        let entity = try container.decode(String.self, forKey: .entity)
+        let value = try container.decode(String.self, forKey: .value)
+        self.init(box: box, entity: entity, value: value)
+    }
+}
 
 // MARK: - isEqual
 

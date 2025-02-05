@@ -27,7 +27,9 @@ protocol PaymentComponentsProtocol {
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
     func paymentView() -> UIView
     func bankSelectionBottomSheet() -> UIViewController
-    func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
+    func loadPaymentReviewScreenFor(trackingDelegate: GiniHealthTrackingDelegate?,
+                                    previousPaymentComponentScreenType: PaymentComponentScreenType?,
+                                    completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
     func paymentInfoViewController() -> UIViewController
     func paymentViewBottomSheet() -> UIViewController
 }
@@ -98,7 +100,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     }
 
     /// Previous presented view
-    var previousPresentedViews: Set<PaymentComponentScreenType> = []
+    var previousPresentedViews: [PaymentComponentScreenType] = []
     // Client's navigation controller provided in order to handle all HealthSDK flows
     weak var navigationControllerProvided: UINavigationController?
     // Payment Information from the invoice that contains a document or not
@@ -107,7 +109,9 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     var documentId: String?
     // Errors stack received from API. We will show them for the clients
     var errors: [String] = []
-
+    
+    // Store Share Bottom Sheet for dismissed native share modal
+    var shareInvoiceBottomSheet: ShareInvoiceBottomView?
     /**
      Initializer of the Payment Component Controller class.
 
@@ -219,7 +223,7 @@ extension PaymentComponentsController: PaymentReviewProtocol {
      This method notifies the tracking delegate about the close button click event.
      */
     public func trackOnPaymentReviewCloseButtonClicked() {
-        // Not anymore tracked on HealthSDK
+        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseButtonClicked))
     }
 
     /**

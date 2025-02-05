@@ -63,6 +63,16 @@ public final class GiniHealthConfiguration: NSObject {
      */
     public var showPaymentReviewScreen = true
 
+    /**
+     Set to `false` to hide close button on the payment review screen
+     */
+    public var showPaymentReviewCloseButton = true
+
+    /**
+     Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
+     */
+    @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
+
     // MARK: - Button configuration options
     /**
      A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View, Payment Review Screen.
@@ -143,12 +153,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
     Custom localization configuration for localizable strings.
     */
-   public var customLocalization: GiniLocalization?
-
-    /**
-     Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
-     */
-    @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
+    public var customLocalization: GiniLocalization?
 }
 
 extension GiniHealthConfiguration {

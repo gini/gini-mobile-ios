@@ -35,7 +35,7 @@
 "gini.merchant.paymentcomponent.payment.info.pay.bills.title.label" = "Pay bills easily with the banking app.";
 "gini.merchant.paymentcomponent.payment.info.pay.bills.description.label" = "Medical bills and other submitted receipts can now be paid very easily.\nThe payment data such as IBAN, amount, recipient and purpose are seamlessly transferred to the banking app, and the payment only needs to be confirmed there.\nYou can also park the invoice and pay it within 3 months after uploading.\nThe data is encrypted and transferred securely to your banking app. The data protection regulations of your bank apply.\nSupported by the largest banks. Integration by Gini[LINK].";
 "gini.merchant.paymentcomponent.payment.info.pay.bills.description.clickable.text" = "Gini[LINK]";
-"gini.merchant.paymentcomponent.paymentinfo.questions.title.label" = "Frequently asked questions";
+"gini.merchant.paymentcomponent.payment.info.questions.title.label" = "Frequently Asked Questions";
 "gini.merchant.paymentcomponent.payment.info.questions.question.1" = "Can I submit invoices and pay them later?";
 "gini.merchant.paymentcomponent.payment.info.questions.question.2" = "Is the service free of charge?";
 "gini.merchant.paymentcomponent.payment.info.questions.question.3" = "Is my data secure?";

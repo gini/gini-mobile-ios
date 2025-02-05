@@ -145,6 +145,7 @@ public struct DataForReview {
         self.paymentService = giniApiLib.paymentService(apiDomain: .default, apiVersion: Constants.defaultVersionAPI)
         super.init()
         self.paymentComponentsController = PaymentComponentsController(giniHealth: self)
+        self.paymentComponentsController.delegate = self
     }
     
     /**
