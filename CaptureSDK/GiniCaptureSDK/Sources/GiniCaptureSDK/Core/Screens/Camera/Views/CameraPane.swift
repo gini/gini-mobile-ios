@@ -14,13 +14,15 @@ final class CameraPane: UIView {
     @IBOutlet weak var flashButton: BottomLabelButton!
     @IBOutlet weak var thumbnailView: ThumbnailView!
     @IBOutlet weak var leftButtonsStack: UIView!
-    @IBOutlet weak var thumbnailConstraint: NSLayoutConstraint!
-    @IBOutlet weak var leftStackViewMargin: NSLayoutConstraint!
 
     private var shouldShowFlashButton: Bool = false
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
     }
 
     func setupView() {
@@ -121,4 +123,8 @@ final class CameraPane: UIView {
         }
     }
 
+    func setupTitlesHidden(isHidden: Bool) {
+        flashButton.actionLabel.isHidden = isHidden
+        fileUploadButton.actionLabel.isHidden = isHidden
+    }
 }
