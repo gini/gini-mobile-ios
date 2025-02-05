@@ -9,8 +9,6 @@
 @testable import GiniCaptureSDK
 import XCTest
 
-var _GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE: Bool = false
-
 private class MockTokenSource: AlternativeTokenSource {
     var token: Token?
     init(token: Token? = nil) {
@@ -30,7 +28,7 @@ private class MockCaptureResultsDelegate: GiniCaptureResultsDelegate {
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
     }
     
-    func giniCaptureDidCancelAnalysis() {
+    func giniCaptureDidCloseAnalysis() {
         closeCalled = true
     }
     
