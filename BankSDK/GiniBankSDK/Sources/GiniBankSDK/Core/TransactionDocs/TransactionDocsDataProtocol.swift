@@ -21,13 +21,6 @@ public protocol TransactionDocsDataProtocol: AnyObject {
     /// The list of attached transaction documents.
     var transactionDocs: [TransactionDoc] { get set }
 
-    /// Retrieves the current view model for transaction documents.
-    /// - Returns: An optional `TransactionDocsViewModel` instance if available.
-    func getViewModel() -> TransactionDocsViewModel?
-
-    /// A closure that handles the loading of document data.
-    var loadData: (() -> Void)? { get set }
-
     /// Retrieves the current value of the "Always Attach Documents" setting.
     /// - Returns: A `Bool` representing whether documents should always be attached to the transaction.
     func getAlwaysAttachDocsValue() -> Bool

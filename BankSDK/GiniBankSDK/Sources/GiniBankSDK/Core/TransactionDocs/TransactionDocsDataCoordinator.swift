@@ -61,18 +61,6 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, Transa
 
     /// The view controller responsible for presenting document-related views.
     public weak var presentingViewController: UIViewController?
-    /// Retrieves the current view model for transaction documents.
-    /// - Returns: An optional `TransactionDocsViewModel` instance if available.
-    public func getViewModel() -> TransactionDocsViewModel? {
-        return getTransactionDocsViewModel()
-    }
-
-    /// A public closure that handles loading document data.
-    public var loadData: (() -> Void)? {
-        didSet {
-            loadDocumentData = loadData
-        }
-    }
 
     /// Retrieves the current value of the "Always Attach Documents" setting.
     /// - Returns: A `Bool` representing whether documents should always be attached to the transaction.
