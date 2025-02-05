@@ -195,7 +195,7 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
             }
         }
     }
-
+ 
     private func loadDocumentData(for documentId: String) {
         let dispatchGroup = DispatchGroup()
         var extractedData: [Extraction] = []

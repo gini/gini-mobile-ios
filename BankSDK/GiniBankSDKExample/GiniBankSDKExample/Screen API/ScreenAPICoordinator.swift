@@ -157,7 +157,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                           amountToPay: amoutToPay)
 
         let transactionDocIDs = configuration.transactionDocsDataCoordinator.transactionDocIDs
-        print("DEBUG-------- transaction docs ids = ", transactionDocIDs)
         let attachments = configuration.transactionDocsDataCoordinator.transactionDocs.map {
             return Attachment(documentId: $0.documentId,
                               filename: $0.fileName,
@@ -172,7 +171,9 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                       paymentReference: paymentReference,
                                       attachments: attachments)
         updateJSONFileWithTransaction(transaction)
+
         configuration.cleanup()
+
         delegate?.screenAPI(coordinator: self, didFinish: ())
     }
 
