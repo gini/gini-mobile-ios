@@ -209,15 +209,6 @@ extension PaymentComponentsController: PaymentReviewProtocol {
     }
 
     /**
-     Called when the payment request was successfully created
-
-     - parameter paymentRequestId: Id of created payment request.
-     */
-    public func didCreatePaymentRequest(paymentRequestId: String) {
-        giniSDK.delegate?.didCreatePaymentRequest(paymentRequestId: paymentRequestId)
-    }
-
-    /**
      Tracks the event when the keyboard is closed on the payment review screen.
 
      This method informs the tracking delegate about the keyboard close event.

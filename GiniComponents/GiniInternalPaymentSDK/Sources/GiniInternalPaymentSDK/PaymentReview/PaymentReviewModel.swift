@@ -13,13 +13,13 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
     func presentBankSelectionBottomSheet(bottomSheet: BottomSheetViewController)
     func createPaymentRequestAndOpenBankApp()
-    func obtainPDFFromPaymentRequest()
+    func obtainPDFFromPaymentRequest(paymentRequestId: String)
 }
 
 /// BottomSheetsProviderProtocol defines methods for providing custom bottom sheets.
 public protocol BottomSheetsProviderProtocol: AnyObject {
     func installAppBottomSheet() -> BottomSheetViewController
-    func shareInvoiceBottomSheet(qrCodeData: Data) -> BottomSheetViewController
+    func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> BottomSheetViewController
     func bankSelectionBottomSheet() -> UIViewController
 }
 
@@ -30,11 +30,10 @@ public typealias PaymentReviewProtocol = PaymentReviewAPIProtocol & PaymentRevie
 public protocol PaymentReviewAPIProtocol: AnyObject {
     func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniError>) -> Void)
     func shouldHandleErrorInternally(error: GiniError) -> Bool
-    func didCreatePaymentRequest(paymentRequestId: String)
     func openPaymentProviderApp(requestId: String, universalLink: String)
     func submitFeedback(for document: Document, updatedExtractions: [Extraction], completion: ((Result<Void, GiniHealthAPILibrary.GiniError>) -> Void)?)
     func preview(for documentId: String, pageNumber: Int, completion: @escaping (Result<Data, GiniHealthAPILibrary.GiniError>) -> Void)
-    func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController)
+    func obtainPDFURLFromPaymentRequest(viewController: UIViewController, paymentRequestId: String)
 }
 
 /// PaymentReviewTrackingProtocol defines methods for tracking user interactions during the payment review process.
@@ -194,7 +193,6 @@ public class PaymentReviewModel: NSObject {
             self?.isLoading = false
             switch result {
             case let .success(requestId):
-                self?.delegate?.didCreatePaymentRequest(paymentRequestId: requestId)
                 completion?(requestId)
             case let .failure(error):
                 if self?.delegate?.shouldHandleErrorInternally(error: error) == true {
@@ -295,8 +293,8 @@ extension PaymentReviewModel: InstallAppBottomViewProtocol {
 }
 
 extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
-    public func didTapOnContinueToShareInvoice() {
-        viewModelDelegate?.obtainPDFFromPaymentRequest()
+    public func didTapOnContinueToShareInvoice(paymentRequestId: String) {
+        viewModelDelegate?.obtainPDFFromPaymentRequest(paymentRequestId: paymentRequestId)
     }
 }
 
