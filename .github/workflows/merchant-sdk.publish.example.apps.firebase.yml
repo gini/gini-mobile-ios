@@ -153,7 +153,7 @@ jobs:
         uses: atlassian/gajira-comment@v3
         with:
           issue: ${{ env.JIRA_TICKET_NAME }}
-          comment: Build merchant example app ${{ steps.distribute.outputs.FIREBASE_CONSOLE_URI }}
+          comment: Build merchant example app ${{ steps.distribute.outputs.FIREBASE_CONSOLE_URI }} and app tester build can be downloaded from here ${{ steps.distribute.outputs.TESTING_URI }}
       
 
 
