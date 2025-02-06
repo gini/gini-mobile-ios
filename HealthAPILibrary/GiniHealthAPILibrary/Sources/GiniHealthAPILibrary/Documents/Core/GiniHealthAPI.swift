@@ -12,13 +12,15 @@ public final class GiniHealthAPI {
     
     private var docService: DocumentService!
     private var payService: PaymentService?
+    private var configurationService: ClientConfigurationServiceProtocol?
     static var logLevel: LogLevel = .none
     public var sessionDelegate: URLSessionDelegate? = nil
 
-    init<T: DocumentService>(documentService: T, paymentService: PaymentService? )
+    init<T: DocumentService>(documentService: T, paymentService: PaymentService?, clientConfigurationService: ClientConfigurationServiceProtocol?)
     {
         self.docService = documentService
         self.payService = paymentService
+        self.configurationService = clientConfigurationService
     }
     
     /**
@@ -40,6 +42,14 @@ public final class GiniHealthAPI {
      */
     public func paymentService(apiDomain: APIDomain = .default, apiVersion: Int = Constants.defaultVersionAPI) -> PaymentService {
         return payService ?? PaymentService(sessionManager: SessionManager(userDomain: .default), apiDomain: apiDomain, apiVersion: apiVersion)
+    }
+    
+    /**
+     * The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
+     *
+     */
+    public func clientConfigurationService() -> ClientConfigurationServiceProtocol? {
+        return configurationService
     }
     
     /// Removes the user stored credentials. Recommended when logging a different user in your app.
@@ -171,7 +181,10 @@ extension GiniHealthAPI {
                                                                          apiVersion: apiVersion),
                                  paymentService: PaymentService(sessionManager: sessionManager,
                                                                 apiDomain: api,
-                                                                apiVersion: apiVersion))
+                                                                apiVersion: apiVersion),
+                                 clientConfigurationService: ClientConfigurationService(sessionManager: sessionManager,
+                                                                                        apiDomain: api,
+                                                                                        apiVersion: apiVersion))
         }
 
         private func save(_ client: Client) {

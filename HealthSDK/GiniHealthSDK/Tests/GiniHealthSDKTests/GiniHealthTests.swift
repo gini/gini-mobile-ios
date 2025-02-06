@@ -14,7 +14,9 @@ final class GiniHealthTests: XCTestCase {
         let sessionManagerMock = MockSessionManager()
         let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
         let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService)
+        giniHealthAPI = GiniHealthAPI(documentService: documentService,
+                                      paymentService: paymentService,
+                                      clientConfigurationService: nil)
         giniHealth = GiniHealth(giniApiLib: giniHealthAPI)
     }
 

@@ -19,6 +19,7 @@ enum SwitchType {
 protocol DebugMenuDelegate: AnyObject {
     func didChangeSwitchValue(type: SwitchType, isOn: Bool)
     func didPickNewLocalization(localization: GiniLocalization)
+    func didPickNewIngredientBrandType(brandType: IngredientBrandTypeEnum)
 }
 
 class DebugMenuViewController: UIViewController {
@@ -50,9 +51,17 @@ class DebugMenuViewController: UIViewController {
     private var reviewScreenSwitch: UISwitch!
     private lazy var reviewScreenRow: UIStackView = stackView(axis: .horizontal, subviews: [reviewScreenOptionLabel, reviewScreenSwitch])
 
-    private lazy var brandedOptionLabel: UILabel = rowTitle("Show Branded View")
-    private var brandedSwitch: UISwitch!
-    private lazy var brandedEditableRow: UIStackView = stackView(axis: .horizontal, subviews: [brandedOptionLabel, brandedSwitch])
+    private lazy var brandedTitleLabel: UILabel = rowTitle("Ingredient Brand")
+
+    private lazy var brandedPicker: UIPickerView = {
+        let picker = UIPickerView()
+        picker.delegate = self
+        picker.dataSource = self
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        return picker
+    }()
+
+    private lazy var brandedRow: UIStackView = stackView(axis: .horizontal, subviews: [brandedTitleLabel, brandedPicker])
 
     private lazy var bottomPaymentComponentOptionLabel: UILabel = rowTitle("Use bottom payment component")
     private var bottomPaymentComponentSwitch: UISwitch!
@@ -70,7 +79,6 @@ class DebugMenuViewController: UIViewController {
          showPaymentCloseButton: Bool) {
         super.init(nibName: nil, bundle: nil)
         self.reviewScreenSwitch = self.switchView(isOn: showReviewScreen)
-        self.brandedSwitch = self.switchView(isOn: paymentComponentConfiguration.isPaymentComponentBranded)
         self.bottomPaymentComponentSwitch = self.switchView(isOn: useBottomPaymentComponent)
         self.closeButtonSwitch = self.switchView(isOn: showPaymentCloseButton)
     }
@@ -91,20 +99,17 @@ class DebugMenuViewController: UIViewController {
         if let localization = GiniHealthConfiguration.shared.customLocalization, let index = GiniLocalization.allCases.firstIndex(of: localization) {
             localizationPicker.selectRow(index, inComponent: 0, animated: true)
         }
+        
+        if let ingredientType = GiniHealthConfiguration.shared.clientConfiguration?.ingredientBrandType?.toHealthIngredientBrandType(), let index = GiniUtilites.IngredientBrandTypeEnum.allCases.firstIndex(of: ingredientType) {
+            brandedPicker.selectRow(index, inComponent: 0, animated: true)
+        }
     }
 
     private func setupUI() {
         view.backgroundColor = UIColor(named: "background")
 
         let spacer = UIView()
-        let mainStackView = stackView(axis: .vertical,
-                                      subviews: [titleLabel,
-                                                 localizationRow,
-                                                 reviewScreenRow,
-                                                 brandedEditableRow,
-                                                 bottomPaymentComponentEditableRow,
-                                                 closeButtonRow,
-                                                 spacer])
+        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, brandedRow, bottomPaymentComponentEditableRow, closeButtonRow, spacer])
         view.addSubview(mainStackView)
 
         NSLayoutConstraint.activate([
@@ -113,9 +118,10 @@ class DebugMenuViewController: UIViewController {
             mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: spacing),
             mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -spacing),
 
+            brandedPicker.widthAnchor.constraint(equalToConstant: view.frame.width/2),
             localizationRow.heightAnchor.constraint(equalToConstant: rowHeight),
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
-            brandedEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
+            brandedRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
             closeButtonRow.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
@@ -153,15 +159,36 @@ extension DebugMenuViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return GiniLocalization.allCases.count
+        switch pickerView {
+        case localizationPicker:
+            return GiniLocalization.allCases.count
+        case brandedPicker:
+            return IngredientBrandTypeEnum.allCases.count
+        default:
+            return 0
+        }
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return GiniLocalization.allCases[row].rawValue
+        switch pickerView {
+        case localizationPicker:
+            return GiniLocalization.allCases[row].rawValue
+        case brandedPicker:
+            return IngredientBrandTypeEnum.allCases[row].rawValue
+        default:
+            return ""
+        }
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        delegate?.didPickNewLocalization(localization: GiniLocalization.allCases[row])
+        switch pickerView {
+        case localizationPicker:
+            delegate?.didPickNewLocalization(localization: GiniLocalization.allCases[row])
+        case brandedPicker:
+            delegate?.didPickNewIngredientBrandType(brandType: IngredientBrandTypeEnum.allCases[row])
+        default:
+            break
+        }
     }
 }
 
@@ -171,8 +198,6 @@ private extension DebugMenuViewController {
         switch sender {
             case reviewScreenSwitch:
                 delegate?.didChangeSwitchValue(type: .showReviewScreen, isOn: sender.isOn)
-            case brandedSwitch:
-                delegate?.didChangeSwitchValue(type: .showBrandedView, isOn: sender.isOn)
             case bottomPaymentComponentSwitch:
                 delegate?.didChangeSwitchValue(type: .useBottomPaymentComponent, isOn: sender.isOn)
             case closeButtonSwitch:
