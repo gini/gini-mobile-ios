@@ -19,7 +19,7 @@ final class DemoViewController: UIViewController {
     
     @IBOutlet private weak var contentView: UIView!
     @IBOutlet private weak var metaInformationLabel: UILabel!
-    @IBOutlet private weak var ibanTextField: TextField!
+    @IBOutlet private weak var ibanTextField: GiniTextField!
     @IBOutlet private weak var alternativeTitle: UILabel!
     @IBOutlet private weak var descriptionTitle: UILabel!
     @IBOutlet private weak var welcomeTitlte: UILabel!
