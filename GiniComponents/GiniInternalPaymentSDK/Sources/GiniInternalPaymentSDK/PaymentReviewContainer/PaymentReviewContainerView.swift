@@ -34,11 +34,21 @@ public final class PaymentReviewContainerView: UIView {
     private let recipientStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let ibanAmountContainerStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let ibanAmountHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fill).spacing(Constants.stackViewSpacing)
+    
+    private let firstStackContainerView = EmptyStackView().orientation(.vertical).distribution(.fill)
+    private let firstStackHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fillEqually).spacing(Constants.stackViewSpacing)
+    private let firstErrorsHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fillEqually)
+    
+    private let secondStackContainerView = EmptyStackView().orientation(.vertical).distribution(.fill)
+    private let secondStackHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fill).spacing(Constants.stackViewSpacing)
+    private let secondErrorsHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fill)
 
     private let ibanAmountErrorsHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fill)
+    private let recipientErrorStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let ibanErrorStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let amountErrorStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let usageStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
+    private let usageErrorStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
 
     private lazy var recipientTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.recipientFieldTag.rawValue, isEditable: !viewModel.configuration.lockedFields)
     private lazy var ibanTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.ibanFieldTag.rawValue, isEditable: !viewModel.configuration.lockedFields)
@@ -78,6 +88,8 @@ public final class PaymentReviewContainerView: UIView {
     private var paymentInputFields: [TextFieldWithLabelView] = []
     private var paymentInputFieldsErrorLabels: [UILabel] = []
     private var coupledErrorLabels: [UILabel] = []
+    private var firstCoupledErrorsLabels: [UILabel] = []
+    private var secondCoupleErrorsLabels: [UILabel] = []
     private let viewModel: PaymentReviewContainerViewModel
     /// A closure that is called when the pay button is clicked.
     public var onPayButtonClicked: (() -> Void)?
@@ -87,8 +99,13 @@ public final class PaymentReviewContainerView: UIView {
     public init(viewModel: PaymentReviewContainerViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
-        setupViewHierarchy()
-        setupLayout()
+        setupView()
+    }
+    
+    public func setupView() {
+        let isPortrait = UIDevice.current.orientation.isPortrait
+        setupViewHierarchy(isPortrait: isPortrait)
+        setupLayout(isPortrait: isPortrait)
         configureUI()
     }
 
@@ -96,27 +113,57 @@ public final class PaymentReviewContainerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupViewHierarchy() {
+    private func setupViewHierarchy(isPortrait: Bool) {
         paymentInputFields = [recipientTextFieldView, amountTextFieldView, ibanTextFieldView, usageTextFieldView]
         paymentInputFieldsErrorLabels = [recipientErrorLabel, amountErrorLabel, ibanErrorLabel, usageErrorLabel]
-        coupledErrorLabels = [amountErrorLabel, ibanErrorLabel]
+        if isPortrait {
+            coupledErrorLabels = [amountErrorLabel, ibanErrorLabel]
+        } else {
+            firstCoupledErrorsLabels = [recipientErrorLabel, ibanErrorLabel]
+            secondCoupleErrorsLabels = [amountErrorLabel, usageErrorLabel]
+        }
 
-        recipientStackView.addArrangedSubview(recipientTextFieldView)
-        recipientStackView.addArrangedSubview(recipientErrorLabel)
-
-        ibanAmountHorizontalStackView.addArrangedSubview(ibanTextFieldView)
-        ibanAmountHorizontalStackView.addArrangedSubview(amountTextFieldView)
-
-        ibanErrorStackView.addArrangedSubview(ibanErrorLabel)
-        amountErrorStackView.addArrangedSubview(amountErrorLabel)
-        ibanAmountErrorsHorizontalStackView.addArrangedSubview(ibanErrorStackView)
-        ibanAmountErrorsHorizontalStackView.addArrangedSubview(amountErrorStackView)
-
-        ibanAmountContainerStackView.addArrangedSubview(ibanAmountHorizontalStackView)
-        ibanAmountContainerStackView.addArrangedSubview(ibanAmountErrorsHorizontalStackView)
-
-        usageStackView.addArrangedSubview(usageTextFieldView)
-        usageStackView.addArrangedSubview(usageErrorLabel)
+        if isPortrait {
+            recipientStackView.addArrangedSubview(recipientTextFieldView)
+            recipientStackView.addArrangedSubview(recipientErrorLabel)
+            
+            ibanAmountHorizontalStackView.addArrangedSubview(ibanTextFieldView)
+            ibanAmountHorizontalStackView.addArrangedSubview(amountTextFieldView)
+            
+            ibanErrorStackView.addArrangedSubview(ibanErrorLabel)
+            amountErrorStackView.addArrangedSubview(amountErrorLabel)
+            ibanAmountErrorsHorizontalStackView.addArrangedSubview(ibanErrorStackView)
+            ibanAmountErrorsHorizontalStackView.addArrangedSubview(amountErrorStackView)
+            
+            ibanAmountContainerStackView.addArrangedSubview(ibanAmountHorizontalStackView)
+            ibanAmountContainerStackView.addArrangedSubview(ibanAmountErrorsHorizontalStackView)
+            
+            usageStackView.addArrangedSubview(usageTextFieldView)
+            usageStackView.addArrangedSubview(usageErrorLabel)
+        } else {
+            
+            firstStackHorizontalStackView.addArrangedSubview(recipientTextFieldView)
+            firstStackHorizontalStackView.addArrangedSubview(ibanTextFieldView)
+            
+            recipientErrorStackView.addArrangedSubview(recipientErrorLabel)
+            ibanErrorStackView.addArrangedSubview(ibanErrorLabel)
+            firstErrorsHorizontalStackView.addArrangedSubview(recipientErrorStackView)
+            firstErrorsHorizontalStackView.addArrangedSubview(ibanErrorStackView)
+            
+            secondStackHorizontalStackView.addArrangedSubview(amountTextFieldView)
+            secondStackHorizontalStackView.addArrangedSubview(usageTextFieldView)
+            
+            amountErrorStackView.addArrangedSubview(amountErrorLabel)
+            usageErrorStackView.addArrangedSubview(usageErrorLabel)
+            secondErrorsHorizontalStackView.addArrangedSubview(amountErrorStackView)
+            secondErrorsHorizontalStackView.addArrangedSubview(usageErrorStackView)
+            
+            firstStackContainerView.addArrangedSubview(firstStackHorizontalStackView)
+            firstStackContainerView.addArrangedSubview(firstErrorsHorizontalStackView)
+            
+            secondStackContainerView.addArrangedSubview(secondStackHorizontalStackView)
+            secondStackContainerView.addArrangedSubview(secondErrorsHorizontalStackView)
+        }
 
         if viewModel.configuration.showBanksPicker {
             buttonsStackView.addArrangedSubview(selectBankButton)
@@ -127,12 +174,16 @@ public final class PaymentReviewContainerView: UIView {
         bottomStackView.addArrangedSubview(UIView())
         bottomStackView.addArrangedSubview(poweredByGiniView)
         bottomView.addSubview(bottomStackView)
-
-        paymentInfoStackView.addArrangedSubview(recipientStackView)
-
-        paymentInfoStackView.addArrangedSubview(ibanAmountContainerStackView)
-
-        paymentInfoStackView.addArrangedSubview(usageStackView)
+        
+        paymentInfoStackView.removeAllArrangedSubviews()
+        if isPortrait {
+            paymentInfoStackView.addArrangedSubview(recipientStackView)
+            paymentInfoStackView.addArrangedSubview(ibanAmountContainerStackView)
+            paymentInfoStackView.addArrangedSubview(usageStackView)
+        } else {
+            paymentInfoStackView.addArrangedSubview(firstStackContainerView)
+            paymentInfoStackView.addArrangedSubview(secondStackContainerView)
+        }
         paymentInfoStackView.addArrangedSubview(buttonsView)
         paymentInfoStackView.addArrangedSubview(bottomView)
         paymentInfoStackView.addArrangedSubview(UIView())
@@ -142,11 +193,16 @@ public final class PaymentReviewContainerView: UIView {
 
     // MARK: Layout & Constraints
 
-    private func setupLayout() {
+    private func setupLayout(isPortrait: Bool) {
         setupContainerContraints()
-        setupRecipientStackViewConstraints()
-        setupIbanAmountStackViewsConstraints()
-        setupUsageStackViewConstraints()
+        if isPortrait {
+            setupRecipientStackViewConstraints()
+            setupIbanAmountStackViewsConstraints()
+            setupUsageStackViewConstraints()
+        } else {
+            setupFirstStackViewsConstraints()
+            setupSecondStackViewsConstraints()
+        }
         setupButtonConstraints()
         setupPoweredByGiniConstraints()
     }
@@ -196,6 +252,30 @@ public final class PaymentReviewContainerView: UIView {
         NSLayoutConstraint.activate([
             usageTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
             usageErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight)
+        ])
+    }
+    
+    private func setupFirstStackViewsConstraints() {
+        NSLayoutConstraint.activate([
+            ibanTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
+            amountTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
+            ibanErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+        ])
+    }
+    
+    private func setupSecondStackViewsConstraints() {
+        let amountTextFieldWidthConstraint = amountTextFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountWidth)
+        amountTextFieldWidthConstraint.priority = .required - 1
+        let amountErrorLabelWidthConstraint = amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountWidth)
+        amountTextFieldWidthConstraint.priority = .required - 1
+        NSLayoutConstraint.activate([
+            amountTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
+            usageTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
+            amountTextFieldWidthConstraint,
+            usageErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            amountErrorLabelWidthConstraint
         ])
     }
 
@@ -518,7 +598,14 @@ public final class PaymentReviewContainerView: UIView {
     private func updateAmountIbanErrorState() {
         ibanAmountErrorsHorizontalStackView.isHidden = coupledErrorLabels.allSatisfy { $0.isHidden }
     }
+    
+    private func updateRecipientIbanErrorState() {
+        firstErrorsHorizontalStackView.isHidden = firstCoupledErrorsLabels.allSatisfy { $0.isHidden }
+    }
 
+    private func updateAmountUsageErrorState() {
+        secondErrorsHorizontalStackView.isHidden = secondCoupleErrorsLabels.allSatisfy { $0.isHidden }
+    }
     // MARK: - Pay Button Action
     fileprivate func payButtonClicked() {
         self.endEditing(true)

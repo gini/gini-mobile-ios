@@ -25,6 +25,9 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     lazy var paymentInfoContainerView = buildPaymentInfoContainerView()
     lazy var collectionView = buildCollectionView()
     lazy var pageControl = buildPageControl()
+    
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
 
     private var infoBarBottomConstraint: NSLayoutConstraint?
 
@@ -156,6 +159,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             layoutInfoBar()
             setContent(content: paymentInfoContainerView)
         }
+        setupInitialLayout()
     }
 
     // MARK: - Pay Button Action
@@ -398,7 +402,6 @@ fileprivate extension PaymentReviewViewController {
             collectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: navigationBarHeight),
-            collectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.collectionViewBottomPadding),
 
             pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight),
             pageControl.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -Constants.collectionViewPadding),
@@ -527,6 +530,68 @@ extension PaymentReviewViewController {
         DispatchQueue.main.async { [weak self] in
             self?.present(alertController, animated: true, completion: nil)
         }
+    }
+}
+
+extension PaymentReviewViewController {
+    private func setupInitialLayout() {
+        updateLayoutForCurrentOrientation()
+    }
+
+    private func updateLayoutForCurrentOrientation() {
+        let deviceOrientation = UIDevice.current.orientation
+        switch deviceOrientation {
+        case .portrait:
+            setupPortraitConstraints()
+        case .landscapeLeft, .landscapeRight:
+            setupLandscapeConstraints()
+        default:
+            break
+        }
+        collectionView.reloadData()
+    }
+    
+    private func setupPortraitConstraints() {
+        setupConstraints(for: .vertical)
+    }
+    
+    private func setupLandscapeConstraints() {
+        setupConstraints(for: .horizontal)
+    }
+    
+    private func setupConstraints(for orientation: NSLayoutConstraint.Axis) {
+        // Deactivate previous constraints
+        NSLayoutConstraint.deactivate(orientation == .vertical ? landscapeConstraints : portraitConstraints)
+        
+        paymentInfoContainerView.setupView()
+        
+        let isPortrait = orientation == .vertical
+        let showCollectionView = model.displayMode == .documentCollection
+        
+        var constraints = [] as [NSLayoutConstraint]
+        
+        if showCollectionView {
+            constraints.append(collectionView.bottomAnchor.constraint(equalTo: isPortrait ? paymentInfoContainerView.topAnchor : mainView.bottomAnchor, constant: Constants.collectionViewBottomPadding))
+        }
+        
+        if isPortrait {
+            portraitConstraints = constraints
+            NSLayoutConstraint.activate(portraitConstraints)
+        } else {
+            landscapeConstraints = constraints
+            NSLayoutConstraint.activate(landscapeConstraints)
+        }
+    }
+    
+    // Handle orientation change
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        updateLayoutForCurrentOrientation()
+
+        // Perform layout updates with animation
+        coordinator.animate(alongsideTransition: { context in
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 
