@@ -20,6 +20,9 @@
 		289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289570912A30CD7600CC2C56 /* SettingsViewController.swift */; };
 		289570942A30CE2800CC2C56 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289570922A30CD7600CC2C56 /* SettingsViewController.xib */; };
 		289918002BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289917FF2BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift */; };
+		289A754B2D553E9B0079E44A /* DemoScreenSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289A754A2D553E9B0079E44A /* DemoScreenSwiftUIView.swift */; };
+		289A75502D55451C0079E44A /* GiniSwiftUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289A754F2D5545190079E44A /* GiniSwiftUIButton.swift */; };
+		289A75522D5545460079E44A /* IBANTextFieldSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289A75512D55453E0079E44A /* IBANTextFieldSwiftUIView.swift */; };
 		289D3DB32A4EC857002A6681 /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D3DB12A4EC857002A6681 /* InfoTableViewCell.swift */; };
 		289D3DB42A4EC857002A6681 /* InfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */; };
 		28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */; };
@@ -112,7 +115,7 @@
 		28F62F9E2AB21B1700D47866 /* DemoScreenStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62F9D2AB21B1700D47866 /* DemoScreenStrings.swift */; };
 		28F62FA22AB21C2E00D47866 /* DemoScreen.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28F62FA42AB21C2E00D47866 /* DemoScreen.strings */; };
 		28F62FA72AB2236500D47866 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA62AB2236500D47866 /* Device.swift */; };
-		28F62FA92AB319A000D47866 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA82AB319A000D47866 /* TextField.swift */; };
+		28F62FA92AB319A000D47866 /* GiniTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA82AB319A000D47866 /* GiniTextField.swift */; };
 		3E7839CE29C9DBB700B42216 /* ExtractionResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7839CD29C9DBB700B42216 /* ExtractionResultTableViewCell.swift */; };
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
 		502B63FA2C3FED5D00B5D5EA /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 502B63F92C3FED5D00B5D5EA /* PhotosUI.framework */; };
@@ -258,6 +261,9 @@
 		289570912A30CD7600CC2C56 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		289570922A30CD7600CC2C56 /* SettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		289917FF2BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalInvoiceIntegrationTests.swift; sourceTree = "<group>"; };
+		289A754A2D553E9B0079E44A /* DemoScreenSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoScreenSwiftUIView.swift; sourceTree = "<group>"; };
+		289A754F2D5545190079E44A /* GiniSwiftUIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniSwiftUIButton.swift; sourceTree = "<group>"; };
+		289A75512D55453E0079E44A /* IBANTextFieldSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBANTextFieldSwiftUIView.swift; sourceTree = "<group>"; };
 		289D3DB12A4EC857002A6681 /* InfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
 		289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoTableViewCell.xib; sourceTree = "<group>"; };
 		28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SettingsButtonStates.swift"; sourceTree = "<group>"; };
@@ -323,7 +329,7 @@
 		28F62FA32AB21C2E00D47866 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DemoScreen.strings; sourceTree = "<group>"; };
 		28F62FA52AB21C3000D47866 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/DemoScreen.strings; sourceTree = "<group>"; };
 		28F62FA62AB2236500D47866 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
-		28F62FA82AB319A000D47866 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		28F62FA82AB319A000D47866 /* GiniTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniTextField.swift; sourceTree = "<group>"; };
 		3E7839CD29C9DBB700B42216 /* ExtractionResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResultTableViewCell.swift; sourceTree = "<group>"; };
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
@@ -487,6 +493,34 @@
 			path = DigitalInvoiceWithSkonto;
 			sourceTree = "<group>";
 		};
+		289A754C2D5544C70079E44A /* DemoScreen */ = {
+			isa = PBXGroup;
+			children = (
+				289A754E2D5544DD0079E44A /* UIKit */,
+				289A754D2D5544D20079E44A /* SwiftUI */,
+			);
+			path = DemoScreen;
+			sourceTree = "<group>";
+		};
+		289A754D2D5544D20079E44A /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				289A75512D55453E0079E44A /* IBANTextFieldSwiftUIView.swift */,
+				289A754A2D553E9B0079E44A /* DemoScreenSwiftUIView.swift */,
+				289A754F2D5545190079E44A /* GiniSwiftUIButton.swift */,
+			);
+			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		289A754E2D5544DD0079E44A /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				F4AD00C125DED43200C34E15 /* DemoViewController.swift */,
+				28F62F982AB1C2CA00D47866 /* DemoViewController.xib */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
 		28B5873A2A37270F008CB210 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -495,7 +529,7 @@
 				28B5873D2A3727F8008CB210 /* ReusableView.swift */,
 				28CDB8222A38A5E40016A81C /* ColorPalette.swift */,
 				28F62FA62AB2236500D47866 /* Device.swift */,
-				28F62FA82AB319A000D47866 /* TextField.swift */,
+				28F62FA82AB319A000D47866 /* GiniTextField.swift */,
 				2883DE052AB89F4000AE3A9C /* GiniCaptureSDKColors.swift */,
 				28DB2C812A39AF5000F5B304 /* GiniButton.swift */,
 				284F52092BD959F300CF70AD /* UIColor.swift */,
@@ -953,6 +987,7 @@
 		F490C7E325DE873900D8CA6F /* GiniBankSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				289A754C2D5544C70079E44A /* DemoScreen */,
 				28BB82022C91D4D9003C8389 /* TransactionSummary */,
 				5DCC9FA32C779BC000C1B76A /* Models */,
 				84CD074B2C7DB501004DF1DE /* DigitalInvoiceSkontoBottomNavigationBar */,
@@ -973,8 +1008,6 @@
 				F441DCC525E56BF800AAB09A /* LaunchScreen.xib */,
 				F459606E2A813CB1004B0112 /* SettingsViewController */,
 				F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */,
-				F4AD00C125DED43200C34E15 /* DemoViewController.swift */,
-				28F62F982AB1C2CA00D47866 /* DemoViewController.xib */,
 				F4AD00BB25DED33300C34E15 /* Coordinator.swift */,
 				F44AD01428D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift */,
 				F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */,
@@ -1335,6 +1368,7 @@
 			files = (
 				28DAF4B32CD293AD0035A1FF /* GiniCameraAccessScreenUITests.swift in Sources */,
 				83D02CD3290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */,
+				289A75502D55451C0079E44A /* GiniSwiftUIButton.swift in Sources */,
 				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
 				768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */,
 				847B68CC2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift in Sources */,
@@ -1355,6 +1389,7 @@
 				28DAF4C42CD3A85A0035A1FF /* HelpScreen.swift in Sources */,
 				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,
 				F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */,
+				289A75522D5545460079E44A /* IBANTextFieldSwiftUIView.swift in Sources */,
 				28DAF4C02CD3A8520035A1FF /* OnboardingScreen.swift in Sources */,
 				289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */,
 				28DAF4BA2CD293C40035A1FF /* GiniMainScreenUITests.swift in Sources */,
@@ -1369,7 +1404,7 @@
 				84F2FD142CD0FABC00DAE5B4 /* SettingsHeaderView.swift in Sources */,
 				28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */,
 				F4AD00C225DED43200C34E15 /* DemoViewController.swift in Sources */,
-				28F62FA92AB319A000D47866 /* TextField.swift in Sources */,
+				28F62FA92AB319A000D47866 /* GiniTextField.swift in Sources */,
 				28DAF4BE2CD293CD0035A1FF /* GiniSkontoScreenUITests.swift in Sources */,
 				28DAF4C92CD3A8660035A1FF /* SettingScreen.swift in Sources */,
 				28F62FA72AB2236500D47866 /* Device.swift in Sources */,
@@ -1384,6 +1419,7 @@
 				8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */,
 				28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */,
 				5DCC9FA12C769A0900C1B76A /* APIEnvironment.swift in Sources */,
+				289A754B2D553E9B0079E44A /* DemoScreenSwiftUIView.swift in Sources */,
 				28DAF4CA2CD3A8680035A1FF /* TransactionDocsScreen.swift in Sources */,
 				5D5328882C63F71100DEA203 /* CredentialsTableViewCell.swift in Sources */,
 				76EFD4D429B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift in Sources */,

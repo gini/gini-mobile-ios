@@ -1,5 +1,5 @@
 //
-//  TextField.swift
+//  GiniTextField.swift
 //  GiniBankSDKExample
 //
 //  Created by Valentina Iancu on 14.09.23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TextField: UITextField {
+class GiniTextField: UITextField {
     
     let padding = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
     

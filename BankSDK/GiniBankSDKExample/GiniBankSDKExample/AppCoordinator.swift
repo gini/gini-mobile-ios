@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import GiniCaptureSDK
 import GiniBankAPILibrary
 import GiniBankSDK
@@ -19,14 +20,31 @@ final class AppCoordinator: Coordinator {
     fileprivate var screenAPIViewController: UIViewController?
     
     var rootViewController: UIViewController {
-        return demoViewController
+        return demoView
     }
-    lazy var demoViewController: DemoViewController = {
-        let viewController = DemoViewController()
-        viewController.delegate = self
-        viewController.clientId = self.client.id
-        return viewController
+//    lazy var demoViewController: DemoViewController = {
+//        let viewController = DemoViewController()
+//        viewController.delegate = self
+//        viewController.clientId = self.client.id
+//        return viewController
+//    }()
+    lazy var demoView: UIViewController = {
+        let view = DemoView(
+            clientId: self.client.id,
+            onPhotoPayment: { [weak self] in
+                self?.didSelectEntryPoint(.button)
+            },
+            onSettingsTap: { [weak self] in
+                self?.didSelectSettings()
+            },
+            onEntryPointSelected: { [weak self] entryPoint in
+                self?.didSelectEntryPoint(entryPoint)
+            }
+        )
+
+        return UIHostingController(rootView: view)
     }()
+
 
     lazy var configuration: GiniBankConfiguration = {
         let configuration = GiniBankConfiguration.shared
@@ -321,7 +339,7 @@ final class AppCoordinator: Coordinator {
 
 // MARK: - DemoViewControllerDelegate
 
-extension AppCoordinator: DemoViewControllerDelegate {
+extension AppCoordinator {
     func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint) {
         GiniBankConfiguration.shared.entryPoint = entryPoint
         showScreenAPI()
