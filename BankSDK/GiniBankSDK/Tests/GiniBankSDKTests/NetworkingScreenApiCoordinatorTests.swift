@@ -28,7 +28,7 @@ private class MockCaptureResultsDelegate: GiniCaptureResultsDelegate {
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
     }
     
-    func giniCaptureDidCloseAnalysis() {
+    func giniCaptureDidCancelAnalysis() {
         closeCalled = true
     }
     
