@@ -434,8 +434,8 @@ extension AppCoordinator: DebugMenuDelegate {
         health.setConfiguration(giniHealthConfiguration)
     }
     
-    func didPickNewComunicationTone(comunicationTone: GiniUtilites.ComunicationToneEnum) {
-        giniHealthConfiguration.clientConfiguration?.comunicationTone = GiniHealthAPILibrary.ComunicationToneEnum(rawValue: comunicationTone.rawValue)
+    func didPickNewCommunicationTone(communicationTone: GiniUtilites.CommunicationToneEnum) {
+        giniHealthConfiguration.clientConfiguration?.communicationTone = GiniHealthAPILibrary.CommunicationToneEnum(rawValue: communicationTone.rawValue)
         health.setConfiguration(giniHealthConfiguration)
     }
 }

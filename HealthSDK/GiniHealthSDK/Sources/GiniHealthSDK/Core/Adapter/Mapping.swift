@@ -253,8 +253,8 @@ extension GiniHealthAPILibrary.IngredientBrandTypeEnum {
     }
 }
 
-extension GiniHealthAPILibrary.ComunicationToneEnum {
-    public func toHealthComunicationTone() -> GiniUtilites.ComunicationToneEnum {
-        GiniUtilites.ComunicationToneEnum(rawValue: rawValue) ?? .formal
+extension GiniHealthAPILibrary.CommunicationToneEnum {
+    public func toHealthCommunicationTone() -> GiniUtilites.CommunicationToneEnum {
+        GiniUtilites.CommunicationToneEnum(rawValue: rawValue) ?? .formal
     }
 }

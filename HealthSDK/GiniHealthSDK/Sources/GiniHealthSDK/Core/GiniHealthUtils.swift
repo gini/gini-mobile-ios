@@ -56,9 +56,9 @@ func NSLocalizedStringPreferredFormat(_ key: String,
                                       fallbackKey: String = "",
                                       comment: String,
                                       isCustomizable: Bool = true) -> String {
-    let comunicationTone = GiniHealthConfiguration.shared.clientConfiguration?.comunicationTone
-            .flatMap { ComunicationToneEnum(rawValue: $0.rawValue) }
-    return GiniLocalized.string(key, fallbackKey: fallbackKey, comment: comment, locale: GiniHealthConfiguration.shared.customLocalization?.rawValue, bundle: giniHealthBundle(), comunicationTone: comunicationTone)
+    let communicationTone = GiniHealthConfiguration.shared.clientConfiguration?.communicationTone
+            .flatMap { CommunicationToneEnum(rawValue: $0.rawValue) }
+    return GiniLocalized.string(key, fallbackKey: fallbackKey, comment: comment, locale: GiniHealthConfiguration.shared.customLocalization?.rawValue, bundle: giniHealthBundle(), communicationTone: communicationTone)
 }
 
 /**
