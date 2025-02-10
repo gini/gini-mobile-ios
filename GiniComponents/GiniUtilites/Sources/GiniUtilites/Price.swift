@@ -12,9 +12,18 @@ import Foundation
 
 public struct Price {
     // Decimal value
-    public var value: Decimal
+    public var value: Decimal {
+        didSet {
+            if value > Price.maxValue {
+                value = Price.maxValue
+            }
+        }
+    }
     // Currency code
     let currencyCode: String
+    
+    // Maximum allowed value
+    private static let maxValue: Decimal = 99999.99
 
     /**
      Returns a price structure with decimal value and  currency code from extraction string

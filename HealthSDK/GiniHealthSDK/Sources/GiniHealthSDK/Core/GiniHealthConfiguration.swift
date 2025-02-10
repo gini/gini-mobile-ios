@@ -154,7 +154,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
     Custom localization configuration for localizable strings.
     */
-   public var customLocalization: GiniLocalization?
+    public var customLocalization: GiniLocalization?
     
     /**
      Client's configuration provided from the server
