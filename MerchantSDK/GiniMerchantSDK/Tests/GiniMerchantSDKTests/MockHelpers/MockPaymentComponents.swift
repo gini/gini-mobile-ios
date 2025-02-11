@@ -113,7 +113,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                         configuration: giniMerchant.paymentInfoConfiguration,
                                                         strings: giniMerchant.paymentInfoStrings,
                                                         poweredByGiniConfiguration: giniMerchant.poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: giniMerchant.poweredByGiniStrings)
+                                                        poweredByGiniStrings: giniMerchant.poweredByGiniStrings,
+                                                        clientConfiguration: nil)
         let paymentInfoViewController = PaymentInfoViewController(viewModel: paymentInfoViewModel)
         return paymentInfoViewController
     }
