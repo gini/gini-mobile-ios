@@ -34,7 +34,7 @@ extension PaymentComponentsController {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders.map{ $0.toHealthPaymentProvider() }
                 self?.sortPaymentProviders()
-                self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
+//                self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
                 GiniUtilites.Log("Couldn't load payment providers: \(error.localizedDescription)", event: .error)
@@ -287,7 +287,8 @@ extension PaymentComponentsController {
                                                         configuration: configurationProvider.paymentInfoConfiguration,
                                                         strings: stringsProvider.paymentInfoStrings,
                                                         poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                        clientConfiguration: configurationProvider.clientConfiguration)
         return PaymentInfoViewController(viewModel: paymentInfoViewModel)
     }
 
@@ -306,7 +307,8 @@ extension PaymentComponentsController {
                                                                   strings: stringsProvider.installAppStrings,
                                                                   primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
                                                                   poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                                  poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                                  poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                                  clientConfiguration: configurationProvider.clientConfiguration)
         installAppBottomViewModel.viewDelegate = self
         let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return installAppBottomView
@@ -333,7 +335,8 @@ extension PaymentComponentsController {
                                                                       poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                       qrCodeData: qrCodeData,
                                                                       paymentInfo: paymentInfo,
-                                                                      paymentRequestId: paymentRequestId)
+                                                                      paymentRequestId: paymentRequestId,
+                                                                      clientConfiguration: configurationProvider.clientConfiguration)
         shareInvoiceBottomViewModel.viewDelegate = self
         shareInvoiceBottomViewModel.documentId = documentId
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)

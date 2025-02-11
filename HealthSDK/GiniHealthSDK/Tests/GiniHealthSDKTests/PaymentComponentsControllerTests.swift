@@ -93,7 +93,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                           moreInformationStrings: giniHealth.moreInformationStrings,
                                                           minimumButtonsHeight: giniHealth.paymentComponentButtonsHeight,
                                                           paymentComponentConfiguration: giniHealth.paymentComponentConfiguration,
-                                                          clientConfiguration: nil)
+                                                          clientConfiguration: giniHealth.clientConfiguration)
 
         let expectedView = PaymentComponentView(viewModel: expectedViewModel)
         expectedViewModel.documentId = documentId
@@ -171,7 +171,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                    moreInformationConfiguration: giniHealth.moreInformationConfiguration,
                                                    moreInformationStrings: giniHealth.moreInformationStrings,
                                                    urlOpener: URLOpener(MockUIApplication(canOpen: false)),
-                                                   clientConfiguration: nil)
+                                                   clientConfiguration: giniHealth.clientConfiguration)
 
 
         XCTAssertEqual(bottomViewModel.paymentProviders.count, 11)

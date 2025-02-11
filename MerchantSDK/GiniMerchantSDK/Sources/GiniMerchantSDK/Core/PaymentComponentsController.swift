@@ -374,7 +374,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                         configuration: configurationProvider.paymentInfoConfiguration,
                                                         strings: stringsProvider.paymentInfoStrings,
                                                         poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                        clientConfiguration: nil)
         return PaymentInfoViewController(viewModel: paymentInfoViewModel)
     }
 
@@ -393,7 +394,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                   strings: stringsProvider.installAppStrings,
                                                                   primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
                                                                   poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                                  poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                                  poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                                  clientConfiguration: nil)
         installAppBottomViewModel.viewDelegate = self
         let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return installAppBottomView
@@ -420,7 +422,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                       poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                       qrCodeData: qrCodeData,
                                                                       paymentInfo: nil,
-                                                                      paymentRequestId: paymentRequestId)
+                                                                      paymentRequestId: paymentRequestId,
+                                                                      clientConfiguration: nil)
         shareInvoiceBottomViewModel.viewDelegate = self
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return shareInvoiceBottomView
