@@ -14,9 +14,11 @@ final class GiniHealthTests: XCTestCase {
         let sessionManagerMock = MockSessionManager()
         let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
         let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
+        let clientConfigurationService = ClientConfigurationService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
+        GiniHealthConfiguration.shared.clientConfiguration = nil
         giniHealthAPI = GiniHealthAPI(documentService: documentService,
                                       paymentService: paymentService,
-                                      clientConfigurationService: nil)
+                                      clientConfigurationService: clientConfigurationService)
         giniHealth = GiniHealth(giniApiLib: giniHealthAPI)
     }
 
@@ -520,5 +522,46 @@ final class GiniHealthTests: XCTestCase {
         // Then
         XCTAssertNotNil(receivedDoctorExtraction)
         XCTAssertEqual(receivedDoctorExtraction?.value, expectedDoctorName)
+    }
+
+    func testLoadClientConfigurationFromFile() {
+        // Given
+        let expectedClientId = "testClientId"
+        let expectedCommunicationType: GiniHealthAPILibrary.CommunicationToneEnum = .formal
+        let expectedBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
+
+        // When
+        let expectation = self.expectation(description: "Getting client configuration details")
+        var receivedClientConfiguration: ClientConfiguration?
+
+        giniHealth.clientConfigurationService?.fetchConfigurations { result in
+            switch result {
+            case .success(let clientConfiguration):
+                receivedClientConfiguration = clientConfiguration
+            case .failure(_):
+                receivedClientConfiguration = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        XCTAssertNotNil(receivedClientConfiguration)
+        XCTAssertEqual(receivedClientConfiguration?.clientID, expectedClientId)
+        XCTAssertEqual(receivedClientConfiguration?.communicationTone, expectedCommunicationType)
+        XCTAssertEqual(receivedClientConfiguration?.ingredientBrandType, expectedBrandType)
+    }
+
+    func testLoadDefaultClientConfiguration() {
+        // Given
+        let testClientId = "testClientId"
+        let clientConfiguration = ClientConfiguration(clientID: testClientId)
+        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .formal
+        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
+
+        // Expected
+        XCTAssertNotNil(clientConfiguration)
+        XCTAssertEqual(clientConfiguration.clientID, testClientId)
+        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
+        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
     }
 }

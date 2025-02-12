@@ -248,7 +248,6 @@ public struct DataForReview {
      */
     public func setConfiguration(_ configuration: GiniHealthConfiguration) {
         GiniHealthConfiguration.shared = configuration
-        paymentComponentsController.configurationProvider.clientConfiguration = configuration.clientConfiguration
     }
 
     /**

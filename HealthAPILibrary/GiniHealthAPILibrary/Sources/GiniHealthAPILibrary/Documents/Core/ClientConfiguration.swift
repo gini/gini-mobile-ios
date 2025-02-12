@@ -20,7 +20,7 @@ public struct ClientConfiguration: Codable {
      - parameter ingredientBrandType: A configuration that indicates the presence of the ingredient brand. Defaults to `nil`.
      */
     public init(clientID: String,
-                communicationTone: CommunicationToneEnum? = nil,
+                communicationTone: CommunicationToneEnum? = .formal,
                 ingredientBrandType: IngredientBrandTypeEnum? = .invisible) {
         self.clientID = clientID
         self.communicationTone = communicationTone

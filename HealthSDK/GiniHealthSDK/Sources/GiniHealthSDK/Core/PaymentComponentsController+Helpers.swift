@@ -95,7 +95,7 @@ extension PaymentComponentsController {
             switch result {
             case let .success(clientConfiguration):
                 GiniHealthConfiguration.shared.clientConfiguration = clientConfiguration
-                self.giniSDK.setConfiguration(GiniHealthConfiguration.shared)
+                self.configurationProvider.clientConfiguration = clientConfiguration
             case let .failure(error):
                 GiniUtilites.Log("Couldn't load client configuration: \(error.localizedDescription)", event: .error)
             }
