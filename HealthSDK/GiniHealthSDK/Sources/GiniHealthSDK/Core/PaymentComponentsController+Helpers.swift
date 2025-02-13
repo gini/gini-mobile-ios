@@ -34,7 +34,7 @@ extension PaymentComponentsController {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders.map{ $0.toHealthPaymentProvider() }
                 self?.sortPaymentProviders()
-//                self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
+                self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
                 GiniUtilites.Log("Couldn't load payment providers: \(error.localizedDescription)", event: .error)
