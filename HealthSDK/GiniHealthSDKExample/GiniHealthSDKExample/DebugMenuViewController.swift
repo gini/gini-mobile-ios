@@ -19,8 +19,6 @@ enum SwitchType {
 protocol DebugMenuDelegate: AnyObject {
     func didChangeSwitchValue(type: SwitchType, isOn: Bool)
     func didPickNewLocalization(localization: GiniLocalization)
-    func didPickNewIngredientBrandType(brandType: IngredientBrandTypeEnum)
-    func didPickNewCommunicationTone(communicationTone: CommunicationToneEnum)
 }
 
 class DebugMenuViewController: UIViewController {
@@ -52,33 +50,9 @@ class DebugMenuViewController: UIViewController {
     private var reviewScreenSwitch: UISwitch!
     private lazy var reviewScreenRow: UIStackView = stackView(axis: .horizontal, subviews: [reviewScreenOptionLabel, reviewScreenSwitch])
 
-    private lazy var brandedTitleLabel: UILabel = rowTitle("Ingredient Brand")
-
-    private lazy var brandedPicker: UIPickerView = {
-        let picker = UIPickerView()
-        picker.delegate = self
-        picker.dataSource = self
-        picker.translatesAutoresizingMaskIntoConstraints = false
-        return picker
-    }()
-
-    private lazy var brandedRow: UIStackView = stackView(axis: .horizontal, subviews: [brandedTitleLabel, brandedPicker])
-
     private lazy var bottomPaymentComponentOptionLabel: UILabel = rowTitle("Use bottom payment component")
     private var bottomPaymentComponentSwitch: UISwitch!
     private lazy var bottomPaymentComponentEditableRow: UIStackView = stackView(axis: .horizontal, subviews: [bottomPaymentComponentOptionLabel, bottomPaymentComponentSwitch])
-    
-    private lazy var communicationToneTitleLabel: UILabel = rowTitle("Communication Tone")
-
-    private lazy var communicationPicker: UIPickerView = {
-        let picker = UIPickerView()
-        picker.delegate = self
-        picker.dataSource = self
-        picker.translatesAutoresizingMaskIntoConstraints = false
-        return picker
-    }()
-    
-    private lazy var communicationToneRow: UIStackView = stackView(axis: .horizontal, subviews: [communicationToneTitleLabel, communicationPicker])
 
     private lazy var closeButtonOptionLabel: UILabel = rowTitle("Show Payment Review Close Button")
     private var closeButtonSwitch: UISwitch!
@@ -112,21 +86,13 @@ class DebugMenuViewController: UIViewController {
         if let localization = GiniHealthConfiguration.shared.customLocalization, let index = GiniLocalization.allCases.firstIndex(of: localization) {
             localizationPicker.selectRow(index, inComponent: 0, animated: true)
         }
-        
-        if let ingredientType = GiniHealthConfiguration.shared.clientConfiguration?.ingredientBrandType?.toHealthIngredientBrandType(), let index = GiniUtilites.IngredientBrandTypeEnum.allCases.firstIndex(of: ingredientType) {
-            brandedPicker.selectRow(index, inComponent: 0, animated: true)
-        }
-        
-        if let communicationTone = GiniHealthConfiguration.shared.clientConfiguration?.communicationTone?.toHealthCommunicationTone(), let index = GiniUtilites.CommunicationToneEnum.allCases.firstIndex(of: communicationTone) {
-            communicationPicker.selectRow(index, inComponent: 0, animated: true)
-        }
     }
 
     private func setupUI() {
         view.backgroundColor = UIColor(named: "background")
 
         let spacer = UIView()
-        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, communicationToneRow, reviewScreenRow, brandedRow, bottomPaymentComponentEditableRow, closeButtonRow, spacer])
+        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, bottomPaymentComponentEditableRow, closeButtonRow, spacer])
         view.addSubview(mainStackView)
 
         NSLayoutConstraint.activate([
@@ -135,12 +101,8 @@ class DebugMenuViewController: UIViewController {
             mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: spacing),
             mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -spacing),
 
-            brandedPicker.widthAnchor.constraint(equalToConstant: view.frame.width/2),
-            communicationPicker.widthAnchor.constraint(equalToConstant: view.frame.width/2),
             localizationRow.heightAnchor.constraint(equalToConstant: rowHeight),
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
-            brandedRow.heightAnchor.constraint(equalToConstant: rowHeight),
-            communicationToneRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
             closeButtonRow.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
@@ -181,10 +143,6 @@ extension DebugMenuViewController: UIPickerViewDelegate, UIPickerViewDataSource 
         switch pickerView {
         case localizationPicker:
             return GiniLocalization.allCases.count
-        case brandedPicker:
-            return IngredientBrandTypeEnum.allCases.count
-        case communicationPicker:
-            return CommunicationToneEnum.allCases.count
         default:
             return 0
         }
@@ -194,10 +152,6 @@ extension DebugMenuViewController: UIPickerViewDelegate, UIPickerViewDataSource 
         switch pickerView {
         case localizationPicker:
             return GiniLocalization.allCases[row].rawValue
-        case brandedPicker:
-            return IngredientBrandTypeEnum.allCases[row].rawValue
-        case communicationPicker:
-            return CommunicationToneEnum.allCases[row].rawValue
         default:
             return ""
         }
@@ -207,10 +161,6 @@ extension DebugMenuViewController: UIPickerViewDelegate, UIPickerViewDataSource 
         switch pickerView {
         case localizationPicker:
             delegate?.didPickNewLocalization(localization: GiniLocalization.allCases[row])
-        case brandedPicker:
-            delegate?.didPickNewIngredientBrandType(brandType: IngredientBrandTypeEnum.allCases[row])
-        case communicationPicker:
-            delegate?.didPickNewCommunicationTone(communicationTone: CommunicationToneEnum.allCases[row])
         default:
             break
         }

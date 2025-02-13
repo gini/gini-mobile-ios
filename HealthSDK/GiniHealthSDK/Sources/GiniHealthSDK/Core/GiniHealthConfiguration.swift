@@ -159,7 +159,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      Client's configuration provided from the server
      */
-    public var clientConfiguration: ClientConfiguration?
+    var clientConfiguration: ClientConfiguration?
 }
 
 extension GiniHealthConfiguration {
