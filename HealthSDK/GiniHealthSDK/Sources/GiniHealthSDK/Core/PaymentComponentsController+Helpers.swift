@@ -846,6 +846,7 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     
     /// Notifies the delegate when the more information button is tapped on the bank selection bottom view
     public func didTapOnMoreInformation() {
+        previousPresentedViews.append(.bankPicker)
         openMoreInformationViewController()
     }
 }
