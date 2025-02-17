@@ -339,9 +339,11 @@ fileprivate extension GiniBank {
         let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
                                                               extractions: extractionInfo,
                                                               transactionProceesed: true)
-        internalTransactionDocsDataCoordinator?
-            .getTransactionDocsViewModel()?
-            .setTransactionDocsDocumentPagesViewModel(viewModel, for: documentId)
+        DispatchQueue.main.async { [weak self] in
+            self?.internalTransactionDocsDataCoordinator?
+                .getTransactionDocsViewModel()?
+                .setTransactionDocsDocumentPagesViewModel(viewModel, for: documentId)
+        }
     }
 
     private func fetchDocumentPages(documentId: String, completion: @escaping ([UIImage], GiniError?) -> Void) {
