@@ -170,6 +170,7 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
                                   type: docType)
         }
 
+        // for now there is one document per transaction that's why we always use the first attachement object
         bankSDK.handleTransactionDocsDataLoading(for: transaction.attachments[0].documentId)
         displayTransactionDetails(for: transaction)
     }
