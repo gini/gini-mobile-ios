@@ -52,6 +52,7 @@ public class TransactionDocsViewModel {
         internalTransactionDocsDataCoordinator?.deleteTransactionDoc(with: documentId)
         onUpdate?()
     }
+
     /// Handles the action to preview an attached document
     /// - Parameter documentId: The ID of the document to preview.
     func handlePreviewDocument(for documentId: String) {
