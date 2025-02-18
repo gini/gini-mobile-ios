@@ -322,7 +322,6 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var skontoNavigationBarBottomAdapter: SkontoNavigationBarBottomAdapter?
 
-
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the Skonto help screen
      */
