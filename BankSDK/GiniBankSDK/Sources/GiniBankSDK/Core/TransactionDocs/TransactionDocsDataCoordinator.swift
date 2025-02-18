@@ -155,8 +155,10 @@ public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, Transa
     }
 
     // MARK: - Multiple transactions handling public methods
+
     /// Sets the transactions and creates a view model for each.
-    /// If a single transaction is provided, it updates the old `transactionDocsViewModel` for backward compatibility.
+    /// - Parameter transactions: A nested array of `TransactionDoc` objects, where each inner array represents
+    /// the documents attached to a specific transaction.
     public func setTransactions(_ transactions: [[TransactionDoc]]) {
         self.transactions = transactions
         transactionViewModels = transactions.map { docs in

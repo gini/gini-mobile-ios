@@ -20,10 +20,17 @@ public protocol TransactionDocsDataProtocol: AnyObject {
     /// The list of attached transaction documents.
     var transactionDocs: [TransactionDoc] { get set }
 
-    /// Allows external apps to set transactions inside the SDK.
+    /// Sets the transactions and creates a `TransactionDocsViewModel` for each.
+    /// This method allows to provide multiple transactions, each containing a list of documents.
+    ///
+    /// - Parameter transactions: A nested array of `TransactionDoc` objects, where each inner array
+    /// represents the documents attached to a specific transaction.
     func setTransactions(_ transactions: [[TransactionDoc]])
 
-    /// Sets the selected transaction index.
+    /// Sets the selected transaction index within the SDK.
+    /// This determines which transaction's documents will be accessed and displayed.
+    ///
+    /// - Parameter index: The index of the transaction to select.
     func setSelectedTransactionIndex(_ index: Int)
 
     /// Retrieves the current value of the "Always Attach Documents" setting.
