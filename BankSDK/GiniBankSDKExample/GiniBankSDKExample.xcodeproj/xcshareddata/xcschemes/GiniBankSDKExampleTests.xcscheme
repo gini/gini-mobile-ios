@@ -52,17 +52,6 @@
                ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2870684C2CB9670200D5F2C9"
-               BuildableName = "GiniBankSDKExampleUITests.xctest"
-               BlueprintName = "GiniBankSDKExampleUITests"
-               ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -103,15 +92,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F490C7FC25DE87A800D8CA6F"
-            BuildableName = "GiniBankSDKExampleTests.xctest"
-            BlueprintName = "GiniBankSDKExampleTests"
-            ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
