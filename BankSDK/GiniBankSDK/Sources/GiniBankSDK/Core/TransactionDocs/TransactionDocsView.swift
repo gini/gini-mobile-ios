@@ -33,6 +33,7 @@ public class TransactionDocsView: UIView {
     private var viewModel: TransactionDocsViewModel? {
         return internalTransactionDocsDataCoordinator?.getTransactionDocsViewModel()
     }
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical

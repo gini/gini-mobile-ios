@@ -14,12 +14,17 @@ public protocol TransactionDocsDataProtocol: AnyObject {
     /// The view controller responsible for presenting document-related views.
     var presentingViewController: UIViewController? { get set }
 
-    // TODO: remove this if you add public access to transactionDocs -> need to change something in TransactionSummaryTableViewController
     /// The list of attached transaction document ids.
     var transactionDocIDs: [String] { get }
 
     /// The list of attached transaction documents.
     var transactionDocs: [TransactionDoc] { get set }
+
+    /// Allows external apps to set transactions inside the SDK.
+    func setTransactions(_ transactions: [[TransactionDoc]])
+
+    /// Sets the selected transaction index.
+    func setSelectedTransactionIndex(_ index: Int)
 
     /// Retrieves the current value of the "Always Attach Documents" setting.
     /// - Returns: A `Bool` representing whether documents should always be attached to the transaction.
