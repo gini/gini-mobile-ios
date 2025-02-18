@@ -16,18 +16,18 @@ public struct ClientConfiguration: Codable {
      Creates a new `ClientConfiguration` instance.
      
      - parameter clientID: A unique identifier for the client.
-     - parameter comunicationTone: A configuration that indicates the comunication tone of the texts. Defaults to `nil
+     - parameter communicationTone: A configuration that indicates the comunication tone of the texts. Defaults to `nil
      - parameter ingredientBrandType: A configuration that indicates the presence of the ingredient brand. Defaults to `nil`.
      */
     public init(clientID: String,
-                comunicationTone: ComunicationToneEnum? = nil,
+                communicationTone: CommunicationToneEnum? = .formal,
                 ingredientBrandType: IngredientBrandTypeEnum? = .invisible) {
         self.clientID = clientID
-        self.comunicationTone = comunicationTone
+        self.communicationTone = communicationTone
         self.ingredientBrandType = ingredientBrandType
     }
     
     public let clientID: String
-    public var comunicationTone: ComunicationToneEnum?
+    public var communicationTone: CommunicationToneEnum?
     public var ingredientBrandType: IngredientBrandTypeEnum?
 }

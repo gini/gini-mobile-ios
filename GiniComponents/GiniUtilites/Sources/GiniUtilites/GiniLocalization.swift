@@ -27,6 +27,27 @@ public enum IngredientBrandTypeEnum: String, Codable, CaseIterable {
 }
 
 /**
+ An enumeration representing the tone of communication.
+
+ Use this enum to specify whether the communication style should be formal or informal.
+ */
+public enum CommunicationToneEnum: String, Codable, CaseIterable {
+    case formal = "FORMAL"
+    case informal = "INFORMAL"
+
+    func localizable() -> String {
+        switch self {
+            case .formal:
+                "de"
+            case .informal:
+                "de_informal"
+        }
+    }
+
+    static let defaultCommunicationTone = CommunicationToneEnum.formal.localizable()
+}
+
+/**
  A utility for retrieving localized strings from the client's bundle or SDK bundle.
  */
 public enum GiniLocalized {
@@ -41,8 +62,11 @@ public enum GiniLocalized {
 
      - Returns: The localized string for the given key.
      */
-    public static func string(_ key: String, fallbackKey: String? = nil, comment: String, locale: String?, bundle: Bundle) -> String {
-        let locale = locale ?? getLanguageCode() ?? GiniLocalization.en.rawValue
+    public static func string(_ key: String, fallbackKey: String? = nil, comment: String, locale: String?, bundle: Bundle, communicationTone: CommunicationToneEnum? = .none) -> String {
+        var locale = locale ?? getLanguageCode() ?? GiniLocalization.en.rawValue
+        if locale == GiniLocalization.de.rawValue {
+            locale = communicationTone?.localizable() ?? CommunicationToneEnum.defaultCommunicationTone
+        }
         let clientAppBundle = Bundle.main
 
         if let clientString = overridedString(key, locale: locale, comment: comment, bundle: clientAppBundle) {

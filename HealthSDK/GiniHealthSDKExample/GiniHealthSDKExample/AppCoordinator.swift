@@ -428,9 +428,4 @@ extension AppCoordinator: DebugMenuDelegate {
         giniHealthConfiguration.customLocalization = localization
         health.setConfiguration(giniHealthConfiguration)
     }
-    
-    func didPickNewIngredientBrandType(brandType: GiniUtilites.IngredientBrandTypeEnum) {
-        giniHealthConfiguration.clientConfiguration?.ingredientBrandType = GiniHealthAPILibrary.IngredientBrandTypeEnum(rawValue: brandType.rawValue)
-        health.setConfiguration(giniHealthConfiguration)
-    }
 }

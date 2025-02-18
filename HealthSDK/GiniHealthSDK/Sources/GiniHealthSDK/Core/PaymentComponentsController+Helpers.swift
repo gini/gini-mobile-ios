@@ -34,7 +34,7 @@ extension PaymentComponentsController {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders.map{ $0.toHealthPaymentProvider() }
                 self?.sortPaymentProviders()
-//                self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
+                self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
                 GiniUtilites.Log("Couldn't load payment providers: \(error.localizedDescription)", event: .error)
@@ -95,7 +95,7 @@ extension PaymentComponentsController {
             switch result {
             case let .success(clientConfiguration):
                 GiniHealthConfiguration.shared.clientConfiguration = clientConfiguration
-                self.giniSDK.setConfiguration(GiniHealthConfiguration.shared)
+                self.configurationProvider.clientConfiguration = clientConfiguration
             case let .failure(error):
                 GiniUtilites.Log("Couldn't load client configuration: \(error.localizedDescription)", event: .error)
             }
@@ -846,6 +846,7 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     
     /// Notifies the delegate when the more information button is tapped on the bank selection bottom view
     public func didTapOnMoreInformation() {
+        previousPresentedViews.append(.bankPicker)
         openMoreInformationViewController()
     }
 }
