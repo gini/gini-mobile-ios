@@ -78,6 +78,22 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         self.transactions = transactions.sorted { $0.date > $1.date }
 
        transactionDocsDataCoordinator.presentingViewController = navigationController
+
+        let mappedTransactions = self.transactions.map { transaction in
+            return transaction.attachments.map { attachment in
+                var attachmentFileName = attachment.filename + ".png"
+                if attachment.filename.contains("pdf") {
+                    attachmentFileName = attachment.filename
+                }
+                let docType: TransactionDocType = (attachment.type == .image) ? .image : .document
+                return TransactionDoc(documentId: attachment.documentId,
+                                      fileName: attachmentFileName,
+                                      type: docType)
+            }
+        }
+
+        // Set mapped transactions inside the SDK
+        transactionDocsDataCoordinator.setTransactions(mappedTransactions)
     }
 
     private func configureRoundedCorners(for cell: UITableViewCell, at indexPath: IndexPath, in tableView: UITableView) {
@@ -158,20 +174,14 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         tableView.deselectRow(at: indexPath, animated: true)
         let index = indexPath.row
         let transaction = transactions[index]
-        transactionDocsDataCoordinator.transactionDocs = transaction.attachments.map { attachment in
-            //TODO: this is hardcoded for now, we need to get the filename from backend
-            var attachmentFileName = attachment.filename + ".png"
-            if attachment.filename.contains("pdf") {
-                attachmentFileName = attachment.filename
-            }
-            let docType: TransactionDocType = (attachment.type == .image) ? .image : .document
-            return TransactionDoc(documentId: attachment.documentId,
-                                  fileName: attachmentFileName,
-                                  type: docType)
-        }
 
+        transactionDocsDataCoordinator.setSelectedTransactionIndex(index)
+        // please note that setSelectedTransactionIndex should be called before handleTransactionDocsDataLoading
         // for now there is one document per transaction that's why we always use the first attachement object
-        bankSDK.handleTransactionDocsDataLoading(for: transaction.attachments[0].documentId)
+        if !transaction.attachments.isEmpty {
+            // do this only if there is a document attached to the transaction to load
+            bankSDK.handleTransactionDocsDataLoading(for: transaction.attachments[0].documentId)
+        }
         displayTransactionDetails(for: transaction)
     }
 
