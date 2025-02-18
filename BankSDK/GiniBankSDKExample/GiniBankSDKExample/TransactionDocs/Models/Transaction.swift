@@ -15,7 +15,7 @@ struct Transaction: Codable {
     let paymentRecipient: String
     let iban: String?
     let paymentReference: String
-    let attachments: [Attachment]
+    var attachments: [Attachment]
 
     var transactionInfo: [TransactionInfo] {
         [

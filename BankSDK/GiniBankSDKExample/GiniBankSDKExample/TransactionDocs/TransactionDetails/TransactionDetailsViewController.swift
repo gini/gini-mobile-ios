@@ -9,13 +9,20 @@ import UIKit
 import GiniBankSDK
 import GiniCaptureSDK
 
+protocol TransactionDetailsViewDelegate: AnyObject {
+    /// Called when an attachment is deleted from a transaction.
+    func transactionDetailsViewDidUpdate(_ transaction: Transaction)
+}
+
 class TransactionDetailsViewController: UIViewController {
 
     var transactionData: Transaction?
+    weak var delegate: TransactionDetailsViewDelegate?
 
     private let tableView = UITableView()
+    private let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
     private var numberOfSections = 1
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,6 +37,7 @@ class TransactionDetailsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         numberOfSections = (transactionData?.attachments.isEmpty ?? true) ? 1 : 2
         title = NSLocalizedStringPreferredFormat("transaction.details.title",
                                                  fallbackKey: "Transaction Details",
@@ -108,7 +116,18 @@ extension TransactionDetailsViewController:  UITableViewDataSource, UITableViewD
 }
 extension TransactionDetailsViewController: TransactionDocsViewDelegate {
     func transactionDocsViewDidUpdateContent(_ attachmentsView: TransactionDocsView) {
-        numberOfSections = (transactionData?.attachments.isEmpty ?? true) ? 1 : 2
+        let currentTransactionDocIDs = transactionDocsDataCoordinator.transactionDocIDs
+        numberOfSections = currentTransactionDocIDs.isEmpty ? 1 : 2
         tableView.reloadData()
+
+        // Filter out deleted attachments
+        transactionData?.attachments.removeAll { attachment in
+            !currentTransactionDocIDs.contains(attachment.documentId)
+        }
+
+        // Notify delegate about the update
+        if let transactionData = transactionData {
+            delegate?.transactionDetailsViewDidUpdate(transactionData)
+        }
     }
 }

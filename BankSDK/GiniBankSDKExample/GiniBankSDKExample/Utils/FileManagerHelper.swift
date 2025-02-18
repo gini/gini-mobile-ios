@@ -45,7 +45,7 @@ class FileManagerHelper {
     }
 
     // Write data to the file (generic)
-    private func write<T: Codable>(_ objects: [T]) {
+   func write<T: Codable>(_ objects: [T]) {
         guard let fileURL = fileURL() else { return }
 
         let encoder = JSONEncoder()

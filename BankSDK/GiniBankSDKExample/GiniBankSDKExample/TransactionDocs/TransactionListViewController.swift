@@ -28,11 +28,17 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupUI()
         loadData()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
 
     private func setupUI() {
@@ -126,6 +132,7 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
     private func displayTransactionDetails(for transaction: Transaction) {
         let transactionDetailsViewController = TransactionDetailsViewController()
         transactionDetailsViewController.transactionData = transaction
+        transactionDetailsViewController.delegate = self
         navigationController?.pushViewController(transactionDetailsViewController, animated: true)
     }
 
@@ -187,6 +194,23 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
 
     @objc private func closeButtonTapped() {
         dismiss(animated: true)
+    }
+}
+
+extension TransactionListViewController: TransactionDetailsViewDelegate {
+    func transactionDetailsViewDidUpdate(_ transaction: Transaction) {
+        // Find the transaction by matching unique fields (date + paymentReference + paymentRecipient)
+        if let index = transactions.firstIndex(where: {
+            $0.date == transaction.date &&
+            $0.paymentReference == transaction.paymentReference &&
+            $0.paymentRecipient == transaction.paymentRecipient
+        }) {
+            transactions[index] = transaction
+        }
+
+        // Save updated transactions list to file
+        let fileManager = FileManagerHelper(fileName: "transaction_list.json")
+        fileManager.write(transactions) // Persist updated transactions
     }
 }
 
