@@ -127,7 +127,7 @@ class TransactionCell: UITableViewCell, CodeLoadableView {
         NSLayoutConstraint.activate([
             mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.mainHorizontalSpacing),
             mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.mainVerticalSpacing),
-            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.mainVerticalSpacing), // TODO: in design is a bit different
+            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.mainVerticalSpacing),
             mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.mainHorizontalSpacing)
         ])
     }
