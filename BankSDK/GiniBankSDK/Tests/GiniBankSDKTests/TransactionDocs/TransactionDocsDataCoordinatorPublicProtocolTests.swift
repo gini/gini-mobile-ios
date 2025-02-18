@@ -61,4 +61,45 @@ class TransactionDocsDataCoordinatorPublicProtocolTests: XCTestCase {
         XCTAssertFalse(GiniBankUserDefaultsStorage.alwaysAttachDocs ?? true,
                        "Expected GiniBankUserDefaultsStorage.alwaysAttachDocs to be false after setting coordinator.setAlwaysAttachDocs to false")
     }
+
+    func testTransactionDocsShouldUpdateCorrectly() {
+        coordinator.transactionDocs = mockDocs
+
+        XCTAssertEqual(coordinator.transactionDocs.count,
+                       mockDocs.count,
+                       "Expected transactionDocs count to match the mockDocs count after setting")
+
+        XCTAssertEqual(coordinator.transactionDocs.first?.documentId,
+                       mockDocs.first?.documentId,
+                       "Expected first documentId to match the first mock document's ID")
+
+        XCTAssertEqual(coordinator.transactionDocs.last?.documentId,
+                       mockDocs.last?.documentId,
+                       "Expected last documentId to match the last mock document's ID")
+    }
+
+    func testSetTransactionsShouldStoreAndRetrieveCorrectly() {
+        let transactions = TransactionDoc.createMockTransactions()
+
+        coordinator.setTransactions(transactions)
+
+        XCTAssertEqual(coordinator.transactionDocs.count, 2,
+                       "Expected transactionDocs to match the first transaction after setting transactions")
+
+        coordinator.setSelectedTransactionIndex(1)
+
+        XCTAssertEqual(coordinator.transactionDocs.count, 2,
+                       "Expected transactionDocs to match the second transaction after selecting index 1")
+    }
+
+    func testSetSelectedTransactionIndexInvalidIndexShouldNotChangeTransactionDocs() {
+        let transactions = TransactionDoc.createMockTransactions()
+
+        coordinator.setTransactions(transactions)
+
+        coordinator.setSelectedTransactionIndex(5) // Invalid index
+
+        XCTAssertEqual(coordinator.transactionDocs.count, 2,
+                       "Expected transactionDocs to remain unchanged when selecting an invalid index")
+    }
 }

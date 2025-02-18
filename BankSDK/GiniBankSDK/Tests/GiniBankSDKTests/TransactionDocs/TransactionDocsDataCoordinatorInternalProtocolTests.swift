@@ -10,7 +10,7 @@ import XCTest
 
 class TransactionDocsDataCoordinatorInternalProtocolTests: XCTestCase {
 
-    var coordinator: TransactionDocsDataInternalProtocol!
+    var coordinator: TransactionDocsDataCoordinator!
     private var mockDocs: [TransactionDoc]!
 
     override func setUp() {

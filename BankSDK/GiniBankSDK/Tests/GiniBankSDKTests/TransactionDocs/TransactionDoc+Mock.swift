@@ -7,9 +7,17 @@
 @testable import GiniBankSDK
 
 extension TransactionDoc {
-    static func createMockDocuments() -> [TransactionDoc] {
-        let doc1 = TransactionDoc(documentId: "doc1", fileName: "filename1", type: .document)
-        let doc2 = TransactionDoc(documentId: "doc2", fileName: "filename2", type: .document)
-        return [doc1, doc2]
+    /// Creates a mock list of transaction documents.
+    static func createMockDocuments(count: Int = 2) -> [TransactionDoc] {
+        return (1...count).map { index in
+            TransactionDoc(documentId: "doc\(index)", fileName: "filename\(index)", type: .document)
+        }
+    }
+
+    /// Creates a mock list of transactions, where each transaction contains a list of documents.
+    static func createMockTransactions(transactionCount: Int = 2, documentsPerTransaction: Int = 2) -> [[TransactionDoc]] {
+        return (1...transactionCount).map { _ in
+            createMockDocuments(count: documentsPerTransaction)
+        }
     }
 }
