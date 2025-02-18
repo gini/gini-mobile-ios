@@ -33,7 +33,7 @@ internal protocol TransactionDocsDataInternalProtocol: AnyObject {
 
 /// A class that implements the `TransactionDocsDataProtocol` to manage transaction document data.
 /// Responsible for handling the state of attaching, managing, and presenting documents attached to a transaction.
-public class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, TransactionDocsDataInternalProtocol {
+public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, TransactionDocsDataInternalProtocol {
 
     // MARK: - Internal properties and methods
 
