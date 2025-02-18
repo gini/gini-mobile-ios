@@ -140,29 +140,22 @@ extension DebugMenuViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch pickerView {
-        case localizationPicker:
+        if pickerView == localizationPicker {
             return GiniLocalization.allCases.count
-        default:
-            return 0
         }
+        return 0
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        switch pickerView {
-        case localizationPicker:
+        if pickerView == localizationPicker {
             return GiniLocalization.allCases[row].rawValue
-        default:
-            return ""
         }
+        return ""
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        switch pickerView {
-        case localizationPicker:
+        if pickerView == localizationPicker {
             delegate?.didPickNewLocalization(localization: GiniLocalization.allCases[row])
-        default:
-            break
         }
     }
 }
