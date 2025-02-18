@@ -156,7 +156,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                           bic: bic,
                                           amountToPay: amoutToPay)
 
-        let transactionDocIDs = configuration.transactionDocsDataCoordinator.transactionDocIDs
         let attachments = configuration.transactionDocsDataCoordinator.transactionDocs.map {
             return Attachment(documentId: $0.documentId,
                               filename: $0.fileName,
