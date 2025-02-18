@@ -87,7 +87,12 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
     }
 
     public var transactionDocIDs: [String] {
-        return transactionDocs.map { $0.documentId }
+        if transactionViewModels.isEmpty {
+            return transactionDocs.map { $0.documentId }
+        } else if transactions.indices.contains(selectedTransactionIndex) {
+            return transactions[selectedTransactionIndex].map { $0.documentId }
+        }
+        return []
     }
 
     /// Sets the "Always Attach Documents" setting to the given value.
@@ -106,15 +111,13 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
     /// - Parameter documentId: The ID of the document to delete.
     public func deleteTransactionDoc(with documentId: String) {
         if transactionViewModels.isEmpty {
-            // single transaction support
+            // Single transaction support
             transactionDocs.removeAll { $0.documentId == documentId }
-            return
+        } else if transactions.indices.contains(selectedTransactionIndex) {
+            // Multiple transactions support
+            transactions[selectedTransactionIndex].removeAll { $0.documentId == documentId }
+            transactionDocs = transactions[selectedTransactionIndex] // Ensure sync
         }
-
-        // multiple transactions support
-        guard transactions.indices.contains(selectedTransactionIndex) else { return }
-
-        transactions[selectedTransactionIndex].removeAll { $0.documentId == documentId }
     }
 
     /// Informs that an error occurred while trying to preview a document.
@@ -173,10 +176,9 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
         }
     }
 
-    /// Sets the selected transaction index.
     public func setSelectedTransactionIndex(_ index: Int) {
         guard transactions.indices.contains(index) else { return }
         self.selectedTransactionIndex = index
+        transactionDocs = transactions[index] // Ensure `transactionDocs` is up-to-date
     }
-
 }
