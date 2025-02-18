@@ -96,6 +96,9 @@ public final class PaymentReviewContainerView: UIView {
     /// A closure that is called when the banks selection button is clicked.
     public var onBankSelectionButtonClicked: (() -> Void)?
 
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
+
     public init(viewModel: PaymentReviewContainerViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -114,6 +117,8 @@ public final class PaymentReviewContainerView: UIView {
     }
 
     private func setupViewHierarchy(isPortrait: Bool) {
+        subviews.forEach { $0.removeFromSuperview() }
+
         paymentInputFields = [recipientTextFieldView, amountTextFieldView, ibanTextFieldView, usageTextFieldView]
         paymentInputFieldsErrorLabels = [recipientErrorLabel, amountErrorLabel, ibanErrorLabel, usageErrorLabel]
         if isPortrait {
@@ -141,7 +146,6 @@ public final class PaymentReviewContainerView: UIView {
             usageStackView.addArrangedSubview(usageTextFieldView)
             usageStackView.addArrangedSubview(usageErrorLabel)
         } else {
-            
             firstStackHorizontalStackView.addArrangedSubview(recipientTextFieldView)
             firstStackHorizontalStackView.addArrangedSubview(ibanTextFieldView)
             
@@ -205,12 +209,11 @@ public final class PaymentReviewContainerView: UIView {
         }
         setupButtonConstraints()
         setupPoweredByGiniConstraints()
+        updateLayoutForCurrentOrientation(isPortrait: isPortrait)
     }
 
     private func setupContainerContraints() {
         NSLayoutConstraint.activate([
-            paymentInfoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPadding),
-            paymentInfoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPadding),
             paymentInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : Constants.topBottomPaymentInfoContainerPadding),
             paymentInfoStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : -Constants.topBottomPaymentInfoContainerPadding)
         ])
@@ -226,6 +229,44 @@ public final class PaymentReviewContainerView: UIView {
         addDoneButtonForNumPad(amountTextFieldView)
     }
 
+    private func updateLayoutForCurrentOrientation(isPortrait: Bool) {
+        if isPortrait {
+            setupPortraitConstraints()
+        } else {
+            setupLandscapeConstraints()
+        }
+    }
+
+    private func setupPortraitConstraints() {
+        setupConstraints(for: .vertical)
+    }
+
+    private func setupLandscapeConstraints() {
+        setupConstraints(for: .horizontal)
+    }
+
+    private func setupConstraints(for orientation: NSLayoutConstraint.Axis) {
+        // Deactivate previous constraints
+        let isPortrait = orientation == .vertical
+        NSLayoutConstraint.deactivate(isPortrait ? landscapeConstraints : portraitConstraints)
+
+        let constraints = [
+            paymentInfoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: isPortrait ? Constants.leftRightPaymentInfoContainerPortraitPadding : Constants.leftRightPaymentInfoContainerLandscapePadding),
+            paymentInfoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: isPortrait ? -Constants.leftRightPaymentInfoContainerPortraitPadding : -Constants.leftRightPaymentInfoContainerLandscapePadding),
+            bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPortraitPadding),
+            bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPortraitPadding),
+        ]
+
+        if isPortrait {
+            portraitConstraints = constraints
+            NSLayoutConstraint.activate(portraitConstraints)
+        } else {
+            landscapeConstraints = constraints
+            NSLayoutConstraint.activate(landscapeConstraints)
+        }
+    }
+
+
     private func setupRecipientStackViewConstraints() {
         NSLayoutConstraint.activate([
             recipientTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
@@ -234,9 +275,9 @@ public final class PaymentReviewContainerView: UIView {
     }
 
     private func setupIbanAmountStackViewsConstraints() {
-        let amountTextFieldWidthConstraint = amountTextFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountWidth)
+        let amountTextFieldWidthConstraint = amountTextFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountPortraitWidth)
         amountTextFieldWidthConstraint.priority = .required - 1
-        let amountErrorLabelWidthConstraint = amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountWidth)
+        let amountErrorLabelWidthConstraint = amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountPortraitWidth)
         amountErrorLabelWidthConstraint.priority = .required - 1
         NSLayoutConstraint.activate([
             ibanTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
@@ -265,17 +306,13 @@ public final class PaymentReviewContainerView: UIView {
     }
     
     private func setupSecondStackViewsConstraints() {
-        let amountTextFieldWidthConstraint = amountTextFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountWidth)
-        amountTextFieldWidthConstraint.priority = .required - 1
-        let amountErrorLabelWidthConstraint = amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountWidth)
-        amountTextFieldWidthConstraint.priority = .required - 1
         NSLayoutConstraint.activate([
             amountTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
             usageTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            amountTextFieldWidthConstraint,
+            amountTextFieldView.widthAnchor.constraint(equalToConstant: Constants.amountLandscapeWidth),
             usageErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
             amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
-            amountErrorLabelWidthConstraint
+            amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountLandscapeWidth)
         ])
     }
 
@@ -291,8 +328,6 @@ public final class PaymentReviewContainerView: UIView {
 
     private func setupPoweredByGiniConstraints() {
         NSLayoutConstraint.activate([
-            bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPadding),
-            bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPadding),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
             bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
             bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
@@ -803,11 +838,13 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
 extension PaymentReviewContainerView {
     enum Constants {
         static let buttonViewHeight = 56.0
-        static let leftRightPaymentInfoContainerPadding = 8.0
+        static let leftRightPaymentInfoContainerPortraitPadding = 8.0
+        static let leftRightPaymentInfoContainerLandscapePadding = 56.0
         static let topBottomPaymentInfoContainerPadding = 16.0
         static let textFieldHeight = 56.0
         static let errorLabelHeight = 12.0
-        static let amountWidth = 95.0
+        static let amountPortraitWidth = 95.0
+        static let amountLandscapeWidth = 120.0
         static let animationDuration: CGFloat = 0.3
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let heightToolbar = 40.0
