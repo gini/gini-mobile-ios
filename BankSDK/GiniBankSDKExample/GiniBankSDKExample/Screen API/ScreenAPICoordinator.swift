@@ -159,7 +159,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         let attachments = configuration.transactionDocsDataCoordinator.transactionDocs.map {
             return Attachment(documentId: $0.documentId,
                               filename: $0.fileName,
-                              type: $0.type == .document ? .document : .image)
+                              type: $0.isFile ? .document : .image)
         }
 
         let transaction = Transaction(date: Date(),
