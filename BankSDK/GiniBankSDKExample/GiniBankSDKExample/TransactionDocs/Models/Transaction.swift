@@ -9,6 +9,7 @@ import Foundation
 import GiniCaptureSDK
 
 struct Transaction: Codable {
+    let identifier: String
     let date: Date
     let paiedAmount: String
     let paymentPurpose: String
@@ -16,6 +17,27 @@ struct Transaction: Codable {
     let iban: String?
     let paymentReference: String
     var attachments: [Attachment]
+
+    // Initialize with a unique identifier
+    init(
+        identifier: String = UUID().uuidString, // Generate a random unique identifier if not provided
+        date: Date,
+        paiedAmount: String,
+        paymentPurpose: String,
+        paymentRecipient: String,
+        iban: String?,
+        paymentReference: String,
+        attachments: [Attachment]
+    ) {
+        self.identifier = identifier
+        self.date = date
+        self.paiedAmount = paiedAmount
+        self.paymentPurpose = paymentPurpose
+        self.paymentRecipient = paymentRecipient
+        self.iban = iban
+        self.paymentReference = paymentReference
+        self.attachments = attachments
+    }
 
     var transactionInfo: [TransactionInfo] {
         [

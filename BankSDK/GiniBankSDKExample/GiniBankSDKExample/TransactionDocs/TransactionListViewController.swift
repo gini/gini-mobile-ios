@@ -86,10 +86,15 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
        transactionDocsDataCoordinator.presentingViewController = navigationController
 
         let mappedTransactions = self.transactions.map { transaction in
-            return transaction.attachments.map { attachment in
-                return TransactionDoc(documentId: attachment.documentId,
-                                      originalFileName: attachment.filename)
-            }
+            GiniTransaction(
+                identifier: transaction.identifier,
+                transactionDocs: transaction.attachments.map { attachment in
+                    GiniTransactionDoc(
+                        documentId: attachment.documentId,
+                        originalFileName: attachment.filename
+                    )
+                }
+            )
         }
 
         // Set mapped transactions inside the SDK
@@ -181,11 +186,12 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         let index = indexPath.row
         let transaction = transactions[index]
 
-        transactionDocsDataCoordinator.setSelectedTransactionIndex(index)
-        // please note that setSelectedTransactionIndex should be called before handleTransactionDocsDataLoading
-        // for now there is one document per transaction that's why we always use the first attachement object
+        transactionDocsDataCoordinator.setSelectedTransaction(transaction.identifier)
+        // please note that setSelectedTransaction should be called before handleTransactionDocsDataLoading
         if !transaction.attachments.isEmpty {
             // do this only if there is a document attached to the transaction to load
+
+            // for now there is one document per transaction that's why we always use the first attachement object
             bankSDK.handleTransactionDocsDataLoading(for: transaction.attachments[0].documentId)
         }
         displayTransactionDetails(for: transaction)
