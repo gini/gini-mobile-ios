@@ -12,11 +12,11 @@ class TransactionDocsDataCoordinatorPublicProtocolTests: XCTestCase {
     var coordinator: TransactionDocsDataProtocol!
     
     private let mockViewController = UIViewController()
-    private var mockDocs: [TransactionDoc]!
+    private var mockDocs: [GiniTransactionDoc]!
 
     override func setUp() {
         super.setUp()
-        mockDocs = TransactionDoc.createMockDocuments()
+        mockDocs = GiniTransaction.createMockDocuments()
         let transactionDocsDataCoordinator = TransactionDocsDataCoordinator()
         transactionDocsDataCoordinator.transactionDocs = mockDocs
         coordinator = transactionDocsDataCoordinator
@@ -79,27 +79,27 @@ class TransactionDocsDataCoordinatorPublicProtocolTests: XCTestCase {
     }
 
     func testSetTransactionsShouldStoreAndRetrieveCorrectly() {
-        let transactions = TransactionDoc.createMockTransactions()
+        let transactions = GiniTransaction.createMockTransactions(transactionCount: 2, documentsPerTransaction: 2)
 
         coordinator.setTransactions(transactions)
 
         XCTAssertEqual(coordinator.transactionDocs.count, 2,
                        "Expected transactionDocs to match the first transaction after setting transactions")
 
-        coordinator.setSelectedTransactionIndex(1)
+        coordinator.setSelectedTransaction(transactions[1].identifier)
 
         XCTAssertEqual(coordinator.transactionDocs.count, 2,
-                       "Expected transactionDocs to match the second transaction after selecting index 1")
+                       "Expected transactionDocs to match the second transaction after selecting by identifier")
     }
 
-    func testSetSelectedTransactionIndexInvalidIndexShouldNotChangeTransactionDocs() {
-        let transactions = TransactionDoc.createMockTransactions()
+    func testSetSelectedTransactionInvalidIdentifierShouldNotChangeTransactionDocs() {
+        let transactions = GiniTransaction.createMockTransactions(transactionCount: 2, documentsPerTransaction: 2)
 
         coordinator.setTransactions(transactions)
 
-        coordinator.setSelectedTransactionIndex(5) // Invalid index
+        coordinator.setSelectedTransaction("invalid_id") // Non-existent identifier
 
         XCTAssertEqual(coordinator.transactionDocs.count, 2,
-                       "Expected transactionDocs to remain unchanged when selecting an invalid index")
+                       "Expected transactionDocs to remain unchanged when selecting an invalid identifier")
     }
 }
