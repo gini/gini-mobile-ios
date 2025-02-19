@@ -39,7 +39,23 @@ final class DemoViewController: UIViewController {
     private var cameraImageView: UIImageView?
     
     var clientId: String?
-    
+
+    private let textColor = GiniColor(light: .black, dark: .white).uiColor()
+    private let iconColor = GiniColor(light: .black, dark: .white).uiColor()
+    private var itemBackgroundColor: UIColor {
+        return GiniColor(light: giniCaptureColor("Light04"),
+                         dark: giniCaptureColor("Dark04")).uiColor()
+    }
+
+    private var cameraInputImage: UIImage? {
+        return UIImage(named: "cameraInput")?.tintedImageWithColor(iconColor)
+    }
+
+
+    private var settingsImage: UIImage? {
+        return ImageAsset.settingsIcon.image.tintedImageWithColor(iconColor)
+    }
+
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +89,7 @@ final class DemoViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         cameraImageView?.image = cameraInputImage
+        settingsButton.setImage(settingsImage, for: .normal)
     }
     
     // MARK: - Configure UI
@@ -84,17 +101,8 @@ final class DemoViewController: UIViewController {
     }
 
     private func configureSettingsButton() {
-        let settingsImage: UIImage?
-
-        if #available(iOS 13.0, *) {
-            settingsImage = UIImage(systemName: "gear")
-        } else {
-            settingsImage = UIImage(named: "settings") // Use a custom asset for iOS 12
-        }
-
         settingsButton.setImage(settingsImage, for: .normal)
         settingsButton.setTitle("", for: .normal)
-        settingsButton.setTitleColor(textColor, for: .normal)
         settingsButton.addTarget(self, action: #selector(launchSettings), for: .touchUpInside)
         settingsButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.settingsButton.rawValue
     }
@@ -133,18 +141,7 @@ final class DemoViewController: UIViewController {
             UITextField.appearance().tintColor = ColorPalette.giniBlue
         }
     }
-    
-    private let textColor = GiniColor(light: .black, dark: .white).uiColor()
-    private let iconColor = GiniColor(light: .black, dark: .white).uiColor()
-    private var itemBackgroundColor: UIColor {
-        return GiniColor(light: giniCaptureColor("Light04"),
-                         dark: giniCaptureColor("Dark04")).uiColor()
-    }
-    
-    private var cameraInputImage: UIImage? {
-        return UIImage(named: "cameraInput")?.tintedImageWithColor(iconColor)
-    }
-    
+
     private func configureAlternativeTitle() {
         alternativeTitle.text = DemoScreenStrings.alternativeText.localized
         alternativeTitle.textColor = textColor
