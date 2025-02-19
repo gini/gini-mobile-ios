@@ -607,10 +607,13 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         },
                                                 attachAction: { [weak self] in
             if let documentId = documentId {
+                // NOTE: For now all the documents that are not PDfs will be saved with name "Document.png"
+                // this should come from backend in the feature
+                // for PDFs documents Gini store the original name
+                let originalFileName = originalDocumentName ?? "Document.png"
                 self?.giniBankConfiguration.transactionDocsDataCoordinator
                     .transactionDocs = [.init(documentId: documentId,
-                                              fileName: originalDocumentName ?? "Document",
-                                              type: .document)]
+                                              originalFileName: originalFileName)]
                 self?.setTransactionDocsDataToDisplay(with: extractionResult, for: documentId)
             } else {
                 self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
