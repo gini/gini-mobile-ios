@@ -18,9 +18,11 @@ enum AttachmentType: String, Codable {
     case document
 
     var icon: UIImage? {
-        if self == .document {
-            return ImageAsset.transactionDocsFileIcon.image
+        switch self {
+            case .document:
+                return ImageAsset.transactionDocsFileIcon.image
+            case .image:
+                return ImageAsset.transactionDocsImageIcon.image
         }
-        return nil
     }
 }
