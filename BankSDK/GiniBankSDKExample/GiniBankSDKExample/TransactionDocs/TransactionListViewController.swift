@@ -87,14 +87,8 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
 
         let mappedTransactions = self.transactions.map { transaction in
             return transaction.attachments.map { attachment in
-                var attachmentFileName = attachment.filename + ".png"
-                if attachment.filename.contains("pdf") {
-                    attachmentFileName = attachment.filename
-                }
-                let docType: TransactionDocType = (attachment.type == .image) ? .image : .document
                 return TransactionDoc(documentId: attachment.documentId,
-                                      fileName: attachmentFileName,
-                                      type: docType)
+                                      originalFileName: attachment.filename)
             }
         }
 
