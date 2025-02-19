@@ -526,7 +526,6 @@ final class GiniHealthTests: XCTestCase {
 
     func testLoadClientConfigurationFromFile() {
         // Given
-        let expectedClientId = "testClientId"
         let expectedCommunicationType: GiniHealthAPILibrary.CommunicationToneEnum = .formal
         let expectedBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
 
@@ -546,21 +545,18 @@ final class GiniHealthTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         XCTAssertNotNil(receivedClientConfiguration)
-        XCTAssertEqual(receivedClientConfiguration?.clientID, expectedClientId)
         XCTAssertEqual(receivedClientConfiguration?.communicationTone, expectedCommunicationType)
         XCTAssertEqual(receivedClientConfiguration?.ingredientBrandType, expectedBrandType)
     }
 
     func testLoadDefaultClientConfiguration() {
         // Given
-        let testClientId = "testClientId"
-        let clientConfiguration = ClientConfiguration(clientID: testClientId)
+        let clientConfiguration = ClientConfiguration()
         let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .formal
         let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
 
         // Expected
         XCTAssertNotNil(clientConfiguration)
-        XCTAssertEqual(clientConfiguration.clientID, testClientId)
         XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
         XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
     }
