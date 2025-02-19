@@ -42,10 +42,6 @@ final class DemoViewController: UIViewController {
 
     private let textColor = GiniColor(light: .black, dark: .white).uiColor()
     private let iconColor = GiniColor(light: .black, dark: .white).uiColor()
-    private var itemBackgroundColor: UIColor {
-        return GiniColor(light: giniCaptureColor("Light04"),
-                         dark: giniCaptureColor("Dark04")).uiColor()
-    }
 
     private var cameraInputImage: UIImage? {
         return UIImage(named: "cameraInput")?.tintedImageWithColor(iconColor)
@@ -111,7 +107,8 @@ final class DemoViewController: UIViewController {
         if let cameraIcon = cameraInputImage {
             ibanTextField.delegate = self
             ibanTextField.layer.cornerRadius = 8
-            ibanTextField.backgroundColor = itemBackgroundColor
+            ibanTextField.backgroundColor = GiniColor(light: giniCaptureColor("Light02"),
+                                                      dark: giniCaptureColor("Dark04")).uiColor()
             ibanTextField.attributedPlaceholder = NSAttributedString(
                 string: DemoScreenStrings.ibanTextFieldPlaceholder.localized,
                 attributes: [NSAttributedString.Key.foregroundColor: textColor]
@@ -148,9 +145,11 @@ final class DemoViewController: UIViewController {
     }
     
     private func configurePhotoPaymentButton() {
-        photoPaymentButton.backgroundColor = itemBackgroundColor
+        photoPaymentButton.backgroundColor = GiniColor(light: giniCaptureColor("Accent01"),
+                                                      dark: giniCaptureColor("Accent01")).uiColor()
         photoPaymentButton.setTitle(DemoScreenStrings.photoPaymentButtonTitle.localized, for: .normal)
-        photoPaymentButton.setTitleColor(textColor, for: .normal)
+        photoPaymentButton.setTitleColor(GiniColor(light: giniCaptureColor("Light01"),
+                                                   dark: giniCaptureColor("Light01")).uiColor(), for: .normal)
         photoPaymentButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue
     }
 
@@ -158,6 +157,7 @@ final class DemoViewController: UIViewController {
         transactionListButton.backgroundColor = GiniColor.init(light: giniCaptureColor("Light01"),
                                                                dark: giniCaptureColor("Dark04")).uiColor()
         transactionListButton.setTitle(DemoScreenStrings.transactionListButtonTitle.localized, for: .normal)
+        transactionListButton.tintColor = .clear
         let textColor = GiniColor(light: giniCaptureColor("Dark06"),
                                   dark: giniCaptureColor("Light01")).uiColor()
         transactionListButton.setTitleColor(textColor, for: .normal)
