@@ -112,7 +112,12 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         cell.contentView.layer.maskedCorners = []
         cell.contentView.layer.masksToBounds = true // Prevent clipping issues
 
-        if indexPath.row == 0 && numberOfRows > 1 {
+        if numberOfRows == 1 {
+            // If only one cell, round all corners
+            cell.contentView.layer.cornerRadius = cornerRadius
+            cell.contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner,
+                                                    .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        } else if indexPath.row == 0 {
             // First cell: Round top corners
             cell.contentView.layer.cornerRadius = cornerRadius
             cell.contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
