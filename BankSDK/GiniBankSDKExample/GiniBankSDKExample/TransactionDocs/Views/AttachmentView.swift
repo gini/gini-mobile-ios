@@ -28,8 +28,8 @@ class AttachmentView: UIView {
         let label = UILabel()
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.lineBreakMode = .byTruncatingMiddle
         label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -74,10 +74,6 @@ class AttachmentView: UIView {
 
         // Add `iconImageView` to `imageContainerView`
         imageContainerView.addSubview(iconImageView)
-        NSLayoutConstraint.activate([
-            iconImageView.centerXAnchor.constraint(equalTo: imageContainerView.centerXAnchor),
-            iconImageView.centerYAnchor.constraint(equalTo: imageContainerView.centerYAnchor)
-        ])
 
         // Add `imageContainerView` and `fileNameLabel` to `containerStackView`
         containerStackView.addArrangedSubview(imageContainerView)
@@ -89,6 +85,10 @@ class AttachmentView: UIView {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+
+            iconImageView.centerXAnchor.constraint(equalTo: imageContainerView.centerXAnchor),
+            iconImageView.centerYAnchor.constraint(equalTo: imageContainerView.centerYAnchor),
+
             // Image container size constraints
             imageContainerView.widthAnchor.constraint(equalToConstant: Constants.iconImageViewSize),
             imageContainerView.heightAnchor.constraint(equalToConstant: Constants.iconImageViewSize),
@@ -104,7 +104,8 @@ class AttachmentView: UIView {
             containerStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor,
                                                        constant: -Constants.stackViewVerticalSpacing),
 
-            heightAnchor.constraint(equalToConstant: Constants.viewHeight)
+            heightAnchor.constraint(equalToConstant: Constants.viewHeight),
+            widthAnchor.constraint(equalToConstant: Constants.viewWidth)
         ])
     }
 }
@@ -118,6 +119,7 @@ private extension AttachmentView {
         static let stackViewSpacing: CGFloat = 4
         static let viewCornerRadius: CGFloat = 14
         static let viewHeight: CGFloat = 28
+        static let viewWidth: CGFloat = 138
         static let viewBorderWidth: CGFloat = 1.0
     }
 }
