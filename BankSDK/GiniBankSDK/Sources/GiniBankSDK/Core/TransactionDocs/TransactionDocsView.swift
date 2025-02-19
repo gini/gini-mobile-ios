@@ -18,7 +18,7 @@ public protocol TransactionDocsViewDelegate: AnyObject {
 /// A view that displays a list of documents attached to a transaction and allows interaction with them.
 /// The `TransactionDocsView` class is responsible for rendering attached documents,
 /// binding to a view model, and notifying its delegate when the content is updated.
-public class TransactionDocsView: UIView {
+public final class TransactionDocsView: UIView {
 
     /// The delegate that is notified when the view's content is updated.
     public weak var delegate: TransactionDocsViewDelegate?
