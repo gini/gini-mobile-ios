@@ -72,8 +72,6 @@ import UIKit
      
      - note: Screen API only.
      */
-    @available(*, unavailable,
-    message: "Use the screen specific background color instead e.g. onboardingScreenBackgroundColor")
     @objc public var backgroundColor: UIColor = UIColor.black
     
     /**
