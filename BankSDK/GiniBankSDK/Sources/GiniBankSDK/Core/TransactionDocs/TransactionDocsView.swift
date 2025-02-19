@@ -111,7 +111,7 @@ public final class TransactionDocsView: UIView {
         }
     }
 
-    private func createTransactionDocsItemView(for transactionDoc: TransactionDoc) -> TransactionDocsItemView {
+    private func createTransactionDocsItemView(for transactionDoc: GiniTransactionDoc) -> TransactionDocsItemView {
         let transactionDocsItemView = TransactionDocsItemView(transactionDocsItem: transactionDoc)
 
         // TODO: do I need to move this inside TransactionDocsItemView to be also available for TD list???

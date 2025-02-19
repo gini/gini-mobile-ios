@@ -1,5 +1,5 @@
 //
-//  TransactionDocType.swift
+//  GiniTransactionDocType.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -8,7 +8,7 @@ import UIKit
 
 /// Represents the type of a document that is attached to a transaction.
 
-public enum TransactionDocType {
+public enum GiniTransactionDocType {
     /// Represents an image-based transaction document (e.g., PNG, JPEG).
     case image
 

@@ -13,7 +13,7 @@ import GiniBankAPILibrary
 class TransactionDocsViewModel {
 
     /// The current list of transaction documents.
-    var transactionDocs: [TransactionDoc] {
+    var transactionDocs: [GiniTransactionDoc] {
         didSet {
             onUpdate?()
         }
@@ -65,8 +65,8 @@ class TransactionDocsViewModel {
         internalTransactionDocsDataCoordinator?.loadDocumentData?()
     }
     /// Presents an action sheet for the specified attached document, allowing the user to open or delete the document.
-    /// - Parameter document: The `TransactionDoc` to present actions for.
-    func presentDocumentActionSheet(for document: TransactionDoc) {
+    /// - Parameter document: The `GiniTransactionDoc` to present actions for.
+    func presentDocumentActionSheet(for document: GiniTransactionDoc) {
         guard let presentingViewController = transactionDocsDataProtocol.presentingViewController else {
             print("No presenting view controller available.")
             return

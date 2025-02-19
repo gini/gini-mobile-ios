@@ -1,5 +1,5 @@
 //
-//  TransactionDoc.swift
+//  GiniTransactionDoc.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -8,7 +8,7 @@ import Foundation
 
 /// Represents a document that is attached to a transaction
 
-public struct TransactionDoc {
+public struct GiniTransactionDoc {
     /// The unique identifier for the document.
     public let documentId: String
     /// The name of the document file.
@@ -16,9 +16,9 @@ public struct TransactionDoc {
 
     /// The type of the document (image or file).
     /// This property is internal and not exposed to the client app.
-    internal let type: TransactionDocType
+    internal let type: GiniTransactionDocType
 
-    /// Initializes a `TransactionDoc` instance.
+    /// Initializes a `GiniTransactionDoc` instance.
     ///
     /// - Parameters:
     ///   - documentId: The unique identifier for the document.
@@ -28,14 +28,14 @@ public struct TransactionDoc {
     public init(documentId: String, originalFileName: String) {
         self.documentId = documentId
         self.fileName = originalFileName
-        self.type = TransactionDoc.determineType(originalFileName)
+        self.type = GiniTransactionDoc.determineType(originalFileName)
     }
 
     /// Determines the document type based on the file extension.
     ///
     /// - Parameter fileName: The name of the file.
     /// - Returns: `.document` if the file has a `.pdf` extension, otherwise `.image`.
-    private static func determineType(_ fileName: String) -> TransactionDocType {
+    private static func determineType(_ fileName: String) -> GiniTransactionDocType {
         return fileName.lowercased().hasSuffix(".pdf") ? .document : .image
     }
 

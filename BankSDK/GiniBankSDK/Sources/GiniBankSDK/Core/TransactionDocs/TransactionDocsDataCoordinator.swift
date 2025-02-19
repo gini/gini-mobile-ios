@@ -73,14 +73,14 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
 
     /// Retrieves or updates the list of transaction documents for the selected transaction.
     /// Supports both single-instance and multi-transaction cases.
-    public var transactionDocs: [TransactionDoc] = [] {
+    public var transactionDocs: [GiniTransactionDoc] = [] {
         didSet {
             // If no multi-transaction logic is used, update the single-instance model
             if transactionViewModels.isEmpty {
                 transactionDocsViewModel?.transactionDocs = transactionDocs
             } else if transactions.indices.contains(selectedTransactionIndex) {
                 // Multiple transactions case: Ensure the selected transaction updates correctly
-                transactions[selectedTransactionIndex] = transactionDocs
+                transactions[selectedTransactionIndex].transactionDocs = transactionDocs
                 transactionViewModels[selectedTransactionIndex].transactionDocs = transactionDocs
             }
         }
@@ -90,7 +90,7 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
         if transactionViewModels.isEmpty {
             return transactionDocs.map { $0.documentId }
         } else if transactions.indices.contains(selectedTransactionIndex) {
-            return transactions[selectedTransactionIndex].map { $0.documentId }
+            return transactions[selectedTransactionIndex].transactionDocs.map { $0.documentId }
         }
         return []
     }
@@ -115,8 +115,8 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
             transactionDocs.removeAll { $0.documentId == documentId }
         } else if transactions.indices.contains(selectedTransactionIndex) {
             // Multiple transactions support
-            transactions[selectedTransactionIndex].removeAll { $0.documentId == documentId }
-            transactionDocs = transactions[selectedTransactionIndex] // Ensure sync
+            transactions[selectedTransactionIndex].transactionDocs.removeAll { $0.documentId == documentId }
+            transactionDocs = transactions[selectedTransactionIndex].transactionDocs // Ensure sync
         }
     }
 
@@ -142,8 +142,8 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
 
     // MARK: - Multiple transactions handling internal methods and properties
 
-    /// Stores multiple sets of transaction documents, where each index represents a transaction.
-    private var transactions: [[TransactionDoc]] = []
+    /// Stores multiple sets of transaction
+    private var transactions: [GiniTransaction] = []
 
     /// Stores view models for each transaction.
     private var transactionViewModels: [TransactionDocsViewModel] = []
@@ -162,11 +162,11 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
     /// Sets the transactions and creates a view model for each.
     /// - Parameter transactions: A nested array of `TransactionDoc` objects, where each inner array represents
     /// the documents attached to a specific transaction.
-    public func setTransactions(_ transactions: [[TransactionDoc]]) {
+    public func setTransactions(_ transactions: [GiniTransaction]) {
         self.transactions = transactions
-        transactionViewModels = transactions.map { docs in
+        transactionViewModels = transactions.map { transaction in
             let viewModel = TransactionDocsViewModel(transactionDocsDataProtocol: self)
-            viewModel.transactionDocs = docs
+            viewModel.transactionDocs = transaction.transactionDocs
             return viewModel
         }
 
@@ -176,9 +176,9 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
         }
     }
 
-    public func setSelectedTransactionIndex(_ index: Int) {
-        guard transactions.indices.contains(index) else { return }
+    public func setSelectedTransaction(_ identifier: String) {
+        guard let index = transactions.firstIndex(where: { $0.identifier == identifier }) else { return }
         self.selectedTransactionIndex = index
-        transactionDocs = transactions[index] // Ensure `transactionDocs` is up-to-date
+        transactionDocs = transactions[index].transactionDocs // Ensure `transactionDocs` is up-to-date
     }
 }

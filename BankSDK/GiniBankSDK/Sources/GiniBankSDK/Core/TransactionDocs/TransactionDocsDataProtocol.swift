@@ -18,20 +18,7 @@ public protocol TransactionDocsDataProtocol: AnyObject {
     var transactionDocIDs: [String] { get }
 
     /// The list of attached transaction documents.
-    var transactionDocs: [TransactionDoc] { get set }
-
-    /// Sets the transactions and creates a `TransactionDocsViewModel` for each.
-    /// This method allows to provide multiple transactions, each containing a list of documents.
-    ///
-    /// - Parameter transactions: A nested array of `TransactionDoc` objects, where each inner array
-    /// represents the documents attached to a specific transaction.
-    func setTransactions(_ transactions: [[TransactionDoc]])
-
-    /// Sets the selected transaction index within the SDK.
-    /// This determines which transaction's documents will be accessed and displayed.
-    ///
-    /// - Parameter index: The index of the transaction to select.
-    func setSelectedTransactionIndex(_ index: Int)
+    var transactionDocs: [GiniTransactionDoc] { get set }
 
     /// Retrieves the current value of the "Always Attach Documents" setting.
     /// - Returns: A `Bool` representing whether documents should always be attached to the transaction.
@@ -40,4 +27,17 @@ public protocol TransactionDocsDataProtocol: AnyObject {
     /// Sets the "Always Attach Documents" setting to a given value.
     /// - Parameter value: A `Bool` indicating whether documents should always be attached to the transaction.
     func setAlwaysAttachDocs(_ value: Bool)
+
+    // MARK: - Multiple transactions
+    /// Sets the transactions and creates a `TransactionDocsViewModel` for each.
+    /// This method allows to provide multiple transactions, each containing a list of documents.
+    ///
+    /// - Parameter transactions: A nested array of `GiniTransaction`
+    func setTransactions(_ transactions: [GiniTransaction])
+
+    /// Sets the selected transaction identifier within the SDK.
+    /// This determines which transaction's documents will be accessed and displayed.
+    ///
+    /// - Parameter identifier: The identifier of the transaction to select.
+    func setSelectedTransaction(_ identifier: String)
 }

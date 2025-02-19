@@ -52,11 +52,11 @@ class TransactionDocsItemView: UIView {
 
     private let configuration = GiniBankConfiguration.shared
 
-    private(set) var transactionDocsItem: TransactionDoc?
+    private(set) var transactionDocsItem: GiniTransactionDoc?
 
     var optionsAction: (() -> Void)?
 
-    init(transactionDocsItem: TransactionDoc) {
+    init(transactionDocsItem: GiniTransactionDoc) {
         super.init(frame: .zero)
         self.transactionDocsItem = transactionDocsItem
         setupViews()
@@ -68,7 +68,7 @@ class TransactionDocsItemView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func configure(with transactionDoc: TransactionDoc) {
+    private func configure(with transactionDoc: GiniTransactionDoc) {
         iconImageView.image = transactionDoc.type.icon
         fileNameLabel.text = transactionDoc.fileName
 
