@@ -156,6 +156,15 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                           bic: bic,
                                           amountToPay: amoutToPay)
 
+        // GiniBankSDK requires both `documentId` and `originalFileName`
+        // to properly display attachment information in the transaction details screen.
+        // Example usage in `TransactionListViewController`:
+        //
+        // GiniTransactionDoc(
+        //     documentId: documentId,
+        //     originalFileName: filename
+        // )
+
         let attachments = configuration.transactionDocsDataCoordinator.transactionDocs.map {
             return Attachment(documentId: $0.documentId,
                               filename: $0.fileName,
@@ -180,7 +189,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         let fileManager = FileManagerHelper(fileName: "transaction_list.json")
 
         // Read transactions (automatically creates an empty file if it doesn't exist)
-        let transactions: [Transaction] = fileManager.read()
+        let _: [Transaction] = fileManager.read()
         fileManager.append([transaction])
     }
 
