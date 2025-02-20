@@ -86,15 +86,6 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
         }
     }
 
-    public var transactionDocIDs: [String] {
-        if transactionViewModels.isEmpty {
-            return transactionDocs.map { $0.documentId }
-        } else if transactions.indices.contains(selectedTransactionIndex) {
-            return transactions[selectedTransactionIndex].transactionDocs.map { $0.documentId }
-        }
-        return []
-    }
-
     /// Sets the "Always Attach Documents" setting to the given value.
     /// - Parameter value: A `Bool` indicating whether documents should always be attached to the transaction.
     public func setAlwaysAttachDocs(_ value: Bool) {
@@ -170,7 +161,7 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
             return viewModel
         }
 
-        // Support old single-instance view model if only one transaction exists
+        // Support single-instance view model if only one transaction exists
         if transactions.count == 1 {
             transactionDocsViewModel = transactionViewModels.first
         }

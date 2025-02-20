@@ -14,9 +14,6 @@ public protocol TransactionDocsDataProtocol: AnyObject {
     /// The view controller responsible for presenting document-related views.
     var presentingViewController: UIViewController? { get set }
 
-    /// The list of attached transaction document ids.
-    var transactionDocIDs: [String] { get }
-
     /// The list of attached transaction documents.
     var transactionDocs: [GiniTransactionDoc] { get set }
 
