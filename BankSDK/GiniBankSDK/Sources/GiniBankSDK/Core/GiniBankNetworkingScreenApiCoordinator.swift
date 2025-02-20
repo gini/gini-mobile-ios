@@ -775,9 +775,11 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 self?.loadDocumentPagesAndHandleErrors(for: documentId, with: extractionResult.extractions)
                 return
             }
-            self?.updateTransactionDocsViewModel(with: images,
-                                                 extractions: extractionResult.extractions,
-                                                 for: documentId)
+
+            let extractions = extractionResult.extractions
+            self?.transactionDocsDataCoordinator?.updateTransactionDocsViewModel(with: images,
+                                                                                 extractions: extractions,
+                                                                                 for: documentId)
         }
     }
 
@@ -789,9 +791,9 @@ extension GiniBankNetworkingScreenApiCoordinator {
                     self.handlePreviewDocumentError(error: error)
                     return
                 }
-                self.updateTransactionDocsViewModel(with: images,
-                                                    extractions: extractions,
-                                                    for: documentId)
+                self.transactionDocsDataCoordinator?.updateTransactionDocsViewModel(with: images,
+                                                                                    extractions: extractions,
+                                                                                    for: documentId)
             }
         }
     }
@@ -803,16 +805,5 @@ extension GiniBankNetworkingScreenApiCoordinator {
         viewModel?.setPreviewDocumentError(error: error) { [weak self] in
             self?.transactionDocsDataCoordinator?.loadDocumentData?()
         }
-    }
-
-    private func updateTransactionDocsViewModel(with images: [UIImage],
-                                                extractions: [Extraction],
-                                                for documentId: String) {
-        let extractionInfo = TransactionDocsExtractions(extractions: extractions)
-        let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
-                                                              extractions: extractionInfo)
-        transactionDocsDataCoordinator?
-            .getTransactionDocsViewModel()?
-            .setTransactionDocsDocumentPagesViewModel(viewModel, for: documentId)
     }
 }

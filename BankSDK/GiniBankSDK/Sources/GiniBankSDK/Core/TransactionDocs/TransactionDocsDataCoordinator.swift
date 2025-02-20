@@ -15,6 +15,18 @@ internal protocol TransactionDocsDataInternalProtocol: AnyObject {
     /// - Returns: An optional `TransactionDocsViewModel` instance if available.
     func getTransactionDocsViewModel() -> TransactionDocsViewModel?
 
+    /// Updates the `TransactionDocsViewModel` with new images and extracted data for a specific document.
+    ///
+    /// - Parameters:
+    ///   - images: An array of `UIImage` objects representing the updated transaction document images.
+    ///   - extractions: An array of `Extraction` objects containing extracted data related to the transaction.
+    ///   - documentId: A `String` representing the unique identifier of the document being updated.
+    ///
+    /// This method ensures that the `TransactionDocsViewModel` is synchronized with the latest document images and extracted data.
+    func updateTransactionDocsViewModel(with images: [UIImage],
+                                        extractions: [Extraction],
+                                        for documentId: String)
+
     /// A closure that handles the loading of document data.
     var loadDocumentData: (() -> Void)? { get set }
 
@@ -121,9 +133,9 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
         transactionDocsViewModel?.setPreviewDocumentError(error: error, tryAgainAction: tryAgainAction)
     }
 
-    private func updateTransactionDocsViewModel(with images: [UIImage],
-                                                extractions: [Extraction],
-                                                for documentId: String) {
+    func updateTransactionDocsViewModel(with images: [UIImage],
+                                        extractions: [Extraction],
+                                        for documentId: String) {
         let extractionInfo = TransactionDocsExtractions(extractions: extractions)
         let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
                                                               extractions: extractionInfo)

@@ -280,7 +280,11 @@ fileprivate extension GiniBank {
         }
 
         loadDocumentExtractions(for: documentId) { extractions in
-            self.updateTransactionDocsViewModel(with: images, extractions: extractions, for: documentId)
+            DispatchQueue.main.async { [weak self] in
+                self?.internalTransactionDocsDataCoordinator?.updateTransactionDocsViewModel(with: images,
+                                                                                             extractions: extractions,
+                                                                                             for: documentId)
+            }
         }
     }
 
@@ -307,7 +311,9 @@ fileprivate extension GiniBank {
             if let error = documentPagesError {
                 self.handlePreviewDocumentError(error: error)
             } else {
-                self.updateTransactionDocsViewModel(with: documentImages, extractions: extractedData, for: documentId)
+                self.internalTransactionDocsDataCoordinator?.updateTransactionDocsViewModel(with: documentImages,
+                                                                                            extractions: extractedData,
+                                                                                            for: documentId)
             }
         }
     }
@@ -330,20 +336,6 @@ fileprivate extension GiniBank {
             .setPreviewDocumentError(error: error) {
                 self.internalTransactionDocsDataCoordinator?.loadDocumentData?()
             }
-    }
-
-    private func updateTransactionDocsViewModel(with images: [UIImage],
-                                                extractions: [Extraction],
-                                                for documentId: String) {
-        let extractionInfo = TransactionDocsExtractions(extractions: extractions)
-        let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
-                                                              extractions: extractionInfo,
-                                                              transactionProceesed: true)
-        DispatchQueue.main.async { [weak self] in
-            self?.internalTransactionDocsDataCoordinator?
-                .getTransactionDocsViewModel()?
-                .setTransactionDocsDocumentPagesViewModel(viewModel, for: documentId)
-        }
     }
 
     private func fetchDocumentPages(documentId: String, completion: @escaping ([UIImage], GiniError?) -> Void) {
