@@ -29,8 +29,6 @@ class FileManagerHelper {
             createEmptyFile()
         }
         
-        print(String(data: try! Data(contentsOf: fileURL), encoding: .utf8) ?? "Empty file")
-
         // Read the file
         guard let data = try? Data(contentsOf: fileURL) else { return [] }
         let decoder = JSONDecoder()
