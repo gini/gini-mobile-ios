@@ -55,6 +55,7 @@ class TransactionDocsItemView: UIView {
     private(set) var transactionDocsItem: GiniTransactionDoc?
 
     var optionsAction: (() -> Void)?
+    var tapAction: (() -> Void)?
 
     init(transactionDocsItem: GiniTransactionDoc) {
         super.init(frame: .zero)
@@ -79,6 +80,10 @@ class TransactionDocsItemView: UIView {
         imageContainerView.addSubview(iconImageView)
         addSubview(containerStackView)
         addSubview(optionsButton)
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        containerStackView.isUserInteractionEnabled = true
+        containerStackView.addGestureRecognizer(tapGestureRecognizer)
     }
 
     private func setupAccessibility(with fileName: String) {
@@ -136,8 +141,13 @@ class TransactionDocsItemView: UIView {
         ])
     }
 
+    // MARK: - Actions
     @objc private func optionsButtonTapped() {
         optionsAction?()
+    }
+
+    @objc private func didTapView() {
+        tapAction?()
     }
 }
 

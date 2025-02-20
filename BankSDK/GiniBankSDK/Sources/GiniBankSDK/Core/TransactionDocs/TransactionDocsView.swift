@@ -114,10 +114,9 @@ public final class TransactionDocsView: UIView {
     private func createTransactionDocsItemView(for transactionDoc: GiniTransactionDoc) -> TransactionDocsItemView {
         let transactionDocsItemView = TransactionDocsItemView(transactionDocsItem: transactionDoc)
 
-        // TODO: do I need to move this inside TransactionDocsItemView to be also available for TD list???
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                          action: #selector(didTapToPreviewDocument(_:)))
-        transactionDocsItemView.addGestureRecognizer(tapGestureRecognizer)
+        transactionDocsItemView.tapAction = { [weak self] in
+            self?.viewModel?.handlePreviewDocument(for: transactionDoc.documentId )
+        }
 
         transactionDocsItemView.optionsAction = { [weak self] in
             self?.viewModel?.presentDocumentActionSheet(for: transactionDoc)
@@ -127,9 +126,7 @@ public final class TransactionDocsView: UIView {
     }
 
     // MARK: - Actions
-    @objc private func didTapToPreviewDocument(_ sender: UITapGestureRecognizer) {
-        guard let tappedView = sender.view as? TransactionDocsItemView,
-              let documentId = tappedView.transactionDocsItem?.documentId else { return }
+    @objc private func didTapToPreviewDocument(for documentId: String) {
         viewModel?.handlePreviewDocument(for: documentId)
     }
 }
