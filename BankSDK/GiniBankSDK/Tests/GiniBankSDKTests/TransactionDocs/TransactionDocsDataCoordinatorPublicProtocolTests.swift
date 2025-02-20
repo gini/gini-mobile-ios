@@ -35,9 +35,10 @@ class TransactionDocsDataCoordinatorPublicProtocolTests: XCTestCase {
                        "Expected presentingViewController to be set and retrieved correctly")
     }
 
-    func testTransactionDocIDsShouldReturnCorrectDocumentIDs() {
+    func testTransactionDocsShouldReturnCorrectDocumentIDs() {
         let docIDs = mockDocs.map { $0.documentId }
-        XCTAssertEqual(coordinator.transactionDocIDs,
+        let transactionDocIDs = coordinator.transactionDocs.map { $0.documentId }
+        XCTAssertEqual(transactionDocIDs,
                        docIDs,
                        "Expected transactionDocIDs to match the IDs of the mock documents")
     }
