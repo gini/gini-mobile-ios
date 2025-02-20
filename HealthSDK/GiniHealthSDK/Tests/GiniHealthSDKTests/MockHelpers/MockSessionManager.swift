@@ -119,6 +119,11 @@ final class MockSessionManager: SessionManagerProtocol {
                 default:
                     fatalError("Document id not found in tests")
                 }
+            case .configurations:
+                let clientConfiguration: ClientConfiguration? = load(fromFile: "clientConfiguration")
+                if let clientConfiguration = clientConfiguration as? T.ResponseType {
+                    completion(.success(clientConfiguration))
+                }
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))

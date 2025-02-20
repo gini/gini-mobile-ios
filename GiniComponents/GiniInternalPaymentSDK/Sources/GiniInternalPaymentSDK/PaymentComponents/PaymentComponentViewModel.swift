@@ -51,9 +51,10 @@ public final class PaymentComponentViewModel {
     var hasBankSelected: Bool
 
     var paymentComponentConfiguration: PaymentComponentConfiguration?
+    var clientConfiguration: ClientConfiguration?
 
     var shouldShowBrandedView: Bool {
-        paymentComponentConfiguration?.isPaymentComponentBranded ?? true
+        clientConfiguration?.ingredientBrandType == .paymentComponent || clientConfiguration?.ingredientBrandType == .fullVisible
     }
 
     var showPaymentComponentInOneRow: Bool {
@@ -80,12 +81,14 @@ public final class PaymentComponentViewModel {
                 moreInformationConfiguration: MoreInformationConfiguration,
                 moreInformationStrings: MoreInformationStrings,
                 minimumButtonsHeight: CGFloat,
-                paymentComponentConfiguration: PaymentComponentConfiguration?) {
+                paymentComponentConfiguration: PaymentComponentConfiguration?,
+                clientConfiguration: ClientConfiguration?) {
         self.configuration = configuration
         self.strings = strings
         self.primaryButtonConfiguration = primaryButtonConfiguration
         self.secondaryButtonConfiguration = secondaryButtonConfiguration
         self.paymentComponentConfiguration = paymentComponentConfiguration
+        self.clientConfiguration = clientConfiguration
 
         self.hasBankSelected = paymentProvider != nil
         self.bankImageIcon = paymentProvider?.iconData.toImage

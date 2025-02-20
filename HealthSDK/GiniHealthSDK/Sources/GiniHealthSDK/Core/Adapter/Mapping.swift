@@ -9,6 +9,7 @@
 import Foundation
 import GiniHealthAPILibrary
 import GiniInternalPaymentSDK
+import GiniUtilites
 
 //MARK: - Mapping Extraction
 extension Extraction {
@@ -243,5 +244,17 @@ extension GiniInternalPaymentSDK.PaymentInfo {
                   purpose: paymentConponentsInfo.purpose,
                   paymentUniversalLink: paymentConponentsInfo.paymentUniversalLink,
                   paymentProviderId: paymentConponentsInfo.paymentProviderId)
+    }
+}
+
+extension GiniHealthAPILibrary.IngredientBrandTypeEnum {
+    public func toHealthIngredientBrandType() -> GiniInternalPaymentSDK.IngredientBrandTypeEnum {
+        GiniInternalPaymentSDK.IngredientBrandTypeEnum(rawValue: rawValue) ?? .invisible
+    }
+}
+
+extension GiniHealthAPILibrary.CommunicationToneEnum {
+    public func toHealthCommunicationTone() -> GiniInternalPaymentSDK.CommunicationToneEnum {
+        GiniInternalPaymentSDK.CommunicationToneEnum(rawValue: rawValue) ?? .formal
     }
 }

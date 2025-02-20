@@ -48,6 +48,10 @@ public final class ShareInvoiceBottomViewModel {
 
     var appsMocked: [SingleApp] = []
 
+    var clientConfiguration: ClientConfiguration?
+    var shouldShowBrandedView: Bool {
+        clientConfiguration?.ingredientBrandType == .fullVisible
+    }
     /**
      Initializes a new instance of `ShareInvoiceBottomViewModel`.
 
@@ -67,7 +71,8 @@ public final class ShareInvoiceBottomViewModel {
                 poweredByGiniStrings: PoweredByGiniStrings,
                 qrCodeData: Data,
                 paymentInfo: PaymentInfo?,
-                paymentRequestId: String) {
+                paymentRequestId: String,
+                clientConfiguration: ClientConfiguration?) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.bankImageIcon = selectedPaymentProvider?.iconData ?? Data()
         self.paymentProviderColors = selectedPaymentProvider?.colors
@@ -78,6 +83,7 @@ public final class ShareInvoiceBottomViewModel {
         self.qrCodeData = qrCodeData
         self.paymentInfo = paymentInfo
         self.paymentRequestId = paymentRequestId
+        self.clientConfiguration = clientConfiguration
 
         titleText = strings.titleTextPattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
         descriptionLabelText = strings.descriptionTextPattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")

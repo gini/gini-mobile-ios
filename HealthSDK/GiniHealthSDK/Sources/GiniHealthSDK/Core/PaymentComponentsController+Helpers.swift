@@ -89,6 +89,19 @@ extension PaymentComponentsController {
             }
     }
     
+    // MARK: - Client Configuration Service
+    func fetchAndUpdateClientConfiguration() {
+        giniSDK.clientConfigurationService?.fetchConfigurations { result in
+            switch result {
+            case let .success(clientConfiguration):
+                GiniHealthConfiguration.shared.clientConfiguration = clientConfiguration
+                self.configurationProvider.clientConfiguration = clientConfiguration
+            case let .failure(error):
+                GiniUtilites.Log("Couldn't load client configuration: \(error.localizedDescription)", event: .error)
+            }
+        }
+    }
+    
     // MARK: - Bottom sheets
     /**
      Provides a custom Gini view for the payment view that is going to be presented as a bottom sheet.
@@ -122,7 +135,8 @@ extension PaymentComponentsController {
             moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
             moreInformationStrings: stringsProvider.moreInformationStrings,
             minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
-            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration
+            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration,
+            clientConfiguration: configurationProvider.clientConfiguration
         )
         paymentComponentViewModel.delegate = self
         paymentComponentViewModel.documentId = documentId
@@ -161,7 +175,8 @@ extension PaymentComponentsController {
                                                                    poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
-                                                                   moreInformationStrings: stringsProvider.moreInformationStrings)
+                                                                   moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   clientConfiguration: configurationProvider.clientConfiguration)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
@@ -250,7 +265,8 @@ extension PaymentComponentsController {
                                            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                            bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
                                            showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
-                                           previousPaymentComponentScreenType: previousPaymentComponentScreenType)
+                                           previousPaymentComponentScreenType: previousPaymentComponentScreenType,
+                                           clientConfiguration: configurationProvider.clientConfiguration)
 
         let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                          selectedPaymentProvider: healthSelectedPaymentProvider)
@@ -271,7 +287,8 @@ extension PaymentComponentsController {
                                                         configuration: configurationProvider.paymentInfoConfiguration,
                                                         strings: stringsProvider.paymentInfoStrings,
                                                         poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                        clientConfiguration: configurationProvider.clientConfiguration)
         return PaymentInfoViewController(viewModel: paymentInfoViewModel)
     }
 
@@ -290,7 +307,8 @@ extension PaymentComponentsController {
                                                                   strings: stringsProvider.installAppStrings,
                                                                   primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
                                                                   poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                                  poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                                  poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                                  clientConfiguration: configurationProvider.clientConfiguration)
         installAppBottomViewModel.viewDelegate = self
         let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return installAppBottomView
@@ -317,7 +335,8 @@ extension PaymentComponentsController {
                                                                       poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                       qrCodeData: qrCodeData,
                                                                       paymentInfo: paymentInfo,
-                                                                      paymentRequestId: paymentRequestId)
+                                                                      paymentRequestId: paymentRequestId,
+                                                                      clientConfiguration: configurationProvider.clientConfiguration)
         shareInvoiceBottomViewModel.viewDelegate = self
         shareInvoiceBottomViewModel.documentId = documentId
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
@@ -827,6 +846,7 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     
     /// Notifies the delegate when the more information button is tapped on the bank selection bottom view
     public func didTapOnMoreInformation() {
+        previousPresentedViews.append(.bankPicker)
         openMoreInformationViewController()
     }
 }
