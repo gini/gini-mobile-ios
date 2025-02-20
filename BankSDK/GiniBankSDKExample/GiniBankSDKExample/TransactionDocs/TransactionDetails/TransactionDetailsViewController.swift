@@ -116,15 +116,14 @@ extension TransactionDetailsViewController:  UITableViewDataSource, UITableViewD
 }
 extension TransactionDetailsViewController: TransactionDocsViewDelegate {
     func transactionDocsViewDidUpdateContent(_ attachmentsView: TransactionDocsView) {
-        let currentTransactionDocIDs = transactionDocsDataCoordinator.transactionDocIDs
-        numberOfSections = currentTransactionDocIDs.isEmpty ? 1 : 2
+        let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
+        numberOfSections = currentTransactionDocs.isEmpty ? 1 : 2
         tableView.reloadData()
 
         // Filter out deleted attachments
         transactionData?.attachments.removeAll { attachment in
-            !currentTransactionDocIDs.contains(attachment.documentId)
+            !currentTransactionDocs.contains { $0.documentId == attachment.documentId }
         }
-
         // Notify delegate about the update
         if let transactionData = transactionData {
             delegate?.transactionDetailsViewDidUpdate(transactionData)
