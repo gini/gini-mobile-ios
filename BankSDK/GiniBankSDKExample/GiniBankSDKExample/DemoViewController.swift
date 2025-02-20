@@ -154,8 +154,7 @@ final class DemoViewController: UIViewController {
     }
 
     private func configureTransactionListButton() {
-        transactionListButton.backgroundColor = GiniColor.init(light: giniCaptureColor("Light01"),
-                                                               dark: giniCaptureColor("Dark04")).uiColor()
+        transactionListButton.backgroundColor = .clear
         transactionListButton.setTitle(DemoScreenStrings.transactionListButtonTitle.localized, for: .normal)
         transactionListButton.tintColor = .clear
         let textColor = GiniColor(light: giniCaptureColor("Dark06"),
