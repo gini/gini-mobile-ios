@@ -248,13 +248,13 @@ extension GiniInternalPaymentSDK.PaymentInfo {
 }
 
 extension GiniHealthAPILibrary.IngredientBrandTypeEnum {
-    public func toHealthIngredientBrandType() -> GiniUtilites.IngredientBrandTypeEnum {
-        GiniUtilites.IngredientBrandTypeEnum(rawValue: rawValue) ?? .invisible
+    public func toHealthIngredientBrandType() -> GiniInternalPaymentSDK.IngredientBrandTypeEnum {
+        GiniInternalPaymentSDK.IngredientBrandTypeEnum(rawValue: rawValue) ?? .invisible
     }
 }
 
 extension GiniHealthAPILibrary.CommunicationToneEnum {
-    public func toHealthCommunicationTone() -> GiniUtilites.CommunicationToneEnum {
-        GiniUtilites.CommunicationToneEnum(rawValue: rawValue) ?? .formal
+    public func toHealthCommunicationTone() -> GiniInternalPaymentSDK.CommunicationToneEnum {
+        GiniInternalPaymentSDK.CommunicationToneEnum(rawValue: rawValue) ?? .formal
     }
 }
