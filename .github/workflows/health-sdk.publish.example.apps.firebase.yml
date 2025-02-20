@@ -73,9 +73,11 @@ jobs:
 
       - name: Setup Credentials
         run: |
-            plutil -replace client_id -string "gini-mobile-test" HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
-            plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
-                
+            sed -i '' \
+            -e 's/clientID = "client_id"/clientID = "gini-mobile-test"/' \
+            -e 's/clientPassword = "client_password"/clientPassword = "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"/' \
+            HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/CredentialsManager.swift
+                            
       - name: Archiving project
         run: |
             xcodebuild clean archive \
@@ -135,7 +137,7 @@ jobs:
         id: extract_jira_ticket
         run: |
           commit_message=$(git log -1 --pretty=%B)
-          jira_ticket=$(echo "$commit_message" | sed -n '2p')
+          jira_ticket=$(echo "$commit_message" | awk 'NR > 1 && $0 != "" { print $0; exit }')
           echo "JIRA_TICKET_NAME=${jira_ticket}" >> $GITHUB_ENV
 
       - name: Login to jira
@@ -151,4 +153,4 @@ jobs:
         uses: atlassian/gajira-comment@v3
         with:
           issue: ${{ env.JIRA_TICKET_NAME }}
-          comment: Build health example app ${{ steps.distribute.outputs.FIREBASE_CONSOLE_URI }}
+          comment: Build health example app ${{ steps.distribute.outputs.FIREBASE_CONSOLE_URI }}  and app tester build can be downloaded from here ${{ steps.distribute.outputs.TESTING_URI }}

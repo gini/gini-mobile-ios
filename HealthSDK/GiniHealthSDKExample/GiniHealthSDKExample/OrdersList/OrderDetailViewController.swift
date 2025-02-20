@@ -142,15 +142,14 @@ final class OrderDetailViewController: UIViewController {
         order.recipient = textFields[NSLocalizedString(Fields.recipient.rawValue, comment: "")]?.text ?? ""
         order.purpose = textFields[NSLocalizedString(Fields.purpose.rawValue, comment: "")]?.text ?? ""
 
-        var text = textFields[NSLocalizedString(Fields.amountToPay.rawValue, comment: "")]?.text ?? ""
-        text = text.replacingOccurrences(of: ",", with: ".")
-        if let decimalAmount = Decimal(string: text) {
-            var price = Price(extractionString: order.amountToPay) ?? Price(value: decimalAmount, currencyCode: "€")
-            price.value = decimalAmount
-
-            order.amountToPay = price.extractionString
-        } else {
-            order.amountToPay = Price(value: .zero, currencyCode: "€").extractionString
+        let text = textFields[NSLocalizedString(Fields.amountToPay.rawValue, comment: "")]?.text ?? ""
+        if let priceValue = text.decimal() {
+            let price = Price(value: priceValue, currencyCode: "€")
+            if priceValue > 0 {
+                order.amountToPay = price.extractionString
+            } else {
+                order.amountToPay = Price(value: .zero, currencyCode: "€").extractionString
+            }
         }
     }
 
@@ -195,6 +194,8 @@ extension OrderDetailViewController: GiniHealthTrackingDelegate {
             GiniUtilites.Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
         case .onCloseKeyboardButtonClicked:
             GiniUtilites.Log("Close keyboard was triggered", event: .success)
+        case .onCloseButtonClicked:
+            GiniUtilites.Log("Close button was tapped", event: .success)
         }
     }
 }

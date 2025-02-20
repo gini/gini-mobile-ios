@@ -21,9 +21,9 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     weak var delegate: OnboardingScreen?
     var isProgrammaticScroll = false
-    
+
     private let giniConfiguration: GiniConfiguration
-    private (set) var currentPageIndex = 0
+    private(set) var currentPageIndex = 0
     private var isInitialScroll = true
 
     lazy var pageModels: [OnboardingPageModel] = {
