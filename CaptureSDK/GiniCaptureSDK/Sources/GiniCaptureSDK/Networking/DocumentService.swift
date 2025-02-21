@@ -14,6 +14,8 @@ import GiniBankAPILibrary
 
 var errorOccurred = false
 
+public var originalDocumentName: String?
+
 public final class DocumentService: DocumentServiceProtocol {
     
     var partialDocuments: [String: PartialDocument] = [:]

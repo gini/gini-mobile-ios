@@ -10,14 +10,24 @@ import GiniBankAPILibrary
 import GiniCaptureSDK
 
 /**
- Core class for Gini Bank SDK.
+ Core class for the Gini Bank SDK, providing functionalities for document handling and payment processing.
  */
 @objc public final class GiniBank: NSObject {
-    /// reponsible for interaction with Gini Bank backend.
+
+    /// Handles interaction with the Gini Bank backend.
     public var giniApiLib: GiniBankAPI
-    /// reponsible for the payment processing.
+
+    /// Provides services for payment processing.
     public var paymentService: PaymentService
 
+    private var documentService: DefaultDocumentService {
+        return giniApiLib.documentService()
+    }
+
+    // Cast the coordinator to the internal protocol to access internal properties and methods
+    private var internalTransactionDocsDataCoordinator: TransactionDocsDataInternalProtocol? {
+        return GiniBankConfiguration.shared.transactionDocsDataCoordinator as? TransactionDocsDataInternalProtocol
+    }
     /**
      Returns a GiniBank instance
 
@@ -108,6 +118,19 @@ import GiniCaptureSDK
             DispatchQueue.main.async {
                 UIApplication.shared.open(resultUrl, options: [:], completionHandler: nil)
             }
+        }
+    }
+
+    // MARK: - Transaction Docs
+
+    /**
+     Initiates the process of loading transaction document data.
+
+     - Parameter documentId: The identifier of the document to process.
+     */
+    public func handleTransactionDocsDataLoading(for documentId: String) {
+        internalTransactionDocsDataCoordinator?.loadDocumentData = { [weak self] in
+            self?.processTransactionDocs(for: documentId)
         }
     }
 
@@ -243,5 +266,123 @@ import GiniCaptureSDK
         GiniBankConfiguration.shared = configuration
         let captureConfiguration = GiniBankConfiguration.shared.captureConfiguration()
         GiniCapture.setConfiguration(captureConfiguration)
+    }
+}
+
+// MARK: - Private Methods
+fileprivate extension GiniBank {
+
+    private func processTransactionDocs(for documentId: String) {
+        guard let viewModel = internalTransactionDocsDataCoordinator?.getTransactionDocsViewModel(),
+              let images = viewModel.cachedImages[documentId], !images.isEmpty else {
+            loadDocumentData(for: documentId)
+            return
+        }
+
+        loadDocumentExtractions(for: documentId) { extractions in
+            DispatchQueue.main.async { [weak self] in
+                self?.internalTransactionDocsDataCoordinator?.updateTransactionDocsViewModel(with: images,
+                                                                                             extractions: extractions,
+                                                                                             for: documentId)
+            }
+        }
+    }
+
+    private func loadDocumentData(for documentId: String) {
+        let dispatchGroup = DispatchGroup()
+        var extractedData: [Extraction] = []
+        var documentImages: [UIImage] = []
+        var documentPagesError: GiniError?
+
+        dispatchGroup.enter()
+        fetchDocumentPages(documentId: documentId) { images, error in
+            documentPagesError = error
+            documentImages = images
+            dispatchGroup.leave()
+        }
+
+        dispatchGroup.enter()
+        loadDocumentExtractions(for: documentId) { extractions in
+            extractedData = extractions
+            dispatchGroup.leave()
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            if let error = documentPagesError {
+                self.handlePreviewDocumentError(error: error)
+            } else {
+                self.internalTransactionDocsDataCoordinator?.updateTransactionDocsViewModel(with: documentImages,
+                                                                                            extractions: extractedData,
+                                                                                            for: documentId)
+            }
+        }
+    }
+
+    private func loadDocumentExtractions(for documentId: String,
+                                         completion: @escaping ([Extraction]) -> Void) {
+        fetchDocumentExtractions(for: documentId) { result in
+            switch result {
+            case.success(let extractionResult):
+                completion(extractionResult.extractions)
+            case.failure:
+                completion([])
+            }
+        }
+    }
+
+    private func handlePreviewDocumentError(error: GiniError) {
+        internalTransactionDocsDataCoordinator?
+            .getTransactionDocsViewModel()?
+            .setPreviewDocumentError(error: error) {
+                self.internalTransactionDocsDataCoordinator?.loadDocumentData?()
+            }
+    }
+
+    private func fetchDocumentPages(documentId: String, completion: @escaping ([UIImage], GiniError?) -> Void) {
+        documentService.pages(for: documentId) { [weak self] result in
+            switch result {
+            case .success(let pages):
+                self?.loadAllPages(for: documentId, pages: pages, completion: completion)
+            case .failure(let error):
+                    completion([], error)
+            }
+        }
+    }
+
+    private func fetchDocumentExtractions(for documentId: String,
+                                          completion: @escaping (Result<ExtractionResult, GiniError>) -> Void) {
+        documentService.extractions(for: documentId, completion: completion)
+    }
+
+    private func loadAllPages(for documentId: String,
+                              pages: [Document.Page],
+                              completion: @escaping ([UIImage], GiniError?) -> Void) {
+        var images: [UIImage] = []
+        var loadError: GiniError?
+
+        func loadPage(at index: Int) {
+            guard index < pages.count else {
+                completion(images, nil)
+                return
+            }
+
+            let page = pages[index]
+            documentService.documentPage(for: documentId,
+                                         pageNumber: page.number,
+                                         size: page.images[0].size) { result in
+                switch result {
+                case .success(let data):
+                    if let image = UIImage(data: data) {
+                        images.append(image)
+                        loadPage(at: index + 1)
+                    }
+                case .failure(let error):
+                    loadError = error
+                    completion([], loadError)
+                }
+            }
+        }
+
+        loadPage(at: 0)
     }
 }

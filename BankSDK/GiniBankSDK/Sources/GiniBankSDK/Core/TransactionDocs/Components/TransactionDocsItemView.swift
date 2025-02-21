@@ -52,11 +52,12 @@ class TransactionDocsItemView: UIView {
 
     private let configuration = GiniBankConfiguration.shared
 
-    private(set) var transactionDocsItem: TransactionDoc?
+    private(set) var transactionDocsItem: GiniTransactionDoc?
 
     var optionsAction: (() -> Void)?
+    var tapAction: (() -> Void)?
 
-    init(transactionDocsItem: TransactionDoc) {
+    init(transactionDocsItem: GiniTransactionDoc) {
         super.init(frame: .zero)
         self.transactionDocsItem = transactionDocsItem
         setupViews()
@@ -68,7 +69,7 @@ class TransactionDocsItemView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func configure(with transactionDoc: TransactionDoc) {
+    private func configure(with transactionDoc: GiniTransactionDoc) {
         iconImageView.image = transactionDoc.type.icon
         fileNameLabel.text = transactionDoc.fileName
 
@@ -79,6 +80,10 @@ class TransactionDocsItemView: UIView {
         imageContainerView.addSubview(iconImageView)
         addSubview(containerStackView)
         addSubview(optionsButton)
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        containerStackView.isUserInteractionEnabled = true
+        containerStackView.addGestureRecognizer(tapGestureRecognizer)
     }
 
     private func setupAccessibility(with fileName: String) {
@@ -136,8 +141,13 @@ class TransactionDocsItemView: UIView {
         ])
     }
 
+    // MARK: - Actions
     @objc private func optionsButtonTapped() {
         optionsAction?()
+    }
+
+    @objc private func didTapView() {
+        tapAction?()
     }
 }
 
