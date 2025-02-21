@@ -342,8 +342,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     // MARK: - Start Analysis with Return Assistant or Skonto
 
     private func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
-        documentService.startAnalysis { result in
-
+        documentService.startAnalysis {[weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .success(extractionResult):
                     self.setDcoumentIdAsUserProperty()
