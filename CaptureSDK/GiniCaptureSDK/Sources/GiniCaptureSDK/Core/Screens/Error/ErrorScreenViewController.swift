@@ -91,10 +91,9 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func sendAnalyticsScreenShown() {
-        var eventProperties = [GiniAnalyticsProperty]()
-
         let errorAnalytics = errorType.errorAnalytics()
-        eventProperties.append(GiniAnalyticsProperty(key: .errorType, value: errorAnalytics.type))
+        var eventProperties = [GiniAnalyticsProperty(key: .errorType, value: errorAnalytics.type)]
+
         if let code = errorAnalytics.code {
             eventProperties.append(GiniAnalyticsProperty(key: .errorCode, value: code))
         }
