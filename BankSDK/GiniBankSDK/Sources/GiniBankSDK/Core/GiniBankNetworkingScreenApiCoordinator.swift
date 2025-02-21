@@ -154,10 +154,10 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     private init(resultsDelegate: GiniCaptureResultsDelegate,
-                configuration: GiniBankConfiguration,
-                documentMetadata: Document.Metadata?,
-                trackingDelegate: GiniCaptureTrackingDelegate?,
-                lib: GiniBankAPI) {
+                 configuration: GiniBankConfiguration,
+                 documentMetadata: Document.Metadata?,
+                 trackingDelegate: GiniCaptureTrackingDelegate?,
+                 lib: GiniBankAPI) {
         documentService = DocumentService(lib: lib, metadata: documentMetadata)
         configurationService = lib.configurationService()
         analyticsService = lib.analyticService()
@@ -342,8 +342,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     // MARK: - Start Analysis with Return Assistant or Skonto
 
     private func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
-        documentService.startAnalysis { result in
-
+        documentService.startAnalysis {[weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .success(extractionResult):
                     self.setDcoumentIdAsUserProperty()
