@@ -138,7 +138,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 api: APIDomain,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 lib: GiniBankAPI) {
-        documentService = DocumentService(lib: lib, metadata: documentMetadata)
+        documentService = DocumentService(lib: lib, metadata: Self.makeMetadata(with: documentMetadata))
         configurationService = lib.configurationService()
         let captureConfiguration = configuration.captureConfiguration()
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
@@ -156,7 +156,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 documentMetadata: Document.Metadata?,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 lib: GiniBankAPI) {
-        documentService = DocumentService(lib: lib, metadata: documentMetadata)
+        documentService = DocumentService(lib: lib, metadata: Self.makeMetadata(with: documentMetadata))
         configurationService = lib.configurationService()
         let captureConfiguration = configuration.captureConfiguration()
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
@@ -175,9 +175,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 captureNetworkService: GiniCaptureNetworkService,
                 configurationService: ClientConfigurationServiceProtocol?) {
-
         documentService = DocumentService(giniCaptureNetworkService: captureNetworkService,
-                                          metadata: documentMetadata)
+                                          metadata: Self.makeMetadata(with: documentMetadata))
         self.configurationService = configurationService
         let captureConfiguration = configuration.captureConfiguration()
 
@@ -810,5 +809,16 @@ extension GiniBankNetworkingScreenApiCoordinator {
         transactionDocsDataCoordinator?
             .getTransactionDocsViewModel()?
             .setTransactionDocsDocumentPagesViewModel(viewModel, for: documentId)
+    }
+}
+
+// MARK: - Document Metadata creation
+extension GiniBankNetworkingScreenApiCoordinator {
+    private static func makeMetadata(with documentMetadata: Document.Metadata?) -> Document.Metadata {
+        guard var documentMetadata else {
+            return .init(bankSDKVersion: GiniBankSDKVersion)
+        }
+        documentMetadata.addGiniBankSDKVersion(GiniBankSDKVersion)
+        return documentMetadata
     }
 }
