@@ -10,7 +10,7 @@ import GiniCaptureSDK
 import GiniBankSDK
 
 protocol DemoViewControllerDelegate: AnyObject {
-    func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint)
+    func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint, selfDealloc: Bool)
     func didSelectSettings()
 }
 
@@ -71,7 +71,6 @@ final class DemoViewController: UIViewController {
     private func configureWelcomeTitle() {
         welcomeTitleTopConstraint.constant = Constants.welcomeTitleTopConstant
         welcomeTitlte.text = DemoScreenStrings.welcomeTitle.localized
-        welcomeTitlte.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.welcomeTextTitle.rawValue
     }
     
     private func configureIbanTextField() {
@@ -102,9 +101,7 @@ final class DemoViewController: UIViewController {
             
             let iconTapGesture = UITapGestureRecognizer(target: self, action: #selector(ibanCameraIconTapped))
             ibanTextField.rightView?.addGestureRecognizer(iconTapGesture)
-            ibanTextField.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.ibanTextField.rawValue
-            cameraIcon.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.cameraIconButton.rawValue
-
+            
             UITextField.appearance().tintColor = ColorPalette.giniBlue
         }
     }
@@ -129,13 +126,11 @@ final class DemoViewController: UIViewController {
         photoPaymentButton.backgroundColor = itemBackgroundColor
         photoPaymentButton.setTitle(DemoScreenStrings.photoPaymentButtonTitle.localized, for: .normal)
         photoPaymentButton.setTitleColor(textColor, for: .normal)
-        photoPaymentButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue
     }
     
     private func configureScreenDescriptionTitle() {
         descriptionTitle.text = DemoScreenStrings.screenDescription.localized
         descriptionTitle.textColor = textColor
-        descriptionTitle.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.descriptionTextTitle.rawValue
     }
   
     private func configureMetaTitle() {
@@ -145,7 +140,6 @@ final class DemoViewController: UIViewController {
         metaInformationLabel.textColor = textColor
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.launchSettings))
         metaInformationLabel.addGestureRecognizer(tapGesture)
-        metaInformationLabel.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.metaInformationLabel.rawValue
     }
     
     private func startSDK(entryPoint: GiniConfiguration.GiniEntryPoint) {
@@ -153,7 +147,7 @@ final class DemoViewController: UIViewController {
         unsubscribeFromKeyboardNotifications()
         // we should hide the keyboard if the SDK is presented
         dismissKeyboard()
-        delegate?.didSelectEntryPoint(entryPoint)
+        delegate?.didSelectEntryPoint(entryPoint, selfDealloc: SettingsViewModel.shouldCloseSDKAfterTenSeconds)
     }
     
     // MARK: - User interactions

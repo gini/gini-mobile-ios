@@ -17,6 +17,7 @@ protocol SettingsViewModelDelegate: AnyObject {
 }
 
 final class SettingsViewModel {
+    static private(set) var shouldCloseSDKAfterTenSeconds = false
     private var giniConfiguration: GiniBankConfiguration
     private var settingsButtonStates: SettingsButtonStates
     private var documentValidationsState: DocumentValidationsState
@@ -235,6 +236,8 @@ final class SettingsViewModel {
                                                             isSwitchOn: giniConfiguration.debugModeOn)))
         debugSection.items.append(.switchOption(data: .init(type: .customDocumentValidations,
                                                             isSwitchOn: documentValidationsState.isSwitchOn)))
+        debugSection.items.append(.switchOption(data: .init(type: .closeSDK,
+                                                            isSwitchOn: Self.shouldCloseSDKAfterTenSeconds)))
         return debugSection
     }
 
@@ -348,6 +351,8 @@ final class SettingsViewModel {
             giniConfiguration.skontoNavigationBarBottomAdapter = data.isSwitchOn ? CustomSkontoNavigationBarBottomAdapter() : nil
         case .skontoHelpNavigationBarBottomAdapter:
             giniConfiguration.skontoHelpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
+        case .closeSDK:
+            Self.shouldCloseSDKAfterTenSeconds = data.isSwitchOn
         }
     }
 
