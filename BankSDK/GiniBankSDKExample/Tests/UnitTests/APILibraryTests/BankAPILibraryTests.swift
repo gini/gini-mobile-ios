@@ -25,7 +25,7 @@ final class BankAPILibraryTests: XCTestCase {
     }
 
     func testBuildWithCustomUserDomain() {
-        let userApi = UserDomain.custom(domain: customDomain)
+        let userApi = UserDomain.custom(domain: cutomUserDomain)
         let giniBankAPILib = GiniBankAPI.Builder(client: client,
                                                  userApi: userApi,
                                                  logLevel: .none)
@@ -36,6 +36,7 @@ final class BankAPILibraryTests: XCTestCase {
         XCTAssertEqual(sessionManager.userDomain.domainString, cutomUserDomain)
     }
 
+    
     func testBuildWithCustomApiAndUserDomain() {
         let api = APIDomain.custom(domain: customDomain, tokenSource: nil)
         let userApi = UserDomain.custom(domain: cutomUserDomain)
