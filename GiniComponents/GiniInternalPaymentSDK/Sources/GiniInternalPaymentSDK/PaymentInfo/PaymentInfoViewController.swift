@@ -144,6 +144,7 @@ public final class PaymentInfoViewController: UIViewController {
         setupViewAttributes()
         setupViewConstraints()
         setupInitialLayout()
+        setupViewVisibility()
     }
     
     private func setupViewHierarchy() {
@@ -196,13 +197,17 @@ public final class PaymentInfoViewController: UIViewController {
     private func updateLayoutForCurrentOrientation() {
         let deviceOrientation = UIDevice.current.orientation
         switch deviceOrientation {
-        case .portrait:
-            setupPortraitConstraints()
-        case .landscapeLeft, .landscapeRight:
-            setupLandscapeConstraints()
-        default:
-            break
+            case .portrait:
+                setupPortraitConstraints()
+            case .landscapeLeft, .landscapeRight:
+                setupLandscapeConstraints()
+            default:
+                break
         }
+    }
+    
+    private func setupViewVisibility() {
+        poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
     }
 
     private func setupContentViewConstraints() {

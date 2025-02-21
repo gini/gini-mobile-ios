@@ -23,7 +23,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let sessionManagerMock = MockSessionManager()
         let documentService = DefaultDocumentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
         let paymentService = PaymentService(sessionManager: sessionManagerMock, apiVersion: versionAPI)
-        giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService)
+        giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService, clientConfigurationService: nil)
         giniHealth = GiniHealth(giniApiLib: giniHealthAPI)
         mockPaymentComponentsController = MockPaymentComponents(giniHealth: giniHealth)
     }
@@ -92,7 +92,8 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                           moreInformationConfiguration: giniHealth.moreInformationConfiguration,
                                                           moreInformationStrings: giniHealth.moreInformationStrings,
                                                           minimumButtonsHeight: giniHealth.paymentComponentButtonsHeight,
-                                                          paymentComponentConfiguration: giniHealth.paymentComponentConfiguration)
+                                                          paymentComponentConfiguration: giniHealth.paymentComponentConfiguration,
+                                                          clientConfiguration: giniHealth.clientConfiguration)
 
         let expectedView = PaymentComponentView(viewModel: expectedViewModel)
         expectedViewModel.documentId = documentId
@@ -169,7 +170,8 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                    poweredByGiniStrings: giniHealth.poweredByGiniStrings,
                                                    moreInformationConfiguration: giniHealth.moreInformationConfiguration,
                                                    moreInformationStrings: giniHealth.moreInformationStrings,
-                                                   urlOpener: URLOpener(MockUIApplication(canOpen: false)))
+                                                   urlOpener: URLOpener(MockUIApplication(canOpen: false)),
+                                                   clientConfiguration: giniHealth.clientConfiguration)
 
 
         XCTAssertEqual(bottomViewModel.paymentProviders.count, 11)

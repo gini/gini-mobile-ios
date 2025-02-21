@@ -120,6 +120,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
         setupLayout()
         setupListeners()
         setButtonsState()
+        setupViewVisibility()
     }
 
     private func setupViewHierarchy() {
@@ -136,6 +137,10 @@ public final class InstallAppBottomView: BottomSheetViewController {
         contentStackView.addArrangedSubview(bottomView)
         contentView.addSubview(contentStackView)
         self.setContent(content: contentView)
+    }
+
+    private func setupViewVisibility() {
+        poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
     }
 
     private func setupLayout() {

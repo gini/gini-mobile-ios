@@ -45,6 +45,11 @@ public final class BanksBottomViewModel {
     var heightTableView: CGFloat = 0
 
     private var urlOpener: URLOpener
+    
+    var clientConfiguration: ClientConfiguration?
+    var shouldShowBrandedView: Bool {
+        clientConfiguration?.ingredientBrandType == .paymentComponent || clientConfiguration?.ingredientBrandType == .fullVisible
+    }
 
     public init(paymentProviders: PaymentProviders,
                 selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider?,
@@ -54,13 +59,15 @@ public final class BanksBottomViewModel {
                 poweredByGiniStrings: PoweredByGiniStrings,
                 moreInformationConfiguration: MoreInformationConfiguration,
                 moreInformationStrings: MoreInformationStrings,
-                urlOpener: URLOpener = URLOpener(UIApplication.shared)) {
+                urlOpener: URLOpener = URLOpener(UIApplication.shared),
+                clientConfiguration: ClientConfiguration?) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.urlOpener = urlOpener
         self.configuration = configuration
         self.strings = strings
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration, strings: moreInformationStrings)
+        self.clientConfiguration = clientConfiguration
 
         self.paymentProviders = paymentProviders
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,

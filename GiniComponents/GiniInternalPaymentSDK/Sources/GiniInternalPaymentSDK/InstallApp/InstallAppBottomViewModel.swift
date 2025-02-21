@@ -39,12 +39,18 @@ public final class InstallAppBottomViewModel {
         selectedPaymentProvider?.appSchemeIOS.canOpenURLString() == true
     }
 
+    var clientConfiguration: ClientConfiguration?
+    var shouldShowBrandedView: Bool {
+        clientConfiguration?.ingredientBrandType == .fullVisible
+    }
+
     public init(selectedPaymentProvider: PaymentProvider?,
                 installAppConfiguration: InstallAppConfiguration,
                 strings: InstallAppStrings,
                 primaryButtonConfiguration: ButtonConfiguration,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
-                poweredByGiniStrings: PoweredByGiniStrings) {
+                poweredByGiniStrings: PoweredByGiniStrings,
+                clientConfiguration: ClientConfiguration?) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.bankImageIcon = selectedPaymentProvider?.iconData.toImage ?? UIImage()
         self.paymentProviderColors = selectedPaymentProvider?.colors
@@ -52,6 +58,7 @@ public final class InstallAppBottomViewModel {
         self.strings = strings
         self.primaryButtonConfiguration = primaryButtonConfiguration
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
+        self.clientConfiguration = clientConfiguration
 
         titleText = strings.titlePattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
     }

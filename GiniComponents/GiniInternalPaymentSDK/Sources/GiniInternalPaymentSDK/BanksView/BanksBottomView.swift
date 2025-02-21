@@ -146,7 +146,9 @@ public final class BanksBottomView: BottomSheetViewController {
         contentStackView.addArrangedSubview(paymentProvidersView)
         bottomStackView.addArrangedSubview(moreInformationView)
         bottomStackView.addArrangedSubview(UIView())
-        bottomStackView.addArrangedSubview(poweredByGiniView)
+        if viewModel.shouldShowBrandedView {
+            bottomStackView.addArrangedSubview(poweredByGiniView)
+        }
         bottomView.addSubview(bottomStackView)
         contentStackView.addArrangedSubview(bottomView)
         contentView.addSubview(contentStackView)

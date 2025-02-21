@@ -38,4 +38,5 @@ enum APIMethod: ResourceMethod {
     case payment(id: String)
     case pdfWithQRCode(paymentRequestId: String,
                        mimeSubtype: MimeSubtype)
+    case configurations
 }
