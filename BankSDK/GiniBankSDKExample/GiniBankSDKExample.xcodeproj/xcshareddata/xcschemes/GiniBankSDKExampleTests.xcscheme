@@ -57,7 +57,7 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2870684C2CB9670200D5F2C9"
+               BlueprintIdentifier = "D7E50A5E2C32D0AD004C1CBF"
                BuildableName = "GiniBankSDKExampleUITests.xctest"
                BlueprintName = "GiniBankSDKExampleUITests"
                ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
