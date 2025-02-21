@@ -120,6 +120,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         setupViewHierarchy()
         setupLayout()
         setButtonsState()
+        setupViewVisibility()
     }
 
     private func setupViewHierarchy() {
@@ -136,9 +137,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         qrCodeView.addSubview(qrImageView)
 
         brandStackView.addArrangedSubview(UIView())
-        if viewModel.shouldShowBrandedView {
-            brandStackView.addArrangedSubview(poweredByGiniView)
-        }
+        brandStackView.addArrangedSubview(poweredByGiniView)
         brandStackView.addArrangedSubview(UIView())
         brandView.addSubview(brandStackView)
 
@@ -159,7 +158,11 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         // Add the UIScrollView to the main container
         self.setContent(content: scrollView)
     }
-    
+
+    private func setupViewVisibility() {
+        poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
+    }
+
     fileprivate func setupSplitStackViewHierarchy() {
         splitStacKView.removeAllArrangedSubviews()
         contentStackView.removeAllArrangedSubviews()
