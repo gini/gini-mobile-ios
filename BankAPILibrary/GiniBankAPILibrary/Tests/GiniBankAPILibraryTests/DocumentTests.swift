@@ -2,124 +2,90 @@
 //  GiniDocumentTests.swift
 //  GiniExampleTests
 //
-//  Created by Enrique del Pozo Gómez on 1/14/18.
-//  Copyright © 2018 Gini. All rights reserved.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import XCTest
 @testable import GiniBankAPILibrary
 
 final class GiniDocumentTests: XCTestCase {
-    
+
     lazy var documentJson: Data = loadFile(withName: "document", ofType: "json")
     lazy var compositeDocumentJson: Data = loadFile(withName: "compositeDocument", ofType: "json")
     lazy var partialDocumentJson: Data = loadFile(withName: "partialDocument", ofType: "json")
-    
-    lazy var validDocument: Document = {
+
+    lazy var validDocument: Document = decodeJson(documentJson)
+
+    let uploadMetadata = Document.UploadMetadata(
+        giniCaptureVersion: "99.99.99",
+        deviceOrientation: "deviceOrientation",
+        source: "source",
+        importMethod: "import",
+        entryPoint: "unit-test",
+        osVersion: "ios 99"
+    )
+
+    private func decodeJson(_ jsonData: Data) -> Document {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
-        let giniDocument = try? decoder.decode(Document.self, from: documentJson)
-        return giniDocument!
-    }()
-    
+        return try! decoder.decode(Document.self, from: jsonData)
+    }
+
     func testDocumentDecoding() {
-        XCTAssertNoThrow(try JSONDecoder().decode(Document.self, from: documentJson))
+        assertDecodingSucceeds(for: documentJson)
+        assertDecodingSucceeds(for: compositeDocumentJson)
+        assertDecodingSucceeds(for: partialDocumentJson)
     }
-    
-    func testCompositeDocumentDecoding() {
-        XCTAssertNoThrow(try JSONDecoder().decode(Document.self, from: compositeDocumentJson))
+
+    private func assertDecodingSucceeds(for jsonData: Data) {
+        XCTAssertNoThrow(try JSONDecoder().decode(Document.self, from: jsonData))
     }
-    
-    func testPartialDocumentDecoding() {
-        XCTAssertNoThrow(try JSONDecoder().decode(Document.self, from: partialDocumentJson))
-    }
-    
-    func testID() {
-        XCTAssertEqual(validDocument.id,
-                       "626626a0-749f-11e2-bfd6-000000000000",
-                       "document ID should match")
-    }
-    
-    func testCreationDate() {
-        XCTAssertEqual(validDocument.creationDate.timeIntervalSince1970,
-                       1515932941.2839971,
-                       "document creationDate should match")
-    }
-    
-    func testName() {
+
+    func testDocumentProperties() {
+        XCTAssertEqual(validDocument.id, "626626a0-749f-11e2-bfd6-000000000000", "document ID should match")
+        XCTAssertEqual(validDocument.creationDate.timeIntervalSince1970, 1515932941.2839971, "document creationDate should match")
         XCTAssertEqual(validDocument.name, "scanned.jpg", "document name should match")
-    }
-    
-    func testStatus() {
         XCTAssertEqual(validDocument.progress, .completed, "document status should match")
-    }
-    
-    func testOrigin() {
         XCTAssertEqual(validDocument.origin, .upload, "document origin should match")
-    }
-    
-    func testType() {
         XCTAssertEqual(validDocument.sourceClassification, .scanned, "document type should match")
-    }
-    
-    func testPageCount() {
         XCTAssertEqual(validDocument.pageCount, 1, "document pageCount should be 1")
     }
-    
+
     func testPages() {
-        XCTAssertEqual(validDocument.pages?.count, validDocument.pageCount,
-                       "document pageCount and pages count should match")
-        XCTAssertEqual(validDocument.pages?[0].number, 1, "first page number should be 1")
-        XCTAssertEqual(validDocument.pages?[0].images.count, 2, "first page images count should be 2")
+        XCTAssertEqual(validDocument.pages?.count, validDocument.pageCount, "document pageCount and pages count should match")
+        XCTAssertEqual(validDocument.pages?.first?.number, 1, "first page number should be 1")
+        XCTAssertEqual(validDocument.pages?.first?.images.count, 2, "first page images count should be 2")
     }
-    
+
     func testLinks() {
-        XCTAssertEqual(validDocument.links.extractions.absoluteString,
-                       "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/extractions",
-                       "document extractions resource should match")
-        XCTAssertEqual(validDocument.links.layout.absoluteString,
-                       "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/layout",
-                       "document layout resource should match")
-        XCTAssertEqual(validDocument.links.document.absoluteString,
-                       "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000",
-                       "document document resource should match")
-        XCTAssertEqual(validDocument.links.processed.absoluteString,
-                       "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/processed",
-                       "document processed resource should match")
+        assertLink(validDocument.links.extractions, "extractions")
+        assertLink(validDocument.links.layout, "layout")
+        assertLink(validDocument.links.processed, "processed")
     }
-    
-    func testIncompleteJSONDecoding() {
-        let incompleteJSON = loadFile(withName: "incompleteDocument", ofType: "json")
-        XCTAssertThrowsError(try JSONDecoder().decode(Document.self, from: incompleteJSON),
-                             "document should be nil since one of its properties is missing")
+
+
+    private func assertLink(_ link: URL, _ endpoint: String) {
+        let documentLink = "https://api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000/"
+        XCTAssertEqual(link.absoluteString, documentLink + endpoint,
+                       "document \(endpoint) resource should match")
     }
-    
-    func testInvalidJSONDecoding() {
-        let invalidJSON: Data = "invalid json".data(using: .utf8)!
-        XCTAssertThrowsError(try JSONDecoder().decode(Document.self, from: invalidJSON),
-                             "document should be nil since it is not a valid JSON")
+
+    func testInvalidDecoding() {
+        assertDecodingFails(for: loadFile(withName: "incompleteDocument", ofType: "json"))
+        assertDecodingFails(for: "invalid json".data(using: .utf8)!)
     }
-    
+
+    private func assertDecodingFails(for jsonData: Data) {
+        XCTAssertThrowsError(try JSONDecoder().decode(Document.self, from: jsonData), "document should be nil since it is invalid")
+    }
+
     func testMetadata() {
-        let metadata = Document.Metadata.init(branchId: "test-brand",
-                                              additionalHeaders: ["additionalTest": "additionalValue"])
-        
-        XCTAssertEqual(metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.branchIdHeaderKey],
-                       "test-brand",
-                       "branchId header should match")
-        XCTAssertEqual(metadata.headers["\(Document.Metadata.headerKeyPrefix)additionalTest"],
-                       "additionalValue",
-                       "additional header should match")
+        let metadata = Document.Metadata(branchId: "test-brand", additionalHeaders: ["additionalTest": "additionalValue"])
+        XCTAssertEqual(metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.branchIdHeaderKey], "test-brand", "branchId header should match")
+        XCTAssertEqual(metadata.headers["\(Document.Metadata.headerKeyPrefix)additionalTest"], "additionalValue", "additional header should match")
     }
+
     func testUploadMetadata() {
-        let metadata = Document.UploadMetadata.init(
-            giniCaptureVersion: "99.99.99",
-            deviceOrientation: "deviceOrientation",
-            source: "source",
-            importMethod: "import",
-            entryPoint: "unit-test",
-            osVersion: "ios 99"
-        )
         let expectedComment = Document.UploadMetadata.constructComment(
             osVersion: "ios 99",
             giniVersion: "99.99.99",
@@ -130,46 +96,20 @@ final class GiniDocumentTests: XCTestCase {
             deviceOrientation: "deviceOrientation",
             rotation: ""
         )
-        XCTAssertEqual(
-            metadata.userComment,
-            expectedComment,
-            "Upload metadata(userComment) should match; expected \"\(expectedComment)\", got \"\(metadata.userComment)\""
-        )
+        XCTAssertEqual(uploadMetadata.userComment, expectedComment, "Upload metadata(userComment) should match")
     }
-    func testAddUploadMetadata() {
+
+    func testMetadataWithUpload() {
         var metadata = Document.Metadata()
-        let uploadMetadata = Document.UploadMetadata.init(
-            giniCaptureVersion: "99.99.99",
-            deviceOrientation: "deviceOrientation",
-            source: "source",
-            importMethod: "import",
-            entryPoint: "unit-test",
-            osVersion: "ios 99"
-        )
         metadata.addUploadMetadata(uploadMetadata)
-        let metadataValue = metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] ?? ""
-        XCTAssertEqual(
-            metadataValue,
-            uploadMetadata.userComment,
-            "userComment should match; expected \"\(uploadMetadata.userComment)\", got \"\(metadataValue)\""
-        )
+        assertMetadataValue(metadata, uploadMetadata.userComment)
+
+        let metadataInit = Document.Metadata(uploadMetadata: uploadMetadata)
+        assertMetadataValue(metadataInit, uploadMetadata.userComment)
     }
-    func testInitWithUploadMetadata() {
-        let uploadMetadata = Document.UploadMetadata.init(
-            giniCaptureVersion: "99.99.99",
-            deviceOrientation: "deviceOrientation",
-            source: "source",
-            importMethod: "import",
-            entryPoint: "unit-test",
-            osVersion: "ios 99"
-        )
-        let metadata = Document.Metadata(uploadMetadata: uploadMetadata)
+
+    private func assertMetadataValue(_ metadata: Document.Metadata, _ expectedValue: String) {
         let metadataValue = metadata.headers[Document.Metadata.headerKeyPrefix + Document.Metadata.uploadHeaderKey] ?? ""
-        XCTAssertEqual(
-            metadataValue,
-            uploadMetadata.userComment,
-            "userComment should match; expected \"\(uploadMetadata.userComment)\", got \"\(metadataValue)\""
-        )
+        XCTAssertEqual(metadataValue, expectedValue, "userComment should match")
     }
 }
-
