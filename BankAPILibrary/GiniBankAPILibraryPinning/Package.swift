@@ -2,6 +2,7 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
+import Foundation
 
 let package = Package(
     name: "GiniBankAPILibraryPinning",
@@ -10,6 +11,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "GiniBankAPILibraryPinning",
+            type: ProcessInfo.processInfo.environment["GINI_FORCE_DYNAMIC_LIBRARY"] == "1" ? .dynamic : nil,
             targets: ["GiniBankAPILibraryPinning"]),
     ],
     dependencies: [
@@ -25,8 +27,11 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "GiniBankAPILibraryPinning",
-            dependencies: ["GiniBankAPILibrary", "TrustKit"]),
-        
+            dependencies: [
+                .product(name: "TrustKit", package: "TrustKit"), // Explicit product usage
+                "GiniBankAPILibrary"
+            ]
+        ),
         .testTarget(
             name: "GiniBankAPILibraryPinningTests",
             dependencies: ["GiniBankAPILibraryPinning"]),
