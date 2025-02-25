@@ -203,7 +203,7 @@ extension GiniScreenAPICoordinator {
         }
     }
 
-    @objc func finishWithCancellation() {
+    @objc public func finishWithCancellation() {
         if let delegate = self.visionDelegate {
             delegate.didCancelCapturing()
         } else {
