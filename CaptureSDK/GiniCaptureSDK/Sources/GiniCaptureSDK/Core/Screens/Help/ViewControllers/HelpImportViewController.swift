@@ -12,6 +12,7 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
 
     var bottomNavigationBar: UIView?
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
 
     private enum HelpImportCellType {
         case selectInvoice
@@ -43,6 +44,7 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        updateBottomBarHeightBasedOnOrientation()
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin * 2, right: 0)
     }
 
