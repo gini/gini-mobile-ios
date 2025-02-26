@@ -216,7 +216,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
             moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
             moreInformationStrings: stringsProvider.moreInformationStrings,
             minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
-            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration
+            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration,
+            clientConfiguration: nil
         )
         paymentComponentViewModel.delegate = self
         paymentComponentViewModel.documentId = documentId
@@ -276,7 +277,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
                                                                showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
-                                                               previousPaymentComponentScreenType: nil)
+                                                               previousPaymentComponentScreenType: nil,
+                                                               clientConfiguration: nil)
 
                             let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                                              selectedPaymentProvider: healthSelectedPaymentProvider)
@@ -316,7 +318,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                            bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
                                            showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
-                                           previousPaymentComponentScreenType: nil)
+                                           previousPaymentComponentScreenType: nil,
+                                           clientConfiguration: nil)
 
         let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                          selectedPaymentProvider: healthSelectedPaymentProvider)
@@ -352,7 +355,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                    poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
-                                                                   moreInformationStrings: stringsProvider.moreInformationStrings)
+                                                                   moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   clientConfiguration: nil)
         paymentProvidersBottomViewModel.viewDelegate = self
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
@@ -370,7 +374,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                         configuration: configurationProvider.paymentInfoConfiguration,
                                                         strings: stringsProvider.paymentInfoStrings,
                                                         poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                        clientConfiguration: nil)
         return PaymentInfoViewController(viewModel: paymentInfoViewModel)
     }
 
@@ -389,7 +394,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                   strings: stringsProvider.installAppStrings,
                                                                   primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
                                                                   poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                                  poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                                  poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                                  clientConfiguration: nil)
         installAppBottomViewModel.viewDelegate = self
         let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return installAppBottomView
@@ -416,7 +422,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                       poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                       qrCodeData: qrCodeData,
                                                                       paymentInfo: nil,
-                                                                      paymentRequestId: paymentRequestId)
+                                                                      paymentRequestId: paymentRequestId,
+                                                                      clientConfiguration: nil)
         shareInvoiceBottomViewModel.viewDelegate = self
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return shareInvoiceBottomView
@@ -437,7 +444,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                    poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
-                                                                   moreInformationStrings: stringsProvider.moreInformationStrings)
+                                                                   moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   clientConfiguration: nil)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)

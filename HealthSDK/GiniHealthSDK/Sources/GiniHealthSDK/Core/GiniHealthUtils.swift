@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniInternalPaymentSDK
 import GiniUtilites
 /**
   Returns the GiniHealth bundle.
@@ -56,7 +57,9 @@ func NSLocalizedStringPreferredFormat(_ key: String,
                                       fallbackKey: String = "",
                                       comment: String,
                                       isCustomizable: Bool = true) -> String {
-    GiniLocalized.string(key, fallbackKey: fallbackKey, comment: comment, locale: GiniHealthConfiguration.shared.customLocalization?.rawValue, bundle: giniHealthBundle())
+    let communicationTone = GiniHealthConfiguration.shared.clientConfiguration?.communicationTone
+        .flatMap { CommunicationToneEnum(rawValue: $0.rawValue)?.localizable() } ?? CommunicationToneEnum.defaultCommunicationTone
+    return GiniLocalized.string(key, fallbackKey: fallbackKey, comment: comment, locale: GiniHealthConfiguration.shared.customLocalization?.rawValue, bundle: giniHealthBundle(), communicationTone: communicationTone)
 }
 
 /**

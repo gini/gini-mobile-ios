@@ -28,6 +28,7 @@ final class ReviewZoomViewController: UIViewController {
     init(page: GiniCapturePage) {
         self.page = page
         super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .pageSheet
     }
 
     @available(*, unavailable)

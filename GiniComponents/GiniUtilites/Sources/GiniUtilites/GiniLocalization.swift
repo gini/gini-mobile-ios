@@ -31,8 +31,11 @@ public enum GiniLocalized {
 
      - Returns: The localized string for the given key.
      */
-    public static func string(_ key: String, fallbackKey: String? = nil, comment: String, locale: String?, bundle: Bundle) -> String {
-        let locale = locale ?? getLanguageCode() ?? GiniLocalization.en.rawValue
+    public static func string(_ key: String, fallbackKey: String? = nil, comment: String, locale: String?, bundle: Bundle, communicationTone: String? = nil) -> String {
+        var locale = locale ?? getLanguageCode() ?? GiniLocalization.en.rawValue
+        if locale == GiniLocalization.de.rawValue, let communicationTone {
+            locale = communicationTone
+        }
         let clientAppBundle = Bundle.main
 
         if let clientString = overridedString(key, locale: locale, comment: comment, bundle: clientAppBundle) {

@@ -125,7 +125,9 @@ public final class PaymentReviewContainerView: UIView {
         buttonsView.addSubview(buttonsStackView)
 
         bottomStackView.addArrangedSubview(UIView())
-        bottomStackView.addArrangedSubview(poweredByGiniView)
+        if viewModel.shouldShowBrandedView {
+            bottomStackView.addArrangedSubview(poweredByGiniView)
+        }
         bottomView.addSubview(bottomStackView)
 
         paymentInfoStackView.addArrangedSubview(recipientStackView)
