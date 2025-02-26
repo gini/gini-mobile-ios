@@ -2,7 +2,6 @@
 //  GalleryManagerMock.swift
 //  GiniCapture_Tests
 //
-//  Created by Enrique del Pozo Gómez on 2/26/18.
 //  Copyright © 2018 Gini GmbH. All rights reserved.
 //
 
@@ -12,17 +11,21 @@ import Photos
 final class GalleryManagerMock: GalleryManagerProtocol {
     var isGalleryAccessLimited: Bool = false
     
-    
-    var albums: [Album] = [Album(assets: [Asset(identifier: "Asset 1")],
-                                 title: "Album 1",
-                                 identifier: "Album 1"),
-                           Album(assets: [Asset(identifier: "Asset 1"), Asset(identifier: "Asset 2")],
-                                 title: "Album 2",
-                                 identifier: "Album 2"),
-                           Album(assets: [Asset(identifier: "Asset 1"), Asset(identifier: "Asset 2")],
-                                 title: "Album 3",
-                                 identifier: "Album 3")]
-    
+    private let asset1 = Asset(identifier: "Asset 1")
+    private let asset2 = Asset(identifier: "Asset 2")
+
+    private let albumTitles = ["Album 1", "Album 2", "Album 3"]
+
+    private func createAlbum(index: Int, assets: [Asset]) -> Album {
+        return Album(assets: assets, title: albumTitles[index], identifier: albumTitles[index])
+    }
+
+    lazy var albums: [Album] = [
+        createAlbum(index: 0, assets: [asset1]),
+        createAlbum(index: 1, assets: [asset1, asset2]),
+        createAlbum(index: 2, assets: [asset1, asset2])
+    ]
+
     var isCaching = false
         
     func reloadAlbums() {
