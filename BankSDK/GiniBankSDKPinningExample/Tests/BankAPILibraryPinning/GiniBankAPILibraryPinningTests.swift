@@ -9,8 +9,8 @@ import XCTest
 @testable import TrustKit
 
 final class GiniBankAPILibraryPinningTests: XCTestCase {
-    let client = Client(id: "", secret: "", domain: "")
-    let yourPublicPinningConfig = [
+    private let client = Client(id: "", secret: "", domain: "")
+    private let yourPublicPinningConfig = [
         kTSKPinnedDomains: [
             "pay-api.gini.net": [
                 kTSKPublicKeyHashes: [
@@ -28,48 +28,53 @@ final class GiniBankAPILibraryPinningTests: XCTestCase {
                 ]],
         ]] as [String: Any]
 
+    private let customApiDomain = "custom-api.domain.com"
+    private let customUserDomain = "custom-user.domain.com"
+
     func testBuildWithCustomApiDomain() {
         let giniBankAPILib = GiniBankAPI.Builder(client: client,
-                                                 api: .custom(domain: "custom-api.domain.com", tokenSource: nil),
+                                                 api: .custom(domain: customApiDomain, tokenSource: nil),
                                                  pinningConfig: yourPublicPinningConfig,
                                                  logLevel: .none).build()
 
         let documentService: DefaultDocumentService = giniBankAPILib.documentService()
-        XCTAssertEqual(documentService.apiDomain.domainString, "custom-api.domain.com")
+        XCTAssertEqual(documentService.apiDomain.domainString, customApiDomain)
     }
 
     func testBuildWithCustomUserDomain() {
         let giniBankAPILib = GiniBankAPI.Builder(client: client,
-                                                 userApi: .custom(domain: "custom-user.domain.com"),
+                                                 userApi: .custom(domain: customUserDomain),
                                                  pinningConfig: yourPublicPinningConfig,
                                                  logLevel: .none).build()
+
         let documentService: DefaultDocumentService = giniBankAPILib.documentService()
         let sessionManager: SessionManager = documentService.sessionManager as! SessionManager
-        XCTAssertEqual(sessionManager.userDomain.domainString, "custom-user.domain.com")
+        XCTAssertEqual(sessionManager.userDomain.domainString, customUserDomain)
     }
 
     func testBuildWithCustomApiAndUserDomain() {
         let giniBankAPILib = GiniBankAPI.Builder(client: client,
-                                                 api: .custom(domain: "custom-api.domain.com", tokenSource: nil),
-                                                 userApi: .custom(domain: "custom-user.domain.com"),
+                                                 api: .custom(domain: customApiDomain, tokenSource: nil),
+                                                 userApi: .custom(domain: customUserDomain),
                                                  pinningConfig: yourPublicPinningConfig,
                                                  logLevel: .none).build()
+
         let documentService: DefaultDocumentService = giniBankAPILib.documentService()
-        XCTAssertEqual(documentService.apiDomain.domainString, "custom-api.domain.com")
+        XCTAssertEqual(documentService.apiDomain.domainString, customApiDomain)
 
         let sessionManager: SessionManager = documentService.sessionManager as! SessionManager
-        XCTAssertEqual(sessionManager.userDomain.domainString, "custom-user.domain.com")
+        XCTAssertEqual(sessionManager.userDomain.domainString, customUserDomain)
     }
 
     func testWithCustomApiDomainAndAlternativeTokenSource() {
         let tokenSource = TokenSource()
-        let giniBankAPILib = GiniBankAPI.Builder(customApiDomain: "custom-api.domain.com",
+        let giniBankAPILib = GiniBankAPI.Builder(customApiDomain: customApiDomain,
                                                  alternativeTokenSource: tokenSource,
                                                  pinningConfig: yourPublicPinningConfig,
                                                  logLevel: .none).build()
 
         let documentService: DefaultDocumentService = giniBankAPILib.documentService()
-        XCTAssertEqual(documentService.apiDomain.domainString, "custom-api.domain.com")
+        XCTAssertEqual(documentService.apiDomain.domainString, customApiDomain)
 
         let sessionManager: SessionManager = documentService.sessionManager as! SessionManager
         XCTAssertNotNil(sessionManager.alternativeTokenSource)
