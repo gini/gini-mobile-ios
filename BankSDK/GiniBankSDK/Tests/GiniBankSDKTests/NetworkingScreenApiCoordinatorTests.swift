@@ -59,7 +59,7 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
         tokenSource = makeTokenSource()
         resultsDelegate = MockCaptureResultsDelegate()
         configuration = GiniBankConfiguration()
-        metadata = Document.Metadata(branchId: "branch")
+        metadata = Document.Metadata(branchId: "branch", bankSDKVersion: GiniBankSDKVersion)
         trackingDelegate = MockTrackingDelegate()
     }
 

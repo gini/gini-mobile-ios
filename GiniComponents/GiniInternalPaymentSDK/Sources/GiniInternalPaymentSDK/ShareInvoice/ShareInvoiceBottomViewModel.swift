@@ -11,7 +11,7 @@ import GiniHealthAPILibrary
 
 /// A protocol for handling actions from the Onboarding Share Invoice bottom view
 public protocol ShareInvoiceBottomViewProtocol: AnyObject {
-    func didTapOnContinueToShareInvoice()
+    func didTapOnContinueToShareInvoice(paymentRequestId: String)
 }
 
 struct SingleApp {
@@ -39,6 +39,8 @@ public final class ShareInvoiceBottomViewModel {
     let bankImageIcon: Data
     let qrCodeData: Data
     let continueButtonText: String
+    
+    let paymentRequestId: String
 
     /// An optional identifier for the document ID being shared in order to pass it back to the delegates
     public var documentId: String?
@@ -46,6 +48,10 @@ public final class ShareInvoiceBottomViewModel {
 
     var appsMocked: [SingleApp] = []
 
+    var clientConfiguration: ClientConfiguration?
+    var shouldShowBrandedView: Bool {
+        clientConfiguration?.ingredientBrandType == .fullVisible
+    }
     /**
      Initializes a new instance of `ShareInvoiceBottomViewModel`.
 
@@ -64,7 +70,9 @@ public final class ShareInvoiceBottomViewModel {
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
                 poweredByGiniStrings: PoweredByGiniStrings,
                 qrCodeData: Data,
-                paymentInfo: PaymentInfo?) {
+                paymentInfo: PaymentInfo?,
+                paymentRequestId: String,
+                clientConfiguration: ClientConfiguration?) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.bankImageIcon = selectedPaymentProvider?.iconData ?? Data()
         self.paymentProviderColors = selectedPaymentProvider?.colors
@@ -74,6 +82,8 @@ public final class ShareInvoiceBottomViewModel {
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.qrCodeData = qrCodeData
         self.paymentInfo = paymentInfo
+        self.paymentRequestId = paymentRequestId
+        self.clientConfiguration = clientConfiguration
 
         titleText = strings.titleTextPattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
         descriptionLabelText = strings.descriptionTextPattern.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
@@ -81,6 +91,6 @@ public final class ShareInvoiceBottomViewModel {
     }
     
     func didTapOnContinue() {
-        viewDelegate?.didTapOnContinueToShareInvoice()
+        viewDelegate?.didTapOnContinueToShareInvoice(paymentRequestId: paymentRequestId)
     }
 }

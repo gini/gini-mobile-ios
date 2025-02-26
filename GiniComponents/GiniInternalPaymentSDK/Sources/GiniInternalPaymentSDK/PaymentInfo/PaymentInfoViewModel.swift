@@ -24,16 +24,23 @@ public final class PaymentInfoViewModel {
     var payBillsDescriptionAttributedText: NSMutableAttributedString = NSMutableAttributedString()
     var payBillsDescriptionLinkAttributes: [NSAttributedString.Key: Any]
     var questions: [FAQSection] = []
-    
+
+    var clientConfiguration: ClientConfiguration?
+    var shouldShowBrandedView: Bool {
+        clientConfiguration?.ingredientBrandType == .fullVisible
+    }
+
     public init(paymentProviders: GiniHealthAPILibrary.PaymentProviders,
                 configuration: PaymentInfoConfiguration,
                 strings: PaymentInfoStrings,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
-                poweredByGiniStrings: PoweredByGiniStrings) {
+                poweredByGiniStrings: PoweredByGiniStrings,
+                clientConfiguration: ClientConfiguration?) {
         self.paymentProviders = paymentProviders
         self.configuration = configuration
         self.strings = strings
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
+        self.clientConfiguration = clientConfiguration
 
         payBillsDescriptionLinkAttributes = [.font: configuration.linksFont]
 

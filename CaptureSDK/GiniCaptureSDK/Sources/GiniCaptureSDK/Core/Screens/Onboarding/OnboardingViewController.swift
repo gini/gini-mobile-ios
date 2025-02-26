@@ -10,7 +10,7 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var pagesCollection: UICollectionView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var nextButton: MultilineTitleButton!
-    private (set) var dataSource: OnboardingDataSource
+    private(set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?

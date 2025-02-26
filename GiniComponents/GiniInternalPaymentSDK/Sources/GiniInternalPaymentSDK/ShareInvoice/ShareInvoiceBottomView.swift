@@ -126,7 +126,9 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         contentStackView.addArrangedSubview(qrCodeView)
         
         brandStackView.addArrangedSubview(UIView())
-        brandStackView.addArrangedSubview(poweredByGiniView)
+        if viewModel.shouldShowBrandedView {
+            brandStackView.addArrangedSubview(poweredByGiniView)
+        }
         brandStackView.addArrangedSubview(UIView())
         brandView.addSubview(brandStackView)
         contentStackView.addArrangedSubview(brandView)
