@@ -26,7 +26,7 @@ final class GalleryManagerMock: GalleryManagerProtocol {
     var isCaching = false
         
     func reloadAlbums() {
-        
+        // This method will remain empty; no implementation is needed.
     }
     
     func startCachingImages(for album: Album) {
@@ -46,7 +46,7 @@ final class GalleryManagerMock: GalleryManagerProtocol {
     }
     
     func fetchImage(from asset: Asset, imageQuality: ImageQuality, completion: @escaping ((UIImage) -> Void)) {
-        
+        // This method will remain empty; no implementation is needed.
     }
 }
 
