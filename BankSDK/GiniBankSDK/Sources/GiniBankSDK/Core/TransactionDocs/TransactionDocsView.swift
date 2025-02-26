@@ -18,7 +18,7 @@ public protocol TransactionDocsViewDelegate: AnyObject {
 /// A view that displays a list of documents attached to a transaction and allows interaction with them.
 /// The `TransactionDocsView` class is responsible for rendering attached documents,
 /// binding to a view model, and notifying its delegate when the content is updated.
-public class TransactionDocsView: UIView {
+public final class TransactionDocsView: UIView {
 
     /// The delegate that is notified when the view's content is updated.
     public weak var delegate: TransactionDocsViewDelegate?
@@ -33,6 +33,7 @@ public class TransactionDocsView: UIView {
     private var viewModel: TransactionDocsViewModel? {
         return internalTransactionDocsDataCoordinator?.getTransactionDocsViewModel()
     }
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -59,8 +60,7 @@ public class TransactionDocsView: UIView {
     }
 
     private func commonInit() {
-        guard let internalTransactionDocsDataCoordinator = internalTransactionDocsDataCoordinator else { return }
-        let transactionDocs = internalTransactionDocsDataCoordinator.transactionDocs
+        let transactionDocs = viewModel?.transactionDocs ?? []
         let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration
         let transactionDocsEnabled = savedConfiguration?.transactionDocsEnabled ?? false
         guard transactionDocsEnabled, configuration.transactionDocsEnabled, !transactionDocs.isEmpty else { return }
@@ -111,12 +111,12 @@ public class TransactionDocsView: UIView {
         }
     }
 
-    private func createTransactionDocsItemView(for transactionDoc: TransactionDoc) -> TransactionDocsItemView {
+    private func createTransactionDocsItemView(for transactionDoc: GiniTransactionDoc) -> TransactionDocsItemView {
         let transactionDocsItemView = TransactionDocsItemView(transactionDocsItem: transactionDoc)
 
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                          action: #selector(didTapToPreviewDocument(_:)))
-        transactionDocsItemView.addGestureRecognizer(tapGestureRecognizer)
+        transactionDocsItemView.tapAction = { [weak self] in
+            self?.viewModel?.handlePreviewDocument(for: transactionDoc.documentId )
+        }
 
         transactionDocsItemView.optionsAction = { [weak self] in
             self?.viewModel?.presentDocumentActionSheet(for: transactionDoc)
@@ -126,9 +126,7 @@ public class TransactionDocsView: UIView {
     }
 
     // MARK: - Actions
-    @objc private func didTapToPreviewDocument(_ sender: UITapGestureRecognizer) {
-        guard let tappedView = sender.view as? TransactionDocsItemView,
-              let documentId = tappedView.transactionDocsItem?.documentId else { return }
+    @objc private func didTapToPreviewDocument(for documentId: String) {
         viewModel?.handlePreviewDocument(for: documentId)
     }
 }

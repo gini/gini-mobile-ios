@@ -152,11 +152,11 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     private init(resultsDelegate: GiniCaptureResultsDelegate,
-                configuration: GiniBankConfiguration,
-                documentMetadata: Document.Metadata?,
-                trackingDelegate: GiniCaptureTrackingDelegate?,
-                lib: GiniBankAPI) {
-        documentService = DocumentService(lib: lib, metadata: Self.makeMetadata(with: documentMetadata))
+                 configuration: GiniBankConfiguration,
+                 documentMetadata: Document.Metadata?,
+                 trackingDelegate: GiniCaptureTrackingDelegate?,
+                 lib: GiniBankAPI) {
+        documentService = DocumentService(lib: lib, metadata: documentMetadata)
         configurationService = lib.configurationService()
         let captureConfiguration = configuration.captureConfiguration()
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
@@ -601,19 +601,23 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
 
         self.handleTransactionDocsAlertIfNeeded(on: navigationController,
                                                 defaultAction: { [weak self] in
-            self?.transactionDocsDataCoordinator?.transactionDocs = []
+            self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
             deliveryFunction(extractionResult)
         },
                                                 attachAction: { [weak self] in
             if let documentId = documentId {
-                self?.transactionDocsDataCoordinator?.transactionDocs = [.init(documentId: documentId,
-                                                                               fileName: "Document",
-                                                                               type: .document)]
+                // NOTE: For now all the documents that are not PDfs will be saved with name "Document.png"
+                // this should come from backend in the feature
+                // for PDFs documents Gini store the original name
+                let originalFileName = originalDocumentName ?? "Document.png"
+                self?.giniBankConfiguration.transactionDocsDataCoordinator
+                    .transactionDocs = [.init(documentId: documentId,
+                                              originalFileName: originalFileName)]
                 self?.setTransactionDocsDataToDisplay(with: extractionResult, for: documentId)
             } else {
-                self?.transactionDocsDataCoordinator?.transactionDocs = []
+                self?.giniBankConfiguration.transactionDocsDataCoordinator.transactionDocs = []
             }
-            
+
             deliveryFunction(extractionResult)
         })
     }
@@ -641,7 +645,7 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         }
     }
     private func createDocumentPageViewModel(from skontoViewModel: SkontoViewModel,
-                                             completion: @escaping (Result<SkontoDocumentPagesViewModel, 
+                                             completion: @escaping (Result<SkontoDocumentPagesViewModel,
                                                                     GiniError>) -> Void) {
         let dispatchGroup = DispatchGroup()
         var originalSizes: [DocumentPageSize] = []
@@ -767,16 +771,18 @@ extension GiniBankNetworkingScreenApiCoordinator {
             guard let viewModel = self?.transactionDocsDataCoordinator?.getTransactionDocsViewModel(),
                   let images = viewModel.cachedImages[documentId],
                   !images.isEmpty else {
-                self?.loadDocumentPagesAndHandleErrors(for: documentId, with: extractionResult)
+                self?.loadDocumentPagesAndHandleErrors(for: documentId, with: extractionResult.extractions)
                 return
             }
-            self?.updateTransactionDocsViewModel(with: images,
-                                                 extractionResult: extractionResult,
-                                                 for: documentId)
+
+            let extractions = extractionResult.extractions
+            self?.transactionDocsDataCoordinator?.updateTransactionDocsViewModel(with: images,
+                                                                                 extractions: extractions,
+                                                                                 for: documentId)
         }
     }
 
-    private func loadDocumentPagesAndHandleErrors(for documentId: String, with extractionResult: ExtractionResult) {
+    private func loadDocumentPagesAndHandleErrors(for documentId: String, with extractions: [Extraction]) {
         loadDocumentPages { [weak self] images, error in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -784,9 +790,9 @@ extension GiniBankNetworkingScreenApiCoordinator {
                     self.handlePreviewDocumentError(error: error)
                     return
                 }
-                self.updateTransactionDocsViewModel(with: images,
-                                                    extractionResult: extractionResult,
-                                                    for: documentId)
+                self.transactionDocsDataCoordinator?.updateTransactionDocsViewModel(with: images,
+                                                                                    extractions: extractions,
+                                                                                    for: documentId)
             }
         }
     }
@@ -798,17 +804,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
         viewModel?.setPreviewDocumentError(error: error) { [weak self] in
             self?.transactionDocsDataCoordinator?.loadDocumentData?()
         }
-    }
-
-    private func updateTransactionDocsViewModel(with images: [UIImage],
-                                                extractionResult: ExtractionResult,
-                                                for documentId: String) {
-        let extractionInfo = TransactionDocsExtractions(extractions: extractionResult)
-        let viewModel = TransactionDocsDocumentPagesViewModel(originalImages: images,
-                                                              extractions: extractionInfo)
-        transactionDocsDataCoordinator?
-            .getTransactionDocsViewModel()?
-            .setTransactionDocsDocumentPagesViewModel(viewModel, for: documentId)
     }
 }
 

@@ -8,7 +8,6 @@ import UIKit
 
 extension GiniBankNetworkingScreenApiCoordinator {
     func handleTransactionDocsAlertIfNeeded(on controller: UIViewController,
-
                                             defaultAction: @escaping () -> Void,
                                             attachAction: @escaping () -> Void) {
         let savedConfiguration = GiniBankUserDefaultsStorage.clientConfiguration

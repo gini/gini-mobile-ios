@@ -112,53 +112,85 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? TransactionSummaryTableViewController)!
 
-        customResultsScreen.tableView.estimatedRowHeight = 75
-        
-        configuration.transactionDocsDataCoordinator.presentingViewController = customResultsScreen
+        customResultsScreen.delegate = self
 
+        configuration.transactionDocsDataCoordinator.presentingViewController = customResultsScreen
         customResultsScreen.result = results
 		customResultsScreen.editableFields = editableSpecificExtractions
-        customResultsScreen.navigationItem.setHidesBackButton(true, animated: true)
-        let title =
-        NSLocalizedStringPreferredFormat("results.sendfeedback.button.title", 
-                                         fallbackKey: "Send feedback and close",
-                                         comment: "title for send feedback button",
-                                         isCustomizable: true)
-        customResultsScreen.navigationItem
-            .rightBarButtonItem = UIBarButtonItem(title: title,
-                                                  style: .plain,
-                                                  target: self,
-                                                  action: #selector(closeSreenAPIAndSendTransferSummary))
+
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
                 if let config = self?.configuration.captureConfiguration(),
-                 config.customNavigationController == nil {
+                   config.customNavigationController == nil {
                     self?.screenAPIViewController.applyStyle(withConfiguration: config)
                 }
-             }
+            }
             self?.screenAPIViewController.setNavigationBarHidden(false, animated: false)
             
             self?.screenAPIViewController.pushViewController(customResultsScreen, animated: true)
         }
     }
     
-    @objc private func closeSreenAPIAndSendTransferSummary() {
+    private func closeSreenAPIAndSendTransferSummary() {
         var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
+        var extractionAmountString = ""
         if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
             if amountValue.split(separator: ":").count > 0 {
-                extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0,
+                let value = Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0
+                extractionAmount = ExtractionAmount(value: value,
                                                     currency: .EUR)
+                extractionAmountString = "\(amountValue.split(separator: ":")[0]) EUR"
             }
         }
 
-        configuration.sendTransferSummary(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
-                                          paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
-                                          paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
-                                          iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
-                                          bic: extractedResults.first(where: { $0.name == "bic"})?.value ?? "",
-                                          amountToPay: extractionAmount)
+        let paymentRecipient = extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? ""
+        let paymentReference = extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? ""
+        let paymentPurpose = extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? ""
+        let iban = extractedResults.first(where: { $0.name == "iban"})?.value ?? ""
+        let bic = extractedResults.first(where: { $0.name == "bic"})?.value ?? ""
+        let amoutToPay = extractionAmount
+        configuration.sendTransferSummary(paymentRecipient: paymentRecipient,
+                                          paymentReference: paymentReference,
+                                          paymentPurpose: paymentPurpose,
+                                          iban: iban,
+                                          bic: bic,
+                                          amountToPay: amoutToPay)
+
+        // GiniBankSDK requires both `documentId` and `originalFileName`
+        // to properly display attachment information in the transaction details screen.
+        // Example usage in `TransactionListViewController`:
+        //
+        // GiniTransactionDoc(
+        //     documentId: documentId,
+        //     originalFileName: filename
+        // )
+
+        let attachments = configuration.transactionDocsDataCoordinator.transactionDocs.map {
+            return Attachment(documentId: $0.documentId,
+                              filename: $0.fileName,
+                              type: $0.isFile ? .document : .image)
+        }
+
+        let transaction = Transaction(date: Date(),
+                                      paiedAmount: extractionAmountString,
+                                      paymentPurpose: paymentPurpose,
+                                      paymentRecipient: paymentRecipient,
+                                      iban: iban,
+                                      paymentReference: paymentReference,
+                                      attachments: attachments)
+        updateJSONFileWithTransaction(transaction)
+
         configuration.cleanup()
+
         delegate?.screenAPI(coordinator: self, didFinish: ())
+    }
+
+    private func updateJSONFileWithTransaction(_ transaction: Transaction) {
+        let fileManager = FileManagerHelper(fileName: "transaction_list.json")
+
+        // Read transactions (automatically creates an empty file if it doesn't exist)
+        let _: [Transaction] = fileManager.read()
+        fileManager.append([transaction])
     }
 
     private func showAlertOnDidEnterManually(){
@@ -172,6 +204,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 
         alert.addAction(ok)
         rootViewController.present(alert, animated: true)
+    }
+}
+// MARK: - TransactionSummaryTableViewControllerDelegate
+extension ScreenAPICoordinator: TransactionSummaryTableViewControllerDelegate {
+    func didTapCloseAndSendTransferSummary() {
+        closeSreenAPIAndSendTransferSummary()
     }
 }
 
