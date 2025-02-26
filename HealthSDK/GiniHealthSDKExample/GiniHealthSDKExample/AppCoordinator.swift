@@ -61,7 +61,9 @@ final class AppCoordinator: Coordinator {
     private var documentMetadata: GiniHealthSDK.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
-    
+
+    private let hardcodedInvoicesController: HardcodedInvoicesControllerProtocol = HardcodedInvoicesController()
+
     init(window: UIWindow) {
         self.window = window
         print("------------------------------------\n\n",
@@ -165,7 +167,7 @@ final class AppCoordinator: Coordinator {
                                                                                             secret: clientPassword,
                                                                                             domain: clientDomain),
                                                                                             documentMetadata: metadata,
-                                                        hardcodedInvoicesController: HardcodedInvoicesController())
+                                                        hardcodedInvoicesController: hardcodedInvoicesController)
         
         screenAPICoordinator.delegate = self
         
@@ -321,7 +323,7 @@ final class AppCoordinator: Coordinator {
         let invoicesListCoordinator = InvoicesListCoordinator()
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
-                                          hardcodedInvoicesController: HardcodedInvoicesController(),
+                                          hardcodedInvoicesController: self.hardcodedInvoicesController,
                                           health: self.health,
                                           invoices: invoices)
             self.add(childCoordinator: invoicesListCoordinator)
@@ -427,5 +429,22 @@ extension AppCoordinator: DebugMenuDelegate {
     func didPickNewLocalization(localization: GiniLocalization) {
         giniHealthConfiguration.customLocalization = localization
         health.setConfiguration(giniHealthConfiguration)
+    }
+
+    func didTapOnBulkDelete() {
+        let documentsToDeleteIds = Array(hardcodedInvoicesController.getInvoicesWithExtractions()
+            .map { $0.documentId }
+            .prefix(2)) // Number of documents to delete
+        guard !documentsToDeleteIds.isEmpty else { return }
+
+        health.deleteBatchOfDocuments(documentIds: documentsToDeleteIds) { result in
+            switch result {
+            case .success(_):
+                self.hardcodedInvoicesController.deleteDocuments(withIds: documentsToDeleteIds)
+                GiniUtilites.Log("Successfully deleted documents with: \(documentsToDeleteIds)", event: .success)
+            case .failure(let failure):
+                GiniUtilites.Log("Failed to delete documents with error: \(failure.localizedDescription)", event: .error)
+            }
+        }
     }
 }
