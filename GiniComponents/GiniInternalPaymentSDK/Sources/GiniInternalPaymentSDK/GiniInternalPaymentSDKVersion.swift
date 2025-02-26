@@ -5,4 +5,4 @@
 //
 
 
-public let GiniInternalPaymentSDKVersion = "2.0.0"
+public let GiniInternalPaymentSDKVersion = "2.1.0"

@@ -135,7 +135,9 @@ public final class InstallAppBottomView: BottomSheetViewController {
         contentStackView.addArrangedSubview(buttonsView)
         contentStackView.addArrangedSubview(UIView())
         bottomStackView.addArrangedSubview(UIView())
-        bottomStackView.addArrangedSubview(poweredByGiniView)
+        if viewModel.shouldShowBrandedView {
+            bottomStackView.addArrangedSubview(poweredByGiniView)
+        }
         bottomView.addSubview(bottomStackView)
         contentStackView.addArrangedSubview(bottomView)
         self.setContent(content: contentStackView)

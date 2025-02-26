@@ -82,7 +82,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
             moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
             moreInformationStrings: stringsProvider.moreInformationStrings,
             minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
-            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration
+            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration,
+            clientConfiguration: configurationProvider.clientConfiguration
         )
         paymentComponentViewModel.documentId = MockSessionManager.payableDocumentID
         let view = PaymentComponentView(viewModel: paymentComponentViewModel)
@@ -97,7 +98,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                                    poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
-                                                                   moreInformationStrings: stringsProvider.moreInformationStrings)
+                                                                   moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   clientConfiguration: configurationProvider.clientConfiguration)
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
 
@@ -112,7 +114,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                         configuration: giniHealth.paymentInfoConfiguration,
                                                         strings: giniHealth.paymentInfoStrings,
                                                         poweredByGiniConfiguration: giniHealth.poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: giniHealth.poweredByGiniStrings)
+                                                        poweredByGiniStrings: giniHealth.poweredByGiniStrings,
+                                                        clientConfiguration: configurationProvider.clientConfiguration)
         let paymentInfoViewController = PaymentInfoViewController(viewModel: paymentInfoViewModel)
         return paymentInfoViewController
     }
