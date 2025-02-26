@@ -1,5 +1,10 @@
 name: Publish GiniMerchantSDKExample to Firebase Distribution
 on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - 'MerchantSDK/**'
+      - 'HealthAPILibrary/**'
   workflow_dispatch:
 
 concurrency:
