@@ -156,7 +156,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         guard let viewModel = viewModel else { return }
         let eventProperties = [GiniAnalyticsProperty(key: .switchActive, value: viewModel.isSkontoApplied)]
         GiniAnalyticsManager.track(event: .skontoSwitchTapped,
-                                   screenName: .returnAssistantSkonto,
+                                   screenName: .returnAssistant,
                                    properties: eventProperties)
     }
 
