@@ -11,14 +11,15 @@ import XCTest
 extension UIControl {
     func simulateEvent(_ event: UIControl.Event) {
         for target in allTargets {
-            let target = target as NSObjectProtocol
-            for actionName in actions(forTarget: target, forControlEvent: event) ?? [] {
+            let nsObjectTarget = target as NSObjectProtocol
+            for actionName in actions(forTarget: nsObjectTarget, forControlEvent: event) ?? [] {
                 let selector = Selector(actionName)
-                target.perform(selector)
+                nsObjectTarget.perform(selector)
             }
         }
     }
 }
+
 final class GalleryCoordinatorTests: XCTestCase {
     let galleryManager = GalleryManagerMock()
     let giniConfiguration: GiniConfiguration = GiniConfiguration.shared
