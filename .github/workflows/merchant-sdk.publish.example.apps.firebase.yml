@@ -5,6 +5,7 @@ on:
     paths:
       - 'MerchantSDK/**'
       - 'HealthAPILibrary/**'
+      - 'GiniComponents/**'
   workflow_dispatch:
 
 concurrency:

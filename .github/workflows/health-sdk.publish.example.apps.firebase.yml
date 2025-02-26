@@ -3,8 +3,9 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
     paths:
-      - 'HealthSDK/**'
+      - 'MerchantSDK/**'
       - 'HealthAPILibrary/**'
+      - 'GiniComponents/**'
   workflow_dispatch:
 
 
