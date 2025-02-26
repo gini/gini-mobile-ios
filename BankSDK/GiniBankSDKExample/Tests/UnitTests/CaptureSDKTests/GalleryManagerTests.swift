@@ -34,7 +34,6 @@ final class GalleryManagerMock: GalleryManagerProtocol {
         ]
     }
 
-
     func reloadAlbums() {
         // This method will remain empty; no implementation is needed.
     }
