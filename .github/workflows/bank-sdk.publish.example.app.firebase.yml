@@ -1,5 +1,11 @@
 name: Publish GiniBankSDKExample to Firebase Distribution
 on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - 'BankSDK/**'
+      - 'CaptureSDK/**'
+      - 'BankAPILibrary/**'
   workflow_dispatch:
 
 concurrency:
