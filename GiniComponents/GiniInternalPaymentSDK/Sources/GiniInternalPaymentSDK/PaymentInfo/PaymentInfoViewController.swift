@@ -140,6 +140,7 @@ public final class PaymentInfoViewController: UIViewController {
         setupViewHierarchy()
         setupViewAttributes()
         setupViewConstraints()
+        setupViewVisibility()
     }
     
     private func setupViewHierarchy() {
@@ -164,7 +165,11 @@ public final class PaymentInfoViewController: UIViewController {
         setupPayBillsConstraints()
         setupQuestionsConstraints()
     }
-    
+
+    private func setupViewVisibility() {
+        poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
+    }
+
     private func setupContentViewConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),

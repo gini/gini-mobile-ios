@@ -40,6 +40,7 @@ final class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem, HelpM
     }
 
     override func configureCell(cell: HelpMenuCell, indexPath: IndexPath) {
+        cell.accessibilityTraits.insert(.button)
         cell.backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark3).uiColor()
         cell.titleLabel.text = items[indexPath.row].title
         cell.titleLabel.textColor = GiniColor(

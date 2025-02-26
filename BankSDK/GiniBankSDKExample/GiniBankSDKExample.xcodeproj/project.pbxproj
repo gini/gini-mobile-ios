@@ -84,30 +84,6 @@
 		28DAF4B02CD293140035A1FF /* GiniHelpScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4982CD293140035A1FF /* GiniHelpScreenUITests.swift */; };
 		28DAF4B12CD293140035A1FF /* GiniReviewScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4992CD293140035A1FF /* GiniReviewScreenUITests.swift */; };
 		28DAF4B22CD293140035A1FF /* GiniCaptureScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF49A2CD293140035A1FF /* GiniCaptureScreenUITests.swift */; };
-		28DAF4B32CD293AD0035A1FF /* GiniCameraAccessScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF48D2CD293140035A1FF /* GiniCameraAccessScreenUITests.swift */; };
-		28DAF4B42CD293B00035A1FF /* MainScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4912CD293140035A1FF /* MainScreenAccessibilityIdentifiers.swift */; };
-		28DAF4B52CD293B50035A1FF /* SettingScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4922CD293140035A1FF /* SettingScreenAccessibilityIdentifiers.swift */; };
-		28DAF4B62CD293B80035A1FF /* GiniBankSDKExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF48F2CD293140035A1FF /* GiniBankSDKExampleUITests.swift */; };
-		28DAF4B72CD293BC0035A1FF /* GiniCaptureScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF49A2CD293140035A1FF /* GiniCaptureScreenUITests.swift */; };
-		28DAF4B82CD293BF0035A1FF /* GiniErrorScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4902CD293140035A1FF /* GiniErrorScreenUITests.swift */; };
-		28DAF4B92CD293C10035A1FF /* GiniHelpScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4982CD293140035A1FF /* GiniHelpScreenUITests.swift */; };
-		28DAF4BA2CD293C40035A1FF /* GiniMainScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4962CD293140035A1FF /* GiniMainScreenUITests.swift */; };
-		28DAF4BB2CD293C60035A1FF /* GiniOnboardingScreenUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4952CD293140035A1FF /* GiniOnboardingScreenUITest.swift */; };
-		28DAF4BC2CD293C80035A1FF /* GiniReturnAssistantScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4942CD293140035A1FF /* GiniReturnAssistantScreenUITests.swift */; };
-		28DAF4BD2CD293CB0035A1FF /* GiniReviewScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4992CD293140035A1FF /* GiniReviewScreenUITests.swift */; };
-		28DAF4BE2CD293CD0035A1FF /* GiniSkontoScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF48E2CD293140035A1FF /* GiniSkontoScreenUITests.swift */; };
-		28DAF4BF2CD293CF0035A1FF /* GiniTransactionDocsScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4972CD293140035A1FF /* GiniTransactionDocsScreenUITests.swift */; };
-		28DAF4C02CD3A8520035A1FF /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4862CD293140035A1FF /* OnboardingScreen.swift */; };
-		28DAF4C12CD3A8540035A1FF /* CameraAccessScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4812CD293140035A1FF /* CameraAccessScreen.swift */; };
-		28DAF4C32CD3A8580035A1FF /* ErrorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4832CD293140035A1FF /* ErrorScreen.swift */; };
-		28DAF4C42CD3A85A0035A1FF /* HelpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4842CD293140035A1FF /* HelpScreen.swift */; };
-		28DAF4C52CD3A85D0035A1FF /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4852CD293140035A1FF /* MainScreen.swift */; };
-		28DAF4C62CD3A8600035A1FF /* ReturnAssistantScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4872CD293140035A1FF /* ReturnAssistantScreen.swift */; };
-		28DAF4C72CD3A8620035A1FF /* ReviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4882CD293140035A1FF /* ReviewScreen.swift */; };
-		28DAF4C82CD3A8640035A1FF /* SkontoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF48A2CD293140035A1FF /* SkontoScreen.swift */; };
-		28DAF4C92CD3A8660035A1FF /* SettingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4892CD293140035A1FF /* SettingScreen.swift */; };
-		28DAF4CA2CD3A8680035A1FF /* TransactionDocsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF48B2CD293140035A1FF /* TransactionDocsScreen.swift */; };
-		28DAF4CB2CD3A8CA0035A1FF /* CaptureScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4822CD293140035A1FF /* CaptureScreen.swift */; };
 		28DAF4CC2CD3A8CC0035A1FF /* CaptureScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4822CD293140035A1FF /* CaptureScreen.swift */; };
 		28DAF4CD2CD3A8EE0035A1FF /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4862CD293140035A1FF /* OnboardingScreen.swift */; };
 		28DAF4CE2CD3A8F30035A1FF /* CameraAccessScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4812CD293140035A1FF /* CameraAccessScreen.swift */; };
@@ -134,6 +110,8 @@
 		5D5328882C63F71100DEA203 /* CredentialsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5328872C63F71100DEA203 /* CredentialsTableViewCell.swift */; };
 		5D53288A2C63F77E00DEA203 /* CredentialsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5328892C63F77E00DEA203 /* CredentialsModel.swift */; };
 		5DCC9FA12C769A0900C1B76A /* APIEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCC9FA02C769A0900C1B76A /* APIEnvironment.swift */; };
+		736C98AF2D687EBE000115B0 /* SettingScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4922CD293140035A1FF /* SettingScreenAccessibilityIdentifiers.swift */; };
+		736C98B02D687EBE000115B0 /* MainScreenAccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DAF4912CD293140035A1FF /* MainScreenAccessibilityIdentifiers.swift */; };
 		764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 764E0AD428CF274A00F96503 /* InfoPlist.strings */; };
 		76610BE6298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76610BE5298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib */; };
 		76610BE9298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610BE8298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift */; };
@@ -1415,7 +1393,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28DAF4B32CD293AD0035A1FF /* GiniCameraAccessScreenUITests.swift in Sources */,
 				83D02CD3290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
 				768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */,
@@ -1428,21 +1405,13 @@
 				288E78B12D3161A7004ACB9B /* FileManagerHelper.swift in Sources */,
 				288E78BE2D318856004ACB9B /* TransactionListTableViewHeader.swift in Sources */,
 				84F2FD182CD0FAC600DAE5B4 /* SettingsViewModel.swift in Sources */,
-				28DAF4C72CD3A8620035A1FF /* ReviewScreen.swift in Sources */,
-				28DAF4B82CD293BF0035A1FF /* GiniErrorScreenUITests.swift in Sources */,
 				76EFD4D629B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift in Sources */,
-				28DAF4B42CD293B00035A1FF /* MainScreenAccessibilityIdentifiers.swift in Sources */,
 				76810039299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift in Sources */,
 				28A570072D41326300A97EBC /* Optional+Required.swift in Sources */,
 				28B448CE2C985A6B00FB7BF4 /* UpdateUserDefaultsCell.swift in Sources */,
-				28DAF4C12CD3A8540035A1FF /* CameraAccessScreen.swift in Sources */,
-				28DAF4C82CD3A8640035A1FF /* SkontoScreen.swift in Sources */,
-				28DAF4C42CD3A85A0035A1FF /* HelpScreen.swift in Sources */,
 				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,
 				F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */,
-				28DAF4C02CD3A8520035A1FF /* OnboardingScreen.swift in Sources */,
 				289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */,
-				28DAF4BA2CD293C40035A1FF /* GiniMainScreenUITests.swift in Sources */,
 				76610BEA298D5448004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift in Sources */,
 				288E78B32D316219004ACB9B /* Transaction.swift in Sources */,
 				28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */,
@@ -1458,18 +1427,12 @@
 				28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */,
 				F4AD00C225DED43200C34E15 /* DemoViewController.swift in Sources */,
 				28F62FA92AB319A000D47866 /* TextField.swift in Sources */,
-				28DAF4BE2CD293CD0035A1FF /* GiniSkontoScreenUITests.swift in Sources */,
-				28DAF4C92CD3A8660035A1FF /* SettingScreen.swift in Sources */,
 				28F62FA72AB2236500D47866 /* Device.swift in Sources */,
-				28DAF4C52CD3A85D0035A1FF /* MainScreen.swift in Sources */,
 				837EEFB5291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
-				28DAF4BB2CD293C60035A1FF /* GiniOnboardingScreenUITest.swift in Sources */,
 				76610BE9298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */,
-				28DAF4B72CD293BC0035A1FF /* GiniCaptureScreenUITests.swift in Sources */,
 				F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */,
 				28A570052D4131FF00A97EBC /* ImageAsset.swift in Sources */,
 				28B5874C2A374730008CB210 /* SegmentedOptionTableViewCell.swift in Sources */,
-				28DAF4CB2CD3A8CA0035A1FF /* CaptureScreen.swift in Sources */,
 				8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */,
 				28A5700D2D41550D00A97EBC /* String+Acronym.swift in Sources */,
 				28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */,
@@ -1481,14 +1444,13 @@
 				76EFD4D429B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift in Sources */,
 				F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */,
 				847B68CA2C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift in Sources */,
-				28DAF4BD2CD293CB0035A1FF /* GiniReviewScreenUITests.swift in Sources */,
-				28DAF4B52CD293B50035A1FF /* SettingScreenAccessibilityIdentifiers.swift in Sources */,
 				84CD074F2C7DBBAD004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBarAdapter.swift in Sources */,
 				F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */,
 				837EEFB3291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift in Sources */,
 				84F2FD1A2CD0FAE100DAE5B4 /* UITableView+HeaderFooterViewRegistration.swift in Sources */,
-				28DAF4C32CD3A8580035A1FF /* ErrorScreen.swift in Sources */,
 				28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */,
+				736C98AF2D687EBE000115B0 /* SettingScreenAccessibilityIdentifiers.swift in Sources */,
+				736C98B02D687EBE000115B0 /* MainScreenAccessibilityIdentifiers.swift in Sources */,
 				833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */,
 				289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */,
 				2883DE062AB89F4000AE3A9C /* GiniCaptureSDKColors.swift in Sources */,
@@ -1498,7 +1460,6 @@
 				28DAF4B92CD293C10035A1FF /* GiniHelpScreenUITests.swift in Sources */,
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
 				284F520A2BD959F300CF70AD /* UIColor.swift in Sources */,
-				28DAF4BF2CD293CF0035A1FF /* GiniTransactionDocsScreenUITests.swift in Sources */,
 				84CD074D2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift in Sources */,
 				768100372996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				28A570102D4276EB00A97EBC /* TransactionDetailsViewController.swift in Sources */,
