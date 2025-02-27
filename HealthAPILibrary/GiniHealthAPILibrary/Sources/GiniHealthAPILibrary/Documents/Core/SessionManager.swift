@@ -317,6 +317,11 @@ private extension SessionManager {
                 return
             }
 
+            if let jsonObject = try? JSONSerialization.jsonObject(with: responseData, options: []), let _ = jsonObject as? [String: Any] {
+                completion(.failure(.customError(response: response, data: responseData)))
+                return
+            }
+
             guard let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
                   errorInfo["error"] == "invalid_grant" else {
                 completion(.failure(.badRequest(response: response, data: data)))

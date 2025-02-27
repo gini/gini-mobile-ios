@@ -14,7 +14,7 @@ public protocol GiniErrorProtocol {
     var data: Data? { get }
 }
 
-public enum GiniError: Error, GiniErrorProtocol, Equatable {
+public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equatable {
     case decorator(GiniHealthAPILibrary.GiniError)
 
     public var message: String {
@@ -35,6 +35,27 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
         switch self {
         case .decorator(let giniError):
             return giniError.data
+        }
+    }
+
+    public var unauthorizedDocuments: [String]? {
+        switch self {
+        case .decorator(let giniError):
+            return giniError.unauthorizedDocuments
+        }
+    }
+
+    public var notFoundDocuments: [String]? {
+        switch self {
+        case .decorator(let giniError):
+            return giniError.notFoundDocuments
+        }
+    }
+
+    public var missingCompositeDocuments: [String]? {
+        switch self {
+        case .decorator(let giniError):
+            return giniError.missingCompositeDocuments
         }
     }
 }

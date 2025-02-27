@@ -443,7 +443,7 @@ extension AppCoordinator: DebugMenuDelegate {
                 self.hardcodedInvoicesController.deleteDocuments(withIds: documentsToDeleteIds)
                 GiniUtilites.Log("Successfully deleted documents with: \(documentsToDeleteIds)", event: .success)
             case .failure(let failure):
-                GiniUtilites.Log("Failed to delete documents with error: \(failure.localizedDescription)", event: .error)
+                GiniUtilites.Log("Failed to delete documents with error: \(failure.message)", event: .error)
             }
         }
     }
