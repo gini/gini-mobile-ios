@@ -69,7 +69,11 @@ final class ImagePickerViewController: UIViewController {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(collectionView)
+        NotificationCenter.default.removeObserver(
+            collectionView,
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
     }
 
     // MARK: - UIViewController
@@ -84,7 +88,7 @@ final class ImagePickerViewController: UIViewController {
         scrollToBottom()
         NotificationCenter.default.addObserver(
             collectionView,
-            selector: #selector(collectionView.layoutSubviews),
+            selector: #selector(collectionView.reloadData),
             name: UIDevice.orientationDidChangeNotification,
             object: nil
         )
@@ -114,8 +118,8 @@ final class ImagePickerViewController: UIViewController {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
 
             contentView.topAnchor.constraint(equalTo: view.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -243,8 +247,12 @@ extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return ImagePickerCollectionViewCell.size(itemsInARow: currentInterfaceOrientation.isLandscape ? 5 : 4,
-                                                  collectionViewLayout: collectionViewLayout)
+        return ImagePickerCollectionViewCell.size(
+            itemsInARow: currentInterfaceOrientation.isLandscape ? Constants.imagesInRowLandscape : Constants.imagesInRowPortrait,
+            collectionViewLayout: collectionViewLayout,
+            leftSafeArea: UIApplication.shared.keyWindow?.rootViewController?.view.safeAreaInsets.left ?? 0,
+            rightSafeArea: UIApplication.shared.keyWindow?.rootViewController?.view.safeAreaInsets.left ?? 0
+        )
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -262,5 +270,7 @@ private extension ImagePickerViewController {
     enum Constants {
         static let navigationBarHeight: CGFloat = 114
         static let navigationBarHeightHorizontal: CGFloat = 62
+        static let imagesInRowPortrait: Int = 4
+        static let imagesInRowLandscape: Int = 5
     }
 }

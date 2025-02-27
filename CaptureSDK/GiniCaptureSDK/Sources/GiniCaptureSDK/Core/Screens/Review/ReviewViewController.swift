@@ -254,15 +254,15 @@ public final class ReviewViewController: UIViewController {
         collectionViewHeightConstraint]
 
     private lazy var pageControlConstraints: [NSLayoutConstraint] = [
-        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.padding * 2),
+        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.largePadding),
         pageControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
         pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)]
 
     private lazy var pageControlHorizontalConstraints: [NSLayoutConstraint] = [
-        pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.padding * 2),
-        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.padding * 2),
+        pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.largePadding),
+        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.largePadding),
         pageControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-        pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -275)
+        pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.trailingCollectionPadding)
     ]
 
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
@@ -271,7 +271,7 @@ public final class ReviewViewController: UIViewController {
     ]
 
     private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
-        buttonContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.padding * 2),
+        buttonContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.largePadding),
         buttonContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
         buttonContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
                                               constant: -Constants.bottomPadding),
@@ -279,7 +279,7 @@ public final class ReviewViewController: UIViewController {
     ]
 
     private lazy var buttonContainerHorizontalConstraints: [NSLayoutConstraint] = [
-        buttonContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -85),
+        buttonContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.buttonContainerHorizontalTrailingPadding),
         buttonContainer.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
     ]
 
@@ -287,7 +287,7 @@ public final class ReviewViewController: UIViewController {
         pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
                                             constant: -Constants.pageControlBottomPadding),
         collectionView.bottomAnchor.constraint(greaterThanOrEqualTo: pageControl.topAnchor,
-                                               constant: -Constants.padding * 2)
+                                               constant: -Constants.largePadding)
     ]
 
     // MARK: - Init
@@ -429,7 +429,7 @@ extension ReviewViewController {
         bottomNavigationBar?.alpha = isLandscape ? 0 : 1
         bottomNavigationBar?.isUserInteractionEnabled = !isLandscape
 
-        trailingConstraints.forEach { $0.constant = isLandscape ? -275 : 0 }
+        trailingConstraints.forEach { $0.constant = isLandscape ? -Constants.trailingCollectionPadding : 0 }
         let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
                                                         ? bottomNavigationBarAdditionalConstraints
                                                         : buttonContainerConstraints + pageControlConstraints
@@ -719,7 +719,7 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                insetForSectionAt section: Int) -> UIEdgeInsets {
-        let margin = (self.view.bounds.width - (currentInterfaceOrientation.isLandscape && UIDevice.current.isIphone ? 275 : 0) - self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAt: IndexPath(row: 0, section: 0)).width) / 2
+        let margin = (self.view.bounds.width - (currentInterfaceOrientation.isLandscape && UIDevice.current.isIphone ? Constants.trailingCollectionPadding : 0) - self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAt: IndexPath(row: 0, section: 0)).width) / 2
         return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
     }
 
@@ -763,12 +763,15 @@ extension ReviewViewController: ReviewCollectionViewDelegate {
 extension ReviewViewController {
     private enum Constants {
         static let padding: CGFloat = 16
+        static let largePadding: CGFloat = 32
         static let bottomPadding: CGFloat = 50
         static let pageControlBottomPadding: CGFloat = 130
         static let buttonSize: CGSize = CGSize(width: 126, height: 50)
         static let titleHeight: CGFloat = 18
         static let maxTitleHeight: CGFloat = 100
         static let bottomNavigationBarHeight: CGFloat = 114
+        static let trailingCollectionPadding: CGFloat = 275
+        static let buttonContainerHorizontalTrailingPadding: CGFloat = 85
     }
 }
 // swiftlint:enable file_length

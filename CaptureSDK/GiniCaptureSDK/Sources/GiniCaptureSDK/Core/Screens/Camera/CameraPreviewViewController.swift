@@ -91,7 +91,7 @@ final class CameraPreviewViewController: UIViewController {
         }
     }
     private var bottomControlHeight: CGFloat {
-        return view.frame.height * 0.23 +
+        return view.frame.height * Constants.bottomControlHeightMultiplier +
         (giniConfiguration.bottomNavigationBarEnabled ? Constants.bottomNavigationBarHeight : 0)
     }
 
@@ -536,5 +536,6 @@ extension CameraPreviewViewController {
         static let bottomNavigationBarHeight: CGFloat = 114
         static let bottomNavigationBarHeightHorizontal: CGFloat = 62
         static let QRCodeScannerSize = CGSize(width: 258, height: 258)
+        static let bottomControlHeightMultiplier: CGFloat = 0.23
     }
 }

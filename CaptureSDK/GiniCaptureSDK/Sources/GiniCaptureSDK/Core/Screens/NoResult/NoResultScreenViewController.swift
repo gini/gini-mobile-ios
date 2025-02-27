@@ -142,7 +142,7 @@ final class NoResultScreenViewController: UIViewController {
             buttonsView.buttonsView.axis = isLandscape ? .horizontal : .vertical
             buttonsHeightConstraint?.constant = getButtonsMinHeight(numberOfButtons: isLandscape ? 1 : numberOfButtons)
 
-            let margin = isLandscape ? GiniMargins.marginHorizontal : GiniMargins.margin
+            let margin = isLandscape ? GiniMargins.horizontalMargin : GiniMargins.margin
             tableViewiPhoneLeadingConstraint?.constant = margin
             tableViewiPhoneTrailingConstraint?.constant = -margin
         }

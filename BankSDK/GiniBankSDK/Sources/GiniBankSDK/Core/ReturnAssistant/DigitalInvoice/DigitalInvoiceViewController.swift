@@ -104,8 +104,8 @@ final class DigitalInvoiceViewController: UIViewController {
                                                  multiplier: Constants.tabletWidthMultiplier)])
         } else {
             NSLayoutConstraint.activate([
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding)
+                tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.padding),
+                tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.padding)
             ])
         }
     }

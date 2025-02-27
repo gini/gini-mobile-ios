@@ -151,7 +151,7 @@ import UIKit
         super.viewDidLayoutSubviews()
         if UIDevice.current.isIphone, document is GiniImageDocument {
             let isLandscape = currentInterfaceOrientation.isLandscape
-            centerYConstraint.constant = isLandscape ? -96 / 2 : 0
+            centerYConstraint.constant = isLandscape ? -Constants.loadingIndicatorContainerHorizontalCenterYInset : 0
         }
     }
 
@@ -303,6 +303,7 @@ private extension AnalysisViewController {
     enum Constants {
         static let padding: CGFloat = 16
         static let loadingIndicatorContainerHeight: CGFloat = 60
+        static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
     }
 }

@@ -102,7 +102,7 @@ class ErrorScreenViewController: UIViewController {
             buttonsView.buttonsView.axis = isLandscape ? .horizontal : .vertical
             buttonsHeightConstraint?.constant = getButtonsMinHeight(numberOfButtons: isLandscape ? 1 : numberOfButtons)
 
-            let margin = isLandscape ? GiniMargins.marginHorizontal : GiniMargins.margin
+            let margin = isLandscape ? GiniMargins.horizontalMargin : GiniMargins.margin
             buttonsiPhoneLeadingConstraint?.constant = margin
             buttonsiPhoneTrailingConstraint?.constant = -margin
 
