@@ -24,16 +24,23 @@ public final class PaymentInfoViewModel {
     var payBillsDescriptionAttributedText: NSMutableAttributedString = NSMutableAttributedString()
     var payBillsDescriptionLinkAttributes: [NSAttributedString.Key: Any]
     var questions: [FAQSection] = []
-    
+
+    var clientConfiguration: ClientConfiguration?
+    var shouldShowBrandedView: Bool {
+        clientConfiguration?.ingredientBrandType == .fullVisible
+    }
+
     public init(paymentProviders: GiniHealthAPILibrary.PaymentProviders,
                 configuration: PaymentInfoConfiguration,
                 strings: PaymentInfoStrings,
                 poweredByGiniConfiguration: PoweredByGiniConfiguration,
-                poweredByGiniStrings: PoweredByGiniStrings) {
+                poweredByGiniStrings: PoweredByGiniStrings,
+                clientConfiguration: ClientConfiguration?) {
         self.paymentProviders = paymentProviders
         self.configuration = configuration
         self.strings = strings
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
+        self.clientConfiguration = clientConfiguration
 
         payBillsDescriptionLinkAttributes = [.font: configuration.linksFont]
 
@@ -76,11 +83,13 @@ public final class PaymentInfoViewModel {
         let attributedString = attributedString
         let giniRange = (attributedString.string as NSString).range(of: strings.giniWebsiteText)
         attributedString.addLinkToRange(link: strings.giniURLText,
+                                        color: configuration.linksColor,
                                         range: giniRange,
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)
         let privacyPolicyRange = (attributedString.string as NSString).range(of: strings.answerPrivacyPolicyText)
         attributedString.addLinkToRange(link: strings.privacyPolicyURLText,
+                                        color: configuration.linksColor,
                                         range: privacyPolicyRange,
                                         linkFont: linkFont,
                                         textToRemove: Constants.linkTextToRemove)

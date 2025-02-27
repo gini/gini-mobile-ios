@@ -9,6 +9,7 @@
 import Foundation
 import GiniHealthAPILibrary
 import GiniInternalPaymentSDK
+import GiniUtilites
 
 //MARK: - Mapping Extraction
 extension Extraction {
@@ -124,7 +125,7 @@ extension Document {
                   origin: Origin(rawValue: healthDocument.origin.rawValue) ?? .unknown,
                   pageCount: healthDocument.pageCount,
                   pages: healthDocument.pages?.compactMap { Document.Page(healthPage: $0) },
-                  links: Links(giniAPIDocumentURL: healthDocument.links.extractions),
+                  links: Links(giniAPIDocumentURL: healthDocument.links.document),
                   partialDocuments: healthDocument.partialDocuments?.compactMap { PartialDocumentInfo(document: $0.document, rotationDelta: $0.rotationDelta) },
                   progress: Progress(rawValue: healthDocument.progress.rawValue) ?? .completed,
                   sourceClassification: SourceClassification(rawValue: healthDocument.sourceClassification.rawValue) ?? .scanned,
@@ -135,7 +136,7 @@ extension Document {
         GiniHealthAPILibrary.Document(creationDate: creationDate,
                                       id: id,
                                       name: name,
-                                      links: GiniHealthAPILibrary.Document.Links(giniAPIDocumentURL: links.extractions),
+                                      links: GiniHealthAPILibrary.Document.Links(giniAPIDocumentURL: links.document),
                                       pageCount: pageCount,
                                       sourceClassification: GiniHealthAPILibrary.Document.SourceClassification(rawValue: sourceClassification.rawValue) ?? .scanned,
                                       expirationDate: expirationDate)
@@ -243,5 +244,17 @@ extension GiniInternalPaymentSDK.PaymentInfo {
                   purpose: paymentConponentsInfo.purpose,
                   paymentUniversalLink: paymentConponentsInfo.paymentUniversalLink,
                   paymentProviderId: paymentConponentsInfo.paymentProviderId)
+    }
+}
+
+extension GiniHealthAPILibrary.IngredientBrandTypeEnum {
+    public func toHealthIngredientBrandType() -> GiniInternalPaymentSDK.IngredientBrandTypeEnum {
+        GiniInternalPaymentSDK.IngredientBrandTypeEnum(rawValue: rawValue) ?? .invisible
+    }
+}
+
+extension GiniHealthAPILibrary.CommunicationToneEnum {
+    public func toHealthCommunicationTone() -> GiniInternalPaymentSDK.CommunicationToneEnum {
+        GiniInternalPaymentSDK.CommunicationToneEnum(rawValue: rawValue) ?? .formal
     }
 }

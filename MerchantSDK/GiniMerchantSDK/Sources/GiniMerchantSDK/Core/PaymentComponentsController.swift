@@ -25,7 +25,7 @@ public protocol PaymentProvidersBottomViewProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider)
     func didTapOnClose()
     func didTapOnMoreInformation()
-    func didTapOnContinueOnShareBottomSheet()
+    func didTapOnContinueOnShareBottomSheet(paymentRequestId: String)
     func didTapForwardOnInstallBottomSheet()
     func didTapOnPayButton()
 }
@@ -216,7 +216,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
             moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
             moreInformationStrings: stringsProvider.moreInformationStrings,
             minimumButtonsHeight: configurationProvider.paymentComponentButtonsHeight,
-            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration
+            paymentComponentConfiguration: configurationProvider.paymentComponentConfiguration,
+            clientConfiguration: nil
         )
         paymentComponentViewModel.delegate = self
         paymentComponentViewModel.documentId = documentId
@@ -275,7 +276,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
-                                                               showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+                                                               showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
+                                                               previousPaymentComponentScreenType: nil,
+                                                               clientConfiguration: nil)
 
                             let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                                              selectedPaymentProvider: healthSelectedPaymentProvider)
@@ -314,7 +317,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                            poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                            poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                            bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration,
-                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton)
+                                           showPaymentReviewCloseButton: configurationProvider.showPaymentReviewCloseButton,
+                                           previousPaymentComponentScreenType: nil,
+                                           clientConfiguration: nil)
 
         let vc = PaymentReviewViewController.instantiate(viewModel: viewModel,
                                                          selectedPaymentProvider: healthSelectedPaymentProvider)
@@ -350,7 +355,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                    poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
-                                                                   moreInformationStrings: stringsProvider.moreInformationStrings)
+                                                                   moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   clientConfiguration: nil)
         paymentProvidersBottomViewModel.viewDelegate = self
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
@@ -368,7 +374,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                         configuration: configurationProvider.paymentInfoConfiguration,
                                                         strings: stringsProvider.paymentInfoStrings,
                                                         poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                        poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                        clientConfiguration: nil)
         return PaymentInfoViewController(viewModel: paymentInfoViewModel)
     }
 
@@ -387,7 +394,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                   strings: stringsProvider.installAppStrings,
                                                                   primaryButtonConfiguration: configurationProvider.primaryButtonConfiguration,
                                                                   poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
-                                                                  poweredByGiniStrings: stringsProvider.poweredByGiniStrings)
+                                                                  poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
+                                                                  clientConfiguration: nil)
         installAppBottomViewModel.viewDelegate = self
         let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return installAppBottomView
@@ -400,10 +408,11 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
      localized strings, and returns a `ShareInvoiceBottomView` configured with the view model.
      It also increments the onboarding count for the selected payment provider.
 
-     - Parameter documentId: An optional identifier for the document associated id with the invoice.
+     - Parameter qrCodeData: QR Data shown in the Share Invoice Bottom Sheet
+     - Parameter paymentRequestId: Payment request id generated from the payment info extracted from the order
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
-    public func shareInvoiceBottomSheet(qrCodeData: Data) -> BottomSheetViewController {
+    public func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> BottomSheetViewController {
         previousPresentedView = nil
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
@@ -412,7 +421,9 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                       poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                       poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                       qrCodeData: qrCodeData,
-                                                                      paymentInfo: nil)
+                                                                      paymentInfo: nil,
+                                                                      paymentRequestId: paymentRequestId,
+                                                                      clientConfiguration: nil)
         shareInvoiceBottomViewModel.viewDelegate = self
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
         return shareInvoiceBottomView
@@ -433,7 +444,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                    poweredByGiniConfiguration: configurationProvider.poweredByGiniConfiguration,
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
-                                                                   moreInformationStrings: stringsProvider.moreInformationStrings)
+                                                                   moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   clientConfiguration: nil)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
@@ -458,21 +470,17 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
 
     /// Checks if the selected payment provider supports GPC(Gini Pay Connect) on iOS.
     public func supportsGPC() -> Bool {
-        healthSelectedPaymentProvider?.openWithSupportedPlatforms.contains(.ios) == true
+        healthSelectedPaymentProvider?.gpcSupportedPlatforms.contains(.ios) == true
     }
 
     /**
      Creates a payment request and obtains the PDF URL using the provided payment information.
 
-     - Parameter paymentInfo: The payment information for the request.
      - Parameter viewController: The view controller used to present any necessary UI related to the request.
+     - Parameter paymentRequestId: The paymentRequestId generated from the payment info extracted from the order
      */
-    public func obtainPDFURLFromPaymentRequest(paymentInfo: PaymentInfo, viewController: UIViewController) {
-        createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] paymentRequestID, error in
-            if let paymentRequestID {
-                self?.loadPDFData(paymentRequestID: paymentRequestID, viewController: viewController)
-            }
-        })
+    public func obtainPDFURLFromPaymentRequest(viewController: UIViewController, paymentRequestId: String) {
+        self.loadPDFData(paymentRequestID: paymentRequestId, viewController: viewController)
     }
 
     /**
@@ -483,10 +491,11 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
        - completion: A closure that is called with the payment request ID or an error.
      */
     public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (_ paymentRequestID: String?, _ error: GiniMerchantError?) -> Void) {
-        giniSDK.createPaymentRequest(paymentInfo: paymentInfo) { result in
+        giniSDK.createPaymentRequest(paymentInfo: paymentInfo) {[weak self] result in
             switch result {
             case let .success(requestId):
                 completion(requestId, nil)
+                self?.didCreatePaymentRequest(paymentRequestId: requestId)
             case let .failure(error):
                 completion(nil, GiniMerchantError.apiError(error))
             }
@@ -656,8 +665,8 @@ extension PaymentComponentsController: BanksSelectionProtocol {
 
 extension PaymentComponentsController: ShareInvoiceBottomViewProtocol {
     /// Notifies the delegate to continue sharing the invoice with the provided document ID.
-    public func didTapOnContinueToShareInvoice() {
-        bottomViewDelegate?.didTapOnContinueOnShareBottomSheet()
+    public func didTapOnContinueToShareInvoice(paymentRequestId: String) {
+        bottomViewDelegate?.didTapOnContinueOnShareBottomSheet(paymentRequestId: paymentRequestId)
     }
 }
 
@@ -669,6 +678,15 @@ extension PaymentComponentsController: InstallAppBottomViewProtocol {
 }
 
 extension PaymentComponentsController: PaymentReviewProtocol {
+    /**
+     Called when the payment request was successfully created
+
+     - parameter paymentRequestId: Id of created payment request.
+     */
+    public func didCreatePaymentRequest(paymentRequestId: String) {
+        giniSDK.delegate?.didCreatePaymentRequest(paymentRequestID: paymentRequestId)
+    }
+    
     /**
      Submits feedback for the specified document and its updated extractions. Method used to update the information extracted from a document.
 
@@ -802,6 +820,10 @@ extension PaymentComponentsController: PaymentReviewProtocol {
     }
     
     public func presentShareInvoiceBottomSheet(paymentRequestId: String, paymentInfo: GiniInternalPaymentSDK.PaymentInfo) {}
+    
+    public func paymentReviewClosed(with previousPresentedView: PaymentComponentScreenType?) {
+        // TODO: This method is going to be handled later in GiniMerchantSDK 
+    }
 }
 
 extension PaymentComponentsController {

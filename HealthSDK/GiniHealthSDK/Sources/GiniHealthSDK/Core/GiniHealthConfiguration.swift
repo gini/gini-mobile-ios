@@ -8,6 +8,7 @@
 import UIKit
 import GiniUtilites
 import GiniInternalPaymentSDK
+import GiniHealthAPILibrary
 
 /**
  The `GiniHealthConfiguration` class allows customizations to the look of the Gini Health SDK.
@@ -62,6 +63,16 @@ public final class GiniHealthConfiguration: NSObject {
      Set to `false` to hide the payment review screen and jump straight to payment
      */
     public var showPaymentReviewScreen = true
+
+    /**
+     Set to `false` to hide close button on the payment review screen
+     */
+    public var showPaymentReviewCloseButton = true
+
+    /**
+     Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
+     */
+    @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
 
     // MARK: - Button configuration options
     /**
@@ -143,12 +154,12 @@ public final class GiniHealthConfiguration: NSObject {
     /**
     Custom localization configuration for localizable strings.
     */
-   public var customLocalization: GiniLocalization?
-
+    public var customLocalization: GiniLocalization?
+    
     /**
-     Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
+     Client's configuration provided from the server
      */
-    @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
+    var clientConfiguration: ClientConfiguration?
 }
 
 extension GiniHealthConfiguration {
