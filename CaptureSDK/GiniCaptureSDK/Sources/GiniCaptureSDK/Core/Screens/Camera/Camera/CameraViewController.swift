@@ -103,7 +103,11 @@ final class CameraViewController: UIViewController {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
     }
 
     override func viewDidLoad() {
@@ -307,7 +311,7 @@ final class CameraViewController: UIViewController {
             view.removeConstraints([bottomPaneConstraint, bottomButtonsConstraints])
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(navigationBar)
-            cameraPaneHorizontalBottomConstraint.constant = 62
+            cameraPaneHorizontalBottomConstraint.constant = Constants.horizontalCameraPaneBottomBarPadding
             NSLayoutConstraint.activate([
                 navigationBar.topAnchor.constraint(equalTo: cameraPane.bottomAnchor),
                 navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -772,6 +776,7 @@ private extension CameraViewController {
         static let switcherPadding: CGFloat = 8
         static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 40)
         static let tableSwitcherSize: CGSize = CGSize(width: 40, height: 124)
+        static let horizontalCameraPaneBottomBarPadding: CGFloat = 62
     }
 }
 // swiftlint:enable type_body_length

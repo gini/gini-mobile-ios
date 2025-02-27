@@ -69,7 +69,7 @@ class OnboardingViewController: UIViewController {
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 46),
+            navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.pageControlBottomBarPadding),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -274,5 +274,11 @@ extension OnboardingViewController: OnboardingScreen {
 class CollectionFlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
+    }
+}
+
+private extension OnboardingViewController {
+    enum Constants {
+        static let pageControlBottomBarPadding: CGFloat = 46
     }
 }

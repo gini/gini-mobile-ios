@@ -55,7 +55,7 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
         updateBottomBarHeightBasedOnOrientation()
         if UIDevice.current.isIphone {
             let isLandscape = currentInterfaceOrientation.isLandscape
-            let margin = isLandscape ? GiniMargins.marginHorizontal : GiniMargins.margin
+            let margin = isLandscape ? GiniMargins.horizontalMargin : GiniMargins.margin
             tableViewLeadingConstraint.constant = margin
             tableViewTrailingConstraint.constant = -margin
         }

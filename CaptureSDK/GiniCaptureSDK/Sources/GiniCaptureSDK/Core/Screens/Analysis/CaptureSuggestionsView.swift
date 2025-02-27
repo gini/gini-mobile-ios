@@ -19,7 +19,7 @@ final class CaptureSuggestionsView: UIView {
     private let containerHeight: CGFloat = 96
     private var itemSeparationConstraint: NSLayoutConstraint = NSLayoutConstraint()
     private var bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
-    private var leadingiPhondConstraint = NSLayoutConstraint()
+    private var leadingiPhoneConstraint = NSLayoutConstraint()
     private var trailingiPhoneConstraint = NSLayoutConstraint()
     private let repeatInterval: TimeInterval = 5
     private let superViewBottomAnchor: NSLayoutYAxisAnchor
@@ -93,7 +93,7 @@ final class CaptureSuggestionsView: UIView {
         if UIDevice.current.isIphone {
             let isLandscape = currentInterfaceOrientation.isLandscape
             let margin: CGFloat = isLandscape ? 56 : 20
-            leadingiPhondConstraint.constant = margin
+            leadingiPhoneConstraint.constant = margin
             trailingiPhoneConstraint.constant = -margin
         }
     }
@@ -122,7 +122,7 @@ final class CaptureSuggestionsView: UIView {
                               attr: .width, multiplier: 0.7)
             Constraints.active(item: suggestionContainer, attr: .centerX, relatedBy: .equal, to: self, attr: .centerX)
         } else {
-            leadingiPhondConstraint = Constraints.active(item: suggestionContainer, attr: .leading, relatedBy: .equal, to: self, attr: .leading,
+            leadingiPhoneConstraint = Constraints.active(item: suggestionContainer, attr: .leading, relatedBy: .equal, to: self, attr: .leading,
                               constant: 20)
             trailingiPhoneConstraint = Constraints.active(item: suggestionContainer, attr: .trailing, relatedBy: .equal, to: self, attr: .trailing,
                               constant: -20)

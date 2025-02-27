@@ -15,7 +15,6 @@ import UIKit
  */
 
 final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewController {
-    
     var bottomNavigationBar: UIView?
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
     var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
