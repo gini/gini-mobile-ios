@@ -500,4 +500,65 @@ platform :ios do
       sh "cd #{podspecs_repo_sdk_folder_path} && git push origin master"
     end
   end
+
+  desc <<~DOC
+    Build and upload a test build to TestFlight.
+    
+    Parameters:
+      scheme                - The Xcode scheme to build (e.g., "GiniBankSDKExample")
+      export_options_path   - Path to the exportOptions.plist file (used for signing)
+      apple_id              - The Apple Developer ID
+      api_key_id            - App Store Connect API Key ID
+      api_issuer_id         - App Store Connect API Issuer ID
+      api_key               - The actual API key content (base64 encoded or a file path)
+      ci                    - Set to "true" if running on a CI machine
+
+  DOC
+  lane :upload_testflight_build do |options|
+    (scheme, export_options_path, apple_id, api_key_id, api_issuer_id, api_key, ci) = 
+      check_and_get_options(options, [:scheme, :export_options_path, :apple_id, :api_key_id, :api_issuer_id, :api_key, :ci], UI)
+
+    UI.message "🏗 Starting TestFlight build process for scheme: #{scheme}"
+
+    if ci
+      configure_git_on_ci_machines("Team Mobile Schorsch", "team-mobile@gini.net")
+    end
+
+    # Detect Xcode project or workspace
+    xcode_project = Dir.glob("*.xcodeproj").first
+    xcode_workspace = Dir.glob("*.xcworkspace").first
+
+    # Select project type
+    if xcode_workspace
+      UI.message "Using workspace: #{xcode_workspace}"
+      build_app(
+        workspace: xcode_workspace,
+        scheme: scheme,
+        export_options: export_options_path,
+        clean: true
+      )
+    elsif xcode_project
+      UI.message "Using project: #{xcode_project}"
+      build_app(
+        project: xcode_project,
+        scheme: scheme,
+        export_options: export_options_path,
+        clean: true
+      )
+    else
+      UI.abort_with_message! "No Xcode project or workspace found!"
+    end
+
+    # Upload to TestFlight
+    UI.message "🚀 Uploading to TestFlight..."
+    upload_to_testflight(
+      username: apple_id,
+      api_key_id: api_key_id,
+      api_issuer: api_issuer_id,
+      api_key_path: api_key,
+      skip_waiting_for_build_processing: false
+    )
+
+    UI.success "🎉 Build successfully uploaded to TestFlight!"
+  end
 end
