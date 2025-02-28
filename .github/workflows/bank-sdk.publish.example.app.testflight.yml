@@ -73,7 +73,6 @@ jobs:
           options: >
             {
               "scheme": "GiniBankSDKExample",
-              "export_options_path": "ExportOptions.plist",
               "apple_id": "${{ secrets.APPLE_ID }}",
               "api_key_id": "${{ secrets.APP_STORE_API_KEY_ID }}",
               "api_issuer_id": "${{ secrets.APP_STORE_API_KEY_ISSUER_ID }}",
