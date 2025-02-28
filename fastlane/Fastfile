@@ -515,50 +515,63 @@ platform :ios do
 
   DOC
   lane :upload_testflight_build do |options|
-    (scheme, export_options_path, apple_id, api_key_id, api_issuer_id, api_key, ci) = 
+    (scheme, export_options_path, apple_id, api_key_id, api_issuer_id, api_key, ci) =
       check_and_get_options(options, [:scheme, :export_options_path, :apple_id, :api_key_id, :api_issuer_id, :api_key, :ci], UI)
-
+  
     UI.message "🏗 Starting TestFlight build process for scheme: #{scheme}"
-
+  
     if ci
       configure_git_on_ci_machines("Team Mobile Schorsch", "team-mobile@gini.net")
     end
-
-    # Detect Xcode project or workspace
-    xcode_workspace ||= Dir.glob("*.xcworkspace").first
-    xcode_project ||= Dir.glob("*.xcodeproj").first
-
-    # Select project type
-    if xcode_workspace
-      UI.message "Using workspace: #{xcode_workspace}"
-      build_app(
-        workspace: xcode_workspace,
-        scheme: scheme,
-        export_options: export_options_path,
-        clean: true
+  
+    # 🔹 Define project root and store original directory
+    project_root = File.expand_path("../BankSDK/GiniBankSDKExample")  # Adjust path as needed
+    original_dir = Dir.pwd
+    Dir.chdir(project_root) do
+      # 🔍 List all detected workspaces and projects
+      available_workspaces = Dir.glob("*.xcworkspace")
+      available_projects = Dir.glob("*.xcodeproj")
+  
+      UI.message "📂 Available workspaces: #{available_workspaces.empty? ? 'None found' : available_workspaces.join(', ')}"
+      UI.message "📂 Available projects: #{available_projects.empty? ? 'None found' : available_projects.join(', ')}"
+  
+      # 🔹 Prioritize workspaces and projects matching the scheme name
+      # xcode_workspace = Dir.glob("#{scheme}.xcworkspace").first || available_workspaces.first
+      xcode_project = Dir.glob("#{scheme}.xcodeproj").first || available_projects.first
+  
+      # 🔹 Ensure at least one valid project or workspace is found
+      if xcode_project
+        absolute_project_path = File.expand_path(xcode_project, Dir.pwd)
+        UI.message "✅ Using project: #{absolute_project_path}"
+        build_app(
+          project: absolute_project_path,
+          scheme: scheme,
+          export_options: export_options_path,
+          clean: true
+        )
+      else
+        UI.abort_with_message!(
+          "❌ No Xcode workspace or project found!\n" \
+          "🔍 Searched for:\n" \
+          "- #{scheme}.xcworkspace\n" \
+          "- #{scheme}.xcodeproj\n" \
+          "- Any available workspace or project\n" \
+          "📂 Current directory contents:\n#{Dir.entries(Dir.pwd).join("\n")}"
+        )
+      end
+  
+      # 🔹 Upload to TestFlight
+      UI.message "🚀 Uploading to TestFlight..."
+      upload_to_testflight(
+        username: apple_id,
+        api_key_id: api_key_id,
+        api_issuer: api_issuer_id,
+        api_key_path: api_key,
+        skip_waiting_for_build_processing: false
       )
-    elsif xcode_project
-      UI.message "Using project: #{xcode_project}"
-      build_app(
-        project: xcode_project,
-        scheme: scheme,
-        export_options: export_options_path,
-        clean: true
-      )
-    else
-      UI.abort_with_message! "No Xcode project or workspace found!"
+  
+      UI.success "🎉 Build successfully uploaded to TestFlight!"
     end
-
-    # Upload to TestFlight
-    UI.message "🚀 Uploading to TestFlight..."
-    upload_to_testflight(
-      username: apple_id,
-      api_key_id: api_key_id,
-      api_issuer: api_issuer_id,
-      api_key_path: api_key,
-      skip_waiting_for_build_processing: false
-    )
-
-    UI.success "🎉 Build successfully uploaded to TestFlight!"
-  end
+  end  
+  
 end
