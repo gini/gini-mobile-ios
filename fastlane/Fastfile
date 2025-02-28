@@ -525,8 +525,8 @@ platform :ios do
     end
 
     # Detect Xcode project or workspace
-    xcode_project = Dir.glob("*.xcodeproj").first
-    xcode_workspace = Dir.glob("*.xcworkspace").first
+    xcode_workspace ||= Dir.glob("*.xcworkspace").first
+    xcode_project ||= Dir.glob("*.xcodeproj").first
 
     # Select project type
     if xcode_workspace
