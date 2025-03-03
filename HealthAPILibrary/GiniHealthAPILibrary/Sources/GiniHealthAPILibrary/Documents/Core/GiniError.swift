@@ -61,15 +61,8 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         case .customError(_, _):
             if let message = customError?.message {
                 return message
-            } else if let unauthorizedDocuments = customError?.unauthorizedDocuments {
-                return "Unauthorized documents: \(unauthorizedDocuments.joined(separator: ", "))"
-            } else if let notFoundDocuments = customError?.notFoundDocuments {
-                return "Not found documents: \(notFoundDocuments.joined(separator: ", "))"
-            } else if let missingCompositeDocuments = customError?.missingCompositeDocuments {
-                return "Missing composite documents: \(missingCompositeDocuments.joined(separator: ", "))"
-            } else {
-                return localizedDescription
             }
+            return getCustomErrorMessage() ?? localizedDescription
         }
     }
 
@@ -122,5 +115,17 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
 
     public var missingCompositeDocuments: [String]? {
         return customError?.missingCompositeDocuments
+    }
+
+    /// Helper Function to Get Custom Document Errors Message
+    private func getCustomErrorMessage() -> String? {
+        if let unauthorizedDocuments = customError?.unauthorizedDocuments {
+            return "Unauthorized documents: \(unauthorizedDocuments.joined(separator: ", "))"
+        } else if let notFoundDocuments = customError?.notFoundDocuments {
+            return "Not found documents: \(notFoundDocuments.joined(separator: ", "))"
+        } else if let missingCompositeDocuments = customError?.missingCompositeDocuments {
+            return "Missing composite documents: \(missingCompositeDocuments.joined(separator: ", "))"
+        }
+        return nil
     }
 }

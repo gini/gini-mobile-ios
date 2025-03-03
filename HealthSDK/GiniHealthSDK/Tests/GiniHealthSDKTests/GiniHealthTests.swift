@@ -586,35 +586,35 @@ final class GiniHealthTests: XCTestCase {
         }
     }
 
-    func testDeleteBatchDocuments_Success() {
+    func testDeleteBatchDocumentsSuccess() {
         performDeleteBatchDocumentsTest(
             documentType: .success,
             description: "Deleting Batch Of Documents with Success"
         )
     }
 
-    func testDeleteBatchDocuments_Failure() {
+    func testDeleteBatchDocumentsFailure() {
         performDeleteBatchDocumentsTest(
             documentType: .failure,
             description: "Deleting Batch Of Documents with Failure"
         )
     }
 
-    func testDeleteBatchDocuments_Error_UnauthorizedDocuments() {
+    func testDeleteBatchDocumentsErrorUnauthorizedDocuments() {
         performDeleteBatchDocumentsTest(
             documentType: .unauthorizedDocuments,
             description: "Deleting Batch Of Documents with Error of unauthorized documents"
         )
     }
 
-    func testDeleteBatchDocuments_Error_NotFoundDocuments() {
+    func testDeleteBatchDocumentsErrorNotFoundDocuments() {
         performDeleteBatchDocumentsTest(
             documentType: .notFoundDocuments,
             description: "Deleting Batch Of Documents with Error of not found documents"
         )
     }
 
-    func testDeleteBatchDocuments_Error_MissingCompositeDocuments() {
+    func testDeleteBatchDocumentsErrorMissingCompositeDocuments() {
         performDeleteBatchDocumentsTest(
             documentType: .missingCompositeDocuments,
             description: "Deleting Batch Of Documents with Error of missing composite documents"
