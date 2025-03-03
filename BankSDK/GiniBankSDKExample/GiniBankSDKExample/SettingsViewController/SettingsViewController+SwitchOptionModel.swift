@@ -56,6 +56,7 @@ struct SwitchOptionModel {
         case skontoHelpNavigationBarBottomAdapter
         case skontoEnabled
         case transactionDocsEnabled
+        case closeSDK
 
 		var title: String {
 			switch self {
@@ -153,6 +154,8 @@ struct SwitchOptionModel {
                 return "Skonto bottom navigation bar"
             case .skontoHelpNavigationBarBottomAdapter:
                 return "Skonto help bottom navigation bar"
+            case .closeSDK:
+                return "Close SDK"
             }
 		}
 		
@@ -226,6 +229,8 @@ struct SwitchOptionModel {
                 return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
             case .skontoHelpNavigationBarBottomAdapter:
                 return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+            case .closeSDK:
+                return "Self-destruct SDK after 10 seconds"
 			default:
 				return nil
 			}

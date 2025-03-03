@@ -322,8 +322,13 @@ final class AppCoordinator: Coordinator {
 // MARK: - DemoViewControllerDelegate
 
 extension AppCoordinator: DemoViewControllerDelegate {
-    func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint) {
+    func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint, selfDealloc: Bool) {
         GiniBankConfiguration.shared.entryPoint = entryPoint
+        if selfDealloc {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+                GiniBank.closeCurrentSDK()
+            }
+        }
         showScreenAPI()
     }
 	
