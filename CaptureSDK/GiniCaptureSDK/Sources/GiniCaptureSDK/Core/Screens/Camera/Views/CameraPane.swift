@@ -14,6 +14,7 @@ final class CameraPane: UIView {
     @IBOutlet weak var flashButton: BottomLabelButton!
     @IBOutlet weak var thumbnailView: ThumbnailView!
     @IBOutlet weak var leftButtonsStack: UIView!
+    @IBOutlet weak var thumbnailConstraint: NSLayoutConstraint!
 
     private var shouldShowFlashButton: Bool = false
     override func awakeFromNib() {

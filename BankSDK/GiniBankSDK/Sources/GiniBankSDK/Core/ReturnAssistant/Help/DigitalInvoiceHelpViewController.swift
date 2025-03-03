@@ -135,7 +135,8 @@ final class DigitalInvoiceHelpViewController: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()

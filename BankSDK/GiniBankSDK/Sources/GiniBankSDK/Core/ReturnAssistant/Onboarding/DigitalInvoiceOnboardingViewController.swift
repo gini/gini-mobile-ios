@@ -20,6 +20,11 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet private weak var doneButton: MultilineTitleButton!
     @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
+    private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem(
+        with: GiniBankConfiguration.shared
+    ) { [weak self] in
+        self?.doneAction(nil)
+    }
 
     weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
     private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
@@ -80,6 +85,24 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
             GiniAnalyticsManager.track(event: .getStartedTapped, screenName: .onboardingReturnAssistant)
         } else {
             GiniAnalyticsManager.track(event: .dismissed, screenName: .onboardingReturnAssistant)
+        }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.current.isIphone {
+            if view.currentInterfaceOrientation.isLandscape {
+                view.addSubview(horizontalItem)
+                horizontalItem.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    horizontalItem.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    horizontalItem.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    horizontalItem.topAnchor.constraint(equalTo: view.topAnchor),
+                    horizontalItem.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                ])
+            } else {
+                horizontalItem.removeFromSuperview()
+            }
         }
     }
 
