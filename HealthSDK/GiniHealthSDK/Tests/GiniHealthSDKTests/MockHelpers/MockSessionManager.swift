@@ -113,10 +113,7 @@ final class MockSessionManager: SessionManagerProtocol {
                     completion(.success(clientConfiguration))
                 }
             case .documents(_, _):
-                guard let bodyStringArray = decodeBody(from: resource.params.body) else {
-                    return
-                }
-
+                guard let bodyStringArray = decodeBody(from: resource.params.body) else { return }
                 handleBodyStringArray(bodyStringArray, completion: completion)
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
