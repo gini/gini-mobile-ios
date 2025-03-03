@@ -113,9 +113,7 @@ final class MockSessionManager: SessionManagerProtocol {
                     completion(.success(clientConfiguration))
                 }
             case .documents(_, _):
-                guard resource.params.method == .delete,
-                      let body = resource.params.body,
-                      let bodyStringArray = try? JSONDecoder().decode([String].self, from: body) else {
+                guard let bodyStringArray = decodeBody(from: resource.params.body) else {
                     return
                 }
 
@@ -125,6 +123,12 @@ final class MockSessionManager: SessionManagerProtocol {
                 completion(.failure(error))
             }
         }
+    }
+
+    /// Helper function to decode body
+    private func decodeBody(from body: Data?) -> [String]? {
+        guard let body = body else { return nil }
+        return try? JSONDecoder().decode([String].self, from: body)
     }
 
     /// Helper function to handle the body array types
@@ -162,7 +166,7 @@ final class MockSessionManager: SessionManagerProtocol {
         completion(.failure(error))
     }
 
-    /// Helper Function to Handle Extraction Results
+    /// Helper function to handle extraction results
     private func handleExtractionResults<ResponseType>(
         fromFile fileName: String,
         completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>
