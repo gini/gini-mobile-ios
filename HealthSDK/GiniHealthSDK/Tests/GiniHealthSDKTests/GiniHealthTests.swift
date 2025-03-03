@@ -560,4 +560,85 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
         XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
     }
+
+    // MARK: - Delete Batch Of Documents Tests
+    /// Enum for Delete  Batch Document Types
+    private enum DeleteBatchDocumentType: String {
+        case unauthorizedDocuments
+        case notFoundDocuments
+        case missingCompositeDocuments
+        case success = ""
+        case failure
+
+        /// Expected failure response if applicable
+        var expectedFailure: [String]? {
+            switch self {
+            case .unauthorizedDocuments, .notFoundDocuments, .missingCompositeDocuments:
+                return [self.rawValue]
+            default:
+                return nil
+            }
+        }
+
+        /// Expected success response if applicable
+        var expectedSuccess: String? {
+            self == .success ? "" : nil
+        }
+    }
+
+    func testDeleteBatchDocuments_Success() {
+        performDeleteBatchDocumentsTest(
+            documentType: .success,
+            description: "Deleting Batch Of Documents with Success"
+        )
+    }
+
+    func testDeleteBatchDocuments_Failure() {
+        performDeleteBatchDocumentsTest(
+            documentType: .failure,
+            description: "Deleting Batch Of Documents with Failure"
+        )
+    }
+
+    func testDeleteBatchDocuments_Error_UnauthorizedDocuments() {
+        performDeleteBatchDocumentsTest(
+            documentType: .unauthorizedDocuments,
+            description: "Deleting Batch Of Documents with Error of unauthorized documents"
+        )
+    }
+
+    func testDeleteBatchDocuments_Error_NotFoundDocuments() {
+        performDeleteBatchDocumentsTest(
+            documentType: .notFoundDocuments,
+            description: "Deleting Batch Of Documents with Error of not found documents"
+        )
+    }
+
+    func testDeleteBatchDocuments_Error_MissingCompositeDocuments() {
+        performDeleteBatchDocumentsTest(
+            documentType: .missingCompositeDocuments,
+            description: "Deleting Batch Of Documents with Error of missing composite documents"
+        )
+    }
+
+    /// Helper Function for Delete Batch Documents Tests
+    private func performDeleteBatchDocumentsTest(
+        documentType: DeleteBatchDocumentType,
+        description: String
+    ) {
+        let expectation = self.expectation(description: description)
+
+        giniHealth.deleteBatchOfDocuments(documentIds: documentType == .failure ? [] : [documentType.rawValue]) { result in
+            switch result {
+            case .success(let responseMessage):
+                XCTAssertEqual(responseMessage, documentType.expectedSuccess)
+            case .failure(let error):
+                let receivedError = error.unauthorizedDocuments ?? error.notFoundDocuments ?? error.missingCompositeDocuments
+                XCTAssertEqual(receivedError, documentType.expectedFailure)
+            }
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
 }

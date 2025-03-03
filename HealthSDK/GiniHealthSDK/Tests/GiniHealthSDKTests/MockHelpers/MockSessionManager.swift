@@ -124,11 +124,50 @@ final class MockSessionManager: SessionManagerProtocol {
                 if let clientConfiguration = clientConfiguration as? T.ResponseType {
                     completion(.success(clientConfiguration))
                 }
+            case .documents(_, _):
+                guard resource.params.method == .delete,
+                      let body = resource.params.body,
+                      let bodyStringArray = try? JSONDecoder().decode([String].self, from: body) else {
+                    return
+                }
+
+                switch bodyStringArray {
+                case [""]:
+                    if let emptyResponse = "" as? T.ResponseType {
+                        completion(.success(emptyResponse))
+                    }
+
+                case ["unauthorizedDocuments"]:
+                    handleDeleteDocumentsError(fromFile: "unauthorizedDocumentsError", completion: completion)
+
+                case ["notFoundDocuments"]:
+                    handleDeleteDocumentsError(fromFile: "notFoundDocumentsError", completion: completion)
+
+                case ["missingCompositeDocuments"]:
+                    handleDeleteDocumentsError(fromFile: "missingCompositeDocumentsError", completion: completion)
+
+                default:
+                    completion(.failure(GiniError.unknown(response: nil, data: nil)))
+                }
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))
             }
         }
+    }
+
+    /// Helper function to load and encode errors
+    private func handleDeleteDocumentsError<ResponseType>(
+        fromFile fileName: String,
+        completion: @escaping GiniHealthAPILibrary.CompletionResult<ResponseType>
+    ) {
+        guard let extractionResults: GiniCustomError = load(fromFile: fileName),
+              let jsonData = try? JSONEncoder().encode(extractionResults) else {
+            return
+        }
+
+        let error = GiniError.customError(response: nil, data: jsonData)
+        completion(.failure(error))
     }
 }
 

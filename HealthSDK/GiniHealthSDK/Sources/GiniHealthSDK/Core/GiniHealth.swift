@@ -571,8 +571,8 @@ public struct DataForReview {
         documentService.deleteDocuments(documentIds) { result in
             DispatchQueue.main.async {
                 switch result {
-                case let .success(requestId):
-                    completion(.success(requestId))
+                case let .success(message):
+                    completion(.success(message))
                 case let .failure(error):
                     completion(.failure(error))
                 }
