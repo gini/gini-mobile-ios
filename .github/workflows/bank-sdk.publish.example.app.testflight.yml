@@ -18,26 +18,19 @@ jobs:
 #     uses: ./.github/workflows/bank-sdk.check.yml
 #     secrets:
 #       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
-
-  upload-version:
-    # needs: check
-    runs-on: macos-latest    
+  upload-testflight:
+    runs-on: macos-latest
+    
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup Xcode
-        uses: maxim-lobanov/setup-xcode@v1
+        uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
           xcode-version: '15.3'
 
-      - name: Setup Ruby and Fastlane
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2.0'
-          bundler-cache: true
-
-      - name: Setup provisioning profile
+      - name: Setup Provisioning Profile
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE }}
           P12_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
@@ -49,33 +42,88 @@ jobs:
           PP_PATH1=$RUNNER_TEMP/build_pp1.mobileprovision
           PP_PATH2=$RUNNER_TEMP/build_pp2.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # Decode and save certificate & provisioning profiles
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $PP_PATH1
           echo -n "$BUILD_PROVISION_PROFILE_EXTENSION_BASE64" | base64 --decode --output $PP_PATH2
+
+          # Create and unlock a temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # Import the certificate into the keychain
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+
+          # Ensure the keychain is prioritized for code signing
           security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # Install provisioning profiles
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH1 ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH2 ~/Library/MobileDevice/Provisioning\ Profiles
 
-      - name: Setup Credentials
+      - name: Archive Xcode Project
         run: |
-            plutil -replace client_id -string "gini-mobile-test" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+          xcodebuild clean archive \
+            -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
+            -scheme "GiniBankSDKExample" \
+            -archivePath ./GiniBankSDKExample.xcarchive \
+            -configuration Release \
+            -destination generic/platform=iOS \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM=JA825X8F7Z \
+            ONLY_ACTIVE_ARCH=NO
 
-      - name: Upload Test Build to TestFlight
-        uses: maierj/fastlane-action@v3.1.0
+      - name: Export .ipa File
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath GiniBankSDKExample.xcarchive \
+            -exportPath . \
+            -exportOptionsPlist ExportOptions.plist \
+            -destination "generic/platform=iOS" \
+            CODE_SIGNING_REQUIRED=YES \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGN_STYLE=Manual
+
+      - name: Verify .ipa File Existence
+        uses: andstor/file-existence-action@v3
         with:
-          lane: 'upload_testflight_build'
-          options: >
-            {
-              "scheme": "GiniBankSDKExample",
-              "apple_id": "${{ secrets.APPLE_ID }}",
-              "api_key_id": "${{ secrets.APP_STORE_API_KEY_ID }}",
-              "api_issuer_id": "${{ secrets.APP_STORE_API_KEY_ISSUER_ID }}",
-              "api_key": "${{ secrets.APP_STORE_API_KEY }}",
-              "ci": "true"
-            }
+          files: "*.ipa"
+          fail: true
+
+      - name: Upload .ipa to TestFlight
+        uses: apple-actions/upload-testflight-build@v1
+        with:
+          app-id: ${{ secrets.APP_STORE_APP_ID }}
+          issuer-id: ${{ secrets.APP_STORE_API_KEY_ISSUER_ID }}
+          api-key-id: ${{ secrets.APP_STORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APP_STORE_API_KEY }}
+          file-path: GiniBankSDKExample.ipa
+          skip-waiting-for-build-processing: true
+
+      - name: Extract Jira Ticket
+        id: extract_jira_ticket
+        run: |
+          commit_message=$(git log -1 --pretty=%B)
+          jira_ticket=$(echo "$commit_message" | awk 'NR > 1 && $0 != "" { print $0; exit }')
+          echo "JIRA_TICKET_NAME=${jira_ticket}" >> $GITHUB_ENV
+
+      - name: Login to Jira
+        if: ${{ env.JIRA_TICKET_NAME != null }}
+        uses: justin-jhg/gajira-login@v1
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_KEY }}
+
+      - name: Comment on Jira Issue
+        if: ${{ env.JIRA_TICKET_NAME != null }}
+        uses: atlassian/gajira-comment@v3
+        with:
+          issue: ${{ env.JIRA_TICKET_NAME }}
+          comment: |
+            ✅ TestFlight build uploaded successfully! 🚀  
+            🔗 [TestFlight Dashboard](https://appstoreconnect.apple.com/apps/${{ secrets.APP_STORE_APP_ID }}/testflight)  
