@@ -2,6 +2,7 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
+import Foundation
 
 let package = Package(
     name: "GiniCaptureSDKPinning",
@@ -11,6 +12,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "GiniCaptureSDKPinning",
+            type: ProcessInfo.processInfo.environment["GINI_FORCE_DYNAMIC_LIBRARY"] == "1" ? .dynamic : nil,
             targets: ["GiniCaptureSDKPinning"]),
     ],
     dependencies: [
@@ -18,6 +20,8 @@ let package = Package(
         // .package(url: /* package url */, from: "1.0.0"),
         .package(name: "GiniCaptureSDK", path: "../GiniCaptureSDK"),
         .package(name: "GiniBankAPILibraryPinning", path: "../../BankAPILibrary/GiniBankAPILibraryPinning"),
+        .package(name: "TrustKit", url: "https://github.com/datatheorem/TrustKit.git" , from: "2.0.0"),
+        .package(name: "GiniBankAPILibrary", path: "../../BankAPILibrary/GiniBankAPILibrary")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -25,7 +29,11 @@ let package = Package(
         
         .target(
             name: "GiniCaptureSDKPinning",
-            dependencies: ["GiniCaptureSDK","GiniBankAPILibraryPinning"]),
+            dependencies: [
+                .product(name: "TrustKit", package: "TrustKit"), // Explicit product usage
+                "GiniCaptureSDK",
+                "GiniBankAPILibraryPinning",
+                "GiniBankAPILibrary"]),
         .testTarget(
             name: "GiniCaptureSDKPinningTests",
             dependencies: ["GiniCaptureSDKPinning"]),
