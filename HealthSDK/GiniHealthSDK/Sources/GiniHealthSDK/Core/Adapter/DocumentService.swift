@@ -294,4 +294,15 @@ public final class DefaultDocumentService {
                 }
             })
     }
+
+    public func deleteDocuments(_ documentIds: [String], completion: @escaping CompletionResult<String>) {
+        docService.deleteDocuments(documentIds) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(GiniError.decorator(error)))
+            }
+        }
+    }
 }

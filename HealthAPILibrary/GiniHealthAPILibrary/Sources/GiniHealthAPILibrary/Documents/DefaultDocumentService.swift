@@ -301,6 +301,16 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     public func file(urlString: String, completion: @escaping CompletionResult<Data>){
         file(urlString: urlString, resourceHandler: sessionManager.download, completion: completion)
     }
+
+    /**
+     *  Deletes a batch of documents
+     *
+     * - Parameter documentIds:         An array of document ids to be deleted
+     * - Parameter completion:          A completion callback
+     */
+    public func deleteDocuments(_ documentIds: [String], completion: @escaping CompletionResult<String>) {
+        deleteDocuments(resourceHandler: sessionManager.data, with: documentIds, completion: completion)
+    }
 }
 
 extension DefaultDocumentService {
