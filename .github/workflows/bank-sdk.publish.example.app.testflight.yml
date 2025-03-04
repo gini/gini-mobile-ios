@@ -64,6 +64,11 @@ jobs:
           cp $PP_PATH1 ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH2 ~/Library/MobileDevice/Provisioning\ Profiles
 
+      - name: Setup App Store API Key
+        run: |
+          mkdir -p ~/.private_keys
+          echo "${{ secrets.APP_STORE_API_KEY }}" > ~/.private_keys/AuthKey.p8
+     
       - name: Archive Xcode Project
         run: |
           xcodebuild clean archive \
@@ -104,26 +109,26 @@ jobs:
           file-path: GiniBankSDKExample.ipa
           skip-waiting-for-build-processing: true
 
-      - name: Extract Jira Ticket
-        id: extract_jira_ticket
-        run: |
-          commit_message=$(git log -1 --pretty=%B)
-          jira_ticket=$(echo "$commit_message" | awk 'NR > 1 && $0 != "" { print $0; exit }')
-          echo "JIRA_TICKET_NAME=${jira_ticket}" >> $GITHUB_ENV
+      # - name: Extract Jira Ticket
+      #   id: extract_jira_ticket
+      #   run: |
+      #     commit_message=$(git log -1 --pretty=%B)
+      #     jira_ticket=$(echo "$commit_message" | awk 'NR > 1 && $0 != "" { print $0; exit }')
+      #     echo "JIRA_TICKET_NAME=${jira_ticket}" >> $GITHUB_ENV
 
-      - name: Login to Jira
-        if: ${{ env.JIRA_TICKET_NAME != null }}
-        uses: justin-jhg/gajira-login@v1
-        env:
-          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_KEY }}
+      # - name: Login to Jira
+      #   if: ${{ env.JIRA_TICKET_NAME != null }}
+      #   uses: justin-jhg/gajira-login@v1
+      #   env:
+      #     JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+      #     JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+      #     JIRA_API_TOKEN: ${{ secrets.JIRA_API_KEY }}
 
-      - name: Comment on Jira Issue
-        if: ${{ env.JIRA_TICKET_NAME != null }}
-        uses: atlassian/gajira-comment@v3
-        with:
-          issue: ${{ env.JIRA_TICKET_NAME }}
-          comment: |
-            ✅ TestFlight build uploaded successfully! 🚀  
-            🔗 [TestFlight Dashboard](https://appstoreconnect.apple.com/apps/${{ secrets.APP_STORE_APP_ID }}/testflight)  
+      # - name: Comment on Jira Issue
+      #   if: ${{ env.JIRA_TICKET_NAME != null }}
+      #   uses: atlassian/gajira-comment@v3
+      #   with:
+      #     issue: ${{ env.JIRA_TICKET_NAME }}
+      #     comment: |
+      #       ✅ TestFlight build uploaded successfully! 🚀  
+      #       🔗 [TestFlight Dashboard](https://appstoreconnect.apple.com/apps/${{ secrets.APP_STORE_APP_ID }}/testflight)  
