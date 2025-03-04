@@ -51,6 +51,8 @@ final class ImagePickerViewController: UIViewController {
         return contentView
     }()
 
+    private var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
+
     // MARK: - Initializers
 
     init(album: Album,
@@ -66,6 +68,14 @@ final class ImagePickerViewController: UIViewController {
         fatalError("init(giniConfiguration:) has not been implemented")
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(
+            collectionView,
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
+    }
+
     // MARK: - UIViewController
 
     override func viewDidLoad() {
@@ -76,6 +86,20 @@ final class ImagePickerViewController: UIViewController {
         setupConstraints()
 
         scrollToBottom()
+        NotificationCenter.default.addObserver(
+            collectionView,
+            selector: #selector(collectionView.reloadData),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.current.isIphone {
+            let isLandscape = currentInterfaceOrientation.isLandscape
+            bottomNavigationBarHeightConstraint?.constant = isLandscape ? Constants.navigationBarHeightHorizontal : Constants.navigationBarHeight
+        }
     }
 
     private func setupView() {
@@ -94,8 +118,8 @@ final class ImagePickerViewController: UIViewController {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
 
             contentView.topAnchor.constraint(equalTo: view.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -178,12 +202,13 @@ final class ImagePickerViewController: UIViewController {
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(navigationBar)
+        bottomNavigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
         NSLayoutConstraint.activate([
             contentView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
+            bottomNavigationBarHeightConstraint!
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
@@ -222,8 +247,12 @@ extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return ImagePickerCollectionViewCell.size(itemsInARow: 4,
-                                                  collectionViewLayout: collectionViewLayout)
+        return ImagePickerCollectionViewCell.size(
+            itemsInARow: currentInterfaceOrientation.isLandscape ? Constants.imagesInRowLandscape : Constants.imagesInRowPortrait,
+            collectionViewLayout: collectionViewLayout,
+            leftSafeArea: UIApplication.shared.keyWindow?.rootViewController?.view.safeAreaInsets.left ?? 0,
+            rightSafeArea: UIApplication.shared.keyWindow?.rootViewController?.view.safeAreaInsets.left ?? 0
+        )
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -240,5 +269,8 @@ extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
 private extension ImagePickerViewController {
     enum Constants {
         static let navigationBarHeight: CGFloat = 114
+        static let navigationBarHeightHorizontal: CGFloat = 62
+        static let imagesInRowPortrait: Int = 4
+        static let imagesInRowLandscape: Int = 5
     }
 }
