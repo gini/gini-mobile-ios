@@ -63,7 +63,7 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH1 ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH2 ~/Library/MobileDevice/Provisioning\ Profiles
-
+     
       - name: Archive Xcode Project
         run: |
           xcodebuild clean archive \
@@ -94,36 +94,20 @@ jobs:
           files: "*.ipa"
           fail: true
 
-      - name: Upload .ipa to TestFlight
-        uses: apple-actions/upload-testflight-build@v1
-        with:
-          app-id: ${{ secrets.APP_STORE_APP_ID }}
-          issuer-id: ${{ secrets.APP_STORE_API_KEY_ISSUER_ID }}
-          api-key-id: ${{ secrets.APP_STORE_API_KEY_ID }}
-          api-private-key: ${{ secrets.APP_STORE_API_KEY }}
-          file-path: GiniBankSDKExample.ipa
-          skip-waiting-for-build-processing: true
-
-      - name: Extract Jira Ticket
-        id: extract_jira_ticket
+      - name: Install Fastlane
         run: |
-          commit_message=$(git log -1 --pretty=%B)
-          jira_ticket=$(echo "$commit_message" | awk 'NR > 1 && $0 != "" { print $0; exit }')
-          echo "JIRA_TICKET_NAME=${jira_ticket}" >> $GITHUB_ENV
+            gem install fastlane
 
-      - name: Login to Jira
-        if: ${{ env.JIRA_TICKET_NAME != null }}
-        uses: justin-jhg/gajira-login@v1
+      - name: Setup App Store API Key
+        run: |
+          mkdir -p $HOME/.appstoreconnect/private_keys
+          echo "${{ secrets.APP_STORE_API_KEY }}" > $HOME/.appstoreconnect/private_keys/AuthKey.p8
+          chmod 600 $HOME/.appstoreconnect/private_keys/AuthKey.p8 # ✅ Ensure correct permissions
+          
+
+      - name: Upload .ipa to TestFlight
         env:
-          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_KEY }}
-
-      - name: Comment on Jira Issue
-        if: ${{ env.JIRA_TICKET_NAME != null }}
-        uses: atlassian/gajira-comment@v3
-        with:
-          issue: ${{ env.JIRA_TICKET_NAME }}
-          comment: |
-            ✅ TestFlight build uploaded successfully! 🚀  
-            🔗 [TestFlight Dashboard](https://appstoreconnect.apple.com/apps/${{ secrets.APP_STORE_APP_ID }}/testflight)  
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
+        run: fastlane publish_to_testflight
