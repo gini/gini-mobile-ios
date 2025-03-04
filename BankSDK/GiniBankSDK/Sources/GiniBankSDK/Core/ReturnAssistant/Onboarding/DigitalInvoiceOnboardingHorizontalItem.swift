@@ -68,12 +68,12 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
 
     private var secondLabelText: String {
         return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text2",
-                                                        comment: "title for digital invoice onboarding screen")
+                                                        comment: "second label title for digital invoice onboarding screen")
     }
 
     private var doneButtonTitle: String {
         return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.getStartedButton",
-                                                        comment: "title for digital invoice onboarding screen")
+                                                        comment: "get started button title for digital invoice onboarding screen")
     }
 
     init(with configuration: GiniBankConfiguration, frame: CGRect = .zero, onDone: @escaping () -> Void) {

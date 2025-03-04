@@ -23,7 +23,7 @@ extension HelpBottomBarEnabledViewController {
     func updateBottomBarHeightBasedOnOrientation() {
         if UIDevice.current.isIphone {
             let isLandscape = currentInterfaceOrientation.isLandscape
-            bottomNavigationBarHeightConstraint?.constant = isLandscape ? BottomNavigationBarConstants.heightLandscape : BottomNavigationBarConstants.heightPortrait
+            bottomNavigationBarHeightConstraint?.constant = isLandscape ? CameraBottomNavigationBar.Constants.heightLandscape : CameraBottomNavigationBar.Constants.heightPortrait
         }
     }
 
