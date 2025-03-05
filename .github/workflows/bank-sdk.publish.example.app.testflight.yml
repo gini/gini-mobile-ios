@@ -117,6 +117,11 @@ jobs:
         shell: bash
         run: |
          echo "${{ secrets.APPSTORE_API_KEY_JSON_BASE64 }}" | base64 --decode > ./AuthKey.json
+      
+      
+      - name: Set Permissions for AuthKey.json
+        run: chmod 600 AuthKey.json
+
 
       # - name: Check AuthKey.json contents
       #   shell: bash

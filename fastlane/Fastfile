@@ -508,11 +508,12 @@ platform :ios do
     )
     
     # api_key_path = "#{ENV['HOME']}/.appstoreconnect/private_keys/AuthKey.p8"
-    api_key_path = ENV['APP_STORE_CONNECT_API_KEY_PATH']
-    
+    api_key_path = File.expand_path("./AuthKey.json")
     unless File.exist?(api_key_path)
       UI.user_error!("❌ API Key file is missing: #{api_key_path}")
     end
+    # ENV["APP_STORE_CONNECT_API_KEY_PATH"] = api_key_path
+
     
     api_key = app_store_connect_api_key(
       key_id: ENV['APP_STORE_CONNECT_API_KEY_ID'],
