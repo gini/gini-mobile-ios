@@ -116,7 +116,7 @@ jobs:
       - name: Decode Base64 App Store Connect API key
         shell: bash
         run: |
-         echo "${{ secrets.APPSTORE_API_KEY_JSON_BASE64 }}" | base64 --decode > ./AuthKey.json
+         echo "${{ secrets.APPSTORE_API_KEY_JSON_BASE64 }}" | base64 --decode > $HOME/.appstoreconnect/private_keys/AuthKey.json
       
       
       - name: Set Permissions for AuthKey.json
@@ -152,5 +152,4 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
-          APP_STORE_CONNECT_API_KEY_PATH: AuthKey.json
         run: bundle exec fastlane publish_to_testflight --verbose
