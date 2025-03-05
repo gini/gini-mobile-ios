@@ -116,12 +116,9 @@ jobs:
       - name: Decode Base64 App Store Connect API key
         shell: bash
         run: |
-         echo "${{ secrets.APPSTORE_API_KEY_JSON_BASE64 }}" | base64 --decode > $HOME/.appstoreconnect/private_keys/AuthKey.json
-      
-      
-      - name: Set Permissions for AuthKey.json
-        run: chmod 600 AuthKey.json
-
+          mkdir -p $HOME/.appstoreconnect/private_keys
+          echo "${{ secrets.APPSTORE_API_KEY_JSON_BASE64 }}" | base64 --decode > $HOME/.appstoreconnect/private_keys/AuthKey.json
+          chmod 600 $HOME/.appstoreconnect/private_keys/AuthKey.json
 
       # - name: Check AuthKey.json contents
       #   shell: bash
