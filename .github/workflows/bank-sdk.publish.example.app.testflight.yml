@@ -103,11 +103,12 @@ jobs:
           mkdir -p $HOME/.appstoreconnect/private_keys
           echo "${{ secrets.APP_STORE_API_KEY }}" > $HOME/.appstoreconnect/private_keys/AuthKey.p8
           chmod 600 $HOME/.appstoreconnect/private_keys/AuthKey.p8 # ✅ Ensure correct permissions
-          
+          ls -la $HOME/.appstoreconnect/private_keys/
+          cat $HOME/.appstoreconnect/private_keys/AuthKey.p8
 
       - name: Upload .ipa to TestFlight
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
-        run: fastlane publish_to_testflight
+        run: fastlane publish_to_testflight --verbose
