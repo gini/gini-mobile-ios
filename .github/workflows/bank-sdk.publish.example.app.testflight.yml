@@ -103,8 +103,12 @@ jobs:
           mkdir -p $HOME/.appstoreconnect/private_keys
           echo "${{ secrets.APP_STORE_API_KEY }}" > $HOME/.appstoreconnect/private_keys/AuthKey.p8
           chmod 600 $HOME/.appstoreconnect/private_keys/AuthKey.p8 # ✅ Ensure correct permissions
+      - name: Debug API Key Storage
+        run: |
+          echo "Checking API Key File..."
           ls -la $HOME/.appstoreconnect/private_keys/
-          cat $HOME/.appstoreconnect/private_keys/AuthKey.p8
+          echo "First few lines of the API Key:"
+          head -n 5 $HOME/.appstoreconnect/private_keys/AuthKey.p8
 
       - name: Upload .ipa to TestFlight
         env:
