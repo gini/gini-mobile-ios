@@ -94,9 +94,19 @@ jobs:
           files: "*.ipa"
           fail: true
 
+      - name: Set Up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+  
+      - name: Install Bundler
+        run: gem install bundler
+  
+      - name: Install Dependencies
+        run: bundle install
+  
       - name: Install Fastlane
-        run: |
-            gem install fastlane
+        run: gem install fastlane
 
       # - name: Setup App Store API Key
       #   run: |
@@ -108,15 +118,15 @@ jobs:
         run: |
          echo "${{ secrets.APPSTORE_API_KEY_JSON_BASE64 }}" | base64 --decode > ./AuthKey.json
 
-      - name: Check AuthKey.json contents
-        shell: bash
-        run: |
-          cat AuthKey.json
+      # - name: Check AuthKey.json contents
+      #   shell: bash
+      #   run: |
+      #     cat AuthKey.json
 
-      - name: Validate AuthKey.json
-        shell: bash
-        run: |
-          jq '.' AuthKey.json
+      # - name: Validate AuthKey.json
+      #   shell: bash
+      #   run: |
+      #     jq '.' AuthKey.json
 
       # - name: Test App Store Connect API Key
       #   run: |
