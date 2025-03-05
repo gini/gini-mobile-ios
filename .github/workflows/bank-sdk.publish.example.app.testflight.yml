@@ -98,18 +98,32 @@ jobs:
         run: |
             gem install fastlane
 
-      - name: Setup App Store API Key
+      # - name: Setup App Store API Key
+      #   run: |
+      #     mkdir -p $HOME/.appstoreconnect/private_keys
+      #     echo "${{ secrets.APP_STORE_API_KEY }}" | base64 --decode > $HOME/.appstoreconnect/private_keys/AuthKey.p8
+      #     chmod 600 $HOME/.appstoreconnect/private_keys/AuthKey.p8
+      - name: Decode Base64 App Store Connect API key
+        shell: bash
         run: |
-          mkdir -p $HOME/.appstoreconnect/private_keys
-          echo "${{ secrets.APP_STORE_API_KEY }}" | base64 --decode > $HOME/.appstoreconnect/private_keys/AuthKey.p8
-          chmod 600 $HOME/.appstoreconnect/private_keys/AuthKey.p8
+         echo "${{ secrets.APPSTORE_API_KEY_JSON_BASE64 }}" | base64 --decode > ./AuthKey.json
 
-      - name: Test App Store Connect API Key
+      - name: Check AuthKey.json contents
+        shell: bash
         run: |
-          fastlane run app_store_connect_api_key \
-            key_id:"${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}" \
-            issuer_id:"${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}" \
-            key_filepath:"$HOME/.appstoreconnect/private_keys/AuthKey.p8"
+          cat AuthKey.json
+
+      - name: Validate AuthKey.json
+        shell: bash
+        run: |
+          jq '.' AuthKey.json
+
+      # - name: Test App Store Connect API Key
+      #   run: |
+      #     fastlane run app_store_connect_api_key \
+      #       key_id:"${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}" \
+      #       issuer_id:"${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}" \
+      #       key_filepath:"$HOME/.appstoreconnect/private_keys/AuthKey.p8"
 
       # - name: Debug API Key Storage
       #   run: |
@@ -123,4 +137,5 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
-        run: fastlane publish_to_testflight --verbose
+          APP_STORE_CONNECT_API_KEY_PATH: AuthKey.json
+        run: bundle exec fastlane publish_to_testflight --verbose
