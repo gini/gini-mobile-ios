@@ -163,7 +163,7 @@ public final class TransactionDocsDataCoordinator: TransactionDocsDataProtocol, 
     // MARK: - Multiple transactions handling public methods
 
     /// Sets the transactions and creates a view model for each.
-    /// - Parameter transactions: A nested array of `TransactionDoc` objects, where each inner array represents
+    /// - Parameter transactions: A nested array of `GiniTransaction` objects, where each inner array represents
     /// the documents attached to a specific transaction.
     public func setTransactions(_ transactions: [GiniTransaction]) {
         self.transactions = transactions
