@@ -190,6 +190,23 @@ extension DocumentService {
         })
     }
     
+    private func handleExtractionsResponse(resourceHandler: @escaping ResourceDataHandler<APIResource<ExtractionsContainer>>,
+                                           documentId: String,
+                                           completion: @escaping CompletionResult<ExtractionResult>) {
+        let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: documentId),
+                                                         apiDomain: self.apiDomain,
+                                                         httpMethod: .get)
+
+        resourceHandler(resource) { result in
+            switch result {
+            case .success(let extractionsContainer):
+                completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     func extractions(resourceHandler: @escaping CancellableResourceDataHandler<APIResource<ExtractionsContainer>>,
                      documentResourceHandler: @escaping CancellableResourceDataHandler<APIResource<Document>>,
                      for document: Document,
@@ -198,41 +215,21 @@ extension DocumentService {
         poll(resourceHandler: documentResourceHandler,
              document: document,
              cancellationToken: cancellationToken) { result in
-                switch result {
-                case .success:
-                    let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: document.id),
-                                                                     apiDomain: self.apiDomain,
-                                                                     httpMethod: .get)
-                    
-                    resourceHandler(resource, cancellationToken, { result in
-                        switch result {
-                        case .success(let extractionsContainer):
-                            completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
-                        case .failure(let error):
-                            completion(.failure(error))
-                        }
-                    })
-                case .failure(let error):
-                    completion(.failure(error))
-                }
+            switch result {
+            case .success:
+                self.handleExtractionsResponse(resourceHandler: { resource, completion in
+                    resourceHandler(resource, cancellationToken, completion)
+                }, documentId: document.id, completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 
     func fetchDocumentExtractions(resourceHandler: @escaping ResourceDataHandler<APIResource<ExtractionsContainer>>,
                                   for documentId: String,
                                   completion: @escaping CompletionResult<ExtractionResult>) {
-        let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: documentId),
-                                                         apiDomain: self.apiDomain,
-                                                         httpMethod: .get)
-
-        resourceHandler(resource) { result in
-            switch result {
-                case .success(let extractionsContainer):
-                    completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
-                case .failure(let error):
-                    completion(.failure(error))
-            }
-        }
+        handleExtractionsResponse(resourceHandler: resourceHandler, documentId: documentId, completion: completion)
     }
 
     func fetchDocument(resourceHandler: CancellableResourceDataHandler<APIResource<Document>>,
