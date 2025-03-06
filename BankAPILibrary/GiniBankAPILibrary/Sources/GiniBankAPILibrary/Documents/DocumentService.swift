@@ -300,74 +300,68 @@ extension DocumentService {
         fetchPages(resourceHandler: resourceHandler, documentId: documentId, completion: completion)
     }
 
+    private func fetchPagePreview(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
+                                  documentId: String,
+                                  pageNumber: Int,
+                                  size: Document.Page.Size?,
+                                  method: APIMethod,
+                                  completion: @escaping CompletionResult<Data>) {
+        guard pageNumber > 0 else {
+            preconditionFailure("The page number starts at 1")
+        }
+
+        let resource = APIResource<Data>(method: method, apiDomain: self.apiDomain, httpMethod: .get)
+
+        resourceHandler(resource) { result in
+            switch result {
+                case .success(let data):
+                    completion(.success(data))
+                case .failure(let error):
+                    if case .notFound = error {
+                        print("Document \(documentId) page not found")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.fetchPagePreview(resourceHandler: resourceHandler,
+                                                  documentId: documentId,
+                                                  pageNumber: pageNumber,
+                                                  size: size,
+                                                  method: method,
+                                                  completion: completion)
+                        }
+                    } else {
+                        completion(.failure(error))
+                    }
+            }
+        }
+    }
+
     func pagePreview(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
                      in document: Document,
                      pageNumber: Int,
                      size: Document.Page.Size?,
                      completion: @escaping CompletionResult<Data>) {
         guard document.sourceClassification != .composite else {
-            preconditionFailure("Composite documents does not have a page preview. " +
-                "Fetch each partial page preview instead")
+            preconditionFailure("Composite documents do not have a page preview. " +
+                                "Fetch each partial page preview instead")
         }
-        
-        guard pageNumber > 0 else {
-            preconditionFailure("The page number starts at 1")
-        }
-        
-        let resource = APIResource<Data>(method: .page(forDocumentId: document.id,
-                                                       number: pageNumber,
-                                                       size: size),
-                                         apiDomain: self.apiDomain,
-                                         httpMethod: .get)
-        
-        resourceHandler(resource) { result in
-            switch result {
-            case .success(let data):
-                completion(.success(data))
-            case .failure(let error):
-                if case .notFound = error {
-                    print("Document \(document.id) page not found")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.pagePreview(resourceHandler: resourceHandler,
-                                         in: document,
-                                         pageNumber: pageNumber,
-                                         size: size,
-                                         completion: completion)
-                    }
-                } else {
-                    completion(.failure(error))
-                }
-            }
-            
-        }
+
+        fetchPagePreview(resourceHandler: resourceHandler,
+                         documentId: document.id,
+                         pageNumber: pageNumber,
+                         size: size,
+                         method: .page(forDocumentId: document.id, number: pageNumber, size: size),
+                         completion: completion)
     }
-    
+
     func preview(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
                  with documentId: String,
                  pageNumber: Int,
                  completion: @escaping CompletionResult<Data>) {
-        let resource = APIResource<Data>(method: .pagePreview(forDocumentId: documentId,
-                                                              number: pageNumber),
-                                         apiDomain: self.apiDomain,
-                                         httpMethod: .get)
-        resourceHandler(resource) { result in
-            switch result {
-            case let .success(data):
-                completion(.success(data))
-            case let .failure(error):
-                if case .notFound = error {
-                    print("Document \(documentId) page not found")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.preview(resourceHandler: resourceHandler,
-                                     with: documentId,
-                                     pageNumber: pageNumber,
-                                     completion: completion)
-                    }
-                } else {
-                    completion(.failure(error))
-                }
-            }
-        }
+        fetchPagePreview(resourceHandler: resourceHandler,
+                         documentId: documentId,
+                         pageNumber: pageNumber,
+                         size: nil,
+                         method: .pagePreview(forDocumentId: documentId, number: pageNumber),
+                         completion: completion)
     }
 
     func documentPage(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
