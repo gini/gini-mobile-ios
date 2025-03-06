@@ -45,7 +45,17 @@ public protocol DocumentService: AnyObject {
     func extractions(for document: Document,
                      cancellationToken: CancellationToken,
                      completion: @escaping CompletionResult<ExtractionResult>)
-    
+
+    /**
+     *  Retrieves the extractions for a given documentId.
+     *
+     * - Parameter documentId:          The document's unique identifier
+     * - Parameter completion:          A completion callback, returning the extraction list on success
+     */
+    func extractions(for documentId: String,
+                     completion: @escaping CompletionResult<ExtractionResult>)
+
+
     /**
      *  Retrieves a document for a given document id
      *
@@ -58,7 +68,7 @@ public protocol DocumentService: AnyObject {
     /**
      *  Retrieves the layout of a given document
      *
-     * - Parameter id:                  The document's unique identifier
+     * - Parameter document:            The document from which to retrieve the page data
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     func layout(for document: Document,
@@ -67,12 +77,21 @@ public protocol DocumentService: AnyObject {
     /**
      *  Retrieves the pages of a given document
      *
-     * - Parameter id:                  The document's unique identifier
+     * - Parameter document:            The document from which to retrieve the page data
      * - Parameter completion:          A completion callback, returning the requested document layout on success
      */
     func pages(in document: Document,
                completion: @escaping CompletionResult<[Document.Page]>)
-    
+
+    /**
+     *  Retrieves the pages of a given document
+     *
+     * - Parameter id:                  The document's unique identifier
+     * - Parameter completion:          A completion callback, returning the requested document layout on success
+     */
+    func pages(for documentId: String,
+               completion: @escaping CompletionResult<[Document.Page]>)
+
     /**
      *  Retrieves the page preview of a document for a given page and size
      *
@@ -171,6 +190,23 @@ extension DocumentService {
         })
     }
     
+    private func handleExtractionsResponse(resourceHandler: @escaping ResourceDataHandler<APIResource<ExtractionsContainer>>,
+                                           documentId: String,
+                                           completion: @escaping CompletionResult<ExtractionResult>) {
+        let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: documentId),
+                                                         apiDomain: self.apiDomain,
+                                                         httpMethod: .get)
+
+        resourceHandler(resource) { result in
+            switch result {
+            case .success(let extractionsContainer):
+                completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     func extractions(resourceHandler: @escaping CancellableResourceDataHandler<APIResource<ExtractionsContainer>>,
                      documentResourceHandler: @escaping CancellableResourceDataHandler<APIResource<Document>>,
                      for document: Document,
@@ -179,26 +215,23 @@ extension DocumentService {
         poll(resourceHandler: documentResourceHandler,
              document: document,
              cancellationToken: cancellationToken) { result in
-                switch result {
-                case .success:
-                    let resource = APIResource<ExtractionsContainer>(method: .extractions(forDocumentId: document.id),
-                                                                     apiDomain: self.apiDomain,
-                                                                     httpMethod: .get)
-                    
-                    resourceHandler(resource, cancellationToken, { result in
-                        switch result {
-                        case .success(let extractionsContainer):
-                            completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
-                        case .failure(let error):
-                            completion(.failure(error))
-                        }
-                    })
-                case .failure(let error):
-                    completion(.failure(error))
-                }
+            switch result {
+            case .success:
+                self.handleExtractionsResponse(resourceHandler: { resource, completion in
+                    resourceHandler(resource, cancellationToken, completion)
+                }, documentId: document.id, completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
-    
+
+    func fetchDocumentExtractions(resourceHandler: @escaping ResourceDataHandler<APIResource<ExtractionsContainer>>,
+                                  for documentId: String,
+                                  completion: @escaping CompletionResult<ExtractionResult>) {
+        handleExtractionsResponse(resourceHandler: resourceHandler, documentId: documentId, completion: completion)
+    }
+
     func fetchDocument(resourceHandler: CancellableResourceDataHandler<APIResource<Document>>,
                        with id: String,
                        cancellationToken: CancellationToken? = nil,
@@ -238,89 +271,120 @@ extension DocumentService {
         })
     }
     
-    func pages(resourceHandler: ResourceDataHandler<APIResource<[Document.Page]>>,
-               in document: Document,
-               completion: @escaping CompletionResult<[Document.Page]>) {
-        let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: document.id),
+    private func fetchPages(resourceHandler: ResourceDataHandler<APIResource<[Document.Page]>>,
+                            documentId: String,
+                            completion: @escaping CompletionResult<[Document.Page]>) {
+        let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: documentId),
                                                     apiDomain: apiDomain,
                                                     httpMethod: .get)
-        
-        resourceHandler(resource, { result in
+
+        resourceHandler(resource) { result in
             switch result {
             case .success(let pages):
                 completion(.success(pages))
             case .failure(let error):
                 completion(.failure(error))
             }
-        })
+        }
     }
-    
+
+    func pages(resourceHandler: ResourceDataHandler<APIResource<[Document.Page]>>,
+               in document: Document,
+               completion: @escaping CompletionResult<[Document.Page]>) {
+        fetchPages(resourceHandler: resourceHandler, documentId: document.id, completion: completion)
+    }
+
+    func pages(resourceHandler: ResourceDataHandler<APIResource<[Document.Page]>>,
+               for documentId: String,
+               completion: @escaping CompletionResult<[Document.Page]>) {
+        fetchPages(resourceHandler: resourceHandler, documentId: documentId, completion: completion)
+    }
+
+    private func fetchPagePreview(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
+                                  documentId: String,
+                                  pageNumber: Int,
+                                  size: Document.Page.Size?,
+                                  method: APIMethod,
+                                  completion: @escaping CompletionResult<Data>) {
+        guard pageNumber > 0 else {
+            preconditionFailure("The page number starts at 1")
+        }
+
+        let resource = APIResource<Data>(method: method, apiDomain: self.apiDomain, httpMethod: .get)
+
+        resourceHandler(resource) { result in
+            switch result {
+                case .success(let data):
+                    completion(.success(data))
+                case .failure(let error):
+                    if case .notFound = error {
+                        print("Document \(documentId) page not found")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.fetchPagePreview(resourceHandler: resourceHandler,
+                                                  documentId: documentId,
+                                                  pageNumber: pageNumber,
+                                                  size: size,
+                                                  method: method,
+                                                  completion: completion)
+                        }
+                    } else {
+                        completion(.failure(error))
+                    }
+            }
+        }
+    }
+
     func pagePreview(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
                      in document: Document,
                      pageNumber: Int,
                      size: Document.Page.Size?,
                      completion: @escaping CompletionResult<Data>) {
         guard document.sourceClassification != .composite else {
-            preconditionFailure("Composite documents does not have a page preview. " +
-                "Fetch each partial page preview instead")
+            preconditionFailure("Composite documents do not have a page preview. " +
+                                "Fetch each partial page preview instead")
         }
-        
-        guard pageNumber > 0 else {
-            preconditionFailure("The page number starts at 1")
-        }
-        
-        let resource = APIResource<Data>(method: .page(forDocumentId: document.id,
-                                                       number: pageNumber,
-                                                       size: size),
-                                         apiDomain: self.apiDomain,
-                                         httpMethod: .get)
-        
-        resourceHandler(resource) { result in
-            switch result {
-            case .success(let data):
-                completion(.success(data))
-            case .failure(let error):
-                if case .notFound = error {
-                    print("Document \(document.id) page not found")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.pagePreview(resourceHandler: resourceHandler,
-                                         in: document,
-                                         pageNumber: pageNumber,
-                                         size: size,
-                                         completion: completion)
-                    }
-                } else {
-                    completion(.failure(error))
-                }
-            }
-            
-        }
+
+        fetchPagePreview(resourceHandler: resourceHandler,
+                         documentId: document.id,
+                         pageNumber: pageNumber,
+                         size: size,
+                         method: .page(forDocumentId: document.id, number: pageNumber, size: size),
+                         completion: completion)
     }
-    
+
     func preview(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
                  with documentId: String,
                  pageNumber: Int,
                  completion: @escaping CompletionResult<Data>) {
-        let resource = APIResource<Data>(method: .pagePreview(forDocumentId: documentId,
-                                                              number: pageNumber),
-                                         apiDomain: self.apiDomain,
+        fetchPagePreview(resourceHandler: resourceHandler,
+                         documentId: documentId,
+                         pageNumber: pageNumber,
+                         size: nil,
+                         method: .pagePreview(forDocumentId: documentId, number: pageNumber),
+                         completion: completion)
+    }
+
+    private func fetchDocumentPage(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
+                                   documentId: String,
+                                   pageNumber: Int,
+                                   size: Document.Page.Size,
+                                   completion: @escaping CompletionResult<Data>) {
+        guard pageNumber > 0 else {
+            preconditionFailure("The page number starts at 1")
+        }
+
+        let resource = APIResource<Data>(method: .documentPage(forDocumentId: documentId,
+                                                               number: pageNumber,
+                                                               size: size),
+                                         apiDomain: apiDomain,
                                          httpMethod: .get)
+
         resourceHandler(resource) { result in
             switch result {
-            case let .success(data):
-                completion(.success(data))
-            case let .failure(error):
-                if case .notFound = error {
-                    print("Document \(documentId) page not found")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.preview(resourceHandler: resourceHandler,
-                                     with: documentId,
-                                     pageNumber: pageNumber,
-                                     completion: completion)
-                    }
-                } else {
+                case .success(let data):
+                    completion(.success(data))
+                case .failure(let error):
                     completion(.failure(error))
-                }
             }
         }
     }
@@ -330,80 +394,70 @@ extension DocumentService {
                       pageNumber: Int,
                       size: Document.Page.Size,
                       completion: @escaping CompletionResult<Data>) {
-        guard pageNumber > 0 else {
-            preconditionFailure("The page number starts at 1")
-        }
-
-        let resource = APIResource<Data>(method: .documentPage(forDocumentId: document.id,
-                                                               number: pageNumber,
-                                                               size: .medium),
-                                         apiDomain: apiDomain,
-                                         httpMethod: .get)
-
-        resourceHandler(resource) { result in
-            switch result {
-            case .success(let data):
-                completion(.success(data))
-            case .failure(let error):
-                    completion(.failure(error))
-            }
-        }
+        fetchDocumentPage(resourceHandler: resourceHandler,
+                          documentId: document.id,
+                          pageNumber: pageNumber,
+                          size: size,
+                          completion: completion)
     }
 
+    func documentPage(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
+                      in documentId: String,
+                      pageNumber: Int,
+                      size: Document.Page.Size,
+                      completion: @escaping CompletionResult<Data>) {
+        fetchDocumentPage(resourceHandler: resourceHandler,
+                          documentId: documentId,
+                          pageNumber: pageNumber,
+                          size: size,
+                          completion: completion)
+    }
 
-    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
-                        for document: Document,
-                        with extractions: [Extraction],
-                        completion: @escaping CompletionResult<Void>) {
-        guard let json = try? JSONEncoder().encode(ExtractionsFeedback(feedback: extractions)) else {
-            assertionFailure("The extractions provided cannot be encoded")
+    private func sendFeedback<T: Encodable>(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                                            documentId: String,
+                                            feedback: T,
+                                            completion: @escaping CompletionResult<Void>) {
+        guard let json = try? JSONEncoder().encode(feedback) else {
+            assertionFailure("The feedback provided cannot be encoded")
             return
         }
-        
-        let resource = APIResource<String>(method: .feedback(forDocumentId: document.id),
+
+        let resource = APIResource<String>(method: .feedback(forDocumentId: documentId),
                                            apiDomain: apiDomain,
                                            httpMethod: .post,
                                            body: json)
-        
-        resourceHandler(resource, { result in
+
+        resourceHandler(resource) { result in
             switch result {
             case .success:
                 completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
             }
-            
-        })
+        }
     }
-    
+
+    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                        for document: Document,
+                        with extractions: [Extraction],
+                        completion: @escaping CompletionResult<Void>) {
+        sendFeedback(resourceHandler: resourceHandler,
+                     documentId: document.id,
+                     feedback: ExtractionsFeedback(feedback: extractions),
+                     completion: completion)
+    }
+
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
                         for document: Document,
                         with extractions: [Extraction],
                         and compoundExtractions: [String: [[Extraction]]],
                         completion: @escaping CompletionResult<Void>) {
-        guard let json = try? JSONEncoder().encode(
-            CompoundExtractionsFeedback(extractions: extractions, compoundExtractions: compoundExtractions)
-            ) else {
-                assertionFailure("The extractions provided cannot be encoded")
-                return
-        }
-        
-        let resource = APIResource<String>(method: .feedback(forDocumentId: document.id),
-                                           apiDomain: apiDomain,
-                                           httpMethod: .post,
-                                           body: json)
-        
-        resourceHandler(resource, { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-            
-        })
+        sendFeedback(resourceHandler: resourceHandler,
+                     documentId: document.id,
+                     feedback: CompoundExtractionsFeedback(extractions: extractions, compoundExtractions: compoundExtractions),
+                     completion: completion)
     }
-    
+
     func log(resourceHandler: ResourceDataHandler<APIResource<String>>,
              errorEvent: ErrorEvent,
              completion: @escaping CompletionResult<Void>) {
