@@ -517,8 +517,8 @@ platform :ios do
     api_key = app_store_connect_api_key(
       key_id: ENV['APP_STORE_CONNECT_API_KEY_ID'],
       issuer_id: ENV['APP_STORE_CONNECT_API_ISSUER_ID'],
-      key_content: Env['APP_STORE_CONNECT_API_KEY'],
-      duration: 1200 # 20 minutes (Ensure token doesn't expire early),
+      key_content: ENV['APP_STORE_CONNECT_API_KEY'],
+      duration: 1200, # 20 minutes (Ensure token doesn't expire early),
       is_key_content_base64: true, 
       in_house: false
     )
@@ -529,21 +529,14 @@ platform :ios do
     puts "Issuer ID: #{api_key[:issuer_id]}"
     puts "Key: #{api_key[:key] ? 'Exists' : 'Missing'}" # To avoid printing the full key
 
-    # pilot(
-    #   ipa: "GiniBankSDKExample.ipa",
-    #   app_identifier: "net.gini.banksdk.example",
-    #   skip_waiting_for_build_processing: true,
-    #   api_key_path: ,
-    #   uses_non_exempt_encryption: false
-    # )
-
     pilot(
       apple_id: "6504189755",
       ipa: "GiniBankSDKExample.ipa",
       app_identifier: "net.gini.banksdk.example",
       skip_waiting_for_build_processing: true,
       skip_submission: true,
-      api_key: api_key
+      api_key: api_key,
+      upload_type: "ios"
     )
   end  
 

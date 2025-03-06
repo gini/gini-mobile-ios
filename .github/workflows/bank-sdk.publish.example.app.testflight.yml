@@ -99,12 +99,6 @@ jobs:
         with:
           ruby-version: '3.0'
   
-      - name: Install Bundler
-        run: gem install bundler
-  
-      - name: Install Dependencies
-        run: bundle install
-  
       - name: Install Fastlane
         run: gem install fastlane
 
@@ -149,4 +143,13 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
-        run: bundle exec fastlane publish_to_testflight --verbose
+        run: fastlane publish_to_testflight --verbose
+
+      # - name: Upload .ipa to TestFlight
+      #   uses: maierj/fastlane-action@v3.1.0
+      #   with:
+      #     lane: 'publish_to_testflight'
+      #   env:
+      #     APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
+      #     APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
+      #     APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
