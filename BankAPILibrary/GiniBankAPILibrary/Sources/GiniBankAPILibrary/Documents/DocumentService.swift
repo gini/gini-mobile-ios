@@ -364,43 +364,18 @@ extension DocumentService {
                          completion: completion)
     }
 
-    func documentPage(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
-                      in document: Document,
-                      pageNumber: Int,
-                      size: Document.Page.Size,
-                      completion: @escaping CompletionResult<Data>) {
-        guard pageNumber > 0 else {
-            preconditionFailure("The page number starts at 1")
-        }
-
-        let resource = APIResource<Data>(method: .documentPage(forDocumentId: document.id,
-                                                               number: pageNumber,
-                                                               size: .medium),
-                                         apiDomain: apiDomain,
-                                         httpMethod: .get)
-
-        resourceHandler(resource) { result in
-            switch result {
-            case .success(let data):
-                completion(.success(data))
-            case .failure(let error):
-                    completion(.failure(error))
-            }
-        }
-    }
-
-    func documentPage(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
-                      in documentId: String,
-                      pageNumber: Int,
-                      size: Document.Page.Size,
-                      completion: @escaping CompletionResult<Data>) {
+    private func fetchDocumentPage(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
+                                   documentId: String,
+                                   pageNumber: Int,
+                                   size: Document.Page.Size,
+                                   completion: @escaping CompletionResult<Data>) {
         guard pageNumber > 0 else {
             preconditionFailure("The page number starts at 1")
         }
 
         let resource = APIResource<Data>(method: .documentPage(forDocumentId: documentId,
                                                                number: pageNumber,
-                                                               size: .medium),
+                                                               size: size),
                                          apiDomain: apiDomain,
                                          httpMethod: .get)
 
@@ -412,6 +387,30 @@ extension DocumentService {
                     completion(.failure(error))
             }
         }
+    }
+
+    func documentPage(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
+                      in document: Document,
+                      pageNumber: Int,
+                      size: Document.Page.Size,
+                      completion: @escaping CompletionResult<Data>) {
+        fetchDocumentPage(resourceHandler: resourceHandler,
+                          documentId: document.id,
+                          pageNumber: pageNumber,
+                          size: size,
+                          completion: completion)
+    }
+
+    func documentPage(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
+                      in documentId: String,
+                      pageNumber: Int,
+                      size: Document.Page.Size,
+                      completion: @escaping CompletionResult<Data>) {
+        fetchDocumentPage(resourceHandler: resourceHandler,
+                          documentId: documentId,
+                          pageNumber: pageNumber,
+                          size: size,
+                          completion: completion)
     }
 
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
