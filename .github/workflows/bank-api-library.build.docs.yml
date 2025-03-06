@@ -1,15 +1,11 @@
 name: Builds docs for Bank API Library
 
 on:
-  push:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
     paths:
       - 'BankAPILibrary/**'
   workflow_dispatch:
-    tags-ignore:
-      - '**'
-  pull_request:
-    paths:
-      - 'BankAPILibrary/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

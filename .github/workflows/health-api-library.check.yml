@@ -1,7 +1,7 @@
 name: Check Health API Library
 on:
   pull_request:
-   types: [opened, edited, reopened, synchronize]
+   types: [opened, reopened, synchronize, ready_for_review]
    paths:
       - 'HealthAPILibrary/**'
   workflow_call:

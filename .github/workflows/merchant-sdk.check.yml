@@ -1,7 +1,7 @@
 name: Check Merchant SDK
 on:
   pull_request:
-    types: [opened, edited, reopened, synchronize]
+    types: [opened, reopened, synchronize, ready_for_review]
     paths:
       - 'MerchantSDK/**'
   workflow_call:
