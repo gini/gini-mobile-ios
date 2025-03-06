@@ -24,6 +24,8 @@ import GiniCaptureSDK
         return giniApiLib.documentService()
     }
 
+    private var documentId: String?
+    
     // Cast the coordinator to the internal protocol to access internal properties and methods
     private var internalTransactionDocsDataCoordinator: TransactionDocsDataInternalProtocol? {
         return GiniBankConfiguration.shared.transactionDocsDataCoordinator as? TransactionDocsDataInternalProtocol
@@ -129,6 +131,7 @@ import GiniCaptureSDK
      - Parameter documentId: The identifier of the document to process.
      */
     public func handleTransactionDocsDataLoading(for documentId: String) {
+        self.documentId = documentId
         internalTransactionDocsDataCoordinator?.loadDocumentData = { [weak self] in
             self?.processTransactionDocs(for: documentId)
         }
@@ -269,6 +272,23 @@ import GiniCaptureSDK
     }
 }
 
+extension GiniBank: DocumentServiceProviding {
+    func getDocumentPages(completion: @escaping (Result<[Document.Page], GiniError>) -> Void) {
+        guard let documentId else { return }
+        documentService.pages(for: documentId, completion: completion)
+    }
+
+    func getDocumentPage(for pageNumber: Int,
+                         size: Document.Page.Size,
+                         completion: @escaping (Result<Data, GiniError>) -> Void) {
+        guard let documentId else { return }
+        documentService.documentPage(for: documentId,
+                                     pageNumber: pageNumber,
+                                     size: size,
+                                     completion: completion)
+    }
+}
+//
 // MARK: - Private Methods
 fileprivate extension GiniBank {
 
@@ -295,9 +315,13 @@ fileprivate extension GiniBank {
         var documentPagesError: GiniError?
 
         dispatchGroup.enter()
-        fetchDocumentPages(documentId: documentId) { images, error in
-            documentPagesError = error
-            documentImages = images
+        DocumentServiceHelper.fetchDocumentPages(from: self) { result in
+            switch result {
+            case .success(let images):
+                documentImages = images
+            case .failure(let error):
+                documentPagesError = error
+            }
             dispatchGroup.leave()
         }
 
@@ -311,9 +335,11 @@ fileprivate extension GiniBank {
             if let error = documentPagesError {
                 self.handlePreviewDocumentError(error: error)
             } else {
-                self.internalTransactionDocsDataCoordinator?.updateTransactionDocsViewModel(with: documentImages,
-                                                                                            extractions: extractedData,
-                                                                                            for: documentId)
+                self.internalTransactionDocsDataCoordinator?.updateTransactionDocsViewModel(
+                    with: documentImages,
+                    extractions: extractedData,
+                    for: documentId
+                )
             }
         }
     }
@@ -338,51 +364,8 @@ fileprivate extension GiniBank {
             }
     }
 
-    private func fetchDocumentPages(documentId: String, completion: @escaping ([UIImage], GiniError?) -> Void) {
-        documentService.pages(for: documentId) { [weak self] result in
-            switch result {
-            case .success(let pages):
-                self?.loadAllPages(for: documentId, pages: pages, completion: completion)
-            case .failure(let error):
-                    completion([], error)
-            }
-        }
-    }
-
     private func fetchDocumentExtractions(for documentId: String,
                                           completion: @escaping (Result<ExtractionResult, GiniError>) -> Void) {
         documentService.extractions(for: documentId, completion: completion)
-    }
-
-    private func loadAllPages(for documentId: String,
-                              pages: [Document.Page],
-                              completion: @escaping ([UIImage], GiniError?) -> Void) {
-        var images: [UIImage] = []
-        var loadError: GiniError?
-
-        func loadPage(at index: Int) {
-            guard index < pages.count else {
-                completion(images, nil)
-                return
-            }
-
-            let page = pages[index]
-            documentService.documentPage(for: documentId,
-                                         pageNumber: page.number,
-                                         size: page.images[0].size) { result in
-                switch result {
-                case .success(let data):
-                    if let image = UIImage(data: data) {
-                        images.append(image)
-                        loadPage(at: index + 1)
-                    }
-                case .failure(let error):
-                    loadError = error
-                    completion([], loadError)
-                }
-            }
-        }
-
-        loadPage(at: 0)
     }
 }
