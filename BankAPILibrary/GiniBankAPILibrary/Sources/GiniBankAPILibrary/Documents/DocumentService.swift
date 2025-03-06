@@ -413,59 +413,51 @@ extension DocumentService {
                           completion: completion)
     }
 
-    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
-                        for document: Document,
-                        with extractions: [Extraction],
-                        completion: @escaping CompletionResult<Void>) {
-        guard let json = try? JSONEncoder().encode(ExtractionsFeedback(feedback: extractions)) else {
-            assertionFailure("The extractions provided cannot be encoded")
+    private func sendFeedback<T: Encodable>(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                                            documentId: String,
+                                            feedback: T,
+                                            completion: @escaping CompletionResult<Void>) {
+        guard let json = try? JSONEncoder().encode(feedback) else {
+            assertionFailure("The feedback provided cannot be encoded")
             return
         }
-        
-        let resource = APIResource<String>(method: .feedback(forDocumentId: document.id),
+
+        let resource = APIResource<String>(method: .feedback(forDocumentId: documentId),
                                            apiDomain: apiDomain,
                                            httpMethod: .post,
                                            body: json)
-        
-        resourceHandler(resource, { result in
+
+        resourceHandler(resource) { result in
             switch result {
             case .success:
                 completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
             }
-            
-        })
+        }
     }
-    
+
+    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                        for document: Document,
+                        with extractions: [Extraction],
+                        completion: @escaping CompletionResult<Void>) {
+        sendFeedback(resourceHandler: resourceHandler,
+                     documentId: document.id,
+                     feedback: ExtractionsFeedback(feedback: extractions),
+                     completion: completion)
+    }
+
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
                         for document: Document,
                         with extractions: [Extraction],
                         and compoundExtractions: [String: [[Extraction]]],
                         completion: @escaping CompletionResult<Void>) {
-        guard let json = try? JSONEncoder().encode(
-            CompoundExtractionsFeedback(extractions: extractions, compoundExtractions: compoundExtractions)
-            ) else {
-                assertionFailure("The extractions provided cannot be encoded")
-                return
-        }
-        
-        let resource = APIResource<String>(method: .feedback(forDocumentId: document.id),
-                                           apiDomain: apiDomain,
-                                           httpMethod: .post,
-                                           body: json)
-        
-        resourceHandler(resource, { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-            
-        })
+        sendFeedback(resourceHandler: resourceHandler,
+                     documentId: document.id,
+                     feedback: CompoundExtractionsFeedback(extractions: extractions, compoundExtractions: compoundExtractions),
+                     completion: completion)
     }
-    
+
     func log(resourceHandler: ResourceDataHandler<APIResource<String>>,
              errorEvent: ErrorEvent,
              completion: @escaping CompletionResult<Void>) {
