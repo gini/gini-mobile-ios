@@ -38,7 +38,7 @@ public final class GiniHealthConfiguration: NSObject {
     public override init() {
         super.init()
         DispatchQueue.main.async {
-            self.defaultPDFFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
+            self.paymentPDFFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
         }
     }
 
@@ -163,30 +163,26 @@ public final class GiniHealthConfiguration: NSObject {
      Client's configuration provided from the server
      */
     var clientConfiguration: ClientConfiguration?
+    
     /**
      Custom payment information pdf file provided through the QR code flow.
       Customization rulles:
        - Number of characters for the file name: 25
        - Limit characters to letters, numbers, underscore and dash
      */
-    public var paymentPDFFileName: String {
-        get {
-            return _paymentPDFFileName.isEmpty ? defaultPDFFileName : _paymentPDFFileName
-        }
-        set {
-            _paymentPDFFileName = isValidPDFFilename(newValue) ? newValue : defaultPDFFileName
+    public var paymentPDFFileName: String = "" {
+        didSet {
+            if !isValidPDFFilename(paymentPDFFileName) {
+                paymentPDFFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
+            }
         }
     }
-
-    private var _paymentPDFFileName: String = ""
-    private var defaultPDFFileName: String = ""
 }
 
 extension GiniHealthConfiguration {
     private func isValidPDFFilename(_ fileName: String) -> Bool {
         let regex = "^[a-zA-Z0-9_-]{1,25}$" // Allows letters, numbers, underscore, and dash, max 25 characters
         let response = NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: fileName)
-        print("filename: \(response)")
         return response
     }
 }
