@@ -271,40 +271,34 @@ extension DocumentService {
         })
     }
     
-    func pages(resourceHandler: ResourceDataHandler<APIResource<[Document.Page]>>,
-               in document: Document,
-               completion: @escaping CompletionResult<[Document.Page]>) {
-        let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: document.id),
+    private func fetchPages(resourceHandler: ResourceDataHandler<APIResource<[Document.Page]>>,
+                            documentId: String,
+                            completion: @escaping CompletionResult<[Document.Page]>) {
+        let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: documentId),
                                                     apiDomain: apiDomain,
                                                     httpMethod: .get)
-        
-        resourceHandler(resource, { result in
+
+        resourceHandler(resource) { result in
             switch result {
             case .success(let pages):
                 completion(.success(pages))
             case .failure(let error):
                 completion(.failure(error))
             }
-        })
+        }
+    }
+
+    func pages(resourceHandler: ResourceDataHandler<APIResource<[Document.Page]>>,
+               in document: Document,
+               completion: @escaping CompletionResult<[Document.Page]>) {
+        fetchPages(resourceHandler: resourceHandler, documentId: document.id, completion: completion)
     }
 
     func pages(resourceHandler: ResourceDataHandler<APIResource<[Document.Page]>>,
                for documentId: String,
                completion: @escaping CompletionResult<[Document.Page]>) {
-        let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: documentId),
-                                                    apiDomain: apiDomain,
-                                                    httpMethod: .get)
-
-        resourceHandler(resource, { result in
-            switch result {
-                case .success(let pages):
-                    completion(.success(pages))
-                case .failure(let error):
-                    completion(.failure(error))
-            }
-        })
+        fetchPages(resourceHandler: resourceHandler, documentId: documentId, completion: completion)
     }
-
 
     func pagePreview(resourceHandler: @escaping ResourceDataHandler<APIResource<Data>>,
                      in document: Document,
