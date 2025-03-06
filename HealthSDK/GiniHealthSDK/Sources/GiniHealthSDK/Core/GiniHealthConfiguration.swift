@@ -37,6 +37,9 @@ public final class GiniHealthConfiguration: NSObject {
      */
     public override init() {
         super.init()
+        DispatchQueue.main.async {
+            self.paymentPDFFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
+        }
     }
 
     // MARK: - Payment component view
@@ -160,11 +163,34 @@ public final class GiniHealthConfiguration: NSObject {
      Client's configuration provided from the server
      */
     var clientConfiguration: ClientConfiguration?
+    
+    /**
+     Custom payment information pdf file provided through the QR code flow.
+      Customization rulles:
+       - Number of characters for the file name: 25
+       - Limit characters to letters, numbers, underscore and dash
+     */
+    public var paymentPDFFileName: String = "" {
+        didSet {
+            if !isValidPDFFilename(paymentPDFFileName) {
+                paymentPDFFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
+            }
+        }
+    }
+}
+
+extension GiniHealthConfiguration {
+    private func isValidPDFFilename(_ fileName: String) -> Bool {
+        let regex = "^[a-zA-Z0-9_-]{1,25}$" // Allows letters, numbers, underscore, and dash, max 25 characters
+        let response = NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: fileName)
+        return response
+    }
 }
 
 extension GiniHealthConfiguration {
     private enum Constants {
         static let defaultButtonsHeight = 56.0
         static let minimumButtonsHeight = 44.0
+        static let defaultPaymentPDFFileKey = "gini.health.paymentcomponent.share.invoice.pdf.filename.default"
     }
 }

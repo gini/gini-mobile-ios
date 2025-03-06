@@ -428,4 +428,9 @@ extension AppCoordinator: DebugMenuDelegate {
         giniHealthConfiguration.customLocalization = localization
         health.setConfiguration(giniHealthConfiguration)
     }
+
+    func didCustomizeQRCodePDFFilename(filename: String) {
+        giniHealthConfiguration.paymentPDFFileName = filename
+        health.setConfiguration(giniHealthConfiguration)
+    }
 }
