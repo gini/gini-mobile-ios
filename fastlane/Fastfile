@@ -533,7 +533,6 @@ platform :ios do
     ENV["DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"] = "-t DAV"
 
     pilot(
-      apple_id: "6504189755",
       ipa: "GiniBankSDKExample.ipa",
       app_identifier: "net.gini.banksdk.example",
       skip_waiting_for_build_processing: true,
