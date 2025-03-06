@@ -49,14 +49,14 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 65
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
 
         tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.padding, right: 0)
+        tableView.contentInset = Constants.tableContentInset
 
         if #available(iOS 15.0, *) {
-            tableView.sectionHeaderTopPadding = 0
+            tableView.sectionHeaderTopPadding = Constants.sectionHeaderTopPadding
         }
 
         tableView.register(TransactionCell.self)
@@ -110,26 +110,27 @@ class TransactionListViewController: UIViewController, UITableViewDataSource, UI
         }
 
         let numberOfRows = tableView.numberOfRows(inSection: indexPath.section)
-        let cornerRadius: CGFloat = 12
 
         // Reset rounded corners
         cell.contentView.layer.cornerRadius = 0
         cell.contentView.layer.maskedCorners = []
         cell.contentView.layer.masksToBounds = true // Prevent clipping issues
 
-        if numberOfRows == 1 {
-            // If only one cell, round all corners
-            cell.contentView.layer.cornerRadius = cornerRadius
-            cell.contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner,
-                                                    .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        } else if indexPath.row == 0 {
-            // First cell: Round top corners
-            cell.contentView.layer.cornerRadius = cornerRadius
-            cell.contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        } else if indexPath.row == numberOfRows - 1 {
-            // Last cell: Round bottom corners
-            cell.contentView.layer.cornerRadius = cornerRadius
-            cell.contentView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        switch indexPath.row {
+            case 0 where numberOfRows == 1:
+                // If only one cell, round all corners
+                cell.contentView.layer.cornerRadius = Constants.cornerRadius
+                cell.contentView.layer.maskedCorners = Constants.allCorners
+            case 0:
+                // First cell: Round top corners
+                cell.contentView.layer.cornerRadius = Constants.cornerRadius
+                cell.contentView.layer.maskedCorners = Constants.topCorners
+            case numberOfRows - 1:
+                // Last cell: Round bottom corners
+                cell.contentView.layer.cornerRadius = Constants.cornerRadius
+                cell.contentView.layer.maskedCorners = Constants.bottomCorners
+            default:
+                break
         }
     }
 
@@ -222,6 +223,14 @@ extension TransactionListViewController: TransactionDetailsViewDelegate {
 private extension TransactionListViewController {
     enum Constants {
         static let padding: CGFloat = 16
+        static let sectionHeaderTopPadding: CGFloat = 0
+        static let estimatedRowHeight: CGFloat = 65
+        static let tableContentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.padding, right: 0)
+        static let cornerRadius: CGFloat = 12
+        static let allCorners: CACornerMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner,
+                                               .layerMinXMaxYCorner, .layerMinXMaxYCorner]
+        static let topCorners: CACornerMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        static let bottomCorners: CACornerMask = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
 }
 
