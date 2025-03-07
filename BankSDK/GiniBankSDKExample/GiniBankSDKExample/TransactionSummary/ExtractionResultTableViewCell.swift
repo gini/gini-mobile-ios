@@ -10,5 +10,4 @@ class ExtractionResultTableViewCell: UITableViewCell {
 
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var detailTextField: UITextField!
-
 }
