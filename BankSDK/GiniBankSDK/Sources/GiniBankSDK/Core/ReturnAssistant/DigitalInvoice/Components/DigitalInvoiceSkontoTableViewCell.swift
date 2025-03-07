@@ -4,6 +4,7 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
+import GiniCaptureSDK
 import UIKit
 
 protocol DigitalInvoiceSkontoTableViewCellDelegate: AnyObject {
@@ -159,6 +160,13 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     @objc private func editButtonTapped() {
         delegate?.editTapped(cell: self)
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if UIDevice.current.isIphone {
+            contentView.frame = contentView.frame.insetBy(dx: safeAreaInsets.left + Constants.horizontalPadding, dy: 0)
+        }
+    }
 }
 
 // MARK: - Constants
@@ -169,5 +177,6 @@ private extension DigitalInvoiceSkontoTableViewCell {
         static let labelsEditButtonSpacing: CGFloat = 12.0
         static let stackViewVerticalSpacing: CGFloat = 16.0
         static let editButtonMinWidth: CGFloat = 80.0
+        static let horizontalPadding: CGFloat = 16.0
     }
 }

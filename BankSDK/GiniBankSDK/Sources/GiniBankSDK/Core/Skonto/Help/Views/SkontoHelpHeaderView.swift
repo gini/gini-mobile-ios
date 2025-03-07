@@ -47,13 +47,13 @@ class SkontoHelpHeaderView: UIView {
         addSubview(subtitleLabel)
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.topPadding),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
 
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                                constant: Constants.verticalPadding),
-            subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            subtitleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            subtitleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             subtitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }

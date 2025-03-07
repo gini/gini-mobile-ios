@@ -129,8 +129,8 @@ final class EditLineItemViewController: UIViewController {
             containerViewBottomConstraint?.constant = defaultHeight
         } else {
             NSLayoutConstraint.activate([
-                containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+                containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
             ])
         }
         containerViewHeightConstraint?.isActive = true
