@@ -19,6 +19,7 @@ enum SwitchType {
 protocol DebugMenuDelegate: AnyObject {
     func didChangeSwitchValue(type: SwitchType, isOn: Bool)
     func didPickNewLocalization(localization: GiniLocalization)
+    func didChangeSliderValue(value: Float)
 }
 
 class DebugMenuViewController: UIViewController {
@@ -57,17 +58,39 @@ class DebugMenuViewController: UIViewController {
     private lazy var closeButtonOptionLabel: UILabel = rowTitle("Show Payment Review Close Button")
     private var closeButtonSwitch: UISwitch!
     private lazy var closeButtonRow: UIStackView = stackView(axis: .horizontal, subviews: [closeButtonOptionLabel, closeButtonSwitch])
+    
+    private lazy var popupDurationTitleLabel: UILabel = rowTitle("Popup Duration Time")
+    
+    private lazy var popupDurationSlider: UISlider = {
+        let slider = UISlider()
+        slider.minimumValue = 0
+        slider.maximumValue = 10
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.isContinuous = true
+        slider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
+        
+        if #available(iOS 15.0, *) {
+            slider.toolTip = "\(slider.value)"
+        }
+        
+        return slider
+    }()
+    
+    private lazy var popupDurationRow: UIStackView = stackView(axis: .horizontal, subviews: [popupDurationTitleLabel,
+                                                                                             popupDurationSlider])
 
     weak var delegate: DebugMenuDelegate?
 
     init(showReviewScreen: Bool,
          useBottomPaymentComponent: Bool,
          paymentComponentConfiguration: PaymentComponentConfiguration,
-         showPaymentCloseButton: Bool) {
+         showPaymentCloseButton: Bool,
+         popupDuration: TimeInterval) {
         super.init(nibName: nil, bundle: nil)
         self.reviewScreenSwitch = self.switchView(isOn: showReviewScreen)
         self.bottomPaymentComponentSwitch = self.switchView(isOn: useBottomPaymentComponent)
         self.closeButtonSwitch = self.switchView(isOn: showPaymentCloseButton)
+        self.popupDurationSlider.value = Float(popupDuration)
     }
 
     required init?(coder: NSCoder) {
@@ -92,7 +115,7 @@ class DebugMenuViewController: UIViewController {
         view.backgroundColor = UIColor(named: "background")
 
         let spacer = UIView()
-        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, bottomPaymentComponentEditableRow, closeButtonRow, spacer])
+        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, bottomPaymentComponentEditableRow, closeButtonRow, popupDurationRow, spacer])
         view.addSubview(mainStackView)
 
         NSLayoutConstraint.activate([
@@ -104,7 +127,8 @@ class DebugMenuViewController: UIViewController {
             localizationRow.heightAnchor.constraint(equalToConstant: rowHeight),
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
-            closeButtonRow.heightAnchor.constraint(equalToConstant: rowHeight)
+            closeButtonRow.heightAnchor.constraint(equalToConstant: rowHeight),
+            popupDurationRow.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
     }
 }
@@ -173,5 +197,13 @@ private extension DebugMenuViewController {
             default:
                 break
         }
+    }
+}
+
+// MARK: Slider functions
+private extension DebugMenuViewController {
+    @objc private func sliderValueChanged(_ sender: UISlider) {
+        sender.value = roundf(sender.value)
+        delegate?.didChangeSliderValue(value: sender.value)
     }
 }

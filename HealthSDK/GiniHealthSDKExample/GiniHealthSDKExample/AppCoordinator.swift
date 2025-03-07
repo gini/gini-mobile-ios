@@ -403,7 +403,8 @@ extension AppCoordinator: DebugMenuPresenter {
         let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
                                                               useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
                                                               paymentComponentConfiguration: health.paymentComponentConfiguration,
-                                                              showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton)
+                                                              showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton,
+                                                              popupDuration: giniHealthConfiguration.popupDurationPaymentReview)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -427,5 +428,9 @@ extension AppCoordinator: DebugMenuDelegate {
     func didPickNewLocalization(localization: GiniLocalization) {
         giniHealthConfiguration.customLocalization = localization
         health.setConfiguration(giniHealthConfiguration)
+    }
+    
+    func didChangeSliderValue(value: Float) {
+        giniHealthConfiguration.popupDurationPaymentReview = TimeInterval(value)
     }
 }
