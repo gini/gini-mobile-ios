@@ -55,6 +55,7 @@ final class SkontoHelpViewController: UIViewController {
 
     private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     private var navigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter?
+    private var navigationBarHeightConstraint: NSLayoutConstraint?
 
     private let viewModel = SkontoHelpViewModel()
 
@@ -67,6 +68,11 @@ final class SkontoHelpViewController: UIViewController {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        navigationBarHeightConstraint?.constant = view.currentInterfaceOrientation.isLandscape && UIDevice.current.isIphone ? Constants.navigationBarHeightLandscape : Constants.navigationBarHeightPortrait
     }
 
     private func setupViews() {
@@ -136,6 +142,9 @@ final class SkontoHelpViewController: UIViewController {
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(navigationBar)
+        navigationBarHeightConstraint = navigationBar.heightAnchor.constraint(
+            equalToConstant: view.currentInterfaceOrientation.isLandscape ? Constants.navigationBarHeightLandscape : Constants.navigationBarHeightPortrait
+        )
 
         scrollViewBottomConstraint.isActive = false
         NSLayoutConstraint.activate([
@@ -157,6 +166,7 @@ private extension SkontoHelpViewController {
     enum Constants {
         static let padding: CGFloat = 16
         static let spacing: CGFloat = 32
-        static let navigationBarHeight: CGFloat = 114
+        static let navigationBarHeightPortrait: CGFloat = 114
+        static let navigationBarHeightLandscape: CGFloat = UIDevice.current.isSmallIphone ? 40 : 62
     }
 }

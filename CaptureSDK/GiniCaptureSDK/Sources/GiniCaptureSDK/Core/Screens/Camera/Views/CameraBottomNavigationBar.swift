@@ -41,6 +41,6 @@ class CameraBottomNavigationBar: UIView {
 extension CameraBottomNavigationBar {
     enum Constants {
         static let heightPortrait: CGFloat = 114
-        static let heightLandscape: CGFloat = 62
+        static let heightLandscape: CGFloat = UIDevice.current.isSmallIphone ? 40 : 62
     }
 }

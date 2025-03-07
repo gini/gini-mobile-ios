@@ -98,7 +98,7 @@ final class ImagePickerViewController: UIViewController {
         super.viewDidLayoutSubviews()
         if UIDevice.current.isIphone {
             let isLandscape = currentInterfaceOrientation.isLandscape
-            bottomNavigationBarHeightConstraint?.constant = isLandscape ? Constants.navigationBarHeightHorizontal : Constants.navigationBarHeight
+            bottomNavigationBarHeightConstraint?.constant = isLandscape ? CameraBottomNavigationBar.Constants.heightLandscape : CameraBottomNavigationBar.Constants.heightPortrait
         }
     }
 
@@ -202,7 +202,7 @@ final class ImagePickerViewController: UIViewController {
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(navigationBar)
-        bottomNavigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
+        bottomNavigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: CameraBottomNavigationBar.Constants.heightPortrait)
         NSLayoutConstraint.activate([
             contentView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -268,8 +268,6 @@ extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
 
 private extension ImagePickerViewController {
     enum Constants {
-        static let navigationBarHeight: CGFloat = 114
-        static let navigationBarHeightHorizontal: CGFloat = 62
         static let imagesInRowPortrait: Int = 4
         static let imagesInRowLandscape: Int = 5
     }
