@@ -140,10 +140,8 @@ import UIKit
         didShowAnalysis?()
 
         let documentTypeAnalytics = GiniAnalyticsMapper.documentTypeAnalytics(from: document.type)
-        let eventProperties = [GiniAnalyticsProperty(key: .documentType,
-                                                     value: documentTypeAnalytics)]
-        GiniAnalyticsManager.trackScreenShown(screenName: .analysis,
-                                              properties: eventProperties)
+        GiniAnalyticsManager.registerSuperProperties([.documentType: documentTypeAnalytics])
+        GiniAnalyticsManager.trackScreenShown(screenName: .analysis)
     }
 
     // MARK: Toggle animation

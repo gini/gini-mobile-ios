@@ -51,7 +51,6 @@ class ErrorScreenViewController: UIViewController {
 
     let viewModel: BottomButtonsViewModel
     private let errorType: ErrorType
-    private let documentType: GiniCaptureDocumentType
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var numberOfButtons: Int {
         return [
@@ -73,12 +72,10 @@ class ErrorScreenViewController: UIViewController {
      */
     public init(giniConfiguration: GiniConfiguration,
                 type: ErrorType,
-                documentType: GiniCaptureDocumentType,
                 viewModel: BottomButtonsViewModel) {
         self.giniConfiguration = giniConfiguration
         self.viewModel = viewModel
         self.errorType = type
-        self.documentType = documentType
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -94,12 +91,9 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func sendAnalyticsScreenShown() {
-        let documentTypeAnalyticsValue = GiniAnalyticsMapper.documentTypeAnalytics(from: documentType)
-        var eventProperties = [GiniAnalyticsProperty(key: .documentType,
-                                                     value: documentTypeAnalyticsValue)]
-
         let errorAnalytics = errorType.errorAnalytics()
-        eventProperties.append(GiniAnalyticsProperty(key: .errorType, value: errorAnalytics.type))
+        var eventProperties = [GiniAnalyticsProperty(key: .errorType, value: errorAnalytics.type)]
+
         if let code = errorAnalytics.code {
             eventProperties.append(GiniAnalyticsProperty(key: .errorCode, value: code))
         }
