@@ -44,11 +44,10 @@ import GiniBankAPILibrary
             self = .authentication
         case .noInternetConnection:
             self = .connection
-        case .noResponse:
+        case .noResponse, .notFound:
             self = .unexpected
         case .notAcceptable, .tooManyRequests,
-             .parseError, .badRequest,
-             .notFound:
+             .parseError, .badRequest:
             self = .request
         case .server:
             self = .serverError
