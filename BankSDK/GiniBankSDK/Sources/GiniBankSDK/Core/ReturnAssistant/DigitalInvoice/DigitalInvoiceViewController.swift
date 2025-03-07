@@ -47,6 +47,17 @@ final class DigitalInvoiceViewController: UIViewController {
     private var navigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
+    private lazy var proceedViewConstraints: [NSLayoutConstraint] = [
+        proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        proceedView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonContainerHeight),
+        proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        tableView.bottomAnchor.constraint(equalTo: proceedView.topAnchor),
+    ]
+    private lazy var proceedViewTableConstraints: [NSLayoutConstraint] = [
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+    ]
+
     init(viewModel: DigitalInvoiceViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -89,13 +100,7 @@ final class DigitalInvoiceViewController: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
-            tableView.bottomAnchor.constraint(equalTo: proceedView.topAnchor),
-
-            proceedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            proceedView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonContainerHeight)
-        ])
+        ] + proceedViewConstraints)
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
@@ -104,8 +109,8 @@ final class DigitalInvoiceViewController: UIViewController {
                                                  multiplier: Constants.tabletWidthMultiplier)])
         } else {
             NSLayoutConstraint.activate([
-                tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.padding),
-                tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.padding)
+                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
             ])
         }
     }
@@ -160,6 +165,43 @@ final class DigitalInvoiceViewController: UIViewController {
             // Send a 'screenShown' event when returning back from `Help` screen.
             // This is not called initially due to the onboarding screen being displayed as a modal view on top.
             sendAnalyticsScreenShown()
+        }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.current.isIphone {
+            if view.currentInterfaceOrientation.isLandscape {
+                if tableView.tableFooterView == nil {
+                    NSLayoutConstraint.deactivate(proceedViewConstraints)
+                    proceedView.removeFromSuperview()
+
+                    // frame is mandatory for tableview footer view, since it doesn't use autolayout, which means we have to specify size
+                    let container = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: Constants.buttonContainerHeight + Constants.padding))
+                    container.addSubview(proceedView)
+                    NSLayoutConstraint.activate([
+                        proceedView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+                        proceedView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+                        proceedView.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+                        proceedView.topAnchor.constraint(equalTo: container.topAnchor, constant: Constants.padding)
+                    ])
+                    tableView.tableFooterView = container
+
+                    NSLayoutConstraint.activate(proceedViewTableConstraints)
+                    proceedView.isHidden = false
+
+                }
+            } else {
+                if tableView.tableFooterView != nil {
+                    NSLayoutConstraint.deactivate(proceedViewTableConstraints)
+                    proceedView.removeFromSuperview()
+                    tableView.tableFooterView = nil
+                    proceedViewTableConstraints.last?.isActive = false
+                    view.addSubview(proceedView)
+                    NSLayoutConstraint.activate(proceedViewConstraints)
+                    proceedView.isHidden = configuration.bottomNavigationBarEnabled
+                }
+            }
         }
     }
 

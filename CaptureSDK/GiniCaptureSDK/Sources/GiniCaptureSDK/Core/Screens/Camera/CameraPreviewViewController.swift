@@ -92,7 +92,7 @@ final class CameraPreviewViewController: UIViewController {
     }
     private var bottomControlHeight: CGFloat {
         return view.frame.height * Constants.bottomControlHeightMultiplier +
-        (giniConfiguration.bottomNavigationBarEnabled ? Constants.bottomNavigationBarHeight : 0)
+        (giniConfiguration.bottomNavigationBarEnabled ? CameraBottomNavigationBar.Constants.heightPortrait : 0)
     }
 
     var isAuthorized = false
@@ -267,7 +267,7 @@ final class CameraPreviewViewController: UIViewController {
 
             if UIDevice.current.isIphone {
                 cameraFrameViewBottomConstrant.constant = isLandscape
-                ? -(giniConfiguration.bottomNavigationBarEnabled ? Constants.bottomNavigationBarHeightHorizontal : 0) - Constants.padding
+                ? -(giniConfiguration.bottomNavigationBarEnabled ? CameraBottomNavigationBar.Constants.heightLandscape : 0) - Constants.padding
                 : -bottomControlHeight-Constants.padding
             }
         }
@@ -533,8 +533,6 @@ extension CameraPreviewViewController {
         static let padding: CGFloat = 16
         static let a4AspectRatio: CGFloat = 1.414
         static let cameraPaneWidth: CGFloat = 124
-        static let bottomNavigationBarHeight: CGFloat = 114
-        static let bottomNavigationBarHeightHorizontal: CGFloat = 62
         static let QRCodeScannerSize = CGSize(width: 258, height: 258)
         static let bottomControlHeightMultiplier: CGFloat = 0.23
     }

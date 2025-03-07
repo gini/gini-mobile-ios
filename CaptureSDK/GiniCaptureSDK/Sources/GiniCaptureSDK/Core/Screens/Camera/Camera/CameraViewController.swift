@@ -311,7 +311,7 @@ final class CameraViewController: UIViewController {
             view.removeConstraints([bottomPaneConstraint, bottomButtonsConstraints])
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(navigationBar)
-            cameraPaneHorizontalBottomConstraint.constant = Constants.horizontalCameraPaneBottomBarPadding
+            cameraPaneHorizontalBottomConstraint.constant = CameraBottomNavigationBar.Constants.heightLandscape
             NSLayoutConstraint.activate([
                 navigationBar.topAnchor.constraint(equalTo: cameraPane.bottomAnchor),
                 navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -776,7 +776,6 @@ private extension CameraViewController {
         static let switcherPadding: CGFloat = 8
         static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 40)
         static let tableSwitcherSize: CGSize = CGSize(width: 40, height: 124)
-        static let horizontalCameraPaneBottomBarPadding: CGFloat = 62
     }
 }
 // swiftlint:enable type_body_length
