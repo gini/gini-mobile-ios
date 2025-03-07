@@ -1,16 +1,17 @@
 //
-//  GalleryManagerMock.swift
-//  GiniCapture_Tests
+//  GalleryManagerTests.swift
+//  Example_Tests
 //
-//  Copyright © 2018 Gini GmbH. All rights reserved.
+//  Copyright © 2021 Gini GmbH. All rights reserved.
 //
 
 import UIKit
-import Photos
 @testable import GiniCaptureSDK
+import Photos
+
 final class GalleryManagerMock: GalleryManagerProtocol {
     var isGalleryAccessLimited: Bool = false
-    
+
     private let asset1 = Asset(identifier: "Asset 1")
     private let asset2 = Asset(identifier: "Asset 2")
 
@@ -27,27 +28,27 @@ final class GalleryManagerMock: GalleryManagerProtocol {
     ]
 
     var isCaching = false
-        
+
     func reloadAlbums() {
         // This method will remain empty; no implementation is needed.
     }
-    
+
     func startCachingImages(for album: Album) {
         isCaching = true
     }
-    
+
     func stopCachingImages(for album: Album) {
         isCaching = false
     }
-    
+
     func fetchImageData(from asset: Asset, completion: @escaping ((Data?) -> Void)) {
         completion(Data(count: 10))
     }
-    
+
     func fetchRemoteImageData(from asset: Asset, completion: @escaping ((Data?) -> Void)) {
         completion(Data(count: 10))
     }
-    
+
     func fetchImage(from asset: Asset, imageQuality: ImageQuality, completion: @escaping ((UIImage) -> Void)) {
         // This method will remain empty; no implementation is needed.
     }

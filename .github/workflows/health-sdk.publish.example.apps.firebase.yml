@@ -1,6 +1,13 @@
 name: Publish GiniHealthSDKExample to Firebase Distribution
 on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - 'MerchantSDK/**'
+      - 'HealthAPILibrary/**'
+      - 'GiniComponents/**'
   workflow_dispatch:
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-publish
