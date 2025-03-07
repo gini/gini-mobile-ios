@@ -63,7 +63,34 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH1 ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH2 ~/Library/MobileDevice/Provisioning\ Profiles
-     
+      - name: Setup Manual Signing for Xcode project
+        uses: ruby/setup-ruby@v1
+        with:
+            ruby-version: '3.2.0'
+            bundler-cache: true
+      - uses: maierj/fastlane-action@v3.1.0
+        with:
+            lane: 'setup_manual_signing'
+            options: >
+              { 
+                "project_path":"BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj",
+                "team_id":"JA825X8F7Z",
+                "target":"GiniBankSDKExample",
+                "target_extension": "GiniBankSDKShareExtension",
+                "bundle_identifier": "net.gini.banksdk.example",
+                "bundle_identifier_extension": "net.gini.banksdk.example.ShareExtension",
+                "profile_name": "Gini Bank SDK Example App Ad-Hoc Distribution",
+                "profile_name_extension" : "Gini Bank SDK Share Extension Ad-Hoc Distribution",
+                "entitlements_file_path": "GiniBankSDKExample/Example Swift.entitlements", 
+                "entitlements_file_path_extension": "GiniBankSDKShareExtension/GiniBankSDKShareExtension.entitlements", 
+                "ci": "true"
+              }
+  
+      - name: Setup Credentials
+        run: |
+              plutil -replace client_id -string "gini-mobile-test" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+              plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+                   
       - name: Archive Xcode Project
         run: |
           xcodebuild clean archive \
@@ -102,54 +129,9 @@ jobs:
       - name: Install Fastlane
         run: gem install fastlane
 
-      # - name: Setup App Store API Key
-      #   run: |
-      #     mkdir -p $HOME/.appstoreconnect/private_keys
-      #     echo "${{ secrets.APP_STORE_API_KEY }}" | base64 --decode > $HOME/.appstoreconnect/private_keys/AuthKey.p8
-      #     chmod 600 $HOME/.appstoreconnect/private_keys/AuthKey.p8
-      - name: Decode Base64 App Store Connect API key
-        shell: bash
-        run: |
-          mkdir -p $HOME/.appstoreconnect/private_keys
-          echo "${{ secrets.APPSTORE_API_KEY_JSON_BASE64 }}" | base64 --decode > $HOME/.appstoreconnect/private_keys/AuthKey.json
-          chmod 600 $HOME/.appstoreconnect/private_keys/AuthKey.json
-
-      # - name: Check AuthKey.json contents
-      #   shell: bash
-      #   run: |
-      #     cat AuthKey.json
-
-      # - name: Validate AuthKey.json
-      #   shell: bash
-      #   run: |
-      #     jq '.' AuthKey.json
-
-      # - name: Test App Store Connect API Key
-      #   run: |
-      #     fastlane run app_store_connect_api_key \
-      #       key_id:"${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}" \
-      #       issuer_id:"${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}" \
-      #       key_filepath:"$HOME/.appstoreconnect/private_keys/AuthKey.p8"
-
-      # - name: Debug API Key Storage
-      #   run: |
-      #     echo "Checking API Key File..."
-      #     ls -la $HOME/.appstoreconnect/private_keys/
-      #     echo "First few lines of the API Key:"
-      #     head -n 5 $HOME/.appstoreconnect/private_keys/AuthKey.p8
-
       - name: Upload .ipa to TestFlight
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
         run: fastlane publish_to_testflight --verbose
-
-      # - name: Upload .ipa to TestFlight
-      #   uses: maierj/fastlane-action@v3.1.0
-      #   with:
-      #     lane: 'publish_to_testflight'
-      #   env:
-      #     APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
-      #     APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
-      #     APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
