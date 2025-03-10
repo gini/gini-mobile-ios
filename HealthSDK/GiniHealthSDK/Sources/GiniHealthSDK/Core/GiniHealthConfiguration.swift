@@ -73,9 +73,11 @@ public final class GiniHealthConfiguration: NSObject {
      Sets the duration of the payment review popup on payment review screen. The `max` value can be `10`, the `min` value can be `0` and the `default` value is `3`
      */
     public var popupDurationPaymentReview: TimeInterval = 3.0 {
-        willSet {
-            guard newValue >= 0 && newValue <= 10 else {
-                abort()
+        didSet {
+            if popupDurationPaymentReview > 10 {
+                popupDurationPaymentReview = 10
+            } else if popupDurationPaymentReview < 0 {
+                popupDurationPaymentReview = 3
             }
         }
     }
