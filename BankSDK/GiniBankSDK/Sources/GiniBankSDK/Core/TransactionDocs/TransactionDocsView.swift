@@ -6,21 +6,32 @@
 
 import UIKit
 
-/// A delegate protocol for `TransactionDocsView` to notify about updates in the content.
-/// Conforming types are notified when the content in the `TransactionDocsView` is updated.
+/**
+ A delegate protocol for `TransactionDocsView` to notify about updates in the content.
+ Conforming types are notified when the content in the `TransactionDocsView` is updated.
+ */
+
 public protocol TransactionDocsViewDelegate: AnyObject {
 
-    /// Notifies the delegate that the content in the `TransactionDocsView` has been updated.
-    /// - Parameter transactionDocsView: The `TransactionDocsView` instance that triggered the update.
+    /**
+     Notifies the delegate that the content in the `TransactionDocsView` has been updated.
+
+     - Parameters:
+     - transactionDocsView: The `TransactionDocsView` instance that triggered the update.
+     */
     func transactionDocsViewDidUpdateContent(_ transactionDocsView: TransactionDocsView)
 }
 
-/// A view that displays a list of documents attached to a transaction and allows interaction with them.
-/// The `TransactionDocsView` class is responsible for rendering attached documents,
-/// binding to a view model, and notifying its delegate when the content is updated.
+/**
+ A view that displays a list of documents attached to a transaction and allows interaction with them.
+ The `TransactionDocsView` class is responsible for rendering attached documents,
+ binding to a view model, and notifying its delegate when the content is updated.
+ */
 public final class TransactionDocsView: UIView {
 
-    /// The delegate that is notified when the view's content is updated.
+    /**
+     The delegate that is notified when the view's content is updated.
+     */
     public weak var delegate: TransactionDocsViewDelegate?
 
     private let configuration = GiniBankConfiguration.shared
@@ -48,13 +59,17 @@ public final class TransactionDocsView: UIView {
         return TransactionDocsHeaderView()
     }()
 
-    /// Initializes a new instance of `TransactionDocsView`.
+    /**
+     Initializes a new instance of `TransactionDocsView`.
+     */
     public init() {
         super.init(frame: .zero)
         commonInit()
     }
 
-    /// This initializer is required by `UIView` but is not supported in `TransactionDocsView`.
+    /**
+     This initializer is required by `UIView` but is not supported in `TransactionDocsView`.
+     */
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
