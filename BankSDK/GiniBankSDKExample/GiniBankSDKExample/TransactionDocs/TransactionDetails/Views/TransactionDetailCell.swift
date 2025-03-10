@@ -53,19 +53,19 @@ final class TransactionDetailCell: UITableViewCell, CodeLoadableView {
                                                    constant: Constants.containerHorizontalPadding),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                     constant: -Constants.containerHorizontalPadding),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.containerVerticalPadding),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.containerVerticalPadding),
 
             // Title label constraints
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.labelHorizontalPadding),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.labelHorizontalPadding),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.labelVerticalPadding),
 
             // Value label constraints
             valueLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             valueLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            valueLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            valueLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8)
+            valueLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.labelSpacing),
+            valueLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Constants.labelVerticalPadding)
         ])
     }
 
@@ -77,12 +77,16 @@ final class TransactionDetailCell: UITableViewCell, CodeLoadableView {
 }
 
 private extension TransactionDetailCell {
-    enum Constants {
-        static let padding: CGFloat = 16
-        static let containerViewBorderColor: UIColor = GiniColor(light: .GiniBank.light3,
-                                                                 dark: .GiniBank.dark4).uiColor()
-        static let containerViewBorderWidth: CGFloat = 1.0
-        static let containerViewBorderCornerRadius: CGFloat = 8.0
-        static let containerHorizontalPadding: CGFloat = 16
-    }
+        enum Constants {
+            static let padding: CGFloat = 16
+            static let containerViewBorderColor: UIColor = GiniColor(light: .GiniBank.light3,
+                                                                     dark: .GiniBank.dark4).uiColor()
+            static let containerViewBorderWidth: CGFloat = 1.0
+            static let containerViewBorderCornerRadius: CGFloat = 8.0
+            static let containerHorizontalPadding: CGFloat = 16
+            static let containerVerticalPadding: CGFloat = 8
+            static let labelHorizontalPadding: CGFloat = 12
+            static let labelVerticalPadding: CGFloat = 8
+            static let labelSpacing: CGFloat = 4
+        }
 }

@@ -58,20 +58,20 @@ class TransactionCell: UITableViewCell, CodeLoadableView {
         selectionStyle = .none
 
         // Configure labels and stackView
-        amountLabel.font = UIFont.systemFont(ofSize: 17)
+        amountLabel.font = Constants.amountLabelFont
         amountLabel.textAlignment = .right
 
-        paymentRecipientLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        paymentRecipientLabel.font = UIFont.systemFont(ofSize: 17)
+        paymentRecipientLabel.textColor = Constants.primaryTextColor
+        paymentRecipientLabel.font = Constants.primaryFont
 
-        paymentPurposeLabel.font = UIFont.systemFont(ofSize: 13)
-        paymentPurposeLabel.textColor = GiniColor(light: .GiniBank.light6, dark: .GiniBank.dark7).uiColor()
+        paymentPurposeLabel.font = Constants.secondaryFont
+        paymentPurposeLabel.textColor = Constants.secondaryTextColor
 
-        paymentReferenceLabel.font = UIFont.systemFont(ofSize: 13)
-        paymentReferenceLabel.textColor = GiniColor(light: .GiniBank.light6, dark: .GiniBank.dark7).uiColor()
+        paymentReferenceLabel.font = Constants.secondaryFont
+        paymentReferenceLabel.textColor = Constants.secondaryTextColor
 
-        dateLabel.textColor = GiniColor(light: .GiniBank.light6, dark: .GiniBank.dark7).uiColor()
-        dateLabel.font = UIFont.systemFont(ofSize: 13)
+        dateLabel.textColor = Constants.secondaryTextColor
+        dateLabel.font = Constants.secondaryFont
 
         attachmentsStackView.axis = .horizontal
         attachmentsStackView.spacing = 4
@@ -159,5 +159,10 @@ private extension TransactionCell {
         static let dividerViewHeight: CGFloat = 1
         static let attachmentsStackViewLeftPedding: CGFloat = 40
         static let attachmentsStackViewVerticalPedding: CGFloat = 8
+        static let amountLabelFont: UIFont = UIFont.systemFont(ofSize: 17)
+        static let primaryFont: UIFont = UIFont.systemFont(ofSize: 17)
+        static let secondaryFont: UIFont = UIFont.systemFont(ofSize: 13)
+        static let primaryTextColor: UIColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        static let secondaryTextColor: UIColor = GiniColor(light: .GiniBank.light6, dark: .GiniBank.dark7).uiColor()
     }
 }
