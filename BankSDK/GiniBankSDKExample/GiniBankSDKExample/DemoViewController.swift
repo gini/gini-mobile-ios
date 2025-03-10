@@ -47,7 +47,6 @@ final class DemoViewController: UIViewController {
         return UIImage(named: "cameraInput")?.tintedImageWithColor(iconColor)
     }
 
-
     private var settingsImage: UIImage? {
         return ImageAsset.settingsIcon.image.tintedImageWithColor(iconColor)
     }

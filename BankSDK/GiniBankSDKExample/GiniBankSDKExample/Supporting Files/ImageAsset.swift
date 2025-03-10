@@ -14,5 +14,4 @@ enum ImageAsset: String {
     var image: UIImage {
         return UIImage(named: rawValue).require(hint: "Image with name \(rawValue) missing")
     }
-
 }
