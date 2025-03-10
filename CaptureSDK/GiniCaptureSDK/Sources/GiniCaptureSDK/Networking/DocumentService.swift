@@ -139,6 +139,8 @@ public final class DocumentService: DocumentServiceProtocol {
         analysisCancellationToken = nil
         document = nil
         captureNetworkService.cleanup()
+        // Cleanup the local cached PDF file name
+        originalDocumentName = nil
     }
     
     public func update(imageDocument: GiniImageDocument) {
