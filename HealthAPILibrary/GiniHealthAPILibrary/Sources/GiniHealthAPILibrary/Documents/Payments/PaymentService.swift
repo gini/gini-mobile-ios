@@ -60,6 +60,18 @@ public final class PaymentService: PaymentServiceProtocol {
     }
     
     /**
+     *  Deletes a payment request.
+     *
+     * - Parameter id:                 The the payment request's unique identifier
+     * - Parameter completion:         A completion callback, returning the payment request's unique identifier on success
+     */
+    
+    public func deletePaymentRequest(id: String,
+                                     completion: @escaping CompletionResult<String>) {
+        self.deletePaymentRequest(id: id, resourceHandler: sessionManager.data, completion: completion)
+    }
+    
+    /**
      *  Returns a payment request.
      *
      * - Parameter id:            The the payment request's unique identifier
@@ -185,6 +197,16 @@ protocol PaymentServiceProtocol: AnyObject {
                               completion: @escaping CompletionResult<String>)
     
     /**
+     *  Deletes a payment request.
+     *
+     * - Parameter id:                 The the payment request's unique identifier
+     * - Parameter completion:         A completion callback, returning the payment's'request unique identifier on success
+     */
+    
+    func deletePaymentRequest(id: String,
+                              completion: @escaping CompletionResult<String>)
+    
+    /**
      *  Returns a payment request.
      *
      * - Parameter id:            The id of the payment request
@@ -306,6 +328,24 @@ extension PaymentService {
                     return
                 }
                 completion(.success(String(id)))
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        })
+    }
+    
+    func deletePaymentRequest(id: String,
+                              resourceHandler: ResourceDataHandler<APIResource<String>>,
+                              completion: @escaping CompletionResult<String>) {
+        let resource = APIResource<String>(method: .deletePaymentRequest(id: id),
+                                           apiDomain: apiDomain,
+                                           apiVersion: apiVersion,
+                                           httpMethod: .delete)
+        
+        resourceHandler(resource, { result in
+            switch result {
+            case .success:
+                completion(.success(id))
             case let .failure(error):
                 completion(.failure(error))
             }
