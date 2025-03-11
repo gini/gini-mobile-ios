@@ -1,5 +1,5 @@
 //
-//  DocumentServiceProviding.swift
+//  DocumentPagesProvider.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
@@ -14,7 +14,7 @@ import UIKit
  Implementing types provide functionality to retrieve document pages
  and specific page data.
  */
-protocol DocumentServiceProviding {
+protocol DocumentPagesProvider {
     /**
      Retrieves all pages of a document.
 

@@ -9,7 +9,7 @@ import GiniBankAPILibrary
 import UIKit
 
 class DocumentServiceHelper {
-    static func loadAllPages(from service: DocumentServiceProviding,
+    static func loadAllPages(from service: DocumentPagesProvider,
                              pages: [Document.Page],
                              completion: @escaping (Result<[UIImage], GiniError>) -> Void) {
         var images: [UIImage] = []
@@ -40,7 +40,7 @@ class DocumentServiceHelper {
         }
     }
 
-    static func fetchDocumentPages(from service: DocumentServiceProviding,
+    static func fetchDocumentPages(from service: DocumentPagesProvider,
                                    completion: @escaping (Result<[UIImage], GiniError>) -> Void) {
         service.getDocumentPages { result in
             switch result {
