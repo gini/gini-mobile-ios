@@ -158,7 +158,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                  documentMetadata: Document.Metadata?,
                  trackingDelegate: GiniCaptureTrackingDelegate?,
                  lib: GiniBankAPI) {
-        documentService = DocumentService(lib: lib, metadata: documentMetadata)
+        documentService = DocumentService(lib: lib, metadata: Self.makeMetadata(with: documentMetadata))
         configurationService = lib.configurationService()
         analyticsService = lib.analyticService()
         let captureConfiguration = configuration.captureConfiguration()
