@@ -127,24 +127,28 @@ final class MockSessionManager: SessionManagerProtocol {
                     completion(.success(clientConfiguration))
                 }
             case .paymentRequest(let paymentRequestId):
-                switch paymentRequestId {
-                case MockSessionManager.paymentRequestIdWithMissingExpirationDate:
-                    let paymentRequest: PaymentRequest? = load(fromFile: "paymentRequestWithMissingExpirationDate")
-                    if let paymentRequest = paymentRequest as? T.ResponseType {
-                        completion(.success(paymentRequest))
-                    }
-                case MockSessionManager.paymentRequestIdWithExpirationDate:
-                    let paymentRequest: PaymentRequest? = load(fromFile: "paymentRequestWithExpirationDate")
-                    if let paymentRequest = paymentRequest as? T.ResponseType {
-                        completion(.success(paymentRequest))
-                    }
-                default:
-                    fatalError("Payment Request Id not found in tests")
-                }
+                processPaymentRequest(paymentRequestId, completion: completion)
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))
             }
+        }
+    }
+
+    private func processPaymentRequest<T>(_ paymentRequestId: String, completion: (Result<T, GiniError>) -> Void) {
+        let fileName: String
+        switch paymentRequestId {
+        case MockSessionManager.paymentRequestIdWithMissingExpirationDate:
+            fileName = "paymentRequestWithMissingExpirationDate"
+        case MockSessionManager.paymentRequestIdWithExpirationDate:
+            fileName = "paymentRequestWithExpirationDate"
+        default:
+            fatalError("Payment Request Id not found in tests")
+        }
+
+        let paymentRequest: PaymentRequest? = load(fromFile: fileName)
+        if let paymentRequest = paymentRequest as? T {
+            completion(.success(paymentRequest))
         }
     }
 }

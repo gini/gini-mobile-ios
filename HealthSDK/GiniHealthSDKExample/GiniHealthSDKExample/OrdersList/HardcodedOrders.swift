@@ -38,7 +38,7 @@ class Order: Codable {
 
 final class HardcodedOrdersController: HardcodedOrdersControllerProtocol {
 
-    private var _orders: [Order] = [
+    private var ordersList: [Order] = [
         Order(amountToPay: "709.97:€", recipient: "OTTO GMBH & CO KG", iban: "DE75201207003100124444", purpose: "RF7411164022"),
         Order(amountToPay: "54.97:€", recipient: "Tchibo GmbH", iban: "DE14200800000816170700", purpose: "10020302020"),
         Order(amountToPay: "126.62:€", recipient: "Zalando SE", iban: "DE86210700200123010101", purpose: "938929192"),
@@ -47,12 +47,12 @@ final class HardcodedOrdersController: HardcodedOrdersControllerProtocol {
     ]
 
     var orders: [Order] {
-        _orders
+        ordersList
     }
 
     func updateOrder(updatedOrder: Order) {
-        if let index = _orders.firstIndex(where: { $0.iban == updatedOrder.iban }) {
-            _orders[index] = updatedOrder
+        if let index = ordersList.firstIndex(where: { $0.iban == updatedOrder.iban }) {
+            ordersList[index] = updatedOrder
         }
     }
 }

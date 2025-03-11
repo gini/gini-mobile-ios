@@ -253,24 +253,37 @@ final class OrderDetailViewController: UIViewController {
         let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(paymentComponentsInfo: obtainPaymentInfo())
         health.createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
             switch result {
-            case .success(let success):
-                self?.health.getPaymentRequest(by: success, completion: { [weak self] paymentRequestResult in
-                    switch paymentRequestResult {
-                    case .success(let paymentRequest):
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-                        guard let expirationDateString = paymentRequest.expirationDate, let expirationDate = dateFormatter.date(from: expirationDateString) else { return }
-                        self?.paymentExpirationDate = expirationDate
-                    case .failure(let error):
-                        self?.errors.append(error.localizedDescription)
-                        self?.showErrorsIfAny()
-                    }
-                })
+            case .success(let paymentRequestId):
+                self?.fetchPaymentRequestInfo(paymentRequestId)
             case .failure(let error):
                 self?.errors.append(error.localizedDescription)
                 self?.showErrorsIfAny()
             }
         }
+    }
+
+    private func fetchPaymentRequestInfo(_ paymentRequestId: String) {
+        health.getPaymentRequest(by: paymentRequestId, completion: { [weak self] result in
+            switch result {
+            case .success(let paymentRequest):
+                self?.handlePaymentRequestExpirationDate(paymentRequest.expirationDate)
+            case .failure(let error):
+                self?.handlePaymentRequestFailure(error)
+            }
+        })
+    }
+
+    private func handlePaymentRequestExpirationDate(_ expirationDateReceived: String?) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        guard let expirationDateString = expirationDateReceived,
+              let expirationDate = dateFormatter.date(from: expirationDateString) else { return }
+        self.paymentExpirationDate = expirationDate
+    }
+
+    private func handlePaymentRequestFailure(_ error: Error) {
+        self.errors.append(error.localizedDescription)
+        self.showErrorsIfAny()
     }
 }
 
