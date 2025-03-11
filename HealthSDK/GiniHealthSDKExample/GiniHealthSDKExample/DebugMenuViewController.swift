@@ -19,7 +19,7 @@ enum SwitchType {
 protocol DebugMenuDelegate: AnyObject {
     func didChangeSwitchValue(type: SwitchType, isOn: Bool)
     func didPickNewLocalization(localization: GiniLocalization)
-    func didCustomizeQRCodePDFFilename(filename: String)  // New delegate method
+    func didCustomizeShareWithFilename(filename: String)
 }
 
 class DebugMenuViewController: UIViewController {
@@ -59,16 +59,16 @@ class DebugMenuViewController: UIViewController {
     private var closeButtonSwitch: UISwitch!
     private lazy var closeButtonRow: UIStackView = stackView(axis: .horizontal, subviews: [closeButtonOptionLabel, closeButtonSwitch])
 
-    private lazy var qrFilenameOptionLabel: UILabel = rowTitle("QR PDF Filename")
-    private lazy var qrFilenameTextField: UITextField = {
+    private lazy var shareWithFilenameOptionLabel: UILabel = rowTitle("QR PDF Filename")
+    private lazy var shareWithFilenameTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.placeholder = "Enter filename"
         textField.borderStyle = .roundedRect
-        textField.addTarget(self, action: #selector(qrFilenameTextFieldChanged(_:)), for: .editingChanged)
+        textField.addTarget(self, action: #selector(shareWithFilenameTextFieldChanged(_:)), for: .editingChanged)
         return textField
     }()
-    private lazy var qrFilenameRow: UIStackView = stackView(axis: .horizontal, subviews: [qrFilenameOptionLabel, qrFilenameTextField])
+    private lazy var shareWithFilenameRow: UIStackView = stackView(axis: .horizontal, subviews: [shareWithFilenameOptionLabel, shareWithFilenameTextField])
 
     weak var delegate: DebugMenuDelegate?
 
@@ -104,7 +104,7 @@ class DebugMenuViewController: UIViewController {
         view.backgroundColor = UIColor(named: "background")
 
         let spacer = UIView()
-        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, bottomPaymentComponentEditableRow, closeButtonRow, qrFilenameRow, spacer])
+        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, bottomPaymentComponentEditableRow, closeButtonRow, shareWithFilenameRow, spacer])
         view.addSubview(mainStackView)
 
         NSLayoutConstraint.activate([
@@ -117,13 +117,13 @@ class DebugMenuViewController: UIViewController {
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
             closeButtonRow.heightAnchor.constraint(equalToConstant: rowHeight),
-            qrFilenameRow.heightAnchor.constraint(equalToConstant: rowHeight)
+            shareWithFilenameRow.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
     }
 
-    @objc private func qrFilenameTextFieldChanged(_ sender: UITextField) {
+    @objc private func shareWithFilenameTextFieldChanged(_ sender: UITextField) {
         if let filename = sender.text {
-            delegate?.didCustomizeQRCodePDFFilename(filename: filename)
+            delegate?.didCustomizeShareWithFilename(filename: filename)
         }
     }
 }

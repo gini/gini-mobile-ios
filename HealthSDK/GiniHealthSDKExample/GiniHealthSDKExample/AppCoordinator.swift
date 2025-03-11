@@ -429,8 +429,8 @@ extension AppCoordinator: DebugMenuDelegate {
         health.setConfiguration(giniHealthConfiguration)
     }
 
-    func didCustomizeQRCodePDFFilename(filename: String) {
-        giniHealthConfiguration.paymentPDFFileName = filename
+    func didCustomizeShareWithFilename(filename: String) {
+        giniHealthConfiguration.shareWithFileName = filename
         health.setConfiguration(giniHealthConfiguration)
     }
 }

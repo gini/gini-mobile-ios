@@ -462,7 +462,7 @@ extension PaymentComponentsController {
         do {
             let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             guard let docDirectoryPath = paths.first else { return  nil}
-            let pdfFileName = GiniHealthConfiguration.shared.paymentPDFFileName + Constants.pdfExtension
+            let pdfFileName = GiniHealthConfiguration.shared.shareWithFileName + Constants.pdfExtension
             let pdfPath = docDirectoryPath.appendingPathComponent(pdfFileName)
             try data.write(to: pdfPath)
             return pdfPath

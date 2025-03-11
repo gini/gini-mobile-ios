@@ -38,7 +38,7 @@ public final class GiniHealthConfiguration: NSObject {
     public override init() {
         super.init()
         DispatchQueue.main.async {
-            self.paymentPDFFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
+            self.shareWithFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
         }
     }
 
@@ -165,15 +165,16 @@ public final class GiniHealthConfiguration: NSObject {
     var clientConfiguration: ClientConfiguration?
     
     /**
-     Custom payment information pdf file provided through the QR code flow.
-      Customization rulles:
+     Custom name for the file, provided through the Share With flow.
+      Customization rules:
        - Number of characters for the file name: 25
        - Limit characters to letters, numbers, underscore and dash
      */
-    public var paymentPDFFileName: String = "" {
+    public var shareWithFileName: String = "" {
         didSet {
-            if !isValidPDFFilename(paymentPDFFileName) {
-                paymentPDFFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
+            // If the custom file name does not comply with the customization rules, the default value will be used.
+            if !isValidPDFFilename(shareWithFileName) {
+                shareWithFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
             }
         }
     }
