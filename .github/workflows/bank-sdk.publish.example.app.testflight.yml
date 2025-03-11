@@ -80,7 +80,7 @@ jobs:
                 "bundle_identifier": "net.gini.banksdk.example",
                 "bundle_identifier_extension": "net.gini.banksdk.example.ShareExtension",
                 "profile_name": "Gini Bank SDK Example App AppStore Distribution",
-                "profile_name_extension" : "Gini Bank SDK Share Extension AppStore Distribution",
+                "profile_name_extension" : "Gini Bank SDK Share Extension AppStore Dist",
                 "entitlements_file_path": "GiniBankSDKExample/Example Swift.entitlements", 
                 "entitlements_file_path_extension": "GiniBankSDKShareExtension/GiniBankSDKShareExtension.entitlements", 
                 "ci": "true"
