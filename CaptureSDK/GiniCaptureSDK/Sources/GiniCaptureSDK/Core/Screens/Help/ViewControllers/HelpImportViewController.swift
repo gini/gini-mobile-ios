@@ -79,7 +79,7 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
         tableView.register(
             UINib(
                 nibName: "HelpImportCell",
-                bundle: giniCaptureBundle()),
+                bundle: giniCaptureBundleResource()),
             forCellReuseIdentifier: HelpImportCell.reuseIdentifier)
         tableView.contentInsetAdjustmentBehavior = .never
     }

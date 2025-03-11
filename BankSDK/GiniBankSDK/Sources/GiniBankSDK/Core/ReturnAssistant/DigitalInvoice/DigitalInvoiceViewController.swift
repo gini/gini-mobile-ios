@@ -21,7 +21,7 @@ final class DigitalInvoiceViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(DigitalInvoiceTableViewTitleCell.self,
                            forCellReuseIdentifier: DigitalInvoiceTableViewTitleCell.reuseIdentifier)
-        tableView.register(UINib(nibName: "DigitalLineItemTableViewCell", bundle: giniBankBundle()),
+        tableView.register(UINib(nibName: "DigitalLineItemTableViewCell", bundle: giniBankBundleResource()),
                            forCellReuseIdentifier: DigitalLineItemTableViewCell.reuseIdentifier)
         tableView.register(DigitalInvoiceAddOnListCell.self,
                            forCellReuseIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier)
