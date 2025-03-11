@@ -16,6 +16,8 @@ final class MockSessionManager: SessionManagerProtocol {
     static let extractionsWithPaymentDocumentID = "626626a0-749f-11e2-bfd6-000000000004"
     static let paymentRequestId = "b09ef70a-490f-11eb-952e-9bc6f4646c57"
     static let doctorsNameDocumentID = "626626a0-749f-11e2-bfd6-000000000005"
+    static let paymentRequestIdWithExpirationDate = "1"
+    static let paymentRequestIdWithMissingExpirationDate = "2"
 
     func upload<T>(resource: T, data: Data, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
         //
@@ -123,6 +125,21 @@ final class MockSessionManager: SessionManagerProtocol {
                 let clientConfiguration: ClientConfiguration? = load(fromFile: "clientConfiguration")
                 if let clientConfiguration = clientConfiguration as? T.ResponseType {
                     completion(.success(clientConfiguration))
+                }
+            case .paymentRequest(let paymentRequestId):
+                switch paymentRequestId {
+                case MockSessionManager.paymentRequestIdWithMissingExpirationDate:
+                    let paymentRequest: PaymentRequest? = load(fromFile: "paymentRequestWithMissingExpirationDate")
+                    if let paymentRequest = paymentRequest as? T.ResponseType {
+                        completion(.success(paymentRequest))
+                    }
+                case MockSessionManager.paymentRequestIdWithExpirationDate:
+                    let paymentRequest: PaymentRequest? = load(fromFile: "paymentRequestWithExpirationDate")
+                    if let paymentRequest = paymentRequest as? T.ResponseType {
+                        completion(.success(paymentRequest))
+                    }
+                default:
+                    fatalError("Payment Request Id not found in tests")
                 }
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
