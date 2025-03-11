@@ -13,10 +13,10 @@ class TransactionCell: UITableViewCell, CodeLoadableView {
     private let paymentRecipientInitialsLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
-        label.font = .boldSystemFont(ofSize: 16)
-        label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        label.layer.cornerRadius = 20
+        label.backgroundColor = Constants.recipientInitialsBackgroundColor
+        label.font = Constants.boldFont
+        label.textColor = Constants.primaryTextColor
+        label.layer.cornerRadius = Constants.recipientInitialsCornerRadius
         label.clipsToBounds = true
         return label
     }()
@@ -26,7 +26,7 @@ class TransactionCell: UITableViewCell, CodeLoadableView {
     private let paymentDetailStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 2
+        stackView.spacing = Constants.paymentDetailStackViewSpacing
         return stackView
     }()
 
@@ -74,20 +74,20 @@ class TransactionCell: UITableViewCell, CodeLoadableView {
         dateLabel.font = Constants.secondaryFont
 
         attachmentsStackView.axis = .horizontal
-        attachmentsStackView.spacing = 4
+        attachmentsStackView.spacing = Constants.attachmentsStackViewSpacing
         attachmentsStackView.distribution = .equalSpacing
 
         let horizontalStackView = UIStackView()
         horizontalStackView.axis = .horizontal
         horizontalStackView.alignment = .center
-        horizontalStackView.spacing = 8
+        horizontalStackView.spacing = Constants.horizontalStackViewSpacing
         horizontalStackView.distribution = .fill
 
         horizontalStackView.addArrangedSubview(paymentRecipientInitialsLabel)
 
         let verticalStackView = UIStackView()
         verticalStackView.axis = .vertical
-        verticalStackView.spacing = 4
+        verticalStackView.spacing = Constants.verticalStackViewSpacing
         verticalStackView.addArrangedSubview(paymentRecipientLabel)
         verticalStackView.addArrangedSubview(dateLabel)
         verticalStackView.addArrangedSubview(paymentPurposeLabel)
@@ -111,7 +111,7 @@ class TransactionCell: UITableViewCell, CodeLoadableView {
 
         let mainStackView = UIStackView(arrangedSubviews: [horizontalStackView, attachmentsContainerView, dividerView])
         mainStackView.axis = .vertical
-        mainStackView.spacing = 8
+        mainStackView.spacing = Constants.mainStackViewSpacing
 
         addSubview(mainStackView)
 
@@ -162,7 +162,18 @@ private extension TransactionCell {
         static let amountLabelFont: UIFont = UIFont.systemFont(ofSize: 17)
         static let primaryFont: UIFont = UIFont.systemFont(ofSize: 17)
         static let secondaryFont: UIFont = UIFont.systemFont(ofSize: 13)
+        static let boldFont: UIFont = .boldSystemFont(ofSize: 16)
         static let primaryTextColor: UIColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         static let secondaryTextColor: UIColor = GiniColor(light: .GiniBank.light6, dark: .GiniBank.dark7).uiColor()
+        static let recipientInitialsBackgroundColor: UIColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
+
+        // StackView Spacing
+        static let paymentDetailStackViewSpacing: CGFloat = 2
+        static let attachmentsStackViewSpacing: CGFloat = 4
+        static let horizontalStackViewSpacing: CGFloat = 8
+        static let verticalStackViewSpacing: CGFloat = 4
+        static let mainStackViewSpacing: CGFloat = 8
+
+        static let recipientInitialsCornerRadius: CGFloat = 20
     }
 }
