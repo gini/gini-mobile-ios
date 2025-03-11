@@ -272,7 +272,7 @@ import GiniCaptureSDK
     }
 }
 
-extension GiniBank: DocumentServiceProviding {
+extension GiniBank: DocumentPagesProvider {
     func getDocumentPages(completion: @escaping (Result<[Document.Page], GiniError>) -> Void) {
         guard let documentId else { return }
         documentService.pages(for: documentId, completion: completion)

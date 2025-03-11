@@ -465,7 +465,7 @@ extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDeleg
     }
 }
 
-extension GiniBankNetworkingScreenApiCoordinator: DocumentServiceProviding {
+extension GiniBankNetworkingScreenApiCoordinator: DocumentPagesProvider {
     func getDocumentPages(completion: @escaping (Result<[Document.Page], GiniError>) -> Void) {
         documentService.pages(completion: completion)
     }
