@@ -2,7 +2,7 @@ name: Builds docs for Bank SDK
 
 on:
   pull_request:
-    types: [opened, edited, reopened, synchronize]
+    types: [opened, reopened, synchronize, ready_for_review]
     paths:
       - 'BankSDK/**'
   workflow_dispatch:
