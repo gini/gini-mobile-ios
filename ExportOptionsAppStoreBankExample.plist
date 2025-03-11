@@ -5,13 +5,13 @@
 	<key>compileBitcode</key>
 	<true/>
 	<key>method</key>
-	<string>app-store</string>
+	<string>app-store-connect</string>
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>net.gini.banksdk.example</key>
-		<string>Gini Bank SDK Example App Store Distribution</string>
+		<string>Gini Bank SDK Example AppStore Distribution</string>
 		<key>net.gini.banksdk.example.ShareExtension</key>
-		<string>Gini Bank SDK Share Extension App Store Distribution</string>
+		<string>Gini Bank SDK Share Extension AppStore Dist</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>
