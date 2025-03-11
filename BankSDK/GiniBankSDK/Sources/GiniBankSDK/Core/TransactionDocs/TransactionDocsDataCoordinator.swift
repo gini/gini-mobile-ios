@@ -9,7 +9,7 @@ import GiniBankAPILibrary
 
 /**
  An internal protocol that defines methods and properties for managing the state
- of transaction documents used within the GiniBankSDK.
+ of transaction documents within the GiniBankSDK.
  */
 internal protocol TransactionDocsDataInternalProtocol: AnyObject {
 

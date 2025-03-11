@@ -8,7 +8,7 @@ import UIKit
 import GiniBankAPILibrary
 
 /**
- A public protocol that defines methods and properties for managing the state of transaction documents in a photo payment flow.
+ A public protocol that defines methods and properties for managing transaction documents in a photo payment flow.
 Conforming types are responsible for tracking, modifying, and handling the state related to attaching documents to a transaction.
  */
 public protocol TransactionDocsDataProtocol: AnyObject {
@@ -42,7 +42,8 @@ public protocol TransactionDocsDataProtocol: AnyObject {
      Sets the transactions and creates a `TransactionDocsViewModel` for each.
      This method allows to provide multiple transactions, each containing a list of documents.
 
-     - Parameter transactions: A nested array of `GiniTransaction`
+     - Parameters:
+     - transactions: A nested array of `GiniTransaction`
      */
     func setTransactions(_ transactions: [GiniTransaction])
 

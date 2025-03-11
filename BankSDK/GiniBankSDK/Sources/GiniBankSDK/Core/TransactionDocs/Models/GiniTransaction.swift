@@ -5,13 +5,13 @@
 //
 
 /**
- A representation of a transaction done via PhotoPayment containing attached documents if they exist.
+ A model representing a transaction processed through PhotoPayment.
+ This transaction may contain attached documents, if available.
  */
 public struct GiniTransaction {
 
     /**
      The unique identifier for the transaction.
-     This identifier is used to differentiate between transactions.
      */
     public let identifier: String
 
@@ -25,7 +25,7 @@ public struct GiniTransaction {
 
      - Parameters:
      - identifier: A unique identifier for the transaction.
-     - transactionDocs: An array of `GiniTransactionDoc` objects attached to this transaction.
+     - transactionDocs: An array of `GiniTransactionDoc` objects associated with transaction.
      */
     public init(identifier: String, transactionDocs: [GiniTransactionDoc]) {
         self.identifier = identifier

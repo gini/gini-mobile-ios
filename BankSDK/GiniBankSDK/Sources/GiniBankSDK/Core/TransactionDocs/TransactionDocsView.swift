@@ -14,7 +14,7 @@ import UIKit
 public protocol TransactionDocsViewDelegate: AnyObject {
 
     /**
-     Notifies the delegate that the content in the `TransactionDocsView` has been updated.
+     Notifies the delegate that the content of the `TransactionDocsView` has been updated.
 
      - Parameters:
      - transactionDocsView: The `TransactionDocsView` instance that triggered the update.
