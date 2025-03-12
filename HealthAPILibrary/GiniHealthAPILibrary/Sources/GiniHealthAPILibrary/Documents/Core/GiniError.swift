@@ -7,11 +7,29 @@
 
 import Foundation
 
+/**
+ A protocol representing errors that may occur when interacting with the Gini API.
+
+ This protocol defines three properties:
+ - `message`: A descriptive message explaining the error.
+ - `response`: The associated `HTTPURLResponse`, if available.
+ - `data`: The response data received, if any.
+ */
+
 public protocol GiniErrorProtocol {
     var message: String { get }
     var response: HTTPURLResponse? { get }
     var data: Data? { get }
 }
+
+/**
+ A protocol representing custom errors that may occur when interacting with the Gini API.
+
+ This protocol defines three properties:
+ - `unauthorizedDocuments`: An array of documents that could not be deleted due to insufficient permissions.  
+ - `notFoundDocuments`: An array of documents that were not found during a bulk deletion attempt.
+ - `missingCompositeDocuments`: An array of composite documents that are missing when attempting to perform a bulk deletion.
+ */
 
 public protocol GiniCustomErrorProtocol {
     var unauthorizedDocuments: [String]? { get }

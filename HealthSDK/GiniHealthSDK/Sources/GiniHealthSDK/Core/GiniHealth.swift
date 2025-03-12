@@ -567,7 +567,7 @@ public struct DataForReview {
         In case of failure error from the server side.
 
      */
-    public func deleteBatchOfDocuments(documentIds: [String], completion: @escaping (Result<String, GiniError>) -> Void) {
+    public func deleteDocuments(documentIds: [String], completion: @escaping (Result<String, GiniError>) -> Void) {
         documentService.deleteDocuments(documentIds) { result in
             DispatchQueue.main.async {
                 switch result {

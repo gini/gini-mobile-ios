@@ -627,8 +627,9 @@ final class GiniHealthTests: XCTestCase {
         description: String
     ) {
         let expectation = self.expectation(description: description)
-
-        giniHealth.deleteBatchOfDocuments(documentIds: documentType == .failure ? [] : [documentType.rawValue]) { result in
+        
+        let documentIds = documentType == .failure ? [] : [documentType.rawValue]
+        giniHealth.deleteDocuments(documentIds: documentIds) { result in
             switch result {
             case .success(let responseMessage):
                 XCTAssertEqual(responseMessage, documentType.expectedSuccess)

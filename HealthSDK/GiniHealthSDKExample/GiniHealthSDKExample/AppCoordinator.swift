@@ -434,10 +434,10 @@ extension AppCoordinator: DebugMenuDelegate {
     func didTapOnBulkDelete() {
         let documentsToDeleteIds = Array(hardcodedInvoicesController.getInvoicesWithExtractions()
             .map { $0.documentId }
-            .prefix(2)) // Number of documents to delete
+            .prefix(Constants.numberOfDocumentsToBeDeleted)) // Number of documents to delete
         guard !documentsToDeleteIds.isEmpty else { return }
 
-        health.deleteBatchOfDocuments(documentIds: documentsToDeleteIds) { result in
+        health.deleteDocuments(documentIds: documentsToDeleteIds) { result in
             switch result {
             case .success(_):
                 self.hardcodedInvoicesController.deleteDocuments(withIds: documentsToDeleteIds)
@@ -446,5 +446,11 @@ extension AppCoordinator: DebugMenuDelegate {
                 GiniUtilites.Log("Failed to delete documents with error: \(failure.message)", event: .error)
             }
         }
+    }
+}
+
+extension AppCoordinator {
+    enum Constants {
+        static let numberOfDocumentsToBeDeleted = 2
     }
 }
