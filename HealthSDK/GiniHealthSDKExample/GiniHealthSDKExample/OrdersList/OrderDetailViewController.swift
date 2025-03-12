@@ -261,6 +261,7 @@ final class OrderDetailViewController: UIViewController {
                         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
                         guard let expirationDateString = paymentRequest.expirationDate, let expirationDate = dateFormatter.date(from: expirationDateString) else { return }
                         self?.paymentExpirationDate = expirationDate
+                        self?.order.id = success
                     case .failure(let error):
                         self?.errors.append(error.localizedDescription)
                         self?.showErrorsIfAny()

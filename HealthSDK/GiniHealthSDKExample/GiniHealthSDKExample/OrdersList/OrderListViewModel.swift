@@ -22,10 +22,11 @@ final class OrderListViewModel {
     let cancelText = NSLocalizedString("gini.health.example.cancel.button.title", comment: "")
     let errorTitleText = NSLocalizedString("gini.health.example.invoicesList.error", comment: "")
 
-    private var errors: [String] = []
-
     var health: GiniHealth
-    var orders: [Order]
+    private var errors: [String] = []
+    
+    @Published var orders: [Order]
+    @Published var errorMessage: String?
 
     init(coordinator: OrderListCoordinator,
          orders: [Order]? = nil,
@@ -41,5 +42,27 @@ final class OrderListViewModel {
 
     func updateOrder(updatedOrder: Order) {
         hardcodedOrdersController.updateOrder(updatedOrder: updatedOrder)
+    }
+    
+    func deleteOrder(_ order: Order) {
+        guard let orderId = order.id else { return }
+        
+        health.paymentService.deletePaymentRequest(id: orderId, completion: { result in
+            switch result {
+            case .success:
+                self.orders.removeAll(where: { $0.id == order.id })
+            case .failure(let error):
+                self.errors.append(error.localizedDescription)
+                self.showErrorsIfAny()
+            }
+        })
+    }
+    
+    private func showErrorsIfAny() {
+        if !errors.isEmpty {
+            let uniqueErrorMessages = Array(Set(errors))
+            errorMessage = uniqueErrorMessages.joined(separator: ", ")
+            errors = []
+        }
     }
 }

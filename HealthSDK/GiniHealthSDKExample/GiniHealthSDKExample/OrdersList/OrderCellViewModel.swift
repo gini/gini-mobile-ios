@@ -11,10 +11,21 @@ import GiniUtilites
 import UIKit
 
 final class OrderCellViewModel {
+    
+    private static let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        return formatter
+    }()
+    
     private var order: Order
 
     init(_ order: Order) {
         self.order = order
+    }
+    
+    var idText: String? {
+        order.id
     }
     
     var recipientNameText: String {
@@ -27,6 +38,14 @@ final class OrderCellViewModel {
 
     var ibanText: String {
         order.iban
+    }
+    
+    var expirationDateText: String? {
+        guard let date = order.expirationDate as Date? else {
+            return nil
+        }
+        
+        return OrderCellViewModel.formatter.string(from: date)
     }
 
     var isRecipientLabelHidden: Bool {

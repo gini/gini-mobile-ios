@@ -16,6 +16,7 @@ protocol HardcodedOrdersControllerProtocol {
 }
 
 class Order: Codable {
+    var id: String?
     var amountToPay = ""
     var recipient = ""
     var iban = ""
@@ -25,6 +26,10 @@ class Order: Codable {
     var price: Price {
         Price(extractionString: amountToPay) ??
         Price(value: .zero, currencyCode: "€")
+    }
+    
+    var canBeDeleted: Bool {
+        id != nil
     }
 
     convenience init(amountToPay: String, recipient: String, iban: String, purpose: String) {
