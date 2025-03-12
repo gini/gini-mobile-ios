@@ -10,12 +10,12 @@ import XCTest
 
 class TransactionDocsDataCoordinatorInternalProtocolTests: XCTestCase {
 
-    var coordinator: TransactionDocsDataInternalProtocol!
-    private var mockDocs: [TransactionDoc]!
+    var coordinator: TransactionDocsDataCoordinator!
+    private var mockDocs: [GiniTransactionDoc]!
 
     override func setUp() {
         super.setUp()
-        mockDocs = TransactionDoc.createMockDocuments()
+        mockDocs = GiniTransaction.createMockDocuments()
         coordinator = TransactionDocsDataCoordinator()
     }
 

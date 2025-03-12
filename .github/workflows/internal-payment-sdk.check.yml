@@ -1,10 +1,9 @@
 name: Check Gini Internal Payment SDK
 on:
-  push:
+  pull_request:
+   types: [opened, reopened, synchronize, ready_for_review]
    paths:
       - 'GiniComponents/GiniInternalPaymentSDK/**'
-   tags-ignore:
-      - '**'
   workflow_call:
   workflow_dispatch:
 
