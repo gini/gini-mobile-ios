@@ -3,10 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28D1B4582D2E9A14002EE0DA /* GalleryCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4532D2E9A14002EE0DA /* GalleryCoordinatorTests.swift */; };
+		28D1B4592D2E9A14002EE0DA /* GalleryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4542D2E9A14002EE0DA /* GalleryManagerTests.swift */; };
+		28D1B45A2D2E9A14002EE0DA /* AlbumsPickerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4552D2E9A14002EE0DA /* AlbumsPickerViewControllerTests.swift */; };
+		28D1B45B2D2E9A14002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4562D2E9A14002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift */; };
+		28D1B45C2D2E9A14002EE0DA /* GalleryCoordinatorDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4572D2E9A14002EE0DA /* GalleryCoordinatorDelegateTests.swift */; };
+		28D1B4682D2EDAD3002EE0DA /* GiniBankAPILibraryPinningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4642D2EDAD3002EE0DA /* GiniBankAPILibraryPinningTests.swift */; };
+		28D1B4692D2EDAD3002EE0DA /* GiniBankAPILibraryPinningIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4652D2EDAD3002EE0DA /* GiniBankAPILibraryPinningIntegrationTests.swift */; };
+		28D1B46B2D2EDAD3002EE0DA /* GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D1B4672D2EDAD3002EE0DA /* GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift */; };
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
 		834735F52940E88F00C3B5F3 /* CustomAnalysisError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834735F42940E88F00C3B5F3 /* CustomAnalysisError.swift */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
@@ -74,6 +82,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28D1B4532D2E9A14002EE0DA /* GalleryCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCoordinatorTests.swift; sourceTree = "<group>"; };
+		28D1B4542D2E9A14002EE0DA /* GalleryManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryManagerTests.swift; sourceTree = "<group>"; };
+		28D1B4552D2E9A14002EE0DA /* AlbumsPickerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumsPickerViewControllerTests.swift; sourceTree = "<group>"; };
+		28D1B4562D2E9A14002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumsPickerViewControllerDelegateTests.swift; sourceTree = "<group>"; };
+		28D1B4572D2E9A14002EE0DA /* GalleryCoordinatorDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCoordinatorDelegateTests.swift; sourceTree = "<group>"; };
+		28D1B4642D2EDAD3002EE0DA /* GiniBankAPILibraryPinningTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniBankAPILibraryPinningTests.swift; sourceTree = "<group>"; };
+		28D1B4652D2EDAD3002EE0DA /* GiniBankAPILibraryPinningIntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniBankAPILibraryPinningIntegrationTests.swift; sourceTree = "<group>"; };
+		28D1B4672D2EDAD3002EE0DA /* GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift; sourceTree = "<group>"; };
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
 		834735F42940E88F00C3B5F3 /* CustomAnalysisError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnalysisError.swift; sourceTree = "<group>"; };
@@ -163,6 +179,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28D1B4632D2EDA97002EE0DA /* BankAPILibraryPinning */ = {
+			isa = PBXGroup;
+			children = (
+				28D1B4652D2EDAD3002EE0DA /* GiniBankAPILibraryPinningIntegrationTests.swift */,
+				28D1B4672D2EDAD3002EE0DA /* GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift */,
+				28D1B4642D2EDAD3002EE0DA /* GiniBankAPILibraryPinningTests.swift */,
+			);
+			path = BankAPILibraryPinning;
+			sourceTree = "<group>";
+		};
 		F439C210273555B60010D77D /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -296,6 +322,12 @@
 		F4CBE3402821878C00B28220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				28D1B4632D2EDA97002EE0DA /* BankAPILibraryPinning */,
+				28D1B4562D2E9A14002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift */,
+				28D1B4552D2E9A14002EE0DA /* AlbumsPickerViewControllerTests.swift */,
+				28D1B4572D2E9A14002EE0DA /* GalleryCoordinatorDelegateTests.swift */,
+				28D1B4532D2E9A14002EE0DA /* GalleryCoordinatorTests.swift */,
+				28D1B4542D2E9A14002EE0DA /* GalleryManagerTests.swift */,
 				F4CBE3412821878C00B28220 /* TransferSummaryIntegrationTest.swift */,
 				F4CBE3422821878C00B28220 /* ScreenAPICoordinatorTests.swift */,
 				F4CBE3432821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift */,
@@ -510,10 +542,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28D1B46B2D2EDAD3002EE0DA /* GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift in Sources */,
+				28D1B4692D2EDAD3002EE0DA /* GiniBankAPILibraryPinningIntegrationTests.swift in Sources */,
 				F4CBE3562821878C00B28220 /* SettingsViewControllerTests.swift in Sources */,
+				28D1B4682D2EDAD3002EE0DA /* GiniBankAPILibraryPinningTests.swift in Sources */,
 				F4CBE34D2821878C00B28220 /* TransferSummaryIntegrationTest.swift in Sources */,
+				28D1B45A2D2E9A14002EE0DA /* AlbumsPickerViewControllerTests.swift in Sources */,
+				28D1B4592D2E9A14002EE0DA /* GalleryManagerTests.swift in Sources */,
+				28D1B45C2D2E9A14002EE0DA /* GalleryCoordinatorDelegateTests.swift in Sources */,
+				28D1B4582D2E9A14002EE0DA /* GalleryCoordinatorTests.swift in Sources */,
 				F4CBE34F2821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
 				F4CBE34E2821878C00B28220 /* ScreenAPICoordinatorTests.swift in Sources */,
+				28D1B45B2D2E9A14002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

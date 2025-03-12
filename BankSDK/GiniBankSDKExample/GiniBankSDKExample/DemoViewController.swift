@@ -10,7 +10,7 @@ import GiniCaptureSDK
 import GiniBankSDK
 
 protocol DemoViewControllerDelegate: AnyObject {
-    func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint)
+    func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint, selfDealloc: Bool)
     func didSelectSettings()
 }
 
@@ -153,7 +153,7 @@ final class DemoViewController: UIViewController {
         unsubscribeFromKeyboardNotifications()
         // we should hide the keyboard if the SDK is presented
         dismissKeyboard()
-        delegate?.didSelectEntryPoint(entryPoint)
+        delegate?.didSelectEntryPoint(entryPoint, selfDealloc: SettingsViewModel.shouldCloseSDKAfterTenSeconds)
     }
     
     // MARK: - User interactions
