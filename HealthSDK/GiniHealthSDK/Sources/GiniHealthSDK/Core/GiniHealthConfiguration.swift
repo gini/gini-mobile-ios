@@ -70,7 +70,11 @@ public final class GiniHealthConfiguration: NSObject {
     public var showPaymentReviewCloseButton = true
     
     /**
-     Sets the duration of the payment review popup on payment review screen. The `max` value can be `10`, the `min` value can be `0` and the `default` value is `3`
+     Sets the duration of the payment review popup on the payment review screen.
+     - The value must be between `0` and `10` seconds.
+     - If a value greater than `10` is set, it will be clamped to `10`.
+     - If a negative value is set, it defaults to `3`.
+     - The default duration is `3` seconds.
      */
     public var popupDurationPaymentReview: TimeInterval = 3.0 {
         didSet {
