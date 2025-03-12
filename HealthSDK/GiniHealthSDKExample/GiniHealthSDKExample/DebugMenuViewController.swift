@@ -113,17 +113,27 @@ class DebugMenuViewController: UIViewController {
 
     private func setupUI() {
         view.backgroundColor = UIColor(named: "background")
-
+        
         let spacer = UIView()
-        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, bottomPaymentComponentEditableRow, closeButtonRow, popupDurationRow, spacer])
+        
+        let views = [titleLabel,
+                     localizationRow,
+                     reviewScreenRow,
+                     bottomPaymentComponentEditableRow,
+                     closeButtonRow,
+                     popupDurationRow,
+                     spacer]
+        
+        let mainStackView = stackView(axis: .vertical,
+                                      subviews: views)
         view.addSubview(mainStackView)
-
+        
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: spacing),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -spacing),
             mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: spacing),
             mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -spacing),
-
+            
             localizationRow.heightAnchor.constraint(equalToConstant: rowHeight),
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
