@@ -47,13 +47,13 @@ final class OrderListViewModel {
     func deleteOrder(_ order: Order) {
         guard let orderId = order.id else { return }
         
-        health.paymentService.deletePaymentRequest(id: orderId, completion: { result in
+        health.paymentService.deletePaymentRequest(id: orderId, completion: { [weak self] result in
             switch result {
             case .success:
-                self.orders.removeAll(where: { $0.id == order.id })
+                self?.handlePaymentRequestDeletion(for: order)
             case .failure(let error):
-                self.errors.append(error.localizedDescription)
-                self.showErrorsIfAny()
+                self?.errors.append(error.localizedDescription)
+                self?.showErrorsIfAny()
             }
         })
     }
@@ -64,5 +64,17 @@ final class OrderListViewModel {
             errorMessage = uniqueErrorMessages.joined(separator: ", ")
             errors = []
         }
+    }
+    
+    private func updateLoadedOrder(_ order: Order) {
+        guard let index = orders.firstIndex(where: { $0.iban == order.iban }) else { return }
+        orders[index] = order
+    }
+    
+    private func handlePaymentRequestDeletion(for order: Order) {
+        order.expirationDate = nil
+        order.id = nil
+        updateOrder(updatedOrder: order)
+        updateLoadedOrder(order)
     }
 }
