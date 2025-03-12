@@ -11,3 +11,4 @@
 "iban.textfield.placeholder" = "Geben Sie Ihre IBAN ein";
 "photo.payment.button.title" = "Fotoüberweisung";
 "alternative.text" = "oder nutzen Sie die";
+"transaction.list.button.title" = "Umsatzliste";
