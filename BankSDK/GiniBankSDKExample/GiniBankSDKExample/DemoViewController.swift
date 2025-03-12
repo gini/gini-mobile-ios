@@ -12,6 +12,7 @@ import GiniBankSDK
 protocol DemoViewControllerDelegate: AnyObject {
     func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint, selfDealloc: Bool)
     func didSelectSettings()
+    func didTapTransactionList()
 }
 
 final class DemoViewController: UIViewController {
@@ -23,24 +24,41 @@ final class DemoViewController: UIViewController {
     @IBOutlet private weak var descriptionTitle: UILabel!
     @IBOutlet private weak var welcomeTitlte: UILabel!
     @IBOutlet private weak var photoPaymentButton: GiniButton!
-    
+    @IBOutlet private weak var settingsButton: UIButton!
+    @IBOutlet private weak var transactionListButton: GiniButton!
+    @IBOutlet private weak var entrypointContentStackView: UIStackView!
+
     @IBOutlet private weak var giniLogoTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var welcomeTitleTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var stackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private var stackViewMarginConstraints: [NSLayoutConstraint]!
-    
+    @IBOutlet private weak var metaInformationLabelTopConstraint: NSLayoutConstraint!
+
     weak var delegate: DemoViewControllerDelegate?
     private var focusedFormField: UITextField?
     private var cameraImageView: UIImageView?
     
     var clientId: String?
-    
+
+    private let textColor = GiniColor(light: .black, dark: .white).uiColor()
+    private let iconColor = GiniColor(light: .black, dark: .white).uiColor()
+
+    private var cameraInputImage: UIImage? {
+        return UIImage(named: "cameraInput")?.tintedImageWithColor(iconColor)
+    }
+
+    private var settingsImage: UIImage? {
+        return ImageAsset.settingsIcon.image.tintedImageWithColor(iconColor)
+    }
+
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         giniLogoTopConstraint.constant = Constants.giniLogoTopConstant
-        
+        metaInformationLabelTopConstraint.constant = Constants.metaInformationLabelTopConstant
+        entrypointContentStackView.spacing = Constants.entryPointContentStackViewSpacing
+
         configureWelcomeTitle()
         configureScreenDescriptionTitle()
         
@@ -50,8 +68,10 @@ final class DemoViewController: UIViewController {
         }
         configureIbanTextField()
         configurePhotoPaymentButton()
+        configureTransactionListButton()
         configureAlternativeTitle()
         configureMetaTitle()
+        configureSettingsButton()
 
         dismissKeyboardOnTap()
     }
@@ -64,6 +84,7 @@ final class DemoViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         cameraImageView?.image = cameraInputImage
+        settingsButton.setImage(settingsImage, for: .normal)
     }
     
     // MARK: - Configure UI
@@ -73,12 +94,20 @@ final class DemoViewController: UIViewController {
         welcomeTitlte.text = DemoScreenStrings.welcomeTitle.localized
         welcomeTitlte.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.welcomeTextTitle.rawValue
     }
-    
+
+    private func configureSettingsButton() {
+        settingsButton.setImage(settingsImage, for: .normal)
+        settingsButton.setTitle("", for: .normal)
+        settingsButton.addTarget(self, action: #selector(launchSettings), for: .touchUpInside)
+        settingsButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.settingsButton.rawValue
+    }
+
     private func configureIbanTextField() {
         if let cameraIcon = cameraInputImage {
             ibanTextField.delegate = self
             ibanTextField.layer.cornerRadius = 8
-            ibanTextField.backgroundColor = itemBackgroundColor
+            ibanTextField.backgroundColor = GiniColor(light: giniCaptureColor("Light02"),
+                                                      dark: giniCaptureColor("Dark04")).uiColor()
             ibanTextField.attributedPlaceholder = NSAttributedString(
                 string: DemoScreenStrings.ibanTextFieldPlaceholder.localized,
                 attributes: [NSAttributedString.Key.foregroundColor: textColor]
@@ -108,30 +137,32 @@ final class DemoViewController: UIViewController {
             UITextField.appearance().tintColor = ColorPalette.giniBlue
         }
     }
-    
-    private let textColor = GiniColor(light: .black, dark: .white).uiColor()
-    private let iconColor = GiniColor(light: .black, dark: .white).uiColor()
-    private var itemBackgroundColor: UIColor {
-        return GiniColor(light: giniCaptureColor("Light04"),
-                         dark: giniCaptureColor("Dark04")).uiColor()
-    }
-    
-    private var cameraInputImage: UIImage? {
-        return UIImage(named: "cameraInput")?.tintedImageWithColor(iconColor)
-    }
-    
+
     private func configureAlternativeTitle() {
         alternativeTitle.text = DemoScreenStrings.alternativeText.localized
         alternativeTitle.textColor = textColor
     }
     
     private func configurePhotoPaymentButton() {
-        photoPaymentButton.backgroundColor = itemBackgroundColor
+        photoPaymentButton.backgroundColor = GiniColor(light: giniCaptureColor("Accent01"),
+                                                      dark: giniCaptureColor("Accent01")).uiColor()
         photoPaymentButton.setTitle(DemoScreenStrings.photoPaymentButtonTitle.localized, for: .normal)
-        photoPaymentButton.setTitleColor(textColor, for: .normal)
+        photoPaymentButton.setTitleColor(GiniColor(light: giniCaptureColor("Light01"),
+                                                   dark: giniCaptureColor("Light01")).uiColor(), for: .normal)
         photoPaymentButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue
     }
-    
+
+    private func configureTransactionListButton() {
+        transactionListButton.backgroundColor = .clear
+        transactionListButton.setTitle(DemoScreenStrings.transactionListButtonTitle.localized, for: .normal)
+        transactionListButton.tintColor = .clear
+        let textColor = GiniColor(light: giniCaptureColor("Dark06"),
+                                  dark: giniCaptureColor("Light01")).uiColor()
+        transactionListButton.setTitleColor(textColor, for: .normal)
+        transactionListButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.transactionListButton.rawValue
+        transactionListButton.addTarget(self, action: #selector(transactionListButtonTapped), for: .touchUpInside)
+    }
+
     private func configureScreenDescriptionTitle() {
         descriptionTitle.text = DemoScreenStrings.screenDescription.localized
         descriptionTitle.textColor = textColor
@@ -143,8 +174,6 @@ final class DemoViewController: UIViewController {
         let metaTitle = "Gini Bank SDK: (\(GiniBankSDKVersion)) / Gini Capture SDK: (\(GiniCaptureSDKVersion)) / Client id: \(self.clientId ?? "")"
         metaInformationLabel.text = metaTitle
         metaInformationLabel.textColor = textColor
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.launchSettings))
-        metaInformationLabel.addGestureRecognizer(tapGesture)
         metaInformationLabel.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.metaInformationLabel.rawValue
     }
     
@@ -169,7 +198,11 @@ final class DemoViewController: UIViewController {
     @objc func ibanCameraIconTapped(_ sender: Any) {
         startSDK(entryPoint: .field)
     }
-    
+
+    @objc func transactionListButtonTapped(_ sender: Any) {
+        delegate?.didTapTransactionList()
+    }
+
     // MARK: - Notifications
     
     private func subscribeOnKeyboardNotifications() {
@@ -250,8 +283,10 @@ extension DemoViewController: UITextFieldDelegate {
 private extension DemoViewController {
     enum Constants {
         static let welcomeTitleTopConstant: CGFloat = Device.small ? 24 : UIDevice.current.isIpad ? 85 : 48
-        static let giniLogoTopConstant: CGFloat = Device.small ? 48 : UIDevice.current.isIpad ? 150 : 112
-        static let stackViewTopConstant: CGFloat = 72
+        static let giniLogoTopConstant: CGFloat = Device.small ? 24 : UIDevice.current.isIpad ? 150 : 112
+        static let stackViewTopConstant: CGFloat = Device.small ? 24 : 72
         static let stackViewMarginConstant: CGFloat = UIDevice.current.isIpad ? 64 : 16
+        static let entryPointContentStackViewSpacing: CGFloat = Device.small ? 16 : 24
+        static let metaInformationLabelTopConstant: CGFloat = Device.small ? 24 : 44
     }
 }

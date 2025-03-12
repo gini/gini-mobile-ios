@@ -13,6 +13,7 @@ enum DemoScreenStrings: Localized {
     case ibanTextFieldPlaceholder
     case photoPaymentButtonTitle
     case alternativeText
+    case transactionListButtonTitle
 }
 
 extension DemoScreenStrings {
@@ -30,6 +31,8 @@ extension DemoScreenStrings {
                 return "photo.payment.button.title"
             case .alternativeText:
                 return "alternative.text"
+            case .transactionListButtonTitle:
+                return "transaction.list.button.title"
         }
     }
 }
