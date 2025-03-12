@@ -29,7 +29,10 @@ class Order: Codable {
     }
     
     var canBeDeleted: Bool {
-        id != nil
+        guard id != nil else { return false }
+        guard let expirationDate = expirationDate, expirationDate > Date() else { return false }
+        
+        return true
     }
 
     convenience init(amountToPay: String, recipient: String, iban: String, purpose: String) {
