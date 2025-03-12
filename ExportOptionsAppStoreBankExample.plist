@@ -9,7 +9,7 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>net.gini.banksdk.example</key>
-		<string>Gini Bank SDK Example AppStore Distribution</string>
+		<string>Gini Bank SDK Example App AppStore Distribution</string>
 		<key>net.gini.banksdk.example.ShareExtension</key>
 		<string>Gini Bank SDK Share Extension AppStore Dist</string>
 	</dict>

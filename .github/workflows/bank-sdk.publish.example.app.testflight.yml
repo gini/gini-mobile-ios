@@ -63,6 +63,7 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH1 ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH2 ~/Library/MobileDevice/Provisioning\ Profiles
+      
       - name: Setup Manual Signing for Xcode project
         uses: ruby/setup-ruby@v1
         with:
@@ -109,11 +110,7 @@ jobs:
           xcodebuild -exportArchive \
             -archivePath GiniBankSDKExample.xcarchive \
             -exportPath . \
-            -exportOptionsPlist ExportOptionsAppStoreBankExample.plist \
-            -destination "generic/platform=iOS" \
-            CODE_SIGNING_REQUIRED=YES \
-            ONLY_ACTIVE_ARCH=NO \
-            CODE_SIGN_STYLE=Manual
+            -exportOptionsPlist ExportOptionsAppStoreBankExample.plist
 
       - name: Verify .ipa File Existence
         uses: andstor/file-existence-action@v3
