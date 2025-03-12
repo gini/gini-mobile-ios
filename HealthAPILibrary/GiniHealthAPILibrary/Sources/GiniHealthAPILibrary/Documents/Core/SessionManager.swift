@@ -323,7 +323,7 @@ private extension SessionManager {
                 return
             }
 
-            if let jsonObject = try? JSONSerialization.jsonObject(with: responseData) as? [String: Any] {
+            if (try? JSONSerialization.jsonObject(with: responseData) as? [String: Any]) != nil {
                 completion(.failure(.customError(response: response, data: responseData)))
                 return
             }
