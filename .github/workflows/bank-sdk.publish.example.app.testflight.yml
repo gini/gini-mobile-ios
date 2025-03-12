@@ -139,25 +139,25 @@ jobs:
       - name: Install Fastlane
         run: gem install fastlane
 
-      # - name: Upload .ipa to TestFlight
-      #   env:
-      #     APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
-      #     APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
-      #     APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
-      #   run: fastlane publish_to_testflight ipa:GiniBankSDKExample.ipa api_key_path:build_artifacts/AppStoreConnectAPIKey.p8 --verbose
-
-
       - name: Upload .ipa to TestFlight
-        uses: maierj/fastlane-action@v3.1.0
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
-        with:
-          lane: 'publish_to_testflight'
-          options: >
-           { 
-              "ipa": "GiniBankSDKExample.ipa",
-              "api_key_path": "build_artifacts/AppStoreConnectAPIKey.p8"
-            }
+        run: fastlane publish_to_testflight ipa:"GiniBankSDKExample.ipa" --verbose
+
+
+      # - name: Upload .ipa to TestFlight
+      #   uses: maierj/fastlane-action@v3.1.0
+      #   env:
+      #     APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
+      #     APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
+      #     APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
+      #   with:
+      #     lane: 'publish_to_testflight'
+      #     options: >
+      #      { 
+      #         "ipa": "GiniBankSDKExample.ipa",
+      #         "api_key_path": "build_artifacts/AppStoreConnectAPIKey.p8"
+      #       }
     
