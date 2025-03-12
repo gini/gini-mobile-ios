@@ -144,4 +144,4 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_API_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
-        run: fastlane publish_to_testflight ipa:GiniBankSDKExample.ipa --verbose
+        run: fastlane publish_to_testflight ipa:GiniBankSDKExample.ipa api_key_path:build_artifacts/AppStoreConnectAPIKey.p8 --verbose
