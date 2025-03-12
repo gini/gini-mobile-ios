@@ -399,8 +399,7 @@ extension ReviewViewController {
             self.setCellStatus(for: self.currentPage, isActive: false)
             self.collectionView.reloadData()
 
-            self.collectionView.scrollToItem(at: IndexPath(row: self.currentPage, section: 0),
-                                              at: .centeredHorizontally, animated: true)
+            self.scrollToItem(at: IndexPath(row: self.currentPage, section: 0))
 
             self.previousScreenHeight = UIScreen.main.bounds.height
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -547,8 +546,7 @@ extension ReviewViewController {
             DispatchQueue.main.async {
                 self.setCellStatus(for: self.currentPage, isActive: false)
 
-                self.collectionView.scrollToItem(at: IndexPath(row: self.pages.count - 1, section: 0),
-                                                  at: .centeredHorizontally, animated: true)
+                self.scrollToItem(at: IndexPath(row: self.pages.count - 1, section: 0))
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                     self.setCurrentPage(basedOn: self.collectionView)
@@ -581,14 +579,50 @@ extension ReviewViewController {
         }
     }
 
+    private func scrollToItem(at indexPath: IndexPath) {
+        let iphoneLandscape = UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape
+        let scrollPosition: UICollectionView.ScrollPosition = {
+            guard iphoneLandscape else {
+                return .centeredHorizontally
+            }
+            if pages.count > 2, indexPath.row == 0 {
+                return .left
+            } else if self.pages.count > 3, indexPath.row == (pages.count - 1) {
+                return .right
+            } else {
+                return .centeredHorizontally
+            }
+        }()
+        if scrollPosition == .centeredHorizontally {
+            collectionView.contentInset.left = 0
+            collectionView.contentInset.right = 0
+        } else if scrollPosition == .left || scrollPosition == .right {
+            let cellWidth = cellSize().width
+            let cellSpacing = {
+                guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+                    return 0.0
+                }
+                return layout.minimumInteritemSpacing
+            }()
+            let sheetItemCount: CGFloat = 3
+            let sheetFullWidth = (cellWidth * sheetItemCount) + (cellSpacing * (sheetItemCount - 1))
+            let viewWidth = collectionView.frame.width
+
+            let padding = (viewWidth - sheetFullWidth) / 2
+            collectionView.contentInset.left = padding
+            collectionView.contentInset.right = padding
+        }
+
+        collectionView.scrollToItem(at: indexPath, at: scrollPosition, animated: true)
+    }
+
     @objc
     private func pageControlTapHandler(sender: UIPageControl) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: { [weak self] in
-            self?.collectionView.scrollToItem(at: IndexPath(row: sender.currentPage, section: 0),
-                                              at: .centeredHorizontally, animated: true)
             guard let self = self else { return }
             self.setCellStatus(for: self.currentPage, isActive: false)
             self.currentPage = sender.currentPage
+            self.scrollToItem(at: IndexPath(row: sender.currentPage, section: 0))
         })
     }
 
@@ -608,6 +642,9 @@ extension ReviewViewController {
         pages.remove(at: indexPath.row)
         collectionView.deleteItems(at: [indexPath])
         delegate?.review(self, didDelete: pageToDelete)
+        if !pages.isEmpty {
+            scrollToItem(at: IndexPath(row: currentPage, section: 0))
+        }
     }
 
     private func didTapAddPages() {
@@ -623,8 +660,7 @@ extension ReviewViewController {
             guard currentPage < pages.count - 1 else { return }
             setCellStatus(for: currentPage, isActive: false)
             currentPage += 1
-            collectionView.scrollToItem(at: IndexPath(row: currentPage, section: 0),
-                                        at: .centeredHorizontally, animated: true)
+            scrollToItem(at: IndexPath(row: currentPage, section: 0))
             pageControl.currentPage = currentPage
 
             GiniAnalyticsManager.track(event: .pageSwiped, screenName: .review)
@@ -633,8 +669,7 @@ extension ReviewViewController {
             guard currentPage > 0 else { return }
             setCellStatus(for: currentPage, isActive: false)
             currentPage -= 1
-            collectionView.scrollToItem(at: IndexPath(row: currentPage, section: 0),
-                                        at: .centeredHorizontally, animated: true)
+            scrollToItem(at: IndexPath(row: currentPage, section: 0))
             pageControl.currentPage = currentPage
 
             GiniAnalyticsManager.track(event: .pageSwiped, screenName: .review)
