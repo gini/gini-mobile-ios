@@ -122,14 +122,20 @@ jobs:
         env:
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
         run: |
-          echo "$APP_STORE_CONNECT_API_KEY" | base64 --decode > fastlane/AppStoreConnectAPIKey.p8
-  
+          mkdir -p build_artifacts # Create a new directory for artifacts
+          echo "$APP_STORE_CONNECT_API_KEY" | base64 --decode > build_artifacts/AppStoreConnectAPIKey.p8
+          ls -lah build_artifacts/ # Verify the file exists
 
       - name: Set Up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0'
   
+      - name: Verify App Store Connect API Key
+        run: |
+          ls -lah build_artifacts/ # Check if the file exists
+          cat build_artifacts/AppStoreConnectAPIKey.p8 | head -n 2 # Print first 2 lines (sanity check)
+
       - name: Install Fastlane
         run: gem install fastlane
 
