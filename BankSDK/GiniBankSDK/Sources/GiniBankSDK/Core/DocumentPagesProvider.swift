@@ -4,10 +4,8 @@
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
-import GiniCaptureSDK
 import GiniBankAPILibrary
 import UIKit
-
 
 /**
  A protocol defining the required methods for fetching document pages.
