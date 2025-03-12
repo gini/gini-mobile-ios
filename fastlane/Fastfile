@@ -502,18 +502,18 @@ platform :ios do
   end
 
   lane :publish_to_testflight do |options|
-    ipa_path = options[:ipa] || "./GiniBankSDKExample.ipa" # Default value if not provided
-    api_key_path = options[:api_key_path]
+    ipa_path = options[:ipa_path] || "./GiniBankSDKExample.ipa"
+    api_key_path = options[:api_key_path] || "build_artifacts/AppStoreConnectAPIKey.p8"
 
-    # Ensure the build number is incremented
-    increment_build_number(
-      xcodeproj: "BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj"
-    )
+    # # Ensure the build number is incremented
+    # increment_build_number(
+    #   xcodeproj: "BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj"
+    # )
 
     api_key = app_store_connect_api_key(
       key_id: ENV['APP_STORE_CONNECT_API_KEY_ID'],
       issuer_id: ENV['APP_STORE_CONNECT_API_ISSUER_ID'],
-      key_content: api_key_path,
+      key_content: File.read(File.expand_path(api_key_path)),
       duration: 1200, # 20 minutes (Ensure token doesn't expire early),
       in_house: false
     )
@@ -522,7 +522,10 @@ platform :ios do
     puts "Fastlane API Key Debug:"
     puts "Key ID: #{api_key[:key_id]}"
     puts "Issuer ID: #{api_key[:issuer_id]}"
-    puts "Key: #{api_key[:key] ? 'Exists' : 'Missing'}" # To avoid printing the full key
+
+    puts "🔑 Using App Store Connect API Key from: #{api_key_path}"
+    puts "📦 Uploading IPA: #{ipa_path}"
+
 
     # pilot uses the iTunes Transporter to upload metadata and binaries.
     ENV["DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"] = "-t DAV"
