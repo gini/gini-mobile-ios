@@ -47,7 +47,7 @@ final class OrderListViewModel {
     func deleteOrder(_ order: Order) {
         guard let orderId = order.id else { return }
         
-        health.paymentService.deletePaymentRequest(id: orderId, completion: { [weak self] result in
+        health.deletePaymentRequest(id: orderId, completion: { [weak self] result in
             switch result {
             case .success:
                 self?.handlePaymentRequestDeletion(for: order)
