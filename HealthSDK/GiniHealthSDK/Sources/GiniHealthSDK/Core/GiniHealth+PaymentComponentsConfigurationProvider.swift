@@ -144,7 +144,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             pageIndicatorTintColor: GiniColor.standard4.uiColor(),
             currentPageIndicatorTintColor: GiniColor(lightModeColorName: .dark2, darkModeColorName: .light5).uiColor(),
             isInfoBarHidden: GiniHealthConfiguration.shared.useInvoiceWithoutDocument ? true : false,
-            popupDuration: GiniHealthConfiguration.shared.popupDurationPaymentReview
+            popupAnimationDuration: GiniHealthConfiguration.shared.popupDurationPaymentReview
         )
     }
 
