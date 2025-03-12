@@ -84,6 +84,10 @@ final class MockSessionManager: SessionManagerProtocol {
                 if let paymentRequestId = MockSessionManager.paymentRequestId as? T.ResponseType {
                     completion(.success(paymentRequestId))
                 }
+            case .deletePaymentRequest:
+                if let paymentRequestId = MockSessionManager.paymentRequestId as? T.ResponseType {
+                    completion(.success(paymentRequestId))
+                }
             case .paymentProvider(_):
                 let providerResponse: PaymentProviderResponse? = load(fromFile: "provider")
                 if let providerResponse = providerResponse as? T.ResponseType {

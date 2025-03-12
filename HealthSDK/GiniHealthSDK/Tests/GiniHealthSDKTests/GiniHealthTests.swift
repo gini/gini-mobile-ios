@@ -339,6 +339,31 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
     }
     
+    func testDeletePaymentRequest_Success() {
+        // Given
+        let expectedPaymentRequestID = MockSessionManager.paymentRequestId
+
+        // When
+        let expectation = self.expectation(description: "Deleting payment request")
+        var receivedRequestId: String?
+        
+        giniHealth.deletePaymentRequest(id: expectedPaymentRequestID, completion: { result in
+            switch result {
+            case .success(let requestId):
+                receivedRequestId = requestId
+            case .failure(_):
+                receivedRequestId = nil
+            }
+            expectation.fulfill()
+        })
+        
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(receivedRequestId)
+        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
+    }
+    
     func testOpenLink_Success() {
         let mockUIApplication = MockUIApplication(canOpen: true)
         let urlOpener = URLOpener(mockUIApplication)
