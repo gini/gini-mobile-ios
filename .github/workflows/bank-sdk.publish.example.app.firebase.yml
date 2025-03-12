@@ -145,7 +145,7 @@ jobs:
             ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
             ${{ github.event.head_commit.message }}
 
-       - name: Extract Jira ticket
+      - name: Extract Jira ticket
         id: extract_jira_ticket
         run: |
           echo "Checking the last 3 commits for JIRA tickets..."
