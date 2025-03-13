@@ -129,15 +129,17 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
 
     class func size(for screen: UIScreen = UIScreen.main,
                     itemsInARow: Int,
-                    collectionViewLayout: UICollectionViewLayout) -> CGSize {
-        let width = screen.bounds.width / CGFloat(itemsInARow)
+                    collectionViewLayout: UICollectionViewLayout,
+                    leftSafeArea: CGFloat,
+                    rightSafeArea: CGFloat) -> CGSize {
+        let width = (screen.bounds.width - leftSafeArea - rightSafeArea) / CGFloat(itemsInARow)
 
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
             return CGSize(width: width, height: width)
         }
 
         let spacing = flowLayout.minimumInteritemSpacing * CGFloat(itemsInARow - 1)
-        let widthWithoutSpacing = (screen.bounds.width - spacing) / CGFloat(itemsInARow)
+        let widthWithoutSpacing = (screen.bounds.width - spacing - leftSafeArea - rightSafeArea) / CGFloat(itemsInARow)
 
         return CGSize(width: widthWithoutSpacing, height: widthWithoutSpacing)
     }
