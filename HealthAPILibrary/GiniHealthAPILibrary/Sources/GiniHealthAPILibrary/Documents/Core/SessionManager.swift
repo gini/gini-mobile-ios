@@ -318,7 +318,7 @@ private extension SessionManager {
             }
 
             if let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
-                  errorInfo["error"] == "invalid_request" {
+                  errorInfo["error"] == "invalid_grant" {
                 completion(.failure(.unauthorized(response: response, data: data)))
                 return
             }
