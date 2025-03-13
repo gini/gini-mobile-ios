@@ -11,3 +11,4 @@
 "iban.textfield.placeholder" = "Enter your IBAN code";
 "photo.payment.button.title" = "Photopayment";
 "alternative.text" = "or use";
+"transaction.list.button.title" = "Transaction list";

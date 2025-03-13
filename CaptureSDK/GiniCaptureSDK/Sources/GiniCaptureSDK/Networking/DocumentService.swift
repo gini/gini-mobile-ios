@@ -14,6 +14,8 @@ import GiniBankAPILibrary
 
 var errorOccurred = false
 
+public var originalDocumentName: String?
+
 public final class DocumentService: DocumentServiceProtocol {
     
     var partialDocuments: [String: PartialDocument] = [:]
@@ -137,6 +139,8 @@ public final class DocumentService: DocumentServiceProtocol {
         analysisCancellationToken = nil
         document = nil
         captureNetworkService.cleanup()
+        // Cleanup the local cached PDF file name
+        originalDocumentName = nil
     }
     
     public func update(imageDocument: GiniImageDocument) {
