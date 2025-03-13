@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="ipad7_9" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,6 +11,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnboardingViewController" customModule="GiniCaptureSDK">
             <connections>
+                <outlet property="buttonCenterXConstraint" destination="ZTR-SX-gVU" id="Eh0-k1-uoO"/>
+                <outlet property="collectionViewToPageControlConstraint" destination="5o3-NM-xxS" id="Wfv-sT-oNj"/>
+                <outlet property="collectionViewToViewBottomConstraint" destination="mh1-kT-nGp" id="sxp-FP-6gV"/>
                 <outlet property="nextButton" destination="dqe-Kh-XtC" id="DN4-gq-JQi"/>
                 <outlet property="pageControl" destination="fzW-pg-Fy6" id="hrr-29-qQS"/>
                 <outlet property="pagesCollection" destination="r9F-HC-Y7G" id="hRS-Zh-TZf"/>
@@ -46,7 +49,7 @@
                     </state>
                 </button>
                 <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fzW-pg-Fy6">
-                    <rect key="frame" x="0.0" y="1003" width="744" height="0.0"/>
+                    <rect key="frame" x="287" y="1003" width="170" height="0.0"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </pageControl>
             </subviews>
@@ -55,15 +58,26 @@
             <constraints>
                 <constraint firstItem="r9F-HC-Y7G" firstAttribute="top" secondItem="FpJ-cd-hgL" secondAttribute="top" id="55g-vr-qIJ"/>
                 <constraint firstItem="fzW-pg-Fy6" firstAttribute="top" secondItem="r9F-HC-Y7G" secondAttribute="bottom" constant="25" id="5o3-NM-xxS"/>
+                <constraint firstItem="fzW-pg-Fy6" firstAttribute="width" relation="greaterThanOrEqual" secondItem="dqe-Kh-XtC" secondAttribute="width" id="DlL-Gw-sWu"/>
+                <constraint firstItem="fzW-pg-Fy6" firstAttribute="centerX" secondItem="dqe-Kh-XtC" secondAttribute="centerX" id="VaW-wa-9lK"/>
                 <constraint firstItem="dqe-Kh-XtC" firstAttribute="centerX" secondItem="Nfe-ie-kjh" secondAttribute="centerX" id="ZTR-SX-gVU"/>
                 <constraint firstItem="dqe-Kh-XtC" firstAttribute="top" secondItem="fzW-pg-Fy6" secondAttribute="bottom" constant="30" id="icM-Ic-aSU"/>
-                <constraint firstItem="fzW-pg-Fy6" firstAttribute="leading" secondItem="Nfe-ie-kjh" secondAttribute="leading" id="k1L-Cz-ht8"/>
-                <constraint firstAttribute="trailing" secondItem="fzW-pg-Fy6" secondAttribute="trailing" id="nNa-Yj-GPz"/>
+                <constraint firstItem="FpJ-cd-hgL" firstAttribute="bottom" secondItem="r9F-HC-Y7G" secondAttribute="bottom" id="mh1-kT-nGp"/>
                 <constraint firstItem="r9F-HC-Y7G" firstAttribute="leading" secondItem="Nfe-ie-kjh" secondAttribute="leading" id="qgS-df-Pfj"/>
                 <constraint firstAttribute="trailing" secondItem="r9F-HC-Y7G" secondAttribute="trailing" id="rKq-1S-lwz"/>
                 <constraint firstItem="dqe-Kh-XtC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="FpJ-cd-hgL" secondAttribute="leading" constant="16" id="rdq-uq-m7p"/>
                 <constraint firstAttribute="bottom" secondItem="dqe-Kh-XtC" secondAttribute="bottom" constant="50" id="tai-nW-c9d"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="mh1-kT-nGp"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="constraints">
+                    <include reference="ZTR-SX-gVU"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="-733.84615384615381" y="-1819.905213270142"/>
         </view>
     </objects>

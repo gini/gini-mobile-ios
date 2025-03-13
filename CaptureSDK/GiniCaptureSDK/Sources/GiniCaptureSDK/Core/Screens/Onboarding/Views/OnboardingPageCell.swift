@@ -54,7 +54,7 @@ class OnboardingPageCell: UICollectionViewCell {
                 topConstraint.constant = Constants.regularTopPadding
                 iconBottomConstraint.constant = Constants.maxIconPadding
             }
-        } else {
+        } else if currentInterfaceOrientation.isPortrait {
             topConstraint.constant = Constants.compactTopPadding
             iconBottomConstraint.constant = calculateIconMargin()
         }
