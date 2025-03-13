@@ -254,6 +254,7 @@ final class OrderDetailViewController: UIViewController {
         health.createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
             switch result {
             case .success(let paymentRequestId):
+                self?.order.id = paymentRequestId
                 self?.fetchPaymentRequestInfo(paymentRequestId)
             case .failure(let error):
                 self?.errors.append(error.localizedDescription)

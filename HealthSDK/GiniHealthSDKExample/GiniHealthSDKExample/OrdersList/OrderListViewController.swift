@@ -7,6 +7,7 @@
 
 
 import UIKit
+import Combine
 
 protocol OrderListViewControllerProtocol: AnyObject {
     func showActivityIndicator()
@@ -37,11 +38,14 @@ final class OrderListViewController: UIViewController {
         return activityIndicator
     }()
     
+    private var cancellables = Set<AnyCancellable>()
+    
     var viewModel: OrderListViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        registerForUpdates()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -114,6 +118,21 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let order = self.viewModel.orders[indexPath.row]
+        
+        guard order.canBeDeleted else {
+            return nil
+        }
+        
+        return UISwipeActionsConfiguration(actions: [UIContextualAction(style: .destructive,
+                                                                        title: "Delete",
+                                                                        handler: { _, _, completion in
+            self.viewModel.deleteOrder(order)
+            completion(true)
+        })])
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         tableView.backgroundView = nil
         tableView.separatorStyle = .singleLine
@@ -129,6 +148,28 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
 
         // Present InvoiceViewController
         self.navigationController?.pushViewController(orderViewController, animated: true)
+    }
+    
+    private func showError(_ error: String) {
+        showErrorAlertView(error: error)
+    }
+    
+    private func registerForUpdates() {
+        viewModel.$orders
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .sink { _ in
+                self.reloadTableView()
+            }.store(in: &cancellables)
+        
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .sink { errorMessage in
+                if let errorMessage {
+                    self.showError(message: errorMessage)
+                }
+            }.store(in: &cancellables)
     }
 }
 

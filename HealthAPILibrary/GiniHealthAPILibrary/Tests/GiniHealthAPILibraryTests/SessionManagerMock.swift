@@ -94,6 +94,8 @@ final class SessionManagerMock: SessionManagerProtocol {
                 completion(.success(SessionManagerMock.compositeDocumentId as! T.ResponseType))
             case .createPaymentRequest:
                 completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
+            case .deletePaymentRequest:
+                completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
             case .paymentProvider(_):
                 let providerResponse: PaymentProviderResponse = loadProviderResponse()
                 completion(.success(providerResponse as! T.ResponseType))

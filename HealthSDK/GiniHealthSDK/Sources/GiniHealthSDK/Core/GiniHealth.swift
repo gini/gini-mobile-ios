@@ -441,6 +441,30 @@ public struct DataForReview {
     }
     
     /**
+     Deletes a payment request
+     
+     - Parameters:
+        - id: Id of the payment request to delete.
+        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
+        Completion block called on main thread.
+        In success it includes the id of deleted payment request.
+        In case of failure error from the server side.
+     
+     */
+    public func deletePaymentRequest(id: String, completion: @escaping (Result<String, GiniError>) -> Void) {
+        paymentService.deletePaymentRequest(id: id) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(requestId):
+                    completion(.success(requestId))
+                case let .failure(error):
+                    completion(.failure(GiniError.decorator(error)))
+                }
+            }
+        }
+    }
+    
+    /**
      Opens an app of selected payment provider.
         openUrl called on main thread.
      

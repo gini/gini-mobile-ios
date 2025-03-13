@@ -37,6 +37,23 @@ class PaymentServiceTests: XCTestCase {
         wait(for: [expect], timeout: 1)
     }
     
+    func testPaymentRequestDeletion() {
+        let expect = expectation(description: "returns payment request id")
+        
+        paymentService.deletePaymentRequest(id: SessionManagerMock.paymentRequestId) { result in
+            switch result {
+            case .success(let paymentRequestId):
+                XCTAssertEqual(paymentRequestId,
+                               SessionManagerMock.paymentRequestId,
+                               "payment request ids should match")
+                expect.fulfill()
+            case .failure:
+                break
+            }
+        }
+        wait(for: [expect], timeout: 1)
+    }
+    
     func testPaymentProviders() {
         let expect = expectation(description: "returns array of payment providers")
         sessionManagerMock.initializeWithPaymentProvidersResponse()
