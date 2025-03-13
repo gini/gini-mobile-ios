@@ -428,4 +428,9 @@ extension AppCoordinator: DebugMenuDelegate {
         giniHealthConfiguration.customLocalization = localization
         health.setConfiguration(giniHealthConfiguration)
     }
+
+    func didCustomizeShareWithFilename(filename: String) {
+        giniHealthConfiguration.shareWithFileName = filename
+        health.setConfiguration(giniHealthConfiguration)
+    }
 }

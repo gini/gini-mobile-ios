@@ -60,3 +60,4 @@
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.title" = "Teile diesen QR-Zahlungscode mit deiner Banking-App";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Alternativ kannst du ein Screenshot von dieser Seite machen und mit der Fotoüberweisung Funktion der [BANK] öffnen.";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Mit der [BANK]-App teilen";
+"gini.health.paymentcomponent.share.invoice.pdf.filename.default" = "Zahlungsinformationen";
