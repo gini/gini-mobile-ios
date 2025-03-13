@@ -10,6 +10,9 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var pagesCollection: UICollectionView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var nextButton: MultilineTitleButton!
+    @IBOutlet weak var buttonCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var collectionViewToPageControlConstraint: NSLayoutConstraint!
+    @IBOutlet weak var collectionViewToViewBottomConstraint: NSLayoutConstraint!
     private(set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
@@ -29,8 +32,12 @@ class OnboardingViewController: UIViewController {
         pagesCollection.register(
             UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()),
             forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier)
+        pagesCollection.register(
+            UINib(nibName: "OnboardingPageCellLandscapeIphone", bundle: giniCaptureBundle()),
+            forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier + "iphoneland")
         pagesCollection.isPagingEnabled = true
         pagesCollection.showsHorizontalScrollIndicator = false
+        pagesCollection.contentInsetAdjustmentBehavior = .never
         pagesCollection.dataSource = dataSource
         pagesCollection.delegate = dataSource
         dataSource.delegate = self
@@ -64,6 +71,27 @@ class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.current.isIphone {
+            if view.currentInterfaceOrientation.isLandscape {
+                let safeareaPadding = view.safeAreaInsets.left / 2
+                let iconWidth: CGFloat = 220 / 2
+                let textStackPadding: CGFloat = 24 / 2
+                let viewWidth = view.bounds.width / 2
+
+                buttonCenterXConstraint.constant = (viewWidth - iconWidth - (safeareaPadding * 2) - (textStackPadding * 2)) / 2
+                collectionViewToPageControlConstraint.isActive = false
+                collectionViewToViewBottomConstraint.isActive = true
+            } else {
+                buttonCenterXConstraint.constant = 0
+                collectionViewToViewBottomConstraint.isActive = false
+                collectionViewToPageControlConstraint.isActive = true
+            }
+            pagesCollection.reloadData()
+        }
     }
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
