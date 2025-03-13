@@ -70,13 +70,14 @@ final class PaymentTests: XCTestCase {
     
     func tesDeletePaymentRequestURL() {
         let mockRequestId = "mockRequestId"
-        let expectedURLString = baseAPIURLString + "/paymentRequests/\(mockRequestId)"
+        
         let resource = APIResource<String>(method: .deletePaymentRequest(id: mockRequestId),
                                            apiDomain: .default,
                                            apiVersion: versionAPI,
                                            httpMethod: .delete)
+        
         let urlString = resource.url.absoluteString
-        XCTAssertEqual(urlString, expectedURLString, "path should match")
+        XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/mockRequestId", "path should match")
     }
     
     func testPaymentProviders() {
