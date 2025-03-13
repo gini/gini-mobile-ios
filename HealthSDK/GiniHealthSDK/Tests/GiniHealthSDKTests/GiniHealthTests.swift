@@ -339,7 +339,7 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
     }
     
-    func testDeletePaymentRequest_Success() {
+    func testDeletePaymentRequestSuccess() {
         // Given
         let expectedPaymentRequestID = MockSessionManager.paymentRequestId
 
