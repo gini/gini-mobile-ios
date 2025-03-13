@@ -39,4 +39,7 @@ final class OrderListViewModel {
         self.health = health
     }
 
+    func updateOrder(updatedOrder: Order) {
+        hardcodedOrdersController.updateOrder(updatedOrder: updatedOrder)
+    }
 }

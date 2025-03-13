@@ -145,7 +145,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     public func startPaymentFlow(documentId: String?, paymentInfo: GiniHealthSDK.PaymentInfo?, navigationController: UINavigationController, trackingDelegate: GiniHealthTrackingDelegate?) {
         self.navigationControllerProvided = navigationController
         if let paymentInfo {
-            self.paymentInfo = GiniInternalPaymentSDK.PaymentInfo(paymentConponentsInfo: paymentInfo)
+            self.paymentInfo = GiniInternalPaymentSDK.PaymentInfo(paymentComponentsInfo: paymentInfo)
         }
         self.documentId = documentId
         self.trackingDelegate = trackingDelegate

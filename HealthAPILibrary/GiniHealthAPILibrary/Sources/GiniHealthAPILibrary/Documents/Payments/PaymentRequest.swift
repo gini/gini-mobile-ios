@@ -13,7 +13,7 @@ public struct PaymentRequest: Codable {
     public var paymentProvider: String
     public var requesterURI: String?
     public var iban: String
-    public var bic: String?
+    public var bic, expirationDate: String?
     public var amount, purpose, recipient, createdAt: String
     public var status: String
     var links: Links?
@@ -21,7 +21,7 @@ public struct PaymentRequest: Codable {
     enum CodingKeys: String, CodingKey {
         case paymentProvider
         case requesterURI = "requesterUri"
-        case iban, bic, amount, purpose, recipient, createdAt, status
+        case iban, bic, amount, purpose, recipient, createdAt, status, expirationDate
         case links = "_links"
     }
 }
