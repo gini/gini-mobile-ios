@@ -32,7 +32,6 @@ public class QREngagementViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [previousButton, nextButton])
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.distribution = .fillProportionally
         stackView.spacing = Constants.bottomContainerSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -42,7 +41,6 @@ public class QREngagementViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [horizontalButtonStack, skipButton])
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.distribution = .fillEqually
         stackView.spacing = Constants.bottomContainerSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -119,6 +117,12 @@ public class QREngagementViewController: UIViewController {
             topView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             topView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
+            previousButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
+            previousButton.widthAnchor.constraint(equalTo: nextButton.widthAnchor,
+                                                  multiplier: Constants.previousButtonMultiplier),
+            nextButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
+            skipButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
+
             bottomContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                     constant: -Constants.bottomContainerBottom),
             bottomContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor,
@@ -154,6 +158,7 @@ public class QREngagementViewController: UIViewController {
     private func updateUI(for index: Int) {
         topView.update(currentStep: index + 1, totalSteps: viewModel.steps.count)
         // TODO: remove it after integration. Just to avoid crash
+        previousButton.isHidden = index == 0
         previousButton.isEnabled = (index > 0)
         nextButton.isEnabled = (index < viewModel.steps.count - 1)
     }
@@ -188,8 +193,10 @@ private extension QREngagementViewController {
     enum Constants {
         static let topViewTopSpacing: CGFloat = 8
         static let bottomContainerBottom: CGFloat = 16
-        static let bottomContainerSpacing: CGFloat = 16
+        static let bottomContainerSpacing: CGFloat = 12
         static let horizontalPadding: CGFloat = 16
         static let pageContainerSpacing: CGFloat = 8
+        static let buttonHeight: CGFloat = 50
+        static let previousButtonMultiplier: CGFloat = 126/205
     }
 }
