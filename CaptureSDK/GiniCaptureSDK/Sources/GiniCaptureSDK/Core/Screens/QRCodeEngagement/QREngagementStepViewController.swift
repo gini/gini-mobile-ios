@@ -82,7 +82,7 @@ class QREngagementStepViewController: UIViewController {
 
     private func configure(with step: QREngagementStep) {
         titleLabel.text = step.title
-        descriptionLabel.text = step.description
+        descriptionLabel.attributedText = step.attributedDescription
         imageView.image = step.image
     }
 }

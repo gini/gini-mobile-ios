@@ -45,4 +45,32 @@ public enum QREngagementStep {
             return GiniCaptureImages.qrCodeEngagementStep2.image
         }
     }
+
+    var attributedDescription: NSAttributedString {
+        let text = self.description
+        let attributedString = NSMutableAttributedString(string: text)
+
+        let configuration = GiniConfiguration.shared
+        guard let baseFont = configuration.textStyleFonts[.callout],
+              let boldFont = configuration.textStyleFonts[.calloutBold] else {
+            return attributedString
+        }
+
+        attributedString.addAttribute(.font, value: baseFont,
+                                      range: NSRange(location: 0, length: text.utf16.count))
+
+        var wordsToBold: [String] = []
+        if self == .first {
+            wordsToBold = ["Rechnungen", "Zahlungsformulare", "Bildschirme", "PDFs", "GIFs"]
+        }
+
+        for word in wordsToBold {
+            let nsText = text as NSString
+            let range = nsText.range(of: word)
+            if range.location != NSNotFound {
+                attributedString.addAttribute(.font, value: boldFont, range: range)
+            }
+        }
+        return attributedString
+    }
 }
