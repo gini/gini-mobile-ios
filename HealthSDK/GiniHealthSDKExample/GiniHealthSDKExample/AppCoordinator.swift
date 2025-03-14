@@ -373,7 +373,11 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
     func presentError(title: String, message: String) {
-        self.rootViewController.showError(title, message: message)
+        if let presentedVC = rootViewController.presentedViewController {
+            presentedVC.showError(title, message: message)
+        } else {
+            rootViewController.showError(title, message: message)
+        }
     }
     
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
@@ -435,15 +439,17 @@ extension AppCoordinator: DebugMenuDelegate {
         let documentsToDeleteIds = Array(hardcodedInvoicesController.getInvoicesWithExtractions()
             .map { $0.documentId }
             .prefix(Constants.numberOfDocumentsToBeDeleted)) // Number of documents to delete
-        guard !documentsToDeleteIds.isEmpty else { return }
 
-        health.deleteDocuments(documentIds: documentsToDeleteIds) { result in
+        health.deleteDocuments(documentIds: documentsToDeleteIds) { [weak self] result in
             switch result {
             case .success(_):
-                self.hardcodedInvoicesController.deleteDocuments(withIds: documentsToDeleteIds)
-                GiniUtilites.Log("Successfully deleted documents with: \(documentsToDeleteIds)", event: .success)
+                self?.hardcodedInvoicesController.deleteDocuments(withIds: documentsToDeleteIds)
+                let successMessage = "Successfully deleted documents with: \(documentsToDeleteIds)"
+                GiniUtilites.Log(successMessage, event: .success)
+                self?.presentError(title: "Success", message: successMessage)
             case .failure(let failure):
                 GiniUtilites.Log("Failed to delete documents with error: \(failure.message)", event: .error)
+                self?.presentError(title: "Error", message: failure.message)
             }
         }
     }
