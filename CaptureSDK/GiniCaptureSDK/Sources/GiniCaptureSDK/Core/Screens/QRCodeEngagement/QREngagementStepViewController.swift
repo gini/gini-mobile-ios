@@ -19,10 +19,11 @@ class QREngagementStepViewController: UIViewController {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = configuration.textStyleFonts[.headline]
+        // TODO: check title2Bold in configuration
+        label.font = configuration.textStyleFonts[.title2Bold]
         label.textColor = .black
         label.numberOfLines = 0
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -32,7 +33,7 @@ class QREngagementStepViewController: UIViewController {
         label.font = configuration.textStyleFonts[.callout]
         label.textColor = .black
         label.numberOfLines = 0
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
