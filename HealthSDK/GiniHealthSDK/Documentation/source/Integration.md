@@ -125,6 +125,15 @@ The method returns `true` in the success case if the `contains_multiple_docs` fi
 
 > - Recommendation: Use this check in a specific order. First, call the `checkIfDocumentIsPayable` method, and then call `checkIfDocumentContainsMultipleInvoices` method.
 
+## Delete a batch of documents
+
+GiniHealth provides a method to delete multiple documents at once:
+
+```swift
+healthSDK.deleteDocuments(documentIds: [String], completion: @escaping (Result<String, GiniError>) -> Void)
+```
+
+This method enables clients to delete multiple documents simultaneously by passing an array of document IDs. Upon success, it returns an array of successfully deleted documents. In case of an error, a specific error message is provided.
 
 ## Integrate the Payment flow
 
