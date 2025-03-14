@@ -1,7 +1,7 @@
 name: Check Bank API Library
 on:
   pull_request:
-    types: [opened, edited, reopened, synchronize]
+    types: [opened, reopened, synchronize, ready_for_review]
     paths:
       - 'BankAPILibrary/**'
 
@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         target: [GiniBankAPILibrary, GiniBankAPILibraryPinning]
-        destination: ['platform=iOS Simulator,OS=17.2,name=iPhone SE (3rd generation)', 'platform=iOS Simulator,OS=17.5,name=iPhone 15']
+        destination: ['platform=iOS Simulator,OS=17.5,name=iPhone 15']
     steps:
     - uses: maxim-lobanov/setup-xcode@v1.6.0
       with:
