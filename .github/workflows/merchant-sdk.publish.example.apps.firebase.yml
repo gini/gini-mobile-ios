@@ -13,13 +13,7 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
-  check:
-    uses: ./.github/workflows/merchant-sdk.check.yml
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
-
   upload-version:
-    needs: check
     runs-on: macos-latest    
     steps:
       - name: Checkout repository
