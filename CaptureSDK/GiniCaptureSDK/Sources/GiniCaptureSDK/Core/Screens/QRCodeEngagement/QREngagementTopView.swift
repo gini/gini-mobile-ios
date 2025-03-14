@@ -11,13 +11,12 @@ class QREngagementTopView: UIView {
 
     private lazy var pageLabel: UILabel = {
         let label = UILabel()
-        label.font = configuration.textStyleFonts[.headline]
+        label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    private var stepViews: [UIView] = []
     private lazy var stepsStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
@@ -25,7 +24,41 @@ class QREngagementTopView: UIView {
         stack.distribution = .fillEqually
         stack.spacing = Constants.spacingBetween
         stack.translatesAutoresizingMaskIntoConstraints = false
+        for _ in 0..<3 {
+            let view = UIView()
+            view.layer.cornerRadius = Constants.stepViewHeight / 2
+            view.clipsToBounds = true
+            view.backgroundColor = .lightGray
+            stack.addArrangedSubview(view)
+        }
         return stack
+    }()
+
+    private lazy var poweredByLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Powered by"
+        // TODO: body-xs
+        label.font = configuration.textStyleFonts[.body]
+        label.textColor = .darkGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private lazy var poweredByImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = GiniCaptureImages.poweredByGiniLogo.image
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+
+    private lazy var poweredByStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [poweredByLabel, poweredByImageView])
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.spacing = Constants.poweredBySpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
 
     override init(frame: CGRect) {
@@ -38,42 +71,33 @@ class QREngagementTopView: UIView {
     }
 
     private func setupUI() {
-        for _ in 0..<3 {
-            let view = UIView()
-            view.layer.cornerRadius = Constants.segmentCornerRadius
-            view.clipsToBounds = true
-            view.backgroundColor = .lightGray
-            stepViews.append(view)
-            stepsStackView.addArrangedSubview(view)
-        }
-
-        let containerStack = UIStackView(arrangedSubviews: [pageLabel, stepsStackView])
-        containerStack.axis = .horizontal
-        containerStack.alignment = .fill
-        containerStack.distribution = .fill
-        containerStack.spacing = Constants.spacingBetween
-        containerStack.translatesAutoresizingMaskIntoConstraints = false
-
-        addSubview(containerStack)
+        addSubview(pageLabel)
+        addSubview(stepsStackView)
+        addSubview(poweredByStackView)
 
         NSLayoutConstraint.activate([
-            containerStack.topAnchor.constraint(equalTo: topAnchor, constant: Constants.topSpacing),
-            containerStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.bottomSpacing),
-            containerStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.horizontalPadding),
-            containerStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.horizontalPadding),
-            heightAnchor.constraint(equalToConstant: Constants.viewHeight)
+            pageLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.topSpacing),
+            pageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.horizontalPadding),
+
+            stepsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.horizontalPadding),
+            stepsStackView.leadingAnchor.constraint(equalTo: pageLabel.trailingAnchor,
+                                                    constant: Constants.spacingBetween),
+            stepsStackView.centerYAnchor.constraint(equalTo: pageLabel.centerYAnchor),
+            stepsStackView.heightAnchor.constraint(equalToConstant: Constants.stepViewHeight),
+
+            poweredByStackView.topAnchor.constraint(equalTo: pageLabel.bottomAnchor,
+                                                    constant: Constants.poweredByTopSpacing),
+            poweredByStackView.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                         constant: -Constants.horizontalPadding),
+            poweredByStackView.bottomAnchor.constraint(equalTo: bottomAnchor,
+                                                       constant: -Constants.bottomSpacing)
         ])
     }
 
     func update(currentStep: Int, totalSteps: Int) {
         pageLabel.text = "\(currentStep) / \(totalSteps)"
-
-        for (index, stepView) in stepViews.enumerated() {
-            if index == currentStep - 1 {
-                stepView.backgroundColor = .blue
-            } else {
-                stepView.backgroundColor = .lightGray
-            }
+        for (index, stepView) in stepsStackView.arrangedSubviews.enumerated() {
+            stepView.backgroundColor = (index == currentStep - 1) ? .blue : .lightGray
         }
     }
 }
@@ -82,9 +106,10 @@ private extension QREngagementTopView {
     enum Constants {
         static let spacingBetween: CGFloat = 8
         static let horizontalPadding: CGFloat = 16
-        static let topSpacing: CGFloat = 8
+        static let topSpacing: CGFloat = 11
         static let bottomSpacing: CGFloat = 8
-        static let viewHeight: CGFloat = 44
-        static let segmentCornerRadius: CGFloat = 4
+        static let stepViewHeight: CGFloat = 4
+        static let poweredByTopSpacing: CGFloat = 6
+        static let poweredBySpacing: CGFloat = 4
     }
 }

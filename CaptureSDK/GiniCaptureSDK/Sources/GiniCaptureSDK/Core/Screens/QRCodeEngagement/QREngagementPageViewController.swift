@@ -118,7 +118,6 @@ public class QREngagementViewController: UIViewController {
                                          constant: Constants.topViewTopSpacing),
             topView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             topView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            topView.heightAnchor.constraint(equalToConstant: Constants.topViewHeight),
 
             bottomContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                     constant: -Constants.bottomContainerBottom),
@@ -188,7 +187,6 @@ private extension Array {
 private extension QREngagementViewController {
     enum Constants {
         static let topViewTopSpacing: CGFloat = 8
-        static let topViewHeight: CGFloat = 44
         static let bottomContainerBottom: CGFloat = 16
         static let bottomContainerSpacing: CGFloat = 16
         static let horizontalPadding: CGFloat = 16
