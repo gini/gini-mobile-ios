@@ -47,26 +47,38 @@ public class QREngagementViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var previousButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Previous", for: .normal)
+    private lazy var previousButton: MultilineTitleButton = {
+        let button = MultilineTitleButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        let title = "Previous"
+        button.setTitle(title, for: .normal)
+        button.accessibilityValue = title
         button.addTarget(self, action: #selector(handlePrevious), for: .touchUpInside)
         return button
     }()
 
-    private lazy var nextButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Next", for: .normal)
+    private lazy var nextButton: MultilineTitleButton = {
+        let button = MultilineTitleButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        let title = "Next"
+        button.setTitle(title, for: .normal)
+        button.accessibilityValue = title
         button.addTarget(self, action: #selector(handleNext), for: .touchUpInside)
         return button
     }()
 
-    private lazy var skipButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Skip", for: .normal)
+    private lazy var skipButton: MultilineTitleButton = {
+        let button = MultilineTitleButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configure(with: configuration.secondaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        let title = "Skip"
+        button.setTitle(title, for: .normal)
+        button.accessibilityValue = title
         button.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
         return button
     }()
@@ -134,12 +146,14 @@ public class QREngagementViewController: UIViewController {
     }
 
     private func setupPageViewController() {
+        // TODO: remove safe subscript. Just to avoid crash before integration
         guard let initialVC = pages[safe: viewModel.currentIndex] else { return }
         pageViewController.setViewControllers([initialVC], direction: .forward, animated: false, completion: nil)
     }
 
     private func updateUI(for index: Int) {
         topView.update(currentStep: index + 1, totalSteps: viewModel.steps.count)
+        // TODO: remove it after integration. Just to avoid crash
         previousButton.isEnabled = (index > 0)
         nextButton.isEnabled = (index < viewModel.steps.count - 1)
     }
@@ -163,6 +177,7 @@ public class QREngagementViewController: UIViewController {
     }
 }
 
+// TODO: remove safe subscript. Just to avoid crash before integration
 private extension Array {
     subscript(safe index: Int) -> Element? {
         return indices.contains(index) ? self[index] : nil
