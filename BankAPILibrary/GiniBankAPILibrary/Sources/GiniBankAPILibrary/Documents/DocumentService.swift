@@ -55,7 +55,6 @@ public protocol DocumentService: AnyObject {
     func extractions(for documentId: String,
                      completion: @escaping CompletionResult<ExtractionResult>)
 
-
     /**
      *  Retrieves a document for a given document id
      *
@@ -189,7 +188,7 @@ extension DocumentService {
             }
         })
     }
-    
+
     private func handleExtractionsResponse(resourceHandler: @escaping ResourceDataHandler<APIResource<ExtractionsContainer>>,
                                            documentId: String,
                                            completion: @escaping CompletionResult<ExtractionResult>) {
@@ -199,10 +198,10 @@ extension DocumentService {
 
         resourceHandler(resource) { result in
             switch result {
-            case .success(let extractionsContainer):
-                completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
-            case .failure(let error):
-                completion(.failure(error))
+                case .success(let extractionsContainer):
+                    completion(.success(ExtractionResult(extractionsContainer: extractionsContainer)))
+                case .failure(let error):
+                    completion(.failure(error))
             }
         }
     }
@@ -218,8 +217,9 @@ extension DocumentService {
             switch result {
             case .success:
                 self.handleExtractionsResponse(resourceHandler: { resource, completion in
-                    resourceHandler(resource, cancellationToken, completion)
-                }, documentId: document.id, completion: completion)
+                        resourceHandler(resource, cancellationToken, completion)
+                    },
+                                               documentId: document.id, completion: completion)
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -414,9 +414,9 @@ extension DocumentService {
     }
 
     private func sendFeedback<T: Encodable>(resourceHandler: ResourceDataHandler<APIResource<String>>,
-                                            documentId: String,
-                                            feedback: T,
-                                            completion: @escaping CompletionResult<Void>) {
+                                           documentId: String,
+                                           feedback: T,
+                                           completion: @escaping CompletionResult<Void>) {
         guard let json = try? JSONEncoder().encode(feedback) else {
             assertionFailure("The feedback provided cannot be encoded")
             return
@@ -429,22 +429,44 @@ extension DocumentService {
 
         resourceHandler(resource) { result in
             switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
+                case .success:
+                    completion(.success(()))
+                case .failure(let error):
+                    completion(.failure(error))
             }
         }
+    }
+
+    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                        for documentId: String,
+                        with extractions: [Extraction],
+                        completion: @escaping CompletionResult<Void>) {
+        sendFeedback(resourceHandler: resourceHandler,
+                     documentId: documentId,
+                     feedback: ExtractionsFeedback(feedback: extractions),
+                     completion: completion)
+    }
+    
+    func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
+                        for documentId: String,
+                        with extractions: [Extraction],
+                        and compoundExtractions: [String: [[Extraction]]],
+                        completion: @escaping CompletionResult<Void>) {
+        sendFeedback(resourceHandler: resourceHandler,
+                     documentId: documentId,
+                     feedback: CompoundExtractionsFeedback(extractions: extractions,
+                                                           compoundExtractions: compoundExtractions),
+                     completion: completion)
     }
 
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
                         for document: Document,
                         with extractions: [Extraction],
                         completion: @escaping CompletionResult<Void>) {
-        sendFeedback(resourceHandler: resourceHandler,
-                     documentId: document.id,
-                     feedback: ExtractionsFeedback(feedback: extractions),
-                     completion: completion)
+        submitFeedback(resourceHandler: resourceHandler,
+                       for: document.id,
+                       with: extractions,
+                       completion: completion)
     }
 
     func submitFeedback(resourceHandler: ResourceDataHandler<APIResource<String>>,
@@ -452,10 +474,11 @@ extension DocumentService {
                         with extractions: [Extraction],
                         and compoundExtractions: [String: [[Extraction]]],
                         completion: @escaping CompletionResult<Void>) {
-        sendFeedback(resourceHandler: resourceHandler,
-                     documentId: document.id,
-                     feedback: CompoundExtractionsFeedback(extractions: extractions, compoundExtractions: compoundExtractions),
-                     completion: completion)
+        submitFeedback(resourceHandler: resourceHandler,
+                       for: document.id,
+                       with: extractions,
+                       and: compoundExtractions,
+                       completion: completion)
     }
 
     func log(resourceHandler: ResourceDataHandler<APIResource<String>>,

@@ -68,14 +68,18 @@ final class DocumentPagesViewController: UIViewController {
     private var viewModel: DocumentPagesViewModelProtocol?
     private let configuration = GiniBankConfiguration.shared
     private let screenTitle: String?
+    private let errorButtonTitle: String
     private var errorView: DocumentPagesErrorView?
 
     // Constraints
     private var contentStackViewTopConstraint: NSLayoutConstraint?
 
+    private var zoomAnalyticsEventSent: Bool = false
+    
     // MARK: - Init
-    init(screenTitle: String? = nil) {
+    init(screenTitle: String? = nil, errorButtonTitle: String) {
         self.screenTitle = screenTitle
+        self.errorButtonTitle = errorButtonTitle
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -100,22 +104,20 @@ final class DocumentPagesViewController: UIViewController {
                                                 action: #selector(didTapOptionsButton))
             navigationBar.topItem?.rightBarButtonItem = optionsButton
         }
+
+        GiniAnalyticsManager.trackScreenShown(screenName: .skontoInvoicePreview)
         showProcessedImages()
         showSkontoDetailsInFooter()
     }
 
     func setError(errorType: ErrorType, tryAgainAction: @escaping () -> Void) {
-        let errorView = DocumentPagesErrorView(
-            errorType: errorType,
-            buttonTitle: NSLocalizedStringPreferredGiniBankFormat(
-                "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle",
-                comment: "Try again"),
-            buttonAction: {
-                tryAgainAction()
-                self.removeErrorView()
-            }
-        )
+        let errorView = DocumentPagesErrorView(errorType: errorType,
+                                               buttonTitle: errorButtonTitle,
+                                               buttonAction: { [weak self] in
+            self?.handleTryAgainAction(tryAgainAction)
+        })
 
+        sendAnalyticsErrorScreenShown(with: errorType)
         view.addSubview(errorView)
 
         errorView.translatesAutoresizingMaskIntoConstraints = false
@@ -128,6 +130,29 @@ final class DocumentPagesViewController: UIViewController {
         ])
 
         self.errorView = errorView
+    }
+
+    private func handleTryAgainAction(_ tryAgainAction: @escaping () -> Void) {
+        GiniAnalyticsManager.track(event: .tryAgainTapped, screenName: .skontoInvoicePreviewError)
+        tryAgainAction()
+        removeErrorView()
+    }
+
+    private func sendAnalyticsErrorScreenShown(with errorType: ErrorType) {
+        var eventProperties = [GiniAnalyticsProperty]()
+
+        let errorAnalytics = errorType.errorAnalytics()
+        eventProperties.append(GiniAnalyticsProperty(key: .errorType, value: errorAnalytics.type))
+        if let code = errorAnalytics.code {
+            eventProperties.append(GiniAnalyticsProperty(key: .errorCode, value: code))
+        }
+
+        if let reason = errorAnalytics.reason {
+            eventProperties.append(GiniAnalyticsProperty(key: .errorMessage, value: reason))
+        }
+
+        GiniAnalyticsManager.trackScreenShown(screenName: .skontoInvoicePreviewError,
+                                              properties: eventProperties)
     }
 
     private func removeErrorView() {
@@ -424,6 +449,12 @@ final class DocumentPagesViewController: UIViewController {
     }
 
     @objc private func didTapClose() {
+        var screenName = GiniAnalyticsScreen.skontoInvoicePreview
+        if errorView != nil {
+            screenName = .skontoInvoicePreviewError
+        }
+        GiniAnalyticsManager.track(event: .closeTapped,
+                                   screenName: screenName)
         dismiss(animated: true)
     }
 }
@@ -438,6 +469,11 @@ extension DocumentPagesViewController: UIScrollViewDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         adjustContentToCenter()
         adjustStackViewTopConstraint()
+        if !zoomAnalyticsEventSent {
+            zoomAnalyticsEventSent = true
+            GiniAnalyticsManager.track(event: .previewZoomed,
+                                       screenName: .skontoInvoicePreview)
+        }
     }
 }
 

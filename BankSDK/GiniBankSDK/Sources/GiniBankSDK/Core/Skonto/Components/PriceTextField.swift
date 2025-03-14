@@ -8,6 +8,7 @@ import UIKit
 
 protocol PriceTextFieldDelegate: AnyObject {
     func priceTextField(_ textField: PriceTextField, didChangePrice editedText: String)
+    func priceTextFieldTapped()
 }
 
 class PriceTextField: UITextField, UITextFieldDelegate {
@@ -16,6 +17,7 @@ class PriceTextField: UITextField, UITextFieldDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.delegate = self
+        self.addTarget(self, action: #selector(didBeginEditing), for: .editingDidBegin)
     }
 
     required init?(coder: NSCoder) {
@@ -35,6 +37,11 @@ class PriceTextField: UITextField, UITextFieldDelegate {
                 updateTextField(with: formattedText, originalText: self.text ?? "")
             }
         }
+    }
+
+    @objc private func didBeginEditing() {
+        // Notify delegate that the text field was tapped
+        priceDelegate?.priceTextFieldTapped()
     }
 
     func textField(_ textField: UITextField,

@@ -53,7 +53,6 @@ public enum GiniAnalyticsPropertyKey: String {
     case ibanDetectionLayerVisible = "iban_detection_layer_visible"
 
     case errorMessage = "error_message"
-    case documentType = "document_type"
     case errorCode = "error_code"
     case errorType = "error_type"
 
@@ -61,10 +60,13 @@ public enum GiniAnalyticsPropertyKey: String {
     case helpItems = "help_items"
     case itemTapped = "item_tapped"
     case customOnboardingTitle = "custom_onboarding_title"
-    case documentId = "document_id"
 
     case itemsChanged = "items_changed"
     case switchActive = "switch_active"
     case permissionStatus = "permission_status"
     case status
+
+    // MARK: - Skonto property keys
+    case edgeCaseType = "edge_case_type"
+    case skontoActive = "skonto_switch_active"
 }

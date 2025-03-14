@@ -27,8 +27,7 @@ class BaseIntegrationTest: XCTestCase {
      */
     func uploadAndAnalyzeDocument(fileName: String,
                                   delegate: GiniCaptureResultsDelegate,
-                                  documentType: String = "pdf",
-                                  sendTransferSummaryIfNeeded: Bool = false) {
+                                  documentType: String = "pdf") {
         guard let testDocumentData = FileLoader.loadFile(withName: fileName,
                                                          ofType: documentType) else {
             XCTFail("Error loading file: `\(fileName).\(documentType)`")
@@ -49,8 +48,7 @@ class BaseIntegrationTest: XCTestCase {
             switch result {
                 case .success(_):
                     self.handleUploadSuccess(captureDocument: captureDocument,
-                                             delegate: delegate,
-                                             sendTransferSummaryIfNeeded: sendTransferSummaryIfNeeded)
+                                             delegate: delegate)
                 case let .failure(error):
                     XCTFail(String(describing: error))
             }
@@ -66,14 +64,12 @@ class BaseIntegrationTest: XCTestCase {
      - sendTransferSummaryIfNeeded: A Boolean flag indicating whether to send a transfer summary after analysis.
      */
     func handleUploadSuccess(captureDocument: GiniCaptureDocument,
-                             delegate: GiniCaptureResultsDelegate,
-                             sendTransferSummaryIfNeeded: Bool) {
+                             delegate: GiniCaptureResultsDelegate) {
         giniHelper.giniCaptureSDKDocumentService?.startAnalysis { result in
             switch result {
                 case let .success(extractionResult):
                     self.handleAnalysisSuccess(extractionResult: extractionResult,
-                                               delegate: delegate,
-                                               sendTransferSummaryIfNeeded: sendTransferSummaryIfNeeded)
+                                               delegate: delegate)
                 case let .failure(error):
                     XCTFail(String(describing: error))
             }
@@ -89,8 +85,7 @@ class BaseIntegrationTest: XCTestCase {
      - sendTransferSummaryIfNeeded: A Boolean flag indicating whether to send a transfer summary after analysis.
      */
     func handleAnalysisSuccess(extractionResult: ExtractionResult,
-                               delegate: GiniCaptureResultsDelegate,
-                               sendTransferSummaryIfNeeded: Bool) {
+                               delegate: GiniCaptureResultsDelegate) {
         let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: extractionResult.extractions.compactMap {
             guard let name = $0.name else { return nil }
             return (name, $0)
@@ -98,25 +93,15 @@ class BaseIntegrationTest: XCTestCase {
 
         let analysisResult = AnalysisResult(extractions: extractions,
                                             lineItems: extractionResult.lineItems,
+                                            skontoDiscounts: extractionResult.skontoDiscounts,
                                             images: [],
                                             document: self.giniHelper.giniCaptureSDKDocumentService?.document,
                                             candidates: [:])
 
         self.analysisExtractionResult = extractionResult
-        delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
         GiniBankConfiguration.shared.lineItems = extractionResult.lineItems
-
-        if sendTransferSummaryIfNeeded {
-            // Send transfer summary for the extractions the user confirmed
-            GiniBankConfiguration.shared.sendTransferSummary(
-                paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
-                paymentReference: extractions["paymentReference"]?.value ?? "",
-                paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
-                iban: extractions["iban"]?.value ?? "",
-                bic: extractions["bic"]?.value ?? "",
-                amountToPay: ExtractionAmount(value: 950.00, currency: .EUR)
-            )
-        }
+        GiniBankConfiguration.shared.skontoDiscounts = extractionResult.skontoDiscounts
+        delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
     }
 
     /**

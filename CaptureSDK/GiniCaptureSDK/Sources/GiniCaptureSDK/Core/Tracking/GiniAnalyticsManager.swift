@@ -5,9 +5,10 @@
 //
 
 import UIKit
+import GiniBankAPILibrary
 
 public final class GiniAnalyticsManager {
-    private static var amplitudeService: AmplitudeService? {
+    private static var analyticsService: GiniAnalyticsService? {
         didSet {
             handleAnalyticsSDKsInit()
         }
@@ -21,12 +22,13 @@ public final class GiniAnalyticsManager {
     private static var giniClientID: String?
     private static var eventId: Int64 = 0
 
-    public static func initializeAnalytics(with configuration: GiniAnalyticsConfiguration) {
+    public static func initializeAnalytics(with configuration: GiniAnalyticsConfiguration,
+                                           analyticsAPIService: AnalyticsServiceProtocol?) {
         guard configuration.userJourneyAnalyticsEnabled,
               GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
 
         giniClientID = configuration.clientID
-        initializeAmplitude(with: configuration.amplitudeApiKey)
+        analyticsService = GiniAnalyticsService(analyticsAPIService: analyticsAPIService)
     }
 
     public static func cleanManager() {
@@ -42,14 +44,8 @@ public final class GiniAnalyticsManager {
         sessionId = Date.berlinTimestamp()
     }
 
-    // MARK: Initialization
-
-    private static func initializeAmplitude(with apiKey: String?) {
-        amplitudeService = AmplitudeService(apiKey: apiKey)
-    }
-
     private static func handleAnalyticsSDKsInit() {
-        guard amplitudeService != nil else { return }
+        guard analyticsService != nil else { return }
         userProperties[.captureSDKVersion] = GiniCapture.versionString
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
@@ -97,7 +93,7 @@ public final class GiniAnalyticsManager {
         eventsQueue.append(queuedEvent)
 
         // Process the event queue if AmplitudeService is initialized
-        if amplitudeService != nil {
+        if analyticsService != nil {
             processEventsQueue()
         }
     }
@@ -113,7 +109,7 @@ public final class GiniAnalyticsManager {
             }
         }
 
-        amplitudeService?.trackEvents(baseEvents)
+        analyticsService?.trackEvents(baseEvents)
     }
 
     /// Converts a `GiniQueuedAnalyticsEvent` to a `AmplitudeBaseEvent`

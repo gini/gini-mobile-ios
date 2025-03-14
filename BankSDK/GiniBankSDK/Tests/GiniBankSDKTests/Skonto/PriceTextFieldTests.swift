@@ -8,7 +8,6 @@ import XCTest
 @testable import GiniBankSDK
 
 class PriceTextFieldTests: XCTestCase, PriceTextFieldDelegate {
-
     var priceTextField: PriceTextField!
     var priceTextChangeExpectation: XCTestExpectation?
 
@@ -27,6 +26,10 @@ class PriceTextFieldTests: XCTestCase, PriceTextFieldDelegate {
 
     func priceTextField(_ textField: PriceTextField, didChangePrice editedText: String) {
         priceTextChangeExpectation?.fulfill()
+    }
+
+    func priceTextFieldTapped() {
+        // Nothing to do here
     }
 
     func testSingleDigitInput() {
