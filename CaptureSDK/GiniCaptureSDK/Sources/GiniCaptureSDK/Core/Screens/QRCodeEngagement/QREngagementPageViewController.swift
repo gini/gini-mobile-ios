@@ -53,7 +53,7 @@ public class QREngagementViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        let title = "Previous"
+        let title = "Zurück"
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
         button.addTarget(self, action: #selector(handlePrevious), for: .touchUpInside)
@@ -65,7 +65,7 @@ public class QREngagementViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        let title = "Next"
+        let title = "Weiter"
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
         button.addTarget(self, action: #selector(handleNext), for: .touchUpInside)
@@ -77,7 +77,7 @@ public class QREngagementViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.secondaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        let title = "Skip"
+        let title = "Zahlung fortsetzen"
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
         button.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
