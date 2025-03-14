@@ -6,7 +6,7 @@
 
 import UIKit
 
-public class QREngagementTopView: UIView {
+class QREngagementTopView: UIView {
     private let configuration = GiniConfiguration.shared
 
     private lazy var pageLabel: UILabel = {
@@ -28,14 +28,13 @@ public class QREngagementTopView: UIView {
         return stack
     }()
 
-    public override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
 
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupUI()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupUI() {
@@ -66,7 +65,7 @@ public class QREngagementTopView: UIView {
         ])
     }
 
-    public func update(currentStep: Int, totalSteps: Int) {
+    func update(currentStep: Int, totalSteps: Int) {
         pageLabel.text = "\(currentStep) / \(totalSteps)"
 
         for (index, stepView) in stepViews.enumerated() {

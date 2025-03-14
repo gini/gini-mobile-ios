@@ -6,7 +6,7 @@
 
 import UIKit
 
-public enum QREngagementStep {
+enum QREngagementStep {
     case first
     case second
     case third
