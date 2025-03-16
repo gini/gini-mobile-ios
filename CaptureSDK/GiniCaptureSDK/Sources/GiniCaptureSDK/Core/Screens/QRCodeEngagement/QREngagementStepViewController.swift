@@ -19,7 +19,6 @@ class QREngagementStepViewController: UIViewController {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        // TODO: check title2Bold in configuration
         label.font = configuration.textStyleFonts[.title2Bold]
         label.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
                                     dark: UIColor.GiniCapture.light1).uiColor()
