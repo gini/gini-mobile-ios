@@ -8,7 +8,7 @@ import UIKit
 
 // TODO: remove public after tests & integration
 public class QREngagementViewController: UIViewController {
-    var viewModel: QREngagementViewModel
+    private var viewModel: QREngagementViewModel
     private let configuration = GiniConfiguration.shared
 
     private lazy var pageViewController: UIPageViewController = {
