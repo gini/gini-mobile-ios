@@ -21,7 +21,8 @@ class QREngagementStepViewController: UIViewController {
         let label = UILabel()
         // TODO: check title2Bold in configuration
         label.font = configuration.textStyleFonts[.title2Bold]
-        label.textColor = .black
+        label.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                    dark: UIColor.GiniCapture.light1).uiColor()
         label.numberOfLines = 0
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -31,7 +32,8 @@ class QREngagementStepViewController: UIViewController {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = configuration.textStyleFonts[.callout]
-        label.textColor = .black
+        label.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                    dark: UIColor.GiniCapture.light1).uiColor()
         label.numberOfLines = 0
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +51,8 @@ class QREngagementStepViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light1,
+                                         dark: UIColor.GiniCapture.dark3).uiColor()
 
         setupUI()
         configure(with: step)

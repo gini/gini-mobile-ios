@@ -3,6 +3,16 @@
     {
       "filename" : "QR-code popups1.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "QR-code popups1 1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

@@ -93,7 +93,8 @@ public class QREngagementViewController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light1,
+                                         dark: UIColor.GiniCapture.dark3).uiColor()
         setupViews()
         setupPageViewController()
         updateUI(for: viewModel.currentIndex)

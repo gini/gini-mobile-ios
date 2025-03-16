@@ -12,7 +12,8 @@ class QREngagementTopView: UIView {
     private lazy var pageLabel: UILabel = {
         let label = UILabel()
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .black
+        label.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                    dark: UIColor.GiniCapture.light1).uiColor()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -28,7 +29,9 @@ class QREngagementTopView: UIView {
             let view = UIView()
             view.layer.cornerRadius = Constants.stepViewHeight / 2
             view.clipsToBounds = true
-            view.backgroundColor = .lightGray
+            view.backgroundColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                             dark: UIColor.GiniCapture.light1
+                                             ).uiColor().withAlphaComponent(0.3)
             stack.addArrangedSubview(view)
         }
         return stack
@@ -71,6 +74,7 @@ class QREngagementTopView: UIView {
     }
 
     private func setupUI() {
+        backgroundColor = .clear
         addSubview(pageLabel)
         addSubview(stepsStackView)
         addSubview(poweredByStackView)
@@ -96,8 +100,14 @@ class QREngagementTopView: UIView {
 
     func update(currentStep: Int, totalSteps: Int) {
         pageLabel.text = "\(currentStep) / \(totalSteps)"
+        let stepColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                  dark: UIColor.GiniCapture.light1
+                                  ).uiColor().withAlphaComponent(0.3)
+        let selectedStepColor = GiniColor(light: UIColor.GiniCapture.accent1,
+                                          dark: UIColor.GiniCapture.accent1
+                                          ).uiColor()
         for (index, stepView) in stepsStackView.arrangedSubviews.enumerated() {
-            stepView.backgroundColor = (index == currentStep - 1) ? .blue : .lightGray
+            stepView.backgroundColor = (index == currentStep - 1) ? selectedStepColor : stepColor
         }
     }
 }
