@@ -61,6 +61,7 @@ enum QREngagementStep {
 
         var wordsToBold: [String] = []
         if self == .first {
+            // TODO: PP-1043 rework for localization strings
             wordsToBold = ["Rechnungen", "Zahlungsformulare", "Bildschirme", "PDFs", "GIFs"]
         }
 

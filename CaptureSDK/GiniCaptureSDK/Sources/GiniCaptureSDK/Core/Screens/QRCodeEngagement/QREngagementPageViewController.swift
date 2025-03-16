@@ -51,6 +51,7 @@ public class QREngagementViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        // TODO: PP-1043 localization strings
         let title = "Zurück"
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
@@ -63,6 +64,7 @@ public class QREngagementViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        // TODO: PP-1043 localization strings
         let title = "Weiter"
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
@@ -75,6 +77,7 @@ public class QREngagementViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.secondaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        // TODO: PP-1043 localization strings
         let title = "Zahlung fortsetzen"
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
@@ -159,8 +162,8 @@ public class QREngagementViewController: UIViewController {
 
     private func updateUI(for index: Int) {
         topView.update(currentStep: index + 1, totalSteps: viewModel.steps.count)
-        // TODO: remove it after integration. Just to avoid crash
         previousButton.isHidden = index == 0
+        // TODO: remove it after integration. Just to avoid crash
         previousButton.isEnabled = (index > 0)
         nextButton.isEnabled = (index < viewModel.steps.count - 1)
     }
