@@ -168,7 +168,6 @@ public class QREngagementViewController: UIViewController {
     @objc private func handleNext() {
         let newIndex = min(viewModel.currentIndex + 1, pages.count - 1)
         guard newIndex != viewModel.currentIndex else { return }
-        guard newIndex != viewModel.currentIndex else { return }
         pageViewController.setViewControllers([pages[newIndex]], direction: .forward, animated: true, completion: nil)
         viewModel.setPage(index: newIndex)
     }
