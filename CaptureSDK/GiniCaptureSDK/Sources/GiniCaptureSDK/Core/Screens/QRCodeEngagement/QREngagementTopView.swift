@@ -42,7 +42,8 @@ class QREngagementTopView: UIView {
         label.text = "Powered by"
         // TODO: body-xs
         label.font = configuration.textStyleFonts[.body]
-        label.textColor = .darkGray
+        label.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
+                                    dark: UIColor.GiniCapture.dark7).uiColor()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
