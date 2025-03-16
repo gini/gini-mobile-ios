@@ -151,8 +151,10 @@ public class QREngagementViewController: UIViewController {
     }
 
     private func setupPageViewController() {
-        let initialVC = pages[viewModel.currentIndex]
-        pageViewController.setViewControllers([initialVC], direction: .forward, animated: false, completion: nil)
+        pageViewController.setViewControllers([pages[viewModel.currentIndex]],
+                                              direction: .forward,
+                                              animated: false,
+                                              completion: nil)
     }
 
     private func updateUI(for index: Int) {
