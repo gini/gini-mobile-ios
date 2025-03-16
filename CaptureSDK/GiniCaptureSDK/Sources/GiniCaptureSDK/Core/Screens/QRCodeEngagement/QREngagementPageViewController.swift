@@ -151,8 +151,7 @@ public class QREngagementViewController: UIViewController {
     }
 
     private func setupPageViewController() {
-        // TODO: remove safe subscript. Just to avoid crash before integration
-        guard let initialVC = pages[safe: viewModel.currentIndex] else { return }
+        let initialVC = pages[viewModel.currentIndex]
         pageViewController.setViewControllers([initialVC], direction: .forward, animated: false, completion: nil)
     }
 
@@ -166,27 +165,21 @@ public class QREngagementViewController: UIViewController {
 
     @objc private func handleNext() {
         let newIndex = min(viewModel.currentIndex + 1, pages.count - 1)
-        guard newIndex != viewModel.currentIndex, let nextVC = pages[safe: newIndex] else { return }
-        pageViewController.setViewControllers([nextVC], direction: .forward, animated: true, completion: nil)
+        guard newIndex != viewModel.currentIndex else { return }
+        guard newIndex != viewModel.currentIndex else { return }
+        pageViewController.setViewControllers([pages[newIndex]], direction: .forward, animated: true, completion: nil)
         viewModel.setPage(index: newIndex)
     }
 
     @objc private func handlePrevious() {
         let newIndex = max(viewModel.currentIndex - 1, 0)
-        guard newIndex != viewModel.currentIndex, let prevVC = pages[safe: newIndex] else { return }
-        pageViewController.setViewControllers([prevVC], direction: .reverse, animated: true, completion: nil)
+        guard newIndex != viewModel.currentIndex else { return }
+        pageViewController.setViewControllers([pages[newIndex]], direction: .reverse, animated: true, completion: nil)
         viewModel.setPage(index: newIndex)
     }
 
     @objc private func handleSkip() {
         // TODO: screen close
-    }
-}
-
-// TODO: remove safe subscript. Just to avoid crash before integration
-private extension Array {
-    subscript(safe index: Int) -> Element? {
-        return indices.contains(index) ? self[index] : nil
     }
 }
 
