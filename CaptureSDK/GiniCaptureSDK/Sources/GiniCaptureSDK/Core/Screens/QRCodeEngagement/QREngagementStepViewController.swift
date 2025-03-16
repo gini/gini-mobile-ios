@@ -66,8 +66,8 @@ class QREngagementStepViewController: UIViewController {
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.imageTopSpacing),
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
-            imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize),
+            imageView.widthAnchor.constraint(equalToConstant: Constants.imageWidth),
+            imageView.heightAnchor.constraint(equalToConstant: Constants.imageHeight),
 
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: Constants.titleTopSpacing),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizontalPadding),
@@ -93,11 +93,12 @@ class QREngagementStepViewController: UIViewController {
 
 private extension QREngagementStepViewController {
     enum Constants {
-        static let imageTopSpacing: CGFloat = 40
-        static let imageSize: CGFloat = 160
-        static let titleTopSpacing: CGFloat = 24
-        static let descriptionTopSpacing: CGFloat = 12
-        static let descriptionBottomPadding: CGFloat = 40
+        static let imageTopSpacing: CGFloat = 24
+        static let imageHeight: CGFloat = 160
+        static let imageWidth: CGFloat = 142
+        static let titleTopSpacing: CGFloat = 32
+        static let descriptionTopSpacing: CGFloat = 16
+        static let descriptionBottomPadding: CGFloat = 16
         static let horizontalPadding: CGFloat = 16
     }
 }

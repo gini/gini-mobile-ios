@@ -192,8 +192,8 @@ private extension Array {
 
 private extension QREngagementViewController {
     enum Constants {
-        static let topViewTopSpacing: CGFloat = 8
-        static let bottomContainerBottom: CGFloat = 16
+        static let topViewTopSpacing: CGFloat = 0
+        static let bottomContainerBottom: CGFloat = 24
         static let bottomContainerSpacing: CGFloat = 12
         static let horizontalPadding: CGFloat = 16
         static let pageContainerSpacing: CGFloat = 8
