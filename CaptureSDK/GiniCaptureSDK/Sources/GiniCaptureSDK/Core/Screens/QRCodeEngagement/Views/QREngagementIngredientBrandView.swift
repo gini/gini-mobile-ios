@@ -49,7 +49,7 @@ class QREngagementIngredientBrandView: UIView {
     private func setupUI() {
         addSubview(ingredientBrandStackView)
         NSLayoutConstraint.activate([
-            ingredientBrandStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.topSpacing),
+            ingredientBrandStackView.topAnchor.constraint(equalTo: topAnchor),
             ingredientBrandStackView.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                          constant: -Constants.horizontalPadding),
             ingredientBrandStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
@@ -60,7 +60,6 @@ class QREngagementIngredientBrandView: UIView {
 private extension QREngagementIngredientBrandView {
     enum Constants {
         static let horizontalPadding: CGFloat = 16
-        static let topSpacing: CGFloat = 6
         static let ingredientBrandSpacing: CGFloat = 4
     }
 }

@@ -23,7 +23,7 @@ class QREngagementProgressView: UIView {
         stack.axis = .horizontal
         stack.alignment = .fill
         stack.distribution = .fillEqually
-        stack.spacing = Constants.spacingBetween
+        stack.spacing = Constants.spacingBetweenSteps
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
@@ -49,7 +49,7 @@ class QREngagementProgressView: UIView {
             stepsStackView.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                      constant: -Constants.horizontalPadding),
             stepsStackView.leadingAnchor.constraint(equalTo: pageLabel.trailingAnchor,
-                                                    constant: Constants.spacingBetween),
+                                                    constant: Constants.spacingBetweenSteps),
             stepsStackView.centerYAnchor.constraint(equalTo: pageLabel.centerYAnchor),
             stepsStackView.heightAnchor.constraint(equalToConstant: Constants.stepViewHeight)
         ])
@@ -79,7 +79,7 @@ class QREngagementProgressView: UIView {
 
 private extension QREngagementProgressView {
     enum Constants {
-        static let spacingBetween: CGFloat = 8
+        static let spacingBetweenSteps: CGFloat = 5
         static let horizontalPadding: CGFloat = 16
         static let topSpacing: CGFloat = 11
         static let bottomSpacing: CGFloat = 6
