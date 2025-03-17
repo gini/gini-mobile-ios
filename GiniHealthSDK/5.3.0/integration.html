@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Integration  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+
+    <a title="Integration  Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="index.html">
+        <img class="logo-icon" src="img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="index.html">GiniHealthSDK Reference</a>
+      <img class="carat" src="img/carat.png" />
+      Integration  Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="testing.html">Testing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CancellationToken.html">CancellationToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DefaultDocumentService.html">DefaultDocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/Extraction.html">Extraction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/Extraction/Box.html">– Box</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/Extraction/Candidate.html">– Candidate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ExtractionResult.html">ExtractionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniHealth.html">GiniHealth</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniHealth/Constants.html">– Constants</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniHealthConfiguration.html">GiniHealthConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/PaymentComponentsController.html">PaymentComponentsController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Global%20Variables.html#/s:13GiniHealthSDK0aB10SDKVersionSSvp">GiniHealthSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ExtractionType.html">ExtractionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/GiniError.html">GiniError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/GiniHealthError.html">GiniHealthError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/GiniHealthImage.html">GiniHealthImage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/LogLevel.html">LogLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/PaymentReviewScreenEventType.html">PaymentReviewScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/PaymentState.html">PaymentState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/PlatformSupported.html">PlatformSupported</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Extensions.html#/AppKit">AppKit</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/GiniHealthAPILibrary.html">GiniHealthAPILibrary</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/GiniHealthAPILibrary/IngredientBrandTypeEnum.html">– IngredientBrandTypeEnum</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/GiniHealthAPILibrary/CommunicationToneEnum.html">– CommunicationToneEnum</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:13GiniHealthSDK04giniB6BundleSo8NSBundleCyF">giniHealthBundle()</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniErrorProtocol.html">GiniErrorProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniHealthDelegate.html">GiniHealthDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Protocols.html#/s:13GiniHealthSDK0aB16TrackingDelegateP">GiniHealthTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/PaymentComponentsConfigurationProvider.html">PaymentComponentsConfigurationProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/PaymentComponentsStringsProvider.html">PaymentComponentsStringsProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/PaymentReviewScreenTrackingDelegate.html">PaymentReviewScreenTrackingDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/CompositeDocument.html">CompositeDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/CompositeDocumentInfo.html">CompositeDocumentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DataForReview.html">DataForReview</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Document.html">Document</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Document/Layout.html">– Layout</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Document/Progress.html">– Progress</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Document/Origin.html">– Origin</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Document/SourceClassification.html">– SourceClassification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Document/Page.html">– Page</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Document/Links.html">– Links</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Document/DocType.html">– DocType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Document/TypeV2.html">– TypeV2</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Document/Metadata.html">– Metadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ExtractionsContainer.html">ExtractionsContainer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/MinAppVersions.html">MinAppVersions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PartialDocumentInfo.html">PartialDocumentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PaymentInfo.html">PaymentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PaymentProvider.html">PaymentProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ProviderColors.html">ProviderColors</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/TrackingEvent.html">TrackingEvent</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Type Aliases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:13GiniHealthSDK16CompletionResulta">CompletionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:13GiniHealthSDK16PaymentProvidersa">PaymentProviders</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            
+            <h1 id='integration' class='heading'>Integration</h1>
+
+<p>The Gini Health SDK for iOS provides all the UI and functionality needed to use the Gini Health API in your app to extract payment and health information from invoices and from digital payment orders. The payment information can be reviewed and then the invoice/orders can be paid using any available payment provider app (e.g., banking app).</p>
+
+<p>The Gini Health API provides an information extraction service for analyzing health invoices. Specifically, it extracts information such as the document sender or the payment relevant information (amount to pay, IBAN, etc.). In addition it also provides a secure channel for sharing payment related information between clients. </p>
+
+<blockquote>
+<p>⚠️  <strong>Important:</strong>
+For supporting each payment provider you need to specify <code>LSApplicationQueriesSchemes</code> in your <code>Info.plist</code> file. App schemes for specification will be provided by Gini.</p>
+</blockquote>
+<h2 id='ginihealthapi-initialization' class='heading'>GiniHealthAPI initialization</h2>
+
+<blockquote>
+<p>⚠️  <strong>Important:</strong>
+You should have received Gini Health API client credentials from us. Please get in touch with us in case you don&rsquo;t have them.</p>
+</blockquote>
+
+<p>You can easy initialize <code>GiniHealthAPI</code> with the client credentials:</p>
+<pre class="highlight swift"><code><span class="kd">private</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">merchant</span> <span class="o">=</span> <span class="kt">GiniHealth</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="n">clientID</span><span class="p">,</span> <span class="nv">secret</span><span class="p">:</span> <span class="n">clientPassword</span><span class="p">,</span> <span class="nv">domain</span><span class="p">:</span> <span class="n">clientDomain</span><span class="p">)</span>
+</code></pre>
+
+<p>If you want to use a transparent proxy with your own authentication you can specify your own domain and add <code>AlternativeTokenSource</code> protocol implementation:</p>
+<pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">apiLib</span> <span class="o">=</span>  <span class="kt">GiniHealthAPI</span><span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">customApiDomain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
+                                 <span class="nv">alternativeTokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">)</span>
+                                 <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+</code></pre>
+
+<p>The token your provide will be added as a bearer token to all api.custom.net requests.</p>
+
+<blockquote>
+<p>⚠️  <strong>Important:</strong></p>
+</blockquote>
+
+<p>When you implement <code>AlternativeTokenSource</code> protocol make sure that you call the completion in one specific thread</p>
+<pre class="highlight swift"><code><span class="kd">private</span> <span class="kd">class</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">:</span> <span class="kt">AlternativeTokenSource</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">fetchToken</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Token</span><span class="p">,</span> <span class="kt">GiniError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// fetch token from any thread</span>
+        <span class="c1">// then call the completion in one specific thread</span>
+        <span class="nf">completion</span><span class="p">(</span><span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="kt">Token</span><span class="p">()))</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<h2 id='certificate-pinning-optional' class='heading'>Certificate pinning (optional)</h2>
+
+<p>If you want to use <em>Certificate pinning</em>, provide metadata for the upload process, you can pass your public key pinning configuration as follows:</p>
+<pre class="highlight swift"><code>    <span class="kd">private</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">health</span> <span class="o">=</span> <span class="kt">GiniHealth</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="n">clientID</span><span class="p">,</span> <span class="nv">secret</span><span class="p">:</span> <span class="n">clientPassword</span><span class="p">,</span> <span class="nv">domain</span><span class="p">:</span> <span class="n">clientDomain</span><span class="p">,</span> <span class="nv">pinningConfig</span><span class="p">:</span> <span class="p">[</span><span class="s">"PinnedDomains"</span> <span class="p">:</span> <span class="p">[</span><span class="s">"PublicKeyHashes"</span><span class="p">]])</span>
+</code></pre>
+<h2 id='ginihealth-initialization' class='heading'>GiniHealth initialization</h2>
+
+<p>Now that the <code>GiniHealthAPI</code> has been initialized, you can initialize <code><a href="Classes/GiniHealth.html">GiniHealth</a></code>:</p>
+<pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">healthSDK</span> <span class="o">=</span> <span class="kt">GiniHealth</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">giniApiLib</span><span class="p">)</span>
+</code></pre>
+<h2 id='document-upload' class='heading'>Document upload</h2>
+
+<p>For the document upload if you plan to do it with <code><a href="Classes/GiniHealth.html">GiniHealth</a></code>. First you need get document service and create partial document.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">documentService</span><span class="p">:</span> <span class="kt">DefaultDocumentService</span> <span class="o">=</span> <span class="n">healthSDK</span><span class="o">.</span><span class="nf">documentService</span><span class="p">()</span>
+<span class="n">documentService</span><span class="o">.</span><span class="nf">createDocument</span><span class="p">(</span><span class="nv">fileName</span><span class="p">:</span><span class="s">"ginipay-partial"</span><span class="p">,</span>
+                               <span class="nv">docType</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span>
+                               <span class="nv">type</span><span class="p">:</span> <span class="o">.</span><span class="nf">partial</span><span class="p">(</span><span class="n">documentData</span><span class="p">),</span>
+                               <span class="nv">metadata</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+
+<p>The method above returns the completion block with partial <code><a href="Structs/Document.html">Document</a></code> in success case.</p>
+
+<p>After receiving the partial document in completion you can get actual composite document:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">partialDocs</span> <span class="o">=</span> <span class="p">[</span><span class="kt">PartialDocumentInfo</span><span class="p">(</span><span class="nv">document</span><span class="p">:</span> <span class="n">createdDocument</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">document</span><span class="p">)]</span>
+<span class="k">self</span><span class="o">.</span><span class="n">healthSDK</span><span class="o">.</span><span class="n">documentService</span>
+            <span class="o">.</span><span class="nf">createDocument</span><span class="p">(</span><span class="nv">fileName</span><span class="p">:</span> <span class="s">"ginipay-composite"</span><span class="p">,</span>
+                            <span class="nv">docType</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span>
+                            <span class="nv">type</span><span class="p">:</span> <span class="o">.</span><span class="nf">composite</span><span class="p">(</span><span class="kt">CompositeDocumentInfo</span><span class="p">(</span><span class="nv">partialDocuments</span><span class="p">:</span> <span class="n">partialDocs</span><span class="p">)),</span>
+                            <span class="nv">metadata</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+
+</code></pre>
+<h2 id='check-which-documents-invoices-are-payable' class='heading'>Check which documents/invoices are payable</h2>
+
+<p>We provide 2 ways of doing this.</p>
+
+<ol>
+<li><p>GiniHealth provides a variable for checking if the document is payable or not. You can look for <code>payment_state</code> of the document/invoice. The document/invoice is payable if <code>payment_state</code> is <code>Payable</code> </p></li>
+<li><p>GiniHealth provides a method for checking if the document is payable or not.</p></li>
+</ol>
+<pre class="highlight swift"><code><span class="n">healthSDK</span><span class="o">.</span><span class="nf">checkIfDocumentIsPayable</span><span class="p">(</span><span class="nv">docId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                                   <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">GiniHealthError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+</code></pre>
+
+<p>The method returns success and <code>true</code> value if <code>payment_state</code> was extracted.</p>
+
+<blockquote>
+
+<ul>
+<li>We recommend using a <code>DispatchGroup</code> for these requests, waiting till all of them are ready, and then, reloading the list.</li>
+</ul>
+</blockquote>
+<pre class="highlight swift"><code><span class="k">for</span> <span class="n">giniDocument</span> <span class="k">in</span> <span class="n">dataDocuments</span> <span class="p">{</span>
+   <span class="n">dispatchGroup</span><span class="o">.</span><span class="nf">enter</span><span class="p">()</span>
+   <span class="k">self</span><span class="o">.</span><span class="n">health</span><span class="o">.</span><span class="nf">checkIfDocumentIsPayable</span><span class="p">(</span><span class="nv">docId</span><span class="p">:</span> <span class="n">createdDocument</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="n">result</span> <span class="k">in</span>
+       <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+       <span class="c1">// ...</span>
+       <span class="p">}</span>
+       <span class="k">self</span><span class="p">?</span><span class="o">.</span><span class="n">dispatchGroup</span><span class="o">.</span><span class="nf">leave</span><span class="p">()</span>
+   <span class="p">})</span>
+<span class="p">}</span>
+<span class="n">dispatchGroup</span><span class="o">.</span><span class="nf">notify</span><span class="p">(</span><span class="nv">queue</span><span class="p">:</span> <span class="o">.</span><span class="n">main</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Reload List</span>
+<span class="p">}</span>
+</code></pre>
+<h2 id='check-if-the-document-contains-multiple-invoices' class='heading'>Check if the document contains multiple invoices</h2>
+
+<p>GiniHealth provides a method to check whether a document contains multiple invoices:</p>
+<pre class="highlight swift"><code><span class="n">healthSDK</span><span class="o">.</span><span class="nf">checkIfDocumentContainsMultipleInvoices</span><span class="p">(</span><span class="nv">docId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">GiniHealthError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+</code></pre>
+
+<p>The method returns <code>true</code> in the success case if the <code>contains_multiple_docs</code> field was extracted and its value is <code>true</code>.</p>
+
+<blockquote>
+
+<ul>
+<li>Recommendation: Use this check in a specific order. First, call the <code>checkIfDocumentIsPayable</code> method, and then call <code>checkIfDocumentContainsMultipleInvoices</code> method.</li>
+</ul>
+</blockquote>
+<h2 id='delete-a-batch-of-documents' class='heading'>Delete a batch of documents</h2>
+
+<p>GiniHealth provides a method to delete multiple documents at once:</p>
+<pre class="highlight swift"><code><span class="n">healthSDK</span><span class="o">.</span><span class="nf">deleteDocuments</span><span class="p">(</span><span class="nv">documentIds</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">GiniError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+</code></pre>
+
+<p>This method enables clients to delete multiple documents simultaneously by passing an array of document IDs. Upon success, it returns an array of successfully deleted documents. In case of an error, a specific error message is provided.</p>
+<h2 id='integrate-the-payment-flow' class='heading'>Integrate the Payment flow</h2>
+
+<p>We provide a custom payment flow for the users to pay the invoice/document/digital payment  .
+Please follow the steps below for the payment component integration.</p>
+<h3 id='1-create-an-instance-of-the-code-ginihealth-code' class='heading'>1. Create an instance of the <code><a href="Classes/GiniHealth.html">GiniHealth</a></code>.</h3>
+<pre class="highlight swift"><code>    <span class="kd">private</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">health</span> <span class="o">=</span> <span class="kt">GiniHealth</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="n">clientID</span><span class="p">,</span> <span class="nv">secret</span><span class="p">:</span> <span class="n">clientPassword</span><span class="p">,</span> <span class="nv">domain</span><span class="p">:</span> <span class="n">clientDomain</span><span class="p">)</span>
+    <span class="n">health</span><span class="o">.</span><span class="n">paymentDelegate</span> <span class="o">=</span> <span class="k">self</span> <span class="c1">// where self is your viewController</span>
+</code></pre>
+
+<ul>
+<li><code>paymentDelegate</code> is a delegate for <code><a href="Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a></code></li>
+<li><p><code><a href="Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a></code> provides information when the <code><a href="Classes/PaymentComponentsController.html">PaymentComponentsController</a></code> is loading.
+You can show/hide an <code>UIActivityIndicator</code> based on that.</p></li>
+<li><p><code><a href="Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a></code> provides completion handlers when <code><a href="Classes/PaymentComponentsController.html">PaymentComponentsController</a></code> fetched successfully payment providers or when it failed with an error.</p></li>
+</ul>
+
+<blockquote>
+<p><strong>Note:</strong>
+It should be sufficient to call paymentComponentsController.loadPaymentProviderApps() only once when your app starts.</p>
+
+<ul>
+<li>We effectively handle situations where there are no payment providers available.</li>
+<li>Based on the payment provider&rsquo;s colors, the <code>UIView</code> will automatically change its color.</li>
+</ul>
+</blockquote>
+<h3 id='2-start-the-payment-flow' class='heading'>2. Start the Payment Flow</h3>
+
+<p>Once you initialize the healthSDK, there is a function that you should call when users taps on your CTA pay button:</p>
+<pre class="highlight swift"><code><span class="n">health</span><span class="o">.</span><span class="nf">startPaymentFlow</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="n">documentId</span><span class="p">,</span> <span class="nv">paymentInfo</span><span class="p">:</span> <span class="n">paymentInfo</span><span class="p">,</span> <span class="nv">navigationController</span><span class="p">:</span> <span class="n">navigationController</span><span class="p">,</span> <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="k">self</span><span class="p">)</span>
+<span class="kt">Initiates</span> <span class="n">the</span> <span class="n">payment</span> <span class="n">flow</span> <span class="k">for</span> <span class="n">a</span> <span class="n">specified</span> <span class="n">document</span> <span class="n">and</span> <span class="n">payment</span> <span class="n">information</span><span class="o">.</span>
+
+         <span class="o">-</span> <span class="kt">Parameters</span><span class="p">:</span>
+           <span class="o">-</span> <span class="nv">documentId</span><span class="p">:</span> <span class="kt">An</span> <span class="kd">optional</span> <span class="n">identifier</span> <span class="k">for</span> <span class="n">the</span> <span class="n">document</span> <span class="n">associated</span> <span class="n">with</span> <span class="n">the</span> <span class="n">payment</span> <span class="n">flow</span><span class="o">.</span>
+           <span class="o">-</span> <span class="nv">paymentInfo</span><span class="p">:</span> <span class="kt">An</span> <span class="kd">optional</span> <span class="err">`</span><span class="kt">PaymentInfo</span><span class="err">`</span> <span class="n">object</span> <span class="n">containing</span> <span class="n">the</span> <span class="n">payment</span> <span class="n">details</span><span class="o">.</span>
+           <span class="o">-</span> <span class="nv">navigationController</span><span class="p">:</span> <span class="kt">The</span> <span class="err">`</span><span class="kt">UINavigationController</span><span class="err">`</span> <span class="n">used</span> <span class="n">to</span> <span class="n">present</span> <span class="n">subsequent</span> <span class="n">view</span> <span class="n">controllers</span> <span class="k">in</span> <span class="n">the</span> <span class="n">payment</span> <span class="n">flow</span><span class="o">.</span>
+           <span class="o">-</span> <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="kt">The</span> <span class="err">`</span><span class="kt">GiniHealthTrackingDelegate</span><span class="err">`</span> <span class="n">provides</span> <span class="n">event</span> <span class="n">information</span> <span class="n">that</span> <span class="n">happens</span> <span class="n">on</span> <span class="kt">PaymentReviewScreen</span><span class="o">.</span>
+</code></pre>
+<h3 id='optional' class='heading'>Optional:</h3>
+
+<p>We also provide trust marker information for creating a subview that displays the available banks and their respective numbers. See Figma <a href="https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12906-13711&node-type=instance&t=fLL9Yl3dPpmV51U0-0">here</a>
+For that please call next method:</p>
+<pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">logos</span> <span class="o">=</span> <span class="n">health</span><span class="o">.</span><span class="nf">fetchBankLogos</span><span class="p">()</span><span class="o">.</span><span class="n">logos</span> <span class="c1">// for the first two payment providers available</span>
+    <span class="k">let</span> <span class="nv">additionalBankNumberToShow</span> <span class="o">=</span> <span class="n">health</span><span class="o">.</span><span class="nf">fetchBankLogos</span><span class="p">()</span><span class="o">.</span><span class="n">additionalBankCount</span> <span class="c1">// for the number of additional payment providers available</span>
+</code></pre>
+
+          </div>
+        </section>
+
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2025 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2025-03-17)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
