@@ -14,17 +14,13 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
-  check:
-    uses: ./.github/workflows/health-sdk.check.yml
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
-
   upload-version:
-    needs: check
     runs-on: macos-latest    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
 
       - uses: maxim-lobanov/setup-xcode@v1.6.0
         with:

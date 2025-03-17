@@ -15,6 +15,7 @@ protocol HardcodedInvoicesControllerProtocol: AnyObject {
     func getInvoicesWithExtractions() -> [DocumentWithExtractions]
     func appendInvoiceWithExtractions(invoice: DocumentWithExtractions)
     func updateDocumentExtractions(documentId: String, extractions: ExtractionResult)
+    func deleteDocuments(withIds documentIds: [String])
 }
 
 final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
@@ -76,6 +77,20 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
             invoices[index].amountToPay = extractions.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
         }
         storeInvoicesWithExtractions(invoices: invoices)
+    }
+
+    func deleteDocuments(withIds documentIds: [String]) {
+        var invoices = getInvoicesWithExtractions()
+        let initialCount = invoices.count
+
+        // Remove invoices that match the given document IDs
+        invoices.removeAll { documentIds.contains($0.documentId) }
+
+        // Store the updated list back to UserDefaults
+        storeInvoicesWithExtractions(invoices: invoices)
+
+        let deletedCount = initialCount - invoices.count
+        Log("Successfully deleted \(deletedCount) invoices", event: .success)
     }
 }
 
