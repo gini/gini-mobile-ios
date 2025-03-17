@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "QR-code popups2.pdf",
+      "filename" : "qrCodeEngagementStep2Light.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "QR-code popups2 1.pdf",
+      "filename" : "qrCodeEngagementStep2Dark.pdf",
       "idiom" : "universal"
     }
   ],
