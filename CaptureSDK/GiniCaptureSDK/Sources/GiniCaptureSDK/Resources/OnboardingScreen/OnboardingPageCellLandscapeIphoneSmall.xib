@@ -18,17 +18,18 @@
                 <rect key="frame" x="0.0" y="0.0" width="804" height="424"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="SQ0-nC-yBn" customClass="OnboardingImageView" customModule="GiniCaptureSDK">
-                        <rect key="frame" x="56" y="58" width="220" height="308"/>
+                    <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="SQ0-nC-yBn" customClass="OnboardingImageView" customModule="GiniCaptureSDK">
+                        <rect key="frame" x="56" y="58" width="1" height="1"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="220" id="6LR-o1-9WY"/>
+                            <constraint firstAttribute="width" constant="1" id="6LR-o1-9WY"/>
+                            <constraint firstAttribute="height" constant="1" id="aYf-EP-qa8"/>
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="i46-rn-0DW">
-                        <rect key="frame" x="300" y="168.5" width="480" height="87.5"/>
+                        <rect key="frame" x="24" y="44" width="756" height="87.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flat paper within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4m8-UH-fux">
-                                <rect key="frame" x="138.5" y="0.0" width="203.5" height="33"/>
+                                <rect key="frame" x="276.5" y="0.0" width="203.5" height="33"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="33" id="gYd-cQ-4Xr"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="276" id="sYN-4q-OLf"/>
@@ -38,7 +39,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="Ensure that the document is flat, and positioned within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1HY-bp-k5Q">
-                                <rect key="frame" x="114.5" y="45" width="251.5" height="42.5"/>
+                                <rect key="frame" x="252.5" y="45" width="251.5" height="42.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="276" id="fuK-nP-Ydc"/>
                                 </constraints>
@@ -52,12 +53,11 @@
                 <viewLayoutGuide key="safeArea" id="aEO-NH-fih"/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
+                    <constraint firstItem="i46-rn-0DW" firstAttribute="top" secondItem="3EI-sg-mtc" secondAttribute="top" constant="44" id="Naj-jU-OTz"/>
                     <constraint firstItem="SQ0-nC-yBn" firstAttribute="leading" secondItem="aEO-NH-fih" secondAttribute="leading" constant="56" id="OQg-qN-je7"/>
-                    <constraint firstItem="i46-rn-0DW" firstAttribute="leading" secondItem="SQ0-nC-yBn" secondAttribute="trailing" constant="24" id="OsM-SV-Vt6"/>
-                    <constraint firstAttribute="bottom" secondItem="i46-rn-0DW" secondAttribute="bottom" constant="168" id="XhM-Xn-mxp"/>
+                    <constraint firstItem="i46-rn-0DW" firstAttribute="leading" secondItem="aEO-NH-fih" secondAttribute="leading" constant="24" id="czO-J6-UdY"/>
                     <constraint firstItem="aEO-NH-fih" firstAttribute="trailing" secondItem="i46-rn-0DW" secondAttribute="trailing" constant="24" id="dvm-75-nFJ"/>
                     <constraint firstItem="SQ0-nC-yBn" firstAttribute="top" secondItem="3EI-sg-mtc" secondAttribute="top" constant="58" id="fbF-gk-peq"/>
-                    <constraint firstItem="SQ0-nC-yBn" firstAttribute="centerY" secondItem="3EI-sg-mtc" secondAttribute="centerY" id="uIL-ki-2na"/>
                 </constraints>
             </collectionViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
