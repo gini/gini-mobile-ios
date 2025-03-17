@@ -11,12 +11,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnboardingViewController" customModule="GiniCaptureSDK">
             <connections>
-                <outlet property="buttonCenterXConstraint" destination="ZTR-SX-gVU" id="Eh0-k1-uoO"/>
+                <outlet property="buttonCenterXConstraint" destination="ett-pc-tOL" id="i1M-qh-PZ9"/>
                 <outlet property="collectionViewToPageControlConstraint" destination="5o3-NM-xxS" id="Wfv-sT-oNj"/>
                 <outlet property="collectionViewToViewBottomConstraint" destination="mh1-kT-nGp" id="sxp-FP-6gV"/>
                 <outlet property="nextButton" destination="dqe-Kh-XtC" id="DN4-gq-JQi"/>
                 <outlet property="pageControl" destination="fzW-pg-Fy6" id="hrr-29-qQS"/>
                 <outlet property="pagesCollection" destination="r9F-HC-Y7G" id="hRS-Zh-TZf"/>
+                <outlet property="skipBottomBarButton" destination="Imh-nf-zzT" id="mga-BG-lgV"/>
                 <outlet property="view" destination="Nfe-ie-kjh" id="pkh-VV-OAN"/>
             </connections>
         </placeholder>
@@ -26,7 +27,7 @@
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="r9F-HC-Y7G">
-                    <rect key="frame" x="0.0" y="24" width="744" height="954"/>
+                    <rect key="frame" x="0.0" y="24" width="744" height="959"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Ohp-ah-9Sw" customClass="CollectionFlowLayout" customModule="GiniCaptureSDK">
                         <size key="itemSize" width="390" height="500"/>
@@ -35,50 +36,66 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dqe-Kh-XtC" customClass="MultilineTitleButton" customModule="GiniCaptureSDK">
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Q3o-O4-h6A">
                     <rect key="frame" x="287" y="1033" width="170" height="50"/>
-                    <color key="backgroundColor" red="0.058291204270000001" green="0.61419159170000004" blue="0.86277651789999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <subviews>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Imh-nf-zzT" customClass="MultilineTitleButton" customModule="GiniCaptureSDK">
+                            <rect key="frame" x="0.0" y="0.0" width="170" height="50"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="Bzd-c2-lll"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="170" id="V4o-Vg-gd7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Button">
+                                <color key="titleColor" red="0.058823529411764705" green="0.61568627450980395" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dqe-Kh-XtC" customClass="MultilineTitleButton" customModule="GiniCaptureSDK">
+                            <rect key="frame" x="0.0" y="0.0" width="170" height="50"/>
+                            <color key="backgroundColor" red="0.058291204270000001" green="0.61419159170000004" blue="0.86277651789999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="170" id="HtE-go-UrU"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="bUG-L5-vie"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Button">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
                     <constraints>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="170" id="HtE-go-UrU"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="bUG-L5-vie"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="wds-Th-9mI"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                    <state key="normal" title="Button">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                </button>
+                </stackView>
                 <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fzW-pg-Fy6">
-                    <rect key="frame" x="287" y="1003" width="170" height="0.0"/>
+                    <rect key="frame" x="287" y="1008" width="170" height="0.0"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </pageControl>
             </subviews>
             <viewLayoutGuide key="safeArea" id="FpJ-cd-hgL"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="Q3o-O4-h6A" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="FpJ-cd-hgL" secondAttribute="leading" constant="16" id="4SQ-pZ-yh4"/>
                 <constraint firstItem="r9F-HC-Y7G" firstAttribute="top" secondItem="FpJ-cd-hgL" secondAttribute="top" id="55g-vr-qIJ"/>
                 <constraint firstItem="fzW-pg-Fy6" firstAttribute="top" secondItem="r9F-HC-Y7G" secondAttribute="bottom" constant="25" id="5o3-NM-xxS"/>
-                <constraint firstItem="fzW-pg-Fy6" firstAttribute="width" relation="greaterThanOrEqual" secondItem="dqe-Kh-XtC" secondAttribute="width" id="DlL-Gw-sWu"/>
-                <constraint firstItem="fzW-pg-Fy6" firstAttribute="centerX" secondItem="dqe-Kh-XtC" secondAttribute="centerX" id="VaW-wa-9lK"/>
-                <constraint firstItem="dqe-Kh-XtC" firstAttribute="centerX" secondItem="Nfe-ie-kjh" secondAttribute="centerX" id="ZTR-SX-gVU"/>
-                <constraint firstItem="dqe-Kh-XtC" firstAttribute="top" secondItem="fzW-pg-Fy6" secondAttribute="bottom" constant="30" id="icM-Ic-aSU"/>
+                <constraint firstAttribute="bottom" secondItem="Q3o-O4-h6A" secondAttribute="bottom" constant="50" id="9Es-FI-pwe"/>
+                <constraint firstItem="fzW-pg-Fy6" firstAttribute="centerX" secondItem="Q3o-O4-h6A" secondAttribute="centerX" id="DTO-LZ-Sll"/>
+                <constraint firstItem="fzW-pg-Fy6" firstAttribute="width" relation="greaterThanOrEqual" secondItem="Q3o-O4-h6A" secondAttribute="width" id="QsI-IB-M9U"/>
+                <constraint firstItem="Q3o-O4-h6A" firstAttribute="top" secondItem="fzW-pg-Fy6" secondAttribute="bottom" constant="25" id="eBQ-PG-wRi"/>
+                <constraint firstItem="Q3o-O4-h6A" firstAttribute="centerX" secondItem="Nfe-ie-kjh" secondAttribute="centerX" id="ett-pc-tOL"/>
                 <constraint firstItem="FpJ-cd-hgL" firstAttribute="bottom" secondItem="r9F-HC-Y7G" secondAttribute="bottom" id="mh1-kT-nGp"/>
                 <constraint firstItem="r9F-HC-Y7G" firstAttribute="leading" secondItem="Nfe-ie-kjh" secondAttribute="leading" id="qgS-df-Pfj"/>
                 <constraint firstAttribute="trailing" secondItem="r9F-HC-Y7G" secondAttribute="trailing" id="rKq-1S-lwz"/>
-                <constraint firstItem="dqe-Kh-XtC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="FpJ-cd-hgL" secondAttribute="leading" constant="16" id="rdq-uq-m7p"/>
-                <constraint firstAttribute="bottom" secondItem="dqe-Kh-XtC" secondAttribute="bottom" constant="50" id="tai-nW-c9d"/>
             </constraints>
             <variation key="default">
                 <mask key="constraints">
                     <exclude reference="mh1-kT-nGp"/>
                 </mask>
             </variation>
-            <variation key="heightClass=regular-widthClass=compact">
-                <mask key="constraints">
-                    <include reference="ZTR-SX-gVU"/>
-                </mask>
-            </variation>
-            <point key="canvasLocation" x="-733.84615384615381" y="-1819.905213270142"/>
+            <point key="canvasLocation" x="-733.87096774193549" y="-1820.3883495145631"/>
         </view>
     </objects>
     <resources>
