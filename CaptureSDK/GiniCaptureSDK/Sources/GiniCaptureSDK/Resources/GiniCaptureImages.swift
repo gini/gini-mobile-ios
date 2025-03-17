@@ -11,7 +11,7 @@ enum GiniCaptureImages: String {
     case qrCodeEngagementStep0 = "qrCodeEngagementStep0"
     case qrCodeEngagementStep1 = "qrCodeEngagementStep1"
     case qrCodeEngagementStep2 = "qrCodeEngagementStep2"
-    case poweredByGiniLogo = "poweredByGiniLogo"
+    case ingredientBrand = "ingredientBrand"
 
     var image: UIImage? {
         return UIImageNamedPreferred(named: rawValue)

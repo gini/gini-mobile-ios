@@ -1,15 +1,15 @@
 //
-//  QREngagementBrandView.swift
+//  QREngagementIngredientBrandView.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
-class QREngagementBrandView: UIView {
+class QREngagementIngredientBrandView: UIView {
     private let configuration = GiniConfiguration.shared
 
-    private lazy var poweredByLabel: UILabel = {
+    private lazy var ingredientBrandLabel: UILabel = {
         let label = UILabel()
         label.text = "Powered by"
         // TODO: body-xs
@@ -20,19 +20,19 @@ class QREngagementBrandView: UIView {
         return label
     }()
 
-    private lazy var poweredByImageView: UIImageView = {
+    private lazy var ingredientBrandImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = GiniCaptureImages.poweredByGiniLogo.image
+        imageView.image = GiniCaptureImages.ingredientBrand.image
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
 
-    private lazy var poweredByStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [poweredByLabel, poweredByImageView])
+    private lazy var ingredientBrandStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [ingredientBrandLabel, ingredientBrandImageView])
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.spacing = Constants.poweredBySpacing
+        stackView.spacing = Constants.ingredientBrandSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -47,20 +47,20 @@ class QREngagementBrandView: UIView {
     }
 
     private func setupUI() {
-        addSubview(poweredByStackView)
+        addSubview(ingredientBrandStackView)
         NSLayoutConstraint.activate([
-            poweredByStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.topSpacing),
-            poweredByStackView.trailingAnchor.constraint(equalTo: trailingAnchor,
+            ingredientBrandStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.topSpacing),
+            ingredientBrandStackView.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                          constant: -Constants.horizontalPadding),
-            poweredByStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ingredientBrandStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }
 
-private extension QREngagementBrandView {
+private extension QREngagementIngredientBrandView {
     enum Constants {
         static let horizontalPadding: CGFloat = 16
         static let topSpacing: CGFloat = 6
-        static let poweredBySpacing: CGFloat = 4
+        static let ingredientBrandSpacing: CGFloat = 4
     }
 }

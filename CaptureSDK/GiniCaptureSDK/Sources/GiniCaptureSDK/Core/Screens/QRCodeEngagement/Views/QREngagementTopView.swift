@@ -13,8 +13,8 @@ class QREngagementTopView: UIView {
         return view
     }()
 
-    private lazy var brandView: QREngagementBrandView = {
-        let view = QREngagementBrandView()
+    private lazy var ingredientBrandView: QREngagementIngredientBrandView = {
+        let view = QREngagementIngredientBrandView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -30,17 +30,17 @@ class QREngagementTopView: UIView {
 
     private func setupUI() {
         addSubview(progressView)
-        addSubview(brandView)
+        addSubview(ingredientBrandView)
 
         NSLayoutConstraint.activate([
             progressView.topAnchor.constraint(equalTo: topAnchor),
             progressView.leadingAnchor.constraint(equalTo: leadingAnchor),
             progressView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            brandView.topAnchor.constraint(equalTo: progressView.bottomAnchor),
-            brandView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            brandView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            brandView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ingredientBrandView.topAnchor.constraint(equalTo: progressView.bottomAnchor),
+            ingredientBrandView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            ingredientBrandView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            ingredientBrandView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
