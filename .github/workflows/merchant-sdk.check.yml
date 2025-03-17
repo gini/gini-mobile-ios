@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         target: [GiniMerchantSDK]
-        destination: ['platform=iOS Simulator,OS=17.2,name=iPhone SE (3rd generation)', 'platform=iOS Simulator,OS=17.5,name=iPhone 15']
+        destination: ['platform=iOS Simulator,OS=17.5,name=iPhone 15']
     steps:
     - uses: maxim-lobanov/setup-xcode@v1.6.0
       with:

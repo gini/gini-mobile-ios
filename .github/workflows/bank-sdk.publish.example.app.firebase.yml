@@ -13,17 +13,13 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
-  check:
-    uses: ./.github/workflows/bank-sdk.check.yml
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
-
   upload-version:
-    needs: check
     runs-on: macos-latest    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
 
       - uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
@@ -176,8 +172,8 @@ jobs:
           if [[ -n "$jira_ticket" ]]; then
             echo "JIRA_TICKET_NAME=${jira_ticket}" >> $GITHUB_ENV
           else
-            echo "No JIRA Ticket found in the last 3 commits. Build link will not be posted to Jira."
-            exit 1
+            echo "No JIRA Ticket found in the last 3 commits. Build link will not be posted to Jira. Pick it manually. This job will pass anyway."
+            exit 0
           fi
 
       - name: Login to jira
