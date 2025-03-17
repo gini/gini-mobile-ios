@@ -16,16 +16,8 @@ public class QREngagementViewModel {
 
     var onPageChange: ((Int) -> Void)?
 
-    public init() { }
-
-    func moveToNext() {
-        guard currentIndex < steps.count - 1 else { return }
-        currentIndex += 1
-    }
-
-    func moveToPrevious() {
-        guard currentIndex > 0 else { return }
-        currentIndex -= 1
+    public init() {
+        // empty init
     }
 
     func setPage(index: Int) {
