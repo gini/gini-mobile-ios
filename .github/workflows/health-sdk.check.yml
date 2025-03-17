@@ -60,24 +60,13 @@ jobs:
         xcrun simctl boot "$DEVICE_NAME"
         xcrun simctl bootstatus "$DEVICE_NAME" -b        
 
-    - name: Build pinning example app and run integration tests
+    - name: Build example app and run integration tests
       run: >
         xcodebuild clean test
         -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
         -scheme "GiniHealthSDKExampleTests"
         -destination "${{ matrix.destination }}"
         -skip-testing:GiniHealthSDKExampleTests/GiniHealthSDKPinningExampleWrongCertificatesTests
-        CODE_SIGN_IDENTITY=""
-        CODE_SIGNING_REQUIRED=NO
-        ONLY_ACTIVE_ARCH=NO
-        CLIENT_ID="gini-mobile-test"
-        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
-        &&
-        xcodebuild clean test
-        -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
-        -scheme "GiniHealthSDKExampleTests"
-        -destination "${{ matrix.destination }}"
-        -only-testing:GiniHealthSDKExampleTests/GiniHealthSDKPinningExampleWrongCertificatesTests
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
