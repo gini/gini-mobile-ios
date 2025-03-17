@@ -29,9 +29,7 @@ class QREngagementTopView: UIView {
             let view = UIView()
             view.layer.cornerRadius = Constants.stepViewHeight / 2
             view.clipsToBounds = true
-            view.backgroundColor = GiniColor(light: UIColor.GiniCapture.dark1,
-                                             dark: UIColor.GiniCapture.light1
-                                             ).uiColor().withAlphaComponent(0.3)
+            view.backgroundColor = Constants.stepColor
             stack.addArrangedSubview(view)
         }
         return stack
@@ -101,14 +99,8 @@ class QREngagementTopView: UIView {
 
     func update(currentStep: Int, totalSteps: Int) {
         pageLabel.text = "\(currentStep) / \(totalSteps)"
-        let stepColor = GiniColor(light: UIColor.GiniCapture.dark1,
-                                  dark: UIColor.GiniCapture.light1
-                                  ).uiColor().withAlphaComponent(0.3)
-        let selectedStepColor = GiniColor(light: UIColor.GiniCapture.accent1,
-                                          dark: UIColor.GiniCapture.accent1
-                                          ).uiColor()
         for (index, stepView) in stepsStackView.arrangedSubviews.enumerated() {
-            stepView.backgroundColor = (index == currentStep - 1) ? selectedStepColor : stepColor
+            stepView.backgroundColor = (index == currentStep - 1) ? Constants.selectedStepColor : Constants.stepColor
         }
     }
 }
@@ -122,5 +114,11 @@ private extension QREngagementTopView {
         static let stepViewHeight: CGFloat = 4
         static let poweredByTopSpacing: CGFloat = 6
         static let poweredBySpacing: CGFloat = 4
+        static let stepColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                         dark: UIColor.GiniCapture.light1
+                                         ).uiColor().withAlphaComponent(0.3)
+        static let selectedStepColor = GiniColor(light: UIColor.GiniCapture.accent1,
+                                                 dark: UIColor.GiniCapture.accent1
+                                                 ).uiColor()
     }
 }
