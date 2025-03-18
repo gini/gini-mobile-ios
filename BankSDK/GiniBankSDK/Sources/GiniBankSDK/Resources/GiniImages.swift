@@ -24,6 +24,7 @@ enum GiniImages: String {
     case skontoHelpItem4 = "skonto_help_item4"
     case transactionDocsOptionsIcon = "transactionDocs_attached_document_options_icon"
     case transactionDocsFileIcon = "transactionDocs_attached_document_file_icon"
+    case transactionDocsImageIcon = "transactionDocs_attached_image_icon"
 
     var image: UIImage? {
         return prefferedImage(named: rawValue)

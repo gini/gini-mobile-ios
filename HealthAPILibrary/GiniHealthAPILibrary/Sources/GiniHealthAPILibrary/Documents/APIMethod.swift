@@ -31,8 +31,6 @@ enum APIMethod: ResourceMethod {
     case paymentProvider(id: String)
     case paymentProviders
     case createPaymentRequest
-    case deletePaymentRequest(id: String)
-    case deletePaymentRequests
     case paymentRequest(id: String)
     case paymentRequests(limit: Int?,
                          offset: Int?)

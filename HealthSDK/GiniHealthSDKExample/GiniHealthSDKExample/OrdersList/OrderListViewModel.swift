@@ -23,7 +23,6 @@ final class OrderListViewModel {
     let errorTitleText = NSLocalizedString("gini.health.example.invoicesList.error", comment: "")
 
     var health: GiniHealth
-    private var errors: [String] = []
     
     @Published var orders: [Order]
     @Published var errorMessage: String?
@@ -50,12 +49,10 @@ final class OrderListViewModel {
         
         health.deletePaymentRequest(id: orderId, completion: { [weak self] result in
             switch result {
-            case .success(let message):
+            case .success:
                 self?.handlePaymentRequestDeletion(for: order)
-                self?.successMessage = message
             case .failure(let error):
-                self?.errors.append(error.localizedDescription)
-                self?.showErrorsIfAny()
+                self?.errorMessage = error.localizedDescription
             }
         })
     }
@@ -65,21 +62,13 @@ final class OrderListViewModel {
         
         health.deletePaymentRequests(ids: orderIds, completion: { [weak self] result in
             switch result {
-            case .success:
+            case .success(let message):
                 self?.orders.forEach { self?.handlePaymentRequestDeletion(for: $0) }
+                self?.successMessage = message
             case .failure(let error):
-                self?.errors.append(error.localizedDescription)
-                self?.showErrorsIfAny()
+                self?.errorMessage = error.localizedDescription
             }
         })
-    }
-    
-    private func showErrorsIfAny() {
-        if !errors.isEmpty {
-            let uniqueErrorMessages = Array(Set(errors))
-            errorMessage = uniqueErrorMessages.joined(separator: ", ")
-            errors = []
-        }
     }
     
     private func updateLoadedOrder(_ order: Order) {

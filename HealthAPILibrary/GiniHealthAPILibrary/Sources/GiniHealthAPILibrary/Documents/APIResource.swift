@@ -103,10 +103,6 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentProviders/\(id)"
         case .createPaymentRequest:
             return "/paymentRequests"
-        case .deletePaymentRequest(let id):
-            return "/paymentRequests/\(id)"
-        case .deletePaymentRequests:
-            return "/paymentRequests"
         case .paymentRequest(let id):
             return "/paymentRequests/\(id)"
         case .paymentRequests(_, _):

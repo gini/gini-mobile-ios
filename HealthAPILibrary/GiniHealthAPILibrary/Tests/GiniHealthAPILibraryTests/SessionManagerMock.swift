@@ -94,8 +94,6 @@ final class SessionManagerMock: SessionManagerProtocol {
                 completion(.success(SessionManagerMock.compositeDocumentId as! T.ResponseType))
             case .createPaymentRequest:
                 completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
-            case .deletePaymentRequest:
-                completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
             case .paymentProvider(_):
                 let providerResponse: PaymentProviderResponse = loadProviderResponse()
                 completion(.success(providerResponse as! T.ResponseType))
@@ -103,8 +101,12 @@ final class SessionManagerMock: SessionManagerProtocol {
                 let paymentProvidersResponse: [PaymentProviderResponse] = loadProvidersResponse()
                 completion(.success(paymentProvidersResponse as! T.ResponseType))
             case .paymentRequest(_):
-                let paymentRequest: PaymentRequest = loadPaymentRequest()
-                completion(.success(paymentRequest as! T.ResponseType))
+                if resource.params.method == .delete {
+                    completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
+                } else {
+                    let paymentRequest: PaymentRequest = loadPaymentRequest()
+                    completion(.success(paymentRequest as! T.ResponseType))
+                }
             case .feedback(_):
                 extractionFeedbackBody = resource.request.httpBody ?? nil
                 completion(.success("Feedback was sent" as! T.ResponseType))

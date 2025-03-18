@@ -28,6 +28,8 @@ final class AppCoordinator: Coordinator {
         return viewController
     }()
 
+    private var extractions: [Extraction] = []
+
     lazy var configuration: GiniBankConfiguration = {
         let configuration = GiniBankConfiguration.shared
         configuration.debugModeOn = true
@@ -335,6 +337,14 @@ extension AppCoordinator: DemoViewControllerDelegate {
 	func didSelectSettings() {
 		showSettings()
 	}
+
+    func didTapTransactionList() {
+        let transactionListViewController = TransactionListViewController()
+        let navigationController = UINavigationController(rootViewController: transactionListViewController)
+        navigationController.modalPresentationStyle = .overFullScreen
+        navigationController.modalTransitionStyle = .coverVertical
+        rootViewController.present(navigationController, animated: true)
+    }
 }
 
 extension AppCoordinator: SettingsViewControllerDelegate {

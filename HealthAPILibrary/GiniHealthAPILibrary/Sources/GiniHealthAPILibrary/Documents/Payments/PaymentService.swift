@@ -363,7 +363,7 @@ extension PaymentService {
     func deletePaymentRequest(id: String,
                               resourceHandler: ResourceDataHandler<APIResource<String>>,
                               completion: @escaping CompletionResult<String>) {
-        let resource = APIResource<String>(method: .deletePaymentRequest(id: id),
+        let resource = APIResource<String>(method: .paymentRequest(id: id),
                                            apiDomain: apiDomain,
                                            apiVersion: apiVersion,
                                            httpMethod: .delete)
@@ -386,7 +386,7 @@ extension PaymentService {
             return
         }
         
-        let resource = APIResource<String>(method: .deletePaymentRequests,
+        let resource = APIResource<String>(method: .paymentRequests(limit: nil, offset: nil),
                                            apiDomain: apiDomain,
                                            apiVersion: apiVersion,
                                            httpMethod: .delete,
