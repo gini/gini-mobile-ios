@@ -13,7 +13,7 @@ class QREngagementIngredientBrandView: UIView {
         let label = UILabel()
         label.text = NSLocalizedStringPreferredFormat("ginicapture.QRengagement.ingredient.brand",
                                                       comment: "Powered by")
-        // TODO: body-xs
+        // TODO: PP-1043 body-xs
         label.font = configuration.textStyleFonts[.body]
         label.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
                                     dark: UIColor.GiniCapture.dark7).uiColor()
