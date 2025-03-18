@@ -28,6 +28,12 @@ public class QREngagementViewController: UIViewController {
         return top
     }()
 
+    private lazy var pageContainer: UIView = {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        return container
+    }()
+
     private lazy var horizontalButtonStack: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [previousButton, nextButton])
         stackView.axis = .horizontal
@@ -110,11 +116,8 @@ public class QREngagementViewController: UIViewController {
     private func setupViews() {
         view.addSubview(topView)
         view.addSubview(bottomContainer)
-
-        let pageContainer = UIView()
-        pageContainer.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(pageContainer)
-
+        
         NSLayoutConstraint.activate([
             topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                          constant: Constants.topViewTopSpacing),
@@ -140,7 +143,9 @@ public class QREngagementViewController: UIViewController {
             pageContainer.bottomAnchor.constraint(equalTo: bottomContainer.topAnchor,
                                                   constant: -Constants.pageContainerSpacing)
         ])
+    }
 
+    private func setupPageViewController() {
         addChild(pageViewController)
         pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
         pageContainer.addSubview(pageViewController.view)
@@ -151,9 +156,6 @@ public class QREngagementViewController: UIViewController {
             pageViewController.view.bottomAnchor.constraint(equalTo: pageContainer.bottomAnchor)
         ])
         pageViewController.didMove(toParent: self)
-    }
-
-    private func setupPageViewController() {
         pageViewController.setViewControllers([pages[viewModel.currentIndex]],
                                               direction: .forward,
                                               animated: false,
