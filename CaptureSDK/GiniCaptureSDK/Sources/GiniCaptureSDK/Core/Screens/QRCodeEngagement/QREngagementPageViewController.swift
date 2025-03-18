@@ -117,7 +117,7 @@ public class QREngagementViewController: UIViewController {
         view.addSubview(topView)
         view.addSubview(bottomContainer)
         view.addSubview(pageContainer)
-        
+
         NSLayoutConstraint.activate([
             topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                          constant: Constants.topViewTopSpacing),
@@ -158,8 +158,7 @@ public class QREngagementViewController: UIViewController {
         pageViewController.didMove(toParent: self)
         pageViewController.setViewControllers([pages[viewModel.currentIndex]],
                                               direction: .forward,
-                                              animated: false,
-                                              completion: nil)
+                                              animated: false)
     }
 
     private func updateUI(for index: Int) {
@@ -173,14 +172,14 @@ public class QREngagementViewController: UIViewController {
     @objc private func handleNext() {
         let newIndex = min(viewModel.currentIndex + 1, pages.count - 1)
         guard newIndex != viewModel.currentIndex else { return }
-        pageViewController.setViewControllers([pages[newIndex]], direction: .forward, animated: true, completion: nil)
+        pageViewController.setViewControllers([pages[newIndex]], direction: .forward, animated: true)
         viewModel.setPage(index: newIndex)
     }
 
     @objc private func handlePrevious() {
         let newIndex = max(viewModel.currentIndex - 1, 0)
         guard newIndex != viewModel.currentIndex else { return }
-        pageViewController.setViewControllers([pages[newIndex]], direction: .reverse, animated: true, completion: nil)
+        pageViewController.setViewControllers([pages[newIndex]], direction: .reverse, animated: true)
         viewModel.setPage(index: newIndex)
     }
 
