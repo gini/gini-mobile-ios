@@ -27,6 +27,7 @@ final class OrderListViewModel {
     
     @Published var orders: [Order]
     @Published var errorMessage: String?
+    @Published var successMessage: String?
 
     init(coordinator: OrderListCoordinator,
          orders: [Order]? = nil,
@@ -49,8 +50,23 @@ final class OrderListViewModel {
         
         health.deletePaymentRequest(id: orderId, completion: { [weak self] result in
             switch result {
-            case .success:
+            case .success(let message):
                 self?.handlePaymentRequestDeletion(for: order)
+                self?.successMessage = message
+            case .failure(let error):
+                self?.errors.append(error.localizedDescription)
+                self?.showErrorsIfAny()
+            }
+        })
+    }
+    
+    func deleteOders() {
+        let orderIds = orders.compactMap(\.id)
+        
+        health.deletePaymentRequests(ids: orderIds, completion: { [weak self] result in
+            switch result {
+            case .success:
+                self?.orders.forEach { self?.handlePaymentRequestDeletion(for: $0) }
             case .failure(let error):
                 self?.errors.append(error.localizedDescription)
                 self?.showErrorsIfAny()
