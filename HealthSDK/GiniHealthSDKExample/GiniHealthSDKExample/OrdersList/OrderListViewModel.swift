@@ -62,9 +62,8 @@ final class OrderListViewModel {
         
         health.deletePaymentRequests(ids: orderIds, completion: { [weak self] result in
             switch result {
-            case .success(let message):
+            case .success:
                 self?.orders.forEach { self?.handlePaymentRequestDeletion(for: $0) }
-                self?.successMessage = message
             case .failure(let error):
                 self?.errorMessage = error.localizedDescription
             }
