@@ -317,12 +317,18 @@ private extension SessionManager {
                 return
             }
 
-            guard let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
-                  errorInfo["error"] == "invalid_grant" else {
-                completion(.failure(.badRequest(response: response, data: data)))
+            if let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
+                  errorInfo["error"] == "invalid_grant" {
+                completion(.failure(.unauthorized(response: response, data: data)))
                 return
             }
-            completion(.failure(.unauthorized(response: response, data: data)))
+
+            if (try? JSONSerialization.jsonObject(with: responseData) as? [String: Any]) != nil {
+                completion(.failure(.customError(response: response, data: responseData)))
+                return
+            }
+
+            completion(.failure(.badRequest(response: response, data: data)))
         case 401:
             completion(.failure(.unauthorized(response: response, data: data)))
         case 404:

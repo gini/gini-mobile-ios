@@ -2,10 +2,8 @@ name: Builds docs for Capture SDK
 
 on:
   workflow_dispatch:
-    tags-ignore:
-      - '**'
   pull_request:
-    types: [opened, edited, reopened, synchronize]
+    types: [opened, reopened, synchronize, ready_for_review]
     paths:
       - 'CaptureSDK/**'
 
