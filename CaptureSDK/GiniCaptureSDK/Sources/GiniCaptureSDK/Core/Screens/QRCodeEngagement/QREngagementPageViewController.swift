@@ -57,8 +57,8 @@ public class QREngagementViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        // TODO: PP-1043 localization strings
-        let title = "Zurück"
+        let title = NSLocalizedStringPreferredFormat("ginicapture.QRengagement.previous",
+                                                     comment: "Previous button title")
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
         button.addTarget(self, action: #selector(handlePrevious), for: .touchUpInside)
@@ -70,8 +70,8 @@ public class QREngagementViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        // TODO: PP-1043 localization strings
-        let title = "Weiter"
+        let title = NSLocalizedStringPreferredFormat("ginicapture.QRengagement.next",
+                                                     comment: "Next button title")
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
         button.addTarget(self, action: #selector(handleNext), for: .touchUpInside)
@@ -83,8 +83,8 @@ public class QREngagementViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.secondaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        // TODO: PP-1043 localization strings
-        let title = "Zahlung fortsetzen"
+        let title = NSLocalizedStringPreferredFormat("ginicapture.QRengagement.skip",
+                                                     comment: "Skip button title")
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
         button.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)

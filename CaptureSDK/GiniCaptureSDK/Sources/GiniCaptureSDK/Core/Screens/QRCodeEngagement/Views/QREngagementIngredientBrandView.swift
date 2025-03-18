@@ -11,7 +11,8 @@ class QREngagementIngredientBrandView: UIView {
 
     private lazy var ingredientBrandLabel: UILabel = {
         let label = UILabel()
-        label.text = "Powered by"
+        label.text = NSLocalizedStringPreferredFormat("ginicapture.QRengagement.ingredient.brand",
+                                                      comment: "Powered by")
         // TODO: body-xs
         label.font = configuration.textStyleFonts[.body]
         label.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
