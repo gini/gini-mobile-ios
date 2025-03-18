@@ -84,10 +84,6 @@ final class MockSessionManager: SessionManagerProtocol {
                 if let paymentRequestId = MockSessionManager.paymentRequestId as? T.ResponseType {
                     completion(.success(paymentRequestId))
                 }
-            case .deletePaymentRequest:
-                if let paymentRequestId = MockSessionManager.paymentRequestId as? T.ResponseType {
-                    completion(.success(paymentRequestId))
-                }
             case .paymentProvider(_):
                 let providerResponse: PaymentProviderResponse? = load(fromFile: "provider")
                 if let providerResponse = providerResponse as? T.ResponseType {
@@ -119,7 +115,11 @@ final class MockSessionManager: SessionManagerProtocol {
                     completion(.success(clientConfiguration))
                 }
             case .paymentRequest(let paymentRequestId):
-                processPaymentRequest(paymentRequestId, completion: completion)
+                if resource.params.method == .delete {
+                    completion(.success(MockSessionManager.paymentRequestId as! T.ResponseType))
+                } else {
+                    processPaymentRequest(paymentRequestId, completion: completion)
+                }
             case .documents(_, _):
                 guard let bodyStringArray = decodeBody(from: resource.params.body) else { return }
                 handleBodyStringArray(bodyStringArray, completion: completion)
