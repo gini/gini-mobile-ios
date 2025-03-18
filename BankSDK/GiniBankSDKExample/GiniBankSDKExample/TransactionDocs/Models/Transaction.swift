@@ -11,7 +11,7 @@ import GiniCaptureSDK
 struct Transaction: Codable {
     let identifier: String
     let date: Date
-    let paiedAmount: String
+    let paidAmount: String
     let paymentPurpose: String
     let paymentRecipient: String
     let iban: String?
@@ -22,7 +22,7 @@ struct Transaction: Codable {
     init(
         identifier: String = UUID().uuidString, // Generate a random unique identifier if not provided
         date: Date,
-        paiedAmount: String,
+        paidAmount: String,
         paymentPurpose: String,
         paymentRecipient: String,
         iban: String?,
@@ -31,7 +31,7 @@ struct Transaction: Codable {
     ) {
         self.identifier = identifier
         self.date = date
-        self.paiedAmount = paiedAmount
+        self.paidAmount = paidAmount
         self.paymentPurpose = paymentPurpose
         self.paymentRecipient = paymentRecipient
         self.iban = iban
@@ -50,7 +50,7 @@ struct Transaction: Codable {
                                                                     fallbackKey: "Amount",
                                                                     comment: "Amount",
                                                                     isCustomizable: true),
-                            value: paiedAmount),
+                            value: paidAmount),
             TransactionInfo(title: NSLocalizedStringPreferredFormat("transaction.details.purpose",
                                                                     fallbackKey: "Payment Purpose",
                                                                     comment: "Payment Purpose",
