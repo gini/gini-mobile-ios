@@ -28,6 +28,7 @@ final class SkontoViewController: UIViewController {
 
     private lazy var withDiscountPriceView: SkontoWithDiscountPriceView = {
         let view = SkontoWithDiscountPriceView(viewModel: viewModel)
+        view.delegate = self
         return view
     }()
 
@@ -41,6 +42,7 @@ final class SkontoViewController: UIViewController {
 
     private lazy var expiryDateView: SkontoExpiryDateView = {
         let view = SkontoExpiryDateView(viewModel: viewModel)
+        view.delegate = self
         return view
     }()
 
@@ -114,6 +116,8 @@ final class SkontoViewController: UIViewController {
             showAlertIfNeeded()
             firstAppearance = false
         }
+
+        sendAnalyticsScreenShown()
     }
 
     deinit {
@@ -250,7 +254,7 @@ final class SkontoViewController: UIViewController {
         }
 
         navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
-            self?.viewModel.proceedButtonTapped()
+            self?.proceedButtonTapped()
         }
 
         navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
@@ -298,12 +302,30 @@ final class SkontoViewController: UIViewController {
         navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
     }
 
+    private func sendAnalyticsScreenShown() {
+        let isSkontoApplied = viewModel.isSkontoApplied
+        var eventProperties: [GiniAnalyticsProperty] = [GiniAnalyticsProperty(key: .switchActive,
+                                                                              value: isSkontoApplied)]
+        if let edgeCaseAnalyticsValue = viewModel.edgeCase?.analyticsValue {
+            eventProperties.append(GiniAnalyticsProperty(key: .edgeCaseType,
+                                                         value: edgeCaseAnalyticsValue))
+        }
+
+        GiniAnalyticsManager.trackScreenShown(screenName: .skonto, properties: eventProperties)
+    }
+
     @objc private func helpButtonTapped() {
+        GiniAnalyticsManager.track(event: .helpTapped, screenName: .skonto)
         viewModel.helpButtonTapped()
     }
 
     @objc private func backButtonTapped() {
+        GiniAnalyticsManager.track(event: .closeTapped, screenName: .skonto)
         viewModel.backButtonTapped()
+    }
+
+    @objc private func proceedButtonTapped() {
+        viewModel.proceedButtonTapped()
     }
 
     private func setupTapGesture() {
@@ -323,7 +345,20 @@ final class SkontoViewController: UIViewController {
 
 extension SkontoViewController: SkontoDocumentPreviewViewDelegate {
     func documentPreviewTapped(in view: SkontoDocumentPreviewView) {
+        GiniAnalyticsManager.track(event: .invoicePreviewTapped, screenName: .skonto)
         viewModel.documentPreviewTapped()
+    }
+}
+
+extension SkontoViewController: SkontoExpiryDateViewDelegate {
+    func expiryDateTextFieldTapped() {
+        GiniAnalyticsManager.track(event: .dueDateTapped, screenName: .skonto)
+    }
+}
+
+extension SkontoViewController: SkontoWithDiscountPriceViewDelegate {
+    func withDiscountPriceTextFieldTapped() {
+        GiniAnalyticsManager.track(event: .finalAmountTapped, screenName: .skonto)
     }
 }
 
