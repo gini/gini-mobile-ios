@@ -2,7 +2,7 @@ name: Builds docs for Merchant SDK
 
 on:
   pull_request:
-    types: [opened, edited, reopened, synchronize]
+    types: [opened, reopened, synchronize, ready_for_review]
     paths:
       - 'MerchantSDK/**'
   workflow_dispatch:

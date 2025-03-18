@@ -66,6 +66,7 @@ import UIKit
 
         if document.type == .pdf {
             if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
+                originalDocumentName = documentTitle
                 let titleString = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
                                                                    comment: "Analysis screen loading text for PDF")
 
