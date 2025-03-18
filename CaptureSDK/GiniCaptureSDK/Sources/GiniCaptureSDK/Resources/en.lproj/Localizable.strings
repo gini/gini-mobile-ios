@@ -215,16 +215,16 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.ibandetection.multipleibansdetected" = "IBAN detected";
 "ginicapture.ibandetection.takephoto" = "Take a photo";
 
-"ginicapture.QRengagement.first.title" = "Nicht nur QR-Codes!";
-"ginicapture.QRengagement.second.title" = "Fotos, PDFs & mehr!";
-"ginicapture.QRengagement.third.title" = "Sogar Bildschirme & GIFs!";
+"ginicapture.QRengagement.first.title" = "More than just QR codes!";
+"ginicapture.QRengagement.second.title" = "Photos, PDFs & more!";
+"ginicapture.QRengagement.third.title" = "Send Screens & GIFs!";
 
-"ginicapture.QRengagement.first.description" = "Fotoüberweisung kann mehr als nur QR-Codes scannen! Rechnungen, Zahlungsformulare, Bildschirme, PDFs und sogar GIFs – tippen Sie auf Mehr lesen, um mehr zu erfahren.";
-"ginicapture.QRengagement.first.description.boldwords" = "Rechnungen;Zahlungsformulare;Bildschirme;PDFs;GIFs";
-"ginicapture.QRengagement.second.description" = "Machen Sie ein Foto, laden Sie ein PDF hoch (bis zu 10 Seiten) oder scannen Sie digital erstellte Rechnungen und Überweisungsträger – Fotoüberweisung übernimmt die Zahlungsdaten für Sie!";
-"ginicapture.QRengagement.third.description" = "Scannen Sie Zahlungsdaten direkt von einem Monitor, Screenshot, GIF oder QR-Code – schnell und einfach!";
+"ginicapture.QRengagement.first.description" = "Photo Payment isn’t just for QR codes. You can photo invoices or payment forms. Or upload images, PDFs or even GIFs.";
+"ginicapture.QRengagement.first.description.boldwords" = "invoices;payment forms;images;PDFs;GIFs";
+"ginicapture.QRengagement.second.description" = "Take a photo, upload a PDF (up to 10 pages), or scan digital invoices and remittance slips – Photo Payment will handle the payment details for you!";
+"ginicapture.QRengagement.third.description" = "Scan payment details directly from a monitor, screenshot, GIF or QR code – quick and easy!";
 
-"ginicapture.QRengagement.previous" = "Zurück";
-"ginicapture.QRengagement.next" = "Weiter";
-"ginicapture.QRengagement.skip" = "Zahlung fortsetzen";
+"ginicapture.QRengagement.previous" = "Back";
+"ginicapture.QRengagement.next" = "Next";
+"ginicapture.QRengagement.skip" = "Continue Payment";
 "ginicapture.QRengagement.ingredient.brand" = "Powered by";
