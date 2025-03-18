@@ -66,7 +66,6 @@ jobs:
         -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
         -scheme "GiniHealthSDKExampleTests"
         -destination "${{ matrix.destination }}"
-        -skip-testing:GiniHealthSDKExampleTests/GiniHealthSDKPinningExampleWrongCertificatesTests
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO

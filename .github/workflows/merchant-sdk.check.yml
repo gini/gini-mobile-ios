@@ -63,7 +63,6 @@ jobs:
         -project MerchantSDK/GiniMerchantSDKExample/GiniMerchantSDKExample.xcodeproj
         -scheme "GiniMerchantSDKExampleTests"
         -destination "${{ matrix.destination }}"
-        -skip-testing:GiniMerchantSDKExampleTests/GiniMerchantSDKExampleWrongCertificatesTests
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
