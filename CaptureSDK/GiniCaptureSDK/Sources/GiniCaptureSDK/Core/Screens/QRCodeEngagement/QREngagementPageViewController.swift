@@ -196,6 +196,6 @@ private extension QREngagementViewController {
         static let horizontalPadding: CGFloat = 16
         static let pageContainerSpacing: CGFloat = 8
         static let buttonHeight: CGFloat = 50
-        static let previousButtonMultiplier: CGFloat = 126/205
+        static let previousButtonMultiplier: CGFloat = 0.6
     }
 }
