@@ -33,3 +33,25 @@ extension String {
         }.joined(separator: separator)
     }
 }
+
+extension String {
+    func attributed(
+        with mainAttributes: [NSAttributedString.Key: Any],
+        substringsAttributes: [(substring: String, attributes: [NSAttributedString.Key: Any])]
+    ) -> NSAttributedString {
+        let attributedString = NSMutableAttributedString(string: self, attributes: mainAttributes)
+        let nsString = self as NSString
+
+        for (substring, attributes) in substringsAttributes {
+            var searchRange = NSRange(location: 0, length: nsString.length)
+            while true {
+                let range = nsString.range(of: substring, options: [], range: searchRange)
+                if range.location == NSNotFound { break }
+                attributedString.addAttributes(attributes, range: range)
+                let newLocation = range.location + range.length
+                searchRange = NSRange(location: newLocation, length: nsString.length - newLocation)
+            }
+        }
+        return attributedString
+    }
+}

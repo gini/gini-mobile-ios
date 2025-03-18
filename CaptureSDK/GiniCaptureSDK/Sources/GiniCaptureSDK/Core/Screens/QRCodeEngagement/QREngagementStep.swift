@@ -12,26 +12,30 @@ enum QREngagementStep {
     case third
 
     var title: String {
-        // TODO: PP-1043 add localization strings
         switch self {
         case .first:
-            return "Nicht nur QR-Codes!"
+            return NSLocalizedStringPreferredFormat("ginicapture.QRengagement.first.title",
+                                     comment: "Title for first engagement step")
         case .second:
-            return "Fotos, PDFs & mehr!"
+            return NSLocalizedStringPreferredFormat("ginicapture.QRengagement.second.title",
+                                     comment: "Title for second engagement step")
         case .third:
-            return "Sogar Bildschirme & GIFs!"
+            return NSLocalizedStringPreferredFormat("ginicapture.QRengagement.third.title",
+                                     comment: "Title for third engagement step")
         }
     }
 
     var description: String {
-        // TODO: PP-1043 add localization strings
         switch self {
         case .first:
-            return "Fotoüberweisung kann mehr als nur QR-Codes scannen! Rechnungen, Zahlungsformulare, Bildschirme, PDFs und sogar GIFs – tippen Sie auf Mehr lesen, um mehr zu erfahren."
+            return NSLocalizedStringPreferredFormat("ginicapture.QRengagement.first.description",
+                                     comment: "Description for first engagement step")
         case .second:
-            return "Machen Sie ein Foto, laden Sie ein PDF hoch (bis zu 10 Seiten) oder scannen Sie digital erstellte Rechnungen und Überweisungsträger – Fotoüberweisung übernimmt die Zahlungsdaten für Sie!"
+            return NSLocalizedStringPreferredFormat("ginicapture.QRengagement.second.description",
+                                     comment: "Description for second engagement step")
         case .third:
-            return "Scannen Sie Zahlungsdaten direkt von einem Monitor, Screenshot, GIF oder QR-Code – schnell und einfach!"
+            return NSLocalizedStringPreferredFormat("ginicapture.QRengagement.third.description",
+                                     comment: "Description for third engagement step")
         }
     }
 
@@ -47,31 +51,22 @@ enum QREngagementStep {
     }
 
     var attributedDescription: NSAttributedString {
-        let text = self.description
-        let attributedString = NSMutableAttributedString(string: text)
-
+        let text = description
         let configuration = GiniConfiguration.shared
         guard let baseFont = configuration.textStyleFonts[.callout],
               let boldFont = configuration.textStyleFonts[.calloutBold] else {
-            return attributedString
+            return NSAttributedString(string: text)
         }
 
-        attributedString.addAttribute(.font, value: baseFont,
-                                      range: NSRange(location: 0, length: text.utf16.count))
+        var substringsAttributes: [(String, [NSAttributedString.Key: Any])] = []
 
-        var wordsToBold: [String] = []
         if self == .first {
-            // TODO: PP-1043 rework for localization strings
-            wordsToBold = ["Rechnungen", "Zahlungsformulare", "Bildschirme", "PDFs", "GIFs"]
+            let boldWordsString = NSLocalizedStringPreferredFormat("ginicapture.QRengagement.first.description.boldwords",
+                                                                   comment: "Bold words for QR engagement step, separated by ';'")
+            let wordsToBold = boldWordsString.components(separatedBy: ";")
+            substringsAttributes = wordsToBold.map { ($0, [.font: boldFont]) }
         }
 
-        for word in wordsToBold {
-            let nsText = text as NSString
-            let range = nsText.range(of: word)
-            if range.location != NSNotFound {
-                attributedString.addAttribute(.font, value: boldFont, range: range)
-            }
-        }
-        return attributedString
+        return text.attributed(with: [.font: baseFont], substringsAttributes: substringsAttributes)
     }
 }
