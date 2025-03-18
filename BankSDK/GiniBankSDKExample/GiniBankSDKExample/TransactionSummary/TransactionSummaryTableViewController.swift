@@ -8,11 +8,15 @@ import UIKit
 import GiniBankAPILibrary
 import GiniCaptureSDK
 import GiniBankSDK
+
+protocol TransactionSummaryTableViewControllerDelegate: AnyObject {
+    func didTapCloseAndSendTransferSummary()
+}
 /**
  Presents a dictionary of results from the analysis process in a table view.
  Values from the dictionary will be used as the cells titles and keys as the cells subtitles.
  */
-final class TransactionSummaryTableViewController: UITableViewController, UITextFieldDelegate {
+final class TransactionSummaryTableViewController: UITableViewController  {
     /**
      The result collection from the analysis process.
      */
@@ -21,24 +25,47 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
             result.sort(by: { $0.name! < $1.name! })
         }
     }
-
-    private let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
-	var editableFields: [String : String] = [:]
+    var editableFields: [String : String] = [:]
     var lineItems: [[Extraction]]? = nil
     var enabledRows: [Int] = []
+
+    weak var delegate: TransactionSummaryTableViewControllerDelegate?
+
+    private let transactionDocsDataCoordinator = GiniBankConfiguration.shared.transactionDocsDataCoordinator
     private var numberOfSections = 1
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        numberOfSections = transactionDocsDataCoordinator.transactionDocIDs.isEmpty ? 1 : 2
+        let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
+        numberOfSections = currentTransactionDocs.isEmpty ? 1 : 2
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(AttachmentsTableViewCell.self,
-                           forCellReuseIdentifier: AttachmentsTableViewCell.reuseIdentifier)
+        tableView.estimatedRowHeight = 75
+        tableView.register(AttachmentsTableViewCell.self)
+        setupNavigationButtons()
     }
 
+    private func setupNavigationButtons() {
+        navigationItem.setHidesBackButton(true, animated: true)
+        let title = NSLocalizedStringPreferredFormat("results.sendfeedback.button.title",
+                                                     fallbackKey: "Send feedback and close",
+                                                     comment: "title for send feedback button",
+                                                     isCustomizable: true)
+        navigationItem
+            .rightBarButtonItem = UIBarButtonItem(title: title,
+                                                  style: .plain,
+                                                  target: self,
+                                                  action: #selector(tapCloseSreenAPIAndSendTransferSummary))
+    }
+    
+    // MARK: - Actions
+    @objc func tapCloseSreenAPIAndSendTransferSummary() {
+        delegate?.didTapCloseAndSendTransferSummary()
+    }
+
+    // MARK: - TableViewDataSource and TableViewDelegate
     override func numberOfSections(in tableView: UITableView) -> Int {
         return numberOfSections
     }
@@ -52,10 +79,10 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell", for: indexPath) as? ExtractionResultTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell",
+                                                           for: indexPath) as? ExtractionResultTableViewCell else {
                 return UITableViewCell()
             }
-
             cell.detailTextField.text = result[indexPath.row].value
             cell.detailTextField.placeholder = result[indexPath.row].name
             cell.detailTextField.tag = indexPath.row
@@ -78,11 +105,7 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
 
             return cell
         } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentsTableViewCell.reuseIdentifier, 
-                                                           for: indexPath) 
-                    as? AttachmentsTableViewCell else {
-                return UITableViewCell()
-            }
+            let cell = tableView.dequeueReusableCell() as AttachmentsTableViewCell
             cell.configure(delegate: self)
             return cell
         }
@@ -91,7 +114,9 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-    
+
+}
+extension TransactionSummaryTableViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let text = textField.text as NSString? {
             result[textField.tag].value = text.replacingCharacters(in: range, with: string)
@@ -118,7 +143,8 @@ final class TransactionSummaryTableViewController: UITableViewController, UIText
 
 extension TransactionSummaryTableViewController: TransactionDocsViewDelegate {
     func transactionDocsViewDidUpdateContent(_ attachmentsView: TransactionDocsView) {
-        numberOfSections = transactionDocsDataCoordinator.transactionDocIDs.isEmpty ? 1 : 2
+        let currentTransactionDocs = transactionDocsDataCoordinator.transactionDocs
+        numberOfSections = currentTransactionDocs.isEmpty ? 1 : 2
         tableView.reloadData()
     }
 }

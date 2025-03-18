@@ -123,33 +123,44 @@ struct APIResource<T: Decodable>: Resource {
             return "/events/error"
         case .configurations:
             return "/configurations"
+        case .analyticsEvent:
+            return "/events/batch"
         }
     }
     
     var defaultHeaders: HTTPHeaders {
+        let acceptHeaderKey = "Accept"
+        let contentTypeHeaderKey = "Content-Type"
+        
+        let jsonAcceptValue = ContentType.content(version: apiVersion, 
+                                                  subtype: nil,
+                                                  mimeSubtype: "json").value
+        let jsonContentTypeValue = ContentType.content(version: apiVersion, 
+                                                       subtype: nil,
+                                                       mimeSubtype: "json").value
+        let amplitudeEventsValue = "application/vnd.gini.v1.events.amplitude"
+        
         switch method {
         case .createDocument(_, _, let mimeSubType, let documentType):
-            return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: nil,
-                                                  mimeSubtype: "json").value,
-                    "Content-Type": ContentType.content(version: apiVersion,
-                                                        subtype: documentType?.name,
-                                                        mimeSubtype: mimeSubType).value
-            ]
+            let dynamicContentType = ContentType.content(version: apiVersion, 
+                                                         subtype: documentType?.name,
+                                                         mimeSubtype: mimeSubType).value
+            return [acceptHeaderKey: jsonAcceptValue, 
+               contentTypeHeaderKey: dynamicContentType]
+
         case .page, .pagePreview, .documentPage:
             return [:]
+            
         case .paymentRequests:
-        return ["Accept": ContentType.content(version: apiVersion,
-                                              subtype: nil,
-                                              mimeSubtype: "json").value]
+            return [acceptHeaderKey: jsonAcceptValue]
+            
+        case .analyticsEvent:
+            return [acceptHeaderKey: ContentType.json.value, 
+               contentTypeHeaderKey: amplitudeEventsValue]
+
         default:
-            return ["Accept": ContentType.content(version: apiVersion,
-                                                  subtype: nil,
-                                                  mimeSubtype: "json").value,
-                    "Content-Type": ContentType.content(version: apiVersion,
-                                                         subtype: nil,
-                                                         mimeSubtype: "json").value
-            ]
+            return [acceptHeaderKey: jsonAcceptValue, 
+               contentTypeHeaderKey: jsonContentTypeValue]
         }
     }
     
@@ -159,10 +170,12 @@ struct APIResource<T: Decodable>: Resource {
          additionalHeaders: HTTPHeaders = [:],
          body: Data? = nil) {
         self.method = method
-        self.domain = apiDomain
-        self.params = RequestParameters(method: httpMethod,
+        domain = apiDomain
+        params = RequestParameters(method: httpMethod,
                                         body: body)
-        self.params.headers = defaultHeaders.merging(additionalHeaders) { (current, _ ) in current }
+        params.headers = defaultHeaders.merging(additionalHeaders) {
+            (current, _ ) in current
+        }
     }
     
     func parsed(response: HTTPURLResponse, data: Data) throws -> ResponseType {
@@ -178,7 +191,9 @@ struct APIResource<T: Decodable>: Resource {
             if let string = string as? ResponseType {
                 return string
             } else {
-                throw GiniError.parseError(message: "Invalid string response", response: response, data: data)
+                throw GiniError.parseError(message: "Invalid string response",
+                                           response: response,
+                                           data: data)
             }
         }
         

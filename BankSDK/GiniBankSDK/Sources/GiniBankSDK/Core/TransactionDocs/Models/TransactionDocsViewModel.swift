@@ -10,19 +10,14 @@ import GiniBankAPILibrary
 /// A view model responsible for managing the state of documents attached to a transaction.
 /// The `TransactionDocsViewModel` class handles loading, deleting, and presenting attached documents
 /// and communicates updates to the view.
-public class TransactionDocsViewModel {
+class TransactionDocsViewModel {
 
     /// The current list of transaction documents.
-    var transactionDocs: [TransactionDoc] {
+    var transactionDocs: [GiniTransactionDoc] {
         didSet {
             onUpdate?()
         }
     }
-
-    /// The current cache of document images.
-    /// The key is the `documentId` of the corresponding transaction document,
-    /// and the value is an array of `UIImage` representing the images for that document.
-    var cachedImages: [String: [UIImage]] = [:]
 
     private var presentingViewController: UIViewController? {
         return transactionDocsDataProtocol.presentingViewController
@@ -34,14 +29,20 @@ public class TransactionDocsViewModel {
 
     private var documentPagesViewController: DocumentPagesViewController?
     private let transactionDocsDataProtocol: TransactionDocsDataProtocol
-    public var onUpdate: (() -> Void)?
+
+    var onUpdate: (() -> Void)?
+
+    /// The current cache of document images.
+    /// The key is the `documentId` of the corresponding transaction document,
+    /// and the value is an array of `UIImage` representing the images for that document.
+    var cachedImages: [String: [UIImage]] = [:]
 
     /// Initializes a new instance of `TransactionDocsViewModel`.
     /// - Parameter transactionDocsDataProtocol: The protocol responsible for managing attached documents.
-    public init(transactionDocsDataProtocol: TransactionDocsDataProtocol) {
+    init(transactionDocsDataProtocol: TransactionDocsDataProtocol) {
         self.transactionDocsDataProtocol = transactionDocsDataProtocol
         // Access transactionDocs from the internal protocol if available
-        transactionDocs = (transactionDocsDataProtocol as? TransactionDocsDataInternalProtocol)?.transactionDocs ?? []
+        transactionDocs = transactionDocsDataProtocol.transactionDocs
     }
 
     /// Deletes a transaction document from the list.
@@ -51,20 +52,24 @@ public class TransactionDocsViewModel {
         internalTransactionDocsDataCoordinator?.deleteTransactionDoc(with: documentId)
         onUpdate?()
     }
+
     /// Handles the action to preview an attached document
     /// - Parameter documentId: The ID of the document to preview.
     func handlePreviewDocument(for documentId: String) {
         let transactionDoc = transactionDocs.first(where: { $0.documentId == documentId })
         let screenTitle = transactionDoc?.fileName ?? ""
-        let viewController = DocumentPagesViewController(screenTitle: screenTitle)
+        let errorButtonTitle = NSLocalizedStringPreferredGiniBankFormat(
+            "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle",
+            comment: "Try again")
+        let viewController = DocumentPagesViewController(screenTitle: screenTitle, errorButtonTitle: errorButtonTitle)
         viewController.modalPresentationStyle = .overCurrentContext
         documentPagesViewController = viewController
         presentingViewController?.present(viewController, animated: true)
         internalTransactionDocsDataCoordinator?.loadDocumentData?()
     }
     /// Presents an action sheet for the specified attached document, allowing the user to open or delete the document.
-    /// - Parameter document: The `TransactionDoc` to present actions for.
-    func presentDocumentActionSheet(for document: TransactionDoc) {
+    /// - Parameter document: The `GiniTransactionDoc` to present actions for.
+    func presentDocumentActionSheet(for document: GiniTransactionDoc) {
         guard let presentingViewController = transactionDocsDataProtocol.presentingViewController else {
             print("No presenting view controller available.")
             return
@@ -102,7 +107,7 @@ public class TransactionDocsViewModel {
     /// - Parameters:
     ///   - error: The `GiniError` that occurred while previewing the document.
     ///   - tryAgainAction: A closure that is called when the user attempts to retry the document preview action.
-    func setPreviewDocumentError(error: GiniError, tryAgainAction: @escaping () -> Void) {
+   func setPreviewDocumentError(error: GiniError, tryAgainAction: @escaping () -> Void) {
         guard let documentPagesViewController else { return }
         documentPagesViewController.stopLoadingIndicatorAnimation()
         documentPagesViewController.setError(errorType: .init(error: error),

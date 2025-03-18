@@ -61,7 +61,9 @@ final class AppCoordinator: Coordinator {
     private var documentMetadata: GiniHealthSDK.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
-    
+
+    private let hardcodedInvoicesController: HardcodedInvoicesControllerProtocol = HardcodedInvoicesController()
+
     init(window: UIWindow) {
         self.window = window
         print("------------------------------------\n\n",
@@ -165,7 +167,7 @@ final class AppCoordinator: Coordinator {
                                                                                             secret: clientPassword,
                                                                                             domain: clientDomain),
                                                                                             documentMetadata: metadata,
-                                                        hardcodedInvoicesController: HardcodedInvoicesController())
+                                                        hardcodedInvoicesController: hardcodedInvoicesController)
         
         screenAPICoordinator.delegate = self
         
@@ -321,7 +323,7 @@ final class AppCoordinator: Coordinator {
         let invoicesListCoordinator = InvoicesListCoordinator()
         DispatchQueue.main.async {
             invoicesListCoordinator.start(documentService: self.health.documentService,
-                                          hardcodedInvoicesController: HardcodedInvoicesController(),
+                                          hardcodedInvoicesController: self.hardcodedInvoicesController,
                                           health: self.health,
                                           invoices: invoices)
             self.add(childCoordinator: invoicesListCoordinator)
@@ -371,7 +373,11 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
     func presentError(title: String, message: String) {
-        self.rootViewController.showError(title, message: message)
+        if let presentedVC = rootViewController.presentedViewController {
+            presentedVC.showError(title, message: message)
+        } else {
+            rootViewController.showError(title, message: message)
+        }
     }
     
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
@@ -432,5 +438,30 @@ extension AppCoordinator: DebugMenuDelegate {
     
     func didChangeSliderValue(value: Float) {
         giniHealthConfiguration.popupDurationPaymentReview = TimeInterval(value)
+    }
+
+    func didTapOnBulkDelete() {
+        let documentsToDeleteIds = Array(hardcodedInvoicesController.getInvoicesWithExtractions()
+            .map { $0.documentId }
+            .prefix(Constants.numberOfDocumentsToBeDeleted)) // Number of documents to delete
+
+        health.deleteDocuments(documentIds: documentsToDeleteIds) { [weak self] result in
+            switch result {
+            case .success(_):
+                self?.hardcodedInvoicesController.deleteDocuments(withIds: documentsToDeleteIds)
+                let successMessage = "Successfully deleted documents with: \(documentsToDeleteIds)"
+                GiniUtilites.Log(successMessage, event: .success)
+                self?.presentError(title: "Success", message: successMessage)
+            case .failure(let failure):
+                GiniUtilites.Log("Failed to delete documents with error: \(failure.message)", event: .error)
+                self?.presentError(title: "Error", message: failure.message)
+            }
+        }
+    }
+}
+
+extension AppCoordinator {
+    enum Constants {
+        static let numberOfDocumentsToBeDeleted = 2
     }
 }

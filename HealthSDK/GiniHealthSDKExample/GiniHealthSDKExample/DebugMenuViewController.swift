@@ -20,6 +20,7 @@ protocol DebugMenuDelegate: AnyObject {
     func didChangeSwitchValue(type: SwitchType, isOn: Bool)
     func didPickNewLocalization(localization: GiniLocalization)
     func didChangeSliderValue(value: Float)
+    func didTapOnBulkDelete()
 }
 
 class DebugMenuViewController: UIViewController {
@@ -79,6 +80,8 @@ class DebugMenuViewController: UIViewController {
     private lazy var popupDurationRow: UIStackView = stackView(axis: .horizontal, subviews: [popupDurationTitleLabel,
                                                                                              popupDurationSlider])
 
+    private lazy var bulkDeleteButton: UIButton = actionButton(for: .deleteDocuments)
+
     weak var delegate: DebugMenuDelegate?
 
     init(showReviewScreen: Bool,
@@ -122,6 +125,7 @@ class DebugMenuViewController: UIViewController {
                      bottomPaymentComponentEditableRow,
                      closeButtonRow,
                      popupDurationRow,
+                     bulkDeleteButton,
                      spacer]
         
         let mainStackView = stackView(axis: .vertical,
@@ -138,12 +142,31 @@ class DebugMenuViewController: UIViewController {
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
             closeButtonRow.heightAnchor.constraint(equalToConstant: rowHeight),
-            popupDurationRow.heightAnchor.constraint(equalToConstant: rowHeight)
+            popupDurationRow.heightAnchor.constraint(equalToConstant: rowHeight),
+            bulkDeleteButton.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
     }
 }
 
 private extension DebugMenuViewController {
+    enum DebugMenuActionType {
+        case deleteDocuments
+        // Add more cases if needed
+        var title: String {
+            switch self {
+            case .deleteDocuments:
+                return "Bulk Delete"
+            }
+        }
+
+        var selector: Selector {
+            switch self {
+            case .deleteDocuments:
+                return #selector(deleteDocumentsTapped)
+            }
+        }
+    }
+
     func rowTitle(_ title: String) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -165,6 +188,23 @@ private extension DebugMenuViewController {
         mySwitch.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
         mySwitch.isOn = isOn
         return mySwitch
+    }
+
+    func actionButton(for type: DebugMenuActionType) -> UIButton {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(type.title, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 8
+        button.layer.masksToBounds = true
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.addTarget(self, action: type.selector, for: .touchUpInside)
+        return button
+    }
+
+    @objc private func deleteDocumentsTapped() {
+        delegate?.didTapOnBulkDelete()
     }
 }
 

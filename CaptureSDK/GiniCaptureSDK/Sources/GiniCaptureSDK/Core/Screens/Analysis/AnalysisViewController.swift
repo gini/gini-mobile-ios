@@ -66,6 +66,7 @@ import UIKit
 
         if document.type == .pdf {
             if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
+                originalDocumentName = documentTitle
                 let titleString = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
                                                                    comment: "Analysis screen loading text for PDF")
 
@@ -140,10 +141,8 @@ import UIKit
         didShowAnalysis?()
 
         let documentTypeAnalytics = GiniAnalyticsMapper.documentTypeAnalytics(from: document.type)
-        let eventProperties = [GiniAnalyticsProperty(key: .documentType,
-                                                     value: documentTypeAnalytics)]
-        GiniAnalyticsManager.trackScreenShown(screenName: .analysis,
-                                              properties: eventProperties)
+        GiniAnalyticsManager.registerSuperProperties([.documentType: documentTypeAnalytics])
+        GiniAnalyticsManager.trackScreenShown(screenName: .analysis)
     }
 
     // MARK: Toggle animation

@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniCaptureSDK
 
 protocol DigitalInvoiceSkontoTableViewCellDelegate: AnyObject {
     func editTapped(cell: DigitalInvoiceSkontoTableViewCell)
@@ -151,9 +152,18 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         delegate?.reloadCell(cell: self)
     }
 
+    private func sendAnalyticsSwitchTapped() {
+        guard let viewModel = viewModel else { return }
+        let eventProperties = [GiniAnalyticsProperty(key: .switchActive, value: viewModel.isSkontoApplied)]
+        GiniAnalyticsManager.track(event: .skontoSwitchTapped,
+                                   screenName: .returnAssistant,
+                                   properties: eventProperties)
+    }
+
     // MARK: - Actions
     @objc private func toggleDiscount() {
         viewModel?.toggleDiscount()
+        sendAnalyticsSwitchTapped()
     }
 
     @objc private func editButtonTapped() {

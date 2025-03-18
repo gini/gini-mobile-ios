@@ -8,6 +8,7 @@ import UIKit
 
 protocol SkontoAmountViewDelegate: AnyObject {
     func textFieldPriceChanged(editedText: String)
+    func textFieldTapped()
 }
 
 class SkontoAmountToPayView: UIView {
@@ -198,8 +199,12 @@ class SkontoAmountToPayView: UIView {
 }
 
 extension SkontoAmountToPayView: PriceTextFieldDelegate {
+    func priceTextFieldTapped() {
+        delegate?.textFieldTapped()
+    }
+
     func priceTextField(_ textField: PriceTextField, didChangePrice editedText: String) {
-        self.delegate?.textFieldPriceChanged(editedText: editedText)
+        delegate?.textFieldPriceChanged(editedText: editedText)
     }
 }
 

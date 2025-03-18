@@ -130,6 +130,7 @@
 "ginibank.skonto.help.back" = "Skonto";
 
 "ginibank.skonto.document.pages.screen.title" = "Skonto-Details";
+"ginibank.skonto.document.pages.error.tryAgain.buttonTitle" = "Versuch's nochmal";
 
 // MARK: - Transaction Docs feature
 "ginibank.transactionDocs.alert.title" = "Fügen Sie der Transaktion einen Anhang hinzu?";
@@ -148,3 +149,6 @@
 "ginibank.transactionDocs.preview.iban" = "IBAN";
 "ginibank.transactionDocs.preview.expiryDate" = "Rechnungsfälligkeitsdatum";
 "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle" = "Versuch's nochmal";
+
+// MARK: - Transaction Docs feature -  Transaction Details
+"ginibank.transactionDocs.preview.amount" = "Betrag";

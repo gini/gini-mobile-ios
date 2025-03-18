@@ -370,7 +370,7 @@ import GiniBankAPILibrary
     */
     public var customMenuItems: [HelpMenuItem] = []
 
-    // MAKR: - Transaction Docs feature
+    // MARK: - Transaction Docs feature
     /**
      * Indicates whether the Transaction Docs feature is enabled or not. If set to `true`,
      * the user will be presented with an alert dialog in the photo payment flow to choose
@@ -502,10 +502,6 @@ import GiniBankAPILibrary
                                          _ iban: String,
                                          _ bic: String,
                                          _ amountToPay: ExtractionAmount) -> [Extraction] {
-
-        let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"
-        let amountToPayString = "\(formattedPriceValue)" + ":" + amountToPay.currency.rawValue
-
         let paymentRecipientExtraction = Extraction(box: nil,
                                                     candidates: nil,
                                                     entity: "companyname",
@@ -534,7 +530,7 @@ import GiniBankAPILibrary
         let amountExtraction = Extraction(box: nil,
                                           candidates: nil,
                                           entity: "amount",
-                                          value: amountToPayString,
+                                          value: amountToPay.formattedString(),
                                           name: "amountToPay")
         return [paymentRecipientExtraction,
                 paymentReferenceExtraction,
