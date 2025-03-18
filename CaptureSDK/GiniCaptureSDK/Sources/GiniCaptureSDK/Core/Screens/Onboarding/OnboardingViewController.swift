@@ -83,12 +83,28 @@ class OnboardingViewController: UIViewController {
                 nextButton?.isHidden = false
                 skipBottomBarButton?.isHidden = !configuration.bottomNavigationBarEnabled || pageControl.currentPage == dataSource.pageModels.count - 1
                 bottomNavigationBar?.isHidden = true
-                let safeareaPadding = view.safeAreaInsets.left / 2
-                let iconWidth: CGFloat = 220 / 2
-                let textStackPadding: CGFloat = 24 / 2
-                let viewWidth = view.bounds.width / 2
+                let safeareaLeftPadding = view.safeAreaInsets.left
+                let safeareaRightPadding = view.safeAreaInsets.right
 
-                buttonCenterXConstraint.constant = (viewWidth - iconWidth - (safeareaPadding * 2) - (textStackPadding * 2)) / 2
+                // icon leading constraint size from safearea
+                let iconPadding: CGFloat = 56
+                let iconWidth: CGFloat = 220
+                let viewWidth = view.bounds.width
+
+                // it'll be easier to start with the zero point of the view
+                let startOffset = -viewWidth/2
+
+                // distance from X=0 to icon view right edge x
+                let toIconOffset = safeareaLeftPadding + iconPadding + iconWidth
+
+                // width of stackview with texts, including padding. safe area isn't counted, as constraints are bound to safe area
+                let textStackWidthWithPadding = viewWidth - toIconOffset - safeareaRightPadding
+
+                // X of the right edge of the icon view + half of text stack width
+                let xOffset = startOffset + toIconOffset + (textStackWidthWithPadding / 2)
+                let isIphoneSmall = UIDevice.current.isSmallIphone
+
+                buttonCenterXConstraint.constant = isIphoneSmall ? 0 : xOffset
                 collectionViewToPageControlConstraint.isActive = false
                 collectionViewToViewBottomConstraint.isActive = true
             } else {

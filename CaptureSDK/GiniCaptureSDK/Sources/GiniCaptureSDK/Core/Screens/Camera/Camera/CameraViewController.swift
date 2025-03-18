@@ -325,7 +325,7 @@ final class CameraViewController: UIViewController {
     }
 
     private func configureCameraPaneButtons() {
-        cameraPane.setupAuthorization(isHidden: !currentInterfaceOrientation.isPortrait)
+        cameraPane.setupAuthorization(isHidden: UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape)
         cameraPaneHorizontal?.setupAuthorization(isHidden: !(UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape))
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
