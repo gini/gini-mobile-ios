@@ -46,7 +46,9 @@ extension String {
             var searchRange = NSRange(location: 0, length: nsString.length)
             while true {
                 let range = nsString.range(of: substring, options: [], range: searchRange)
-                if range.location == NSNotFound { break }
+                if range.location == NSNotFound {
+                    break
+                }
                 attributedString.addAttributes(attributes, range: range)
                 let newLocation = range.location + range.length
                 searchRange = NSRange(location: newLocation, length: nsString.length - newLocation)
