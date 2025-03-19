@@ -26,7 +26,6 @@ final class OrderListViewModel {
     
     @Published var orders: [Order]
     @Published var errorMessage: String?
-    @Published var successMessage: String?
 
     init(coordinator: OrderListCoordinator,
          orders: [Order]? = nil,
@@ -65,7 +64,7 @@ final class OrderListViewModel {
             case .success:
                 self?.orders.forEach { self?.handlePaymentRequestDeletion(for: $0) }
             case .failure(let error):
-                self?.errorMessage = error.localizedDescription
+                self?.errorMessage = error.message
             }
         })
     }

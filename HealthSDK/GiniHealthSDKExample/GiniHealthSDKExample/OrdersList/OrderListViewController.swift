@@ -185,15 +185,6 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
                     self.showError(message: errorMessage)
                 }
             }.store(in: &cancellables)
-        
-        viewModel.$successMessage
-            .receive(on: DispatchQueue.main)
-            .dropFirst()
-            .sink { message in
-                if let message {
-                    self.showError(message: message)
-                }
-            }.store(in: &cancellables)
     }
 }
 
