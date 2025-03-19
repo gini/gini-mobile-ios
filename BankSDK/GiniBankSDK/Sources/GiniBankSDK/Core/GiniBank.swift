@@ -10,14 +10,26 @@ import GiniBankAPILibrary
 import GiniCaptureSDK
 
 /**
- Core class for Gini Bank SDK.
+ Core class for the Gini Bank SDK, providing functionalities for document handling and payment processing.
  */
 @objc public final class GiniBank: NSObject {
-    /// reponsible for interaction with Gini Bank backend.
+
+    /// Handles interaction with the Gini Bank backend.
     public var giniApiLib: GiniBankAPI
-    /// reponsible for the payment processing.
+
+    /// Provides services for payment processing.
     public var paymentService: PaymentService
 
+    private var documentService: DefaultDocumentService {
+        return giniApiLib.documentService()
+    }
+
+    private var documentId: String?
+    
+    // Cast the coordinator to the internal protocol to access internal properties and methods
+    private var internalTransactionDocsDataCoordinator: TransactionDocsDataInternalProtocol? {
+        return GiniBankConfiguration.shared.transactionDocsDataCoordinator as? TransactionDocsDataInternalProtocol
+    }
     /**
      Returns a GiniBank instance
 
@@ -108,6 +120,20 @@ import GiniCaptureSDK
             DispatchQueue.main.async {
                 UIApplication.shared.open(resultUrl, options: [:], completionHandler: nil)
             }
+        }
+    }
+
+    // MARK: - Transaction Docs
+
+    /**
+     Initiates the process of loading transaction document data.
+
+     - Parameter documentId: The identifier of the document to process.
+     */
+    public func handleTransactionDocsDataLoading(for documentId: String) {
+        self.documentId = documentId
+        internalTransactionDocsDataCoordinator?.loadDocumentData = { [weak self] in
+            self?.processTransactionDocs(for: documentId)
         }
     }
 
@@ -243,5 +269,103 @@ import GiniCaptureSDK
         GiniBankConfiguration.shared = configuration
         let captureConfiguration = GiniBankConfiguration.shared.captureConfiguration()
         GiniCapture.setConfiguration(captureConfiguration)
+    }
+}
+
+extension GiniBank: DocumentPagesProvider {
+    func getDocumentPages(completion: @escaping (Result<[Document.Page], GiniError>) -> Void) {
+        guard let documentId else { return }
+        documentService.pages(for: documentId, completion: completion)
+    }
+
+    func getDocumentPage(for pageNumber: Int,
+                         size: Document.Page.Size,
+                         completion: @escaping (Result<Data, GiniError>) -> Void) {
+        guard let documentId else { return }
+        documentService.documentPage(for: documentId,
+                                     pageNumber: pageNumber,
+                                     size: size,
+                                     completion: completion)
+    }
+}
+//
+// MARK: - Private Methods
+fileprivate extension GiniBank {
+
+    private func processTransactionDocs(for documentId: String) {
+        guard let viewModel = internalTransactionDocsDataCoordinator?.getTransactionDocsViewModel(),
+              let images = viewModel.cachedImages[documentId], !images.isEmpty else {
+            loadDocumentData(for: documentId)
+            return
+        }
+
+        loadDocumentExtractions(for: documentId) { extractions in
+            DispatchQueue.main.async { [weak self] in
+                self?.internalTransactionDocsDataCoordinator?.updateTransactionDocsViewModel(with: images,
+                                                                                             extractions: extractions,
+                                                                                             for: documentId)
+            }
+        }
+    }
+
+    private func loadDocumentData(for documentId: String) {
+        let dispatchGroup = DispatchGroup()
+        var extractedData: [Extraction] = []
+        var documentImages: [UIImage] = []
+        var documentPagesError: GiniError?
+
+        dispatchGroup.enter()
+        DocumentServiceHelper.fetchDocumentPages(from: self) { result in
+            switch result {
+            case .success(let images):
+                documentImages = images
+            case .failure(let error):
+                documentPagesError = error
+            }
+            dispatchGroup.leave()
+        }
+
+        dispatchGroup.enter()
+        loadDocumentExtractions(for: documentId) { extractions in
+            extractedData = extractions
+            dispatchGroup.leave()
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            if let error = documentPagesError {
+                self.handlePreviewDocumentError(error: error)
+            } else {
+                self.internalTransactionDocsDataCoordinator?.updateTransactionDocsViewModel(
+                    with: documentImages,
+                    extractions: extractedData,
+                    for: documentId
+                )
+            }
+        }
+    }
+
+    private func loadDocumentExtractions(for documentId: String,
+                                         completion: @escaping ([Extraction]) -> Void) {
+        fetchDocumentExtractions(for: documentId) { result in
+            switch result {
+            case.success(let extractionResult):
+                completion(extractionResult.extractions)
+            case.failure:
+                completion([])
+            }
+        }
+    }
+
+    private func handlePreviewDocumentError(error: GiniError) {
+        internalTransactionDocsDataCoordinator?
+            .getTransactionDocsViewModel()?
+            .setPreviewDocumentError(error: error) {
+                self.internalTransactionDocsDataCoordinator?.loadDocumentData?()
+            }
+    }
+
+    private func fetchDocumentExtractions(for documentId: String,
+                                          completion: @escaping (Result<ExtractionResult, GiniError>) -> Void) {
+        documentService.extractions(for: documentId, completion: completion)
     }
 }

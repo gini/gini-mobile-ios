@@ -7,20 +7,30 @@
 
 import Foundation
 
+/**
+Sets the default error logger. It is only used when giniErrorLoggerIsOn is true.
+- note: Internal usage only.
+**/
+var _GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE: Bool = false
+
 /// The Gini Bank API Library
 public final class GiniBankAPI {
     
     private let docService: DocumentService!
     private let payService: PaymentService?
     private let configService: ClientConfigurationServiceProtocol?
+    private let analyticsService: AnalyticsServiceProtocol?
+    
     static var logLevel: LogLevel = .none
 
     init<T: DocumentService>(documentService: T,
                              paymentService: PaymentService?,
-                             configurationService: ClientConfigurationServiceProtocol?) {
+                             configurationService: ClientConfigurationServiceProtocol?,
+                             analyticsService: AnalyticsServiceProtocol?) {
         self.docService = documentService
         self.payService = paymentService
         self.configService = configurationService
+        self.analyticsService = analyticsService
     }
     
     /**
@@ -46,6 +56,10 @@ public final class GiniBankAPI {
     
     public func configurationService() -> ClientConfigurationServiceProtocol? {
         return configService
+    }
+    
+    public func analyticService() -> AnalyticsServiceProtocol? {
+        return analyticsService
     }
 
     /// Removes the user stored credentials. Recommended when logging a different user in your app.
@@ -114,10 +128,12 @@ extension GiniBankAPI {
             let documentService = DefaultDocumentService(sessionManager: sessionManager, apiDomain: api)
             let paymentService = PaymentService(sessionManager: sessionManager, apiDomain: api)
             let configurationService = ClientConfigurationService(sessionManager: sessionManager, apiDomain: api)
-
-            return GiniBankAPI(documentService: documentService, 
+            let analyticsService = AnalyticsService(sessionManager: sessionManager, apiDomain: api)
+            
+            return GiniBankAPI(documentService: documentService,
                                paymentService: paymentService,
-                               configurationService: configurationService)
+                               configurationService: configurationService,
+                               analyticsService: analyticsService)
         }
         
         private func createSessionManager() -> SessionManager {
@@ -145,8 +161,10 @@ extension GiniBankAPI {
                                                                    value: client.domain,
                                                                    service: .auth))
             } catch {
-                preconditionFailure("There was an error using the Keychain. " +
-                    "Check that the Keychain capability is enabled in your project")
+                if !_GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE {
+                    preconditionFailure("There was an error using the Keychain. " +
+                                        "Check that the Keychain capability is enabled in your project")
+                }
             }
         }
     }

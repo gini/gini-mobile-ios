@@ -24,10 +24,12 @@ private class MockTokenSource: AlternativeTokenSource {
 }
 
 private class MockCaptureResultsDelegate: GiniCaptureResultsDelegate {
+    private(set) var closeCalled: Bool = false
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
     }
     
     func giniCaptureDidCancelAnalysis() {
+        closeCalled = true
     }
     
     func giniCaptureDidEnterManually() {
@@ -56,63 +58,74 @@ final class NetworkingScreenApiCoordinatorTests: XCTestCase {
     private var trackingDelegate: MockTrackingDelegate!
 
     override func setUp() {
+        _GINIBANKAPILIBRARY_DISABLE_KEYCHAIN_PRECONDITION_FAILURE = true
         tokenSource = makeTokenSource()
         resultsDelegate = MockCaptureResultsDelegate()
         configuration = GiniBankConfiguration()
-        metadata = Document.Metadata(branchId: "branch")
+        metadata = Document.Metadata(branchId: "branch", bankSDKVersion: GiniBankSDKVersion)
         trackingDelegate = MockTrackingDelegate()
     }
 
+    func testCloseSDK() throws {
+        let (coordinator, _) = try makeCoordinatorAndService(fromViewController: true) // so the sdk would start
+
+        XCTAssertEqual(GiniBankNetworkingScreenApiCoordinator.currentCoordinator, coordinator, "The coordinator should be the same")
+
+        GiniBank.closeCurrentSDK()
+        XCTAssertNil(GiniBankNetworkingScreenApiCoordinator.currentCoordinator)
+        XCTAssertTrue(resultsDelegate.closeCalled, "Should've called delegate for cancelling")
+    }
+
     func testInitWithAlternativeTokenSource() throws {
-//        let (coordinator, service) = try makeCoordinatorAndService()
-//
-//        // check domain
-//        XCTAssertEqual(service.apiDomain.domainString, "pay-api.gini.net", "Service api domain should match our default")
-//
-//        // check token
-//        let receivedToken = try XCTUnwrap(
-//            login(service: service),
-//            "Should log in successfully"
-//        )
-//        XCTAssertEqual(receivedToken, tokenSource.token, "Received token should match the expected token")
-//
-//        // check for delegates/configs
-//        XCTAssertNotNil(
-//            coordinator.resultsDelegate as? MockCaptureResultsDelegate,
-//            "Coordinator should have correct results delegate instance"
-//        )
-//        XCTAssertEqual(coordinator.giniBankConfiguration, configuration, "Coordinator should have correct configuration instance")
-//        XCTAssertNotNil(
-//            coordinator.trackingDelegate as? MockTrackingDelegate,
-//            "Coordinator should have correct tracking delegate instance"
-//        )
-//        XCTAssertEqual(coordinator.documentService.metadata?.headers, metadata.headers, "Metadata headers should match")
+        let (coordinator, service) = try makeCoordinatorAndService()
+
+        // check domain
+        XCTAssertEqual(service.apiDomain.domainString, "pay-api.gini.net", "Service api domain should match our default")
+
+        // check token
+        let receivedToken = try XCTUnwrap(
+            login(service: service),
+            "Should log in successfully"
+        )
+        XCTAssertEqual(receivedToken, tokenSource.token, "Received token should match the expected token")
+
+        // check for delegates/configs
+        XCTAssertNotNil(
+            coordinator.resultsDelegate as? MockCaptureResultsDelegate,
+            "Coordinator should have correct results delegate instance"
+        )
+        XCTAssertEqual(coordinator.giniBankConfiguration, configuration, "Coordinator should have correct configuration instance")
+        XCTAssertNotNil(
+            coordinator.trackingDelegate as? MockTrackingDelegate,
+            "Coordinator should have correct tracking delegate instance"
+        )
+        XCTAssertEqual(coordinator.documentService.metadata?.headers, metadata.headers, "Metadata headers should match")
     }
 
     func testViewControllerWithAlternativeTokenSource() throws {
-//        let (coordinator, service) = try makeCoordinatorAndService(fromViewController: true)
-//
-//        // check domain
-//        XCTAssertEqual(service.apiDomain.domainString, "pay-api.gini.net", "Service api domain should match our default")
-//
-//        // check token
-//        let receivedToken = try XCTUnwrap(
-//            login(service: service),
-//            "Should log in successfully"
-//        )
-//        XCTAssertEqual(receivedToken, tokenSource.token, "Received token should match the expected token")
-//
-//        // check for delegates/configs
-//        XCTAssertNotNil(
-//            coordinator.resultsDelegate as? MockCaptureResultsDelegate,
-//            "Coordinator should have correct results delegate instance"
-//        )
-//        XCTAssertEqual(coordinator.giniBankConfiguration, configuration, "Coordinator should have correct configuration instance")
-//        XCTAssertNotNil(
-//            coordinator.trackingDelegate as? MockTrackingDelegate,
-//            "Coordinator should have correct tracking delegate instance"
-//        )
-//        XCTAssertEqual(coordinator.documentService.metadata?.headers, metadata.headers, "Metadata headers should match")
+        let (coordinator, service) = try makeCoordinatorAndService(fromViewController: true)
+
+        // check domain
+        XCTAssertEqual(service.apiDomain.domainString, "pay-api.gini.net", "Service api domain should match our default")
+
+        // check token
+        let receivedToken = try XCTUnwrap(
+            login(service: service),
+            "Should log in successfully"
+        )
+        XCTAssertEqual(receivedToken, tokenSource.token, "Received token should match the expected token")
+
+        // check for delegates/configs
+        XCTAssertNotNil(
+            coordinator.resultsDelegate as? MockCaptureResultsDelegate,
+            "Coordinator should have correct results delegate instance"
+        )
+        XCTAssertEqual(coordinator.giniBankConfiguration, configuration, "Coordinator should have correct configuration instance")
+        XCTAssertNotNil(
+            coordinator.trackingDelegate as? MockTrackingDelegate,
+            "Coordinator should have correct tracking delegate instance"
+        )
+        XCTAssertEqual(coordinator.documentService.metadata?.headers, metadata.headers, "Metadata headers should match")
     }
 }
 

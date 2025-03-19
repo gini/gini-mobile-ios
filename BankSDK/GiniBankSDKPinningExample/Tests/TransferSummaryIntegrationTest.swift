@@ -1,8 +1,7 @@
 //
 //  TransferSummaryIntegrationTest.swift
-//  GiniBankSDKExample
 //
-//  Created by Nadya Karaban on 06.04.22.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import XCTest

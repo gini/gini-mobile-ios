@@ -13,7 +13,7 @@ import XCTest
 extension BaseIntegrationTest {
 
     // Method to handle updating and verifying feedback
-    func updateAndVerifyTransferSummary(result: AnalysisResult, expect: XCTestExpectation) {
+    func updateAndVerifyTransferSummary(result: AnalysisResult, mockedInvoiceUpdatedResultName: String, expect: XCTestExpectation) {
         // Assuming the user updated the amountToPay to "950.00:EUR"
         result.extractions["amountToPay"]?.value = "950.00:EUR"
 
@@ -25,6 +25,7 @@ extension BaseIntegrationTest {
                     switch updatedResult {
                         case let .success(extractionResult):
                             self.handleSuccessfulTransferSummaryUpdate(extractionResult: extractionResult,
+                                                                       mockedInvoiceUpdatedResultName: mockedInvoiceUpdatedResultName,
                                                                        expect: expect,
                                                                        result: result)
                         case let .failure(error):
@@ -44,13 +45,12 @@ extension BaseIntegrationTest {
      - result: The initial analysis result.
      */
     private func handleSuccessfulTransferSummaryUpdate(extractionResult: ExtractionResult,
+                                                       mockedInvoiceUpdatedResultName: String,
                                                        expect: XCTestExpectation,
                                                        result: AnalysisResult) {
         let extractionsAfterFeedback = extractionResult.extractions
-
-        let mockedInvoice = "result_Gini_invoice_example_payment_reference_after_feedback"
         // Load the expected fixture after feedback
-        guard let fixtureExtractionsAfterFeedbackContainer = self.loadFixtureExtractionsContainer(from: mockedInvoice) else {
+        guard let fixtureExtractionsAfterFeedbackContainer = self.loadFixtureExtractionsContainer(from: mockedInvoiceUpdatedResultName) else {
             return
         }
 
@@ -91,9 +91,9 @@ extension BaseIntegrationTest {
      * This method reproduces getting updated extractions for the already known document by the Bank SDK.
      * It is assumed that transfer summary was sent, and we retrieve the updated extractions for verification.
      */
-    private func getUpdatedExtractionsFromGiniBankSDK(for document: Document, completion: @escaping AnalysisCompletion) {
-        self.giniHelper.giniBankAPIDocumentService.extractions(for: document,
-                                                               cancellationToken: CancellationToken()) { result in
+    func getUpdatedExtractionsFromGiniBankSDK(for document: Document, completion: @escaping AnalysisCompletion) {
+        giniHelper.giniBankAPIDocumentService.extractions(for: document,
+                                                          cancellationToken: CancellationToken()) { result in
             switch result {
                 case let .success(extractionResult):
                     completion(.success(extractionResult))

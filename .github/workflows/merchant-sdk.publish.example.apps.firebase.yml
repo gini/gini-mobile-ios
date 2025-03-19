@@ -1,5 +1,11 @@
 name: Publish GiniMerchantSDKExample to Firebase Distribution
 on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - 'MerchantSDK/**'
+      - 'HealthAPILibrary/**'
+      - 'GiniComponents/**'
   workflow_dispatch:
 
 concurrency:
@@ -7,17 +13,13 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
-  check:
-    uses: ./.github/workflows/merchant-sdk.check.yml
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
-
   upload-version:
-    needs: check
     runs-on: macos-latest    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
 
       - uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
@@ -136,9 +138,37 @@ jobs:
       - name: Extract Jira ticket
         id: extract_jira_ticket
         run: |
+          echo "Checking the last 3 commits for JIRA tickets..."
+          jira_ticket_pattern='[A-Z]+-[0-9]+'
+          jira_ticket=""
+
           commit_message=$(git log -1 --pretty=%B)
-          jira_ticket=$(echo "$commit_message" | awk 'NR > 1 && $0 != "" { print $0; exit }')
-          echo "JIRA_TICKET_NAME=${jira_ticket}" >> $GITHUB_ENV
+          jira_ticket=$(echo "$commit_message" | grep -oE "$jira_ticket_pattern" | head -1)
+
+          if [[ -n "$jira_ticket" ]]; then
+            echo "JIRA Ticket Found in Last Commit: $jira_ticket"
+          else
+            commit_message=$(git log --no-merges -1 --pretty=%B)
+            jira_ticket=$(echo "$commit_message" | grep -oE "$jira_ticket_pattern" | head -1)
+
+            if [[ -n "$jira_ticket" ]]; then
+              echo "JIRA Ticket Found in Second Last Commit: $jira_ticket"
+            else    
+              commit_message=$(git log --no-merges -2 --pretty=%B)
+              jira_ticket=$(echo "$commit_message" | grep -oE "$jira_ticket_pattern" | head -1)
+
+              if [[ -n "$jira_ticket" ]]; then
+                echo "JIRA Ticket Found in Third Last Commit: $jira_ticket"
+              fi
+            fi
+          fi
+
+          if [[ -n "$jira_ticket" ]]; then
+            echo "JIRA_TICKET_NAME=${jira_ticket}" >> $GITHUB_ENV
+          else
+            echo "No JIRA Ticket found in the last 3 commits. Build link will not be posted to Jira. Pick it manually. This job will pass anyway."
+            exit 0
+          fi
 
       - name: Login to jira
         if: ${{ env.JIRA_TICKET_NAME != null }}
