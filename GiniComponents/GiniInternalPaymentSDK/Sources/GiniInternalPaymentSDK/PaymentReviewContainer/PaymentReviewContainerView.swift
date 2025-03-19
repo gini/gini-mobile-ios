@@ -672,6 +672,10 @@ public final class PaymentReviewContainerView: UIView {
         }
     }
 
+    func textFieldEdited() -> UITextField? {
+        paymentInfoStackView.findFirstResponder()
+    }
+    
     private func buildErrorLabel() -> UILabel {
         let label = UILabel()
         label.font = viewModel.configuration.errorLabelFont
@@ -685,6 +689,20 @@ public final class PaymentReviewContainerView: UIView {
         textFieldView.isUserInteractionEnabled = isEditable
         textFieldView.setKeyboardType(keyboardType: keyboardType)
         return textFieldView
+    }
+}
+
+extension UIView {
+    func findFirstResponder() -> UITextField? {
+        if self is UITextField, self.isFirstResponder {
+            return self as? UITextField
+        }
+        for subview in subviews {
+            if let responder = subview.findFirstResponder() {
+                return responder
+            }
+        }
+        return nil
     }
 }
 
