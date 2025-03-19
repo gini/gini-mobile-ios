@@ -76,11 +76,11 @@ public final class PaymentService: PaymentServiceProtocol {
     *
     * - Parameter ids:                                  An array of paymen request ids to be deleted
     * - Parameter completion:                     An action for deleting a batch of payment request. Result is a value that represents either a success or a failure, including an associated value in each case.
-                                       In success it includes a success message
+                                       In success it includes an array of deleted ids
                                        In case of failure error from the server side.
     */
    public func deletePaymentRequests(_ ids: [String],
-                                     completion: @escaping CompletionResult<String>) {
+                                     completion: @escaping CompletionResult<[String]>) {
        self.deletePaymentRequests(ids,
                                   resourceHandler: sessionManager.data,
                                   completion: completion)
@@ -226,11 +226,11 @@ protocol PaymentServiceProtocol: AnyObject {
     *
     * - Parameter ids:                                    An array of payment request ids to be deleted
     * - Parameter completion:                       An action for deleting a batch of payment request. Result is a value that represents either a success or a failure, including an associated value in each case.
-                                       In success it includes a success message
+                                       In success it includes an array of deleted ids
                                        In case of failure error from the server side.
     */
    func deletePaymentRequests(_ ids: [String],
-                              completion: @escaping CompletionResult<String>)
+                              completion: @escaping CompletionResult<[String]>)
     
     /**
      *  Returns a payment request.
@@ -380,7 +380,7 @@ extension PaymentService {
     
     func deletePaymentRequests(_ ids: [String],
                                resourceHandler: ResourceDataHandler<APIResource<String>>,
-                               completion: @escaping CompletionResult<String>) {
+                               completion: @escaping CompletionResult<[String]>) {
         guard let json = try? JSONEncoder().encode(ids) else {
             assertionFailure("The payment request ids provided cannot be encoded")
             return
@@ -394,8 +394,8 @@ extension PaymentService {
         
         resourceHandler(resource, { result in
             switch result {
-            case .success(let message):
-                completion(.success(message))
+            case .success:
+                completion(.success(ids))
             case let .failure(error):
                 completion(.failure(error))
             }

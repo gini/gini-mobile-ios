@@ -471,16 +471,16 @@ public struct DataForReview {
         - ids: An array of paymen request ids to be deleted
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
         Completion block called on main thread.
-        In success it includes a success message
+        In success it includes an array of deleted ids
         In case of failure error from the server side.
      
      */
-    public func deletePaymentRequests(ids: [String], completion: @escaping (Result<String, GiniError>) -> Void) {
+    public func deletePaymentRequests(ids: [String], completion: @escaping (Result<[String], GiniError>) -> Void) {
         paymentService.deletePaymentRequests(ids) { result in
             DispatchQueue.main.async {
                 switch result {
-                case let .success(message):
-                    completion(.success(message))
+                case let .success(deletedIds):
+                    completion(.success(deletedIds))
                 case let .failure(error):
                     completion(.failure(GiniError.decorator(error)))
                 }
