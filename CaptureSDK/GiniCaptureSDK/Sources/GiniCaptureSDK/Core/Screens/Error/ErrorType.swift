@@ -47,7 +47,8 @@ import GiniBankAPILibrary
         case .noResponse, .notFound:
             self = .unexpected
         case .notAcceptable, .tooManyRequests,
-             .parseError, .badRequest:
+             .parseError, .badRequest,
+             .unknown:
             self = .request
         case .server:
             self = .serverError
