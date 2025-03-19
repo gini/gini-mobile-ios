@@ -214,3 +214,17 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 
 "ginicapture.ibandetection.multipleibansdetected" = "IBAN detected";
 "ginicapture.ibandetection.takephoto" = "Take a photo";
+
+"ginicapture.QRengagement.first.title" = "More than just QR codes!";
+"ginicapture.QRengagement.second.title" = "Photos, PDFs & more!";
+"ginicapture.QRengagement.third.title" = "Send Screens & GIFs!";
+
+"ginicapture.QRengagement.first.description" = "Photo Payment isn’t just for QR codes. You can photo invoices or payment forms. Or upload images, PDFs or even GIFs.";
+"ginicapture.QRengagement.first.description.boldwords" = "invoices;payment forms;images;PDFs;GIFs";
+"ginicapture.QRengagement.second.description" = "Take a photo, upload a PDF (up to 10 pages), or scan digital invoices and remittance slips – Photo Payment will handle the payment details for you!";
+"ginicapture.QRengagement.third.description" = "Scan payment details directly from a monitor, screenshot, GIF or QR code – quick and easy!";
+
+"ginicapture.QRengagement.previous" = "Back";
+"ginicapture.QRengagement.next" = "Next";
+"ginicapture.QRengagement.skip" = "Continue Payment";
+"ginicapture.QRengagement.ingredient.brand" = "Powered by";
