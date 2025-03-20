@@ -150,8 +150,6 @@ struct SwitchOptionModel {
 				return "Custom Gini error logger"
 			case .debugModeOn:
 				return "Debug mode"
-            case .skontoNavigationBarBottomAdapter:
-                return "Skonto bottom navigation bar"
             case .skontoHelpNavigationBarBottomAdapter:
                 return "Skonto help bottom navigation bar"
             case .closeSDK:
