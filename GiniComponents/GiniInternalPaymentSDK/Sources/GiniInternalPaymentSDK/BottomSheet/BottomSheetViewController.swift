@@ -68,7 +68,6 @@ open class BottomSheetViewController: UIViewController {
         setupViews()
         setupGestures()
         setupInitialLayout()
-        view.layoutIfNeeded()
     }
 
     open override func viewDidAppear(_ animated: Bool) {
