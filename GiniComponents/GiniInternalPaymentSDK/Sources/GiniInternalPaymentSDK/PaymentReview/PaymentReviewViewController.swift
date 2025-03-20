@@ -238,10 +238,9 @@ extension PaymentReviewViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
         guard let keyboardSize = getKeyboardSize(from: notification) else { return }
 
-        switch UIDevice.current.orientation {
-        case .portrait:
-            adjustViewForPortrait()
-        default:
+        if UIDevice.isPortrait() {
+            adjustViewForPortrait(with: keyboardSize.height)
+        } else {
             handleLandscapeKeyboard(with: keyboardSize.height)
         }
 
@@ -249,10 +248,9 @@ extension PaymentReviewViewController {
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        switch UIDevice.current.orientation {
-        case .portrait:
+        if UIDevice.isPortrait() {
             resetViewOriginForPortrait(using: notification)
-        default:
+        } else {
             resetViewTransformForLandscape()
         }
 
@@ -265,9 +263,9 @@ extension PaymentReviewViewController {
         return (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
     }
 
-    private func adjustViewForPortrait() {
-        let targetView = (model.displayMode == .bottomSheet ? view : mainView)
-        targetView?.bounds.origin.y = 70
+    private func adjustViewForPortrait(with keyboardHeight: CGFloat) {
+        (model.displayMode == .bottomSheet ? view : mainView)
+            .bounds.origin.y = keyboardHeight - view.safeAreaInsets.bottom
     }
 
     private func handleLandscapeKeyboard(with keyboardHeight: CGFloat) {
@@ -614,14 +612,10 @@ extension PaymentReviewViewController {
     }
 
     private func updateLayoutForCurrentOrientation() {
-        let deviceOrientation = UIDevice.current.orientation
-        switch deviceOrientation {
-        case .portrait:
+        if UIDevice.isPortrait() {
             setupPortraitConstraints()
-        case .landscapeLeft, .landscapeRight:
+        } else {
             setupLandscapeConstraints()
-        default:
-            break
         }
         collectionView.reloadData()
     }

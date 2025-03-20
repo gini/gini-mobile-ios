@@ -161,14 +161,10 @@ private extension BottomSheetViewController {
     }
 
     private func updateLayoutForCurrentOrientation() {
-        let deviceOrientation = UIDevice.current.orientation
-        switch deviceOrientation {
-            case .portrait:
-                setupPortraitConstraints()
-            case .landscapeLeft, .landscapeRight:
-                setupLandscapeConstraints()
-            default:
-                break
+        if UIDevice.isPortrait() {
+            setupPortraitConstraints()
+        } else {
+            setupLandscapeConstraints()
         }
     }
 

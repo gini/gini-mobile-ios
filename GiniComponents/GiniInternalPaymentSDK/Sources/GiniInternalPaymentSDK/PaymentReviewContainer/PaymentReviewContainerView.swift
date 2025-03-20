@@ -106,7 +106,7 @@ public final class PaymentReviewContainerView: UIView {
     }
     
     public func setupView() {
-        let isPortrait = UIDevice.current.orientation.isPortrait
+        let isPortrait = UIDevice.isPortrait()
         setupViewHierarchy(isPortrait: isPortrait)
         setupLayout(isPortrait: isPortrait)
         configureUI()

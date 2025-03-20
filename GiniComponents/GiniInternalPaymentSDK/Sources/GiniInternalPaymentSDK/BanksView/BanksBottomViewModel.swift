@@ -88,11 +88,10 @@ public final class BanksBottomViewModel {
     func calculateHeights() {
         let totalTableViewHeight = CGFloat(paymentProviders.count) * Constants.cellSizeHeight
         let totalBottomViewHeight = Constants.blankBottomViewHeight + totalTableViewHeight
-        let deviceOrientation = UIDevice.current.orientation
         var topPaddingView: CGFloat = 0
-        if deviceOrientation == .portrait {
+        if UIDevice.isPortrait() {
             topPaddingView = Constants.topPaddingViewPortrait
-        } else if deviceOrientation == .landscapeLeft || deviceOrientation == .landscapeRight {
+        } else {
             topPaddingView = Constants.topPaddingViewLandscape
         }
         maximumViewHeight = UIScreen.main.bounds.height - topPaddingView

@@ -45,11 +45,9 @@ public final class PaymentComponentBottomView: BottomSheetViewController {
 
     // Detect and setup initial layout based on the current orientation
     private func setupInitialLayout() {
-        let deviceOrientation = UIDevice.current.orientation
-
-        if deviceOrientation == .portrait || deviceOrientation == .portraitUpsideDown {
+        if UIDevice.isPortrait() {
             setupPortraitConstraints()
-        } else if deviceOrientation == .landscapeLeft || deviceOrientation == .landscapeRight {
+        } else {
             setupLandscapeConstraints()
         }
     }
@@ -74,20 +72,15 @@ public final class PaymentComponentBottomView: BottomSheetViewController {
         NSLayoutConstraint.activate(landscapeConstraints)
     }
 
-    // Handle orientation change
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        // Check the device orientation
-        let deviceOrientation = UIDevice.current.orientation
-
-        if deviceOrientation == .portrait {
-            setupPortraitConstraints() // or upsideDown based on orientation
-        } else if deviceOrientation == .landscapeLeft || deviceOrientation == .landscapeRight {
+        if UIDevice.isPortrait() {
+            setupPortraitConstraints()
+        } else {
             setupLandscapeConstraints()
         }
 
-        // Perform layout updates with animation
         coordinator.animate(alongsideTransition: { context in
             self.view.layoutIfNeeded()
         }, completion: nil)

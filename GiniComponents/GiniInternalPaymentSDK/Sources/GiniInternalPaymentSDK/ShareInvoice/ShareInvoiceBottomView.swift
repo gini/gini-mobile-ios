@@ -190,14 +190,10 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     }
 
     private func updateLayoutForCurrentOrientation() {
-        let deviceOrientation = UIDevice.current.orientation
-        switch deviceOrientation {
-        case .portrait:
+        if UIDevice.isPortrait() {
             setupPortraitConstraints()
-        case .landscapeLeft, .landscapeRight:
+        } else {
             setupLandscapeConstraints()
-        default:
-            break
         }
     }
 
