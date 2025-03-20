@@ -103,6 +103,14 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
             } else {
                 horizontalItem.removeFromSuperview()
             }
+        } else {
+            if view.currentInterfaceOrientation.isLandscape {
+                doneButton.isHidden = false
+                bottomNavigationBar?.isHidden = true
+            } else {
+                doneButton.isHidden = bottomNavigationBar != nil
+                bottomNavigationBar?.isHidden = false
+            }
         }
     }
 
@@ -154,7 +162,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         doneButton.configure(with: configuration.primaryButtonConfiguration)
 
         if configuration.bottomNavigationBarEnabled {
-            doneButton.isHidden = true
+            doneButton.isHidden = !(UIDevice.current.isIpad && view.currentInterfaceOrientation.isLandscape)
 
             NSLayoutConstraint.deactivate([scrollViewBottomAnchor])
 
@@ -199,6 +207,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        guard UIDevice.current.isIpad else { return }
         coordinator.animate(alongsideTransition: { [weak self] _ in
             guard let self = self else { return }
             self.scrollViewTopConstraint.constant = self.topPadding
