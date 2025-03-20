@@ -123,48 +123,46 @@ public final class PaymentReviewContainerView: UIView {
         paymentInputFieldsErrorLabels = [recipientErrorLabel, amountErrorLabel, ibanErrorLabel, usageErrorLabel]
         if isPortrait {
             coupledErrorLabels = [amountErrorLabel, ibanErrorLabel]
-        } else {
-            firstCoupledErrorsLabels = [recipientErrorLabel, ibanErrorLabel]
-            secondCoupleErrorsLabels = [amountErrorLabel, usageErrorLabel]
-        }
 
-        if isPortrait {
             recipientStackView.addArrangedSubview(recipientTextFieldView)
             recipientStackView.addArrangedSubview(recipientErrorLabel)
-            
+
             ibanAmountHorizontalStackView.addArrangedSubview(ibanTextFieldView)
             ibanAmountHorizontalStackView.addArrangedSubview(amountTextFieldView)
-            
+
             ibanErrorStackView.addArrangedSubview(ibanErrorLabel)
             amountErrorStackView.addArrangedSubview(amountErrorLabel)
             ibanAmountErrorsHorizontalStackView.addArrangedSubview(ibanErrorStackView)
             ibanAmountErrorsHorizontalStackView.addArrangedSubview(amountErrorStackView)
-            
+
             ibanAmountContainerStackView.addArrangedSubview(ibanAmountHorizontalStackView)
             ibanAmountContainerStackView.addArrangedSubview(ibanAmountErrorsHorizontalStackView)
-            
+
             usageStackView.addArrangedSubview(usageTextFieldView)
             usageStackView.addArrangedSubview(usageErrorLabel)
         } else {
+            firstCoupledErrorsLabels = [recipientErrorLabel, ibanErrorLabel]
+            secondCoupleErrorsLabels = [amountErrorLabel, usageErrorLabel]
+
             firstStackHorizontalStackView.addArrangedSubview(recipientTextFieldView)
             firstStackHorizontalStackView.addArrangedSubview(ibanTextFieldView)
-            
+
             recipientErrorStackView.addArrangedSubview(recipientErrorLabel)
             ibanErrorStackView.addArrangedSubview(ibanErrorLabel)
             firstErrorsHorizontalStackView.addArrangedSubview(recipientErrorStackView)
             firstErrorsHorizontalStackView.addArrangedSubview(ibanErrorStackView)
-            
+
             secondStackHorizontalStackView.addArrangedSubview(amountTextFieldView)
             secondStackHorizontalStackView.addArrangedSubview(usageTextFieldView)
-            
+
             amountErrorStackView.addArrangedSubview(amountErrorLabel)
             usageErrorStackView.addArrangedSubview(usageErrorLabel)
             secondErrorsHorizontalStackView.addArrangedSubview(amountErrorStackView)
             secondErrorsHorizontalStackView.addArrangedSubview(usageErrorStackView)
-            
+
             firstStackContainerView.addArrangedSubview(firstStackHorizontalStackView)
             firstStackContainerView.addArrangedSubview(firstErrorsHorizontalStackView)
-            
+
             secondStackContainerView.addArrangedSubview(secondStackHorizontalStackView)
             secondStackContainerView.addArrangedSubview(secondErrorsHorizontalStackView)
         }
@@ -636,13 +634,6 @@ public final class PaymentReviewContainerView: UIView {
         ibanAmountErrorsHorizontalStackView.isHidden = coupledErrorLabels.allSatisfy { $0.isHidden }
     }
     
-    private func updateRecipientIbanErrorState() {
-        firstErrorsHorizontalStackView.isHidden = firstCoupledErrorsLabels.allSatisfy { $0.isHidden }
-    }
-
-    private func updateAmountUsageErrorState() {
-        secondErrorsHorizontalStackView.isHidden = secondCoupleErrorsLabels.allSatisfy { $0.isHidden }
-    }
     // MARK: - Pay Button Action
     fileprivate func payButtonClicked() {
         self.endEditing(true)

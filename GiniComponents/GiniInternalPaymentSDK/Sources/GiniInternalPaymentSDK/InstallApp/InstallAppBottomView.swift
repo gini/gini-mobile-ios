@@ -211,18 +211,25 @@ public final class InstallAppBottomView: BottomSheetViewController {
 
         switch layout {
         case .portrait:
-            titleLabel.textAlignment = .left
-            moreInformationStackView.alignment = .leading
-            moreInformationLabel.textAlignment = .left
-            moreInformationStackView.addArrangedSubview(moreInformationButton)
-            moreInformationStackView.addArrangedSubview(moreInformationLabel)
+            configureStackView(alignment: .leading, textAlignment: .left, addPaddingViews: false)
         case .landscape:
-            titleLabel.textAlignment = .center
-            moreInformationStackView.alignment = .center
-            moreInformationLabel.textAlignment = .center
+            configureStackView(alignment: .center, textAlignment: .center, addPaddingViews: true)
+        }
+    }
+
+    private func configureStackView(alignment: UIStackView.Alignment, textAlignment: NSTextAlignment, addPaddingViews: Bool) {
+        titleLabel.textAlignment = textAlignment
+        moreInformationStackView.alignment = alignment
+        moreInformationLabel.textAlignment = textAlignment
+
+        if addPaddingViews {
             moreInformationStackView.addArrangedSubview(UIView())
-            moreInformationStackView.addArrangedSubview(moreInformationButton)
-            moreInformationStackView.addArrangedSubview(moreInformationLabel)
+        }
+
+        moreInformationStackView.addArrangedSubview(moreInformationButton)
+        moreInformationStackView.addArrangedSubview(moreInformationLabel)
+
+        if addPaddingViews {
             moreInformationStackView.addArrangedSubview(UIView())
         }
     }

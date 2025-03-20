@@ -361,12 +361,12 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     }
     
     private func generatePaymentInfoViews(orientation: NSLayoutConstraint.Axis) -> UIStackView {
-        let paymentInfoStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
+        let stackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .vertical)
         [
             generateRecipientIbanStackView(orientation: orientation),
             generateAmountPurposeStackView()
-        ].forEach { paymentInfoStackView.addArrangedSubview($0) }
-        return paymentInfoStackView
+        ].forEach { stackView.addArrangedSubview($0) }
+        return stackView
     }
     
     private func generateRecipientIbanStackView(orientation: NSLayoutConstraint.Axis) -> UIStackView {
