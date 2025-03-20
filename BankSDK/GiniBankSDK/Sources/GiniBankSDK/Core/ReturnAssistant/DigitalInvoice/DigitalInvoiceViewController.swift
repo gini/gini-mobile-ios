@@ -189,7 +189,7 @@ final class DigitalInvoiceViewController: UIViewController {
 
                     NSLayoutConstraint.activate(proceedViewTableConstraints)
                     proceedView.isHidden = false
-
+                    bottomNavigationBar?.isHidden = true
                 }
             } else {
                 if tableView.tableFooterView != nil {
@@ -200,6 +200,7 @@ final class DigitalInvoiceViewController: UIViewController {
                     view.addSubview(proceedView)
                     NSLayoutConstraint.activate(proceedViewConstraints)
                     proceedView.isHidden = configuration.bottomNavigationBarEnabled
+                    bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
                 }
             }
         }
@@ -222,9 +223,8 @@ final class DigitalInvoiceViewController: UIViewController {
                 navigationBarBottomAdapter?.updateSkontoSavingsInfo(with: skontoViewModel.savingsAmountString)
                 navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
             }
-        } else {
-            proceedView.configure(viewModel: viewModel)
         }
+        proceedView.configure(viewModel: viewModel)
     }
 
     @objc func helpButtonTapped() {
