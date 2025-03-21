@@ -47,11 +47,17 @@ import GiniBankAPILibrary
         case .noResponse, .notFound:
             self = .unexpected
         case .notAcceptable, .tooManyRequests,
-             .parseError, .badRequest,
-             .unknown:
+             .parseError, .badRequest:
             self = .request
         case .server:
             self = .serverError
+        case .unknown(let response, _):
+            if response?.statusCode == 499 {
+                self = .unexpected
+            }
+            else {
+                self = .request
+            }
         case .maintenance:
             self = .maintenance
         case .outage:
