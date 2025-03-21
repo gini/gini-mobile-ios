@@ -16,6 +16,8 @@ final class MockSessionManager: SessionManagerProtocol {
     static let extractionsWithPaymentDocumentID = "626626a0-749f-11e2-bfd6-000000000004"
     static let paymentRequestId = "b09ef70a-490f-11eb-952e-9bc6f4646c57"
     static let doctorsNameDocumentID = "626626a0-749f-11e2-bfd6-000000000005"
+    static let paymentRequestIdWithExpirationDate = "1"
+    static let paymentRequestIdWithMissingExpirationDate = "2"
 
     func upload<T>(resource: T, data: Data, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
         //
@@ -112,6 +114,8 @@ final class MockSessionManager: SessionManagerProtocol {
                 if let clientConfiguration = clientConfiguration as? T.ResponseType {
                     completion(.success(clientConfiguration))
                 }
+            case .paymentRequest(let paymentRequestId):
+                processPaymentRequest(paymentRequestId, completion: completion)
             case .documents(_, _):
                 guard let bodyStringArray = decodeBody(from: resource.params.body) else { return }
                 handleBodyStringArray(bodyStringArray, completion: completion)
@@ -119,6 +123,23 @@ final class MockSessionManager: SessionManagerProtocol {
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))
             }
+        }
+    }
+
+    private func processPaymentRequest<T>(_ paymentRequestId: String, completion: (Result<T, GiniError>) -> Void) {
+        let fileName: String
+        switch paymentRequestId {
+            case MockSessionManager.paymentRequestIdWithMissingExpirationDate:
+                fileName = "paymentRequestWithMissingExpirationDate"
+            case MockSessionManager.paymentRequestIdWithExpirationDate:
+                fileName = "paymentRequestWithExpirationDate"
+            default:
+                fatalError("Payment Request Id not found in tests")
+        }
+
+        let paymentRequest: PaymentRequest? = load(fromFile: fileName)
+        if let paymentRequest = paymentRequest as? T {
+            completion(.success(paymentRequest))
         }
     }
 

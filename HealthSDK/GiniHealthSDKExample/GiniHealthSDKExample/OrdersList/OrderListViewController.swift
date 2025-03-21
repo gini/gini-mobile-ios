@@ -92,6 +92,7 @@ final class OrderListViewController: UIViewController {
         viewModel.orders.append(newOrder)
 
         let orderViewController = OrderDetailViewController(newOrder, health: viewModel.health)
+        orderViewController.delegate = self
         self.navigationController?.pushViewController(orderViewController, animated: true)
     }
 
@@ -124,6 +125,7 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
 
         // Instantiate InvoiceViewController with the Order instance
         let orderViewController = OrderDetailViewController(order, health: viewModel.health)
+        orderViewController.delegate = self
 
         // Present InvoiceViewController
         self.navigationController?.pushViewController(orderViewController, animated: true)
@@ -150,6 +152,12 @@ extension OrderListViewController: OrderListViewControllerProtocol {
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))
         self.present(alertController, animated: true)
+    }
+}
+
+extension OrderListViewController: OrderDetailViewControllerDelegate {
+    func didUpdateOrder(_ order: Order) {
+        viewModel.updateOrder(updatedOrder: order)
     }
 }
 
