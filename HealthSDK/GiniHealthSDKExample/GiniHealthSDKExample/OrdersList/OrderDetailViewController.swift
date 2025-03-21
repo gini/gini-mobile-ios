@@ -211,6 +211,18 @@ final class OrderDetailViewController: UIViewController {
                            paymentUniversalLink: health.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
                            paymentProviderId: health.paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
+    
+    private func obtainGiniPaymentInfo() -> GiniHealthSDK.PaymentInfo {
+        saveTextFieldData()
+
+        return PaymentInfo(recipient: order.recipient,
+                           iban: order.iban,
+                           bic: "",
+                           amount: order.amountToPay,
+                           purpose: order.purpose,
+                           paymentUniversalLink: "",
+                           paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
+    }
 
     private func showErrorsIfAny() {
         if !errors.isEmpty {
@@ -250,10 +262,11 @@ final class OrderDetailViewController: UIViewController {
     }
 
     @objc private func createPaymentRequestTapped() {
-        let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(paymentComponentsInfo: obtainPaymentInfo())
+        let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(paymentComponentsInfo: obtainGiniPaymentInfo())
         health.createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
             switch result {
             case .success(let paymentRequestId):
+                self?.order.id = paymentRequestId
                 self?.fetchPaymentRequestInfo(paymentRequestId)
             case .failure(let error):
                 self?.errors.append(error.localizedDescription)
