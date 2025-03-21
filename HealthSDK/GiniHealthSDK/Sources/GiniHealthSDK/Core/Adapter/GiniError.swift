@@ -39,17 +39,17 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         }
     }
 
-    public var unauthorizedDocuments: [String]? {
+    public var unauthorizedItems: [String]? {
         switch self {
         case .decorator(let giniError):
-            return giniError.unauthorizedDocuments
+            return giniError.unauthorizedItems
         }
     }
 
-    public var notFoundDocuments: [String]? {
+    public var notFoundItems: [String]? {
         switch self {
         case .decorator(let giniError):
-            return giniError.notFoundDocuments
+            return giniError.notFoundItems
         }
     }
 

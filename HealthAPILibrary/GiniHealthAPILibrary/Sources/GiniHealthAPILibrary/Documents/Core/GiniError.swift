@@ -23,25 +23,61 @@ public protocol GiniErrorProtocol {
 }
 
 /**
- A protocol representing custom errors that may occur when interacting with the Gini API.
+ A protocol representing custom errors that may occur when interacting with the Gini Health API.
 
  This protocol defines three properties:
- - `unauthorizedDocuments`: An array of documents that could not be deleted due to insufficient permissions.  
- - `notFoundDocuments`: An array of documents that were not found during a bulk deletion attempt.
+ - `unauthorizedItems`: An array of items that could not be deleted due to insufficient permissions.
+ - `notFoundItems`: An array of items that were not found during a bulk deletion attempt.
  - `missingCompositeDocuments`: An array of composite documents that are missing when attempting to perform a bulk deletion.
  */
 
 public protocol GiniCustomErrorProtocol {
-    var unauthorizedDocuments: [String]? { get }
-    var notFoundDocuments: [String]? { get }
+    var unauthorizedItems: [String]? { get }
+    var notFoundItems: [String]? { get }
     var missingCompositeDocuments: [String]? { get }
 }
 
-struct GiniCustomError: GiniCustomErrorProtocol, Codable {
+struct GiniCustomError: GiniCustomErrorProtocol, Decodable {
     var message: String?
-    var unauthorizedDocuments: [String]?
-    var notFoundDocuments: [String]?
+    var unauthorizedItems: [String]?
+    var notFoundItems: [String]?
     var missingCompositeDocuments: [String]?
+    
+    enum CodingKeys: CodingKey {
+        case message
+        case unauthorizedItems
+        case notFoundItems
+        case missingCompositeDocuments
+        
+        //backend values
+        case unauthorizedPaymentRequests
+        case notFoundPaymentRequests
+        case unauthorizedDocuments
+        case notFoundDocuments
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        message = try? container.decodeIfPresent(String.self, forKey: .message)
+        missingCompositeDocuments = try container.decodeIfPresent([String].self, forKey: .missingCompositeDocuments)
+        
+        if let items = try? container.decodeIfPresent([String].self, forKey: .unauthorizedPaymentRequests) {
+            unauthorizedItems = items
+        } else if let items = try? container.decodeIfPresent([String].self, forKey: .unauthorizedDocuments) {
+            unauthorizedItems = items
+        } else {
+            unauthorizedItems = nil
+        }
+        
+        if let items = try? container.decodeIfPresent([String].self, forKey: .notFoundPaymentRequests) {
+            notFoundItems = items
+        } else if let items = try? container.decodeIfPresent([String].self, forKey: .notFoundDocuments) {
+            notFoundItems = items
+        } else {
+            notFoundItems = nil
+        }
+    }
 }
 
 public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equatable {
@@ -123,27 +159,28 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         return customErrorDecoded
     }
 
-    public var unauthorizedDocuments: [String]? {
-        return customError?.unauthorizedDocuments
+    public var unauthorizedItems: [String]? {
+        return customError?.unauthorizedItems
     }
 
-    public var notFoundDocuments: [String]? {
-        return customError?.notFoundDocuments
+    public var notFoundItems: [String]? {
+        return customError?.notFoundItems
     }
 
     public var missingCompositeDocuments: [String]? {
         return customError?.missingCompositeDocuments
     }
 
-    /// Helper Function to Get Custom Document Errors Message
+    /// Helper Function to Get Custom Document / PaymentRequest Errors Message
     private func getCustomErrorMessage() -> String? {
-        if let unauthorizedDocuments = customError?.unauthorizedDocuments {
-            return "Unauthorized documents: \(unauthorizedDocuments.joined(separator: ", "))"
-        } else if let notFoundDocuments = customError?.notFoundDocuments {
-            return "Not found documents: \(notFoundDocuments.joined(separator: ", "))"
+        if let unauthorizedItems = customError?.unauthorizedItems {
+            return "Unauthorized items: \(unauthorizedItems.joined(separator: ", "))"
+        } else if let notFoundItems = customError?.notFoundItems {
+            return "Not found items: \(notFoundItems.joined(separator: ", "))"
         } else if let missingCompositeDocuments = customError?.missingCompositeDocuments {
             return "Missing composite documents: \(missingCompositeDocuments.joined(separator: ", "))"
         }
+        
         return nil
     }
 }

@@ -77,18 +77,33 @@ final class OrderListViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: viewModel.customOrderText,
-            style: .plain,
+            barButtonSystemItem: .add,
             target: self,
-            action: #selector(customOrderButtonTapped)
-        )
-
+            action: #selector(addButtonTapped))
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: viewModel.cancelText,
             style: .plain,
             target: self,
             action: #selector(dismissViewControllerTapped)
         )
+    }
+    
+    @objc func addButtonTapped() {
+        let optionsSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let addorderAction = UIAlertAction(title: viewModel.customOrderText, style: .default) { _ in
+            self.customOrderButtonTapped()
+        }
+        
+        let deletePaymentRequestsAction = UIAlertAction(title: "Delete payment requests", style: .destructive) { _ in
+            self.viewModel.deleteOders()
+        }
+        
+        optionsSheet.addAction(addorderAction)
+        optionsSheet.addAction(deletePaymentRequestsAction)
+        
+        present(optionsSheet, animated: true)
     }
 
     @objc func customOrderButtonTapped() {
