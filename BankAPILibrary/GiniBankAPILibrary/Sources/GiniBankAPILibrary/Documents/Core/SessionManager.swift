@@ -310,6 +310,8 @@ private extension SessionManager {
             completion(.failure(.notAcceptable(response: response, data: data)))
         case 429:
             completion(.failure(.tooManyRequests(response: response, data: data)))
+        case 402...498 where statusCode != 404:
+            completion(.failure(.clientSide(response: response, data: data)))
         case 503:
             completion(.failure(.maintenance(errorCode: statusCode)))
         case 500:

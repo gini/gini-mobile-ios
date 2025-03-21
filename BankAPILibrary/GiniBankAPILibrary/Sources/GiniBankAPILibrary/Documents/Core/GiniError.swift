@@ -36,6 +36,8 @@ public protocol GiniErrorProtocol {
  - maintenance: Error indicating that the system is under maintenance.
  - outage: Error indicating that the service is unavailable due to outage.
  - server: Error indicating that the server is unavailable.
+ - noInternetConnection: Error indicating that there is no internet connection.
+ - clientSide: Error indicating a client-side error in the 4xx range (excluding specific cases like 404).
  - unknown: An unknown error occurred.
  */
 
@@ -51,8 +53,9 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
     case maintenance(errorCode: Int)
     case outage(errorCode: Int)
     case server(errorCode: Int)
-    case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
     case noInternetConnection
+    case clientSide(response: HTTPURLResponse? = nil, data: Data? = nil)
+    case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
 
     public var message: String {
         switch self {
@@ -80,6 +83,8 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
             return "An unexpected server error occurred"
         case .noInternetConnection:
             return "No internet connection"
+        case .clientSide:
+            return "Client side errors between 402 and 498 except 404"
         case .unknown:
             return "Unknown"
         }
