@@ -22,7 +22,7 @@ import GiniBankAPILibrary
 
 @objc public enum ErrorType: Int {
     case connection
-    case request
+    case request // upload error
     case serverError
     case authentication
     case unexpected
@@ -44,25 +44,17 @@ import GiniBankAPILibrary
             self = .authentication
         case .noInternetConnection:
             self = .connection
-        case .noResponse, .notFound:
-            self = .unexpected
         case .notAcceptable, .tooManyRequests,
-             .parseError, .badRequest:
-            self = .request
+             .parseError, .badRequest, .clientSide:
+            self = .request // upload error
         case .server:
             self = .serverError
-        case .unknown(let response, _):
-            if response?.statusCode == 499 {
-                self = .unexpected
-            }
-            else {
-                self = .request
-            }
         case .maintenance:
             self = .maintenance
         case .outage:
             self = .outage
         default:
+            // including .noResponse, .notFound
             self = .unexpected
         }
 
