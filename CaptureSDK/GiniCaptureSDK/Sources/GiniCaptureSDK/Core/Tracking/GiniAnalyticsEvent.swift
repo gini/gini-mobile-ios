@@ -7,10 +7,15 @@
 import Foundation
 
 public enum GiniAnalyticsEvent: String {
+    // MARK: - Shared
     case screenShown = "screen_shown"
     case closeTapped = "close_tapped"
     case sdkOpened = "sdk_opened"
     case sdkClosed = "sdk_closed"
+    case proceedTapped = "proceed_tapped"
+    case previewZoomed = "preview_zoomed"
+    case invoicePreviewTapped = "invoice_preview_tapped"
+    case tryAgainTapped = "try_again_tapped"
 
     // MARK: - Camera
     case captureTapped = "capture_tapped"
@@ -23,18 +28,16 @@ public enum GiniAnalyticsEvent: String {
     case errorDialogShown = "error_dialog_shown"
     case qr_code_scanned = "qr_code_scanned"
 
-    // MARK: Camera permission
+    // MARK: - Camera permission
     case cameraPermissionShown = "camera_permission_shown"
     case cameraPermissionTapped = "camera_permission_tapped"
     case giveAccessTapped = "give_access_tapped"
 
     // MARK: - Review
-    case processTapped = "process_tapped"
     case deletePagesTapped = "delete_pages_tapped"
     case addPagesTapped = "add_pages_tapped"
     case pageSwiped = "page_swiped"
     case fullScreenPageTapped = "full_screen_page_tapped"
-    case previewZoomed = "preview_zoomed"
 
     // MARK: - No Results and Error
     case enterManuallyTapped = "enter_manually_tapped"
@@ -54,5 +57,10 @@ public enum GiniAnalyticsEvent: String {
     case saveTapped = "save_tapped"
     case editTapped = "edit_tapped"
     case itemSwitchTapped = "item_switch_tapped"
-    case proceedTapped = "proceed_tapped"
+
+    // MARK: - Skonto
+    case skontoSwitchTapped = "skonto_switch_tapped"
+    case finalAmountTapped = "final_amount_tapped"
+    case fullAmountTapped = "full_amount_tapped"
+    case dueDateTapped = "due_date_tapped"
 }

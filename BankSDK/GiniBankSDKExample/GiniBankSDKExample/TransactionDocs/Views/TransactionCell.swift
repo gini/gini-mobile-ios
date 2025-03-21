@@ -135,7 +135,7 @@ class TransactionCell: UITableViewCell, CodeLoadableView {
     func configure(with transaction: Transaction, isLastCell: Bool = false) {
         paymentRecipientInitialsLabel.text = transaction.paymentRecipient.acronym()
         paymentRecipientLabel.text = transaction.paymentRecipient
-        amountLabel.text = "-" + transaction.paiedAmount
+        amountLabel.text = "-" + transaction.paidAmount
         dateLabel.text = transaction.date.toFormattedString()
         paymentPurposeLabel.text = transaction.paymentPurpose
         paymentReferenceLabel.text = transaction.paymentReference
