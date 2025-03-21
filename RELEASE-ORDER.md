@@ -31,16 +31,19 @@ Release order for GiniBankSDKPinning:
 Release order for GiniHealthAPILibrary:
     1. GiniHealthAPILibrary 
     
-Release order for GiniHealthAPILibraryPinning:
+Release order for GiniInternalPaymentSDK:
     1. GiniHealthAPILibrary
-    2. GiniHealthAPILibraryPinning
+    2. GiniUtilites
+    2. GiniInternalPaymentSDK
 
 Release order for GiniHealthSDK:
     1. GiniHealthAPILibrary
-    2. GiniHealthSDK
+    2. GiniUtilites
+    3. GiniInternalPaymentSDK
+    4. GiniHealthSDK
 
-Release order for GiniHealthSDKPinning:
+Release order for GiniMerchantSDK:
     1. GiniHealthAPILibrary
-    2. GiniHealthAPILibraryPinning
-    3. GiniHealthSDK
-    4. GiniHealthSDKPinning
+    2. GiniUtilites
+    3. GiniInternalPaymentSDK
+    4. GiniMerchantSDK
