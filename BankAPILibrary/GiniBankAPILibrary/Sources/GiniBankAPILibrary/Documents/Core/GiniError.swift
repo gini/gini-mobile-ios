@@ -120,3 +120,35 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
         }
     }
 }
+
+public extension GiniError {
+    static func from(statusCode: Int, response: HTTPURLResponse?, data: Data?) -> GiniError {
+        switch statusCode {
+            case 400:
+                if let data = data,
+                   let errorInfo = try? JSONDecoder().decode([String: String].self, from: data),
+                   errorInfo["error"] == "invalid_grant" {
+                    return .unauthorized(response: response, data: data)
+                }
+                return .badRequest(response: response, data: data)
+            case 401:
+                return .unauthorized(response: response, data: data)
+            case 404:
+                return .notFound(response: response, data: data)
+            case 406:
+                return .notAcceptable(response: response, data: data)
+            case 429:
+                return .tooManyRequests(response: response, data: data)
+            case 402...498 where statusCode != 404:
+                return .clientSide(response: response, data: data)
+            case 503:
+                return .maintenance(errorCode: statusCode)
+            case 500:
+                return .outage(errorCode: statusCode)
+            case 501, 502, 504...599:
+                return .server(errorCode: statusCode)
+            default:
+                return .unknown(response: response, data: data)
+        }
+    }
+}

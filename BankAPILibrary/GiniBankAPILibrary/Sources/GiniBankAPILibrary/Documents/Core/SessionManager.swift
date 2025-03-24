@@ -289,38 +289,8 @@ private extension SessionManager {
                                           taskType: TaskType,
                                           cancellationToken: CancellationToken?,
                                           completion: @escaping CompletionResult<T.ResponseType>) {
-        switch statusCode {
-        case 400:
-            guard let responseData = data else {
-                completion(.failure(.badRequest(response: response, data: nil)))
-                return
-            }
-
-            guard let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
-                errorInfo["error"] == "invalid_grant" else {
-                completion(.failure(.badRequest(response: response, data: data)))
-                return
-            }
-            completion(.failure(.unauthorized(response: response, data: data)))
-        case 401:
-            completion(.failure(.unauthorized(response: response, data: data)))
-        case 404:
-            completion(.failure(.notFound(response: response, data: data)))
-        case 406:
-            completion(.failure(.notAcceptable(response: response, data: data)))
-        case 429:
-            completion(.failure(.tooManyRequests(response: response, data: data)))
-        case 402...498 where statusCode != 404:
-            completion(.failure(.clientSide(response: response, data: data)))
-        case 503:
-            completion(.failure(.maintenance(errorCode: statusCode)))
-        case 500:
-            completion(.failure(.outage(errorCode: statusCode)))
-        case 501, 502, 504...599:
-            completion(.failure(.server(errorCode: statusCode)))
-        default:
-            completion(.failure(.unknown(response: response, data: data)))
-        }
+        let error = GiniError.from(statusCode: statusCode, response: response, data: data)
+        completion(.failure(error))
     }
 
     private func downloadTaskCompletionHandler<T: Resource>(for resource: T,
