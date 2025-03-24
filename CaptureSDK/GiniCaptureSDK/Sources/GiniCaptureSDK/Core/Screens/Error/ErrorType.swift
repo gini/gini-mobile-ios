@@ -13,7 +13,7 @@ import GiniBankAPILibrary
 
  - connection: Error related to establishing a connection.
  - request: Error related to the request being made.
- - serverError: Error returned by the server.
+ - server: Error returned by the server.
  - authentication: Error related to authentication.
  - unexpected: Unexpected error that is not covered by the other cases.
  - maintenance: Error returned when the system is under maintenance.
