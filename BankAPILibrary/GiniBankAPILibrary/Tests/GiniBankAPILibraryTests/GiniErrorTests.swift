@@ -9,8 +9,8 @@ import XCTest
 
 final class GiniErrorTests: XCTestCase {
 
-    let mockURL = URL(string: "https://test.com")!
-    let mockData = "mock".data(using: .utf8)!
+    private let mockURL = URL(string: "https://test.com")!
+    private let mockData = "mock".data(using: .utf8)!
 
     func testBadRequestWithoutData() {
         let response = HTTPURLResponse(url: mockURL,
