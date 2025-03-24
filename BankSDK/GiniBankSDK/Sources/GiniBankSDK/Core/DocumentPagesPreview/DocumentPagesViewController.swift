@@ -249,9 +249,10 @@ final class DocumentPagesViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
 
+        let isIphone = UIDevice.current.isIphone
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: isIphone ? view.safeAreaLayoutGuide.leadingAnchor : view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: isIphone ? view.safeAreaLayoutGuide.trailingAnchor : view.trailingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
@@ -351,25 +352,9 @@ final class DocumentPagesViewController: UIViewController {
             // Calculate the image's aspect ratio
             let aspectRatio = image.size.width / image.size.height
 
-            // Apply constraints based on device and aspect ratio
-            if !UIDevice.current.isIpad {
-                // For iPhones, calculate the dynamic width and height based on aspect ratio
-                let screenWidth = UIScreen.main.bounds.width
-                let contentWidth = screenWidth - contentStackView.layoutMargins.left
-                - contentStackView.layoutMargins.right
-                let imageViewHeight = contentWidth / aspectRatio
-
-                // Set the width and height constraints with flexible priorities
-                imageView.widthAnchor.constraint(equalToConstant: contentWidth).isActive = true
-                let heightConstraint = imageView.heightAnchor.constraint(equalToConstant: imageViewHeight)
-                heightConstraint.priority = .defaultHigh // Set lower priority to allow flexibility
-                heightConstraint.isActive = true
-            } else {
-                // For iPads, scale the image to fit the stack view width and maintain aspect ratio
-                imageView.widthAnchor.constraint(equalTo: contentStackView.widthAnchor).isActive = true
-                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor,
-                                                  multiplier: 1/aspectRatio).isActive = true
-            }
+            imageView.widthAnchor.constraint(equalTo: contentStackView.widthAnchor).isActive = true
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor,
+                                              multiplier: 1/aspectRatio).isActive = true
 
             // Set content compression resistance and hugging priority to prevent clipping
             imageView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)

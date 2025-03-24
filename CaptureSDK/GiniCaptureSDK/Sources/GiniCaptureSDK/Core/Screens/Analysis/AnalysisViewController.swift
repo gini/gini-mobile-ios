@@ -286,7 +286,6 @@ import UIKit
         view.addSubview(loadingIndicatorContainer)
         NSLayoutConstraint.activate([
             loadingIndicatorContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingIndicatorContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             loadingIndicatorContainer.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor),
             loadingIndicatorContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                                constant: Constants.padding)])
