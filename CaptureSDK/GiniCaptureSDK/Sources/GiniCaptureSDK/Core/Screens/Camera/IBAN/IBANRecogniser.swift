@@ -14,13 +14,14 @@ private func extractIBANMatches(from string: String) -> [NSTextCheckingResult] {
 }
 
 func extractIBANS(string: String) -> [String] {
+    var ibanString = string
     var results = [String]()
     var prefferedIBANs = [String]()
-    var matches = extractIBANMatches(from: string)
+    var matches = extractIBANMatches(from: ibanString).filter { $0.isValidIBAN(in: ibanString) }
 
     // try to fix invalid strings
-    if matches.isEmpty, string.count > 2 {
-        var number = String(string.dropFirst(2))
+    if matches.isEmpty, ibanString.count > 2 {
+        var number = String(ibanString.dropFirst(2))
 
         number = number.replacingOccurrences(of: "s", with: "5")
         number = number.replacingOccurrences(of: "S", with: "5")
@@ -37,12 +38,13 @@ func extractIBANS(string: String) -> [String] {
         number = number.trimmingCharacters(in: .whitespaces)
         number = number.replacingOccurrences(of: ",", with: "")
         number = number.replacingOccurrences(of: ".", with: "")
-        matches = extractIBANMatches(from: String(string.prefix(2)) + number)
+        ibanString = String(ibanString.prefix(2)) + number
+        matches = extractIBANMatches(from: ibanString).filter { $0.isValidIBAN(in: ibanString) }
     }
 
     for match in matches {
-        if let range = Range(match.range, in: string) {
-            let iban = String(string[range]).filter { !$0.isWhitespace }
+        if let range = Range(match.range, in: ibanString) {
+            let iban = String(ibanString[range]).filter { !$0.isWhitespace }
 
             if IBANValidator().isValid(iban: iban) {
                 let ibanRange = NSRange(location: 0, length: iban.count)
@@ -60,4 +62,14 @@ func extractIBANS(string: String) -> [String] {
     }
 
     return prefferedIBANs.isEmpty ? results : prefferedIBANs
+}
+
+private extension NSTextCheckingResult {
+    func isValidIBAN(in string: String) -> Bool {
+        guard let range = Range(range, in: string) else {
+            return false
+        }
+        let iban = String(string[range]).filter { !$0.isWhitespace }
+        return IBANValidator().isValid(iban: iban)
+    }
 }
