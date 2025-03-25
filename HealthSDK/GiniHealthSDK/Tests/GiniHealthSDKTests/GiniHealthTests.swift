@@ -217,4 +217,28 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertNotNil(receivedPaymentRequest)
         XCTAssertNil(receivedPaymentRequest?.expirationDate)
     }
+    
+    func testGettingPaymentSuccess() {
+        // Given
+        let expectedIBAN = "DE02300209000106531065"
+        
+        // When
+        let expectation = self.expectation(description: "Getting payment for a given payment request")
+        var receivedPayment: Payment?
+
+        giniHealth.getPayment(id: MockSessionManager.paymentRequestId) { result in
+            switch result {
+            case .success(let payment):
+                receivedPayment = payment
+            case .failure(_):
+                receivedPayment = nil
+            }
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1, handler: nil)
+
+        XCTAssertNotNil(receivedPayment)
+        XCTAssertEqual(receivedPayment?.iban, expectedIBAN)
+    }
 }
