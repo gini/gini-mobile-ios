@@ -14,6 +14,7 @@ final class OrderTableViewCell: UITableViewCell {
 
     private let recipientLabel = UILabel()
     private let ibanLabel = UILabel()
+    private let idLabel = UILabel()
     private let amountLabel = UILabel()
 
     private lazy var horizontalStackView: UIStackView = {
@@ -27,7 +28,7 @@ final class OrderTableViewCell: UITableViewCell {
     }()
 
     private lazy var verticalStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [recipientLabel, ibanLabel])
+        let stackView = UIStackView(arrangedSubviews: [recipientLabel, ibanLabel, idLabel])
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         stackView.alignment = .leading
@@ -45,6 +46,7 @@ final class OrderTableViewCell: UITableViewCell {
             recipientLabel.isHidden = viewModel.isRecipientLabelHidden
 
             ibanLabel.text = viewModel.ibanText
+            idLabel.text = viewModel.idText
 
             amountLabel.text = viewModel.amountToPayText
             amountLabel.textColor = UIColor(named: "amountLabelTextColor")
@@ -63,6 +65,7 @@ final class OrderTableViewCell: UITableViewCell {
         recipientLabel.translatesAutoresizingMaskIntoConstraints = false
         ibanLabel.translatesAutoresizingMaskIntoConstraints = false
         amountLabel.translatesAutoresizingMaskIntoConstraints = false
+        idLabel.translatesAutoresizingMaskIntoConstraints = false
 
         amountLabel.textAlignment = .right
 

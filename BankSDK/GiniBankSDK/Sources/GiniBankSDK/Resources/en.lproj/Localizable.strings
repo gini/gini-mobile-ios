@@ -137,6 +137,7 @@
 "ginibank.skonto.help.back" = "Skonto discount";
 
 "ginibank.skonto.document.pages.screen.title" = "Skonto discount details";
+"ginibank.skonto.document.pages.error.tryAgain.buttonTitle" = "Try again";
 
 // MARK: - Transaction Docs feature
 "ginibank.transactionDocs.alert.title" = "Add an attachment to this transaction?";
@@ -155,3 +156,6 @@
 "ginibank.transactionDocs.preview.iban" = "IBAN";
 "ginibank.transactionDocs.preview.expiryDate" = "Invoice Due Date";
 "ginibank.transactionDocs.preview.error.tryAgain.buttonTitle" = "Try again";
+
+// MARK: - Transaction Docs feature -  Transaction Details
+"ginibank.transactionDocs.preview.amount" = "Amount";

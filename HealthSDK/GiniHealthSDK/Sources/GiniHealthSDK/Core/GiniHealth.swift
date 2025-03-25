@@ -441,6 +441,30 @@ public struct DataForReview {
     }
     
     /**
+     Deletes a payment request
+     
+     - Parameters:
+        - id: Id of the payment request to delete.
+        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
+        Completion block called on main thread.
+        In success it includes the id of deleted payment request.
+        In case of failure error from the server side.
+     
+     */
+    public func deletePaymentRequest(id: String, completion: @escaping (Result<String, GiniError>) -> Void) {
+        paymentService.deletePaymentRequest(id: id) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(requestId):
+                    completion(.success(requestId))
+                case let .failure(error):
+                    completion(.failure(GiniError.decorator(error)))
+                }
+            }
+        }
+    }
+    
+    /**
      Opens an app of selected payment provider.
         openUrl called on main thread.
      
@@ -552,6 +576,29 @@ public struct DataForReview {
                     completion(.success(paymentRequest))
                 case let .failure(error):
                     completion(.failure(GiniError.decorator(error)))
+                }
+            }
+        }
+    }
+
+    /**
+     Delete a batch of documents
+
+     - Parameters:
+        - documentIds: An array of document ids to be deleted
+        - completion: An action for deleting a batch of documents. Result is a value that represents either a success or a failure, including an associated value in each case.
+        In success it includes a success message
+        In case of failure error from the server side.
+
+     */
+    public func deleteDocuments(documentIds: [String], completion: @escaping (Result<String, GiniError>) -> Void) {
+        documentService.deleteDocuments(documentIds) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(message):
+                    completion(.success(message))
+                case let .failure(error):
+                    completion(.failure(error))
                 }
             }
         }

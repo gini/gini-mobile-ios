@@ -6,9 +6,8 @@
 //
 
 import UIKit
-class ExtractionResultTableViewCell: UITableViewCell {
+class ExtractionResultTableViewCell: UITableViewCell, NibLoadableView {
 
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var detailTextField: UITextField!
-
 }

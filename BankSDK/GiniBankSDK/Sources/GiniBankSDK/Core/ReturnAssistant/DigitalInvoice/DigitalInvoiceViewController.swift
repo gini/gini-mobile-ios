@@ -164,7 +164,6 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func payButtonTapped() {
-        GiniAnalyticsManager.track(event: .proceedTapped, screenName: .returnAssistant)
         viewModel.didTapPay()
     }
 
@@ -198,10 +197,13 @@ final class DigitalInvoiceViewController: UIViewController {
 
     func sendAnalyticsScreenShown() {
         var eventProperties: [GiniAnalyticsProperty] = []
-        if let documentId = configuration.documentService?.document?.id {
-            eventProperties.append(GiniAnalyticsProperty(key: .documentId, value: documentId))
+
+        if viewModel.hasSkonto {
+            eventProperties.append(GiniAnalyticsProperty(key: .skontoActive,
+                                                         value: viewModel.skontoViewModel?.isSkontoApplied ?? false))
         }
         GiniAnalyticsManager.trackScreenShown(screenName: .returnAssistant, properties: eventProperties)
+
     }
 }
 
@@ -245,12 +247,13 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             if let cell = tableView.dequeueReusableCell(withIdentifier: DigitalLineItemTableViewCell.reuseIdentifier,
                                                         for: indexPath) as? DigitalLineItemTableViewCell {
                 if let invoice = viewModel.invoice {
+                    let maxCharactersCount = Constants.nameMaxCharactersCount
                     cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
                                                                            index: indexPath.row,
                                                                            invoiceNumTotal: invoice.numTotal,
                                                                            invoiceLineItemsCount:
                                                                            invoice.lineItems.count,
-                                                                           nameMaxCharactersCount: Constants.nameMaxCharactersCount)
+                                                                           nameMaxCharactersCount: maxCharactersCount)
                 }
                 cell.delegate = self
                 return cell
@@ -361,6 +364,7 @@ extension DigitalInvoiceViewController: DigitalInvoiceSkontoTableViewCellDelegat
     func editTapped(cell: DigitalInvoiceSkontoTableViewCell) {
         guard let skontoViewModel = viewModel.skontoViewModel else { return }
         let vc = DigitalInvoiceSkontoViewController(viewModel: skontoViewModel)
+        GiniAnalyticsManager.track(event: .editTapped, screenName: .returnAssistant)
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

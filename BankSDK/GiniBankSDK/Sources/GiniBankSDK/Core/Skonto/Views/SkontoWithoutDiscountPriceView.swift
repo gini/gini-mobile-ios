@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniCaptureSDK
 
 class SkontoWithoutDiscountPriceView: UIView {
     private lazy var amountView: SkontoAmountToPayView = {
@@ -85,6 +86,10 @@ class SkontoWithoutDiscountPriceView: UIView {
 }
 
 extension SkontoWithoutDiscountPriceView: SkontoAmountViewDelegate {
+    func textFieldTapped() {
+        GiniAnalyticsManager.track(event: .fullAmountTapped, screenName: .skonto)
+    }
+
     func textFieldPriceChanged(editedText: String) {
         viewModel.setAmountToPayPrice(editedText)
     }
