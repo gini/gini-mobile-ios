@@ -79,7 +79,8 @@ final class TransactionSummaryTableViewController: UITableViewController  {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell", for: indexPath) as? ExtractionResultTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell",
+                                                           for: indexPath) as? ExtractionResultTableViewCell else {
                 return UITableViewCell()
             }
             cell.detailTextField.text = result[indexPath.row].value

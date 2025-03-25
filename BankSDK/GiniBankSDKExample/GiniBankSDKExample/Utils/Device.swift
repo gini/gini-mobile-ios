@@ -9,6 +9,7 @@ import UIKit
 
 class Device {
     static var small: Bool {
-        return UIScreen.main.bounds.width <= 320
+        let screenHeight = UIScreen.main.bounds.height
+        return screenHeight <= 667 // Targets iPhone SE 1st Gen, 6/7/8, SE 2nd Gen
     }
 }

@@ -51,7 +51,7 @@ final class OrderListViewModel {
             case .success:
                 self?.handlePaymentRequestDeletion(for: order)
             case .failure(let error):
-                self?.errorMessage = error.localizedDescription
+                self?.errorMessage = error.message
             }
         })
     }

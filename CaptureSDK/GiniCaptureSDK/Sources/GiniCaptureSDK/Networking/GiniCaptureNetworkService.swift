@@ -23,6 +23,10 @@ public protocol GiniCaptureNetworkService: AnyObject  {
                       updatedExtractions: [Extraction],
                       updatedCompoundExtractions: [String: [[Extraction]]]?,
                       completion: @escaping (Result<Void, GiniError>) -> Void)
+    func sendFeedback(documentId: String,
+                      updatedExtractions: [Extraction],
+                      updatedCompoundExtractions: [String: [[Extraction]]]?,
+                      completion: @escaping (Result<Void, GiniError>) -> Void)
     func log(errorEvent: ErrorEvent,
              completion: @escaping (Result<Void, GiniError>) -> Void)
 
@@ -71,6 +75,25 @@ public extension GiniCaptureNetworkService {
                       pageNumber: Int,
                       size: Document.Page.Size,
                       completion: @escaping DocumentPagePreviewCompletion) {
+        // Default implementation is empty
+    }
+    
+    /**
+     *  Sends feedback for a document based on the provided document ID, updated extractions, and updated compound extractions.
+     *
+     * - Parameter documentId:                  The unique identifier of the document for which feedback is being sent.
+     * - Parameter updatedExtractions:          An array of updated extractions to be included in the feedback.
+     * - Parameter updatedCompoundExtractions:  A dictionary of updated compound extractions to be included in the feedback.
+     * - Parameter completion:                  A completion callback that returns a `Result<Void, GiniError>`.
+     *                                          On success, it returns `Void`. On failure, it returns an error.
+     *
+     *  - Note: This method is preferred over the `sendFeedback(document:updatedExtractions:updatedCompoundExtractions:completion:)`,
+     *          as it requires only the `documentId` instead of the entire document object, making it more lightweight and flexible.
+     */
+    func sendFeedback(documentId: String,
+                      updatedExtractions: [Extraction],
+                      updatedCompoundExtractions: [String: [[Extraction]]]?,
+                      completion: @escaping (Result<Void, GiniError>) -> Void) {
         // Default implementation is empty
     }
 }
@@ -173,12 +196,22 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                       updatedExtractions: [Extraction],
                       updatedCompoundExtractions: [String: [[Extraction]]]?,
                       completion: @escaping (Result<Void, GiniError>) -> Void) {
+        sendFeedback(documentId: document.id,
+                     updatedExtractions: updatedExtractions,
+                     updatedCompoundExtractions: updatedCompoundExtractions,
+                     completion: completion)
+    }
+    
+    func sendFeedback(documentId: String,
+                      updatedExtractions: [Extraction],
+                      updatedCompoundExtractions: [String: [[Extraction]]]?,
+                      completion: @escaping (Result<Void, GiniError>) -> Void) {
         if let updatedCompoundExtractions = updatedCompoundExtractions {
-            documentService.submitFeedback(for: document, with: updatedExtractions, and: updatedCompoundExtractions) { result in
+            documentService.submitFeedback(for: documentId, with: updatedExtractions, and: updatedCompoundExtractions) { result in
                 completion(result)
             }
         } else {
-            documentService.submitFeedback(for: document, with: updatedExtractions) { result in
+            documentService.submitFeedback(for: documentId, with: updatedExtractions) { result in
                 completion(result)
             }
         }
