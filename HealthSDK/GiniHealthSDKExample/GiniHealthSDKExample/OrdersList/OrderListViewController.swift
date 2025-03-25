@@ -96,12 +96,15 @@ final class OrderListViewController: UIViewController {
             self.customOrderButtonTapped()
         }
         
-        let deletePaymentRequestsAction = UIAlertAction(title: "Delete payment requests", style: .destructive) { _ in
+        let deletePaymentRequestsAction = UIAlertAction(title: "Delete payment requests", style: .default) { _ in
             self.viewModel.deleteOders()
         }
         
+        let cancelAction = UIAlertAction(title: viewModel.cancelText, style: .cancel)
+        
         optionsSheet.addAction(addorderAction)
         optionsSheet.addAction(deletePaymentRequestsAction)
+        optionsSheet.addAction(cancelAction)
         
         present(optionsSheet, animated: true)
     }
