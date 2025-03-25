@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniUtilites
 
 protocol PriceTextFieldDelegate: AnyObject {
     func priceTextField(_ textField: PriceTextField, didChangePrice editedText: String)
