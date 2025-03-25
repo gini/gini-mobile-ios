@@ -68,9 +68,6 @@
       location = "container:"
       name = "GiniCaptureSDK">
       <FileRef
-         location = "group:CaptureSDK/GiniCaptureSDKPinning">
-      </FileRef>
-      <FileRef
          location = "group:CaptureSDK/GiniCaptureSDK">
       </FileRef>
    </Group>
