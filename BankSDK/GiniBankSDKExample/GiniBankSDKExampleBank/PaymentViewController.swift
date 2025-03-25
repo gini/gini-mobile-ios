@@ -422,13 +422,3 @@ extension PaymentViewController {
         present(alertController, animated: true, completion: nil)
     }
 }
-
-public extension UITextField {
-    
-    func moveSelectedTextRange(from position: UITextPosition, to offset: Int) {
-        if let newSelectedRangeFromTo = self.position(from: position, offset: offset),
-           let newSelectedRange = self.textRange(from: newSelectedRangeFromTo, to: newSelectedRangeFromTo) {
-            self.selectedTextRange = newSelectedRange
-        }
-    }
-}
