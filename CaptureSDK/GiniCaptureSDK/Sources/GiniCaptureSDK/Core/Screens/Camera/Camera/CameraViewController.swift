@@ -179,17 +179,11 @@ final class CameraViewController: UIViewController {
 
     private static func checkAvailableLenses() -> [CameraLensesAvailable] {
         var discoverySession: AVCaptureDevice.DiscoverySession
-        if #available(iOS 13.0, *) {
-            discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInUltraWideCamera,
-                                                                              .builtInWideAngleCamera,
-                                                                              .builtInTelephotoCamera],
-                                                                mediaType: .video, position: .back)
-        } else {
-            discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera,
-                                                                              .builtInTelephotoCamera],
-                                                                mediaType: .video, position: .back)
-        }
-
+        discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInUltraWideCamera,
+                                                                          .builtInWideAngleCamera,
+                                                                          .builtInTelephotoCamera],
+                                                            mediaType: .video, position: .back)
+        
         var availableLenses: [CameraLensesAvailable] = []
 
         let rawDeviceTypes = discoverySession.devices.map { $0.deviceType.rawValue }
@@ -695,9 +689,7 @@ extension CameraViewController: CameraLensSwitcherViewDelegate {
 
         switch lens {
         case .ultraWide:
-            if #available(iOS 13.0, *) {
-                device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back)
-            }
+            device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back)
         case .wide:
             device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
         case .tele:

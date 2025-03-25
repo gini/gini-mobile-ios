@@ -27,7 +27,7 @@ final class SessionManagerMock: SessionManagerProtocol {
 
 
     init(keyStore: KeyStore = KeychainStore(),
-         urlSession: URLSession = URLSession()) {
+         urlSession: URLSession = URLSession(configuration: .default)) {
         
     }
     

@@ -24,13 +24,13 @@ Further documentation with installation, integration or customization guides can
 
 ## Requirements
 
-- iOS 12+
+- iOS 13+
 - Xcode 12+
 
 **Note:**
 In order to have better analysis results it is highly recommended to enable only devices with 8MP camera and flash. These devices would be:
 
-* iPhones with iOS 12 or higher.
+* iPhones with iOS 13 or higher.
 * iPad Pro devices (iPad Air 2 and iPad Mini 4 have 8MP camera but no flash).
 
 ## Author

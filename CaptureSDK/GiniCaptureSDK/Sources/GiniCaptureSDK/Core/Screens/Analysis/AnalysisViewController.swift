@@ -50,7 +50,7 @@ import UIKit
     private var loadingIndicatorView: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView()
         indicatorView.hidesWhenStopped = true
-        indicatorView.style = .whiteLarge
+        indicatorView.style = .large
         indicatorView.startAnimating()
         return indicatorView
     }()

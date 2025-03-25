@@ -110,11 +110,7 @@ final class Camera: NSObject, CameraProtocol {
 
     // MARK: - Text detection
     func startOCR() {
-        if #available(iOS 13.0, *) {
-            request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
-        } else {
-            Log(message: "IBAN detection is not supported for iOS 12 or older", event: .warning)
-        }
+        request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
     }
 
     func switchTo(newVideoDevice: AVCaptureDevice) {
@@ -376,47 +372,42 @@ fileprivate extension Camera {
 
     // Vision recognition handler.
     func recognizeTextHandler(request: VNRequest, error: Error?) {
-        if #available(iOS 13.0, *) {
-            if let error = error as NSError? {
-                Log(message: "Error while recognizing IBAN in text due to error \(error.localizedDescription)",
-                    event: .error)
-                return
-            }
+        if let error = error as NSError? {
+            Log(message: "Error while recognizing IBAN in text due to error \(error.localizedDescription)",
+                event: .error)
+            return
+        }
 
-            guard let results = request.results as? [VNRecognizedTextObservation] else {
-                Log(message: "The observations are of an unexpected type.",
-                    event: .error)
-                return
-            }
+        guard let results = request.results as? [VNRecognizedTextObservation] else {
+            Log(message: "The observations are of an unexpected type.",
+                event: .error)
+            return
+        }
 
-            var ibans = Set<String>()
-            let maximumCandidates = 1
+        var ibans = Set<String>()
+        let maximumCandidates = 1
 
-            for visionResult in results {
-                // topCandidates return no more than N but can be less than N candidates. The maximum number of candidates returned cannot exceed 10 candidates.
-                guard let candidate = visionResult.topCandidates(maximumCandidates).first else { continue }
-                for result in extractIBANS(string: candidate.string) {
-                    let ibanRectTransformed = visionResult.boundingBox.applying(visionToAVFTransform)
-                    if let videoPreviewLayer = videoPreviewLayer, let regionOfInterest = regionOfInterest {
-                        let newRect = videoPreviewLayer.layerRectConverted(fromMetadataOutputRect: ibanRectTransformed)
-                        if regionOfInterest.contains(newRect) {
-                            ibans.insert(result)
-                        }
+        for visionResult in results {
+            // topCandidates return no more than N but can be less than N candidates. The maximum number of candidates returned cannot exceed 10 candidates.
+            guard let candidate = visionResult.topCandidates(maximumCandidates).first else { continue }
+            for result in extractIBANS(string: candidate.string) {
+                let ibanRectTransformed = visionResult.boundingBox.applying(visionToAVFTransform)
+                if let videoPreviewLayer = videoPreviewLayer, let regionOfInterest = regionOfInterest {
+                    let newRect = videoPreviewLayer.layerRectConverted(fromMetadataOutputRect: ibanRectTransformed)
+                    if regionOfInterest.contains(newRect) {
+                        ibans.insert(result)
                     }
                 }
             }
+        }
 
-            // Found a definite number.
-            // Stop the camera synchronously to ensure that no further buffers are
-            // received. Then update the number view asynchronously.
-            sessionQueue.sync {
-                DispatchQueue.main.async {
-                    self.didDetectIBANs!(Array(ibans))
-                }
+        // Found a definite number.
+        // Stop the camera synchronously to ensure that no further buffers are
+        // received. Then update the number view asynchronously.
+        sessionQueue.sync {
+            DispatchQueue.main.async {
+                self.didDetectIBANs!(Array(ibans))
             }
-
-        } else {
-            Log(message: "IBAN detection is not supported for iOS 12 or older", event: .warning)
         }
     }
 
@@ -482,26 +473,22 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput,
                        didOutput sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
-        if #available(iOS 13.0, *) {
-            guard let request = request as? VNRecognizeTextRequest else { return }
-            if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
-                // Configure for running in real-time.
-                request.recognitionLevel = .accurate
-                request.usesLanguageCorrection = false
+        guard let request = request as? VNRecognizeTextRequest else { return }
+        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+            // Configure for running in real-time.
+            request.recognitionLevel = .accurate
+            request.usesLanguageCorrection = false
 
-                let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer,
-                                                           orientation: textOrientation,
-                                                           options: [:])
-                do {
-                    try requestHandler.perform([request])
-                } catch {
-                    Log(message: "Could not perform ocr request due to error \(error.localizedDescription)",
-                        event: .error)
-                    return
-                }
+            let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer,
+                                                       orientation: textOrientation,
+                                                       options: [:])
+            do {
+                try requestHandler.perform([request])
+            } catch {
+                Log(message: "Could not perform ocr request due to error \(error.localizedDescription)",
+                    event: .error)
+                return
             }
-        } else {
-            Log(message: "IBAN detection is not supported for iOS 12 or older", event: .warning)
         }
     }
 }

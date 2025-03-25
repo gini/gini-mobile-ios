@@ -10,7 +10,7 @@ import UIKit
 final class ImagePickerCollectionViewCell: UICollectionViewCell {
     static let identifier = "ImagePickerCollectionViewCell"
     lazy var activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .gray)
+        let indicator = UIActivityIndicatorView(style: .medium)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.alpha = 0
         return indicator
