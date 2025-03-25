@@ -25,9 +25,6 @@
       location = "container:"
       name = "GiniBankSDK">
       <FileRef
-         location = "group:BankSDK/GiniBankSDKPinningExample/GiniBankSDKPinningExample.xcodeproj">
-      </FileRef>
-      <FileRef
          location = "group:BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj">
       </FileRef>
       <FileRef
