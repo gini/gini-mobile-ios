@@ -40,12 +40,13 @@ You can also specify a custom path segment, if your proxy url requires it:
 
 ## Public Key Pinning
 
+//TODO: remove TrustKit reference
 If you want to use _Certificate pinning_, then pass your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information) as follows:
 
 ```swift
     let yourPublicPinningConfig = [
             kTSKPinnedDomains: [
-            "Bank-api.gini.net": [
+            "pay-api.gini.net": [
                 kTSKPublicKeyHashes: [
                 // old *.gini.net public key
                 "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",

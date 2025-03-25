@@ -16,3 +16,35 @@ To initialize the library, you will need to use the snippet below:
                                 domain: "your-domain"))
         .build()
 ```
+
+## Public Key Pinning
+
+ Your pinning configuration should have `health-api.gini.net` domain like in the example below:
+
+```swift
+    let yourPublicPinningConfig = [
+            kTSKPinnedDomains: [
+            "pay-api.gini.net": [
+                kTSKPublicKeyHashes: [
+                // old *.gini.net public key
+                "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                // new *.gini.net public key, active from around June 2020
+                "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
+            ]],
+            "user.gini.net": [
+                kTSKPublicKeyHashes: [
+                // old *.gini.net public key
+                "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                // new *.gini.net public key, active from around June 2020
+                "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
+            ]],
+        ]] as [String: Any]
+
+    let giniBankAPI = GiniBankAPI
+        .Builder(client: Client(id: "your-id",
+                                secret: "your-secret",
+                                domain: "your-domain"),
+                 api: .default,
+                 pinningConfig: yourPublicPinningConfig)
+        .build()
+```
