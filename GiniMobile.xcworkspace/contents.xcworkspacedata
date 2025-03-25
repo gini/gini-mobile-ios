@@ -31,9 +31,6 @@
          location = "group:BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:BankSDK/GiniBankSDKPinning">
-      </FileRef>
-      <FileRef
          location = "group:BankSDK/GiniBankSDK">
       </FileRef>
    </Group>
