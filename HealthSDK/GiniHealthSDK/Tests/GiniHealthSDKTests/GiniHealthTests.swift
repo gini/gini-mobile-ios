@@ -224,7 +224,7 @@ final class GiniHealthTests: XCTestCase {
         
         // When
         let expectation = self.expectation(description: "Getting payment for a given payment request")
-        var receivedPayment: Payment?
+        var receivedPayment: Payment? 
 
         giniHealth.getPayment(id: MockSessionManager.paymentRequestId) { result in
             switch result {
