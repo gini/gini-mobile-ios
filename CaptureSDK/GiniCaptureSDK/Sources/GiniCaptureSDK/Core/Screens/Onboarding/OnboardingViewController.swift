@@ -122,8 +122,10 @@ class OnboardingViewController: UIViewController {
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.pageControlBottomBarPadding),
+            navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
+                                               constant: Constants.pageControlBottomBarPadding),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])

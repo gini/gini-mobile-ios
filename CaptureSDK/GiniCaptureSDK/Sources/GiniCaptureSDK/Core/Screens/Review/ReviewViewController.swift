@@ -348,7 +348,8 @@ extension ReviewViewController {
         NSLayoutConstraint.activate([
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: Constants.bottomNavigationBarHeight)
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
@@ -430,7 +431,7 @@ extension ReviewViewController {
 
         trailingConstraints.forEach { $0.constant = isLandscape ? -Constants.trailingCollectionPadding : 0 }
         let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
-                                                        ? bottomNavigationBarAdditionalConstraints
+                                                        ? bottomNavigationBarAdditionalConstraints + pageControlConstraints
                                                         : buttonContainerConstraints + pageControlConstraints
         let constraintsToActivate = isLandscape
             ? buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
@@ -641,6 +642,7 @@ extension ReviewViewController {
         let pageToDelete = pages[indexPath.row]
         pages.remove(at: indexPath.row)
         collectionView.deleteItems(at: [indexPath])
+        setCurrentPage(basedOn: collectionView)
         delegate?.review(self, didDelete: pageToDelete)
         if !pages.isEmpty {
             scrollToItem(at: IndexPath(row: currentPage, section: 0))

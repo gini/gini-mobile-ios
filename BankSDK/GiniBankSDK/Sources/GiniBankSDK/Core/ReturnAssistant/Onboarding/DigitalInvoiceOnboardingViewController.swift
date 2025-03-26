@@ -103,14 +103,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
             } else {
                 horizontalItem.removeFromSuperview()
             }
-        } else {
-            if view.currentInterfaceOrientation.isLandscape {
-                doneButton.isHidden = false
-                bottomNavigationBar?.isHidden = true
-            } else {
-                doneButton.isHidden = bottomNavigationBar != nil
-                bottomNavigationBar?.isHidden = false
-            }
         }
     }
 
@@ -187,6 +179,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                     navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                     navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                     navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                    navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight),
                     navigationBar.topAnchor.constraint(equalTo: scrollView.bottomAnchor)
                 ])
             }

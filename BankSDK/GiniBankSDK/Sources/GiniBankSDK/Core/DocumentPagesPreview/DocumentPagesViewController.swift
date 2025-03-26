@@ -111,25 +111,25 @@ final class DocumentPagesViewController: UIViewController {
     }
 
     func setError(errorType: ErrorType, tryAgainAction: @escaping () -> Void) {
-        let errorView = DocumentPagesErrorView(errorType: errorType,
+        let documentErrorView = DocumentPagesErrorView(errorType: errorType,
                                                buttonTitle: errorButtonTitle,
                                                buttonAction: { [weak self] in
             self?.handleTryAgainAction(tryAgainAction)
         })
 
         sendAnalyticsErrorScreenShown(with: errorType)
-        view.addSubview(errorView)
+        view.addSubview(documentErrorView)
 
-        errorView.translatesAutoresizingMaskIntoConstraints = false
+        documentErrorView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            errorView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
-            errorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            errorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            errorView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            documentErrorView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+            documentErrorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            documentErrorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            documentErrorView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
-        self.errorView = errorView
+        self.errorView = documentErrorView
     }
 
     private func handleTryAgainAction(_ tryAgainAction: @escaping () -> Void) {

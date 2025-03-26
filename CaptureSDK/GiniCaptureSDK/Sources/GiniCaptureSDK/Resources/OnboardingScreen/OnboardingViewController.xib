@@ -67,13 +67,20 @@
                         </button>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="wds-Th-9mI"/>
+                        <constraint firstAttribute="height" constant="50" id="wds-Th-9mI"/>
                     </constraints>
                 </stackView>
                 <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fzW-pg-Fy6">
                     <rect key="frame" x="287" y="1008" width="170" height="0.0"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </pageControl>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IBY-D8-EGY">
+                    <rect key="frame" x="0.0" y="1032" width="744" height="1"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" priority="250" constant="1" id="cyr-b1-9DI"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="FpJ-cd-hgL"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -81,12 +88,15 @@
                 <constraint firstItem="Q3o-O4-h6A" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="FpJ-cd-hgL" secondAttribute="leading" constant="16" id="4SQ-pZ-yh4"/>
                 <constraint firstItem="r9F-HC-Y7G" firstAttribute="top" secondItem="FpJ-cd-hgL" secondAttribute="top" id="55g-vr-qIJ"/>
                 <constraint firstItem="fzW-pg-Fy6" firstAttribute="top" secondItem="r9F-HC-Y7G" secondAttribute="bottom" constant="25" id="5o3-NM-xxS"/>
+                <constraint firstItem="FpJ-cd-hgL" firstAttribute="trailing" secondItem="IBY-D8-EGY" secondAttribute="trailing" id="7C2-Pj-upb"/>
                 <constraint firstAttribute="bottom" secondItem="Q3o-O4-h6A" secondAttribute="bottom" constant="50" id="9Es-FI-pwe"/>
                 <constraint firstItem="fzW-pg-Fy6" firstAttribute="centerX" secondItem="Q3o-O4-h6A" secondAttribute="centerX" id="DTO-LZ-Sll"/>
                 <constraint firstItem="fzW-pg-Fy6" firstAttribute="width" relation="greaterThanOrEqual" secondItem="Q3o-O4-h6A" secondAttribute="width" id="QsI-IB-M9U"/>
-                <constraint firstItem="Q3o-O4-h6A" firstAttribute="top" secondItem="fzW-pg-Fy6" secondAttribute="bottom" constant="25" id="eBQ-PG-wRi"/>
+                <constraint firstItem="IBY-D8-EGY" firstAttribute="top" secondItem="fzW-pg-Fy6" secondAttribute="bottom" constant="24" id="eBQ-PG-wRi"/>
                 <constraint firstItem="Q3o-O4-h6A" firstAttribute="centerX" secondItem="Nfe-ie-kjh" secondAttribute="centerX" id="ett-pc-tOL"/>
+                <constraint firstItem="IBY-D8-EGY" firstAttribute="leading" secondItem="FpJ-cd-hgL" secondAttribute="leading" id="g5A-qU-WN6"/>
                 <constraint firstItem="FpJ-cd-hgL" firstAttribute="bottom" secondItem="r9F-HC-Y7G" secondAttribute="bottom" id="mh1-kT-nGp"/>
+                <constraint firstItem="Q3o-O4-h6A" firstAttribute="top" secondItem="IBY-D8-EGY" secondAttribute="bottom" id="n4B-LU-cnF"/>
                 <constraint firstItem="r9F-HC-Y7G" firstAttribute="leading" secondItem="Nfe-ie-kjh" secondAttribute="leading" id="qgS-df-Pfj"/>
                 <constraint firstAttribute="trailing" secondItem="r9F-HC-Y7G" secondAttribute="trailing" id="rKq-1S-lwz"/>
             </constraints>
