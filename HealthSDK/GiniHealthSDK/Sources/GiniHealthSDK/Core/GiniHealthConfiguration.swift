@@ -68,6 +68,23 @@ public final class GiniHealthConfiguration: NSObject {
      Set to `false` to hide close button on the payment review screen
      */
     public var showPaymentReviewCloseButton = true
+    
+    /**
+     Sets the duration of the payment review popup on the payment review screen.
+     - The value must be between `0` and `10` seconds.
+     - If a value greater than `10` is set, it will be clamped to `10`.
+     - If a negative value is set, it defaults to `3`.
+     - The default duration is `3` seconds.
+     */
+    public var popupDurationPaymentReview: TimeInterval = 3.0 {
+        didSet {
+            if popupDurationPaymentReview > 10 {
+                popupDurationPaymentReview = 10
+            } else if popupDurationPaymentReview < 0 {
+                popupDurationPaymentReview = 3
+            }
+        }
+    }
 
     /**
      Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.

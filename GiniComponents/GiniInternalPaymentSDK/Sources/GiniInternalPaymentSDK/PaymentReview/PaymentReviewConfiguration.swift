@@ -20,6 +20,7 @@ public struct PaymentReviewConfiguration {
     let pageIndicatorTintColor: UIColor
     let currentPageIndicatorTintColor: UIColor
     let isInfoBarHidden: Bool
+    let popupAnimationDuration: TimeInterval
 
     public init(loadingIndicatorStyle: UIActivityIndicatorView.Style,
                 loadingIndicatorColor: UIColor,
@@ -33,7 +34,8 @@ public struct PaymentReviewConfiguration {
                 statusBarStyle: UIStatusBarStyle,
                 pageIndicatorTintColor: UIColor,
                 currentPageIndicatorTintColor: UIColor,
-                isInfoBarHidden: Bool) {
+                isInfoBarHidden: Bool,
+                popupAnimationDuration: TimeInterval = 3.0) {
         self.loadingIndicatorStyle = loadingIndicatorStyle
         self.loadingIndicatorColor = loadingIndicatorColor
         self.infoBarLabelTextColor = infoBarLabelTextColor
@@ -47,6 +49,7 @@ public struct PaymentReviewConfiguration {
         self.currentPageIndicatorTintColor = currentPageIndicatorTintColor
         self.paymentReviewClose = paymentReviewClose
         self.isInfoBarHidden = isInfoBarHidden
+        self.popupAnimationDuration = popupAnimationDuration
     }
 }
 
