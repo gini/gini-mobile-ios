@@ -139,8 +139,12 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let isIphoneLandscape = UIDevice.current.isIphone && collectionView.currentInterfaceOrientation.isLandscape
+        let isIphoneSmall = UIDevice.current.isSmallIphone
+        let suffix = isIphoneSmall ? "iphoneland-small" : "iphoneland"
+        let reuseId = isIphoneLandscape ? OnboardingPageCell.reuseIdentifier + suffix : OnboardingPageCell.reuseIdentifier
         if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: OnboardingPageCell.reuseIdentifier,
+            withReuseIdentifier: reuseId,
             for: indexPath) as? OnboardingPageCell {
             configureCell(cell: cell, indexPath: indexPath)
             return cell
