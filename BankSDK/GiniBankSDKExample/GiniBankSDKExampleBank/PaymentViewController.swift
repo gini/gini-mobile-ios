@@ -9,6 +9,7 @@ import GiniBankAPILibrary
 import GiniBankSDK
 import GiniCaptureSDK
 import UIKit
+import GiniUtilites
 
 class PaymentViewController: UIViewController {
     @IBOutlet var receipient: UITextField!
