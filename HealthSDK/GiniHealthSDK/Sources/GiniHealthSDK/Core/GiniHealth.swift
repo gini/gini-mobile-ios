@@ -603,6 +603,31 @@ public struct DataForReview {
             }
         }
     }
+    
+    /**
+     Retrieve a `Payment` of the specified `PaymentRequest`
+
+     - Parameters:
+        - id: The `id` of the payment request to retrieve the payment.
+        - completion: An action for retrieving the payment. Result is a value that represents either a success or a failure, including an associated value in each case.
+        Completion block called on main thread.
+        In success, it includes the retrieved payment.
+        In case of failure, error from the server side.
+     */
+
+    public func getPayment(id: String,
+                           completion: @escaping (Result<Payment, GiniError>) -> Void) {
+        paymentService.payment(id: id) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(payment):
+                    completion(.success(payment))
+                case let .failure(error):
+                    completion(.failure(GiniError.decorator(error)))
+                }
+            }
+        }
+    }
 
     /// A static string representing the current version of the Gini Health SDK.
     public static var versionString: String {

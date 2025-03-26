@@ -123,6 +123,11 @@ final class MockSessionManager: SessionManagerProtocol {
             case .documents(_, _):
                 guard let bodyStringArray = decodeBody(from: resource.params.body) else { return }
                 handleBodyStringArray(bodyStringArray, completion: completion)
+            case .payment(_):
+                let paymentResponse: Payment? = load(fromFile: "payment")
+                if let paymentResponse = paymentResponse as? T.ResponseType {
+                    completion(.success(paymentResponse))
+                }
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))
