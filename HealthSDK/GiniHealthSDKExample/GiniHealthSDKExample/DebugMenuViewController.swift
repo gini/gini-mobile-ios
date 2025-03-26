@@ -107,6 +107,7 @@ class DebugMenuViewController: UIViewController {
 
         let spacer = UIView()
         let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, bottomPaymentComponentEditableRow, closeButtonRow, shareWithFilenameRow, bulkDeleteButton, spacer])
+        view.addSubview(mainStackView)
 
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: spacing),
