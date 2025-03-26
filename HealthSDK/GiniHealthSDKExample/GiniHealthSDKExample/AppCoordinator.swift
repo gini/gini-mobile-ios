@@ -435,6 +435,11 @@ extension AppCoordinator: DebugMenuDelegate {
         health.setConfiguration(giniHealthConfiguration)
     }
 
+    func didCustomizeShareWithFilename(filename: String) {
+        giniHealthConfiguration.shareWithFileName = filename
+        health.setConfiguration(giniHealthConfiguration)
+    }
+    
     func didTapOnBulkDelete() {
         let documentsToDeleteIds = Array(hardcodedInvoicesController.getInvoicesWithExtractions()
             .map { $0.documentId }

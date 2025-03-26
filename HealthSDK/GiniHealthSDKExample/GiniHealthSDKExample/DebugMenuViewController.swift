@@ -19,6 +19,7 @@ enum SwitchType {
 protocol DebugMenuDelegate: AnyObject {
     func didChangeSwitchValue(type: SwitchType, isOn: Bool)
     func didPickNewLocalization(localization: GiniLocalization)
+    func didCustomizeShareWithFilename(filename: String)
     func didTapOnBulkDelete()
 }
 
@@ -59,6 +60,16 @@ class DebugMenuViewController: UIViewController {
     private var closeButtonSwitch: UISwitch!
     private lazy var closeButtonRow: UIStackView = stackView(axis: .horizontal, subviews: [closeButtonOptionLabel, closeButtonSwitch])
 
+    private lazy var shareWithFilenameOptionLabel: UILabel = rowTitle("QR PDF Filename")
+    private lazy var shareWithFilenameTextField: UITextField = {
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.placeholder = "Enter filename"
+        textField.borderStyle = .roundedRect
+        textField.addTarget(self, action: #selector(shareWithFilenameTextFieldChanged(_:)), for: .editingChanged)
+        return textField
+    }()
+    private lazy var shareWithFilenameRow: UIStackView = stackView(axis: .horizontal, subviews: [shareWithFilenameOptionLabel, shareWithFilenameTextField])
     private lazy var bulkDeleteButton: UIButton = actionButton(for: .deleteDocuments)
 
     weak var delegate: DebugMenuDelegate?
@@ -95,7 +106,7 @@ class DebugMenuViewController: UIViewController {
         view.backgroundColor = UIColor(named: "background")
 
         let spacer = UIView()
-        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, bottomPaymentComponentEditableRow, closeButtonRow, bulkDeleteButton, spacer])
+        let mainStackView = stackView(axis: .vertical, subviews: [titleLabel, localizationRow, reviewScreenRow, bottomPaymentComponentEditableRow, closeButtonRow, shareWithFilenameRow, bulkDeleteButton, spacer])
         view.addSubview(mainStackView)
 
         NSLayoutConstraint.activate([
@@ -108,8 +119,15 @@ class DebugMenuViewController: UIViewController {
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
             closeButtonRow.heightAnchor.constraint(equalToConstant: rowHeight),
+            shareWithFilenameRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bulkDeleteButton.heightAnchor.constraint(equalToConstant: rowHeight)
         ])
+    }
+
+    @objc private func shareWithFilenameTextFieldChanged(_ sender: UITextField) {
+        if let filename = sender.text {
+            delegate?.didCustomizeShareWithFilename(filename: filename)
+        }
     }
 }
 
