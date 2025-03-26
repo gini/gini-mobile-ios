@@ -80,6 +80,24 @@ final class PaymentTests: XCTestCase {
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/\(mockRequestId)", "path should match")
     }
     
+    func testDeletePaymentRequestsURL() {
+        let paymentRequestBody = PaymentRequestBody(sourceDocumentLocation: "", paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57", recipient: "James Bond", iban: "DE89370400440532013000", bic: "INGDDEFF123", amount: "33.78:EUR", purpose: "Save the world")
+        
+        guard let jsonData = try? JSONEncoder().encode(paymentRequestBody)
+        else {
+            assertionFailure("The PaymentRequestBody cannot be encoded")
+            return
+        }
+        
+        let resource = APIResource<String>(method: .paymentRequests(limit: nil, offset: nil),
+                                           apiDomain: .default,
+                                           apiVersion: versionAPI,
+                                           httpMethod: .delete,
+                                           body: jsonData)
+        let urlString = resource.url.absoluteString
+        XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests", "path should match")
+    }
+    
     func testPaymentProviders() {
         let sessionManagerMock = SessionManagerMock()
         sessionManagerMock.initializeWithPaymentProvidersResponse()

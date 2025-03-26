@@ -145,7 +145,7 @@ struct APIResource<T: Decodable>: Resource {
             case .file(_):
                 return [:]
 
-            case .paymentProviders, .paymentProvider(_), .paymentRequests(_, _):
+            case .paymentProviders, .paymentProvider(_):
                 return acceptHeader
 
             case .pdfWithQRCode(_, let mimeSubtype):

@@ -232,7 +232,10 @@ final class GiniHealthDocumentHandlingTests: XCTestCase {
             case .success(let responseMessage):
                 XCTAssertEqual(responseMessage, documentType.expectedSuccess)
             case .failure(let error):
-                let receivedError = error.unauthorizedDocuments ?? error.notFoundDocuments ?? error.missingCompositeDocuments
+                let deprecatedError = error.unauthorizedDocuments ?? error.notFoundDocuments ?? error.missingCompositeDocuments
+                let itemsError = error.unauthorizedItems ?? error.notFoundItems ?? error.missingCompositeItems
+                
+                let receivedError = deprecatedError ?? itemsError
                 XCTAssertEqual(receivedError, documentType.expectedFailure)
             }
             expectation.fulfill()
