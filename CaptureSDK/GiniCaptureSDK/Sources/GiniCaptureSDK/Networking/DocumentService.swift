@@ -148,9 +148,9 @@ public final class DocumentService: DocumentServiceProtocol {
     }
     
     public func sendFeedback(with updatedExtractions: [Extraction], updatedCompoundExtractions: [String: [[Extraction]]]?) {
-        Log(message: "Sending feedback", event: "💬")
+        GiniCaptureSDK.Log(message: "Sending feedback", event: "💬")
         guard let documentId = document?.id else {
-            Log(message: "Cannot send feedback: no document", event: .error)
+            GiniCaptureSDK.Log(message: "Cannot send feedback: no document", event: .error)
             return
         }
         attemptFeedback(documentId: documentId,
@@ -162,9 +162,9 @@ public final class DocumentService: DocumentServiceProtocol {
     public func sendSkontoFeedback(with updatedExtractions: [Extraction],
                                    updatedCompoundExtractions: [String: [[Extraction]]]?,
                                    retryCount: Int) {
-        Log(message: "Sending feedback", event: "💬")
+        GiniCaptureSDK.Log(message: "Sending feedback", event: "💬")
         guard let documentId = document?.id else {
-            Log(message: "Cannot send feedback: no document", event: .error)
+            GiniCaptureSDK.Log(message: "Cannot send feedback: no document", event: .error)
             return
         }
         attemptFeedback(documentId: documentId,
@@ -184,7 +184,7 @@ public final class DocumentService: DocumentServiceProtocol {
             
             switch result {
             case .success:
-                Log(message: "Feedback sent with \(updatedExtractions.count) extractions and \(updatedCompoundExtractions?.count ?? 0) compound extractions",
+                GiniCaptureSDK.Log(message: "Feedback sent with \(updatedExtractions.count) extractions and \(updatedCompoundExtractions?.count ?? 0) compound extractions",
                     event: "🚀")
             case .failure(let error):
                 self.handleFeedbackFailure(documentId: documentId,
@@ -202,7 +202,7 @@ public final class DocumentService: DocumentServiceProtocol {
                                        error: Error,
                                        retryCount: Int) {
         if retryCount > 0 {
-            Log(message: "Retrying feedback due to error: \(error). Remaining retries: \(retryCount - 1)", event: .warning)
+            GiniCaptureSDK.Log(message: "Retrying feedback due to error: \(error). Remaining retries: \(retryCount - 1)", event: .warning)
             DispatchQueue.global().asyncAfter(deadline: .now() + 5) { [weak self] in
                 self?.attemptFeedback(documentId: documentId,
                                       updatedExtractions: updatedExtractions,
@@ -216,7 +216,7 @@ public final class DocumentService: DocumentServiceProtocol {
 
     private func handleFeedbackError(documentId: String, error: Error) {
         let message = "Error sending feedback for document with id: \(documentId) error: \(error)"
-        Log(message: message, event: .error)
+        GiniCaptureSDK.Log(message: message, event: .error)
         let errorLog = ErrorLog(description: message, error: error)
         GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
     }
@@ -232,10 +232,10 @@ public final class DocumentService: DocumentServiceProtocol {
         captureNetworkService.log(errorEvent: errorEvent) { result in
             switch result {
             case .success:
-                Log(message: "Error event sent to Gini", event: .success)
+                GiniCaptureSDK.Log(message: "Error event sent to Gini", event: .success)
                 break
             case .failure(let error):
-                Log(message: "Failed to send error event to Gini: \(error)", event: .error)
+                GiniCaptureSDK.Log(message: "Failed to send error event to Gini: \(error)", event: .error)
                 break
             }
         }
@@ -243,7 +243,7 @@ public final class DocumentService: DocumentServiceProtocol {
 
     public func layout(completion: @escaping DocumentLayoutCompletion) {
         guard let document = document else {
-            Log(message: "Cannot get document layout: no document", event: .error)
+            GiniCaptureSDK.Log(message: "Cannot get document layout: no document", event: .error)
             return
         }
         captureNetworkService.layout(for: document) { result in
@@ -252,7 +252,7 @@ public final class DocumentService: DocumentServiceProtocol {
                     completion(.success(documentLayout))
                 case .failure(let error):
                     let message = "Failed to get layout for document with id: \(document.id) error: \(error)"
-                    Log(message: message, event: .error)
+                    GiniCaptureSDK.Log(message: message, event: .error)
                     completion(.failure(error))
             }
         }
@@ -260,7 +260,7 @@ public final class DocumentService: DocumentServiceProtocol {
 
     public func pages(completion: @escaping DocumentPagsCompletion) {
         guard let document = document else {
-            Log(message: "Cannot get document pages", event: .error)
+            GiniCaptureSDK.Log(message: "Cannot get document pages", event: .error)
             return
         }
         captureNetworkService.pages(for: document) { result in
@@ -269,7 +269,7 @@ public final class DocumentService: DocumentServiceProtocol {
                     completion(.success(pages))
                 case let .failure(error):
                     let message = "Failed to get pages for document with id: \(document.id) error: \(error)"
-                    Log(message: message, event: .error)
+                    GiniCaptureSDK.Log(message: message, event: .error)
                     completion(.failure(error))
             }
         }
@@ -279,7 +279,7 @@ public final class DocumentService: DocumentServiceProtocol {
                              size: Document.Page.Size,
                              completion: @escaping DocumentPagePreviewCompletion){
         guard let document = document else {
-            Log(message: "Cannot get document page", event: .error)
+            GiniCaptureSDK.Log(message: "Cannot get document page", event: .error)
             return
         }
         captureNetworkService.documentPage(for: document,
@@ -290,7 +290,7 @@ public final class DocumentService: DocumentServiceProtocol {
                 completion(.success(pageData))
             case .failure(let error):
                 let message = "Failed to get page for document with id: \(document.id) error: \(error)"
-                Log(message: message, event: .error)
+                GiniCaptureSDK.Log(message: message, event: .error)
                 completion(.failure(error))
             }
         }
