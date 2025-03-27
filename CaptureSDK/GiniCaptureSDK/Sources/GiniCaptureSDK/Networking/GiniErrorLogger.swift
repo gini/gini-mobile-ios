@@ -17,7 +17,7 @@ class GiniErrorLogger: GiniCaptureErrorLoggerDelegate {
     }
     
     public func handleErrorLog(error: ErrorLog) {
-        Log(message: "Sending error log to Gini: \(error)", event: "📝")
+        GiniCaptureSDK.Log(message: "Sending error log to Gini: \(error)", event: "📝")
         documentService.log(errorEvent: ErrorEvent.from(error))
     }
 }
