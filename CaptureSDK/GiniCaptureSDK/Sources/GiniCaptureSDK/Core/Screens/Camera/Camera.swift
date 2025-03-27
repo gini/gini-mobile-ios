@@ -149,7 +149,7 @@ final class Camera: NSObject, CameraProtocol {
             captureDevice.autoFocusRangeRestriction = .near
             captureDevice.unlockForConfiguration()
         } catch {
-            Log(message: "Could not lock device for configuration", event: .error)
+            GiniCaptureSDK.Log(message: "Could not lock device for configuration", event: .error)
             return
         }
     }
@@ -206,7 +206,7 @@ final class Camera: NSObject, CameraProtocol {
         sessionQueue.async {
             guard let device = self.videoDeviceInput?.device else { return }
             guard case .some = try? device.lockForConfiguration() else {
-                Log(message: "Could not lock device for configuration", event: .error)
+                GiniCaptureSDK.Log(message: "Could not lock device for configuration", event: .error)
                 return
             }
 
@@ -373,13 +373,13 @@ fileprivate extension Camera {
     // Vision recognition handler.
     func recognizeTextHandler(request: VNRequest, error: Error?) {
         if let error = error as NSError? {
-            Log(message: "Error while recognizing IBAN in text due to error \(error.localizedDescription)",
+            GiniCaptureSDK.Log(message: "Error while recognizing IBAN in text due to error \(error.localizedDescription)",
                 event: .error)
             return
         }
 
         guard let results = request.results as? [VNRecognizedTextObservation] else {
-            Log(message: "The observations are of an unexpected type.",
+            GiniCaptureSDK.Log(message: "The observations are of an unexpected type.",
                 event: .error)
             return
         }
@@ -485,7 +485,7 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
             do {
                 try requestHandler.perform([request])
             } catch {
-                Log(message: "Could not perform ocr request due to error \(error.localizedDescription)",
+                GiniCaptureSDK.Log(message: "Could not perform ocr request due to error \(error.localizedDescription)",
                     event: .error)
                 return
             }
