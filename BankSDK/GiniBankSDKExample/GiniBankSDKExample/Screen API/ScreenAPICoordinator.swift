@@ -85,6 +85,34 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                                  api: apiEnvironment.api,
                                                  userApi: apiEnvironment.userApi,
                                                  trackingDelegate: trackingDelegate)
+
+
+// MARK: - Screen API with default networking with Pinning certificates
+        /*
+        let yourPublicPinningConfig = [
+            "pay-api.gini.net": [
+                // old *.gini.net public key
+                "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                // new *.gini.net public key, active from around June 2020
+                "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+            ],
+            "user.gini.net": [
+                // old *.gini.net public key
+                "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                // new *.gini.net public key, active from around June 2020
+                "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+            ]
+        ]
+        let viewController = GiniBank.viewController(withClient: client,
+                                                     importedDocuments: visionDocuments,
+                                                     configuration: configuration,
+                                                     resultsDelegate: self,
+                                                     pinningConfig: yourPublicPinningConfig,
+                                                     documentMetadata: documentMetadata,
+                                                     api: .default,
+                                                     trackingDelegate: trackingDelegate)
+         */
+
 // MARK: - Screen API with custom networking
 //        let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
 //                                                     configuration: configuration,
