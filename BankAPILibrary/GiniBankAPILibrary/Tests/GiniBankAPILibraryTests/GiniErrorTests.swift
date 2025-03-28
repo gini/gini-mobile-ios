@@ -86,6 +86,15 @@ final class GiniErrorTests: XCTestCase {
         XCTAssertEqual(error, .clientSide(response: response, data: mockData))
     }
 
+    func testUnknownError499() {
+        let response = HTTPURLResponse(url: mockURL,
+                                       statusCode: 499,
+                                       httpVersion: nil,
+                                       headerFields: nil)
+        let error = GiniError.from(statusCode: 499, response: response, data: mockData)
+        XCTAssertEqual(error, .unknown(response: response, data: mockData))
+    }
+
     func testMaintenance503() {
         let error = GiniError.from(statusCode: 503, response: nil, data: nil)
         XCTAssertEqual(error, .maintenance(errorCode: 503))
@@ -107,7 +116,10 @@ final class GiniErrorTests: XCTestCase {
     }
 
     func testUnknownStatusCode600() {
-        let response = HTTPURLResponse(url: mockURL, statusCode: 600, httpVersion: nil, headerFields: nil)
+        let response = HTTPURLResponse(url: mockURL,
+                                       statusCode: 600,
+                                       httpVersion: nil,
+                                       headerFields: nil)
         let error = GiniError.from(statusCode: 600, response: response, data: mockData)
         XCTAssertEqual(error, .unknown(response: response, data: mockData))
     }
