@@ -173,7 +173,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
 
     // Portrait Layout Constraints
     private func setupPortraitConstraints() {
-        NSLayoutConstraint.deactivate(landscapeConstraints)
+        deactivateAllConstraints()
         updateMoreInformationStackView(for: .portrait)
 
         portraitConstraints = [
@@ -187,7 +187,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
 
     // Landscape Layout Constraints
     private func setupLandscapeConstraints() {
-        NSLayoutConstraint.deactivate(portraitConstraints)
+        deactivateAllConstraints()
         updateMoreInformationStackView(for: .landscape)
 
         landscapeConstraints = [
@@ -197,6 +197,10 @@ public final class InstallAppBottomView: BottomSheetViewController {
             poweredByGiniView.centerXAnchor.constraint(equalTo: bottomView.centerXAnchor)
         ]
         NSLayoutConstraint.activate(landscapeConstraints)
+    }
+    
+    private func deactivateAllConstraints() {
+        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
     }
 
     // Enum to Represent Layout Types

@@ -630,7 +630,7 @@ extension PaymentReviewViewController {
     
     private func setupConstraints(for orientation: NSLayoutConstraint.Axis) {
         // Deactivate previous constraints
-        NSLayoutConstraint.deactivate(orientation == .vertical ? landscapeConstraints : portraitConstraints)
+        NSLayoutConstraint.deactivate(landscapeConstraints + portraitConstraints)
         
         paymentInfoContainerView.setupView()
         

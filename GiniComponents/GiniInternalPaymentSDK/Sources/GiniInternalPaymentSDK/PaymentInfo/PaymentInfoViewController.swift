@@ -176,7 +176,7 @@ public final class PaymentInfoViewController: UIViewController {
 
     // Portrait Layout Constraints
     private func setupPortraitConstraints() {
-        NSLayoutConstraint.deactivate(landscapeConstraints)
+        deactivateAllConstraints()
         portraitConstraints = [
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -186,12 +186,16 @@ public final class PaymentInfoViewController: UIViewController {
 
     // Landscape Layout Constraints
     private func setupLandscapeConstraints() {
-        NSLayoutConstraint.deactivate(portraitConstraints)
+        deactivateAllConstraints()
         landscapeConstraints = [
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.viewPaddingLandscape),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.viewPaddingLandscape)
         ]
         NSLayoutConstraint.activate(landscapeConstraints)
+    }
+    
+    private func deactivateAllConstraints() {
+        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
     }
 
     private func updateLayoutForCurrentOrientation() {

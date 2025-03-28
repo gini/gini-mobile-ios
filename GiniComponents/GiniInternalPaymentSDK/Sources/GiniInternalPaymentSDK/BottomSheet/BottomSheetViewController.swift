@@ -169,7 +169,7 @@ private extension BottomSheetViewController {
 
     // Portrait Layout Constraints
     func setupPortraitConstraints() {
-        landscapeTopConstraint?.isActive = false
+        deactivateAllConstraints()
         if minHeight > 0 {
             portraitTopConstraint = mainContainerView.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: obtainTopAnchorMinHeightConstraint())
         } else {
@@ -180,13 +180,18 @@ private extension BottomSheetViewController {
 
     // Landscape Layout Constraints
     func setupLandscapeConstraints() {
-        portraitTopConstraint?.isActive = false
+        deactivateAllConstraints()
         if minHeight > 0 {
             landscapeTopConstraint = mainContainerView.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: obtainTopAnchorMinHeightConstraint())
         } else {
             landscapeTopConstraint = mainContainerView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.minTopSpacingLandscape)
         }
         landscapeTopConstraint?.isActive = true
+    }
+    
+    private func deactivateAllConstraints() {
+        portraitTopConstraint?.isActive = false
+        landscapeTopConstraint?.isActive = false
     }
 
     func setupGestures() {

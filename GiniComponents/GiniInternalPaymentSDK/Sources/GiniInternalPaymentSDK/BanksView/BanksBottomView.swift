@@ -110,7 +110,7 @@ public final class BanksBottomView: BottomSheetViewController {
 
     // Portrait Layout Constraints
     private func setupPortraitConstraints() {
-        NSLayoutConstraint.deactivate(landscapeConstraints)
+        deactivateAllConstraints()
         portraitConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -121,13 +121,17 @@ public final class BanksBottomView: BottomSheetViewController {
 
     // Landscape Layout Constraints
     private func setupLandscapeConstraints() {
-        NSLayoutConstraint.deactivate(portraitConstraints)
+        deactivateAllConstraints()
         landscapeConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.landscapePadding),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.landscapePadding),
             paymentProvidersTableView.heightAnchor.constraint(equalToConstant: viewModel.heightTableView)
         ]
         NSLayoutConstraint.activate(landscapeConstraints)
+    }
+    
+    private func deactivateAllConstraints() {
+        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
     }
 
     private func setupView() {

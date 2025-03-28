@@ -54,7 +54,7 @@ public final class PaymentComponentBottomView: BottomSheetViewController {
 
     // Portrait Layout Constraints
     private func setupPortraitConstraints() {
-        NSLayoutConstraint.deactivate(landscapeConstraints)
+        deactivateAllConstraints()
         portraitConstraints = [
             paymentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.portraitPadding),
             paymentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.portraitPadding)
@@ -64,12 +64,16 @@ public final class PaymentComponentBottomView: BottomSheetViewController {
 
     // Landscape Layout Constraints
     private func setupLandscapeConstraints() {
-        NSLayoutConstraint.deactivate(portraitConstraints)
+        deactivateAllConstraints()
         landscapeConstraints = [
             paymentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.landscapePadding),
             paymentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.landscapePadding)
         ]
         NSLayoutConstraint.activate(landscapeConstraints)
+    }
+    
+    private func deactivateAllConstraints() {
+        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
     }
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

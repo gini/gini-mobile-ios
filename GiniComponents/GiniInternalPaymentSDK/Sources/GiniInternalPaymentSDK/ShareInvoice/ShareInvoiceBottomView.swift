@@ -199,7 +199,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
 
     private func setupConstraints(for orientation: NSLayoutConstraint.Axis) {
         // Deactivate previous constraints
-        NSLayoutConstraint.deactivate(orientation == .vertical ? landscapeConstraints : portraitConstraints)
+        NSLayoutConstraint.deactivate(landscapeConstraints + portraitConstraints)
 
         // Update the split stack view and payment info stack view
         setupSplitStackViewHierarchy()
