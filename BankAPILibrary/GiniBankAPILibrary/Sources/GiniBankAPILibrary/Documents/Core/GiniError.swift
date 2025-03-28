@@ -162,7 +162,7 @@ public extension GiniError {
                 return .notAcceptable(response: response, data: data)
             case 429:
                 return .tooManyRequests(response: response, data: data)
-            case 402...498 where statusCode != 404:
+            case 402...498:
                 return .clientSide(response: response, data: data)
             default:
                 return .unknown(response: response, data: data)
