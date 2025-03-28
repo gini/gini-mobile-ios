@@ -32,6 +32,18 @@ final class OrderDetailViewController: UIViewController {
 
     private var errors: [String] = []
     private let errorTitleText = NSLocalizedString("gini.health.example.invoicesList.error", comment: "")
+    
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private var rowItems: [(String, String)] {
         [(Fields.recipient.rawValue, order.recipient),
@@ -43,9 +55,24 @@ final class OrderDetailViewController: UIViewController {
     }
 
     private var detaiViewConstraints: [NSLayoutConstraint] { [
-        detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.paddingTopBottom),
-        detailView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
-        detailView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.paddingLeadingTrailing)]
+        detailView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: Constants.paddingTopBottom),
+        detailView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.paddingLeadingTrailing),
+        detailView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.paddingLeadingTrailing)]
+    }
+    
+    private var scrollViewConstraints: [NSLayoutConstraint] { [
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)]
+    }
+    
+    private var contentViewConstraints: [NSLayoutConstraint] { [
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+        contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+        contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+        contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)]
     }
 
     init(_ order: Order, health: GiniHealth) {
@@ -102,11 +129,14 @@ final class OrderDetailViewController: UIViewController {
         title = NSLocalizedString("gini.health.example.order.navigation.order.details", comment: "")
 
         view.backgroundColor = .secondarySystemBackground
-        view.addSubview(detailView)
-        view.addSubview(expirationLabel)
-        view.addSubview(buttonStackView)
+    
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(detailView)
+        contentView.addSubview(expirationLabel)
+        contentView.addSubview(buttonStackView)
         buttonStackView.addArrangedSubview(createPaymentRequestButton)
-        view.addSubview(payButton)
+        contentView.addSubview(payButton)
 
         updateExpirationLabel()
         setupConstraints()
@@ -137,21 +167,27 @@ final class OrderDetailViewController: UIViewController {
     }
 
     private func setupConstraints() {
+        let heightContentView = contentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+        heightContentView.priority = .defaultHigh
+        
         NSLayoutConstraint.activate([
+            heightContentView,
+            
             expirationLabel.topAnchor.constraint(equalTo: detailView.bottomAnchor, constant: Constants.expirationLabelTopPadding),
-            expirationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            expirationLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            expirationLabel.heightAnchor.constraint(equalToConstant: Constants.expirationRowHeight),
 
             buttonStackView.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: Constants.buttonStackTopPadding),
-            buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.buttonStackLeadingTrailingPadding),
-            buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.buttonStackLeadingTrailingPadding),
+            buttonStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.buttonStackLeadingTrailingPadding),
+            buttonStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.buttonStackLeadingTrailingPadding),
             buttonStackView.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight),
-
-            payButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.paddingTopBottom),
-            payButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            payButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
+            
+            payButton.topAnchor.constraint(greaterThanOrEqualTo: buttonStackView.bottomAnchor, constant: Constants.paddingTopBottom),
+            payButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.payButtonBottomPadding),
+            payButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.paddingLeadingTrailing),
+            payButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.paddingLeadingTrailing),
             payButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
-        ] + detaiViewConstraints)
+        ] + detaiViewConstraints + scrollViewConstraints + contentViewConstraints)
     }
 
     private func createButton(title: String, action: Selector) -> UIButton {
@@ -323,7 +359,9 @@ extension OrderDetailViewController {
         static let buttonStackTopPadding = 10.0
         static let buttonStackLeadingTrailingPadding = 16.0
         static let payButtonTopPadding = 20.0
+        static let payButtonBottomPadding = 40.0
         static let buttonStackSpacing = 10.0
         static let expirationLabelFontSize = 14.0
+        static let expirationRowHeight = 22.0
     }
 }
