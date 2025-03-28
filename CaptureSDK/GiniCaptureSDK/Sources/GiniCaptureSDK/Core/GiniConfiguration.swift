@@ -464,38 +464,6 @@ import GiniBankAPILibrary
 
     var documentService: DocumentServiceProtocol?
 
-    // swiftlint:disable function_parameter_count
-     /// Function for clean up
-     /// - Parameters:
-     ///   - paymentRecipient: paymentRecipient description
-     ///   - paymentReference: paymentReference description
-     ///   - iban: iban description
-     ///   - bic: bic description
-     ///   - amountToPay: amountToPay description
-    // swiftlint:disable line_length
-    @available(*, deprecated, message: "Please use sendTransferSummary() to provide the required transfer summary first (if the user has completed TAN verification) and then cleanup() to let the SDK free up used resources")
-    // swiftlint:enable line_length
-    public func cleanup(paymentRecipient: String,
-                        paymentReference: String,
-                        paymentPurpose: String,
-                        iban: String,
-                        bic: String,
-                        amountToPay: ExtractionAmount) {
-        guard let documentService = documentService else { return }
-
-        let updatedExtractions = buildPaymentExtractions(paymentRecipient,
-                                                         paymentReference,
-                                                         paymentPurpose,
-                                                         iban,
-                                                         bic,
-                                                         amountToPay)
-
-        documentService.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: nil)
-
-        documentService.resetToInitialState()
-        self.documentService = nil
-    }
-
     private func buildPaymentExtractions(_ paymentRecipient: String,
                                          _ paymentReference: String,
                                          _ paymentPurpose: String,
