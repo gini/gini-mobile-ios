@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import GiniUtilites
 
 func extractIBANS(string: String) -> [String] {
     var results = [String]()

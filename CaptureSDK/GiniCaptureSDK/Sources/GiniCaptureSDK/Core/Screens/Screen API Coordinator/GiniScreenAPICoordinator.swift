@@ -207,7 +207,7 @@ extension GiniScreenAPICoordinator {
         if let delegate = self.visionDelegate {
             delegate.didCancelCapturing()
         } else {
-            Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+            GiniCaptureSDK.Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
         }
     }
 
@@ -215,7 +215,7 @@ extension GiniScreenAPICoordinator {
         if let delegate = self.visionDelegate {
             delegate.didPressEnterManually()
         } else {
-            Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
+            GiniCaptureSDK.Log(message: "GiniCaptureResultsDelegate is not implemented", event: .error)
         }
     }
 

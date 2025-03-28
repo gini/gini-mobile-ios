@@ -7,6 +7,7 @@
 
 import GiniBankAPILibrary
 import UIKit
+import GiniUtilites
 
 /**
  A Gini Capture document made from a QR code.
