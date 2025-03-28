@@ -80,6 +80,8 @@ class GiniAnalyticsMapper {
             return GiniErrorAnalytics(type: "server", code: errorCode, reason: error.message)
         case .unknown(let response, _):
             return GiniErrorAnalytics(type: "unknown", code: response?.statusCode, reason: error.message)
+        case .clientSide(let response, _):
+            return GiniErrorAnalytics(type: "client side error", code: response?.statusCode, reason: error.message)
         case .noInternetConnection:
             return GiniErrorAnalytics(type: "no_internet")
         }
