@@ -18,9 +18,14 @@ enum Fields: String, CaseIterable {
     case purpose = "gini.health.example.order.detail.purpose"
 }
 
+protocol OrderDetailViewControllerDelegate: AnyObject {
+    func didUpdateOrder(_ order: Order)
+}
+
 final class OrderDetailViewController: UIViewController {
 
     private var order: Order
+    weak var delegate: OrderDetailViewControllerDelegate?
 
     private let health: GiniHealth
     private let giniHealthConfiguration = GiniHealthConfiguration.shared
@@ -61,18 +66,35 @@ final class OrderDetailViewController: UIViewController {
         OrderDetailView(rowItems)
     }()
 
-    private lazy var payButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(NSLocalizedString("gini.health.example.order.detail.pay", comment: ""), for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = Constants.payButtonCornerRadius
-        button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
-        button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
+    private var paymentExpirationDate: Date? {
+        get { order.expirationDate }
+        set {
+            order.expirationDate = newValue
+            updateExpirationLabel()
+            updateOrderDetails(newOrder: order)
+        }
+    }
 
-        return button
+    private let expirationLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: Constants.expirationLabelFontSize, weight: .medium)
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
     }()
+
+    private let buttonStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = Constants.buttonStackSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private lazy var createPaymentRequestButton: UIButton = createButton(title: "Create Payment Request", action: #selector(createPaymentRequestTapped))
+
+    private lazy var payButton: UIButton = createButton(title: "Pay", action: #selector(payButtonTapped))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,8 +103,12 @@ final class OrderDetailViewController: UIViewController {
 
         view.backgroundColor = .secondarySystemBackground
         view.addSubview(detailView)
+        view.addSubview(expirationLabel)
+        view.addSubview(buttonStackView)
+        buttonStackView.addArrangedSubview(createPaymentRequestButton)
         view.addSubview(payButton)
 
+        updateExpirationLabel()
         setupConstraints()
     }
 
@@ -112,11 +138,32 @@ final class OrderDetailViewController: UIViewController {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            expirationLabel.topAnchor.constraint(equalTo: detailView.bottomAnchor, constant: Constants.expirationLabelTopPadding),
+            expirationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+            buttonStackView.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: Constants.buttonStackTopPadding),
+            buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.buttonStackLeadingTrailingPadding),
+            buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.buttonStackLeadingTrailingPadding),
+            buttonStackView.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight),
+
             payButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.paddingTopBottom),
             payButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             payButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.paddingLeadingTrailing),
             payButton.heightAnchor.constraint(equalToConstant: Constants.payButtonHeight)
         ] + detaiViewConstraints)
+    }
+
+    private func createButton(title: String, action: Selector) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = Constants.payButtonCornerRadius
+        button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: action, for: .touchUpInside)
+        return button
     }
 
     @objc private func payButtonTapped() {
@@ -164,6 +211,18 @@ final class OrderDetailViewController: UIViewController {
                            paymentUniversalLink: health.paymentComponentsController.selectedPaymentProvider?.universalLinkIOS ?? "",
                            paymentProviderId: health.paymentComponentsController.selectedPaymentProvider?.id ?? "")
     }
+    
+    private func obtainGiniPaymentInfo() -> GiniHealthSDK.PaymentInfo {
+        saveTextFieldData()
+
+        return PaymentInfo(recipient: order.recipient,
+                           iban: order.iban,
+                           bic: "",
+                           amount: order.amountToPay,
+                           purpose: order.purpose,
+                           paymentUniversalLink: "",
+                           paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
+    }
 
     private func showErrorsIfAny() {
         if !errors.isEmpty {
@@ -184,6 +243,60 @@ final class OrderDetailViewController: UIViewController {
                           style: .default)
         )
         self.present(alertController, animated: true)
+    }
+
+    private func updateExpirationLabel() {
+        guard let expirationDate = paymentExpirationDate else {
+            expirationLabel.isHidden = true
+            return
+        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        expirationLabel.text = "Expires: " + dateFormatter.string(from: expirationDate)
+        expirationLabel.textColor = expirationDate > Date() ? .systemGreen : .systemRed
+        expirationLabel.isHidden = false
+    }
+
+    func updateOrderDetails(newOrder: Order) {
+        delegate?.didUpdateOrder(newOrder)
+    }
+
+    @objc private func createPaymentRequestTapped() {
+        let paymentInfo = GiniInternalPaymentSDK.PaymentInfo(paymentComponentsInfo: obtainGiniPaymentInfo())
+        health.createPaymentRequest(paymentInfo: paymentInfo) { [weak self] result in
+            switch result {
+            case .success(let paymentRequestId):
+                self?.order.id = paymentRequestId
+                self?.fetchPaymentRequestInfo(paymentRequestId)
+            case .failure(let error):
+                self?.errors.append(error.localizedDescription)
+                self?.showErrorsIfAny()
+            }
+        }
+    }
+
+    private func fetchPaymentRequestInfo(_ paymentRequestId: String) {
+        health.getPaymentRequest(by: paymentRequestId, completion: { [weak self] result in
+            switch result {
+            case .success(let paymentRequest):
+                self?.handlePaymentRequestExpirationDate(paymentRequest.expirationDate)
+            case .failure(let error):
+                self?.handlePaymentRequestFailure(error)
+            }
+        })
+    }
+
+    private func handlePaymentRequestExpirationDate(_ expirationDateReceived: String?) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        guard let expirationDateString = expirationDateReceived,
+              let expirationDate = dateFormatter.date(from: expirationDateString) else { return }
+        self.paymentExpirationDate = expirationDate
+    }
+
+    private func handlePaymentRequestFailure(_ error: Error) {
+        self.errors.append(error.localizedDescription)
+        self.showErrorsIfAny()
     }
 }
 
@@ -206,5 +319,11 @@ extension OrderDetailViewController {
         static let paddingLeadingTrailing = 16.0
         static let payButtonHeight = 50.0
         static let payButtonCornerRadius = 14.0
+        static let expirationLabelTopPadding = 10.0
+        static let buttonStackTopPadding = 10.0
+        static let buttonStackLeadingTrailingPadding = 16.0
+        static let payButtonTopPadding = 20.0
+        static let buttonStackSpacing = 10.0
+        static let expirationLabelFontSize = 14.0
     }
 }
