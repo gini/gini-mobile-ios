@@ -127,6 +127,10 @@ private extension SessionManager {
                            taskType: TaskType,
                            cancellationToken: CancellationToken?,
                            completion: @escaping CompletionResult<T.ResponseType>) {
+        guard var request = resource.request else {
+            completion(.failure(.unknown(response: nil, data: nil)))
+            return
+        }
         if let authServiceType = resource.authServiceType {
             var accessToken: String?
             var authType: AuthType?
@@ -144,7 +148,6 @@ private extension SessionManager {
             }
 
             if let accessToken = accessToken, let header = authType {
-                var request = resource.request
                 let authHeader = AuthHelper.authorizationHeader(for: accessToken, headerType: header)
                 request.addValue(authHeader.value, forHTTPHeaderField: authHeader.key)
                 dataTask(for: resource,
@@ -162,7 +165,7 @@ private extension SessionManager {
 
         } else {
             dataTask(for: resource,
-                     finalRequest: resource.request,
+                     finalRequest: request,
                      type: taskType,
                      cancellationToken: cancellationToken,
                      completion: completion).resume()
