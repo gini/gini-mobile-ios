@@ -539,20 +539,14 @@ extension ReviewViewController {
 
         self.pages = pages
         guard !finishedUpload else { return }
-
+        if pages.isNotEmpty {
+            currentPage = pages.count - 1
+        }
         collectionView.reloadData()
         // Update cell status only if pages not empty
         if pages.isNotEmpty {
             guard pages.count > 1 else { return }
-            DispatchQueue.main.async {
-                self.setCellStatus(for: self.currentPage, isActive: false)
-
-                self.scrollToItem(at: IndexPath(row: self.pages.count - 1, section: 0))
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    self.setCurrentPage(basedOn: self.collectionView)
-                }
-            }
+            self.scrollToItem(at: IndexPath(row: currentPage, section: 0))
         }
     }
 }
