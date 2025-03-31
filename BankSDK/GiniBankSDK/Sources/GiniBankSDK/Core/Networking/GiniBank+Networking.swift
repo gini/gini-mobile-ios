@@ -25,16 +25,16 @@ extension GiniBank {
      It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
      all screens and transitions out of the box, including the networking.
 
-     - parameter client: `GiniClient` with the information needed to enable document analysis
-     - parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
-     - parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - parameter configuration: The configuration to set.
-     - parameter documentMetadata: Additional HTTP headers to send when uploading documents
-     - parameter api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
-     - parameter userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
-     - parameter trackingDelegate: A delegate object to receive user events
+     - Parameter client: `GiniClient` with the information needed to enable document analysis
+     - Parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+     - Parameter configuration: The configuration to set.
+     - Parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
+     - Parameter documentMetadata: Additional HTTP headers to send when uploading documents
+     - Parameter api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
+     - Parameter userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
+     - Parameter trackingDelegate: A delegate object to receive user events
 
-     - returns: A presentable view controller.
+     - Returns: A presentable view controller.
      */
     public class func viewController(withClient client: Client,
                                      importedDocuments: [GiniCaptureDocument]? = nil,
@@ -59,14 +59,14 @@ extension GiniBank {
      It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
      all screens and transitions out of the box, including the networking.
 
-     - parameter tokenSource: Alternative token source
-     - parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
-     - parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - parameter configuration: The configuration to set.
-     - parameter documentMetadata: Additional HTTP headers to send when uploading documents
-     - parameter trackingDelegate: A delegate object to receive user events
+     - Parameter tokenSource: Alternative token source
+     - Parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+     - Parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
+     - Parameter configuration: The configuration to set.
+     - Parameter documentMetadata: Additional HTTP headers to send when uploading documents
+     - Parameter trackingDelegate: A delegate object to receive user events
 
-     - returns: A presentable view controller.
+     - Returns: A presentable view controller.
      */
     public class func viewController(withAlternativeTokenSource tokenSource: AlternativeTokenSource,
                                      importedDocuments: [GiniCaptureDocument]? = nil,
@@ -78,6 +78,45 @@ extension GiniBank {
                                                                        resultsDelegate: resultsDelegate,
                                                                        configuration: configuration,
                                                                        documentMetadata: documentMetadata,
+                                                                       trackingDelegate: trackingDelegate)
+        return screenCoordinator.startSDK(withDocuments: importedDocuments)
+    }
+
+    // MARK: - Screen API with Default Networking Pinning - Initializers for 'UIViewController'
+
+    /**
+     Returns a view controller which will handle the analysis process.
+     It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
+     all screens and transitions out of the box, including the networking.
+
+     - Parameter client: `GiniClient` with the information needed to enable document analysis
+     - Parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+     - Parameter configuration: The configuration to set.
+     - Parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
+     - Parameter pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+     - Parameter documentMetadata: Additional HTTP headers to send when uploading documents
+     - Parameter api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
+     - Parameter userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
+     - Parameter trackingDelegate: A delegate object to receive user events
+
+     - Returns: A presentable view controller.
+     */
+    public class func viewController(withClient client: Client,
+                                     importedDocuments: [GiniCaptureDocument]? = nil,
+                                     configuration: GiniBankConfiguration,
+                                     resultsDelegate: GiniCaptureResultsDelegate,
+                                     pinningConfig: [String: [String]],
+                                     documentMetadata: Document.Metadata? = nil,
+                                     api: APIDomain = .default,
+                                     userApi: UserDomain = .default,
+                                     trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
+        let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(client: client,
+                                                                       resultsDelegate: resultsDelegate,
+                                                                       configuration: configuration,
+                                                                       pinningConfig: pinningConfig,
+                                                                       documentMetadata: documentMetadata,
+                                                                       api: api,
+                                                                       userApi: userApi,
                                                                        trackingDelegate: trackingDelegate)
         return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
