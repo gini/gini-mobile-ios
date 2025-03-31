@@ -88,6 +88,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 
 
 // MARK: - Screen API with default networking with Pinning certificates
+        // In order to be able to test with pinning, please comment the initialization of `viewController` above
+        // and uncomment the following code snippet.
         /*
         let yourPublicPinningConfig = [
             "pay-api.gini.net": [
