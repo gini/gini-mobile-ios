@@ -10,7 +10,6 @@ import XCTest
 @testable import GiniBankAPILibrary
 
 class BankAPILibraryIntegrationTests: BaseIntegrationTest {
-    private let paymentRequestID = "a6466506-acf1-4896-94c8-9b398d4e0ee1"
 
     func testErrorLogging() {
         let expect = expectation(description: "it logs the error event")
@@ -33,10 +32,10 @@ class BankAPILibraryIntegrationTests: BaseIntegrationTest {
         XCTAssertEqual(giniHelper.paymentService.apiDomain.domainString, "pay-api.gini.net")
     }
 
-    func testFetchPaymentRequest(){
+    func testFetchPaymentRequest() {
         let expect = expectation(description: "it fetches the payment request")
 
-        giniHelper.paymentService.paymentRequest(id: paymentRequestID) { result in
+        giniHelper.paymentService.paymentRequest(id: giniHelper.paymentRequestID) { result in
             switch result {
                 case .success(let request):
                     XCTAssertEqual(request.iban, "DE13760700120500154000")
@@ -48,11 +47,11 @@ class BankAPILibraryIntegrationTests: BaseIntegrationTest {
         wait(for: [expect], timeout: 10)
     }
 
-    func testResolvePaymentRequest(){
+    func testResolvePaymentRequest() {
         let message = "You can't resolve the previously resolved payment request"
         let expect = expectation(description: message)
 
-        giniHelper.paymentService.resolvePaymentRequest(id: paymentRequestID, 
+        giniHelper.paymentService.resolvePaymentRequest(id: giniHelper.paymentRequestID,
                                                         recipient: "Dr. med. Hackler",
                                                         iban: "DE13760700120500154000",
                                                         bic: "",
@@ -68,7 +67,7 @@ class BankAPILibraryIntegrationTests: BaseIntegrationTest {
         wait(for: [expect], timeout: 10)
     }
 
-    func testPayment(){
+    func testPayment() {
         let expect = expectation(description: "it gets the payment")
 
         giniHelper.paymentService.payment(id: "a6466506-acf1-4896-94c8-9b398d4e0ee1") { result in
