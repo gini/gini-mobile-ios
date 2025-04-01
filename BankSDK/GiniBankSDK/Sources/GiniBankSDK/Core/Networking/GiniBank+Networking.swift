@@ -82,7 +82,7 @@ extension GiniBank {
         return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
 
-    // MARK: - Screen API with Default Networking Pinning - Initializers for 'UIViewController'
+    // MARK: - Screen API with Default Networking with Pinning Cetificates - Initializers for 'UIViewController'
 
     /**
      Returns a view controller which will handle the analysis process.
@@ -128,17 +128,17 @@ extension GiniBank {
      It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
      all screens and transitions out of the box with the custom networking.
      
-     - parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
-     - parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - parameter configuration: The gini bank configuration to set.
-     - parameter documentMetadata: Additional HTTP headers to send when uploading documents.
-     - parameter trackingDelegate: A delegate object to receive user events.
-     - parameter networkingService: A delegate object which implement protocol for the document processing events.
-     - parameter configurationService: A delegate object which implement protocol for the customer configuration.
+     - Parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+     - Parameter configuration: The gini bank configuration to set.
+     - Parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
+     - Parameter documentMetadata: Additional HTTP headers to send when uploading documents.
+     - Parameter trackingDelegate: A delegate object to receive user events.
+     - Parameter networkingService: A delegate object which implement protocol for the document processing events.
+     - Parameter configurationService: A delegate object which implement protocol for the customer configuration.
 
-     - note: Screen API with custom networking only.
+     - Note: Screen API with custom networking only.
 
-     - returns: A presentable view controller.
+     - Returns: A presentable view controller.
      */
     public class func viewController(importedDocuments: [GiniCaptureDocument]? = nil,
                                      configuration: GiniBankConfiguration,
