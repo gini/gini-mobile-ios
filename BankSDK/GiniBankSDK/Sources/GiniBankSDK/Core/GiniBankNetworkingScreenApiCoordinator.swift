@@ -277,9 +277,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                   lib: lib)
     }
 
-    // MARK: Pinned certificates
+    // MARK: Pinning certificates
     /**
-     Initializes a new instance.
+     Initializes a new instance using Pinning certificates.
 
      - Parameters:
      - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.

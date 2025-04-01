@@ -82,7 +82,7 @@ extension GiniBank {
         return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
 
-    // MARK: - Screen API with Default Networking with Pinning Cetificates - Initializers for 'UIViewController'
+    // MARK: - Screen API with Default Networking with Pinning Certificates - Initializers for 'UIViewController'
 
     /**
      Returns a view controller which will handle the analysis process.
