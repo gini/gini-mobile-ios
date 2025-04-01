@@ -19,7 +19,7 @@ To initialize the library, you will need to use the snippet below:
 
 ## Public Key Pinning
 
- Your pinning configuration should have `health-api.gini.net` domain like in the example below:
+ Your pinning configuration should have `pay-api.gini.net` domain like in the example below:
 
 ```swift
     let yourPublicPinningConfig = [

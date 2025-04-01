@@ -40,8 +40,7 @@ You can also specify a custom path segment, if your proxy url requires it:
 
 ## Public Key Pinning
 
-//TODO: remove TrustKit reference
-If you want to use _Certificate pinning_, then pass your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information) as follows:
+If you want to use _Certificate pinning_, then pass your public key pinning configuration as follows:
 
 ```swift
     let yourPublicPinningConfig = [
