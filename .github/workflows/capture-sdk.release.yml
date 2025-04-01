@@ -45,22 +45,6 @@ jobs:
             "ci": "true"
           }
 
-    - name: Publish GiniCaptureSDKPinning package to the release repo
-      uses: maierj/fastlane-action@v3.1.0
-      with:
-        lane: 'publish_swift_package'
-        options: >
-          { 
-            "project_folder": "CaptureSDK",
-            "package_folder": "GiniCaptureSDKPinning",
-            "version_file_path": "CaptureSDK/GiniCaptureSDKPinning/Sources/GiniCaptureSDKPinning/GiniCaptureSDKPinningVersion.swift",
-            "git_tag": "${{ github.ref }}", 
-            "repo_url": "https://github.com/gini/capture-sdk-pinning-ios.git", 
-            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
-            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
-            "ci": "true"
-          }      
-
   release-documentation:
     needs: release
     uses: gini/gini-mobile-ios/.github/workflows/capture-sdk.publish.docs.yml@main

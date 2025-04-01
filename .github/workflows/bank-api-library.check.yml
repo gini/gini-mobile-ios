@@ -20,7 +20,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        target: [GiniBankAPILibrary, GiniBankAPILibraryPinning]
+        target: [GiniBankAPILibrary]
         destination: ['platform=iOS Simulator,OS=17.5,name=iPhone 15']
     steps:
     - uses: maxim-lobanov/setup-xcode@v1.6.0
@@ -34,12 +34,6 @@ jobs:
       if: ${{ matrix.target == 'GiniBankAPILibrary' }}
       run: |
            cd BankAPILibrary/GiniBankAPILibrary
-           swift package update
-
-    - name: Check package GiniBankAPILibraryPinning
-      if: ${{ matrix.target == 'GiniBankAPILibraryPinning' }}
-      run: |
-           cd BankAPILibrary/GiniBankAPILibraryPinning
            swift package update
 
     - name: Build sdk targets
