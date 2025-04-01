@@ -132,8 +132,7 @@
 "ginicapture.help.import.importtoapp.desc" = "Please select your Banking App from the list to start the analysis and transfer process.";
 "ginicapture.help.import.importtoapp.accessibility" = "Select Banking App from the list to start the analysis process";
 "ginicapture.help.import.draganddrop.title" = "Drag and drop on iPad";
-"ginicapture.help.import.draganddrop.desc" = "If your iPad is running iOS 12 or newer, you can
-conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to start a payment. To do this, open your Banking App and open the Files app as a second app on the screen. Select the desired invoice file in the Files app and drag this over to your Banking App.";
+"ginicapture.help.import.draganddrop.desc" = "You can conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to start a payment. To do this, open your Banking App and open the Files app as a second app on the screen. Select the desired invoice file in the Files app and drag this over to your Banking App.";
 "ginicapture.help.import.draganddrop.accessibility" = "On tablet you can use the drag and drop function to move the file into the banking app";
 
 "ginicapture.help.supportedFormats.title" = "Formats";
