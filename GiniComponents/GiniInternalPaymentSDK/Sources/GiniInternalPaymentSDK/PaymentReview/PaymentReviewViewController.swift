@@ -380,6 +380,7 @@ fileprivate extension PaymentReviewViewController {
         control.backgroundColor = .clear
         control.hidesForSinglePage = true
         control.numberOfPages = model.document?.pageCount ?? 0
+        control.addTarget(self, action: #selector(pageControlTapHandler), for: .touchUpInside)
         return control
     }
 
