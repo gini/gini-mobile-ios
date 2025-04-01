@@ -21,7 +21,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.font = GiniBankConfiguration.shared.textStyleFonts[.body]
-        label.textColor = .giniColorScheme().text.tertiary.uiColor()
+        label.textColor = .giniBankColorScheme().text.tertiary.uiColor()
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.screen.title",
                                                               comment: "Skonto discount")
         label.numberOfLines = 0
@@ -32,7 +32,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.font = GiniBankConfiguration.shared.textStyleFonts[.caption2]
-        label.textColor = .giniColorScheme().text.tertiary.uiColor()
+        label.textColor = .giniBankColorScheme().text.tertiary.uiColor()
         label.numberOfLines = 0
         return label
     }()
@@ -41,7 +41,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.font = GiniBankConfiguration.shared.textStyleFonts[.bodyBold]
-        label.textColor = .giniColorScheme().text.success.uiColor()
+        label.textColor = .giniBankColorScheme().text.success.uiColor()
         return label
     }()
 
@@ -100,7 +100,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     // MARK: - Setup Methods
     private func setupViews() {
         selectionStyle = .none
-        backgroundColor = .giniColorScheme().container.background.uiColor()
+        backgroundColor = .giniBankColorScheme().container.background.uiColor()
         clipsToBounds = true
         layer.cornerRadius = 8
         layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
