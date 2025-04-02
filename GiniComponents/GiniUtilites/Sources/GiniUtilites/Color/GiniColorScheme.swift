@@ -42,7 +42,9 @@ public struct GiniColorScheme {
         public var action: GiniColor
         public var navigation: GiniColor
         
-        public init(background: GiniColor, action: GiniColor, navigation: GiniColor) {
+        public init(background: GiniColor,
+                    action: GiniColor,
+                    navigation: GiniColor) {
             self.background = background
             self.action = action
             self.navigation = navigation
@@ -95,7 +97,12 @@ public struct GiniColorScheme {
         public var success: GiniColor
         public var error: GiniColor
         
-        public init(primary: GiniColor, secondary: GiniColor, tertiary: GiniColor, accent: GiniColor, success: GiniColor, error: GiniColor) {
+        public init(primary: GiniColor,
+                    secondary: GiniColor,
+                    tertiary: GiniColor,
+                    accent: GiniColor,
+                    success: GiniColor,
+                    error: GiniColor) {
             self.primary = primary
             self.secondary = secondary
             self.tertiary = tertiary
@@ -143,7 +150,12 @@ public struct GiniColorScheme {
         public var backgroundError: GiniColor
         public var contentError: GiniColor
         
-        public init(backgroundSuccess: GiniColor, contentSuccess: GiniColor, backgroundWarning: GiniColor, contentWarning: GiniColor, backgroundError: GiniColor, contentError: GiniColor) {
+        public init(backgroundSuccess: GiniColor,
+                    contentSuccess: GiniColor,
+                    backgroundWarning: GiniColor,
+                    contentWarning: GiniColor,
+                    backgroundError: GiniColor,
+                    contentError: GiniColor) {
             self.backgroundSuccess = backgroundSuccess
             self.contentSuccess = contentSuccess
             self.backgroundWarning = backgroundWarning
@@ -168,7 +180,9 @@ public struct GiniColorScheme {
         public var backgroundLoading: GiniColor
         public var content: GiniColor
         
-        public init(background: GiniColor, backgroundLoading: GiniColor, content: GiniColor) {
+        public init(background: GiniColor,
+                    backgroundLoading: GiniColor,
+                    content: GiniColor) {
             self.background = background
             self.backgroundLoading = backgroundLoading
             self.content = content
@@ -204,7 +218,23 @@ public struct GiniColorScheme {
         public var cursorEnabled: GiniColor
         public var cursorError: GiniColor
         
-        public init(background: GiniColor, border: GiniColor, focusedText: GiniColor, unfocusedText: GiniColor, disabledText: GiniColor, errorText: GiniColor, labelFocused: GiniColor, labelUnfocused: GiniColor, labelDisabled: GiniColor, labelError: GiniColor, supportingFocused: GiniColor, supportingUnfocused: GiniColor, supportingDisabled: GiniColor, supportingError: GiniColor, trailingFocused: GiniColor, cursorEnabled: GiniColor, cursorError: GiniColor) {
+        public init(background: GiniColor,
+                    border: GiniColor,
+                    focusedText: GiniColor,
+                    unfocusedText: GiniColor,
+                    disabledText: GiniColor,
+                    errorText: GiniColor,
+                    labelFocused: GiniColor,
+                    labelUnfocused: GiniColor,
+                    labelDisabled: GiniColor,
+                    labelError: GiniColor,
+                    supportingFocused: GiniColor,
+                    supportingUnfocused: GiniColor,
+                    supportingDisabled: GiniColor,
+                    supportingError: GiniColor,
+                    trailingFocused: GiniColor,
+                    cursorEnabled: GiniColor,
+                    cursorError: GiniColor) {
             self.background = background
             self.border = border
             self.focusedText = focusedText
@@ -231,7 +261,10 @@ public struct GiniColorScheme {
         public var trackOff: GiniColor
         public var disabledTrack: GiniColor
         
-        public init(thumb: GiniColor, trackOn: GiniColor, trackOff: GiniColor, disabledTrack: GiniColor) {
+        public init(thumb: GiniColor,
+                    trackOn: GiniColor,
+                    trackOff: GiniColor,
+                    disabledTrack: GiniColor) {
             self.thumb = thumb
             self.trackOn = trackOn
             self.trackOff = trackOff
@@ -258,7 +291,24 @@ public struct GiniColorScheme {
     public var textField: TextField
     public var toggle: Toggle
     
-    public init(background: Background, actionSheet: ActionSheet, alert: Alert, navigationBar: NavigationBar, content: Content, bottomBar: BottomBar, container: Container, placeholder: Placeholder, text: Text, icon: Icon, pageController: PageController, error: Error, message: Message, badge: Badge, button: Button, buttonOutlined: ButtonOutlined, textField: TextField, toggle: Toggle) {
+    public init(background: Background,
+                actionSheet: ActionSheet,
+                alert: Alert,
+                navigationBar: NavigationBar,
+                content: Content,
+                bottomBar: BottomBar,
+                container: Container,
+                placeholder: Placeholder,
+                text: Text,
+                icon: Icon,
+                pageController: PageController,
+                error: Error,
+                message: Message,
+                badge: Badge,
+                button: Button,
+                buttonOutlined: ButtonOutlined,
+                textField: TextField,
+                toggle: Toggle) {
         self.background = background
         self.actionSheet = actionSheet
         self.alert = alert
