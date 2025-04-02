@@ -15,6 +15,11 @@ public enum DisplayMode: Int {
     case documentCollection
 }
 
+enum PaymentInfoState {
+    case expanded  // Full content visible
+    case collapsed // Only buttons visible
+}
+
 /// A view controller for reviewing payment details
 public final class PaymentReviewViewController: BottomSheetViewController, UIGestureRecognizerDelegate {
     private lazy var mainView = buildMainView()
@@ -25,6 +30,15 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     lazy var paymentInfoContainerView = buildPaymentInfoContainerView()
     lazy var collectionView = buildCollectionView()
     lazy var pageControl = buildPageControl()
+    
+    private let topBarView = EmptyView()
+    private lazy var barLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = model.configuration.rectangleColor
+        view.layer.cornerRadius = Constants.cornerRadiusTopRectangle
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
@@ -37,6 +51,8 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     /// The model instance containing data and methods for handling the payment review process.
     public let model: PaymentReviewModel
     private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
+    
+    private var currentPaymentInfoState: PaymentInfoState = .expanded
 
     init(viewModel: PaymentReviewModel,
          selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
@@ -152,8 +168,10 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             layoutMainView()
             layoutPaymentInfoContainerView()
             layoutContainerCollectionView()
+            layoutTopBarView()
             layoutInfoBar()
             layoutCloseButton()
+            setupDraggableBottomView()
         case .bottomSheet:
             layoutPaymentInfoContainerView()
             layoutInfoBar()
@@ -398,7 +416,6 @@ fileprivate extension PaymentReviewViewController {
     func buildPaymentInfoContainerView() -> PaymentReviewContainerView {
         let containerView = PaymentReviewContainerView(viewModel: model.paymentReviewContainerViewModel())
         containerView.backgroundColor = model.configuration.infoContainerViewBackgroundColor
-        containerView.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadius)
         containerView.onPayButtonClicked = { [weak self] in
             self?.payButtonClicked()
         }
@@ -425,6 +442,25 @@ fileprivate extension PaymentReviewViewController {
                 paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor)
             ])
         }
+    }
+    
+    func layoutTopBarView() {
+        topBarView.backgroundColor = model.configuration.mainViewBackgroundColor
+        topBarView.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadius)
+        mainView.addSubview(topBarView)
+        NSLayoutConstraint.activate([
+            topBarView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor),
+            topBarView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            topBarView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
+            topBarView.heightAnchor.constraint(equalToConstant: Constants.heightTopBarView)
+        ])
+        topBarView.addSubview(barLineView)
+        NSLayoutConstraint.activate([
+            barLineView.centerXAnchor.constraint(equalTo: topBarView.centerXAnchor),
+            barLineView.topAnchor.constraint(equalTo: topBarView.topAnchor, constant: Constants.topAnchorTopRectangle),
+            barLineView.widthAnchor.constraint(equalToConstant: Constants.widthTopRectangle),
+            barLineView.heightAnchor.constraint(equalToConstant: Constants.heightTopRectangle)
+        ])
     }
 
     func updatePaymentInfoContainerView() {
@@ -546,11 +582,12 @@ fileprivate extension PaymentReviewViewController {
         infoBar.translatesAutoresizingMaskIntoConstraints = false
         infoBarLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        let container = model.displayMode == .bottomSheet ? (view ?? UIView()) : mainView
+        let isBottomSheetPresented = model.displayMode == .bottomSheet
+        let container = isBottomSheetPresented ? (view ?? UIView()) : mainView
         container.insertSubview(infoBar, belowSubview: paymentInfoContainerView)
         infoBar.addSubview(infoBarLabel)
 
-        let bottomConstraint = infoBar.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.infoBarHeight)
+        let bottomConstraint = infoBar.bottomAnchor.constraint(equalTo: isBottomSheetPresented ? paymentInfoContainerView.topAnchor : topBarView.topAnchor, constant: Constants.infoBarHeight)
         infoBarBottomConstraint = bottomConstraint
         NSLayoutConstraint.activate([
             bottomConstraint,
@@ -590,6 +627,33 @@ fileprivate extension PaymentReviewViewController {
             self.infoBarBottomConstraint?.constant = verticalConstant
             self.view.layoutIfNeeded()
         }, completion: completion)
+    }
+    
+    func setupDraggableBottomView() {
+        let panGesturePaymentInfoView = UIPanGestureRecognizer(target: self, action: #selector(handlePaymentContainerPanGesture(_:)))
+        let panGestureTopBarView = UIPanGestureRecognizer(target: self, action: #selector(handlePaymentContainerPanGesture(_:)))
+        paymentInfoContainerView.addGestureRecognizer(panGesturePaymentInfoView)
+        topBarView.addGestureRecognizer(panGestureTopBarView)
+    }
+    
+    @objc private func handlePaymentContainerPanGesture(_ gesture: UIPanGestureRecognizer) {
+        let velocity = gesture.velocity(in: view).y
+
+        if gesture.state == .ended {
+            let targetState: PaymentInfoState = velocity > 0 ? .collapsed : .expanded
+            togglePaymentInfo(to: targetState)
+        }
+    }
+    
+    private func togglePaymentInfo(to state: PaymentInfoState) {
+        guard !UIDevice.isPortrait() else { return }
+        guard state != currentPaymentInfoState else { return }
+        currentPaymentInfoState = state
+
+        UIView.animate(withDuration: 0.3) {
+            self.paymentInfoContainerView.updateViews(for: state)
+            self.view.layoutIfNeeded()
+        }
     }
 }
 
@@ -681,5 +745,10 @@ extension PaymentReviewViewController {
         static let moveHeightInfoBar = 24.0
         static let collectionViewBottomPadding = 10.0
         static let keyboardOverlapPadding = 20.0
+        static let cornerRadiusTopRectangle = 2.0
+        static let heightTopBarView = 16.0
+        static let topAnchorTopRectangle = 12.0
+        static let widthTopRectangle = 48.0
+        static let heightTopRectangle = 4.0
     }
 }

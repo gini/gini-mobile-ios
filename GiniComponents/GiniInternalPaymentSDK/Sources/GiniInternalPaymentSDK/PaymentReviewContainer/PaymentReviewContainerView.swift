@@ -111,6 +111,27 @@ public final class PaymentReviewContainerView: UIView {
         setupLayout(isPortrait: isPortrait)
         configureUI()
     }
+    
+    func updateViews(for paymentInfoState: PaymentInfoState) {
+        switch paymentInfoState {
+        case .expanded:
+            toggleExpandedViews(isHidden: false)
+        case .collapsed:
+            toggleExpandedViews(isHidden: true)
+            resignAllInputFields()
+        }
+    }
+
+    private func toggleExpandedViews(isHidden: Bool) {
+        UIView.animate(withDuration: 0.3) {
+            self.firstStackContainerView.isHidden = isHidden
+            self.secondStackContainerView.isHidden = isHidden
+        }
+    }
+    
+    private func resignAllInputFields() {
+        paymentInputFields.forEach( { _ = $0.resignFirstResponder() })
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
