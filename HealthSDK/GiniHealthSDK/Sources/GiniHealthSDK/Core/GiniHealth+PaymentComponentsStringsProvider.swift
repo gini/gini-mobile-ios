@@ -31,7 +31,9 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             purposeErrorMessage: NSLocalizedStringPreferredFormat("gini.health.errors.failed.purpose.non.empty.check",
                                                                   comment: "purpose failed non empty check"),
             payInvoiceLabelText: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.banking.app.button.label",
-                                                                  comment: "Title label used for the pay invoice button default")
+                                                                  comment: "Title label used for the pay invoice button default"),
+            selectBankAccessibilityText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.select.bank.label",
+                                                                          comment: "Accesibility label for the select bank button")
         )
     }
 
@@ -144,7 +146,11 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             defaultErrorMessage: NSLocalizedStringPreferredFormat("gini.health.errors.default",
                                                                   comment: "default error message"),
             createPaymentErrorMessage: NSLocalizedStringPreferredFormat("gini.health.errors.failed.payment.request.creation",
-                                                                        comment: "error for creating payment request")
+                                                                        comment: "error for creating payment request"),
+            invoiceImageAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.invoice.image.content.description",
+                                                                             comment: "accessibility label for invoice image"),
+            closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.close.button.accesibility.label",
+                                                                            comment: "accessibility label for close button")
         )
     }
 

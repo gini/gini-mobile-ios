@@ -11,6 +11,8 @@
 "gini.health.reviewscreen.iban.placeholder" = "IBAN";
 "gini.health.reviewscreen.banking.app.button.label" = "Zur Banking App";
 "gini.health.reviewscreen.infobar.message" = "Bitte überprüfe die vorausgefüllten Felder";
+"gini.health.reviewscreen.invoice.image.content.description" = "Rechnungsdokument";
+"gini.health.reviewscreen.close.button.accesibility.label" = "Schließen";
 "gini.health.errors.default" = "Oh da ist was schief gelaufen. Probiere es bitte noch einmal.";
 "gini.health.errors.failed.payment.request.creation" = "Oh da ist was schief gelaufen. Probiere es bitte noch einmal.";
 

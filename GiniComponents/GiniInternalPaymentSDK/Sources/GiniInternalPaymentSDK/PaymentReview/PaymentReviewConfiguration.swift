@@ -55,14 +55,20 @@ public struct PaymentReviewStrings {
     public let infoBarMessage: String
     public let defaultErrorMessage: String
     public let createPaymentErrorMessage: String
+    public let invoiceImageAccessibilityLabel: String
+    public let closeButtonAccessibilityLabel: String
 
     public init(alertOkButtonTitle: String,
                 infoBarMessage: String,
                 defaultErrorMessage: String,
-                createPaymentErrorMessage: String) {
+                createPaymentErrorMessage: String,
+                invoiceImageAccessibilityLabel: String,
+                closeButtonAccessibilityLabel: String) {
         self.alertOkButtonTitle = alertOkButtonTitle
         self.infoBarMessage = infoBarMessage
         self.defaultErrorMessage = defaultErrorMessage
         self.createPaymentErrorMessage = createPaymentErrorMessage
+        self.invoiceImageAccessibilityLabel = invoiceImageAccessibilityLabel
+        self.closeButtonAccessibilityLabel = closeButtonAccessibilityLabel
     }
 }

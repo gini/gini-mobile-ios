@@ -38,6 +38,7 @@ public final class MoreInformationView: UIView {
     private lazy var moreInformationButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.isAccessibilityElement = false
         button.setImage(viewModel.configuration.moreInformationIcon, for: .normal)
         button.tintColor = viewModel.configuration.moreInformationAccentColor
         button.addTarget(self, action: #selector(tapOnMoreInformationButtonAction), for: .touchUpInside)

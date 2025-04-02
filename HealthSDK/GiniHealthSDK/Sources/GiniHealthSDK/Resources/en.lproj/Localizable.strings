@@ -11,6 +11,8 @@
 "gini.health.reviewscreen.usage.placeholder" = "Reference number";
 "gini.health.reviewscreen.banking.app.button.label" = "To the banking app";
 "gini.health.reviewscreen.infobar.message" = "Please check the pre-filled data.";
+"gini.health.reviewscreen.invoice.image.content.description" = "Invoice document";
+"gini.health.reviewscreen.close.button.accesibility.label" = "Close";
 "gini.health.errors.default" = "Oops something went wrong. Please try again.";
 "gini.health.errors.failed.payment.request.creation" = "Oops something went wrong. Please try again.";
 "gini.health.errors.failed.recipient.non.empty.check" = "Recipient is required.";

@@ -24,6 +24,9 @@ extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionVie
         cell.pageImageView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: Constants.bottomPaddingPageImageView, right: 0.0)
         let cellModel = model.getCellViewModel(at: indexPath)
         cell.pageImageView.display(image: cellModel.preview)
+        cell.pageImageView.accessibilityTraits = .image
+        cell.pageImageView.isAccessibilityElement = true
+        cell.pageImageView.accessibilityLabel = model.strings.invoiceImageAccessibilityLabel
         return cell
     }
 

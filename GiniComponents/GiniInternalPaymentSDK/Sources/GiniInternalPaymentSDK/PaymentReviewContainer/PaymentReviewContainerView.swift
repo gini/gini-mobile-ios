@@ -477,6 +477,9 @@ public final class PaymentReviewContainerView: UIView {
         selectBankButton.didTapButton = { [weak self] in
             self?.tapOnBankPicker()
         }
+        selectBankButton.accessibilityLabel = viewModel.strings.selectBankAccessibilityText
+        selectBankButton.isAccessibilityElement = true
+        selectBankButton.accessibilityTraits = .button
     }
 
     @objc
@@ -494,6 +497,9 @@ public final class PaymentReviewContainerView: UIView {
         payInvoiceButton.didTapButton = { [weak self] in
             self?.payButtonClicked()
         }
+        payInvoiceButton.accessibilityLabel = viewModel.strings.payInvoiceLabelText
+        payInvoiceButton.isAccessibilityElement = true
+        payInvoiceButton.accessibilityTraits = .button
     }
 
     fileprivate func addDoneButtonForNumPad(_ textFieldView: TextFieldWithLabelView) {
