@@ -82,7 +82,7 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
      
      - parameter configuration: The configuration to set.
      */
-    @objc public class func setConfiguration(_ configuration: GiniConfiguration) {
+    public static func setConfiguration(_ configuration: GiniConfiguration) {
         GiniConfiguration.shared = configuration
 
         if configuration.debugModeOn {
@@ -99,8 +99,8 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
      
      - returns: A presentable view controller.
      */
-    @objc public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                           importedDocuments: [GiniCaptureDocument]? = nil) -> UIViewController {
+    public static func viewController(withDelegate delegate: GiniCaptureDelegate,
+                                      importedDocuments: [GiniCaptureDocument]? = nil) -> UIViewController {
         let screenCoordinator = GiniScreenAPICoordinator(withDelegate: delegate,
                                                          giniConfiguration: GiniConfiguration.shared)
 
@@ -117,9 +117,9 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
 
      - returns: A presentable view controller.
      */
-    public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                     importedDocuments: [GiniCaptureDocument]? = nil,
-                                     trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
+    public static func viewController(withDelegate delegate: GiniCaptureDelegate,
+                                      importedDocuments: [GiniCaptureDocument]? = nil,
+                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
         let screenCoordinator = GiniScreenAPICoordinator(withDelegate: delegate,
                                                          giniConfiguration: GiniConfiguration.shared)
         screenCoordinator.trackingDelegate = trackingDelegate
@@ -135,8 +135,8 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
 
      - returns: A presentable view controller.
      */
-    @objc public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                           importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
+    public static func viewController(withDelegate delegate: GiniCaptureDelegate,
+                                      importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
         var documents: [GiniCaptureDocument]?
         if let importedDocument = importedDocument {
             documents = [importedDocument]
@@ -155,9 +155,9 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
 
      - returns: A presentable view controller.
      */
-    public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                     importedDocument: GiniCaptureDocument? = nil,
-                                     trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
+    public static func viewController(withDelegate delegate: GiniCaptureDelegate,
+                                      importedDocument: GiniCaptureDocument? = nil,
+                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
         var documents: [GiniCaptureDocument]?
         if let importedDocument = importedDocument {
             documents = [importedDocument]
@@ -177,9 +177,9 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
 
      - returns: A presentable view controller.
      */
-    @objc public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                           withConfiguration configuration: GiniConfiguration,
-                                           importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
+    public static func viewController(withDelegate delegate: GiniCaptureDelegate,
+                                      withConfiguration configuration: GiniConfiguration,
+                                      importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
         setConfiguration(configuration)
         return viewController(withDelegate: delegate, importedDocument: importedDocument)
     }
@@ -187,7 +187,7 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
     /**
      Returns a view controller which will handle the analysis process.
      Allows to set a custom configuration to change the look and feel of the Gini Capture SDK.
-     
+
      - parameter delegate:      An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter configuration: The configuration to set.
      - parameter importedDocument: Documents that come from a source different than CameraViewController.
@@ -196,10 +196,10 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
 
      - returns: A presentable view controller.
      */
-    public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                     withConfiguration configuration: GiniConfiguration,
-                                     importedDocument: GiniCaptureDocument? = nil,
-                                     trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
+    public static func viewController(withDelegate delegate: GiniCaptureDelegate,
+                                      withConfiguration configuration: GiniConfiguration,
+                                      importedDocument: GiniCaptureDocument? = nil,
+                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
         setConfiguration(configuration)
         return viewController(withDelegate: delegate,
                               importedDocument: importedDocument,
@@ -210,18 +210,18 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
      Returns the current version of the Gini Capture SDK.
      If there is an error retrieving the version the returned value will be an empty string.
      */
-    @objc public static var versionString: String {
+    public static var versionString: String {
         return GiniCaptureSDKVersion
     }
 
     /**
      Validates a `GiniCaptureDocument` with a given `GiniConfiguration`.
-     
+
      - Throws: `DocumentValidationError` if there was an error during the validation.
-     
+
      */
-    @objc public class func validate(_ document: GiniCaptureDocument,
-                                     withConfig giniConfiguration: GiniConfiguration) throws {
+    public static func validate(_ document: GiniCaptureDocument,
+                                withConfig giniConfiguration: GiniConfiguration) throws {
         try GiniCaptureDocumentValidator.validate(document, withConfig: giniConfiguration)
     }
 }
