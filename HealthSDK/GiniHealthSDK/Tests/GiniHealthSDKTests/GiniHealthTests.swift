@@ -217,4 +217,43 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertNotNil(receivedPaymentRequest)
         XCTAssertNil(receivedPaymentRequest?.expirationDate)
     }
+    
+    func testFormalDE() {
+        // Given
+        let clientConfiguration = ClientConfiguration()
+        let configuration = GiniHealthConfiguration()
+        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .formal
+        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
+        
+        // When
+        configuration.customLocalization = .de
+        configuration.clientConfiguration = clientConfiguration
+        giniHealth.setConfiguration(configuration)
+        
+
+        // Expected
+        XCTAssertNotNil(clientConfiguration)
+        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
+        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
+    }
+    
+    func testInformalDE() {
+        // Given
+        let clientConfiguration = ClientConfiguration(communicationTone: .informal)
+        let configuration = GiniHealthConfiguration()
+        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .informal
+        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
+        
+        // When
+        configuration.clientConfiguration = clientConfiguration
+        configuration.customLocalization = .de
+        giniHealth.setConfiguration(configuration)
+
+        // Expected
+        XCTAssertNotNil(clientConfiguration)
+        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
+        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
+    }
 }
