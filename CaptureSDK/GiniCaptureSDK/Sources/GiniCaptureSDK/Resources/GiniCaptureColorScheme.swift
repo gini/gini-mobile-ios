@@ -10,49 +10,49 @@ import GiniUtilites
 extension UIColor {
     static func giniCaptureColorScheme() -> GiniColorScheme {
         return GiniColorScheme(
-            background: createBackgroundColorScheme(),
-            actionSheet: createActionSheetColorScheme(),
-            alert: createAlertColorScheme(),
-            navigationBar: createNavigationBarColorScheme(),
-            content: createContentColorScheme(),
-            bottomBar: createBottomBarColorScheme(),
-            container: createContainerColorScheme(),
-            placeholder: createPlaceholderColorScheme(),
-            text: createTextColorScheme(),
-            icon: createIconColorScheme(),
-            pageController: createPageControllerColorScheme(),
-            error: createErrorColorScheme(),
-            message: createMessageColorScheme(),
-            badge: createBadgeColorScheme(),
-            button: createButtonColorScheme(),
-            buttonOutlined: createButtonOutlinedColorScheme(),
-            textField: createTextFieldColorScheme(),
-            toggle: createToggleColorScheme()
+            background: createCaptureBackgroundColorScheme(),
+            actionSheet: createCaptureActionSheetColorScheme(),
+            alert: createCaptureAlertColorScheme(),
+            navigationBar: createCaptureNavigationBarColorScheme(),
+            content: createCaptureContentColorScheme(),
+            bottomBar: createCaptureBottomBarColorScheme(),
+            container: createCaptureContainerColorScheme(),
+            placeholder: createCapturePlaceholderColorScheme(),
+            text: createCaptureTextColorScheme(),
+            icon: createCaptureIconColorScheme(),
+            pageController: createCapturePageControllerColorScheme(),
+            error: createCaptureErrorColorScheme(),
+            message: createCaptureMessageColorScheme(),
+            badge: createCaptureBadgeColorScheme(),
+            button: createCaptureButtonColorScheme(),
+            buttonOutlined: createCaptureButtonOutlinedColorScheme(),
+            textField: createCaptureTextFieldColorScheme(),
+            toggle: createCaptureToggleColorScheme()
         )
     }
 
-    private static func createBackgroundColorScheme() -> GiniColorScheme.Background {
+    private static func createCaptureBackgroundColorScheme() -> GiniColorScheme.Background {
         return GiniColorScheme.Background(
             primary: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light2, darkModeColor: .GiniCapture.dark2),
             secondary: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light1, darkModeColor: .GiniCapture.dark2)
         )
     }
 
-    private static func createActionSheetColorScheme() -> GiniColorScheme.ActionSheet {
+    private static func createCaptureActionSheetColorScheme() -> GiniColorScheme.ActionSheet {
         return GiniColorScheme.ActionSheet(
             buttonBackground: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light1.withAlphaComponent(0.72), darkModeColor: .GiniCapture.dark5.withAlphaComponent(0.5)),
             cancelButtonBackground: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light1, darkModeColor: .GiniCapture.dark3)
         )
     }
 
-    private static func createAlertColorScheme() -> GiniColorScheme.Alert {
+    private static func createCaptureAlertColorScheme() -> GiniColorScheme.Alert {
         return GiniColorScheme.Alert(
             background: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light2.withAlphaComponent(0.8), darkModeColor: .GiniCapture.dark3.withAlphaComponent(0.8)),
             divider: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light6, darkModeColor: .GiniCapture.dark4.withAlphaComponent(0.65))
         )
     }
 
-    private static func createNavigationBarColorScheme() -> GiniColorScheme.NavigationBar {
+    private static func createCaptureNavigationBarColorScheme() -> GiniColorScheme.NavigationBar {
         return GiniColorScheme.NavigationBar(
             background: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light2, darkModeColor: .GiniCapture.dark2),
             action: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.accent1, darkModeColor: .GiniCapture.accent1),
@@ -60,34 +60,34 @@ extension UIColor {
         )
     }
 
-    private static func createContentColorScheme() -> GiniColorScheme.Content {
+    private static func createCaptureContentColorScheme() -> GiniColorScheme.Content {
         return GiniColorScheme.Content(
             navigation: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.accent1, darkModeColor: .GiniCapture.accent1),
             text: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light1, darkModeColor: .GiniCapture.light1)
         )
     }
 
-    private static func createBottomBarColorScheme() -> GiniColorScheme.BottomBar {
+    private static func createCaptureBottomBarColorScheme() -> GiniColorScheme.BottomBar {
         return GiniColorScheme.BottomBar(
             background: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light1, darkModeColor: .GiniCapture.dark3),
             border: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light3, darkModeColor: .GiniCapture.dark4)
         )
     }
 
-    private static func createContainerColorScheme() -> GiniColorScheme.Container {
+    private static func createCaptureContainerColorScheme() -> GiniColorScheme.Container {
         return GiniColorScheme.Container(
             background: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light1, darkModeColor: .GiniCapture.dark3)
         )
     }
 
-    private static func createPlaceholderColorScheme() -> GiniColorScheme.Placeholder {
+    private static func createCapturePlaceholderColorScheme() -> GiniColorScheme.Placeholder {
         return GiniColorScheme.Placeholder(
             background: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light2, darkModeColor: .GiniCapture.dark4),
             tint: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.dark7, darkModeColor: .GiniCapture.light6)
         )
     }
 
-    private static func createTextColorScheme() -> GiniColorScheme.Text {
+    private static func createCaptureTextColorScheme() -> GiniColorScheme.Text {
         return GiniColorScheme.Text(
             primary: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.dark1, darkModeColor: .GiniCapture.light1),
             secondary: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.dark6, darkModeColor: .GiniCapture.dark7),
@@ -98,28 +98,28 @@ extension UIColor {
         )
     }
 
-    private static func createIconColorScheme() -> GiniColorScheme.Icon {
+    private static func createCaptureIconColorScheme() -> GiniColorScheme.Icon {
         return GiniColorScheme.Icon(
             primary: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.dark2, darkModeColor: .GiniCapture.light1),
             secondary: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light4, darkModeColor: .GiniCapture.dark6)
         )
     }
 
-    private static func createPageControllerColorScheme() -> GiniColorScheme.PageController {
+    private static func createCapturePageControllerColorScheme() -> GiniColorScheme.PageController {
         return GiniColorScheme.PageController(
             selected: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.dark1, darkModeColor: .GiniCapture.light1),
             unselected: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.dark1.withAlphaComponent(0.3), darkModeColor: .GiniCapture.light1.withAlphaComponent(0.3))
         )
     }
 
-    private static func createErrorColorScheme() -> GiniColorScheme.Error {
+    private static func createCaptureErrorColorScheme() -> GiniColorScheme.Error {
         return GiniColorScheme.Error(
             background: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.error4, darkModeColor: .GiniCapture.error4),
             icon: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.error3, darkModeColor: .GiniCapture.error3)
         )
     }
 
-    private static func createMessageColorScheme() -> GiniColorScheme.Message {
+    private static func createCaptureMessageColorScheme() -> GiniColorScheme.Message {
         return GiniColorScheme.Message(
             backgroundSuccess: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.success5, darkModeColor: .GiniCapture.success5),
             contentSuccess: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.success2, darkModeColor: .GiniCapture.success2),
@@ -130,14 +130,14 @@ extension UIColor {
         )
     }
 
-    private static func createBadgeColorScheme() -> GiniColorScheme.Badge {
+    private static func createCaptureBadgeColorScheme() -> GiniColorScheme.Badge {
         return GiniColorScheme.Badge(
             background: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.success3, darkModeColor: .GiniCapture.success3),
             content: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light1, darkModeColor: .GiniCapture.light1)
         )
     }
 
-    private static func createButtonColorScheme() -> GiniColorScheme.Button {
+    private static func createCaptureButtonColorScheme() -> GiniColorScheme.Button {
         return GiniColorScheme.Button(
             background: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.accent1, darkModeColor: .GiniCapture.accent1),
             backgroundLoading: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.accent1.withAlphaComponent(0.24), darkModeColor: .GiniCapture.accent1.withAlphaComponent(0.24)),
@@ -145,14 +145,14 @@ extension UIColor {
         )
     }
 
-    private static func createButtonOutlinedColorScheme() -> GiniColorScheme.ButtonOutlined {
+    private static func createCaptureButtonOutlinedColorScheme() -> GiniColorScheme.ButtonOutlined {
         return GiniColorScheme.ButtonOutlined(
             background: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light4, darkModeColor: .GiniCapture.dark4),
             content: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.dark6, darkModeColor: .GiniCapture.light6)
         )
     }
 
-    private static func createTextFieldColorScheme() -> GiniColorScheme.TextField {
+    private static func createCaptureTextFieldColorScheme() -> GiniColorScheme.TextField {
         return GiniColorScheme.TextField(
             background: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light1, darkModeColor: .GiniCapture.dark3),
             border: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light3, darkModeColor: .GiniCapture.dark4),
@@ -174,7 +174,7 @@ extension UIColor {
         )
     }
 
-    private static func createToggleColorScheme() -> GiniColorScheme.Toggle {
+    private static func createCaptureToggleColorScheme() -> GiniColorScheme.Toggle {
         return GiniColorScheme.Toggle(
             thumb: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.light1, darkModeColor: .GiniCapture.light1),
             trackOn: GiniUtilites.GiniColor(lightModeColor: .GiniCapture.accent1, darkModeColor: .GiniCapture.accent1),
