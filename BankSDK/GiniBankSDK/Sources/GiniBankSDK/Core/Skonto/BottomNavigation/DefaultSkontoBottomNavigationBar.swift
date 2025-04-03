@@ -52,7 +52,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.subheadline]
-        label.textColor = .giniColorScheme().text.primary.uiColor()
+        label.textColor = .giniBankColorScheme().text.primary.uiColor()
         label.adjustsFontForContentSizeCategory = true
         let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                             comment: "Total")
@@ -64,7 +64,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title2Bold]
-        label.textColor = .giniColorScheme().text.primary.uiColor()
+        label.textColor = .giniBankColorScheme().text.primary.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -86,7 +86,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().badge.content.uiColor()
+        label.textColor = .giniBankColorScheme().badge.content.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -96,7 +96,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
 
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniColorScheme().badge.background.uiColor()
+        view.backgroundColor = .giniBankColorScheme().badge.background.uiColor()
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -108,7 +108,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().text.success.uiColor()
+        label.textColor = .giniBankColorScheme().text.success.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -116,7 +116,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
 
     private lazy var dividerView: UIView = {
         let dividerView = UIView()
-        dividerView.backgroundColor = .giniColorScheme().bottomBar.border.uiColor()
+        dividerView.backgroundColor = .giniBankColorScheme().bottomBar.border.uiColor()
         dividerView.translatesAutoresizingMaskIntoConstraints = false
         return dividerView
     }()
@@ -161,7 +161,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .giniColorScheme().bottomBar.background.uiColor()
+        backgroundColor = .giniBankColorScheme().bottomBar.background.uiColor()
 
         addSubview(contentView)
         addSubview(dividerView)

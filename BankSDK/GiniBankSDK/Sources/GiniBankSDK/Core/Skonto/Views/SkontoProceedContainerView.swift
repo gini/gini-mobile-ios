@@ -32,7 +32,7 @@ class SkontoProceedContainerView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.subheadline]
-        label.textColor = .giniColorScheme().text.primary.uiColor()
+        label.textColor = .giniBankColorScheme().text.primary.uiColor()
         let labelText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                                   comment: "Total")
         label.text = labelText
@@ -43,7 +43,7 @@ class SkontoProceedContainerView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.title2Bold]
-        label.textColor = .giniColorScheme().text.primary.uiColor()
+        label.textColor = .giniBankColorScheme().text.primary.uiColor()
         let labelText = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
         label.text = labelText
         label.adjustsFontForContentSizeCategory = true
@@ -67,7 +67,7 @@ class SkontoProceedContainerView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().badge.content.uiColor()
+        label.textColor = .giniBankColorScheme().badge.content.uiColor()
         let labelText = String.localizedStringWithFormat(skontoTitle,
                                                          viewModel.formattedPercentageDiscounted)
         label.text = labelText
@@ -80,7 +80,7 @@ class SkontoProceedContainerView: UIView {
 
     private lazy var skontoBadgeView: UIView = {
         let view = UIView()
-        view.backgroundColor = .giniColorScheme().badge.background.uiColor()
+        view.backgroundColor = .giniBankColorScheme().badge.background.uiColor()
         view.layer.cornerRadius = Constants.cornerRadius
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -92,7 +92,7 @@ class SkontoProceedContainerView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = .giniColorScheme().badge.background.uiColor()
+        label.textColor = .giniBankColorScheme().badge.background.uiColor()
         let labelText = viewModel.savingsAmountString
         label.text = labelText
         label.adjustsFontForContentSizeCategory = true
@@ -102,7 +102,7 @@ class SkontoProceedContainerView: UIView {
 
     private lazy var dividerView: UIView = {
         let dividerView = UIView()
-        dividerView.backgroundColor = .giniColorScheme().bottomBar.border.uiColor()
+        dividerView.backgroundColor = .giniBankColorScheme().bottomBar.border.uiColor()
         dividerView.translatesAutoresizingMaskIntoConstraints = false
         return dividerView
     }()
@@ -125,7 +125,7 @@ class SkontoProceedContainerView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .giniColorScheme().bottomBar.background.uiColor()
+        backgroundColor = .giniBankColorScheme().bottomBar.background.uiColor()
         translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(contentView)
