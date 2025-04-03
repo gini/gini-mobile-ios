@@ -139,6 +139,7 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             infoContainerViewBackgroundColor: GiniColor.standard7.uiColor(), 
             paymentReviewClose: GiniMerchantImage.paymentReviewClose.preferredUIImage(),
             backgroundColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor(),
+            rectangleColor: GiniColor.standard5.uiColor(),
             infoBarLabelFont: GiniMerchantConfiguration.shared.font(for: .captions1),
             statusBarStyle: .default,
             pageIndicatorTintColor: GiniColor.standard4.uiColor(),
