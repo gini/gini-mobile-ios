@@ -212,7 +212,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         
         let qrCodeSize = isPortrait ? Constants.qrCodeImageSizePortrait : Constants.qrCodeImageSizeLandscape
         let bottomViewHeight = isPortrait ? Constants.bottomViewPortraitHeight : Constants.bottomViewLandscapeHeight
-        let contentPadding = isPortrait ? 0 : Constants.landscapePadding
+        let contentPadding = isPortrait ? 0 : (Constants.landscapePaddingRatio * view.frame.width)
         
         let constraints = [
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: contentPadding),
@@ -419,10 +419,10 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     // Handle orientation change
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        updateLayoutForCurrentOrientation()
 
         // Perform layout updates with animation
         coordinator.animate(alongsideTransition: { context in
+            self.updateLayoutForCurrentOrientation()
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -446,6 +446,6 @@ extension ShareInvoiceBottomView {
         static let paymentInfoBorderWidth = 1.0
         static let paymentInfoCornerRadius = 16.0
         static let paymentInfoFieldsSpacing = 4.0
-        static let landscapePadding = 126.0
+        static let landscapePaddingRatio = 0.15
     }
 }

@@ -141,6 +141,6 @@ extension BanksBottomViewModel {
         static let blankBottomViewHeight: CGFloat = 200.0
         static let cellSizeHeight: CGFloat = 64.0
         static let topPaddingViewPortrait: CGFloat = 100.0
-        static let topPaddingViewLandscape: CGFloat = 10.0
+        static let topPaddingViewLandscape: CGFloat = 20.0
     }
 }

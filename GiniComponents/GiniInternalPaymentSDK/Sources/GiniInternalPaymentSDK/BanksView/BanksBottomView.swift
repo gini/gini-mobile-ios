@@ -105,7 +105,7 @@ public final class BanksBottomView: BottomSheetViewController {
     }
 
     private func setupInitialLayout() {
-        updateLayoutForCurrentOrientation()
+        updateLayoutForCurrentOrientation(screenSize: UIScreen.main.bounds.size)
     }
 
     // Portrait Layout Constraints
@@ -120,11 +120,12 @@ public final class BanksBottomView: BottomSheetViewController {
     }
 
     // Landscape Layout Constraints
-    private func setupLandscapeConstraints() {
+    private func setupLandscapeConstraints(screenWidth: CGFloat) {
         deactivateAllConstraints()
+        let landscapePadding: CGFloat = (Constants.landscapePaddingRatio * screenWidth)
         landscapeConstraints = [
-            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.landscapePadding),
-            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.landscapePadding),
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: landscapePadding),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -landscapePadding),
             paymentProvidersTableView.heightAnchor.constraint(equalToConstant: viewModel.heightTableView)
         ]
         NSLayoutConstraint.activate(landscapeConstraints)
@@ -228,23 +229,23 @@ public final class BanksBottomView: BottomSheetViewController {
     // Handle orientation change
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        viewModel.calculateHeights()
-        updateLayoutForCurrentOrientation()
-        setupTableViewConstraints()
-        setupPoweredByGiniConstraints()
-        setupViewAttributes()
 
         // Perform layout updates with animation
         coordinator.animate(alongsideTransition: { context in
+            self.viewModel.calculateHeights()
+            self.updateLayoutForCurrentOrientation(screenSize: size)
+            self.setupTableViewConstraints()
+            self.setupPoweredByGiniConstraints()
+            self.setupViewAttributes()
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
 
-    private func updateLayoutForCurrentOrientation() {
+    private func updateLayoutForCurrentOrientation(screenSize: CGSize) {
         if UIDevice.isPortrait() {
             setupPortraitConstraints()
         } else {
-            setupLandscapeConstraints()
+            setupLandscapeConstraints(screenWidth: screenSize.width)
         }
     }
 }
@@ -259,7 +260,7 @@ extension BanksBottomView {
         static let titleViewTitleIconSpacing = 10.0
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let bottomViewHeight = 44.0
-        static let landscapePadding = 126.0
+        static let landscapePaddingRatio = 0.15
     }
 }
 

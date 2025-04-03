@@ -79,13 +79,12 @@ public final class PaymentComponentBottomView: BottomSheetViewController {
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        if UIDevice.isPortrait() {
-            setupPortraitConstraints()
-        } else {
-            setupLandscapeConstraints()
-        }
-
         coordinator.animate(alongsideTransition: { context in
+            if UIDevice.isPortrait() {
+                self.setupPortraitConstraints()
+            } else {
+                self.setupLandscapeConstraints()
+            }
             self.view.layoutIfNeeded()
         }, completion: nil)
     }

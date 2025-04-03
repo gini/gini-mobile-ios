@@ -334,10 +334,10 @@ public final class InstallAppBottomView: BottomSheetViewController {
     // Handle orientation change
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        updateLayoutForCurrentOrientation()
 
         // Perform layout updates with animation
         coordinator.animate(alongsideTransition: { context in
+            self.updateLayoutForCurrentOrientation()
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
