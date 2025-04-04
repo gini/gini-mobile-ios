@@ -21,17 +21,20 @@ public struct ClientConfiguration: Codable {
      - parameter skontoEnabled: A flag indicating whether Skonto is enabled.
      - parameter returnAssistantEnabled: A flag indicating whether the return assistant feature is enabled.
      - parameter transactionDocsEnabled: A flag indicating whether TransactionDocs feature is enabled.
+     - parameter instantPayment: A flag indicating whether Instant Payment is enabled.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
                 skontoEnabled: Bool,
                 returnAssistantEnabled: Bool,
-                transactionDocsEnabled: Bool) {
+                transactionDocsEnabled: Bool,
+                instantPayment: Bool) {
         self.clientID = clientID
         self.userJourneyAnalyticsEnabled = userJourneyAnalyticsEnabled
         self.skontoEnabled = skontoEnabled
         self.returnAssistantEnabled = returnAssistantEnabled
         self.transactionDocsEnabled = transactionDocsEnabled
+        self.instantPayment = instantPayment
     }
     
     public let clientID: String
@@ -39,4 +42,5 @@ public struct ClientConfiguration: Codable {
     public let skontoEnabled: Bool
     public let returnAssistantEnabled: Bool
     public let transactionDocsEnabled: Bool
+    public let instantPayment: Bool
 }
