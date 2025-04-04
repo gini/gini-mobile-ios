@@ -2107,13 +2107,13 @@ extension SettingsViewModelTests {
     // MARK: - Instant Payment
 
     func testInstantPaymentSwitchOn() {
-        guard let index = getSwitchOptionIndex(for: .instantPayment) else {
+        guard let index = getSwitchOptionIndex(for: .instantPaymentEnabled) else {
             XCTFail("`instantPayment` option not found in sectionData")
             return
         }
         
         if case .switchOption(var data) = contentData[index.section].items[index.row] {
-            guard data.type == .instantPayment else {
+            guard data.type == .instantPaymentEnabled else {
                 XCTFail("Expected type `instantPayment`, found a different one: \(data.type)")
                 return
             }
@@ -2126,13 +2126,13 @@ extension SettingsViewModelTests {
     }
 
     func testInstantPaymentSwitchOff() {
-        guard let index = getSwitchOptionIndex(for: .instantPayment) else {
+        guard let index = getSwitchOptionIndex(for: .instantPaymentEnabled) else {
             XCTFail("`instantPayment` option not found in sectionData")
             return
         }
         
         if case .switchOption(var data) = contentData[index.section].items[index.row] {
-            guard data.type == .instantPayment else {
+            guard data.type == .instantPaymentEnabled else {
                 XCTFail("Expected type `instantPayment`, found a different one: \(data.type)")
                 return
             }

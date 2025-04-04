@@ -56,7 +56,7 @@ struct SwitchOptionModel {
         case skontoHelpNavigationBarBottomAdapter
         case skontoEnabled
         case transactionDocsEnabled
-        case instantPayment
+        case instantPaymentEnabled
         case closeSDK
 
 		var title: String {
@@ -153,7 +153,7 @@ struct SwitchOptionModel {
 				return "Custom Gini error logger"
 			case .debugModeOn:
 				return "Debug mode"
-            case .instantPayment:
+            case .instantPaymentEnabled:
                 return "Instant Payment feature"
             case .closeSDK:
                 return "Close SDK"
