@@ -16,19 +16,13 @@ extension UINavigationController {
                                                                                                     .uiColor()]
         let navigationBackgroundColor = GiniColor(light: .GiniCapture.light2,
                                                   dark: .GiniCapture.dark2).uiColor()
-        if #available(iOS 13.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = navigationBackgroundColor
-            appearance.titleTextAttributes = titleTextAttrubutes
-            appearance.shadowColor = navigationBackgroundColor
-            navigationBar.standardAppearance = appearance
-            navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
-        } else {
-            navigationBar.barTintColor = navigationBackgroundColor
-            navigationBar.titleTextAttributes = titleTextAttrubutes
-            navigationBar.setValue(true, forKey: "hidesShadow")
-        }
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = navigationBackgroundColor
+        appearance.titleTextAttributes = titleTextAttrubutes
+        appearance.shadowColor = navigationBackgroundColor
+        navigationBar.standardAppearance = appearance
+        navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
         navigationBar.tintColor = UIColor.GiniCapture.accent1
     }
 }
