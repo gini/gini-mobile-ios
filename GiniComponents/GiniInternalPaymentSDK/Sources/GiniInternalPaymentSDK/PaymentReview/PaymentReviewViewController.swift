@@ -505,12 +505,9 @@ fileprivate extension PaymentReviewViewController {
         mainView.addSubview(collectionView)
         mainView.sendSubviewToBack(collectionView)
 
-        let navigationBarHeight = self.navigationController?.navigationBar.frame.maxY ?? 0
-
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: navigationBarHeight),
 
             pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight),
             pageControl.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -Constants.collectionViewPadding),
@@ -652,6 +649,7 @@ fileprivate extension PaymentReviewViewController {
 
         UIView.animate(withDuration: 0.3) {
             self.paymentInfoContainerView.updateViews(for: state)
+            self.updateLayoutForCurrentOrientation()
             self.view.layoutIfNeeded()
         }
     }
@@ -685,6 +683,7 @@ extension PaymentReviewViewController {
     }
     
     private func setupPortraitConstraints() {
+        currentPaymentInfoState = .expanded
         setupConstraints(for: .vertical)
     }
     
@@ -697,6 +696,7 @@ extension PaymentReviewViewController {
         NSLayoutConstraint.deactivate(landscapeConstraints + portraitConstraints)
         
         paymentInfoContainerView.setupView()
+        paymentInfoContainerView.updateViews(for: currentPaymentInfoState)
         
         let isPortrait = orientation == .vertical
         let showCollectionView = model.displayMode == .documentCollection
@@ -704,7 +704,9 @@ extension PaymentReviewViewController {
         var constraints = [] as [NSLayoutConstraint]
         
         if showCollectionView {
-            constraints.append(collectionView.bottomAnchor.constraint(equalTo: isPortrait ? paymentInfoContainerView.topAnchor : mainView.bottomAnchor, constant: Constants.collectionViewBottomPadding))
+            let navigationBarHeight = self.navigationController?.navigationBar.frame.maxY ?? 0
+            constraints.append(collectionView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: navigationBarHeight))
+            constraints.append(collectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor))
         }
         
         if isPortrait {
@@ -739,11 +741,9 @@ extension PaymentReviewViewController {
         static let infoBarLabelPadding = 8.0
         static let pageControlHeight = 20.0
         static let collectionViewPadding = 10.0
-        static let inputContainerHeightPortait = 375.0
-        static let inputContainerHeightLandscape = 307.0
-        static let cornerRadius = 12.0
+        static let cornerRadius = 8.0
         static let moveHeightInfoBar = 24.0
-        static let collectionViewBottomPadding = 10.0
+        static let collectionViewBottomPadding = 20.0
         static let keyboardOverlapPadding = 20.0
         static let cornerRadiusTopRectangle = 2.0
         static let heightTopBarView = 16.0
