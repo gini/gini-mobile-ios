@@ -144,6 +144,7 @@
 		83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CDA290AC86300DA97F7 /* NibLoading.swift */; };
 		847B68CA2C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */; };
 		847B68CC2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */; };
+		848F0A3C2DA3213B00AFF3EF /* GiniBankConfigurationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848F0A3B2DA3213B00AFF3EF /* GiniBankConfigurationsTests.swift */; };
 		84C53D5E2C87477D00A908BB /* AttachmentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */; };
 		84C5D65C2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json in Resources */ = {isa = PBXBuildFile; fileRef = 84C5D65B2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json */; };
 		84C5D65D2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json in Resources */ = {isa = PBXBuildFile; fileRef = 84C5D65B2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json */; };
@@ -380,6 +381,7 @@
 		83D02CDA290AC86300DA97F7 /* NibLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoading.swift; sourceTree = "<group>"; };
 		847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
 		847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
+		848F0A3B2DA3213B00AFF3EF /* GiniBankConfigurationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankConfigurationsTests.swift; sourceTree = "<group>"; };
 		84C53D5D2C87477D00A908BB /* AttachmentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentsTableViewCell.swift; sourceTree = "<group>"; };
 		84C5D65B2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = result_Gini_invoice_example_skonto_after_transfer_summary.json; sourceTree = "<group>"; };
 		84CD074C2C7DBB9A004DF1DE /* CustomDigitalInvoiceSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
@@ -692,6 +694,7 @@
 		28D77C5F2CBEC05100F815DB /* IntegrationTests */ = {
 			isa = PBXGroup;
 			children = (
+				84364E942DA4165100098A13 /* BankConfiguration */,
 				28D1B4602D2ED5D8002EE0DA /* BankAPILibrary */,
 				28D77C612CBEC07000F815DB /* Base */,
 				28D77C5C2CBEC01700F815DB /* DigitalInvoice */,
@@ -869,6 +872,14 @@
 				83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */,
 			);
 			path = OnboardingBottomNavigationBar;
+			sourceTree = "<group>";
+		};
+		84364E942DA4165100098A13 /* BankConfiguration */ = {
+			isa = PBXGroup;
+			children = (
+				848F0A3B2DA3213B00AFF3EF /* GiniBankConfigurationsTests.swift */,
+			);
+			path = BankConfiguration;
 			sourceTree = "<group>";
 		};
 		847B68C82C4009D700544050 /* SkontoBottomNavigationBar */ = {
@@ -1540,6 +1551,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84DB5EA22D03172E005EDC4C /* SkontoTransferSummaryIntegrationTest.swift in Sources */,
+				848F0A3C2DA3213B00AFF3EF /* GiniBankConfigurationsTests.swift in Sources */,
 				28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */,
 				28D1B45F2D2ECC9B002EE0DA /* BankAPILibraryTests.swift in Sources */,
 				F45D7F0E2800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
