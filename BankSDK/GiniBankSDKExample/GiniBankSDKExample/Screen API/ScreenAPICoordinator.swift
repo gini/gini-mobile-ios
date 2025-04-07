@@ -172,7 +172,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         }
 
         let transaction = Transaction(date: Date(),
-                                      paiedAmount: extractionAmountString,
+                                      paidAmount: extractionAmountString,
                                       paymentPurpose: paymentPurpose,
                                       paymentRecipient: paymentRecipient,
                                       iban: iban,
