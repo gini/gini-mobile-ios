@@ -694,10 +694,7 @@ extension PaymentReviewViewController {
     private func setupConstraints(for orientation: NSLayoutConstraint.Axis) {
         // Deactivate previous constraints
         NSLayoutConstraint.deactivate(landscapeConstraints + portraitConstraints)
-        
-        paymentInfoContainerView.setupView()
-        paymentInfoContainerView.updateViews(for: currentPaymentInfoState)
-        
+
         let isPortrait = orientation == .vertical
         let showCollectionView = model.displayMode == .documentCollection
         
@@ -722,10 +719,14 @@ extension PaymentReviewViewController {
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
+        paymentInfoContainerView.setupView()
+        paymentInfoContainerView.updateViews(for: currentPaymentInfoState)
+
         // Perform layout updates with animation
         coordinator.animate(alongsideTransition: { context in
             self.updateLayoutForCurrentOrientation()
             self.view.layoutIfNeeded()
+            self.collectionView.reloadData()
         }, completion: nil)
     }
 }
@@ -750,5 +751,6 @@ extension PaymentReviewViewController {
         static let topAnchorTopRectangle = 12.0
         static let widthTopRectangle = 48.0
         static let heightTopRectangle = 4.0
+        static let landscapeCollectionViewLeftInsetRatio = 0.07
     }
 }

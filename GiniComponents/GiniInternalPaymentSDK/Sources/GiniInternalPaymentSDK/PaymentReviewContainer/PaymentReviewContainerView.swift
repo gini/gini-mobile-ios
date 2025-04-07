@@ -267,10 +267,9 @@ public final class PaymentReviewContainerView: UIView {
     }
 
     private func setupConstraints(for orientation: NSLayoutConstraint.Axis) {
-        // Deactivate previous constraints
-        let isPortrait = orientation == .vertical
-        NSLayoutConstraint.deactivate(isPortrait ? landscapeConstraints : portraitConstraints)
+        NSLayoutConstraint.deactivate(landscapeConstraints + portraitConstraints)
 
+        let isPortrait = orientation == .vertical
         let constraints = [
             paymentInfoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: isPortrait ? Constants.leftRightPaymentInfoContainerPortraitPadding : Constants.leftRightPaymentInfoContainerLandscapePadding),
             paymentInfoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: isPortrait ? -Constants.leftRightPaymentInfoContainerPortraitPadding : -Constants.leftRightPaymentInfoContainerLandscapePadding),
