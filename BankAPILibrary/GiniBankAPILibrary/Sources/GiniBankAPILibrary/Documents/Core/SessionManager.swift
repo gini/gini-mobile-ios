@@ -268,20 +268,24 @@ private extension SessionManager {
                                             response: HTTPURLResponse,
                                             data: Data,
                                             completion: @escaping CompletionResult<T.ResponseType>) {
+        let method = request.httpMethod ?? "unknown method"
+        let url = request.url?.absoluteString ?? "unknown URL"
+        let dataString = String(data: data, encoding: .utf8) ?? "nil"
+
         do {
             let result = try resource.parsed(response: response, data: data)
-            Log("Success: \(request.httpMethod!) - \(request.url!)", event: .success)
+            Log("Success: \(method) - \(url)", event: .success)
             completion(.success(result))
         } catch let error {
             Log("""
-                Failure: \(request.httpMethod!) - \(request.url!)
-                Parse error: \(error)
-                Data content: \(String(data: data, encoding: .utf8) ?? "nil")
-                """, event: .error)
+        Failure: \(method) - \(url)
+        Parse error: \(error)
+        Data content: \(dataString)
+        """, event: .error)
+
             completion(.failure(.parseError(message: "Failed to parse response",
                                             response: response,
-                                            data: data))
-            )
+                                            data: data)))
         }
     }
 
