@@ -37,9 +37,7 @@ public final class GiniHealthConfiguration: NSObject {
      */
     public override init() {
         super.init()
-        DispatchQueue.main.async {
-            self.shareWithFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
-        }
+        setDefaultShareWithFileName()
     }
 
     // MARK: - Payment component view
@@ -157,8 +155,12 @@ public final class GiniHealthConfiguration: NSObject {
     /**
     Custom localization configuration for localizable strings.
     */
-    public var customLocalization: GiniLocalization?
-    
+    public var customLocalization: GiniLocalization? {
+        didSet {
+            setDefaultShareWithFileName()
+        }
+    }
+
     /**
      Client's configuration provided from the server
      */
@@ -176,6 +178,12 @@ public final class GiniHealthConfiguration: NSObject {
             if !isValidPDFFilename(shareWithFileName) {
                 shareWithFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
             }
+        }
+    }
+
+    private func setDefaultShareWithFileName() {
+        DispatchQueue.main.async {
+            self.shareWithFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
         }
     }
 }
