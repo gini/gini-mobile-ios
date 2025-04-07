@@ -16,7 +16,7 @@
 		<string>https://</string>
 	</dict>
 	<key>method</key>
-	<string>ad-hoc</string>
+	<string>release-testing</string>
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>net.gini.banksdk.example</key>
