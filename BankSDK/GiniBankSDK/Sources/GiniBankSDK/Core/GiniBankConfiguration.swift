@@ -528,64 +528,39 @@ public final class GiniBankConfiguration: NSObject {
     }
 
     // MARK: - Transfer summary sending and cleanup
+    // Deprecated method - Please use sendTransferSummary()
+    /**
+     Function for clean up
+     - Parameters:
+     - paymentRecipient: paymentRecipient description
+     - paymentReference: paymentReference description
+     - iban: iban description
+     - bic: bic description
+     - amountToPay: amountToPay description
+     - instantPayment: instantPayment description
+     */
 
-    // swiftlint:disable function_parameter_count
-    /// Function for clean up
-    /// - Parameters:
-    ///   - paymentRecipient: paymentRecipient description
-    ///   - paymentReference: paymentReference description
-    ///   - iban: iban description
-    ///   - bic: bic description
-    ///   - amountToPay: amountToPay description
     // swiftlint:disable line_length
     @available(*, deprecated, message: "Please use sendTransferSummary() to provide the required transfer summary first (if the user has completed TAN verification) and then cleanup() to let the SDK free up used resources")
     // swiftlint:enable line_length
+    // swiftlint:disable function_parameter_count
     // swiftlint:disable function_body_length
     public func cleanup(paymentRecipient: String,
                         paymentReference: String,
                         paymentPurpose: String,
                         iban: String,
                         bic: String,
-                        amountToPay: ExtractionAmount) {
+                        amountToPay: ExtractionAmount,
+                        instantPayment: String) {
         guard let documentService = documentService else { return }
 
-        let paymentRecipientExtraction = Extraction(box: nil,
-                                                    candidates: nil,
-                                                    entity: "companyname",
-                                                    value: paymentRecipient,
-                                                    name: "paymentRecipient")
-        let paymentReferenceExtraction = Extraction(box: nil,
-                                                    candidates: nil,
-                                                    entity: "reference",
-                                                    value: paymentReference,
-                                                    name: "paymentReference")
-        let paymentPurposeExtraction = Extraction(box: nil,
-                                                  candidates: nil,
-                                                  entity: "text",
-                                                  value: paymentPurpose,
-                                                  name: "paymentPurpose")
-        let ibanExtraction = Extraction(box: nil,
-                                        candidates: nil,
-                                        entity: "iban",
-                                        value: iban,
-                                        name: "iban")
-        let bicExtraction = Extraction(box: nil,
-                                       candidates: nil,
-                                       entity: "bic",
-                                       value: bic,
-                                       name: "bic")
-        let amountExtraction = Extraction(box: nil,
-                                          candidates: nil,
-                                          entity: "amount",
-                                          value: amountToPay.formattedString(),
-                                          name: "amountToPay")
-
-        let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
-                                                paymentReferenceExtraction,
-                                                paymentPurposeExtraction,
-                                                ibanExtraction,
-                                                bicExtraction,
-                                                amountExtraction]
+        let updatedExtractions = generateBasicExtractions(paymentRecipient: paymentRecipient,
+                                                          paymentReference: paymentReference,
+                                                          paymentPurpose: paymentPurpose,
+                                                          iban: iban,
+                                                          bic: bic,
+                                                          amountToPayString: amountToPay.formattedString(),
+                                                          instantPayment: instantPayment)
 
         if let lineItems = lineItems {
             documentService.sendFeedback(with: updatedExtractions,
@@ -601,6 +576,7 @@ public final class GiniBankConfiguration: NSObject {
     }
     // swiftlint:enable function_body_length
     // swiftlint:enable function_parameter_count
+
     /**
      Function for transfer summary.
      Provides transfer summary to Gini.
@@ -612,33 +588,39 @@ public final class GiniBankConfiguration: NSObject {
      - Provide the final data approved by the user (and not the initially extracted only).
      - Send the transfer summary after TAN verification and provide the extraction values the user has used.
 
-     - parameter paymentRecipient: paymentRecipient description
-     - parameter paymentReference: paymentReference description
-     - parameter iban: iban description
-     - parameter bic: bic description
-     - parameter amountToPay: amountToPay description
+     - Parameters:
+        - paymentRecipient: paymentRecipient description
+        - paymentReference: paymentReference description
+        - paymentPurpose: paymentPurpose description
+        - iban: iban description
+        - bic: bic description
+        - amountToPay: amountToPay description
      */
+    // swiftlint:disable function_parameter_count
     public func sendTransferSummary(paymentRecipient: String,
                                     paymentReference: String,
                                     paymentPurpose: String,
                                     iban: String,
                                     bic: String,
-                                    amountToPay: ExtractionAmount) {
+                                    amountToPay: ExtractionAmount,
+                                    instantPayment: String) {
         let updatedExtractions = generateBasicExtractions(paymentRecipient: paymentRecipient,
                                                           paymentReference: paymentReference,
                                                           paymentPurpose: paymentPurpose,
                                                           iban: iban,
                                                           bic: bic,
-                                                          amountToPayString: amountToPay.formattedString())
+                                                          amountToPayString: amountToPay.formattedString(),
+                                                          instantPayment: instantPayment)
         sendTransferSummary(updatedExtractions: updatedExtractions)
     }
 
-    private func generateBasicExtractions(paymentRecipient: String,
+    internal func generateBasicExtractions(paymentRecipient: String,
                                           paymentReference: String,
                                           paymentPurpose: String,
                                           iban: String,
                                           bic: String,
-                                          amountToPayString: String) -> [Extraction] {
+                                          amountToPayString: String,
+                                          instantPayment: String) -> [Extraction] {
         let paymentRecipientExtraction = Extraction(box: nil,
                                                     candidates: nil,
                                                     entity: "companyname",
@@ -669,13 +651,20 @@ public final class GiniBankConfiguration: NSObject {
                                           entity: "amount",
                                           value: amountToPayString,
                                           name: "amountToPay")
+        let instantPayment = Extraction(box: nil,
+                                        candidates: nil,
+                                        entity: "instantPayment",
+                                        value: instantPayment,
+                                        name: "instantPayment")
         return [paymentRecipientExtraction,
                 paymentReferenceExtraction,
                 paymentPurposeExtraction,
                 ibanExtraction,
                 bicExtraction,
-                amountExtraction]
+                amountExtraction,
+                instantPayment]
     }
+    // swiftlint:enable function_parameter_count
 
     private func sendTransferSummary(updatedExtractions: [Extraction]) {
         let updatedCompoundExtractions = addLineItems(to: [:])
