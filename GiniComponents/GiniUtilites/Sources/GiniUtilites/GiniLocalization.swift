@@ -33,8 +33,9 @@ public enum GiniLocalized {
      */
     public static func string(_ key: String, fallbackKey: String? = nil, comment: String, locale: String?, bundle: Bundle, communicationTone: String? = nil) -> String {
         var key = key
+        let communicationToneInformal = "INFORMAL"
         let locale = locale ?? getLanguageCode() ?? GiniLocalization.en.rawValue
-        if locale == GiniLocalization.de.rawValue, let communicationTone, communicationTone == "INFORMAL" {
+        if locale == GiniLocalization.de.rawValue, let communicationTone, communicationTone == communicationToneInformal {
             key = key + "." + communicationTone.lowercased()
         }
         let clientAppBundle = Bundle.main
