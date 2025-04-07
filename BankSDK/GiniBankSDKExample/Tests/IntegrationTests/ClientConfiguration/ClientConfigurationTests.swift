@@ -1,5 +1,5 @@
 //
-//  GiniBankConfigurationsTests.swift
+//  ClientConfigurationTests.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import XCTest
 @testable import GiniBankSDK
 
-class GiniBankConfigurationsTests: BaseIntegrationTest {
+class ClientConfigurationTests: BaseIntegrationTest {
     override func setUp() {
         giniHelper.setup()
     }
