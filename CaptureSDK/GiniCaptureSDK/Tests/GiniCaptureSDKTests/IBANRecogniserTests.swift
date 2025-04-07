@@ -57,5 +57,11 @@ final class IBANRecogniserTests: XCTestCase {
         XCTAssertEqual(expectedIBANs, extractedIBANs, "German IBAN should be preffered")
     }
 
+    func testIBANRecogniserWithLetters() {
+        let expectedIBANs : [String] = ["DE15500105171729472483"]
+        let text = "DE15S00105171729472483"
+        let extractedIBANs = extractIBANS(string: text)
+        XCTAssertEqual(expectedIBANs, extractedIBANs, "IBANs should be equal")
+    }
 }
 
