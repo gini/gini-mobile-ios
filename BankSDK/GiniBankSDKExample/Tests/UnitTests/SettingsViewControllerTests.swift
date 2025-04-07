@@ -2104,6 +2104,45 @@ extension SettingsViewModelTests {
         }
     }
 
+    // MARK: - Instant Payment
+
+    func testInstantPaymentSwitchOn() {
+        guard let index = getSwitchOptionIndex(for: .instantPaymentEnabled) else {
+            XCTFail("`instantPaymentEnabled` option not found in sectionData")
+            return
+        }
+        
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .instantPaymentEnabled else {
+                XCTFail("Expected type `instantPaymentEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = true
+            configuration.instantPaymentEnabled = data.isSwitchOn
+            
+            XCTAssertTrue(configuration.instantPaymentEnabled,
+                          "instantPaymentEnabled should be true in the gini configuration")
+        }
+    }
+
+    func testInstantPaymentSwitchOff() {
+        guard let index = getSwitchOptionIndex(for: .instantPaymentEnabled) else {
+            XCTFail("`instantPaymentEnabled` option not found in sectionData")
+            return
+        }
+        
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .instantPaymentEnabled else {
+                XCTFail("Expected type `instantPaymentEnabled`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = false
+            configuration.instantPaymentEnabled = data.isSwitchOn
+            
+            XCTAssertFalse(configuration.instantPaymentEnabled,
+                           "instantPaymentEnabled should be false in the gini configuration")
+        }
+    }
 }
 
 extension SettingsViewModelTests: GiniCaptureErrorLoggerDelegate {
