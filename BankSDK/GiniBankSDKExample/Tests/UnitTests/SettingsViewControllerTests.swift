@@ -2108,39 +2108,39 @@ extension SettingsViewModelTests {
 
     func testInstantPaymentSwitchOn() {
         guard let index = getSwitchOptionIndex(for: .instantPaymentEnabled) else {
-            XCTFail("`instantPayment` option not found in sectionData")
+            XCTFail("`instantPaymentEnabled` option not found in sectionData")
             return
         }
         
         if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .instantPaymentEnabled else {
-                XCTFail("Expected type `instantPayment`, found a different one: \(data.type)")
+                XCTFail("Expected type `instantPaymentEnabled`, found a different one: \(data.type)")
                 return
             }
             data.isSwitchOn = true
             configuration.instantPaymentEnabled = data.isSwitchOn
             
             XCTAssertTrue(configuration.instantPaymentEnabled,
-                          "instantPayment should be enabled in the gini configuration")
+                          "instantPaymentEnabled should be true in the gini configuration")
         }
     }
 
     func testInstantPaymentSwitchOff() {
         guard let index = getSwitchOptionIndex(for: .instantPaymentEnabled) else {
-            XCTFail("`instantPayment` option not found in sectionData")
+            XCTFail("`instantPaymentEnabled` option not found in sectionData")
             return
         }
         
         if case .switchOption(var data) = contentData[index.section].items[index.row] {
             guard data.type == .instantPaymentEnabled else {
-                XCTFail("Expected type `instantPayment`, found a different one: \(data.type)")
+                XCTFail("Expected type `instantPaymentEnabled`, found a different one: \(data.type)")
                 return
             }
             data.isSwitchOn = false
             configuration.instantPaymentEnabled = data.isSwitchOn
             
             XCTAssertFalse(configuration.instantPaymentEnabled,
-                           "instantPaymentEnabled should not be enabled in the gini configuration")
+                           "instantPaymentEnabled should be false in the gini configuration")
         }
     }
 }
