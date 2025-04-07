@@ -66,9 +66,10 @@ class TransferSummaryExtractionsTests: XCTestCase {
 
     // MARK: - Tests
 
-    func test_generateBasicExtractions_returnsCorrectExtractions() {
+    func testGenerateBasicExtractionsReturnsCorrectExtractions() {
         let amount = ExtractionAmount(value: 99.99, currency: .EUR)
-        let input = ExtractionInput(paymentRecipient: "Test AG",
+        let paymentRecipientName = "Otto"
+        let input = ExtractionInput(paymentRecipient: paymentRecipientName,
                                     paymentReference: "REF-001",
                                     paymentPurpose: "Invoice March",
                                     iban: "DE89370400440532013000",
@@ -79,12 +80,12 @@ class TransferSummaryExtractionsTests: XCTestCase {
         let extractions = generateExtractions(from: input)
 
         XCTAssertEqual(extractions.count, 7)
-        assertExtractionExists(extractions, name: Field.paymentRecipient, value: "Test AG")
+        assertExtractionExists(extractions, name: Field.paymentRecipient, value: paymentRecipientName)
         assertExtractionExists(extractions, name: Field.amountToPay, value: amount.formattedString())
         assertExtractionExists(extractions, name: Field.instantPayment, value: "false")
     }
 
-    func test_generateBasicExtractions_withEmptyStrings() {
+    func testGenerateBasicExtractionsWithEmptyStrings() {
         let input = ExtractionInput(paymentRecipient: "",
                                     paymentReference: "",
                                     paymentPurpose: "",
@@ -99,8 +100,8 @@ class TransferSummaryExtractionsTests: XCTestCase {
         XCTAssertTrue(extractions.allSatisfy { $0.value == "" })
     }
 
-    func test_generateBasicExtractions_withInvalidIbanFormat() {
-        let input = ExtractionInput(paymentRecipient: "Acme Inc",
+    func testGenerateBasicExtractionsWithInvalidIbanFormat() {
+        let input = ExtractionInput(paymentRecipient: "Bonprix",
                                     paymentReference: "INV123",
                                     paymentPurpose: "Payment",
                                     iban: "INVALID_IBAN",
@@ -114,11 +115,11 @@ class TransferSummaryExtractionsTests: XCTestCase {
         XCTAssertFalse(input.iban.hasPrefix("DE"), "IBAN should normally start with 'DE' in Germany")
     }
 
-    func test_generateBasicExtractions_fieldCoverage() {
+    func testGenerateBasicExtractionsFieldCoverage() {
         let amount = ExtractionAmount(value: 50.00, currency: .EUR)
-        let input = ExtractionInput(paymentRecipient: "Test AG",
+        let input = ExtractionInput(paymentRecipient: "Tchibo",
                                     paymentReference: "REF-321",
-                                    paymentPurpose: "Rent",
+                                    paymentPurpose: "Payment for coffee",
                                     iban: "DE44500105175407324931",
                                     bic: "INGDDEFFXXX",
                                     amount: amount.formattedString(),
@@ -139,7 +140,7 @@ class TransferSummaryExtractionsTests: XCTestCase {
         }
     }
 
-    func test_generateBasicExtractions_valueMapping() {
+    func testGenerateBasicExtractionsValueMapping() {
         let input = ExtractionInput(paymentRecipient: "Some Company",
                                     paymentReference: "Ref-0001",
                                     paymentPurpose: "Consulting Services",
