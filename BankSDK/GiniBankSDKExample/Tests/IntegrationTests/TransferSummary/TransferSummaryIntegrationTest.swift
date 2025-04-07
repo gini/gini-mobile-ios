@@ -47,7 +47,8 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
                 paymentPurpose: result.extractions["paymentPurpose"]?.value ?? "",
                 iban: result.extractions["iban"]?.value ?? "",
                 bic: result.extractions["bic"]?.value ?? "",
-                amountToPay: ExtractionAmount(value: 950.00, currency: .EUR)
+                amountToPay: ExtractionAmount(value: 950.00, currency: .EUR),
+                instantPayment: result.extractions["instantPayment"]?.value ?? ""
             )
             
             let mockedInvoice = mockedInvoiceResultName

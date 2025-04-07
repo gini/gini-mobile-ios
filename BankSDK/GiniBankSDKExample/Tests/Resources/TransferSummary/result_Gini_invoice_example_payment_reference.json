@@ -13,6 +13,10 @@
       "entity": "text",
       "value": "true"
     },
+    "instantPayment": {
+        "entity": "text",
+        "value": "true"
+    },
     "paymentPurpose": {
       "entity": "text",
       "value": "3 941674010439",
