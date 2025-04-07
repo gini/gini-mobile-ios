@@ -109,11 +109,13 @@ final class PaymentTests: XCTestCase {
     }
     
     func testPaymentURL() {
-        let resource = APIResource<Payment>(method: .payment(id: "d8b46793-31b4-49d5-8f81-554e9e13f3f5"),
+        let resource = APIResource<Payment>(method: .payment(id: SessionManagerMock.paymentRequestId),
                                             apiDomain: .default,
                                             apiVersion: versionAPI,
                                             httpMethod: .get)
+        
         let urlString = resource.url.absoluteString
-        XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/d8b46793-31b4-49d5-8f81-554e9e13f3f5/payment", "path should match")
+        
+        XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/\(SessionManagerMock.paymentRequestId)/payment", "path should match")
     }
 }
