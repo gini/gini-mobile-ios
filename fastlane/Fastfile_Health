@@ -24,7 +24,8 @@ platform :ios do
     match(
       app_identifier: ["net.gini.healthsdk.example"],
       type: "development",
-      generate_apple_certs: true
+      generate_apple_certs: true,
+      force_for_new_devices: true
     )
 
   end
