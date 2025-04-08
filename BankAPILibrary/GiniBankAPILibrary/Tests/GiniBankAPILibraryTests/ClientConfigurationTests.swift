@@ -11,16 +11,17 @@ final class ClientConfigurationTests: XCTestCase {
 
     lazy var clientConfigurationJson = loadFile(withName: "clientConfiguration", ofType: "json")
     lazy var clientConfigurationMissingJson = loadFile(withName: "clientConfigurationMissing", ofType: "json")
+    private let testClientID = "test-client"
 
     func testInitialization() {
-        let config = ClientConfiguration(clientID: "test-client",
+        let config = ClientConfiguration(clientID: testClientID,
                                          userJourneyAnalyticsEnabled: true,
                                          skontoEnabled: true,
                                          returnAssistantEnabled: true,
                                          transactionDocsEnabled: true,
                                          instantPayment: true)
 
-        XCTAssertEqual(config.clientID, "test-client")
+        XCTAssertEqual(config.clientID, testClientID)
         XCTAssertTrue(config.userJourneyAnalyticsEnabled)
         XCTAssertTrue(config.skontoEnabled)
         XCTAssertTrue(config.returnAssistantEnabled)
@@ -33,7 +34,7 @@ final class ClientConfigurationTests: XCTestCase {
         let decoder = JSONDecoder()
         let config = try decoder.decode(ClientConfiguration.self, from: data)
 
-        XCTAssertEqual(config.clientID, "test-client")
+        XCTAssertEqual(config.clientID, testClientID)
         XCTAssertTrue(config.userJourneyAnalyticsEnabled)
         XCTAssertTrue(config.skontoEnabled)
         XCTAssertTrue(config.returnAssistantEnabled)
