@@ -45,8 +45,8 @@ import GiniCaptureSDK
     /**
      Fetches the payment request via payment request id.
 
-     - parameter paymentRequestId: Id of payment request.
-     - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
+     - Parameter paymentRequestId: Id of payment request.
+     - Parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
      Completion block called on main thread.
      In success returns the payment request structure.
      In case of failure error from the server side.
@@ -148,8 +148,8 @@ import GiniCaptureSDK
 
      - returns: A presentable view controller.
      */
-    @objc public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                           importedDocuments: [GiniCaptureDocument]? = nil) -> UIViewController {
+    public static func viewController(withDelegate delegate: GiniCaptureDelegate,
+                                      importedDocuments: [GiniCaptureDocument]? = nil) -> UIViewController {
 
         let screenCoordinator = GiniScreenAPICoordinator(withDelegate: delegate,
                                                          giniConfiguration:
@@ -168,9 +168,9 @@ import GiniCaptureSDK
 
      - returns: A presentable view controller.
      */
-    public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                     importedDocuments: [GiniCaptureDocument]? = nil,
-                                     trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
+    public static func viewController(withDelegate delegate: GiniCaptureDelegate,
+                                      importedDocuments: [GiniCaptureDocument]? = nil,
+                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
         let configuration = GiniBankConfiguration.shared.captureConfiguration()
         let screenCoordinator = GiniScreenAPICoordinator(withDelegate: delegate,
                                                          giniConfiguration: configuration)
@@ -188,8 +188,8 @@ import GiniCaptureSDK
 
      - returns: A presentable view controller.
      */
-    @objc public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                           importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
+    public static func viewController(withDelegate delegate: GiniCaptureDelegate,
+                                      importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
         var documents: [GiniCaptureDocument]?
         if let importedDocument = importedDocument {
             documents = [importedDocument]
@@ -208,15 +208,17 @@ import GiniCaptureSDK
 
      - returns: A presentable view controller.
      */
-    public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                     importedDocument: GiniCaptureDocument?,
-                                     trackingDelegate: GiniCaptureTrackingDelegate?) -> UIViewController {
+    public static func viewController(withDelegate delegate: GiniCaptureDelegate,
+                                      importedDocument: GiniCaptureDocument?,
+                                      trackingDelegate: GiniCaptureTrackingDelegate?) -> UIViewController {
         var documents: [GiniCaptureDocument]?
         if let importedDocument = importedDocument {
             documents = [importedDocument]
         }
 
-        return viewController(withDelegate: delegate, importedDocuments: documents, trackingDelegate: trackingDelegate)
+        return viewController(withDelegate: delegate,
+                              importedDocuments: documents,
+                              trackingDelegate: trackingDelegate)
     }
 
     /**
@@ -230,9 +232,9 @@ import GiniCaptureSDK
 
      - returns: A presentable view controller.
      */
-    @objc public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                           withConfiguration configuration: GiniBankConfiguration,
-                                           importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
+    public static func viewController(withDelegate delegate: GiniCaptureDelegate,
+                                      withConfiguration configuration: GiniBankConfiguration,
+                                      importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
         GiniBank.setConfiguration(configuration)
         return viewController(withDelegate: delegate, importedDocument: importedDocument)
     }
@@ -265,7 +267,7 @@ import GiniCaptureSDK
 
      - parameter configuration: The bank configuration to set.
      */
-    @objc public class func setConfiguration(_ configuration: GiniBankConfiguration) {
+    public static func setConfiguration(_ configuration: GiniBankConfiguration) {
         GiniBankConfiguration.shared = configuration
         let captureConfiguration = GiniBankConfiguration.shared.captureConfiguration()
         GiniCapture.setConfiguration(captureConfiguration)
