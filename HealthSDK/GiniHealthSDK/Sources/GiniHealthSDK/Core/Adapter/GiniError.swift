@@ -16,6 +16,7 @@ public protocol GiniErrorProtocol {
 
 /// An enumeration representing errors that can occur when interacting with the Gini API.
 public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equatable {
+    
     case decorator(GiniHealthAPILibrary.GiniError)
 
     public var message: String {
@@ -39,24 +40,48 @@ public enum GiniError: Error, GiniErrorProtocol, GiniCustomErrorProtocol, Equata
         }
     }
 
+    public var unauthorizedItems: [String]? {
+        switch self {
+        case .decorator(let giniError):
+            return giniError.unauthorizedItems
+        }
+    }
+
+    public var notFoundItems: [String]? {
+        switch self {
+        case .decorator(let giniError):
+            return giniError.notFoundItems
+        }
+    }
+    
+    public var missingCompositeItems: [String]? {
+        switch self {
+        case .decorator(let giniError):
+            return giniError.missingCompositeItems
+        }
+    }
+    
+    @available(*, deprecated, message: "This property will be removed in a future release", renamed: "unauthorizedItems")
     public var unauthorizedDocuments: [String]? {
         switch self {
         case .decorator(let giniError):
-            return giniError.unauthorizedDocuments
+            return giniError.unauthorizedItems
         }
     }
-
+    
+    @available(*, deprecated, message: "This property will be removed in a future release", renamed: "notFoundItems")
     public var notFoundDocuments: [String]? {
         switch self {
         case .decorator(let giniError):
-            return giniError.notFoundDocuments
+            return giniError.notFoundItems
         }
     }
-
+    
+    @available(*, deprecated, message: "This property will be removed in a future release", renamed: "missingCompositeItems")
     public var missingCompositeDocuments: [String]? {
         switch self {
         case .decorator(let giniError):
-            return giniError.missingCompositeDocuments
+            return giniError.missingCompositeItems
         }
     }
 }
