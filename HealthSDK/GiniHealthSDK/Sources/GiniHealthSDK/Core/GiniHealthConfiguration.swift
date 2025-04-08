@@ -177,6 +177,8 @@ public final class GiniHealthConfiguration: NSObject {
      Client's configuration provided from the server
      */
     var clientConfiguration: ClientConfiguration?
+    
+    lazy var defaultFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
         
     /**
      Custom name for the file, provided through the Share With flow.
@@ -184,11 +186,11 @@ public final class GiniHealthConfiguration: NSObject {
        - Number of characters for the file name: 25
        - Limit characters to letters, numbers, underscore and dash
      */
-    public var shareWithFileName: String = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "") {
+    public var shareWithFileName: String? {
         didSet {
             // If the custom file name does not comply with the customization rules, the default value will be used.
-            if !isValidPDFFilename(shareWithFileName) {
-                shareWithFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
+            if let shareWithFileName, !isValidPDFFilename(shareWithFileName) {
+                self.shareWithFileName = defaultFileName
             }
         }
     }
