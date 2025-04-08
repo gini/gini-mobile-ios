@@ -38,8 +38,18 @@ class TransferSummaryExtractionsTests: XCTestCase {
                                         name: String,
                                         value: String? = nil,
                                         entity: String? = nil) {
-        let match = extractions.first(where: { $0.name == name && (value == nil || $0.value == value) && (entity == nil || $0.entity == entity) })
-        XCTAssertNotNil(match, "Expected extraction with name '\(name)', value '\(value ?? "*")', entity '\(entity ?? "*")' not found")
+        let match = extractions.first { extraction in
+            let nameMatches = extraction.name == name
+            let valueMatches = value == nil || extraction.value == value
+            let entityMatches = entity == nil || extraction.entity == entity
+            return nameMatches && valueMatches && entityMatches
+        }
+        let expectedMessage = """
+                              Expected extraction with name '\(name)', \
+                              value '\(value ?? "*")', \
+                              entity '\(entity ?? "*")' not found
+                              """
+        XCTAssertNotNil(match, expectedMessage)
     }
 
     // MARK: - Field + Entity Constants
