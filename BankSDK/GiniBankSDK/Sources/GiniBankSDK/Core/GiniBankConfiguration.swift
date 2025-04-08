@@ -651,18 +651,18 @@ public final class GiniBankConfiguration: NSObject {
                                           entity: "amount",
                                           value: amountToPayString,
                                           name: "amountToPay")
-        let instantPayment = Extraction(box: nil,
-                                        candidates: nil,
-                                        entity: "instantPayment",
-                                        value: instantPayment,
-                                        name: "instantPayment")
+        let instantPaymentExtraction = Extraction(box: nil,
+                                                  candidates: nil,
+                                                  entity: "instantPayment",
+                                                  value: instantPayment,
+                                                  name: "instantPayment")
         return [paymentRecipientExtraction,
                 paymentReferenceExtraction,
                 paymentPurposeExtraction,
                 ibanExtraction,
                 bicExtraction,
                 amountExtraction,
-                instantPayment]
+                instantPaymentExtraction]
     }
     // swiftlint:enable function_parameter_count
 
