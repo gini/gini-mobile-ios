@@ -37,7 +37,6 @@ public final class GiniHealthConfiguration: NSObject {
      */
     public override init() {
         super.init()
-        setDefaultShareWithFileName()
     }
 
     // MARK: - Payment component view
@@ -172,35 +171,25 @@ public final class GiniHealthConfiguration: NSObject {
     /**
     Custom localization configuration for localizable strings.
     */
-    public var customLocalization: GiniLocalization? {
-        didSet {
-            setDefaultShareWithFileName()
-        }
-    }
+    public var customLocalization: GiniLocalization?
 
     /**
      Client's configuration provided from the server
      */
     var clientConfiguration: ClientConfiguration?
-    
+        
     /**
      Custom name for the file, provided through the Share With flow.
       Customization rules:
        - Number of characters for the file name: 25
        - Limit characters to letters, numbers, underscore and dash
      */
-    public var shareWithFileName: String = "" {
+    public var shareWithFileName: String = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "") {
         didSet {
             // If the custom file name does not comply with the customization rules, the default value will be used.
             if !isValidPDFFilename(shareWithFileName) {
                 shareWithFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
             }
-        }
-    }
-
-    private func setDefaultShareWithFileName() {
-        DispatchQueue.main.async {
-            self.shareWithFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
         }
     }
 }

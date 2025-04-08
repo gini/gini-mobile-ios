@@ -49,7 +49,7 @@ For example you would like to customize pay invoice button label in the Payment 
 1. Find a string key for a text that you would like to customize.
 For the [To the banking app button label](https://www.figma.com/design/fHf3b3XxE59wymH7gvoMrJ/iOS-Gini-Health-SDK-5.0-UI-Customisation?node-id=12909-10929&t=vzclpYe0B8kEePKJ-4) in the Payment Review screen we use `gini.health.paymentcomponent.to.banking.app.label`. 
 2. Add the string key with a desired value to `Localizable.strings` in your app.
-
+    2.1 For German informal tone, you must add a key with `.informal` suffix to `Localizable.strings` in your app. For example, `gini.health.paymentcomponent.to.banking.app.label.informal`.
 ### Supporting dark mode
 
 We support dark mode in our SDK. If you decide to customize the color palette, please ensure that the text colors are also set in contrast to the background colors.
