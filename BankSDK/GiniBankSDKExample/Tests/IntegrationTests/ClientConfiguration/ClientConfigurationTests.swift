@@ -6,6 +6,7 @@
 
 import XCTest
 @testable import GiniBankSDK
+@testable import GiniBankAPILibrary
 
 class ClientConfigurationTests: BaseIntegrationTest {
     override func setUp() {
@@ -27,5 +28,69 @@ class ClientConfigurationTests: BaseIntegrationTest {
         }
 
         wait(for: [expect], timeout: 30.0)
+    }
+
+    func testFetchingConfigurationFailsWithInvalidDomain() {
+        // Setup a misconfigured domain to induce failure
+        let sessionManager: SessionManager = giniHelper.giniBankAPIDocumentService.sessionManager as! SessionManager
+        let invalidDomainService = ClientConfigurationService(
+            sessionManager: sessionManager,
+            apiDomain: APIDomain.custom(domain: "invalid.domain", path: nil, tokenSource: nil)
+        )
+
+        let expectation = self.expectation(description: "Should fail to fetch configuration with an invalid domain")
+
+        invalidDomainService.fetchConfigurations { result in
+            switch result {
+                case .success:
+                    XCTFail("Expected fetch to fail with invalid domain, but succeeded")
+                    expectation.fulfill()
+                case .failure(let error):
+                    print("Received expected error: \(error)")
+                    expectation.fulfill()
+            }
+        }
+
+        wait(for: [expectation], timeout: 10.0)
+    }
+
+    func testFetchedConfigurationHasExpectedProperties() {
+        let expectation = self.expectation(description: "Configuration should have all required fields populated")
+
+        giniHelper.giniBankConfigurationService.fetchConfigurations { result in
+            switch result {
+                case .success(let configuration):
+                    XCTAssertFalse(configuration.clientID.isEmpty, "clientID should not be empty")
+                    XCTAssertNotNil(configuration.userJourneyAnalyticsEnabled, "userJourneyAnalyticsEnabled should be present")
+                    XCTAssertNotNil(configuration.skontoEnabled, "skontoEnabled should be present")
+                    XCTAssertNotNil(configuration.returnAssistantEnabled, "returnAssistantEnabled should be present")
+                    XCTAssertNotNil(configuration.transactionDocsEnabled, "transactionDocsEnabled should be present")
+                    XCTAssertNotNil(configuration.instantPayment, "instantPayment should be present")
+
+                    expectation.fulfill()
+                case .failure(let error):
+                    XCTFail("Failed to fetch configuration: \(error.localizedDescription)")
+                    expectation.fulfill()
+            }
+        }
+
+        wait(for: [expectation], timeout: 10.0)
+    }
+
+    func testFetchingConfigurationFails() {
+        let mockService = MockFailingConfigurationService()
+        let expect = expectation(description: "Should fail to fetch configuration")
+
+        mockService.fetchConfigurations { result in
+            switch result {
+            case .success(_):
+                XCTFail("Expected fetch to fail, but succeeded")
+            case .failure(let error):
+                XCTAssertNotNil(error, "Expected an error on failure")
+                expect.fulfill()
+            }
+        }
+
+        wait(for: [expect], timeout: 10.0)
     }
 }

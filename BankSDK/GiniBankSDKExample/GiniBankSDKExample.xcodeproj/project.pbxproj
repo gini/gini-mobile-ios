@@ -142,6 +142,7 @@
 		83D02CD7290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */; };
 		83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */; };
 		83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CDA290AC86300DA97F7 /* NibLoading.swift */; };
+		84364E982DA51E2600098A13 /* MockFailingConfigurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84364E972DA51E2500098A13 /* MockFailingConfigurationService.swift */; };
 		847B68CA2C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */; };
 		847B68CC2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */; };
 		848F0A3C2DA3213B00AFF3EF /* ClientConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848F0A3B2DA3213B00AFF3EF /* ClientConfigurationTests.swift */; };
@@ -379,6 +380,7 @@
 		83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomOnboardingBottomNavigationBar.xib; sourceTree = "<group>"; };
 		83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingBottomNavigationBar.swift; sourceTree = "<group>"; };
 		83D02CDA290AC86300DA97F7 /* NibLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoading.swift; sourceTree = "<group>"; };
+		84364E972DA51E2500098A13 /* MockFailingConfigurationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFailingConfigurationService.swift; sourceTree = "<group>"; };
 		847B68C92C4009FA00544050 /* CustomSkontoBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBar.swift; sourceTree = "<group>"; };
 		847B68CB2C400A0600544050 /* CustomSkontoBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSkontoBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		848F0A3B2DA3213B00AFF3EF /* ClientConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientConfigurationTests.swift; sourceTree = "<group>"; };
@@ -877,6 +879,7 @@
 		84364E942DA4165100098A13 /* ClientConfiguration */ = {
 			isa = PBXGroup;
 			children = (
+				84364E972DA51E2500098A13 /* MockFailingConfigurationService.swift */,
 				848F0A3B2DA3213B00AFF3EF /* ClientConfigurationTests.swift */,
 			);
 			path = ClientConfiguration;
@@ -1570,6 +1573,7 @@
 				28D1B4502D2E9172002EE0DA /* GalleryCoordinatorTests.swift in Sources */,
 				28D1B4522D2E9172002EE0DA /* GalleryManagerTests.swift in Sources */,
 				F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */,
+				84364E982DA51E2600098A13 /* MockFailingConfigurationService.swift in Sources */,
 				289918002BAB0B1900F5D214 /* DigitalInvoiceIntegrationTests.swift in Sources */,
 				28D1B44A2D2E9172002EE0DA /* AlbumsPickerViewControllerDelegateTests.swift in Sources */,
 			);
