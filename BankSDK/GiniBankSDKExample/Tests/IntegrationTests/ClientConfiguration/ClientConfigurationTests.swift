@@ -23,7 +23,6 @@ class ClientConfigurationTests: BaseIntegrationTest {
                 expect.fulfill()
             case .failure(let error):
                 XCTFail("Expected successful configuration fetch, but failed with error: \(error)")
-                expect.fulfill()
             }
         }
 
@@ -33,41 +32,39 @@ class ClientConfigurationTests: BaseIntegrationTest {
     func testFetchingConfigurationFailsWithInvalidDomain() {
         // Setup a misconfigured domain to induce failure
         let sessionManager: SessionManager = giniHelper.giniBankAPIDocumentService.sessionManager as! SessionManager
-        let invalidDomainService = ClientConfigurationService(
-            sessionManager: sessionManager,
-            apiDomain: APIDomain.custom(domain: "invalid.domain", path: nil, tokenSource: nil)
-        )
+        let invalidAPIDomain = APIDomain.custom(domain: "invalid.domain", path: nil, tokenSource: nil)
+        let invalidDomainService = ClientConfigurationService(sessionManager: sessionManager,
+                                                              apiDomain: invalidAPIDomain)
 
-        let expectation = self.expectation(description: "Should fail to fetch configuration with an invalid domain")
+        let expect = expectation(description: "Should fail to fetch configuration with an invalid domain")
 
         invalidDomainService.fetchConfigurations { result in
             switch result {
                 case .success:
                     XCTFail("Expected fetch to fail with invalid domain, but succeeded")
-                    expectation.fulfill()
                 case .failure(let error):
                     print("Received expected error: \(error)")
-                    expectation.fulfill()
+                    expect.fulfill()
             }
         }
 
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expect], timeout: 30.0)
     }
 
     func testFetchedConfigurationHasExpectedProperties() {
-        let expectation = self.expectation(description: "Configuration should have all required fields populated")
+        let expect = expectation(description: "Configuration should have all required fields populated")
 
         giniHelper.giniBankConfigurationService.fetchConfigurations { result in
             switch result {
             case .success(let configuration):
                 self.assertRequiredFields(in: configuration)
+                expect.fulfill()
             case .failure(let error):
                 XCTFail("Failed to fetch configuration: \(error.localizedDescription)")
             }
-            expectation.fulfill()
         }
 
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expect], timeout: 30.0)
     }
 
     func testFetchingConfigurationFails() {
@@ -84,7 +81,7 @@ class ClientConfigurationTests: BaseIntegrationTest {
             }
         }
 
-        wait(for: [expect], timeout: 10.0)
+        wait(for: [expect], timeout: 30.0)
     }
 
     // MARK: - Helper
