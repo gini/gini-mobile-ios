@@ -12,7 +12,7 @@ class ClientConfigurationTests: BaseIntegrationTest {
     override func setUp() {
         giniHelper.setup()
     }
-    
+
     func testFetchingConfigurationSucceeds() {
         let expect = expectation(description: "Should successfully fetch a non-nil configuration")
 
@@ -59,19 +59,12 @@ class ClientConfigurationTests: BaseIntegrationTest {
 
         giniHelper.giniBankConfigurationService.fetchConfigurations { result in
             switch result {
-                case .success(let configuration):
-                    XCTAssertFalse(configuration.clientID.isEmpty, "clientID should not be empty")
-                    XCTAssertNotNil(configuration.userJourneyAnalyticsEnabled, "userJourneyAnalyticsEnabled should be present")
-                    XCTAssertNotNil(configuration.skontoEnabled, "skontoEnabled should be present")
-                    XCTAssertNotNil(configuration.returnAssistantEnabled, "returnAssistantEnabled should be present")
-                    XCTAssertNotNil(configuration.transactionDocsEnabled, "transactionDocsEnabled should be present")
-                    XCTAssertNotNil(configuration.instantPayment, "instantPayment should be present")
-
-                    expectation.fulfill()
-                case .failure(let error):
-                    XCTFail("Failed to fetch configuration: \(error.localizedDescription)")
-                    expectation.fulfill()
+            case .success(let configuration):
+                self.assertRequiredFields(in: configuration)
+            case .failure(let error):
+                XCTFail("Failed to fetch configuration: \(error.localizedDescription)")
             }
+            expectation.fulfill()
         }
 
         wait(for: [expectation], timeout: 10.0)
@@ -92,5 +85,16 @@ class ClientConfigurationTests: BaseIntegrationTest {
         }
 
         wait(for: [expect], timeout: 10.0)
+    }
+
+    // MARK: - Helper
+
+    private func assertRequiredFields(in configuration: ClientConfiguration) {
+        XCTAssertFalse(configuration.clientID.isEmpty, "clientID should not be empty")
+        XCTAssertNotNil(configuration.userJourneyAnalyticsEnabled, "userJourneyAnalyticsEnabled should be present")
+        XCTAssertNotNil(configuration.skontoEnabled, "skontoEnabled should be present")
+        XCTAssertNotNil(configuration.returnAssistantEnabled, "returnAssistantEnabled should be present")
+        XCTAssertNotNil(configuration.transactionDocsEnabled, "transactionDocsEnabled should be present")
+        XCTAssertNotNil(configuration.instantPayment, "instantPayment should be present")
     }
 }
