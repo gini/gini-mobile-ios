@@ -21,10 +21,10 @@ class ErrorScreenViewController: UIViewController {
 
     lazy var buttonsView: ButtonsView = {
         let view = ButtonsView(
-            firstTitle: NSLocalizedStringPreferredFormat(
+            enterButtonTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.error.enterManually",
                 comment: "Enter manually button title"),
-            secondTitle: NSLocalizedStringPreferredFormat(
+            retakeButtonTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.error.backToCamera",
                 comment: "Back to camera button title"))
         view.translatesAutoresizingMaskIntoConstraints = false

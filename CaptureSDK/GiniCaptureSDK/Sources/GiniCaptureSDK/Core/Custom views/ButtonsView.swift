@@ -12,16 +12,16 @@ class ButtonsView: UIView {
     lazy var enterButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(firstButtonTitle, for: .normal)
-        button.accessibilityLabel = firstButtonTitle
+        button.setTitle(enterButtonTitle, for: .normal)
+        button.accessibilityLabel = enterButtonTitle
         return button
     }()
 
     lazy var retakeButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(secondButtonTitle, for: .normal)
-        button.accessibilityLabel = secondButtonTitle
+        button.setTitle(retakeButtonTitle, for: .normal)
+        button.accessibilityLabel = retakeButtonTitle
         return button
     }()
 
@@ -36,12 +36,12 @@ class ButtonsView: UIView {
         return stackView
     }()
 
-    let firstButtonTitle: String
-    let secondButtonTitle: String
+    let enterButtonTitle: String
+    let retakeButtonTitle: String
 
-    init(firstTitle: String, secondTitle: String) {
-        firstButtonTitle = firstTitle
-        secondButtonTitle = secondTitle
+    init(enterButtonTitle: String, retakeButtonTitle: String) {
+        self.enterButtonTitle = enterButtonTitle
+        self.retakeButtonTitle = retakeButtonTitle
         super.init(frame: CGRect.zero)
         addSubview(buttonsView)
         configureButtons()
