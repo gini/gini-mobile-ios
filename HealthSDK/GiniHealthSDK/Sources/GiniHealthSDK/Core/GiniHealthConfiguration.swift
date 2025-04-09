@@ -178,7 +178,7 @@ public final class GiniHealthConfiguration: NSObject {
      */
     var clientConfiguration: ClientConfiguration?
     
-    lazy var defaultFileName = NSLocalizedStringPreferredFormat(Constants.defaultPaymentPDFFileKey, comment: "")
+    lazy var defaultFileName = NSLocalizedStringPreferredFormat(Constants.shareWithFileName, comment: "")
         
     /**
      Custom name for the file, provided through the Share With flow.
@@ -208,6 +208,6 @@ extension GiniHealthConfiguration {
     private enum Constants {
         static let defaultButtonsHeight = 56.0
         static let minimumButtonsHeight = 44.0
-        static let defaultPaymentPDFFileKey = "gini.health.paymentcomponent.share.invoice.pdf.filename.default"
+        static let shareWithFileName = "gini.health.paymentcomponent.share.invoice.pdf.filename.default"
     }
 }
