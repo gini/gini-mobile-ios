@@ -345,13 +345,6 @@ public final class GiniBankConfiguration: NSObject {
     /// that implements the protocol.
     public var transactionDocsDataCoordinator: TransactionDocsDataProtocol = TransactionDocsDataCoordinator()
 
-    // MARK: - Instant Payment feature
-
-    /**
-     * Indicates whether the Instant Payment feature is enabled.
-     */
-    public var instantPaymentEnabled: Bool = false
-
     /**
      Set the entry point used for launching the Gini Bank SDK.
      Default value is `GiniEntryPoint.button`.

@@ -113,8 +113,6 @@ final class SettingsViewModel {
                                                                      isSwitchOn: giniConfiguration.skontoEnabled)))
         featureTogglesSection.items.append(.switchOption(data: .init(type: .transactionDocsEnabled,
                                                                      isSwitchOn: giniConfiguration.transactionDocsEnabled)))
-        featureTogglesSection.items.append(.switchOption(data: .init(type: .instantPaymentEnabled,
-                                                                     isSwitchOn: giniConfiguration.instantPaymentEnabled)))
         return featureTogglesSection
     }
 
@@ -355,8 +353,6 @@ final class SettingsViewModel {
             giniConfiguration.skontoHelpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
         case .closeSDK:
             Self.shouldCloseSDKAfterTenSeconds = data.isSwitchOn
-        case .instantPaymentEnabled:
-            giniConfiguration.instantPaymentEnabled = data.isSwitchOn
         }
     }
 
