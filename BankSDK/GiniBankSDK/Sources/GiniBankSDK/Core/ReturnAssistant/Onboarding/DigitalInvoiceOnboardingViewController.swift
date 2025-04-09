@@ -20,6 +20,11 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet private weak var doneButton: MultilineTitleButton!
     @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
+    private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem(
+        with: GiniBankConfiguration.shared
+    ) { [weak self] in
+        self?.doneAction(nil)
+    }
 
     weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
     private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
@@ -83,6 +88,24 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         }
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.current.isIphone {
+            if view.currentInterfaceOrientation.isLandscape {
+                view.addSubview(horizontalItem)
+                horizontalItem.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    horizontalItem.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    horizontalItem.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    horizontalItem.topAnchor.constraint(equalTo: view.topAnchor),
+                    horizontalItem.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                ])
+            } else {
+                horizontalItem.removeFromSuperview()
+            }
+        }
+    }
+
     private func configureUI() {
         let configuration = GiniBankConfiguration.shared
 
@@ -131,7 +154,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         doneButton.configure(with: configuration.primaryButtonConfiguration)
 
         if configuration.bottomNavigationBarEnabled {
-            doneButton.isHidden = true
+            doneButton.isHidden = !(UIDevice.current.isIpad && view.currentInterfaceOrientation.isLandscape)
 
             NSLayoutConstraint.deactivate([scrollViewBottomAnchor])
 
@@ -177,6 +200,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        guard UIDevice.current.isIpad else { return }
         coordinator.animate(alongsideTransition: { [weak self] _ in
             guard let self = self else { return }
             self.scrollViewTopConstraint.constant = self.topPadding
