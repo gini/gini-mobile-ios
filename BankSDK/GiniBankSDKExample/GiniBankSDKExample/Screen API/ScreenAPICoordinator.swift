@@ -57,7 +57,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 											   "paymentPurpose" : "text",
 											   "iban" : "iban",
 											   "bic" : "bic",
-											   "amountToPay" : "amount"]
+											   "amountToPay" : "amount",
+                                               "instantPayment" : "instantPayment"]
 
     private let apiEnvironment: APIEnvironment
 
