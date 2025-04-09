@@ -537,7 +537,6 @@ public final class GiniBankConfiguration: NSObject {
      - iban: iban description
      - bic: bic description
      - amountToPay: amountToPay description
-     - instantPayment: instantPayment description
      */
 
     // swiftlint:disable line_length
@@ -550,8 +549,7 @@ public final class GiniBankConfiguration: NSObject {
                         paymentPurpose: String,
                         iban: String,
                         bic: String,
-                        amountToPay: ExtractionAmount,
-                        instantPayment: String) {
+                        amountToPay: ExtractionAmount) {
         guard let documentService = documentService else { return }
 
         let updatedExtractions = generateBasicExtractions(paymentRecipient: paymentRecipient,
@@ -559,8 +557,7 @@ public final class GiniBankConfiguration: NSObject {
                                                           paymentPurpose: paymentPurpose,
                                                           iban: iban,
                                                           bic: bic,
-                                                          amountToPayString: amountToPay.formattedString(),
-                                                          instantPayment: instantPayment)
+                                                          amountToPayString: amountToPay.formattedString())
 
         if let lineItems = lineItems {
             documentService.sendFeedback(with: updatedExtractions,
@@ -595,6 +592,7 @@ public final class GiniBankConfiguration: NSObject {
         - iban: iban description
         - bic: bic description
         - amountToPay: amountToPay description
+        - instantPayment: instantPayment description
      */
     // swiftlint:disable function_parameter_count
     public func sendTransferSummary(paymentRecipient: String,
@@ -603,7 +601,7 @@ public final class GiniBankConfiguration: NSObject {
                                     iban: String,
                                     bic: String,
                                     amountToPay: ExtractionAmount,
-                                    instantPayment: String) {
+                                    instantPayment: String? = nil) {
         let updatedExtractions = generateBasicExtractions(paymentRecipient: paymentRecipient,
                                                           paymentReference: paymentReference,
                                                           paymentPurpose: paymentPurpose,
@@ -615,12 +613,12 @@ public final class GiniBankConfiguration: NSObject {
     }
 
     internal func generateBasicExtractions(paymentRecipient: String,
-                                          paymentReference: String,
-                                          paymentPurpose: String,
-                                          iban: String,
-                                          bic: String,
-                                          amountToPayString: String,
-                                          instantPayment: String) -> [Extraction] {
+                                           paymentReference: String,
+                                           paymentPurpose: String,
+                                           iban: String,
+                                           bic: String,
+                                           amountToPayString: String,
+                                           instantPayment: String? = nil) -> [Extraction] {
         let paymentRecipientExtraction = Extraction(box: nil,
                                                     candidates: nil,
                                                     entity: "companyname",
@@ -651,18 +649,25 @@ public final class GiniBankConfiguration: NSObject {
                                           entity: "amount",
                                           value: amountToPayString,
                                           name: "amountToPay")
-        let instantPaymentExtraction = Extraction(box: nil,
-                                                  candidates: nil,
-                                                  entity: "instantPayment",
-                                                  value: instantPayment,
-                                                  name: "instantPayment")
-        return [paymentRecipientExtraction,
-                paymentReferenceExtraction,
-                paymentPurposeExtraction,
-                ibanExtraction,
-                bicExtraction,
-                amountExtraction,
-                instantPaymentExtraction]
+
+        var extractions = [paymentRecipientExtraction,
+                           paymentReferenceExtraction,
+                           paymentPurposeExtraction,
+                           ibanExtraction,
+                           bicExtraction,
+                           amountExtraction]
+
+        if let instantPayment {
+            let instantPaymentExtraction = Extraction(box: nil,
+                                                      candidates: nil,
+                                                      entity: "instantPayment",
+                                                      value: instantPayment,
+                                                      name: "instantPayment")
+
+            extractions.append(instantPaymentExtraction)
+        }
+
+        return extractions
     }
     // swiftlint:enable function_parameter_count
 
