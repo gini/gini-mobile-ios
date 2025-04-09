@@ -27,8 +27,8 @@ class ButtonsView: UIView {
 
     lazy var buttonsView: UIStackView = {
         let stackView = UIStackView()
-        stackView.addArrangedSubview(enterButton)
         stackView.addArrangedSubview(retakeButton)
+        stackView.addArrangedSubview(enterButton)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
