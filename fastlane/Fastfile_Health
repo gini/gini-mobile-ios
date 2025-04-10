@@ -27,6 +27,20 @@ platform :ios do
       generate_apple_certs: true,
       force_for_new_devices: true
     )
-
   end
+
+  lane :refresh_profiles do
+    match(
+      app_identifier: ["net.gini.healthsdk.example"],
+      type: "development",
+      generate_apple_certs: false,
+      force_for_new_devices: true
+    )
+  end
+
+  lane :register_new_devices do 
+    register_devices(device_file: "./devices.txt")
+    refresh_profiles
+  end
+
 end
