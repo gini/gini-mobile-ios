@@ -46,10 +46,10 @@ final class NoResultScreenViewController: UIViewController {
 
     lazy var buttonsView: ButtonsView = {
         let view = ButtonsView(
-            firstTitle: NSLocalizedStringPreferredFormat(
+            enterButtonTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.enterManually",
                 comment: "Enter manually button title"),
-            secondTitle: NSLocalizedStringPreferredFormat(
+            retakeButtonTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.retakeImages",
                 comment: "Retake images button title"))
         view.translatesAutoresizingMaskIntoConstraints = false
