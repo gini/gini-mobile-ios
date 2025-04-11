@@ -137,6 +137,9 @@ class BaseIntegrationTest: XCTestCase {
                        result.extractions["bic"]?.value)
         XCTAssertEqual(fixtureContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                        result.extractions["amountToPay"]?.value)
+        //TODO: I need to uncomment this when backend is ready
+//        XCTAssertEqual(fixtureContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
+//                       result.extractions["instantPayment"]?.value)
     }
 
     /*
