@@ -149,7 +149,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         let paymentPurpose = extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? ""
         let iban = extractedResults.first(where: { $0.name == "iban"})?.value ?? ""
         let bic = extractedResults.first(where: { $0.name == "bic"})?.value ?? ""
-        let instantPayment = extractedResults.first(where: { $0.name == "instantPayment"})?.value ?? ""
+
+        // `instantPayment` is currently a String, but it should be a Bool.
+        // In GiniSDK, this parameter must be a Boolean to restrict the possible values
+        // and ensure the correct data type is sent in the transfer summary to the backend.
+        let instantPaymentString = extractedResults.first(where: { $0.name == "instantPayment"})?.value ?? ""
         let amoutToPay = extractionAmount
         configuration.sendTransferSummary(paymentRecipient: paymentRecipient,
                                           paymentReference: paymentReference,
@@ -157,7 +161,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                           iban: iban,
                                           bic: bic,
                                           amountToPay: amoutToPay,
-                                          instantPayment: instantPayment)
+                                          instantPayment: instantPaymentString.lowercased() == "true")
 
         // GiniBankSDK requires both `documentId` and `originalFileName`
         // to properly display attachment information in the transaction details screen.

@@ -586,13 +586,13 @@ public final class GiniBankConfiguration: NSObject {
      - Send the transfer summary after TAN verification and provide the extraction values the user has used.
 
      - Parameters:
-        - paymentRecipient: paymentRecipient description
-        - paymentReference: paymentReference description
-        - paymentPurpose: paymentPurpose description
-        - iban: iban description
-        - bic: bic description
-        - amountToPay: amountToPay description
-        - instantPayment: instantPayment description
+        - paymentRecipient: The name of the recipient to whom the payment is being made.
+        - paymentReference: A reference string used to identify the payment transaction.
+        - paymentPurpose: A brief description of the purpose of the payment.
+        - iban: The International Bank Account Number of the recipient.
+        - bic: The Bank Identifier Code associated with the recipient’s bank.
+        - amountToPay: The amount to be transferred, including currency information.
+        - instantPayment: A Boolean value indicating whether the payment should be processed as an instant payment.
      */
     // swiftlint:disable function_parameter_count
     public func sendTransferSummary(paymentRecipient: String,
@@ -601,7 +601,7 @@ public final class GiniBankConfiguration: NSObject {
                                     iban: String,
                                     bic: String,
                                     amountToPay: ExtractionAmount,
-                                    instantPayment: String? = nil) {
+                                    instantPayment: Bool? = nil) {
         let updatedExtractions = generateBasicExtractions(paymentRecipient: paymentRecipient,
                                                           paymentReference: paymentReference,
                                                           paymentPurpose: paymentPurpose,
@@ -618,7 +618,7 @@ public final class GiniBankConfiguration: NSObject {
                                            iban: String,
                                            bic: String,
                                            amountToPayString: String,
-                                           instantPayment: String? = nil) -> [Extraction] {
+                                           instantPayment: Bool? = nil) -> [Extraction] {
         let paymentRecipientExtraction = Extraction(box: nil,
                                                     candidates: nil,
                                                     entity: "companyname",
@@ -658,10 +658,11 @@ public final class GiniBankConfiguration: NSObject {
                            amountExtraction]
 
         if let instantPayment {
+            let instantPaymentString = instantPayment ? "true" : "false"
             let instantPaymentExtraction = Extraction(box: nil,
                                                       candidates: nil,
                                                       entity: "instantPayment",
-                                                      value: instantPayment,
+                                                      value: instantPaymentString,
                                                       name: "instantPayment")
 
             extractions.append(instantPaymentExtraction)

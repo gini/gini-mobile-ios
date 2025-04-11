@@ -41,6 +41,8 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
         }
 
         func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
+            let instantPaymentString = result.extractions["instantPayment"]?.value ?? ""
+            
             GiniBankConfiguration.shared.sendTransferSummary(
                 paymentRecipient: result.extractions["paymentRecipient"]?.value ?? "",
                 paymentReference: result.extractions["paymentReference"]?.value ?? "",
@@ -48,7 +50,7 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
                 iban: result.extractions["iban"]?.value ?? "",
                 bic: result.extractions["bic"]?.value ?? "",
                 amountToPay: ExtractionAmount(value: 950.00, currency: .EUR),
-                instantPayment: result.extractions["instantPayment"]?.value ?? ""
+                instantPayment: instantPaymentString.lowercased() == "true"
             )
             
             let mockedInvoice = mockedInvoiceResultName
