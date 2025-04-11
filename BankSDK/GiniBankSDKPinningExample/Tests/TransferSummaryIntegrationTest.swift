@@ -207,13 +207,14 @@ class TransferSummaryIntegrationTest: XCTestCase {
                   delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
                   // 4. Send transfer summary for the extractions the user saw
                   //    with the final (user confirmed or updated) extraction values
+                  let instantPaymentString = extractions["instantPayment"]?.value ?? ""
                   GiniBankConfiguration.shared.sendTransferSummary(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
                                                                    paymentReference: extractions["paymentReference"]?.value ?? "",
                                                                    paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
                                                                    iban: extractions["iban"]?.value ?? "",
                                                                    bic: extractions["bic"]?.value ?? "",
                                                                    amountToPay: ExtractionAmount(value: 950.00, currency: .EUR),
-                                                                   instantPayment: extractions["instantPayment"]?.value ?? "")
+                                                                   instantPayment: instantPaymentString.lowercased() == "true")
                case let .failure(error):
                   XCTFail(String(describing: error))
                }
