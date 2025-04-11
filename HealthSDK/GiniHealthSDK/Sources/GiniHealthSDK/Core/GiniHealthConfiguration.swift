@@ -68,6 +68,23 @@ public final class GiniHealthConfiguration: NSObject {
      Set to `false` to hide close button on the payment review screen
      */
     public var showPaymentReviewCloseButton = true
+    
+    /**
+     Sets the duration of the payment review popup on the payment review screen.
+     - The value must be between `0` and `10` seconds.
+     - If a value greater than `10` is set, it will be clamped to `10`.
+     - If a negative value is set, it defaults to `3`.
+     - The default duration is `3` seconds.
+     */
+    public var popupDurationPaymentReview: TimeInterval = 3.0 {
+        didSet {
+            if popupDurationPaymentReview > 10 {
+                popupDurationPaymentReview = 10
+            } else if popupDurationPaymentReview < 0 {
+                popupDurationPaymentReview = 3
+            }
+        }
+    }
 
     /**
      Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
@@ -155,16 +172,42 @@ public final class GiniHealthConfiguration: NSObject {
     Custom localization configuration for localizable strings.
     */
     public var customLocalization: GiniLocalization?
-    
+
     /**
      Client's configuration provided from the server
      */
     var clientConfiguration: ClientConfiguration?
+    
+    lazy var defaultFileName = NSLocalizedStringPreferredFormat(Constants.shareWithFileName, comment: "")
+        
+    /**
+     Custom name for the file, provided through the Share With flow.
+      Customization rules:
+       - Number of characters for the file name: 25
+       - Limit characters to letters, numbers, underscore and dash
+     */
+    public var shareWithFileName: String? {
+        didSet {
+            // If the custom file name does not comply with the customization rules, the default value will be used.
+            if let shareWithFileName, !isValidPDFFilename(shareWithFileName) {
+                self.shareWithFileName = defaultFileName
+            }
+        }
+    }
+}
+
+extension GiniHealthConfiguration {
+    private func isValidPDFFilename(_ fileName: String) -> Bool {
+        let regex = "^[a-zA-Z0-9_-]{1,25}$" // Allows letters, numbers, underscore, and dash, max 25 characters
+        let response = NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: fileName)
+        return response
+    }
 }
 
 extension GiniHealthConfiguration {
     private enum Constants {
         static let defaultButtonsHeight = 56.0
         static let minimumButtonsHeight = 44.0
+        static let shareWithFileName = "gini.health.paymentcomponent.share.invoice.pdf.filename.default"
     }
 }
