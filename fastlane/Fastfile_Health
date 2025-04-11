@@ -39,8 +39,7 @@ platform :ios do
   end
 
   lane :register_new_devices do 
-    register_devices(device_file: "./devices.txt")
-    refresh_profiles
+    register_devices(devices_file: "./devices.txt")
   end
 
 end
