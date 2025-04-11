@@ -21,7 +21,7 @@ class TransferSummaryExtractionsTests: XCTestCase {
         var iban: String
         var bic: String
         var amount: String
-        var instantPayment: String
+        var instantPayment: Bool?
     }
 
     private func generateExtractions(from input: ExtractionInput) -> [Extraction] {
@@ -85,7 +85,7 @@ class TransferSummaryExtractionsTests: XCTestCase {
                                     iban: "DE89370400440532013000",
                                     bic: "COBADEFFXXX",
                                     amount: amount.formattedString(),
-                                    instantPayment: "false")
+                                    instantPayment: false)
 
         let extractions = generateExtractions(from: input)
 
@@ -101,12 +101,11 @@ class TransferSummaryExtractionsTests: XCTestCase {
                                     paymentPurpose: "",
                                     iban: "",
                                     bic: "",
-                                    amount: "",
-                                    instantPayment: "")
+                                    amount: "")
 
         let extractions = generateExtractions(from: input)
 
-        XCTAssertEqual(extractions.count, 7)
+        XCTAssertEqual(extractions.count, 6)
         XCTAssertTrue(extractions.allSatisfy { $0.value == "" })
     }
 
@@ -117,7 +116,7 @@ class TransferSummaryExtractionsTests: XCTestCase {
                                     iban: "INVALID_IBAN",
                                     bic: "DEUTDEFF",
                                     amount: "123.00",
-                                    instantPayment: "false")
+                                    instantPayment: false)
 
         let extractions = generateExtractions(from: input)
 
@@ -133,7 +132,7 @@ class TransferSummaryExtractionsTests: XCTestCase {
                                     iban: "DE44500105175407324931",
                                     bic: "INGDDEFFXXX",
                                     amount: amount.formattedString(),
-                                    instantPayment: "true")
+                                    instantPayment: true)
 
         let extractions = generateExtractions(from: input)
 
@@ -157,7 +156,7 @@ class TransferSummaryExtractionsTests: XCTestCase {
                                     iban: "DE00123456780000000000",
                                     bic: "BANKDEFFXXX",
                                     amount: "123.45",
-                                    instantPayment: "true")
+                                    instantPayment: true)
 
         let extractions = generateExtractions(from: input)
 
@@ -167,7 +166,7 @@ class TransferSummaryExtractionsTests: XCTestCase {
                               (Field.iban, input.iban),
                               (Field.bic, input.bic),
                               (Field.amountToPay, input.amount),
-                              (Field.instantPayment, input.instantPayment)]
+                              (Field.instantPayment, input.instantPayment == true ? "true" : "false")]
 
         for (name, value) in expectedValues {
             assertExtractionExists(extractions, name: name, value: value)
