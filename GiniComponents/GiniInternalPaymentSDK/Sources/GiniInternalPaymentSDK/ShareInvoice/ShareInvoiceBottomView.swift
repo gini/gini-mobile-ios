@@ -188,6 +188,11 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     private func setupInitialLayout() {
         updateLayoutForCurrentOrientation()
     }
+    
+    public func updateViews() {
+        updateLayoutForCurrentOrientation()
+        view.layoutIfNeeded()
+    }
 
     private func updateLayoutForCurrentOrientation() {
         if UIDevice.isPortrait() {
@@ -422,8 +427,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
 
         // Perform layout updates with animation
         coordinator.animate(alongsideTransition: { context in
-            self.updateLayoutForCurrentOrientation()
-            self.view.layoutIfNeeded()
+            self.updateViews()
         }, completion: nil)
     }
 }

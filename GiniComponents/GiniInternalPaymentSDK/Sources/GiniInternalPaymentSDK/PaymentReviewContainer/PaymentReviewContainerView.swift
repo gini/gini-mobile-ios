@@ -105,11 +105,13 @@ public final class PaymentReviewContainerView: UIView {
         setupView()
     }
     
-    public func setupView() {
+    public func setupView(shouldUpdateUI: Bool = true) {
         let isPortrait = UIDevice.isPortrait()
         setupViewHierarchy(isPortrait: isPortrait)
         setupLayout(isPortrait: isPortrait)
-        configureUI()
+        if shouldUpdateUI {
+            configureUI()
+        }
     }
     
     func updateViews(for paymentInfoState: PaymentInfoState) {

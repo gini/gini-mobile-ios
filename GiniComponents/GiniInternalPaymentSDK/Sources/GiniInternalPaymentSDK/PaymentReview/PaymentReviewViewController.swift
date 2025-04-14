@@ -719,7 +719,7 @@ extension PaymentReviewViewController {
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        paymentInfoContainerView.setupView()
+        paymentInfoContainerView.setupView(shouldUpdateUI: false)
         paymentInfoContainerView.updateViews(for: currentPaymentInfoState)
 
         // Perform layout updates with animation
