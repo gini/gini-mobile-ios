@@ -19,7 +19,7 @@ class ErrorScreenViewController: UIViewController {
         fatalError("Error header not found")
     }()
 
-    lazy var buttonsView: ButtonsView = {
+    private lazy var buttonsView: ButtonsView = {
         let view = ButtonsView(
             enterButtonTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.error.enterManually",

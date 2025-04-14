@@ -8,7 +8,7 @@
 import UIKit
 
 class ButtonsView: UIView {
-    var giniConfiguration = GiniConfiguration.shared
+    private let giniConfiguration = GiniConfiguration.shared
     lazy var enterButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -25,7 +25,7 @@ class ButtonsView: UIView {
         return button
     }()
 
-    lazy var buttonsView: UIStackView = {
+    private lazy var buttonsView: UIStackView = {
         let stackView = UIStackView()
         stackView.addArrangedSubview(retakeButton)
         stackView.addArrangedSubview(enterButton)
@@ -36,8 +36,8 @@ class ButtonsView: UIView {
         return stackView
     }()
 
-    let enterButtonTitle: String
-    let retakeButtonTitle: String
+    private let enterButtonTitle: String
+    private let retakeButtonTitle: String
 
     init(enterButtonTitle: String, retakeButtonTitle: String) {
         self.enterButtonTitle = enterButtonTitle
