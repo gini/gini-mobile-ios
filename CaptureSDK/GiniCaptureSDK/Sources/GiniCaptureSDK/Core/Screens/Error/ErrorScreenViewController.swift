@@ -155,15 +155,17 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureCustomTopNavigationBar() {
-        let cancelButton = GiniBarButton(ofType: .cancel)
-        cancelButton.addAction(self, #selector(didPressCancel))
+        let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
+                                                           comment: "Back to camera")
+        let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
+        backButton.addAction(self, #selector(didPressBack))
 
         if giniConfiguration.bottomNavigationBarEnabled {
-            navigationItem.rightBarButtonItem = cancelButton.barButton
+            navigationItem.rightBarButtonItem = backButton.barButton
 
             navigationItem.setHidesBackButton(true, animated: true)
         } else {
-            navigationItem.leftBarButtonItem = cancelButton.barButton
+            navigationItem.leftBarButtonItem = backButton.barButton
         }
     }
 
@@ -177,9 +179,10 @@ class ErrorScreenViewController: UIViewController {
         viewModel.didPressRetake()
     }
 
-    @objc func didPressCancel() {
+    @objc func didPressBack() {
+        // TODO: PP-1132 check if analytics and viewModel should be changed (cancel is not used, same action as retake - probably should be separated back to camera action)
         GiniAnalyticsManager.track(event: .closeTapped, screenName: .error)
-        viewModel.didPressCancel()
+        viewModel.didPressRetake()
     }
 
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
