@@ -71,7 +71,7 @@ healthSDK.setConfiguration(config)
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/design/vkZ0H0OA2K31DzgHrl5zRy/iOS-Gini-Health-SDK-5.5-UI-Customization?node-id=12906-23094&t=aHxsiaVHNdae2b9i-4" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/vkZ0H0OA2K31DzgHrl5zRy/iOS-Gini-Health-SDK-5.5-UI-Customization?node-id=12906-23094&t=aHxsiaVHNdae2b9i-4&embed-host=share" allowfullscreen></iframe>
 
 ## Bank Selection Bottom Sheet
 
@@ -80,7 +80,7 @@ You can also view the UI customisation guide in Figma [here](https://www.figma.c
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/design/vkZ0H0OA2K31DzgHrl5zRy/iOS-Gini-Health-SDK-5.5-UI-Customization?node-id=12907-10274&t=aHxsiaVHNdae2b9i-4" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/vkZ0H0OA2K31DzgHrl5zRy/iOS-Gini-Health-SDK-5.5-UI-Customization?node-id=12907-10274&t=aHxsiaVHNdae2b9i-4&embed-host=share" allowfullscreen></iframe>
 
 ## Payment Feature Info Screen
 
@@ -89,7 +89,7 @@ You can also view the UI customisation guide in Figma [here](https://www.figma.c
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/design/vkZ0H0OA2K31DzgHrl5zRy/iOS-Gini-Health-SDK-5.5-UI-Customization?node-id=12907-11429&t=aHxsiaVHNdae2b9i-4" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/vkZ0H0OA2K31DzgHrl5zRy/iOS-Gini-Health-SDK-5.5-UI-Customization?node-id=12907-11429&t=aHxsiaVHNdae2b9i-4&embed-host=share" allowfullscreen></iframe>
 
 ## Payment Review screen
  
@@ -98,7 +98,7 @@ You can also view the UI customisation guide in Figma [here](https://www.figma.c
 **Note:**
 To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/design/vkZ0H0OA2K31DzgHrl5zRy/iOS-Gini-Health-SDK-5.5-UI-Customization?node-id=12907-12507&t=aHxsiaVHNdae2b9i-4" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/vkZ0H0OA2K31DzgHrl5zRy/iOS-Gini-Health-SDK-5.5-UI-Customization?node-id=12907-12507&t=aHxsiaVHNdae2b9i-4&embed-host=share" allowfullscreen></iframe>
 
 > **Note:** 
 > - PaymentReviewViewController contains the following configuration options:
