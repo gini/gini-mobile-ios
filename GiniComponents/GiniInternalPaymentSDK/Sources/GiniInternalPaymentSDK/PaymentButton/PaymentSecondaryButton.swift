@@ -9,12 +9,12 @@
 import UIKit
 import GiniUtilites
 
-public final class PaymentSecondaryButton: UIView {
+public final class PaymentSecondaryButton: UIButton {
     public var didTapButton: (() -> Void)?
 
     private lazy var contentView: UIView = {
         let view = EmptyView()
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnBankPicker)))
+        view.isUserInteractionEnabled = false
         return view
     }()
 
@@ -25,7 +25,7 @@ public final class PaymentSecondaryButton: UIView {
         return imageView
     }()
 
-    private lazy var titleLabel: UILabel = {
+    private lazy var buttonTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
@@ -46,9 +46,11 @@ public final class PaymentSecondaryButton: UIView {
 
     public init() {
         super.init(frame: .zero)
+        
+        addTarget(self, action: #selector(tapOnBankPicker), for: .touchUpInside)
         addSubview(contentView)
         contentView.addSubview(leftImageView)
-        contentView.addSubview(titleLabel)
+        contentView.addSubview(buttonTitleLabel)
         contentView.addSubview(rightImageView)
         setupConstraints()
     }
@@ -77,16 +79,16 @@ public final class PaymentSecondaryButton: UIView {
             leftImageView.widthAnchor.constraint(equalToConstant: leftImageView.frame.width).isActive = true
             leftImageView.heightAnchor.constraint(equalToConstant: leftImageView.frame.height).isActive = true
 
-            titleLabel.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor, constant: Constants.contentPadding).isActive = true
-            leftImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor).isActive = true
+            buttonTitleLabel.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor, constant: Constants.contentPadding).isActive = true
+            leftImageView.centerYAnchor.constraint(equalTo: buttonTitleLabel.centerYAnchor).isActive = true
         } else {
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentPadding).isActive = true
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+            buttonTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentPadding).isActive = true
+            buttonTitleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         }
-        if titleLabel.isHidden {
+        if buttonTitleLabel.isHidden {
             rightImageView.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor, constant: Constants.bankIconChevronIconPadding).isActive = true
         } else {
-            rightImageView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
+            rightImageView.leadingAnchor.constraint(equalTo: buttonTitleLabel.trailingAnchor).isActive = true
         }
     }
 
@@ -107,8 +109,8 @@ public extension PaymentSecondaryButton {
         leftImageView.layer.borderWidth = configuration.borderWidth
         leftImageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
 
-        titleLabel.textColor = configuration.titleColor
-        titleLabel.font = configuration.titleFont
+        buttonTitleLabel.textColor = configuration.titleColor
+        buttonTitleLabel.font = configuration.titleFont
     }
 
     func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: UIImage?, rightImageTintColor: UIColor?, shouldShowLabel: Bool) {
@@ -126,10 +128,10 @@ public extension PaymentSecondaryButton {
             rightImageView.isHidden = true
         }
         if shouldShowLabel {
-            titleLabel.text = labelText
-            titleLabel.isHidden = false
+            buttonTitleLabel.text = labelText
+            buttonTitleLabel.isHidden = false
         } else {
-            titleLabel.isHidden = true
+            buttonTitleLabel.isHidden = true
         }
         activateImagesViewConstraints()
     }
