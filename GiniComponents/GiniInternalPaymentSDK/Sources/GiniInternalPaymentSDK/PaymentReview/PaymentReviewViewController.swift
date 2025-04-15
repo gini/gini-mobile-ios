@@ -47,6 +47,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
 
     private var showInfoBarOnce = true
     private var keyboardWillShowCalled = false
+    private var isViewRotating = false
 
     /// The model instance containing data and methods for handling the payment review process.
     public let model: PaymentReviewModel
@@ -266,7 +267,7 @@ extension PaymentReviewViewController {
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        if UIDevice.isPortrait() {
+        if UIDevice.isPortrait() || isViewRotating {
             resetViewOriginForPortrait(using: notification)
         } else {
             resetViewTransformForLandscape()
@@ -436,12 +437,6 @@ fileprivate extension PaymentReviewViewController {
             paymentInfoContainerView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             paymentInfoContainerView.trailingAnchor.constraint(equalTo: container.trailingAnchor)
         ])
-
-        if model.displayMode == .documentCollection {
-            NSLayoutConstraint.activate([
-                paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor)
-            ])
-        }
     }
     
     func layoutTopBarView() {
@@ -704,6 +699,7 @@ extension PaymentReviewViewController {
             let navigationBarHeight = self.navigationController?.navigationBar.frame.maxY ?? 0
             constraints.append(collectionView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: navigationBarHeight))
             constraints.append(collectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor))
+            constraints.append(paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor))
         }
         
         if isPortrait {
@@ -717,6 +713,7 @@ extension PaymentReviewViewController {
     
     // Handle orientation change
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        isViewRotating = true
         super.viewWillTransition(to: size, with: coordinator)
 
         paymentInfoContainerView.setupView(shouldUpdateUI: false)
@@ -727,6 +724,7 @@ extension PaymentReviewViewController {
             self.updateLayoutForCurrentOrientation()
             self.view.layoutIfNeeded()
             self.collectionView.reloadData()
+            self.isViewRotating = false
         }, completion: nil)
     }
 }
