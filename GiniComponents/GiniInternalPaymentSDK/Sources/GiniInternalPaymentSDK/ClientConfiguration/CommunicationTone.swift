@@ -13,14 +13,5 @@ public enum CommunicationToneEnum: String, Codable, CaseIterable {
     case formal = "FORMAL"
     case informal = "INFORMAL"
 
-    public func localizable() -> String {
-        switch self {
-            case .formal:
-                "de"
-            case .informal:
-                "de_informal"
-        }
-    }
-
-    public static let defaultCommunicationTone = CommunicationToneEnum.formal.localizable()
+    public static let defaultCommunicationTone = CommunicationToneEnum.formal
 }
