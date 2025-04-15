@@ -57,6 +57,8 @@
 "gini.health.reviewscreen.infobar.message" = "Bitte überprüfen Sie die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder" = "Verwendungszweck";
+"gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR-Code";
+"gini.health.paymentcomponent.install.app.bottom.sheet.appstore" = "App-Store";
 
 // INFORMAL KEYS - German informal localization strings
 
@@ -112,3 +114,5 @@
 "gini.health.reviewscreen.infobar.message.informal" = "Bitte überprüfe die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder.informal" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder.informal" = "Verwendungszweck";
+"gini.health.paymentcomponent.share.invoice.qr.code.image.informal" = "QR-Code";
+"gini.health.paymentcomponent.install.app.bottom.sheet.appstore.informal" = "App-Store";

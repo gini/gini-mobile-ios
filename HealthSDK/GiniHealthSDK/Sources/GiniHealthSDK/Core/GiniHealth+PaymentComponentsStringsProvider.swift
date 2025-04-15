@@ -60,7 +60,9 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             moreInformationNotePattern: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.install.app.bottom.sheet.notes.description",
                                                                          comment: "Text for notes information label"),
             continueLabelText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.install.app.bottom.sheet.continue.button.text",
-                                                                comment: "Title label used for the Continue button")
+                                                                comment: "Title label used for the Continue button"),
+            accesibilityAppStoreText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.install.app.bottom.sheet.appstore",
+                                                                       comment: "Accesibility label for the App Store button")
         )
     }
 
@@ -79,7 +81,9 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             ibanLabelText: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.iban.placeholder",
                                                             comment: "placeholder text for iban input field"),
             purposeLabelText: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.usage.placeholder",
-                                                               comment: "placeholder text for usage input field")
+                                                               comment: "placeholder text for usage input field"),
+            accesibilityQRCodeImageText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.share.invoice.qr.code.image",
+                                                                          comment: "accessibility label for qr code image")
         )
     }
 

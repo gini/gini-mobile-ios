@@ -29,6 +29,7 @@ public final class PoweredByGiniView: UIView {
         let imageView = UIImageView(image: viewModel.configuration.giniIcon)
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.widthGiniLogo, height: Constants.heightGiniLogo)
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isAccessibilityElement = false
         return imageView
     }()
     
