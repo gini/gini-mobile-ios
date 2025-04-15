@@ -124,7 +124,15 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
             viewControllers = [reviewViewController, cameraViewController]
         }
 
-        self.screenAPINavigationController.setViewControllers(viewControllers, animated: animated)
+        if documents == nil {
+            let transition = CATransition()
+            transition.type = .push
+            transition.subtype = .fromLeft
+            screenAPINavigationController.view.layer.add(transition, forKey: kCATransition)
+            screenAPINavigationController.setViewControllers(viewControllers, animated: false)
+        } else {
+            screenAPINavigationController.setViewControllers(viewControllers, animated: animated)
+        }
         return ContainerNavigationController(rootViewController: self.screenAPINavigationController,
                                              parent: self)
     }
