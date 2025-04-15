@@ -62,3 +62,7 @@
 "gini.merchant.paymentcomponent.share.invoice.bottom.sheet.tip.description" = "Tip: If you don't see the app, scroll or tap \"More\" until you find the [BANK] app. If you haven't installed the [BANK] app yet, download it from the store.";
 "gini.merchant.paymentcomponent.share.invoice.bottom.sheet.tip.underlined.part" = "download it from the store";
 "gini.merchant.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Forward";
+"gini.merchant.paymentcomponent.install.app.bottom.sheet.appstore" = "App Store";
+"gini.merchant.paymentcomponent.share.invoice.qr.code.image" = "QR Code";
+"gini.merchant.reviewscreen.close.button.accesibility.label" = "Close";
+"gini.merchant.reviewscreen.invoice.image.content.description" = "Invoice document";
