@@ -39,6 +39,10 @@ public final class PaymentSecondaryButton: UIView {
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.chevronIconSize, height: Constants.chevronIconSize)
         return imageView
     }()
+    
+    public override var canBecomeFocused: Bool {
+        true
+    }
 
     public init() {
         super.init(frame: .zero)

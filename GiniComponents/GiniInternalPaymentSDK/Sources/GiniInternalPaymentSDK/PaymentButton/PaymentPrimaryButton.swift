@@ -41,6 +41,10 @@ public final class PaymentPrimaryButton: UIView {
         return imageView
     }()
     
+    public override var canBecomeFocused: Bool {
+        true
+    }
+    
     private var trailingConstraint: NSLayoutConstraint?
     
     public init() {
