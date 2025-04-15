@@ -189,3 +189,13 @@ healthSDK.deletePaymentRequest(id: String, completion: @escaping (Result<String,
 ```
 
 This method enables clients to delete single payment request by passing the payment request ID. Upon success, it returns the ID of successfully deleted payment request. In case of an error, a specific error message is provided.
+
+## Getting a payment
+
+GiniHealth provides a method to retrieve a payment of an specified payment request:
+
+```swift
+healthSDK.getPayment(id: String, completion: @escaping (Result<Payment, GiniError>) -> Void)
+```
+
+This method enables clients to retrieve the `payment` of an specified request by passing the payment request ID. Upon success, it returns the `payment` associated with the given payment request id. In case of an error, a specific error message is provided.

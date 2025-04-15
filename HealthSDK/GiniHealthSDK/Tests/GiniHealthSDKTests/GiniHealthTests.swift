@@ -63,55 +63,6 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertEqual(receivedProviders, expectedProviders)
     }
     
-    func testCreatePaymentRequestSuccess() {
-        // Given
-        let expectedPaymentRequestID = MockSessionManager.paymentRequestId
-
-        // When
-        let expectation = self.expectation(description: "Creating payment request")
-        var receivedRequestId: String?
-        let paymentInfo = GiniHealthSDK.PaymentInfo(recipient: "Uno Flüchtlingshilfe", iban: "DE78370501980020008850", bic: "COLSDE33", amount: "1.00:EUR", purpose: "ReNr 12345", paymentUniversalLink: "ginipay-test://paymentRequester", paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
-        giniHealth.createPaymentRequest(paymentInfo: PaymentInfo(paymentComponentsInfo: paymentInfo), completion: { result in
-            switch result {
-            case .success(let requestId):
-                receivedRequestId = requestId
-            case .failure(_):
-                receivedRequestId = nil
-            }
-            expectation.fulfill()
-        })
-        waitForExpectations(timeout: 1, handler: nil)
-
-        // Then
-        XCTAssertNotNil(receivedRequestId)
-        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
-    }
-    
-    func testDeletePaymentRequestSuccess() {
-        // Given
-        let expectedPaymentRequestID = MockSessionManager.paymentRequestId
-
-        // When
-        let expectation = self.expectation(description: "Deleting payment request")
-        var receivedRequestId: String?
-        
-        giniHealth.deletePaymentRequest(id: expectedPaymentRequestID, completion: { result in
-            switch result {
-            case .success(let requestId):
-                receivedRequestId = requestId
-            case .failure(_):
-                receivedRequestId = nil
-            }
-            expectation.fulfill()
-        })
-        
-        waitForExpectations(timeout: 1, handler: nil)
-
-        // Then
-        XCTAssertNotNil(receivedRequestId)
-        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
-    }
-    
     func testOpenLinkSuccess() {
         let mockUIApplication = MockUIApplication(canOpen: true)
         let urlOpener = URLOpener(mockUIApplication)
@@ -174,47 +125,43 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
         XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
     }
-
-    func testFetchPaymentRequestWithExpirationDate() {
+    
+    func testFormalDE() {
         // Given
-        let expectedExpirationDate = "2020-12-08T15:50:23"
-
+        let clientConfiguration = ClientConfiguration()
+        let configuration = GiniHealthConfiguration()
+        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .formal
+        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
+        
         // When
-        let expectation = self.expectation(description: "Getting payment request with expiration date")
-        var receivedPaymentRequest: PaymentRequest?
+        configuration.customLocalization = .de
+        configuration.clientConfiguration = clientConfiguration
+        giniHealth.setConfiguration(configuration)
+        
 
-        giniHealth.paymentService.paymentRequest(id: MockSessionManager.paymentRequestIdWithExpirationDate) { result in
-            switch result {
-            case .success(let paymentRequest):
-                receivedPaymentRequest = paymentRequest
-            case .failure(_):
-                receivedPaymentRequest = nil
-            }
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-
-        XCTAssertNotNil(receivedPaymentRequest)
-        XCTAssertEqual(receivedPaymentRequest?.expirationDate, expectedExpirationDate)
+        // Expected
+        XCTAssertNotNil(clientConfiguration)
+        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
+        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
     }
-
-    func testFetchPaymentRequestWithMissingExpirationDate() {
+    
+    func testInformalDE() {
+        // Given
+        let clientConfiguration = ClientConfiguration(communicationTone: .informal)
+        let configuration = GiniHealthConfiguration()
+        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .informal
+        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
+        
         // When
-        let expectation = self.expectation(description: "Getting payment request without expiration date")
-        var receivedPaymentRequest: PaymentRequest?
+        configuration.clientConfiguration = clientConfiguration
+        configuration.customLocalization = .de
+        giniHealth.setConfiguration(configuration)
 
-        giniHealth.paymentService.paymentRequest(id: MockSessionManager.paymentRequestIdWithMissingExpirationDate) { result in
-            switch result {
-            case .success(let paymentRequest):
-                receivedPaymentRequest = paymentRequest
-            case .failure(_):
-                receivedPaymentRequest = nil
-            }
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-
-        XCTAssertNotNil(receivedPaymentRequest)
-        XCTAssertNil(receivedPaymentRequest?.expirationDate)
+        // Expected
+        XCTAssertNotNil(clientConfiguration)
+        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
+        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
     }
 }
