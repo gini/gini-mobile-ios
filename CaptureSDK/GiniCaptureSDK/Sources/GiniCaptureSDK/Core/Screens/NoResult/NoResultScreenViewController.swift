@@ -170,7 +170,7 @@ final class NoResultScreenViewController: UIViewController {
 
     private func configureCustomTopNavigationBar() {
         let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
-                                                           comment: "Back to camera")
+                                                           comment: "Back")
         let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
         backButton.addAction(self, #selector(didPressBack))
 
@@ -257,9 +257,9 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     @objc func didPressBack() {
-        // TODO: PP-1132 check if analytics and viewModel should be changed (cancel is not used, same action as retake - probably should be separated back to camera action)
+        // TODO: PP-1132 check if analytics should be changed
         GiniAnalyticsManager.track(event: .closeTapped, screenName: .noResults)
-        viewModel.didPressRetake()
+        viewModel.didPressBack()
     }
 
     private func configureHeaderContraints() {

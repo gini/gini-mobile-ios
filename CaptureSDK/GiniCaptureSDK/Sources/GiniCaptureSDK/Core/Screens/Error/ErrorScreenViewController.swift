@@ -180,9 +180,9 @@ class ErrorScreenViewController: UIViewController {
     }
 
     @objc func didPressBack() {
-        // TODO: PP-1132 check if analytics and viewModel should be changed (cancel is not used, same action as retake - probably should be separated back to camera action)
+        // TODO: PP-1132 check if analytics should be changed
         GiniAnalyticsManager.track(event: .closeTapped, screenName: .error)
-        viewModel.didPressRetake()
+        viewModel.didPressBack()
     }
 
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
