@@ -45,7 +45,6 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         let imageView = UIImageView(image: viewModel.qrCodeData.toImage)
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.frame = CGRect(x: 0, y: 0, width: Constants.qrCodeImageSize, height: Constants.qrCodeImageSize)
         imageView.accessibilityTraits = .image
         imageView.isAccessibilityElement = true
         imageView.accessibilityLabel = viewModel.strings.accesibilityQRCodeImageText
