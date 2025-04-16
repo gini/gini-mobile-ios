@@ -41,7 +41,8 @@ public final class PaymentPrimaryButton: UIButton {
         return imageView
     }()
     
-    private var trailingConstraint: NSLayoutConstraint?
+    private var titleTrailingConstraint: NSLayoutConstraint?
+    private var titleLeadingConstraint: NSLayoutConstraint?
     
     public init() {
         super.init(frame: .zero)
@@ -57,16 +58,19 @@ public final class PaymentPrimaryButton: UIButton {
     }
     
     private func setupConstraints() {
-        trailingConstraint = contentView.trailingAnchor.constraint(equalTo: buttonTitleLabel.trailingAnchor)
+        titleLeadingConstraint = contentView.leadingAnchor.constraint(equalTo: buttonTitleLabel.leadingAnchor, constant: -Constants.titlePadding)
+        titleTrailingConstraint = contentView.trailingAnchor.constraint(equalTo: buttonTitleLabel.trailingAnchor, constant: Constants.titlePadding)
+        
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.topAnchor.constraint(equalTo: topAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            contentView.centerYAnchor.constraint(equalTo: buttonTitleLabel.centerYAnchor),
-            contentView.leadingAnchor.constraint(equalTo: buttonTitleLabel.leadingAnchor),
+            contentView.centerYAnchor.constraint(equalTo: buttonTitleLabel.centerYAnchor)
         ])
-        trailingConstraint?.isActive = true
+        
+        titleLeadingConstraint?.isActive = true
+        titleTrailingConstraint?.isActive = true
     }
         
     private func setupLeftImageConstraints() {
@@ -74,6 +78,9 @@ public final class PaymentPrimaryButton: UIButton {
         leftImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         leftImageView.widthAnchor.constraint(equalToConstant: leftImageView.frame.width).isActive = true
         leftImageView.heightAnchor.constraint(equalToConstant: leftImageView.frame.height).isActive = true
+        
+        titleLeadingConstraint?.isActive = false
+        buttonTitleLabel.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor).isActive = true
     }
     
     private func setupRightImageConstraints() {
@@ -81,8 +88,9 @@ public final class PaymentPrimaryButton: UIButton {
         rightImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         rightImageView.widthAnchor.constraint(equalToConstant: rightImageView.frame.width).isActive = true
         rightImageView.heightAnchor.constraint(equalToConstant: rightImageView.frame.height).isActive = true
-        trailingConstraint?.isActive = false
-        buttonTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -(Constants.contentTrailingPadding + Constants.bankIconSize)).isActive = true
+        
+        titleTrailingConstraint?.isActive = false
+        buttonTitleLabel.trailingAnchor.constraint(equalTo: rightImageView.leadingAnchor).isActive = true
     }
         
     @objc private func tapOnPayInvoiceView() {
@@ -135,5 +143,6 @@ extension PaymentPrimaryButton {
         static let bankIconCornerRadius: CGFloat = 8
         static let contentLeadingPadding: CGFloat = 19
         static let contentTrailingPadding: CGFloat = 8
+        static let titlePadding: CGFloat = 16
     }
 }

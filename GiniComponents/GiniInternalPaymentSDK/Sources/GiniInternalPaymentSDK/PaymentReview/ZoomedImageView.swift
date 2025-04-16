@@ -39,6 +39,10 @@ open class ZoomedImageView: UIScrollView {
     private var scaleToRestoreAfterResize: CGFloat = 1.0
     open var maxScaleFromMinScale: CGFloat = 3.0
     
+    open override var canBecomeFocused: Bool {
+        true
+    }
+    
     override open var frame: CGRect {
         willSet {
             if !frame.equalTo(newValue) && !newValue.equalTo(CGRect.zero) && !imageSize.equalTo(CGSize.zero) {
