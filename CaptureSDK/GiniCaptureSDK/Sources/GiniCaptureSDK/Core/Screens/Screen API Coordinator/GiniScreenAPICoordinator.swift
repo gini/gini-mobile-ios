@@ -85,6 +85,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     }
 
     public func start(withDocuments documents: [GiniCaptureDocument]?,
+                      backAnimated: Bool = false,
                       animated: Bool = false) -> UIViewController {
         var viewControllers: [UIViewController] = []
 
@@ -124,7 +125,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
             viewControllers = [reviewViewController, cameraViewController]
         }
 
-        if documents == nil {
+        if backAnimated {
             let transition = CATransition()
             transition.type = .push
             transition.subtype = .fromLeft
@@ -324,7 +325,7 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func backToCamera() {
-        _ = start(withDocuments: nil, animated: true)
+        _ = start(withDocuments: nil, backAnimated: true)
     }
 }
 
