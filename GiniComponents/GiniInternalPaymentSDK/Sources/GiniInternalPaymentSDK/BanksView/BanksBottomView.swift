@@ -11,7 +11,11 @@ import GiniUtilites
 public final class BanksBottomView: BottomSheetViewController {
 
     var viewModel: BanksBottomViewModel
-    
+
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
+
+    private let contentView = EmptyView()
     private let contentStackView = EmptyStackView().orientation(.vertical)
 
     private lazy var titleView: UIView = {
@@ -87,6 +91,8 @@ public final class BanksBottomView: BottomSheetViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        // Detect the initial orientation and set up the appropriate constraints
+        setupInitialLayout()
     }
 
     public init(viewModel: BanksBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
@@ -96,6 +102,37 @@ public final class BanksBottomView: BottomSheetViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupInitialLayout() {
+        updateLayoutForCurrentOrientation(screenSize: UIScreen.main.bounds.size)
+    }
+
+    // Portrait Layout Constraints
+    private func setupPortraitConstraints() {
+        deactivateAllConstraints()
+        portraitConstraints = [
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            paymentProvidersTableView.heightAnchor.constraint(equalToConstant: viewModel.heightTableView)
+        ]
+        NSLayoutConstraint.activate(portraitConstraints)
+    }
+
+    // Landscape Layout Constraints
+    private func setupLandscapeConstraints(screenWidth: CGFloat) {
+        deactivateAllConstraints()
+        let landscapePadding: CGFloat = (Constants.landscapePaddingRatio * screenWidth)
+        landscapeConstraints = [
+            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: landscapePadding),
+            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -landscapePadding),
+            paymentProvidersTableView.heightAnchor.constraint(equalToConstant: viewModel.heightTableView)
+        ]
+        NSLayoutConstraint.activate(landscapeConstraints)
+    }
+    
+    private func deactivateAllConstraints() {
+        NSLayoutConstraint.deactivate(portraitConstraints + landscapeConstraints)
     }
 
     private func setupView() {
@@ -119,7 +156,8 @@ public final class BanksBottomView: BottomSheetViewController {
         }
         bottomView.addSubview(bottomStackView)
         contentStackView.addArrangedSubview(bottomView)
-        self.setContent(content: contentStackView)
+        contentView.addSubview(contentStackView)
+        self.setContent(content: contentView)
     }
 
     private func setupViewAttributes() {
@@ -128,10 +166,18 @@ public final class BanksBottomView: BottomSheetViewController {
     }
 
     private func setupLayout() {
+        setupContentViewConstraints()
         setupTitleViewConstraints()
         setupDescriptionConstraints()
         setupTableViewConstraints()
         setupPoweredByGiniConstraints()
+    }
+
+    private func setupContentViewConstraints() {
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: contentStackView.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: contentStackView.bottomAnchor)
+        ])
     }
 
     private func setupTitleViewConstraints() {
@@ -161,8 +207,7 @@ public final class BanksBottomView: BottomSheetViewController {
             paymentProvidersTableView.topAnchor.constraint(equalTo: paymentProvidersView.topAnchor),
             paymentProvidersTableView.leadingAnchor.constraint(equalTo: paymentProvidersView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             paymentProvidersTableView.trailingAnchor.constraint(equalTo: paymentProvidersView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            paymentProvidersTableView.bottomAnchor.constraint(equalTo: paymentProvidersView.bottomAnchor),
-            paymentProvidersTableView.heightAnchor.constraint(equalToConstant: viewModel.heightTableView)
+            paymentProvidersTableView.bottomAnchor.constraint(equalTo: paymentProvidersView.bottomAnchor)
         ])
     }
 
@@ -180,7 +225,29 @@ public final class BanksBottomView: BottomSheetViewController {
     private func tapOnCloseIcon() {
         viewModel.didTapOnClose()
     }
-    
+
+    // Handle orientation change
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // Perform layout updates with animation
+        coordinator.animate(alongsideTransition: { context in
+            self.viewModel.calculateHeights()
+            self.updateLayoutForCurrentOrientation(screenSize: size)
+            self.setupTableViewConstraints()
+            self.setupPoweredByGiniConstraints()
+            self.setupViewAttributes()
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    private func updateLayoutForCurrentOrientation(screenSize: CGSize) {
+        if UIDevice.isPortrait() {
+            setupPortraitConstraints()
+        } else {
+            setupLandscapeConstraints(screenWidth: screenSize.width)
+        }
+    }
 }
 
 extension BanksBottomView {
@@ -193,6 +260,7 @@ extension BanksBottomView {
         static let titleViewTitleIconSpacing = 10.0
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let bottomViewHeight = 44.0
+        static let landscapePaddingRatio = 0.15
     }
 }
 

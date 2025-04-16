@@ -15,6 +15,7 @@ public struct PaymentReviewConfiguration {
     let infoContainerViewBackgroundColor: UIColor
     let paymentReviewClose: UIImage
     let backgroundColor: UIColor
+    let rectangleColor: UIColor
     let infoBarLabelFont: UIFont
     let statusBarStyle: UIStatusBarStyle
     let pageIndicatorTintColor: UIColor
@@ -30,6 +31,7 @@ public struct PaymentReviewConfiguration {
                 infoContainerViewBackgroundColor: UIColor,
                 paymentReviewClose: UIImage,
                 backgroundColor: UIColor,
+                rectangleColor: UIColor,
                 infoBarLabelFont: UIFont,
                 statusBarStyle: UIStatusBarStyle,
                 pageIndicatorTintColor: UIColor,
@@ -43,6 +45,7 @@ public struct PaymentReviewConfiguration {
         self.mainViewBackgroundColor = mainViewBackgroundColor
         self.infoContainerViewBackgroundColor = infoContainerViewBackgroundColor
         self.backgroundColor = backgroundColor
+        self.rectangleColor = rectangleColor
         self.infoBarLabelFont = infoBarLabelFont
         self.statusBarStyle = statusBarStyle
         self.pageIndicatorTintColor = pageIndicatorTintColor

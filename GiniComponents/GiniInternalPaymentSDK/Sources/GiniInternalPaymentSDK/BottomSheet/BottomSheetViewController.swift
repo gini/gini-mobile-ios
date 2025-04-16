@@ -10,6 +10,9 @@ import UIKit
 import GiniUtilites
 
 open class BottomSheetViewController: UIViewController {
+
+    private var portraitTopConstraint: NSLayoutConstraint?
+    private var landscapeTopConstraint: NSLayoutConstraint?
     // MARK: - UI
     /// Main bottom sheet container view
     private lazy var mainContainerView: UIView = {
@@ -64,6 +67,7 @@ open class BottomSheetViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupGestures()
+        setupInitialLayout()
     }
 
     open override func viewDidAppear(_ animated: Bool) {
@@ -84,6 +88,15 @@ public extension BottomSheetViewController {
             content.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         view.layoutIfNeeded()
+    }
+
+    // Handle orientation change
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            self?.updateLayoutForCurrentOrientation()
+            self?.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 
@@ -107,11 +120,6 @@ private extension BottomSheetViewController {
             mainContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             mainContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        if minHeight > 0 {
-            mainContainerView.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: obtainTopAnchorMinHeightConstraint()).isActive = true
-        } else {
-            mainContainerView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.minTopSpacing).isActive = true
-        }
         
         // Top draggable bar view
         mainContainerView.addSubview(topBarView)
@@ -146,7 +154,46 @@ private extension BottomSheetViewController {
         let topAnchorWithMinHeightConstant = view.frame.height - minHeight + extraBottomSafeAreaConstant
         return topAnchorWithMinHeightConstant
     }
+
+    func setupInitialLayout() {
+        updateLayoutForCurrentOrientation()
+    }
+
+    private func updateLayoutForCurrentOrientation() {
+        if UIDevice.isPortrait() {
+            setupPortraitConstraints()
+        } else {
+            setupLandscapeConstraints()
+        }
+    }
+
+    // Portrait Layout Constraints
+    func setupPortraitConstraints() {
+        deactivateAllConstraints()
+        if minHeight > 0 {
+            portraitTopConstraint = mainContainerView.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: obtainTopAnchorMinHeightConstraint())
+        } else {
+            portraitTopConstraint = mainContainerView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.minTopSpacingPortrait)
+        }
+        portraitTopConstraint?.isActive = true
+    }
+
+    // Landscape Layout Constraints
+    func setupLandscapeConstraints() {
+        deactivateAllConstraints()
+        if minHeight > 0 {
+            landscapeTopConstraint = mainContainerView.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: obtainTopAnchorMinHeightConstraint())
+        } else {
+            landscapeTopConstraint = mainContainerView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.minTopSpacingLandscape)
+        }
+        landscapeTopConstraint?.isActive = true
+    }
     
+    private func deactivateAllConstraints() {
+        portraitTopConstraint?.isActive = false
+        landscapeTopConstraint?.isActive = false
+    }
+
     func setupGestures() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapDimmedView))
         dimmedView.addGestureRecognizer(tapGesture)
@@ -216,7 +263,8 @@ extension BottomSheetViewController {
         /// Minimum drag vertically that enable bottom sheet to dismiss
         static let minDismissiblePanHeight: CGFloat = 20
         /// Minimum spacing between the top edge and bottom sheet
-        static var minTopSpacing: CGFloat = 80
+        static var minTopSpacingPortrait: CGFloat = 80
+        static var minTopSpacingLandscape: CGFloat = 26
         /// Minimum bottom sheet height
         static let heightTopBarView = 32.0
         static let cornerRadiusTopRectangle = 2.0

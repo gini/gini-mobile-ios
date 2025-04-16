@@ -15,6 +15,11 @@ public enum DisplayMode: Int {
     case documentCollection
 }
 
+enum PaymentInfoState {
+    case expanded  // Full content visible
+    case collapsed // Only buttons visible
+}
+
 /// A view controller for reviewing payment details
 public final class PaymentReviewViewController: BottomSheetViewController, UIGestureRecognizerDelegate {
     private lazy var mainView = buildMainView()
@@ -25,15 +30,30 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     lazy var paymentInfoContainerView = buildPaymentInfoContainerView()
     lazy var collectionView = buildCollectionView()
     lazy var pageControl = buildPageControl()
+    
+    private let topBarView = EmptyView()
+    private lazy var barLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = model.configuration.rectangleColor
+        view.layer.cornerRadius = Constants.cornerRadiusTopRectangle
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
 
     private var infoBarBottomConstraint: NSLayoutConstraint?
 
     private var showInfoBarOnce = true
     private var keyboardWillShowCalled = false
+    private var isViewRotating = false
 
     /// The model instance containing data and methods for handling the payment review process.
     public let model: PaymentReviewModel
     private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
+    
+    private var currentPaymentInfoState: PaymentInfoState = .expanded
 
     init(viewModel: PaymentReviewModel,
          selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider) {
@@ -149,13 +169,16 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             layoutMainView()
             layoutPaymentInfoContainerView()
             layoutContainerCollectionView()
+            layoutTopBarView()
             layoutInfoBar()
             layoutCloseButton()
+            setupDraggableBottomView()
         case .bottomSheet:
             layoutPaymentInfoContainerView()
             layoutInfoBar()
             setContent(content: paymentInfoContainerView)
         }
+        setupInitialLayout()
     }
 
     // MARK: - Pay Button Action
@@ -232,35 +255,108 @@ extension PaymentReviewViewController {
 // MARK: - Keyboard handling
 extension PaymentReviewViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            /**
-             If keyboard size is not available for some reason, dont do anything
-             */
-            return
+        guard let keyboardSize = getKeyboardSize(from: notification) else { return }
+
+        if UIDevice.isPortrait() {
+            adjustViewForPortrait(with: keyboardSize.height)
+        } else {
+            handleLandscapeKeyboard(with: keyboardSize.height)
         }
-        /**
-         Moves the root view up by the distance of keyboard height  taking in account safeAreaInsets.bottom
-         */
-        (model.displayMode == .bottomSheet ? view : mainView)
-            .bounds.origin.y = keyboardSize.height - view.safeAreaInsets.bottom
 
         keyboardWillShowCalled = true
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        let animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? Constants.animationDuration
-        let animationCurve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? UInt(UIView.AnimationCurve.easeOut.rawValue)
+        if UIDevice.isPortrait() || isViewRotating {
+            resetViewOriginForPortrait(using: notification)
+        } else {
+            resetViewTransformForLandscape()
+        }
 
         keyboardWillShowCalled = false
+    }
 
-        /**
-         Moves back the root view origin to zero. Schedules it on the main dispatch queue to prevent
-         the view jumping if another keyboard is shown right after this one is hidden.
-         */
-        UIView.animate(withDuration: animationDuration, delay: 0.0, options: UIView.AnimationOptions(rawValue: animationCurve), animations: { [weak self] in
-            guard let self else { return }
-            (model.displayMode == .bottomSheet ? view : mainView)?.bounds.origin.y = 0
-        }, completion: nil)
+    // MARK: - Keyboard Helpers
+
+    private func getKeyboardSize(from notification: NSNotification) -> CGRect? {
+        return (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+    }
+
+    private func adjustViewForPortrait(with keyboardHeight: CGFloat) {
+        (model.displayMode == .bottomSheet ? view : mainView)
+            .bounds.origin.y = keyboardHeight - view.safeAreaInsets.bottom
+    }
+
+    private func handleLandscapeKeyboard(with keyboardHeight: CGFloat) {
+        guard let editedTextField = paymentInfoContainerView.textFieldEdited() else { return }
+
+        if isAmountField(editedTextField) {
+            resetViewTransform()
+        }
+
+        adjustViewIfNeeded(for: editedTextField, keyboardHeight: keyboardHeight)
+    }
+
+    private func isAmountField(_ textField: UITextField) -> Bool {
+        guard let type = TextFieldType(rawValue: textField.tag) else { return false }
+        return type == .amountFieldTag
+    }
+
+    private func resetViewTransform() {
+        UIView.animate(withDuration: 0.1) {
+            self.view.transform = .identity
+        }
+    }
+
+    private func adjustViewIfNeeded(for textField: UITextField, keyboardHeight: CGFloat) {
+        guard let textFieldFrame = textField.superview?.convert(textField.frame, to: nil) else { return }
+
+        let overlap = calculateOverlap(for: textFieldFrame, keyboardHeight: keyboardHeight)
+        if overlap > 0 {
+            animateViewUp(by: overlap + Constants.keyboardOverlapPadding)
+        }
+    }
+
+    private func calculateOverlap(for textFieldFrame: CGRect, keyboardHeight: CGFloat) -> CGFloat {
+        let textFieldBottom = textFieldFrame.maxY
+        let screenHeight = UIScreen.main.bounds.height
+        return textFieldBottom - (screenHeight - keyboardHeight)
+    }
+
+    private func animateViewUp(by distance: CGFloat) {
+        UIView.animate(withDuration: 0.3) {
+            self.view.transform = CGAffineTransform(translationX: 0, y: -distance)
+        }
+    }
+
+    private func resetViewOriginForPortrait(using notification: NSNotification) {
+        let animationDuration = getAnimationDuration(from: notification)
+        let animationCurve = getAnimationCurve(from: notification)
+
+        UIView.animate(
+            withDuration: animationDuration,
+            delay: 0.0,
+            options: UIView.AnimationOptions(rawValue: animationCurve),
+            animations: { [weak self] in
+                guard let self = self else { return }
+                (self.model.displayMode == .bottomSheet ? self.view : self.mainView)?.bounds.origin.y = 0
+            },
+            completion: nil
+        )
+    }
+
+    private func resetViewTransformForLandscape() {
+        UIView.animate(withDuration: 0.3) {
+            self.view.transform = .identity
+        }
+    }
+
+    private func getAnimationDuration(from notification: NSNotification) -> Double {
+        return notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? Constants.animationDuration
+    }
+
+    private func getAnimationCurve(from notification: NSNotification) -> UInt {
+        return notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? UInt(UIView.AnimationCurve.easeOut.rawValue)
     }
 
     func subscribeOnNotifications() {
@@ -321,7 +417,6 @@ fileprivate extension PaymentReviewViewController {
     func buildPaymentInfoContainerView() -> PaymentReviewContainerView {
         let containerView = PaymentReviewContainerView(viewModel: model.paymentReviewContainerViewModel())
         containerView.backgroundColor = model.configuration.infoContainerViewBackgroundColor
-        containerView.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadius)
         containerView.onPayButtonClicked = { [weak self] in
             self?.payButtonClicked()
         }
@@ -342,12 +437,25 @@ fileprivate extension PaymentReviewViewController {
             paymentInfoContainerView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             paymentInfoContainerView.trailingAnchor.constraint(equalTo: container.trailingAnchor)
         ])
-
-        if model.displayMode == .documentCollection {
-            NSLayoutConstraint.activate([
-                paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor)
-            ])
-        }
+    }
+    
+    func layoutTopBarView() {
+        topBarView.backgroundColor = model.configuration.mainViewBackgroundColor
+        topBarView.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadius)
+        mainView.addSubview(topBarView)
+        NSLayoutConstraint.activate([
+            topBarView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor),
+            topBarView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            topBarView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
+            topBarView.heightAnchor.constraint(equalToConstant: Constants.heightTopBarView)
+        ])
+        topBarView.addSubview(barLineView)
+        NSLayoutConstraint.activate([
+            barLineView.centerXAnchor.constraint(equalTo: topBarView.centerXAnchor),
+            barLineView.topAnchor.constraint(equalTo: topBarView.topAnchor, constant: Constants.topAnchorTopRectangle),
+            barLineView.widthAnchor.constraint(equalToConstant: Constants.widthTopRectangle),
+            barLineView.heightAnchor.constraint(equalToConstant: Constants.heightTopRectangle)
+        ])
     }
 
     func updatePaymentInfoContainerView() {
@@ -392,13 +500,9 @@ fileprivate extension PaymentReviewViewController {
         mainView.addSubview(collectionView)
         mainView.sendSubviewToBack(collectionView)
 
-        let navigationBarHeight = self.navigationController?.navigationBar.frame.maxY ?? 0
-
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: navigationBarHeight),
-            collectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.collectionViewBottomPadding),
 
             pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight),
             pageControl.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -Constants.collectionViewPadding),
@@ -471,11 +575,12 @@ fileprivate extension PaymentReviewViewController {
         infoBar.translatesAutoresizingMaskIntoConstraints = false
         infoBarLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        let container = model.displayMode == .bottomSheet ? (view ?? UIView()) : mainView
+        let isBottomSheetPresented = model.displayMode == .bottomSheet
+        let container = isBottomSheetPresented ? (view ?? UIView()) : mainView
         container.insertSubview(infoBar, belowSubview: paymentInfoContainerView)
         infoBar.addSubview(infoBarLabel)
 
-        let bottomConstraint = infoBar.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor, constant: Constants.infoBarHeight)
+        let bottomConstraint = infoBar.bottomAnchor.constraint(equalTo: isBottomSheetPresented ? paymentInfoContainerView.topAnchor : topBarView.topAnchor, constant: Constants.infoBarHeight)
         infoBarBottomConstraint = bottomConstraint
         NSLayoutConstraint.activate([
             bottomConstraint,
@@ -516,6 +621,34 @@ fileprivate extension PaymentReviewViewController {
             self.view.layoutIfNeeded()
         }, completion: completion)
     }
+    
+    func setupDraggableBottomView() {
+        let panGesturePaymentInfoView = UIPanGestureRecognizer(target: self, action: #selector(handlePaymentContainerPanGesture(_:)))
+        let panGestureTopBarView = UIPanGestureRecognizer(target: self, action: #selector(handlePaymentContainerPanGesture(_:)))
+        paymentInfoContainerView.addGestureRecognizer(panGesturePaymentInfoView)
+        topBarView.addGestureRecognizer(panGestureTopBarView)
+    }
+    
+    @objc private func handlePaymentContainerPanGesture(_ gesture: UIPanGestureRecognizer) {
+        let velocity = gesture.velocity(in: view).y
+
+        if gesture.state == .ended {
+            let targetState: PaymentInfoState = velocity > 0 ? .collapsed : .expanded
+            togglePaymentInfo(to: targetState)
+        }
+    }
+    
+    private func togglePaymentInfo(to state: PaymentInfoState) {
+        guard !UIDevice.isPortrait() else { return }
+        guard state != currentPaymentInfoState else { return }
+        currentPaymentInfoState = state
+
+        UIView.animate(withDuration: 0.3) {
+            self.paymentInfoContainerView.updateViews(for: state)
+            self.updateLayoutForCurrentOrientation()
+            self.view.layoutIfNeeded()
+        }
+    }
 }
 
 extension PaymentReviewViewController {
@@ -532,6 +665,72 @@ extension PaymentReviewViewController {
 }
 
 extension PaymentReviewViewController {
+    private func setupInitialLayout() {
+        updateLayoutForCurrentOrientation()
+    }
+
+    private func updateLayoutForCurrentOrientation() {
+        if UIDevice.isPortrait() {
+            setupPortraitConstraints()
+        } else {
+            setupLandscapeConstraints()
+        }
+        collectionView.reloadData()
+    }
+    
+    private func setupPortraitConstraints() {
+        currentPaymentInfoState = .expanded
+        setupConstraints(for: .vertical)
+    }
+    
+    private func setupLandscapeConstraints() {
+        setupConstraints(for: .horizontal)
+    }
+    
+    private func setupConstraints(for orientation: NSLayoutConstraint.Axis) {
+        // Deactivate previous constraints
+        NSLayoutConstraint.deactivate(landscapeConstraints + portraitConstraints)
+
+        let isPortrait = orientation == .vertical
+        let showCollectionView = model.displayMode == .documentCollection
+        
+        var constraints = [] as [NSLayoutConstraint]
+        
+        if showCollectionView {
+            let navigationBarHeight = self.navigationController?.navigationBar.frame.maxY ?? 0
+            constraints.append(collectionView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: navigationBarHeight))
+            constraints.append(collectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor))
+            constraints.append(paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor))
+        }
+        
+        if isPortrait {
+            portraitConstraints = constraints
+            NSLayoutConstraint.activate(portraitConstraints)
+        } else {
+            landscapeConstraints = constraints
+            NSLayoutConstraint.activate(landscapeConstraints)
+        }
+    }
+    
+    // Handle orientation change
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        isViewRotating = true
+        super.viewWillTransition(to: size, with: coordinator)
+
+        paymentInfoContainerView.setupView(shouldUpdateUI: false)
+        paymentInfoContainerView.updateViews(for: currentPaymentInfoState)
+
+        // Perform layout updates with animation
+        coordinator.animate(alongsideTransition: { context in
+            self.updateLayoutForCurrentOrientation()
+            self.view.layoutIfNeeded()
+            self.collectionView.reloadData()
+            self.isViewRotating = false
+        }, completion: nil)
+    }
+}
+
+extension PaymentReviewViewController {
     enum Constants {
         static let animationDuration = 0.3
         static let bottomPaddingPageImageView = 20.0
@@ -542,9 +741,15 @@ extension PaymentReviewViewController {
         static let infoBarLabelPadding = 8.0
         static let pageControlHeight = 20.0
         static let collectionViewPadding = 10.0
-        static let inputContainerHeight = 375.0
-        static let cornerRadius = 12.0
+        static let cornerRadius = 8.0
         static let moveHeightInfoBar = 24.0
-        static let collectionViewBottomPadding = 10.0
+        static let collectionViewBottomPadding = 20.0
+        static let keyboardOverlapPadding = 20.0
+        static let cornerRadiusTopRectangle = 2.0
+        static let heightTopBarView = 16.0
+        static let topAnchorTopRectangle = 12.0
+        static let widthTopRectangle = 48.0
+        static let heightTopRectangle = 4.0
+        static let landscapeCollectionViewLeftInsetRatio = 0.07
     }
 }
