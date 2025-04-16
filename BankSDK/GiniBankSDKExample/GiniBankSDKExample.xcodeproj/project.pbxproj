@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		281417EA2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json in Resources */ = {isa = PBXBuildFile; fileRef = 281417E82DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json */; };
+		281417EB2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 281417E92DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json */; };
+		281417EC2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json in Resources */ = {isa = PBXBuildFile; fileRef = 281417E82DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json */; };
+		281417ED2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 281417E92DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json */; };
+		281417EF2DAFDBDE00D138CF /* Gini_invoice_example_instant_payment_remslips.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 281417EE2DAFDBDE00D138CF /* Gini_invoice_example_instant_payment_remslips.pdf */; };
+		281417F02DAFDBDE00D138CF /* Gini_invoice_example_instant_payment_remslips.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 281417EE2DAFDBDE00D138CF /* Gini_invoice_example_instant_payment_remslips.pdf */; };
 		284F52082BD954B200CF70AD /* GiniBankCustomResourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284F52072BD954B200CF70AD /* GiniBankCustomResourceProvider.swift */; };
 		284F520A2BD959F300CF70AD /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284F52092BD959F300CF70AD /* UIColor.swift */; };
 		2870683C2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870683B2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift */; };
@@ -251,6 +257,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		281417E82DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = result_Gini_invoice_example_instant_payment_remslips.json; sourceTree = "<group>"; };
+		281417E92DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = result_Gini_invoice_example_instant_payment_remslips_after_feedback.json; sourceTree = "<group>"; };
+		281417EE2DAFDBDE00D138CF /* Gini_invoice_example_instant_payment_remslips.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_instant_payment_remslips.pdf; sourceTree = "<group>"; };
 		284F52072BD954B200CF70AD /* GiniBankCustomResourceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankCustomResourceProvider.swift; sourceTree = "<group>"; };
 		284F52092BD959F300CF70AD /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		2870683B2CB94E9900D5F2C9 /* DigitalInvoiceWithSkontoIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalInvoiceWithSkontoIntegrationTests.swift; sourceTree = "<group>"; };
@@ -654,7 +663,10 @@
 			children = (
 				28D77C412CBE99FC00F815DB /* Gini_invoice_example_payment_reference.pdf */,
 				28D77C422CBE99FC00F815DB /* result_Gini_invoice_example_payment_reference_after_feedback.json */,
+				281417E82DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json */,
+				281417E92DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json */,
 				28D77C432CBE99FC00F815DB /* result_Gini_invoice_example_payment_reference.json */,
+				281417EE2DAFDBDE00D138CF /* Gini_invoice_example_instant_payment_remslips.pdf */,
 			);
 			path = TransferSummary;
 			sourceTree = "<group>";
@@ -1318,8 +1330,11 @@
 			files = (
 				F44AD01E28D4BBE7002BAD98 /* page1Animation.json in Resources */,
 				F45D7F172800583300C73C63 /* result_Gini_invoice_example.json in Resources */,
+				281417F02DAFDBDE00D138CF /* Gini_invoice_example_instant_payment_remslips.pdf in Resources */,
 				5D5328862C63F59C00DEA203 /* CredentialsTableViewCell.xib in Resources */,
 				833652FF28F0330B00B5A1CE /* CustomBottomNavigationBar.xib in Resources */,
+				281417EA2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json in Resources */,
+				281417EB2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json in Resources */,
 				287068432CB950D700D5F2C9 /* Gini_invoice_example_RA_Skonto.pdf in Resources */,
 				289570942A30CE2800CC2C56 /* SettingsViewController.xib in Resources */,
 				28F62FA22AB21C2E00D47866 /* DemoScreen.strings in Resources */,
@@ -1365,8 +1380,11 @@
 				28D77C4B2CBE99FC00F815DB /* result_Gini_invoice_example_skonto.json in Resources */,
 				28D77C552CBE99FC00F815DB /* result_Gini_invoice_example_line_items_with_discount.json in Resources */,
 				F45D7F132800566900C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
+				281417EC2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips.json in Resources */,
+				281417ED2DAEC7E500D138CF /* result_Gini_invoice_example_instant_payment_remslips_after_feedback.json in Resources */,
 				F45D7F102800566900C73C63 /* result_Gini_invoice_example.json in Resources */,
 				F45D7F112800566900C73C63 /* testPDF.pdf in Resources */,
+				281417EF2DAFDBDE00D138CF /* Gini_invoice_example_instant_payment_remslips.pdf in Resources */,
 				84C5D65D2D0240E7005711C5 /* result_Gini_invoice_example_skonto_after_transfer_summary.json in Resources */,
 				28D77C4F2CBE99FC00F815DB /* result_Gini_invoice_example_payment_reference_after_feedback.json in Resources */,
 				28D77C512CBE99FC00F815DB /* result_Gini_invoice_example_payment_reference.json in Resources */,

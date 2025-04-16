@@ -102,9 +102,8 @@ class TransferSummaryIntegrationTest: XCTestCase {
                         result.extractions["bic"]?.value)
          XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                         result.extractions["amountToPay"]?.value)
-         //TODO: I need to uncomment this when backend is ready
-         //        XCTAssertEqual(fixtureContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
-         //                       result.extractions["instantPayment"]?.value)
+         XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
+                        result.extractions["instantPayment"]?.value)
 
          // 3. Assuming the user saw the following extractions:
          //    amountToPay, iban, bic, paymentPurpose and paymentRecipient
@@ -133,9 +132,8 @@ class TransferSummaryIntegrationTest: XCTestCase {
                                     extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
                      XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                                     extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
-                        //TODO: I need to uncomment this when backend is ready
-                        //        XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
-                        //                       extractionsAfterFeedback.first(where: { $0.name == "instantPayment" })?.value)
+                        XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
+                                       extractionsAfterFeedback.first(where: { $0.name == "instantPayment" })?.value)
                      // 6. Free up resources after TAN verification
                      GiniBankConfiguration.shared.cleanup()
                      XCTAssertNil(GiniBankConfiguration.shared.documentService)

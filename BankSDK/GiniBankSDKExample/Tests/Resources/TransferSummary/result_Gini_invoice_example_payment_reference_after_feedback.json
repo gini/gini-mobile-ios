@@ -9,10 +9,6 @@
       "value": "KLARNA",
       "candidates": "paymentRecipients"
     },
-    "instantPayment": {
-        "entity": "text",
-        "value": "true"
-    },
     "amountsAreConsistent": {
       "entity": "text",
       "value": "true"
