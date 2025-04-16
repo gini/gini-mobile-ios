@@ -21,7 +21,7 @@ public struct ClientConfiguration: Codable {
      - parameter skontoEnabled: A flag indicating whether Skonto is enabled.
      - parameter returnAssistantEnabled: A flag indicating whether the return assistant feature is enabled.
      - parameter transactionDocsEnabled: A flag indicating whether TransactionDocs feature is enabled.
-     - parameter instantPayment: A flag indicating whether Instant Payment feature is enabled.
+     - parameter instantPaymentEnabled: A flag indicating whether Instant Payment feature is enabled.
      */
     public init(clientID: String,
                 userJourneyAnalyticsEnabled: Bool,
