@@ -147,10 +147,8 @@ class BaseIntegrationTest: XCTestCase {
 
     // Specific method for verifying instantPayment on invoice
     func verifyInstantPaymentExtraction(result: AnalysisResult, fixtureContainer: ExtractionsContainer) {
-        XCTAssertEqual(
-            fixtureContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
-            result.extractions["instantPayment"]?.value
-        )
+        XCTAssertEqual(fixtureContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
+                       result.extractions["instantPayment"]?.value)
     }
     /*
      Verifies that the `paymentRecipient` extraction is present and has a non-nil value.
