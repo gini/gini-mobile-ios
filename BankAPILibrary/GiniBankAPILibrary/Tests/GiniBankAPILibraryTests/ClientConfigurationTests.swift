@@ -19,14 +19,14 @@ final class ClientConfigurationTests: XCTestCase {
                                          skontoEnabled: true,
                                          returnAssistantEnabled: true,
                                          transactionDocsEnabled: true,
-                                         instantPayment: true)
+                                         instantPaymentEnabled: true)
 
         XCTAssertEqual(config.clientID, testClientID)
         XCTAssertTrue(config.userJourneyAnalyticsEnabled)
         XCTAssertTrue(config.skontoEnabled)
         XCTAssertTrue(config.returnAssistantEnabled)
         XCTAssertTrue(config.transactionDocsEnabled)
-        XCTAssertTrue(config.instantPayment)
+        XCTAssertTrue(config.instantPaymentEnabled)
     }
 
     func testDecodingFromValidJSON() throws {
@@ -39,7 +39,7 @@ final class ClientConfigurationTests: XCTestCase {
         XCTAssertTrue(config.skontoEnabled)
         XCTAssertTrue(config.returnAssistantEnabled)
         XCTAssertFalse(config.transactionDocsEnabled)
-        XCTAssertFalse(config.instantPayment)
+        XCTAssertFalse(config.instantPaymentEnabled)
     }
 
     func testDecodingFailsWhenMissingRequiredField() {

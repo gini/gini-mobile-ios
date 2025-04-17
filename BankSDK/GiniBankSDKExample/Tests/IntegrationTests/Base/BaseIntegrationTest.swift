@@ -127,7 +127,9 @@ class BaseIntegrationTest: XCTestCase {
     }
 
     // Helper method for verifying extractions (with the decoded fixture container as input)
-    func verifyExtractions(result: AnalysisResult, fixtureContainer: ExtractionsContainer) {
+    func verifyExtractions(result: AnalysisResult,
+                           fixtureContainer: ExtractionsContainer,
+                           verifyInstantPayment: Bool? = nil) {
         XCTAssertEqual(fixtureContainer.extractions.first(where: { $0.name == "iban" })?.value,
                        result.extractions["iban"]?.value)
 
@@ -137,11 +139,17 @@ class BaseIntegrationTest: XCTestCase {
                        result.extractions["bic"]?.value)
         XCTAssertEqual(fixtureContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                        result.extractions["amountToPay"]?.value)
-        //TODO: I need to uncomment this when backend is ready
-//        XCTAssertEqual(fixtureContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
-//                       result.extractions["instantPayment"]?.value)
+
+        if verifyInstantPayment == true {
+            verifyInstantPaymentExtraction(result: result, fixtureContainer: fixtureContainer)
+        }
     }
 
+    // Specific method for verifying instantPayment on invoice
+    func verifyInstantPaymentExtraction(result: AnalysisResult, fixtureContainer: ExtractionsContainer) {
+        XCTAssertEqual(fixtureContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
+                       result.extractions["instantPayment"]?.value)
+    }
     /*
      Verifies that the `paymentRecipient` extraction is present and has a non-nil value.
 

@@ -92,6 +92,6 @@ class ClientConfigurationTests: BaseIntegrationTest {
         XCTAssertNotNil(configuration.skontoEnabled, "skontoEnabled should be present")
         XCTAssertNotNil(configuration.returnAssistantEnabled, "returnAssistantEnabled should be present")
         XCTAssertNotNil(configuration.transactionDocsEnabled, "transactionDocsEnabled should be present")
-        XCTAssertNotNil(configuration.instantPayment, "instantPayment should be present")
+        XCTAssertNotNil(configuration.instantPaymentEnabled, "instantPaymentEnabled should be present")
     }
 }

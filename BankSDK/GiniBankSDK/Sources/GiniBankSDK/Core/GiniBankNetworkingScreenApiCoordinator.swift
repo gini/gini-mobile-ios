@@ -327,7 +327,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         GiniAnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
                                                   .returnReasonsEnabled: giniBankConfiguration.enableReturnReasons,
                                                   .bankSDKVersion: GiniBankSDKVersion,
-                                                  .instantPaymentEnabled: configuration.instantPayment])
+                                                  .instantPaymentEnabled: configuration.instantPaymentEnabled])
         GiniAnalyticsManager.initializeAnalytics(with: analyticsConfiguration,
                                                  analyticsAPIService: analyticsService)
     }
