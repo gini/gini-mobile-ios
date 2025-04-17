@@ -7,6 +7,7 @@
 
 
 import UIKit
+import Combine
 
 protocol OrderListViewControllerProtocol: AnyObject {
     func showActivityIndicator()
@@ -37,11 +38,14 @@ final class OrderListViewController: UIViewController {
         return activityIndicator
     }()
     
+    private var cancellables = Set<AnyCancellable>()
+    
     var viewModel: OrderListViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        registerForUpdates()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -73,12 +77,10 @@ final class OrderListViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: viewModel.customOrderText,
-            style: .plain,
+            barButtonSystemItem: .add,
             target: self,
-            action: #selector(customOrderButtonTapped)
-        )
-
+            action: #selector(addButtonTapped))
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: viewModel.cancelText,
             style: .plain,
@@ -86,12 +88,33 @@ final class OrderListViewController: UIViewController {
             action: #selector(dismissViewControllerTapped)
         )
     }
+    
+    @objc func addButtonTapped() {
+        let optionsSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let addorderAction = UIAlertAction(title: viewModel.customOrderText, style: .default) { _ in
+            self.customOrderButtonTapped()
+        }
+        
+        let deletePaymentRequestsAction = UIAlertAction(title: "Delete payment requests", style: .default) { _ in
+            self.viewModel.deleteOders()
+        }
+        
+        let cancelAction = UIAlertAction(title: viewModel.cancelText, style: .cancel)
+        
+        optionsSheet.addAction(addorderAction)
+        optionsSheet.addAction(deletePaymentRequestsAction)
+        optionsSheet.addAction(cancelAction)
+        
+        present(optionsSheet, animated: true)
+    }
 
     @objc func customOrderButtonTapped() {
         let newOrder = Order(amountToPay: "", recipient: "", iban: "", purpose: "")
         viewModel.orders.append(newOrder)
 
         let orderViewController = OrderDetailViewController(newOrder, health: viewModel.health)
+        orderViewController.delegate = self
         self.navigationController?.pushViewController(orderViewController, animated: true)
     }
 
@@ -113,6 +136,21 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let order = self.viewModel.orders[indexPath.row]
+        
+        guard order.canBeDeleted else {
+            return nil
+        }
+        
+        return UISwipeActionsConfiguration(actions: [UIContextualAction(style: .destructive,
+                                                                        title: "Delete",
+                                                                        handler: { _, _, completion in
+            self.viewModel.deleteOrder(order)
+            completion(true)
+        })])
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         tableView.backgroundView = nil
         tableView.separatorStyle = .singleLine
@@ -124,9 +162,32 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
 
         // Instantiate InvoiceViewController with the Order instance
         let orderViewController = OrderDetailViewController(order, health: viewModel.health)
+        orderViewController.delegate = self
 
         // Present InvoiceViewController
         self.navigationController?.pushViewController(orderViewController, animated: true)
+    }
+    
+    private func showError(_ error: String) {
+        showErrorAlertView(error: error)
+    }
+    
+    private func registerForUpdates() {
+        viewModel.$orders
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .sink { _ in
+                self.reloadTableView()
+            }.store(in: &cancellables)
+        
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .sink { errorMessage in
+                if let errorMessage {
+                    self.showError(message: errorMessage)
+                }
+            }.store(in: &cancellables)
     }
 }
 
@@ -150,6 +211,12 @@ extension OrderListViewController: OrderListViewControllerProtocol {
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))
         self.present(alertController, animated: true)
+    }
+}
+
+extension OrderListViewController: OrderDetailViewControllerDelegate {
+    func didUpdateOrder(_ order: Order) {
+        viewModel.updateOrder(updatedOrder: order)
     }
 }
 
