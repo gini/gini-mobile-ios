@@ -56,6 +56,19 @@ final class OrderListViewModel {
         })
     }
     
+    func deleteOders() {
+        let orderIds = orders.compactMap(\.id)
+        
+        health.deletePaymentRequests(ids: orderIds, completion: { [weak self] result in
+            switch result {
+            case .success:
+                self?.orders.forEach { self?.handlePaymentRequestDeletion(for: $0) }
+            case .failure(let error):
+                self?.errorMessage = error.message
+            }
+        })
+    }
+    
     private func updateLoadedOrder(_ order: Order) {
         guard let index = orders.firstIndex(where: { $0.iban == order.iban }) else { return }
         orders[index] = order

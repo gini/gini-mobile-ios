@@ -13,7 +13,10 @@ class PinningWrongCertificatesIntegrationTests: XCTestCase {
     // Make sure not to commit the credentials if the scheme is shared!
     private let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
     private let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
-    private let paymentRequestID = "a6466506-acf1-4896-94c8-9b398d4e0ee1"
+
+    // In cases tests are failing please check if the `paymentRequestID` is still valid
+    private let paymentRequestID = "77deedc2-16c2-4597-9199-83451f43a360"
+
     private var giniBankAPILib: GiniBankAPI!
     private var documentService: DefaultDocumentService!
 
