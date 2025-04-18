@@ -126,11 +126,9 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
         }
 
         if backAnimated {
-            let transition = CATransition()
-            transition.type = .push
-            transition.subtype = .fromLeft
-            screenAPINavigationController.view.layer.add(transition, forKey: kCATransition)
-            screenAPINavigationController.setViewControllers(viewControllers, animated: false)
+            let delegate = OneTimeSlideFromLeftNavigationDelegate()
+            screenAPINavigationController.delegate = delegate
+            screenAPINavigationController.setViewControllers(viewControllers, animated: true)
         } else {
             screenAPINavigationController.setViewControllers(viewControllers, animated: animated)
         }
