@@ -83,13 +83,14 @@ extension GiniBankAPI {
         public var sessionDelegate: URLSessionDelegate? = nil
         
         /**
-         *  Creates a Gini Bank API Library.
+         *  Initializes a Gini Bank API Library instance.
          *
-         * - Parameter client:            The Gini Bank API client credentials
-         * - Parameter api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
-         * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
-         * - Parameter logLevel:          The log level. `LogLevel.none` by default.
-         * - Parameter sessionDelegate:   The session delegate `URLSessionDelegate` will be set for Gini Bank API Library with `Pinning`.
+         *  - Parameters:
+         *   - client:            The Gini Bank API client credentials
+         *   - api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
+         *   - userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
+         *   - logLevel:          The desired log level. Defaults to `LogLevel.none`.
+         *   - sessionDelegate:   The session delegate `URLSessionDelegate` will be set for Gini Bank API Library with `Pinning`.
          */
         public init(client: Client,
                     api: APIDomain = .default,
@@ -104,12 +105,13 @@ extension GiniBankAPI {
         }
 
         /**
-         * Creates a Gini Bank API Library to be used with a transparent proxy and a custom api access token source.
+         * Initializes a Gini Bank API Library instance configured with a transparent proxy and a custom api access token source.
          *
-         * - Parameter customApiDomain:          A custom api domain string.
-         * - Parameter alternativeTokenSource:   A protocol for using custom api access token
-         * - Parameter logLevel:                 The log level. `LogLevel.none` by default.
-         * - Parameter sessionDelegate:          The session delegate `URLSessionDelegate` will be set for Gini Bank API Library with `Pinning`.
+         * - Parameters:
+         *  - customApiDomain:          A custom api domain string.
+         *  - alternativeTokenSource:   A protocol for using custom api access token
+         *  - logLevel:                 The desired log level. Defaults to `LogLevel.none`.
+         *  - sessionDelegate:          The session delegate `URLSessionDelegate` will be set for Gini Bank API Library with `Pinning`.
          */
         public init(customApiDomain: String = APIDomain.default.domainString,
                     alternativeTokenSource: AlternativeTokenSource,
@@ -122,13 +124,14 @@ extension GiniBankAPI {
         }
 
         /**
-         *  Creates a Gini Bank API Library with certificate pinning configuration.
+         *  Initializes a Gini Bank API Library instance configured with a certificate pinning configuration.
          *
-         * - Parameter client:            The Gini Bank API client credentials
-         * - Parameter api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
-         * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
-         * - Parameter pinningConfig:     The configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
-         * - Parameter logLevel:          The log level. `LogLevel.none` by default.
+         *  - Parameters:
+         *   - client:            The Gini Bank API client credentials
+         *   - api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
+         *   - userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
+         *   - pinningConfig:     A dictionary specifying the certificate pinning configuration in the format `["PinnedDomains": ["PublicKeyHashes"]]`.
+         *   - logLevel:          The desired log level. Defaults to `LogLevel.none`.
          */
         public init(client: Client,
                     api: APIDomain = .default,
@@ -143,12 +146,13 @@ extension GiniBankAPI {
         }
 
         /**
-         * Creates a Gini Bank API Library to be used with a transparent proxy and a custom api access token source and certificate pinning configuration.
+         * Initializes a Gini Bank API Library instance configured with a transparent proxy and a custom api access token source and certificate pinning configuration.
          *
-         * - Parameter customApiDomain:        A custom api domain string.
-         * - Parameter alternativeTokenSource: A protocol for using custom api access token
-         * - Parameter pinningConfig:          the configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
-         * - Parameter logLevel:               The log level. `LogLevel.none` by default.
+         * - Parameters:
+         *  - customApiDomain:        A custom api domain string.
+         *  - alternativeTokenSource: A protocol-conforming instance used to provide a custom API access token.
+         *  - pinningConfig:          A dictionary specifying the certificate pinning configuration in the format `["PinnedDomains": ["PublicKeyHashes"]]`.
+         *  - logLevel:               The desired log level. Defaults to `LogLevel.none`.
          */
         public init(customApiDomain: String = APIDomain.default.domainString,
                     alternativeTokenSource: AlternativeTokenSource,
