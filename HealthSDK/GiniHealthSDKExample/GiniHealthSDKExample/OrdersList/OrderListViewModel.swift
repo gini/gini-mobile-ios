@@ -22,10 +22,10 @@ final class OrderListViewModel {
     let cancelText = NSLocalizedString("gini.health.example.cancel.button.title", comment: "")
     let errorTitleText = NSLocalizedString("gini.health.example.invoicesList.error", comment: "")
 
-    private var errors: [String] = []
-
     var health: GiniHealth
-    var orders: [Order]
+    
+    @Published var orders: [Order]
+    @Published var errorMessage: String?
 
     init(coordinator: OrderListCoordinator,
          orders: [Order]? = nil,
@@ -39,4 +39,45 @@ final class OrderListViewModel {
         self.health = health
     }
 
+    func updateOrder(updatedOrder: Order) {
+        hardcodedOrdersController.updateOrder(updatedOrder: updatedOrder)
+    }
+    
+    func deleteOrder(_ order: Order) {
+        guard let orderId = order.id else { return }
+        
+        health.deletePaymentRequest(id: orderId, completion: { [weak self] result in
+            switch result {
+            case .success:
+                self?.handlePaymentRequestDeletion(for: order)
+            case .failure(let error):
+                self?.errorMessage = error.message
+            }
+        })
+    }
+    
+    func deleteOders() {
+        let orderIds = orders.compactMap(\.id)
+        
+        health.deletePaymentRequests(ids: orderIds, completion: { [weak self] result in
+            switch result {
+            case .success:
+                self?.orders.forEach { self?.handlePaymentRequestDeletion(for: $0) }
+            case .failure(let error):
+                self?.errorMessage = error.message
+            }
+        })
+    }
+    
+    private func updateLoadedOrder(_ order: Order) {
+        guard let index = orders.firstIndex(where: { $0.iban == order.iban }) else { return }
+        orders[index] = order
+    }
+    
+    private func handlePaymentRequestDeletion(for order: Order) {
+        order.expirationDate = nil
+        order.id = nil
+        updateOrder(updatedOrder: order)
+        updateLoadedOrder(order)
+    }
 }

@@ -236,14 +236,14 @@ extension LogLevel {
 //MARK: - PaymentProvider
 
 extension GiniInternalPaymentSDK.PaymentInfo {
-    init(paymentConponentsInfo: GiniHealthSDK.PaymentInfo) {
-        self.init(recipient: paymentConponentsInfo.recipient,
-                  iban: paymentConponentsInfo.iban,
-                  bic: paymentConponentsInfo.bic,
-                  amount: paymentConponentsInfo.amount,
-                  purpose: paymentConponentsInfo.purpose,
-                  paymentUniversalLink: paymentConponentsInfo.paymentUniversalLink,
-                  paymentProviderId: paymentConponentsInfo.paymentProviderId)
+    public init(paymentComponentsInfo: GiniHealthSDK.PaymentInfo) {
+        self.init(recipient: paymentComponentsInfo.recipient,
+                  iban: paymentComponentsInfo.iban,
+                  bic: paymentComponentsInfo.bic,
+                  amount: paymentComponentsInfo.amount,
+                  purpose: paymentComponentsInfo.purpose,
+                  paymentUniversalLink: paymentComponentsInfo.paymentUniversalLink,
+                  paymentProviderId: paymentComponentsInfo.paymentProviderId)
     }
 }
 

@@ -179,3 +179,23 @@ For that please call next method:
     let logos = health.fetchBankLogos().logos // for the first two payment providers available
     let additionalBankNumberToShow = health.fetchBankLogos().additionalBankCount // for the number of additional payment providers available
 ```
+
+## Delete a payment request
+
+GiniHealth provides a method to delete a single payment request:
+
+```swift
+healthSDK.deletePaymentRequest(id: String, completion: @escaping (Result<String, GiniError>) -> Void)
+```
+
+This method enables clients to delete single payment request by passing the payment request ID. Upon success, it returns the ID of successfully deleted payment request. In case of an error, a specific error message is provided.
+
+## Getting a payment
+
+GiniHealth provides a method to retrieve a payment of an specified payment request:
+
+```swift
+healthSDK.getPayment(id: String, completion: @escaping (Result<Payment, GiniError>) -> Void)
+```
+
+This method enables clients to retrieve the `payment` of an specified request by passing the payment request ID. Upon success, it returns the `payment` associated with the given payment request id. In case of an error, a specific error message is provided.

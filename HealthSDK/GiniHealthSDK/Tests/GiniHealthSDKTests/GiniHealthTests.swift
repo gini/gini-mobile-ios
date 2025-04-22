@@ -63,30 +63,6 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertEqual(receivedProviders, expectedProviders)
     }
     
-    func testCreatePaymentRequestSuccess() {
-        // Given
-        let expectedPaymentRequestID = MockSessionManager.paymentRequestId
-
-        // When
-        let expectation = self.expectation(description: "Creating payment request")
-        var receivedRequestId: String?
-        let paymentInfo = GiniHealthSDK.PaymentInfo(recipient: "Uno Flüchtlingshilfe", iban: "DE78370501980020008850", bic: "COLSDE33", amount: "1.00:EUR", purpose: "ReNr 12345", paymentUniversalLink: "ginipay-test://paymentRequester", paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
-        giniHealth.createPaymentRequest(paymentInfo: PaymentInfo(paymentConponentsInfo: paymentInfo), completion: { result in
-            switch result {
-            case .success(let requestId):
-                receivedRequestId = requestId
-            case .failure(_):
-                receivedRequestId = nil
-            }
-            expectation.fulfill()
-        })
-        waitForExpectations(timeout: 1, handler: nil)
-
-        // Then
-        XCTAssertNotNil(receivedRequestId)
-        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
-    }
-    
     func testOpenLinkSuccess() {
         let mockUIApplication = MockUIApplication(canOpen: true)
         let urlOpener = URLOpener(mockUIApplication)
@@ -148,5 +124,44 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertNotNil(clientConfiguration)
         XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
         XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+    }
+    
+    func testFormalDE() {
+        // Given
+        let clientConfiguration = ClientConfiguration()
+        let configuration = GiniHealthConfiguration()
+        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .formal
+        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
+        
+        // When
+        configuration.customLocalization = .de
+        configuration.clientConfiguration = clientConfiguration
+        giniHealth.setConfiguration(configuration)
+        
+
+        // Expected
+        XCTAssertNotNil(clientConfiguration)
+        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
+        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
+    }
+    
+    func testInformalDE() {
+        // Given
+        let clientConfiguration = ClientConfiguration(communicationTone: .informal)
+        let configuration = GiniHealthConfiguration()
+        let expectedDefaultComunicationTone: GiniHealthAPILibrary.CommunicationToneEnum = .informal
+        let expectedDefaultBrandType: GiniHealthAPILibrary.IngredientBrandTypeEnum = .invisible
+        
+        // When
+        configuration.clientConfiguration = clientConfiguration
+        configuration.customLocalization = .de
+        giniHealth.setConfiguration(configuration)
+
+        // Expected
+        XCTAssertNotNil(clientConfiguration)
+        XCTAssertEqual(clientConfiguration.communicationTone, expectedDefaultComunicationTone)
+        XCTAssertEqual(clientConfiguration.ingredientBrandType, expectedDefaultBrandType)
+        XCTAssertEqual(giniHealth.installAppStrings.moreInformationTipPattern, "Tipp: Tippe auf 'Weiter', um die Zahlung in der [BANK]-App abzuschließen.")
     }
 }

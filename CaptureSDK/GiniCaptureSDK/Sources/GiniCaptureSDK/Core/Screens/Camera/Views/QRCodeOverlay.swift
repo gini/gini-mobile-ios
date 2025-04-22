@@ -131,7 +131,7 @@ final class QRCodeOverlay: UIView {
     private lazy var loadingIndicatorView: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView()
         indicatorView.hidesWhenStopped = true
-        indicatorView.style = .whiteLarge
+        indicatorView.style = .large
         return indicatorView
     }()
 

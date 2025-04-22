@@ -68,6 +68,36 @@ final class PaymentTests: XCTestCase {
         XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests", "path should match")
     }
     
+    func testDeletePaymentRequestURL() {
+        let mockRequestId = "mockRequestId"
+        
+        let resource = APIResource<String>(method: .paymentRequest(id: mockRequestId),
+                                           apiDomain: .default,
+                                           apiVersion: versionAPI,
+                                           httpMethod: .delete)
+        
+        let urlString = resource.url.absoluteString
+        XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/\(mockRequestId)", "path should match")
+    }
+    
+    func testDeletePaymentRequestsURL() {
+        let paymentRequestBody = PaymentRequestBody(sourceDocumentLocation: "", paymentProvider: "b09ef70a-490f-11eb-952e-9bc6f4646c57", recipient: "James Bond", iban: "DE89370400440532013000", bic: "INGDDEFF123", amount: "33.78:EUR", purpose: "Save the world")
+        
+        guard let jsonData = try? JSONEncoder().encode(paymentRequestBody)
+        else {
+            assertionFailure("The PaymentRequestBody cannot be encoded")
+            return
+        }
+        
+        let resource = APIResource<String>(method: .paymentRequests(limit: nil, offset: nil),
+                                           apiDomain: .default,
+                                           apiVersion: versionAPI,
+                                           httpMethod: .delete,
+                                           body: jsonData)
+        let urlString = resource.url.absoluteString
+        XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests", "path should match")
+    }
+    
     func testPaymentProviders() {
         let sessionManagerMock = SessionManagerMock()
         sessionManagerMock.initializeWithPaymentProvidersResponse()
@@ -97,11 +127,13 @@ final class PaymentTests: XCTestCase {
     }
     
     func testPaymentURL() {
-        let resource = APIResource<Payment>(method: .payment(id: "d8b46793-31b4-49d5-8f81-554e9e13f3f5"),
+        let resource = APIResource<Payment>(method: .payment(id: SessionManagerMock.paymentRequestId),
                                             apiDomain: .default,
                                             apiVersion: versionAPI,
                                             httpMethod: .get)
+        
         let urlString = resource.url.absoluteString
-        XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/d8b46793-31b4-49d5-8f81-554e9e13f3f5/payment", "path should match")
+        
+        XCTAssertEqual(urlString, baseAPIURLString + "/paymentRequests/\(SessionManagerMock.paymentRequestId)/payment", "path should match")
     }
 }
