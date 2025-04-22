@@ -134,7 +134,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     /**
-     Initializes a new instance.
+     Initializes a new instance of GiniBankNetworkingScreenApiCoordinator.
 
      - Parameters:
      - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
@@ -186,7 +186,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     /**
-     Initializes a new instance.
+     Initializes a new instance of GiniBankNetworkingScreenApiCoordinator.
 
      - Parameters:
      - resultsDelegate: Results delegate object where you can get the results of the analysis.
@@ -218,7 +218,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     /**
-     Initializes a new instance.
+     Initializes a new instance of GiniBankNetworkingScreenApiCoordinator.
 
      - Parameters:
      - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
@@ -250,7 +250,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
     /**
-     Initializes a new instance using an `AlternativeTokenSource`.
+     Initializes a new instance of GiniBankNetworkingScreenApiCoordinator using an `AlternativeTokenSource`.
 
      This initializer creates a `GiniBankAPI` instance using a custom token source for authentication
 
@@ -279,7 +279,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
     // MARK: Pinning certificates
     /**
-     Initializes a new instance using Pinning certificates.
+     Initializes a new instance of GiniBankNetworkingScreenApiCoordinator using Pinning certificates.
 
      - Parameters:
      - client: The client object containing the client ID, secret, and domain for authenticating with the Gini API.
@@ -314,7 +314,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     }
 
      /**
-      Initializes a new instance using an `AlternativeTokenSource`.
+      Initializes a new instance of GiniBankNetworkingScreenApiCoordinator using an `AlternativeTokenSource`.
 
       This initializer creates a `GiniBankAPI` instance using a custom token source for authentication
 

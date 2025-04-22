@@ -25,14 +25,15 @@ extension GiniBank {
      It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
      all screens and transitions out of the box, including the networking.
 
-     - Parameter client: `GiniClient` with the information needed to enable document analysis
-     - Parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
-     - Parameter configuration: The configuration to set.
-     - Parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - Parameter documentMetadata: Additional HTTP headers to send when uploading documents
-     - Parameter api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
-     - Parameter userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
-     - Parameter trackingDelegate: A delegate object to receive user events
+     - Parameters:
+        - client: `GiniClient` with the information needed to enable document analysis
+        - importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+        - configuration: The configuration to set.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - documentMetadata: Additional HTTP headers to send when uploading documents
+        - api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
+        - userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
+        - trackingDelegate: A delegate object to receive user events
 
      - Returns: A presentable view controller.
      */
@@ -59,12 +60,13 @@ extension GiniBank {
      It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
      all screens and transitions out of the box, including the networking.
 
-     - Parameter tokenSource: Alternative token source
-     - Parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
-     - Parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - Parameter configuration: The configuration to set.
-     - Parameter documentMetadata: Additional HTTP headers to send when uploading documents
-     - Parameter trackingDelegate: A delegate object to receive user events
+     - Parameters:
+        - tokenSource: Alternative token source
+        - importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - configuration: The configuration to set.
+        - documentMetadata: Additional HTTP headers to send when uploading documents
+        - trackingDelegate: A delegate object to receive user events
 
      - Returns: A presentable view controller.
      */
@@ -89,15 +91,16 @@ extension GiniBank {
      It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
      all screens and transitions out of the box, including the networking.
 
-     - Parameter client: `GiniClient` with the information needed to enable document analysis
-     - Parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
-     - Parameter configuration: The configuration to set.
-     - Parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - Parameter pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
-     - Parameter documentMetadata: Additional HTTP headers to send when uploading documents
-     - Parameter api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
-     - Parameter userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
-     - Parameter trackingDelegate: A delegate object to receive user events
+     - Parameters:
+        - client: `GiniClient` with the information needed to enable document analysis
+        - importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+        - configuration: The configuration to set.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - pinningConfig: Configuration for certificate pinning. Format ["PinnedDomains" : ["PublicKeyHashes"]]
+        - documentMetadata: Additional HTTP headers to send when uploading documents
+        - api: The Gini backend API to use. Supply .custom("domain") in order to specify a custom domain.
+        - userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
+        - trackingDelegate: A delegate object to receive user events
 
      - Returns: A presentable view controller.
      */
@@ -128,13 +131,14 @@ extension GiniBank {
      It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
      all screens and transitions out of the box with the custom networking.
      
-     - Parameter importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
-     - Parameter configuration: The gini bank configuration to set.
-     - Parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
-     - Parameter documentMetadata: Additional HTTP headers to send when uploading documents.
-     - Parameter trackingDelegate: A delegate object to receive user events.
-     - Parameter networkingService: A delegate object which implement protocol for the document processing events.
-     - Parameter configurationService: A delegate object which implement protocol for the customer configuration.
+     - Parameters:
+        - importedDocuments: There should be either images or one PDF, and they should be validated before calling this method.
+        - configuration: The gini bank configuration to set.
+        - resultsDelegate: Results delegate object where you can get the results of the analysis.
+        - documentMetadata: Additional HTTP headers to send when uploading documents.
+        - trackingDelegate: A delegate object to receive user events.
+        - networkingService: A delegate object which implement protocol for the document processing events.
+        - configurationService: A delegate object which implement protocol for the customer configuration.
 
      - Note: Screen API with custom networking only.
 
