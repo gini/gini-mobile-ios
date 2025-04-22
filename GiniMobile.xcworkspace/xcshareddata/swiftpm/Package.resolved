@@ -9,15 +9,6 @@
           "revision": "d6feea26a370019b4d3a85f5984cb95a2734776f",
           "version": "4.2.0"
         }
-      },
-      {
-        "package": "TrustKit",
-        "repositoryURL": "https://github.com/datatheorem/TrustKit.git",
-        "state": {
-          "branch": null,
-          "revision": "3e98aeb36aff65067cdae55bca7be7f1157deffb",
-          "version": "2.0.0"
-        }
       }
     ]
   },
