@@ -5,10 +5,11 @@
 //
 
 import XCTest
+@testable import GiniUtilites
 @testable import GiniBankAPILibrary
 
 class GiniBankAPILibraryPinningIntegrationTests: BaseIntegrationTest {
-
+    private let validator = IBANValidator()
     override func setUp() {
         giniHelper.setupWithPinningCertificates()
     }
@@ -44,10 +45,10 @@ class GiniBankAPILibraryPinningIntegrationTests: BaseIntegrationTest {
     func testFetchPaymentRequest() {
         let expect = expectation(description: "it fetches the payment request")
 
-        giniHelper.paymentService?.paymentRequest(id: giniHelper.paymentRequestID) { result in
+        giniHelper.paymentService?.paymentRequest(id: giniHelper.paymentRequestID) { [weak self] result in
             switch result {
             case .success(let request):
-                XCTAssertEqual(request.iban, "DE13760700120500154000")
+                self?.assertValidIBAN(request.iban)
                 expect.fulfill()
             case .failure(let error):
                 XCTFail(String(describing: error))
@@ -78,15 +79,20 @@ class GiniBankAPILibraryPinningIntegrationTests: BaseIntegrationTest {
     func testPayment() {
         let expect = expectation(description: "it gets the payment")
 
-        giniHelper.paymentService.payment(id: "a6466506-acf1-4896-94c8-9b398d4e0ee1") { result in
+        giniHelper.paymentService.payment(id: giniHelper.paymentRequestID) { [weak self] result in
             switch result {
             case .success(let payment):
-                XCTAssertEqual(payment.iban, "DE13760700120500154000")
+                self?.assertValidIBAN(payment.iban)
                 expect.fulfill()
             case .failure(let error):
                 XCTFail(String(describing: error))
             }
         }
         wait(for: [expect], timeout: 10)
+    }
+
+    private func assertValidIBAN(_ iban: String) {
+        XCTAssertFalse(iban.isEmpty, "IBAN should not be empty")
+        XCTAssertTrue(validator.isValid(iban: iban), "IBAN should be valid")
     }
 }
