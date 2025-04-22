@@ -111,8 +111,8 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
             switch result {
             case .success(let result):
                 completion(.success(result))
-                Log(message: "Deleted \(document.sourceClassification.rawValue) document with id: \(document.id)",
-                    event: "🗑")
+                GiniCaptureSDK.Log(message: "Deleted \(document.sourceClassification.rawValue) document with id: \(document.id)",
+                                   event: "🗑")
             case .failure(let error):
                 let message = "Error deleting \(document.sourceClassification.rawValue) document with" +
                     " id: \(document.id)"
@@ -128,7 +128,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                  metadata: Document.Metadata?,
                  cancellationToken: CancellationToken,
                  completion: @escaping (Result<(document: Document, extractionResult: ExtractionResult), GiniError>) -> Void) {
-        Log(message: "Creating composite document...", event: "📑")
+        GiniCaptureSDK.Log(message: "Creating composite document...", event: "📑")
         let fileName = "Composite-\(NSDate().timeIntervalSince1970)"
 
         documentService
@@ -139,11 +139,11 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                 guard let self = self else { return }
                 switch result {
                 case let .success(createdDocument):
-                    Log(message: "Starting analysis for composite document \(createdDocument.id)",
-                        event: "🔎")
-                        self.startExtraction(for: createdDocument,
-                                             cancellationToken: cancellationToken,
-                                             completion: completion)
+                    GiniCaptureSDK.Log(message: "Starting analysis for composite document \(createdDocument.id)",
+                                       event: "🔎")
+                    self.startExtraction(for: createdDocument,
+                                         cancellationToken: cancellationToken,
+                                         completion: completion)
                 case let .failure(error):
                     self.logError(message: "Composite document creation failed with error: \(error)", 
                                      error: error)
@@ -165,7 +165,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
             metadata.addUploadMetadata(uploadMetadata)
             return metadata
         }()
-        Log(message: "Creating document...", event: "📝")
+        GiniCaptureSDK.Log(message: "Creating document...", event: "📝")
 
         let fileName = "Partial-\(NSDate().timeIntervalSince1970)"
 
@@ -175,7 +175,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                                        metadata: documentMetadata) { result in
             switch result {
             case let .success(createdDocument):
-                Log(message: "Created document with id: \(createdDocument.id) " +
+                GiniCaptureSDK.Log(message: "Created document with id: \(createdDocument.id) " +
                     "for vision document \(document.id)", event: "📄")
                 completion(.success(createdDocument))
             case let .failure(error):
@@ -218,7 +218,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
     }
 
     func layout(for document: Document, completion: @escaping DocumentLayoutCompletion) {
-        Log(message: "Getting layout for document with id: \(document.id) ", event: "📝")
+        GiniCaptureSDK.Log(message: "Getting layout for document with id: \(document.id) ", event: "📝")
         documentService.layout(for: document) { result in
             switch result {
             case let .success(layout):
@@ -232,7 +232,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
     }
 
     func pages(for document: Document, completion: @escaping (Result<[Document.Page], GiniError>) -> Void) {
-        Log(message: "Getting pages for document with id: \(document.id) ", event: "📝")
+        GiniCaptureSDK.Log(message: "Getting pages for document with id: \(document.id) ", event: "📝")
         documentService.pages(in: document) { result in
             switch result {
                 case let .success(pages):
@@ -249,7 +249,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                       pageNumber: Int,
                       size: GiniBankAPILibrary.Document.Page.Size,
                       completion: @escaping DocumentPagePreviewCompletion) {
-        Log(message: "Getting page for document with id: \(document.id) ", event: "📝")
+        GiniCaptureSDK.Log(message: "Getting page for document with id: \(document.id) ", event: "📝")
         documentService.documentPage(for: document,
                                      pageNumber: pageNumber,
                                      size: size) { result in
@@ -275,13 +275,13 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                          cancellationToken: cancellationToken) { result in
                 switch result {
                 case let .success(extractionResult):
-                    Log(message: "Finished analysis process with no errors", event: .success)
+                    GiniCaptureSDK.Log(message: "Finished analysis process with no errors", event: .success)
                     completion(.success((document, extractionResult)))
                 case let .failure(error):
                     if error == .requestCancelled {
-                        Log(message: "Cancelled analysis process", event: .error)
+                        GiniCaptureSDK.Log(message: "Cancelled analysis process", event: .error)
                     } else {
-                        Log(message: "Finished analysis process with error: \(error)", event: .error)
+                        GiniCaptureSDK.Log(message: "Finished analysis process with error: \(error)", event: .error)
                     }
                     completion(.failure(error))
                 }
@@ -289,7 +289,7 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
     }
 
     private func logError(message: String, error: GiniError) {
-        Log(message: message, event: .error)
+        GiniCaptureSDK.Log(message: message, event: .error)
         let errorLog = ErrorLog(description: message, error: error)
         GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
     }

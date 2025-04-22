@@ -232,7 +232,7 @@ func measure(block: () -> Void) {
     let start = Date()
     block()
     let elaspsedTime = Date().timeIntervalSince(start)
-    Log(message: "Elapsed time: \(elaspsedTime) seconds", event: "⏲️")
+    GiniCaptureSDK.Log(message: "Elapsed time: \(elaspsedTime) seconds", event: "⏲️")
 }
 private class CaptureSDKBundleFinder {}
 

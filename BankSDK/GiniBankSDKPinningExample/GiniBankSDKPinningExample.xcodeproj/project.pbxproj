@@ -35,10 +35,7 @@
 		F4807C40263C20BB00F30FF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4807C3F263C20BB00F30FF3 /* Assets.xcassets */; };
 		F4807C43263C20BB00F30FF3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4807C41263C20BB00F30FF3 /* LaunchScreen.storyboard */; };
 		F4807F342640177600F30FF3 /* PaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F332640177500F30FF3 /* PaymentViewModel.swift */; };
-		F4807F542641347F00F30FF3 /* UIView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F532641347F00F30FF3 /* UIView+Utils.swift */; };
-		F4807F7426416A5200F30FF3 /* IBANValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F7326416A5200F30FF3 /* IBANValidator.swift */; };
 		F4807F9026416E2E00F30FF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4807F9226416E2E00F30FF3 /* Localizable.strings */; };
-		F4807F9F2641709500F30FF3 /* UITextField+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F9E2641709500F30FF3 /* UITextField+Utils.swift */; };
 		F4807FB52641713700F30FF3 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807FB42641713700F30FF3 /* Amount.swift */; };
 		F4807FC22641830D00F30FF3 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807FC12641830D00F30FF3 /* CredentialsManager.swift */; };
 		F4807FC9264183C000F30FF3 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4807FC8264183C000F30FF3 /* Credentials.plist */; };
@@ -114,11 +111,8 @@
 		F4807C42263C20BB00F30FF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4807C44263C20BB00F30FF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4807F332640177500F30FF3 /* PaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewModel.swift; sourceTree = "<group>"; };
-		F4807F532641347F00F30FF3 /* UIView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Utils.swift"; sourceTree = "<group>"; };
-		F4807F7326416A5200F30FF3 /* IBANValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBANValidator.swift; sourceTree = "<group>"; };
 		F4807F9126416E2E00F30FF3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F4807F9826416E3300F30FF3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		F4807F9E2641709500F30FF3 /* UITextField+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Utils.swift"; sourceTree = "<group>"; };
 		F4807FB42641713700F30FF3 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		F4807FC12641830D00F30FF3 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		F4807FC8264183C000F30FF3 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
@@ -251,11 +245,8 @@
 		F4807FBB264182BD00F30FF3 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				F4807F7326416A5200F30FF3 /* IBANValidator.swift */,
 				F4807FC12641830D00F30FF3 /* CredentialsManager.swift */,
 				F4807FB42641713700F30FF3 /* Amount.swift */,
-				F4807F532641347F00F30FF3 /* UIView+Utils.swift */,
-				F4807F9E2641709500F30FF3 /* UITextField+Utils.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -507,12 +498,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4807C3B263C20BA00F30FF3 /* PaymentViewController.swift in Sources */,
-				F4807F9F2641709500F30FF3 /* UITextField+Utils.swift in Sources */,
-				F4807F7426416A5200F30FF3 /* IBANValidator.swift in Sources */,
 				F4807FB52641713700F30FF3 /* Amount.swift in Sources */,
 				F4807FC22641830D00F30FF3 /* CredentialsManager.swift in Sources */,
 				F4807F342640177600F30FF3 /* PaymentViewModel.swift in Sources */,
-				F4807F542641347F00F30FF3 /* UIView+Utils.swift in Sources */,
 				F4807C37263C20BA00F30FF3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -647,7 +635,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
 				INFOPLIST_FILE = GiniBankSDKExampleBank/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -671,7 +659,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
 				INFOPLIST_FILE = GiniBankSDKExampleBank/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
