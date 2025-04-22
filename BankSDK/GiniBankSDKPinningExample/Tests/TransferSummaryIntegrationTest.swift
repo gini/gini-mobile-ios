@@ -102,6 +102,8 @@ class TransferSummaryIntegrationTest: XCTestCase {
                         result.extractions["bic"]?.value)
          XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                         result.extractions["amountToPay"]?.value)
+         XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
+                        result.extractions["instantPayment"]?.value)
 
          // 3. Assuming the user saw the following extractions:
          //    amountToPay, iban, bic, paymentPurpose and paymentRecipient
@@ -130,6 +132,8 @@ class TransferSummaryIntegrationTest: XCTestCase {
                                     extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
                      XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                                     extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
+                        XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
+                                       extractionsAfterFeedback.first(where: { $0.name == "instantPayment" })?.value)
                      // 6. Free up resources after TAN verification
                      GiniBankConfiguration.shared.cleanup()
                      XCTAssertNil(GiniBankConfiguration.shared.documentService)
@@ -201,12 +205,14 @@ class TransferSummaryIntegrationTest: XCTestCase {
                   delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
                   // 4. Send transfer summary for the extractions the user saw
                   //    with the final (user confirmed or updated) extraction values
+                  let instantPaymentString = extractions["instantPayment"]?.value ?? ""
                   GiniBankConfiguration.shared.sendTransferSummary(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
                                                                    paymentReference: extractions["paymentReference"]?.value ?? "",
                                                                    paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
                                                                    iban: extractions["iban"]?.value ?? "",
                                                                    bic: extractions["bic"]?.value ?? "",
-                                                                   amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
+                                                                   amountToPay: ExtractionAmount(value: 950.00, currency: .EUR),
+                                                                   instantPayment: instantPaymentString.lowercased() == "true")
                case let .failure(error):
                   XCTFail(String(describing: error))
                }

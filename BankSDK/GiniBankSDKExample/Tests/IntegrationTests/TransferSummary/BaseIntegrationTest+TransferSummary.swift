@@ -65,6 +65,8 @@ extension BaseIntegrationTest {
                        extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
         XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                        extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
+        XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
+                       extractionsAfterFeedback.first(where: { $0.name == "instantPayment" })?.value)
 
         // Validate line items if applicable
         let fixtureLineItems = fixtureExtractionsAfterFeedbackContainer.compoundExtractions?.lineItems

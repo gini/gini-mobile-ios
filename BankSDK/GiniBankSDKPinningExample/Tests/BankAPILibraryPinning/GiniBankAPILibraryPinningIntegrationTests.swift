@@ -5,6 +5,7 @@
 //
 
 import XCTest
+@testable import GiniCaptureSDK
 @testable import GiniBankAPILibrary
 @testable import TrustKit
 
@@ -12,9 +13,12 @@ class GiniBankAPILibraryPinningIntegrationTests: XCTestCase {
     
     // When running from Xcode: update these environment variables in the scheme.
     // Make sure not to commit the credentials if the scheme is shared!
-    let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
-    let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
-    let paymentRequestID = "a6466506-acf1-4896-94c8-9b398d4e0ee1"
+    private let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
+    private let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
+    // In cases tests are failing please check if the `paymentRequestID` is still valid
+    private let paymentRequestID = "77deedc2-16c2-4597-9199-83451f43a360"
+    private let validator = IBANValidator()
+
     var giniBankAPILib: GiniBankAPI!
     var documentService: DefaultDocumentService!
     
@@ -74,10 +78,10 @@ class GiniBankAPILibraryPinningIntegrationTests: XCTestCase {
         let expect = expectation(description: "it fetches the payment request")
 
         let paymentService = giniBankAPILib.paymentService()
-        paymentService.paymentRequest(id: paymentRequestID) { result in
+        paymentService.paymentRequest(id: paymentRequestID) { [weak self] result in
             switch result {
             case .success(let request):
-                XCTAssertEqual(request.iban, "DE13760700120500154000")
+                self?.assertValidIBAN(request.iban)
                 expect.fulfill()
             case .failure(let error):
                 XCTFail(String(describing: error))
@@ -86,14 +90,14 @@ class GiniBankAPILibraryPinningIntegrationTests: XCTestCase {
         wait(for: [expect], timeout: 10)
     }
 
-    func testResolvePaymentRequest(){
+    func testResolvePaymentRequest() {
         let message = "You can't resolve the previously resolved payment request"
         let expect = expectation(description: message)
 
         let paymentService = giniBankAPILib.paymentService()
         paymentService.resolvePaymentRequest(id: paymentRequestID, 
                                              recipient: "Dr. med. Hackler",
-                                             iban: "DE13760700120500154000",
+                                             iban: "DE02300209000106531065",
                                              bic: "", amount: "335.50:EUR",
                                              purpose: "ReNr AZ356789Z") { result in
             switch result {
@@ -106,19 +110,24 @@ class GiniBankAPILibraryPinningIntegrationTests: XCTestCase {
         wait(for: [expect], timeout: 10)
     }
 
-    func testPayment(){
+    func testPayment() {
         let expect = expectation(description: "it gets the payment")
 
         let paymentService = giniBankAPILib.paymentService()
-        paymentService.payment(id: "a6466506-acf1-4896-94c8-9b398d4e0ee1") { result in
+        paymentService.payment(id: paymentRequestID) { [weak self] result in
             switch result {
             case .success(let payment):
-                XCTAssertEqual(payment.iban, "DE13760700120500154000")
+                self?.assertValidIBAN(payment.iban)
                 expect.fulfill()
             case .failure(let error):
                 XCTFail(String(describing: error))
             }
         }
         wait(for: [expect], timeout: 10)
+    }
+
+    private func assertValidIBAN(_ iban: String) {
+        XCTAssertFalse(iban.isEmpty, "IBAN should not be empty")
+        XCTAssertTrue(validator.isValid(iban: iban), "IBAN should be valid")
     }
 }

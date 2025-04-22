@@ -4,5 +4,5 @@
     "skontoEnabled": true,
     "returnAssistantEnabled": true,
     "transactionDocsEnabled": false,
-    "instantPayment": false
+    "instantPaymentEnabled": false
 }

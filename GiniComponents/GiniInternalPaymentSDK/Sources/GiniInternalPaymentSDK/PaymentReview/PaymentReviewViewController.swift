@@ -492,7 +492,7 @@ fileprivate extension PaymentReviewViewController {
         infoBar.isHidden = false
         animateInfoBar(verticalConstant: Constants.moveHeightInfoBar)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + model.configuration.popupAnimationDuration) {
             self.animateSlideDownInfoBar()
         }
     }
