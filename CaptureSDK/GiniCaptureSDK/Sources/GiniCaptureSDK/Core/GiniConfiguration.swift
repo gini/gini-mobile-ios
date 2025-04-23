@@ -279,6 +279,16 @@ import GiniBankAPILibrary
     public var imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
 
     /**
+     Set an adapter implementation to show a custom bottom navigation bar on the error screens.
+     */
+    public var errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the no results screen.
+     */
+    public var noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+
+    /**
       * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
      */
     public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?

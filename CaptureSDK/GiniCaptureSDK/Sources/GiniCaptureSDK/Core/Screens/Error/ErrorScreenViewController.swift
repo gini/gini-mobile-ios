@@ -162,7 +162,11 @@ class ErrorScreenViewController: UIViewController {
         if giniConfiguration.bottomNavigationBarEnabled {
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.leftBarButtonItem = nil
-            navigationBarBottomAdapter = DefaultErrorNavigationBarBottomAdapter()
+            if let bottomBar = giniConfiguration.errorNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBar
+            } else {
+                navigationBarBottomAdapter = DefaultErrorNavigationBarBottomAdapter()
+            }
             navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
                 self?.didPressBack()
             }
