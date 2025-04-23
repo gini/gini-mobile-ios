@@ -75,7 +75,8 @@ class TransferSummaryIntegrationTest: BaseIntegrationTest {
             // Call the updateAndVerifyTransferSummary method to handle the transfer summary update
             testCase.updateAndVerifyTransferSummary(result: result,
                                                     mockedInvoiceUpdatedResultName: mockedInvoiceResultAfterFeedbackName,
-                                                    expect: expect)
+                                                    expect: expect,
+                                                    verifyInstantPayment: verifyInstantPayment)
         }
 
         private func sentTransferSummery(result: AnalysisResult, verifyInstantPayment: Bool?) {

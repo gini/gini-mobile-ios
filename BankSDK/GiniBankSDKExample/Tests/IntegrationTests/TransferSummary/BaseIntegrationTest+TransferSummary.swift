@@ -13,7 +13,10 @@ import XCTest
 extension BaseIntegrationTest {
 
     // Method to handle updating and verifying feedback
-    func updateAndVerifyTransferSummary(result: AnalysisResult, mockedInvoiceUpdatedResultName: String, expect: XCTestExpectation) {
+    func updateAndVerifyTransferSummary(result: AnalysisResult,
+                                        mockedInvoiceUpdatedResultName: String,
+                                        expect: XCTestExpectation,
+                                        verifyInstantPayment: Bool? = nil) {
         // Assuming the user updated the amountToPay to "950.00:EUR"
         result.extractions["amountToPay"]?.value = "950.00:EUR"
 
@@ -27,7 +30,8 @@ extension BaseIntegrationTest {
                             self.handleSuccessfulTransferSummaryUpdate(extractionResult: extractionResult,
                                                                        mockedInvoiceUpdatedResultName: mockedInvoiceUpdatedResultName,
                                                                        expect: expect,
-                                                                       result: result)
+                                                                       result: result,
+                                                                       verifyInstantPayment: verifyInstantPayment)
                         case let .failure(error):
                             XCTFail("Error updating transfer summary: \(error)")
                     }
@@ -47,7 +51,8 @@ extension BaseIntegrationTest {
     private func handleSuccessfulTransferSummaryUpdate(extractionResult: ExtractionResult,
                                                        mockedInvoiceUpdatedResultName: String,
                                                        expect: XCTestExpectation,
-                                                       result: AnalysisResult) {
+                                                       result: AnalysisResult,
+                                                       verifyInstantPayment: Bool? = nil) {
         let extractionsAfterFeedback = extractionResult.extractions
         // Load the expected fixture after feedback
         guard let fixtureExtractionsAfterFeedbackContainer = self.loadFixtureExtractionsContainer(from: mockedInvoiceUpdatedResultName) else {
@@ -65,8 +70,16 @@ extension BaseIntegrationTest {
                        extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
         XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                        extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
-        XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
-                       extractionsAfterFeedback.first(where: { $0.name == "instantPayment" })?.value)
+
+        // Validate instant payment extraction if applicable
+        if let verifyInstantPayment, verifyInstantPayment {
+            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "instantPayment" })?.value,
+                           extractionsAfterFeedback.first(where: { $0.name == "instantPayment" })?.value)
+        } else {
+            // For now for every case that is not instant payment detected on the invoice or is on the invoice but not check marked, we receive from CVIE it as false
+            XCTAssertEqual(extractionsAfterFeedback.first(where: { $0.name == "instantPayment" })?.value,
+                           "false")
+        }
 
         // Validate line items if applicable
         let fixtureLineItems = fixtureExtractionsAfterFeedbackContainer.compoundExtractions?.lineItems
