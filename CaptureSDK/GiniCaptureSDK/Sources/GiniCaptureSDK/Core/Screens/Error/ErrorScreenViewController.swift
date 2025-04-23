@@ -210,7 +210,6 @@ class ErrorScreenViewController: UIViewController {
     }
 
     @objc func didPressBack() {
-        // TODO: PP-1132 check if analytics should be changed
         GiniAnalyticsManager.track(event: .closeTapped, screenName: .error)
         viewModel.didPressBack()
     }
