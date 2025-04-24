@@ -21,7 +21,6 @@ load "util/git.rb"
 load "util/swift_package_releases.rb"
 load "util/add_files_to_project.rb"
 load "util/sbom.rb"
-import "Fastfile_Health"
 
 platform :ios do
   desc <<~DOC
