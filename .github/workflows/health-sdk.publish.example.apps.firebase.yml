@@ -126,7 +126,7 @@ jobs:
       - name: Download IPA artifact
         uses: actions/download-artifact@v4
         with:
-          name: GiniHealthSDKExample.ipa
+          name: GiniHealthSDKExample
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
