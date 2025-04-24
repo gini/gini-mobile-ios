@@ -508,8 +508,7 @@ platform :ios do
       silent: true,
       clean:true,
       suppress_xcode_output: true,
-      export_options: { manageAppVersionAndBuildNumber: false },
-      skip_profile_detection: true
+      export_options: { manageAppVersionAndBuildNumber: false }
     )
   end
 end
