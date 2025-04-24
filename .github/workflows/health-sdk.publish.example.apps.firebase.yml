@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - '.github/workflows/**'
+      - '.github/bin/**'
+      - 'fastlane/**'
   workflow_dispatch:
 
 concurrency:
