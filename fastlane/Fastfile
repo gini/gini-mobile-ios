@@ -514,12 +514,13 @@ platform :ios do
   end
 
   desc "Distribute the app to Firebase App Distribution"
-  lane :distribute_to_firebase do
+  lane :distribute_to_firebase do |options|
     firebase_app_distribution(
       app: ENV['APP_ID'],
       #ipa_path: options[:ipa_path],
       groups: ENV['DISTRIBUTION_GROUPS'],
-      release_notes: ENV['RELEASE_NOTES']
+      release_notes: ENV['RELEASE_NOTES'],
+      firebase_cli_token: options[:token]
     )
   end
 end
