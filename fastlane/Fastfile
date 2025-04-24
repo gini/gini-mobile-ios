@@ -508,7 +508,19 @@ platform :ios do
       silent: true,
       clean:true,
       suppress_xcode_output: true,
-      export_options: { manageAppVersionAndBuildNumber: false }
+      export_options: { manageAppVersionAndBuildNumber: false },
+      output_name: ENV['IPA_FILE']
+    )
+  end
+
+  desc "Distribute the app to Firebase App Distribution"
+  lane :distribute_to_firebase do
+    firebase_app_distribution(
+      app: ENV['APP_ID'],
+      #ipa_path: options[:ipa_path],
+      groups: ENV['DISTRIBUTION_GROUPS'],
+      release_notes: ENV['RELEASE_NOTES'],
+      service_credentials_file: ENV['FIREBASE_SERVICE_CREDENTIALS']
     )
   end
 end

@@ -95,11 +95,12 @@ jobs:
         env:
           APP_SCHEME: ${{ env.APP_SCHEME }}
           TEAM_ID: ${{ env.TEAM_ID }}
+          IPA_FILE: GiniHealthSDKExample.ipa
 
       - name: Check IPA existence
         uses: andstor/file-existence-action@v3
         with:
-          files: "*.ipa"
+          files: "GiniHealthSDKExample.ipa"
           fail: true
 
       - name: Upload IPA artifact
@@ -116,16 +117,13 @@ jobs:
       firebase_console_uri: ${{ steps.distribute.outputs.FIREBASE_CONSOLE_URI }}
       testing_uri: ${{ steps.distribute.outputs.TESTING_URI }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Make scripts executable
         run: chmod +x ${{ github.workspace }}/.github/bin/*.sh
 
       - name: Download IPA artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: app-ipa
+          name: GiniHealthSDKExample.ipa
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
