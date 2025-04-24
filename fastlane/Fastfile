@@ -509,6 +509,7 @@ platform :ios do
       clean:true,
       suppress_xcode_output: true,
       export_options: { manageAppVersionAndBuildNumber: false }
+      skip_profile_detection: true
     )
   end
 end
