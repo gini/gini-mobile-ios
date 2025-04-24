@@ -15,6 +15,31 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios generate_certificates
+
+```sh
+[bundle exec] fastlane ios generate_certificates
+```
+
+Generate certificates
+
+
+### ios refresh_profiles
+
+```sh
+[bundle exec] fastlane ios refresh_profiles
+```
+
+
+
+### ios register_new_devices
+
+```sh
+[bundle exec] fastlane ios register_new_devices
+```
+
+
+
 ### ios publish_swift_package
 
 ```sh
