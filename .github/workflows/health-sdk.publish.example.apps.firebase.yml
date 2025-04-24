@@ -117,6 +117,9 @@ jobs:
       firebase_console_uri: ${{ steps.distribute.outputs.FIREBASE_CONSOLE_URI }}
       testing_uri: ${{ steps.distribute.outputs.TESTING_URI }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Make scripts executable
         run: chmod +x ${{ github.workspace }}/.github/bin/*.sh
 
