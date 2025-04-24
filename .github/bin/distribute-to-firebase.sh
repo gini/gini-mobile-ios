@@ -30,6 +30,7 @@ fi
 
 if [ -n "${INPUT_SERVICECREDENTIALSFILECONTENT}" ] ; then
     cat <<< "${INPUT_SERVICECREDENTIALSFILECONTENT}" > service_credentials_content.json
+    echo ${GOOGLE_APPLICATION_CREDENTIALS}
     export GOOGLE_APPLICATION_CREDENTIALS="service_credentials_content.json"
 fi
 
@@ -39,4 +40,4 @@ if [ -n "${INPUT_TOKEN}" ] ; then
 fi
 
 # run fastlane
-bundle exec fastlane "distribute_to_firebase" TOKEN:"${FIREBASE_TOKEN}" || exit 1
+bundle exec fastlane "distribute_to_firebase" TOKEN_PATH:"${GOOGLE_APPLICATION_CREDENTIALS}" || exit 1
