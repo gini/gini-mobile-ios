@@ -9,7 +9,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-publish
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
-# Variables definidas como env para GitHub Actions
 env:
   XCODE_VERSION: '15.3'
   APP_IDENTIFIER: 'net.gini.healthsdk.example'
@@ -46,7 +45,7 @@ jobs:
           bundler-cache: true
 
       - name: Setup credentials and certificates
-        run: ${{ github.workspace }}/bin/setup-credentials.sh
+        run: ${{ github.workspace }}/.github/bin/setup-credentials.sh
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE }}
           P12_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
