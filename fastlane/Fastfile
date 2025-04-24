@@ -519,8 +519,7 @@ platform :ios do
       app: ENV['APP_ID'],
       #ipa_path: options[:ipa_path],
       groups: ENV['DISTRIBUTION_GROUPS'],
-      release_notes: ENV['RELEASE_NOTES'],
-      service_credentials_file: ENV['FIREBASE_SERVICE_CREDENTIALS']
+      release_notes: ENV['RELEASE_NOTES']
     )
   end
 end
