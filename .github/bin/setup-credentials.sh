@@ -24,7 +24,7 @@ mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
 # Setup manual signing using fastlane
-bundle exec fastlane run setup_manual_signing project_path:"HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj" \
+bundle exec fastlane "setup_manual_signing" project_path:"HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj" \
   team_id:"$TEAM_ID" \
   target:"GiniHealthSDKExample" \
   bundle_identifier:"$APP_IDENTIFIER" \
