@@ -1,4 +1,5 @@
 name: Publish GiniHealthSDKExample to Firebase Distribution
+
 on:
   push:
     paths:
@@ -137,7 +138,7 @@ jobs:
 
       - name: Distribute to Firebase
         id: distribute
-        run: ${{ github.workspace }}/.github/bin/distribute-to-firebase.sh
+        run: ${{ github.workspace }}/.github/bin/publish_to_firebase.sh
         env:
           APP_ID: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
           FIREBASE_SERVICE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
