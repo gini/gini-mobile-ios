@@ -203,7 +203,8 @@ final class NoResultScreenViewController: UIViewController {
         buttonsBottomConstraint?.isActive = false
 
         NSLayoutConstraint.activate([
-            buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
+            buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
+                                                constant: -GiniMargins.margin),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),

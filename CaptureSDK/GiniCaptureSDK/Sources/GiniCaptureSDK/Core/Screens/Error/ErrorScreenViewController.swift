@@ -188,7 +188,8 @@ class ErrorScreenViewController: UIViewController {
         buttonsBottomConstraint?.isActive = false
 
         NSLayoutConstraint.activate([
-            buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
+            buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
+                                                constant: -GiniMargins.margin),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -255,7 +256,7 @@ class ErrorScreenViewController: UIViewController {
             errorHeader.heightAnchor.constraint(
                 greaterThanOrEqualToConstant: Constants.errorHeaderMinHeight),
             errorHeader.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
-                                           multiplier: Constants.errorHeaderHeightMultiplier)
+                                                multiplier: Constants.errorHeaderHeightMultiplier)
         ])
     }
 
@@ -274,7 +275,7 @@ class ErrorScreenViewController: UIViewController {
         )
         buttonsHeightConstraint = buttonsConstraint
         let bottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                  constant: -GiniMargins.margin)
+                                                                   constant: -GiniMargins.margin)
         buttonsBottomConstraint = bottomConstraint
         NSLayoutConstraint.activate([
             buttonsConstraint,
