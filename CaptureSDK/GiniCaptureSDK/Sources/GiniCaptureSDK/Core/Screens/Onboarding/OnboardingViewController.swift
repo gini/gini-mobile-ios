@@ -87,7 +87,7 @@ class OnboardingViewController: UIViewController {
             if view.currentInterfaceOrientation.isLandscape {
                 nextButton?.isHidden = false
                 skipBottomBarButton?.isHidden = !configuration.bottomNavigationBarEnabled || pageControl.currentPage == dataSource.pageModels.count - 1
-                bottomNavigationBar?.isHidden = true
+                bottomNavigationBar?.isHidden = false
                 let safeareaLeftPadding = view.safeAreaInsets.left
                 let safeareaRightPadding = view.safeAreaInsets.right
 
