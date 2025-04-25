@@ -6,7 +6,7 @@
 
 import UIKit
 
-class SlideFromLeftAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+class LeftSlideTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.3
     }
@@ -14,14 +14,15 @@ class SlideFromLeftAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard
             let toView = transitionContext.view(forKey: .to),
-            let fromView = transitionContext.view(forKey: .from)
+            let fromView = transitionContext.view(forKey: .from),
+            let toVC = transitionContext.viewController(forKey: .to)
         else {
             transitionContext.completeTransition(false)
             return
         }
 
         let container = transitionContext.containerView
-        let finalFrame = transitionContext.finalFrame(for: transitionContext.viewController(forKey: .to)!)
+        let finalFrame = transitionContext.finalFrame(for: toVC)
 
         toView.frame = finalFrame.offsetBy(dx: -container.frame.width, dy: 0)
         container.addSubview(toView)
