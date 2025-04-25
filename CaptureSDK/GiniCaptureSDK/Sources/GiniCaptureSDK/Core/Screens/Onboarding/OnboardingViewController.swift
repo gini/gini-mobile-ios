@@ -13,6 +13,7 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var buttonCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToPageControlConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToViewBottomConstraint: NSLayoutConstraint!
+    var bottomPaddingPageIndicatorConstraint: NSLayoutConstraint!
     @IBOutlet weak var skipBottomBarButton: MultilineTitleButton!
     private(set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
@@ -78,6 +79,10 @@ class OnboardingViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        if configuration.bottomNavigationBarEnabled {
+            bottomPaddingPageIndicatorConstraint.constant = getBottomPaddingForPageController()
+        }
         if UIDevice.current.isIphone {
             if view.currentInterfaceOrientation.isLandscape {
                 nextButton?.isHidden = false
@@ -121,9 +126,14 @@ class OnboardingViewController: UIViewController {
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        
+        bottomPaddingPageIndicatorConstraint = navigationBar.topAnchor.constraint(
+            equalTo: pageControl.bottomAnchor,
+            constant: getBottomPaddingForPageController()
+        )
+        
         NSLayoutConstraint.activate([
-            navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
-                                               constant: Constants.pageControlBottomBarPadding),
+            bottomPaddingPageIndicatorConstraint    ,
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -356,5 +366,12 @@ class CollectionFlowLayout: UICollectionViewFlowLayout {
 private extension OnboardingViewController {
     enum Constants {
         static let pageControlBottomBarPadding: CGFloat = 46
+    }
+    
+    func getBottomPaddingForPageController() -> CGFloat {
+        if UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape {
+            return 0
+        }
+        return Constants.pageControlBottomBarPadding
     }
 }
