@@ -216,9 +216,9 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func finishWithRetake() {
-        self.pages = []
-        self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .retry))
-        self.backToCamera()
+        pages = []
+        trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .retry))
+        backToCamera()
     }
 
     @objc public func finishWithCancellation() {
