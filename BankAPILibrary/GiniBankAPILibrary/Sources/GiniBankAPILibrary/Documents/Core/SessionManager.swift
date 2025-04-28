@@ -127,6 +127,10 @@ private extension SessionManager {
                            taskType: TaskType,
                            cancellationToken: CancellationToken?,
                            completion: @escaping CompletionResult<T.ResponseType>) {
+        guard var request = resource.request else {
+            completion(.failure(.unknown(response: nil, data: nil)))
+            return
+        }
         if let authServiceType = resource.authServiceType {
             var accessToken: String?
             var authType: AuthType?
@@ -144,7 +148,6 @@ private extension SessionManager {
             }
 
             if let accessToken = accessToken, let header = authType {
-                var request = resource.request
                 let authHeader = AuthHelper.authorizationHeader(for: accessToken, headerType: header)
                 request.addValue(authHeader.value, forHTTPHeaderField: authHeader.key)
                 dataTask(for: resource,
@@ -162,7 +165,7 @@ private extension SessionManager {
 
         } else {
             dataTask(for: resource,
-                     finalRequest: resource.request,
+                     finalRequest: request,
                      type: taskType,
                      cancellationToken: cancellationToken,
                      completion: completion).resume()
@@ -265,20 +268,24 @@ private extension SessionManager {
                                             response: HTTPURLResponse,
                                             data: Data,
                                             completion: @escaping CompletionResult<T.ResponseType>) {
+        let method = request.httpMethod ?? "unknown method"
+        let url = request.url?.absoluteString ?? "unknown URL"
+        let dataString = String(data: data, encoding: .utf8) ?? "nil"
+
         do {
             let result = try resource.parsed(response: response, data: data)
-            Log("Success: \(request.httpMethod!) - \(request.url!)", event: .success)
+            Log("Success: \(method) - \(url)", event: .success)
             completion(.success(result))
         } catch let error {
             Log("""
-                Failure: \(request.httpMethod!) - \(request.url!)
-                Parse error: \(error)
-                Data content: \(String(data: data, encoding: .utf8) ?? "nil")
-                """, event: .error)
+        Failure: \(method) - \(url)
+        Parse error: \(error)
+        Data content: \(dataString)
+        """, event: .error)
+
             completion(.failure(.parseError(message: "Failed to parse response",
                                             response: response,
-                                            data: data))
-            )
+                                            data: data)))
         }
     }
 
