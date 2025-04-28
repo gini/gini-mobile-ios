@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DocumentService Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Protocol/DocumentService" class="dashAnchor"></a>
+
+    <a title="DocumentService Protocol Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+        <img class="logo-icon" src="../img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">GiniBankAPILibrary Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      DocumentService Protocol Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../getting-started.html">Getting started</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../migration-guide.html">Migration guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AnalyticsService.html">AnalyticsService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CancellationToken.html">CancellationToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ClientConfigurationService.html">ClientConfigurationService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDocumentService.html">DefaultDocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction.html">Extraction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction/Box.html">– Box</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction/Candidate.html">– Candidate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ExtractionResult.html">ExtractionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBankAPI.html">GiniBankAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBankAPI/Builder.html">– Builder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PaymentService.html">PaymentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ReturnReason.html">ReturnReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Token.html">Token</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:18GiniBankAPILibrary0abC7VersionSSvp">GiniBankAPILibraryVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/APIDomain.html">APIDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniError.html">GiniError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/LogLevel.html">LogLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/UserDomain.html">UserDomain</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AlternativeTokenSource.html">AlternativeTokenSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AnalyticsServiceProtocol.html">AnalyticsServiceProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ClientConfigurationServiceProtocol.html">ClientConfigurationServiceProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DocumentService.html">DocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniErrorProtocol.html">GiniErrorProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PaymentServiceProtocol.html">PaymentServiceProtocol</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AmplitudeBaseEvent.html">AmplitudeBaseEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AmplitudeBaseEvent/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AmplitudeEventOptions.html">AmplitudeEventOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AmplitudeEventsBatchPayload.html">AmplitudeEventsBatchPayload</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Client.html">Client</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ClientConfiguration.html">ClientConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CompositeDocument.html">CompositeDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CompositeDocumentInfo.html">CompositeDocumentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document.html">Document</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Layout.html">– Layout</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Page.html">– Page</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/UploadMetadata.html">– UploadMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Progress.html">– Progress</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Origin.html">– Origin</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/SourceClassification.html">– SourceClassification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/DocType.html">– DocType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Links.html">– Links</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/TypeV2.html">– TypeV2</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Metadata.html">– Metadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ErrorEvent.html">ErrorEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Structs.html#/s:18GiniBankAPILibrary5LinksV">Links</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PartialDocumentInfo.html">PartialDocumentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Payment.html">Payment</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Structs.html#/s:18GiniBankAPILibrary12PaymentLinksV">PaymentLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentRequest.html">PaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ResolvedPaymentRequest.html">ResolvedPaymentRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Type Aliases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary15PaymentRequestsa">PaymentRequests</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>DocumentService</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DocumentService</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP9apiDomainAA9APIDomainOvp"></a>
+                    <a name="//apple_ref/swift/Property/apiDomain" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP9apiDomainAA9APIDomainOvp">apiDomain</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">apiDomain</span><span class="p">:</span> <span class="kt"><a href="../Enums/APIDomain.html">APIDomain</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP6delete_10completionyAA0D0V_ys6ResultOySSAA0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/delete(_:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP6delete_10completionyAA0D0V_ys6ResultOySSAA0A5ErrorOGctF">delete(_:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Deletes a document</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">delete</span><span class="p">(</span><span class="n">_</span> <span class="nv">document</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="p">,</span>
+            <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>document</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Document to be deleted</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A completion callback</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP9documents5limit6offset10completionySiSg_AHys6ResultOySayAA0D0VGAA0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/documents(limit:offset:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP9documents5limit6offset10completionySiSg_AHys6ResultOySayAA0D0VGAA0A5ErrorOGctF">documents(limit:offset:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fetches the user documents, with the possibility to retrieve them paginated</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">documents</span><span class="p">(</span><span class="nv">limit</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?,</span>
+               <span class="nv">offset</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?,</span>
+               <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="p">]</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>limit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Limit of documents to retrieve</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>offset</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Document&rsquo;s offset</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A completion callback, returning the document list on success</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP11extractions3for17cancellationToken10completionyAA0D0V_AA012CancellationI0Cys6ResultOyAA010ExtractionL0CAA0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/extractions(for:cancellationToken:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP11extractions3for17cancellationToken10completionyAA0D0V_AA012CancellationI0Cys6ResultOyAA010ExtractionL0CAA0A5ErrorOGctF">extractions(for:cancellationToken:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves the extractions for a given document.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">extractions</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="p">,</span>
+                 <span class="nv">cancellationToken</span><span class="p">:</span> <span class="kt"><a href="../Classes/CancellationToken.html">CancellationToken</a></span><span class="p">,</span>
+                 <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/ExtractionResult.html">ExtractionResult</a></span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>document</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Document to get the extractions for</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cancellationToken</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Token use to stopped the analysis when a user cancels it</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A completion callback, returning the extraction list on success</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP11extractions3for10completionySS_ys6ResultOyAA010ExtractionI0CAA0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/extractions(for:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP11extractions3for10completionySS_ys6ResultOyAA010ExtractionI0CAA0A5ErrorOGctF">extractions(for:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves the extractions for a given documentId.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">extractions</span><span class="p">(</span><span class="k">for</span> <span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                 <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/ExtractionResult.html">ExtractionResult</a></span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documentId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document&rsquo;s unique identifier</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A completion callback, returning the extraction list on success</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP05fetchD04with10completionySS_ys6ResultOyAA0D0VAA0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/fetchDocument(with:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP05fetchD04with10completionySS_ys6ResultOyAA0D0VAA0A5ErrorOGctF">fetchDocument(with:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves a document for a given document id</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">fetchDocument</span><span class="p">(</span><span class="n">with</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                   <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document&rsquo;s unique identifier</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A completion callback, returning the requested document on success</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP6layout3for10completionyAA0D0V_ys6ResultOyAH6LayoutVAA0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/layout(for:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP6layout3for10completionyAA0D0V_ys6ResultOyAH6LayoutVAA0A5ErrorOGctF">layout(for:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves the layout of a given document</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">layout</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="p">,</span>
+            <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">Layout</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>document</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document from which to retrieve the page data</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A completion callback, returning the requested document layout on success</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP5pages2in10completionyAA0D0V_ys6ResultOySayAH4PageVGAA0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/pages(in:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP5pages2in10completionyAA0D0V_ys6ResultOySayAH4PageVGAA0A5ErrorOGctF">pages(in:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves the pages of a given document</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">pages</span><span class="p">(</span><span class="k">in</span> <span class="nv">document</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="p">,</span>
+           <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">Page</span><span class="p">]</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>document</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document from which to retrieve the page data</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A completion callback, returning the requested document layout on success</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP5pages3for10completionySS_ys6ResultOySayAA0D0V4PageVGAA0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/pages(for:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP5pages3for10completionySS_ys6ResultOySayAA0D0V4PageVGAA0A5ErrorOGctF">pages(for:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves the pages of a given document</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">pages</span><span class="p">(</span><span class="k">for</span> <span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+           <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">Page</span><span class="p">]</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document&rsquo;s unique identifier</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A completion callback, returning the requested document layout on success</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP11pagePreview3for0F6Number4size10completionyAA0D0V_SiAJ4PageV4SizeOys6ResultOy10Foundation4DataVAA0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/pagePreview(for:pageNumber:size:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP11pagePreview3for0F6Number4size10completionyAA0D0V_SiAJ4PageV4SizeOys6ResultOy10Foundation4DataVAA0A5ErrorOGctF">pagePreview(for:pageNumber:size:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves the page preview of a document for a given page and size</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">pagePreview</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="p">,</span>
+                 <span class="nv">pageNumber</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+                 <span class="nv">size</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">Page</span><span class="o">.</span><span class="kt">Size</span><span class="p">,</span>
+                 <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="kt">Data</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>document</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Document to get the preview for</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>pageNumber</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document&rsquo;s page number</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>size</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document&rsquo;s page size</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A completion callback, returning the requested page preview on success</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP12documentPage3for10pageNumber4size10completionyAA0D0V_SiAJ0G0V4SizeOys6ResultOy10Foundation4DataVAA0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/documentPage(for:pageNumber:size:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP12documentPage3for10pageNumber4size10completionyAA0D0V_SiAJ0G0V4SizeOys6ResultOy10Foundation4DataVAA0A5ErrorOGctF">documentPage(for:pageNumber:size:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves the page data of a document for a given page number and size</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">documentPage</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="p">,</span>
+                  <span class="nv">pageNumber</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+                  <span class="nv">size</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="o">.</span><span class="kt">Page</span><span class="o">.</span><span class="kt">Size</span><span class="p">,</span>
+                  <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="kt">Data</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>document</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document from which to retrieve the page data</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>pageNumber</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document&rsquo;s page number</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>size</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The size of the page to retrieve (e.g., large, medium)</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A completion callback, returning the requested page preview on success, or an error on failure</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP14submitFeedback3for4with10completionyAA0D0V_SayAA10ExtractionCGys6ResultOyytAA0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/submitFeedback(for:with:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP14submitFeedback3for4with10completionyAA0D0V_SayAA10ExtractionCGys6ResultOyytAA0A5ErrorOGctF">submitFeedback(for:with:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Submits the analysis feedback for a given document.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">submitFeedback</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="p">,</span>
+                    <span class="n">with</span> <span class="nv">extractions</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/Extraction.html">Extraction</a></span><span class="p">],</span>
+                    <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="kt">Void</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>document</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document which the feedback will be updated to</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>extractions</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document&rsquo;s updated extractions</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A completion callback</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary15DocumentServiceP3log10errorEvent10completionyAA05ErrorH0V_ys6ResultOyytAA0aJ0OGctF"></a>
+                    <a name="//apple_ref/swift/Method/log(errorEvent:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary15DocumentServiceP3log10errorEvent10completionyAA05ErrorH0V_ys6ResultOyytAA0aJ0OGctF">log(errorEvent:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Logs an error event.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">log</span><span class="p">(</span><span class="nv">errorEvent</span><span class="p">:</span> <span class="kt"><a href="../Structs/ErrorEvent.html">ErrorEvent</a></span><span class="p">,</span>
+         <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a></span><span class="o">&lt;</span><span class="kt">Void</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>errorEvent</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The error event details</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2025 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2025-04-28)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
