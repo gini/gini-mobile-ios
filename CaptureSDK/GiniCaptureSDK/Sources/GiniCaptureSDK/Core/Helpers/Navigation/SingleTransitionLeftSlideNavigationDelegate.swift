@@ -1,5 +1,5 @@
 //
-//  OneTimeSlideFromLeftNavigationDelegate.swift
+//  SingleTransitionLeftSlideNavigationDelegate.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
