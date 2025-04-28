@@ -50,4 +50,13 @@ extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionVie
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         pageControl.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
     }
+    
+    @objc func pageControlTapHandler() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: { [weak self] in
+            guard let self else { return }
+            
+            collectionView.scrollToItem(at: IndexPath(row: 0, section: pageControl.currentPage),
+                                        at: .centeredHorizontally, animated: true)
+        })
+    }
 }
