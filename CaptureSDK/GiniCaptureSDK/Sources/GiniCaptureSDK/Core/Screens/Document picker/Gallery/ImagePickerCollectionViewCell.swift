@@ -66,6 +66,7 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        contentView.isAccessibilityElement = true
         contentView.addSubview(galleryImage)
         contentView.addSubview(selectedForegroundView)
         contentView.addSubview(checkCircleBackground)

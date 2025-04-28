@@ -51,7 +51,20 @@ final class OrderListViewModel {
             case .success:
                 self?.handlePaymentRequestDeletion(for: order)
             case .failure(let error):
-                self?.errorMessage = error.localizedDescription
+                self?.errorMessage = error.message
+            }
+        })
+    }
+    
+    func deleteOders() {
+        let orderIds = orders.compactMap(\.id)
+        
+        health.deletePaymentRequests(ids: orderIds, completion: { [weak self] result in
+            switch result {
+            case .success:
+                self?.orders.forEach { self?.handlePaymentRequestDeletion(for: $0) }
+            case .failure(let error):
+                self?.errorMessage = error.message
             }
         })
     }
