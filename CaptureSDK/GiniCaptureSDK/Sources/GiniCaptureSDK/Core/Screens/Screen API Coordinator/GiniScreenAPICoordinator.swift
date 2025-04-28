@@ -85,6 +85,11 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     }
 
     public func start(withDocuments documents: [GiniCaptureDocument]?,
+                      animated: Bool = false) -> UIViewController {
+        return start(withDocuments: documents, backAnimated: false, animated: animated)
+    }
+
+    func start(withDocuments documents: [GiniCaptureDocument]?,
                       backAnimated: Bool = false,
                       animated: Bool = false) -> UIViewController {
         var viewControllers: [UIViewController] = []
