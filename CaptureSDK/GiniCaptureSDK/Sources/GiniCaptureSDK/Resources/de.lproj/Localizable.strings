@@ -88,7 +88,7 @@
 "ginicapture.review.unknownError"       = "Auf dem Überprüfungsbildschirm ist ein unbekannter Fehler aufgetreten";
 "ginicapture.review.delete"             = "Seite löschen";
 
-"ginicapture.analysis.screenTitle" = "Übersicht";
+"ginicapture.analysis.screenTitle" = "Auswertung";
 "ginicapture.analysis.loadingText" = "Dokument wird analysiert";
 "ginicapture.analysis.loadingText.pdf" = "%@\nwird analysiert";
 "ginicapture.analysis.section.header" = "Nützliche Tipps";
