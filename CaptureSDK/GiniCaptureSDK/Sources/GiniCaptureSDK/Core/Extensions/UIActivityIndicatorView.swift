@@ -9,10 +9,6 @@ import UIKit
 
 extension UIActivityIndicatorView {
     func applyLargeStyle() {
-        if #available(iOS 13.0, *) {
-            self.style = .large
-        } else {
-            self.style = .whiteLarge
-        }
+        self.style = .large
     }
 }

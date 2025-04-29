@@ -198,7 +198,7 @@ public final class ReviewViewController: UIViewController {
     private var loadingIndicatorView: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView()
         indicatorView.hidesWhenStopped = true
-        indicatorView.style = .whiteLarge
+        indicatorView.style = .large
         indicatorView.color = GiniColor(light: UIColor.GiniCapture.dark3, dark: UIColor.GiniCapture.light3).uiColor()
         return indicatorView
     }()
