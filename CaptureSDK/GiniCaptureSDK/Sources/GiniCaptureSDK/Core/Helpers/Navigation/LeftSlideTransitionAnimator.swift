@@ -6,11 +6,11 @@
 
 import UIKit
 
-/*
+/**
  LeftSlideTransitionAnimator defines a custom animation for navigation controller transitions.
  It performs a left-to-right slide where the new view controller slides in from the left
  and the current one slides out to the right.
-*/
+ */
 final class LeftSlideTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.3
