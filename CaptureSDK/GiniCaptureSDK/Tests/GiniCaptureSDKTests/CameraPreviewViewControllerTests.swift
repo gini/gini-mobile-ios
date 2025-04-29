@@ -32,8 +32,9 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         let camera = CameraMock(state: .unauthorized)
         cameraPreviewViewController = CameraPreviewViewController(giniConfiguration: GiniConfiguration(),
                                                                   camera: camera)
-        cameraPreviewViewController.setupCamera()
-        
+        let bottomAnchor = cameraPreviewViewController.view.bottomAnchor
+        cameraPreviewViewController.setupCamera(bottomAnchor: bottomAnchor)
+
         let notAuthorizedView = cameraPreviewViewController
             .view
             .subviews
@@ -48,8 +49,9 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         giniConfiguration.qrCodeScanningEnabled = true
         cameraPreviewViewController = CameraPreviewViewController(giniConfiguration: giniConfiguration)
         _ = cameraPreviewViewController.view
-        cameraPreviewViewController.setupCamera()
-        
+        let bottomAnchor = cameraPreviewViewController.view.bottomAnchor
+        cameraPreviewViewController.setupCamera(bottomAnchor: bottomAnchor)
+
         DispatchQueue.main.async {
             let metadataOutput = self.cameraPreviewViewController.previewView.session
                 .outputs
@@ -66,7 +68,8 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         giniConfiguration.debugModeOn = true
         cameraPreviewViewController = CameraPreviewViewController(giniConfiguration: giniConfiguration)
         _ = cameraPreviewViewController.view
-        cameraPreviewViewController.setupCamera()
+        let bottomAnchor = cameraPreviewViewController.view.bottomAnchor
+        cameraPreviewViewController.setupCamera(bottomAnchor: bottomAnchor)
 
         cameraPreviewViewController.captureImage { imageData, _ in
             XCTAssertNotNil(imageData, "image captured data should not be nil")
