@@ -32,11 +32,7 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
 
     lazy var tableView: UITableView = {
         var tableView: UITableView
-        if #available(iOS 13.0, *) {
-            tableView = UITableView(frame: .zero, style: .insetGrouped)
-        } else {
-            tableView = UITableView(frame: .zero, style: .grouped)
-        }
+        tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()

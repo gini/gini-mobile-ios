@@ -409,7 +409,8 @@ extension AppCoordinator: DebugMenuPresenter {
         let debugMenuViewController = DebugMenuViewController(showReviewScreen: giniHealthConfiguration.showPaymentReviewScreen,
                                                               useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
                                                               paymentComponentConfiguration: health.paymentComponentConfiguration,
-                                                              showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton)
+                                                              showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton,
+                                                              popupDuration: giniHealthConfiguration.popupDurationPaymentReview)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -434,7 +435,16 @@ extension AppCoordinator: DebugMenuDelegate {
         giniHealthConfiguration.customLocalization = localization
         health.setConfiguration(giniHealthConfiguration)
     }
+    
+    func didChangeSliderValue(value: Float) {
+        giniHealthConfiguration.popupDurationPaymentReview = TimeInterval(value)
+    }
 
+    func didCustomizeShareWithFilename(filename: String) {
+        giniHealthConfiguration.shareWithFileName = filename
+        health.setConfiguration(giniHealthConfiguration)
+    }
+    
     func didTapOnBulkDelete() {
         let documentsToDeleteIds = Array(hardcodedInvoicesController.getInvoicesWithExtractions()
             .map { $0.documentId }
