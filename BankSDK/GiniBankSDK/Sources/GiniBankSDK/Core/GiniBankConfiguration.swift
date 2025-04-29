@@ -329,8 +329,6 @@ public final class GiniBankConfiguration: NSObject {
 
     // MARK: - Transaction Docs feature
     /**
-     Indicates whether the Return reasons feature is enabled or not. In the case of `true`,
-     the users will be asked to select from a predefined list of reasons why they decided to return an item.
      * Indicates whether the Transaction Docs feature is enabled or not. If set to `true`,
      * the user will be presented with an alert dialog in the photo payment flow to choose
      * whether to attach images or PDFs to the transaction.
