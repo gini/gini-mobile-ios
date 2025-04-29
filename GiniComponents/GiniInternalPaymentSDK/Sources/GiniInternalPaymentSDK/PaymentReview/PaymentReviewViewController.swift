@@ -61,10 +61,6 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             showInfoBar()
             showInfoBarOnce = false
         }
-        if model.previousPaymentComponentScreenType == .bankPicker {
-            model.openBankSelectionBottomSheet()
-            model.previousPaymentComponentScreenType = nil
-        }
     }
 
     fileprivate func setupViewModel() {
