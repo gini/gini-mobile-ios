@@ -61,7 +61,7 @@ final class DocumentPagesViewController: UIViewController {
     private lazy var loadingIndicatorView: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView()
         indicatorView.hidesWhenStopped = true
-        indicatorView.style = .whiteLarge
+        indicatorView.style = .large
         return indicatorView
     }()
 
@@ -75,7 +75,7 @@ final class DocumentPagesViewController: UIViewController {
     private var contentStackViewTopConstraint: NSLayoutConstraint?
 
     private var zoomAnalyticsEventSent: Bool = false
-    
+
     // MARK: - Init
     init(screenTitle: String? = nil, errorButtonTitle: String) {
         self.screenTitle = screenTitle
