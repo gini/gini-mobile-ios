@@ -185,7 +185,7 @@ open class ZoomedImageView: UIScrollView {
         }
         
         zoomView = UIImageView(image: image)
-        zoomView!.isUserInteractionEnabled = true
+        zoomView?.isUserInteractionEnabled = true
         addSubview(zoomView!)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomedImageView.doubleTapGestureRecognizer(_:)))
@@ -200,12 +200,7 @@ open class ZoomedImageView: UIScrollView {
         contentSize = imageSize
         setMaxMinZoomScalesForCurrentBounds()
         zoomScale = minimumZoomScale
-
-        if UIDevice.isPortrait() {
-            imageContentMode = .aspectFit
-        } else {
-            imageContentMode = .widthFill
-        }
+        imageContentMode = .aspectFit
         
         switch initialOffset {
         case .begining:
