@@ -12,7 +12,7 @@ class SkontoHelpHeaderView: UIView {
         titleLabel.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.header.title",
                                                                    comment: "Save money by paying promptly")
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = .giniColorScheme().text.primary.uiColor()
+        titleLabel.textColor = .giniBankColorScheme().text.primary.uiColor()
         titleLabel.font = configuration.textStyleFonts[.bodyBold]
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.numberOfLines = Constants.labelNumberOfLines
@@ -24,7 +24,7 @@ class SkontoHelpHeaderView: UIView {
         titleLabel.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.help.header.subtitle",
                                                                    comment: "Many companies offer Skonto discounts...")
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = .giniColorScheme().text.secondary.uiColor()
+        titleLabel.textColor = .giniBankColorScheme().text.secondary.uiColor()
         titleLabel.font = configuration.textStyleFonts[.body]
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.numberOfLines = Constants.labelNumberOfLines

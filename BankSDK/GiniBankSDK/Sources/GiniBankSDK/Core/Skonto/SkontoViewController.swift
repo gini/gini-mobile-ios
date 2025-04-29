@@ -35,7 +35,7 @@ final class SkontoViewController: UIViewController {
     private lazy var withDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().container.background.uiColor()
+        view.backgroundColor = .giniBankColorScheme().container.background.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()
@@ -54,7 +54,7 @@ final class SkontoViewController: UIViewController {
     private lazy var withoutDiscountContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .giniColorScheme().container.background.uiColor()
+        view.backgroundColor = .giniBankColorScheme().container.background.uiColor()
         view.layer.cornerRadius = Constants.groupCornerRadius
         return view
     }()
@@ -130,7 +130,7 @@ final class SkontoViewController: UIViewController {
         let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
                                                                        comment: "Back")
         edgesForExtendedLayout = []
-        view.backgroundColor = .giniColorScheme().background.primary.uiColor()
+        view.backgroundColor = .giniBankColorScheme().background.primary.uiColor()
         if !configuration.bottomNavigationBarEnabled {
             let helpButton = GiniBarButton(ofType: .help)
             helpButton.addAction(self, #selector(helpButtonTapped))

@@ -9,6 +9,7 @@ import Foundation
 import XCTest
 @testable import GiniCaptureSDK
 @testable import GiniBankAPILibrary
+@testable import GiniUtilites
 
 class BankAPILibraryIntegrationTests: BaseIntegrationTest {
     // In cases tests are failing please check if the `paymentRequestID` is still valid
