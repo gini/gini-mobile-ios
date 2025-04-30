@@ -19,9 +19,7 @@ public final class CustomLoadingIndicator: UIActivityIndicatorView, CustomLoadin
     }
 
     public func injectedView() -> UIView {
-        if #available(iOS 13.0, *) {
-            self.style = .large
-        }
+        self.style = .large
         self.color = .blue
         self.startAnimating()
 
@@ -42,9 +40,7 @@ public final class OnButtonLoading: UIActivityIndicatorView, OnButtonLoadingIndi
     }
 
     public func injectedView() -> UIView {
-        if #available(iOS 13.0, *) {
-            self.style = .large
-        }
+        self.style = .large
         self.color = .red
         self.startAnimating()
 

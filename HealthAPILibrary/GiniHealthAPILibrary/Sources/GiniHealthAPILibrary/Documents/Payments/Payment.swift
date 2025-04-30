@@ -61,7 +61,7 @@ public struct Payment: Decodable {
 
         self.amount = try container.decode(String.self, forKey: .amount)
         self.purpose = try container.decode(String.self, forKey: .purpose)
-        self.links = try container.decode(PaymentLinks.self, forKey: .links)
+        self.links = try? container.decodeIfPresent(PaymentLinks.self, forKey: .links)
     }
 }
 
