@@ -37,7 +37,8 @@ import UIKit
     var didShowAnalysis: (() -> Void)?
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
-
+    private let useCustomLoadingView: Bool = true
+    private var loadingController: QREducationLoadingController?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
     // User interface
@@ -211,17 +212,47 @@ import UIKit
     }
 
     private func configureLoadingIndicator() {
-        loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        if useCustomLoadingView {
+            let customLoadingView = QREducationLoadingView()
+            customLoadingView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(customLoadingView)
 
-        addLoadingContainer()
-        addLoadingView(intoContainer: loadingIndicatorContainer)
+            NSLayoutConstraint.activate([
+                customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+                                                           constant: Constants.padding),
+                customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
+                                                            constant: -Constants.padding)
+            ])
 
-        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
-            addLoadingText(below: loadingIndicator.injectedView())
-            loadingIndicator.startAnimation()
+            let rotatingModels = [
+                QREducationLoadingModel(image: UIImageNamedPreferred(named: "qrEducation1"),
+                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
+                                                                               comment: "Education intro"),
+                                        duration: 0.5),
+                QREducationLoadingModel(image: UIImageNamedPreferred(named: "qrEducation2"),
+                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo.step1",
+                                                                               comment: "Education step 1"),
+                                        duration: 0.5)
+            ]
+
+            let controller = QREducationLoadingController(loadingView: customLoadingView)
+            controller.setRotatingModels(rotatingModels)
+            loadingController = controller
+
         } else {
-            addLoadingText(below: loadingIndicatorView)
-            loadingIndicatorView.startAnimating()
+            loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+            addLoadingContainer()
+            addLoadingView(intoContainer: loadingIndicatorContainer)
+
+            if let loadingIndicator = giniConfiguration.customLoadingIndicator {
+                addLoadingText(below: loadingIndicator.injectedView())
+                loadingIndicator.startAnimation()
+            } else {
+                addLoadingText(below: loadingIndicatorView)
+                loadingIndicatorView.startAnimating()
+            }
         }
     }
 
