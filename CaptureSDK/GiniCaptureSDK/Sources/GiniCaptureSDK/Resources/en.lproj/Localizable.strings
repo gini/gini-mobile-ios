@@ -107,6 +107,9 @@
 "ginicapture.analysis.error.analysis" = "An error occurred while parsing the document.";
 "ginicapture.analysis.error.cancelled" = "The analysis was cancelled";
 "ginicapture.analysis.defaultPdfDokumentTitle" = "PDF document";
+"ginicapture.analysis.education.loadingText" = "analyzing";
+"ginicapture.analysis.education.intro" = "In case you didn’t know...";
+"ginicapture.analysis.education.photo.step1" = "Upload PDFs, images, or GIFs.";
 
 "ginicapture.help.openWithTutorial.title" = "Open documents from other apps";
 
