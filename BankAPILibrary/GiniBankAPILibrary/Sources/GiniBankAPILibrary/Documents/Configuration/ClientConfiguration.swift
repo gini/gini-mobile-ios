@@ -12,7 +12,7 @@ import Foundation
  
  This struct holds various configuration options that can be used to customize the behavior and features.
 
- Note: This configuration is intended for internal use with Gini SDKs only.
+ Note: This configuration is intended for internal use in Gini SDKs only.
  */
 public struct ClientConfiguration: Codable {
 
