@@ -4,5 +4,6 @@
     "skontoEnabled": true,
     "returnAssistantEnabled": true,
     "transactionDocsEnabled": false,
-    "instantPaymentEnabled": false
+    "instantPaymentEnabled": false,
+    "qrCodeEducationEnabled": false
 }
