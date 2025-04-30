@@ -272,7 +272,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
         Self.currentCoordinator = self
         setupAnalytics(withDocuments: documents)
-        configurationService?.fetchConfigurations(completion: { result in
+        configurationService?.fetchConfigurations { result in
             switch result {
             case .success(let configuration):
                 DispatchQueue.main.async {
@@ -285,8 +285,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 // We will not implement any caching mechanism on our side if the request is too slow.
                 // In case of a failure, the UJ analytics will remain disabled for that session.
             }
-        })
-        return self.start(withDocuments: documents, animated: animated)
+        }
+        return start(withDocuments: documents, animated: animated)
     }
 
     public static func closeSDK() {
@@ -334,7 +334,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
     private func sendAnalyticsEventSDKClose() {
         GiniAnalyticsManager.track(event: .sdkClosed,
-                                   properties: [GiniAnalyticsProperty(key: .status, 
+                                   properties: [GiniAnalyticsProperty(key: .status,
                                                                       value: "successful")])
     }
 
