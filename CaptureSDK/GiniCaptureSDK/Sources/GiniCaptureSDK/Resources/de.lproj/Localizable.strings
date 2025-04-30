@@ -166,7 +166,7 @@
 "ginicapture.help.import.importtoapp.desc" = "Nun die Banking App aus der angezeigten Liste auswählen, um das Dokument zum Analysieren weiterzuleiten.";
 "ginicapture.help.import.importtoapp.accessibility" = "Banking App auswählen. Wählen Sie nun die gewünschte App aus mit der das Dokument geteilt werden soll";
 "ginicapture.help.import.draganddrop.title" = "Drag & drop auf dem iPad";
-"ginicapture.help.import.draganddrop.desc" = "Auf dem iPad können Sie ab iOS 12 oder neuer PDFs oder Fotos bequem aus der Datei-Browser-App per “Drag and Drop” in die Banking App gezogen werden, um den Überweisungsprozess zu starten. Hierzu öffnen Sie zunächst Ihre Banking App und die Datei-Browser-App parallel auf Ihrem Bildschirm. Ziehen Sie dann die gewünschte Datei rüber in die Banking App.";
+"ginicapture.help.import.draganddrop.desc" = "Auf dem iPad können Sie PDFs oder Fotos bequem aus der Datei-Browser-App per “Drag and Drop” in die Banking App gezogen werden, um den Überweisungsprozess zu starten. Hierzu öffnen Sie zunächst Ihre Banking App und die Datei-Browser-App parallel auf Ihrem Bildschirm. Ziehen Sie dann die gewünschte Datei rüber in die Banking App.";
 "ginicapture.help.import.draganddrop.accessibility" = "Auf dem Tablet können Sie auch die zu teilende Datei mit Drag and Drop in die Banking App ziehen";
 
 "ginicapture.help.supportedFormats.title" = "Formate";

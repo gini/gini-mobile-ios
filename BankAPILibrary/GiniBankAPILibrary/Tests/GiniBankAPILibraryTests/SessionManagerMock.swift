@@ -27,7 +27,7 @@ final class SessionManagerMock: SessionManagerProtocol {
 
 
     init(keyStore: KeyStore = KeychainStore(),
-         urlSession: URLSession = URLSession()) {
+         urlSession: URLSession = URLSession(configuration: .default)) {
         
     }
     
@@ -97,10 +97,10 @@ final class SessionManagerMock: SessionManagerProtocol {
                 let payment: Payment = loadPayment()
                 completion(.success(payment as! T.ResponseType))
             case .feedback(_):
-                extractionFeedbackBody = resource.request.httpBody ?? nil
+                extractionFeedbackBody = resource.request?.httpBody ?? nil
                 completion(.success("Feedback was sent" as! T.ResponseType))
             case .logErrorEvent:
-                logErrorEventBody = resource.request.httpBody ?? nil
+                logErrorEventBody = resource.request?.httpBody ?? nil
                 completion(.success("Logged" as! T.ResponseType))
             default: break
             }
