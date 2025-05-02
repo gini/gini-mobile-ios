@@ -350,7 +350,9 @@ extension OnboardingViewController: OnboardingScreen {
             }
         default:
             if configuration.bottomNavigationBarEnabled,
-                let bottomNavigationBar = bottomNavigationBar {
+                let bottomNavigationBar = bottomNavigationBar,
+               configuration.onboardingNavigationBarBottomAdapter == nil {
+                
                 navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next],
                                                         navigationBar: bottomNavigationBar)
                 skipBottomBarButton.isHidden = !(UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape)
