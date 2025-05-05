@@ -136,7 +136,7 @@ public final class ReviewViewController: UIViewController {
     }()
 
     private lazy var pageControl: UIPageControl = {
-        let pageControl = UIPageControl()
+        let pageControl = PageControlWithTap()
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
         pageControl.pageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
@@ -612,11 +612,11 @@ extension ReviewViewController {
     }
 
     @objc
-    private func pageControlTapHandler(sender: UIPageControl) {
+    private func pageControlTapHandler(sender: PageControlWithTap) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: { [weak self] in
             guard let self = self else { return }
             self.setCellStatus(for: self.currentPage, isActive: false)
-            self.currentPage = sender.currentPage
+            self.currentPage = sender.tappedPage
             self.scrollToItem(at: IndexPath(row: sender.currentPage, section: 0))
         })
     }
