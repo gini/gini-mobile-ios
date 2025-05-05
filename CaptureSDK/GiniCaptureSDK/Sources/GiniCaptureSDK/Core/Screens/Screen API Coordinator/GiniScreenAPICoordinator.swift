@@ -86,6 +86,12 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
     public func start(withDocuments documents: [GiniCaptureDocument]?,
                       animated: Bool = false) -> UIViewController {
+        return start(withDocuments: documents, animated: animated, backAnimation: false)
+    }
+
+    private func start(withDocuments documents: [GiniCaptureDocument]?,
+                       animated: Bool = false,
+                       backAnimation: Bool) -> UIViewController {
         var viewControllers: [UIViewController] = []
 
         if let documents = documents, !documents.isEmpty {
@@ -124,7 +130,13 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
             viewControllers = [reviewViewController, cameraViewController]
         }
 
-        self.screenAPINavigationController.setViewControllers(viewControllers, animated: animated)
+        if backAnimation {
+            let delegate = SingleTransitionLeftSlideNavigationDelegate()
+            screenAPINavigationController.delegate = delegate
+            screenAPINavigationController.setViewControllers(viewControllers, animated: true)
+        } else {
+            screenAPINavigationController.setViewControllers(viewControllers, animated: animated)
+        }
         return ContainerNavigationController(rootViewController: self.screenAPINavigationController,
                                              parent: self)
     }
@@ -201,6 +213,12 @@ extension GiniScreenAPICoordinator {
         default:
             navigateBack()
         }
+    }
+
+    @objc func finishWithRetake() {
+        pages = []
+        trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .retry))
+        backToCamera()
     }
 
     @objc public func finishWithCancellation() {
@@ -310,7 +328,7 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func backToCamera() {
-        _ = start(withDocuments: nil, animated: true)
+        _ = start(withDocuments: nil, backAnimation: true)
     }
 }
 

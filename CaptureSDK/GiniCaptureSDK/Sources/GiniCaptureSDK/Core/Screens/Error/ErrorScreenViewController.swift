@@ -51,7 +51,9 @@ class ErrorScreenViewController: UIViewController {
 
     let viewModel: BottomButtonsViewModel
     private let errorType: ErrorType
+    private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
     private var buttonsHeightConstraint: NSLayoutConstraint?
+    private var buttonsBottomConstraint: NSLayoutConstraint?
     private var numberOfButtons: Int {
         return [
             viewModel.isEnterManuallyHidden(),
@@ -118,8 +120,8 @@ class ErrorScreenViewController: UIViewController {
         buttonsView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(buttonsView)
         configureButtons()
-        configureCustomTopNavigationBar()
         configureConstraints()
+        configureBottomNavigationBar()
     }
 
     private func configureErrorHeader() {
@@ -154,17 +156,48 @@ class ErrorScreenViewController: UIViewController {
                                            for: .touchUpInside)
     }
 
-    private func configureCustomTopNavigationBar() {
-        let cancelButton = GiniBarButton(ofType: .cancel)
-        cancelButton.addAction(self, #selector(didPressCancel))
-
+    private func configureBottomNavigationBar() {
+        let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
+                                                           comment: "Back to camera")
         if giniConfiguration.bottomNavigationBarEnabled {
-            navigationItem.rightBarButtonItem = cancelButton.barButton
+            navigationItem.setHidesBackButton(true, animated: false)
+            navigationItem.leftBarButtonItem = nil
+            if let bottomBar = giniConfiguration.errorNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBar
+            } else {
+                navigationBarBottomAdapter = DefaultErrorNavigationBarBottomAdapter()
+            }
+            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+                self?.didPressBack()
+            }
 
-            navigationItem.setHidesBackButton(true, animated: true)
+            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+                navigationBar.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(navigationBar)
+
+                layoutBottomNavigationBar(navigationBar)
+            }
         } else {
-            navigationItem.leftBarButtonItem = cancelButton.barButton
+            let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
+            backButton.addAction(self, #selector(didPressBack))
+            navigationItem.leftBarButtonItem = backButton.barButton
         }
+    }
+
+    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
+        buttonsBottomConstraint?.isActive = false
+
+        NSLayoutConstraint.activate([
+            buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
+                                                constant: -GiniMargins.margin),
+            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
+        ])
+
+        view.bringSubviewToFront(navigationBar)
+        view.layoutSubviews()
     }
 
     @objc func didPressEnterManually() {
@@ -177,9 +210,9 @@ class ErrorScreenViewController: UIViewController {
         viewModel.didPressRetake()
     }
 
-    @objc func didPressCancel() {
+    @objc func didPressBack() {
         GiniAnalyticsManager.track(event: .closeTapped, screenName: .error)
-        viewModel.didPressCancel()
+        viewModel.didPressBack()
     }
 
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
@@ -223,7 +256,7 @@ class ErrorScreenViewController: UIViewController {
             errorHeader.heightAnchor.constraint(
                 greaterThanOrEqualToConstant: Constants.errorHeaderMinHeight),
             errorHeader.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
-                                           multiplier: Constants.errorHeaderHeightMultiplier)
+                                                multiplier: Constants.errorHeaderHeightMultiplier)
         ])
     }
 
@@ -241,10 +274,12 @@ class ErrorScreenViewController: UIViewController {
             greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
         )
         buttonsHeightConstraint = buttonsConstraint
+        let bottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                                   constant: -GiniMargins.margin)
+        buttonsBottomConstraint = bottomConstraint
         NSLayoutConstraint.activate([
             buttonsConstraint,
-            buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                constant: -GiniMargins.margin)
+            bottomConstraint
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
@@ -299,5 +334,6 @@ class ErrorScreenViewController: UIViewController {
         static let sidePadding: CGFloat = 24
         static let iPadWidthMultiplier: CGFloat = 0.7
         static let iPadButtonsWidth: CGFloat = 280
+        static let navigationBarHeight: CGFloat = 114
     }
 }
