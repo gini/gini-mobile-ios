@@ -66,6 +66,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
         button.setImage(viewModel.configuration.moreInformationIcon, for: .normal)
         button.tintColor = viewModel.configuration.moreInformationAccentColor
         button.isUserInteractionEnabled = false
+        button.isAccessibilityElement = false
         return button
     }()
     
@@ -76,6 +77,9 @@ public final class InstallAppBottomView: BottomSheetViewController {
         button.customConfigure(text: viewModel.strings.continueLabelText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
+        button.isAccessibilityElement = true
+        button.accessibilityLabel = viewModel.strings.continueLabelText
+        button.accessibilityTraits = .button
         return button
     }()
     
@@ -85,6 +89,9 @@ public final class InstallAppBottomView: BottomSheetViewController {
         button.setImage(viewModel.configuration.appStoreIcon, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(tapOnAppStoreButton), for: .touchUpInside)
+        button.isAccessibilityElement = true
+        button.accessibilityTraits = .button
+        button.accessibilityLabel = viewModel.strings.accesibilityAppStoreText
         return button
     }()
     
