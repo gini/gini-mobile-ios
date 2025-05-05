@@ -27,22 +27,22 @@ final class QREducationLoadingController {
     }
 
     private func showCurrentModel() {
-        guard !models.isEmpty else { return }
+        guard currentIndex < models.count else { return }
 
         let model = models[currentIndex]
         loadingView?.configure(with: model)
 
-        timer = Timer.scheduledTimer(
-            timeInterval: model.duration,
-            target: self,
-            selector: #selector(nextModel),
-            userInfo: nil,
-            repeats: false
-        )
+        if currentIndex < models.count - 1 {
+            timer = Timer.scheduledTimer(timeInterval: model.duration,
+                                         target: self,
+                                         selector: #selector(nextModel),
+                                         userInfo: nil,
+                                         repeats: false)
+        }
     }
 
     @objc private func nextModel() {
-        currentIndex = (currentIndex + 1) % models.count
+        currentIndex += 1
         showCurrentModel()
     }
 
