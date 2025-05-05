@@ -232,8 +232,8 @@ import UIKit
                                                                                comment: "Education intro"),
                                         duration: 0.5),
                 QREducationLoadingModel(image: UIImageNamedPreferred(named: "qrEducation2"),
-                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo.step1",
-                                                                               comment: "Education step 1"),
+                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
+                                                                               comment: "Photo education"),
                                         duration: 0.5)
             ]
 
