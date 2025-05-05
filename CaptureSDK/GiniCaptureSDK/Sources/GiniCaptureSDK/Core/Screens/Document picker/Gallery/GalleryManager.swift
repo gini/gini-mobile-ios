@@ -47,7 +47,7 @@ final class GalleryManager: GalleryManagerProtocol {
     }
 
     func fetchImageData(from asset: Asset, completion: @escaping ((Data?) -> Void)) {
-        cachingImageManager.requestImageData(for: asset.value, options: nil) { data, _, _, _ in
+        cachingImageManager.requestImageDataAndOrientation(for: asset.value, options: nil) { data, _, _, _ in
             completion(data)
         }
     }
@@ -57,7 +57,7 @@ final class GalleryManager: GalleryManagerProtocol {
         options = PHImageRequestOptions()
         options.isNetworkAccessAllowed = true
 
-        cachingImageManager.requestImageData(for: asset.value, options: options) { data, _, _, _ in
+        cachingImageManager.requestImageDataAndOrientation(for: asset.value, options: options) { data, _, _, _ in
             completion(data)
         }
     }

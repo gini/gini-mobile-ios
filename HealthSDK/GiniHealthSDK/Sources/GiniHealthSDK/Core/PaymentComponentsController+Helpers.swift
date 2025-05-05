@@ -385,7 +385,7 @@ extension PaymentComponentsController {
     
     @objc
     private func paymentInfoDissapeared() {
-        switch previousPresentedViews.first {
+        switch previousPresentedViews.last {
         case .bankPicker:
             previousPresentedViews.removeAll()
             didTapOnBankPicker(documentId: documentId)
@@ -651,13 +651,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             }
         } else if let presentedVC = navigationControllerProvided?.presentedViewController {
             presentedVC.dismiss(animated: true) { [weak self] in
-                if self?.navigationControllerProvided?.viewControllers.last is PaymentReviewViewController {
-                    self?.navigationControllerProvided?.popViewController(animated: true, completion: {
-                        self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
-                    })
-                } else {
-                    self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
-                }
+                self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
             }
         } else {
             navigationControllerProvided?.pushViewController(viewController, animated: true)
