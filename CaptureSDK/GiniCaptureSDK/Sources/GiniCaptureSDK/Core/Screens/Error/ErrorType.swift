@@ -13,7 +13,7 @@ import GiniBankAPILibrary
 
  - connection: Error related to establishing a connection.
  - request: Error related to the request being made.
- - serverError: Error returned by the server.
+ - server: Error returned by the server.
  - authentication: Error related to authentication.
  - unexpected: Unexpected error that is not covered by the other cases.
  - maintenance: Error returned when the system is under maintenance.
@@ -22,8 +22,8 @@ import GiniBankAPILibrary
 
 @objc public enum ErrorType: Int {
     case connection
-    case request
-    case serverError
+    case request // upload error
+    case server
     case authentication
     case unexpected
     case maintenance
@@ -44,18 +44,17 @@ import GiniBankAPILibrary
             self = .authentication
         case .noInternetConnection:
             self = .connection
-        case .noResponse, .notFound:
-            self = .unexpected
         case .notAcceptable, .tooManyRequests,
-             .parseError, .badRequest:
-            self = .request
+             .parseError, .badRequest, .clientSide:
+            self = .request // upload error
         case .server:
-            self = .serverError
+            self = .server
         case .maintenance:
             self = .maintenance
         case .outage:
             self = .outage
         default:
+            // including .noResponse, .notFound
             self = .unexpected
         }
 
@@ -73,7 +72,7 @@ import GiniBankAPILibrary
             return "errorUpload"
         case .authentication:
             return "errorAuth"
-        case .serverError, .outage:
+        case .server, .outage:
             return "errorCloud"
         case .unexpected:
             return "alertTriangle"
@@ -82,70 +81,26 @@ import GiniBankAPILibrary
         }
     }
 
-    public func content() -> String {
+    private var localizationKey: String {
         switch self {
-        case .connection:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.connection.content",
-                comment: "Connection error")
-        case .request:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.request.content",
-                comment: "Request error")
-        case .authentication:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.authentication.content",
-                comment: "Authentication error")
-        case .serverError:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.serverError.content",
-                comment: "Server error")
-        case .unexpected:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.unexpected.content",
-                comment: "Unexpected error")
-        case .maintenance:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.maintenance.content",
-                comment: "Maintenance error")
-        case .outage:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.outage.content",
-                comment: "Outage error")
+        case .connection: return "connection"
+        case .request: return "request"
+        case .authentication: return "authentication"
+        case .server: return "serverError"
+        case .unexpected: return "unexpected"
+        case .maintenance: return "maintenance"
+        case .outage: return "outage"
         }
     }
 
     public func title() -> String {
-        switch self {
-        case .connection:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.connection.title",
-                comment: "Connection error")
-        case .authentication:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.authentication.title",
-                comment: "Authentication error")
-        case .serverError:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.serverError.title",
-                comment: "Server error")
-        case .unexpected:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.unexpected.title",
-                comment: "Unexpected error")
-        case .request:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.request.title",
-                comment: "Upload error")
-        case .maintenance:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.maintenance.title",
-                comment: "Maintenance error")
-        case .outage:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.outage.title",
-                comment: "Outage error")
-        }
+        NSLocalizedStringPreferredFormat("ginicapture.error.\(localizationKey).title",
+                                         comment: "\(localizationKey.capitalized) title")
+    }
+
+    public func content() -> String {
+        NSLocalizedStringPreferredFormat("ginicapture.error.\(localizationKey).content",
+                                         comment: "\(localizationKey.capitalized) content")
     }
 
     /**
