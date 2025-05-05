@@ -93,5 +93,6 @@ class ClientConfigurationTests: BaseIntegrationTest {
         XCTAssertNotNil(configuration.returnAssistantEnabled, "returnAssistantEnabled should be present")
         XCTAssertNotNil(configuration.transactionDocsEnabled, "transactionDocsEnabled should be present")
         XCTAssertNotNil(configuration.instantPaymentEnabled, "instantPaymentEnabled should be present")
+        XCTAssertNotNil(configuration.qrCodeEducationEnabled, "qrCodeEducationEnabled should be present")
     }
 }
