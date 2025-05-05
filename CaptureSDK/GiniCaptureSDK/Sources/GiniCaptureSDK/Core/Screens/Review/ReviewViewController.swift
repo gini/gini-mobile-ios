@@ -138,7 +138,7 @@ public final class ReviewViewController: UIViewController {
     private lazy var pageControl: UIPageControl = {
         let pageControl = PageControlWithTap()
         pageControl.numberOfPages = pages.count
-        pageControl.currentPage = 0
+        pageControl.currentPage = pages.count
         pageControl.pageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
                                                        dark: UIColor.GiniCapture.light1)
                                                        .uiColor().withAlphaComponent(0.3)
