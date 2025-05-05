@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PaymentComponentsController Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/PaymentComponentsController" class="dashAnchor"></a>
+
+    <a title="PaymentComponentsController Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+        <img class="logo-icon" src="../img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">GiniHealthSDK Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      PaymentComponentsController Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../testing.html">Testing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CancellationToken.html">CancellationToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDocumentService.html">DefaultDocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction.html">Extraction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction/Box.html">– Box</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction/Candidate.html">– Candidate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ExtractionResult.html">ExtractionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniHealth.html">GiniHealth</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniHealth/Constants.html">– Constants</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniHealthConfiguration.html">GiniHealthConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PaymentComponentsController.html">PaymentComponentsController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:13GiniHealthSDK0aB10SDKVersionSSvp">GiniHealthSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ExtractionType.html">ExtractionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniError.html">GiniError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniHealthError.html">GiniHealthError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniHealthImage.html">GiniHealthImage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/LogLevel.html">LogLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/PaymentReviewScreenEventType.html">PaymentReviewScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/PaymentState.html">PaymentState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/PlatformSupported.html">PlatformSupported</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Extensions.html#/AppKit">AppKit</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/GiniHealthAPILibrary.html">GiniHealthAPILibrary</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/GiniHealthAPILibrary/IngredientBrandTypeEnum.html">– IngredientBrandTypeEnum</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/GiniHealthAPILibrary/CommunicationToneEnum.html">– CommunicationToneEnum</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/GiniInternalPaymentSDK.html">GiniInternalPaymentSDK</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/GiniInternalPaymentSDK/PaymentInfo.html">– PaymentInfo</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Functions.html#/s:13GiniHealthSDK04giniB6BundleSo8NSBundleCyF">giniHealthBundle()</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniErrorProtocol.html">GiniErrorProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniHealthDelegate.html">GiniHealthDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Protocols.html#/s:13GiniHealthSDK0aB16TrackingDelegateP">GiniHealthTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PaymentComponentsConfigurationProvider.html">PaymentComponentsConfigurationProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PaymentComponentsStringsProvider.html">PaymentComponentsStringsProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PaymentReviewScreenTrackingDelegate.html">PaymentReviewScreenTrackingDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CompositeDocument.html">CompositeDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CompositeDocumentInfo.html">CompositeDocumentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DataForReview.html">DataForReview</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document.html">Document</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Layout.html">– Layout</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Progress.html">– Progress</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Origin.html">– Origin</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/SourceClassification.html">– SourceClassification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Page.html">– Page</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Links.html">– Links</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/DocType.html">– DocType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/TypeV2.html">– TypeV2</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Metadata.html">– Metadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ExtractionsContainer.html">ExtractionsContainer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/MinAppVersions.html">MinAppVersions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PartialDocumentInfo.html">PartialDocumentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentInfo.html">PaymentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentProvider.html">PaymentProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ProviderColors.html">ProviderColors</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/TrackingEvent.html">TrackingEvent</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Type Aliases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Typealiases.html#/s:13GiniHealthSDK16CompletionResulta">CompletionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Typealiases.html#/s:13GiniHealthSDK16PaymentProvidersa">PaymentProviders</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>PaymentComponentsController</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">PaymentComponentsController</span> <span class="p">:</span> <span class="kt">BottomSheetsProviderProtocol</span><span class="p">,</span> <span class="kt"><a href="../Other%20Protocols.html#/s:13GiniHealthSDK0aB16TrackingDelegateP">GiniHealthTrackingDelegate</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PaymentComponentsController</span><span class="p">:</span> <span class="kt">BanksSelectionProtocol</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PaymentComponentsController</span><span class="p">:</span> <span class="kt">PaymentComponentViewProtocol</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PaymentComponentsController</span><span class="p">:</span> <span class="kt">ShareInvoiceBottomViewProtocol</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PaymentComponentsController</span><span class="p">:</span> <span class="kt">InstallAppBottomViewProtocol</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PaymentComponentsController</span><span class="p">:</span> <span class="kt">PaymentReviewProtocol</span></code></pre>
+
+                </div>
+              </div>
+            <p>The <code>PaymentComponentsController</code> class allows control over the payment components.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC8delegateAA0deF8Protocol_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/delegate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC8delegateAA0deF8Protocol_pSgvp">delegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>handling the Payment Component Controller delegate</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">delegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/PaymentComponentsControllerProtocol.html">PaymentComponentsControllerProtocol</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC08selectedD8ProviderAA0dH0VSgvp"></a>
+                    <a name="//apple_ref/swift/Property/selectedPaymentProvider" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC08selectedD8ProviderAA0dH0VSgvp">selectedPaymentProvider</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>storing the current selected payment provider</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">selectedPaymentProvider</span><span class="p">:</span> <span class="kt"><a href="../Structs/PaymentProvider.html">PaymentProvider</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC04giniB0AcA0dE21ConfigurationProvider_AA0de7StringsI0AA0aB0CXc_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(giniHealth:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC04giniB0AcA0dE21ConfigurationProvider_AA0de7StringsI0AA0aB0CXc_tcfc">init(giniHealth:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializer of the Payment Component Controller class.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">giniHealth</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniHealth.html">GiniHealth</a></span> <span class="o">&amp;</span> <span class="kt"><a href="../Protocols/PaymentComponentsConfigurationProvider.html">PaymentComponentsConfigurationProvider</a></span> <span class="o">&amp;</span> <span class="kt"><a href="../Protocols/PaymentComponentsStringsProvider.html">PaymentComponentsStringsProvider</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>giniHealth</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An instance of GiniHealth initialized with GiniHealthAPI.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><ul>
+<li>instance of the payment component controller class</li>
+</ul></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC05startD4Flow10documentId11paymentInfo010navigationF016trackingDelegateySSSg_AA0dL0VSgSo012UINavigationF0CAA0ab8TrackingO0_pSgtF"></a>
+                    <a name="//apple_ref/swift/Method/startPaymentFlow(documentId:paymentInfo:navigationController:trackingDelegate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC05startD4Flow10documentId11paymentInfo010navigationF016trackingDelegateySSSg_AA0dL0VSgSo012UINavigationF0CAA0ab8TrackingO0_pSgtF">startPaymentFlow(documentId:paymentInfo:navigationController:trackingDelegate:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initiates the payment flow for a specified document and payment information.</p>
+
+<p>This method sets up the payment flow by storing the provided document ID, payment information, and navigation controller.
+If a <code><a href="../Classes/PaymentComponentsController.html#/s:13GiniHealthSDK27PaymentComponentsControllerC08selectedD8ProviderAA0dH0VSgvp">selectedPaymentProvider</a></code> is available, it either presents the payment review screen or the payment view bottom sheet,
+depending on the configuration. If no payment provider is selected, it directly presents the payment view bottom sheet.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">startPaymentFlow</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">paymentInfo</span><span class="p">:</span> <span class="kt">GiniHealthSDK</span><span class="o">.</span><span class="kt"><a href="../Structs/PaymentInfo.html">PaymentInfo</a></span><span class="p">?,</span> <span class="nv">navigationController</span><span class="p">:</span> <span class="kt">UINavigationController</span><span class="p">,</span> <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="kt"><a href="../Other%20Protocols.html#/s:13GiniHealthSDK0aB16TrackingDelegateP">GiniHealthTrackingDelegate</a></span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documentId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional identifier for the document associated id with the payment flow.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>paymentInfo</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional <code><a href="../Structs/PaymentInfo.html">PaymentInfo</a></code> object containing the payment details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>navigationController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>UINavigationController</code> used to present subsequent view controllers in the payment flow.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC24checkIfDocumentIsPayable5docId10completionySS_ys6ResultOySbAA0aB5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/checkIfDocumentIsPayable(docId:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC24checkIfDocumentIsPayable5docId10completionySS_ys6ResultOySbAA0aB5ErrorOGctF">checkIfDocumentIsPayable(docId:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Checks if the document is payable by extracting the IBAN.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">checkIfDocumentIsPayable</span><span class="p">(</span><span class="nv">docId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt"><a href="../Enums/GiniHealthError.html">GiniHealthError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>docId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ID of the uploaded document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure for processing asynchronous data received from the service. It has a Result type parameter, representing either success or failure. The completion block is called on the main thread.
+In the case of success, it includes a boolean value indicating whether the IBAN was extracted successfully.
+In case of failure, it returns an error from the server side.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Bottom%20sheets"></a>
+                <a name="//apple_ref/swift/Section/Bottom sheets" class="dashAnchor"></a>
+                <a href="#/Bottom%20sheets">
+                  <h3 class="section-name">Bottom sheets</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC22paymentViewBottomSheet10documentIdSo06UIViewF0CSSSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/paymentViewBottomSheet(documentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC22paymentViewBottomSheet10documentIdSo06UIViewF0CSSSg_tF">paymentViewBottomSheet(documentId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provides a custom Gini view for the payment view that is going to be presented as a bottom sheet.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">paymentViewBottomSheet</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documentId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional identifier for the document associated id with the payment.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A configured <code>UIViewController</code> for displaying the payment bottom view.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC24bankSelectionBottomSheetSo06UIViewF0CyF"></a>
+                    <a name="//apple_ref/swift/Method/bankSelectionBottomSheet()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC24bankSelectionBottomSheetSo06UIViewF0CyF">bankSelectionBottomSheet()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provides a custom Gini view for the bank selection bottom sheet.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bankSelectionBottomSheet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A configured <code>UIViewController</code> for displaying the bank selection options.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC21installAppBottomSheet0a8InternaldC00ij4ViewF0CyF"></a>
+                    <a name="//apple_ref/swift/Method/installAppBottomSheet()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC21installAppBottomSheet0a8InternaldC00ij4ViewF0CyF">installAppBottomSheet()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provides a custom Gini view for installing the app if not present.</p>
+
+<p>This method initializes an <code>InstallAppBottomViewModel</code> with the necessary configurations and
+localized strings, and returns an <code>InstallAppBottomView</code> configured with the view model.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">installAppBottomSheet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">BottomSheetViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A configured <code>BottomSheetViewController</code> for the app installation process.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC23shareInvoiceBottomSheet10qrCodeData16paymentRequestId0a8InternaldC00ij4ViewF0C10Foundation0M0V_SStF"></a>
+                    <a name="//apple_ref/swift/Method/shareInvoiceBottomSheet(qrCodeData:paymentRequestId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC23shareInvoiceBottomSheet10qrCodeData16paymentRequestId0a8InternaldC00ij4ViewF0C10Foundation0M0V_SStF">shareInvoiceBottomSheet(qrCodeData:paymentRequestId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provides a custom Gini view to onboard the user about the sharing invoices flow.</p>
+
+<p>This method initializes a <code>ShareInvoiceBottomViewModel</code> with the necessary configurations and
+localized strings, and returns a <code>ShareInvoiceBottomView</code> configured with the view model.
+It also increments the onboarding count for the selected payment provider.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">shareInvoiceBottomSheet</span><span class="p">(</span><span class="nv">qrCodeData</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span> <span class="nv">paymentRequestId</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">BottomSheetViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>qrCodeData</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A qrCode data information for the document associated payment request generated by the payment details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>paymentRequestId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The payment request id from generated from the payment info extracted from the invoice</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A configured <code>BottomSheetViewController</code> for sharing invoices.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC07updatedD8Provideryy0aB10APILibrary0dH0VF"></a>
+                    <a name="//apple_ref/swift/Method/updatedPaymentProvider(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC07updatedD8Provideryy0aB10APILibrary0dH0VF">updatedPaymentProvider(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates the selected payment provider with the given payment provider. This method is used when updating the payment provider from Payment Review Screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updatedPaymentProvider</span><span class="p">(</span><span class="n">_</span> <span class="nv">paymentProvider</span><span class="p">:</span> <span class="kt">GiniHealthAPILibrary</span><span class="o">.</span><span class="kt"><a href="../Structs/PaymentProvider.html">PaymentProvider</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>paymentProvider</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new payment provider to be set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC19paymentReviewClosed4withy0a8InternaldC00D19ComponentScreenTypeOSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/paymentReviewClosed(with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC19paymentReviewClosed4withy0a8InternaldC00D19ComponentScreenTypeOSg_tF">paymentReviewClosed(with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the controller that the Payment Review Screen has closed, enabling the cleanup of stored data used to manage various flows.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">paymentReviewClosed</span><span class="p">(</span><span class="n">with</span> <span class="nv">previousPresentedView</span><span class="p">:</span> <span class="kt">PaymentComponentScreenType</span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC023openMoreInformationViewF0yyF"></a>
+                    <a name="//apple_ref/swift/Method/openMoreInformationViewController()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC023openMoreInformationViewF0yyF">openMoreInformationViewController()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Opens the more information view controller by notifying the view delegate. This method is used when opening the More Information screen inside the bank selection bottom sheet that&rsquo;s presented in the Payment Review Screen.</p>
+
+<p>This method triggers the delegate&rsquo;s action for displaying more information.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">openMoreInformationViewController</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Other%20helpers"></a>
+                <a name="//apple_ref/swift/Section/Other helpers" class="dashAnchor"></a>
+                <a href="#/Other%20helpers">
+                  <h3 class="section-name">Other helpers</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC07canOpenD11ProviderAppSbyF"></a>
+                    <a name="//apple_ref/swift/Method/canOpenPaymentProviderApp()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC07canOpenD11ProviderAppSbyF">canOpenPaymentProviderApp()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Checks if the payment provider app can be opened based on the selected payment provider and GPC(Gini Pay Connect) support.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">canOpenPaymentProviderApp</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC16supportsOpenWithSbyF"></a>
+                    <a name="//apple_ref/swift/Method/supportsOpenWith()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC16supportsOpenWithSbyF">supportsOpenWith()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Checks if the selected payment provider supports the &ldquo;Open With&rdquo; feature on iOS.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">supportsOpenWith</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC11supportsGPCSbyF"></a>
+                    <a name="//apple_ref/swift/Method/supportsGPC()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC11supportsGPCSbyF">supportsGPC()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Checks if the selected payment provider supports GPC(Gini Pay Connect) on iOS.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">supportsGPC</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC016obtainPDFURLFromD7Request04viewF007paymentI2IdySo06UIViewF0C_SStF"></a>
+                    <a name="//apple_ref/swift/Method/obtainPDFURLFromPaymentRequest(viewController:paymentRequestId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC016obtainPDFURLFromD7Request04viewF007paymentI2IdySo06UIViewF0C_SStF">obtainPDFURLFromPaymentRequest(viewController:paymentRequestId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a payment request and obtains the PDF URL using the provided payment information.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">obtainPDFURLFromPaymentRequest</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="nv">paymentRequestId</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The view controller used to present any necessary UI related to the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>paymentRequestId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The payment request id generated from the payment info extracted from the invoice</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Payment%20Review%20Screen%20functions"></a>
+                <a name="//apple_ref/swift/Section/Payment Review Screen functions" class="dashAnchor"></a>
+                <a href="#/Payment%20Review%20Screen%20functions">
+                  <h3 class="section-name">Payment Review Screen functions</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC06createD7Request11paymentInfo10completiony0a8InternaldC00dJ0V_ys6ResultOySS0aB10APILibrary0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/createPaymentRequest(paymentInfo:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC06createD7Request11paymentInfo10completiony0a8InternaldC00dJ0V_ys6ResultOySS0aB10APILibrary0A5ErrorOGctF">createPaymentRequest(paymentInfo:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a payment request using the provided payment information.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">createPaymentRequest</span><span class="p">(</span><span class="nv">paymentInfo</span><span class="p">:</span> <span class="kt">GiniInternalPaymentSDK</span><span class="o">.</span><span class="kt"><a href="../Structs/PaymentInfo.html">PaymentInfo</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">GiniHealthAPILibrary</span><span class="o">.</span><span class="kt"><a href="../Enums/GiniError.html">GiniError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>paymentInfo</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The payment information to be used for the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure to be executed once the request is completed, containing the result of the operation.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC14submitFeedback3for18updatedExtractions10completiony0aB10APILibrary8DocumentV_SayAH10ExtractionCGys6ResultOyytAH0A5ErrorOGcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/submitFeedback(for:updatedExtractions:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC14submitFeedback3for18updatedExtractions10completiony0aB10APILibrary8DocumentV_SayAH10ExtractionCGys6ResultOyytAH0A5ErrorOGcSgtF">submitFeedback(for:updatedExtractions:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Submits feedback for the specified document and its updated extractions. Method used to update the information extracted from a document.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">submitFeedback</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">GiniHealthAPILibrary</span><span class="o">.</span><span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="p">,</span> <span class="nv">updatedExtractions</span><span class="p">:</span> <span class="p">[</span><span class="kt">GiniHealthAPILibrary</span><span class="o">.</span><span class="kt"><a href="../Classes/Extraction.html">Extraction</a></span><span class="p">],</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">GiniHealthAPILibrary</span><span class="o">.</span><span class="kt"><a href="../Enums/GiniError.html">GiniError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>document</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document for which feedback is being submitted.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>updatedExtractions</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The updated extractions related to the document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional closure to be executed upon completion, containing the result of the submission.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC7preview3for10pageNumber10completionySS_Siys6ResultOy10Foundation4DataV0aB10APILibrary0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/preview(for:pageNumber:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC7preview3for10pageNumber10completionySS_Siys6ResultOy10Foundation4DataV0aB10APILibrary0A5ErrorOGctF">preview(for:pageNumber:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves a preview for the specified document and page number.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">preview</span><span class="p">(</span><span class="k">for</span> <span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">pageNumber</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Data</span><span class="p">,</span> <span class="kt">GiniHealthAPILibrary</span><span class="o">.</span><span class="kt"><a href="../Enums/GiniError.html">GiniError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documentId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ID of the document to preview.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>pageNumber</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The page number of the document to retrieve.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure that gets called with the result containing either the preview data or an error.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC04openD11ProviderApp9requestId13universalLinkySS_SStF"></a>
+                    <a name="//apple_ref/swift/Method/openPaymentProviderApp(requestId:universalLink:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC04openD11ProviderApp9requestId13universalLinkySS_SStF">openPaymentProviderApp(requestId:universalLink:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Opens the payment provider app using the specified request ID and universal link.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">openPaymentProviderApp</span><span class="p">(</span><span class="nv">requestId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">universalLink</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>requestId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ID of the payment request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>universalLink</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The universal link to open the payment provider app.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC03getD7Request2by10completionySS_ys6ResultOy0aB10APILibrary0dH0VAI0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/getPaymentRequest(by:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC03getD7Request2by10completionySS_ys6ResultOy0aB10APILibrary0dH0VAI0A5ErrorOGctF">getPaymentRequest(by:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves a payment request using the provided payment request ID.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getPaymentRequest</span><span class="p">(</span><span class="n">by</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">PaymentRequest</span><span class="p">,</span> <span class="kt">GiniHealthAPILibrary</span><span class="o">.</span><span class="kt"><a href="../Enums/GiniError.html">GiniError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ID of the payment request to retrieve.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure to be executed once the retrieval is completed, containing the result of the operation as a <code>PaymentRequest</code> object on success or a <code><a href="../Enums/GiniError.html">GiniError</a></code> on failure.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC09didSelectD8Provider07paymentI0y0aB10APILibrary0dI0V_tF"></a>
+                    <a name="//apple_ref/swift/Method/didSelectPaymentProvider(paymentProvider:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC09didSelectD8Provider07paymentI0y0aB10APILibrary0dI0V_tF">didSelectPaymentProvider(paymentProvider:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates the selected payment provider and notifies the delegate with the provider and optional document ID.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didSelectPaymentProvider</span><span class="p">(</span><span class="nv">paymentProvider</span><span class="p">:</span> <span class="kt">GiniHealthAPILibrary</span><span class="o">.</span><span class="kt"><a href="../Structs/PaymentProvider.html">PaymentProvider</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC016didTapOnContinueI16ShareBottomSheetyyF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnContinueOnShareBottomSheet()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC016didTapOnContinueI16ShareBottomSheetyyF">didTapOnContinueOnShareBottomSheet()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the action when the continue button is tapped on the share bottom sheet.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnContinueOnShareBottomSheet</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC33didTapForwardOnInstallBottomSheetyyF"></a>
+                    <a name="//apple_ref/swift/Method/didTapForwardOnInstallBottomSheet()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC33didTapForwardOnInstallBottomSheetyyF">didTapForwardOnInstallBottomSheet()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the action when the forward button is tapped on the install bottom sheet.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapForwardOnInstallBottomSheet</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC17didTapOnPayButtonyyF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnPayButton()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC17didTapOnPayButtonyyF">didTapOnPayButton()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the action when the pay button is tapped on install bottom sheet.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnPayButton</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC23didTapOnMoreInformation10documentIdySSSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnMoreInformation(documentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC23didTapOnMoreInformation10documentIdySSSg_tF">didTapOnMoreInformation(documentId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the action when the more information button is tapped on the payment component view, using the provided document ID.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnMoreInformation</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC18didTapOnBankPicker10documentIdySSSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnBankPicker(documentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC18didTapOnBankPicker10documentIdySSSg_tF">didTapOnBankPicker(documentId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the action when the bank picker button is tapped on the payment component view, using the provided document ID.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnBankPicker</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC18didTapOnPayInvoice10documentIdySSSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnPayInvoice(documentId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC18didTapOnPayInvoice10documentIdySSSg_tF">didTapOnPayInvoice(documentId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the action when the pay invoice button is tapped on the payment component view, using the provided document ID.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnPayInvoice</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC30presentShareInvoiceBottomSheet16paymentRequestId0L4InfoySS_0a8InternaldC00dO0VtF"></a>
+                    <a name="//apple_ref/swift/Method/presentShareInvoiceBottomSheet(paymentRequestId:paymentInfo:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC30presentShareInvoiceBottomSheet16paymentRequestId0L4InfoySS_0a8InternaldC00dO0VtF">presentShareInvoiceBottomSheet(paymentRequestId:paymentInfo:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">presentShareInvoiceBottomSheet</span><span class="p">(</span><span class="nv">paymentRequestId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">paymentInfo</span><span class="p">:</span> <span class="kt">GiniInternalPaymentSDK</span><span class="o">.</span><span class="kt"><a href="../Structs/PaymentInfo.html">PaymentInfo</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC09didSelectD8Provider07paymentI0yAA0dI0V_tF"></a>
+                    <a name="//apple_ref/swift/Method/didSelectPaymentProvider(paymentProvider:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC09didSelectD8Provider07paymentI0yAA0dI0V_tF">didSelectPaymentProvider(paymentProvider:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates the selected payment provider from the bank selection bottom view and notifies the delegate with the selected provider and document ID.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didSelectPaymentProvider</span><span class="p">(</span><span class="nv">paymentProvider</span><span class="p">:</span> <span class="kt"><a href="../Structs/PaymentProvider.html">PaymentProvider</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC13didTapOnCloseyyF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnClose()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC13didTapOnCloseyyF">didTapOnClose()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the delegate when the close button is tapped on bank selection bottom view</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnClose</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC23didTapOnMoreInformationyyF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnMoreInformation()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC23didTapOnMoreInformationyyF">didTapOnMoreInformation()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the delegate when the more information button is tapped on the bank selection bottom view</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnMoreInformation</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC30didTapOnContinueToShareInvoice16paymentRequestIdySS_tF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnContinueToShareInvoice(paymentRequestId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC30didTapOnContinueToShareInvoice16paymentRequestIdySS_tF">didTapOnContinueToShareInvoice(paymentRequestId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the delegate to continue sharing the invoice with the provided document ID.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnContinueToShareInvoice</span><span class="p">(</span><span class="nv">paymentRequestId</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC16didTapOnContinueyyF"></a>
+                    <a name="//apple_ref/swift/Method/didTapOnContinue()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC16didTapOnContinueyyF">didTapOnContinue()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didTapOnContinue</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC14submitFeedback3for18updatedExtractions10completionySS_Say0aB10APILibrary10ExtractionCGys6ResultOyytAH0A5ErrorOGcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/submitFeedback(for:updatedExtractions:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC14submitFeedback3for18updatedExtractions10completionySS_Say0aB10APILibrary10ExtractionCGys6ResultOyytAH0A5ErrorOGcSgtF">submitFeedback(for:updatedExtractions:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Submits feedback for the specified document and its updated extractions. Method used to update the information extracted from a document.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">submitFeedback</span><span class="p">(</span><span class="k">for</span> <span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">updatedExtractions</span><span class="p">:</span> <span class="p">[</span><span class="kt">GiniHealthAPILibrary</span><span class="o">.</span><span class="kt"><a href="../Classes/Extraction.html">Extraction</a></span><span class="p">],</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">GiniHealthAPILibrary</span><span class="o">.</span><span class="kt"><a href="../Enums/GiniError.html">GiniError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>document</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document for which feedback is being submitted.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>updatedExtractions</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The updated extractions related to the document.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional closure to be executed upon completion, containing the result of the submission.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC27shouldHandleErrorInternally5errorSb0aB10APILibrary0aI0O_tF"></a>
+                    <a name="//apple_ref/swift/Method/shouldHandleErrorInternally(error:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC27shouldHandleErrorInternally5errorSb0aB10APILibrary0aI0O_tF">shouldHandleErrorInternally(error:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Determines if the specified error should be handled internally by the SDK.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">shouldHandleErrorInternally</span><span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">GiniHealthAPILibrary</span><span class="o">.</span><span class="kt"><a href="../Enums/GiniError.html">GiniError</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Gini error to evaluate.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A Boolean value indicating whether the error should be handled internally.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC07trackOnD26ReviewCloseKeyboardClickedyyF"></a>
+                    <a name="//apple_ref/swift/Method/trackOnPaymentReviewCloseKeyboardClicked()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC07trackOnD26ReviewCloseKeyboardClickedyyF">trackOnPaymentReviewCloseKeyboardClicked()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Tracks the event when the keyboard is closed on the payment review screen.</p>
+
+<p>This method informs the tracking delegate about the keyboard close event.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">trackOnPaymentReviewCloseKeyboardClicked</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC07trackOnD24ReviewCloseButtonClickedyyF"></a>
+                    <a name="//apple_ref/swift/Method/trackOnPaymentReviewCloseButtonClicked()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC07trackOnD24ReviewCloseButtonClickedyyF">trackOnPaymentReviewCloseButtonClicked()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Tracks the event when the close button is clicked on the payment review screen.</p>
+
+<p>This method notifies the tracking delegate about the close button click event.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">trackOnPaymentReviewCloseButtonClicked</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC07trackOnD23ReviewBankButtonClicked12providerNameySS_tF"></a>
+                    <a name="//apple_ref/swift/Method/trackOnPaymentReviewBankButtonClicked(providerName:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC07trackOnD23ReviewBankButtonClicked12providerNameySS_tF">trackOnPaymentReviewBankButtonClicked(providerName:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Tracks the event when the bank button is clicked on the payment review screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">trackOnPaymentReviewBankButtonClicked</span><span class="p">(</span><span class="nv">providerName</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>providerName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the payment provider associated with the button click.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13GiniHealthSDK27PaymentComponentsControllerC02onD17ReviewScreenEvent5eventyAA08TrackingJ0VyAA0dhiJ4TypeOG_tF"></a>
+                    <a name="//apple_ref/swift/Method/onPaymentReviewScreenEvent(event:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13GiniHealthSDK27PaymentComponentsControllerC02onD17ReviewScreenEvent5eventyAA08TrackingJ0VyAA0dhiJ4TypeOG_tF">onPaymentReviewScreenEvent(event:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the tracking delegate of an event occurring on the payment review screen.</p>
+
+<p>This method forwards the event to the <code>trackingDelegate</code>, which can handle it based on the event type and any associated data.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onPaymentReviewScreenEvent</span><span class="p">(</span><span class="nv">event</span><span class="p">:</span> <span class="kt"><a href="../Structs/TrackingEvent.html">TrackingEvent</a></span><span class="o">&lt;</span><span class="kt"><a href="../Enums/PaymentReviewScreenEventType.html">PaymentReviewScreenEventType</a></span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>event</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Structs/TrackingEvent.html">TrackingEvent</a></code> of type <code><a href="../Enums/PaymentReviewScreenEventType.html">PaymentReviewScreenEventType</a></code> that describes the specific event
+that occurred on the payment review screen.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2025 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2025-05-05)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
