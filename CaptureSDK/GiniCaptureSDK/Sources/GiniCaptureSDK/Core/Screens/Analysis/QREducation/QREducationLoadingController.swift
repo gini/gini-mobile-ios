@@ -7,7 +7,6 @@
 import Foundation
 
 final class QREducationLoadingController {
-
     private weak var loadingView: QREducationLoadingView?
     private var timer: Timer?
     private var models: [QREducationLoadingModel] = []
