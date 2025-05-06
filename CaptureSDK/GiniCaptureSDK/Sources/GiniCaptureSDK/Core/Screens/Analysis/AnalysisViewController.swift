@@ -230,11 +230,11 @@ import UIKit
                 QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducation1"),
                                         text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
                                                                                comment: "Education intro"),
-                                        duration: 0.5),
+                                        duration: 1.5),
                 QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducation2"),
                                         text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
                                                                                comment: "Photo education"),
-                                        duration: 0.5)
+                                        duration: 3)
             ]
 
             let controller = QREducationLoadingController(loadingView: customLoadingView)
