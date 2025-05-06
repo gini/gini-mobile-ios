@@ -40,13 +40,10 @@ final class QREducationLoadingView: UIView {
         return label
     }()
 
-    private lazy var stackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [imageView, textLabel])
-        stack.axis = .vertical
-        stack.spacing = Constants.stackSpacing
-        stack.alignment = .center
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
+    private lazy var contentContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     override init(frame: CGRect) {
@@ -59,22 +56,35 @@ final class QREducationLoadingView: UIView {
     }
 
     private func setupViews() {
-        addSubview(stackView)
-        addSubview(analysingLabel)
+        addSubview(contentContainer)
+        contentContainer.addSubview(imageView)
+        contentContainer.addSubview(textLabel)
+        contentContainer.addSubview(analysingLabel)
 
         NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.padding),
-            stackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Constants.padding),
+            contentContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
+            contentContainer.centerYAnchor.constraint(equalTo: centerYAnchor),
+            contentContainer.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                      constant: Constants.padding),
+            contentContainer.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                       constant: -Constants.padding),
 
-            analysingLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            analysingLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.padding),
-            analysingLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Constants.padding),
-            analysingLabel.topAnchor.constraint(greaterThanOrEqualTo: imageView.bottomAnchor,
-                                               constant: Constants.imageToAnalysingLabelMinSpacing),
+            imageView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
+            imageView.centerXAnchor.constraint(equalTo: contentContainer.centerXAnchor),
+
+            textLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor,
+                                           constant: Constants.imageToTextSpacing),
+            textLabel.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
+            textLabel.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
+
+            analysingLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor,
+                                                constant: Constants.imageToAnalysingSpacing),
+            analysingLabel.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
+            analysingLabel.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
+
             analysingLabel.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
-                                               constant: Constants.textToAnalysingLabelMinSpacing)
+                                                constant: Constants.minTextToAnalysingSpacing),
+            analysingLabel.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor)
         ])
     }
 
@@ -92,8 +102,8 @@ final class QREducationLoadingView: UIView {
 private extension QREducationLoadingView {
     enum Constants {
         static let padding: CGFloat = 16
-        static let stackSpacing: CGFloat = 16
-        static let imageToAnalysingLabelMinSpacing: CGFloat = 100
-        static let textToAnalysingLabelMinSpacing: CGFloat = 38
+        static let imageToTextSpacing: CGFloat = 16
+        static let imageToAnalysingSpacing: CGFloat = 100
+        static let minTextToAnalysingSpacing: CGFloat = 38
     }
 }

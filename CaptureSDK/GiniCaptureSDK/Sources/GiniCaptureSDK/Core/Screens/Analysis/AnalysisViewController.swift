@@ -220,10 +220,8 @@ import UIKit
             NSLayoutConstraint.activate([
                 customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
-                                                           constant: Constants.padding),
-                customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
-                                                            constant: -Constants.padding)
+                customLoadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                customLoadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
 
             let loadingItems = [
