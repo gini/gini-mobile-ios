@@ -41,7 +41,7 @@ open class BottomSheetViewController: UIViewController {
     private lazy var dimmedView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = configuration.dimmingBackgroundColor
+        view.backgroundColor = .clear
         view.alpha = 0
         return view
     }()
@@ -93,7 +93,6 @@ private extension BottomSheetViewController {
         view.backgroundColor = configuration.dimmingBackgroundColor
         view.isOpaque = false
        
-        /*
         view.addSubview(dimmedView)
         NSLayoutConstraint.activate([
             // Set dimmedView edges to superview
@@ -101,7 +100,7 @@ private extension BottomSheetViewController {
             dimmedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             dimmedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             dimmedView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])*/
+        ])
 
         // Container View
         view.addSubview(mainContainerView)
@@ -152,7 +151,7 @@ private extension BottomSheetViewController {
     
     func setupGestures() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapDimmedView))
-        view.addGestureRecognizer(tapGesture)
+        dimmedView.addGestureRecognizer(tapGesture)
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         panGesture.delaysTouchesBegan = false
