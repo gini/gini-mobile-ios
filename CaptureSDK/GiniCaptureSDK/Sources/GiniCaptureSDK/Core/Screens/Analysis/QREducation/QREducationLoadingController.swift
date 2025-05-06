@@ -9,40 +9,33 @@ import Foundation
 final class QREducationLoadingController {
     private weak var loadingView: QREducationLoadingView?
     private var timer: Timer?
-    private var models: [QREducationLoadingModel] = []
-    private var currentIndex = 0
+    private var itemQueue: [QREducationLoadingItem] = []
 
     init(loadingView: QREducationLoadingView) {
         self.loadingView = loadingView
     }
 
-    func setRotatingModels(_ models: [QREducationLoadingModel]) {
+    func start(with items: [QREducationLoadingItem]) {
         stop()
-        guard !models.isEmpty else { return }
+        guard !items.isEmpty else { return }
 
-        self.models = models
-        self.currentIndex = 0
-        showCurrentModel()
+        self.itemQueue = items
+        showNextItem()
     }
 
-    private func showCurrentModel() {
-        guard currentIndex < models.count else { return }
+    @objc private func showNextItem() {
+        guard !itemQueue.isEmpty else { return }
 
-        let model = models[currentIndex]
-        loadingView?.configure(with: model)
+        let nextItem = itemQueue.removeFirst()
+        loadingView?.configure(with: nextItem)
 
-        if currentIndex < models.count - 1 {
-            timer = Timer.scheduledTimer(timeInterval: model.duration,
+        if !itemQueue.isEmpty {
+            timer = Timer.scheduledTimer(timeInterval: nextItem.duration,
                                          target: self,
-                                         selector: #selector(nextModel),
+                                         selector: #selector(showNextItem),
                                          userInfo: nil,
                                          repeats: false)
         }
-    }
-
-    @objc private func nextModel() {
-        currentIndex += 1
-        showCurrentModel()
     }
 
     func stop() {

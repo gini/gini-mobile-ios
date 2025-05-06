@@ -78,7 +78,7 @@ final class QREducationLoadingView: UIView {
         ])
     }
 
-    func configure(with model: QREducationLoadingModel) {
+    func configure(with model: QREducationLoadingItem) {
         imageView.image = model.image
         textLabel.text = model.text
         textLabel.accessibilityLabel = model.text

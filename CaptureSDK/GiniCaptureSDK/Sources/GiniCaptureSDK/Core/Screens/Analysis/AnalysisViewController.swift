@@ -226,19 +226,19 @@ import UIKit
                                                             constant: -Constants.padding)
             ])
 
-            let rotatingModels = [
-                QREducationLoadingModel(image: UIImageNamedPreferred(named: "qrEducation1"),
+            let loadingItems = [
+                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducation1"),
                                         text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
                                                                                comment: "Education intro"),
                                         duration: 0.5),
-                QREducationLoadingModel(image: UIImageNamedPreferred(named: "qrEducation2"),
+                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducation2"),
                                         text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
                                                                                comment: "Photo education"),
                                         duration: 0.5)
             ]
 
             let controller = QREducationLoadingController(loadingView: customLoadingView)
-            controller.setRotatingModels(rotatingModels)
+            controller.start(with: loadingItems)
             loadingController = controller
 
         } else {
