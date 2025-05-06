@@ -152,7 +152,7 @@ private extension BottomSheetViewController {
     
     func setupGestures() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapDimmedView))
-        dimmedView.addGestureRecognizer(tapGesture)
+        view.addGestureRecognizer(tapGesture)
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         panGesture.delaysTouchesBegan = false
