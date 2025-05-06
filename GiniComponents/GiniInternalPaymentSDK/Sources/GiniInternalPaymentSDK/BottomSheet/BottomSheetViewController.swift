@@ -90,7 +90,10 @@ public extension BottomSheetViewController {
 // MARK: - Private
 private extension BottomSheetViewController {
     func setupViews() {
-        view.backgroundColor = .clear
+        view.backgroundColor = configuration.dimmingBackgroundColor
+        view.isOpaque = false
+       
+        /*
         view.addSubview(dimmedView)
         NSLayoutConstraint.activate([
             // Set dimmedView edges to superview
@@ -98,7 +101,7 @@ private extension BottomSheetViewController {
             dimmedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             dimmedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             dimmedView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
+        ])*/
 
         // Container View
         view.addSubview(mainContainerView)
@@ -231,7 +234,12 @@ extension BottomSheetViewController {
 
 public extension UIViewController {
     func presentBottomSheet(viewController: BottomSheetViewController) {
-        viewController.modalPresentationStyle = .overFullScreen
-        present(viewController, animated: false, completion: nil)
+        if let navigationController = viewController.navigationController {
+            navigationController.modalPresentationStyle = .overFullScreen
+            present(navigationController, animated: false, completion: nil)
+        } else {
+            viewController.modalPresentationStyle = .overFullScreen
+            present(viewController, animated: false, completion: nil)
+        }
     }
 }

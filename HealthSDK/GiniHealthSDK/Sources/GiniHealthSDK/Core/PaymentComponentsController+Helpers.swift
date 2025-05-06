@@ -151,8 +151,15 @@ extension PaymentComponentsController {
     
     private func dismissAndPresent(viewController: UIViewController, animated: Bool) {
         if let presentedViewController = navigationControllerProvided?.presentedViewController {
+            // We need to extract to hold the reference, otherwise it becomes nil after `presentingViewController` is dismissed. 
+            let navigationController = viewController.navigationController
+            
             presentedViewController.dismiss(animated: true) {
-                self.navigationControllerProvided?.present(viewController, animated: animated)
+                if let navigationController {
+                    self.navigationControllerProvided?.present(navigationController, animated: animated)
+                } else {
+                    self.navigationControllerProvided?.present(viewController, animated: animated)
+                }
             }
         } else {
             navigationControllerProvided?.present(viewController, animated: animated)
@@ -179,7 +186,11 @@ extension PaymentComponentsController {
                                                                    clientConfiguration: configurationProvider.clientConfiguration)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
-        return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
+        
+        let banksViewController = BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
+        let _ = UINavigationController(rootViewController: banksViewController)
+        
+        return banksViewController
     }
     
     /**
@@ -388,7 +399,6 @@ extension PaymentComponentsController {
         switch previousPresentedViews.last {
         case .bankPicker:
             previousPresentedViews.removeAll()
-            didTapOnBankPicker(documentId: documentId)
         case .paymentComponent:
             previousPresentedViews.removeAll()
             presentPaymentViewBottomSheet()
@@ -640,7 +650,11 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     }
     
     private func pushOrDismissAndPush(_ viewController: UIViewController) {
-        if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
+        if let banksBottomVC = navigationControllerProvided?.topMostViewController() as? BanksBottomView {
+            
+            previousPresentedViews.append(.bankPicker)
+            banksBottomVC.navigationController?.show(viewController, sender: nil)
+        } else if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
             doublePresentedVC.dismiss(animated: true) { [weak self] in
                 if let presentedVC = self?.navigationControllerProvided?.presentedViewController {
                     presentedVC.dismiss(animated: true) { [weak self] in
@@ -857,5 +871,32 @@ extension PaymentComponentsController: InstallAppBottomViewProtocol {
     // Notifies the delegate to proceed when the continue button is tapped in the install app bottom view. This happens after the user installed the app from AppStore
     public func didTapOnContinue() {
         didTapForwardOnInstallBottomSheet()
+    }
+}
+
+extension UIViewController {
+    
+    func topMostViewController() -> UIViewController {
+        if let navigation = self as? UINavigationController {
+            return navigation.visibleViewController?.topMostViewController() ?? self
+        }
+        
+        if let tabBarController = self as? UITabBarController {
+            if let selectedTab = tabBarController.selectedViewController {
+                if let navigation = selectedTab as? UINavigationController {
+                    return navigation.visibleViewController?.topMostViewController() ?? selectedTab
+                }
+                
+                return selectedTab.topMostViewController()
+            }
+            
+            return tabBarController
+        }
+        
+        if let presentedViewController {
+            return presentedViewController.topMostViewController()
+        }
+        
+        return self
     }
 }
