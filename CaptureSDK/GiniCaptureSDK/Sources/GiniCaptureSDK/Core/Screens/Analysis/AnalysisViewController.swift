@@ -220,16 +220,18 @@ import UIKit
             NSLayoutConstraint.activate([
                 customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                customLoadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                customLoadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+                customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+                                                           constant: Constants.educationLoadingViewPadding),
+                customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
+                                                            constant: -Constants.educationLoadingViewPadding)
             ])
 
             let loadingItems = [
-                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducation1"),
+                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
                                         text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
                                                                                comment: "Education intro"),
                                         duration: 1.5),
-                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducation2"),
+                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
                                         text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
                                                                                comment: "Photo education"),
                                         duration: 3)
@@ -321,6 +323,7 @@ import UIKit
 private extension AnalysisViewController {
     enum Constants {
         static let padding: CGFloat = 16
+        static let educationLoadingViewPadding: CGFloat = 28
         static let loadingIndicatorContainerHeight: CGFloat = 60
         static let widthMultiplier: CGFloat = 0.9
     }

@@ -40,12 +40,6 @@ final class QREducationLoadingView: UIView {
         return label
     }()
 
-    private lazy var contentContainer: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -56,35 +50,27 @@ final class QREducationLoadingView: UIView {
     }
 
     private func setupViews() {
-        addSubview(contentContainer)
-        contentContainer.addSubview(imageView)
-        contentContainer.addSubview(textLabel)
-        contentContainer.addSubview(analysingLabel)
+        addSubview(imageView)
+        addSubview(textLabel)
+        addSubview(analysingLabel)
 
         NSLayoutConstraint.activate([
-            contentContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
-            contentContainer.centerYAnchor.constraint(equalTo: centerYAnchor),
-            contentContainer.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                      constant: Constants.padding),
-            contentContainer.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                       constant: -Constants.padding),
-
-            imageView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
-            imageView.centerXAnchor.constraint(equalTo: contentContainer.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: topAnchor),
+            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
 
             textLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor,
                                            constant: Constants.imageToTextSpacing),
-            textLabel.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
-            textLabel.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
+            textLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            textLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             analysingLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor,
                                                 constant: Constants.imageToAnalysingSpacing),
-            analysingLabel.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
-            analysingLabel.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
+            analysingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            analysingLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             analysingLabel.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
                                                 constant: Constants.minTextToAnalysingSpacing),
-            analysingLabel.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor)
+            analysingLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
@@ -101,9 +87,8 @@ final class QREducationLoadingView: UIView {
 
 private extension QREducationLoadingView {
     enum Constants {
-        static let padding: CGFloat = 16
         static let imageToTextSpacing: CGFloat = 16
-        static let imageToAnalysingSpacing: CGFloat = 100
+        static let imageToAnalysingSpacing: CGFloat = 98
         static let minTextToAnalysingSpacing: CGFloat = 38
     }
 }
