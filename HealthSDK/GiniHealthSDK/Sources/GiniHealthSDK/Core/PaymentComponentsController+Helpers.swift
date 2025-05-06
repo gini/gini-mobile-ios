@@ -151,7 +151,7 @@ extension PaymentComponentsController {
     
     private func dismissAndPresent(viewController: UIViewController, animated: Bool) {
         if let presentedViewController = navigationControllerProvided?.presentedViewController {
-            // We need to extract to hold the reference, otherwise it becomes nil after `presentingViewController` is dismissed. 
+            // We need to extract to hold the reference, otherwise it becomes nil after `presentingViewController` is dismissed.
             let navigationController = viewController.navigationController
             
             presentedViewController.dismiss(animated: true) {
@@ -651,7 +651,6 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     
     private func pushOrDismissAndPush(_ viewController: UIViewController) {
         if let banksBottomVC = navigationControllerProvided?.topMostViewController() as? BanksBottomView {
-            
             previousPresentedViews.append(.bankPicker)
             banksBottomVC.navigationController?.show(viewController, sender: nil)
         } else if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
@@ -718,11 +717,11 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             if self.documentId != nil {
                 self.navigationControllerProvided?.pushViewController(viewController, animated: true)
             } else {
-                self.navigationControllerProvided?.present(viewController, animated: true)
+                self.navigationControllerProvided?.topMostViewController().present(viewController, animated: true)
             }
         }
         
-        if let presentedVC = navigationControllerProvided?.presentedViewController {
+        if let presentedVC = navigationControllerProvided?.topMostViewController().presentedViewController {
             presentedVC.dismiss(animated: true, completion: presentOrPush)
         } else {
             presentOrPush()
