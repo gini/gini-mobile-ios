@@ -35,7 +35,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
         print("GINI LOG: Content of \(self) navigation controller \(self.navigationController?.viewControllers) \n")
         print("GINI LOG: Content of bottomSheet navigation controller \(bottomSheet.navigationController?.viewControllers) \n")
         
-        print("GINI LOG: top most view controller before presenting banks \(self.presentingViewController?.topMostViewController()) \n")
+        print("GINI LOG: top most view controller before presenting banks from presentingVC \(self.presentingViewController?.topMostViewController()) \n")
         print("GINI LOG: top most view controller before presenting banks \(self.topMostViewController()) \n")
         print("GINI LOG: top view controller \(self.navigationController?.topViewController) to present banks sheet \n")
         print("GINI LOG: view controller \(self) to present banks sheet \n")
@@ -43,7 +43,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
         bottomSheet.minHeight = Constants.inputContainerHeight
         presentBottomSheet(viewController: bottomSheet)
         
-        print("GINI LOG: top most view controller after presenting banks \(self.presentingViewController?.topMostViewController()) \n")
+        print("GINI LOG: top most view controller after presenting banks from presentingVC \(self.presentingViewController?.topMostViewController()) \n")
         print("GINI LOG: top most view controller after presenting banks \(self.topMostViewController()) \n")
         print("GINI LOG: view controller presenting review after present banks \(self.presentingViewController) \n")
         print("GINI LOG: view controller that review is presenting \(self.presentedViewController) \n")

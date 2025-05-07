@@ -653,6 +653,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         print("GINI LOG: Content of navigation controller provided: \(navigationControllerProvided?.viewControllers) \n")
         print("GINI LOG: Content of navigation from viewController \(viewController) to push: \(viewController.navigationController?.viewControllers) \n")
         print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
+        print("GINI LOG: Top view controller from navigation provided: \(navigationControllerProvided?.topViewController) \n")
         print("GINI LOG: Presented view controller from navigation provided: \(navigationControllerProvided?.presentedViewController) \n")
         if let banksBottomVC = navigationControllerProvided?.topMostViewController() as? BanksBottomView {
             previousPresentedViews.append(.bankPicker)
