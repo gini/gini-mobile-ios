@@ -22,7 +22,7 @@ public struct PaymentInfo {
 
     public init(recipient: String, iban: String, bic: String, amount: String, purpose: String, paymentUniversalLink: String, paymentProviderId: String) {
         self.recipient = recipient
-        self.iban = iban
+        self.iban = iban.uppercased()
         self.bic = bic
         self.amount = amount
         self.purpose = purpose

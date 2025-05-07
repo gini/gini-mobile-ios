@@ -61,10 +61,6 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             showInfoBar()
             showInfoBarOnce = false
         }
-        if model.previousPaymentComponentScreenType == .bankPicker {
-            model.openBankSelectionBottomSheet()
-            model.previousPaymentComponentScreenType = nil
-        }
     }
 
     fileprivate func setupViewModel() {
@@ -380,6 +376,7 @@ fileprivate extension PaymentReviewViewController {
         control.backgroundColor = .clear
         control.hidesForSinglePage = true
         control.numberOfPages = model.document?.pageCount ?? 0
+        control.addTarget(self, action: #selector(pageControlTapHandler), for: .touchUpInside)
         return control
     }
 
