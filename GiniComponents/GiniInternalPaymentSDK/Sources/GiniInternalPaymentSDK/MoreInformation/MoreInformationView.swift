@@ -9,9 +9,14 @@
 import UIKit
 import GiniUtilites
 
-public final class MoreInformationView: UIView {
+public final class MoreInformationView: UIButton {
     private let viewModel: MoreInformationViewModel
-    private let mainContainer = EmptyView()
+    
+    private lazy var mainContainer: EmptyView = {
+        let view = EmptyView()
+        view.isUserInteractionEnabled = false
+        return view
+    }()
     
     private lazy var moreInformationLabel: UILabel = {
         let label = UILabel()
@@ -25,29 +30,22 @@ public final class MoreInformationView: UIView {
         ]
         let moreInformationActionableAttributtedString = NSMutableAttributedString(string: viewModel.strings.moreInformationActionablePartText, attributes: attributes)
         label.attributedText = moreInformationActionableAttributtedString
-        
-        let tapOnMoreInformation = UITapGestureRecognizer(target: self,
-                                                          action: #selector(self.tapOnMoreInformationLabelAction(gesture:)))
-        label.isUserInteractionEnabled = true
-        label.addGestureRecognizer(tapOnMoreInformation)
-        
-        label.attributedText = moreInformationActionableAttributtedString
         return label
     }()
     
-    private lazy var moreInformationButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.isAccessibilityElement = false
-        button.setImage(viewModel.configuration.moreInformationIcon, for: .normal)
-        button.tintColor = viewModel.configuration.moreInformationAccentColor
-        button.addTarget(self, action: #selector(tapOnMoreInformationButtonAction), for: .touchUpInside)
-        return button
+    private lazy var moreInformationIcon: UIImageView = {
+        let imageView = UIImageView(image: viewModel.configuration.moreInformationIcon)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = viewModel.configuration.moreInformationAccentColor
+        imageView.contentMode = .scaleAspectFit
+        return imageView
     }()
     
     public init(viewModel: MoreInformationViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
+        
+        addTarget(self, action: #selector(tapOnMoreInformationButtonAction), for: .touchUpInside)
         setupView()
     }
 
@@ -58,7 +56,8 @@ public final class MoreInformationView: UIView {
     private func setupView() {
         self.translatesAutoresizingMaskIntoConstraints = false
         
-        mainContainer.addSubview(moreInformationButton)
+        mainContainer.isUserInteractionEnabled = false
+        mainContainer.addSubview(moreInformationIcon)
         mainContainer.addSubview(moreInformationLabel)
         self.addSubview(mainContainer)
         
@@ -67,13 +66,13 @@ public final class MoreInformationView: UIView {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            moreInformationButton.leadingAnchor.constraint(equalTo: mainContainer.leadingAnchor),
-            moreInformationButton.centerYAnchor.constraint(equalTo: mainContainer.centerYAnchor),
-            moreInformationButton.widthAnchor.constraint(equalToConstant: Constants.infoIconSize),
-            moreInformationButton.heightAnchor.constraint(equalToConstant: Constants.infoIconSize),
-            moreInformationLabel.leadingAnchor.constraint(equalTo: moreInformationButton.trailingAnchor, constant: Constants.spacingPadding),
-            moreInformationLabel.centerYAnchor.constraint(equalTo: moreInformationButton.centerYAnchor),
-            moreInformationLabel.trailingAnchor.constraint(greaterThanOrEqualTo: mainContainer.trailingAnchor),
+            moreInformationIcon.leadingAnchor.constraint(equalTo: mainContainer.leadingAnchor),
+            moreInformationIcon.centerYAnchor.constraint(equalTo: mainContainer.centerYAnchor),
+            moreInformationIcon.widthAnchor.constraint(equalToConstant: Constants.infoIconSize),
+            moreInformationIcon.heightAnchor.constraint(equalToConstant: Constants.infoIconSize),
+            moreInformationLabel.leadingAnchor.constraint(equalTo: moreInformationIcon.trailingAnchor, constant: Constants.spacingPadding),
+            moreInformationLabel.centerYAnchor.constraint(equalTo: moreInformationIcon.centerYAnchor),
+            moreInformationLabel.trailingAnchor.constraint(equalTo: mainContainer.trailingAnchor),
             mainContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
             mainContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainContainer.topAnchor.constraint(equalTo: topAnchor),
@@ -82,15 +81,7 @@ public final class MoreInformationView: UIView {
     }
     
     @objc
-    private func tapOnMoreInformationLabelAction(gesture: UITapGestureRecognizer) {
-        if gesture.didTapAttributedTextInLabel(label: moreInformationLabel,
-                                               targetText: viewModel.strings.moreInformationActionablePartText) {
-            viewModel.tapOnMoreInformation()
-        }
-    }
-    
-    @objc
-    private func tapOnMoreInformationButtonAction(gesture: UITapGestureRecognizer) {
+    private func tapOnMoreInformationButtonAction() {
         viewModel.tapOnMoreInformation()
     }
 }

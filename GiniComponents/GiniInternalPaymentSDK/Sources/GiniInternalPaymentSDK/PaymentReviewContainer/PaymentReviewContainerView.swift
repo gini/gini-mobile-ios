@@ -699,6 +699,7 @@ public final class PaymentReviewContainerView: UIView {
         let label = UILabel()
         label.font = viewModel.configuration.errorLabelFont
         label.textColor = viewModel.configuration.errorLabelTextColor
+        label.numberOfLines = 0
         return label
     }
 

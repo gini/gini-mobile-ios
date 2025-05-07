@@ -30,11 +30,7 @@ extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionVie
     }
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        if !UIDevice.isPortrait() {
-            return UIEdgeInsets(top: 0, left: -(Constants.landscapeCollectionViewLeftInsetRatio * collectionView.frame.width), bottom: 0, right: 0)
-        } else {
-            return .zero
-        }
+        return .zero
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout

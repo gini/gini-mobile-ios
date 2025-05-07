@@ -32,8 +32,8 @@ open class BottomSheetViewController: UIViewController {
     private let topBarView = EmptyView()
 
     /// Top view bar
-    private lazy var barLineView: UIView = {
-        let view = UIView()
+    private lazy var barLineView: AccesibleView = {
+        let view = AccesibleView()
         view.backgroundColor = configuration.rectangleColor
         view.layer.cornerRadius = Constants.cornerRadiusTopRectangle
         view.translatesAutoresizingMaskIntoConstraints = false

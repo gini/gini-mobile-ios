@@ -61,7 +61,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         label.font = viewModel.configuration.descriptionFont
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
-        label.textAlignment = .center
+        label.textAlignment = .left
         return label
     }()
     
@@ -231,8 +231,6 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
             contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * contentPadding),
             qrImageView.widthAnchor.constraint(equalToConstant: qrCodeSize),
             qrImageView.heightAnchor.constraint(equalToConstant: qrCodeSize),
-            descriptionLabel.leadingAnchor.constraint(equalTo: descriptionView.leadingAnchor, constant: isPortrait ? Constants.viewPaddingConstraint : 0),
-            descriptionLabel.trailingAnchor.constraint(equalTo: descriptionView.trailingAnchor, constant: isPortrait ? -Constants.viewPaddingConstraint : 0),
             paymentInfoStackView.leadingAnchor.constraint(equalTo: paymentInfoView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             paymentInfoStackView.trailingAnchor.constraint(equalTo: paymentInfoView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             paymentInfoStackView.topAnchor.constraint(equalTo: paymentInfoView.topAnchor, constant: Constants.viewPaddingConstraint),
@@ -317,6 +315,9 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     private func setupDescriptionViewConstraints() {
         NSLayoutConstraint.activate([
             descriptionLabel.topAnchor.constraint(equalTo: descriptionView.topAnchor, constant: Constants.topBottomPaddingConstraint),
+            descriptionLabel.leadingAnchor.constraint(equalTo: descriptionView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            descriptionLabel.trailingAnchor.constraint(equalTo: descriptionView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            descriptionLabel.bottomAnchor.constraint(equalTo: descriptionView.bottomAnchor, constant: -Constants.topBottomPaddingConstraint),
         ])
     }
 
@@ -402,11 +403,15 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
 
     private func generateAmountPurposeStackView() -> UIStackView {
         let amountPurposeStackView = createStackView(distribution: .fillEqually, spacing: Constants.viewPaddingConstraint, orientation: .horizontal)
+        var stackViews: [UIStackView] = []
         
-        let amountStackView = generateInfoStackView(title: viewModel.strings.amountLabelText, subtitle: viewModel.paymentInfo?.amount)
-        let purposeStackView = generateInfoStackView(title: viewModel.strings.purposeLabelText, subtitle: viewModel.paymentInfo?.purpose)
+        if let amountToPayString = viewModel.paymentInfo?.amount, let amountToPay = Price(extractionString: amountToPayString) {
+            stackViews.append(generateInfoStackView(title: viewModel.strings.amountLabelText, subtitle: amountToPay.string))
+        }
         
-        [amountStackView, purposeStackView].forEach { amountPurposeStackView.addArrangedSubview($0) }
+        stackViews.append(generateInfoStackView(title: viewModel.strings.purposeLabelText, subtitle: viewModel.paymentInfo?.purpose))
+        
+        stackViews.forEach { amountPurposeStackView.addArrangedSubview($0) }
         return amountPurposeStackView
     }
 
