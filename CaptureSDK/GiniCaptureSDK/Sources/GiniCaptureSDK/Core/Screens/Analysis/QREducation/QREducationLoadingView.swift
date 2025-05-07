@@ -89,6 +89,6 @@ private extension QREducationLoadingView {
     enum Constants {
         static let imageToTextSpacing: CGFloat = 16
         static let imageToAnalysingSpacing: CGFloat = 98
-        static let minTextToAnalysingSpacing: CGFloat = 38
+        static let minTextToAnalysingSpacing: CGFloat = 16
     }
 }
