@@ -70,7 +70,7 @@ final class ImagePickerViewController: UIViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(
-            collectionView,
+            self,
             name: UIDevice.orientationDidChangeNotification,
             object: nil
         )
@@ -87,7 +87,7 @@ final class ImagePickerViewController: UIViewController {
 
         scrollToBottom()
         NotificationCenter.default.addObserver(
-            collectionView,
+            self,
             selector: #selector(collectionView.reloadData),
             name: UIDevice.orientationDidChangeNotification,
             object: nil

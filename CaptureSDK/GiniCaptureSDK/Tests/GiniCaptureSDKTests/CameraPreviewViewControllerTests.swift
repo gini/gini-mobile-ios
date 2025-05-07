@@ -34,7 +34,7 @@ final class CameraPreviewViewControllerTests: XCTestCase {
                                                                   camera: camera)
         let bottomAnchor = cameraPreviewViewController.view.bottomAnchor
         cameraPreviewViewController.setupCamera(bottomAnchor: bottomAnchor)
-
+        
         let notAuthorizedView = cameraPreviewViewController
             .view
             .subviews
@@ -51,7 +51,7 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         _ = cameraPreviewViewController.view
         let bottomAnchor = cameraPreviewViewController.view.bottomAnchor
         cameraPreviewViewController.setupCamera(bottomAnchor: bottomAnchor)
-
+        
         DispatchQueue.main.async {
             let metadataOutput = self.cameraPreviewViewController.previewView.session
                 .outputs
