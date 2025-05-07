@@ -66,9 +66,6 @@
                             </state>
                         </button>
                     </subviews>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="wds-Th-9mI"/>
-                    </constraints>
                 </stackView>
                 <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fzW-pg-Fy6">
                     <rect key="frame" x="287" y="1008" width="170" height="0.0"/>
