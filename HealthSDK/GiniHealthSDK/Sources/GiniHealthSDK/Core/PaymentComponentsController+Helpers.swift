@@ -652,7 +652,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     private func pushOrDismissAndPush(_ viewController: UIViewController) {
         if let banksBottomVC = navigationControllerProvided?.topMostViewController() as? BanksBottomView {
             previousPresentedViews.append(.bankPicker)
-            banksBottomVC.navigationController?.show(viewController, sender: nil)
+            banksBottomVC.navigationController?.pushViewController(viewController, animated: true)
         } else if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
             doublePresentedVC.dismiss(animated: true) { [weak self] in
                 if let presentedVC = self?.navigationControllerProvided?.presentedViewController {
@@ -721,7 +721,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             }
         }
         
-        if let presentedVC = navigationControllerProvided?.topMostViewController().presentedViewController {
+        if let presentedVC = navigationControllerProvided?.presentedViewController {
             presentedVC.dismiss(animated: true, completion: presentOrPush)
         } else {
             presentOrPush()
