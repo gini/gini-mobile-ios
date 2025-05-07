@@ -20,6 +20,8 @@ struct SwitchOptionModel {
 		case bottomNavigationBar
 		case helpNavigationBarBottomAdapter
 		case cameraNavigationBarBottomAdapter
+        case errorNavigationBarBottomAdapter
+        case noResultsNavigationBarBottomAdapter
 		case reviewNavigationBarBottomAdapter
 		case imagePickerNavigationBarBottomAdapter
 		case onboardingShowAtLaunch
@@ -80,6 +82,10 @@ struct SwitchOptionModel {
 				return "Help screens custom bottom navigation bar"
 			case .cameraNavigationBarBottomAdapter:
 				return "Camera screen custom bottom navigation bar"
+            case .errorNavigationBarBottomAdapter:
+                return "Error screen custom bottom navigation bar"
+            case .noResultsNavigationBarBottomAdapter:
+                return "No results screen custom bottom navigation bar"
 			case .reviewNavigationBarBottomAdapter:
 				return "Review screen custom bottom navigation bar"
 			case .imagePickerNavigationBarBottomAdapter:
@@ -197,13 +203,9 @@ struct SwitchOptionModel {
 				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
             case .digitalInvoiceSkontoNavigationBarBottomAdapter:
                 return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
-			case .helpNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
-			case .cameraNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
-			case .reviewNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
-			case .imagePickerNavigationBarBottomAdapter:
+			case .helpNavigationBarBottomAdapter, .cameraNavigationBarBottomAdapter,
+                    .errorNavigationBarBottomAdapter, .noResultsNavigationBarBottomAdapter,
+                    .reviewNavigationBarBottomAdapter, .imagePickerNavigationBarBottomAdapter:
 				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			case .primaryButtonConfiguration:
 				return "Primary button used on different screens, e.g: `Onboarding`, `Digital Invoice Onboarding`, `Error`, etc."

@@ -11,14 +11,14 @@ import Foundation
 final class BottomButtonsViewModel {
     private let retakePressed: (() -> Void)?
     private let enterManuallyPressed: (() -> Void)?
-    private let cancelPressed: (() -> Void)
+    private let backPressed: (() -> Void)
 
     init(retakeBlock: (() -> Void)? = nil,
          manuallyPressed: (() -> Void)? = nil,
-         cancelPressed: @escaping (() -> Void)) {
+         backPressed: @escaping (() -> Void)) {
         self.retakePressed = retakeBlock
         self.enterManuallyPressed = manuallyPressed
-        self.cancelPressed = cancelPressed
+        self.backPressed = backPressed
     }
 
     @objc func didPressRetake() {
@@ -31,9 +31,9 @@ final class BottomButtonsViewModel {
         enterManuallyPressed?()
     }
 
-    @objc func didPressCancel() {
+    @objc func didPressBack() {
         errorOccurred = false
-        cancelPressed()
+        backPressed()
     }
 
     func isEnterManuallyHidden() -> Bool {

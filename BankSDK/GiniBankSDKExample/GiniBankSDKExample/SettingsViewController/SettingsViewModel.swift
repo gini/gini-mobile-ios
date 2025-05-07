@@ -124,6 +124,10 @@ final class SettingsViewModel {
                                                                     isSwitchOn: giniConfiguration.onboardingNavigationBarBottomAdapter != nil)))
         bottomNavBarsSection.items.append(.switchOption(data: .init(type: .cameraNavigationBarBottomAdapter,
                                                                     isSwitchOn: giniConfiguration.cameraNavigationBarBottomAdapter != nil)))
+        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .errorNavigationBarBottomAdapter,
+                                                                    isSwitchOn: giniConfiguration.errorNavigationBarBottomAdapter != nil)))
+        bottomNavBarsSection.items.append(.switchOption(data: .init(type: .noResultsNavigationBarBottomAdapter,
+                                                                    isSwitchOn: giniConfiguration.noResultsNavigationBarBottomAdapter != nil)))
         bottomNavBarsSection.items.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
                                                                     isSwitchOn: giniConfiguration.helpNavigationBarBottomAdapter != nil)))
         bottomNavBarsSection.items.append(.switchOption(data: .init(type: .reviewNavigationBarBottomAdapter,
@@ -273,6 +277,10 @@ final class SettingsViewModel {
             giniConfiguration.helpNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
         case .cameraNavigationBarBottomAdapter:
             giniConfiguration.cameraNavigationBarBottomAdapter = data.isSwitchOn ? CustomCameraBottomNavigationBarAdapter() : nil
+        case .errorNavigationBarBottomAdapter:
+            giniConfiguration.errorNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
+        case .noResultsNavigationBarBottomAdapter:
+            giniConfiguration.noResultsNavigationBarBottomAdapter = data.isSwitchOn ? CustomBottomNavigationBarAdapter() : nil
         case .reviewNavigationBarBottomAdapter:
             giniConfiguration.reviewNavigationBarBottomAdapter = data.isSwitchOn ? CustomReviewScreenBottomNavigationBarAdapter() : nil
         case .imagePickerNavigationBarBottomAdapter:

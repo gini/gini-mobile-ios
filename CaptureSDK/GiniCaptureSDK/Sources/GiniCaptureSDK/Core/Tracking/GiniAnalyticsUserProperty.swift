@@ -18,4 +18,5 @@ public enum GiniAnalyticsUserProperty: String {
     case returnAssistantEnabled = "return_assistant_enabled"
     case bankSDKVersion = "bank_sdk_version"
     case captureSDKVersion = "capture_sdk_version"
+    case instantPaymentEnabled = "instant_payment_enabled"
 }
