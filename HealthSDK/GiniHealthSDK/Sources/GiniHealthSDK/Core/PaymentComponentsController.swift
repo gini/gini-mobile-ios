@@ -155,7 +155,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
         self.documentId = documentId
         self.trackingDelegate = trackingDelegate
         guard let _ = selectedPaymentProvider else {
-            print("GINI LOG: PaymentViewBottomSheet flow")
+            print("GINI LOG: PaymentViewBottomSheet flow \n")
             presentPaymentViewBottomSheet()
             return
         }
@@ -168,7 +168,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
                 presentPaymentViewBottomSheet()
             }
         } else {
-            print("GINI LOG: didTapOnPayInvoice flow \(documentId) \n")
+            print("GINI LOG: didTapOnPayInvoice flow else \(documentId) \n")
             didTapOnPayInvoice(documentId: documentId)
         }
     }

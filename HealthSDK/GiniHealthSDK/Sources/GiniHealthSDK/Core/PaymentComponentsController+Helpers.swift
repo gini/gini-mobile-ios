@@ -722,6 +722,10 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     }
     
     private func presentOrPushPaymentReviewScreen(_ viewController: UIViewController) {
+        print("GINI LOG: Content of \(navigationControllerProvided) navigation controller provided paymentReview flow \(navigationControllerProvided?.viewControllers) \n")
+        
+        print("GINI LOG: Content of \(viewController) navigation controller provided paymentReview flow \(viewController.navigationController?.viewControllers) \n")
+        
         viewController.modalTransitionStyle = .coverVertical
         viewController.modalPresentationStyle = .overCurrentContext
         
@@ -730,7 +734,15 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             if self.documentId != nil {
                 self.navigationControllerProvided?.pushViewController(viewController, animated: true)
             } else {
+                print("GINI LOG: top most view controller \(self.navigationControllerProvided?.topMostViewController()) to present review \n")
+                
+                print("GINI LOG: top view controller \(self.navigationControllerProvided?.topViewController) to present review \n")
+                
                 self.navigationControllerProvided?.topMostViewController().present(viewController, animated: true)
+                
+                print("GINI LOG: top most view controller \(self.navigationControllerProvided?.topMostViewController()) after present review \n")
+                
+                print("GINI LOG: top view controller \(self.navigationControllerProvided?.topViewController) after present review \n")
             }
         }
         
