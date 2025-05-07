@@ -650,22 +650,35 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     }
     
     private func pushOrDismissAndPush(_ viewController: UIViewController) {
+        print("GINI LOG: Content of navigation controller provided: \(navigationControllerProvided?.viewControllers) \n")
+        print("GINI LOG: Content of navigation from viewController \(viewController) to push: \(viewController.navigationController?.viewControllers) \n")
+        print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
+        print("GINI LOG: Presented view controller from navigation provided: \(navigationControllerProvided?.presentedViewController) \n")
         if let banksBottomVC = navigationControllerProvided?.topMostViewController() as? BanksBottomView {
             previousPresentedViews.append(.bankPicker)
+            
+            print("GINI LOG: Content of navigation controller to push: \(banksBottomVC.navigationController?.viewControllers) \n")
+            print("GINI LOG: Top most view controller from vc to push more info: \(banksBottomVC.navigationController?.topViewController) \n")
             banksBottomVC.navigationController?.pushViewController(viewController, animated: true)
         } else if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
             doublePresentedVC.dismiss(animated: true) { [weak self] in
                 if let presentedVC = self?.navigationControllerProvided?.presentedViewController {
                     presentedVC.dismiss(animated: true) { [weak self] in
+                        print("GINI LOG: Content of navigation controller to push nested flow: \(self?.navigationControllerProvided?.viewControllers) \n")
+                        print("GINI LOG: Top most view controller from vc to push more info nested flow: \(self?.navigationControllerProvided?.topViewController) \n")
                         self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
                     }
                 }
             }
         } else if let presentedVC = navigationControllerProvided?.presentedViewController {
             presentedVC.dismiss(animated: true) { [weak self] in
+                print("GINI LOG: Content of navigation controller to push presented flow: \(self?.navigationControllerProvided?.viewControllers) \n")
+                print("GINI LOG: Top most view controller from vc to push more info presented flow: \(self?.navigationControllerProvided?.topViewController) \n")
                 self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
             }
         } else {
+            print("GINI LOG: Content of navigation controller to push: \(navigationControllerProvided?.viewControllers) \n")
+            print("GINI LOG: Top most view controller from vc to push more info: \(navigationControllerProvided?.topViewController) \n")
             navigationControllerProvided?.pushViewController(viewController, animated: true)
         }
     }
