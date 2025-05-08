@@ -655,12 +655,18 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
         print("GINI LOG: Top view controller from navigation provided: \(navigationControllerProvided?.topViewController) \n")
         print("GINI LOG: Presented view controller from navigation provided: \(navigationControllerProvided?.presentedViewController) \n")
-        if let banksBottomVC = navigationControllerProvided?.topMostViewController() as? BanksBottomView {
+        /*if let banksBottomVC = navigationControllerProvided?.topMostViewController() as? BanksBottomView {
             previousPresentedViews.append(.bankPicker)
             
             print("GINI LOG: Content of navigation controller to push: \(banksBottomVC.navigationController?.viewControllers) \n")
             print("GINI LOG: Top most view controller from vc to push more info: \(banksBottomVC.navigationController?.topViewController) \n")
             banksBottomVC.navigationController?.pushViewController(viewController, animated: true)
+        }*/
+        if viewController is PaymentInfoViewController {
+            print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
+            print("GINI LOG: Top view controller from navigation provided: \(navigationControllerProvided?.topViewController) \n")
+            print("GINI LOG: will present \(viewController) from \(navigationControllerProvided?.topMostViewController()) \n")
+            navigationControllerProvided?.topMostViewController().present(viewController, animated: true)
         } else if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
             doublePresentedVC.dismiss(animated: true) { [weak self] in
                 if let presentedVC = self?.navigationControllerProvided?.presentedViewController {
