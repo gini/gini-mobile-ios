@@ -171,6 +171,7 @@ public class Constraints {
         case top, bottom, right, left
     }
 
+    @discardableResult
     public class func active(item view1: Any!,
                              attr attr1: NSLayoutConstraint.Attribute,
                              relatedBy relation: NSLayoutConstraint.Relation,
@@ -179,7 +180,7 @@ public class Constraints {
                              multiplier: CGFloat = 1.0,
                              constant: CGFloat = 0,
                              priority: Float = 1000,
-                             identifier: String? = nil) {
+                             identifier: String? = nil) -> NSLayoutConstraint {
         let constraint = NSLayoutConstraint(item: view1!,
                                             attribute: attr1,
                                             relatedBy: relation,
@@ -187,6 +188,7 @@ public class Constraints {
                                             multiplier: multiplier,
                                             constant: constant)
         active(constraint: constraint, priority: priority, identifier: identifier)
+        return constraint
     }
 
     class func active(constraint: NSLayoutConstraint,

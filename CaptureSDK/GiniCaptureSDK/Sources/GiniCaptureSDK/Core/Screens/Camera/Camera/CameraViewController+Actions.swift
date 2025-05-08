@@ -24,8 +24,8 @@ extension CameraViewController {
         cameraPane.captureButton.alpha = 0
     }
 
-    public func setupCamera() {
-        cameraPreviewViewController.setupCamera()
+    public func setupCamera(bottomAnchor: NSLayoutYAxisAnchor) {
+        cameraPreviewViewController.setupCamera(bottomAnchor: bottomAnchor)
     }
 
     public func stopLoadingIndicater() {

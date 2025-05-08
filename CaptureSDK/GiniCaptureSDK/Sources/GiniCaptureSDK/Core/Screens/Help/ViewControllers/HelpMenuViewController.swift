@@ -27,6 +27,7 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
     private let tableRowHeight: CGFloat = 44
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
     var bottomNavigationBar: UIView?
+    var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
     private var bottomConstraint: NSLayoutConstraint?
 
     lazy var tableView: UITableView = {
@@ -96,6 +97,7 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        updateBottomBarHeightBasedOnOrientation()
         tableView.reloadData()
     }
 
