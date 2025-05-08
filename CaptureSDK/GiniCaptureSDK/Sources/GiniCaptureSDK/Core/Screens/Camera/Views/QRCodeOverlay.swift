@@ -175,7 +175,8 @@ final class QRCodeOverlay: UIView {
     }
 
     private func addLoadingView() {
-        if useCustomLoadingView {
+        // TODO: PP-1202 replace useCustomLoadingView with UserDefaults check
+        if useCustomLoadingView && configuration.qrCodeScanningEnabled {
             let customView = QREducationLoadingView()
             customView.translatesAutoresizingMaskIntoConstraints = false
             customLoadingView = customView
