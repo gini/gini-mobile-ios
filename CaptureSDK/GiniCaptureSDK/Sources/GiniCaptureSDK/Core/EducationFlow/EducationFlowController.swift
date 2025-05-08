@@ -10,11 +10,11 @@
  It determines whether to show the education message or fallback to the original flow,
  based on a configuration flag and how many times the message has already been displayed.
  */
-class EducationFlowController {
+final class EducationFlowController {
 
     private let configuration: EducationFlowConfiguration
 
-    private init(configuration: EducationFlowConfiguration) {
+    init(configuration: EducationFlowConfiguration) {
         self.configuration = configuration
     }
     /**
@@ -45,21 +45,5 @@ class EducationFlowController {
      */
     func reset() {
         configuration.setDisplayCount(0)
-    }
-}
-
-extension EducationFlowController {
-    static func qrCodeFlowController() -> EducationFlowController {
-        let isEducationEnabled = { GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled ?? false }
-        let getDisplayCount = { GiniCaptureUserDefaultsStorage.messageDisplayCount }
-        let setDisplayCount = { GiniCaptureUserDefaultsStorage.messageDisplayCount = $0 }
-
-        let configuration = EducationFlowConfiguration(maxTotalDisplays: 200,
-                                                       numberOfMessages: 1,
-                                                       isEducationEnabled: isEducationEnabled,
-                                                       getDisplayCount: getDisplayCount,
-                                                       setDisplayCount: setDisplayCount)
-
-        return EducationFlowController(configuration: configuration)
     }
 }

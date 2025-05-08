@@ -12,16 +12,16 @@ import GiniBankAPILibrary
     A struct that manages user defaults for Gini Capture configurations.
  */
 public struct GiniCaptureUserDefaultsStorage {
-    // Configuration flag
-    @GiniCaptureUserDefault("ginicapture.defaults.client.configurations.qrCodeEducationEnabled",
+    @GiniCaptureUserDefault("ginicapture.defaults.onboardingShowed", defaultValue: false)
+    public static var onboardingShowed: Bool
+
+    // Configuration flag for the QR code education message
+    @GiniCaptureUserDefault("ginicapture.defaults.clientConfigurations.qrCodeEducationEnabled",
                             defaultValue: nil)
     public static var qrCodeEducationEnabled: Bool?
 
     // Counts how many times the education message was shown in the invoice photo flow
-    @GiniCaptureUserDefault("ginicapture.defaults.invoicephoto.messageDisplayCount",
+    @GiniCaptureUserDefault("ginicapture.defaults.captureInvoice.educationMessageDisplayCount",
                             defaultValue: 0)
-    static var messageDisplayCount: Int
-
-    @GiniCaptureUserDefault("ginicapture.defaults.onboardingShowed", defaultValue: false)
-    public static var onboardingShowed: Bool
+    static var captureInvoiceEducationMessageDisplayCount: Int
 }
