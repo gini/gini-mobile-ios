@@ -23,7 +23,7 @@ final class EducationFlowController {
      - Returns: `.showMessage(index)` or `.showOriginalFlow`
      */
     func nextState() -> EducationFlowState {
-        guard configuration.isEducationEnabled() else {
+        guard configuration.shouldBeDisplayed() else {
             return .showOriginalFlow
         }
 

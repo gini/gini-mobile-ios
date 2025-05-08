@@ -213,7 +213,7 @@ import UIKit
 
     private func configureLoadingIndicator() {
 
-        let controller = EducationFlowController.qrCodeFlowController()
+        let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: !document.isImported)
 
         let nextState = controller.nextState()
         switch nextState {
