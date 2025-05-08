@@ -280,15 +280,20 @@ final class QRCodeOverlay: UIView {
         checkMarkImageView.isHidden = true
 
         if let controller = loadingController {
+            // TODO: PP-1202 remove test items after UserDefaults & showing business logic integration
             let loadingItems = [
                 QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
                                                                               comment: "Education intro"),
                                        duration: 1.5),
                 QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
+                                       text: NSLocalizedStringPreferredFormat("ginicapture.QRscanning.education.camera",
+                                                                              comment: "Camera education"),
+                                       duration: 1.5),
+                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
                                                                               comment: "Photo education"),
-                                       duration: 3)
+                                       duration: 1.5)
             ]
             controller.start(with: loadingItems)
             customLoadingView?.isHidden = false
