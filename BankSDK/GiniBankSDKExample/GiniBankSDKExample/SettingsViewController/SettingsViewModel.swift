@@ -402,9 +402,9 @@ final class SettingsViewModel {
     }
 
     private func clearOnboardingDefaultsIfNeeded(isSwitchOn: Bool) {
-        let onboardingShowedUserDefault = UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed")
+        let onboardingShowedUserDefault = GiniCaptureUserDefaultsStorage.onboardingShowed
         if !isSwitchOn && onboardingShowedUserDefault {
-            UserDefaults.standard.removeObject(forKey: "ginicapture.defaults.onboardingShowed")
+            GiniCaptureUserDefaultsStorage.onboardingShowed = false
         }
     }
 
