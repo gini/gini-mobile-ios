@@ -187,10 +187,10 @@ extension PaymentComponentsController {
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
         
-        let banksViewController = BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
-        let _ = UINavigationController(rootViewController: banksViewController)
+        //let banksViewController = BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
+        //let _ = UINavigationController(rootViewController: banksViewController)
         
-        return banksViewController
+        return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
     
     /**
@@ -666,8 +666,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             //print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
             print("GINI LOG: Top view controller from navigation provided: \(navigationControllerProvided?.topViewController) \n")
             //print("GINI LOG: will present \(viewController) from \(navigationControllerProvided?.topMostViewController()) \n")
-            //navigationControllerProvided?.topMostViewController().present(viewController, animated: true)
-            navigationControllerProvided?.present(viewController, animated: true)
+            navigationControllerProvided?.topMostViewController().present(viewController, animated: true)
         } else if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
             doublePresentedVC.dismiss(animated: true) { [weak self] in
                 if let presentedVC = self?.navigationControllerProvided?.presentedViewController {
@@ -908,7 +907,6 @@ extension PaymentComponentsController: InstallAppBottomViewProtocol {
 
 extension UIViewController {
     
-    /*
     func topMostViewController() -> UIViewController {
         if let navigation = self as? UINavigationController {
             return navigation.visibleViewController?.topMostViewController() ?? self
@@ -931,5 +929,5 @@ extension UIViewController {
         }
         
         return self
-    }*/
+    }
 }
