@@ -21,4 +21,7 @@ public struct GiniCaptureUserDefaultsStorage {
     @GiniCaptureUserDefault("ginicapture.defaults.invoicephoto.messageDisplayCount",
                             defaultValue: 0)
     static var messageDisplayCount: Int
+
+    @GiniCaptureUserDefault("ginicapture.defaults.onboardingShowed", defaultValue: false)
+    public static var onboardingShowed: Bool
 }

@@ -145,8 +145,8 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
 
     private func shouldShowOnboarding() -> Bool {
         if giniConfiguration.onboardingShowAtFirstLaunch &&
-            !UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed") {
-            UserDefaults.standard.set(true, forKey: "ginicapture.defaults.onboardingShowed")
+            !GiniCaptureUserDefaultsStorage.onboardingShowed {
+            GiniCaptureUserDefaultsStorage.onboardingShowed = true
             return true
         } else if giniConfiguration.onboardingShowAtLaunch {
             return true
