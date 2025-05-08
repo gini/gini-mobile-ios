@@ -103,6 +103,9 @@ final class IncorrectQRCodeTextContainer: UIView {
 
 final class QRCodeOverlay: UIView {
     private let configuration = GiniConfiguration.shared
+    private var loadingController: QREducationLoadingController?
+    private var customLoadingView: QREducationLoadingView?
+    private let useCustomLoadingView: Bool = true
 
     private lazy var correctQRFeedback: CorrectQRCodeTextContainer = {
         let view = CorrectQRCodeTextContainer()
@@ -172,17 +175,27 @@ final class QRCodeOverlay: UIView {
     }
 
     private func addLoadingView() {
-        let loadingIndicator: UIView
-
-        if let customLoadingIndicator = configuration.customLoadingIndicator?.injectedView() {
-            loadingIndicator = customLoadingIndicator
+        // TODO: PP-1202 replace useCustomLoadingView with UserDefaults check
+        if useCustomLoadingView && configuration.qrCodeScanningEnabled {
+            let customView = QREducationLoadingView()
+            customView.translatesAutoresizingMaskIntoConstraints = false
+            customLoadingView = customView
+            addSubview(customView)
+            let controller = QREducationLoadingController(loadingView: customView)
+            loadingController = controller
         } else {
-            loadingIndicator = loadingIndicatorView
-        }
+            let loadingIndicator: UIView
 
-        addSubview(loadingContainer)
-        loadingContainer.addArrangedSubview(loadingIndicator)
-        loadingContainer.addArrangedSubview(loadingIndicatorText)
+            if let customLoadingIndicator = configuration.customLoadingIndicator?.injectedView() {
+                loadingIndicator = customLoadingIndicator
+            } else {
+                loadingIndicator = loadingIndicatorView
+            }
+
+            addSubview(loadingContainer)
+            loadingContainer.addArrangedSubview(loadingIndicator)
+            loadingContainer.addArrangedSubview(loadingIndicatorText)
+        }
     }
 
     func layoutViews(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
@@ -221,12 +234,25 @@ final class QRCodeOverlay: UIView {
     }
 
     private func layoutLoadingIndicator(centeringBy cameraFrame: UIView) {
-        NSLayoutConstraint.activate([
-            loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-            loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
-            loadingContainer.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor),
-            loadingContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
-        ])
+        if let customLoadingView {
+            NSLayoutConstraint.activate([
+                customLoadingView.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
+                customLoadingView.centerYAnchor.constraint(greaterThanOrEqualTo: cameraFrame.centerYAnchor),
+                customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: cameraFrame.leadingAnchor,
+                                                    constant: Constants.educationLoadingViewPadding),
+                customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: cameraFrame.trailingAnchor,
+                                                     constant: -Constants.educationLoadingViewPadding),
+                customLoadingView.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.topAnchor,
+                                                constant: Constants.educationLoadingViewTopPadding)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
+                loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
+                loadingContainer.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor),
+                loadingContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
+            ])
+        }
     }
 
     func configureQrCodeOverlay(withCorrectQrCode isQrCodeCorrect: Bool) {
@@ -253,11 +279,27 @@ final class QRCodeOverlay: UIView {
      */
     public func showAnimation() {
         checkMarkImageView.isHidden = true
-        loadingContainer.isHidden = false
 
-        if let loadingIndicator = configuration.customLoadingIndicator {
-            loadingIndicator.startAnimation()
+        if let controller = loadingController {
+            // TODO: PP-1202 remove test items after UserDefaults & showing business logic integration
+            let loadingItems = [
+                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
+                                       text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
+                                                                              comment: "Education intro"),
+                                       duration: 1.5),
+                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
+                                       text: NSLocalizedStringPreferredFormat("ginicapture.QRscanning.education.camera",
+                                                                              comment: "Camera education"),
+                                       duration: 1.5),
+                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
+                                       text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
+                                                                              comment: "Photo education"),
+                                       duration: 1.5)
+            ]
+            controller.start(with: loadingItems)
+            customLoadingView?.isHidden = false
         } else {
+            loadingContainer.isHidden = false
             loadingIndicatorView.startAnimating()
         }
     }
@@ -267,11 +309,11 @@ final class QRCodeOverlay: UIView {
      */
     public func hideAnimation() {
         checkMarkImageView.isHidden = true
-        loadingContainer.isHidden = true
-
-        if let loadingIndicator = configuration.customLoadingIndicator {
-            loadingIndicator.stopAnimation()
+        if let controller = loadingController {
+            customLoadingView?.isHidden = true
+            controller.stop()
         } else {
+            loadingContainer.isHidden = true
             loadingIndicatorView.stopAnimating()
         }
     }
@@ -279,6 +321,8 @@ final class QRCodeOverlay: UIView {
 
 private enum Constants {
     static let spacing: CGFloat = 8
+    static let educationLoadingViewPadding: CGFloat = 28
+    static let educationLoadingViewTopPadding: CGFloat = 6
     static let topSpacing: CGFloat = 2
     static let iconSize = CGSize(width: 56, height: 56)
 }
