@@ -71,7 +71,7 @@ final class IncorrectQRCodeTextContainer: UIView {
     private lazy var textStackView: UIStackView = {
         let textStackView = UIStackView()
         textStackView.axis = .vertical
-        textStackView.distribution = .fillProportionally
+        textStackView.distribution = .fill
         textStackView.spacing = Constants.spacing
         textStackView.translatesAutoresizingMaskIntoConstraints = false
         return textStackView
