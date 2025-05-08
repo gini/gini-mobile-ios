@@ -212,48 +212,60 @@ import UIKit
     }
 
     private func configureLoadingIndicator() {
-        if useCustomLoadingView {
-            let customLoadingView = QREducationLoadingView()
-            customLoadingView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(customLoadingView)
 
-            NSLayoutConstraint.activate([
-                customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
-                                                           constant: Constants.educationLoadingViewPadding),
-                customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
-                                                            constant: -Constants.educationLoadingViewPadding)
-            ])
+        let controller = EducationFlowController.qrCodeFlowController()
 
-            let loadingItems = [
-                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
-                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
-                                                                               comment: "Education intro"),
-                                        duration: 1.5),
-                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
-                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
-                                                                               comment: "Photo education"),
-                                        duration: 3)
-            ]
-
-            let controller = QREducationLoadingController(loadingView: customLoadingView)
-            controller.start(with: loadingItems)
-            loadingController = controller
-
-        } else {
-            loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
-            addLoadingContainer()
-            addLoadingView(intoContainer: loadingIndicatorContainer)
-
-            if let loadingIndicator = giniConfiguration.customLoadingIndicator {
-                addLoadingText(below: loadingIndicator.injectedView())
-                loadingIndicator.startAnimation()
-            } else {
-                addLoadingText(below: loadingIndicatorView)
-                loadingIndicatorView.startAnimating()
-            }
+        let nextState = controller.nextState()
+        switch nextState {
+        case .showMessage:
+            showEducationLoadingMessage()
+        case .showOriginalFlow:
+            showOriginalLoadingMessage()
         }
+    }
+
+    private func showOriginalLoadingMessage() {
+        loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        addLoadingContainer()
+        addLoadingView(intoContainer: loadingIndicatorContainer)
+
+        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
+            addLoadingText(below: loadingIndicator.injectedView())
+            loadingIndicator.startAnimation()
+        } else {
+            addLoadingText(below: loadingIndicatorView)
+            loadingIndicatorView.startAnimating()
+        }
+    }
+
+    private func showEducationLoadingMessage() {
+        let customLoadingView = QREducationLoadingView()
+        customLoadingView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(customLoadingView)
+
+        NSLayoutConstraint.activate([
+            customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+                                                       constant: Constants.educationLoadingViewPadding),
+            customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
+                                                        constant: -Constants.educationLoadingViewPadding)
+        ])
+
+        let loadingItems = [
+            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
+                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
+                                                                          comment: "Education intro"),
+                                   duration: 1.5),
+            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
+                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
+                                                                          comment: "Photo education"),
+                                   duration: 3)
+        ]
+
+        let controller = QREducationLoadingController(loadingView: customLoadingView)
+        controller.start(with: loadingItems)
+        loadingController = controller
     }
 
     private func addLoadingText(below loadingIndicator: UIView) {
