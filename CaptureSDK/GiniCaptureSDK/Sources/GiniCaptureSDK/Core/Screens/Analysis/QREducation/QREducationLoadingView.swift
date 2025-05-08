@@ -63,7 +63,7 @@ final class QREducationLoadingView: UIView {
             textLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             textLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            analysingLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor,
+            analysingLabel.topAnchor.constraint(greaterThanOrEqualTo: imageView.bottomAnchor,
                                                 constant: Constants.imageToAnalysingSpacing),
             analysingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             analysingLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
