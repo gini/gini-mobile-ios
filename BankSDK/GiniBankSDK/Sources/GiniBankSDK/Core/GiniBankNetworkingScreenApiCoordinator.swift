@@ -355,7 +355,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             guard let self = self else { return }
             switch result {
             case let .success(extractionResult):
-                    self.setDcoumentIdAsUserProperty()
+                self.setDcoumentIdAsUserProperty()
                 DispatchQueue.main.async {
                     if GiniBankConfiguration.shared.returnAssistantEnabled && extractionResult.lineItems != nil {
                         self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
