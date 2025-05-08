@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -24,40 +25,51 @@
                             <constraint firstAttribute="width" constant="220" id="6LR-o1-9WY"/>
                         </constraints>
                     </view>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="i46-rn-0DW">
-                        <rect key="frame" x="300" y="168.5" width="480" height="87.5"/>
+                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaB-PN-sfG">
+                        <rect key="frame" x="280" y="38" width="520" height="127.5"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flat paper within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4m8-UH-fux">
-                                <rect key="frame" x="138.5" y="0.0" width="203.5" height="33"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="i46-rn-0DW">
+                                <rect key="frame" x="0.0" y="0.0" width="504" height="75"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flat paper within the frame jksjdf lksdjf sdfskffj sdslkjf dsf skdlkf dssdkjfs df" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4m8-UH-fux">
+                                        <rect key="frame" x="0.0" y="0.0" width="504" height="42.5"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="Ensure that the document is flat, and positioned within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1HY-bp-k5Q">
+                                        <rect key="frame" x="0.0" y="54.5" width="504" height="20.5"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" name="subheadline"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="33" id="gYd-cQ-4Xr"/>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="276" id="sYN-4q-OLf"/>
+                                    <constraint firstItem="1HY-bp-k5Q" firstAttribute="trailing" secondItem="4m8-UH-fux" secondAttribute="trailing" id="Vvh-Na-a70"/>
+                                    <constraint firstItem="1HY-bp-k5Q" firstAttribute="leading" secondItem="4m8-UH-fux" secondAttribute="leading" id="o1t-ZX-QpR"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="Ensure that the document is flat, and positioned within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1HY-bp-k5Q">
-                                <rect key="frame" x="114.5" y="45" width="251.5" height="42.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="276" id="fuK-nP-Ydc"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </stackView>
                         </subviews>
-                    </stackView>
+                        <color key="backgroundColor" name="Feedback01"/>
+                        <constraints>
+                            <constraint firstItem="i46-rn-0DW" firstAttribute="bottom" secondItem="6bK-ZW-gIV" secondAttribute="bottom" id="233-Nz-w6Q"/>
+                            <constraint firstItem="i46-rn-0DW" firstAttribute="leading" secondItem="6bK-ZW-gIV" secondAttribute="leading" id="DNF-37-73b"/>
+                            <constraint firstItem="i46-rn-0DW" firstAttribute="top" secondItem="6bK-ZW-gIV" secondAttribute="top" id="ODM-Ri-zrx"/>
+                            <constraint firstItem="i46-rn-0DW" firstAttribute="trailing" secondItem="6bK-ZW-gIV" secondAttribute="trailing" id="n2x-BL-tUX"/>
+                        </constraints>
+                        <viewLayoutGuide key="contentLayoutGuide" id="6bK-ZW-gIV"/>
+                        <viewLayoutGuide key="frameLayoutGuide" id="DHA-eG-Y1N"/>
+                    </scrollView>
                 </subviews>
                 <viewLayoutGuide key="safeArea" id="aEO-NH-fih"/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="SQ0-nC-yBn" firstAttribute="leading" secondItem="aEO-NH-fih" secondAttribute="leading" constant="56" id="OQg-qN-je7"/>
-                    <constraint firstItem="i46-rn-0DW" firstAttribute="leading" secondItem="SQ0-nC-yBn" secondAttribute="trailing" constant="24" id="OsM-SV-Vt6"/>
-                    <constraint firstAttribute="bottom" secondItem="i46-rn-0DW" secondAttribute="bottom" constant="168" id="XhM-Xn-mxp"/>
-                    <constraint firstItem="aEO-NH-fih" firstAttribute="trailing" secondItem="i46-rn-0DW" secondAttribute="trailing" constant="24" id="dvm-75-nFJ"/>
                     <constraint firstItem="SQ0-nC-yBn" firstAttribute="top" secondItem="3EI-sg-mtc" secondAttribute="top" constant="58" id="fbF-gk-peq"/>
                     <constraint firstItem="SQ0-nC-yBn" firstAttribute="centerY" secondItem="3EI-sg-mtc" secondAttribute="centerY" id="uIL-ki-2na"/>
+                    <constraint firstItem="4m8-UH-fux" firstAttribute="trailing" secondItem="aEO-NH-fih" secondAttribute="trailing" constant="-20" id="wmf-Tn-tFa"/>
                 </constraints>
             </collectionViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -71,4 +83,12 @@
             <point key="canvasLocation" x="1447.8515625" y="240.26354319180086"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <namedColor name="Feedback01">
+            <color red="0.98039215686274506" green="0.10980392156862745" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="subheadline">
+            <color red="0.55699998140335083" green="0.55699998140335083" blue="0.57599997520446777" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>
