@@ -180,18 +180,6 @@ final class QRCodeOverlay: UIView {
             customView.translatesAutoresizingMaskIntoConstraints = false
             customLoadingView = customView
             addSubview(customView)
-
-            NSLayoutConstraint.activate([
-                customView.centerXAnchor.constraint(equalTo: centerXAnchor),
-                customView.centerYAnchor.constraint(greaterThanOrEqualTo: centerYAnchor),
-                customView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
-                                                    constant: Constants.educationLoadingViewPadding),
-                customView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor,
-                                                     constant: -Constants.educationLoadingViewPadding),
-                customView.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.topAnchor,
-                                                constant: Constants.educationLoadingViewTopPadding)
-            ])
-
             let controller = QREducationLoadingController(loadingView: customView)
             loadingController = controller
         } else {
@@ -245,14 +233,25 @@ final class QRCodeOverlay: UIView {
     }
 
     private func layoutLoadingIndicator(centeringBy cameraFrame: UIView) {
-        guard loadingController == nil else { return }
-
-        NSLayoutConstraint.activate([
-            loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-            loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
-            loadingContainer.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor),
-            loadingContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
-        ])
+        if let customLoadingView {
+            NSLayoutConstraint.activate([
+                customLoadingView.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
+                customLoadingView.centerYAnchor.constraint(greaterThanOrEqualTo: cameraFrame.centerYAnchor),
+                customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: cameraFrame.leadingAnchor,
+                                                    constant: Constants.educationLoadingViewPadding),
+                customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: cameraFrame.trailingAnchor,
+                                                     constant: -Constants.educationLoadingViewPadding),
+                customLoadingView.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.topAnchor,
+                                                constant: Constants.educationLoadingViewTopPadding)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
+                loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
+                loadingContainer.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor),
+                loadingContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
+            ])
+        }
     }
 
     func configureQrCodeOverlay(withCorrectQrCode isQrCodeCorrect: Bool) {
