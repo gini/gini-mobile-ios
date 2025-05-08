@@ -652,7 +652,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     private func pushOrDismissAndPush(_ viewController: UIViewController) {
         print("GINI LOG: Content of navigation controller provided: \(navigationControllerProvided?.viewControllers) \n")
         print("GINI LOG: Content of navigation from viewController \(viewController) to push: \(viewController.navigationController?.viewControllers) \n")
-        print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
+        //print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
         print("GINI LOG: Top view controller from navigation provided: \(navigationControllerProvided?.topViewController) \n")
         print("GINI LOG: Presented view controller from navigation provided: \(navigationControllerProvided?.presentedViewController) \n")
         /*if let banksBottomVC = navigationControllerProvided?.topMostViewController() as? BanksBottomView {
@@ -663,10 +663,11 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             banksBottomVC.navigationController?.pushViewController(viewController, animated: true)
         }*/
         if viewController is PaymentInfoViewController {
-            print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
+            //print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
             print("GINI LOG: Top view controller from navigation provided: \(navigationControllerProvided?.topViewController) \n")
-            print("GINI LOG: will present \(viewController) from \(navigationControllerProvided?.topMostViewController()) \n")
-            navigationControllerProvided?.topMostViewController().present(viewController, animated: true)
+            //print("GINI LOG: will present \(viewController) from \(navigationControllerProvided?.topMostViewController()) \n")
+            //navigationControllerProvided?.topMostViewController().present(viewController, animated: true)
+            navigationControllerProvided?.present(viewController, animated: true)
         } else if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
             doublePresentedVC.dismiss(animated: true) { [weak self] in
                 if let presentedVC = self?.navigationControllerProvided?.presentedViewController {
@@ -741,13 +742,13 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             if self.documentId != nil {
                 self.navigationControllerProvided?.pushViewController(viewController, animated: true)
             } else {
-                print("GINI LOG: top most view controller \(self.navigationControllerProvided?.topMostViewController()) to present review \n")
+                //print("GINI LOG: top most view controller \(self.navigationControllerProvided?.topMostViewController()) to present review \n")
                 
                 print("GINI LOG: top view controller \(self.navigationControllerProvided?.topViewController) to present review \n")
                 
-                self.navigationControllerProvided?.topMostViewController().present(viewController, animated: true)
+                self.navigationControllerProvided?.present(viewController, animated: true)
                 
-                print("GINI LOG: top most view controller \(self.navigationControllerProvided?.topMostViewController()) after present review \n")
+                //print("GINI LOG: top most view controller \(self.navigationControllerProvided?.topMostViewController()) after present review \n")
                 
                 print("GINI LOG: top view controller \(self.navigationControllerProvided?.topViewController) after present review \n")
             }
@@ -907,6 +908,7 @@ extension PaymentComponentsController: InstallAppBottomViewProtocol {
 
 extension UIViewController {
     
+    /*
     func topMostViewController() -> UIViewController {
         if let navigation = self as? UINavigationController {
             return navigation.visibleViewController?.topMostViewController() ?? self
@@ -929,5 +931,5 @@ extension UIViewController {
         }
         
         return self
-    }
+    }*/
 }

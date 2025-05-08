@@ -146,7 +146,7 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
         self.navigationControllerProvided = navigationController
         
         print("GINI LOG: Content of navigation controller provided: \(navigationControllerProvided?.viewControllers) \n")
-        print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
+        //print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
         print("GINI LOG: Presented view controller from navigation provided: \(navigationControllerProvided?.presentedViewController) \n")
         
         if let paymentInfo {
