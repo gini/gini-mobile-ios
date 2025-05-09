@@ -99,6 +99,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   paymentInfoConfiguration: configurationProvider.paymentInfoConfiguration,
+                                                                   paymentInfoStrings: stringsProvider.paymentInfoStrings,
                                                                    clientConfiguration: configurationProvider.clientConfiguration)
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }

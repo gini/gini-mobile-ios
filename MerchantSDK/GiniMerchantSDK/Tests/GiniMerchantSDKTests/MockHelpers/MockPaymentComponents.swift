@@ -92,6 +92,8 @@ class MockPaymentComponents: PaymentComponentsProtocol {
                                                                    poweredByGiniStrings: giniMerchant.poweredByGiniStrings,
                                                                    moreInformationConfiguration: giniMerchant.moreInformationConfiguration,
                                                                    moreInformationStrings: giniMerchant.moreInformationStrings,
+                                                                   paymentInfoConfiguration: giniMerchant.paymentInfoConfiguration,
+                                                                   paymentInfoStrings: giniMerchant.paymentInfoStrings,
                                                                    clientConfiguration: nil)
         let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: giniMerchant.bottomSheetConfiguration)
         return paymentProvidersBottomView

@@ -192,6 +192,8 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                    poweredByGiniStrings: giniMerchant.poweredByGiniStrings,
                                                    moreInformationConfiguration: giniMerchant.moreInformationConfiguration,
                                                    moreInformationStrings: giniMerchant.moreInformationStrings,
+                                                   paymentInfoConfiguration: giniMerchant.paymentInfoConfiguration,
+                                                   paymentInfoStrings: giniMerchant.paymentInfoStrings,
                                                    urlOpener: URLOpener(MockUIApplication(canOpen: false)),
                                                    clientConfiguration: nil)
 

@@ -356,6 +356,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   paymentInfoConfiguration: configurationProvider.paymentInfoConfiguration,
+                                                                   paymentInfoStrings: stringsProvider.paymentInfoStrings,
                                                                    clientConfiguration: nil)
         paymentProvidersBottomViewModel.viewDelegate = self
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
@@ -445,6 +447,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   paymentInfoConfiguration: configurationProvider.paymentInfoConfiguration,
+                                                                   paymentInfoStrings: stringsProvider.paymentInfoStrings,
                                                                    clientConfiguration: nil)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
