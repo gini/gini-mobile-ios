@@ -39,11 +39,4 @@ final class EducationFlowController {
 
         return .showMessage(messageIndex: messageIndex)
     }
-
-    /**
-     Resets the education flow display count.
-     */
-    func reset() {
-        configuration.setDisplayCount(0)
-    }
 }
