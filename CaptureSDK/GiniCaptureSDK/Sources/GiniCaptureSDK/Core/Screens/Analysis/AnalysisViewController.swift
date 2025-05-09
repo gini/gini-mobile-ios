@@ -43,7 +43,7 @@ import Combine
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
     private var animationCompletedSubject = CurrentValueSubject<Bool, Never>(false)
-    private var cancellables = Set<AnyCancellable>()
+    private var anymationCancellables = Set<AnyCancellable>()
 
     // User interface
     private var imageView: UIImageView = {
@@ -272,7 +272,7 @@ import Combine
         .sink { [weak self] in
             self?.animationCompletedSubject.send(true)
         }
-        .store(in: &cancellables)
+        .store(in: &anymationCancellables)
 
         viewModel.start()
     }
@@ -287,7 +287,7 @@ import Combine
                 .sink { _ in
                     action()
                 }
-                .store(in: &cancellables)
+                .store(in: &anymationCancellables)
         }
     }
 
