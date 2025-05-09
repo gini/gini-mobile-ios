@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
@@ -38,8 +39,11 @@ import UIKit
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
     private let useCustomLoadingView: Bool = true
-    private var loadingController: QREducationLoadingController?
+    private var loadingViewModel: QREducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
+
+    private var animationCompletedSubject = CurrentValueSubject<Bool, Never>(false)
+    private var anymationCancellables = Set<AnyCancellable>()
 
     // User interface
     private var imageView: UIImageView = {
@@ -212,47 +216,82 @@ import UIKit
     }
 
     private func configureLoadingIndicator() {
-        if useCustomLoadingView {
-            let customLoadingView = QREducationLoadingView()
-            customLoadingView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(customLoadingView)
+        let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: !document.isImported)
 
-            NSLayoutConstraint.activate([
-                customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
-                                                           constant: Constants.educationLoadingViewPadding),
-                customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
-                                                            constant: -Constants.educationLoadingViewPadding)
-            ])
+        let nextState = controller.nextState()
+        switch nextState {
+        case .showMessage:
+            showEducationLoadingMessage()
+        case .showOriginalFlow:
+            showOriginalLoadingMessage()
+        }
+    }
 
-            let loadingItems = [
-                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
-                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
-                                                                               comment: "Education intro"),
-                                        duration: 1.5),
-                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
-                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
-                                                                               comment: "Photo education"),
-                                        duration: 3)
-            ]
+    private func showOriginalLoadingMessage() {
+        loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        addLoadingContainer()
+        addLoadingView(intoContainer: loadingIndicatorContainer)
 
-            let controller = QREducationLoadingController(loadingView: customLoadingView)
-            controller.start(with: loadingItems)
-            loadingController = controller
-
+        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
+            addLoadingText(below: loadingIndicator.injectedView())
+            loadingIndicator.startAnimation()
         } else {
-            loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
-            addLoadingContainer()
-            addLoadingView(intoContainer: loadingIndicatorContainer)
+            addLoadingText(below: loadingIndicatorView)
+            loadingIndicatorView.startAnimating()
+        }
+        // immediately mark animation complete
+        animationCompletedSubject.send(true)
+    }
 
-            if let loadingIndicator = giniConfiguration.customLoadingIndicator {
-                addLoadingText(below: loadingIndicator.injectedView())
-                loadingIndicator.startAnimation()
-            } else {
-                addLoadingText(below: loadingIndicatorView)
-                loadingIndicatorView.startAnimating()
-            }
+    private func showEducationLoadingMessage() {
+        let loadingItems = [
+            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
+                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
+                                                                          comment: "Education intro"),
+                                   duration: 1.5),
+            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
+                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
+                                                                          comment: "Photo education"),
+                                   duration: 3)
+        ]
+        let viewModel = QREducationLoadingViewModel(items: loadingItems)
+        let customLoadingView = QREducationLoadingView(viewModel: viewModel)
+        customLoadingView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(customLoadingView)
+
+        NSLayoutConstraint.activate([
+            customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+                                                       constant: Constants.educationLoadingViewPadding),
+            customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
+                                                        constant: -Constants.educationLoadingViewPadding)
+        ])
+
+        Task {
+            await viewModel.start()
+            animationCompletedSubject.send(true)
+        }
+    }
+    /**
+     Executes the given action when the animation inside the analysis screen is completed.
+
+     If the animation has already completed, the action is executed immediately.
+     If the animation is still running, the action is queued and will be executed once the animation finishes.
+
+     - Parameter action: A closure to be executed after the animation has completed.
+     */
+    public func performWhenAnimationCompleted(_ action: @escaping () -> Void) {
+        if animationCompletedSubject.value {
+            action()
+        } else {
+            animationCompletedSubject
+                .filter { $0 }
+                .prefix(1)
+                .sink { _ in
+                    action()
+                }
+                .store(in: &anymationCancellables)
         }
     }
 
