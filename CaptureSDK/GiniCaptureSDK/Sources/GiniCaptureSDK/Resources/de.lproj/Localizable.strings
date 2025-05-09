@@ -109,6 +109,9 @@
 "ginicapture.analysis.error.analysis" = "Beim Analysieren des Dokuments ist ein Fehler aufgetreten.";
 "ginicapture.analysis.error.cancelled" = "Die Analyse wurde abgebrochen";
 "ginicapture.analysis.defaultPdfDokumentTitle" = "PDF-Dokument";
+"ginicapture.analysis.education.loadingText" = "analysieren";
+"ginicapture.analysis.education.intro" = "Falls Sie es nicht wussten...";
+"ginicapture.analysis.education.photo" = "Laden Sie direkt ein PDF, Bild oder GIF hoch";
 
 "ginicapture.help.openWithTutorial.title" = "Dokumente aus anderen Apps öffnen";
 

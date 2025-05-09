@@ -32,7 +32,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     public weak var trackingDelegate: GiniCaptureTrackingDelegate?
 
     // Screens
-    var analysisViewController: AnalysisViewController?
+    public var analysisViewController: AnalysisViewController?
     weak var cameraScreen: CameraViewController?
     var noResultsViewController: NoResultScreenViewController?
     lazy var reviewViewController: ReviewViewController = {
@@ -306,7 +306,7 @@ extension GiniScreenAPICoordinator {
         }
         analysisViewController = createAnalysisScreen(withDocument: firstDocument)
         analysisViewController?.trackingDelegate = trackingDelegate
-        self.screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
+        screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
     }
 
     @objc func backToCamera() {
