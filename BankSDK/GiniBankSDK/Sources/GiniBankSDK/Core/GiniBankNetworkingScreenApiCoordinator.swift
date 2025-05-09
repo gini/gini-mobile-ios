@@ -351,28 +351,11 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     // MARK: - Start Analysis with Return Assistant or Skonto
 
     private func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
-        documentService.startAnalysis {[weak self] result in
+        documentService.startAnalysis { [weak self] result in
             guard let self = self else { return }
             switch result {
             case let .success(extractionResult):
-                self.setDcoumentIdAsUserProperty()
-                DispatchQueue.main.async {
-                    if GiniBankConfiguration.shared.returnAssistantEnabled && extractionResult.lineItems != nil {
-                        self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
-                    } else if GiniBankConfiguration.shared.skontoEnabled && extractionResult.skontoDiscounts != nil {
-                        self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
-                    } else {
-                        let document = self.documentService.document
-                        // Default case when no Skonto or RA to be displayed
-                        self.handleTransactionDocsAlert(on: self.screenAPINavigationController,
-                                                        extractionResult: extractionResult,
-                                                        documentId: document?.id,
-                                                        deliveryFunction: { [weak self] result in
-                            self?.deliverWithReturnAssistant(result: result, analysisDelegate: networkDelegate)
-                        })
-                    }
-                }
-
+                    self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
             case let .failure(error):
                 guard error != .requestCancelled else { return }
 
@@ -383,6 +366,39 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
+    private func handleSuccessfulAnalysis(with extractionResult: ExtractionResult,
+                                          networkDelegate: GiniCaptureNetworkDelegate) {
+        DispatchQueue.main.async {
+            self.analysisViewController?.performWhenAnimationCompleted {
+
+                // Ensure still on main thread inside closure
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+
+                    if GiniBankConfiguration.shared.returnAssistantEnabled,
+                       let lineItems = extractionResult.lineItems, !lineItems.isEmpty {
+
+                        self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
+
+                    } else if GiniBankConfiguration.shared.skontoEnabled,
+                              let skontoDiscounts = extractionResult.skontoDiscounts, !skontoDiscounts.isEmpty {
+
+                        self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
+
+                    } else {
+                        let document = self.documentService.document
+                        self.handleTransactionDocsAlert(
+                            on: self.screenAPINavigationController,
+                            extractionResult: extractionResult,
+                            documentId: document?.id,
+                            deliveryFunction: { [weak self] result in
+                                self?.deliverWithReturnAssistant(result: result, analysisDelegate: networkDelegate)
+                            })
+                    }
+                }
+            }
+        }
+    }
     // MARK: - Deliver with Return Assistant
     private func deliverWithReturnAssistant(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
         let hasExtractions = result.extractions.count > 0
