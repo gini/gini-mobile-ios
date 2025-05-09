@@ -38,7 +38,7 @@ import UIKit
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
     private let useCustomLoadingView: Bool = true
-    private var loadingController: QREducationLoadingController?
+    private var loadingViewModel: QREducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
     // User interface
@@ -213,7 +213,18 @@ import UIKit
 
     private func configureLoadingIndicator() {
         if useCustomLoadingView {
-            let customLoadingView = QREducationLoadingView()
+            let loadingItems = [
+                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
+                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
+                                                                               comment: "Education intro"),
+                                        duration: 1.5),
+                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
+                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
+                                                                               comment: "Photo education"),
+                                        duration: 3)
+            ]
+            let viewModel = QREducationLoadingViewModel(items: loadingItems)
+            let customLoadingView = QREducationLoadingView(viewModel: viewModel)
             customLoadingView.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(customLoadingView)
 
@@ -226,20 +237,7 @@ import UIKit
                                                             constant: -Constants.educationLoadingViewPadding)
             ])
 
-            let loadingItems = [
-                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
-                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
-                                                                               comment: "Education intro"),
-                                        duration: 1.5),
-                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
-                                        text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
-                                                                               comment: "Photo education"),
-                                        duration: 3)
-            ]
-
-            let controller = QREducationLoadingController(loadingView: customLoadingView)
-            controller.start(with: loadingItems)
-            loadingController = controller
+            viewModel.start()
 
         } else {
             loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
