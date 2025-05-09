@@ -12,8 +12,6 @@ final class QREducationLoadingViewModel: ObservableObject {
 
     private let items: [QREducationLoadingItem]
 
-    let completion = PassthroughSubject<Void, Never>()
-
     init(items: [QREducationLoadingItem]) {
         self.items = items
     }
