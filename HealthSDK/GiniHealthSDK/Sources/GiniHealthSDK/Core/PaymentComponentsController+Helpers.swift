@@ -151,15 +151,8 @@ extension PaymentComponentsController {
     
     private func dismissAndPresent(viewController: UIViewController, animated: Bool) {
         if let presentedViewController = navigationControllerProvided?.presentedViewController {
-            // We need to extract to hold the reference, otherwise it becomes nil after `presentingViewController` is dismissed.
-            let navigationController = viewController.navigationController
-            
             presentedViewController.dismiss(animated: true) {
-                if let navigationController {
-                    self.navigationControllerProvided?.present(navigationController, animated: animated)
-                } else {
-                    self.navigationControllerProvided?.present(viewController, animated: animated)
-                }
+                self.navigationControllerProvided?.present(viewController, animated: animated)
             }
         } else {
             navigationControllerProvided?.present(viewController, animated: animated)
@@ -183,6 +176,8 @@ extension PaymentComponentsController {
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   paymentInfoConfiguration: configurationProvider.paymentInfoConfiguration,
+                                                                   paymentInfoStrings: stringsProvider.paymentInfoStrings,
                                                                    clientConfiguration: configurationProvider.clientConfiguration)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
