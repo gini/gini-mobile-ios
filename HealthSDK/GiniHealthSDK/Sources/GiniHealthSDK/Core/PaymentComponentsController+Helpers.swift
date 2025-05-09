@@ -182,9 +182,6 @@ extension PaymentComponentsController {
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
         
-        //let banksViewController = BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
-        //let _ = UINavigationController(rootViewController: banksViewController)
-        
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
     
@@ -382,27 +379,6 @@ extension PaymentComponentsController {
      */
     public func openMoreInformationViewController() {
         didTapOnMoreInformation(documentId: documentId)
-    }
-    
-    // MARK: - Other helpers
-    func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(paymentInfoDissapeared), name: .paymentInfoDissapeared, object: nil)
-    }
-    
-    @objc
-    private func paymentInfoDissapeared() {
-        switch previousPresentedViews.last {
-        case .bankPicker:
-            previousPresentedViews.removeAll()
-        case .paymentComponent:
-            previousPresentedViews.removeAll()
-            presentPaymentViewBottomSheet()
-        case .paymentReview:
-            didTapOnPayInvoice()
-        default:
-            break
-        }
-        
     }
     
     /// Checks if the payment provider app can be opened based on the selected payment provider and GPC(Gini Pay Connect) support.
@@ -645,42 +621,21 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     }
     
     private func pushOrDismissAndPush(_ viewController: UIViewController) {
-        print("GINI LOG: Content of navigation controller provided: \(navigationControllerProvided?.viewControllers) \n")
-        print("GINI LOG: Content of navigation from viewController \(viewController) to push: \(viewController.navigationController?.viewControllers) \n")
-        //print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
-        print("GINI LOG: Top view controller from navigation provided: \(navigationControllerProvided?.topViewController) \n")
-        print("GINI LOG: Presented view controller from navigation provided: \(navigationControllerProvided?.presentedViewController) \n")
-        /*if let banksBottomVC = navigationControllerProvided?.topMostViewController() as? BanksBottomView {
-            previousPresentedViews.append(.bankPicker)
-            
-            print("GINI LOG: Content of navigation controller to push: \(banksBottomVC.navigationController?.viewControllers) \n")
-            print("GINI LOG: Top most view controller from vc to push more info: \(banksBottomVC.navigationController?.topViewController) \n")
-            banksBottomVC.navigationController?.pushViewController(viewController, animated: true)
-        }*/
         if viewController is PaymentInfoViewController {
-            //print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
-            print("GINI LOG: Top view controller from navigation provided: \(navigationControllerProvided?.topViewController) \n")
-            //print("GINI LOG: will present \(viewController) from \(navigationControllerProvided?.topMostViewController()) \n")
             navigationControllerProvided?.topMostViewController().present(viewController, animated: true)
         } else if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
             doublePresentedVC.dismiss(animated: true) { [weak self] in
                 if let presentedVC = self?.navigationControllerProvided?.presentedViewController {
                     presentedVC.dismiss(animated: true) { [weak self] in
-                        print("GINI LOG: Content of navigation controller to push nested flow: \(self?.navigationControllerProvided?.viewControllers) \n")
-                        print("GINI LOG: Top most view controller from vc to push more info nested flow: \(self?.navigationControllerProvided?.topViewController) \n")
                         self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
                     }
                 }
             }
         } else if let presentedVC = navigationControllerProvided?.presentedViewController {
             presentedVC.dismiss(animated: true) { [weak self] in
-                print("GINI LOG: Content of navigation controller to push presented flow: \(self?.navigationControllerProvided?.viewControllers) \n")
-                print("GINI LOG: Top most view controller from vc to push more info presented flow: \(self?.navigationControllerProvided?.topViewController) \n")
                 self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
             }
         } else {
-            print("GINI LOG: Content of navigation controller to push: \(navigationControllerProvided?.viewControllers) \n")
-            print("GINI LOG: Top most view controller from vc to push more info: \(navigationControllerProvided?.topViewController) \n")
             navigationControllerProvided?.pushViewController(viewController, animated: true)
         }
     }
@@ -724,10 +679,6 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     }
     
     private func presentOrPushPaymentReviewScreen(_ viewController: UIViewController) {
-        print("GINI LOG: Content of \(navigationControllerProvided) navigation controller provided paymentReview flow \(navigationControllerProvided?.viewControllers) \n")
-        
-        print("GINI LOG: Content of \(viewController) navigation controller provided paymentReview flow \(viewController.navigationController?.viewControllers) \n")
-        
         viewController.modalTransitionStyle = .coverVertical
         viewController.modalPresentationStyle = .overCurrentContext
         
@@ -736,15 +687,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             if self.documentId != nil {
                 self.navigationControllerProvided?.pushViewController(viewController, animated: true)
             } else {
-                //print("GINI LOG: top most view controller \(self.navigationControllerProvided?.topMostViewController()) to present review \n")
-                
-                print("GINI LOG: top view controller \(self.navigationControllerProvided?.topViewController) to present review \n")
-                
                 self.navigationControllerProvided?.present(viewController, animated: true)
-                
-                //print("GINI LOG: top most view controller \(self.navigationControllerProvided?.topMostViewController()) after present review \n")
-                
-                print("GINI LOG: top view controller \(self.navigationControllerProvided?.topViewController) after present review \n")
             }
         }
         
@@ -897,32 +840,5 @@ extension PaymentComponentsController: InstallAppBottomViewProtocol {
     // Notifies the delegate to proceed when the continue button is tapped in the install app bottom view. This happens after the user installed the app from AppStore
     public func didTapOnContinue() {
         didTapForwardOnInstallBottomSheet()
-    }
-}
-
-extension UIViewController {
-    
-    func topMostViewController() -> UIViewController {
-        if let navigation = self as? UINavigationController {
-            return navigation.visibleViewController?.topMostViewController() ?? self
-        }
-        
-        if let tabBarController = self as? UITabBarController {
-            if let selectedTab = tabBarController.selectedViewController {
-                if let navigation = selectedTab as? UINavigationController {
-                    return navigation.visibleViewController?.topMostViewController() ?? selectedTab
-                }
-                
-                return selectedTab.topMostViewController()
-            }
-            
-            return tabBarController
-        }
-        
-        if let presentedViewController {
-            return presentedViewController.topMostViewController()
-        }
-        
-        return self
     }
 }

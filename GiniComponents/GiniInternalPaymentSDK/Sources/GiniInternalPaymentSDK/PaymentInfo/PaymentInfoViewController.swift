@@ -131,11 +131,6 @@ public final class PaymentInfoViewController: UIViewController {
         self.setupView()
     }
 
-    public override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        //NotificationCenter.default.post(name: .paymentInfoDissapeared, object: nil)
-    }
-
     private func setupView() {
         setupViewHierarchy()
         setupViewAttributes()
@@ -178,7 +173,7 @@ public final class PaymentInfoViewController: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: Constants.topPadding),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor),
             contentView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor),
@@ -340,6 +335,7 @@ extension PaymentInfoViewController {
     private enum Constants {
         static let paragraphSpacing = 10.0
         
+        static let topPadding: CGFloat = 16.0
         static let leftRightPadding = 16.0
         
         static let bankIconsSpacing = 5.0

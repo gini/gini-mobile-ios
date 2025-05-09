@@ -119,7 +119,7 @@ public final class BanksBottomView: BottomSheetViewController {
         }
         bottomView.addSubview(bottomStackView)
         contentStackView.addArrangedSubview(bottomView)
-        self.setContent(content: contentStackView)
+        setContent(content: contentStackView)
     }
 
     private func setupViewAttributes() {

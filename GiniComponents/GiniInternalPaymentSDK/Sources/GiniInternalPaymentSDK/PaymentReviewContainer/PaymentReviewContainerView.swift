@@ -123,20 +123,18 @@ public final class PaymentReviewContainerView: UIView {
         }
         buttonsStackView.addArrangedSubview(payInvoiceButton)
         buttonsView.addSubview(buttonsStackView)
-
-        bottomStackView.addArrangedSubview(UIView())
-        if viewModel.shouldShowBrandedView {
-            bottomStackView.addArrangedSubview(poweredByGiniView)
-        }
-        bottomView.addSubview(bottomStackView)
-
         paymentInfoStackView.addArrangedSubview(recipientStackView)
-
         paymentInfoStackView.addArrangedSubview(ibanAmountContainerStackView)
-
         paymentInfoStackView.addArrangedSubview(usageStackView)
         paymentInfoStackView.addArrangedSubview(buttonsView)
-        paymentInfoStackView.addArrangedSubview(bottomView)
+        
+        if viewModel.shouldShowBrandedView {
+            bottomStackView.addArrangedSubview(UIView())
+            bottomStackView.addArrangedSubview(poweredByGiniView)
+            bottomView.addSubview(bottomStackView)
+            paymentInfoStackView.addArrangedSubview(bottomView)
+        }
+        
         paymentInfoStackView.addArrangedSubview(UIView())
 
         self.addSubview(paymentInfoStackView)
@@ -150,7 +148,10 @@ public final class PaymentReviewContainerView: UIView {
         setupIbanAmountStackViewsConstraints()
         setupUsageStackViewConstraints()
         setupButtonConstraints()
-        setupPoweredByGiniConstraints()
+        
+        if viewModel.shouldShowBrandedView {
+            setupPoweredByGiniConstraints()
+        }
     }
 
     private func setupContainerContraints() {

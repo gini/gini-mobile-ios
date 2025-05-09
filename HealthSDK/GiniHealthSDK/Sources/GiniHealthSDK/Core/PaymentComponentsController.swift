@@ -125,7 +125,6 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
         self.giniSDK = giniHealth
         self.configurationProvider = giniHealth
         self.stringsProvider = giniHealth
-        setupObservers()
         loadPaymentProviders()
         fetchAndUpdateClientConfiguration()
     }
@@ -145,30 +144,25 @@ public final class PaymentComponentsController: BottomSheetsProviderProtocol, Gi
     public func startPaymentFlow(documentId: String?, paymentInfo: GiniHealthSDK.PaymentInfo?, navigationController: UINavigationController, trackingDelegate: GiniHealthTrackingDelegate?) {
         self.navigationControllerProvided = navigationController
         
-        print("GINI LOG: Content of navigation controller provided: \(navigationControllerProvided?.viewControllers) \n")
-        //print("GINI LOG: Top most view controller from navigation provided: \(navigationControllerProvided?.topMostViewController()) \n")
-        print("GINI LOG: Presented view controller from navigation provided: \(navigationControllerProvided?.presentedViewController) \n")
-        
         if let paymentInfo {
             self.paymentInfo = GiniInternalPaymentSDK.PaymentInfo(paymentComponentsInfo: paymentInfo)
         }
+        
         self.documentId = documentId
         self.trackingDelegate = trackingDelegate
+        
         guard let _ = selectedPaymentProvider else {
-            print("GINI LOG: PaymentViewBottomSheet flow \n")
             presentPaymentViewBottomSheet()
             return
         }
+        
         if GiniHealthConfiguration.shared.useInvoiceWithoutDocument {
             if GiniHealthConfiguration.shared.showPaymentReviewScreen {
-                print("GINI LOG: didTapOnPayInvoice flow \(documentId) \n")
                 didTapOnPayInvoice(documentId: documentId)
             } else {
-                print("GINI LOG: presentPaymentViewBottomSheet flow \n")
                 presentPaymentViewBottomSheet()
             }
         } else {
-            print("GINI LOG: didTapOnPayInvoice flow else \(documentId) \n")
             didTapOnPayInvoice(documentId: documentId)
         }
     }

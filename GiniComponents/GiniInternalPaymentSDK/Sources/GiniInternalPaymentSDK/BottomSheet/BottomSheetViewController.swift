@@ -233,21 +233,7 @@ extension BottomSheetViewController {
 
 public extension UIViewController {
     func presentBottomSheet(viewController: BottomSheetViewController) {
-        /*
-        if let navigationController = viewController.navigationController {
-            navigationController.modalPresentationStyle = .overFullScreen
-            print("GINI LOG: will present \(viewController) navigation controller flow \n")
-            print("GINI LOG: \(topMostViewController()) will present \(viewController) \n")
-            print("GINI LOG: \(self) will present \(viewController) \n")
-            topMostViewController().present(navigationController, animated: false, completion: nil)
-        } else {
-            viewController.modalPresentationStyle = .overFullScreen
-            print("GINI LOG: \(self) will present \(viewController) without navigation controller flow \n")
-            present(viewController, animated: false, completion: nil)
-        }
-         */
         viewController.modalPresentationStyle = .overFullScreen
-        print("GINI LOG: \(self) will present \(viewController) without navigation controller flow \n")
         present(viewController, animated: false, completion: nil)
     }
 }
