@@ -26,7 +26,7 @@ final class QREducationLoadingViewModel: ObservableObject {
                 await MainActor.run {
                     self.currentItem = item
                 }
-                try? await Task.sleep(nanoseconds: item.duration.nanoseconds)
+                try? await Task.sleep(nanoseconds: item.durationInNanoseconds)
             }
         }
     }
@@ -38,11 +38,5 @@ final class QREducationLoadingViewModel: ObservableObject {
 
     deinit {
         stop()
-    }
-}
-
-fileprivate extension TimeInterval {
-    var nanoseconds: UInt64 {
-        UInt64(self * 1_000_000_000)
     }
 }
