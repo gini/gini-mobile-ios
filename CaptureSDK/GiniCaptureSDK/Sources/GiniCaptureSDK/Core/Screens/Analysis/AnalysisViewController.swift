@@ -39,7 +39,7 @@ import Combine
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
     private let useCustomLoadingView: Bool = true
-    private var loadingController: QREducationLoadingController?
+    private var loadingViewModel: QREducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
     private var animationCompletedSubject = CurrentValueSubject<Bool, Never>(false)
@@ -216,7 +216,6 @@ import Combine
     }
 
     private func configureLoadingIndicator() {
-
         let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: !document.isImported)
 
         let nextState = controller.nextState()
@@ -245,7 +244,18 @@ import Combine
     }
 
     private func showEducationLoadingMessage() {
-        let customLoadingView = QREducationLoadingView()
+        let loadingItems = [
+            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
+                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
+                                                                          comment: "Education intro"),
+                                   duration: 1.5),
+            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
+                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
+                                                                          comment: "Photo education"),
+                                   duration: 3)
+        ]
+        let viewModel = QREducationLoadingViewModel(items: loadingItems)
+        let customLoadingView = QREducationLoadingView(viewModel: viewModel)
         customLoadingView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(customLoadingView)
 
@@ -258,24 +268,13 @@ import Combine
                                                         constant: -Constants.educationLoadingViewPadding)
         ])
 
-        let loadingItems = [
-            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
-                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
-                                                                          comment: "Education intro"),
-                                   duration: 1.5),
-            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
-                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
-                                                                          comment: "Photo education"),
-                                   duration: 3)
-        ]
-
-        let controller = QREducationLoadingController(loadingView: customLoadingView)
-        controller.onCompletion = { [weak self] in
+        viewModel.completion
+        .sink { [weak self] in
             self?.animationCompletedSubject.send(true)
         }
+        .store(in: &cancellables)
 
-        controller.start(with: loadingItems)
-        loadingController = controller
+        viewModel.start()
     }
 
     public func performWhenAnimationCompleted(_ action: @escaping () -> Void) {
