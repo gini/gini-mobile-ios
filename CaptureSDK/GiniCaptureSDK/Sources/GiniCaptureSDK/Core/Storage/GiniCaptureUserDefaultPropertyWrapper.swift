@@ -1,14 +1,18 @@
 //
-//  GiniUserDefaultPropertyWrapper.swift
+//  GiniCaptureUserDefaultPropertyWrapper.swift
 //
-//  Copyright © 2024 Gini GmbH. All rights reserved.
+//  Copyright © 2025 Gini GmbH. All rights reserved.
 //
-
 
 import Foundation
 
+/**
+ This is for internal use only.
+ This is a property wrapper for managing UserDefaults storage. It allows for easy encoding and decoding of Codable types.
+ */
+
 @propertyWrapper
-struct GiniUserDefault<T: Codable> {
+public struct GiniCaptureUserDefault<T: Codable> {
     let key: String
     let defaultValue: T
 
@@ -17,7 +21,7 @@ struct GiniUserDefault<T: Codable> {
         self.defaultValue = defaultValue
     }
 
-    var wrappedValue: T {
+    public var wrappedValue: T {
         get {
             // Handle Codable types with JSON encoding/decoding
             if let data = UserDefaults.standard.data(forKey: key),

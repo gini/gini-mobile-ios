@@ -5,38 +5,25 @@
 //
 
 import Foundation
+import Combine
 
 final class QREducationLoadingViewModel: ObservableObject {
     @Published private(set) var currentItem: QREducationLoadingItem?
 
     private let items: [QREducationLoadingItem]
-    private var task: Task<Void, Never>?
 
     init(items: [QREducationLoadingItem]) {
         self.items = items
     }
 
-    func start() {
-        stop()
-
+    func start() async {
         guard !items.isEmpty else { return }
 
-        task = Task {
-            for item in items {
-                await MainActor.run {
-                    self.currentItem = item
-                }
-                try? await Task.sleep(nanoseconds: item.durationInNanoseconds)
+        for item in items {
+            await MainActor.run {
+                self.currentItem = item
             }
+            try? await Task.sleep(nanoseconds: item.durationInNanoseconds)
         }
-    }
-
-    func stop() {
-        task?.cancel()
-        task = nil
-    }
-
-    deinit {
-        stop()
     }
 }
