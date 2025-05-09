@@ -268,15 +268,19 @@ import Combine
                                                         constant: -Constants.educationLoadingViewPadding)
         ])
 
-        viewModel.completion
-        .sink { [weak self] in
-            self?.animationCompletedSubject.send(true)
+        Task {
+            await viewModel.start()
+            animationCompletedSubject.send(true)
         }
-        .store(in: &anymationCancellables)
-
-        viewModel.start()
     }
+    /**
+     Executes the given action when the animation inside the analysis screen is completed.
 
+     If the animation has already completed, the action is executed immediately.
+     If the animation is still running, the action is queued and will be executed once the animation finishes.
+
+     - Parameter action: A closure to be executed after the animation has completed.
+     */
     public func performWhenAnimationCompleted(_ action: @escaping () -> Void) {
         if animationCompletedSubject.value {
             action()

@@ -11,7 +11,6 @@ final class QREducationLoadingViewModel: ObservableObject {
     @Published private(set) var currentItem: QREducationLoadingItem?
 
     private let items: [QREducationLoadingItem]
-    private var task: Task<Void, Never>?
 
     let completion = PassthroughSubject<Void, Never>()
 
@@ -19,32 +18,14 @@ final class QREducationLoadingViewModel: ObservableObject {
         self.items = items
     }
 
-    func start() {
-        stop()
-
+    func start() async {
         guard !items.isEmpty else { return }
 
-        task = Task {
-            for item in items {
-                await MainActor.run {
-                    self.currentItem = item
-                }
-                try? await Task.sleep(nanoseconds: item.durationInNanoseconds)
-            }
-            
-            // At end of loop → emit completion
+        for item in items {
             await MainActor.run {
-                self.completion.send()
+                self.currentItem = item
             }
+            try? await Task.sleep(nanoseconds: item.durationInNanoseconds)
         }
-    }
-
-    func stop() {
-        task?.cancel()
-        task = nil
-    }
-
-    deinit {
-        stop()
     }
 }
