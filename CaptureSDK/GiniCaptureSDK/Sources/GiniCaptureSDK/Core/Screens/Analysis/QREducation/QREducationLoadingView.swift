@@ -5,9 +5,12 @@
 //
 
 import UIKit
+import Combine
 
 final class QREducationLoadingView: UIView {
     private let giniConfiguration = GiniConfiguration.shared
+    private let viewModel: QREducationLoadingViewModel
+    private var cancellables = Set<AnyCancellable>()
 
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -40,9 +43,11 @@ final class QREducationLoadingView: UIView {
         return label
     }()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: QREducationLoadingViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         setupViews()
+        bind()
     }
 
     required init?(coder: NSCoder) {
@@ -74,7 +79,16 @@ final class QREducationLoadingView: UIView {
         ])
     }
 
-    func configure(with model: QREducationLoadingItem) {
+    private func bind() {
+        viewModel.$currentItem
+            .compactMap { $0 }
+            .sink { [weak self] item in
+                self?.configure(with: item)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func configure(with model: QREducationLoadingItem) {
         imageView.image = model.image
         textLabel.text = model.text
         textLabel.accessibilityLabel = model.text
