@@ -11,6 +11,8 @@ final class QREducationLoadingController {
     private var timer: Timer?
     private var itemQueue: [QREducationLoadingItem] = []
 
+    var onCompletion: (() -> Void)?
+
     init(loadingView: QREducationLoadingView) {
         self.loadingView = loadingView
     }
@@ -35,6 +37,11 @@ final class QREducationLoadingController {
                                          selector: #selector(showNextItem),
                                          userInfo: nil,
                                          repeats: false)
+        } else {
+            timer = Timer.scheduledTimer(withTimeInterval: nextItem.duration,
+                                         repeats: false) { [weak self] _ in
+                self?.onCompletion?()
+            }
         }
     }
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
@@ -40,6 +41,9 @@ import UIKit
     private let useCustomLoadingView: Bool = true
     private var loadingController: QREducationLoadingController?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
+
+    private var animationCompletedSubject = CurrentValueSubject<Bool, Never>(false)
+    private var cancellables = Set<AnyCancellable>()
 
     // User interface
     private var imageView: UIImageView = {
@@ -236,6 +240,8 @@ import UIKit
             addLoadingText(below: loadingIndicatorView)
             loadingIndicatorView.startAnimating()
         }
+        // immediately mark animation complete
+        animationCompletedSubject.send(true)
     }
 
     private func showEducationLoadingMessage() {
@@ -264,8 +270,26 @@ import UIKit
         ]
 
         let controller = QREducationLoadingController(loadingView: customLoadingView)
+        controller.onCompletion = { [weak self] in
+            self?.animationCompletedSubject.send(true)
+        }
+
         controller.start(with: loadingItems)
         loadingController = controller
+    }
+
+    public func performWhenAnimationCompleted(_ action: @escaping () -> Void) {
+        if animationCompletedSubject.value {
+            action()
+        } else {
+            animationCompletedSubject
+                .filter { $0 }
+                .prefix(1)
+                .sink { _ in
+                    action()
+                }
+                .store(in: &cancellables)
+        }
     }
 
     private func addLoadingText(below loadingIndicator: UIView) {
