@@ -16,7 +16,7 @@ extension EducationFlowController {
         let getDisplayCount = { GiniCaptureUserDefaultsStorage.captureInvoiceEducationMessageDisplayCount }
         let setDisplayCount = { GiniCaptureUserDefaultsStorage.captureInvoiceEducationMessageDisplayCount = $0 }
 
-        let configuration = EducationFlowConfiguration(maxTotalDisplays: 200,
+        let configuration = EducationFlowConfiguration(maxTotalDisplays: 2,
                                                        numberOfMessages: 1,
                                                        shouldBeDisplayed: shouldBeDisplayed,
                                                        getDisplayCount: getDisplayCount,
