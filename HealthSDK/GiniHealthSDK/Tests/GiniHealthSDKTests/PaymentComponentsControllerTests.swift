@@ -170,6 +170,8 @@ final class PaymentComponentsControllerTests: XCTestCase {
                                                    poweredByGiniStrings: giniHealth.poweredByGiniStrings,
                                                    moreInformationConfiguration: giniHealth.moreInformationConfiguration,
                                                    moreInformationStrings: giniHealth.moreInformationStrings,
+                                                   paymentInfoConfiguration: giniHealth.paymentInfoConfiguration,
+                                                   paymentInfoStrings: giniHealth.paymentInfoStrings,
                                                    urlOpener: URLOpener(MockUIApplication(canOpen: false)),
                                                    clientConfiguration: giniHealth.clientConfiguration)
 
