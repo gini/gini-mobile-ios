@@ -8,25 +8,25 @@ import UIKit
 
 public extension UIViewController {
     
-    func topMostViewController() -> UIViewController {
+    func giniTopMostViewController() -> UIViewController {
         if let navigation = self as? UINavigationController {
-            return navigation.visibleViewController?.topMostViewController() ?? navigation
+            return navigation.visibleViewController?.giniTopMostViewController() ?? navigation
         }
         
         if let tabBarController = self as? UITabBarController {
             if let selectedTab = tabBarController.selectedViewController {
-                return selectedTab.topMostViewController()
+                return selectedTab.giniTopMostViewController()
             }
             return tabBarController
         }
         
         if let presentedViewController = self.presentedViewController {
-            return presentedViewController.topMostViewController()
+            return presentedViewController.giniTopMostViewController()
         }
         
         if let pageViewController = self as? UIPageViewController,
            let firstViewController = pageViewController.viewControllers?.first {
-            return firstViewController.topMostViewController()
+            return firstViewController.giniTopMostViewController()
         }
         
         return self
