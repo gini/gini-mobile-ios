@@ -44,6 +44,7 @@ import Combine
 
     private var animationCompletedSubject = CurrentValueSubject<Bool, Never>(false)
     private var anymationCancellables = Set<AnyCancellable>()
+    private var educationFlowController: EducationFlowController?
 
     // User interface
     private var imageView: UIImageView = {
@@ -217,13 +218,15 @@ import Combine
 
     private func configureLoadingIndicator() {
         let displayEducationFlow = !document.isImported && giniConfiguration.fileImportSupportedTypes != .none
-        let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: displayEducationFlow)
+        educationFlowController = EducationFlowController.qrCodeFlowController(displayIfNeeded: displayEducationFlow)
 
-        let nextState = controller.nextState()
+        let nextState = educationFlowController?.nextState()
         switch nextState {
         case .showMessage:
             showEducationLoadingMessage()
         case .showOriginalFlow:
+            showOriginalLoadingMessage()
+        case .none:
             showOriginalLoadingMessage()
         }
     }
@@ -290,6 +293,7 @@ import Combine
                 .filter { $0 }
                 .prefix(1)
                 .sink { _ in
+                    self.educationFlowController?.markMessageAsShown()
                     action()
                 }
                 .store(in: &anymationCancellables)
