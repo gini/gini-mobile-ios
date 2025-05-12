@@ -13,8 +13,8 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var buttonCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToPageControlConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToViewBottomConstraint: NSLayoutConstraint!
-    var bottomPaddingPageIndicatorConstraint: NSLayoutConstraint!
-    var navigationBarHeightConstraint: NSLayoutConstraint!
+    var bottomPaddingPageIndicatorConstraint: NSLayoutConstraint! = NSLayoutConstraint()
+    private var navigationBarHeightConstraint: NSLayoutConstraint! = NSLayoutConstraint()
     @IBOutlet weak var skipBottomBarButton: MultilineTitleButton!
     private(set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
@@ -145,6 +145,7 @@ class OnboardingViewController: UIViewController {
         )
         navigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
         NSLayoutConstraint.activate([
+            bottomPaddingPageIndicatorConstraint,
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
