@@ -622,17 +622,17 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     
     private func pushOrDismissAndPush(_ viewController: UIViewController) {
         if viewController is PaymentInfoViewController {
-            navigationControllerProvided?.topMostViewController().present(viewController, animated: true)
-        } else if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
-            doublePresentedVC.dismiss(animated: true) { [weak self] in
-                if let presentedVC = self?.navigationControllerProvided?.presentedViewController {
-                    presentedVC.dismiss(animated: true) { [weak self] in
+            navigationControllerProvided?.giniTopMostViewController().present(viewController, animated: true)
+        } else if let doublePresentedViewController = navigationControllerProvided?.presentedViewController?.presentedViewController {
+            doublePresentedViewController.dismiss(animated: true) { [weak self] in
+                if let presentedViewController = self?.navigationControllerProvided?.presentedViewController {
+                    presentedViewController.dismiss(animated: true) { [weak self] in
                         self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
                     }
                 }
             }
-        } else if let presentedVC = navigationControllerProvided?.presentedViewController {
-            presentedVC.dismiss(animated: true) { [weak self] in
+        } else if let presentedViewController = navigationControllerProvided?.presentedViewController {
+            presentedViewController.dismiss(animated: true) { [weak self] in
                 self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
             }
         } else {
@@ -691,8 +691,8 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             }
         }
         
-        if let presentedVC = navigationControllerProvided?.presentedViewController {
-            presentedVC.dismiss(animated: true, completion: presentOrPush)
+        if let presentedViewController = navigationControllerProvided?.presentedViewController {
+            presentedViewController.dismiss(animated: true, completion: presentOrPush)
         } else {
             presentOrPush()
         }
