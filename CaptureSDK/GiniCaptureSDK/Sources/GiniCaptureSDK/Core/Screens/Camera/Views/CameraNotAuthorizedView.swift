@@ -90,7 +90,7 @@ final class CameraNotAuthorizedView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        let isLandscape = currentInterfaceOrientation.isLandscape
+//        let isLandscape = currentInterfaceOrientation.isLandscape
 //        descriptionWidthConstraint?.isActive = !isLandscape
 //        descriptionWidthLandscapeConstraint?.isActive = isLandscape
     }
