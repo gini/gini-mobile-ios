@@ -300,7 +300,11 @@ final class QRCodeOverlay: UIView {
             customLoadingView?.isHidden = false
         } else {
             loadingContainer.isHidden = false
-            loadingIndicatorView.startAnimating()
+            if let loadingIndicator = configuration.customLoadingIndicator {
+                loadingIndicator.startAnimation()
+            } else {
+                loadingIndicatorView.startAnimating()
+            }
         }
     }
 
@@ -309,8 +313,8 @@ final class QRCodeOverlay: UIView {
      */
     public func hideAnimation() {
         checkMarkImageView.isHidden = true
-        if let educationViewModel {
-            customLoadingView?.isHidden = true
+        if let customLoadingView {
+            customLoadingView.isHidden = true
         } else {
             loadingContainer.isHidden = true
             loadingIndicatorView.stopAnimating()
