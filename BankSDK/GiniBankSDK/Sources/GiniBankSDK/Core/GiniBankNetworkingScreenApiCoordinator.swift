@@ -355,7 +355,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             guard let self = self else { return }
             switch result {
             case let .success(extractionResult):
-                    self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
+                self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
             case let .failure(error):
                 guard error != .requestCancelled else { return }
 
@@ -369,36 +369,44 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     private func handleSuccessfulAnalysis(with extractionResult: ExtractionResult,
                                           networkDelegate: GiniCaptureNetworkDelegate) {
         DispatchQueue.main.async {
-            self.analysisViewController?.performWhenAnimationCompleted {
-
-                // Ensure still on main thread inside closure
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-
-                    if GiniBankConfiguration.shared.returnAssistantEnabled,
-                       let lineItems = extractionResult.lineItems, !lineItems.isEmpty {
-
-                        self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
-
-                    } else if GiniBankConfiguration.shared.skontoEnabled,
-                              let skontoDiscounts = extractionResult.skontoDiscounts, !skontoDiscounts.isEmpty {
-
-                        self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
-
-                    } else {
-                        let document = self.documentService.document
-                        self.handleTransactionDocsAlert(
-                            on: self.screenAPINavigationController,
-                            extractionResult: extractionResult,
-                            documentId: document?.id,
-                            deliveryFunction: { [weak self] result in
-                                self?.deliverWithReturnAssistant(result: result, analysisDelegate: networkDelegate)
-                            })
-                    }
+            if let analysisViewController = self.screenAPINavigationController.children.last as? AnalysisViewController {
+                analysisViewController.performWhenAnimationCompleted {
+                    self.presentNextScreen(after: extractionResult, networkDelegate: networkDelegate)
                 }
+            } else {
+                self.presentNextScreen(after: extractionResult, networkDelegate: networkDelegate)
             }
         }
     }
+
+    private func presentNextScreen(after extractionResult: ExtractionResult,
+                                   networkDelegate: GiniCaptureNetworkDelegate) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            if GiniBankConfiguration.shared.returnAssistantEnabled,
+               let lineItems = extractionResult.lineItems, !lineItems.isEmpty {
+
+                self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
+
+            } else if GiniBankConfiguration.shared.skontoEnabled,
+                      let skontoDiscounts = extractionResult.skontoDiscounts, !skontoDiscounts.isEmpty {
+
+                self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
+
+            } else {
+                let document = self.documentService.document
+                self.handleTransactionDocsAlert(
+                    on: self.screenAPINavigationController,
+                    extractionResult: extractionResult,
+                    documentId: document?.id,
+                    deliveryFunction: { [weak self] result in
+                        self?.deliverWithReturnAssistant(result: result, analysisDelegate: networkDelegate)
+                    })
+            }
+        }
+    }
+
     // MARK: - Deliver with Return Assistant
     private func deliverWithReturnAssistant(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
         let hasExtractions = result.extractions.count > 0

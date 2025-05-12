@@ -5,7 +5,6 @@
 //
 
 import Foundation
-import Combine
 
 final class QREducationLoadingViewModel: ObservableObject {
     @Published private(set) var currentItem: QREducationLoadingItem?
