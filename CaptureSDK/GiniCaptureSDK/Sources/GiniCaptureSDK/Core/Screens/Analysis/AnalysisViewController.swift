@@ -216,7 +216,8 @@ import Combine
     }
 
     private func configureLoadingIndicator() {
-        let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: !document.isImported)
+        let displayEducationFlow = !document.isImported && giniConfiguration.fileImportSupportedTypes != .none
+        let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: displayEducationFlow)
 
         let nextState = controller.nextState()
         switch nextState {
