@@ -13,6 +13,8 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var buttonCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToPageControlConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToViewBottomConstraint: NSLayoutConstraint!
+    var bottomPaddingPageIndicatorConstraint: NSLayoutConstraint!
+    var navigationBarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var skipBottomBarButton: MultilineTitleButton!
     private(set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
@@ -78,11 +80,25 @@ class OnboardingViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        if configuration.bottomNavigationBarEnabled {
+            bottomPaddingPageIndicatorConstraint.constant = getBottomPaddingForPageController()
+        }
         if UIDevice.current.isIphone {
             if view.currentInterfaceOrientation.isLandscape {
-                nextButton?.isHidden = false
-                skipBottomBarButton?.isHidden = !configuration.bottomNavigationBarEnabled || pageControl.currentPage == dataSource.pageModels.count - 1
-                bottomNavigationBar?.isHidden = true
+                navigationBarHeightConstraint.constant = getBottomBarHeight()
+                
+                if configuration.onboardingNavigationBarBottomAdapter != nil {
+                    bottomNavigationBar?.isHidden = false
+                    nextButton?.isHidden = true
+                    skipBottomBarButton?.isHidden = true
+                } else {
+                    bottomNavigationBar?.isHidden = true
+                    nextButton?.isHidden = false
+                    skipBottomBarButton?.isHidden = !configuration.bottomNavigationBarEnabled
+                        || pageControl.currentPage == dataSource.pageModels.count - 1
+                }
+                
                 let safeareaLeftPadding = view.safeAreaInsets.left
                 let safeareaRightPadding = view.safeAreaInsets.right
 
@@ -108,6 +124,7 @@ class OnboardingViewController: UIViewController {
                 collectionViewToPageControlConstraint.isActive = false
                 collectionViewToViewBottomConstraint.isActive = true
             } else {
+                navigationBarHeightConstraint.constant = getBottomBarHeight()
                 buttonCenterXConstraint.constant = 0
                 collectionViewToViewBottomConstraint.isActive = false
                 collectionViewToPageControlConstraint.isActive = true
@@ -121,13 +138,17 @@ class OnboardingViewController: UIViewController {
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        
+        bottomPaddingPageIndicatorConstraint = navigationBar.topAnchor.constraint(
+            equalTo: pageControl.bottomAnchor,
+            constant: getBottomPaddingForPageController()
+        )
+        navigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
         NSLayoutConstraint.activate([
-            navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor,
-                                               constant: Constants.pageControlBottomBarPadding),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBarHeightConstraint
         ])
     }
 
@@ -329,7 +350,9 @@ extension OnboardingViewController: OnboardingScreen {
             }
         default:
             if configuration.bottomNavigationBarEnabled,
-                let bottomNavigationBar = bottomNavigationBar {
+                let bottomNavigationBar = bottomNavigationBar,
+               configuration.onboardingNavigationBarBottomAdapter == nil {
+                
                 navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next],
                                                         navigationBar: bottomNavigationBar)
                 skipBottomBarButton.isHidden = !(UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape)
@@ -356,5 +379,26 @@ class CollectionFlowLayout: UICollectionViewFlowLayout {
 private extension OnboardingViewController {
     enum Constants {
         static let pageControlBottomBarPadding: CGFloat = 46
+        static let pageControlBottomBarPaddingLandscape: CGFloat = 0
+        static let bottomBarHeightPortrait: CGFloat = 110
+        static let bottomBarHeightLandscape: CGFloat = 64
+    }
+    
+    func getBottomPaddingForPageController() -> CGFloat {
+        if isiPhoneAndLandscape() {
+            return Constants.pageControlBottomBarPaddingLandscape
+        }
+        return Constants.pageControlBottomBarPadding
+    }
+    
+    func getBottomBarHeight() -> CGFloat {
+        if isiPhoneAndLandscape() {
+            return Constants.bottomBarHeightLandscape
+        }
+        return Constants.bottomBarHeightPortrait
+    }
+    
+    func isiPhoneAndLandscape() -> Bool {
+        return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
     }
 }
