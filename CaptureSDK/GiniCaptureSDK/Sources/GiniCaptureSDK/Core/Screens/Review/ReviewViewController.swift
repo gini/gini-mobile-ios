@@ -237,9 +237,8 @@ public final class ReviewViewController: UIViewController {
     private lazy var tipLabelConstraints: [NSLayoutConstraint] = [
         tipLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
         tipLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-        tipLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        tipLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.titleHeight),
-        tipLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.maxTitleHeight)]
+        tipLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+    ]
 
     private var trailingConstraints: [NSLayoutConstraint] {
         [
