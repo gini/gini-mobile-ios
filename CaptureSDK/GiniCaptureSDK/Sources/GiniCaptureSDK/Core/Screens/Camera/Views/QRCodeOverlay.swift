@@ -192,7 +192,9 @@ final class QRCodeOverlay: UIView {
                                                                               comment: "Photo education"),
                                        duration: 1.5)
             ]
-            let customView = QREducationLoadingView(viewModel: .init(items: loadingItems))
+            let viewModel = QREducationLoadingViewModel(items: loadingItems)
+            educationViewModel = viewModel
+            let customView = QREducationLoadingView(viewModel: viewModel)
             customView.translatesAutoresizingMaskIntoConstraints = false
             customLoadingView = customView
             addSubview(customView)
