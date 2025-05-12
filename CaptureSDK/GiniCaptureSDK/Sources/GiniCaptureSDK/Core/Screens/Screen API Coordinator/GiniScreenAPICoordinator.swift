@@ -32,7 +32,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     public weak var trackingDelegate: GiniCaptureTrackingDelegate?
 
     // Screens
-    public var analysisViewController: AnalysisViewController?
+    var analysisViewController: AnalysisViewController?
     weak var cameraScreen: CameraViewController?
     var noResultsViewController: NoResultScreenViewController?
     lazy var reviewViewController: ReviewViewController = {
