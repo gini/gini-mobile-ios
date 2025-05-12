@@ -198,7 +198,8 @@ extension BanksBottomView {
 
 extension BanksBottomView: MoreInformationViewProtocol {
     public func didTapOnMoreInformation() {
-        present(PaymentInfoViewController(viewModel: viewModel.paymentInfoViewModel), animated: true)
+        let paymentInfoViewController = PaymentInfoViewController(viewModel: viewModel.paymentInfoViewModel)
+        present(paymentInfoViewController, animated: true)
     }
 }
 

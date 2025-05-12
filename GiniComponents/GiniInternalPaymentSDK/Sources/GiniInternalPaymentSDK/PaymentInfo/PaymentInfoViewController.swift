@@ -333,31 +333,31 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
 
 extension PaymentInfoViewController {
     private enum Constants {
-        static let paragraphSpacing = 10.0
+        static let paragraphSpacing: CGFloat = 10.0
         
         static let topPadding: CGFloat = 16.0
-        static let leftRightPadding = 16.0
+        static let leftRightPadding: CGFloat = 16.0
         
-        static let bankIconsSpacing = 5.0
-        static let bankIconsTopSpacing = 15.0
-        static let bankIconsWidth = 36.0
-        static let bankIconsHeight = 36.0
+        static let bankIconsSpacing: CGFloat = 5.0
+        static let bankIconsTopSpacing: CGFloat = 15.0
+        static let bankIconsWidth: CGFloat = 36.0
+        static let bankIconsHeight: CGFloat = 36.0
         
-        static let poweredByGiniTopPadding = 16.0
+        static let poweredByGiniTopPadding: CGFloat = 16.0
         
-        static let payBillsTitleTopPadding = 16.0
-        static let payBillsTitleLineHeight = 1.26
-        static let maxPayBillsTitleHeight = 100.0
-        static let payBillsDescriptionTopPadding = 8.0
-        static let payBillsDescriptionRightPadding = 31.0
-        static let minPayBillsDescriptionHeight = 100.0
+        static let payBillsTitleTopPadding: CGFloat = 16.0
+        static let payBillsTitleLineHeight: CGFloat = 1.26
+        static let maxPayBillsTitleHeight: CGFloat = 100.0
+        static let payBillsDescriptionTopPadding: CGFloat = 8.0
+        static let payBillsDescriptionRightPadding: CGFloat = 31.0
+        static let minPayBillsDescriptionHeight: CGFloat = 100.0
         
-        static let questionsTitleTopPadding = 24.0
-        static let questionsTitleLineHeight = 1.28
+        static let questionsTitleTopPadding: CGFloat = 24.0
+        static let questionsTitleLineHeight: CGFloat = 1.28
         
-        static let questionTitleHeight = 72.0
-        static let questionSectionSeparatorHeight = 1.0
+        static let questionTitleHeight: CGFloat = 72.0
+        static let questionSectionSeparatorHeight: CGFloat = 1.0
         
-        static let estimatedAnswerHeight = 250.0
+        static let estimatedAnswerHeight: CGFloat = 250.0
     }
 }

@@ -121,6 +121,7 @@ public final class PaymentReviewContainerView: UIView {
         if viewModel.configuration.showBanksPicker {
             buttonsStackView.addArrangedSubview(selectBankButton)
         }
+        
         buttonsStackView.addArrangedSubview(payInvoiceButton)
         buttonsView.addSubview(buttonsStackView)
         paymentInfoStackView.addArrangedSubview(recipientStackView)
@@ -129,15 +130,19 @@ public final class PaymentReviewContainerView: UIView {
         paymentInfoStackView.addArrangedSubview(buttonsView)
         
         if viewModel.shouldShowBrandedView {
-            bottomStackView.addArrangedSubview(UIView())
-            bottomStackView.addArrangedSubview(poweredByGiniView)
-            bottomView.addSubview(bottomStackView)
-            paymentInfoStackView.addArrangedSubview(bottomView)
+            addBrandedViewToViewHierarchy()
         }
         
         paymentInfoStackView.addArrangedSubview(UIView())
 
         self.addSubview(paymentInfoStackView)
+    }
+    
+    private func addBrandedViewToViewHierarchy() {
+        bottomStackView.addArrangedSubview(UIView())
+        bottomStackView.addArrangedSubview(poweredByGiniView)
+        bottomView.addSubview(bottomStackView)
+        paymentInfoStackView.addArrangedSubview(bottomView)
     }
 
     // MARK: Layout & Constraints
