@@ -368,8 +368,10 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
     private func handleSuccessfulAnalysis(with extractionResult: ExtractionResult,
                                           networkDelegate: GiniCaptureNetworkDelegate) {
-        DispatchQueue.main.async {
-            if let analysisViewController = self.screenAPINavigationController.children.last as? AnalysisViewController {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let lastViewControllerInNavigationStack = self.screenAPINavigationController.children.last
+            if let analysisViewController = lastViewControllerInNavigationStack as? AnalysisViewController {
                 analysisViewController.performWhenAnimationCompleted {
                     self.presentNextScreen(after: extractionResult, networkDelegate: networkDelegate)
                 }
