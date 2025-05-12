@@ -623,21 +623,22 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     private func pushOrDismissAndPush(_ viewController: UIViewController) {
         if viewController is PaymentInfoViewController {
             navigationControllerProvided?.giniTopMostViewController().present(viewController, animated: true)
-        } else if let doublePresentedViewController = navigationControllerProvided?.presentedViewController?.presentedViewController {
-            doublePresentedViewController.dismiss(animated: true) { [weak self] in
-                if let presentedViewController = self?.navigationControllerProvided?.presentedViewController {
-                    presentedViewController.dismiss(animated: true) { [weak self] in
-                        self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
-                    }
-                }
-            }
-        } else if let presentedViewController = navigationControllerProvided?.presentedViewController {
-            presentedViewController.dismiss(animated: true) { [weak self] in
-                self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
-            }
-        } else {
-            navigationControllerProvided?.pushViewController(viewController, animated: true)
+            return
         }
+        
+        func dismissAllAndPush(currentViewController: UIViewController? = nil) {
+            let localViewController = currentViewController ?? navigationControllerProvided
+            
+            if let presentedViewController = localViewController?.presentedViewController {
+                presentedViewController.dismiss(animated: true) {
+                    dismissAllAndPush(currentViewController: localViewController)
+                }
+            } else {
+                navigationControllerProvided?.pushViewController(viewController, animated: true)
+            }
+        }
+        
+        dismissAllAndPush()
     }
     
     /// Handles the action when the bank picker button is tapped on the payment component view, using the provided document ID.
