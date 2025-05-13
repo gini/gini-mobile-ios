@@ -622,7 +622,8 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     
     private func pushOrDismissAndPush(_ viewController: UIViewController) {
         if viewController is PaymentInfoViewController {
-            navigationControllerProvided?.giniTopMostViewController().present(viewController, animated: true)
+            let navigationController = UINavigationController(rootViewController: viewController)
+            navigationControllerProvided?.giniTopMostViewController().present(navigationController, animated: true)
             return
         }
         
