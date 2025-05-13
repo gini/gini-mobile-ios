@@ -13,7 +13,7 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var buttonCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToPageControlConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToViewBottomConstraint: NSLayoutConstraint!
-    var bottomPaddingPageIndicatorConstraint: NSLayoutConstraint! = NSLayoutConstraint()
+    private var bottomPaddingPageIndicatorConstraint: NSLayoutConstraint! = NSLayoutConstraint()
     private var navigationBarHeightConstraint: NSLayoutConstraint! = NSLayoutConstraint()
     @IBOutlet weak var skipBottomBarButton: MultilineTitleButton!
     private(set) var dataSource: OnboardingDataSource
@@ -157,6 +157,7 @@ class OnboardingViewController: UIViewController {
         nextButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         nextButton.configure(with: GiniConfiguration.shared.primaryButtonConfiguration)
         nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
+        nextButton.titleLabel?.numberOfLines = 1
 
         skipBottomBarButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         skipBottomBarButton.configure(with: GiniConfiguration.shared.transparentButtonConfiguration)
@@ -230,8 +231,9 @@ class OnboardingViewController: UIViewController {
                                                                comment: "Next button")
         nextButton.accessibilityValue = nextButtonTitle
         nextButton.setTitle(nextButtonTitle, for: .normal)
+        
     }
-
+    
     @objc private func skipTapped() {
         // Handle the skip button tap if there are more onboarding pages.
         // The skip button is not present on the last onboarding page.
