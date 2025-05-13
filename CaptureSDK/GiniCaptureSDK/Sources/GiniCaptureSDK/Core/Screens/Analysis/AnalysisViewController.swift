@@ -274,6 +274,12 @@ import UIKit
         }
     }
 
+    /**
+     Suspends the current task until the animation inside the analysis screen has completed.
+
+     If the animation is already completed, this method returns immediately.
+     Otherwise, it suspends execution and resumes once the animation finishes.
+     */
     public func waitUntilAnimationCompleted() async {
         await withCheckedContinuation { continuation in
             animationCompletionContinuations.append(continuation)
