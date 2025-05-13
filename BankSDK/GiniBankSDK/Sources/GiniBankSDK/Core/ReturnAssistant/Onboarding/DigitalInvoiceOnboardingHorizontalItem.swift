@@ -39,22 +39,30 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             stack.widthAnchor.constraint(equalToConstant: 276),
-            doneButton.widthAnchor.constraint(equalToConstant: 170),
+            doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 170),
             doneButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         return stack
     }()
 
-    private lazy var rightStackViewContainer: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var rightStackViewContainerScrollable: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.alwaysBounceVertical = true
 
-        view.addSubview(rightStackView)
+        scrollView.addSubview(rightStackView)
+
         NSLayoutConstraint.activate([
-            rightStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            rightStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            rightStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            rightStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            rightStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            rightStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+
+            rightStackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            
         ])
-        return view
+
+        return scrollView
     }()
 
     private var topImage: UIImage {
@@ -130,7 +138,8 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
 
         addSubview(topImageView)
-        addSubview(rightStackViewContainer)
+        addSubview(rightStackViewContainerScrollable)
+
 
         topImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -138,11 +147,12 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
             topImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.paddingLarge),
             topImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.paddingLarge),
             topImageView.widthAnchor.constraint(equalToConstant: 220),
-
-            rightStackViewContainer.topAnchor.constraint(equalTo: topAnchor),
-            rightStackViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor),
-            rightStackViewContainer.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            rightStackViewContainer.leadingAnchor.constraint(equalTo: topImageView.trailingAnchor)
+            
+            // Constraints for the scroll view itself
+            rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
+            rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
+            rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: topImageView.trailingAnchor,constant: 10),
+            rightStackViewContainerScrollable.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
     }
 
