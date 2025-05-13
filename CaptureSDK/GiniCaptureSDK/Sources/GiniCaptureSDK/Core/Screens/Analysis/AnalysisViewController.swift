@@ -216,7 +216,7 @@ import Combine
     }
 
     private func configureLoadingIndicator() {
-        let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: !document.isImported)
+        let controller = EducationFlowController.captureInvoiceFlowController(displayIfNeeded: !document.isImported)
 
         let nextState = controller.nextState()
         switch nextState {

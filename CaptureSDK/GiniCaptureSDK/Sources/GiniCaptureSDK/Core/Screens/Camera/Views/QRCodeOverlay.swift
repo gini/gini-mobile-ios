@@ -106,6 +106,11 @@ final class QRCodeOverlay: UIView {
     private var educationViewModel: QREducationLoadingViewModel?
     private var customLoadingView: QREducationLoadingView?
     private let useCustomLoadingView: Bool = true
+    private var educationTask: Task<Void, Never>?
+
+    public var currentEducationTask: Task<Void, Never>? {
+        educationTask
+    }
 
     private lazy var correctQRFeedback: CorrectQRCodeTextContainer = {
         let view = CorrectQRCodeTextContainer()
@@ -175,30 +180,49 @@ final class QRCodeOverlay: UIView {
     }
 
     private func addLoadingView() {
-        // TODO: PP-1202 replace useCustomLoadingView with UserDefaults check
-        if useCustomLoadingView && configuration.qrCodeScanningEnabled {
-            // TODO: PP-1202 remove test items after UserDefaults & showing business logic integration
-            let loadingItems = [
-                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
-                                       text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
-                                                                              comment: "Education intro"),
-                                       duration: 1.5),
-                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
-                                       text: NSLocalizedStringPreferredFormat("ginicapture.QRscanning.education.camera",
-                                                                              comment: "Camera education"),
-                                       duration: 1.5),
-                QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
-                                       text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
-                                                                              comment: "Photo education"),
-                                       duration: 1.5)
-            ]
+        let shouldDisplayEducation = configuration.qrCodeScanningEnabled && !configuration.onlyQRCodeScanningEnabled
+        let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: shouldDisplayEducation)
+
+        let nextState = controller.nextState()
+        switch nextState {
+        case .showMessage(let messageIndex):
+            let introItem = QREducationLoadingItem(
+                image: UIImageNamedPreferred(named: "qrEducationIntro"),
+                text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
+                                                       comment: "Education intro"),
+                duration: 1.5)
+
+            let cameraItem = QREducationLoadingItem(
+                image: UIImageNamedPreferred(named: "qrEducationCamera"),
+                text: NSLocalizedStringPreferredFormat("ginicapture.QRscanning.education.camera",
+                                                       comment: "Camera education"),
+                duration: 3)
+
+            let photoItem = QREducationLoadingItem(
+                image: UIImageNamedPreferred(named: "qrEducationPhoto"),
+                text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
+                                                       comment: "Photo education"),
+                duration: 3)
+
+            let loadingItems: [QREducationLoadingItem] = {
+                switch messageIndex {
+                case 0:
+                    return [introItem, cameraItem]
+                case 1:
+                    return [introItem, photoItem]
+                default:
+                    // TODO: PP-1202 handle default case
+                    return [introItem, cameraItem]
+                }
+            }()
+
             let viewModel = QREducationLoadingViewModel(items: loadingItems)
             educationViewModel = viewModel
             let customView = QREducationLoadingView(viewModel: viewModel)
             customView.translatesAutoresizingMaskIntoConstraints = false
             customLoadingView = customView
             addSubview(customView)
-        } else {
+        case .showOriginalFlow:
             let loadingIndicator: UIView
 
             if let customLoadingIndicator = configuration.customLoadingIndicator?.injectedView() {
@@ -296,7 +320,7 @@ final class QRCodeOverlay: UIView {
         checkMarkImageView.isHidden = true
 
         if let educationViewModel {
-            Task {
+            educationTask = Task {
                 await educationViewModel.start()
             }
             customLoadingView?.isHidden = false
