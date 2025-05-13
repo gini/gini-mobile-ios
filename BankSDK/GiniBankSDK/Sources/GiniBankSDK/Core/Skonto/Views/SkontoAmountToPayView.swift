@@ -16,7 +16,7 @@ class SkontoAmountToPayView: UIView {
         let label = UILabel()
         label.text = titleLabelText
         label.font = configuration.textStyleFonts[.footnote]
-        label.textColor = .giniColorScheme().text.secondary.uiColor()
+        label.textColor = .giniBankColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -26,7 +26,7 @@ class SkontoAmountToPayView: UIView {
         let textField = PriceTextField()
         textField.priceDelegate = self
         textField.text = textFieldInitialText
-        textField.textColor = .giniColorScheme().text.primary.uiColor()
+        textField.textColor = .giniBankColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.keyboardType = .numberPad
@@ -42,7 +42,7 @@ class SkontoAmountToPayView: UIView {
     private lazy var currencyLabel: UILabel = {
         let label = UILabel()
         label.text = currencyLabelText
-        label.textColor = .giniColorScheme().text.secondary.uiColor()
+        label.textColor = .giniBankColorScheme().text.secondary.uiColor()
         label.font = configuration.textStyleFonts[.body]
         label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -62,7 +62,7 @@ class SkontoAmountToPayView: UIView {
 
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderColor = UIColor.giniColorScheme().textField.border.uiColor().cgColor
+        view.layer.borderColor = UIColor.giniBankColorScheme().textField.border.uiColor().cgColor
         view.layer.borderWidth = isEditable ? 1 : 0
         view.layer.cornerRadius = Constants.cornerRadius
         view.isAccessibilityElement = true
@@ -79,7 +79,7 @@ class SkontoAmountToPayView: UIView {
 
     private lazy var validationLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .giniColorScheme().textField.supportingError.uiColor()
+        label.textColor = .giniBankColorScheme().textField.supportingError.uiColor()
         label.font = configuration.textStyleFonts[.caption1]
         label.numberOfLines = 0
         label.isHidden = true
@@ -119,7 +119,7 @@ class SkontoAmountToPayView: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().textField.background.uiColor()
+        backgroundColor = .giniBankColorScheme().textField.background.uiColor()
         addSubview(mainStackView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(stackView)
