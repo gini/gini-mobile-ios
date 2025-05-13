@@ -373,6 +373,14 @@ private extension GiniBankNetworkingScreenApiCoordinator {
                 analysisViewController.performWhenAnimationCompleted {
                     self.presentNextScreen(after: extractionResult, networkDelegate: networkDelegate)
                 }
+            } else if let cameraViewController = self.screenAPINavigationController.children.last as? QRCodeEducationable,
+                      let task = cameraViewController.educationTask {
+                Task {
+                    _ = await task.value
+                    await MainActor.run {
+                        self.presentNextScreen(after: extractionResult, networkDelegate: networkDelegate)
+                    }
+                }
             } else {
                 self.presentNextScreen(after: extractionResult, networkDelegate: networkDelegate)
             }
