@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Combine
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
@@ -42,8 +41,7 @@ import Combine
     private var loadingViewModel: QREducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
-    private var animationCompletedSubject = CurrentValueSubject<Bool, Never>(false)
-    private var anymationCancellables = Set<AnyCancellable>()
+    private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
 
     // User interface
     private var imageView: UIImageView = {
@@ -240,7 +238,8 @@ import Combine
             loadingIndicatorView.startAnimating()
         }
         // immediately mark animation complete
-        animationCompletedSubject.send(true)
+        animationCompletionContinuations.forEach { $0.resume() }
+        animationCompletionContinuations.removeAll()
     }
 
     private func showEducationLoadingMessage() {
@@ -270,28 +269,14 @@ import Combine
 
         Task {
             await viewModel.start()
-            animationCompletedSubject.send(true)
+            animationCompletionContinuations.forEach { $0.resume() }
+            animationCompletionContinuations.removeAll()
         }
     }
-    /**
-     Executes the given action when the animation inside the analysis screen is completed.
 
-     If the animation has already completed, the action is executed immediately.
-     If the animation is still running, the action is queued and will be executed once the animation finishes.
-
-     - Parameter action: A closure to be executed after the animation has completed.
-     */
-    public func performWhenAnimationCompleted(_ action: @escaping () -> Void) {
-        if animationCompletedSubject.value {
-            action()
-        } else {
-            animationCompletedSubject
-                .filter { $0 }
-                .prefix(1)
-                .sink { _ in
-                    action()
-                }
-                .store(in: &anymationCancellables)
+    public func waitUntilAnimationCompleted() async {
+        await withCheckedContinuation { continuation in
+            animationCompletionContinuations.append(continuation)
         }
     }
 
