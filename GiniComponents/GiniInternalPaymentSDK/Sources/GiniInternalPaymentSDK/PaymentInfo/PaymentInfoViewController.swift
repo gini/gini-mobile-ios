@@ -173,7 +173,7 @@ public final class PaymentInfoViewController: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: Constants.topPadding),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor),
             contentView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor),
@@ -334,8 +334,6 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
 extension PaymentInfoViewController {
     private enum Constants {
         static let paragraphSpacing: CGFloat = 10.0
-        
-        static let topPadding: CGFloat = 16.0
         static let leftRightPadding: CGFloat = 16.0
         
         static let bankIconsSpacing: CGFloat = 5.0
