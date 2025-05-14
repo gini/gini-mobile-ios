@@ -455,8 +455,7 @@ fileprivate extension PaymentReviewViewController {
     }
 
     func updatePaymentInfoContainerView() {
-        self.presentedViewController?.dismiss(animated: true)
-        self.selectedPaymentProvider = model.selectedPaymentProvider
+        selectedPaymentProvider = model.selectedPaymentProvider
         paymentInfoContainerView.updateSelectedPaymentProvider(model.selectedPaymentProvider)
     }
 }
