@@ -34,9 +34,11 @@ final class EducationFlowController {
         }
 
         let messageIndex = currentCount % configuration.numberOfMessages
-
-        configuration.setDisplayCount(currentCount + 1)
-
         return .showMessage(messageIndex: messageIndex)
+    }
+
+    func markMessageAsShown() {
+        let currentCount = configuration.getDisplayCount()
+        configuration.setDisplayCount(currentCount + 1)
     }
 }
