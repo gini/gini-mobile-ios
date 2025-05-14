@@ -196,6 +196,12 @@ open class ZoomedImageView: UIScrollView {
         contentSize = imageSize
         setMaxMinZoomScalesForCurrentBounds()
         zoomScale = minimumZoomScale
+
+        if UIDevice.isPortrait() {
+            imageContentMode = .aspectFit
+        } else {
+            imageContentMode = .widthFill
+        }
         
         switch initialOffset {
         case .begining:
