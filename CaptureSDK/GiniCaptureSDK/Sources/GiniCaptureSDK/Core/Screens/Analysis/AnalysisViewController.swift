@@ -275,6 +275,7 @@ import UIKit
             await viewModel.start()
             animationCompletionContinuations.forEach { $0.resume() }
             animationCompletionContinuations.removeAll()
+            educationFlowController?.markMessageAsShown()
         }
     }
 
