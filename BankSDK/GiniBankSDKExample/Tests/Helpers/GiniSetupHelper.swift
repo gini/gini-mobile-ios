@@ -18,6 +18,7 @@ final class GiniSetupHelper {
     private var giniBankAPILib: GiniBankAPI!
     var giniCaptureSDKDocumentService: GiniCaptureSDK.DocumentService!
     var giniBankAPIDocumentService: GiniBankAPILibrary.DefaultDocumentService!
+    var giniBankConfigurationService: GiniBankAPILibrary.ClientConfigurationServiceProtocol!
     var paymentService: PaymentService!
 
     func setup() {
@@ -32,5 +33,6 @@ final class GiniSetupHelper {
 
         giniBankAPIDocumentService = giniBankAPILib.documentService()
         paymentService = giniBankAPILib.paymentService()
+        giniBankConfigurationService = giniBankAPILib.configurationService()
     }
 }
