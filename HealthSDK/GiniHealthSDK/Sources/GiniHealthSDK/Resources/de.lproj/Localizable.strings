@@ -5,7 +5,6 @@
  //  Copyright © 2024 Gini GmbH. All rights reserved.
 
 */
-
 "gini.health.alert.ok.title" = "OK";
 "gini.health.errors.default" = "Oh da ist was schief gelaufen. Probieren Sie es bitte noch einmal.";
 "gini.health.errors.failed.amount.non.empty.check" = "Ungültig.";
@@ -58,6 +57,9 @@
 "gini.health.reviewscreen.infobar.message" = "Bitte überprüfen Sie die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder" = "Verwendungszweck";
+"gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR-Code";
+"gini.health.paymentcomponent.install.app.bottom.sheet.appstore" = "App-Store";
+"gini.health.reviewscreen.close.button.accesibility.label" = "Schließen";
 
 // INFORMAL KEYS - German informal localization strings
 
@@ -113,3 +115,7 @@
 "gini.health.reviewscreen.infobar.message.informal" = "Bitte überprüfe die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder.informal" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder.informal" = "Verwendungszweck";
+"gini.health.paymentcomponent.share.invoice.qr.code.image.informal" = "QR-Code";
+"gini.health.paymentcomponent.install.app.bottom.sheet.appstore.informal" = "App-Store";
+"gini.health.reviewscreen.close.button.accesibility.label.informal" = "Schließen";
+"gini.health.reviewscreen.invoice.image.content.description" = "Rechnungsdokument";
