@@ -247,16 +247,7 @@ import UIKit
     }
 
     private func showEducationLoadingMessage() {
-        let loadingItems = [
-            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
-                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
-                                                                          comment: "Education intro"),
-                                   duration: 1.5),
-            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
-                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
-                                                                          comment: "Photo education"),
-                                   duration: 3)
-        ]
+        let loadingItems = EducationFlowContent.captureInvoice.items
         let viewModel = QREducationLoadingViewModel(items: loadingItems)
         let customLoadingView = QREducationLoadingView(viewModel: viewModel)
         customLoadingView.translatesAutoresizingMaskIntoConstraints = false

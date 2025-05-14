@@ -193,29 +193,7 @@ final class QRCodeOverlay: UIView {
     }
 
     private func addEducationLoadingView(messageIndex: Int) {
-        let introItem = QREducationLoadingItem(
-            image: UIImageNamedPreferred(named: "qrEducationIntro"),
-            text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro", comment: "Education intro"),
-            duration: 1.5)
-
-        let cameraItem = QREducationLoadingItem(
-            image: UIImageNamedPreferred(named: "qrEducationCamera"),
-            text: NSLocalizedStringPreferredFormat("ginicapture.QRscanning.education.camera", comment: "Camera education"),
-            duration: 3)
-
-        let photoItem = QREducationLoadingItem(
-            image: UIImageNamedPreferred(named: "qrEducationPhoto"),
-            text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo", comment: "Photo education"),
-            duration: 3)
-
-        let loadingItems: [QREducationLoadingItem] = {
-            switch messageIndex {
-            case 0:
-                return [introItem, cameraItem]
-            default:
-                return [introItem, photoItem]
-            }
-        }()
+        let loadingItems = EducationFlowContent.qrCode(messageIndex: messageIndex).items
 
         let viewModel = QREducationLoadingViewModel(items: loadingItems)
         educationViewModel = viewModel
