@@ -1,0 +1,8 @@
+{
+    "clientID": "test-client",
+    "userJourneyAnalyticsEnabled": true,
+    "skontoEnabled": true,
+    "returnAssistantEnabled": true,
+    "transactionDocsEnabled": false,
+    "instantPaymentEnabled": false
+}

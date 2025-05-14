@@ -1,0 +1,91 @@
+{
+    "extractions": {
+        "instantPayment": {
+            "entity": "text",
+            "value": "true"
+        },
+        "bic": {
+            "entity": "bic",
+            "value": "INGDDEFFXXX",
+            "candidates": "bics"
+        },
+        "paymentRecipient": {
+            "entity": "companyname",
+            "value": "Bart Kostenloss (BARTH GmbH)",
+            "candidates": "paymentRecipients"
+        },
+        "iban": {
+            "entity": "iban",
+            "value": "DE78500105176856895423",
+            "box": {
+                "top": 823.9,
+                "left": 386.9,
+                "width": 865.2,
+                "height": 71.0,
+                "page": 1
+            },
+            "candidates": "ibans"
+        },
+        "docType": {
+            "entity": "doctype",
+            "value": "RemittanceSlip"
+        },
+        "paymentPurpose": {
+            "entity": "text",
+            "value": "Rechnungs-Nr: 202507 141081"
+        },
+        "amountToPay": {
+            "entity": "amount",
+            "value": "238.59:EUR",
+            "candidates": "amounts"
+        }
+    },
+    "candidates": {
+        "ibans": [{
+            "entity": "iban",
+            "value": "DE78500105176856895423",
+            "box": {
+                "top": 823.9,
+                "left": 386.9,
+                "width": 865.2,
+                "height": 71.0,
+                "page": 1
+            }
+        }, {
+            "entity": "iban",
+            "value": "DE78500105176856895423"
+        }],
+        "amounts": [{
+            "entity": "amount",
+            "value": "23.59:EUR",
+            "box": {
+                "top": 1113.5,
+                "left": 1816.6,
+                "width": 423.10000000000036,
+                "height": 76.0,
+                "page": 1
+            }
+        }, {
+            "entity": "amount",
+            "value": "238.59:EUR"
+        }],
+        "paymentRecipients": [{
+            "entity": "companyname",
+            "value": "Bart Kostenloss ( BARTH Gmbh)",
+            "box": {
+                "top": 678.9,
+                "left": 390.9,
+                "width": 959.0000000000001,
+                "height": 71.0,
+                "page": 1
+            }
+        }, {
+            "entity": "companyname",
+            "value": "Bart Kostenloss (BARTH GmbH)"
+        }],
+        "bics": [{
+            "entity": "bic",
+            "value": "INGDDEFFXXX"
+        }]
+    }
+}

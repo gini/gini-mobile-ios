@@ -21,6 +21,7 @@
 "ginicapture.navigationbar.help.backToMenu"     = "Help";
 "ginicapture.navigationbar.analysis.backToReview" = "Review";
 "ginicapture.navigationbar.accessibility.back" = "Back";
+"ginicapture.navigationbar.error.backToCamera"   = "Camera";
 
 
 "ginicapture.camera.captureButton" = "Capture";
@@ -88,7 +89,7 @@
 "ginicapture.review.unknownError"       = "An unknown error has occurred on the review screen";
 "ginicapture.review.delete"             = "Delete page";
 
-"ginicapture.analysis.screenTitle" = "Review";
+"ginicapture.analysis.screenTitle" = "Analysis";
 "ginicapture.analysis.loadingText" = "Analyzing documents";
 "ginicapture.analysis.loadingText.pdf" = "Analyzing\n%@";
 "ginicapture.analysis.suggestion.1" = "Good lighting";
