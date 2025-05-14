@@ -5,7 +5,6 @@
 //
 
 import Foundation
-import GiniBankAPILibrary
 
 /**
     This is for internal use only.

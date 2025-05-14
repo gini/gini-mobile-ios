@@ -10,7 +10,7 @@
  specifies which message to display (e.g., 0 for first message, 1 for second message).
  - showOriginalFlow: Indicates that the original flow (e.g., spinning wheel) should be shown.
  */
-enum EducationFlowState {
+enum EducationFlowState: Equatable {
     case showMessage(messageIndex: Int)
     case showOriginalFlow
 }

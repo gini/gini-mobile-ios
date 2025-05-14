@@ -42,6 +42,7 @@ import UIKit
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
     private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
+    private var educationFlowController: EducationFlowController?
 
     // User interface
     private var imageView: UIImageView = {
@@ -214,13 +215,16 @@ import UIKit
     }
 
     private func configureLoadingIndicator() {
-        let controller = EducationFlowController.captureInvoiceFlowController(displayIfNeeded: !document.isImported)
+        let displayEducationFlow = !document.isImported && giniConfiguration.fileImportSupportedTypes != .none
+        educationFlowController = EducationFlowController.captureInvoiceFlowController(displayIfNeeded: displayEducationFlow)
 
-        let nextState = controller.nextState()
+        let nextState = educationFlowController?.nextState()
         switch nextState {
         case .showMessage:
             showEducationLoadingMessage()
         case .showOriginalFlow:
+            showOriginalLoadingMessage()
+        case .none:
             showOriginalLoadingMessage()
         }
     }
