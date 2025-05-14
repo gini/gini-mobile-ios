@@ -108,6 +108,12 @@ final class QRCodeOverlay: UIView {
     private let useCustomLoadingView: Bool = true
     private var educationTask: Task<Void, Never>?
 
+    /**
+     The currently running education flow task, if any.
+     
+     This task represents the education flow started by `showAnimation()`
+     when the QR education view is shown.
+     */
     public var currentEducationTask: Task<Void, Never>? {
         educationTask
     }
