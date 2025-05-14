@@ -7,7 +7,7 @@
 */
 "gini.health.alert.ok.title" = "OK";
 "gini.health.errors.default" = "Oh da ist was schief gelaufen. Probieren Sie es bitte noch einmal.";
-"gini.health.errors.failed.amount.non.empty.check" = "Ungültig.";
+"gini.health.errors.failed.amount.non.empty.check" = "Betrag ist notwendig.";
 "gini.health.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig.";
 "gini.health.errors.failed.iban.non.empty.check" = "IBAN ist notwendig.";
 "gini.health.errors.failed.iban.validation.check" = "IBAN ist ungültig.";
@@ -65,7 +65,7 @@
 
 "gini.health.alert.ok.title.informal" = "OK";
 "gini.health.errors.default.informal" = "Oh da ist was schief gelaufen. Probiere es bitte noch einmal.";
-"gini.health.errors.failed.amount.non.empty.check.informal" = "Ungültig.";
+"gini.health.errors.failed.amount.non.empty.check.informal" = "Betrag ist notwendig.";
 "gini.health.errors.failed.default.textfield.validation.check.informal" = "Das Feld ist ungültig.";
 "gini.health.errors.failed.iban.non.empty.check.informal" = "IBAN ist notwendig.";
 "gini.health.errors.failed.iban.validation.check.informal" = "IBAN ist ungültig.";
