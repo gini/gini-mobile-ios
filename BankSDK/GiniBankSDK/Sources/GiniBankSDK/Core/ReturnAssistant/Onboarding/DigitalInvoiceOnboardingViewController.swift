@@ -20,6 +20,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet private weak var doneButton: MultilineTitleButton!
     @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
+    private var navigationBarHeightConstraint: NSLayoutConstraint! = NSLayoutConstraint()
     private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem(
         with: GiniBankConfiguration.shared
     ) { [weak self] in
@@ -91,6 +92,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if UIDevice.current.isIphone {
+            navigationBarHeightConstraint.constant = getBottomBarHeight()
             if view.currentInterfaceOrientation.isLandscape {
                 view.addSubview(horizontalItem)
                 horizontalItem.translatesAutoresizingMaskIntoConstraints = false
@@ -98,7 +100,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                     horizontalItem.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                     horizontalItem.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                     horizontalItem.topAnchor.constraint(equalTo: view.topAnchor),
-                    horizontalItem.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                    horizontalItem.bottomAnchor.constraint(equalTo: getBottomAnchorForLandscapeView())
                 ])
             } else {
                 horizontalItem.removeFromSuperview()
@@ -174,13 +176,15 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                 view.addSubview(navigationBar)
 
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
+                navigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
+
 
                 NSLayoutConstraint.activate([
                     navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                     navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                     navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                    navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight),
-                    navigationBar.topAnchor.constraint(equalTo: scrollView.bottomAnchor)
+                    navigationBar.topAnchor.constraint(equalTo: scrollView.bottomAnchor),
+                    navigationBarHeightConstraint
                 ])
             }
         }
@@ -226,6 +230,30 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
 extension DigitalInvoiceOnboardingViewController {
     private enum Constants {
-        static let navigationBarHeight: CGFloat = 114
+        static let bottomBarHeightPortrait: CGFloat = 110
+        static let bottomBarHeightLandscape: CGFloat = 64
     }
+    
+    private func getBottomAnchorForLandscapeView() -> NSLayoutYAxisAnchor{
+        var anchor: NSLayoutYAxisAnchor!
+        if let _ = GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter {
+            anchor = bottomNavigationBar?.topAnchor ?? view.bottomAnchor
+        } else {
+            anchor = view.bottomAnchor
+        }
+        return anchor
+    }
+    
+    func getBottomBarHeight() -> CGFloat {
+        if isiPhoneAndLandscape() {
+            return Constants.bottomBarHeightLandscape
+        }
+        return Constants.bottomBarHeightPortrait
+    }
+    
+    func isiPhoneAndLandscape() -> Bool {
+        return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
+    }
+
+    
 }

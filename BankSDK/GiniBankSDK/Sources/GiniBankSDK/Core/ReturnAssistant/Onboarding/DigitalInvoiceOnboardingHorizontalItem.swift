@@ -11,6 +11,8 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
     private let firstLabel: UILabel
     private let secondLabel: UILabel
     private let doneButton: MultilineTitleButton
+    private var configuration: GiniBankConfiguration
+
     private lazy var infoStackView: UIStackView = {
         let stack = UIStackView(
             arrangedSubviews: [
@@ -87,6 +89,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
     init(with configuration: GiniBankConfiguration, frame: CGRect = .zero, onDone: @escaping () -> Void) {
         topImageView = .init()
 
+        self.configuration = configuration
         firstLabel = .init()
         firstLabel.numberOfLines = 0
 
@@ -126,6 +129,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
         doneButton.configure(with: configuration.primaryButtonConfiguration)
+        doneButton.isHidden = shouldHideButton()
     }
 
     @available(*, unavailable)
@@ -164,5 +168,12 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
 private extension DigitalInvoiceOnboardingHorizontalItem {
     enum Constants {
         static let paddingLarge: CGFloat = 56
+    }
+    
+    func shouldHideButton()->Bool{
+        if let _ = GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter {
+            return true
+        }
+        return false
     }
 }
