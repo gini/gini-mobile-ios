@@ -13,22 +13,41 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
-  check-bank-api-librray:
+  check-bank-api-libray:
     uses: ./.github/workflows/bank-api-library.check.yml
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
     
+  check-bank-api-libray-docs:
+    needs: check-bank-api-libray
+    uses: ./.github/workflows/bank-api-library.build.docs.yml
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+
   check-capture:
-    needs: check-bank-api-librray
+    needs: check-bank-api-libray-docs
     uses: ./.github/workflows/capture-sdk.check.yml
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
-  check-bank:
+  check-capture-docs:
     needs: check-capture
+    uses: ./.github/workflows/capture-sdk.build.docs.yml
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+    
+  check-bank:
+    needs: check-capture-docs
     uses: ./.github/workflows/bank-sdk.check.yml
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+
+  check-bank-docs:
+    needs: check-bank
+    uses: ./.github/workflows/bank-sdk.build.docs.yml
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+
 
   upload-version:
     needs: check-bank
