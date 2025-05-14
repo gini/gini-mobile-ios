@@ -186,55 +186,58 @@ final class QRCodeOverlay: UIView {
         let nextState = controller.nextState()
         switch nextState {
         case .showMessage(let messageIndex):
-            let introItem = QREducationLoadingItem(
-                image: UIImageNamedPreferred(named: "qrEducationIntro"),
-                text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
-                                                       comment: "Education intro"),
-                duration: 1.5)
-
-            let cameraItem = QREducationLoadingItem(
-                image: UIImageNamedPreferred(named: "qrEducationCamera"),
-                text: NSLocalizedStringPreferredFormat("ginicapture.QRscanning.education.camera",
-                                                       comment: "Camera education"),
-                duration: 3)
-
-            let photoItem = QREducationLoadingItem(
-                image: UIImageNamedPreferred(named: "qrEducationPhoto"),
-                text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
-                                                       comment: "Photo education"),
-                duration: 3)
-
-            let loadingItems: [QREducationLoadingItem] = {
-                switch messageIndex {
-                case 0:
-                    return [introItem, cameraItem]
-                case 1:
-                    return [introItem, photoItem]
-                default:
-                    // TODO: PP-1202 handle default case
-                    return [introItem, cameraItem]
-                }
-            }()
-
-            let viewModel = QREducationLoadingViewModel(items: loadingItems)
-            educationViewModel = viewModel
-            let customView = QREducationLoadingView(viewModel: viewModel)
-            customView.translatesAutoresizingMaskIntoConstraints = false
-            customLoadingView = customView
-            addSubview(customView)
+            addEducationLoadingView(messageIndex: messageIndex)
         case .showOriginalFlow:
-            let loadingIndicator: UIView
-
-            if let customLoadingIndicator = configuration.customLoadingIndicator?.injectedView() {
-                loadingIndicator = customLoadingIndicator
-            } else {
-                loadingIndicator = loadingIndicatorView
-            }
-
-            addSubview(loadingContainer)
-            loadingContainer.addArrangedSubview(loadingIndicator)
-            loadingContainer.addArrangedSubview(loadingIndicatorText)
+            addOriginalLoadingView()
         }
+    }
+
+    private func addEducationLoadingView(messageIndex: Int) {
+        let introItem = QREducationLoadingItem(
+            image: UIImageNamedPreferred(named: "qrEducationIntro"),
+            text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro", comment: "Education intro"),
+            duration: 1.5)
+
+        let cameraItem = QREducationLoadingItem(
+            image: UIImageNamedPreferred(named: "qrEducationCamera"),
+            text: NSLocalizedStringPreferredFormat("ginicapture.QRscanning.education.camera", comment: "Camera education"),
+            duration: 3)
+
+        let photoItem = QREducationLoadingItem(
+            image: UIImageNamedPreferred(named: "qrEducationPhoto"),
+            text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo", comment: "Photo education"),
+            duration: 3)
+
+        let loadingItems: [QREducationLoadingItem] = {
+            switch messageIndex {
+            case 0:
+                return [introItem, cameraItem]
+            default:
+                return [introItem, photoItem]
+            }
+        }()
+
+        let viewModel = QREducationLoadingViewModel(items: loadingItems)
+        educationViewModel = viewModel
+
+        let customView = QREducationLoadingView(viewModel: viewModel)
+        customView.translatesAutoresizingMaskIntoConstraints = false
+        customLoadingView = customView
+        addSubview(customView)
+    }
+
+    private func addOriginalLoadingView() {
+        let loadingIndicator: UIView
+
+        if let customLoadingIndicator = configuration.customLoadingIndicator?.injectedView() {
+            loadingIndicator = customLoadingIndicator
+        } else {
+            loadingIndicator = loadingIndicatorView
+        }
+
+        addSubview(loadingContainer)
+        loadingContainer.addArrangedSubview(loadingIndicator)
+        loadingContainer.addArrangedSubview(loadingIndicatorText)
     }
 
     func layoutViews(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
@@ -274,24 +277,32 @@ final class QRCodeOverlay: UIView {
 
     private func layoutLoadingIndicator(centeringBy cameraFrame: UIView) {
         if let customLoadingView {
-            NSLayoutConstraint.activate([
-                customLoadingView.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-                customLoadingView.centerYAnchor.constraint(greaterThanOrEqualTo: cameraFrame.centerYAnchor),
-                customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: cameraFrame.leadingAnchor,
-                                                    constant: Constants.educationLoadingViewPadding),
-                customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: cameraFrame.trailingAnchor,
-                                                     constant: -Constants.educationLoadingViewPadding),
-                customLoadingView.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.topAnchor,
-                                                constant: Constants.educationLoadingViewTopPadding)
-            ])
+            layoutCustomLoadingView(customLoadingView, cameraFrame: cameraFrame)
         } else {
-            NSLayoutConstraint.activate([
-                loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-                loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
-                loadingContainer.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor),
-                loadingContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
-            ])
+            layoutOriginalLoadingContainer(cameraFrame: cameraFrame)
         }
+    }
+
+    private func layoutCustomLoadingView(_ view: UIView, cameraFrame: UIView) {
+        NSLayoutConstraint.activate([
+            view.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
+            view.centerYAnchor.constraint(greaterThanOrEqualTo: cameraFrame.centerYAnchor),
+            view.leadingAnchor.constraint(greaterThanOrEqualTo: cameraFrame.leadingAnchor,
+                                          constant: Constants.educationLoadingViewPadding),
+            view.trailingAnchor.constraint(lessThanOrEqualTo: cameraFrame.trailingAnchor,
+                                           constant: -Constants.educationLoadingViewPadding),
+            view.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.topAnchor,
+                                      constant: Constants.educationLoadingViewTopPadding)
+        ])
+    }
+
+    private func layoutOriginalLoadingContainer(cameraFrame: UIView) {
+        NSLayoutConstraint.activate([
+            loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
+            loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
+            loadingContainer.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor),
+            loadingContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
+        ])
     }
 
     func configureQrCodeOverlay(withCorrectQrCode isQrCodeCorrect: Bool) {
