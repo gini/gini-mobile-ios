@@ -33,6 +33,8 @@ public final class BanksBottomViewModel {
     let strings: BanksBottomStrings
     let poweredByGiniViewModel: PoweredByGiniViewModel
     let moreInformationViewModel: MoreInformationViewModel
+    let paymentInfoViewModel: PaymentInfoViewModel
+    let internalPaymentProvider: [PaymentProvider] = []
     public weak var viewDelegate: BanksSelectionProtocol?
     public var documentId: String?
 
@@ -59,6 +61,8 @@ public final class BanksBottomViewModel {
                 poweredByGiniStrings: PoweredByGiniStrings,
                 moreInformationConfiguration: MoreInformationConfiguration,
                 moreInformationStrings: MoreInformationStrings,
+                paymentInfoConfiguration: PaymentInfoConfiguration,
+                paymentInfoStrings: PaymentInfoStrings,
                 urlOpener: URLOpener = URLOpener(UIApplication.shared),
                 clientConfiguration: ClientConfiguration?) {
         self.selectedPaymentProvider = selectedPaymentProvider
@@ -67,6 +71,14 @@ public final class BanksBottomViewModel {
         self.strings = strings
         self.poweredByGiniViewModel = PoweredByGiniViewModel(configuration: poweredByGiniConfiguration, strings: poweredByGiniStrings)
         self.moreInformationViewModel = MoreInformationViewModel(configuration: moreInformationConfiguration, strings: moreInformationStrings)
+        
+        self.paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders,
+                                                         configuration: paymentInfoConfiguration,
+                                                         strings: paymentInfoStrings,
+                                                         poweredByGiniConfiguration: poweredByGiniConfiguration,
+                                                         poweredByGiniStrings: poweredByGiniStrings,
+                                                         clientConfiguration: clientConfiguration)
+        
         self.clientConfiguration = clientConfiguration
 
         self.paymentProviders = paymentProviders
@@ -122,10 +134,6 @@ public final class BanksBottomViewModel {
     
     func didTapOnClose() {
         viewDelegate?.didTapOnClose()
-    }
-
-    func didTapOnMoreInformation() {
-        viewDelegate?.didTapOnMoreInformation()
     }
 
     private func isPaymentProviderInstalled(paymentProvider: PaymentProvider) -> Bool {
