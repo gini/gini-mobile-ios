@@ -28,7 +28,7 @@ public final class PaymentSecondaryButton: UIButton {
     private lazy var buttonTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 1
+        label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         label.adjustsFontForContentSizeCategory = true
         return label
@@ -70,6 +70,8 @@ public final class PaymentSecondaryButton: UIButton {
             rightImageView.heightAnchor.constraint(equalToConstant: rightImageView.frame.height),
             contentView.trailingAnchor.constraint(equalTo: rightImageView.trailingAnchor, constant: Constants.contentTrailingPadding),
             rightImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            buttonTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.contentPadding),
+            buttonTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.contentPadding)
         ])
     }
 
