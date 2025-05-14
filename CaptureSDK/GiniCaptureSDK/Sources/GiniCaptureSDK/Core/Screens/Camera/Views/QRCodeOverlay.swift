@@ -332,7 +332,11 @@ final class QRCodeOverlay: UIView {
             customLoadingView.isHidden = true
         } else {
             loadingContainer.isHidden = true
-            loadingIndicatorView.stopAnimating()
+            if let customIndicator = configuration.customLoadingIndicator {
+                customIndicator.stopAnimation()
+            } else {
+                loadingIndicatorView.stopAnimating()
+            }
         }
     }
 }
