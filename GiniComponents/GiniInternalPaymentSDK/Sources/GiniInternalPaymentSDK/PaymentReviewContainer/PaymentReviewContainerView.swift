@@ -291,7 +291,7 @@ public final class PaymentReviewContainerView: UIView {
 
     private func setupRecipientStackViewConstraints() {
         NSLayoutConstraint.activate([
-            recipientTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
+            recipientTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             recipientErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
         ])
     }
@@ -302,8 +302,8 @@ public final class PaymentReviewContainerView: UIView {
         let amountErrorLabelWidthConstraint = amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountPortraitWidth)
         amountErrorLabelWidthConstraint.priority = .required - 1
         NSLayoutConstraint.activate([
-            ibanTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            amountTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
+            ibanTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             amountTextFieldWidthConstraint,
             ibanErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
             amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
@@ -313,15 +313,15 @@ public final class PaymentReviewContainerView: UIView {
 
     private func setupUsageStackViewConstraints() {
         NSLayoutConstraint.activate([
-            usageTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
+            usageTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             usageErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight)
         ])
     }
     
     private func setupFirstStackViewsConstraints() {
         NSLayoutConstraint.activate([
-            ibanTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            amountTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
+            ibanTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             ibanErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
             amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
         ])
@@ -329,9 +329,9 @@ public final class PaymentReviewContainerView: UIView {
     
     private func setupSecondStackViewsConstraints() {
         NSLayoutConstraint.activate([
-            amountTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            usageTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            amountTextFieldView.widthAnchor.constraint(equalToConstant: Constants.amountLandscapeWidth),
+            amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            usageTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            amountTextFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountLandscapeWidth),
             usageErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
             amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
             amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountLandscapeWidth)
@@ -698,6 +698,7 @@ public final class PaymentReviewContainerView: UIView {
     private func buildErrorLabel() -> UILabel {
         let label = UILabel()
         label.font = viewModel.configuration.errorLabelFont
+        label.enableScaling()
         label.textColor = viewModel.configuration.errorLabelTextColor
         return label
     }

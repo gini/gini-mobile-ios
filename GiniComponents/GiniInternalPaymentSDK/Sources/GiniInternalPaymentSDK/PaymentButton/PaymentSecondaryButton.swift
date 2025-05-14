@@ -30,6 +30,7 @@ public final class PaymentSecondaryButton: UIButton {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
