@@ -148,7 +148,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             !GiniCaptureUserDefaultsStorage.onboardingShowed {
             GiniCaptureUserDefaultsStorage.onboardingShowed = true
             return true
-        } else if giniConfiguration.onboardingShowAtLaunch {
+        } else if giniConfiguration.onboardingShowAtLaunch && !hasOnboardingShownOnLaunch(){
             return true
         }
 

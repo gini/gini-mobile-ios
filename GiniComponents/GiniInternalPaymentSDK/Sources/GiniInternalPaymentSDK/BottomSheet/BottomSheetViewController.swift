@@ -41,7 +41,7 @@ open class BottomSheetViewController: UIViewController {
     private lazy var dimmedView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = configuration.dimmingBackgroundColor
+        view.backgroundColor = .clear
         view.alpha = 0
         return view
     }()
@@ -90,7 +90,9 @@ public extension BottomSheetViewController {
 // MARK: - Private
 private extension BottomSheetViewController {
     func setupViews() {
-        view.backgroundColor = .clear
+        view.backgroundColor = configuration.dimmingBackgroundColor
+        view.isOpaque = false
+       
         view.addSubview(dimmedView)
         NSLayoutConstraint.activate([
             // Set dimmedView edges to superview
