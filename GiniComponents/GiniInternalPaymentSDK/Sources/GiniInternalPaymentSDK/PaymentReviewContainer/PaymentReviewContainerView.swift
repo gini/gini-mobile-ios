@@ -121,25 +121,28 @@ public final class PaymentReviewContainerView: UIView {
         if viewModel.configuration.showBanksPicker {
             buttonsStackView.addArrangedSubview(selectBankButton)
         }
+        
         buttonsStackView.addArrangedSubview(payInvoiceButton)
         buttonsView.addSubview(buttonsStackView)
-
-        bottomStackView.addArrangedSubview(UIView())
-        if viewModel.shouldShowBrandedView {
-            bottomStackView.addArrangedSubview(poweredByGiniView)
-        }
-        bottomView.addSubview(bottomStackView)
-
         paymentInfoStackView.addArrangedSubview(recipientStackView)
-
         paymentInfoStackView.addArrangedSubview(ibanAmountContainerStackView)
-
         paymentInfoStackView.addArrangedSubview(usageStackView)
         paymentInfoStackView.addArrangedSubview(buttonsView)
-        paymentInfoStackView.addArrangedSubview(bottomView)
+        
+        if viewModel.shouldShowBrandedView {
+            addBrandedViewToViewHierarchy()
+        }
+        
         paymentInfoStackView.addArrangedSubview(UIView())
 
         self.addSubview(paymentInfoStackView)
+    }
+    
+    private func addBrandedViewToViewHierarchy() {
+        bottomStackView.addArrangedSubview(UIView())
+        bottomStackView.addArrangedSubview(poweredByGiniView)
+        bottomView.addSubview(bottomStackView)
+        paymentInfoStackView.addArrangedSubview(bottomView)
     }
 
     // MARK: Layout & Constraints
@@ -150,7 +153,10 @@ public final class PaymentReviewContainerView: UIView {
         setupIbanAmountStackViewsConstraints()
         setupUsageStackViewConstraints()
         setupButtonConstraints()
-        setupPoweredByGiniConstraints()
+        
+        if viewModel.shouldShowBrandedView {
+            setupPoweredByGiniConstraints()
+        }
     }
 
     private func setupContainerContraints() {

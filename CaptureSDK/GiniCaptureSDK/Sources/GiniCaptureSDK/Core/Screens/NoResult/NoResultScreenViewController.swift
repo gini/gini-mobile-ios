@@ -41,10 +41,10 @@ final class NoResultScreenViewController: UIViewController {
 
     lazy var buttonsView: ButtonsView = {
         let view = ButtonsView(
-            firstTitle: NSLocalizedStringPreferredFormat(
+            enterButtonTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.enterManually",
                 comment: "Enter manually button title"),
-            secondTitle: NSLocalizedStringPreferredFormat(
+            retakeButtonTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.retakeImages",
                 comment: "Retake images button title"))
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -69,9 +69,8 @@ final class NoResultScreenViewController: UIViewController {
     private let type: NoResultType
     private let viewModel: BottomButtonsViewModel
     private var buttonsHeightConstraint: NSLayoutConstraint?
-    private var headeriPhoneLeadingConstraint: NSLayoutConstraint?
-    private var tableViewiPhoneLeadingConstraint: NSLayoutConstraint?
-    private var tableViewiPhoneTrailingConstraint: NSLayoutConstraint?
+    private var buttonsBottomConstraint: NSLayoutConstraint?
+    private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
     private var numberOfButtons: Int {
         return [
             viewModel.isEnterManuallyHidden(),
@@ -128,19 +127,6 @@ final class NoResultScreenViewController: UIViewController {
                 bottom: GiniMargins.margin,
                 right: 0)
         }
-
-        if UIDevice.current.isIphone {
-            let isLandscape = currentInterfaceOrientation.isLandscape
-            headeriPhoneLeadingConstraint?.constant = isLandscape ? Constants.sidePaddingHorizontal : Constants.sidePadding
-            buttonsView.axis = isLandscape ? .horizontal : .vertical
-            buttonsHeightConstraint?.constant = getButtonsMinHeight(numberOfButtons: isLandscape ? 1 : numberOfButtons)
-            buttonsView.buttonsView.axis = isLandscape ? .horizontal : .vertical
-            buttonsHeightConstraint?.constant = getButtonsMinHeight(numberOfButtons: isLandscape ? 1 : numberOfButtons)
-
-            let margin = isLandscape ? GiniMargins.horizontalMargin : GiniMargins.margin
-            tableViewiPhoneLeadingConstraint?.constant = margin
-            tableViewiPhoneTrailingConstraint?.constant = -margin
-        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -157,7 +143,7 @@ final class NoResultScreenViewController: UIViewController {
         configureTableView()
         configureConstraints()
         configureButtons()
-        configureCustomTopNavigationBar()
+        configureCustomBottomNavigationBar()
         edgesForExtendedLayout = []
     }
 
@@ -179,16 +165,49 @@ final class NoResultScreenViewController: UIViewController {
                                            dark: UIColor.GiniCapture.error1).uiColor()
     }
 
-    private func configureCustomTopNavigationBar() {
-        let cancelButton = GiniBarButton(ofType: .cancel)
-        cancelButton.addAction(self, #selector(didPressCancel))
-
+    private func configureCustomBottomNavigationBar() {
+        let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
+                                                           comment: "Back")
         if giniConfiguration.bottomNavigationBarEnabled {
-            navigationItem.rightBarButtonItem = cancelButton.barButton
-            navigationItem.setHidesBackButton(true, animated: true)
+            navigationItem.setHidesBackButton(true, animated: false)
+            navigationItem.leftBarButtonItem = nil
+
+            if let adapter = giniConfiguration.errorNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = adapter
+            } else {
+                navigationBarBottomAdapter = DefaultErrorNavigationBarBottomAdapter()
+            }
+
+            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+                self?.didPressBack()
+            }
+
+            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+                navigationBar.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(navigationBar)
+                layoutBottomNavigationBar(navigationBar)
+            }
         } else {
-            navigationItem.leftBarButtonItem = cancelButton.barButton
+            let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
+            backButton.addAction(self, #selector(didPressBack))
+            navigationItem.leftBarButtonItem = backButton.barButton
         }
+    }
+
+    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
+        buttonsBottomConstraint?.isActive = false
+
+        NSLayoutConstraint.activate([
+            buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
+                                                constant: -GiniMargins.margin),
+            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
+        ])
+
+        view.bringSubviewToFront(navigationBar)
+        view.layoutSubviews()
     }
 
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
@@ -264,9 +283,9 @@ final class NoResultScreenViewController: UIViewController {
         viewModel.didPressRetake()
     }
 
-    @objc func didPressCancel() {
+    @objc func didPressBack() {
         GiniAnalyticsManager.track(event: .closeTapped, screenName: .noResults)
-        viewModel.didPressCancel()
+        viewModel.didPressBack()
     }
 
     private func configureHeaderContraints() {
@@ -279,10 +298,9 @@ final class NoResultScreenViewController: UIViewController {
                 header.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
-            headeriPhoneLeadingConstraint = header.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                                                        constant: Constants.sidePadding)
             NSLayoutConstraint.activate([
-                headeriPhoneLeadingConstraint!,
+                header.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                            constant: Constants.sidePadding),
                 header.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                              constant: -Constants.sidePadding)
             ])
@@ -305,15 +323,26 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureButtonsViewConstraints() {
-        let buttonsConstraint =  buttonsView.heightAnchor.constraint(
+        let buttonsConstraint = buttonsView.heightAnchor.constraint(
             greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
         )
         buttonsHeightConstraint = buttonsConstraint
+
+        let bottomConstraint: NSLayoutConstraint
+        if giniConfiguration.bottomNavigationBarEnabled,
+           let navBar = navigationBarBottomAdapter?.injectedView() {
+            bottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: navBar.topAnchor)
+        } else {
+            bottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                                   constant: -GiniMargins.margin)
+        }
+        buttonsBottomConstraint = bottomConstraint
+
         NSLayoutConstraint.activate([
-            buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                constant: -GiniMargins.margin),
-            buttonsConstraint
+            buttonsConstraint,
+            bottomConstraint
         ])
+
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 buttonsView.leadingAnchor.constraint(
@@ -340,15 +369,13 @@ final class NoResultScreenViewController: UIViewController {
                                                  multiplier: Constants.iPadWidthMultiplier)
             ])
         } else {
-            tableViewiPhoneLeadingConstraint = tableView.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: GiniMargins.margin)
-            tableViewiPhoneTrailingConstraint = tableView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -GiniMargins.margin)
             NSLayoutConstraint.activate([
-                tableViewiPhoneLeadingConstraint!,
-                tableViewiPhoneTrailingConstraint!
+                tableView.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor,
+                    constant: GiniMargins.margin),
+                tableView.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor,
+                    constant: -GiniMargins.margin)
             ])
         }
         NSLayoutConstraint.activate([
@@ -365,11 +392,11 @@ final class NoResultScreenViewController: UIViewController {
         static let tableRowHeight: CGFloat = 44
         static let sectionHeight: CGFloat = 70
         static let sidePadding: CGFloat = 24
-        static let sidePaddingHorizontal: CGFloat = 56
         static let contentTopMargin: CGFloat = 13
         static let contentBottomMargin: CGFloat = 16
         static let contentHeight: CGFloat = 62
         static let contentHeightMultiplier: CGFloat = 0.3
         static let iPadWidthMultiplier: CGFloat = 0.7
+        static let navigationBarHeight: CGFloat = 114
     }
 }

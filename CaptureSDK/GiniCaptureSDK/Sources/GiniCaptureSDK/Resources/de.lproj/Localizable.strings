@@ -21,6 +21,7 @@
 "ginicapture.navigationbar.help.backToMenu"     = "Hilfe";
 "ginicapture.navigationbar.analysis.backToReview" = "Übersicht";
 "ginicapture.navigationbar.accessibility.back" = "Zurück";
+"ginicapture.navigationbar.error.backToCamera"   = "Kamera";
 
 
 "ginicapture.camera.captureButton" = "Auslösen";
@@ -88,7 +89,7 @@
 "ginicapture.review.unknownError"       = "Auf dem Überprüfungsbildschirm ist ein unbekannter Fehler aufgetreten";
 "ginicapture.review.delete"             = "Seite löschen";
 
-"ginicapture.analysis.screenTitle" = "Übersicht";
+"ginicapture.analysis.screenTitle" = "Auswertung";
 "ginicapture.analysis.loadingText" = "Dokument wird analysiert";
 "ginicapture.analysis.loadingText.pdf" = "%@\nwird analysiert";
 "ginicapture.analysis.section.header" = "Nützliche Tipps";
