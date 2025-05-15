@@ -21,8 +21,6 @@ jobs:
   check-bank-api-libray-docs:
     needs: check-bank-api-libray
     uses: ./.github/workflows/bank-api-library.build.docs.yml
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
   check-capture:
     needs: check-bank-api-libray-docs
@@ -33,8 +31,6 @@ jobs:
   check-capture-docs:
     needs: check-capture
     uses: ./.github/workflows/capture-sdk.build.docs.yml
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
     
   check-bank:
     needs: check-capture-docs
@@ -45,12 +41,10 @@ jobs:
   check-bank-docs:
     needs: check-bank
     uses: ./.github/workflows/bank-sdk.build.docs.yml
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
 
   upload-version:
-    needs: check-bank
+    needs: check-bank-docs
     runs-on: macos-latest    
     steps:
       - name: Checkout repository
