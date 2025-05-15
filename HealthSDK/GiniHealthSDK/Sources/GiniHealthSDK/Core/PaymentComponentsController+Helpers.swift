@@ -176,9 +176,12 @@ extension PaymentComponentsController {
                                                                    poweredByGiniStrings: stringsProvider.poweredByGiniStrings,
                                                                    moreInformationConfiguration: configurationProvider.moreInformationConfiguration,
                                                                    moreInformationStrings: stringsProvider.moreInformationStrings,
+                                                                   paymentInfoConfiguration: configurationProvider.paymentInfoConfiguration,
+                                                                   paymentInfoStrings: stringsProvider.paymentInfoStrings,
                                                                    clientConfiguration: configurationProvider.clientConfiguration)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomViewModel.documentId = documentId
+        
         return BanksBottomView(viewModel: paymentProvidersBottomViewModel, bottomSheetConfiguration: configurationProvider.bottomSheetConfiguration)
     }
     
@@ -376,28 +379,6 @@ extension PaymentComponentsController {
      */
     public func openMoreInformationViewController() {
         didTapOnMoreInformation(documentId: documentId)
-    }
-    
-    // MARK: - Other helpers
-    func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(paymentInfoDissapeared), name: .paymentInfoDissapeared, object: nil)
-    }
-    
-    @objc
-    private func paymentInfoDissapeared() {
-        switch previousPresentedViews.last {
-        case .bankPicker:
-            previousPresentedViews.removeAll()
-            didTapOnBankPicker(documentId: documentId)
-        case .paymentComponent:
-            previousPresentedViews.removeAll()
-            presentPaymentViewBottomSheet()
-        case .paymentReview:
-            didTapOnPayInvoice()
-        default:
-            break
-        }
-        
     }
     
     /// Checks if the payment provider app can be opened based on the selected payment provider and GPC(Gini Pay Connect) support.
@@ -640,21 +621,25 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     }
     
     private func pushOrDismissAndPush(_ viewController: UIViewController) {
-        if let doublePresentedVC = navigationControllerProvided?.presentedViewController?.presentedViewController {
-            doublePresentedVC.dismiss(animated: true) { [weak self] in
-                if let presentedVC = self?.navigationControllerProvided?.presentedViewController {
-                    presentedVC.dismiss(animated: true) { [weak self] in
-                        self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
-                    }
-                }
-            }
-        } else if let presentedVC = navigationControllerProvided?.presentedViewController {
-            presentedVC.dismiss(animated: true) { [weak self] in
-                self?.navigationControllerProvided?.pushViewController(viewController, animated: true)
-            }
-        } else {
-            navigationControllerProvided?.pushViewController(viewController, animated: true)
+        if viewController is PaymentInfoViewController {
+            let navigationController = UINavigationController(rootViewController: viewController)
+            navigationControllerProvided?.giniTopMostViewController().present(navigationController, animated: true)
+            return
         }
+        
+        func dismissAllAndPush(currentViewController: UIViewController? = nil) {
+            let localViewController = currentViewController ?? navigationControllerProvided
+            
+            if let presentedViewController = localViewController?.presentedViewController {
+                presentedViewController.dismiss(animated: true) {
+                    dismissAllAndPush(currentViewController: localViewController)
+                }
+            } else {
+                navigationControllerProvided?.pushViewController(viewController, animated: true)
+            }
+        }
+        
+        dismissAllAndPush()
     }
     
     /// Handles the action when the bank picker button is tapped on the payment component view, using the provided document ID.
@@ -708,8 +693,8 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             }
         }
         
-        if let presentedVC = navigationControllerProvided?.presentedViewController {
-            presentedVC.dismiss(animated: true, completion: presentOrPush)
+        if let presentedViewController = navigationControllerProvided?.presentedViewController {
+            presentedViewController.dismiss(animated: true, completion: presentOrPush)
         } else {
             presentOrPush()
         }

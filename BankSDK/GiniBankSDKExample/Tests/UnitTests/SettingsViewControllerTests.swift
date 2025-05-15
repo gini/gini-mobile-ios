@@ -508,6 +508,88 @@ extension SettingsViewModelTests {
 						  "cameraNavigationBarBottomAdapter should be enabled in the gini configuration")
 		}
 	}
+    
+    // MARK: - ErrorNavigationBarBottomAdapter
+    
+    func testErrorCustomNavigationBarBottomSwitchOff() {
+        guard let index = getSwitchOptionIndex(for: .errorNavigationBarBottomAdapter) else {
+            XCTFail("`errorNavigationBarBottomAdapter` option not found in sectionData")
+            return
+        }
+        
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .errorNavigationBarBottomAdapter else {
+                XCTFail("Expected type `errorNavigationBarBottomAdapter`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = false
+            configuration.errorNavigationBarBottomAdapter = nil
+            
+            XCTAssertFalse(configuration.errorNavigationBarBottomAdapter != nil,
+                           "errorNavigationBarBottomAdapter should not be enabled in the gini configuration")
+        }
+    }
+    
+    func testErrorCustomNavigationBarBottomSwitchOn() {
+        guard let index = getSwitchOptionIndex(for: .errorNavigationBarBottomAdapter) else {
+            XCTFail("`errorNavigationBarBottomAdapter` option not found in sectionData")
+            return
+        }
+        
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .errorNavigationBarBottomAdapter else {
+                XCTFail("Expected type `errorNavigationBarBottomAdapter`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = true
+            let customAdapter = CustomBottomNavigationBarAdapter()
+            configuration.errorNavigationBarBottomAdapter = customAdapter
+            
+            XCTAssertTrue(configuration.errorNavigationBarBottomAdapter != nil,
+                          "errorNavigationBarBottomAdapter should be enabled in the gini configuration")
+        }
+    }
+    
+    // MARK: - NoResultsNavigationBarBottomAdapter
+    
+    func testNoResultsCustomNavigationBarBottomSwitchOff() {
+        guard let index = getSwitchOptionIndex(for: .noResultsNavigationBarBottomAdapter) else {
+            XCTFail("`noResultsNavigationBarBottomAdapter` option not found in sectionData")
+            return
+        }
+        
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .noResultsNavigationBarBottomAdapter else {
+                XCTFail("Expected type `noResultsNavigationBarBottomAdapter`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = false
+            configuration.noResultsNavigationBarBottomAdapter = nil
+            
+            XCTAssertFalse(configuration.noResultsNavigationBarBottomAdapter != nil,
+                           "noResultsNavigationBarBottomAdapter should not be enabled in the gini configuration")
+        }
+    }
+    
+    func testNoResultsCustomNavigationBarBottomSwitchOn() {
+        guard let index = getSwitchOptionIndex(for: .noResultsNavigationBarBottomAdapter) else {
+            XCTFail("`noResultsNavigationBarBottomAdapter` option not found in sectionData")
+            return
+        }
+        
+        if case .switchOption(var data) = contentData[index.section].items[index.row] {
+            guard data.type == .noResultsNavigationBarBottomAdapter else {
+                XCTFail("Expected type `noResultsNavigationBarBottomAdapter`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = true
+            let customAdapter = CustomBottomNavigationBarAdapter()
+            configuration.noResultsNavigationBarBottomAdapter = customAdapter
+            
+            XCTAssertTrue(configuration.noResultsNavigationBarBottomAdapter != nil,
+                          "noResultsNavigationBarBottomAdapter should be enabled in the gini configuration")
+        }
+    }
 	
 	// MARK: - ReviewNavigationBarBottomAdapter
 	
