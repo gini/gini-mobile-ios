@@ -1,6 +1,7 @@
 name: Builds docs for Bank API Library
 
 on:
+  workflow_call:
   workflow_dispatch:
 
 concurrency:
