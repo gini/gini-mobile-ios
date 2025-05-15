@@ -371,7 +371,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         Task {
             if let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController {
                 await analysisVC.waitUntilAnimationCompleted()
-            } else if let qrCodeVC = screenAPINavigationController.children.last as? QRCodeEducationable,
+            } else if let qrCodeVC = screenAPINavigationController.children.last as? QRCodeEducationPresenting,
                       let task = qrCodeVC.educationTask {
                 _ = await task.value
             }
