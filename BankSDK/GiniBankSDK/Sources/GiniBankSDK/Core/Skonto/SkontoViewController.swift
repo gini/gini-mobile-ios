@@ -69,10 +69,7 @@ final class SkontoViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.contentInset = UIEdgeInsets(top: Constants.containerPadding,
-                                               left: Constants.scrollViewSideInset,
-                                               bottom: Constants.containerPadding,
-                                               right: Constants.scrollViewSideInset)
+        scrollView.contentInset = scrollViewContentInset
         return scrollView
     }()
 
@@ -84,6 +81,38 @@ final class SkontoViewController: UIViewController {
         return stackView
     }()
 
+    private lazy var mainStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .center // default `.fill` would try to force stackview above to stretch horizontally
+        stackView.spacing = Constants.containerPadding
+        return stackView
+    }()
+
+    private lazy var stackViewWidthConstraint = stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
+                                                                                 constant: contentStackViewWidth)
+    private lazy var proceedContainerConstraints = [
+        proceedContainerView.widthAnchor.constraint(equalTo: view.widthAnchor),
+        proceedContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        proceedContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        proceedContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+    ]
+    private lazy var scrollViewBottomToViewConstraint = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+    private lazy var scrollViewBottomToProceedViewTop = scrollView.bottomAnchor.constraint(equalTo: proceedContainerView.topAnchor)
+    private var contentStackViewWidth: CGFloat {
+        (-2 * Constants.containerPadding) - (view.safeAreaInsets.left + view.safeAreaInsets.right) - (2*Constants.scrollViewSideInset)
+    }
+    private var scrollViewLandscapeIphoneContentInsets: UIEdgeInsets {
+        UIEdgeInsets(top: Constants.containerPadding,
+                     left: 0,
+                     bottom: 0,
+                     right: 0)
+    }
+    private let scrollViewContentInset = UIEdgeInsets(top: Constants.containerPadding,
+                                                      left: 0,
+                                                      bottom: Constants.containerPadding,
+                                                      right: 0)
     private let viewModel: SkontoViewModel
     private let alertFactory: SkontoAlertFactory
     private let configuration = GiniBankConfiguration.shared
@@ -120,6 +149,48 @@ final class SkontoViewController: UIViewController {
         sendAnalyticsScreenShown()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        stackViewWidthConstraint.constant = contentStackViewWidth
+        if UIDevice.current.isIphone {
+            let isLandscape = view.currentInterfaceOrientation.isLandscape
+            scrollView.contentInset =
+                isLandscape
+                    ? scrollViewLandscapeIphoneContentInsets
+                    : scrollViewContentInset
+
+            scrollView.contentInsetAdjustmentBehavior =
+                isLandscape
+                    // we do not need safe area padding in landscape
+                    ? .never
+                    // for portait we don't care
+                    : .automatic
+
+            if isLandscape {
+                if proceedContainerView.superview != mainStackView {
+                    scrollViewBottomToProceedViewTop.isActive = false
+                    NSLayoutConstraint.deactivate(proceedContainerConstraints)
+                    proceedContainerView.removeFromSuperview()
+                    mainStackView.addArrangedSubview(proceedContainerView)
+                    scrollViewBottomToViewConstraint.isActive = true
+                    proceedContainerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+                    proceedContainerView.isHidden = false
+                    bottomNavigationBar?.isHidden = true
+                }
+            } else {
+                if proceedContainerView.superview == mainStackView {
+                    scrollViewBottomToViewConstraint.isActive = false
+                    proceedContainerView.removeFromSuperview()
+                    view.addSubview(proceedContainerView)
+                    scrollViewBottomToProceedViewTop.isActive = true
+                    setupProceedContainerViewConstraints()
+                    proceedContainerView.isHidden = configuration.bottomNavigationBarEnabled
+                    bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
+                }
+            }
+        }
+    }
+
     deinit {
         removeKeyboardObservers()
     }
@@ -143,7 +214,8 @@ final class SkontoViewController: UIViewController {
             navigationItem.hidesBackButton = true
         }
         view.addSubview(scrollView)
-        scrollView.addSubview(stackView)
+        scrollView.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(stackView)
         stackView.addArrangedSubview(documentPreviewView)
         stackView.addArrangedSubview(withDiscountContainerView)
         stackView.addArrangedSubview(withoutDiscountContainerView)
@@ -174,21 +246,19 @@ final class SkontoViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             scrollView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: multiplier),
-            scrollView.bottomAnchor.constraint(equalTo: proceedContainerView.topAnchor)
+            scrollViewBottomToProceedViewTop
         ])
     }
 
     private func setupStackViewConstraints() {
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
-                                               constant: Constants.containerPadding),
-            stackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
-                                                constant: -Constants.containerPadding),
-            stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
-                                             constant: -2 * Constants.containerPadding)
+            mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            mainStackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor),
+            mainStackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor),
+            mainStackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            stackViewWidthConstraint
         ])
     }
 
@@ -238,11 +308,7 @@ final class SkontoViewController: UIViewController {
     }
 
     private func setupProceedContainerViewConstraints() {
-        NSLayoutConstraint.activate([
-            proceedContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            proceedContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            proceedContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        NSLayoutConstraint.activate(proceedContainerConstraints)
     }
 
     private func setupBottomNavigationBar() {
