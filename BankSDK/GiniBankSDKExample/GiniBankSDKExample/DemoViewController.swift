@@ -160,7 +160,9 @@ final class DemoViewController: UIViewController {
                                   dark: giniCaptureColor("Light01")).uiColor()
         transactionListButton.setTitleColor(textColor, for: .normal)
         transactionListButton.accessibilityIdentifier = MainScreenAccessibilityIdentifiers.transactionListButton.rawValue
-        transactionListButton.addTarget(self, action: #selector(transactionListButtonTapped), for: .touchUpInside)
+        transactionListButton.addTarget(self,
+                                        action: #selector(transactionListButtonTapped),
+                                        for: .touchUpInside)
     }
 
     private func configureScreenDescriptionTitle() {
