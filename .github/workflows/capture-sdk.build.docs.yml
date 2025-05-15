@@ -1,6 +1,7 @@
 name: Builds docs for Capture SDK
 
 on:
+  workflow_call:
   workflow_dispatch:
 
 concurrency:
