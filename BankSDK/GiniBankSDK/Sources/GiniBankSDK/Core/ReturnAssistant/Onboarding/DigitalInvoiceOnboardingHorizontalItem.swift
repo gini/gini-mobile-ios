@@ -170,7 +170,7 @@ private extension DigitalInvoiceOnboardingHorizontalItem {
         static let paddingLarge: CGFloat = 56
     }
     
-    func shouldHideButton()->Bool{
+    func shouldHideButton()->Bool {
         if let _ = GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter {
             return true
         }
