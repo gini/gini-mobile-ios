@@ -334,8 +334,8 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
     private func sendAnalyticsEventSDKClose() {
         GiniAnalyticsManager.track(event: .sdkClosed,
-                                   properties: [GiniAnalyticsProperty(key: .status, 
-                                                                      value: "successful")])
+                                  properties: [GiniAnalyticsProperty(key: .status,
+                                                                     value: "successful")])
     }
 
     private func setDcoumentIdAsUserProperty() {

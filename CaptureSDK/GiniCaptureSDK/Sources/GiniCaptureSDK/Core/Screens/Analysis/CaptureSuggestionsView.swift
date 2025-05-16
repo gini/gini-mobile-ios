@@ -112,10 +112,18 @@ final class CaptureSuggestionsView: UIView {
                               attr: .width, multiplier: 0.7)
             Constraints.active(item: suggestionContainer, attr: .centerX, relatedBy: .equal, to: self, attr: .centerX)
         } else {
-            leadingiPhoneConstraint = Constraints.active(item: suggestionContainer, attr: .leading, relatedBy: .equal, to: self.safeAreaLayoutGuide, attr: .leading,
-                              constant: 20)
-            trailingiPhoneConstraint = Constraints.active(item: suggestionContainer, attr: .trailing, relatedBy: .equal, to: self.safeAreaLayoutGuide, attr: .trailing,
-                              constant: -20)
+            leadingiPhoneConstraint = Constraints.active(item: suggestionContainer,
+                                                         attr: .leading,
+                                                         relatedBy: .equal,
+                                                         to: self.safeAreaLayoutGuide,
+                                                         attr: .leading,
+                                                         constant: 20)
+            trailingiPhoneConstraint = Constraints.active(item: suggestionContainer,
+                                                          attr: .trailing,
+                                                          relatedBy: .equal,
+                                                          to: self.safeAreaLayoutGuide,
+                                                          attr: .trailing,
+                                                          constant: -20)
         }
     }
 }

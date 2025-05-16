@@ -52,10 +52,10 @@ final class DigitalInvoiceViewController: UIViewController {
         proceedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         proceedView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonContainerHeight),
         proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        tableView.bottomAnchor.constraint(equalTo: proceedView.topAnchor),
+        tableView.bottomAnchor.constraint(equalTo: proceedView.topAnchor)
     ]
     private lazy var proceedViewTableConstraints: [NSLayoutConstraint] = [
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ]
 
     init(viewModel: DigitalInvoiceViewModel) {
@@ -98,9 +98,14 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
-        ] + proceedViewConstraints)
+        let tableViewTopConstraint = tableView.topAnchor.constraint(equalTo: view.topAnchor,
+                                                                    constant: Constants.padding)
+        var constraints: [NSLayoutConstraint] = []
+
+        constraints.append(tableViewTopConstraint)
+        constraints.append(contentsOf: proceedViewConstraints)
+
+        NSLayoutConstraint.activate(constraints)
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
@@ -177,7 +182,10 @@ final class DigitalInvoiceViewController: UIViewController {
                     proceedView.removeFromSuperview()
 
                     // frame is mandatory for tableview footer view, since it doesn't use autolayout, which means we have to specify size
-                    let container = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: Constants.buttonContainerHeight + Constants.padding))
+                    let container = UIView(frame: CGRect(x: 0,
+                                                         y: 0,
+                                                         width: view.bounds.width,
+                                                         height: Constants.buttonContainerHeight + Constants.padding))
                     container.addSubview(proceedView)
                     NSLayoutConstraint.activate([
                         proceedView.leadingAnchor.constraint(equalTo: container.leadingAnchor),

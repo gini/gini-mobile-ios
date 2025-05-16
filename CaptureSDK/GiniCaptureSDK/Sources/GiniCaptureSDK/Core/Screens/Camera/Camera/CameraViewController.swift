@@ -215,7 +215,6 @@ final class CameraViewController: UIViewController {
                                                                           .builtInWideAngleCamera,
                                                                           .builtInTelephotoCamera],
                                                             mediaType: .video, position: .back)
-        
         var availableLenses: [CameraLensesAvailable] = []
 
         let rawDeviceTypes = discoverySession.devices.map { $0.deviceType.rawValue }
@@ -629,10 +628,10 @@ final class CameraViewController: UIViewController {
             self.qrCodeOverLay.isHidden = false
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.success2)
         }
-        
+
         // Voiceover announcement
         playVoiceOverMessage(success: true)
-        
+
         // this event is sent once per SDK session since the message can be displayed often in the same session
         GiniAnalyticsManager.track(event: .qr_code_scanned,
                                    screenName: .camera,
@@ -651,20 +650,20 @@ final class CameraViewController: UIViewController {
             self.qrCodeOverLay.isHidden = false
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.warning3)
         }
-        
+
         // Voiceover announcement
         playVoiceOverMessage(success: false)
-        
+
         sendGiniAnalyticsEventForInvalidQRCode()
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
     }
-    
+
     private func playVoiceOverMessage(success: Bool) {
         // Determine the appropriate message based on success
         let message = success
         ? NSLocalizedStringPreferredFormat("ginicapture.QRscanning.correct", comment: "QR Detected")
         : NSLocalizedStringPreferredFormat("ginicapture.QRscanning.incorrect.title", comment: "Unknown QR")
-        
+
         // Post the announcement for VoiceOver
         UIAccessibility.post(notification: .announcement, argument: message)
     }

@@ -196,9 +196,9 @@ final class CameraPreviewViewController: UIViewController {
                         cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
                                                                 multiplier: 1 / Constants.a4AspectRatio)
 
-    private lazy var cameraFrameViewBottomConstrant: NSLayoutConstraint = cameraFrameView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
-                                                                                                                  constant: -bottomControlHeight-Constants.padding)
-
+    private lazy var cameraFrameViewBottomConstrant =
+                        cameraFrameView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
+                                                                constant: -bottomControlHeight-Constants.padding)
 
     private func setupConstraints() {
         cameraFrameView.translatesAutoresizingMaskIntoConstraints = false
@@ -326,7 +326,7 @@ final class CameraPreviewViewController: UIViewController {
             }
             self.stopLoadingIndicator()
         }
-        
+
         camera.didDetectQR = { [weak self] qrDocument in
             guard let self = self else { return }
             self.delegate?.cameraPreview(self, didDetect: qrDocument)
@@ -335,7 +335,7 @@ final class CameraPreviewViewController: UIViewController {
             guard let self = self else { return }
             self.delegate?.cameraPreview(self, didDetectInvalid: qrDocument)
         }
-        
+
         camera.didDetectIBANs = { [weak self] ibans in
             guard let self = self else { return }
             self.delegate?.cameraPreview(self, didDetectIBANs: ibans)

@@ -57,7 +57,7 @@
                             <color key="backgroundColor" red="0.058291204270000001" green="0.61419159170000004" blue="0.86277651789999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="170" id="HtE-go-UrU"/>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="bUG-L5-vie"/>
+                                <constraint firstAttribute="height" constant="50" id="bUG-L5-vie"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -66,9 +66,6 @@
                             </state>
                         </button>
                     </subviews>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="wds-Th-9mI"/>
-                    </constraints>
                 </stackView>
                 <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fzW-pg-Fy6">
                     <rect key="frame" x="287" y="1008" width="170" height="0.0"/>
