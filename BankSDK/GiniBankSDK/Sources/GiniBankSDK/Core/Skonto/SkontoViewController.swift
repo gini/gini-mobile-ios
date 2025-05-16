@@ -99,10 +99,15 @@ final class SkontoViewController: UIViewController {
         proceedContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ]
     private lazy var scrollViewBottomToViewConstraint = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-    private lazy var scrollViewBottomToProceedViewTop = scrollView.bottomAnchor.constraint(equalTo: proceedContainerView.topAnchor)
+
+    private lazy var scrollViewBottomToProceedViewTop = scrollView.bottomAnchor
+        .constraint(equalTo: proceedContainerView.topAnchor)
     private var contentStackViewWidth: CGFloat {
-        (-2 * Constants.containerPadding) - (view.safeAreaInsets.left + view.safeAreaInsets.right) - (2*Constants.scrollViewSideInset)
+        let horizontalSafeAreaInsets = view.safeAreaInsets.left + view.safeAreaInsets.right
+        let totalPadding = 2 * Constants.containerPadding + 2 * Constants.scrollViewSideInset
+        return -totalPadding - horizontalSafeAreaInsets
     }
+
     private var scrollViewLandscapeIphoneContentInsets: UIEdgeInsets {
         UIEdgeInsets(top: Constants.containerPadding,
                      left: 0,
@@ -149,8 +154,15 @@ final class SkontoViewController: UIViewController {
         sendAnalyticsScreenShown()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.adjustLayoutForCurrentOrientation()
+        }, completion: nil)
+    }
+
+    func adjustLayoutForCurrentOrientation() {
         stackViewWidthConstraint.constant = contentStackViewWidth
         if UIDevice.current.isIphone {
             let isLandscape = view.currentInterfaceOrientation.isLandscape
@@ -464,7 +476,7 @@ extension SkontoViewController {
         let contentOffsetY = max(0, targetFrameInScrollView.maxY - scrollView.bounds.height + keyboardOffsetOverProceedView)
         UIView.animate(withDuration: animationDuration) {
             self.scrollView.contentInset.bottom = keyboardHeight
-            self.scrollView.scrollIndicatorInsets.bottom = keyboardHeight
+            self.scrollView.verticalScrollIndicatorInsets.bottom = keyboardHeight
             self.scrollView.setContentOffset(CGPoint(x: 0, y: contentOffsetY), animated: true)
         }
     }
@@ -477,7 +489,7 @@ extension SkontoViewController {
 
         UIView.animate(withDuration: animationDuration) {
             self.scrollView.contentInset.bottom = Constants.containerPadding
-            self.scrollView.scrollIndicatorInsets.bottom = Constants.scrollIndicatorInset
+            self.scrollView.verticalScrollIndicatorInsets.bottom = Constants.scrollIndicatorInset
         }
     }
 }
