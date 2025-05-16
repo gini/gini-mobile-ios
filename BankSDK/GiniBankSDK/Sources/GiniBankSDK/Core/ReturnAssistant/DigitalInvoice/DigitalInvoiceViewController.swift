@@ -98,9 +98,14 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding)
-        ] + proceedViewConstraints)
+        let tableViewTopConstraint = tableView.topAnchor.constraint(equalTo: view.topAnchor,
+                                                                    constant: Constants.padding)
+        var constraints: [NSLayoutConstraint] = []
+
+        constraints.append(tableViewTopConstraint)
+        constraints.append(contentsOf: proceedViewConstraints)
+
+        NSLayoutConstraint.activate(constraints)
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
