@@ -39,6 +39,6 @@ final class DefaultSkontoHelpNavigationBottomBar: UIView {
 
 private extension DefaultSkontoHelpNavigationBottomBar {
     enum Constants {
-        static let horizontalPadding: CGFloat = 8
+        static let horizontalPadding: CGFloat = 16
     }
 }
