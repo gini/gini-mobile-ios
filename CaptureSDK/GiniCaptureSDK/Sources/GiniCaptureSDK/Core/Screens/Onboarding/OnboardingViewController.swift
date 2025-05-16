@@ -80,14 +80,14 @@ class OnboardingViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         if configuration.bottomNavigationBarEnabled {
             bottomPaddingPageIndicatorConstraint.constant = getBottomPaddingForPageController()
         }
         if UIDevice.current.isIphone {
             if view.currentInterfaceOrientation.isLandscape {
                 navigationBarHeightConstraint.constant = getBottomBarHeight()
-                
+
                 if configuration.onboardingNavigationBarBottomAdapter != nil {
                     bottomNavigationBar?.isHidden = false
                     nextButton?.isHidden = true
@@ -98,7 +98,7 @@ class OnboardingViewController: UIViewController {
                     skipBottomBarButton?.isHidden = !configuration.bottomNavigationBarEnabled
                         || pageControl.currentPage == dataSource.pageModels.count - 1
                 }
-                
+
                 let safeareaLeftPadding = view.safeAreaInsets.left
                 let safeareaRightPadding = view.safeAreaInsets.right
 
@@ -138,7 +138,7 @@ class OnboardingViewController: UIViewController {
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        
+
         bottomPaddingPageIndicatorConstraint = navigationBar.topAnchor.constraint(
             equalTo: pageControl.bottomAnchor,
             constant: getBottomPaddingForPageController()
@@ -231,9 +231,8 @@ class OnboardingViewController: UIViewController {
                                                                comment: "Next button")
         nextButton.accessibilityValue = nextButtonTitle
         nextButton.setTitle(nextButtonTitle, for: .normal)
-        
     }
-    
+
     @objc private func skipTapped() {
         // Handle the skip button tap if there are more onboarding pages.
         // The skip button is not present on the last onboarding page.
@@ -355,10 +354,10 @@ extension OnboardingViewController: OnboardingScreen {
             if configuration.bottomNavigationBarEnabled,
                 let bottomNavigationBar = bottomNavigationBar,
                configuration.onboardingNavigationBarBottomAdapter == nil {
-                
                 navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next],
                                                         navigationBar: bottomNavigationBar)
-                skipBottomBarButton.isHidden = !(UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape)
+                skipBottomBarButton.isHidden = !(UIDevice.current.isIphone &&
+                                                 view.currentInterfaceOrientation.isLandscape)
                 if nextButton != nil {
                     configureNextButton()
                 }
@@ -386,21 +385,21 @@ private extension OnboardingViewController {
         static let bottomBarHeightPortrait: CGFloat = 110
         static let bottomBarHeightLandscape: CGFloat = 64
     }
-    
+
     func getBottomPaddingForPageController() -> CGFloat {
         if isiPhoneAndLandscape() {
             return Constants.pageControlBottomBarPaddingLandscape
         }
         return Constants.pageControlBottomBarPadding
     }
-    
+
     func getBottomBarHeight() -> CGFloat {
         if isiPhoneAndLandscape() {
             return Constants.bottomBarHeightLandscape
         }
         return Constants.bottomBarHeightPortrait
     }
-    
+
     func isiPhoneAndLandscape() -> Bool {
         return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
     }
