@@ -146,7 +146,7 @@ public final class ReviewViewController: UIViewController {
                                                               dark: UIColor.GiniCapture.light1).uiColor()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.isAccessibilityElement = true
-        pageControl.addTarget(self, action: #selector(pageControlTapHandler(sender:)), for: .touchUpInside)
+        pageControl.addTarget(self, action: #selector(pageControlSelectionAction(_:)), for: .valueChanged)
 
         return pageControl
     }()
@@ -609,15 +609,13 @@ extension ReviewViewController {
 
         collectionView.scrollToItem(at: indexPath, at: scrollPosition, animated: true)
     }
-
+    
     @objc
-    private func pageControlTapHandler(sender: UIPageControl) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: { [weak self] in
-            guard let self = self else { return }
-            self.setCellStatus(for: self.currentPage, isActive: false)
-            self.currentPage = sender.currentPage
-            self.scrollToItem(at: IndexPath(row: sender.currentPage, section: 0))
-        })
+    private func pageControlSelectionAction(_ sender: UIPageControl) {
+        let index = IndexPath(item: sender.currentPage, section: 0)
+        setCellStatus(for: currentPage, isActive: false)
+        currentPage = sender.currentPage
+        scrollToItem(at: index)
     }
 
     @objc
