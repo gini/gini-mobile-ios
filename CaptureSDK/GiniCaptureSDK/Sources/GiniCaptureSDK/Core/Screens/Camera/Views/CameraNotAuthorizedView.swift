@@ -165,8 +165,6 @@ final class CameraNotAuthorizedView: UIView {
             button.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.padding),
             button.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)])
     }
-    
-    
 }
 
 extension CameraNotAuthorizedView {
