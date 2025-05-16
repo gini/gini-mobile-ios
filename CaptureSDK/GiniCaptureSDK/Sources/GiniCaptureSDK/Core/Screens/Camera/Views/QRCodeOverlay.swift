@@ -107,6 +107,7 @@ final class QRCodeOverlay: UIView {
     private var customLoadingView: QREducationLoadingView?
     private let useCustomLoadingView: Bool = true
     private var educationTask: Task<Void, Never>?
+    private var educationFlowController: EducationFlowController?
 
     /**
      The currently running education flow task, if any.
@@ -186,8 +187,11 @@ final class QRCodeOverlay: UIView {
     }
 
     private func addLoadingView() {
-        let shouldDisplayEducation = configuration.qrCodeScanningEnabled && !configuration.onlyQRCodeScanningEnabled
+        let shouldDisplayEducation = configuration.qrCodeScanningEnabled &&
+                                     !configuration.onlyQRCodeScanningEnabled &&
+                                     configuration.fileImportSupportedTypes != .none
         let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: shouldDisplayEducation)
+        educationFlowController = controller
 
         let nextState = controller.nextState()
         switch nextState {
@@ -315,8 +319,9 @@ final class QRCodeOverlay: UIView {
         checkMarkImageView.isHidden = true
 
         if let educationViewModel {
-            educationTask = Task {
+            educationTask = Task { [weak self] in
                 await educationViewModel.start()
+                self?.educationFlowController?.markMessageAsShown()
             }
             customLoadingView?.isHidden = false
         } else {
