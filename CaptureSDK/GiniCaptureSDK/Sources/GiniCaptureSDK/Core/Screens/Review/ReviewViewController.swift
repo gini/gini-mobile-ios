@@ -236,7 +236,7 @@ public final class ReviewViewController: UIViewController {
 
     private lazy var tipLabelConstraints: [NSLayoutConstraint] = [
         tipLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-        tipLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        tipLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: Constants.tipLabelPadding),
         tipLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
     ]
 
@@ -793,6 +793,7 @@ extension ReviewViewController: ReviewCollectionViewDelegate {
 extension ReviewViewController {
     private enum Constants {
         static let padding: CGFloat = 16
+        static let tipLabelPadding: CGFloat = 8
         static let largePadding: CGFloat = 32
         static let bottomPadding: CGFloat = 50
         static let pageControlBottomPadding: CGFloat = 130
@@ -800,7 +801,7 @@ extension ReviewViewController {
         static let titleHeight: CGFloat = 18
         static let maxTitleHeight: CGFloat = 100
         static let bottomNavigationBarHeight: CGFloat = 114
-        static let trailingCollectionPadding: CGFloat = 275
+        static let trailingCollectionPadding: CGFloat = UIScreen.main.bounds.size.width * 0.7
         static let buttonContainerHorizontalTrailingPadding: CGFloat = 85
     }
 }
