@@ -178,7 +178,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
                 navigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
 
-
                 NSLayoutConstraint.activate([
                     navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                     navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
