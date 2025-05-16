@@ -289,7 +289,7 @@ extension DigitalInvoiceSkontoViewController: SkontoDocumentPreviewViewDelegate 
 
 extension DigitalInvoiceSkontoViewController: SkontoExpiryDateViewDelegate {
     func expiryDateTextFieldTapped() {
-        GiniAnalyticsManager.track(event: .dueDateTapped, 
+        GiniAnalyticsManager.track(event: .dueDateTapped,
                                    screenName: .returnAssistantSkonto)
     }
 }

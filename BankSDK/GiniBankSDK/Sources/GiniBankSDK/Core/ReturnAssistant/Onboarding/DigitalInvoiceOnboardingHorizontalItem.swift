@@ -17,7 +17,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         let stack = UIStackView(
             arrangedSubviews: [
                 firstLabel,
-                secondLabel,
+                secondLabel
             ]
         )
         stack.spacing = 12
@@ -30,7 +30,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         let stack = UIStackView(
             arrangedSubviews: [
                 infoStackView,
-                doneButton,
+                doneButton
             ]
         )
         stack.spacing = 40
@@ -59,9 +59,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
             rightStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             rightStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
             rightStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-
-            rightStackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
-            
+            rightStackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
         ])
 
         return scrollView
@@ -77,13 +75,15 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
     }
 
     private var secondLabelText: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text2",
-                                                        comment: "second label title for digital invoice onboarding screen")
+        let key = "ginibank.digitalinvoice.onboarding.text2"
+        let comment = "second label title for digital invoice onboarding screen"
+        return NSLocalizedStringPreferredGiniBankFormat(key, comment: comment)
     }
 
     private var doneButtonTitle: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.getStartedButton",
-                                                        comment: "get started button title for digital invoice onboarding screen")
+        let key = "ginibank.digitalinvoice.onboarding.getStartedButton"
+        let comment = "get started button title for digital invoice onboarding screen"
+        return NSLocalizedStringPreferredGiniBankFormat(key, comment: comment)
     }
 
     init(with configuration: GiniBankConfiguration, frame: CGRect = .zero, onDone: @escaping () -> Void) {
@@ -144,18 +144,19 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         addSubview(topImageView)
         addSubview(rightStackViewContainerScrollable)
 
-
         topImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             topImageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.paddingLarge),
             topImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.paddingLarge),
-            topImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.paddingLarge),
+            topImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
+                                                  constant: Constants.paddingLarge),
             topImageView.widthAnchor.constraint(equalToConstant: 220),
-            
+
             // Constraints for the scroll view itself
             rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
             rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
-            rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: topImageView.trailingAnchor,constant: 10),
+            rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: topImageView.trailingAnchor,
+                                                                       constant: 10),
             rightStackViewContainerScrollable.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
     }
@@ -169,8 +170,8 @@ private extension DigitalInvoiceOnboardingHorizontalItem {
     enum Constants {
         static let paddingLarge: CGFloat = 56
     }
-    
-    func shouldHideButton()->Bool {
+
+    func shouldHideButton() -> Bool {
         if let _ = GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter {
             return true
         }
