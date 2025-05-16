@@ -217,6 +217,7 @@
 "ginicapture.QRscanning.incorrect.title" = "Unbekannter QR-Code";
 "ginicapture.QRscanning.incorrect.description" = "Dieser Code enthält keine Zahlungsinformationen. Bitte anderen QR-Code oder Rechnung abfotografieren.";
 "ginicapture.QRscanning.loading" = "Rechnung wird übermittelt";
+"ginicapture.QRscanning.education.camera" = "Fotografieren Sie direkt ein Zahlungsformular oder eine Rechnung - auch ohne QR-Code";
 
 "ginicapture.ibandetection.multipleibansdetected" = "IBAN erkannt";
 "ginicapture.ibandetection.takephoto" = "Machen Sie ein Foto";

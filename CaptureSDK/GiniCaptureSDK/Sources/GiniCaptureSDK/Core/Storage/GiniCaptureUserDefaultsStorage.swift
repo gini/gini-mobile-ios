@@ -23,4 +23,9 @@ public struct GiniCaptureUserDefaultsStorage {
     @GiniCaptureUserDefault("ginicapture.defaults.captureInvoice.educationMessageDisplayCount",
                             defaultValue: 0)
     static var captureInvoiceEducationMessageDisplayCount: Int
+    
+    // Counts how many times the education message was shown in the QR code flow
+    @GiniCaptureUserDefault("ginicapture.defaults.qrCode.educationMessageDisplayCount",
+                            defaultValue: 0)
+    static var qrCodeEducationMessageDisplayCount: Int
 }
