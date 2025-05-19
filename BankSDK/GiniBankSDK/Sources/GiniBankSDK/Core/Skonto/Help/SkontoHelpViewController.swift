@@ -53,7 +53,8 @@ final class SkontoHelpViewController: UIViewController {
         return view
     }()
 
-    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide
+                                                                                            .bottomAnchor)
     private var navigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter?
     private var navigationBarHeightConstraint: NSLayoutConstraint?
 
@@ -68,11 +69,6 @@ final class SkontoHelpViewController: UIViewController {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        navigationBarHeightConstraint?.constant = view.currentInterfaceOrientation.isLandscape && UIDevice.current.isIphone ? Constants.navigationBarHeightLandscape : Constants.navigationBarHeightPortrait
     }
 
     private func setupViews() {
@@ -139,22 +135,50 @@ final class SkontoHelpViewController: UIViewController {
         }
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: nil) { [weak self] _ in
+            guard let self = self,
+                  let heightConstraint = self.navigationBarHeightConstraint else { return }
+
+            let newHeight = self.calculatedNavigationBarHeight(for: UIDevice.current.orientation)
+            heightConstraint.constant = newHeight
+            self.view.layoutIfNeeded()
+        }
+    }
+
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
-        navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(navigationBar)
-        navigationBarHeightConstraint = navigationBar.heightAnchor.constraint(
-            equalToConstant: view.currentInterfaceOrientation.isLandscape ? Constants.navigationBarHeightLandscape : Constants.navigationBarHeightPortrait
-        )
+        let navigationBarHeight = calculatedNavigationBarHeight(for: UIDevice.current.orientation)
 
         scrollViewBottomConstraint.isActive = false
+
+        let heightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: navigationBarHeight)
+        navigationBarHeightConstraint = heightConstraint
+
         NSLayoutConstraint.activate([
             scrollView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            heightConstraint
         ])
+
         view.bringSubviewToFront(navigationBar)
-        view.layoutSubviews()
+    }
+
+    private func calculatedNavigationBarHeight(for orientation: UIDeviceOrientation) -> CGFloat {
+        let isLandscape = orientation.isLandscape
+
+        let baseHeight: CGFloat
+        if isLandscape {
+            baseHeight = Constants.navigationBarHeightLandscape
+        } else {
+            baseHeight = Constants.navigationBarHeightPortrait
+        }
+
+        let safeAreaBottomInset = isLandscape ? view.safeAreaInsets.bottom : 0
+        return baseHeight + safeAreaBottomInset
     }
 
     @objc private func dismissViewController() {

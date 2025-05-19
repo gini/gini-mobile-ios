@@ -24,7 +24,7 @@ class TransactionDocsActionsBottomSheet {
             popoverController.permittedArrowDirections = []
         }
 
-        let deleteAction = UIAlertAction(title: Constants.deleteTitle, 
+        let deleteAction = UIAlertAction(title: Constants.deleteTitle,
                                          style: .destructive) { _ in
             deleteHandler()
         }

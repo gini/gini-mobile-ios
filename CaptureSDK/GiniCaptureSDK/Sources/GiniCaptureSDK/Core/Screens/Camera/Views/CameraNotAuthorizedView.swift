@@ -75,7 +75,6 @@ final class CameraNotAuthorizedView: UIView {
         backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
 
         // Configure view hierachy
-        
         contentView.addSubview(containerView)
         scrollView.addSubview(contentView)
         addSubview(scrollView)
@@ -90,9 +89,6 @@ final class CameraNotAuthorizedView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-//        let isLandscape = currentInterfaceOrientation.isLandscape
-//        descriptionWidthConstraint?.isActive = !isLandscape
-//        descriptionWidthLandscapeConstraint?.isActive = isLandscape
     }
 
     /**
@@ -122,28 +118,29 @@ final class CameraNotAuthorizedView: UIView {
 
         descriptionWidthConstraint = descriptionLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor,
                                                                              multiplier: Constants.widthCoefficient)
-        
+
         NSLayoutConstraint.activate([
-            
             scrollView.topAnchor.constraint(equalTo: topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -Constants.padding),
-            
+
             contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
             contentView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor,multiplier: 0.7),
-            
+            contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor,
+                                                multiplier: 0.7),
+
             containerView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor),
             containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
-            containerView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -Constants.padding),
+            containerView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+                                                    constant: -Constants.padding),
             containerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            
+
             // Image view
             imageView.topAnchor.constraint(equalTo: containerView.topAnchor),
             imageView.widthAnchor.constraint(equalToConstant: Constants.imageSize.width),
@@ -159,7 +156,7 @@ final class CameraNotAuthorizedView: UIView {
             descriptionLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             descriptionWidthConstraint!,
             descriptionLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            
+
             // button
             button.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                            constant: -Constants.padding * 2),
@@ -168,8 +165,6 @@ final class CameraNotAuthorizedView: UIView {
             button.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.padding),
             button.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)])
     }
-    
-    
 }
 
 extension CameraNotAuthorizedView {

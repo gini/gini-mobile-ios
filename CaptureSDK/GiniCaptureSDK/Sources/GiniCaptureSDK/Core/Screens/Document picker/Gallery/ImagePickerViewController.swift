@@ -88,10 +88,14 @@ final class ImagePickerViewController: UIViewController {
         scrollToBottom()
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(collectionView.reloadData),
+            selector: #selector(reloadDataOnOrientationChange),
             name: UIDevice.orientationDidChangeNotification,
             object: nil
         )
+    }
+    
+    @objc func reloadDataOnOrientationChange() {
+        collectionView.reloadData()
     }
 
     override func viewDidLayoutSubviews() {
