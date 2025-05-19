@@ -29,13 +29,7 @@ enum EducationFlowContent {
 
         switch self {
         case .qrCode(let index):
-            switch index {
-            case 0:
-                return [intro, camera]
-            default:
-                return [intro, photo]
-            }
-
+            return index == 0 ? [intro, camera] : [intro, photo]
         case .captureInvoice:
             return [intro, photo]
         }
