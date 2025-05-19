@@ -33,7 +33,8 @@ final class DefaultSkontoHelpNavigationBottomBar: UIView {
             backButton.buttonView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
             backButton.buttonView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-        backgroundColor = GiniColor(light: UIColor.GiniBank.light1, dark: UIColor.GiniBank.dark1).uiColor()
+        backgroundColor = GiniColor(light: UIColor.GiniBank.light1,
+                                    dark: UIColor.GiniBank.dark1).uiColor()
     }
 }
 

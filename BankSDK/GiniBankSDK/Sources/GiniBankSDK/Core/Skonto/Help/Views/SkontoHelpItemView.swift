@@ -55,7 +55,7 @@ final class SkontoHelpItemView: UIView {
         isAccessibilityElement = true
         accessibilityLabel = text
     }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             iconImageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor,
