@@ -43,9 +43,12 @@ final class QREducationLoadingView: UIView {
         return label
     }()
 
-    init(viewModel: QREducationLoadingViewModel) {
+    init(viewModel: QREducationLoadingViewModel, forceDarkMode: Bool = false) {
         self.viewModel = viewModel
         super.init(frame: .zero)
+        if forceDarkMode {
+            self.overrideUserInterfaceStyle = .dark
+        }
         setupViews()
         bind()
     }
