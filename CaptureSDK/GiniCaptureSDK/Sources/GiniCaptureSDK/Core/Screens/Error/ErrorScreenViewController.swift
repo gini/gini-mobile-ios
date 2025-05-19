@@ -54,6 +54,7 @@ class ErrorScreenViewController: UIViewController {
     private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var buttonsBottomConstraint: NSLayoutConstraint?
+    private var navigationBarHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
     private var numberOfButtons: Int {
         return [
             viewModel.isEnterManuallyHidden(),
@@ -90,6 +91,11 @@ class ErrorScreenViewController: UIViewController {
         setupView()
 
         sendAnalyticsScreenShown()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        navigationBarHeightConstraint.constant = getBottomBarHeight()
     }
 
     private func sendAnalyticsScreenShown() {
@@ -187,13 +193,16 @@ class ErrorScreenViewController: UIViewController {
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         buttonsBottomConstraint?.isActive = false
 
+        let heightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
+        navigationBarHeightConstraint = heightConstraint
+
         NSLayoutConstraint.activate([
             buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
                                                 constant: -GiniMargins.margin),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
+            navigationBarHeightConstraint
         ])
 
         view.bringSubviewToFront(navigationBar)
@@ -323,8 +332,10 @@ class ErrorScreenViewController: UIViewController {
             errorContent.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor)
         ])
     }
+}
 
-    private enum Constants {
+private extension ErrorScreenViewController {
+    enum Constants {
         static let singleButtonHeight: CGFloat = 50
         static let twoButtonsHeight: CGFloat = 112
         static let textContentMargin: CGFloat = 24
@@ -334,6 +345,18 @@ class ErrorScreenViewController: UIViewController {
         static let sidePadding: CGFloat = 24
         static let iPadWidthMultiplier: CGFloat = 0.7
         static let iPadButtonsWidth: CGFloat = 280
-        static let navigationBarHeight: CGFloat = 114
+        static let navigationBarHeight: CGFloat = 110
+        static let navigationBarHeightLandscape: CGFloat = 64
+    }
+
+    func getBottomBarHeight() -> CGFloat {
+        if isiPhoneAndLandscape() {
+            return Constants.navigationBarHeightLandscape
+        }
+        return Constants.navigationBarHeight
+    }
+
+    func isiPhoneAndLandscape() -> Bool {
+        return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
     }
 }
