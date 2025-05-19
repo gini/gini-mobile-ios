@@ -31,16 +31,15 @@ final class QREducationLoadingView: UIView {
         return label
     }()
 
-    private lazy var analysingLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = giniConfiguration.textStyleFonts[.body]
-        label.textColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.dark7).uiColor()
-        label.adjustsFontForContentSizeCategory = true
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.isAccessibilityElement = true
-        return label
+    private lazy var dotLoadingView: DotLoadingView = {
+        let view = DotLoadingView(
+            baseText: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
+                                                       comment: "analyzing"),
+            font: giniConfiguration.textStyleFonts[.body] ?? .systemFont(ofSize: 17),
+            textColor: GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.dark7).uiColor()
+        )
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     init(viewModel: QREducationLoadingViewModel) {
@@ -54,10 +53,15 @@ final class QREducationLoadingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func removeFromSuperview() {
+        super.removeFromSuperview()
+        dotLoadingView.stopAnimating()
+    }
+
     private func setupViews() {
         addSubview(imageView)
         addSubview(textLabel)
-        addSubview(analysingLabel)
+        addSubview(dotLoadingView)
 
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
@@ -68,14 +72,14 @@ final class QREducationLoadingView: UIView {
             textLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             textLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            analysingLabel.topAnchor.constraint(greaterThanOrEqualTo: imageView.bottomAnchor,
+            dotLoadingView.topAnchor.constraint(greaterThanOrEqualTo: imageView.bottomAnchor,
                                                 constant: Constants.imageToAnalysingSpacing),
-            analysingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            analysingLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            dotLoadingView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            dotLoadingView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            analysingLabel.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
+            dotLoadingView.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
                                                 constant: Constants.minTextToAnalysingSpacing),
-            analysingLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            dotLoadingView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
@@ -92,10 +96,7 @@ final class QREducationLoadingView: UIView {
         imageView.image = model.image
         textLabel.text = model.text
         textLabel.accessibilityLabel = model.text
-        let analysingText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
-                                                             comment: "analyzing")
-        analysingLabel.text = analysingText
-        analysingLabel.accessibilityLabel = analysingText
+        dotLoadingView.startAnimating()
     }
 }
 
