@@ -102,6 +102,7 @@ final class SkontoViewController: UIViewController {
 
     private lazy var scrollViewBottomToProceedViewTop = scrollView.bottomAnchor
         .constraint(equalTo: proceedContainerView.topAnchor)
+
     private var contentStackViewWidth: CGFloat {
         let horizontalSafeAreaInsets = view.safeAreaInsets.left + view.safeAreaInsets.right
         let totalPadding = 2 * Constants.containerPadding + 2 * Constants.scrollViewSideInset
@@ -162,45 +163,76 @@ final class SkontoViewController: UIViewController {
         }, completion: nil)
     }
 
-    func adjustLayoutForCurrentOrientation() {
+    private func adjustLayoutForCurrentOrientation() {
         stackViewWidthConstraint.constant = contentStackViewWidth
-        if UIDevice.current.isIphone {
-            let isLandscape = view.currentInterfaceOrientation.isLandscape
-            scrollView.contentInset =
-                isLandscape
-                    ? scrollViewLandscapeIphoneContentInsets
-                    : scrollViewContentInset
 
-            scrollView.contentInsetAdjustmentBehavior =
-                isLandscape
-                    // we do not need safe area padding in landscape
-                    ? .never
-                    // for portait we don't care
-                    : .automatic
+        guard UIDevice.current.isIphone else { return }
 
-            if isLandscape {
-                if proceedContainerView.superview != mainStackView {
-                    scrollViewBottomToProceedViewTop.isActive = false
-                    NSLayoutConstraint.deactivate(proceedContainerConstraints)
-                    proceedContainerView.removeFromSuperview()
-                    mainStackView.addArrangedSubview(proceedContainerView)
-                    scrollViewBottomToViewConstraint.isActive = true
-                    proceedContainerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-                    proceedContainerView.isHidden = false
-                    bottomNavigationBar?.isHidden = true
-                }
-            } else {
-                if proceedContainerView.superview == mainStackView {
-                    scrollViewBottomToViewConstraint.isActive = false
-                    proceedContainerView.removeFromSuperview()
-                    view.addSubview(proceedContainerView)
-                    scrollViewBottomToProceedViewTop.isActive = true
-                    setupProceedContainerViewConstraints()
-                    proceedContainerView.isHidden = configuration.bottomNavigationBarEnabled
-                    bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
-                }
-            }
+        let isLandscape = view.currentInterfaceOrientation.isLandscape
+
+        // Update scroll view insets based on orientation
+        scrollView.contentInset = isLandscape ? scrollViewLandscapeIphoneContentInsets : scrollViewContentInset
+        scrollView.contentInsetAdjustmentBehavior = isLandscape ? .never : .automatic
+
+        if isLandscape {
+            moveProceedContainerAndBottomBarToMainStack()
+        } else {
+            restoreProceedContainerAndBottomBarToRootView()
         }
+    }
+
+    private func restoreProceedContainerAndBottomBarToRootView() {
+        // Remove from main stack if present
+        if proceedContainerView.superview == mainStackView {
+            proceedContainerView.removeFromSuperview()
+            bottomNavigationBar?.removeFromSuperview()
+            scrollViewBottomToViewConstraint.isActive = false
+        }
+
+        // Re-add bottomNavigationBar directly to view if enabled
+        if configuration.bottomNavigationBarEnabled, let navigationBar = bottomNavigationBar {
+            view.addSubview(navigationBar)
+
+            NSLayoutConstraint.activate([
+                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+
+            navigationBar.isHidden = false
+        } else {
+            // Re-add proceedContainerView to main view with original constraints
+            view.addSubview(proceedContainerView)
+            proceedContainerView.translatesAutoresizingMaskIntoConstraints = false
+            scrollViewBottomToProceedViewTop.isActive = true
+            setupProceedContainerViewConstraints()
+
+            proceedContainerView.isHidden = configuration.bottomNavigationBarEnabled
+            bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
+        }
+    }
+
+    private func moveProceedContainerAndBottomBarToMainStack() {
+        // Remove from original parent
+        scrollViewBottomToProceedViewTop.isActive = false
+        NSLayoutConstraint.deactivate(proceedContainerConstraints)
+        proceedContainerView.removeFromSuperview()
+        bottomNavigationBar?.removeFromSuperview()
+
+        if let navigationBar = bottomNavigationBar {
+            mainStackView.addArrangedSubview(navigationBar)
+            navigationBar.translatesAutoresizingMaskIntoConstraints = false
+            navigationBar.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+            navigationBar.isHidden = false
+        } else {
+            // Add proceedContainerView to main stack
+            mainStackView.addArrangedSubview(proceedContainerView)
+            proceedContainerView.translatesAutoresizingMaskIntoConstraints = false
+            proceedContainerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+            proceedContainerView.isHidden = false
+        }
+
+        scrollViewBottomToViewConstraint.isActive = true
     }
 
     deinit {
@@ -469,16 +501,23 @@ extension SkontoViewController {
         }
 
         let targetView = viewModel.isSkontoApplied ? withDiscountContainerView : withoutDiscountContainerView
-        let targetFrameInScrollView = scrollView.convert(targetView.frame, from: targetView.superview)
         let keyboardHeight = keyboardFrame.height
-        let scrollViewBottomMarginDifference = (scrollView.superview?.bounds.height ?? 0) - scrollView.frame.maxY
-        let keyboardOffsetOverProceedView = keyboardHeight + Constants.containerPadding - scrollViewBottomMarginDifference
-        let contentOffsetY = max(0, targetFrameInScrollView.maxY - scrollView.bounds.height + keyboardOffsetOverProceedView)
+
+        let keyboardOffset = calculateKeyboardOffset(for: targetView, keyboardHeight: keyboardFrame.height)
+
         UIView.animate(withDuration: animationDuration) {
             self.scrollView.contentInset.bottom = keyboardHeight
             self.scrollView.verticalScrollIndicatorInsets.bottom = keyboardHeight
-            self.scrollView.setContentOffset(CGPoint(x: 0, y: contentOffsetY), animated: true)
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: keyboardOffset), animated: true)
         }
+    }
+
+    private func calculateKeyboardOffset(for targetView: UIView, keyboardHeight: CGFloat) -> CGFloat {
+        let targetFrameInScrollView = scrollView.convert(targetView.frame, from: targetView.superview)
+        let scrollViewBottomMarginDifference = (scrollView.superview?.bounds.height ?? 0) - scrollView.frame.maxY
+        let keyboardTotalHeight = keyboardHeight + Constants.containerPadding
+        let keyboardOffsetOverProceedView = keyboardTotalHeight - scrollViewBottomMarginDifference
+        return max(0, targetFrameInScrollView.maxY - scrollView.bounds.height + keyboardOffsetOverProceedView)
     }
 
     @objc private func keyboardWillHide(notification: NSNotification) {
