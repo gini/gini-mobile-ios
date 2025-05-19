@@ -176,28 +176,55 @@ final class DefaultSkontoBottomNavigationBar: UIView {
     private func setupConstraints() {
         let multiplier: CGFloat = UIDevice.current.isIpad ? Constants.tabletWidthMultiplier : 1.0
 
+        setupContentViewConstraints(multiplier: multiplier)
+        setupDividerViewConstraints()
+        setupTotalAmountSectionConstraints()
+        setupSkontoBadgeConstraints()
+        setupSavingsAmountConstraints()
+        setupNavigationButtonsConstraints()
+        setupProceedButtonConstraints()
+    }
+
+    private func setupContentViewConstraints(multiplier: CGFloat) {
         NSLayoutConstraint.activate([
             contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
             contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: multiplier),
-            contentView.topAnchor.constraint(equalTo: topAnchor),
+            contentView.topAnchor.constraint(equalTo: topAnchor)
+        ])
+    }
 
+    private func setupDividerViewConstraints() {
+        NSLayoutConstraint.activate([
             dividerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             dividerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
+            dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight)
+        ])
+    }
 
+    private func setupTotalAmountSectionConstraints() {
+        NSLayoutConstraint.activate([
             totalAmountStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-            totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
+            totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                          constant: Constants.padding),
             totalAmountStackView.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
-                                                           constant: -Constants.badgeHorizontalPadding),
+                                                           constant: -Constants.badgeHorizontalPadding)
+        ])
+    }
 
+    private func setupSavingsAmountConstraints() {
+        NSLayoutConstraint.activate([
             savingsAmountLabel.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor,
-                                                  constant: Constants.savingsAmountLabelTopPadding),
+                                                    constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: totalValueLabel.leadingAnchor),
             savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
                                                          constant: -Constants.padding),
-            savingsAmountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            savingsAmountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+    }
 
+    private func setupSkontoBadgeConstraints() {
+        NSLayoutConstraint.activate([
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
             skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                       constant: -Constants.padding),
@@ -209,16 +236,24 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             skontoBadgeLabel.leadingAnchor.constraint(equalTo: skontoBadgeView.leadingAnchor,
                                                       constant: Constants.badgeHorizontalPadding),
             skontoBadgeLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
-                                                       constant: -Constants.badgeHorizontalPadding),
+                                                       constant: -Constants.badgeHorizontalPadding)
+        ])
+    }
 
+    private func setupNavigationButtonsConstraints() {
+        NSLayoutConstraint.activate([
             backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor,
                                                            constant: Constants.padding),
             backButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
 
             helpButton.buttonView.trailingAnchor.constraint(equalTo: trailingAnchor,
-                                                           constant: -Constants.padding),
-            helpButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor),
+                                                            constant: -Constants.padding),
+            helpButton.buttonView.centerYAnchor.constraint(equalTo: proceedButton.centerYAnchor)
+        ])
+    }
 
+    private func setupProceedButtonConstraints() {
+        NSLayoutConstraint.activate([
             proceedButton.topAnchor.constraint(equalTo: contentView.bottomAnchor,
                                                constant: Constants.proceedButtonTopPadding),
             proceedButton.leadingAnchor.constraint(equalTo: backButton.buttonView.trailingAnchor),
@@ -230,7 +265,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
             proceedButton.heightAnchor.constraint(equalToConstant: Constants.proceedButtonHeight)
         ])
     }
-
+    
     @objc private func proceedButtonClicked() {
         proceedAction?()
     }
