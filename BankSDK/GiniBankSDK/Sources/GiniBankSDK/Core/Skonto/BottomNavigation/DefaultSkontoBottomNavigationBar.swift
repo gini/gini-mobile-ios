@@ -419,7 +419,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
 extension DefaultSkontoBottomNavigationBar {
     private enum Constants {
         static let padding: CGFloat = 16
-        static let landscapePadding: CGFloat = 56
+        static let landscapePadding: CGFloat = UIDevice.current.isSmallIphone ? 16 : 56
         static let verticalPadding: CGFloat = 16
         static let proceedButtonTopPadding: CGFloat = 20
         static let proceedButtonHeight: CGFloat = 50
