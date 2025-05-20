@@ -208,7 +208,11 @@ final class QRCodeOverlay: UIView {
         let viewModel = QREducationLoadingViewModel(items: loadingItems)
         educationViewModel = viewModel
 
-        let customView = QREducationLoadingView(viewModel: viewModel)
+        let customView = QREducationLoadingView(viewModel: viewModel,
+                                                style: .init(
+                                                    textColor: .GiniCapture.light1,
+                                                    analysingTextColor: .GiniCapture.dark7
+                                                ))
         customView.translatesAutoresizingMaskIntoConstraints = false
         customLoadingView = customView
         addSubview(customView)
