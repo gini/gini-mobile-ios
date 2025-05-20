@@ -44,6 +44,7 @@ final class DocumentPagesViewController: UIViewController {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = Constants.stackViewItemSpacing
+        stackView.isAccessibilityElement = true
         return stackView
     }()
 
