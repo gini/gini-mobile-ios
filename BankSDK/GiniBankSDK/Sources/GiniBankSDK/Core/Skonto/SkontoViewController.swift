@@ -90,6 +90,8 @@ final class SkontoViewController: UIViewController {
         return stackView
     }()
 
+    private var landscapeBottomBarContentView: UIView?
+
     private lazy var stackViewWidthConstraint = stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
                                                                                  constant: contentStackViewWidth)
     private lazy var proceedContainerConstraints = [
@@ -98,10 +100,10 @@ final class SkontoViewController: UIViewController {
         proceedContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         proceedContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ]
-    private lazy var scrollViewBottomToViewConstraint = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-
+    private lazy var scrollViewBottomToViewConstraint = scrollView.bottomAnchor.constraint(equalTo:
+                                                                                            view.bottomAnchor)
     private lazy var scrollViewBottomToProceedViewTop = scrollView.bottomAnchor
-        .constraint(equalTo: proceedContainerView.topAnchor)
+        .constraint(equalTo: proceedContainerView.bottomAnchor)
 
     private var contentStackViewWidth: CGFloat {
         let horizontalSafeAreaInsets = view.safeAreaInsets.left + view.safeAreaInsets.right
@@ -160,7 +162,7 @@ final class SkontoViewController: UIViewController {
 
         coordinator.animate(alongsideTransition: { _ in
             self.adjustLayoutForCurrentOrientation()
-        }, completion: nil)
+        })
     }
 
     private func adjustLayoutForCurrentOrientation() {
@@ -170,69 +172,94 @@ final class SkontoViewController: UIViewController {
 
         let isLandscape = view.currentInterfaceOrientation.isLandscape
 
-        // Update scroll view insets based on orientation
-        scrollView.contentInset = isLandscape ? scrollViewLandscapeIphoneContentInsets : scrollViewContentInset
-        scrollView.contentInsetAdjustmentBehavior = isLandscape ? .never : .automatic
+        // Always deactivate both constraints before layout switch
+        scrollViewBottomToViewConstraint.isActive = false
+        scrollViewBottomToProceedViewTop.isActive = false
 
         if isLandscape {
-            moveProceedContainerAndBottomBarToMainStack()
+            setupLandscapeLayout()
+            scrollViewBottomToViewConstraint.isActive = true
         } else {
-            restoreProceedContainerAndBottomBarToRootView()
-        }
-    }
-
-    private func restoreProceedContainerAndBottomBarToRootView() {
-        // Remove from main stack if present
-        if proceedContainerView.superview == mainStackView {
-            proceedContainerView.removeFromSuperview()
-            bottomNavigationBar?.removeFromSuperview()
-            scrollViewBottomToViewConstraint.isActive = false
-        }
-
-        // Re-add bottomNavigationBar directly to view if enabled
-        if configuration.bottomNavigationBarEnabled, let navigationBar = bottomNavigationBar {
-            view.addSubview(navigationBar)
-
-            NSLayoutConstraint.activate([
-                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
-
-            navigationBar.isHidden = false
-        } else {
-            // Re-add proceedContainerView to main view with original constraints
-            view.addSubview(proceedContainerView)
-            proceedContainerView.translatesAutoresizingMaskIntoConstraints = false
+            setupPortraitLayout()
             scrollViewBottomToProceedViewTop.isActive = true
-            setupProceedContainerViewConstraints()
-
-            proceedContainerView.isHidden = configuration.bottomNavigationBarEnabled
-            bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
         }
+
+        scrollView.contentInset = isLandscape ? scrollViewLandscapeIphoneContentInsets : scrollViewContentInset
+        scrollView.contentInsetAdjustmentBehavior = isLandscape ? .never : .automatic
     }
 
-    private func moveProceedContainerAndBottomBarToMainStack() {
-        // Remove from original parent
-        scrollViewBottomToProceedViewTop.isActive = false
-        NSLayoutConstraint.deactivate(proceedContainerConstraints)
+    private func setupLandscapeLayout() {
         proceedContainerView.removeFromSuperview()
         bottomNavigationBar?.removeFromSuperview()
 
-        if let navigationBar = bottomNavigationBar {
-            mainStackView.addArrangedSubview(navigationBar)
-            navigationBar.translatesAutoresizingMaskIntoConstraints = false
-            navigationBar.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-            navigationBar.isHidden = false
-        } else {
-            // Add proceedContainerView to main stack
-            mainStackView.addArrangedSubview(proceedContainerView)
-            proceedContainerView.translatesAutoresizingMaskIntoConstraints = false
-            proceedContainerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-            proceedContainerView.isHidden = false
+        // Only remove if we've added one before
+        if let lastView = landscapeBottomBarContentView {
+            mainStackView.removeArrangedSubview(lastView)
+            lastView.removeFromSuperview()
+            landscapeBottomBarContentView = nil
         }
 
-        scrollViewBottomToViewConstraint.isActive = true
+        if let defaultBar = bottomNavigationBar as? DefaultSkontoBottomNavigationBar {
+            let contentView = defaultBar.contentBarView
+            let navBarView = defaultBar.navigationBarView
+            landscapeBottomBarContentView = contentView
+
+            mainStackView.addArrangedSubview(contentView)
+
+            contentView.translatesAutoresizingMaskIntoConstraints = false
+            // Add navBarView to root view
+            navBarView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(navBarView)
+
+            NSLayoutConstraint.activate([
+                contentView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+                contentView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+                navBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                navBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                navBarView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                navBarView.heightAnchor.constraint(equalToConstant: Constants.navigationBarViewDefaultHeight)
+            ])
+
+            // Ensure scrollView stops above navBarView
+            scrollViewBottomToViewConstraint = scrollView.bottomAnchor.constraint(equalTo: navBarView.topAnchor)
+            scrollViewBottomToViewConstraint.isActive = true
+        } else {
+            // TODO: check also this
+            // custom bottom navigation bar injected will be presented as normal
+            setupBottomNavigationBar()
+        }
+    }
+
+    private func setupPortraitLayout() {
+        // Remove landscape-specific layout
+        if let defaultBar = bottomNavigationBar as? DefaultSkontoBottomNavigationBar {
+            defaultBar.navigationBarView.removeFromSuperview()
+            defaultBar.contentBarView.removeFromSuperview()
+
+            if let lastView = landscapeBottomBarContentView {
+                mainStackView.removeArrangedSubview(lastView)
+                lastView.removeFromSuperview()
+                landscapeBottomBarContentView = nil
+            }
+
+            view.addSubview(defaultBar)
+            defaultBar.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                defaultBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                defaultBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                defaultBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+        } else {
+            /// custom bottom navigation bar injected
+        }
+
+        // TODO: check where to put this
+        // ProceedContainerView is reattached
+        if proceedContainerView.superview != view {
+            view.addSubview(proceedContainerView)
+            proceedContainerView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate(proceedContainerConstraints)
+        }
     }
 
     deinit {
@@ -543,5 +570,6 @@ private extension SkontoViewController {
         static let groupCornerRadius: CGFloat = 8
         static let scrollIndicatorInset: CGFloat = 0
         static let tabletWidthMultiplier: CGFloat = 0.7
+        static let navigationBarViewDefaultHeight: CGFloat = 62
     }
 }
