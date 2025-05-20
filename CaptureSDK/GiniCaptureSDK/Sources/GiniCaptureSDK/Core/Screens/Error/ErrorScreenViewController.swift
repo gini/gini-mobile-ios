@@ -48,13 +48,22 @@ class ErrorScreenViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
+    
+    lazy var navigationBarHeightConstraint: NSLayoutConstraint? = {
+        guard let navbar = bottomNavigationBar else {
+            return nil
+        }
+        let constraint = navbar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
+        return constraint
+    }()
 
     let viewModel: BottomButtonsViewModel
     private let errorType: ErrorType
     private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var buttonsBottomConstraint: NSLayoutConstraint?
-    private var navigationBarHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var bottomNavigationBar: UIView?
+    
     private var numberOfButtons: Int {
         return [
             viewModel.isEnterManuallyHidden(),
@@ -95,7 +104,7 @@ class ErrorScreenViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        navigationBarHeightConstraint.constant = getBottomBarHeight()
+        navigationBarHeightConstraint?.constant = getBottomBarHeight()
     }
 
     private func sendAnalyticsScreenShown() {
@@ -178,6 +187,7 @@ class ErrorScreenViewController: UIViewController {
             }
 
             if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+                bottomNavigationBar = navigationBar
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
                 view.addSubview(navigationBar)
 
@@ -193,8 +203,6 @@ class ErrorScreenViewController: UIViewController {
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         buttonsBottomConstraint?.isActive = false
 
-        let heightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
-        navigationBarHeightConstraint = heightConstraint
 
         NSLayoutConstraint.activate([
             buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
@@ -202,7 +210,7 @@ class ErrorScreenViewController: UIViewController {
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBarHeightConstraint
+            navigationBarHeightConstraint!
         ])
 
         view.bringSubviewToFront(navigationBar)
