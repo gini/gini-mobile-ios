@@ -22,7 +22,7 @@ class DotLoadingView: UIView {
     init(baseText: String = "Analyzing",
          dotSymbol: String = ".",
          maxDots: Int = 3,
-         animationInterval: TimeInterval = 0.5,
+         animationInterval: TimeInterval = 0.25,
          font: UIFont = UIFont.systemFont(ofSize: 17),
          textColor: UIColor = .label) {
 
