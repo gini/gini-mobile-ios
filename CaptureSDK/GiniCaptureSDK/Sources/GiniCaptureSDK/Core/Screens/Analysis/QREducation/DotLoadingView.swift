@@ -19,10 +19,10 @@ class DotLoadingView: UIView {
     private let maxDots: Int
     private let animationInterval: TimeInterval
 
-    init(baseText: String = "Analyzing",
+    init(baseText: String = "",
          dotSymbol: String = ".",
          maxDots: Int = 3,
-         animationInterval: TimeInterval = 0.25,
+         animationInterval: TimeInterval = 0.4,
          font: UIFont = UIFont.systemFont(ofSize: 17),
          textColor: UIColor = .label) {
 
