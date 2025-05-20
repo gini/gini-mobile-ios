@@ -69,7 +69,6 @@ final class SkontoViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.contentInset = scrollViewContentInset
         return scrollView
     }()
 
@@ -111,16 +110,6 @@ final class SkontoViewController: UIViewController {
         return -totalPadding - horizontalSafeAreaInsets
     }
 
-    private var scrollViewLandscapeIphoneContentInsets: UIEdgeInsets {
-        UIEdgeInsets(top: Constants.containerPadding,
-                     left: 0,
-                     bottom: 0,
-                     right: 0)
-    }
-    private let scrollViewContentInset = UIEdgeInsets(top: Constants.containerPadding,
-                                                      left: 0,
-                                                      bottom: Constants.containerPadding,
-                                                      right: 0)
     private let viewModel: SkontoViewModel
     private let alertFactory: SkontoAlertFactory
     private let configuration = GiniBankConfiguration.shared
@@ -157,19 +146,18 @@ final class SkontoViewController: UIViewController {
         sendAnalyticsScreenShown()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        guard UIDevice.current.isIphone else { return }
 
         coordinator.animate(alongsideTransition: { _ in
-            self.adjustLayoutForCurrentOrientation()
+            self.adjustPhoneLayoutForCurrentOrientation()
         })
     }
 
-    private func adjustLayoutForCurrentOrientation() {
+    private func adjustPhoneLayoutForCurrentOrientation() {
         stackViewWidthConstraint.constant = contentStackViewWidth
-
-        guard UIDevice.current.isIphone else { return }
-
         let isLandscape = view.currentInterfaceOrientation.isLandscape
 
         // Always deactivate both constraints before layout switch
@@ -179,13 +167,14 @@ final class SkontoViewController: UIViewController {
         if isLandscape {
             setupLandscapeLayout()
             scrollViewBottomToViewConstraint.isActive = true
+            scrollView.contentInset = Constants.scrollViewLandscapeIphoneContentInsets
+            scrollView.contentInsetAdjustmentBehavior = .never
         } else {
             setupPortraitLayout()
             scrollViewBottomToProceedViewTop.isActive = true
+            scrollView.contentInset = Constants.scrollViewDefaultContentInset
+            scrollView.contentInsetAdjustmentBehavior = .automatic
         }
-
-        scrollView.contentInset = isLandscape ? scrollViewLandscapeIphoneContentInsets : scrollViewContentInset
-        scrollView.contentInsetAdjustmentBehavior = isLandscape ? .never : .automatic
     }
 
     private func setupLandscapeLayout() {
@@ -571,5 +560,13 @@ private extension SkontoViewController {
         static let scrollIndicatorInset: CGFloat = 0
         static let tabletWidthMultiplier: CGFloat = 0.7
         static let navigationBarViewDefaultHeight: CGFloat = 62
+
+        static var scrollViewLandscapeIphoneContentInsets: UIEdgeInsets {
+            UIEdgeInsets(top: containerPadding, left: 0, bottom: 0, right: 0)
+        }
+
+        static var scrollViewDefaultContentInset: UIEdgeInsets {
+            UIEdgeInsets(top: containerPadding, left: 0, bottom: containerPadding, right: 0)
+        }
     }
 }

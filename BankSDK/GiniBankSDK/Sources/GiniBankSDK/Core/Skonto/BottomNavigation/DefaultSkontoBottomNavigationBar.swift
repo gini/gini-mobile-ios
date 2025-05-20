@@ -154,7 +154,7 @@ final class DefaultSkontoBottomNavigationBar: UIView {
         self.backAction = backAction
         self.helpAction = helpAction
         super.init(frame: .zero)
-        updateLayoutForCurrentOrientation()
+        updatePhoneLayoutForCurrentOrientation()
     }
 
     required init?(coder: NSCoder) {
@@ -163,12 +163,11 @@ final class DefaultSkontoBottomNavigationBar: UIView {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        updateLayoutForCurrentOrientation()
+        guard UIDevice.current.isIphone else { return }
+        updatePhoneLayoutForCurrentOrientation()
     }
 
-    private func updateLayoutForCurrentOrientation() {
-        guard UIDevice.current.isIphone else { return }
-
+    private func updatePhoneLayoutForCurrentOrientation() {
         let isLandscape = UIDevice.current.isLandscape
 
         subviews.forEach { $0.removeFromSuperview() }
