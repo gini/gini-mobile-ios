@@ -45,7 +45,6 @@ final class QREducationLoadingView: UIView {
     init(viewModel: QREducationLoadingViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
-        setupViews()
         bind()
     }
 
@@ -62,6 +61,7 @@ final class QREducationLoadingView: UIView {
         addSubview(imageView)
         addSubview(textLabel)
         addSubview(dotLoadingView)
+        dotLoadingView.startAnimating()
 
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
@@ -86,6 +86,14 @@ final class QREducationLoadingView: UIView {
     private func bind() {
         viewModel.$currentItem
             .compactMap { $0 }
+            .prefix(1)
+            .sink { [weak self] _ in
+                self?.setupViews()
+            }
+            .store(in: &cancellables)
+
+        viewModel.$currentItem
+            .compactMap { $0 }
             .sink { [weak self] item in
                 self?.configure(with: item)
             }
@@ -96,7 +104,6 @@ final class QREducationLoadingView: UIView {
         imageView.image = model.image
         textLabel.text = model.text
         textLabel.accessibilityLabel = model.text
-        dotLoadingView.startAnimating()
     }
 }
 
