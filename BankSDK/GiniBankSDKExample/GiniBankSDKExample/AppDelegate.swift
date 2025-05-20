@@ -16,11 +16,7 @@ import GiniBankSDK
     var coordinator: AppCoordinator!
     var window: UIWindow?
 
-    let currentLanguage = "de"
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        UserDefaults.standard.set(currentLanguage, forKey: "AppleLanguage")
-        Bundle.setLanguage(currentLanguage)
         window = UIWindow(frame: UIScreen.main.bounds)
         coordinator = AppCoordinator(window: window ?? UIWindow())
         coordinator.start()
@@ -43,35 +39,9 @@ import GiniBankSDK
                 }
             }
         } else {
-            // Coming from Files share fun ctionality
+            // Coming from Files share functionality
                 coordinator.processExternalDocument(withUrl: url, sourceApplication: options[.sourceApplication] as? String)
         }
         return true
-    }
-}
-
-private var associatedBundle: Bundle?
-
-extension Bundle {
-
-    static let once: Void = {
-        object_setClass(Bundle.main, LocalizedBundle.self)
-    }()
-
-    static func setLanguage(_ language: String) {
-        guard let path = Bundle.main.path(forResource: language, ofType: "lproj"),
-              let bundle = Bundle(path: path) else {
-            associatedBundle = nil
-            return
-        }
-        associatedBundle = bundle
-        _ = Bundle.once
-    }
-
-    private class LocalizedBundle: Bundle {
-        override func localizedString(forKey key: String, value: String?, table tableName: String?) -> String {
-            return associatedBundle?.localizedString(forKey: key, value: value, table: tableName)
-            ?? super.localizedString(forKey: key, value: value, table: tableName)
-        }
     }
 }
