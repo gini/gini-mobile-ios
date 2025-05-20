@@ -190,7 +190,7 @@ final class QRCodeOverlay: UIView {
         let shouldDisplayEducation = configuration.qrCodeScanningEnabled && !configuration.onlyQRCodeScanningEnabled
         let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: shouldDisplayEducation)
         educationFlowController = controller
-        
+
         let nextState = controller.nextState()
         switch nextState {
         case .showMessage(let messageIndex):
@@ -206,7 +206,11 @@ final class QRCodeOverlay: UIView {
         let viewModel = QREducationLoadingViewModel(items: loadingItems)
         educationViewModel = viewModel
 
-        let customView = QREducationLoadingView(viewModel: viewModel, forceDarkMode: true)
+        let customView = QREducationLoadingView(viewModel: viewModel,
+                                                style: .init(
+                                                    textColor: .GiniCapture.light1,
+                                                    analysingTextColor: .GiniCapture.dark7
+                                                ))
         customView.translatesAutoresizingMaskIntoConstraints = false
         customLoadingView = customView
         addSubview(customView)
