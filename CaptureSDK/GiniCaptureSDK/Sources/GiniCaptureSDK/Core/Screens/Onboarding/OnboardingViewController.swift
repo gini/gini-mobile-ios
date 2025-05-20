@@ -216,20 +216,20 @@ class OnboardingViewController: UIViewController {
         let getStartedTitle = NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
                                                                comment: "Get Started button")
         nextButton.setTitle(getStartedTitle, for: .normal)
-        nextButton.accessibilityValue = getStartedTitle
+        nextButton.accessibilityTraits = .button
     }
 
     private func configureSkipBottomButton() {
         let title = NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
                                                      comment: "Skip button")
-        skipBottomBarButton.accessibilityValue = title
+        skipBottomBarButton.accessibilityTraits = .button
         skipBottomBarButton.setTitle(title, for: .normal)
     }
 
     private func configureNextButton() {
         let nextButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
                                                                comment: "Next button")
-        nextButton.accessibilityValue = nextButtonTitle
+        nextButton.accessibilityTraits = .button
         nextButton.setTitle(nextButtonTitle, for: .normal)
     }
 
