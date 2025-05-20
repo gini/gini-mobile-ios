@@ -92,9 +92,9 @@ class ErrorScreenViewController: UIViewController {
 
         sendAnalyticsScreenShown()
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+
+    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         navigationBarHeightConstraint.constant = getBottomBarHeight()
     }
 
