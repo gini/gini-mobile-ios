@@ -234,7 +234,7 @@ extension UIColor {
     private static func createTextColorScheme() -> GiniColorScheme.Text {
         return GiniColorScheme.Text(
             primary: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1),
-            secondary: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7),
+            secondary: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6),
             tertiary: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.dark7),
             accent: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
             success: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),
