@@ -237,7 +237,7 @@ extension UIColor {
             secondary: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6),
             tertiary: GiniColor(light: .GiniBank.dark7, dark: .GiniBank.dark7),
             accent: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
-            success: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),
+            success: GiniColor(light: .GiniBank.success2, dark: .GiniBank.success3),
             error: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3)
         )
     }
@@ -277,8 +277,8 @@ extension UIColor {
 
     private static func createBadgeColorScheme() -> GiniColorScheme.Badge {
         return GiniColorScheme.Badge(
-            background: GiniColor(light: .GiniBank.success3, dark: .GiniBank.success3),
-            content: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
+            background: GiniColor(light: .GiniBank.success2, dark: .GiniBank.success3),
+            content: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark1)
         )
     }
 
