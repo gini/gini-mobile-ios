@@ -20,13 +20,10 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet private weak var doneButton: MultilineTitleButton!
     @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
-    private var navigationBarHeightConstraint: NSLayoutConstraint! = NSLayoutConstraint()
-    private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem(
-        with: GiniBankConfiguration.shared
-    ) { [weak self] in
+    private var navigationBarHeightConstraint: NSLayoutConstraint!
+    private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem() { [weak self] in
         self?.doneAction(nil)
     }
-
     weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
     private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
 
@@ -92,7 +89,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if UIDevice.current.isIphone {
-            navigationBarHeightConstraint.constant = getBottomBarHeight()
             if view.currentInterfaceOrientation.isLandscape {
                 view.addSubview(horizontalItem)
                 horizontalItem.translatesAutoresizingMaskIntoConstraints = false
@@ -203,6 +199,10 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+
+        if GiniBankConfiguration.shared.bottomNavigationBarEnabled {
+            navigationBarHeightConstraint.constant = getBottomBarHeight()
+        }
         guard UIDevice.current.isIpad else { return }
         coordinator.animate(alongsideTransition: { [weak self] _ in
             guard let self = self else { return }
@@ -234,13 +234,11 @@ extension DigitalInvoiceOnboardingViewController {
     }
 
     private func getBottomAnchorForLandscapeView() -> NSLayoutYAxisAnchor {
-        var anchor: NSLayoutYAxisAnchor!
         if let _ = GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter {
-            anchor = bottomNavigationBar?.topAnchor ?? view.bottomAnchor
+            return bottomNavigationBar?.topAnchor ?? view.bottomAnchor
         } else {
-            anchor = view.bottomAnchor
+            return view.bottomAnchor
         }
-        return anchor
     }
 
     func getBottomBarHeight() -> CGFloat {
