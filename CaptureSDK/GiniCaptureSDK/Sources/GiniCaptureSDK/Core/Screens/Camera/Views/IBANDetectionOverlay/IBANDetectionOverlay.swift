@@ -51,12 +51,7 @@ final class IBANDetectionOverlay: UIView {
             let title = "\(iban)\n\n\(takePhotoString)"
             
             textContainer.setTitle(title)
-            
-            if previousTitle != title {
-                previousTitle = title
-                // Post the announcement for VoiceOver
-                UIAccessibility.post(notification: .announcement, argument: title)
-            }
+            postVoiceOverAnnouncementIfNeeded(title)
         } else {
             let ibanDetectedString = NSLocalizedStringPreferredFormat("ginicapture.ibandetection.multipleibansdetected",
                                                                       comment: "Multiple IBAN detected")
@@ -74,6 +69,13 @@ final class IBANDetectionOverlay: UIView {
 
     func viewWillDisappear() {
         configureOverlay(hidden: true)
+    }
+    
+    private func postVoiceOverAnnouncementIfNeeded(_ title: String) {
+        if previousTitle != title {
+            previousTitle = title
+            UIAccessibility.post(notification: .announcement, argument: title)
+        }
     }
 
     private enum Constants {
