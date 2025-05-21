@@ -49,7 +49,7 @@ final class QREducationLoadingView: UIView {
             baseText: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
                                                        comment: "analyzing"),
             font: giniConfiguration.textStyleFonts[.body] ?? .systemFont(ofSize: 17),
-            textColor: GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.dark7).uiColor()
+            textColor: style.analysingTextColor
         )
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
