@@ -234,13 +234,11 @@ extension DigitalInvoiceOnboardingViewController {
     }
 
     private func getBottomAnchorForLandscapeView() -> NSLayoutYAxisAnchor {
-        var anchor: NSLayoutYAxisAnchor!
         if let _ = GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter {
-            anchor = bottomNavigationBar?.topAnchor ?? view.bottomAnchor
+            return bottomNavigationBar?.topAnchor ?? view.bottomAnchor
         } else {
-            anchor = view.bottomAnchor
+            return view.bottomAnchor
         }
-        return anchor
     }
 
     func getBottomBarHeight() -> CGFloat {
