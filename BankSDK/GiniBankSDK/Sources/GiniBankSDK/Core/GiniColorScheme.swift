@@ -259,7 +259,7 @@ extension UIColor {
 
     private static func createErrorColorScheme() -> GiniColorScheme.Error {
         return GiniColorScheme.Error(
-            background: GiniColor(light: .GiniBank.error4, dark: .GiniBank.error4),
+            background: GiniColor(light: .GiniBank.error5, dark: .GiniBank.error1),
             icon: GiniColor(light: .GiniBank.error3, dark: .GiniBank.error3)
         )
     }
