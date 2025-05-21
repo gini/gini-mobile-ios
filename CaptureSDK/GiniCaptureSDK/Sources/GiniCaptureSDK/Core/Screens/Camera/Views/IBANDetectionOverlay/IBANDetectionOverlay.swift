@@ -10,6 +10,7 @@ import UIKit
 final class IBANDetectionOverlay: UIView {
     private let configuration = GiniConfiguration.shared
     private let textContainer = IBANTextContainer()
+    private var previousTitle: String?
 
     init() {
         super.init(frame: .zero)
@@ -47,7 +48,15 @@ final class IBANDetectionOverlay: UIView {
                                                                comment: "IBAN Detection")
         if IBANs.count == 1 {
             let iban = IBANs[0].split(every: 4)
-            textContainer.setTitle("\(iban)\n\n\(takePhotoString)")
+            let title = "\(iban)\n\n\(takePhotoString)"
+            
+            textContainer.setTitle(title)
+            
+            if previousTitle != title {
+                previousTitle = title
+                // Post the announcement for VoiceOver
+                UIAccessibility.post(notification: .announcement, argument: title)
+            }
         } else {
             let ibanDetectedString = NSLocalizedStringPreferredFormat("ginicapture.ibandetection.multipleibansdetected",
                                                                       comment: "Multiple IBAN detected")
@@ -57,6 +66,10 @@ final class IBANDetectionOverlay: UIView {
 
     func configureOverlay(hidden: Bool) {
         textContainer.isHidden = hidden
+        
+        if hidden {
+            previousTitle = nil
+        }
     }
 
     func viewWillDisappear() {
