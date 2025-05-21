@@ -20,7 +20,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet private weak var doneButton: MultilineTitleButton!
     @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
-    private var navigationBarHeightConstraint: NSLayoutConstraint! = NSLayoutConstraint()
+    private var navigationBarHeightConstraint: NSLayoutConstraint!
     private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem() { [weak self] in
         self?.doneAction(nil)
     }
@@ -89,7 +89,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if UIDevice.current.isIphone {
-            navigationBarHeightConstraint.constant = getBottomBarHeight()
             if view.currentInterfaceOrientation.isLandscape {
                 view.addSubview(horizontalItem)
                 horizontalItem.translatesAutoresizingMaskIntoConstraints = false
@@ -200,6 +199,10 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+
+        if GiniBankConfiguration.shared.bottomNavigationBarEnabled {
+            navigationBarHeightConstraint.constant = getBottomBarHeight()
+        }
         guard UIDevice.current.isIpad else { return }
         coordinator.animate(alongsideTransition: { [weak self] _ in
             guard let self = self else { return }
