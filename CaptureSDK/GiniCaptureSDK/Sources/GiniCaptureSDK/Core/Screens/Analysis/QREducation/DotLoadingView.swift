@@ -7,28 +7,28 @@
 import UIKit
 import Combine
 
-class DotLoadingView: UIView {
+class AnimatedSuffixLabelView: UIView {
     private let textLabel = UILabel()
-    private let animatedDotsLabel = UILabel()
+    private let suffixLabel = UILabel()
 
     private var animationCancellable: AnyCancellable?
-    private var currentDotCount = 0
+    private var currentStep = 0
 
     private let baseText: String
-    private let dotSymbol: String
-    private let maxDots: Int
+    private let suffixSymbol: String
+    private let maxSteps: Int
     private let animationInterval: TimeInterval
 
     init(baseText: String = "",
-         dotSymbol: String = ".",
-         maxDots: Int = 3,
+         suffixSymbol: String = ".",
+         maxSteps: Int = 3,
          animationInterval: TimeInterval = 0.4,
          font: UIFont = UIFont.systemFont(ofSize: 17),
          textColor: UIColor = .label) {
 
         self.baseText = baseText
-        self.dotSymbol = dotSymbol
-        self.maxDots = maxDots
+        self.suffixSymbol = suffixSymbol
+        self.maxSteps = maxSteps
         self.animationInterval = animationInterval
 
         super.init(frame: .zero)
@@ -36,8 +36,8 @@ class DotLoadingView: UIView {
         setupLabels(font: font, textColor: textColor)
         setupAccessibility()
 
-        let maxDotsWidth = calculateMaxDotsWidth(font: font)
-        setupLayout(dotWidth: maxDotsWidth)
+        let suffixWidth = calculateMaxSuffixWidth(font: font)
+        setupLayout(suffixWidth: suffixWidth)
     }
 
     required init?(coder: NSCoder) {
@@ -52,13 +52,13 @@ class DotLoadingView: UIView {
         textLabel.textColor = textColor
         textLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        animatedDotsLabel.text = ""
-        animatedDotsLabel.font = font
-        animatedDotsLabel.textColor = textColor
-        animatedDotsLabel.translatesAutoresizingMaskIntoConstraints = false
+        suffixLabel.text = ""
+        suffixLabel.font = font
+        suffixLabel.textColor = textColor
+        suffixLabel.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(textLabel)
-        addSubview(animatedDotsLabel)
+        addSubview(suffixLabel)
     }
 
     private func setupAccessibility() {
@@ -66,18 +66,18 @@ class DotLoadingView: UIView {
         accessibilityLabel = baseText
     }
 
-    private func setupLayout(dotWidth: CGFloat) {
+    private func setupLayout(suffixWidth: CGFloat) {
         NSLayoutConstraint.activate([
-            textLabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: -dotWidth / 2),
+            textLabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: -suffixWidth / 2),
             textLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            animatedDotsLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor, constant: 2),
-            animatedDotsLabel.centerYAnchor.constraint(equalTo: textLabel.centerYAnchor)
+            suffixLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor, constant: 2),
+            suffixLabel.centerYAnchor.constraint(equalTo: textLabel.centerYAnchor)
         ])
     }
 
-    private func calculateMaxDotsWidth(font: UIFont) -> CGFloat {
-        let dotsString = String(repeating: dotSymbol, count: maxDots)
-        return (dotsString as NSString).size(withAttributes: [.font: font]).width
+    private func calculateMaxSuffixWidth(font: UIFont) -> CGFloat {
+        let fullSuffix = String(repeating: suffixSymbol, count: maxSteps)
+        return (fullSuffix as NSString).size(withAttributes: [.font: font]).width
     }
 
     // MARK: - Animation control
@@ -89,22 +89,22 @@ class DotLoadingView: UIView {
             .publish(every: animationInterval, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
-                self?.updateDots()
+                self?.updateSuffix()
             }
     }
 
     func stopAnimating() {
         animationCancellable?.cancel()
         animationCancellable = nil
-        currentDotCount = 0
-        animatedDotsLabel.text = ""
+        currentStep = 0
+        suffixLabel.text = ""
     }
 
-    private func updateDots() {
-        currentDotCount = (currentDotCount + 1) % (maxDots + 1)
-        let dots = String(repeating: dotSymbol, count: currentDotCount)
-        animatedDotsLabel.text = dots
-        accessibilityLabel = baseText + dots
+    private func updateSuffix() {
+        currentStep = (currentStep + 1) % (maxSteps + 1)
+        let suffix = String(repeating: suffixSymbol, count: currentStep)
+        suffixLabel.text = suffix
+        accessibilityLabel = baseText + suffix
     }
 
     deinit {

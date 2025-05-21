@@ -31,8 +31,8 @@ final class QREducationLoadingView: UIView {
         return label
     }()
 
-    private lazy var dotLoadingView: DotLoadingView = {
-        let view = DotLoadingView(
+    private lazy var animatedSuffixLabelView: AnimatedSuffixLabelView = {
+        let view = AnimatedSuffixLabelView(
             baseText: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
                                                        comment: "analyzing"),
             font: giniConfiguration.textStyleFonts[.body] ?? .systemFont(ofSize: 17),
@@ -54,14 +54,14 @@ final class QREducationLoadingView: UIView {
 
     override func removeFromSuperview() {
         super.removeFromSuperview()
-        dotLoadingView.stopAnimating()
+        animatedSuffixLabelView.stopAnimating()
     }
 
     private func setupViews() {
         addSubview(imageView)
         addSubview(textLabel)
-        addSubview(dotLoadingView)
-        dotLoadingView.startAnimating()
+        addSubview(animatedSuffixLabelView)
+        animatedSuffixLabelView.startAnimating()
 
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
@@ -72,14 +72,14 @@ final class QREducationLoadingView: UIView {
             textLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             textLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            dotLoadingView.topAnchor.constraint(greaterThanOrEqualTo: imageView.bottomAnchor,
+            animatedSuffixLabelView.topAnchor.constraint(greaterThanOrEqualTo: imageView.bottomAnchor,
                                                 constant: Constants.imageToAnalysingSpacing),
-            dotLoadingView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            dotLoadingView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            animatedSuffixLabelView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            animatedSuffixLabelView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            dotLoadingView.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
+            animatedSuffixLabelView.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
                                                 constant: Constants.minTextToAnalysingSpacing),
-            dotLoadingView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            animatedSuffixLabelView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
