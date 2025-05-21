@@ -155,7 +155,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
             rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
             rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
             rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: topImageView.trailingAnchor,
-                                                                       constant: 10),
+                                                                       constant: Constants.horizontalSpacingBetweenImageViewAndText),
             rightStackViewContainerScrollable.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
     }
@@ -168,6 +168,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
 private extension DigitalInvoiceOnboardingHorizontalItem {
     enum Constants {
         static let paddingLarge: CGFloat = 56
+        static let horizontalSpacingBetweenImageViewAndText: CGFloat = 10
     }
 
     func shouldHideButton() -> Bool {
