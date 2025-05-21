@@ -224,7 +224,6 @@ final class SkontoViewController: UIViewController {
 
         if isLandscape {
             setupPhoneLandscapeLayout()
-            scrollViewBottomToViewConstraint.isActive = true
             scrollView.contentInset = Constants.scrollViewLandscapeIphoneContentInsets
             scrollView.contentInsetAdjustmentBehavior = .never
         } else {
@@ -293,14 +292,16 @@ final class SkontoViewController: UIViewController {
     }
 
     private func setupProceedContainerInLandscape() {
-        guard proceedContainerView.superview != view else { return }
         proceedContainerView.removeFromSuperview()
         NSLayoutConstraint.deactivate(proceedContainerConstraints)
+
         mainStackView.addArrangedSubview(proceedContainerView)
         NSLayoutConstraint.activate([
             proceedContainerView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
             proceedContainerView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
         ])
+
+        updateScrollViewBottomToViewConstraint(to: view.safeAreaLayoutGuide.bottomAnchor)
     }
 
     private func attachProceedContainerViewIfNeeded() {
@@ -365,11 +366,11 @@ final class SkontoViewController: UIViewController {
 
     private func setupStackViewConstraints() {
         NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            mainStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
             mainStackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor),
             mainStackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor),
             mainStackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             stackViewWidthConstraint
         ])
