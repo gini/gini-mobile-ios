@@ -46,8 +46,7 @@ final class QREducationLoadingView: UIView {
 
     private lazy var animatedSuffixLabelView: AnimatedSuffixLabelView = {
         let view = AnimatedSuffixLabelView(
-            baseText: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
-                                                       comment: "analyzing"),
+            baseText: LocalizedStrings.loadingBaseText,
             font: giniConfiguration.textStyleFonts[.body] ?? .systemFont(ofSize: 17),
             textColor: style.analysingTextColor
         )
@@ -126,5 +125,12 @@ private extension QREducationLoadingView {
         static let imageToTextSpacing: CGFloat = 16
         static let imageToAnalysingSpacing: CGFloat = 98
         static let minTextToAnalysingSpacing: CGFloat = 16
+    }
+}
+
+private extension QREducationLoadingView {
+    enum LocalizedStrings {
+        static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
+                                                                      comment: "analyzing")
     }
 }
