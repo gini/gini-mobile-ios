@@ -238,7 +238,7 @@ final class SkontoViewController: UIViewController {
         removeExistingBottomComponents()
 
         if configuration.bottomNavigationBarEnabled {
-            if let _ = bottomNavigationBar as? DefaultSkontoBottomNavigationBar {
+            if bottomNavigationBar is DefaultSkontoBottomNavigationBar {
                 setupBottomNavigationBarInLandscape()
             } else {
                 setupCustomBottomNavigationBarInLandscape()
@@ -293,17 +293,21 @@ final class SkontoViewController: UIViewController {
     }
 
     private func setupProceedContainerInLandscape() {
-        attachProceedContainerViewIfNeeded()
-
-        updateScrollViewBottomToViewConstraint(to: proceedContainerView.topAnchor)
+        guard proceedContainerView.superview != view else { return }
+        proceedContainerView.removeFromSuperview()
+        NSLayoutConstraint.deactivate(proceedContainerConstraints)
+        mainStackView.addArrangedSubview(proceedContainerView)
+        NSLayoutConstraint.activate([
+            proceedContainerView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            proceedContainerView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
+        ])
     }
 
     private func attachProceedContainerViewIfNeeded() {
         guard proceedContainerView.superview != view else { return }
 
         view.addSubview(proceedContainerView)
-        proceedContainerView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate(proceedContainerConstraints)
+        setupProceedContainerViewConstraints()
     }
 
     // MARK: - Portrait specific layout
@@ -327,6 +331,10 @@ final class SkontoViewController: UIViewController {
             pinToBottom(customBar, to: view)
             updateScrollViewBottomToViewConstraint(to: customBar.topAnchor)
         } else {
+            if mainStackView.arrangedSubviews.contains(proceedContainerView) {
+                mainStackView.removeArrangedSubview(proceedContainerView)
+                proceedContainerView.removeFromSuperview()
+            }
             attachProceedContainerViewIfNeeded()
 
             scrollViewBottomToProceedViewTop = scrollView.bottomAnchor
@@ -413,6 +421,7 @@ final class SkontoViewController: UIViewController {
     }
 
     private func setupProceedContainerViewConstraints() {
+        proceedContainerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(proceedContainerConstraints)
     }
 
