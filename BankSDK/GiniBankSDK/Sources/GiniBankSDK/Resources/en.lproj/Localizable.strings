@@ -96,7 +96,6 @@
 // MARK: - Skonto
 "ginibank.skonto.screen.title" = "Skonto discount";
 "ginibank.skonto.backbutton.title" = "Camera";
-"ginibank.skonto.invoice.backbutton.title" = "Back";
 "ginibank.skonto.active" = "• Active";
 "ginibank.skonto.proceedbutton.title" = "Confirm and continue";
 
