@@ -44,19 +44,21 @@ final class IBANDetectionOverlay: UIView {
     }
 
     func setupView(with IBANs: [String]) {
+        let title: String
         let takePhotoString = NSLocalizedStringPreferredFormat("ginicapture.ibandetection.takephoto",
                                                                comment: "IBAN Detection")
+        
         if IBANs.count == 1 {
             let iban = IBANs[0].split(every: 4)
-            let title = "\(iban)\n\n\(takePhotoString)"
-            
-            textContainer.setTitle(title)
-            postVoiceOverAnnouncementIfNeeded(title)
+            title = "\(iban)\n\n\(takePhotoString)"
         } else {
             let ibanDetectedString = NSLocalizedStringPreferredFormat("ginicapture.ibandetection.multipleibansdetected",
                                                                       comment: "Multiple IBAN detected")
-            textContainer.setTitle("\(ibanDetectedString)\n\n\(takePhotoString)")
+            title = "\(ibanDetectedString)\n\n\(takePhotoString)"
         }
+        
+        textContainer.setTitle(title)
+        postVoiceOverAnnouncementIfNeeded(title)
     }
 
     func configureOverlay(hidden: Bool) {
