@@ -95,6 +95,7 @@ import UIKit
         return overlayView
     }()
 
+    private var captureSuggestions: CaptureSuggestionsView?
     private var centerYConstraint = NSLayoutConstraint()
 
     /**
@@ -137,6 +138,14 @@ import UIKit
         // Configure view hierachy
         setupView()
     }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if document is GiniImageDocument {
+            showCaptureSuggestions(giniConfiguration: giniConfiguration)
+        }
+    }
 
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -145,6 +154,12 @@ import UIKit
         let documentTypeAnalytics = GiniAnalyticsMapper.documentTypeAnalytics(from: document.type)
         GiniAnalyticsManager.registerSuperProperties([.documentType: documentTypeAnalytics])
         GiniAnalyticsManager.trackScreenShown(screenName: .analysis)
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        stopCaptureSuggestions()
     }
 
     public override func viewDidLayoutSubviews() {
@@ -191,10 +206,6 @@ import UIKit
 
         configureLoadingIndicator()
         addOverlay()
-
-        if document is GiniImageDocument {
-            showCaptureSuggestions(giniConfiguration: giniConfiguration)
-        }
     }
 
     private func addImageView() {
@@ -222,6 +233,7 @@ import UIKit
 
     private func configureLoadingIndicator() {
         loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        loadingIndicatorView.accessibilityValue = loadingIndicatorText.text
 
         addLoadingContainer()
         addLoadingView(intoContainer: loadingIndicatorContainer)
@@ -292,9 +304,14 @@ import UIKit
     }
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
-        let captureSuggestions = CaptureSuggestionsView(superView: view,
+        captureSuggestions = CaptureSuggestionsView(superView: view,
                                                         bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
-        captureSuggestions.start()
+        captureSuggestions?.start()
+    }
+    
+    private func stopCaptureSuggestions() {
+        captureSuggestions?.removeFromSuperview()
+        captureSuggestions = nil
     }
 }
 

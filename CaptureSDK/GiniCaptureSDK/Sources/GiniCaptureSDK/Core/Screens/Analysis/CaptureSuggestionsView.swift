@@ -139,6 +139,11 @@ extension CaptureSuggestionsView {
             self.alpha = 1
             UIView.animate(withDuration: 0.5, animations: {
                 superview.layoutIfNeeded()
+                
+                if let title = self.suggestionContainer?.titleLabel.text,
+                    let description = self.suggestionContainer?.descriptionLabel.text {
+                    UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
+                }
             }, completion: { _ in
                 self.changeView(toState: .hidden)
             })
@@ -179,9 +184,14 @@ extension CaptureSuggestionsView {
                 nextIndex = 0
             }
 
+            let title = suggestionTitle[nextIndex]
+            let description = suggestionDescription[nextIndex]
+            
             suggestionContainer?.configureContent(with: suggestionIconImages[nextIndex],
-                                                  title: suggestionTitle[nextIndex],
-                                                  description: suggestionDescription[nextIndex])
+                                                  title: title,
+                                                  description: description)
+            
+            UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
         }
     }
 
