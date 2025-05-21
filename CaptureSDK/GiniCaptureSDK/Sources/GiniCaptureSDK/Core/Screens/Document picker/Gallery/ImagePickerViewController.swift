@@ -69,11 +69,6 @@ final class ImagePickerViewController: UIViewController {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: UIDevice.orientationDidChangeNotification,
-            object: nil
-        )
     }
 
     // MARK: - UIViewController
@@ -86,18 +81,12 @@ final class ImagePickerViewController: UIViewController {
         setupConstraints()
 
         scrollToBottom()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(reloadDataOnOrientationChange),
-            name: UIDevice.orientationDidChangeNotification,
-            object: nil
-        )
     }
     
-    @objc func reloadDataOnOrientationChange() {
+    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         collectionView.reloadData()
     }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if UIDevice.current.isIphone {

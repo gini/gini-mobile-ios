@@ -13,8 +13,8 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var buttonCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToPageControlConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewToViewBottomConstraint: NSLayoutConstraint!
-    private var bottomPaddingPageIndicatorConstraint: NSLayoutConstraint! = NSLayoutConstraint()
-    private var navigationBarHeightConstraint: NSLayoutConstraint! = NSLayoutConstraint()
+    private var bottomPaddingPageIndicatorConstraint: NSLayoutConstraint!
+    private var navigationBarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var skipBottomBarButton: MultilineTitleButton!
     private(set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
@@ -81,12 +81,8 @@ class OnboardingViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        if configuration.bottomNavigationBarEnabled {
-            bottomPaddingPageIndicatorConstraint.constant = getBottomPaddingForPageController()
-        }
         if UIDevice.current.isIphone {
             if view.currentInterfaceOrientation.isLandscape {
-                navigationBarHeightConstraint.constant = getBottomBarHeight()
 
                 if configuration.onboardingNavigationBarBottomAdapter != nil {
                     bottomNavigationBar?.isHidden = false
@@ -124,7 +120,6 @@ class OnboardingViewController: UIViewController {
                 collectionViewToPageControlConstraint.isActive = false
                 collectionViewToViewBottomConstraint.isActive = true
             } else {
-                navigationBarHeightConstraint.constant = getBottomBarHeight()
                 buttonCenterXConstraint.constant = 0
                 collectionViewToViewBottomConstraint.isActive = false
                 collectionViewToPageControlConstraint.isActive = true
@@ -135,7 +130,7 @@ class OnboardingViewController: UIViewController {
             pagesCollection.reloadData()
         }
     }
-
+    
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
 
@@ -283,6 +278,11 @@ class OnboardingViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+
+        if configuration.bottomNavigationBarEnabled {
+            bottomPaddingPageIndicatorConstraint.constant = getBottomPaddingForPageController()
+            navigationBarHeightConstraint.constant = getBottomBarHeight()
+        }
 
         // Calculate the current visible page index
         let visiblePageIndex = Int(round(pagesCollection.contentOffset.x / pagesCollection.bounds.width))
