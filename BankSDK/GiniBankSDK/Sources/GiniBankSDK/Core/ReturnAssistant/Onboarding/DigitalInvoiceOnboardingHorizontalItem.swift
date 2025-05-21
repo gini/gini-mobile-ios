@@ -11,7 +11,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
     private let firstLabel: UILabel
     private let secondLabel: UILabel
     private let doneButton: MultilineTitleButton
-    private var configuration: GiniBankConfiguration
+    private lazy var configuration: GiniBankConfiguration = GiniBankConfiguration.shared
 
     private lazy var infoStackView: UIStackView = {
         let stack = UIStackView(
@@ -86,10 +86,9 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         return NSLocalizedStringPreferredGiniBankFormat(key, comment: comment)
     }
 
-    init(with configuration: GiniBankConfiguration, frame: CGRect = .zero, onDone: @escaping () -> Void) {
+    init(frame: CGRect = .zero, onDone: @escaping () -> Void) {
         topImageView = .init()
 
-        self.configuration = configuration
         firstLabel = .init()
         firstLabel.numberOfLines = 0
 

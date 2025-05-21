@@ -21,12 +21,9 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
     private var navigationBarHeightConstraint: NSLayoutConstraint! = NSLayoutConstraint()
-    private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem(
-        with: GiniBankConfiguration.shared
-    ) { [weak self] in
+    private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem() { [weak self] in
         self?.doneAction(nil)
     }
-
     weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
     private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
 
