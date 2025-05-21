@@ -120,7 +120,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         // description
         secondLabel.text = secondLabelText
         secondLabel.font = configuration.textStyleFonts[.subheadline]
-        secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7).uiColor()
+        secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
         secondLabel.adjustsFontForContentSizeCategory = true
 
         // done button

@@ -30,7 +30,7 @@ class OnboardingPageCell: UICollectionViewCell {
         titleLabel.isAccessibilityElement = true
 
         descriptionLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
-                                               dark: UIColor.GiniCapture.dark7).uiColor()
+                                               dark: UIColor.GiniCapture.light6).uiColor()
         descriptionLabel.font = GiniConfiguration.shared.textStyleFonts[.subheadline]
         descriptionLabel.isAccessibilityElement = true
         descriptionLabel.adjustsFontSizeToFitWidth = true

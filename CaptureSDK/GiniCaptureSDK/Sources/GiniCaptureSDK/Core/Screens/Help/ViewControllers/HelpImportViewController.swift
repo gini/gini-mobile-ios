@@ -187,7 +187,7 @@ extension HelpImportViewController: UITableViewDataSource {
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.bodyBold]
         cell.descriptionLabel.backgroundColor = UIColor.clear
         cell.descriptionLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
-                                                    dark: UIColor.GiniCapture.dark7).uiColor()
+                                                    dark: UIColor.GiniCapture.light6).uiColor()
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.contentView.backgroundColor = UIColor.clear
