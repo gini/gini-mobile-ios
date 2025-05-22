@@ -189,7 +189,7 @@ private extension SkontoHelpViewController {
     enum Constants {
         static let padding: CGFloat = 16
         static let spacing: CGFloat = 32
-        static let navigationBarHeightPortrait: CGFloat = 114
+        static let navigationBarHeightPortrait: CGFloat = UIDevice.current.isSmallIphone ? 72 : 114
         static let navigationBarHeightLandscape: CGFloat = UIDevice.current.isSmallIphone ? 40 : 62
     }
 }
