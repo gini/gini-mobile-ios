@@ -68,9 +68,6 @@ final class ImagePickerViewController: UIViewController {
         fatalError("init(giniConfiguration:) has not been implemented")
     }
 
-    deinit {
-    }
-
     // MARK: - UIViewController
 
     override func viewDidLoad() {
