@@ -141,6 +141,7 @@ class SkontoProceedContainerView: UIView {
 
     private func setupConstraints() {
         let multiplier: CGFloat = UIDevice.current.isIpad ? Constants.tabletWidthMultiplier : 1.0
+        let contentViewTrailingAnchor = contentView.safeAreaLayoutGuide.trailingAnchor
 
         NSLayoutConstraint.activate([
             contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -154,14 +155,15 @@ class SkontoProceedContainerView: UIView {
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
             totalAmountStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-            totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: Constants.padding),
+            totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
+                                                          constant: Constants.padding),
             totalAmountStackView.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
                                                            constant: -Constants.badgeHorizontalPadding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
                                                     constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: finalAmountToPayLabel.leadingAnchor),
-            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.safeAreaLayoutGuide.trailingAnchor,
+            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentViewTrailingAnchor,
                                                          constant: -Constants.padding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalStringLabel.centerYAnchor),
