@@ -21,15 +21,15 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" userLabel="ParentView">
             <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="qey-Uj-2J2" customClass="CameraPane" customModule="GiniCaptureSDK">
-                    <rect key="frame" x="0.0" y="294" width="896" height="120"/>
+                    <rect key="frame" x="0.0" y="318.66666666666669" width="896" height="95.333333333333314"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQe-NY-Bi9">
-                            <rect key="frame" x="413" y="36.666666666666686" width="70" height="70"/>
+                            <rect key="frame" x="413" y="17.333333333333314" width="70" height="70"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="70" id="Flv-NK-4aP"/>
                                 <constraint firstAttribute="width" constant="70" id="gVb-eK-08y"/>
@@ -41,30 +41,27 @@
                             </buttonConfiguration>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" horizontalCompressionResistancePriority="755" verticalCompressionResistancePriority="800" text="Scan an invoice or a QR code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="lfm-sA-fAL">
-                            <rect key="frame" x="337.33333333333331" y="7.9999999999999982" width="221.66666666666669" height="20.333333333333329"/>
-                            <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Q1y-Qr-XQo"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <rect key="frame" x="320.66666666666669" y="0.0" width="254.66666666666669" height="14.333333333333334"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <color key="textColor" name="systemWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="zFz-gY-AMg">
-                            <rect key="frame" x="8" y="44.333333333333314" width="379" height="54.666666666666657"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="zFz-gY-AMg">
+                            <rect key="frame" x="8" y="30.333333333333314" width="395" height="44"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oxa-p6-f53" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="0.0" y="0.0" width="184.66666666666666" height="54.666666666666664"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="192.66666666666666" height="44"/>
                                     <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wph-4w-azi" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="194.66666666666663" y="0.0" width="184.33333333333337" height="54.666666666666664"/>
+                                    <rect key="frame" x="202.66666666666663" y="0.0" width="192.33333333333337" height="44"/>
                                     <color key="backgroundColor" systemColor="systemGreenColor"/>
                                     <color key="tintColor" systemColor="tintColor"/>
                                 </view>
                             </subviews>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="XkD-wl-s7a">
-                            <rect key="frame" x="483" y="45.666666666666686" width="405" height="52"/>
+                            <rect key="frame" x="483" y="26.333333333333314" width="405" height="52"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="12N-wP-hsO">
                                     <rect key="frame" x="0.0" y="0.0" width="405" height="52"/>
@@ -91,7 +88,6 @@
                             </constraints>
                         </stackView>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="zFz-gY-AMg" firstAttribute="leading" secondItem="qey-Uj-2J2" secondAttribute="leading" constant="8" id="2MR-qQ-nQt"/>
                         <constraint firstAttribute="trailing" secondItem="XkD-wl-s7a" secondAttribute="trailing" constant="8" id="DcW-RS-xhS"/>
@@ -100,13 +96,12 @@
                         <constraint firstItem="zFz-gY-AMg" firstAttribute="top" secondItem="lfm-sA-fAL" secondAttribute="bottom" constant="16" id="IV7-fG-9A2"/>
                         <constraint firstItem="XkD-wl-s7a" firstAttribute="centerY" secondItem="dQe-NY-Bi9" secondAttribute="centerY" id="Sa7-iM-mp3"/>
                         <constraint firstItem="lfm-sA-fAL" firstAttribute="centerX" secondItem="qey-Uj-2J2" secondAttribute="centerX" id="Z4u-Mw-edC"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="dKX-Qz-rx3"/>
-                        <constraint firstItem="lfm-sA-fAL" firstAttribute="top" secondItem="qey-Uj-2J2" secondAttribute="top" constant="8" id="f4b-FG-Wzh"/>
+                        <constraint firstItem="lfm-sA-fAL" firstAttribute="top" secondItem="qey-Uj-2J2" secondAttribute="top" id="f4b-FG-Wzh"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="centerX" secondItem="qey-Uj-2J2" secondAttribute="centerX" id="iMg-DB-LrQ"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="centerY" secondItem="zFz-gY-AMg" secondAttribute="centerY" id="jIy-hN-jDT"/>
                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="dQe-NY-Bi9" secondAttribute="bottom" constant="8" id="sMG-3O-5Hh"/>
                         <constraint firstItem="lfm-sA-fAL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qey-Uj-2J2" secondAttribute="leading" constant="8" id="stP-BC-ctT"/>
-                        <constraint firstItem="dQe-NY-Bi9" firstAttribute="leading" secondItem="zFz-gY-AMg" secondAttribute="trailing" constant="26" id="z65-kh-Jec"/>
+                        <constraint firstItem="dQe-NY-Bi9" firstAttribute="leading" secondItem="zFz-gY-AMg" secondAttribute="trailing" constant="10" id="z65-kh-Jec"/>
                     </constraints>
                     <connections>
                         <outlet property="cameraTitleLabel" destination="lfm-sA-fAL" id="QDr-0K-AJy"/>

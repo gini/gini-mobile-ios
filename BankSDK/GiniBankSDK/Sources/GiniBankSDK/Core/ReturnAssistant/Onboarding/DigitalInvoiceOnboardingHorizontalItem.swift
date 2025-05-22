@@ -11,11 +11,13 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
     private let firstLabel: UILabel
     private let secondLabel: UILabel
     private let doneButton: MultilineTitleButton
+    private lazy var configuration: GiniBankConfiguration = GiniBankConfiguration.shared
+
     private lazy var infoStackView: UIStackView = {
         let stack = UIStackView(
             arrangedSubviews: [
                 firstLabel,
-                secondLabel,
+                secondLabel
             ]
         )
         stack.spacing = 12
@@ -28,7 +30,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         let stack = UIStackView(
             arrangedSubviews: [
                 infoStackView,
-                doneButton,
+                doneButton
             ]
         )
         stack.spacing = 40
@@ -39,22 +41,28 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             stack.widthAnchor.constraint(equalToConstant: 276),
-            doneButton.widthAnchor.constraint(equalToConstant: 170),
+            doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 170),
             doneButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         return stack
     }()
 
-    private lazy var rightStackViewContainer: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var rightStackViewContainerScrollable: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.alwaysBounceVertical = true
 
-        view.addSubview(rightStackView)
+        scrollView.addSubview(rightStackView)
+
         NSLayoutConstraint.activate([
-            rightStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            rightStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            rightStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            rightStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            rightStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            rightStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            rightStackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
         ])
-        return view
+
+        return scrollView
     }()
 
     private var topImage: UIImage {
@@ -67,16 +75,18 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
     }
 
     private var secondLabelText: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text2",
-                                                        comment: "second label title for digital invoice onboarding screen")
+        let key = "ginibank.digitalinvoice.onboarding.text2"
+        let comment = "second label title for digital invoice onboarding screen"
+        return NSLocalizedStringPreferredGiniBankFormat(key, comment: comment)
     }
 
     private var doneButtonTitle: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.getStartedButton",
-                                                        comment: "get started button title for digital invoice onboarding screen")
+        let key = "ginibank.digitalinvoice.onboarding.getStartedButton"
+        let comment = "get started button title for digital invoice onboarding screen"
+        return NSLocalizedStringPreferredGiniBankFormat(key, comment: comment)
     }
 
-    init(with configuration: GiniBankConfiguration, frame: CGRect = .zero, onDone: @escaping () -> Void) {
+    init(frame: CGRect = .zero, onDone: @escaping () -> Void) {
         topImageView = .init()
 
         firstLabel = .init()
@@ -118,6 +128,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
         doneButton.configure(with: configuration.primaryButtonConfiguration)
+        doneButton.isHidden = shouldHideButton()
     }
 
     @available(*, unavailable)
@@ -130,19 +141,22 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
 
         addSubview(topImageView)
-        addSubview(rightStackViewContainer)
+        addSubview(rightStackViewContainerScrollable)
 
         topImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             topImageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.paddingLarge),
             topImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.paddingLarge),
-            topImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.paddingLarge),
+            topImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
+                                                  constant: Constants.paddingLarge),
             topImageView.widthAnchor.constraint(equalToConstant: 220),
 
-            rightStackViewContainer.topAnchor.constraint(equalTo: topAnchor),
-            rightStackViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor),
-            rightStackViewContainer.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            rightStackViewContainer.leadingAnchor.constraint(equalTo: topImageView.trailingAnchor)
+            // Constraints for the scroll view itself
+            rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
+            rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
+            rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: topImageView.trailingAnchor,
+                                                                       constant: Constants.horizontalSpacingBetweenImageViewAndText),
+            rightStackViewContainerScrollable.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
     }
 
@@ -154,5 +168,10 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
 private extension DigitalInvoiceOnboardingHorizontalItem {
     enum Constants {
         static let paddingLarge: CGFloat = 56
+        static let horizontalSpacingBetweenImageViewAndText: CGFloat = 10
+    }
+
+    func shouldHideButton() -> Bool {
+        return (GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)
     }
 }

@@ -68,14 +68,6 @@ final class ImagePickerViewController: UIViewController {
         fatalError("init(giniConfiguration:) has not been implemented")
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: UIDevice.orientationDidChangeNotification,
-            object: nil
-        )
-    }
-
     // MARK: - UIViewController
 
     override func viewDidLoad() {
@@ -86,14 +78,12 @@ final class ImagePickerViewController: UIViewController {
         setupConstraints()
 
         scrollToBottom()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(collectionView.reloadData),
-            name: UIDevice.orientationDidChangeNotification,
-            object: nil
-        )
     }
-
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        collectionView.reloadData()
+    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if UIDevice.current.isIphone {

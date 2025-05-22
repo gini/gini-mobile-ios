@@ -20,12 +20,10 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet private weak var doneButton: MultilineTitleButton!
     @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
-    private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem(
-        with: GiniBankConfiguration.shared
-    ) { [weak self] in
+    private var navigationBarHeightConstraint: NSLayoutConstraint!
+    private lazy var horizontalItem = DigitalInvoiceOnboardingHorizontalItem() { [weak self] in
         self?.doneAction(nil)
     }
-
     weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
     private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
 
@@ -98,7 +96,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                     horizontalItem.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                     horizontalItem.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                     horizontalItem.topAnchor.constraint(equalTo: view.topAnchor),
-                    horizontalItem.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                    horizontalItem.bottomAnchor.constraint(equalTo: getBottomAnchorForLandscapeView())
                 ])
             } else {
                 horizontalItem.removeFromSuperview()
@@ -174,13 +172,14 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                 view.addSubview(navigationBar)
 
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
+                navigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
 
                 NSLayoutConstraint.activate([
                     navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                     navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                     navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                    navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight),
-                    navigationBar.topAnchor.constraint(equalTo: scrollView.bottomAnchor)
+                    navigationBar.topAnchor.constraint(equalTo: scrollView.bottomAnchor),
+                    navigationBarHeightConstraint
                 ])
             }
         }
@@ -200,6 +199,10 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+
+        if GiniBankConfiguration.shared.bottomNavigationBarEnabled {
+            navigationBarHeightConstraint.constant = getBottomBarHeight()
+        }
         guard UIDevice.current.isIpad else { return }
         coordinator.animate(alongsideTransition: { [weak self] _ in
             guard let self = self else { return }
@@ -226,6 +229,26 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
 extension DigitalInvoiceOnboardingViewController {
     private enum Constants {
-        static let navigationBarHeight: CGFloat = 114
+        static let bottomBarHeightPortrait: CGFloat = 110
+        static let bottomBarHeightLandscape: CGFloat = 64
+    }
+
+    private func getBottomAnchorForLandscapeView() -> NSLayoutYAxisAnchor {
+        if let _ = GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter {
+            return bottomNavigationBar?.topAnchor ?? view.bottomAnchor
+        } else {
+            return view.bottomAnchor
+        }
+    }
+
+    func getBottomBarHeight() -> CGFloat {
+        if isiPhoneAndLandscape() {
+            return Constants.bottomBarHeightLandscape
+        }
+        return Constants.bottomBarHeightPortrait
+    }
+
+    func isiPhoneAndLandscape() -> Bool {
+        return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
     }
 }

@@ -48,12 +48,22 @@ class ErrorScreenViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
+    
+    private lazy var navigationBarHeightConstraint: NSLayoutConstraint? = {
+        guard let navbar = bottomNavigationBar else {
+            return nil
+        }
+        let constraint = navbar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
+        return constraint
+    }()
 
     let viewModel: BottomButtonsViewModel
     private let errorType: ErrorType
     private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var buttonsBottomConstraint: NSLayoutConstraint?
+    private var bottomNavigationBar: UIView?
+    
     private var numberOfButtons: Int {
         return [
             viewModel.isEnterManuallyHidden(),
@@ -90,6 +100,11 @@ class ErrorScreenViewController: UIViewController {
         setupView()
 
         sendAnalyticsScreenShown()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        navigationBarHeightConstraint?.constant = getBottomBarHeight()
     }
 
     private func sendAnalyticsScreenShown() {
@@ -172,6 +187,7 @@ class ErrorScreenViewController: UIViewController {
             }
 
             if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+                bottomNavigationBar = navigationBar
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
                 view.addSubview(navigationBar)
 
@@ -187,14 +203,16 @@ class ErrorScreenViewController: UIViewController {
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         buttonsBottomConstraint?.isActive = false
 
-        NSLayoutConstraint.activate([
-            buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
-                                                constant: -GiniMargins.margin),
-            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: Constants.navigationBarHeight)
-        ])
+        if let heightConstraint = navigationBarHeightConstraint {
+            NSLayoutConstraint.activate([
+                buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
+                                                    constant: -GiniMargins.margin),
+                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                heightConstraint
+            ])
+        }
 
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
@@ -323,8 +341,10 @@ class ErrorScreenViewController: UIViewController {
             errorContent.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor)
         ])
     }
+}
 
-    private enum Constants {
+private extension ErrorScreenViewController {
+    enum Constants {
         static let singleButtonHeight: CGFloat = 50
         static let twoButtonsHeight: CGFloat = 112
         static let textContentMargin: CGFloat = 24
@@ -334,6 +354,18 @@ class ErrorScreenViewController: UIViewController {
         static let sidePadding: CGFloat = 24
         static let iPadWidthMultiplier: CGFloat = 0.7
         static let iPadButtonsWidth: CGFloat = 280
-        static let navigationBarHeight: CGFloat = 114
+        static let navigationBarHeight: CGFloat = 110
+        static let navigationBarHeightLandscape: CGFloat = 64
+    }
+
+    func getBottomBarHeight() -> CGFloat {
+        if isiPhoneAndLandscape() {
+            return Constants.navigationBarHeightLandscape
+        }
+        return Constants.navigationBarHeight
+    }
+
+    func isiPhoneAndLandscape() -> Bool {
+        return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
     }
 }

@@ -14,27 +14,27 @@
             <rect key="frame" x="0.0" y="0.0" width="458" height="114"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MkZ-Xy-A01">
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MkZ-Xy-A01">
                     <rect key="frame" x="9.9999999999999964" y="0.0" width="53.666666666666657" height="114"/>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" title="Left">
                         <color key="baseForegroundColor" red="0.19215688110000001" green="0.45490193369999998" blue="0.85882353779999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </buttonConfiguration>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom Bottom Bar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D9l-ai-Ajo">
-                    <rect key="frame" x="154.33333333333331" y="46.666666666666664" width="149.33333333333331" height="20.999999999999993"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Custom" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D9l-ai-Ajo">
+                    <rect key="frame" x="391.66666666666669" y="47.333333333333336" width="56.333333333333314" height="19.333333333333336"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="zmE-ji-fmY"/>
             <constraints>
+                <constraint firstItem="zmE-ji-fmY" firstAttribute="trailing" secondItem="D9l-ai-Ajo" secondAttribute="trailing" constant="10" id="61F-fe-f52"/>
                 <constraint firstAttribute="bottom" secondItem="MkZ-Xy-A01" secondAttribute="bottom" id="L0b-pz-JGJ"/>
                 <constraint firstItem="MkZ-Xy-A01" firstAttribute="top" secondItem="blv-Zb-zOa" secondAttribute="top" id="QSb-Ud-aXR"/>
                 <constraint firstItem="MkZ-Xy-A01" firstAttribute="leading" secondItem="zmE-ji-fmY" secondAttribute="leading" constant="10" id="b39-Bf-EfK"/>
-                <constraint firstItem="D9l-ai-Ajo" firstAttribute="centerX" secondItem="blv-Zb-zOa" secondAttribute="centerX" id="fDL-sj-XnI"/>
-                <constraint firstItem="D9l-ai-Ajo" firstAttribute="centerY" secondItem="blv-Zb-zOa" secondAttribute="centerY" id="gMa-hy-nzj"/>
+                <constraint firstItem="D9l-ai-Ajo" firstAttribute="centerY" secondItem="MkZ-Xy-A01" secondAttribute="centerY" id="b5B-R2-SmL"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
