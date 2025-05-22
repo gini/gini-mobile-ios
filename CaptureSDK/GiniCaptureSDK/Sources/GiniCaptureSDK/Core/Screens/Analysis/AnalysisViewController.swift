@@ -159,7 +159,7 @@ import UIKit
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        stopCaptureSuggestions()
+        removeCaptureSuggestions()
     }
 
     public override func viewDidLayoutSubviews() {
@@ -305,11 +305,11 @@ import UIKit
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
         captureSuggestions = CaptureSuggestionsView(superView: view,
-                                                        bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+                                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
         captureSuggestions?.start()
     }
     
-    private func stopCaptureSuggestions() {
+    private func removeCaptureSuggestions() {
         captureSuggestions?.removeFromSuperview()
         captureSuggestions = nil
     }

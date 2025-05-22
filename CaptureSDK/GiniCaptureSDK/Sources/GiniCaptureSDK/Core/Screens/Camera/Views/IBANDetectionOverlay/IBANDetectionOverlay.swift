@@ -74,10 +74,12 @@ final class IBANDetectionOverlay: UIView {
     }
     
     private func postVoiceOverAnnouncementIfNeeded(_ title: String) {
-        if previousTitle != title {
-            previousTitle = title
-            UIAccessibility.post(notification: .announcement, argument: title)
+        guard previousTitle != title else {
+            return
         }
+        
+        previousTitle = title
+        UIAccessibility.post(notification: .announcement, argument: title)
     }
 
     private enum Constants {
