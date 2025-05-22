@@ -172,9 +172,6 @@ private extension DigitalInvoiceOnboardingHorizontalItem {
     }
 
     func shouldHideButton() -> Bool {
-        if let _ = GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter {
-            return true
-        }
-        return false
+        return (GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)
     }
 }
