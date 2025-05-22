@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniCaptureSDK
 
 protocol SkontoAmountViewDelegate: AnyObject {
     func textFieldPriceChanged(editedText: String)
@@ -15,6 +16,8 @@ class SkontoAmountToPayView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = titleLabelText
+        label.numberOfLines = 1
+        label.enableScaling()
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true

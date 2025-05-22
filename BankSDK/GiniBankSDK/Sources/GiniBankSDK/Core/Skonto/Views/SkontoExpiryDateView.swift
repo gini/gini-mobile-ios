@@ -15,6 +15,8 @@ class SkontoExpiryDateView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = title
+        label.numberOfLines = 1
+        label.enableScaling()
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
