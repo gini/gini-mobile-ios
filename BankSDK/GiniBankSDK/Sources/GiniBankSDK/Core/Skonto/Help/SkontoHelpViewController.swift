@@ -53,8 +53,7 @@ final class SkontoHelpViewController: UIViewController {
         return view
     }()
 
-    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide
-                                                                                            .bottomAnchor)
+    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     private var navigationBarBottomAdapter: SkontoHelpNavigationBarBottomAdapter?
     private var navigationBarHeightConstraint: NSLayoutConstraint?
 
