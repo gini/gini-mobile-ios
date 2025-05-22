@@ -49,7 +49,7 @@ class ErrorScreenViewController: UIViewController {
         return scrollView
     }()
     
-    private lazy var navigationBarHeightConstraint: NSLayoutConstraint? = {
+    lazy var navigationBarHeightConstraint: NSLayoutConstraint? = {
         guard let navbar = bottomNavigationBar else {
             return nil
         }
@@ -203,16 +203,15 @@ class ErrorScreenViewController: UIViewController {
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         buttonsBottomConstraint?.isActive = false
 
-        if let heightConstraint = navigationBarHeightConstraint {
-            NSLayoutConstraint.activate([
-                buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
-                                                    constant: -GiniMargins.margin),
-                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                heightConstraint
-            ])
-        }
+
+        NSLayoutConstraint.activate([
+            buttonsView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor,
+                                                constant: -GiniMargins.margin),
+            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBarHeightConstraint!
+        ])
 
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()

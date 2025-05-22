@@ -40,7 +40,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Enable/disable the bottom navigation bar.
      */
-    public var bottomNavigationBarEnabled: Bool = true
+    public var bottomNavigationBarEnabled: Bool = false
 
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
