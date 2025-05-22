@@ -111,7 +111,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     private func setupView() {
         title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.screen.title",
                                                          comment: "Skonto")
-        let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
+        let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.screentitle",
                                                                        comment: "Back")
         edgesForExtendedLayout = []
         view.backgroundColor = .giniColorScheme().background.primary.uiColor()
