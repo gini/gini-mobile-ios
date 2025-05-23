@@ -15,7 +15,7 @@ protocol SkontoExpiryDateViewDelegate: AnyObject {
     func expiryDateTextFieldTapped()
 }
 
-class SkontoExpiryDateView: UIView {
+class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = title
@@ -59,6 +59,21 @@ class SkontoExpiryDateView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
+
+    override var inputAccessoryView: UIView? {
+        get {
+            textField.inputAccessoryView
+        }
+
+        set {
+            textField.inputAccessoryView = newValue
+        }
+    }
+
+    override var isFirstResponder: Bool {
+        textField.isFirstResponder
+    }
+
     weak var delegate: SkontoExpiryDateViewDelegate?
 
     init(viewModel: SkontoViewModel) {
@@ -69,6 +84,14 @@ class SkontoExpiryDateView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        textField.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        textField.resignFirstResponder()
     }
 
     private func setupView() {
