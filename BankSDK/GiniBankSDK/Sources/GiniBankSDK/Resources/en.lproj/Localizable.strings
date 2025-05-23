@@ -21,7 +21,7 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Back";
 
 "ginibank.digitalinvoice.screentitle" = "Digital invoice";
-"ginibank.digitalinvoice.paybutton.title" = "Confirm and continue";
+"ginibank.digitalinvoice.paybutton.title" = "Confirm and proceed";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Pay";
 "ginibank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Pay %d out of %d";
@@ -97,7 +97,7 @@
 "ginibank.skonto.screen.title" = "Skonto discount";
 "ginibank.skonto.backbutton.title" = "Camera";
 "ginibank.skonto.active" = "• Active";
-"ginibank.skonto.proceedbutton.title" = "Confirm and continue";
+"ginibank.skonto.proceedbutton.title" = "Confirm and proceed";
 
 "ginibank.skonto.withdiscount.title" = "With Skonto discount";
 "ginibank.skonto.withdiscount.price.title" = "Final amount";
