@@ -134,6 +134,7 @@ final class SkontoViewController: UIViewController {
         setupView()
         setupConstraints()
         setupKeyboardObservers()
+        setupInputAccessoryView(for: [withDiscountPriceView, expiryDateView])
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -649,5 +650,20 @@ private extension SkontoViewController {
                                                                           comment: "Skonto discount")
         static let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
                                                                               comment: "Back")
+    }
+}
+
+extension SkontoViewController: GiniInputAccessoryViewDelegate {
+
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectPrevious field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectNext field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryViewDidCancel(_ view: GiniInputAccessoryView) {
+        endEditing()
     }
 }

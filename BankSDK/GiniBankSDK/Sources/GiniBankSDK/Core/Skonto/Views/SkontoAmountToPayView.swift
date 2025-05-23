@@ -100,6 +100,25 @@ class SkontoAmountToPayView: UIView {
     private let currencyLabelText: String
     private var isEditable: Bool
     private let configuration = GiniBankConfiguration.shared
+
+    /// This is needed to avoid the circular reference between this element and its container
+    private var _inputAccessoryView: UIView?
+
+    override var inputAccessoryView: UIView? {
+        get {
+            _inputAccessoryView
+        }
+
+        set {
+            _inputAccessoryView = newValue
+            textField.inputAccessoryView = newValue
+        }
+    }
+
+    override var isFirstResponder: Bool {
+        textField.isFirstResponder
+    }
+
     weak var delegate: SkontoAmountViewDelegate?
 
     init(title: String,
@@ -115,6 +134,14 @@ class SkontoAmountToPayView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        textField.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        textField.resignFirstResponder()
     }
 
     private func setupView() {
