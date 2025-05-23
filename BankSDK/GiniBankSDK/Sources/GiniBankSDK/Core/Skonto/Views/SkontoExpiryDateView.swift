@@ -81,11 +81,11 @@ class SkontoExpiryDateView: UIView {
         containerView.addSubview(calendarImageView)
         setupConstraints()
         textField.addTarget(self, action: #selector(textFieldTapped), for: .editingDidBegin)
-        
+
         if !hasExternalKeyboard() {
             configureDatePicker()
         }
-        
+
         bindViewModel()
     }
 
@@ -162,12 +162,12 @@ class SkontoExpiryDateView: UIView {
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         textField.inputView = datePicker
     }
-    
+
     func hasExternalKeyboard() -> Bool {
         if #available(iOS 14.0, *) {
             return GCKeyboard.coalesced?.keyboardInput != nil
         }
-        
+
         //TODO: For versions lower than iOS14 we need to realize how to solve this.
         return false
     }

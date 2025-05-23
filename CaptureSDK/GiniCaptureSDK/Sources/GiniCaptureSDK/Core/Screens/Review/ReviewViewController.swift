@@ -609,7 +609,7 @@ extension ReviewViewController {
 
         collectionView.scrollToItem(at: indexPath, at: scrollPosition, animated: true)
     }
-    
+
     @objc
     private func pageControlSelectionAction(_ sender: UIPageControl) {
         let index = IndexPath(item: sender.currentPage, section: 0)

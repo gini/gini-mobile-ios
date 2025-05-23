@@ -141,7 +141,7 @@ class SkontoDocumentPreviewView: UIButton {
             chevronImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
-    
+
     private func configureAccessibility() {
         isAccessibilityElement = true
         addTarget(self, action: #selector(documentPreviewTapped), for: .touchUpInside)

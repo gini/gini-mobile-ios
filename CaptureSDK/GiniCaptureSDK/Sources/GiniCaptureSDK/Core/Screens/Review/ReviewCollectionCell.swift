@@ -41,7 +41,7 @@ final class ReviewCollectionCell: UICollectionViewCell {
         button.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.delete", comment: "Delete")
         return button
     }()
-    
+
     override var canBecomeFocused: Bool {
         false
     }
