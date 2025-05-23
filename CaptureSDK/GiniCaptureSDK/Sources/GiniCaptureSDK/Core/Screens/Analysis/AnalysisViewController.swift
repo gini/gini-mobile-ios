@@ -249,6 +249,7 @@ import UIKit
     private func showEducationLoadingMessage() {
         let loadingItems = EducationFlowContent.captureInvoice.items
         let viewModel = QREducationLoadingViewModel(items: loadingItems)
+        loadingViewModel = viewModel
         let customLoadingView = QREducationLoadingView(viewModel: viewModel)
         customLoadingView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(customLoadingView)
@@ -278,6 +279,10 @@ import UIKit
      */
     public func waitUntilAnimationCompleted() async {
         await withCheckedContinuation { continuation in
+            guard loadingViewModel != nil else {
+                continuation.resume()
+                return
+            }
             animationCompletionContinuations.append(continuation)
         }
     }
