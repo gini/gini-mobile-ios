@@ -38,7 +38,6 @@ final class ReviewCollectionCell: UICollectionViewCell {
         button.isExclusiveTouch = true
         button.isHidden = true
         button.isAccessibilityElement = true
-        button.accessibilityTraits = .button
         button.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.delete", comment: "Delete")
         return button
     }()
@@ -51,6 +50,9 @@ final class ReviewCollectionCell: UICollectionViewCell {
         documentImageView.layer.borderColor = isActive ? UIColor.GiniCapture.accent1.cgColor : UIColor.clear.cgColor
         documentImageView.layer.borderWidth = isActive ? Constants.documentBorderWidth : 0
         deleteButton.isHidden = !isActive
+        
+        /// This is needed to specify the order of the accessible elements. But it is still partially working. A task will be created
+        /// to investigate more how to enable the detection of overlaping elements.
         accessibilityElements = isActive ? [documentImageView, deleteButton] : [documentImageView]
     }
 

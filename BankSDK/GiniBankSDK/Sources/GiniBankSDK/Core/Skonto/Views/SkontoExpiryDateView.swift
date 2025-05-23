@@ -6,6 +6,9 @@
 
 import UIKit
 import GiniCaptureSDK
+
+/// This import is needed to check if a physical keyboard is connected and active.
+/// https://developer.apple.com/documentation/gamecontroller/gckeyboard
 import GameController
 
 protocol SkontoExpiryDateViewDelegate: AnyObject {
