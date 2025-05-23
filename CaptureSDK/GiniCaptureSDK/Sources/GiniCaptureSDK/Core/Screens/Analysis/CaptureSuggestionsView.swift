@@ -135,17 +135,17 @@ extension CaptureSuggestionsView {
     func start(after seconds: TimeInterval = 4) {
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: { [weak self] in
             guard let self = self, let superview = self.superview else { return }
-            self.bottomConstraint.constant = UIDevice.current.isIpad ? -28 : -24
-            self.alpha = 1
-            UIView.animate(withDuration: 0.5, animations: {
+            bottomConstraint.constant = UIDevice.current.isIpad ? -28 : -24
+            alpha = 1
+            UIView.animate(withDuration: 0.5, animations: { [weak self] in
                 superview.layoutIfNeeded()
                 
-                if let title = self.suggestionContainer?.titleLabel.text,
-                    let description = self.suggestionContainer?.descriptionLabel.text {
+                if let title = self?.suggestionContainer?.titleLabel.text,
+                    let description = self?.suggestionContainer?.descriptionLabel.text {
                     UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
                 }
-            }, completion: { _ in
-                self.changeView(toState: .hidden)
+            }, completion: { [weak self] _ in
+                self?.changeView(toState: .hidden)
             })
         })
     }
