@@ -210,7 +210,7 @@ class SkontoProceedContainerView: UIView {
     }
 
     private func adjustLayoutForAccessibility() {
-        guard !UIDevice.current.isIpad else { return }
+        guard UIDevice.current.isIphone else { return }
 
         let isAccessibilityCategory = UIApplication.shared.preferredContentSizeCategory >= .accessibilityMedium
         // Later this will be factor and use the generic methods that are inside UIDevice extension
