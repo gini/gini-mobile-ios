@@ -32,9 +32,9 @@ extension UILabel {
      - Ensures the font never shrinks below 10pt.
      - Supports Dynamic Type for accessibility.
      */
-    public func enableScaling() {
+    public func enableScaling(minimumScaleFactor: CGFloat = 10) {
         adjustsFontSizeToFitWidth = true
-        minimumScaleFactor = 10 / font.pointSize
+        self.minimumScaleFactor = minimumScaleFactor / font.pointSize
         adjustsFontForContentSizeCategory = true
     }
 }
