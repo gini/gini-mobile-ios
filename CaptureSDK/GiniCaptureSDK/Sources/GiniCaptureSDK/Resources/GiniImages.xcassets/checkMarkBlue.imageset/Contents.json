@@ -3,6 +3,16 @@
     {
       "filename" : "checkMarkBlue.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "checkMarkBlueDark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

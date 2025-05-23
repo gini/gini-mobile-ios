@@ -164,7 +164,7 @@ private extension TransactionCell {
         static let secondaryFont: UIFont = UIFont.systemFont(ofSize: 13)
         static let boldFont: UIFont = .boldSystemFont(ofSize: 16)
         static let primaryTextColor: UIColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        static let secondaryTextColor: UIColor = GiniColor(light: .GiniBank.light6, dark: .GiniBank.dark7).uiColor()
+        static let secondaryTextColor: UIColor = GiniColor(light: .GiniBank.light6, dark: .GiniBank.light6).uiColor()
         static let recipientInitialsBackgroundColor: UIColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
 
         // StackView Spacing

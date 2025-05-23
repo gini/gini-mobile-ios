@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "globe.pdf",
+      "filename" : "errorGlobe.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "errorGlobeDark.pdf",
       "idiom" : "universal"
     }
   ],

@@ -159,7 +159,7 @@ class ErrorScreenViewController: UIViewController {
     private func configureErrorContent() {
         errorContent.text = errorType.content()
         errorContent.font = giniConfiguration.textStyleFonts[.body]
-        errorContent.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.dark7).uiColor()
+        errorContent.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.light6).uiColor()
     }
 
     private func configureButtons() {

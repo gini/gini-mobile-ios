@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Onboarding.pdf",
+      "filename" : "onboardingMultiPages.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Onboarding 1.pdf",
+      "filename" : "onboardingMultiPagesDark.pdf",
       "idiom" : "universal"
     }
   ],

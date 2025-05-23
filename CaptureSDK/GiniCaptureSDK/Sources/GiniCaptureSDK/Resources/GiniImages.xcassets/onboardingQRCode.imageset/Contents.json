@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Onboarding-3.pdf",
+      "filename" : "onboardingQRCode.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Onboarding.pdf",
+      "filename" : "onboardingQRCodeDark.pdf",
       "idiom" : "universal"
     }
   ],

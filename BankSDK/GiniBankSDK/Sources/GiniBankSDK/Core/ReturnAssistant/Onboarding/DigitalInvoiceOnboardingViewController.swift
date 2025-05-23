@@ -140,7 +140,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     private func setupSecondLabel(with configuration: GiniBankConfiguration) {
         secondLabel.text = secondLabelText
         secondLabel.font = configuration.textStyleFonts[.subheadline]
-        secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7).uiColor()
+        secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
         secondLabel.adjustsFontForContentSizeCategory = true
     }
 

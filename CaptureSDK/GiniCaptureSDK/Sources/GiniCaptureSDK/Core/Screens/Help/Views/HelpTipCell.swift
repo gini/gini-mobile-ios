@@ -40,8 +40,8 @@ final class HelpTipCell: UITableViewCell, HelpCell {
         descriptionLabel.isAccessibilityElement = true
         descriptionLabel.font = configuration.textStyleFonts[.subheadline]
         descriptionLabel.adjustsFontForContentSizeCategory = true
-        descriptionLabel.textColor = GiniColor(light: .GiniCapture.dark7,
-                                               dark: .GiniCapture.dark7).uiColor()
+        descriptionLabel.textColor = GiniColor(light: .GiniCapture.dark6,
+                                               dark: .GiniCapture.light6).uiColor()
 
         separatorView.backgroundColor = GiniColor(light: .GiniCapture.light3,
                                                   dark: .GiniCapture.dark4).uiColor()
