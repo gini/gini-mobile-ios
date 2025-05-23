@@ -67,6 +67,11 @@ final class CameraViewController: UIViewController {
     @IBOutlet weak var iPadBottomPaneConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
     @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
+
+    private var isIphoneLandscape: Bool {
+        UIDevice.current.isIphone && UIDevice.current.isLandscape
+    }
+
     /**
      Designated initializer for the `CameraViewController` which allows
      to set the `GiniConfiguration for the camera screen`.
@@ -318,8 +323,8 @@ final class CameraViewController: UIViewController {
     }
 
     private func configureCameraPaneButtons() {
-        cameraPane.setupAuthorization(isHidden: UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape)
-        cameraPaneHorizontal?.setupAuthorization(isHidden: !(UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape))
+        cameraPane.setupAuthorization(isHidden: isIphoneLandscape)
+        cameraPaneHorizontal?.setupAuthorization(isHidden: !isIphoneLandscape)
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
             self?.sendGiniAnalyticsEventCapture()
@@ -363,8 +368,10 @@ final class CameraViewController: UIViewController {
         }
         cameraButtonsViewModel.imagesUpdated = { [weak self] images in
             if let lastImage = images.last {
-                self?.cameraPane.thumbnailView.updateStackStatus(to: .filled(count: images.count, lastImage: lastImage))
-                self?.cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: .filled(count: images.count, lastImage: lastImage))
+                self?.cameraPane.thumbnailView.updateStackStatus(to: .filled(count: images.count,
+                                                                             lastImage: lastImage))
+                self?.cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: .filled(count: images.count,
+                                                                                        lastImage: lastImage))
             } else {
                 self?.cameraPane.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
                 self?.cameraPaneHorizontal?.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
@@ -717,9 +724,11 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
         cameraLensSwitcherView.isHidden = true
 
         cameraPreviewViewController.updatePreviewViewOrientation()
+        let isPortrait = currentInterfaceOrientation.isPortrait
+
         UIView.animate(withDuration: 1.0) {
-            self.cameraPane.setupAuthorization(isHidden: !(UIDevice.current.isIpad || self.currentInterfaceOrientation.isPortrait))
-            self.cameraPaneHorizontal?.setupAuthorization(isHidden: !(UIDevice.current.isIphone && self.currentInterfaceOrientation.isLandscape))
+            self.cameraPane.setupAuthorization(isHidden: !(UIDevice.current.isIpad || isPortrait))
+            self.cameraPaneHorizontal?.setupAuthorization(isHidden: !self.isIphoneLandscape)
             self.cameraPreviewViewController.previewView.alpha = 1
         }
     }

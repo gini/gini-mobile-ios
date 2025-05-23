@@ -111,7 +111,7 @@
 
 "ginibank.skonto.total.title" = "Total";
 "ginibank.skonto.total.savings" = "Save %@";
-"ginibank.skonto.total.skontopercentage" = "%@ Skonto discount";
+"ginibank.skonto.total.skontopercentage" = "%@ Skonto";
 
 "ginibank.skonto.infobanner.default.message" = "Pay in %@: receive %@ Skonto discount";
 "ginibank.skonto.infobanner.edgecase.today.message" = "Pay today: receive %@ Skonto discount";

@@ -53,6 +53,7 @@ final class DocumentPagesFooterView: UIView {
         for item in items {
             let label = UILabel()
             label.text = item
+            label.numberOfLines = 0
             label.font = configuration.textStyleFonts[.footnote]
             label.textColor = .GiniBank.light1
             label.translatesAutoresizingMaskIntoConstraints = false
