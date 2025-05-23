@@ -179,14 +179,14 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     // MARK: - Display the page number in page control of collection view cell
     private func updateCurrentPage(_ scrollView: UIScrollView) {
         guard scrollView.frame.width > 0 else { return }
-        
+
         let pageWidth = scrollView.frame.width
         let contentOffsetX = scrollView.contentOffset.x
         let pageIndex = Int(round(contentOffsetX / pageWidth))
         currentPageIndex = max(0, pageIndex)
         delegate?.didScroll(pageIndex: currentPageIndex)
     }
-    
+
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         isProgrammaticScroll = false
     }
@@ -195,7 +195,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         isProgrammaticScroll = false
         updateCurrentPage(scrollView)
     }
-    
+
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         updateCurrentPage(scrollView)
     }

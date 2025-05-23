@@ -130,7 +130,7 @@ class OnboardingViewController: UIViewController {
             pagesCollection.reloadData()
         }
     }
-    
+
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
 

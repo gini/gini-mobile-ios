@@ -56,14 +56,14 @@ final class IBANDetectionOverlay: UIView {
                                                                       comment: "Multiple IBAN detected")
             title = "\(ibanDetectedString)\n\n\(takePhotoString)"
         }
-        
+
         textContainer.setTitle(title)
         postVoiceOverAnnouncementIfNeeded(title)
     }
 
     func configureOverlay(hidden: Bool) {
         textContainer.isHidden = hidden
-        
+
         if hidden {
             previousTitle = nil
         }
@@ -72,12 +72,12 @@ final class IBANDetectionOverlay: UIView {
     func viewWillDisappear() {
         configureOverlay(hidden: true)
     }
-    
+
     private func postVoiceOverAnnouncementIfNeeded(_ title: String) {
         guard previousTitle != title else {
             return
         }
-        
+
         previousTitle = title
         UIAccessibility.post(notification: .announcement, argument: title)
     }

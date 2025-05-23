@@ -48,7 +48,7 @@ class ErrorScreenViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
-    
+
     private lazy var navigationBarHeightConstraint: NSLayoutConstraint? = {
         guard let navbar = bottomNavigationBar else {
             return nil
@@ -63,7 +63,7 @@ class ErrorScreenViewController: UIViewController {
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var buttonsBottomConstraint: NSLayoutConstraint?
     private var bottomNavigationBar: UIView?
-    
+
     private var numberOfButtons: Int {
         return [
             viewModel.isEnterManuallyHidden(),

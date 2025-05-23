@@ -138,10 +138,10 @@ import UIKit
         // Configure view hierachy
         setupView()
     }
-    
+
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         if document is GiniImageDocument {
             showCaptureSuggestions(giniConfiguration: giniConfiguration)
         }
@@ -155,10 +155,10 @@ import UIKit
         GiniAnalyticsManager.registerSuperProperties([.documentType: documentTypeAnalytics])
         GiniAnalyticsManager.trackScreenShown(screenName: .analysis)
     }
-    
+
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+
         removeCaptureSuggestions()
     }
 
@@ -308,7 +308,7 @@ import UIKit
                                                     bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
         captureSuggestions?.start()
     }
-    
+
     private func removeCaptureSuggestions() {
         captureSuggestions?.removeFromSuperview()
         captureSuggestions = nil
