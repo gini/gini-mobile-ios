@@ -67,6 +67,11 @@ final class CameraViewController: UIViewController {
     @IBOutlet weak var iPadBottomPaneConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
     @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
+
+    private var isIphoneLandscape: Bool {
+        UIDevice.current.isIphone && UIDevice.current.isLandscape
+    }
+
     /**
      Designated initializer for the `CameraViewController` which allows
      to set the `GiniConfiguration for the camera screen`.
@@ -318,7 +323,6 @@ final class CameraViewController: UIViewController {
     }
 
     private func configureCameraPaneButtons() {
-        let isIphoneLandscape = UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape
         cameraPane.setupAuthorization(isHidden: isIphoneLandscape)
         cameraPaneHorizontal?.setupAuthorization(isHidden: !isIphoneLandscape)
         configureLeftButtons()
@@ -721,11 +725,10 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
 
         cameraPreviewViewController.updatePreviewViewOrientation()
         let isPortrait = currentInterfaceOrientation.isPortrait
-        let isLandscapeOniPhone = UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape
 
         UIView.animate(withDuration: 1.0) {
             self.cameraPane.setupAuthorization(isHidden: !(UIDevice.current.isIpad || isPortrait))
-            self.cameraPaneHorizontal?.setupAuthorization(isHidden: !isLandscapeOniPhone)
+            self.cameraPaneHorizontal?.setupAuthorization(isHidden: !self.isIphoneLandscape)
             self.cameraPreviewViewController.previewView.alpha = 1
         }
     }
