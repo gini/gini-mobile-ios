@@ -44,23 +44,20 @@ final class QREducationLoadingView: UIView {
         return label
     }()
 
-    private lazy var analysingLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = giniConfiguration.textStyleFonts[.body]
-        label.textColor = style.analysingTextColor
-        label.adjustsFontForContentSizeCategory = true
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.isAccessibilityElement = true
-        return label
+    private lazy var animatedSuffixLabelView: AnimatedSuffixLabelView = {
+        let view = AnimatedSuffixLabelView(
+            baseText: LocalizedStrings.loadingBaseText,
+            font: giniConfiguration.textStyleFonts[.body] ?? .systemFont(ofSize: 17),
+            textColor: style.analysingTextColor
+        )
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     init(viewModel: QREducationLoadingViewModel, style: Style = Style()) {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
-        setupViews()
         bind()
     }
 
@@ -68,10 +65,16 @@ final class QREducationLoadingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func removeFromSuperview() {
+        super.removeFromSuperview()
+        animatedSuffixLabelView.stopAnimating()
+    }
+
     private func setupViews() {
         addSubview(imageView)
         addSubview(textLabel)
-        addSubview(analysingLabel)
+        addSubview(animatedSuffixLabelView)
+        animatedSuffixLabelView.startAnimating()
 
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
@@ -82,18 +85,26 @@ final class QREducationLoadingView: UIView {
             textLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             textLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            analysingLabel.topAnchor.constraint(greaterThanOrEqualTo: imageView.bottomAnchor,
+            animatedSuffixLabelView.topAnchor.constraint(greaterThanOrEqualTo: imageView.bottomAnchor,
                                                 constant: Constants.imageToAnalysingSpacing),
-            analysingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            analysingLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            animatedSuffixLabelView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            animatedSuffixLabelView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            analysingLabel.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
+            animatedSuffixLabelView.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
                                                 constant: Constants.minTextToAnalysingSpacing),
-            analysingLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            animatedSuffixLabelView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
     private func bind() {
+        viewModel.$currentItem
+            .compactMap { $0 }
+            .prefix(1)
+            .sink { [weak self] _ in
+                self?.setupViews()
+            }
+            .store(in: &cancellables)
+
         viewModel.$currentItem
             .compactMap { $0 }
             .sink { [weak self] item in
@@ -106,10 +117,6 @@ final class QREducationLoadingView: UIView {
         imageView.image = model.image
         textLabel.text = model.text
         textLabel.accessibilityLabel = model.text
-        let analysingText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
-                                                             comment: "analyzing")
-        analysingLabel.text = analysingText
-        analysingLabel.accessibilityLabel = analysingText
     }
 }
 
@@ -118,5 +125,12 @@ private extension QREducationLoadingView {
         static let imageToTextSpacing: CGFloat = 16
         static let imageToAnalysingSpacing: CGFloat = 98
         static let minTextToAnalysingSpacing: CGFloat = 16
+    }
+}
+
+private extension QREducationLoadingView {
+    enum LocalizedStrings {
+        static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
+                                                                      comment: "analyzing")
     }
 }
