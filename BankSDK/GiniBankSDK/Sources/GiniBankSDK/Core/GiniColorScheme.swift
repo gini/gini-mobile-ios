@@ -38,7 +38,7 @@ struct GiniColorScheme {
         var background: GiniColor
         var border: GiniColor
     }
-    
+
     struct Container {
         var background: GiniColor
     }
@@ -170,30 +170,37 @@ extension UIColor {
 
     private static func createBackgroundColorScheme() -> GiniColorScheme.Background {
         return GiniColorScheme.Background(
-            primary: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2),
-            secondary: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2)
+            primary: GiniColor(light: .GiniBank.light2,
+                               dark: .GiniBank.dark2),
+            secondary: GiniColor(light: .GiniBank.light1,
+                                 dark: .GiniBank.dark2)
         )
     }
 
     private static func createActionSheetColorScheme() -> GiniColorScheme.ActionSheet {
         return GiniColorScheme.ActionSheet(
-            buttonBackground: GiniColor(light: .GiniBank.light1.withAlphaComponent(0.72), dark: .GiniBank.dark5.withAlphaComponent(0.5)),
+            buttonBackground: GiniColor(light: .GiniBank.light1.withAlphaComponent(0.72),
+                                        dark: .GiniBank.dark5.withAlphaComponent(0.5)),
             cancelButtonBackground: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3)
         )
     }
 
     private static func createAlertColorScheme() -> GiniColorScheme.Alert {
         return GiniColorScheme.Alert(
-            background: GiniColor(light: .GiniBank.light2.withAlphaComponent(0.8), dark: .GiniBank.dark3.withAlphaComponent(0.8)),
+            background: GiniColor(light: .GiniBank.light2.withAlphaComponent(0.8),
+                                  dark: .GiniBank.dark3.withAlphaComponent(0.8)),
             divider: GiniColor(light: .GiniBank.light6, dark: .GiniBank.dark4.withAlphaComponent(0.65))
         )
     }
 
     private static func createNavigationBarColorScheme() -> GiniColorScheme.NavigationBar {
         return GiniColorScheme.NavigationBar(
-            background: GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2),
-            action: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
-            navigation: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1)
+            background: GiniColor(light: .GiniBank.light2,
+                                  dark: .GiniBank.dark2),
+            action: GiniColor(light: .GiniBank.accent1,
+                              dark: .GiniBank.accent1),
+            navigation: GiniColor(light: .GiniBank.accent1,
+                                  dark: .GiniBank.accent1)
         )
     }
 
@@ -245,7 +252,8 @@ extension UIColor {
     private static func createPageControllerColorScheme() -> GiniColorScheme.PageController {
         return GiniColorScheme.PageController(
             selected: GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1),
-            unselected: GiniColor(light: .GiniBank.dark1.withAlphaComponent(0.3), dark: .GiniBank.light1.withAlphaComponent(0.3))
+            unselected: GiniColor(light: .GiniBank.dark1.withAlphaComponent(0.3),
+                                  dark: .GiniBank.light1.withAlphaComponent(0.3))
         )
     }
 
@@ -277,7 +285,8 @@ extension UIColor {
     private static func createButtonColorScheme() -> GiniColorScheme.Button {
         return GiniColorScheme.Button(
             background: GiniColor(light: .GiniBank.accent1, dark: .GiniBank.accent1),
-            backgroundLoading: GiniColor(light: .GiniBank.accent1.withAlphaComponent(0.24), dark: .GiniBank.accent1.withAlphaComponent(0.24)),
+            backgroundLoading: GiniColor(light: .GiniBank.accent1.withAlphaComponent(0.24),
+                                         dark: .GiniBank.accent1.withAlphaComponent(0.24)),
             content: GiniColor(light: .GiniBank.light1, dark: .GiniBank.light1)
         )
     }

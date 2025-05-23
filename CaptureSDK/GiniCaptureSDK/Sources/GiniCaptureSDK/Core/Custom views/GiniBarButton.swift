@@ -83,6 +83,22 @@ public final class GiniBarButton {
     }
 
     /**
+     A property that gets or sets the text alignment of the button's title label.
+
+     Use `titleTextAlignment` to configure how the text inside the `titleLabel` is aligned horizontally.
+
+     - Returns: The current `NSTextAlignment` of the `titleLabel`.
+     */
+    public var titleTextAlignment: NSTextAlignment {
+        get {
+            return titleLabel.textAlignment
+        }
+        set {
+            titleLabel.textAlignment = newValue
+        }
+    }
+
+    /**
      Initializes a new `GiniBarButton` object with the specified button type.
 
      Use the `init(ofType:)` initializer to create a new `GiniBarButton` object with the specified `BarButtonType`. The `BarButtonType` parameter determines the appearance and behavior of the button.
@@ -106,6 +122,7 @@ public final class GiniBarButton {
         titleLabel.accessibilityTraits = .button
         titleLabel.isAccessibilityElement = true
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textAlignment = titleTextAlignment
 
         imageView.isAccessibilityElement = false
         titleLabel.isAccessibilityElement = false

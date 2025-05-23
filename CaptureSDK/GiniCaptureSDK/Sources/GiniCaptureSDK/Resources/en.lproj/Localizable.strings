@@ -208,7 +208,7 @@
 "ginicapture.albums.footer" = "Use \"Select more photos\" button to select more photos or deselect to remove access.";
 
 "ginicapture.QRscanning.correct" = "QR code detected";
-"ginicapture.QRscanning.incorrect.title" = "Unkown QR code";
+"ginicapture.QRscanning.incorrect.title" = "Unknown QR code";
 "ginicapture.QRscanning.incorrect.description" = "This code does not contain any payment details. Please use another QR code or take an image of your invoice.";
 "ginicapture.QRscanning.loading" = "Retrieving invoice";
 

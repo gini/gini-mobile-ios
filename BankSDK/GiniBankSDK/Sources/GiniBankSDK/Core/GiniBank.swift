@@ -25,7 +25,7 @@ import GiniCaptureSDK
     }
 
     private var documentId: String?
-    
+
     // Cast the coordinator to the internal protocol to access internal properties and methods
     private var internalTransactionDocsDataCoordinator: TransactionDocsDataInternalProtocol? {
         return GiniBankConfiguration.shared.transactionDocsDataCoordinator as? TransactionDocsDataInternalProtocol

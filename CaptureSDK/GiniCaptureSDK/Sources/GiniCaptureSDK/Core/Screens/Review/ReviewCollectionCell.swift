@@ -19,6 +19,8 @@ final class ReviewCollectionCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
+        imageView.isAccessibilityElement = true
+        imageView.accessibilityTraits = .button
         imageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.documentImageTitle",
                                                                         comment: "Document")
         imageView.backgroundColor = GiniColor(light: UIColor.GiniCapture.light1,
@@ -40,10 +42,18 @@ final class ReviewCollectionCell: UICollectionViewCell {
         return button
     }()
 
+    override var canBecomeFocused: Bool {
+        false
+    }
+
     private func setActiveStatus(_ isActive: Bool) {
         documentImageView.layer.borderColor = isActive ? UIColor.GiniCapture.accent1.cgColor : UIColor.clear.cgColor
         documentImageView.layer.borderWidth = isActive ? Constants.documentBorderWidth : 0
         deleteButton.isHidden = !isActive
+        
+        /// This is needed to specify the order of the accessible elements. But it is still partially working. A task will be created
+        /// to investigate more how to enable the detection of overlaping elements.
+        accessibilityElements = isActive ? [documentImageView, deleteButton] : [documentImageView]
     }
 
     var isActive: Bool = false {
@@ -56,6 +66,7 @@ final class ReviewCollectionCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.addSubview(documentImageView)
         contentView.addSubview(deleteButton)
+        isAccessibilityElement = false
 
         addConstraints()
     }
@@ -89,6 +100,7 @@ final class ReviewCollectionCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         isActive = false
+        accessibilityElements = [documentImageView]
     }
 }
 

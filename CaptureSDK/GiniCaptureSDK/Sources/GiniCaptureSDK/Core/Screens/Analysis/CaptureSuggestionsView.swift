@@ -19,6 +19,8 @@ final class CaptureSuggestionsView: UIView {
     private let containerHeight: CGFloat = 96
     private var itemSeparationConstraint: NSLayoutConstraint = NSLayoutConstraint()
     private var bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private var leadingiPhoneConstraint = NSLayoutConstraint()
+    private var trailingiPhoneConstraint = NSLayoutConstraint()
     private let repeatInterval: TimeInterval = 5
     private let superViewBottomAnchor: NSLayoutYAxisAnchor
 
@@ -110,10 +112,18 @@ final class CaptureSuggestionsView: UIView {
                               attr: .width, multiplier: 0.7)
             Constraints.active(item: suggestionContainer, attr: .centerX, relatedBy: .equal, to: self, attr: .centerX)
         } else {
-            Constraints.active(item: suggestionContainer, attr: .leading, relatedBy: .equal, to: self, attr: .leading,
-                              constant: 20)
-            Constraints.active(item: suggestionContainer, attr: .trailing, relatedBy: .equal, to: self, attr: .trailing,
-                              constant: -20)
+            leadingiPhoneConstraint = Constraints.active(item: suggestionContainer,
+                                                         attr: .leading,
+                                                         relatedBy: .equal,
+                                                         to: self.safeAreaLayoutGuide,
+                                                         attr: .leading,
+                                                         constant: 20)
+            trailingiPhoneConstraint = Constraints.active(item: suggestionContainer,
+                                                          attr: .trailing,
+                                                          relatedBy: .equal,
+                                                          to: self.safeAreaLayoutGuide,
+                                                          attr: .trailing,
+                                                          constant: -20)
         }
     }
 }
@@ -125,12 +135,17 @@ extension CaptureSuggestionsView {
     func start(after seconds: TimeInterval = 4) {
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: { [weak self] in
             guard let self = self, let superview = self.superview else { return }
-            self.bottomConstraint.constant = UIDevice.current.isIpad ? -28 : -24
-            self.alpha = 1
-            UIView.animate(withDuration: 0.5, animations: {
+            bottomConstraint.constant = UIDevice.current.isIpad ? -28 : -24
+            alpha = 1
+            UIView.animate(withDuration: 0.5, animations: { [weak self] in
                 superview.layoutIfNeeded()
-            }, completion: { _ in
-                self.changeView(toState: .hidden)
+
+                if let title = self?.suggestionContainer?.titleLabel.text,
+                    let description = self?.suggestionContainer?.descriptionLabel.text {
+                    UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
+                }
+            }, completion: { [weak self] _ in
+                self?.changeView(toState: .hidden)
             })
         })
     }
@@ -169,9 +184,14 @@ extension CaptureSuggestionsView {
                 nextIndex = 0
             }
 
+            let title = suggestionTitle[nextIndex]
+            let description = suggestionDescription[nextIndex]
+
             suggestionContainer?.configureContent(with: suggestionIconImages[nextIndex],
-                                                  title: suggestionTitle[nextIndex],
-                                                  description: suggestionDescription[nextIndex])
+                                                  title: title,
+                                                  description: description)
+
+            UIAccessibility.post(notification: .announcement, argument: "\(title) \(description)")
         }
     }
 

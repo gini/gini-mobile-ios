@@ -10,6 +10,7 @@ import UIKit
 final class IBANDetectionOverlay: UIView {
     private let configuration = GiniConfiguration.shared
     private let textContainer = IBANTextContainer()
+    private var previousTitle: String?
 
     init() {
         super.init(frame: .zero)
@@ -43,24 +44,42 @@ final class IBANDetectionOverlay: UIView {
     }
 
     func setupView(with IBANs: [String]) {
+        let title: String
         let takePhotoString = NSLocalizedStringPreferredFormat("ginicapture.ibandetection.takephoto",
                                                                comment: "IBAN Detection")
+        
         if IBANs.count == 1 {
             let iban = IBANs[0].split(every: 4)
-            textContainer.setTitle("\(iban)\n\n\(takePhotoString)")
+            title = "\(iban)\n\n\(takePhotoString)"
         } else {
             let ibanDetectedString = NSLocalizedStringPreferredFormat("ginicapture.ibandetection.multipleibansdetected",
                                                                       comment: "Multiple IBAN detected")
-            textContainer.setTitle("\(ibanDetectedString)\n\n\(takePhotoString)")
+            title = "\(ibanDetectedString)\n\n\(takePhotoString)"
         }
+
+        textContainer.setTitle(title)
+        postVoiceOverAnnouncementIfNeeded(title)
     }
 
     func configureOverlay(hidden: Bool) {
         textContainer.isHidden = hidden
+
+        if hidden {
+            previousTitle = nil
+        }
     }
 
     func viewWillDisappear() {
         configureOverlay(hidden: true)
+    }
+
+    private func postVoiceOverAnnouncementIfNeeded(_ title: String) {
+        guard previousTitle != title else {
+            return
+        }
+
+        previousTitle = title
+        UIAccessibility.post(notification: .announcement, argument: title)
     }
 
     private enum Constants {

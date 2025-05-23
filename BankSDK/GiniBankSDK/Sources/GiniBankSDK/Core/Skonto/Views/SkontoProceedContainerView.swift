@@ -154,18 +154,18 @@ class SkontoProceedContainerView: UIView {
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
             totalAmountStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-            totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
+            totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: Constants.padding),
             totalAmountStackView.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
                                                            constant: -Constants.badgeHorizontalPadding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
                                                     constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: finalAmountToPayLabel.leadingAnchor),
-            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.safeAreaLayoutGuide.trailingAnchor,
                                                          constant: -Constants.padding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalStringLabel.centerYAnchor),
-            skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+            skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor,
                                                       constant: -Constants.padding),
 
             skontoPercentageLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
@@ -182,7 +182,7 @@ class SkontoProceedContainerView: UIView {
             proceedButton.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
             proceedButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            proceedButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+            proceedButton.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
                                                    constant: Constants.padding),
             proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.proceedButtonHeight)
         ])

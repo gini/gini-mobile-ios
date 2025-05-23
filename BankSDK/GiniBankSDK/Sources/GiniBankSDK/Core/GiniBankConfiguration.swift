@@ -273,13 +273,13 @@ public final class GiniBankConfiguration: NSObject {
      Set an adapter implementation to show a custom bottom navigation bar on the error screens.
      */
     public var errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
-    
+
     // MARK: - No results screen
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the no results screen.
      */
     public var noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
-    
+
     // MARK: - Digital Invoice
 
     /**

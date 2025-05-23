@@ -98,7 +98,7 @@ struct Price {
         }
         return roundToTwoDecimalPlaces(number.decimalValue)
     }
-    
+
     /**
      Rounds a Decimal value to two decimal places using "bankers' rounding" (round half to even).
      
