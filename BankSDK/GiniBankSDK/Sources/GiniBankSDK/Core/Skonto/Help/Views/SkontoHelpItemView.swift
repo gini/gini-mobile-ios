@@ -23,6 +23,10 @@ final class SkontoHelpItemView: UIView {
         return titleLabel
     }()
 
+    override var canBecomeFocused: Bool {
+        false
+    }
+    
     private let configuration = GiniBankConfiguration.shared
 
     init(content: SkontoHelpItem, hideDivider: Bool) {

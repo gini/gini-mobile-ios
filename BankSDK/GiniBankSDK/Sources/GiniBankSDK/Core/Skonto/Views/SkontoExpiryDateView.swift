@@ -7,6 +7,10 @@
 import UIKit
 import GiniCaptureSDK
 
+/// This import is needed to check if a physical keyboard is connected and active.
+/// https://developer.apple.com/documentation/gamecontroller/gckeyboard
+import GameController
+
 protocol SkontoExpiryDateViewDelegate: AnyObject {
     func expiryDateTextFieldTapped()
 }
@@ -77,7 +81,11 @@ class SkontoExpiryDateView: UIView {
         containerView.addSubview(calendarImageView)
         setupConstraints()
         textField.addTarget(self, action: #selector(textFieldTapped), for: .editingDidBegin)
-        configureDatePicker()
+        
+        if !hasExternalKeyboard() {
+            configureDatePicker()
+        }
+        
         bindViewModel()
     }
 
@@ -139,6 +147,7 @@ class SkontoExpiryDateView: UIView {
 
     private func configureDatePicker() {
         let datePicker = UIDatePicker()
+        let numberOfMonths = 6
         datePicker.datePickerMode = .date
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
@@ -146,12 +155,21 @@ class SkontoExpiryDateView: UIView {
         datePicker.date = viewModel.dueDate
         let currentDate = Date().inBerlinTimeZone
         var dateComponent = DateComponents()
-        dateComponent.month = 6
+        dateComponent.month = numberOfMonths
         let endDate = Calendar.current.date(byAdding: dateComponent, to: currentDate)
         datePicker.minimumDate = currentDate
         datePicker.maximumDate = endDate
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         textField.inputView = datePicker
+    }
+    
+    func hasExternalKeyboard() -> Bool {
+        if #available(iOS 14.0, *) {
+            return GCKeyboard.coalesced?.keyboardInput != nil
+        }
+        
+        //TODO: For versions lower than iOS14 we need to realize how to solve this.
+        return false
     }
 
     @objc private func dateChanged(_ datePicker: UIDatePicker) {
