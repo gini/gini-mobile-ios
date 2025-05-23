@@ -88,9 +88,7 @@ class SkontoDocumentPreviewView: UIButton {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupView()
-        
-        isAccessibilityElement = true
-        addTarget(self, action: #selector(documentPreviewTapped), for: .touchUpInside)
+        configureAccessibility()
     }
 
     required init?(coder: NSCoder) {
@@ -142,6 +140,11 @@ class SkontoDocumentPreviewView: UIButton {
                                                        constant: -Constants.chevronTrailing),
             chevronImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
+    }
+    
+    private func configureAccessibility() {
+        isAccessibilityElement = true
+        addTarget(self, action: #selector(documentPreviewTapped), for: .touchUpInside)
     }
 
     @objc private func documentPreviewTapped() {

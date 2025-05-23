@@ -28,4 +28,14 @@ public extension UIDevice {
         let minSize: CGFloat = 350
         return smallestDimension <= minSize
     }
+
+    /// Returns true if the current device is currently in landscape orientation.
+    var isLandscape: Bool {
+        orientation.isLandscape
+    }
+
+    /// Returns true if the current device is an iPhone and is currently in landscape orientation.
+    var isIphoneAndLandscape: Bool {
+        isIphone && isLandscape
+    }
 }

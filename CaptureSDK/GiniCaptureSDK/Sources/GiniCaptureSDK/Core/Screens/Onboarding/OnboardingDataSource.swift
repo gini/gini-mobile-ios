@@ -193,6 +193,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         isProgrammaticScroll = false
+        updateCurrentPage(scrollView)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
