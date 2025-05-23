@@ -248,7 +248,7 @@ public final class ReviewViewController: UIViewController {
     }
     private lazy var collectionViewConstraints: [NSLayoutConstraint] = [
         collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
-        collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        collectionView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
         collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         collectionViewHeightConstraint]
 
