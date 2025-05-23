@@ -144,6 +144,7 @@ class SkontoExpiryDateView: UIView {
 
     private func configureDatePicker() {
         let datePicker = UIDatePicker()
+        let numberOfMonths = 6
         datePicker.datePickerMode = .date
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
@@ -151,7 +152,7 @@ class SkontoExpiryDateView: UIView {
         datePicker.date = viewModel.dueDate
         let currentDate = Date().inBerlinTimeZone
         var dateComponent = DateComponents()
-        dateComponent.month = 6
+        dateComponent.month = numberOfMonths
         let endDate = Calendar.current.date(byAdding: dateComponent, to: currentDate)
         datePicker.minimumDate = currentDate
         datePicker.maximumDate = endDate
