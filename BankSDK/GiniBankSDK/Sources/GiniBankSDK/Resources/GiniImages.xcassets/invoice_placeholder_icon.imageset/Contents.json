@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "Rechnungsscan.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "Rechnungsscan@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "Rechnungsscan@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "invoice_placeholder_icon.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
