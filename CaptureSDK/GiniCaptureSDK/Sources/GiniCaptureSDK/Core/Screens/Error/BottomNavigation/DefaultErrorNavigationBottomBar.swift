@@ -23,7 +23,7 @@ final class DefaultErrorNavigationBottomBar: UIView {
         addSubview(backButton.buttonView)
         NSLayoutConstraint.activate([
             backButton.buttonView.topAnchor.constraint(equalTo: topAnchor),
-            backButton.buttonView.leadingAnchor.constraint(equalTo: leadingAnchor,
+            backButton.buttonView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
                                                            constant: Constants.horizontalPadding),
             backButton.buttonView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
             backButton.buttonView.bottomAnchor.constraint(equalTo: bottomAnchor)

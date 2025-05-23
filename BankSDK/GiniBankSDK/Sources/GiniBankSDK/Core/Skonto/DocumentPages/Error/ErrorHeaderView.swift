@@ -51,7 +51,7 @@ class ErrorHeaderView: UIView {
         NSLayoutConstraint.activate([
             iconImageView.widthAnchor.constraint(equalToConstant: Constants.iconImageSize),
             iconImageView.heightAnchor.constraint(equalToConstant: Constants.iconImageSize),
-            headerStack.topAnchor.constraint(equalTo: topAnchor, 
+            headerStack.topAnchor.constraint(equalTo: topAnchor,
                                              constant: Constants.stackViewTopPadding),
             headerStack.bottomAnchor.constraint(equalTo: bottomAnchor,
                                                 constant: Constants.stackViewBottomPadding)

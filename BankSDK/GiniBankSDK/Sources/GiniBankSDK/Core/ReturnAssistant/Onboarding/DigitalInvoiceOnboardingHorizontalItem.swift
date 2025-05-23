@@ -11,7 +11,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
     private let firstLabel: UILabel
     private let secondLabel: UILabel
     private let doneButton: MultilineTitleButton
-    private var configuration: GiniBankConfiguration
+    private lazy var configuration: GiniBankConfiguration = GiniBankConfiguration.shared
 
     private lazy var infoStackView: UIStackView = {
         let stack = UIStackView(
@@ -86,10 +86,9 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
         return NSLocalizedStringPreferredGiniBankFormat(key, comment: comment)
     }
 
-    init(with configuration: GiniBankConfiguration, frame: CGRect = .zero, onDone: @escaping () -> Void) {
+    init(frame: CGRect = .zero, onDone: @escaping () -> Void) {
         topImageView = .init()
 
-        self.configuration = configuration
         firstLabel = .init()
         firstLabel.numberOfLines = 0
 
@@ -156,7 +155,7 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
             rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
             rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
             rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: topImageView.trailingAnchor,
-                                                                       constant: 10),
+                                                                       constant: Constants.horizontalSpacingBetweenImageViewAndText),
             rightStackViewContainerScrollable.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
     }
@@ -169,12 +168,10 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
 private extension DigitalInvoiceOnboardingHorizontalItem {
     enum Constants {
         static let paddingLarge: CGFloat = 56
+        static let horizontalSpacingBetweenImageViewAndText: CGFloat = 10
     }
 
     func shouldHideButton() -> Bool {
-        if let _ = GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter {
-            return true
-        }
-        return false
+        return (GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)
     }
 }
