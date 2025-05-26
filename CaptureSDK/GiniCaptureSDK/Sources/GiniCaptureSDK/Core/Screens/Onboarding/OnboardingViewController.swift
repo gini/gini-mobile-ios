@@ -27,50 +27,17 @@ class OnboardingViewController: UIViewController {
         super.init(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
     }
 
+    deinit {
+        navigationBarBottomAdapter?.onDeinit()
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func configureCollectionView() {
-        pagesCollection.register(
-            UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()),
-            forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier)
-        pagesCollection.register(
-            UINib(nibName: "OnboardingPageCellLandscapeIphone", bundle: giniCaptureBundle()),
-            forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier + "iphoneland")
-        pagesCollection.register(
-            UINib(nibName: "OnboardingPageCellLandscapeIphoneSmall", bundle: giniCaptureBundle()),
-            forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier + "iphoneland-small")
-        pagesCollection.isPagingEnabled = true
-        pagesCollection.showsHorizontalScrollIndicator = false
-        pagesCollection.contentInsetAdjustmentBehavior = .never
-        pagesCollection.dataSource = dataSource
-        pagesCollection.delegate = dataSource
-        dataSource.delegate = self
-    }
-
-    private func configurePageControl() {
-        pageControl.pageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
-                                                       dark: UIColor.GiniCapture.light1
-                                                      ).uiColor().withAlphaComponent(0.3)
-        pageControl.currentPageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
-                                                              dark: UIColor.GiniCapture.light1
-                                                             ).uiColor()
-        pageControl.addTarget(self, action: #selector(self.pageControlSelectionAction(_:)), for: .valueChanged)
-        pageControl.numberOfPages = dataSource.pageModels.count
-        pageControl.isAccessibilityElement = true
-        configureNavigationButtons(for: 0)
-        pageControl.currentPage = 0
-    }
-
-    private func setupView() {
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
-        configureCollectionView()
-        configureBasicNavigation()
-        if configuration.bottomNavigationBarEnabled {
-            configureBottomNavigation()
-        }
-        configurePageControl()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        pagesCollection.collectionViewLayout.invalidateLayout()
     }
 
     override func viewDidLoad() {
@@ -92,7 +59,7 @@ class OnboardingViewController: UIViewController {
                     bottomNavigationBar?.isHidden = true
                     nextButton?.isHidden = false
                     skipBottomBarButton?.isHidden = !configuration.bottomNavigationBarEnabled
-                        || pageControl.currentPage == dataSource.pageModels.count - 1
+                    || pageControl.currentPage == dataSource.pageModels.count - 1
                 }
 
                 let safeareaLeftPadding = view.safeAreaInsets.left
@@ -129,6 +96,47 @@ class OnboardingViewController: UIViewController {
             }
             pagesCollection.reloadData()
         }
+    }
+
+    private func configureCollectionView() {
+        pagesCollection.register(
+            UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()),
+            forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier)
+        pagesCollection.register(
+            UINib(nibName: "OnboardingPageCellLandscapeIphone", bundle: giniCaptureBundle()),
+            forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier + "iphoneland")
+        pagesCollection.register(
+            UINib(nibName: "OnboardingPageCellLandscapeIphoneSmall", bundle: giniCaptureBundle()),
+            forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier + "iphoneland-small")
+        pagesCollection.isPagingEnabled = true
+        pagesCollection.showsHorizontalScrollIndicator = false
+        pagesCollection.contentInsetAdjustmentBehavior = .never
+        pagesCollection.dataSource = dataSource
+        pagesCollection.delegate = dataSource
+        dataSource.delegate = self
+    }
+
+    private func configurePageControl() {
+        pageControl.pageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                                       dark: UIColor.GiniCapture.light1
+                                                      ).uiColor().withAlphaComponent(0.3)
+        pageControl.currentPageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                                              dark: UIColor.GiniCapture.light1
+                                                             ).uiColor()
+        pageControl.addTarget(self, action: #selector(pageControlSelectionAction(_:)), for: .valueChanged)
+        pageControl.numberOfPages = dataSource.pageModels.count
+        pageControl.isAccessibilityElement = true
+        updatePageControlAndNavigationButtons(at: 0)
+    }
+
+    private func setupView() {
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        configureCollectionView()
+        configureBasicNavigation()
+        if configuration.bottomNavigationBarEnabled {
+            configureBottomNavigation()
+        }
+        configurePageControl()
     }
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
@@ -228,35 +236,9 @@ class OnboardingViewController: UIViewController {
         nextButton.setTitle(nextButtonTitle, for: .normal)
     }
 
-    @objc private func skipTapped() {
-        // Handle the skip button tap if there are more onboarding pages.
-        // The skip button is not present on the last onboarding page.
-        let currentPageIndex = dataSource.currentPageIndex
-        guard currentPageIndex < dataSource.pageModels.count - 1 else { return }
-        track(event: .skipTapped, for: currentPageIndex)
-        close()
-    }
-
-    private func close() {
-        dismiss(animated: true)
-    }
-
-    @objc private func pageControlSelectionAction(_ sender: UIPageControl) {
-        let index = IndexPath(item: sender.currentPage, section: 0)
-        pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
-    }
-
-    @objc private func nextPage() {
-        let currentPageIndex = dataSource.currentPageIndex
-        if currentPageIndex < dataSource.pageModels.count - 1 {
-            // Next button tapped
-            track(event: .nextStepTapped, for: currentPageIndex)
-            let index = IndexPath(item: currentPageIndex + 1, section: 0)
-            pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
-            dataSource.isProgrammaticScroll = true
-        } else {
-            getStartedButtonAction()
-        }
+    private func updatePageControlAndNavigationButtons(at pageIndex: Int) {
+        configureNavigationButtons(for: pageIndex)
+        pageControl.currentPage = pageIndex
     }
 
     private func getStartedButtonAction() {
@@ -305,14 +287,39 @@ class OnboardingViewController: UIViewController {
         }
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        pagesCollection.collectionViewLayout.invalidateLayout()
+    // MARK: - Actions
+    @objc private func skipTapped() {
+        // Handle the skip button tap if there are more onboarding pages.
+        // The skip button is not present on the last onboarding page.
+        let currentPageIndex = dataSource.currentPageIndex
+        guard currentPageIndex < dataSource.pageModels.count - 1 else { return }
+        track(event: .skipTapped, for: currentPageIndex)
+        close()
     }
 
-    deinit {
-        navigationBarBottomAdapter?.onDeinit()
+    private func close() {
+        dismiss(animated: true)
     }
+
+    @objc private func pageControlSelectionAction(_ sender: UIPageControl) {
+        let index = IndexPath(item: sender.currentPage, section: 0)
+        pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+        updatePageControlAndNavigationButtons(at: sender.currentPage)
+    }
+
+    @objc private func nextPage() {
+        let currentPageIndex = dataSource.currentPageIndex
+        if currentPageIndex < dataSource.pageModels.count - 1 {
+            // Next button tapped
+            track(event: .nextStepTapped, for: currentPageIndex)
+            let index = IndexPath(item: currentPageIndex + 1, section: 0)
+            pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+            dataSource.isProgrammaticScroll = true
+        } else {
+            getStartedButtonAction()
+        }
+    }
+
 }
 
 extension OnboardingViewController: OnboardingScreen {
@@ -320,8 +327,7 @@ extension OnboardingViewController: OnboardingScreen {
         guard pageControl.currentPage != pageIndex else { return }
 
         sendGiniAnalyticsEventPageSwiped()
-        configureNavigationButtons(for: pageIndex)
-        pageControl.currentPage = pageIndex
+        updatePageControlAndNavigationButtons(at: pageIndex)
     }
 
     private func sendGiniAnalyticsEventPageSwiped() {
