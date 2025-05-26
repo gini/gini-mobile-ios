@@ -22,10 +22,6 @@ final class CameraPane: UIView {
         setupView()
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
-
     func setupView() {
         let giniConfiguration = GiniConfiguration.shared
         backgroundColor = GiniColor(

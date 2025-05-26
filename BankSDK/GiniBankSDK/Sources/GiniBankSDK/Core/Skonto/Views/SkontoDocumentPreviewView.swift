@@ -46,6 +46,7 @@ class SkontoDocumentPreviewView: UIButton {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.invoice.subtitle",
                                                              comment: "Tap to view")
         label.text = title
+        label.numberOfLines = 0
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.font = previewConfiguration.textStyleFonts[.footnote]
         label.adjustsFontForContentSizeCategory = true
