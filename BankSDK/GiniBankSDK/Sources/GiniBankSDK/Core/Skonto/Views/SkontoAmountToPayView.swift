@@ -102,15 +102,15 @@ class SkontoAmountToPayView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
     /// This is needed to avoid the circular reference between this element and its container
-    private var _inputAccessoryView: UIView?
+    private var privateInputAccessoryView: UIView?
 
     override var inputAccessoryView: UIView? {
         get {
-            _inputAccessoryView
+            privateInputAccessoryView
         }
 
         set {
-            _inputAccessoryView = newValue
+            privateInputAccessoryView = newValue
             textField.inputAccessoryView = newValue
         }
     }
