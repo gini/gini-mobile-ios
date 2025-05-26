@@ -489,9 +489,9 @@ extension CameraPreviewViewController {
                      atDevicePoint: devicePoint,
                      monitorSubjectAreaChange: true)
         let imageView =
-            createFocusIndicator(withImage: cameraFocusSmall,
-                                 atPoint: previewView.videoPreviewLayer
-                                            .layerPointConverted(fromCaptureDevicePoint: devicePoint))
+        createFocusIndicator(withImage: cameraFocusSmall,
+                             atPoint: previewView.videoPreviewLayer
+            .layerPointConverted(fromCaptureDevicePoint: devicePoint))
         showFocusIndicator(imageView)
     }
 
