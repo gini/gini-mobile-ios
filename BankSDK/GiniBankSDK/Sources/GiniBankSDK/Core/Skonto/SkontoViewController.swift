@@ -134,8 +134,6 @@ final class SkontoViewController: UIViewController {
         setupView()
         setupConstraints()
         setupKeyboardObservers()
-        setupInputAccessoryView(for: [withDiscountPriceView, expiryDateView],
-                                configuration: GiniBankConfiguration.shared.giniInputAccessoryViewConfiguration)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -500,6 +498,15 @@ final class SkontoViewController: UIViewController {
         navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
         let localizedStringWithCurrencyCode = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
         navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
+        setupInputAccessoryView(isSkontoApplied: isSkontoApplied)
+    }
+
+    private func setupInputAccessoryView(isSkontoApplied: Bool) {
+        if isSkontoApplied {
+            setupInputAccessoryView(for: [withDiscountPriceView, expiryDateView])
+        } else {
+            setupInputAccessoryView(for: [withoutDiscountView])
+        }
     }
 
     private func sendAnalyticsScreenShown() {
@@ -552,12 +559,14 @@ extension SkontoViewController: SkontoDocumentPreviewViewDelegate {
 
 extension SkontoViewController: SkontoExpiryDateViewDelegate {
     func expiryDateTextFieldTapped() {
+        updateCurrentField(expiryDateView)
         GiniAnalyticsManager.track(event: .dueDateTapped, screenName: .skonto)
     }
 }
 
 extension SkontoViewController: SkontoWithDiscountPriceViewDelegate {
     func withDiscountPriceTextFieldTapped() {
+        updateCurrentField(withDiscountPriceView)
         GiniAnalyticsManager.track(event: .finalAmountTapped, screenName: .skonto)
     }
 }

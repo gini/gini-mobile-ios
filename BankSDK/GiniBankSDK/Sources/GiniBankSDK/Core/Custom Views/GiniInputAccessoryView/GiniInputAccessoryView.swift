@@ -23,29 +23,29 @@ final class GiniInputAccessoryView: UIView {
 
         toolbar.translatesAutoresizingMaskIntoConstraints = false
         toolbar.barStyle = .default
-        toolbar.backgroundColor = configuration.backgroundColor
+        toolbar.backgroundColor = .giniColorScheme().inputAccessoryView.background.uiColor()
 
         return toolbar
     }()
 
     private lazy var previousButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: configuration.previousButtonImage,
+        let button = UIBarButtonItem(image: GiniImages.chevronUp.image,
                                      style: .plain,
                                      target: self,
                                      action: #selector(previousTapped))
 
-        button.tintColor = configuration.tintColor
+        button.tintColor = .giniColorScheme().inputAccessoryView.tintColor.uiColor()
 
         return button
     }()
 
     private lazy var nextButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: configuration.nextButtonImage,
+        let button = UIBarButtonItem(image: GiniImages.chevronDown.image,
                                      style: .plain,
                                      target: self,
                                      action: #selector(nextTapped))
 
-        button.tintColor = configuration.tintColor
+        button.tintColor = .giniColorScheme().inputAccessoryView.tintColor.uiColor()
 
         return button
     }()
@@ -58,7 +58,6 @@ final class GiniInputAccessoryView: UIView {
         return button
     }()
 
-    private let configuration: GiniInputAccessoryViewConfiguration
     private let textFields: [UIView]
 
     private lazy var flexibleSpace: UIBarButtonItem = {
@@ -70,11 +69,10 @@ final class GiniInputAccessoryView: UIView {
 
     // MARK: - Initialization
 
-    init(fields: [UIView], configuration: GiniInputAccessoryViewConfiguration) {
+    init(fields: [UIView]) {
         let toolbarHeight = 44
 
         self.textFields = fields
-        self.configuration = configuration
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: toolbarHeight))
         setupView()
         updateButtonStates()
@@ -114,10 +112,13 @@ final class GiniInputAccessoryView: UIView {
     }
 
     private func updateButtonStates() {
+        let enabledTintColor: UIColor = .giniColorScheme().inputAccessoryView.tintColor.uiColor()
+        let disabledTintColor: UIColor = .giniColorScheme().inputAccessoryView.disabledTintColor.uiColor()
+        
         previousButton.isEnabled = currentIndex > 0
         nextButton.isEnabled = currentIndex < textFields.count - 1
-        previousButton.tintColor = previousButton.isEnabled ? configuration.tintColor : configuration.disabledTintColor
-        nextButton.tintColor = nextButton.isEnabled ? configuration.tintColor : configuration.disabledTintColor
+        previousButton.tintColor = previousButton.isEnabled ? enabledTintColor : disabledTintColor
+        nextButton.tintColor = nextButton.isEnabled ? enabledTintColor : disabledTintColor
     }
 
     @objc private func previousTapped() {
@@ -143,15 +144,21 @@ final class GiniInputAccessoryView: UIView {
 
 extension UIViewController {
 
-    func setupInputAccessoryView(for views: [GiniInputAccessoryViewPresentable],
-                                 configuration: GiniInputAccessoryViewConfiguration) {
-        let accessoryView = GiniInputAccessoryView(fields: views.compactMap { $0 as? UIView },
-                                                   configuration: configuration)
+    func setupInputAccessoryView(for views: [GiniInputAccessoryViewPresentable]) {
+        let accessoryView = GiniInputAccessoryView(fields: views.compactMap { $0 as? UIView })
 
         accessoryView.delegate = self as? GiniInputAccessoryViewDelegate
 
         for var view in views {
             view.inputAccessoryView = accessoryView
         }
+    }
+    
+    func updateCurrentField(_ field: GiniInputAccessoryViewPresentable) {
+        let inputAccessoryView = field.inputAccessoryView as? GiniInputAccessoryView
+        
+        guard let view = field as? UIView else { return }
+        
+        inputAccessoryView?.updateCurrentField(view)
     }
 }

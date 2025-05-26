@@ -135,27 +135,6 @@ public final class GiniBankConfiguration: NSObject {
                                                                      shadowRadius: 0,
                                                                      withBlurEffect: false)
 
-    // MARK: - Gini InputAccessoryView configuration
-    /**
-     A configuration that defines the appearance of the "Keyboard Input Accessory View", including its background color, previousButtonImage, nextButtonImage, tintColor and disabledTintColor.
-     It is used on `UITextField` accessory view.
-     */
-    public lazy var giniInputAccessoryViewConfiguration: GiniInputAccessoryViewConfiguration = {
-        let backtroudColor: UIColor = .giniColorScheme().bottomBar.background.uiColor()
-        let tintColor: UIColor = .giniColorScheme().inputAccessoryView.tintColor.uiColor()
-        let disabledTintColor: UIColor = .giniColorScheme().inputAccessoryView.disabledTintColor.uiColor()
-        let chevronUpImage: UIImage? = UIImage(systemName: "chevron.up")
-        let chevronDownImage: UIImage? = UIImage(systemName: "chevron.down")
-
-        let configuration = GiniInputAccessoryViewConfiguration(backgroundColor: backtroudColor,
-                                                                previousButtonImage: chevronUpImage,
-                                                                nextButtonImage: chevronDownImage,
-                                                                tintColor: tintColor,
-                                                                disabledTintColor: disabledTintColor)
-
-        return configuration
-    }()
-
     // MARK: - Loading indicators
     /**
      Set an adapter implementation to show a custom loading indicator on the buttons which support loading.

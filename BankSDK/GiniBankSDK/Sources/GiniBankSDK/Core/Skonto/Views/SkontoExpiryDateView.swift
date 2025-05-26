@@ -60,12 +60,16 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
 
     private var viewModel: SkontoViewModel
 
+    /// This is needed to avoid the circular reference between this element and its container
+    private var privateInputAccessoryView: UIView?
+    
     override var inputAccessoryView: UIView? {
         get {
-            textField.inputAccessoryView
+            privateInputAccessoryView
         }
 
         set {
+            privateInputAccessoryView = newValue
             textField.inputAccessoryView = newValue
         }
     }
