@@ -236,7 +236,8 @@ public final class ReviewViewController: UIViewController {
 
     private lazy var tipLabelConstraints: [NSLayoutConstraint] = [
         tipLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-        tipLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: Constants.tipLabelPadding),
+        tipLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                          constant: Constants.tipLabelPadding),
         tipLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
     ]
 
@@ -247,21 +248,26 @@ public final class ReviewViewController: UIViewController {
         ]
     }
     private lazy var collectionViewConstraints: [NSLayoutConstraint] = [
-        collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
+        collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor,
+                                            constant: Constants.padding),
         collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
         collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         collectionViewHeightConstraint]
 
     private lazy var pageControlConstraints: [NSLayoutConstraint] = [
-        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.largePadding),
+        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor,
+                                         constant: Constants.largePadding),
         pageControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
         pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)]
 
     private lazy var pageControlHorizontalConstraints: [NSLayoutConstraint] = [
-        pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.largePadding),
-        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.largePadding),
+        pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                            constant: -Constants.largePadding),
+        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor,
+                                         constant: Constants.largePadding),
         pageControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-        pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.trailingCollectionPadding)
+        pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                              constant: -Constants.trailingCollectionPadding)
     ]
 
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
@@ -278,7 +284,8 @@ public final class ReviewViewController: UIViewController {
     ]
 
     private lazy var buttonContainerHorizontalConstraints: [NSLayoutConstraint] = [
-        buttonContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.buttonContainerHorizontalTrailingPadding),
+        buttonContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                  constant: -Constants.buttonContainerHorizontalTrailingPadding),
         buttonContainer.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
     ]
 
