@@ -8,6 +8,7 @@
 
 import GiniBankAPILibrary
 import UIKit
+import MobileCoreServices
 
 /**
  * Document processed by the _GiniCapture_ library.
@@ -29,6 +30,7 @@ import UIKit
     case pdf = 0
     case image = 1
     case qrcode = 2
+    case xml = 3
 }
 
 // MARK: GiniCaptureDocumentBuilder
@@ -83,6 +85,8 @@ public class GiniCaptureDocumentBuilder: NSObject {
                                      imageImportMethod: importMethod,
                                      deviceOrientation: deviceOrientation,
                                      uploadMetadata: generateUploadMetadata())
+        } else if data.isXML {
+            return GiniXMLDocument(data: data, fileName: fileName, uploadMetadata: generateUploadMetadata())
         }
         return nil
     }

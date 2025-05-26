@@ -56,6 +56,8 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         case .explorer:
             documentPickerCoordinator.isPDFSelectionAllowed = pages.isEmpty
             documentPickerCoordinator.showDocumentPicker(from: viewController)
+        case .eInvoice:
+            documentPickerCoordinator.showEInvoicePicker(from: viewController)
         }
     }
 
@@ -193,7 +195,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                 switch documentsType {
                 case .image:
                     showReview()
-                case .qrcode, .pdf:
+                case .qrcode, .pdf, .xml:
                     showAnalysisScreen()
                 }
             }
@@ -292,6 +294,8 @@ extension GiniScreenAPICoordinator {
             completion(.failure(FilePickerError.multiplePdfsUnsupported))
             return
         }
+        
+        // TODO: add validation for multiple XML files
 
         guard documentsToValidate.count <= GiniCaptureDocumentValidator.maxPagesCount else {
             completion(.failure(FilePickerError.maxFilesPickedCountExceeded))

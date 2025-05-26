@@ -47,6 +47,8 @@ public protocol DocumentPickerCoordinatorDelegate: AnyObject {
 
     /// File explorer picker
     case explorer
+    
+    case eInvoice
 }
 
 /**
@@ -105,6 +107,11 @@ public final class DocumentPickerCoordinator: NSObject {
         case .none:
             return []
         }
+    }
+    
+    fileprivate var acceptedEInvoiceTypes: [String] {
+        let acceptedPDFTypes = isPDFSelectionAllowed ? GiniPDFDocument.acceptedPDFTypes : []
+        return GiniXMLDocument.acceptedXMLTypes + acceptedPDFTypes
     }
 
     /**
@@ -175,6 +182,19 @@ public final class DocumentPickerCoordinator: NSObject {
         currentPickerViewController = documentPicker
 
         viewController.present(documentPicker, animated: true, completion: nil)
+    }
+
+    public func showEInvoicePicker(from viewController: UIViewController,
+                                   device: UIDevice = UIDevice.current) {
+        let eInvoicePicker = GiniDocumentPickerViewController(documentTypes: acceptedEInvoiceTypes, in: .import)
+        eInvoicePicker.delegate = self
+        eInvoicePicker.allowsMultipleSelection = true
+        eInvoicePicker.view.tintColor = .GiniCapture.accent1
+
+        currentPickerDismissesAutomatically = true
+        currentPickerViewController = eInvoicePicker
+
+        viewController.present(eInvoicePicker, animated: true, completion: nil)
     }
 
     /**
@@ -285,6 +305,7 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
 
 extension DocumentPickerCoordinator: UIDropInteractionDelegate {
     public func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
+        // TODO: Add drop interaction for XML
         guard isPDFDropSelectionAllowed(forSession: session) else {
             return false
         }

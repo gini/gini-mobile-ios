@@ -65,6 +65,7 @@
 "ginicapture.camera.popupTitleImportPDF" = "Import PDF";
 "ginicapture.camera.popupOptionPhotos" = "Upload photo";
 "ginicapture.camera.popupOptionFiles" = "Upload files";
+"ginicapture.camera.popupOptionEInvoice" = "Upload E-Invoice";
 "ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Cancel";
 

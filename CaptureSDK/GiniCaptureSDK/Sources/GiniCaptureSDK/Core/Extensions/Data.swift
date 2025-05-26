@@ -19,7 +19,8 @@ extension Data {
         0x52: "image/webp",
         0x25: "application/pdf",
         0xD0: "application/vnd",
-        0x46: "text/plain"
+        0x46: "text/plain",
+        0x3C: "application/xml"
         ]
 
     var mimeType: String {
@@ -35,6 +36,13 @@ extension Data {
     var isPDF: Bool {
         if let uti = self.utiFromMimeType {
             return UTTypeConformsTo(uti.takeRetainedValue(), kUTTypePDF)
+        }
+        return false
+    }
+
+    var isXML: Bool {
+        if let uti = self.utiFromMimeType {
+            return UTTypeConformsTo(uti.takeRetainedValue(), kUTTypeXML)
         }
         return false
     }

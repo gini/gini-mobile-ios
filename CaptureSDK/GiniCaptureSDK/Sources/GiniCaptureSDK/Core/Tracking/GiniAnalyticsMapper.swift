@@ -26,6 +26,7 @@ class GiniAnalyticsMapper {
             return "image"
         case .qrCode:
             return "qrCode"
+        // TODO: check XML here
         default:
             return "unknown"
         }
@@ -45,6 +46,9 @@ class GiniAnalyticsMapper {
             return "image"
         case .qrcode:
             return "qrCode"
+        // TODO: check XML here
+        case .xml:
+            return "xml"
         }
     }
 
