@@ -134,7 +134,8 @@ final class SkontoViewController: UIViewController {
         setupView()
         setupConstraints()
         setupKeyboardObservers()
-        setupInputAccessoryView(for: [withDiscountPriceView, expiryDateView])
+        setupInputAccessoryView(for: [withDiscountPriceView, expiryDateView],
+                                configuration: GiniBankConfiguration.shared.giniInputAccessoryViewConfiguration)
     }
 
     override func viewDidAppear(_ animated: Bool) {

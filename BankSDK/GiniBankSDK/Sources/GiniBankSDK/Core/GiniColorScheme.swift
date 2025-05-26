@@ -124,6 +124,12 @@ struct GiniColorScheme {
         var disabledTrack: GiniColor
     }
 
+    struct InputAccessoryView {
+        var background: GiniColor
+        var tintColor: GiniColor
+        var disabledTintColor: GiniColor
+    }
+
     var background: Background
     var actionSheet: ActionSheet
     var alert: Alert
@@ -142,6 +148,7 @@ struct GiniColorScheme {
     var buttonOutlined: ButtonOutlined
     var textField: TextField
     var toggle: Toggle
+    var inputAccessoryView: InputAccessoryView
 }
 
 extension UIColor {
@@ -164,7 +171,8 @@ extension UIColor {
             button: createButtonColorScheme(),
             buttonOutlined: createButtonOutlinedColorScheme(),
             textField: createTextFieldColorScheme(),
-            toggle: createToggleColorScheme()
+            toggle: createToggleColorScheme(),
+            inputAccessoryView: createInputAccessoryViewColorScheme()
         )
     }
 
@@ -327,5 +335,11 @@ extension UIColor {
             trackOff: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4),
             disabledTrack: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark4)
         )
+    }
+
+    private static func createInputAccessoryViewColorScheme() -> GiniColorScheme.InputAccessoryView {
+        return GiniColorScheme.InputAccessoryView(background: GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark2),
+                                                  tintColor: GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6),
+                                                  disabledTintColor: GiniColor(light: .GiniBank.light4, dark: .GiniBank.dark6))
     }
 }

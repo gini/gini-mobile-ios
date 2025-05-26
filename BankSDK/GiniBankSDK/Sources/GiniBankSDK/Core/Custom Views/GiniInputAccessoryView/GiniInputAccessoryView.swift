@@ -23,25 +23,29 @@ final class GiniInputAccessoryView: UIView {
 
         toolbar.translatesAutoresizingMaskIntoConstraints = false
         toolbar.barStyle = .default
-        toolbar.backgroundColor = GiniBankColors.dark03.toUIColor
+        toolbar.backgroundColor = configuration.backgroundColor
 
         return toolbar
     }()
 
     private lazy var previousButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.up"),
+        let button = UIBarButtonItem(image: configuration.previousButtonImage,
                                      style: .plain,
                                      target: self,
                                      action: #selector(previousTapped))
+
+        button.tintColor = configuration.tintColor
 
         return button
     }()
 
     private lazy var nextButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.down"),
+        let button = UIBarButtonItem(image: configuration.nextButtonImage,
                                      style: .plain,
                                      target: self,
                                      action: #selector(nextTapped))
+
+        button.tintColor = configuration.tintColor
 
         return button
     }()
@@ -54,29 +58,30 @@ final class GiniInputAccessoryView: UIView {
         return button
     }()
 
+    private let configuration: GiniInputAccessoryViewConfiguration
+    private let textFields: [UIView]
+
     private lazy var flexibleSpace: UIBarButtonItem = {
         UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     }()
 
     weak var delegate: GiniInputAccessoryViewDelegate?
-    private var textFields: [UIView] = []
     private var currentIndex: Int = 0
 
     // MARK: - Initialization
-    override init(frame: CGRect) {
-        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 44))
+
+    init(fields: [UIView], configuration: GiniInputAccessoryViewConfiguration) {
+        let toolbarHeight = 44
+
+        self.textFields = fields
+        self.configuration = configuration
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: toolbarHeight))
         setupView()
+        updateButtonStates()
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupView()
-    }
-
-    convenience init(fields: [UIView]) {
-        self.init(frame: .zero)
-        self.textFields = fields
-        updateButtonStates()
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Setup
@@ -103,12 +108,6 @@ final class GiniInputAccessoryView: UIView {
                          animated: false)
     }
 
-    func configure(with textFields: [UIView], currentField: UIView) {
-        self.textFields = textFields
-        self.currentIndex = textFields.firstIndex(of: currentField) ?? 0
-        updateButtonStates()
-    }
-
     func updateCurrentField(_ field: UIView) {
         currentIndex = textFields.firstIndex(of: field) ?? 0
         updateButtonStates()
@@ -117,8 +116,8 @@ final class GiniInputAccessoryView: UIView {
     private func updateButtonStates() {
         previousButton.isEnabled = currentIndex > 0
         nextButton.isEnabled = currentIndex < textFields.count - 1
-        previousButton.tintColor = previousButton.isEnabled ? .systemBlue : .systemGray3
-        nextButton.tintColor = nextButton.isEnabled ? .systemBlue : .systemGray3
+        previousButton.tintColor = previousButton.isEnabled ? configuration.tintColor : configuration.disabledTintColor
+        nextButton.tintColor = nextButton.isEnabled ? configuration.tintColor : configuration.disabledTintColor
     }
 
     @objc private func previousTapped() {
@@ -144,8 +143,11 @@ final class GiniInputAccessoryView: UIView {
 
 extension UIViewController {
 
-    func setupInputAccessoryView(for views: [GiniInputAccessoryViewPresentable]) {
-        let accessoryView = GiniInputAccessoryView(fields: views.compactMap { $0 as? UIView })
+    func setupInputAccessoryView(for views: [GiniInputAccessoryViewPresentable],
+                                 configuration: GiniInputAccessoryViewConfiguration) {
+        let accessoryView = GiniInputAccessoryView(fields: views.compactMap { $0 as? UIView },
+                                                   configuration: configuration)
+
         accessoryView.delegate = self as? GiniInputAccessoryViewDelegate
 
         for var view in views {
