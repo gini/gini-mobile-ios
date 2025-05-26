@@ -498,6 +498,15 @@ final class SkontoViewController: UIViewController {
         navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
         let localizedStringWithCurrencyCode = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
         navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencyCode: localizedStringWithCurrencyCode)
+        setupInputAccessoryView(isSkontoApplied: isSkontoApplied)
+    }
+
+    private func setupInputAccessoryView(isSkontoApplied: Bool) {
+        if isSkontoApplied {
+            setupInputAccessoryView(for: [withDiscountPriceView, expiryDateView])
+        } else {
+            setupInputAccessoryView(for: [withoutDiscountView])
+        }
     }
 
     private func sendAnalyticsScreenShown() {
@@ -550,12 +559,14 @@ extension SkontoViewController: SkontoDocumentPreviewViewDelegate {
 
 extension SkontoViewController: SkontoExpiryDateViewDelegate {
     func expiryDateTextFieldTapped() {
+        updateCurrentField(expiryDateView)
         GiniAnalyticsManager.track(event: .dueDateTapped, screenName: .skonto)
     }
 }
 
 extension SkontoViewController: SkontoWithDiscountPriceViewDelegate {
     func withDiscountPriceTextFieldTapped() {
+        updateCurrentField(withDiscountPriceView)
         GiniAnalyticsManager.track(event: .finalAmountTapped, screenName: .skonto)
     }
 }
@@ -649,5 +660,20 @@ private extension SkontoViewController {
                                                                           comment: "Skonto discount")
         static let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
                                                                               comment: "Back")
+    }
+}
+
+extension SkontoViewController: GiniInputAccessoryViewDelegate {
+
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectPrevious field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectNext field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryViewDidCancel(_ view: GiniInputAccessoryView) {
+        endEditing()
     }
 }
