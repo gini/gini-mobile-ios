@@ -488,10 +488,12 @@ extension CameraPreviewViewController {
                      exposeWithMode: .autoExpose,
                      atDevicePoint: devicePoint,
                      monitorSubjectAreaChange: true)
+        let tintColor = GiniColor(light: .GiniCapture.warning3, dark: .GiniCapture.warning3).uiColor()
+        let imageWithTindColor = cameraFocusSmall?.tintedImageWithColor(tintColor)
         let imageView =
-            createFocusIndicator(withImage: cameraFocusSmall,
-                                 atPoint: previewView.videoPreviewLayer
-                                            .layerPointConverted(fromCaptureDevicePoint: devicePoint))
+        createFocusIndicator(withImage: imageWithTindColor,
+                             atPoint: previewView.videoPreviewLayer
+            .layerPointConverted(fromCaptureDevicePoint: devicePoint))
         showFocusIndicator(imageView)
     }
 
