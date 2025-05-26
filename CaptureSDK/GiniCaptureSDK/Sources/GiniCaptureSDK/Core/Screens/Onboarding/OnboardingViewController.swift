@@ -59,8 +59,7 @@ class OnboardingViewController: UIViewController {
         pageControl.addTarget(self, action: #selector(self.pageControlSelectionAction(_:)), for: .valueChanged)
         pageControl.numberOfPages = dataSource.pageModels.count
         pageControl.isAccessibilityElement = true
-        configureNavigationButtons(for: 0)
-        pageControl.currentPage = 0
+        updatePageControlAndNavigationButtons(at: 0)
     }
 
     private func setupView() {
@@ -242,8 +241,10 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func pageControlSelectionAction(_ sender: UIPageControl) {
-        let index = IndexPath(item: sender.currentPage, section: 0)
+        let pageIndex = sender.currentPage
+        let index = IndexPath(item: pageIndex, section: 0)
         pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+        updatePageControlAndNavigationButtons(at: pageIndex)
     }
 
     @objc private func nextPage() {
@@ -313,6 +314,11 @@ class OnboardingViewController: UIViewController {
     deinit {
         navigationBarBottomAdapter?.onDeinit()
     }
+
+    private func updatePageControlAndNavigationButtons(at pageIndex: Int) {
+        configureNavigationButtons(for: pageIndex)
+        pageControl.currentPage = pageIndex
+    }
 }
 
 extension OnboardingViewController: OnboardingScreen {
@@ -320,8 +326,7 @@ extension OnboardingViewController: OnboardingScreen {
         guard pageControl.currentPage != pageIndex else { return }
 
         sendGiniAnalyticsEventPageSwiped()
-        configureNavigationButtons(for: pageIndex)
-        pageControl.currentPage = pageIndex
+        updatePageControlAndNavigationButtons(at: pageIndex)
     }
 
     private func sendGiniAnalyticsEventPageSwiped() {

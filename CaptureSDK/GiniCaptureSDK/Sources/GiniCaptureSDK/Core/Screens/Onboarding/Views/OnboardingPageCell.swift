@@ -22,6 +22,7 @@ class OnboardingPageCell: UICollectionViewCell {
 
     private func setupView() {
         iconView.isAccessibilityElement = true
+        iconView.accessibilityTraits = .image
         titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
                                          dark: UIColor.GiniCapture.light1).uiColor()
         titleLabel.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]

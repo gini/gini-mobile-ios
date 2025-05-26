@@ -183,6 +183,8 @@ class SkontoAmountToPayView: UIView {
         guard validationLabel.isHidden else {
             return
         }
+        
+        UIAccessibility.post(notification: .announcement, argument: message)
         validationLabel.text = message
         validationLabel.isHidden = false
     }

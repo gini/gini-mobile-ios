@@ -248,9 +248,8 @@ public final class ReviewViewController: UIViewController {
         ]
     }
     private lazy var collectionViewConstraints: [NSLayoutConstraint] = [
-        collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor,
-                                            constant: Constants.padding),
-        collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
+        collectionView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
         collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         collectionViewHeightConstraint]
 
@@ -806,7 +805,7 @@ extension ReviewViewController {
         static let titleHeight: CGFloat = 18
         static let maxTitleHeight: CGFloat = 100
         static let bottomNavigationBarHeight: CGFloat = 114
-        static let trailingCollectionPadding: CGFloat = UIScreen.main.bounds.size.width * 0.7
+        static let trailingCollectionPadding: CGFloat = 275
         static let buttonContainerHorizontalTrailingPadding: CGFloat = 85
     }
 }

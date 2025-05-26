@@ -340,6 +340,8 @@ final class DocumentPagesViewController: UIViewController {
             imageView.contentMode = .scaleAspectFit
             imageView.translatesAutoresizingMaskIntoConstraints = false
             imageView.clipsToBounds = true
+            imageView.isAccessibilityElement = true
+            imageView.accessibilityTraits = .image
             containerView.addSubview(imageView)
 
             // Constrain image view within its container view
