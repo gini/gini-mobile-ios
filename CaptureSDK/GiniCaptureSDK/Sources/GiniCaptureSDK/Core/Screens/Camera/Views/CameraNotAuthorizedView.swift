@@ -25,7 +25,7 @@ final class CameraNotAuthorizedView: UIView {
         label.text = NSLocalizedStringPreferredFormat("ginicapture.camera.notAuthorized.description",
                                                           comment: "Not authorized description")
         label.numberOfLines = 0
-        label.textColor = UIColor.GiniCapture.dark7
+        label.textColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.light6).uiColor()
         label.textAlignment = .center
         label.font = configuration.textStyleFonts[.headline]?.limitingFontSize(to: Constants.maximumFontSize)
         label.adjustsFontForContentSizeCategory = true
