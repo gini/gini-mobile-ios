@@ -36,7 +36,8 @@ final class CaptureSuggestionsViewContainer: UIView {
         titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
 
         descriptionLabel.font = configuration.textStyleFonts[.subheadline]
-        descriptionLabel.textColor = UIColor.GiniCapture.dark7
+        descriptionLabel.textColor = GiniColor(light: .GiniCapture.dark6,
+                                               dark: .GiniCapture.light6).uiColor()
     }
 
     private func configureAccessibility() {

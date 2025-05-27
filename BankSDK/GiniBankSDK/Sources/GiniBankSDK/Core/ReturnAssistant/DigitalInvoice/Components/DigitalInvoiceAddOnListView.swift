@@ -15,7 +15,8 @@ final class DigitalInvoiceAddOnListView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.body]
-        label.textColor = .GiniBank.dark7
+        label.textColor = GiniColor(light: .GiniCapture.dark6,
+                                    dark: .GiniCapture.light6).uiColor()
 
         return label
     }()
