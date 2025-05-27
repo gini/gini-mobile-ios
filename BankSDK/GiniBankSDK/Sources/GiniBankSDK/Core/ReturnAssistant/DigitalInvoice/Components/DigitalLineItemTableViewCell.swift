@@ -108,8 +108,8 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         editButton.isExclusiveTouch = true
 
         separatorView.backgroundColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
-        unitPriceLabel.textColor = GiniColor(light: .GiniCapture.dark6,
-                                             dark: .GiniCapture.light6).uiColor()
+        unitPriceLabel.textColor = GiniColor(light: .GiniBank.dark6,
+                                             dark: .GiniBank.light6).uiColor()
         editButton.setTitleColor(.GiniBank.accent1, for: .normal)
         nameLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         priceLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
