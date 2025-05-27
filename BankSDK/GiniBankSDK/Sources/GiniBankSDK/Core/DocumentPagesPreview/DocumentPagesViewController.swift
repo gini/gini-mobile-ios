@@ -11,7 +11,7 @@ final class DocumentPagesViewController: UIViewController {
     private lazy var statusBarBackgroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+        view.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.8)
         return view
     }()
 
@@ -21,7 +21,7 @@ final class DocumentPagesViewController: UIViewController {
         navBar.setBackgroundImage(UIImage(), for: .default)
         navBar.shadowImage = UIImage()
         navBar.isTranslucent = true
-        navBar.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+        navBar.backgroundColor = .GiniBank.dark1.withAlphaComponent(0.8)
         navBar.titleTextAttributes = [.font: configuration.textStyleFonts[.bodyBold] as Any,
                                       .foregroundColor: UIColor.GiniBank.light1]
         return navBar
