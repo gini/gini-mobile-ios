@@ -290,12 +290,10 @@ extension GiniScreenAPICoordinator {
             return
         }
 
-        guard documentsToValidate.filter({ $0.type == .pdf }).count <= 1 else {
+        guard documentsToValidate.filter({ $0.type == .pdf || $0.type == .xml }).count <= 1 else {
             completion(.failure(FilePickerError.multiplePdfsUnsupported))
             return
         }
-        
-        // TODO: add validation for multiple XML files
 
         guard documentsToValidate.count <= GiniCaptureDocumentValidator.maxPagesCount else {
             completion(.failure(FilePickerError.maxFilesPickedCountExceeded))
