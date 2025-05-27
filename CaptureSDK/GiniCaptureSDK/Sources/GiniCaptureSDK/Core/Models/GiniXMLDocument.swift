@@ -18,9 +18,15 @@ final public class GiniXMLDocument: NSObject, GiniCaptureDocument {
     public var isReviewable: Bool = false
     public var isImported: Bool = true
     public var uploadMetadata: Document.UploadMetadata?
-
     public let xmlFileName: String?
 
+    /**
+     Initializes a GiniXMLDocument
+
+     - Parameter data: XML data
+     - Parameter fileName: XML file name
+
+     */
     init(data: Data, fileName: String?, uploadMetadata: Document.UploadMetadata? = nil) {
         self.data = data
         self.xmlFileName = fileName
