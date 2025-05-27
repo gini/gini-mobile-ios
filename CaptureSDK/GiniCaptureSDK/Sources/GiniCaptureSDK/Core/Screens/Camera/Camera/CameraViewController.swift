@@ -97,22 +97,10 @@ final class CameraViewController: UIViewController {
         }
 
         self.cameraLensSwitcherView.delegate = self
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(configureCameraPanesBasedOnOrientation),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: UIDevice.orientationDidChangeNotification,
-            object: nil
-        )
     }
 
     override func viewDidLoad() {
@@ -518,7 +506,10 @@ final class CameraViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: nil)
+
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            self?.configureCameraPanesBasedOnOrientation()
+        })
     }
 
     /**
