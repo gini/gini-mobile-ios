@@ -31,7 +31,7 @@ final class DocumentPagesFooterView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+        backgroundColor = .GiniBank.dark1.withAlphaComponent(0.8)
         addSubview(footerStackView)
     }
 
