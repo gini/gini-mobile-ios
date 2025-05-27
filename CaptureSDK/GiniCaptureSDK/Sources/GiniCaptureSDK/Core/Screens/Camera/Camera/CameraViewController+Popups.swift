@@ -46,7 +46,6 @@ extension CameraViewController {
                                                                      comment: "E-Invoice action")
         let eInvoiceAlertAction = UIAlertAction(title: eInvoiceAlertActionTitle,
                                              style: .default) { [unowned self] _ in
-            // TODO: check analytics XML
             GiniAnalyticsManager.track(event: .uploadDocumentsTapped, screenName: .camera)
             self.delegate?.camera(self, didSelect: .eInvoice)
         }

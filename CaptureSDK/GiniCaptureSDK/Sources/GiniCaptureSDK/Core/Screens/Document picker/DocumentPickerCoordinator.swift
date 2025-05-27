@@ -305,7 +305,6 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
 
 extension DocumentPickerCoordinator: UIDropInteractionDelegate {
     public func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
-        // TODO: Add drop interaction for XML
         guard isPDFDropSelectionAllowed(forSession: session) else {
             return false
         }
