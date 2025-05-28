@@ -87,10 +87,6 @@ final class CameraNotAuthorizedView: UIView {
         addConstraints()
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
-
     /**
      Returns an object initialized from data in a given unarchiver.
      
