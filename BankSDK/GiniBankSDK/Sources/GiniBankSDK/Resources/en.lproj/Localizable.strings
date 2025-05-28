@@ -21,7 +21,7 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Back";
 
 "ginibank.digitalinvoice.screentitle" = "Digital invoice";
-"ginibank.digitalinvoice.paybutton.title" = "Proceed";
+"ginibank.digitalinvoice.paybutton.title" = "Confirm and proceed";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Pay";
 "ginibank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Pay %d out of %d";
@@ -95,9 +95,9 @@
 
 // MARK: - Skonto
 "ginibank.skonto.screen.title" = "Skonto discount";
-"ginibank.skonto.backbutton.title" = "Back";
+"ginibank.skonto.backbutton.title" = "Camera";
 "ginibank.skonto.active" = "• Active";
-"ginibank.skonto.proceedbutton.title" = "Proceed";
+"ginibank.skonto.proceedbutton.title" = "Confirm and proceed";
 
 "ginibank.skonto.withdiscount.title" = "With Skonto discount";
 "ginibank.skonto.withdiscount.price.title" = "Final amount";
@@ -111,7 +111,7 @@
 
 "ginibank.skonto.total.title" = "Total";
 "ginibank.skonto.total.savings" = "Save %@";
-"ginibank.skonto.total.skontopercentage" = "%@ Skonto discount";
+"ginibank.skonto.total.skontopercentage" = "%@ Skonto";
 
 "ginibank.skonto.infobanner.default.message" = "Pay in %@: receive %@ Skonto discount";
 "ginibank.skonto.infobanner.edgecase.today.message" = "Pay today: receive %@ Skonto discount";

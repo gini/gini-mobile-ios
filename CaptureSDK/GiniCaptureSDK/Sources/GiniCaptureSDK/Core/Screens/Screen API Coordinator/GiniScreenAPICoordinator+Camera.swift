@@ -65,12 +65,13 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             viewController.stopLoadingIndicater()
             return
         }
+        let bottomAnchor = viewController.topNavBarAnchor ?? viewController.view.bottomAnchor
         if shouldShowOnboarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
-                viewController.setupCamera()
+                viewController.setupCamera(bottomAnchor: bottomAnchor)
             })
         } else {
-            viewController.setupCamera()
+            viewController.setupCamera(bottomAnchor: bottomAnchor)
         }
     }
 
