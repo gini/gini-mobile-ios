@@ -9,22 +9,17 @@ import UIKit
 
 class ButtonsView: UIView {
     private let giniConfiguration = GiniConfiguration.shared
-    lazy var enterButton: MultilineTitleButton = {
-        let button = MultilineTitleButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(enterButtonTitle, for: .normal)
-        button.accessibilityLabel = enterButtonTitle
-        return button
-    }()
+    lazy var enterButton: MultilineTitleButton = configureStackViewButton(title: enterButtonTitle)
+    lazy var retakeButton: MultilineTitleButton = configureStackViewButton(title: retakeButtonTitle)
 
-    lazy var retakeButton: MultilineTitleButton = {
+    private func configureStackViewButton(title: String) -> MultilineTitleButton {
         let button = MultilineTitleButton()
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(retakeButtonTitle, for: .normal)
-        button.accessibilityLabel = retakeButtonTitle
+        button.accessibilityLabel = title
         return button
-    }()
-
+    }
     private lazy var buttonsView: UIStackView = {
         let stackView = UIStackView()
         stackView.addArrangedSubview(retakeButton)
@@ -54,12 +49,10 @@ class ButtonsView: UIView {
     }
 
     private func configureButtons() {
-        retakeButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         retakeButton.configure(with: giniConfiguration.primaryButtonConfiguration)
-        enterButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         enterButton.configure(with: giniConfiguration.secondaryButtonConfiguration)
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
