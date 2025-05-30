@@ -18,6 +18,11 @@ class ButtonsView: UIView {
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.translatesAutoresizingMaskIntoConstraints = false
         button.accessibilityLabel = title
+        
+        // Apply minimum height constraint
+        NSLayoutConstraint.activate([
+        button.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonMinimumHeight)
+        ])
         return button
     }
     private lazy var buttonsView: UIStackView = {
@@ -48,12 +53,27 @@ class ButtonsView: UIView {
         ])
     }
 
+    private func updateStackViewAxis() {
+        buttonsView.axis = UIDevice.current.isLandscape ? .horizontal : .vertical
+    }
+    
     private func configureButtons() {
         retakeButton.configure(with: giniConfiguration.primaryButtonConfiguration)
         enterButton.configure(with: giniConfiguration.secondaryButtonConfiguration)
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateStackViewAxis()
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+private extension ButtonsView {
+    enum Constants {
+        static let buttonMinimumHeight: CGFloat = 50
     }
 }
