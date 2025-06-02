@@ -14,7 +14,7 @@ final class QREducationLoadingView: UIView {
         let analysingTextColor: UIColor
 
         init(textColor: UIColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor(),
-             analysingTextColor: UIColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.dark7).uiColor()) {
+             analysingTextColor: UIColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.light6).uiColor()) {
             self.textColor = textColor
             self.analysingTextColor = analysingTextColor
         }
