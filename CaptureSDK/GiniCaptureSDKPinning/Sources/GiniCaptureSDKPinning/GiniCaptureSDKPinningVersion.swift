@@ -5,4 +5,4 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-public let GiniCaptureSDKPinningVersion = "3.14.0"
+public let GiniCaptureSDKPinningVersion = "3.15.0"

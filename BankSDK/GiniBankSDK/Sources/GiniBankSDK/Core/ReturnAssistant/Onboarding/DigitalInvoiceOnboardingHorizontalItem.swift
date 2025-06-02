@@ -33,16 +33,16 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
                 doneButton
             ]
         )
-        stack.spacing = 40
+        stack.spacing = Constants.stackViewItemSpacing
         stack.axis = .vertical
         stack.alignment = .center
 
         stack.translatesAutoresizingMaskIntoConstraints = false
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stack.widthAnchor.constraint(equalToConstant: 276),
-            doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 170),
-            doneButton.heightAnchor.constraint(equalToConstant: 50)
+            stack.widthAnchor.constraint(equalToConstant: Constants.stackViewWidth),
+            doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.doneButtonMinWidth),
+            doneButton.heightAnchor.constraint(equalToConstant: Constants.doneButtonHeight)
         ])
         return stack
     }()
@@ -169,6 +169,10 @@ private extension DigitalInvoiceOnboardingHorizontalItem {
     enum Constants {
         static let paddingLarge: CGFloat = 56
         static let horizontalSpacingBetweenImageViewAndText: CGFloat = 10
+        static let stackViewWidth: CGFloat = 276
+        static let stackViewItemSpacing: CGFloat = 40
+        static let doneButtonMinWidth: CGFloat = 170
+        static let doneButtonHeight: CGFloat = 50
     }
 
     func shouldHideButton() -> Bool {
