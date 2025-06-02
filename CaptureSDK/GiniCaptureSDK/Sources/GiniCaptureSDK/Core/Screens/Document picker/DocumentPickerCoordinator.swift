@@ -305,7 +305,8 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
 
 extension DocumentPickerCoordinator: UIDropInteractionDelegate {
     public func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
-        guard isPDFDropSelectionAllowed(forSession: session) else {
+        guard isPDFDropSelectionAllowed(forSession: session) ||
+              isXMLDropSelectionAllowed(forSession: session) else {
             return false
         }
 
@@ -313,9 +314,11 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         switch giniConfiguration.fileImportSupportedTypes {
         case .pdf_and_images:
             return (session.canLoadObjects(ofClass: GiniImageDocument.self) ||
-                session.canLoadObjects(ofClass: GiniPDFDocument.self)) && isMultipleItemsSelectionAllowed
+                    session.canLoadObjects(ofClass: GiniPDFDocument.self) ||
+                    session.canLoadObjects(ofClass: GiniXMLDocument.self)) && isMultipleItemsSelectionAllowed
         case .pdf:
-            return session.canLoadObjects(ofClass: GiniPDFDocument.self) && isMultipleItemsSelectionAllowed
+            return (session.canLoadObjects(ofClass: GiniPDFDocument.self) ||
+                    session.canLoadObjects(ofClass: GiniXMLDocument.self)) && isMultipleItemsSelectionAllowed
         case .none:
             return false
         }
@@ -339,6 +342,12 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         loadDocuments(ofClass: GiniImageDocument.self, from: session, in: dispatchGroup) { imageItems in
             if let images = imageItems {
                 documents.append(contentsOf: images as [GiniCaptureDocument])
+            }
+        }
+
+        loadDocuments(ofClass: GiniXMLDocument.self, from: session, in: dispatchGroup) { xmlItems in
+            if let xmls = xmlItems {
+                documents.append(contentsOf: xmls as [GiniCaptureDocument])
             }
         }
 
@@ -372,7 +381,17 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
                 return false
             }
         }
+        return true
+    }
 
+    private func isXMLDropSelectionAllowed(forSession session: UIDropSession) -> Bool {
+        if session.hasItemsConforming(toTypeIdentifiers: GiniXMLDocument.acceptedXMLTypes) {
+            let xmlIdentifier = GiniXMLDocument.acceptedXMLTypes[0]
+            let xmlItems = session.items.filter { $0.itemProvider.hasItemConformingToTypeIdentifier(xmlIdentifier) }
+            if xmlItems.count > 1 {
+                return false
+            }
+        }
         return true
     }
 }
