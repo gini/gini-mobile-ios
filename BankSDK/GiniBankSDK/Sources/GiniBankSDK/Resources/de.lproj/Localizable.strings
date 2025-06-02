@@ -21,7 +21,7 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Zurück";
 
 "ginibank.digitalinvoice.screentitle" = "Digitale Rechnung";
-"ginibank.digitalinvoice.paybutton.title" = "Weiter";
+"ginibank.digitalinvoice.paybutton.title" = "Bestätigen und weiter";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Bezahlen";
 "ginibank.digitalinvoice.paybuttontitle" = "Bezahlen %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Bezahlen %d von %d";
@@ -88,9 +88,9 @@
 // MARK: - Skonto
 
 "ginibank.skonto.screen.title" = "Skonto";
-"ginibank.skonto.backbutton.title" = "Zurück";
+"ginibank.skonto.backbutton.title" = "Kamera";
 "ginibank.skonto.active" = "• Aktiviert";
-"ginibank.skonto.proceedbutton.title" = "Zahlung fortsetzen";
+"ginibank.skonto.proceedbutton.title" = "Bestätigen und weiter";
 
 "ginibank.skonto.withdiscount.title" = "Mit Skonto";
 "ginibank.skonto.withdiscount.price.title" = "Betrag nach Abzug";

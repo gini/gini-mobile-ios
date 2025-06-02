@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -114,10 +114,12 @@
             <connections>
                 <outlet property="backgroundContainerView" destination="utZ-Ul-3Ih" id="0b3-Ve-xGB"/>
                 <outlet property="editButton" destination="ogc-mD-pz6" id="oiL-SO-VZw"/>
+                <outlet property="leadingConstraint" destination="Gbt-6K-DwO" id="HSk-PA-gFy"/>
                 <outlet property="modeSwitch" destination="CUJ-3d-daD" id="fEz-kD-dRR"/>
                 <outlet property="nameLabel" destination="ci3-Xk-SLN" id="whg-Zb-Jno"/>
                 <outlet property="priceLabel" destination="GOU-G0-cKp" id="eio-a5-2Wg"/>
                 <outlet property="separatorView" destination="6LC-kT-CZp" id="8Ue-hi-CsT"/>
+                <outlet property="trailingConstraint" destination="YEs-Mc-Y2p" id="w09-Hg-uyh"/>
                 <outlet property="unitPriceLabel" destination="gxv-Uq-3b2" id="eJq-cF-Z9y"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="-14.397321428571427"/>
@@ -131,7 +133,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemOrangeColor">
-            <color red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -11,7 +11,7 @@ protocol SkontoDocumentPreviewViewDelegate: AnyObject {
     func documentPreviewTapped(in view: SkontoDocumentPreviewView)
 }
 
-class SkontoDocumentPreviewView: UIView {
+class SkontoDocumentPreviewView: UIButton {
     private lazy var imageContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .giniColorScheme().placeholder.background.uiColor()
@@ -29,25 +29,26 @@ class SkontoDocumentPreviewView: UIView {
         return imageView
     }()
 
-    private lazy var titleLabel: UILabel = {
+    private lazy var previewTitleLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.invoice.title",
                                                              comment: "Invoice")
         label.text = title
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        label.font = configuration.textStyleFonts[.footnoteBold]
+        label.font = previewConfiguration.textStyleFonts[.footnoteBold]
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    private lazy var subtitleLabel: UILabel = {
+    private lazy var previewSubtitleLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.invoice.subtitle",
                                                              comment: "Tap to view")
         label.text = title
+        label.numberOfLines = 0
         label.textColor = .giniColorScheme().text.secondary.uiColor()
-        label.font = configuration.textStyleFonts[.footnote]
+        label.font = previewConfiguration.textStyleFonts[.footnote]
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -79,7 +80,7 @@ class SkontoDocumentPreviewView: UIView {
         return view
     }()
 
-    private let configuration = GiniBankConfiguration.shared
+    private let previewConfiguration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
     weak var delegate: SkontoDocumentPreviewViewDelegate?
@@ -88,6 +89,7 @@ class SkontoDocumentPreviewView: UIView {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupView()
+        configureAccessibility()
     }
 
     required init?(coder: NSCoder) {
@@ -97,12 +99,12 @@ class SkontoDocumentPreviewView: UIView {
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         isAccessibilityElement = true
-        accessibilityValue = "\(titleLabel.text ?? "") \(subtitleLabel.text ?? "")"
+        accessibilityValue = "\(previewTitleLabel.text ?? "") \(previewSubtitleLabel.text ?? "")"
         addSubview(contentView)
         contentView.addSubview(imageContainerView)
         imageContainerView.addSubview(documentPreviewImageView)
-        textStackView.addArrangedSubview(titleLabel)
-        textStackView.addArrangedSubview(subtitleLabel)
+        textStackView.addArrangedSubview(previewTitleLabel)
+        textStackView.addArrangedSubview(previewSubtitleLabel)
         contentView.addSubview(textStackView)
         contentView.addSubview(chevronImageView)
 
@@ -139,6 +141,11 @@ class SkontoDocumentPreviewView: UIView {
                                                        constant: -Constants.chevronTrailing),
             chevronImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
+    }
+
+    private func configureAccessibility() {
+        isAccessibilityElement = true
+        addTarget(self, action: #selector(documentPreviewTapped), for: .touchUpInside)
     }
 
     @objc private func documentPreviewTapped() {
