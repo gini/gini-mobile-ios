@@ -55,15 +55,7 @@ final class NoResultScreenViewController: UIViewController {
         return view
     }()
 
-    lazy var header: IconHeader = {
-        if let header = IconHeader().loadNib() as? IconHeader {
-            header.headerLabel.adjustsFontForContentSizeCategory = true
-            header.headerLabel.adjustsFontSizeToFitWidth = true
-            header.translatesAutoresizingMaskIntoConstraints = false
-        return header
-        }
-        fatalError("No result header not found")
-    }()
+    lazy var header = IconHeader()
     private(set) var dataSource: HelpDataSource
     private var giniConfiguration: GiniConfiguration
     private let type: NoResultType
@@ -293,22 +285,22 @@ final class NoResultScreenViewController: UIViewController {
         header.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                header.headerStack.widthAnchor.constraint(equalTo: view.widthAnchor,
+                header.widthAnchor.constraint(equalTo: view.widthAnchor,
                                                           multiplier: Constants.iPadWidthMultiplier),
-                header.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+                header.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
             NSLayoutConstraint.activate([
-                header.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                                                             constant: Constants.sidePadding),
-                header.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                                                              constant: -Constants.sidePadding)
             ])
         }
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             header.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.contentHeight),
             header.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
                                            multiplier: Constants.contentHeightMultiplier)
@@ -371,10 +363,10 @@ final class NoResultScreenViewController: UIViewController {
         } else {
             NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(
-                    equalTo: view.leadingAnchor,
+                    equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                     constant: GiniMargins.margin),
                 tableView.trailingAnchor.constraint(
-                    equalTo: view.trailingAnchor,
+                    equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                     constant: -GiniMargins.margin)
             ])
         }
