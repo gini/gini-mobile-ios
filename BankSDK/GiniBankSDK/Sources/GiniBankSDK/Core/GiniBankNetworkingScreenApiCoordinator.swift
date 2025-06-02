@@ -390,14 +390,13 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             handleSkontoScreenDisplay(extractionResult, delegate)
         } else {
             let document = documentService.document
-            handleTransactionDocsAlert(
-                on: screenAPINavigationController,
-                extractionResult: extractionResult,
-                documentId: document?.id,
-                deliveryFunction: { [weak self] result in
-                    guard let self = self else { return }
-                    self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
-                })
+            handleTransactionDocsAlert(on: screenAPINavigationController,
+                                       extractionResult: extractionResult,
+                                       documentId: document?.id,
+                                       deliveryFunction: { [weak self] result in
+                guard let self = self else { return }
+                self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
+            })
         }
     }
 
