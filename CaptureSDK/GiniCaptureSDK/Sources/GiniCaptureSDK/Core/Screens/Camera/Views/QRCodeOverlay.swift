@@ -113,7 +113,7 @@ final class QRCodeOverlay: UIView {
      The currently running education flow task, if any.
      
      This task represents the education flow started by `showAnimation()`
-     when the QR education view is shown.
+     when the QR code education view is shown.
      */
     public var currentEducationTask: Task<Void, Never>? {
         educationTask
@@ -208,9 +208,9 @@ final class QRCodeOverlay: UIView {
         let viewModel = QREducationLoadingViewModel(items: loadingItems)
         educationViewModel = viewModel
 
-        let customView = QREducationLoadingView(viewModel: viewModel,
-                                                style: .init(textColor: .GiniCapture.light1,
-                                                             analysingTextColor: .GiniCapture.light6))
+        let customViewStyle = QREducationLoadingView.Style(textColor: .GiniCapture.light1,
+                                                           analysingTextColor: .GiniCapture.light6)
+        let customView = QREducationLoadingView(viewModel: viewModel, style: customViewStyle)
         customView.translatesAutoresizingMaskIntoConstraints = false
         customLoadingView = customView
         addSubview(customView)
