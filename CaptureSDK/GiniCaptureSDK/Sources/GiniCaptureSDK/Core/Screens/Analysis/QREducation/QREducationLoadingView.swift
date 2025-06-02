@@ -50,11 +50,10 @@ final class QREducationLoadingView: UIView {
     }()
 
     private lazy var animatedSuffixLabelView: GiniAnimatedSuffixLabelView = {
-        let view = GiniAnimatedSuffixLabelView(
-            baseText: LocalizedStrings.loadingBaseText,
-            font: giniConfiguration.textStyleFonts[.body] ?? .systemFont(ofSize: 17),
-            textColor: style.analysingTextColor
-        )
+        let labelFont = giniConfiguration.textStyleFonts[.caption1] ?? .systemFont(ofSize: 17)
+        let view = GiniAnimatedSuffixLabelView(baseText: LocalizedStrings.loadingBaseText,
+                                               font: labelFont,
+                                               textColor: style.analysingTextColor)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
