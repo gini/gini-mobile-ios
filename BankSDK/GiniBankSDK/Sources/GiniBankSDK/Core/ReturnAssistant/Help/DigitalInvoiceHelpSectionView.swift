@@ -31,7 +31,8 @@ final class DigitalInvoiceHelpSectionView: UIView {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.numberOfLines = 0
-        descriptionLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7).uiColor()
+        descriptionLabel.textColor = GiniColor(light: .GiniBank.dark6,
+                                               dark: .GiniBank.light6).uiColor()
         descriptionLabel.font = configuration.textStyleFonts[.body]
         descriptionLabel.adjustsFontForContentSizeCategory = true
         return descriptionLabel

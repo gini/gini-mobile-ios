@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "user-x.pdf",
+      "filename" : "errorAuth.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "errorAuthDark.pdf",
       "idiom" : "universal"
     }
   ],

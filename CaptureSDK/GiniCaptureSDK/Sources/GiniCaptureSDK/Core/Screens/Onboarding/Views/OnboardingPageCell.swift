@@ -22,6 +22,7 @@ class OnboardingPageCell: UICollectionViewCell {
 
     private func setupView() {
         iconView.isAccessibilityElement = true
+        iconView.accessibilityTraits = .image
         titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
                                          dark: UIColor.GiniCapture.light1).uiColor()
         titleLabel.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]
@@ -30,7 +31,7 @@ class OnboardingPageCell: UICollectionViewCell {
         titleLabel.isAccessibilityElement = true
 
         descriptionLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
-                                               dark: UIColor.GiniCapture.dark7).uiColor()
+                                               dark: UIColor.GiniCapture.light6).uiColor()
         descriptionLabel.font = GiniConfiguration.shared.textStyleFonts[.subheadline]
         descriptionLabel.isAccessibilityElement = true
         descriptionLabel.adjustsFontSizeToFitWidth = true
@@ -54,7 +55,7 @@ class OnboardingPageCell: UICollectionViewCell {
                 topConstraint.constant = Constants.regularTopPadding
                 iconBottomConstraint.constant = Constants.maxIconPadding
             }
-        } else {
+        } else if currentInterfaceOrientation.isPortrait {
             topConstraint.constant = Constants.compactTopPadding
             iconBottomConstraint.constant = calculateIconMargin()
         }

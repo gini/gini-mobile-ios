@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniCaptureSDK
 
 protocol SkontoAmountViewDelegate: AnyObject {
     func textFieldPriceChanged(editedText: String)
@@ -15,6 +16,8 @@ class SkontoAmountToPayView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = titleLabelText
+        label.numberOfLines = 1
+        label.enableScaling()
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .giniColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
@@ -100,6 +103,25 @@ class SkontoAmountToPayView: UIView {
     private let currencyLabelText: String
     private var isEditable: Bool
     private let configuration = GiniBankConfiguration.shared
+
+    /// This is needed to avoid the circular reference between this element and its container
+    private var privateInputAccessoryView: UIView?
+
+    override var inputAccessoryView: UIView? {
+        get {
+            privateInputAccessoryView
+        }
+
+        set {
+            privateInputAccessoryView = newValue
+            textField.inputAccessoryView = newValue
+        }
+    }
+
+    override var isFirstResponder: Bool {
+        textField.isFirstResponder
+    }
+
     weak var delegate: SkontoAmountViewDelegate?
 
     init(title: String,
@@ -115,6 +137,14 @@ class SkontoAmountToPayView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        textField.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        textField.resignFirstResponder()
     }
 
     private func setupView() {
@@ -180,6 +210,8 @@ class SkontoAmountToPayView: UIView {
         guard validationLabel.isHidden else {
             return
         }
+        
+        UIAccessibility.post(notification: .announcement, argument: message)
         validationLabel.text = message
         validationLabel.isHidden = false
     }

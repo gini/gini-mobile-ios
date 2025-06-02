@@ -21,6 +21,7 @@
 "ginicapture.navigationbar.help.backToMenu"     = "Hilfe";
 "ginicapture.navigationbar.analysis.backToReview" = "Übersicht";
 "ginicapture.navigationbar.accessibility.back" = "Zurück";
+"ginicapture.navigationbar.error.backToCamera"   = "Kamera";
 
 
 "ginicapture.camera.captureButton" = "Auslösen";
@@ -64,7 +65,7 @@
 "ginicapture.camera.popupTitleImportPDF" = "PDF importieren";
 "ginicapture.camera.popupOptionPhotos" = "Fotos hochladen";
 "ginicapture.camera.popupOptionFiles" = "Dokument hochladen";
-"ginicapture.camera.popupTitleImportPDForPhotos" = "Fotos oder PDF importieren";
+"ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Abbrechen";
 
 "ginicapture.onboarding.firstPage"  = "Gerät parallel über die Seite halten";
