@@ -9,15 +9,7 @@ import UIKit
 
 class ErrorScreenViewController: UIViewController {
     private var giniConfiguration: GiniConfiguration
-    lazy var errorHeader: IconHeader = {
-        if let header = IconHeader().loadNib() as? IconHeader {
-            header.headerLabel.adjustsFontForContentSizeCategory = true
-            header.headerLabel.adjustsFontSizeToFitWidth = true
-            header.translatesAutoresizingMaskIntoConstraints = false
-        return header
-        }
-        fatalError("Error header not found")
-    }()
+    lazy var errorHeader = IconHeader(frame: .zero)
 
     private lazy var buttonsView: ButtonsView = {
         let view = ButtonsView(
@@ -252,16 +244,14 @@ class ErrorScreenViewController: UIViewController {
     private func configureHeaderConstraints() {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                errorHeader.headerStack.widthAnchor.constraint(equalTo: view.widthAnchor,
+                errorHeader.widthAnchor.constraint(equalTo: view.widthAnchor,
                                                                multiplier: Constants.iPadWidthMultiplier),
-                errorHeader.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+                errorHeader.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
             NSLayoutConstraint.activate([
-                errorHeader.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                                 constant: Constants.sidePadding),
-                errorHeader.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                                  constant: -Constants.sidePadding)
+                errorHeader.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                errorHeader.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
             ])
         }
         errorHeader.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
@@ -269,8 +259,8 @@ class ErrorScreenViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             errorHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            errorHeader.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            errorHeader.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            errorHeader.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             errorHeader.heightAnchor.constraint(
                 greaterThanOrEqualToConstant: Constants.errorHeaderMinHeight),
             errorHeader.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
@@ -281,8 +271,8 @@ class ErrorScreenViewController: UIViewController {
     private func configureScrollViewConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: errorHeader.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor)
         ])
     }
@@ -325,9 +315,9 @@ class ErrorScreenViewController: UIViewController {
             ])
         } else {
             NSLayoutConstraint.activate([
-                errorContent.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                errorContent.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                                                       constant: Constants.textContentMargin),
-                errorContent.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                errorContent.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                                                        constant: -Constants.textContentMargin)
             ])
         }
