@@ -50,16 +50,17 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
 
     private func setupViews() {
         selectionStyle = .none
-        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        contentView.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         clipsToBounds = true
+        backgroundColor = .clear
 
         contentView.addSubview(addOnStackView)
         contentView.addSubview(separatorView)
     }
 
     func configureAsBottomTableCell() {
-        layer.cornerRadius = 8
-        layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        contentView.layer.cornerRadius = 8
+        contentView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
     }
 
     private func setupConstraints() {
@@ -99,6 +100,13 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
                     addOnStackView.addArrangedSubview(view)
                 }
             }
+        }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if UIDevice.current.isIphone {
+            contentView.frame = contentView.frame.insetBy(dx: safeAreaInsets.left + Constants.horizontalPadding, dy: 0)
         }
     }
 }

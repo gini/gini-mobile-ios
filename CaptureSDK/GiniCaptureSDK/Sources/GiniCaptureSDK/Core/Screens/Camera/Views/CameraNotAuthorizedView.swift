@@ -13,7 +13,7 @@ final class CameraNotAuthorizedView: UIView {
         label.text = NSLocalizedStringPreferredFormat("ginicapture.camera.notAuthorized.title",
                                                           comment: "Not authorized title")
         label.numberOfLines = 0
-        label.textColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
+        label.textColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
         label.textAlignment = .center
         label.font = configuration.textStyleFonts[.title2]?.limitingFontSize(to: Constants.maximumFontSize)
         label.adjustsFontForContentSizeCategory = true
@@ -25,7 +25,7 @@ final class CameraNotAuthorizedView: UIView {
         label.text = NSLocalizedStringPreferredFormat("ginicapture.camera.notAuthorized.description",
                                                           comment: "Not authorized description")
         label.numberOfLines = 0
-        label.textColor = UIColor.GiniCapture.dark7
+        label.textColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.light6).uiColor()
         label.textAlignment = .center
         label.font = configuration.textStyleFonts[.headline]?.limitingFontSize(to: Constants.maximumFontSize)
         label.adjustsFontForContentSizeCategory = true
@@ -60,7 +60,12 @@ final class CameraNotAuthorizedView: UIView {
         return button
     }()
 
+    private var descriptionWidthConstraint: NSLayoutConstraint?
+    private var descriptionWidthLandscapeConstraint: NSLayoutConstraint?
+
+    private var containerView = UIView()
     private var contentView = UIView()
+    private var scrollView = UIScrollView()
 
     private let configuration = GiniConfiguration.shared
 
@@ -70,10 +75,12 @@ final class CameraNotAuthorizedView: UIView {
         backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
 
         // Configure view hierachy
-        addSubview(contentView)
-        contentView.addSubview(imageView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(containerView)
+        scrollView.addSubview(contentView)
+        addSubview(scrollView)
+        containerView.addSubview(imageView)
+        containerView.addSubview(titleLabel)
+        containerView.addSubview(descriptionLabel)
         addSubview(button)
 
         // Add constraints
@@ -97,40 +104,62 @@ final class CameraNotAuthorizedView: UIView {
 
     // MARK: Constraints
     fileprivate func addConstraints() {
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         button.translatesAutoresizingMaskIntoConstraints = false
 
+        descriptionWidthConstraint = descriptionLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor,
+                                                                             multiplier: Constants.widthCoefficient)
+
         NSLayoutConstraint.activate([
-            contentView.bottomAnchor.constraint(lessThanOrEqualTo: button.topAnchor, constant: Constants.padding),
-            contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            contentView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -Constants.padding * 2),
-            contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -Constants.padding),
+
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            contentView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor,
+                                                multiplier: 0.7),
+
+            containerView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
+            containerView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+                                                    constant: -Constants.padding),
+            containerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+
             // Image view
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.topAnchor.constraint(equalTo: containerView.topAnchor),
             imageView.widthAnchor.constraint(equalToConstant: Constants.imageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize.height),
-            imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            imageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             // titleLabel
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: Constants.padding * 2),
-            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            titleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor,
+            titleLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            titleLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor,
                                               multiplier: Constants.widthCoefficient),
             // descriptionLabel
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.padding),
-            descriptionLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            descriptionLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor,
-                                                    multiplier: Constants.widthCoefficient),
-            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            descriptionLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            descriptionWidthConstraint!,
+            descriptionLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+
             // button
             button.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                            constant: -Constants.padding * 2),
             button.widthAnchor.constraint(greaterThanOrEqualTo: descriptionLabel.widthAnchor),
             button.heightAnchor.constraint(equalToConstant: Constants.padding * 4),
             button.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.padding),
-            button.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)])
+            button.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)])
     }
 }
 
@@ -138,6 +167,7 @@ extension CameraNotAuthorizedView {
     private enum Constants {
         static let padding: CGFloat = 16
         static let widthCoefficient: CGFloat = 0.7
+        static let descriptionWidthIphoneLandscape: CGFloat = 276
         static let imageSize: CGSize = CGSize(width: 50, height: 50)
         static let maximumFontSize: CGFloat = 36
     }
