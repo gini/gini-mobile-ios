@@ -7,7 +7,7 @@
 import UIKit
 import Combine
 
-class GiniAnimatedSuffixLabelView: UIView {
+final class GiniAnimatedSuffixLabelView: UIView {
     private let textLabel = UILabel()
     private let suffixLabel = UILabel()
 
@@ -23,8 +23,8 @@ class GiniAnimatedSuffixLabelView: UIView {
          suffixSymbol: String = ".",
          maxSteps: Int = 3,
          animationInterval: TimeInterval = 0.4,
-         font: UIFont = UIFont.systemFont(ofSize: 17),
-         textColor: UIColor = .label) {
+         font: UIFont,
+         textColor: UIColor) {
 
         self.baseText = baseText
         self.suffixSymbol = suffixSymbol
