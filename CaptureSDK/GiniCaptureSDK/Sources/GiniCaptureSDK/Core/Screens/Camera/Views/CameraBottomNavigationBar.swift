@@ -16,10 +16,17 @@ class CameraBottomNavigationBar: UIView {
                                                                    comment: "Review")
     lazy var leftBarButton = GiniBarButton(ofType: .back(title: leftButtonTitle))
     lazy var rightBarButton = GiniBarButton(ofType: .help)
+    lazy var heightConstraint = heightAnchor.constraint(equalToConstant: 114)
 
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let isLandscape = currentInterfaceOrientation.isLandscape
+        heightConstraint.constant = isLandscape ? Constants.heightLandscape : CameraBottomNavigationBar.Constants.heightPortrait
     }
 
     func setupView() {
@@ -27,5 +34,14 @@ class CameraBottomNavigationBar: UIView {
         rightBarButton.buttonView.fixInView(rightButtonContainer)
 
         backgroundColor = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
+
+        heightConstraint.isActive = true
+    }
+}
+
+extension CameraBottomNavigationBar {
+    enum Constants {
+        static let heightPortrait: CGFloat = 114
+        static let heightLandscape: CGFloat = UIDevice.current.isSmallIphone ? 40 : 62
     }
 }

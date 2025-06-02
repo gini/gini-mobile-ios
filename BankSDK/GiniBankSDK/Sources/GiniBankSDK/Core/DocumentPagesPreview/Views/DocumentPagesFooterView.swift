@@ -31,7 +31,7 @@ final class DocumentPagesFooterView: UIView {
     }
 
     private func setupView() {
-        backgroundColor = .GiniBank.dark1.withAlphaComponent(0.5)
+        backgroundColor = .GiniBank.dark1.withAlphaComponent(0.8)
         addSubview(footerStackView)
     }
 
@@ -39,9 +39,9 @@ final class DocumentPagesFooterView: UIView {
         let bottomSafeAreaHeight = UIApplication.shared.safeAreaInsets.bottom
         let stackViewBottomConstraint = bottomSafeAreaHeight + Constants.stackViewBottomPadding
         NSLayoutConstraint.activate([
-            footerStackView.leadingAnchor.constraint(equalTo: leadingAnchor,
+            footerStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
                                                      constant: Constants.stackViewDefaultPadding),
-            footerStackView.trailingAnchor.constraint(equalTo: trailingAnchor,
+            footerStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor,
                                                       constant: -Constants.stackViewDefaultPadding),
             footerStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.stackViewDefaultPadding),
             footerStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -stackViewBottomConstraint)
@@ -53,6 +53,7 @@ final class DocumentPagesFooterView: UIView {
         for item in items {
             let label = UILabel()
             label.text = item
+            label.numberOfLines = 0
             label.font = configuration.textStyleFonts[.footnote]
             label.textColor = .GiniBank.light1
             label.translatesAutoresizingMaskIntoConstraints = false

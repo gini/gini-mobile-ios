@@ -101,6 +101,9 @@ import Combine
         return overlayView
     }()
 
+    private var captureSuggestions: CaptureSuggestionsView?
+    private var centerYConstraint = NSLayoutConstraint()
+
     /**
      Designated intitializer for the `AnalysisViewController`.
      
@@ -142,6 +145,14 @@ import Combine
         setupView()
     }
 
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if document is GiniImageDocument {
+            showCaptureSuggestions(giniConfiguration: giniConfiguration)
+        }
+    }
+
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         didShowAnalysis?()
@@ -149,6 +160,20 @@ import Combine
         let documentTypeAnalytics = GiniAnalyticsMapper.documentTypeAnalytics(from: document.type)
         GiniAnalyticsManager.registerSuperProperties([.documentType: documentTypeAnalytics])
         GiniAnalyticsManager.trackScreenShown(screenName: .analysis)
+    }
+
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        removeCaptureSuggestions()
+    }
+
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.current.isIphone, document is GiniImageDocument {
+            let isLandscape = currentInterfaceOrientation.isLandscape
+            centerYConstraint.constant = isLandscape ? -Constants.loadingIndicatorContainerHorizontalCenterYInset : 0
+        }
     }
 
     // MARK: Toggle animation
@@ -187,10 +212,6 @@ import Combine
 
         configureLoadingIndicator()
         addOverlay()
-
-        if document is GiniImageDocument {
-            showCaptureSuggestions(giniConfiguration: giniConfiguration)
-        }
     }
 
     private func addImageView() {
@@ -233,6 +254,8 @@ import Combine
 
     private func showOriginalLoadingMessage() {
         loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        loadingIndicatorView.accessibilityValue = loadingIndicatorText.text
+
         addLoadingContainer()
         addLoadingView(intoContainer: loadingIndicatorContainer)
 
@@ -327,10 +350,10 @@ import Combine
             loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(container)
             container.addSubview(loadingIndicator)
-
+            centerYConstraint = container.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             NSLayoutConstraint.activate([
                 container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                container.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                centerYConstraint,
                 container.heightAnchor.constraint(equalToConstant: Constants.loadingIndicatorContainerHeight),
                 container.widthAnchor.constraint(equalTo: container.heightAnchor),
                 loadingIndicator.centerXAnchor.constraint(equalTo: container.centerXAnchor),
@@ -351,16 +374,20 @@ import Combine
         view.addSubview(loadingIndicatorContainer)
         NSLayoutConstraint.activate([
             loadingIndicatorContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingIndicatorContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             loadingIndicatorContainer.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor),
             loadingIndicatorContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                                constant: Constants.padding)])
     }
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
-        let captureSuggestions = CaptureSuggestionsView(superView: view,
-                                                        bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
-        captureSuggestions.start()
+        captureSuggestions = CaptureSuggestionsView(superView: view,
+                                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+        captureSuggestions?.start()
+    }
+
+    private func removeCaptureSuggestions() {
+        captureSuggestions?.removeFromSuperview()
+        captureSuggestions = nil
     }
 }
 
@@ -369,6 +396,7 @@ private extension AnalysisViewController {
         static let padding: CGFloat = 16
         static let educationLoadingViewPadding: CGFloat = 28
         static let loadingIndicatorContainerHeight: CGFloat = 60
+        static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
     }
 }
