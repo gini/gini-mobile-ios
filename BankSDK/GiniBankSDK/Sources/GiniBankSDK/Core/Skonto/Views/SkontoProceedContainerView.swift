@@ -30,12 +30,14 @@ class SkontoProceedContainerView: UIView {
     private lazy var totalStringLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.subheadline]
         label.textColor = .giniColorScheme().text.primary.uiColor()
         let labelText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.title",
                                                                   comment: "Total")
         label.text = labelText
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+        label.enableScaling(minimumScaleFactor: 15)
         return label
     }()
 
@@ -46,8 +48,8 @@ class SkontoProceedContainerView: UIView {
         label.textColor = .giniColorScheme().text.primary.uiColor()
         let labelText = viewModel.finalAmountToPay.localizedStringWithCurrencyCode
         label.text = labelText
-        label.adjustsFontForContentSizeCategory = true
-        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 1
+        label.enableScaling(minimumScaleFactor: 15)
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return label
@@ -71,8 +73,8 @@ class SkontoProceedContainerView: UIView {
         let labelText = String.localizedStringWithFormat(skontoTitle,
                                                          viewModel.formattedPercentageDiscounted)
         label.text = labelText
-        label.adjustsFontForContentSizeCategory = true
-        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 1
+        label.enableScaling()
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return label
@@ -114,6 +116,10 @@ class SkontoProceedContainerView: UIView {
     private let skontoTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
                                                                       comment: "%@ Skonto discount")
 
+    private var skontoBadgeCompactLeadingConstraint: NSLayoutConstraint?
+    private var totalAmountStackViewDefultLeadingConstraint: NSLayoutConstraint?
+    private var skontoBadgeMinWidthConstraint: NSLayoutConstraint?
+
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -137,10 +143,26 @@ class SkontoProceedContainerView: UIView {
 
         setupConstraints()
         bindViewModel()
+        adjustLayoutForAccessibility()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        adjustLayoutForAccessibility()
     }
 
     private func setupConstraints() {
         let multiplier: CGFloat = UIDevice.current.isIpad ? Constants.tabletWidthMultiplier : 1.0
+        let contentViewTrailingAnchor = contentView.safeAreaLayoutGuide.trailingAnchor
+
+        let skontoCompactLeadinConstraint = Constants.skontoBadgeCompactLeadingConstraint
+        skontoBadgeCompactLeadingConstraint = skontoBadgeView.leadingAnchor
+            .constraint(equalTo: totalStringLabel.trailingAnchor,
+                        constant: skontoCompactLeadinConstraint)
+
+        totalAmountStackViewDefultLeadingConstraint = totalAmountStackView.trailingAnchor
+            .constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
+                        constant: -Constants.badgeHorizontalPadding)
 
         NSLayoutConstraint.activate([
             contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -154,18 +176,17 @@ class SkontoProceedContainerView: UIView {
             dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
             totalAmountStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-            totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
-            totalAmountStackView.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
-                                                           constant: -Constants.badgeHorizontalPadding),
+            totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
+                                                          constant: Constants.padding),
 
             savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
                                                     constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: finalAmountToPayLabel.leadingAnchor),
-            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentViewTrailingAnchor,
                                                          constant: -Constants.padding),
 
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalStringLabel.centerYAnchor),
-            skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+            skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor,
                                                       constant: -Constants.padding),
 
             skontoPercentageLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
@@ -182,10 +203,42 @@ class SkontoProceedContainerView: UIView {
             proceedButton.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
             proceedButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            proceedButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+            proceedButton.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
                                                    constant: Constants.padding),
             proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.proceedButtonHeight)
         ])
+    }
+
+    private func adjustLayoutForAccessibility() {
+        guard UIDevice.current.isIphone else { return }
+
+        let isAccessibilityCategory = UIApplication.shared.preferredContentSizeCategory >= .accessibilityMedium
+        // Later this will be factor and use the generic methods that are inside UIDevice extension
+        let isSmallDevice = UIDevice.current.userInterfaceIdiom == .phone &&
+            UIScreen.main.bounds.size.width <= 375 // iPhone SE and smaller
+        let shouldUseCompactLayout = isAccessibilityCategory && isSmallDevice
+
+        let horizontalPriority: UILayoutPriority = isAccessibilityCategory ? .defaultHigh : .defaultLow
+        skontoPercentageLabel.setContentHuggingPriority(horizontalPriority,
+                                                        for: .horizontal)
+        skontoPercentageLabel.setContentCompressionResistancePriority(horizontalPriority,
+                                                                      for: .horizontal)
+
+        if shouldUseCompactLayout {
+            let skontoBadgeWidth = Constants.skontoBadgeMinWidthCompactLayout
+            skontoBadgeMinWidthConstraint = skontoBadgeView.widthAnchor
+                .constraint(greaterThanOrEqualToConstant: skontoBadgeWidth)
+            skontoBadgeMinWidthConstraint?.isActive = true
+            skontoBadgeCompactLeadingConstraint?.isActive = true
+            totalAmountStackViewDefultLeadingConstraint?.isActive = false
+
+        } else {
+            skontoBadgeMinWidthConstraint?.isActive = false
+            skontoBadgeCompactLeadingConstraint?.isActive = false
+            totalAmountStackViewDefultLeadingConstraint?.isActive = true
+        }
+
+        layoutIfNeeded()
     }
 
     private func bindViewModel() {
@@ -226,5 +279,8 @@ private extension SkontoProceedContainerView {
         static let totalValueLabelTopPadding: CGFloat = 4
         static let savingsAmountLabelTopPadding: CGFloat = 2
         static let tabletWidthMultiplier: CGFloat = 0.7
+        static let skontoBadgeTopPadding: CGFloat = 8
+        static let skontoBadgeMinWidthCompactLayout: CGFloat = 100
+        static let skontoBadgeCompactLeadingConstraint: CGFloat = 8
     }
 }

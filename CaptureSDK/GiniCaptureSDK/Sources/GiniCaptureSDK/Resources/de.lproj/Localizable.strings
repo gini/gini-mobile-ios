@@ -66,7 +66,7 @@
 "ginicapture.camera.popupOptionPhotos" = "Fotos hochladen";
 "ginicapture.camera.popupOptionFiles" = "Dokument hochladen";
 "ginicapture.camera.popupOptionEInvoice" = "E-Rechnung hochladen";
-"ginicapture.camera.popupTitleImportPDForPhotos" = "Fotos oder PDF importieren";
+"ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Abbrechen";
 
 "ginicapture.onboarding.firstPage"  = "Gerät parallel über die Seite halten";

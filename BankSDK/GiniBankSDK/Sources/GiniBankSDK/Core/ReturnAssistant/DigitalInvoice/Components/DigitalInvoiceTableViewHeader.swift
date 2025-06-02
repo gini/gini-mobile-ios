@@ -46,4 +46,9 @@ class DigitalInvoiceTableViewTitleCell: UITableViewCell {
             titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = contentView.frame.insetBy(dx: safeAreaInsets.left + 16, dy: 0)
+    }
 }
