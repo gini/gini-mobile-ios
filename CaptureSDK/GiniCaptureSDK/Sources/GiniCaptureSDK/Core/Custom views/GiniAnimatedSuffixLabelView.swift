@@ -1,5 +1,5 @@
 //
-//  AnimatedSuffixLabelView.swift
+//  GiniAnimatedSuffixLabelView.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import UIKit
 import Combine
 
-class AnimatedSuffixLabelView: UIView {
+class GiniAnimatedSuffixLabelView: UIView {
     private let textLabel = UILabel()
     private let suffixLabel = UILabel()
 

@@ -8,7 +8,7 @@ import UIKit
 import Combine
 
 final class QREducationLoadingView: UIView {
-    
+
     struct Style {
         let textColor: UIColor
         let analysingTextColor: UIColor
@@ -44,8 +44,8 @@ final class QREducationLoadingView: UIView {
         return label
     }()
 
-    private lazy var animatedSuffixLabelView: AnimatedSuffixLabelView = {
-        let view = AnimatedSuffixLabelView(
+    private lazy var animatedSuffixLabelView: GiniAnimatedSuffixLabelView = {
+        let view = GiniAnimatedSuffixLabelView(
             baseText: LocalizedStrings.loadingBaseText,
             font: giniConfiguration.textStyleFonts[.body] ?? .systemFont(ofSize: 17),
             textColor: style.analysingTextColor
