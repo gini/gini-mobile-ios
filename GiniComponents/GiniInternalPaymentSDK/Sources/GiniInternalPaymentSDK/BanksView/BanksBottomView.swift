@@ -119,7 +119,7 @@ public final class BanksBottomView: BottomSheetViewController {
         }
         bottomView.addSubview(bottomStackView)
         contentStackView.addArrangedSubview(bottomView)
-        self.setContent(content: contentStackView)
+        setContent(content: contentStackView)
     }
 
     private func setupViewAttributes() {
@@ -198,7 +198,10 @@ extension BanksBottomView {
 
 extension BanksBottomView: MoreInformationViewProtocol {
     public func didTapOnMoreInformation() {
-        viewModel.didTapOnMoreInformation()
+        let paymentInfoViewController = PaymentInfoViewController(viewModel: viewModel.paymentInfoViewModel)
+        let navigationController = UINavigationController(rootViewController: paymentInfoViewController)
+        
+        present(navigationController, animated: true)
     }
 }
 
@@ -224,5 +227,6 @@ extension BanksBottomView: UITableViewDataSource, UITableViewDelegate {
     /// BanksBottomView event when a bank is selected from the list
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.viewDelegate?.didSelectPaymentProvider(paymentProvider: viewModel.paymentProviders[indexPath.row].paymentProvider)
+        dismiss(animated: true)
     }
 }

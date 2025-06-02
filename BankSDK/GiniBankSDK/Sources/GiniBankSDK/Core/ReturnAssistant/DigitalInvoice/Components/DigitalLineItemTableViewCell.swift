@@ -23,7 +23,8 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var backgroundContainerView: UIView!
     @IBOutlet weak var unitPriceLabel: UILabel!
-
+    @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     private let configuration = GiniBankConfiguration.shared
 
     var viewModel: DigitalLineItemTableViewCellViewModel? {
@@ -89,13 +90,13 @@ class DigitalLineItemTableViewCell: UITableViewCell {
 
     private func setup() {
         let bgColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
-        backgroundColor = bgColor
+        backgroundColor = .clear
         contentView.backgroundColor = bgColor
         backgroundContainerView.backgroundColor = bgColor
         selectionStyle = .none
 
         if viewModel?.index == 0 {
-            round(corners: [.topLeft, .topRight], radius: 8)
+            backgroundContainerView.round(corners: [.topLeft, .topRight], radius: 8)
             separatorView.isHidden = true
         }
 
@@ -107,7 +108,8 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         editButton.isExclusiveTouch = true
 
         separatorView.backgroundColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
-        unitPriceLabel.textColor = .GiniBank.dark7
+        unitPriceLabel.textColor = GiniColor(light: .GiniBank.dark6,
+                                             dark: .GiniBank.light6).uiColor()
         editButton.setTitleColor(.GiniBank.accent1, for: .normal)
         nameLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         priceLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
@@ -130,8 +132,17 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         // When reusing cells, reset the rounded corners and the separator view visibility to their default values
-        round(radius: 0)
+        backgroundContainerView.round(radius: 0)
         separatorView.isHidden = false
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if UIDevice.current.isIphone {
+            let inset = safeAreaInsets.left + 16
+            leadingConstraint.constant = inset
+            trailingConstraint.constant = inset
+        }
     }
 
     @objc func modeSwitchValueChange(sender: UISwitch) {

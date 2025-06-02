@@ -28,6 +28,7 @@ extension UITableViewCell {
 
 public struct GiniMargins {
     public static let margin: CGFloat = 16
+    public static let horizontalMargin: CGFloat = 56
     public static let iPadAspectScale: CGFloat = 0.7
 }
 

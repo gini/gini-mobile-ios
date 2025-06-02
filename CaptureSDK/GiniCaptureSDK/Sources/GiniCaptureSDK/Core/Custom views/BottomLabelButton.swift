@@ -38,10 +38,11 @@ final class BottomLabelButton: UIView {
         return image
     }()
 
-    private lazy var contentView: UIView = {
-        let contentView = UIView()
+    private lazy var contentView: UIStackView = {
+        let contentView = UIStackView(arrangedSubviews: [iconView, actionLabel])
         contentView.translatesAutoresizingMaskIntoConstraints = false
-
+        contentView.spacing = 5
+        contentView.axis = .vertical
         return contentView
     }()
 
@@ -85,15 +86,7 @@ final class BottomLabelButton: UIView {
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
 
-            iconView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            iconView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            iconView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            iconView.heightAnchor.constraint(equalToConstant: 20),
-
-            actionLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 5),
-            actionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            actionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            actionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            iconView.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
 

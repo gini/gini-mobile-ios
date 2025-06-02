@@ -268,6 +268,18 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var openWithAppNameForTexts = Bundle.main.appName
 
+    // MARK: - Error screens
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the error screens.
+     */
+    public var errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+
+    // MARK: - No results screen
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the no results screen.
+     */
+    public var noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+
     // MARK: - Digital Invoice
 
     /**
@@ -402,6 +414,8 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
+        configuration.errorNavigationBarBottomAdapter = self.errorNavigationBarBottomAdapter
+        configuration.noResultsNavigationBarBottomAdapter = self.noResultsNavigationBarBottomAdapter
         configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
         configuration.reviewNavigationBarBottomAdapter = self.reviewNavigationBarBottomAdapter
         configuration.imagePickerNavigationBarBottomAdapter = self.imagePickerNavigationBarBottomAdapter
@@ -496,6 +510,8 @@ public final class GiniBankConfiguration: NSObject {
 		giniBankConfiguration.customNavigationController = configuration.customNavigationController
 		giniBankConfiguration.helpNavigationBarBottomAdapter = configuration.helpNavigationBarBottomAdapter
 		giniBankConfiguration.cameraNavigationBarBottomAdapter = configuration.cameraNavigationBarBottomAdapter
+        giniBankConfiguration.errorNavigationBarBottomAdapter = configuration.errorNavigationBarBottomAdapter
+        giniBankConfiguration.noResultsNavigationBarBottomAdapter = configuration.noResultsNavigationBarBottomAdapter
 		giniBankConfiguration.reviewNavigationBarBottomAdapter = configuration.reviewNavigationBarBottomAdapter
 		giniBankConfiguration.imagePickerNavigationBarBottomAdapter = configuration.imagePickerNavigationBarBottomAdapter
 
