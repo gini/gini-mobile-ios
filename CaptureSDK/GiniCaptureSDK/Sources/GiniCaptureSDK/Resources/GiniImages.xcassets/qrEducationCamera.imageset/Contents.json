@@ -3,6 +3,16 @@
     {
       "filename" : "qrEducationCamera.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "qrEducationCameraDark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
