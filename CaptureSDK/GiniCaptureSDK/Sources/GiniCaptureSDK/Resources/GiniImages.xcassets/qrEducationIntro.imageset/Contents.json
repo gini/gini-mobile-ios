@@ -3,6 +3,16 @@
     {
       "filename" : "qrEducationIntro.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "qrEducationIntroDark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
