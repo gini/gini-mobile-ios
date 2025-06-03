@@ -12,8 +12,7 @@ final class DigitalInvoiceHelpSectionView: UIView {
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.isAccessibilityElement = true
-        imageView.accessibilityTraits = .none
+        imageView.isAccessibilityElement = false
         return imageView
     }()
 
@@ -44,21 +43,27 @@ final class DigitalInvoiceHelpSectionView: UIView {
         super.init(frame: .zero)
 
         setupView(with: content)
+        setupAccessibility(accessibilityLabel: content.title)
         setupConstraints()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupView(with content: DigitalInvoiceHelpSection) {
         backgroundColor = .clear
         iconImageView.image = content.icon
-        iconImageView.accessibilityValue = content.title
         titleLabel.text = content.title
-        titleLabel.accessibilityValue = content.title
         descriptionLabel.text = content.description
-        descriptionLabel.accessibilityValue = content.description
 
         addSubview(iconImageView)
         addSubview(titleLabel)
         addSubview(descriptionLabel)
+    }
+
+    func setupAccessibility(accessibilityLabel: String) {
+        iconImageView.accessibilityLabel = accessibilityLabel
     }
 
     private func setupConstraints() {
@@ -77,10 +82,6 @@ final class DigitalInvoiceHelpSectionView: UIView {
             descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             descriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 
