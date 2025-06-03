@@ -11,7 +11,7 @@ import UIKit
 
 final class IconHeader: UIView {
 
-    let iconImageView: UIImageView = {
+    private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
@@ -19,16 +19,46 @@ final class IconHeader: UIView {
         return imageView
     }()
 
-    let headerLabel: UILabel = {
+    private let headerLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = GiniConfiguration.shared.textStyleFonts[.subheadline]
-        label.textColor = .GiniCapture.dark1
+        label.textColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    private let giniConfiguration = GiniConfiguration.shared
+    var image: UIImage? {
+        get {
+            iconImageView.image
+        }
+
+        set {
+            iconImageView.image = newValue
+        }
+    }
+
+    var text: String? {
+        get {
+            headerLabel.text
+        }
+
+        set {
+            headerLabel.text = newValue
+        }
+    }
+
+    var iconAccessibilityLabel: String? {
+        get {
+            iconImageView.accessibilityLabel
+        }
+
+        set {
+            iconImageView.accessibilityLabel = newValue
+        }
+    }
 
     fileprivate func configureAccessibility() {
         isAccessibilityElement = false
@@ -51,6 +81,7 @@ final class IconHeader: UIView {
     }
 
     private func setupView() {
+        backgroundColor = GiniColor(light: UIColor.GiniCapture.error4, dark: UIColor.GiniCapture.error1).uiColor()
         addIconImageView()
         addHeaderLabel()
     }
@@ -87,3 +118,27 @@ final class IconHeader: UIView {
         static let headerTrailingPadding: CGFloat = 16
     }
 }
+
+/// This is to see in realtime the preview of the component to be built. This helps to not to have
+/// to run the app with each change.
+#if DEBUG
+@available(iOS 17, *)
+#Preview {
+    let vc = UIViewController()
+
+    let iconHeader = IconHeader(frame: .zero)
+
+    vc.view.addSubview(iconHeader)
+    NSLayoutConstraint.activate([
+        iconHeader.leadingAnchor.constraint(equalTo: vc.view.leadingAnchor),
+        iconHeader.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor),
+        iconHeader.topAnchor.constraint(equalTo: vc.view.safeAreaLayoutGuide.topAnchor)
+    ])
+
+    iconHeader.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
+
+    iconHeader.image = UIImage(systemName: "person.circle")
+
+    return vc
+}
+#endif

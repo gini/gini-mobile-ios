@@ -142,19 +142,16 @@ final class NoResultScreenViewController: UIViewController {
     private func configureMainView() {
         title = NSLocalizedStringPreferredFormat("ginicapture.noresult.title",
                                                  comment: "No result screen title")
-        header.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.noresult.title",
+        header.iconAccessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.noresult.title",
                                                                                    comment: "No result screen title")
-        header.headerLabel.text = type.description
-        header.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
-        header.headerLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
-                                                 dark: UIColor.GiniCapture.light1).uiColor()
+        header.text = type.description
+        header.image = UIImageNamedPreferred(named: "alertTriangle")
+
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2,
                                          dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(header)
         view.addSubview(tableView)
         view.addSubview(buttonsView)
-        header.backgroundColor = GiniColor(light: UIColor.GiniCapture.error4,
-                                           dark: UIColor.GiniCapture.error1).uiColor()
     }
 
     private func configureCustomBottomNavigationBar() {
@@ -289,19 +286,12 @@ final class NoResultScreenViewController: UIViewController {
                                                           multiplier: Constants.iPadWidthMultiplier),
                 header.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
-        } else {
-            NSLayoutConstraint.activate([
-                header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-                                                            constant: Constants.sidePadding),
-                header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                                                             constant: -Constants.sidePadding)
-            ])
         }
+
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            header.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.contentHeight),
             header.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
                                            multiplier: Constants.contentHeightMultiplier)
         ])

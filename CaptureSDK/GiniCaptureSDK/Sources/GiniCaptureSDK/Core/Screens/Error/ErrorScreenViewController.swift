@@ -132,20 +132,11 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureErrorHeader() {
-        errorHeader.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat(
+        errorHeader.iconAccessibilityLabel = NSLocalizedStringPreferredFormat(
             "ginicapture.error.title",
             comment: "Error screen title")
-        errorHeader.headerLabel.text = errorType.title()
-        errorHeader.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
-        errorHeader.headerLabel.textColor = GiniColor(
-            light: UIColor.GiniCapture.dark1,
-            dark: UIColor.GiniCapture.light1
-        ).uiColor()
-        errorHeader.backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.error4,
-            dark: UIColor.GiniCapture.error1
-        ).uiColor()
-        errorHeader.iconImageView.image = UIImageNamedPreferred(named: errorType.iconName())
+        errorHeader.text = errorType.title()
+        errorHeader.image = UIImageNamedPreferred(named: errorType.iconName())
     }
 
     private func configureErrorContent() {
@@ -261,8 +252,6 @@ class ErrorScreenViewController: UIViewController {
             errorHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             errorHeader.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             errorHeader.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            errorHeader.heightAnchor.constraint(
-                greaterThanOrEqualToConstant: Constants.errorHeaderMinHeight),
             errorHeader.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
                                                 multiplier: Constants.errorHeaderHeightMultiplier)
         ])
