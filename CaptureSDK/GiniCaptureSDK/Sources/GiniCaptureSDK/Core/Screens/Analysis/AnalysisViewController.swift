@@ -71,17 +71,12 @@ import UIKit
         if document.type == .pdf {
             if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
                 originalDocumentName = documentTitle
-                let titleString = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
-                                                                   comment: "Analysis screen loading text for PDF")
-
-                loadingText.text = String(format: titleString, documentTitle)
+                loadingText.text = String(format: LocalizedStrings.loadingPDFText, documentTitle)
             } else {
-                loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
-                                                                    comment: "Analysis screen loading text for images")
+                loadingText.text = LocalizedStrings.loadingImageText
             }
         } else {
-            loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
-                                                                comment: "Analysis screen loading text for images")
+            loadingText.text = LocalizedStrings.loadingImageText
         }
 
         return loadingText
@@ -237,7 +232,8 @@ import UIKit
 
     private func configureLoadingIndicator() {
         let displayEducationFlow = !document.isImported && giniConfiguration.fileImportSupportedTypes != .none
-        educationFlowController = EducationFlowController.captureInvoiceFlowController(displayIfNeeded: displayEducationFlow)
+        educationFlowController = EducationFlowController
+            .captureInvoiceFlowController(displayIfNeeded: displayEducationFlow)
 
         let nextState = educationFlowController?.nextState()
         switch nextState {
@@ -385,5 +381,17 @@ private extension AnalysisViewController {
         static let loadingIndicatorContainerHeight: CGFloat = 60
         static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
+    }
+
+    enum LocalizedStrings {
+        static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
+                                                                      comment: "analyzing")
+
+        static let loadingPDFText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
+                                                                     comment: "Analysis screen loading text for PDF")
+
+        static let loadingImageText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
+                                                                       comment: "Analysis screen load text for images")
+
     }
 }

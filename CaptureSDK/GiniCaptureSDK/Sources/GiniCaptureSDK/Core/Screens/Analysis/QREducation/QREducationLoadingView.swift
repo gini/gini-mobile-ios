@@ -58,7 +58,7 @@ final class QREducationLoadingView: UIView {
         return view
     }()
 
-    init(viewModel: QREducationLoadingViewModel, style: Style = Style()) {
+    init(viewModel: QREducationLoadingViewModel, style: Style = .init()) {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
