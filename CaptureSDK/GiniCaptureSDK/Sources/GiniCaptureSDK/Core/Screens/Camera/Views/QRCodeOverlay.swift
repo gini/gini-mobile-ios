@@ -147,6 +147,7 @@ final class QRCodeOverlay: UIView {
         let indicatorView = UIActivityIndicatorView()
         indicatorView.hidesWhenStopped = true
         indicatorView.style = .large
+        indicatorView.color = .GiniCapture.light1
         return indicatorView
     }()
 
