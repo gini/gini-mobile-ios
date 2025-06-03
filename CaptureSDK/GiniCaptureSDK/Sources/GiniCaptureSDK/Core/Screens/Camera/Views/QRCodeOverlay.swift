@@ -103,6 +103,21 @@ final class IncorrectQRCodeTextContainer: UIView {
 
 final class QRCodeOverlay: UIView {
     private let configuration = GiniConfiguration.shared
+    private var educationViewModel: QREducationLoadingViewModel?
+    private var customLoadingView: QREducationLoadingView?
+    private let useCustomLoadingView: Bool = true
+    private var educationTask: Task<Void, Never>?
+    private var educationFlowController: EducationFlowController?
+
+    /**
+     The currently running education flow task, if any.
+     
+     This task represents the education flow started by `showAnimation()`
+     when the QR code education view is shown.
+     */
+    public var currentEducationTask: Task<Void, Never>? {
+        educationTask
+    }
 
     private lazy var correctQRFeedback: CorrectQRCodeTextContainer = {
         let view = CorrectQRCodeTextContainer()
@@ -172,6 +187,36 @@ final class QRCodeOverlay: UIView {
     }
 
     private func addLoadingView() {
+        let shouldDisplayEducation = configuration.qrCodeScanningEnabled &&
+                                     !configuration.onlyQRCodeScanningEnabled &&
+                                     configuration.fileImportSupportedTypes != .none
+        let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: shouldDisplayEducation)
+        educationFlowController = controller
+
+        let nextState = controller.nextState()
+        switch nextState {
+        case .showMessage(let messageIndex):
+            addEducationLoadingView(messageIndex: messageIndex)
+        case .showOriginalFlow:
+            addOriginalLoadingView()
+        }
+    }
+
+    private func addEducationLoadingView(messageIndex: Int) {
+        let loadingItems = EducationFlowContent.qrCode(messageIndex: messageIndex).items
+
+        let viewModel = QREducationLoadingViewModel(items: loadingItems)
+        educationViewModel = viewModel
+
+        let customViewStyle = QREducationLoadingView.Style(textColor: .GiniCapture.light1,
+                                                           analysingTextColor: .GiniCapture.light6)
+        let customView = QREducationLoadingView(viewModel: viewModel, style: customViewStyle)
+        customView.translatesAutoresizingMaskIntoConstraints = false
+        customLoadingView = customView
+        addSubview(customView)
+    }
+
+    private func addOriginalLoadingView() {
         let loadingIndicator: UIView
 
         if let customLoadingIndicator = configuration.customLoadingIndicator?.injectedView() {
@@ -221,6 +266,27 @@ final class QRCodeOverlay: UIView {
     }
 
     private func layoutLoadingIndicator(centeringBy cameraFrame: UIView) {
+        if let customLoadingView {
+            layoutCustomLoadingView(customLoadingView, cameraFrame: cameraFrame)
+        } else {
+            layoutOriginalLoadingContainer(cameraFrame: cameraFrame)
+        }
+    }
+
+    private func layoutCustomLoadingView(_ view: UIView, cameraFrame: UIView) {
+        NSLayoutConstraint.activate([
+            view.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
+            view.centerYAnchor.constraint(greaterThanOrEqualTo: cameraFrame.centerYAnchor),
+            view.leadingAnchor.constraint(greaterThanOrEqualTo: cameraFrame.leadingAnchor,
+                                          constant: Constants.educationLoadingViewPadding),
+            view.trailingAnchor.constraint(lessThanOrEqualTo: cameraFrame.trailingAnchor,
+                                           constant: -Constants.educationLoadingViewPadding),
+            view.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.topAnchor,
+                                      constant: Constants.educationLoadingViewTopPadding)
+        ])
+    }
+
+    private func layoutOriginalLoadingContainer(cameraFrame: UIView) {
         NSLayoutConstraint.activate([
             loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
@@ -253,12 +319,20 @@ final class QRCodeOverlay: UIView {
      */
     public func showAnimation() {
         checkMarkImageView.isHidden = true
-        loadingContainer.isHidden = false
 
-        if let loadingIndicator = configuration.customLoadingIndicator {
-            loadingIndicator.startAnimation()
+        if let educationViewModel {
+            educationTask = Task { [weak self] in
+                await educationViewModel.start()
+                self?.educationFlowController?.markMessageAsShown()
+            }
+            customLoadingView?.isHidden = false
         } else {
-            loadingIndicatorView.startAnimating()
+            loadingContainer.isHidden = false
+            if let loadingIndicator = configuration.customLoadingIndicator {
+                loadingIndicator.startAnimation()
+            } else {
+                loadingIndicatorView.startAnimating()
+            }
         }
     }
 
@@ -267,18 +341,23 @@ final class QRCodeOverlay: UIView {
      */
     public func hideAnimation() {
         checkMarkImageView.isHidden = true
-        loadingContainer.isHidden = true
-
-        if let loadingIndicator = configuration.customLoadingIndicator {
-            loadingIndicator.stopAnimation()
+        if let customLoadingView {
+            customLoadingView.isHidden = true
         } else {
-            loadingIndicatorView.stopAnimating()
+            loadingContainer.isHidden = true
+            if let customIndicator = configuration.customLoadingIndicator {
+                customIndicator.stopAnimation()
+            } else {
+                loadingIndicatorView.stopAnimating()
+            }
         }
     }
 }
 
 private enum Constants {
     static let spacing: CGFloat = 8
+    static let educationLoadingViewPadding: CGFloat = 28
+    static let educationLoadingViewTopPadding: CGFloat = 6
     static let topSpacing: CGFloat = 2
     static let iconSize = CGSize(width: 56, height: 56)
 }

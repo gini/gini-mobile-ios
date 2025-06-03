@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Combine
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
@@ -42,8 +41,7 @@ import Combine
     private var loadingViewModel: QREducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
-    private var animationCompletedSubject = CurrentValueSubject<Bool, Never>(false)
-    private var anymationCancellables = Set<AnyCancellable>()
+    private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
     private var educationFlowController: EducationFlowController?
 
     // User interface
@@ -239,7 +237,7 @@ import Combine
 
     private func configureLoadingIndicator() {
         let displayEducationFlow = !document.isImported && giniConfiguration.fileImportSupportedTypes != .none
-        educationFlowController = EducationFlowController.qrCodeFlowController(displayIfNeeded: displayEducationFlow)
+        educationFlowController = EducationFlowController.captureInvoiceFlowController(displayIfNeeded: displayEducationFlow)
 
         let nextState = educationFlowController?.nextState()
         switch nextState {
@@ -267,21 +265,14 @@ import Combine
             loadingIndicatorView.startAnimating()
         }
         // immediately mark animation complete
-        animationCompletedSubject.send(true)
+        animationCompletionContinuations.forEach { $0.resume() }
+        animationCompletionContinuations.removeAll()
     }
 
     private func showEducationLoadingMessage() {
-        let loadingItems = [
-            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
-                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
-                                                                          comment: "Education intro"),
-                                   duration: 1.5),
-            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
-                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
-                                                                          comment: "Photo education"),
-                                   duration: 3)
-        ]
+        let loadingItems = EducationFlowContent.captureInvoice.items
         let viewModel = QREducationLoadingViewModel(items: loadingItems)
+        loadingViewModel = viewModel
         let customLoadingView = QREducationLoadingView(viewModel: viewModel)
         customLoadingView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(customLoadingView)
@@ -297,29 +288,25 @@ import Combine
 
         Task {
             await viewModel.start()
-            animationCompletedSubject.send(true)
+            animationCompletionContinuations.forEach { $0.resume() }
+            animationCompletionContinuations.removeAll()
+            educationFlowController?.markMessageAsShown()
         }
     }
+
     /**
-     Executes the given action when the animation inside the analysis screen is completed.
+     Suspends the current task until the animation inside the analysis screen has completed.
 
-     If the animation has already completed, the action is executed immediately.
-     If the animation is still running, the action is queued and will be executed once the animation finishes.
-
-     - Parameter action: A closure to be executed after the animation has completed.
+     If the animation is already completed, this method returns immediately.
+     Otherwise, it suspends execution and resumes once the animation finishes.
      */
-    public func performWhenAnimationCompleted(_ action: @escaping () -> Void) {
-        if animationCompletedSubject.value {
-            action()
-        } else {
-            animationCompletedSubject
-                .filter { $0 }
-                .prefix(1)
-                .sink { _ in
-                    self.educationFlowController?.markMessageAsShown()
-                    action()
-                }
-                .store(in: &anymationCancellables)
+    public func waitUntilAnimationCompleted() async {
+        await withCheckedContinuation { continuation in
+            guard loadingViewModel != nil else {
+                continuation.resume()
+                return
+            }
+            animationCompletionContinuations.append(continuation)
         }
     }
 

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "qrEducationIntro.pdf",
+      "filename" : "qrEducationCamera.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "qrEducationIntroDark.pdf",
+      "filename" : "qrEducationCameraDark.pdf",
       "idiom" : "universal"
     }
   ],

@@ -8,8 +8,21 @@ import UIKit
 import Combine
 
 final class QREducationLoadingView: UIView {
+    
+    struct Style {
+        let textColor: UIColor
+        let analysingTextColor: UIColor
+
+        init(textColor: UIColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor(),
+             analysingTextColor: UIColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.light6).uiColor()) {
+            self.textColor = textColor
+            self.analysingTextColor = analysingTextColor
+        }
+    }
+
     private let giniConfiguration = GiniConfiguration.shared
     private let viewModel: QREducationLoadingViewModel
+    private let style: Style
     private var cancellables = Set<AnyCancellable>()
 
     private lazy var imageView: UIImageView = {
@@ -23,7 +36,7 @@ final class QREducationLoadingView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = giniConfiguration.textStyleFonts[.bodyBold]
-        label.textColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        label.textColor = style.textColor
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -35,7 +48,7 @@ final class QREducationLoadingView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = giniConfiguration.textStyleFonts[.body]
-        label.textColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.dark7).uiColor()
+        label.textColor = style.analysingTextColor
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -43,8 +56,9 @@ final class QREducationLoadingView: UIView {
         return label
     }()
 
-    init(viewModel: QREducationLoadingViewModel) {
+    init(viewModel: QREducationLoadingViewModel, style: Style = Style()) {
         self.viewModel = viewModel
+        self.style = style
         super.init(frame: .zero)
         setupViews()
         bind()
