@@ -385,6 +385,10 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
     }
 
     private func isXMLDropSelectionAllowed(forSession session: UIDropSession) -> Bool {
+        guard let eInvoiceEnabled = GiniCaptureUserDefaultsStorage.eInvoiceEnabled, eInvoiceEnabled else {
+            return false
+        }
+
         if session.hasItemsConforming(toTypeIdentifiers: GiniXMLDocument.acceptedXMLTypes) {
             let xmlIdentifier = GiniXMLDocument.acceptedXMLTypes[0]
             let xmlItems = session.items.filter { $0.itemProvider.hasItemConformingToTypeIdentifier(xmlIdentifier) }
