@@ -6,7 +6,6 @@
 
 import GiniCaptureSDK
 import UIKit
-import GiniCaptureSDK
 
 protocol DigitalInvoiceSkontoTableViewCellDelegate: AnyObject {
     func editTapped(cell: DigitalInvoiceSkontoTableViewCell)
@@ -17,6 +16,14 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     private var viewModel: SkontoViewModel?
 
     weak var delegate: DigitalInvoiceSkontoTableViewCellDelegate?
+
+    private lazy var containerView: UIView = {
+        let view = UIView()
+
+        view.backgroundColor = .giniColorScheme().background.secondary.uiColor()
+
+        return view
+    }()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -101,23 +108,24 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     // MARK: - Setup Methods
     private func setupViews() {
         selectionStyle = .none
-        backgroundColor = .giniColorScheme().container.background.uiColor()
-        clipsToBounds = true
-        layer.cornerRadius = 8
-        layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        contentView.addSubview(mainStackView)
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+        contentView.addSubview(containerView)
+        containerView.addSubview(mainStackView)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                    constant: Constants.stackViewHorizontalSpacing),
-            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                     constant: -Constants.stackViewHorizontalSpacing),
-            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
-                                               constant: Constants.stackViewVerticalSpacing),
-            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                                  constant: -Constants.stackViewVerticalSpacing),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            mainStackView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             titleLabel.heightAnchor.constraint(greaterThanOrEqualTo: toggleSwitch.heightAnchor),
             editButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.editButtonMinWidth)
         ])
@@ -169,13 +177,6 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
 
     @objc private func editButtonTapped() {
         delegate?.editTapped(cell: self)
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if UIDevice.current.isIphone {
-            contentView.frame = contentView.frame.insetBy(dx: safeAreaInsets.left + Constants.horizontalPadding, dy: 0)
-        }
     }
 }
 
