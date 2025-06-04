@@ -109,8 +109,8 @@
 "ginicapture.analysis.error.cancelled" = "The analysis was cancelled";
 "ginicapture.analysis.defaultPdfDokumentTitle" = "PDF document";
 "ginicapture.analysis.education.loadingText" = "analyzing";
-"ginicapture.analysis.education.intro" = "In case you didn’t know...";
-"ginicapture.analysis.education.photo" = "Upload PDFs, images, or GIFs";
+"ginicapture.analysis.education.loading.intro" = "In case you didn’t know...";
+"ginicapture.analysis.education.loading.uploadTip" = "Upload PDFs, images, or GIFs";
 
 "ginicapture.help.openWithTutorial.title" = "Open documents from other apps";
 
@@ -214,7 +214,7 @@
 "ginicapture.QRscanning.incorrect.title" = "Unknown QR code";
 "ginicapture.QRscanning.incorrect.description" = "This code does not contain any payment details. Please use another QR code or take an image of your invoice.";
 "ginicapture.QRscanning.loading" = "Retrieving invoice";
-"ginicapture.QRscanning.education.camera" = "You can take photos of receipts or remittance slips – even without a QR code";
+"ginicapture.QRscanning.education.loading.captureTip" = "You can take photos of receipts or remittance slips – even without a QR code";
 
 "ginicapture.ibandetection.multipleibansdetected" = "IBAN detected";
 "ginicapture.ibandetection.takephoto" = "Take a photo";

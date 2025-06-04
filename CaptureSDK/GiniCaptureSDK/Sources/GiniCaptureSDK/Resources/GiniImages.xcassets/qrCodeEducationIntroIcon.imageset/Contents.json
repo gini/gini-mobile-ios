@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "qrCodeEducationIntro.pdf",
+      "filename" : "qrCodeEducationIntroIcon.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "qrCodeEducationIntroDark.pdf",
+      "filename" : "qrCodeEducationIntroIconDark.pdf",
       "idiom" : "universal"
     }
   ],

@@ -10,20 +10,20 @@ enum EducationFlowContent {
 
     var items: [QRCodeEducationLoadingItem] {
         let intro = QRCodeEducationLoadingItem(image: Images.intro,
-                                           text: LocalizedStrings.introText,
-                                           duration: 1.5)
-        let camera = QRCodeEducationLoadingItem(image: Images.camera,
-                                            text: LocalizedStrings.cameraText,
-                                            duration: 3)
-        let photo = QRCodeEducationLoadingItem(image: Images.photo,
-                                           text: LocalizedStrings.photoText,
-                                           duration: 3)
+                                               text: LocalizedStrings.intro,
+                                               duration: 1.5)
+        let captureTip = QRCodeEducationLoadingItem(image: Images.capture,
+                                                    text: LocalizedStrings.capture,
+                                                    duration: 3)
+        let uploadTip = QRCodeEducationLoadingItem(image: Images.uploadFile,
+                                                   text: LocalizedStrings.uploadFile,
+                                                   duration: 3)
 
         switch self {
         case .qrCode(let index):
-            return index == 0 ? [intro, camera] : [intro, photo]
+            return index == 0 ? [intro, captureTip] : [intro, uploadTip]
         case .captureInvoice:
-            return [intro, photo]
+            return [intro, uploadTip]
         }
     }
 
@@ -31,18 +31,17 @@ enum EducationFlowContent {
 
 private extension EducationFlowContent {
     enum LocalizedStrings {
-        static let introText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
-                                                                comment: "Education intro")
-        static let cameraText = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.education.camera",
-                                                                 comment: "Camera education")
-        static let photoText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
-                                                                comment: "Photo education")
+        static let intro = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loading.intro",
+                                                            comment: "Education loading intro")
+        static let capture = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.education.loading.captureTip",
+                                                              comment: "Capture hint")
+        static let uploadFile = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loading.uploadTip",
+                                                                 comment: "Upload tip")
     }
 
     enum Images {
-        static let intro = UIImageNamedPreferred(named: "qrEducationIntro")
-        static let camera = UIImageNamedPreferred(named: "qrEducationCamera")
-        static let photo = UIImageNamedPreferred(named: "qrEducationPhoto")
+        static let intro = UIImageNamedPreferred(named: "qrCodeEducationIntroIcon")
+        static let capture = UIImageNamedPreferred(named: "qrCodeEducationCaptureIcon")
+        static let uploadFile = UIImageNamedPreferred(named: "qrCodeEducationUploadIcon")
     }
 }
-
