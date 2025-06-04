@@ -114,7 +114,7 @@ final class GiniInputAccessoryView: UIView {
     private func updateButtonStates() {
         let enabledTintColor: UIColor = .giniColorScheme().inputAccessoryView.tintColor.uiColor()
         let disabledTintColor: UIColor = .giniColorScheme().inputAccessoryView.disabledTintColor.uiColor()
-        
+
         previousButton.isEnabled = currentIndex > 0
         nextButton.isEnabled = currentIndex < textFields.count - 1
         previousButton.tintColor = previousButton.isEnabled ? enabledTintColor : disabledTintColor
@@ -153,12 +153,12 @@ extension UIViewController {
             view.inputAccessoryView = accessoryView
         }
     }
-    
+
     func updateCurrentField(_ field: GiniInputAccessoryViewPresentable) {
         let inputAccessoryView = field.inputAccessoryView as? GiniInputAccessoryView
-        
+
         guard let view = field as? UIView else { return }
-        
+
         inputAccessoryView?.updateCurrentField(view)
     }
 }
