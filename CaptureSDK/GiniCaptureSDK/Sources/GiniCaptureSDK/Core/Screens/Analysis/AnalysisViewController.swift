@@ -68,15 +68,12 @@ import UIKit
         loadingText.isAccessibilityElement = true
         loadingText.numberOfLines = 0
 
-        if document.type == .pdf {
-            if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
-                originalDocumentName = documentTitle
-                loadingText.text = String(format: LocalizedStrings.loadingPDFText, documentTitle)
-            } else {
-                loadingText.text = LocalizedStrings.loadingImageText
-            }
+        if document.type == .pdf,
+           let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
+            originalDocumentName = documentTitle
+            loadingText.text = String(format: LocalizedStrings.loadingPDFText, documentTitle)
         } else {
-            loadingText.text = LocalizedStrings.loadingImageText
+            loadingText.text = LocalizedStrings.loadingBaseText
         }
 
         return loadingText
@@ -384,14 +381,11 @@ private extension AnalysisViewController {
     }
 
     enum LocalizedStrings {
-        static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
-                                                                      comment: "analyzing")
-
         static let loadingPDFText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
                                                                      comment: "Analysis screen loading text for PDF")
 
-        static let loadingImageText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
-                                                                       comment: "Analysis screen load text for images")
+        static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
+                                                                      comment: "Analysis screen loading base text")
 
     }
 }
