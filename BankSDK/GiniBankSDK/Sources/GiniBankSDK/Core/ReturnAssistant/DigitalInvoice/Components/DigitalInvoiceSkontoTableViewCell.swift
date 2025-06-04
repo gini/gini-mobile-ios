@@ -20,7 +20,9 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     private lazy var containerView: UIView = {
         let view = UIView()
 
-        view.backgroundColor = .giniColorScheme().background.secondary.uiColor()
+        view.backgroundColor = .giniColorScheme().container.background.uiColor()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.round(corners: [.bottomLeft, .bottomRight], radius: 8.0)
 
         return view
     }()
@@ -110,24 +112,41 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .clear
         contentView.backgroundColor = .clear
-        contentView.addSubview(containerView)
-        containerView.addSubview(mainStackView)
+        setupContainerView()
+        setupMainStackView()
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            titleLabel.heightAnchor.constraint(greaterThanOrEqualTo: toggleSwitch.heightAnchor),
+            editButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.editButtonMinWidth)
+        ])
+    }
+
+    private func setupContainerView() {
+        contentView.addSubview(containerView)
+
+        NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                    constant: Constants.stackViewHorizontalSpacing),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                    constant: -Constants.stackViewHorizontalSpacing)
+        ])
+    }
+
+    private func setupMainStackView() {
+        containerView.addSubview(mainStackView)
+
+        NSLayoutConstraint.activate([
+            mainStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
+                                                   constant: Constants.stackViewHorizontalSpacing),
+            mainStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
                                                     constant: -Constants.stackViewHorizontalSpacing),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            mainStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             mainStackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            titleLabel.heightAnchor.constraint(greaterThanOrEqualTo: toggleSwitch.heightAnchor),
-            editButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.editButtonMinWidth)
+            mainStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor,
+                                                  constant: -Constants.stackViewVerticalSpacing)
         ])
     }
 
