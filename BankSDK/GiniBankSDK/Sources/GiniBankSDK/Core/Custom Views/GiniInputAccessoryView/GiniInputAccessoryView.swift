@@ -12,10 +12,6 @@ protocol GiniInputAccessoryViewDelegate: AnyObject {
     func inputAccessoryViewDidCancel(_ view: GiniInputAccessoryView)
 }
 
-protocol GiniInputAccessoryViewPresentable {
-    var inputAccessoryView: UIView? { get set }
-}
-
 final class GiniInputAccessoryView: UIView {
 
     private lazy var toolbar: UIToolbar = {
@@ -139,26 +135,5 @@ final class GiniInputAccessoryView: UIView {
 
     @objc private func cancelTapped() {
         delegate?.inputAccessoryViewDidCancel(self)
-    }
-}
-
-extension UIViewController {
-
-    func setupInputAccessoryView(for views: [GiniInputAccessoryViewPresentable]) {
-        let accessoryView = GiniInputAccessoryView(fields: views.compactMap { $0 as? UIView })
-
-        accessoryView.delegate = self as? GiniInputAccessoryViewDelegate
-
-        for var view in views {
-            view.inputAccessoryView = accessoryView
-        }
-    }
-
-    func updateCurrentField(_ field: GiniInputAccessoryViewPresentable) {
-        let inputAccessoryView = field.inputAccessoryView as? GiniInputAccessoryView
-
-        guard let view = field as? UIView else { return }
-
-        inputAccessoryView?.updateCurrentField(view)
     }
 }

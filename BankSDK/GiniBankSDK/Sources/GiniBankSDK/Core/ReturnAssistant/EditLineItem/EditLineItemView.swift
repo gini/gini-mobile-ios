@@ -4,6 +4,7 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
+import Combine
 import GiniCaptureSDK
 import UIKit
 
@@ -119,6 +120,8 @@ final class EditLineItemView: UIView {
         return view
     }()
 
+    private var cancellables: Set<AnyCancellable> = []
+
     var viewModel: EditLineItemViewModel? {
         didSet {
             guard let viewModel = viewModel else { return }
@@ -131,6 +134,7 @@ final class EditLineItemView: UIView {
 
         setupView()
         setupConstraints()
+        bindViews()
     }
 
     required init?(coder: NSCoder) {
@@ -164,6 +168,22 @@ final class EditLineItemView: UIView {
 		priceContainerView.addSubview(priceLabelView)
 		priceContainerView.addSubview(priceErrorView)
 		setupPriceContainerViewConstraints()
+
+        setupInputAccessoryView(for: [nameLabelView, priceLabelView])
+    }
+
+    private func bindViews() {
+        nameLabelView.$didStartEditing
+            .dropFirst()
+            .sink { _ in
+                self.updateCurrentField(self.nameLabelView)
+            }.store(in: &cancellables)
+
+        priceLabelView.$didStartEditing
+            .dropFirst()
+            .sink { _ in
+                self.updateCurrentField(self.priceLabelView)
+            }.store(in: &cancellables)
     }
 
 	private func setupNameContainerViewConstraints() {
@@ -328,6 +348,22 @@ extension EditLineItemView: PriceLabelViewDelegate {
         UIView.animate(withDuration: Constants.animationDuration) {
             self.currencyPicker.alpha = 1
         }
+    }
+}
+
+// MARK: - GiniInputAccessoryView delegate methods
+
+extension EditLineItemView: GiniInputAccessoryViewDelegate {
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectPrevious field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectNext field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryViewDidCancel(_ view: GiniInputAccessoryView) {
+        endEditing(true)
     }
 }
 

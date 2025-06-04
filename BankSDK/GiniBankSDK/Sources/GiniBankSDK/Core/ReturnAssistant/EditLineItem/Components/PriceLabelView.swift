@@ -12,7 +12,7 @@ protocol PriceLabelViewDelegate: AnyObject {
     func priceLabelViewTextFieldDidChange(on: PriceLabelView)
 }
 
-final class PriceLabelView: UIView {
+final class PriceLabelView: UIView, GiniInputAccessoryViewPresentable {
     private lazy var configuration = GiniBankConfiguration.shared
 
     private lazy var titleLabel: UILabel = {
@@ -74,7 +74,23 @@ final class PriceLabelView: UIView {
         }
     }
 
+    override var inputAccessoryView: UIView? {
+        get {
+            priceTextField.inputAccessoryView
+        }
+
+        set {
+            priceTextField.inputAccessoryView = newValue
+        }
+    }
+
+    override var isFirstResponder: Bool {
+        priceTextField.isFirstResponder
+    }
+
     weak var delegate: PriceLabelViewDelegate?
+
+    @Published var didStartEditing = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -85,6 +101,14 @@ final class PriceLabelView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        priceTextField.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        priceTextField.resignFirstResponder()
     }
 
     private func setupView() {
@@ -168,6 +192,10 @@ extension PriceLabelView: UITextFieldDelegate {
             return false
         }
         return true
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        didStartEditing = true
     }
 }
 
