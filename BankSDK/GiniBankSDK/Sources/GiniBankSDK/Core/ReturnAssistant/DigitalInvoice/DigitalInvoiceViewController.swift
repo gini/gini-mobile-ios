@@ -178,16 +178,20 @@ final class DigitalInvoiceViewController: UIViewController {
         }
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        updateFooterViewForDeviceOrientation()
+    }
+
+    private func updateFooterViewForDeviceOrientation() {
         if UIDevice.current.isIphone {
-            if view.currentInterfaceOrientation.isLandscape {
+            if UIDevice.current.isLandscape {
                 if tableView.tableFooterView == nil {
                     NSLayoutConstraint.deactivate(proceedViewConstraints)
                     proceedView.removeFromSuperview()
-
+                    
                     setupLandscapeFooterView()
-
+                    
                     NSLayoutConstraint.activate(proceedViewTableConstraints)
                     proceedView.isHidden = false
                     bottomNavigationBar?.isHidden = true
