@@ -8,14 +8,14 @@ enum EducationFlowContent {
     case qrCode(messageIndex: Int)
     case captureInvoice
 
-    var items: [QREducationLoadingItem] {
-        let intro = QREducationLoadingItem(image: Images.intro,
+    var items: [QRCodeEducationLoadingItem] {
+        let intro = QRCodeEducationLoadingItem(image: Images.intro,
                                            text: LocalizedStrings.introText,
                                            duration: 1.5)
-        let camera = QREducationLoadingItem(image: Images.camera,
+        let camera = QRCodeEducationLoadingItem(image: Images.camera,
                                             text: LocalizedStrings.cameraText,
                                             duration: 3)
-        let photo = QREducationLoadingItem(image: Images.photo,
+        let photo = QRCodeEducationLoadingItem(image: Images.photo,
                                            text: LocalizedStrings.photoText,
                                            duration: 3)
 

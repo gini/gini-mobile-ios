@@ -38,7 +38,7 @@ import UIKit
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
     private let useCustomLoadingView: Bool = true
-    private var loadingViewModel: QREducationLoadingViewModel?
+    private var loadingViewModel: QRCodeEducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
     private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
@@ -264,9 +264,9 @@ import UIKit
 
     private func showEducationLoadingMessage() {
         let loadingItems = EducationFlowContent.captureInvoice.items
-        let viewModel = QREducationLoadingViewModel(items: loadingItems)
+        let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
         loadingViewModel = viewModel
-        let customLoadingView = QREducationLoadingView(viewModel: viewModel)
+        let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel)
         customLoadingView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(customLoadingView)
 

@@ -1,5 +1,5 @@
 //
-//  QREducationLoadingView.swift
+//  QRCodeEducationLoadingView.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 import UIKit
 import Combine
 
-final class QREducationLoadingView: UIView {
+final class QRCodeEducationLoadingView: UIView {
 
     struct Style {
         let textColor: UIColor
@@ -26,7 +26,7 @@ final class QREducationLoadingView: UIView {
     }
 
     private let giniConfiguration = GiniConfiguration.shared
-    private let viewModel: QREducationLoadingViewModel
+    private let viewModel: QRCodeEducationLoadingViewModel
     private let style: Style
     private var cancellables = Set<AnyCancellable>()
 
@@ -58,7 +58,7 @@ final class QREducationLoadingView: UIView {
         return view
     }()
 
-    init(viewModel: QREducationLoadingViewModel, style: Style = .init()) {
+    init(viewModel: QRCodeEducationLoadingViewModel, style: Style = .init()) {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
@@ -117,14 +117,14 @@ final class QREducationLoadingView: UIView {
             .store(in: &cancellables)
     }
 
-    private func configure(with model: QREducationLoadingItem) {
+    private func configure(with model: QRCodeEducationLoadingItem) {
         imageView.image = model.image
         textLabel.text = model.text
         textLabel.accessibilityLabel = model.text
     }
 }
 
-private extension QREducationLoadingView {
+private extension QRCodeEducationLoadingView {
     enum Constants {
         static let imageToTextSpacing: CGFloat = 16
         static let imageToAnalysingSpacing: CGFloat = 98
@@ -132,7 +132,7 @@ private extension QREducationLoadingView {
     }
 }
 
-private extension QREducationLoadingView {
+private extension QRCodeEducationLoadingView {
     enum LocalizedStrings {
         static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
                                                                       comment: "analyzing")

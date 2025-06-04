@@ -103,8 +103,8 @@ final class IncorrectQRCodeTextContainer: UIView {
 
 final class QRCodeOverlay: UIView {
     private let configuration = GiniConfiguration.shared
-    private var educationViewModel: QREducationLoadingViewModel?
-    private var customLoadingView: QREducationLoadingView?
+    private var educationViewModel: QRCodeEducationLoadingViewModel?
+    private var customLoadingView: QRCodeEducationLoadingView?
     private let useCustomLoadingView: Bool = true
     private var educationTask: Task<Void, Never>?
     private var educationFlowController: EducationFlowController?
@@ -206,12 +206,12 @@ final class QRCodeOverlay: UIView {
     private func addEducationLoadingView(messageIndex: Int) {
         let loadingItems = EducationFlowContent.qrCode(messageIndex: messageIndex).items
 
-        let viewModel = QREducationLoadingViewModel(items: loadingItems)
+        let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
         educationViewModel = viewModel
 
-        let customViewStyle = QREducationLoadingView.Style(textColor: .GiniCapture.light1,
+        let customViewStyle = QRCodeEducationLoadingView.Style(textColor: .GiniCapture.light1,
                                                            analysingTextColor: .GiniCapture.light6)
-        let customView = QREducationLoadingView(viewModel: viewModel, style: customViewStyle)
+        let customView = QRCodeEducationLoadingView(viewModel: viewModel, style: customViewStyle)
         customView.translatesAutoresizingMaskIntoConstraints = false
         customLoadingView = customView
         addSubview(customView)

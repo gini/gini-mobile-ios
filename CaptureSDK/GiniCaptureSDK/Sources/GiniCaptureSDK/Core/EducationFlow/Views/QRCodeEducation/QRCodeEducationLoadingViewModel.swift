@@ -1,17 +1,17 @@
 //
-//  QREducationLoadingViewModel.swift
+//  QRCodeEducationLoadingViewModel.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
 import Foundation
 
-final class QREducationLoadingViewModel: ObservableObject {
-    @Published private(set) var currentItem: QREducationLoadingItem?
+final class QRCodeEducationLoadingViewModel: ObservableObject {
+    @Published private(set) var currentItem: QRCodeEducationLoadingItem?
 
-    private let items: [QREducationLoadingItem]
+    private let items: [QRCodeEducationLoadingItem]
 
-    init(items: [QREducationLoadingItem]) {
+    init(items: [QRCodeEducationLoadingItem]) {
         self.items = items
     }
 
