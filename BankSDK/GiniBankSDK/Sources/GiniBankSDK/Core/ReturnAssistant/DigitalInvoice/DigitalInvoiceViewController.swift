@@ -40,6 +40,11 @@ final class DigitalInvoiceViewController: UIViewController {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         return containerView
     }()
+    
+    private lazy var landscapeFooterContainerView: UIView = {
+        let footerContainer = UIView()
+        return footerContainer
+    }()
 
     private let viewModel: DigitalInvoiceViewModel
     private let configuration = GiniBankConfiguration.shared
@@ -181,19 +186,7 @@ final class DigitalInvoiceViewController: UIViewController {
                     NSLayoutConstraint.deactivate(proceedViewConstraints)
                     proceedView.removeFromSuperview()
 
-                    // frame is mandatory for tableview footer view, since it doesn't use autolayout, which means we have to specify size
-                    let container = UIView(frame: CGRect(x: 0,
-                                                         y: 0,
-                                                         width: view.bounds.width,
-                                                         height: Constants.buttonContainerHeight + Constants.padding))
-                    container.addSubview(proceedView)
-                    NSLayoutConstraint.activate([
-                        proceedView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-                        proceedView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-                        proceedView.bottomAnchor.constraint(equalTo: container.bottomAnchor),
-                        proceedView.topAnchor.constraint(equalTo: container.topAnchor, constant: Constants.padding)
-                    ])
-                    tableView.tableFooterView = container
+                    setupLandscapeFooterView()
 
                     NSLayoutConstraint.activate(proceedViewTableConstraints)
                     proceedView.isHidden = false
@@ -254,6 +247,39 @@ final class DigitalInvoiceViewController: UIViewController {
         }
         GiniAnalyticsManager.trackScreenShown(screenName: .returnAssistant, properties: eventProperties)
 
+    }
+    
+    // MARK: - Landscape Footer Setup
+    private func setupLandscapeFooterView() {
+        addProceedViewToFooterContainer()
+        constrainProceedViewInFooterContainer()
+        applyFooterContainerHeightAndAssign()
+    }
+    
+    private func addProceedViewToFooterContainer() {
+        landscapeFooterContainerView.addSubview(proceedView)
+    }
+    
+    private func constrainProceedViewInFooterContainer() {
+        // Setup internal constraints
+        NSLayoutConstraint.activate([
+            proceedView.topAnchor.constraint(equalTo: landscapeFooterContainerView.topAnchor, constant: Constants.padding),
+            proceedView.bottomAnchor.constraint(equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.bottomAnchor),
+            proceedView.leadingAnchor.constraint(equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.leadingAnchor),
+            proceedView.trailingAnchor.constraint(equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.trailingAnchor)
+        ])
+    }
+    
+    private func applyFooterContainerHeightAndAssign() {
+        let targetWidth = view.bounds.width
+        
+        // Calculate fitting height via Auto Layout
+        let fittingSize = proceedView.systemLayoutSizeFitting(
+            CGSize(width: targetWidth, height: UIView.layoutFittingCompressedSize.height)
+        )
+        
+        landscapeFooterContainerView.frame.size.height = fittingSize.height
+        tableView.tableFooterView = landscapeFooterContainerView
     }
 }
 
