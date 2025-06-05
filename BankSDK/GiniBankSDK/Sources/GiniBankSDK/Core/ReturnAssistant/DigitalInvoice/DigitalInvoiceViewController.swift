@@ -40,7 +40,7 @@ final class DigitalInvoiceViewController: UIViewController {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         return containerView
     }()
-    
+
     private lazy var landscapeFooterContainerView: UIView = {
         let footerContainer = UIView()
         return footerContainer
@@ -59,7 +59,7 @@ final class DigitalInvoiceViewController: UIViewController {
         proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         tableView.bottomAnchor.constraint(equalTo: proceedView.topAnchor)
     ]
-    
+
     private lazy var navbarConstraints: [NSLayoutConstraint] = {
         guard let bottomNavigationBar = bottomNavigationBar else {
             return []
@@ -71,7 +71,7 @@ final class DigitalInvoiceViewController: UIViewController {
             bottomNavigationBar.topAnchor.constraint(equalTo: tableView.bottomAnchor)
         ]
     }()
-    
+
     private lazy var proceedViewTableConstraints: [NSLayoutConstraint] = [
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ]
@@ -193,38 +193,38 @@ final class DigitalInvoiceViewController: UIViewController {
 
     private func updateFooterViewForIphoneOrientation() {
         guard UIDevice.current.isIphone else { return }
-        
+
         let isLandscape = UIDevice.current.isLandscape
         let footerExists = tableView.tableFooterView != nil
-        
+
         if isLandscape && !footerExists {
             NSLayoutConstraint.deactivate(proceedViewConstraints)
             proceedView.removeFromSuperview()
-            
+
             setupLandscapeFooterView()
-            
+
             if configuration.bottomNavigationBarEnabled {
                 navbarConstraints.last?.isActive = false
             }
-            
+
             NSLayoutConstraint.activate(proceedViewTableConstraints)
-            
+
             proceedView.isHidden = false
             bottomNavigationBar?.isHidden = true
         } else if !isLandscape && footerExists {
             NSLayoutConstraint.deactivate(proceedViewTableConstraints)
             proceedView.removeFromSuperview()
             tableView.tableFooterView = nil
-            
+
             if configuration.bottomNavigationBarEnabled {
                 navbarConstraints.last?.isActive = true
             }
-            
+
             proceedViewTableConstraints.last?.isActive = false
-            
+
             view.addSubview(proceedView)
             NSLayoutConstraint.activate(proceedViewConstraints)
-            
+
             proceedView.isHidden = configuration.bottomNavigationBarEnabled
             bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
         }
@@ -271,18 +271,18 @@ final class DigitalInvoiceViewController: UIViewController {
         GiniAnalyticsManager.trackScreenShown(screenName: .returnAssistant, properties: eventProperties)
 
     }
-    
+
     // MARK: - Landscape Footer Setup
     private func setupLandscapeFooterView() {
         addProceedViewToFooterContainer()
         constrainProceedViewInFooterContainer()
         applyFooterContainerHeightAndAssign()
     }
-    
+
     private func addProceedViewToFooterContainer() {
         landscapeFooterContainerView.addSubview(proceedView)
     }
-    
+
     private func constrainProceedViewInFooterContainer() {
         // Setup internal constraints
         NSLayoutConstraint.activate([
@@ -292,15 +292,15 @@ final class DigitalInvoiceViewController: UIViewController {
             proceedView.trailingAnchor.constraint(equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
-    
+
     private func applyFooterContainerHeightAndAssign() {
         let targetWidth = view.bounds.width
-        
+
         // Calculate fitting height via Auto Layout
         let fittingSize = proceedView.systemLayoutSizeFitting(
             CGSize(width: targetWidth, height: UIView.layoutFittingCompressedSize.height)
         )
-        
+
         landscapeFooterContainerView.frame.size.height = fittingSize.height
         tableView.tableFooterView = landscapeFooterContainerView
     }
