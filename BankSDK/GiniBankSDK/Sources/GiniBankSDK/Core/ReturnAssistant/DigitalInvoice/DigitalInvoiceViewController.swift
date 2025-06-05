@@ -59,6 +59,19 @@ final class DigitalInvoiceViewController: UIViewController {
         proceedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         tableView.bottomAnchor.constraint(equalTo: proceedView.topAnchor)
     ]
+    
+    private lazy var navbarConstraints: [NSLayoutConstraint] = {
+        guard let bottomNavigationBar = bottomNavigationBar else {
+            return []
+        }
+        return [
+            bottomNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomNavigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomNavigationBar.topAnchor.constraint(equalTo: tableView.bottomAnchor)
+        ]
+    }()
+    
     private lazy var proceedViewTableConstraints: [NSLayoutConstraint] = [
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ]
@@ -147,12 +160,7 @@ final class DigitalInvoiceViewController: UIViewController {
 
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
 
-                NSLayoutConstraint.activate([
-                    navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                    navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                    navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                    navigationBar.topAnchor.constraint(equalTo: tableView.bottomAnchor)
-                ])
+                NSLayoutConstraint.activate(navbarConstraints)
             }
 
             proceedView.isHidden = true
@@ -180,34 +188,45 @@ final class DigitalInvoiceViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        updateFooterViewForDeviceOrientation()
+        updateFooterViewForIphoneOrientation()
     }
 
-    private func updateFooterViewForDeviceOrientation() {
-        if UIDevice.current.isIphone {
-            if UIDevice.current.isLandscape {
-                if tableView.tableFooterView == nil {
-                    NSLayoutConstraint.deactivate(proceedViewConstraints)
-                    proceedView.removeFromSuperview()
-                    
-                    setupLandscapeFooterView()
-                    
-                    NSLayoutConstraint.activate(proceedViewTableConstraints)
-                    proceedView.isHidden = false
-                    bottomNavigationBar?.isHidden = true
-                }
-            } else {
-                if tableView.tableFooterView != nil {
-                    NSLayoutConstraint.deactivate(proceedViewTableConstraints)
-                    proceedView.removeFromSuperview()
-                    tableView.tableFooterView = nil
-                    proceedViewTableConstraints.last?.isActive = false
-                    view.addSubview(proceedView)
-                    NSLayoutConstraint.activate(proceedViewConstraints)
-                    proceedView.isHidden = configuration.bottomNavigationBarEnabled
-                    bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
-                }
+    private func updateFooterViewForIphoneOrientation() {
+        guard UIDevice.current.isIphone else { return }
+        
+        let isLandscape = UIDevice.current.isLandscape
+        let footerExists = tableView.tableFooterView != nil
+        
+        if isLandscape && !footerExists {
+            NSLayoutConstraint.deactivate(proceedViewConstraints)
+            proceedView.removeFromSuperview()
+            
+            setupLandscapeFooterView()
+            
+            if configuration.bottomNavigationBarEnabled {
+                navbarConstraints.last?.isActive = false
             }
+            
+            NSLayoutConstraint.activate(proceedViewTableConstraints)
+            
+            proceedView.isHidden = false
+            bottomNavigationBar?.isHidden = true
+        } else if !isLandscape && footerExists {
+            NSLayoutConstraint.deactivate(proceedViewTableConstraints)
+            proceedView.removeFromSuperview()
+            tableView.tableFooterView = nil
+            
+            if configuration.bottomNavigationBarEnabled {
+                navbarConstraints.last?.isActive = true
+            }
+            
+            proceedViewTableConstraints.last?.isActive = false
+            
+            view.addSubview(proceedView)
+            NSLayoutConstraint.activate(proceedViewConstraints)
+            
+            proceedView.isHidden = configuration.bottomNavigationBarEnabled
+            bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
         }
     }
 
