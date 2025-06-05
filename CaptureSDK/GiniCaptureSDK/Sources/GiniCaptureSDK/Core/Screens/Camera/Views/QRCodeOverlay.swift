@@ -234,7 +234,7 @@ final class QRCodeOverlay: UIView {
     func layoutViews(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
         layoutCorrectQRCode(centeringBy: cameraFrame, on: viewController)
         layoutIncorrectQRCode(centeringBy: cameraFrame)
-        layoutLoadingIndicator(centeringBy: cameraFrame)
+        layoutLoadingIndicator(centeringBy: cameraFrame, on: viewController)
     }
 
     private func layoutCorrectQRCode(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
@@ -266,22 +266,62 @@ final class QRCodeOverlay: UIView {
         ])
     }
 
-    private func layoutLoadingIndicator(centeringBy cameraFrame: UIView) {
+    private func layoutLoadingIndicator(centeringBy cameraFrame: UIView,
+                                        on viewController: UIViewController) {
         if let educationLoadingView {
-            layoutLoadingView(educationLoadingView, cameraFrame: cameraFrame)
+            let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
+            if isAccessibilityCategory && UIDevice.current.isIphoneAndLandscape {
+                layoutEducationLoadingView(educationLoadingView,
+                                           cameraFrame: cameraFrame,
+                                           on: viewController)
+            } else {
+                layoutEducationLoadingView(educationLoadingView,
+                                           cameraFrame: cameraFrame)
+            }
         } else {
-            layoutLoadingView(loadingContainer, cameraFrame: cameraFrame)
+            layoutDefaultLoadingView(cameraFrame: cameraFrame)
         }
     }
+    private var educationLoadingConstraints: [NSLayoutConstraint] = []
 
-    private func layoutLoadingView(_ view: UIView,
-                                   cameraFrame: UIView) {
+    private func layoutEducationLoadingView(_ view: UIView,
+                                            cameraFrame: UIView,
+                                            on viewController: UIViewController? = nil) {
+        NSLayoutConstraint.deactivate(educationLoadingConstraints)
+        educationLoadingConstraints.removeAll()
 
-        NSLayoutConstraint.activate([
+        var constraints: [NSLayoutConstraint] = [
             view.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-            view.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
-            view.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor),
-            view.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
+            view.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor)
+        ]
+
+        if let viewController = viewController {
+            var horizontalPadding: CGFloat = 0
+            if UIDevice.current.isIphoneAndLandscape {
+                horizontalPadding = Constants.educationLoadingHorizontalPadding
+            }
+            constraints.append(view.leadingAnchor.constraint(equalTo: viewController.view.leadingAnchor,
+                                                             constant: horizontalPadding))
+            constraints.append(view.trailingAnchor.constraint(equalTo: viewController.view.trailingAnchor,
+                                                              constant: -horizontalPadding))
+            constraints.append(view.topAnchor.constraint(equalTo: correctQRFeedback.bottomAnchor))
+        } else {
+            constraints.append(view.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor))
+            constraints.append(view.trailingAnchor.constraint(equalTo: cameraFrame.trailingAnchor))
+            constraints.append(view.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.topAnchor,
+                                                         constant: Constants.educationLoadingViewTopPadding))
+        }
+
+        educationLoadingConstraints = constraints
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    private func layoutDefaultLoadingView(cameraFrame: UIView) {
+        NSLayoutConstraint.activate([
+            loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
+            loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
+            loadingContainer.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor),
+            loadingContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
         ])
     }
 
@@ -350,4 +390,5 @@ private enum Constants {
     static let educationLoadingViewTopPadding: CGFloat = 6
     static let topSpacing: CGFloat = 2
     static let iconSize = CGSize(width: 56, height: 56)
+    static let educationLoadingHorizontalPadding:CGFloat = 56
 }
