@@ -104,7 +104,7 @@ final class IncorrectQRCodeTextContainer: UIView {
 final class QRCodeOverlay: UIView {
     private let configuration = GiniConfiguration.shared
     private var educationViewModel: QRCodeEducationLoadingViewModel?
-    private var customLoadingView: QRCodeEducationLoadingView?
+    private var educationLoadingView: QRCodeEducationLoadingView?
     private let useCustomLoadingView: Bool = true
     private var educationTask: Task<Void, Never>?
     private var educationFlowController: EducationFlowController?
@@ -211,10 +211,10 @@ final class QRCodeOverlay: UIView {
 
         let customViewStyle = QRCodeEducationLoadingView.Style(textColor: .GiniCapture.light1,
                                                                analysingTextColor: .GiniCapture.light6)
-        let customView = QRCodeEducationLoadingView(viewModel: viewModel, style: customViewStyle)
-        customView.translatesAutoresizingMaskIntoConstraints = false
-        customLoadingView = customView
-        addSubview(customView)
+        let view = QRCodeEducationLoadingView(viewModel: viewModel, style: customViewStyle)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        educationLoadingView = view
+        addSubview(view)
     }
 
     private func addOriginalLoadingView() {
@@ -267,32 +267,21 @@ final class QRCodeOverlay: UIView {
     }
 
     private func layoutLoadingIndicator(centeringBy cameraFrame: UIView) {
-        if let customLoadingView {
-            layoutCustomLoadingView(customLoadingView, cameraFrame: cameraFrame)
+        if let educationLoadingView {
+            layoutLoadingView(educationLoadingView, cameraFrame: cameraFrame)
         } else {
-            layoutOriginalLoadingContainer(cameraFrame: cameraFrame)
+            layoutLoadingView(loadingContainer, cameraFrame: cameraFrame)
         }
     }
 
-    private func layoutCustomLoadingView(_ view: UIView, cameraFrame: UIView) {
+    private func layoutLoadingView(_ view: UIView,
+                                   cameraFrame: UIView) {
+
         NSLayoutConstraint.activate([
             view.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-            view.centerYAnchor.constraint(greaterThanOrEqualTo: cameraFrame.centerYAnchor),
-            view.leadingAnchor.constraint(greaterThanOrEqualTo: cameraFrame.leadingAnchor,
-                                          constant: Constants.educationLoadingViewPadding),
-            view.trailingAnchor.constraint(lessThanOrEqualTo: cameraFrame.trailingAnchor,
-                                           constant: -Constants.educationLoadingViewPadding),
-            view.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.topAnchor,
-                                      constant: Constants.educationLoadingViewTopPadding)
-        ])
-    }
-
-    private func layoutOriginalLoadingContainer(cameraFrame: UIView) {
-        NSLayoutConstraint.activate([
-            loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-            loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
-            loadingContainer.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor),
-            loadingContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
+            view.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
+            view.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor),
+            view.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
         ])
     }
 
@@ -326,7 +315,7 @@ final class QRCodeOverlay: UIView {
                 await educationViewModel.start()
                 self?.educationFlowController?.markMessageAsShown()
             }
-            customLoadingView?.isHidden = false
+            educationLoadingView?.isHidden = false
         } else {
             loadingContainer.isHidden = false
             if let loadingIndicator = configuration.customLoadingIndicator {
@@ -342,8 +331,8 @@ final class QRCodeOverlay: UIView {
      */
     public func hideAnimation() {
         checkMarkImageView.isHidden = true
-        if let customLoadingView {
-            customLoadingView.isHidden = true
+        if let educationLoadingView {
+            educationLoadingView.isHidden = true
         } else {
             loadingContainer.isHidden = true
             if let customIndicator = configuration.customLoadingIndicator {
