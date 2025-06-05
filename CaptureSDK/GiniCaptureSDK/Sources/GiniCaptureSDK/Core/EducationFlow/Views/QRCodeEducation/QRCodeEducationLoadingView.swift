@@ -50,7 +50,7 @@ final class QRCodeEducationLoadingView: UIView {
     }()
 
     private lazy var animatedSuffixLabelView: GiniAnimatedSuffixLabelView = {
-        let labelFont = giniConfiguration.textStyleFonts[.caption1] ?? .systemFont(ofSize: 17)
+        let labelFont = giniConfiguration.textStyleFonts[.caption1]
         let view = GiniAnimatedSuffixLabelView(baseText: LocalizedStrings.loadingBaseText,
                                                font: labelFont,
                                                textColor: style.analysingTextColor)
