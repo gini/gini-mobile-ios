@@ -41,10 +41,7 @@ final class DigitalInvoiceViewController: UIViewController {
         return containerView
     }()
 
-    private lazy var landscapeFooterContainerView: UIView = {
-        let footerContainer = UIView()
-        return footerContainer
-    }()
+    private lazy var landscapeFooterContainerView: UIView = UIView()
 
     private let viewModel: DigitalInvoiceViewModel
     private let configuration = GiniBankConfiguration.shared
@@ -61,7 +58,7 @@ final class DigitalInvoiceViewController: UIViewController {
     ]
 
     private lazy var navbarConstraints: [NSLayoutConstraint] = {
-        guard let bottomNavigationBar = bottomNavigationBar else {
+        guard let bottomNavigationBar else {
             return []
         }
         return [
@@ -198,36 +195,45 @@ final class DigitalInvoiceViewController: UIViewController {
         let footerExists = tableView.tableFooterView != nil
 
         if isLandscape && !footerExists {
-            NSLayoutConstraint.deactivate(proceedViewConstraints)
-            proceedView.removeFromSuperview()
-
-            setupLandscapeFooterView()
-
-            if configuration.bottomNavigationBarEnabled {
-                navbarConstraints.last?.isActive = false
-            }
-
-            NSLayoutConstraint.activate(proceedViewTableConstraints)
-
-            proceedView.isHidden = false
-            bottomNavigationBar?.isHidden = true
+            updateFooterForLandscape()
         } else if !isLandscape && footerExists {
-            NSLayoutConstraint.deactivate(proceedViewTableConstraints)
-            proceedView.removeFromSuperview()
-            tableView.tableFooterView = nil
-
-            if configuration.bottomNavigationBarEnabled {
-                navbarConstraints.last?.isActive = true
-            }
-
-            proceedViewTableConstraints.last?.isActive = false
-
-            view.addSubview(proceedView)
-            NSLayoutConstraint.activate(proceedViewConstraints)
-
-            proceedView.isHidden = configuration.bottomNavigationBarEnabled
-            bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
+            updateFooterForPortrait()
         }
+    }
+
+    private func updateFooterForLandscape() {
+        NSLayoutConstraint.deactivate(proceedViewConstraints)
+        proceedView.removeFromSuperview()
+
+        setupLandscapeFooterView()
+
+        if configuration.bottomNavigationBarEnabled {
+            navbarConstraints.last?.isActive = false
+        }
+
+        NSLayoutConstraint.activate(proceedViewTableConstraints)
+
+        proceedView.isHidden = false
+        bottomNavigationBar?.isHidden = true
+    }
+
+
+    private func updateFooterForPortrait() {
+        NSLayoutConstraint.deactivate(proceedViewTableConstraints)
+        proceedView.removeFromSuperview()
+        tableView.tableFooterView = nil
+
+        if configuration.bottomNavigationBarEnabled {
+            navbarConstraints.last?.isActive = true
+        }
+
+        proceedViewTableConstraints.last?.isActive = false
+
+        view.addSubview(proceedView)
+        NSLayoutConstraint.activate(proceedViewConstraints)
+
+        proceedView.isHidden = configuration.bottomNavigationBarEnabled
+        bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
     }
 
     @objc func payButtonTapped() {
@@ -274,13 +280,9 @@ final class DigitalInvoiceViewController: UIViewController {
 
     // MARK: - Landscape Footer Setup
     private func setupLandscapeFooterView() {
-        addProceedViewToFooterContainer()
+        landscapeFooterContainerView.addSubview(proceedView)
         constrainProceedViewInFooterContainer()
         applyFooterContainerHeightAndAssign()
-    }
-
-    private func addProceedViewToFooterContainer() {
-        landscapeFooterContainerView.addSubview(proceedView)
     }
 
     private func constrainProceedViewInFooterContainer() {
@@ -298,7 +300,9 @@ final class DigitalInvoiceViewController: UIViewController {
 
         // Calculate fitting height via Auto Layout
         let fittingSize = proceedView.systemLayoutSizeFitting(
-            CGSize(width: targetWidth, height: UIView.layoutFittingCompressedSize.height)
+            CGSize(width: targetWidth, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
         )
 
         landscapeFooterContainerView.frame.size.height = fittingSize.height
