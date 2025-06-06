@@ -23,4 +23,3 @@ public enum GiniAccessibility {
         return UIApplication.shared.preferredContentSizeCategory >= .accessibilityMedium
     }
 }
-

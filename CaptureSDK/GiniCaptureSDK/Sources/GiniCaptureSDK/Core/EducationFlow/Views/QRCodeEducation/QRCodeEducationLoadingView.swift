@@ -34,6 +34,7 @@ final class QRCodeEducationLoadingView: UIView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.isAccessibilityElement = false
         return imageView
     }()
 
@@ -44,8 +45,8 @@ final class QRCodeEducationLoadingView: UIView {
         label.textColor = style.textColor
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
+        label.isAccessibilityElement = false
         label.numberOfLines = 0
-        label.isAccessibilityElement = true
         return label
     }()
 
@@ -55,6 +56,7 @@ final class QRCodeEducationLoadingView: UIView {
                                                font: labelFont,
                                                textColor: style.analysingTextColor)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isAccessibilityElement = false
         return view
     }()
 
@@ -120,7 +122,8 @@ final class QRCodeEducationLoadingView: UIView {
     private func configure(with model: QRCodeEducationLoadingItem) {
         imageView.image = model.image
         textLabel.text = model.text
-        textLabel.accessibilityLabel = model.text
+        let announcementArgument = model.text + "\n" + LocalizedStrings.loadingAccessibilityText
+        UIAccessibility.post(notification: .announcement, argument: announcementArgument)
     }
 }
 
@@ -136,5 +139,8 @@ private extension QRCodeEducationLoadingView {
     enum LocalizedStrings {
         static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
                                                                       comment: "analyzing")
+
+        static let loadingAccessibilityText = NSLocalizedStringPreferredFormat("ginicapture.education.loading.accessibility",
+                                                                               comment: "analyzing")
     }
 }
