@@ -236,7 +236,7 @@ final class EditLineItemViewController: UIViewController {
         }
 
     private func setBottomConstraint(gestureYTranslation: CGFloat = 0) {
-        if UIApplication.shared.statusBarOrientation.isLandscape,
+        if UIDevice.current.isLandscape,
            self.isKeyboardPresented,
            self.keyboardHeight > 200 { // checking if digital keyboard is presented.
             containerViewBottomConstraint?.constant = -(view.frame.height - currentContainerHeight - Constants.topPadding - gestureYTranslation)
