@@ -171,7 +171,7 @@ final class EditLineItemView: UIView {
 			nameLabelView.topAnchor.constraint(equalTo: nameContainerView.topAnchor, constant: 0),
 			nameLabelView.leadingAnchor.constraint(equalTo: nameContainerView.leadingAnchor, constant: 0),
 			nameLabelView.trailingAnchor.constraint(equalTo: nameContainerView.trailingAnchor, constant: 0),
-			nameLabelView.heightAnchor.constraint(equalToConstant: Constants.itemContainerMaxHeight),
+            nameLabelView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.itemContainerMaxHeight),
 
 			nameErrorView.topAnchor.constraint(equalTo: nameLabelView.bottomAnchor, constant: Constants.errorPadding),
 			nameErrorView.leadingAnchor.constraint(equalTo: nameContainerView.leadingAnchor, constant: 0),
@@ -185,7 +185,7 @@ final class EditLineItemView: UIView {
 			priceLabelView.topAnchor.constraint(equalTo: priceContainerView.topAnchor, constant: 0),
 			priceLabelView.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor, constant: 0),
 			priceLabelView.trailingAnchor.constraint(equalTo: priceContainerView.trailingAnchor, constant: 0),
-			priceLabelView.heightAnchor.constraint(equalToConstant: Constants.itemContainerMaxHeight),
+            priceLabelView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.itemContainerMaxHeight),
 
 			priceErrorView.topAnchor.constraint(equalTo: priceLabelView.bottomAnchor, constant: Constants.errorPadding),
 			priceErrorView.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor, constant: 0),
@@ -217,7 +217,7 @@ final class EditLineItemView: UIView {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.horizontalPadding),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.horizontalPadding),
 
-			quantityView.heightAnchor.constraint(equalToConstant: Constants.itemContainerMaxHeight)
+            quantityView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.itemContainerMaxHeight)
         ])
     }
 
