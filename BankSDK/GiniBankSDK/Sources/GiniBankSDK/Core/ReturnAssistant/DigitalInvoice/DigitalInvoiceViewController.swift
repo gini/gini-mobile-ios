@@ -200,7 +200,7 @@ final class DigitalInvoiceViewController: UIViewController {
             updateFooterForPortrait()
         }
     }
-    
+
     private func updateFooterForLandscape() {
         NSLayoutConstraint.deactivate(proceedViewConstraints)
         proceedView.removeFromSuperview()
@@ -216,8 +216,8 @@ final class DigitalInvoiceViewController: UIViewController {
         proceedView.isHidden = false
         bottomNavigationBar?.isHidden = true
     }
-    
-    
+
+
     private func updateFooterForPortrait() {
         NSLayoutConstraint.deactivate(proceedViewTableConstraints)
         proceedView.removeFromSuperview()
