@@ -12,6 +12,7 @@ final class QRCodeEducationLoadingView: UIView {
     struct Style {
         let textColor: UIColor
         let analysingTextColor: UIColor
+        let useDarkAppearance: Bool
 
         private static let defaultTextColor = GiniColor(light: .GiniCapture.dark1,
                                                         dark: .GiniCapture.light1).uiColor()
@@ -19,9 +20,11 @@ final class QRCodeEducationLoadingView: UIView {
                                                                  dark: .GiniCapture.light6).uiColor()
 
         init(textColor: UIColor = defaultTextColor,
-             analysingTextColor: UIColor = defaultAnalysingTextColor) {
+             analysingTextColor: UIColor = defaultAnalysingTextColor,
+             useDarkAppearance: Bool = false) {
             self.textColor = textColor
             self.analysingTextColor = analysingTextColor
+            self.useDarkAppearance = useDarkAppearance
         }
     }
 
@@ -64,6 +67,9 @@ final class QRCodeEducationLoadingView: UIView {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
+        if style.useDarkAppearance {
+            overrideUserInterfaceStyle = .dark
+        }
         bind()
     }
 
