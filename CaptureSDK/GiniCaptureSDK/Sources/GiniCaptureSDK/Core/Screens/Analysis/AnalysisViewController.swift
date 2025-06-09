@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Combine
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
@@ -39,11 +38,10 @@ import Combine
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
     private let useCustomLoadingView: Bool = true
-    private var loadingViewModel: QREducationLoadingViewModel?
+    private var loadingViewModel: QRCodeEducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
-    private var animationCompletedSubject = CurrentValueSubject<Bool, Never>(false)
-    private var anymationCancellables = Set<AnyCancellable>()
+    private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
     private var educationFlowController: EducationFlowController?
 
     // User interface
@@ -70,20 +68,12 @@ import Combine
         loadingText.isAccessibilityElement = true
         loadingText.numberOfLines = 0
 
-        if document.type == .pdf {
-            if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
-                originalDocumentName = documentTitle
-                let titleString = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
-                                                                   comment: "Analysis screen loading text for PDF")
-
-                loadingText.text = String(format: titleString, documentTitle)
-            } else {
-                loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
-                                                                    comment: "Analysis screen loading text for images")
-            }
+        if document.type == .pdf,
+           let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
+            originalDocumentName = documentTitle
+            loadingText.text = String(format: LocalizedStrings.loadingPDFText, documentTitle)
         } else {
-            loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
-                                                                comment: "Analysis screen loading text for images")
+            loadingText.text = LocalizedStrings.loadingBaseText
         }
 
         return loadingText
@@ -239,7 +229,8 @@ import Combine
 
     private func configureLoadingIndicator() {
         let displayEducationFlow = !document.isImported && giniConfiguration.fileImportSupportedTypes != .none
-        educationFlowController = EducationFlowController.qrCodeFlowController(displayIfNeeded: displayEducationFlow)
+        educationFlowController = EducationFlowController
+            .captureInvoiceFlowController(displayIfNeeded: displayEducationFlow)
 
         let nextState = educationFlowController?.nextState()
         switch nextState {
@@ -267,22 +258,15 @@ import Combine
             loadingIndicatorView.startAnimating()
         }
         // immediately mark animation complete
-        animationCompletedSubject.send(true)
+        animationCompletionContinuations.forEach { $0.resume() }
+        animationCompletionContinuations.removeAll()
     }
 
     private func showEducationLoadingMessage() {
-        let loadingItems = [
-            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationIntro"),
-                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.intro",
-                                                                          comment: "Education intro"),
-                                   duration: 1.5),
-            QREducationLoadingItem(image: UIImageNamedPreferred(named: "qrEducationPhoto"),
-                                   text: NSLocalizedStringPreferredFormat("ginicapture.analysis.education.photo",
-                                                                          comment: "Photo education"),
-                                   duration: 3)
-        ]
-        let viewModel = QREducationLoadingViewModel(items: loadingItems)
-        let customLoadingView = QREducationLoadingView(viewModel: viewModel)
+        let loadingItems = EducationFlowContent.captureInvoice.items
+        let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
+        loadingViewModel = viewModel
+        let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel)
         customLoadingView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(customLoadingView)
 
@@ -297,29 +281,25 @@ import Combine
 
         Task {
             await viewModel.start()
-            animationCompletedSubject.send(true)
+            animationCompletionContinuations.forEach { $0.resume() }
+            animationCompletionContinuations.removeAll()
+            educationFlowController?.markMessageAsShown()
         }
     }
+
     /**
-     Executes the given action when the animation inside the analysis screen is completed.
+     Suspends the current task until the animation inside the analysis screen has completed.
 
-     If the animation has already completed, the action is executed immediately.
-     If the animation is still running, the action is queued and will be executed once the animation finishes.
-
-     - Parameter action: A closure to be executed after the animation has completed.
+     If the animation is already completed, this method returns immediately.
+     Otherwise, it suspends execution and resumes once the animation finishes.
      */
-    public func performWhenAnimationCompleted(_ action: @escaping () -> Void) {
-        if animationCompletedSubject.value {
-            action()
-        } else {
-            animationCompletedSubject
-                .filter { $0 }
-                .prefix(1)
-                .sink { _ in
-                    self.educationFlowController?.markMessageAsShown()
-                    action()
-                }
-                .store(in: &anymationCancellables)
+    public func waitUntilAnimationCompleted() async {
+        await withCheckedContinuation { continuation in
+            guard loadingViewModel != nil else {
+                continuation.resume()
+                return
+            }
+            animationCompletionContinuations.append(continuation)
         }
     }
 
@@ -398,5 +378,14 @@ private extension AnalysisViewController {
         static let loadingIndicatorContainerHeight: CGFloat = 60
         static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
+    }
+
+    enum LocalizedStrings {
+        static let loadingPDFText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
+                                                                     comment: "Analysis screen loading text for PDF")
+
+        static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
+                                                                      comment: "Analysis screen loading base text")
+
     }
 }
