@@ -40,7 +40,7 @@ extension CameraViewController {
             self.delegate?.camera(self, didSelect: .explorer)
         }
         alertViewController.addAction(filesAlertAction)
-        
+
         if let eInvoiceEnabled = GiniCaptureUserDefaultsStorage.eInvoiceEnabled, eInvoiceEnabled {
             let eInvoiceAlertActionTitle = NSLocalizedStringPreferredFormat("ginicapture.camera.popupOptionEInvoice",
                                                                          comment: "E-Invoice action")

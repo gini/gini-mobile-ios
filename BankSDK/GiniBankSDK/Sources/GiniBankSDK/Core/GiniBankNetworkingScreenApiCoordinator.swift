@@ -368,44 +368,36 @@ private extension GiniBankNetworkingScreenApiCoordinator {
 
     private func handleSuccessfulAnalysis(with extractionResult: ExtractionResult,
                                           networkDelegate: GiniCaptureNetworkDelegate) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            let lastViewControllerInNavigationStack = self.screenAPINavigationController.children.last
-            if let analysisViewController = lastViewControllerInNavigationStack as? AnalysisViewController {
-                analysisViewController.performWhenAnimationCompleted {
-                    self.presentNextScreen(after: extractionResult, networkDelegate: networkDelegate)
-                }
-            } else {
-                self.presentNextScreen(after: extractionResult, networkDelegate: networkDelegate)
+        Task {
+            if let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController {
+                await analysisVC.waitUntilAnimationCompleted()
+            } else if let qrCodeVC = screenAPINavigationController.children.last as? QRCodeEducationPresenting,
+                      let task = qrCodeVC.educationTask {
+                _ = await task.value
             }
+
+            presentNextScreen(extractionResult: extractionResult, delegate: networkDelegate)
         }
     }
 
-    private func presentNextScreen(after extractionResult: ExtractionResult,
-                                   networkDelegate: GiniCaptureNetworkDelegate) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-
-            if GiniBankConfiguration.shared.returnAssistantEnabled,
-               let lineItems = extractionResult.lineItems, !lineItems.isEmpty {
-
-                self.handleReturnAssistantScreenDisplay(extractionResult, networkDelegate)
-
-            } else if GiniBankConfiguration.shared.skontoEnabled,
-                      let skontoDiscounts = extractionResult.skontoDiscounts, !skontoDiscounts.isEmpty {
-
-                self.handleSkontoScreenDisplay(extractionResult, networkDelegate)
-
-            } else {
-                let document = self.documentService.document
-                self.handleTransactionDocsAlert(
-                    on: self.screenAPINavigationController,
-                    extractionResult: extractionResult,
-                    documentId: document?.id,
-                    deliveryFunction: { [weak self] result in
-                        self?.deliverWithReturnAssistant(result: result, analysisDelegate: networkDelegate)
-                    })
-            }
+    @MainActor
+    private func presentNextScreen(extractionResult: ExtractionResult,
+                                   delegate: GiniCaptureNetworkDelegate) {
+        if GiniBankConfiguration.shared.returnAssistantEnabled,
+           let lineItems = extractionResult.lineItems, !lineItems.isEmpty {
+            handleReturnAssistantScreenDisplay(extractionResult, delegate)
+        } else if GiniBankConfiguration.shared.skontoEnabled,
+                  let skontoDiscounts = extractionResult.skontoDiscounts, !skontoDiscounts.isEmpty {
+            handleSkontoScreenDisplay(extractionResult, delegate)
+        } else {
+            let document = documentService.document
+            handleTransactionDocsAlert(on: screenAPINavigationController,
+                                       extractionResult: extractionResult,
+                                       documentId: document?.id,
+                                       deliveryFunction: { [weak self] result in
+                guard let self = self else { return }
+                self.deliverWithReturnAssistant(result: result, analysisDelegate: delegate)
+            })
         }
     }
 

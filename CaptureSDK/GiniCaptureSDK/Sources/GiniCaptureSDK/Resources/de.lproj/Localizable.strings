@@ -112,8 +112,8 @@
 "ginicapture.analysis.error.cancelled" = "Die Analyse wurde abgebrochen";
 "ginicapture.analysis.defaultPdfDokumentTitle" = "PDF-Dokument";
 "ginicapture.analysis.education.loadingText" = "analysieren";
-"ginicapture.analysis.education.intro" = "Falls Sie es nicht wussten...";
-"ginicapture.analysis.education.photo" = "Laden Sie direkt ein PDF, Bild oder GIF hoch";
+"ginicapture.analysis.education.loading.intro" = "Falls Sie es nicht wussten...";
+"ginicapture.analysis.education.loading.uploadTip" = "Laden Sie direkt ein PDF, Bild oder GIF hoch";
 
 "ginicapture.help.openWithTutorial.title" = "Dokumente aus anderen Apps öffnen";
 
@@ -218,6 +218,7 @@
 "ginicapture.QRscanning.incorrect.title" = "Unbekannter QR-Code";
 "ginicapture.QRscanning.incorrect.description" = "Dieser Code enthält keine Zahlungsinformationen. Bitte anderen QR-Code oder Rechnung abfotografieren.";
 "ginicapture.QRscanning.loading" = "Rechnung wird übermittelt";
+"ginicapture.QRscanning.education.loading.captureTip" = "Fotografieren Sie direkt ein Zahlungsformular oder eine Rechnung - auch ohne QR-Code";
 
 "ginicapture.ibandetection.multipleibansdetected" = "IBAN erkannt";
 "ginicapture.ibandetection.takephoto" = "Machen Sie ein Foto";
