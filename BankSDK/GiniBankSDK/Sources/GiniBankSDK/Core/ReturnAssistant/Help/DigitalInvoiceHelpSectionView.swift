@@ -22,6 +22,7 @@ final class DigitalInvoiceHelpSectionView: UIView {
         titleLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         titleLabel.font = configuration.textStyleFonts[.bodyBold]
         titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.isAccessibilityElement = false
         titleLabel.numberOfLines = 0
         return titleLabel
     }()
@@ -29,6 +30,7 @@ final class DigitalInvoiceHelpSectionView: UIView {
     private lazy var descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.isAccessibilityElement = false
         descriptionLabel.numberOfLines = 0
         descriptionLabel.textColor = GiniColor(light: .GiniBank.dark6,
                                                dark: .GiniBank.light6).uiColor()
@@ -42,8 +44,10 @@ final class DigitalInvoiceHelpSectionView: UIView {
     init(content: DigitalInvoiceHelpSection) {
         super.init(frame: .zero)
 
+        let accessibilityText = "\(content.title)\n\(content.description)"
+
         setupView(with: content)
-        setupAccessibility(accessibilityLabel: content.title)
+        setupAccessibility(text: accessibilityText)
         setupConstraints()
     }
 
@@ -62,8 +66,9 @@ final class DigitalInvoiceHelpSectionView: UIView {
         addSubview(descriptionLabel)
     }
 
-    func setupAccessibility(accessibilityLabel: String) {
-        iconImageView.accessibilityLabel = accessibilityLabel
+    private func setupAccessibility(text: String) {
+        isAccessibilityElement = true
+        accessibilityLabel = text
     }
 
     private func setupConstraints() {

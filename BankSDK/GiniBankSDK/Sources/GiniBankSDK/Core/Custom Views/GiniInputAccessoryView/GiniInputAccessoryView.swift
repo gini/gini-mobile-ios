@@ -66,7 +66,7 @@ final class GiniInputAccessoryView: UIView {
     // MARK: - Initialization
 
     init(fields: [UIView]) {
-        let toolbarHeight = 44
+        let toolbarHeight: Int = 44
 
         self.textFields = fields
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: toolbarHeight))

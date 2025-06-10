@@ -23,7 +23,6 @@ final class PriceLabelView: UIView, GiniInputAccessoryViewPresentable {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.unitPrice",
                                                              comment: "Unit price")
         label.text = title
-        label.accessibilityValue = title
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
@@ -70,7 +69,6 @@ final class PriceLabelView: UIView, GiniInputAccessoryViewPresentable {
         }
         set {
             currencyLabel.text = newValue.uppercased()
-            currencyLabel.accessibilityValue = newValue.uppercased()
         }
     }
 

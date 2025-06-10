@@ -18,7 +18,6 @@ final class QuantityView: UIView {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.quantity",
                                                              comment: "Quantity")
         label.text = title
-        label.accessibilityValue = title
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
@@ -30,6 +29,7 @@ final class QuantityView: UIView {
         textField.isUserInteractionEnabled = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.adjustsFontForContentSizeCategory = true
+        textField.accessibilityTraits = .updatesFrequently
         return textField
     }()
 
@@ -44,12 +44,11 @@ final class QuantityView: UIView {
         let button = UIButton()
         button.setImage(prefferedImage(named: "quantity_minus_icon"), for: .normal)
         button.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
-        button.isExclusiveTouch = true
         button.translatesAutoresizingMaskIntoConstraints = false
         let minusButtonAccessibilityKey = "ginibank.digitalinvoice.edit.minus.button.accessibility"
         let descriptor = NSLocalizedStringPreferredGiniBankFormat(minusButtonAccessibilityKey,
                                                                   comment: "Decrease quantity")
-        button.accessibilityValue = descriptor
+        button.accessibilityLabel = descriptor
         return button
     }()
 
@@ -57,13 +56,12 @@ final class QuantityView: UIView {
         let button = UIButton()
         button.setImage(prefferedImage(named: "quantity_plus_icon"), for: .normal)
         button.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
-        button.isExclusiveTouch = true
         button.translatesAutoresizingMaskIntoConstraints = false
         let plusButtonAccessibilityKey = "ginibank.digitalinvoice.edit.plus.button.accessibility"
 
         let descriptor = NSLocalizedStringPreferredGiniBankFormat(plusButtonAccessibilityKey,
                                                                   comment: "Increase quantity")
-        button.accessibilityValue = descriptor
+        button.accessibilityLabel = descriptor
         return button
     }()
 
@@ -73,8 +71,9 @@ final class QuantityView: UIView {
             return Int(value) ?? 0
         }
         set {
-            quantityTextField.text = "\(newValue)"
-            quantityTextField.accessibilityValue = "\(newValue)"
+            let newValueString = String(newValue)
+            quantityTextField.text = newValueString
+            notifyQuantityChange(newValue: newValueString)
         }
     }
 
@@ -143,6 +142,12 @@ final class QuantityView: UIView {
     private func decreaseQuantity() {
         if quantity > Constants.minimumQuantity {
             quantity -= 1
+        }
+    }
+
+    private func notifyQuantityChange(newValue: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIAccessibility.post(notification: .announcement, argument: newValue)
         }
     }
 }

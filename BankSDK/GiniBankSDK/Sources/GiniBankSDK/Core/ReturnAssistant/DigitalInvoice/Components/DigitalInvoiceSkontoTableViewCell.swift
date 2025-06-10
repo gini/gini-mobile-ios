@@ -22,7 +22,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
 
         view.backgroundColor = .giniColorScheme().container.background.uiColor()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.round(corners: [.bottomLeft, .bottomRight], radius: 8.0)
+        view.round(corners: [.bottomLeft, .bottomRight], radius: Constants.cellCornerRadius)
 
         return view
     }()
@@ -208,5 +208,6 @@ private extension DigitalInvoiceSkontoTableViewCell {
         static let stackViewVerticalSpacing: CGFloat = 16.0
         static let editButtonMinWidth: CGFloat = 80.0
         static let horizontalPadding: CGFloat = 16.0
+        static let cellCornerRadius: CGFloat = 8.0
     }
 }

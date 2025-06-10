@@ -25,7 +25,6 @@ final class EditLineItemView: UIView {
         button.titleLabel?.textColor = .GiniBank.accent1
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.accessibilityValue = title
         return button
     }()
 
@@ -37,7 +36,6 @@ final class EditLineItemView: UIView {
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.attributedText = NSAttributedString(string: title, attributes: textAttributes(for: .bodyBold))
         label.adjustsFontForContentSizeCategory = true
-        label.accessibilityValue = title
         return label
     }()
 
@@ -54,7 +52,6 @@ final class EditLineItemView: UIView {
         button.titleLabel?.textColor = .GiniBank.accent1
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.accessibilityValue = title
         return button
     }()
 
@@ -175,14 +172,16 @@ final class EditLineItemView: UIView {
     private func bindViews() {
         nameLabelView.$didStartEditing
             .dropFirst()
-            .sink { _ in
-                self.updateCurrentField(self.nameLabelView)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                updateCurrentField(nameLabelView)
             }.store(in: &cancellables)
 
         priceLabelView.$didStartEditing
             .dropFirst()
-            .sink { _ in
-                self.updateCurrentField(self.priceLabelView)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                updateCurrentField(priceLabelView)
             }.store(in: &cancellables)
     }
 

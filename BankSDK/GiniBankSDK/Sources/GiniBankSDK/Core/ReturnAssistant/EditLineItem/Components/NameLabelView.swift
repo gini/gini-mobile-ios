@@ -33,7 +33,6 @@ final class NameLabelView: UIView, GiniInputAccessoryViewPresentable {
         label.adjustsFontForContentSizeCategory = true
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.name", comment: "Name")
         label.text = title
-        label.accessibilityValue = title
         return label
     }()
 
