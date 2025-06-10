@@ -305,8 +305,7 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
 
 extension DocumentPickerCoordinator: UIDropInteractionDelegate {
     public func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
-        guard isPDFDropSelectionAllowed(forSession: session) ||
-              isXMLDropSelectionAllowed(forSession: session) else {
+        guard isDropSelectionAllowed(forSession: session) else {
             return false
         }
 
@@ -314,8 +313,7 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         switch giniConfiguration.fileImportSupportedTypes {
         case .pdf_and_images:
             return (session.canLoadObjects(ofClass: GiniImageDocument.self) ||
-                    session.canLoadObjects(ofClass: GiniPDFDocument.self) ||
-                    session.canLoadObjects(ofClass: GiniXMLDocument.self)) && isMultipleItemsSelectionAllowed
+                    session.canLoadObjects(ofClass: GiniPDFDocument.self)) && isMultipleItemsSelectionAllowed
         case .pdf:
             return (session.canLoadObjects(ofClass: GiniPDFDocument.self) ||
                     session.canLoadObjects(ofClass: GiniXMLDocument.self)) && isMultipleItemsSelectionAllowed
@@ -372,27 +370,15 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         }
     }
 
-    private func isPDFDropSelectionAllowed(forSession session: UIDropSession) -> Bool {
+    private func isDropSelectionAllowed(forSession session: UIDropSession) -> Bool {
         if session.hasItemsConforming(toTypeIdentifiers: GiniPDFDocument.acceptedPDFTypes) {
             let pdfIdentifier = GiniPDFDocument.acceptedPDFTypes[0]
             let pdfItems = session.items.filter { $0.itemProvider.hasItemConformingToTypeIdentifier(pdfIdentifier) }
-
-            if pdfItems.count > 1 || !isPDFSelectionAllowed {
-                return false
-            }
-        }
-        return true
-    }
-
-    private func isXMLDropSelectionAllowed(forSession session: UIDropSession) -> Bool {
-        guard let eInvoiceEnabled = GiniCaptureUserDefaultsStorage.eInvoiceEnabled, eInvoiceEnabled else {
-            return false
-        }
-
-        if session.hasItemsConforming(toTypeIdentifiers: GiniXMLDocument.acceptedXMLTypes) {
             let xmlIdentifier = GiniXMLDocument.acceptedXMLTypes[0]
             let xmlItems = session.items.filter { $0.itemProvider.hasItemConformingToTypeIdentifier(xmlIdentifier) }
-            if xmlItems.count > 1 {
+
+            let totalItems = pdfItems.count + xmlItems.count
+            if totalItems > 1 || !isPDFSelectionAllowed {
                 return false
             }
         }
