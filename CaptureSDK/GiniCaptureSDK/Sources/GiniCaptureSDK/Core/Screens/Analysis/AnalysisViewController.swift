@@ -279,11 +279,18 @@ import UIKit
                                                         constant: -Constants.educationLoadingViewPadding)
         ])
 
-        Task {
-            await viewModel.start()
-            animationCompletionContinuations.forEach { $0.resume() }
-            animationCompletionContinuations.removeAll()
-            educationFlowController?.markMessageAsShown()
+        /// Starts the loading animation and handles post-animation cleanup.
+        ///
+        /// The animation is triggered via `viewModel.start(completion:)`, which plays
+        /// all loading items sequentially. Once completed, this block resumes any
+        /// suspended tasks in `waitUntilAnimationCompleted()`, clears them, and notifies
+        /// the flow controller that the message has been shown.
+        viewModel.start { [weak self] in
+            guard let self else { return }
+            self.animationCompletionContinuations.forEach { $0.resume() }
+            self.animationCompletionContinuations.removeAll()
+            self.loadingViewModel = nil
+            self.educationFlowController?.markMessageAsShown()
         }
     }
 
@@ -295,11 +302,12 @@ import UIKit
      */
     public func waitUntilAnimationCompleted() async {
         await withCheckedContinuation { continuation in
-            guard loadingViewModel != nil else {
+            // If no loadingViewModel or no pending animation, return immediately
+            if loadingViewModel == nil || animationCompletionContinuations.isEmpty {
                 continuation.resume()
-                return
+            } else {
+                animationCompletionContinuations.append(continuation)
             }
-            animationCompletionContinuations.append(continuation)
         }
     }
 
