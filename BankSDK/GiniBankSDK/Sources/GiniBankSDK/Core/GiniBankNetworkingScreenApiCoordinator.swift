@@ -354,6 +354,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             guard let self = self else { return }
             switch result {
             case let .success(extractionResult):
+                self.setDcoumentIdAsUserProperty()
                 self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
             case let .failure(error):
                 guard error != .requestCancelled else { return }
