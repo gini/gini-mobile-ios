@@ -6,7 +6,6 @@
 
 import GiniCaptureSDK
 import UIKit
-import GiniCaptureSDK
 
 protocol DigitalInvoiceSkontoTableViewCellDelegate: AnyObject {
     func editTapped(cell: DigitalInvoiceSkontoTableViewCell)
@@ -169,13 +168,6 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
 
     @objc private func editButtonTapped() {
         delegate?.editTapped(cell: self)
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if UIDevice.current.isIphone {
-            contentView.frame = contentView.frame.insetBy(dx: safeAreaInsets.left + Constants.horizontalPadding, dy: 0)
-        }
     }
 }
 
