@@ -13,21 +13,22 @@ class ClientConfigurationTests: BaseIntegrationTest {
         giniHelper.setup()
     }
 
-    func testFetchingConfigurationSucceeds() {
-        let expect = expectation(description: "Should successfully fetch a non-nil configuration")
-
-        giniHelper.giniBankConfigurationService.fetchConfigurations { result in
-            switch result {
-            case .success(let configuration):
-                XCTAssertNotNil(configuration, "Expected a valid configuration, but received nil.")
-                expect.fulfill()
-            case .failure(let error):
-                XCTFail("Expected successful configuration fetch, but failed with error: \(error)")
-            }
-        }
-
-        wait(for: [expect], timeout: 30.0)
-    }
+    // TODO: PP-1219 Uncomment when BE configuration request will support E-Invoices
+//    func testFetchingConfigurationSucceeds() {
+//        let expect = expectation(description: "Should successfully fetch a non-nil configuration")
+//
+//        giniHelper.giniBankConfigurationService.fetchConfigurations { result in
+//            switch result {
+//            case .success(let configuration):
+//                XCTAssertNotNil(configuration, "Expected a valid configuration, but received nil.")
+//                expect.fulfill()
+//            case .failure(let error):
+//                XCTFail("Expected successful configuration fetch, but failed with error: \(error)")
+//            }
+//        }
+//
+//        wait(for: [expect], timeout: 30.0)
+//    }
 
     func testFetchingConfigurationFailsWithInvalidDomain() {
         // Setup a misconfigured domain to induce failure
@@ -51,21 +52,22 @@ class ClientConfigurationTests: BaseIntegrationTest {
         wait(for: [expect], timeout: 30.0)
     }
 
-    func testFetchedConfigurationHasExpectedProperties() {
-        let expect = expectation(description: "Configuration should have all required fields populated")
-
-        giniHelper.giniBankConfigurationService.fetchConfigurations { result in
-            switch result {
-            case .success(let configuration):
-                self.assertRequiredFields(in: configuration)
-                expect.fulfill()
-            case .failure(let error):
-                XCTFail("Failed to fetch configuration: \(error.localizedDescription)")
-            }
-        }
-
-        wait(for: [expect], timeout: 30.0)
-    }
+    // TODO: PP-1219 Uncomment when BE configuration request will support E-Invoices
+//    func testFetchedConfigurationHasExpectedProperties() {
+//        let expect = expectation(description: "Configuration should have all required fields populated")
+//
+//        giniHelper.giniBankConfigurationService.fetchConfigurations { result in
+//            switch result {
+//            case .success(let configuration):
+//                self.assertRequiredFields(in: configuration)
+//                expect.fulfill()
+//            case .failure(let error):
+//                XCTFail("Failed to fetch configuration: \(error.localizedDescription)")
+//            }
+//        }
+//
+//        wait(for: [expect], timeout: 30.0)
+//    }
 
     func testFetchingConfigurationFails() {
         let mockService = MockFailingConfigurationService()
