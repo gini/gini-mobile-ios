@@ -338,7 +338,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         GiniAnalyticsManager.track(event: .sdkClosed,properties: properties)
     }
 
-    private func setDcoumentIdAsUserProperty() {
+    private func setDocumentIdAsUserProperty() {
         guard let documentId = documentService.document?.id else { return }
         GiniAnalyticsManager.registerSuperProperties([.documentId: documentId])
     }
@@ -354,6 +354,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             guard let self = self else { return }
             switch result {
             case let .success(extractionResult):
+                self.setDocumentIdAsUserProperty()
                 self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
             case let .failure(error):
                 guard error != .requestCancelled else { return }

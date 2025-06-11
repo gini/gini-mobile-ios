@@ -6,7 +6,11 @@
 
 import Foundation
 
-final class QRCodeEducationLoadingViewModel: ObservableObject {
+/*
+ ViewModel responsible for managing the sequential display of loading items
+ during the QR code education animation.
+ */
+final class QRCodeEducationLoadingViewModel {
     @Published private(set) var currentItem: QRCodeEducationLoadingItem?
 
     private let items: [QRCodeEducationLoadingItem]
@@ -15,14 +19,26 @@ final class QRCodeEducationLoadingViewModel: ObservableObject {
         self.items = items
     }
 
-    func start() async {
-        guard !items.isEmpty else { return }
-
-        for item in items {
-            await MainActor.run {
-                self.currentItem = item
+    /*
+     Starts the animation and calls `completion` once all items are shown.
+     Each item is set on the main thread and displayed for its specified duration.
+     If no items are available, the method returns immediately.
+     */
+    func start(completion: (() -> Void)? = nil) {
+        Task {
+            guard !items.isEmpty else {
+                completion?()
+                return
             }
-            try? await Task.sleep(nanoseconds: item.durationInNanoseconds)
+
+            for item in items {
+                await MainActor.run {
+                    self.currentItem = item
+                }
+                try? await Task.sleep(nanoseconds: item.durationInNanoseconds)
+            }
+
+            completion?()
         }
     }
 }

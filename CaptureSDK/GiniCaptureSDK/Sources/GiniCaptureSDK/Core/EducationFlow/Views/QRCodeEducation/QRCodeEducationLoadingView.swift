@@ -12,6 +12,7 @@ final class QRCodeEducationLoadingView: UIView {
     struct Style {
         let textColor: UIColor
         let analysingTextColor: UIColor
+        let useDarkAppearance: Bool
 
         private static let defaultTextColor = GiniColor(light: .GiniCapture.dark1,
                                                         dark: .GiniCapture.light1).uiColor()
@@ -19,9 +20,11 @@ final class QRCodeEducationLoadingView: UIView {
                                                                  dark: .GiniCapture.light6).uiColor()
 
         init(textColor: UIColor = defaultTextColor,
-             analysingTextColor: UIColor = defaultAnalysingTextColor) {
+             analysingTextColor: UIColor = defaultAnalysingTextColor,
+             useDarkAppearance: Bool = false) {
             self.textColor = textColor
             self.analysingTextColor = analysingTextColor
+            self.useDarkAppearance = useDarkAppearance
         }
     }
 
@@ -34,6 +37,7 @@ final class QRCodeEducationLoadingView: UIView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.isAccessibilityElement = false
         return imageView
     }()
 
@@ -44,17 +48,18 @@ final class QRCodeEducationLoadingView: UIView {
         label.textColor = style.textColor
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
+        label.isAccessibilityElement = false
         label.numberOfLines = 0
-        label.isAccessibilityElement = true
         return label
     }()
 
     private lazy var animatedSuffixLabelView: GiniAnimatedSuffixLabelView = {
-        let labelFont = giniConfiguration.textStyleFonts[.caption1] ?? .systemFont(ofSize: 17)
+        let labelFont = giniConfiguration.textStyleFonts[.caption1]
         let view = GiniAnimatedSuffixLabelView(baseText: LocalizedStrings.loadingBaseText,
                                                font: labelFont,
                                                textColor: style.analysingTextColor)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isAccessibilityElement = false
         return view
     }()
 
@@ -62,6 +67,9 @@ final class QRCodeEducationLoadingView: UIView {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
+        if style.useDarkAppearance {
+            overrideUserInterfaceStyle = .dark
+        }
         bind()
     }
 
@@ -120,7 +128,8 @@ final class QRCodeEducationLoadingView: UIView {
     private func configure(with model: QRCodeEducationLoadingItem) {
         imageView.image = model.image
         textLabel.text = model.text
-        textLabel.accessibilityLabel = model.text
+        let announcementArgument = model.text + "\n" + LocalizedStrings.loadingAccessibilityText
+        UIAccessibility.post(notification: .announcement, argument: announcementArgument)
     }
 }
 
@@ -136,5 +145,8 @@ private extension QRCodeEducationLoadingView {
     enum LocalizedStrings {
         static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
                                                                       comment: "analyzing")
+
+        static let loadingAccessibilityText = NSLocalizedStringPreferredFormat("ginicapture.education.loading.accessibility",
+                                                                               comment: "analyzing")
     }
 }

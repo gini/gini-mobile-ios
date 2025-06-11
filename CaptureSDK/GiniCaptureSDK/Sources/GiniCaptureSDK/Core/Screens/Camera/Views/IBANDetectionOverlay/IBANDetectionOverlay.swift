@@ -47,7 +47,7 @@ final class IBANDetectionOverlay: UIView {
         let title: String
         let takePhotoString = NSLocalizedStringPreferredFormat("ginicapture.ibandetection.takephoto",
                                                                comment: "IBAN Detection")
-        
+
         if IBANs.count == 1 {
             let iban = IBANs[0].split(every: 4)
             title = "\(iban)\n\n\(takePhotoString)"
