@@ -26,7 +26,7 @@ final class CameraViewController: UIViewController {
         return cameraPreviewViewController
     }()
 
-    private lazy var qrCodeOverLay: QRCodeOverlay = {
+    lazy var qrCodeOverLay: QRCodeOverlay = {
         let view = QRCodeOverlay()
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
