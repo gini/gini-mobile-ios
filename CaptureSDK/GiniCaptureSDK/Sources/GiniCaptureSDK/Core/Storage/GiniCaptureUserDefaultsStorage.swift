@@ -18,6 +18,11 @@ public struct GiniCaptureUserDefaultsStorage {
     @GiniCaptureUserDefault("ginicapture.defaults.clientConfigurations.qrCodeEducationEnabled",
                             defaultValue: nil)
     public static var qrCodeEducationEnabled: Bool?
+    
+    // Configuration flag for the E-Invoice flow
+    @GiniCaptureUserDefault("ginicapture.defaults.clientConfigurations.eInvoiceEnabled",
+                            defaultValue: nil)
+    public static var eInvoiceEnabled: Bool?
 
     // Counts how many times the education message was shown in the invoice photo flow
     @GiniCaptureUserDefault("ginicapture.defaults.captureInvoice.educationMessageDisplayCount",
