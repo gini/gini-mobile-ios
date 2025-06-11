@@ -57,7 +57,7 @@ final class DigitalInvoiceViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: proceedView.topAnchor)
     ]
 
-    private lazy var navbarConstraints: [NSLayoutConstraint] = {
+    private lazy var bottomNavigationBarContraints: [NSLayoutConstraint] = {
         guard let bottomNavigationBar else {
             return []
         }
@@ -157,7 +157,7 @@ final class DigitalInvoiceViewController: UIViewController {
 
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
 
-                NSLayoutConstraint.activate(navbarConstraints)
+                NSLayoutConstraint.activate(bottomNavigationBarContraints)
             }
 
             proceedView.isHidden = true
@@ -208,7 +208,7 @@ final class DigitalInvoiceViewController: UIViewController {
         setupLandscapeFooterView()
 
         if configuration.bottomNavigationBarEnabled {
-            navbarConstraints.last?.isActive = false
+            bottomNavigationBarContraints.last?.isActive = false
         }
 
         NSLayoutConstraint.activate(proceedViewTableConstraints)
@@ -224,7 +224,7 @@ final class DigitalInvoiceViewController: UIViewController {
         tableView.tableFooterView = nil
 
         if configuration.bottomNavigationBarEnabled {
-            navbarConstraints.last?.isActive = true
+            bottomNavigationBarContraints.last?.isActive = true
         }
 
         proceedViewTableConstraints.last?.isActive = false
@@ -300,7 +300,10 @@ final class DigitalInvoiceViewController: UIViewController {
 
         // Calculate fitting height via Auto Layout
         let fittingSize = proceedView.systemLayoutSizeFitting(
-            CGSize(width: targetWidth, height: UIView.layoutFittingCompressedSize.height),
+            CGSize(
+                width: targetWidth,
+                height: UIView.layoutFittingCompressedSize.height
+            ),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel
         )
