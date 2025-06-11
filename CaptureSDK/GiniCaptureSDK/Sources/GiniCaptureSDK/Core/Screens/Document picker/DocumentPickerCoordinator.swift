@@ -47,7 +47,8 @@ public protocol DocumentPickerCoordinatorDelegate: AnyObject {
 
     /// File explorer picker
     case explorer
-    
+
+    /// E-Invoice file picker (XML and PDF support)
     case eInvoice
 }
 
@@ -181,12 +182,18 @@ public final class DocumentPickerCoordinator: NSObject {
         currentPickerDismissesAutomatically = true
         currentPickerViewController = documentPicker
 
-        viewController.present(documentPicker, animated: true, completion: nil)
+        viewController.present(documentPicker, animated: true)
     }
 
-    public func showEInvoicePicker(from viewController: UIViewController,
-                                   device: UIDevice = UIDevice.current) {
-        let eInvoicePicker = GiniDocumentPickerViewController(documentTypes: acceptedEInvoiceTypes, in: .import)
+    /**
+     Shows the E-Invoice file picker from a given view controller.
+
+     - Parameters:
+        - viewController: The view controller that presents the E-Invoice picker.
+     */
+    public func showEInvoicePicker(from viewController: UIViewController) {
+        let eInvoicePicker = GiniDocumentPickerViewController(documentTypes: acceptedEInvoiceTypes,
+                                                              in: .import)
         eInvoicePicker.delegate = self
         eInvoicePicker.allowsMultipleSelection = true
         eInvoicePicker.view.tintColor = .GiniCapture.accent1
@@ -194,7 +201,7 @@ public final class DocumentPickerCoordinator: NSObject {
         currentPickerDismissesAutomatically = true
         currentPickerViewController = eInvoicePicker
 
-        viewController.present(eInvoicePicker, animated: true, completion: nil)
+        viewController.present(eInvoicePicker, animated: true)
     }
 
     /**
