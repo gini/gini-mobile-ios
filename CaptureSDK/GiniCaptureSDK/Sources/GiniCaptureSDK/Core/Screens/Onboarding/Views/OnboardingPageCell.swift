@@ -46,7 +46,28 @@ class OnboardingPageCell: UICollectionViewCell {
         return Constants.iconPadding + diff * min(scaleFactor, 1)
     }
 
-    override func layoutSubviews() {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        let didVerticalTraitsChange = traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass
+        let didHorizontalTraitsChange = traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass
+        let shouldUpdateConstraints =  didVerticalTraitsChange || didHorizontalTraitsChange
+
+        if shouldUpdateConstraints {
+            updateConstraintsForCurrentTraits()
+        }
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        iconView.illustrationAdapter = nil
+        iconView.icon = nil
+        iconView.subviews.forEach({ $0.removeFromSuperview() })
+        titleLabel.text = ""
+        descriptionLabel.text = ""
+    }
+
+    func updateConstraintsForCurrentTraits() {
         if UIDevice.current.isIpad {
             if UIWindow.orientation.isLandscape {
                 topConstraint?.constant = Constants.compactTopPadding
@@ -59,16 +80,6 @@ class OnboardingPageCell: UICollectionViewCell {
             topConstraint?.constant = Constants.compactTopPadding
             iconBottomConstraint.constant = calculateIconMargin()
         }
-        super.layoutSubviews()
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        iconView.illustrationAdapter = nil
-        iconView.icon = nil
-        iconView.subviews.forEach({ $0.removeFromSuperview() })
-        titleLabel.text = ""
-        descriptionLabel.text = ""
     }
 }
 
