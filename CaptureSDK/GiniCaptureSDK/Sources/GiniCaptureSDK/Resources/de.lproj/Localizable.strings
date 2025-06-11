@@ -32,7 +32,7 @@
 "ginicapture.camera.filepicker.photoLibraryAccessDenied" = "Um gespeicherte Bilder zu analysieren, wird Zugriff auf Ihre Fotos benötigt.";
 "ginicapture.camera.filepicker.mixedDocumentsUnsupported" = "Es ist nur möglich einen Dateityp gleichzeitig auszuwählen.";
 "ginicapture.camera.filepicker.failedToOpenDocument" = "Die Datei konnte nicht geöffnet werden. Bitte verwenden Sie einen anderen Dateityp.";
-"ginicapture.camera.filepicker.multiplePdfErrorMessage" = "Es kann nur eine PDF-Datei gleichzeitig ausgewählt werden.";
+"ginicapture.camera.filepicker.multiplePdfErrorMessage" = "Es kann jeweils nur eine Rechnung hochgeladen werden.";
 "ginicapture.camera.filepicker.errorPopup.cancelButton" = "Abbrechen";
 "ginicapture.camera.filepicker.errorPopup.confirmButton" = "OK";
 "ginicapture.camera.filepicker.errorPopup.grantAccessButton" = "Zugriff erteilen";
@@ -65,6 +65,7 @@
 "ginicapture.camera.popupTitleImportPDF" = "PDF importieren";
 "ginicapture.camera.popupOptionPhotos" = "Fotos hochladen";
 "ginicapture.camera.popupOptionFiles" = "Dokument hochladen";
+"ginicapture.camera.popupOptionEInvoice" = "E-Rechnung hochladen";
 "ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Abbrechen";
 

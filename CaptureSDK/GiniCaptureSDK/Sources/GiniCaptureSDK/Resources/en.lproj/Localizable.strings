@@ -32,7 +32,7 @@
 "ginicapture.camera.filepicker.photoLibraryAccessDenied" = "Permission to access your photos gallery is required to analyse saved photos";
 "ginicapture.camera.filepicker.mixedDocumentsUnsupported" = "It is only possible to select one file type at the same time.";
 "ginicapture.camera.filepicker.failedToOpenDocument" = "The file could not be opened. Please use a different file type.";
-"ginicapture.camera.filepicker.multiplePdfErrorMessage" = "It is only possible to select one PDF at a time.";
+"ginicapture.camera.filepicker.multiplePdfErrorMessage" = "Only one invoice can be uploaded at a time.";
 "ginicapture.camera.filepicker.errorPopup.cancelButton" = "Cancel";
 "ginicapture.camera.filepicker.errorPopup.confirmButton" = "OK";
 "ginicapture.camera.filepicker.errorPopup.grantAccessButton" = "Grant permission";
@@ -65,6 +65,7 @@
 "ginicapture.camera.popupTitleImportPDF" = "Import PDF";
 "ginicapture.camera.popupOptionPhotos" = "Upload photo";
 "ginicapture.camera.popupOptionFiles" = "Upload files";
+"ginicapture.camera.popupOptionEInvoice" = "Upload E-Invoice";
 "ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Cancel";
 

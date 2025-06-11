@@ -47,6 +47,9 @@ public protocol DocumentPickerCoordinatorDelegate: AnyObject {
 
     /// File explorer picker
     case explorer
+
+    /// E-Invoice file picker (XML and PDF support)
+    case eInvoice
 }
 
 /**
@@ -106,6 +109,11 @@ public final class DocumentPickerCoordinator: NSObject {
             return []
         }
     }
+    
+    fileprivate var acceptedEInvoiceTypes: [String] {
+        let acceptedPDFTypes = isPDFSelectionAllowed ? GiniPDFDocument.acceptedPDFTypes : []
+        return GiniXMLDocument.acceptedXMLTypes + acceptedPDFTypes
+    }
 
     /**
      Designated initializer for the `DocumentPickerCoordinator`.
@@ -164,7 +172,7 @@ public final class DocumentPickerCoordinator: NSObject {
 
      - parameter viewController: View controller which presentes the gallery picker
      */
-    public func showDocumentPicker(from viewController: UIViewController,
+    func showDocumentPicker(from viewController: UIViewController,
                                    device: UIDevice = UIDevice.current) {
         let documentPicker = GiniDocumentPickerViewController(documentTypes: acceptedDocumentTypes, in: .import)
         documentPicker.delegate = self
@@ -174,7 +182,26 @@ public final class DocumentPickerCoordinator: NSObject {
         currentPickerDismissesAutomatically = true
         currentPickerViewController = documentPicker
 
-        viewController.present(documentPicker, animated: true, completion: nil)
+        viewController.present(documentPicker, animated: true)
+    }
+
+    /**
+     Shows the E-Invoice file picker from a given view controller.
+
+     - Parameters:
+        - viewController: The view controller that presents the E-Invoice picker.
+     */
+    func showEInvoicePicker(from viewController: UIViewController) {
+        let eInvoicePicker = GiniDocumentPickerViewController(documentTypes: acceptedEInvoiceTypes,
+                                                              in: .import)
+        eInvoicePicker.delegate = self
+        eInvoicePicker.allowsMultipleSelection = true
+        eInvoicePicker.view.tintColor = .GiniCapture.accent1
+
+        currentPickerDismissesAutomatically = true
+        currentPickerViewController = eInvoicePicker
+
+        viewController.present(eInvoicePicker, animated: true)
     }
 
     /**
