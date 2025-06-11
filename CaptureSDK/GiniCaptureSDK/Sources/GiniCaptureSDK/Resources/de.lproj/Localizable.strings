@@ -222,3 +222,5 @@
 
 "ginicapture.ibandetection.multipleibansdetected" = "IBAN erkannt";
 "ginicapture.ibandetection.takephoto" = "Machen Sie ein Foto";
+
+"ginicapture.education.loading.accessibility" = "Analyse der Rechnung läuft";

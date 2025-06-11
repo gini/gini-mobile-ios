@@ -23,7 +23,7 @@ final class GiniAnimatedSuffixLabelView: UIView {
          suffixSymbol: String = ".",
          maxSteps: Int = 3,
          animationInterval: TimeInterval = 0.4,
-         font: UIFont,
+         font: UIFont?,
          textColor: UIColor) {
 
         self.baseText = baseText
@@ -46,7 +46,7 @@ final class GiniAnimatedSuffixLabelView: UIView {
 
     // MARK: - Setup
 
-    private func setupLabels(font: UIFont, textColor: UIColor) {
+    private func setupLabels(font: UIFont?, textColor: UIColor) {
         textLabel.text = baseText
         textLabel.font = font
         textLabel.textColor = textColor
@@ -75,7 +75,8 @@ final class GiniAnimatedSuffixLabelView: UIView {
         ])
     }
 
-    private func calculateMaxSuffixWidth(font: UIFont) -> CGFloat {
+    private func calculateMaxSuffixWidth(font: UIFont?) -> CGFloat {
+        guard let font else { return 0 }
         let fullSuffix = String(repeating: suffixSymbol, count: maxSteps)
         return (fullSuffix as NSString).size(withAttributes: [.font: font]).width
     }
