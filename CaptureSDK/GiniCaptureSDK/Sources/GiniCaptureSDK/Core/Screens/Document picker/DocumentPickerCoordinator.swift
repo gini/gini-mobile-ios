@@ -372,7 +372,7 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
     }
 
     private func isDropSelectionAllowed(forSession session: UIDropSession) -> Bool {
-        let eInvoiceEnabled = true
+        let eInvoiceEnabled = GiniCaptureUserDefaultsStorage.eInvoiceEnabled ?? false
         let xmlIdentifier = GiniXMLDocument.acceptedXMLTypes.first
         let pdfIdentifier = GiniPDFDocument.acceptedPDFTypes.first
         let identifiers = eInvoiceEnabled ? [pdfIdentifier, xmlIdentifier] : [pdfIdentifier]
