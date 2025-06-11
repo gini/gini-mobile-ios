@@ -43,6 +43,12 @@ import UIKit
 
     private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
     private var educationFlowController: EducationFlowController?
+    private var shouldShowOriginalFlow: Bool {
+        guard let state = educationFlowController?.nextState() else {
+            return false
+        }
+        return state == .showOriginalFlow
+    }
 
     // User interface
     private var imageView: UIImageView = {
@@ -133,12 +139,8 @@ import UIKit
 
         // Configure view hierachy
         setupView()
-    }
 
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if document is GiniImageDocument {
+        if document is GiniImageDocument && shouldShowOriginalFlow {
             showCaptureSuggestions(giniConfiguration: giniConfiguration)
         }
     }
