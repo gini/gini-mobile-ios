@@ -313,7 +313,8 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         switch giniConfiguration.fileImportSupportedTypes {
         case .pdf_and_images:
             return (session.canLoadObjects(ofClass: GiniImageDocument.self) ||
-                    session.canLoadObjects(ofClass: GiniPDFDocument.self)) && isMultipleItemsSelectionAllowed
+                    session.canLoadObjects(ofClass: GiniPDFDocument.self) ||
+                    session.canLoadObjects(ofClass: GiniXMLDocument.self)) && isMultipleItemsSelectionAllowed
         case .pdf:
             return (session.canLoadObjects(ofClass: GiniPDFDocument.self) ||
                     session.canLoadObjects(ofClass: GiniXMLDocument.self)) && isMultipleItemsSelectionAllowed
@@ -371,17 +372,30 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
     }
 
     private func isDropSelectionAllowed(forSession session: UIDropSession) -> Bool {
-        if session.hasItemsConforming(toTypeIdentifiers: GiniPDFDocument.acceptedPDFTypes) {
-            let pdfIdentifier = GiniPDFDocument.acceptedPDFTypes[0]
-            let pdfItems = session.items.filter { $0.itemProvider.hasItemConformingToTypeIdentifier(pdfIdentifier) }
-            let xmlIdentifier = GiniXMLDocument.acceptedXMLTypes[0]
-            let xmlItems = session.items.filter { $0.itemProvider.hasItemConformingToTypeIdentifier(xmlIdentifier) }
+        let eInvoiceEnabled = true
+        let xmlIdentifier = GiniXMLDocument.acceptedXMLTypes.first
+        let pdfIdentifier = GiniPDFDocument.acceptedPDFTypes.first
+        let identifiers = eInvoiceEnabled ? [pdfIdentifier, xmlIdentifier] : [pdfIdentifier]
 
-            let totalItems = pdfItems.count + xmlItems.count
-            if totalItems > 1 || !isPDFSelectionAllowed {
-                return false
-            }
+        guard session.hasItemsConforming(toTypeIdentifiers: identifiers.compactMap { $0 }) else {
+            return true
         }
-        return true
+
+        let itemProviders = session.items.map { $0.itemProvider }
+
+        let pdfCount = itemProviders.filter {
+            guard let pdfIdentifier = pdfIdentifier else { return false }
+            return $0.hasItemConformingToTypeIdentifier(pdfIdentifier)
+        }.count
+
+        let xmlCount: Int = eInvoiceEnabled
+            ? itemProviders.filter {
+                guard let xmlIdentifier = xmlIdentifier else { return false }
+                return $0.hasItemConformingToTypeIdentifier(xmlIdentifier)
+            }.count
+            : 0
+
+        let totalItems = pdfCount + xmlCount
+        return totalItems <= 1 && isPDFSelectionAllowed
     }
 }
