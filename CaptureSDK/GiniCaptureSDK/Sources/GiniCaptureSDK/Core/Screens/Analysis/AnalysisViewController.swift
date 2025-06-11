@@ -43,6 +43,7 @@ import UIKit
 
     private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
     private var educationFlowController: EducationFlowController?
+    private var educationAnimationFinished: Bool = false
     private var shouldShowOriginalFlow: Bool {
         guard let state = educationFlowController?.nextState() else {
             return false
@@ -281,19 +282,25 @@ import UIKit
                                                         constant: -Constants.educationLoadingViewPadding)
         ])
 
-        /// Starts the loading animation and handles post-animation cleanup.
-        ///
-        /// The animation is triggered via `viewModel.start(completion:)`, which plays
-        /// all loading items sequentially. Once completed, this block resumes any
-        /// suspended tasks in `waitUntilAnimationCompleted()`, clears them, and notifies
-        /// the flow controller that the message has been shown.
-        viewModel.start { [weak self] in
-            guard let self else { return }
-            self.animationCompletionContinuations.forEach { $0.resume() }
-            self.animationCompletionContinuations.removeAll()
-            self.loadingViewModel = nil
-            self.educationFlowController?.markMessageAsShown()
+        Task {
+            await finalizeEducationAnimation(viewModel)
         }
+    }
+
+    /**
+     Handles the finalization of the education animation sequence:
+     - Starts the view model lifecycle.
+     - Resumes all pending animation completion continuations.
+     - Clears the continuation list to avoid memory leaks or duplicate calls.
+     - Flags the animation as finished to update UI state.
+     - Marks the educational message as shown to prevent it from appearing again.
+     */
+    private func finalizeEducationAnimation(_ viewModel: QRCodeEducationLoadingViewModel) async {
+        await viewModel.start()
+        animationCompletionContinuations.forEach { $0.resume() }
+        animationCompletionContinuations.removeAll()
+        educationAnimationFinished = true
+        educationFlowController?.markMessageAsShown()
     }
 
     /**
@@ -304,8 +311,12 @@ import UIKit
      */
     public func waitUntilAnimationCompleted() async {
         await withCheckedContinuation { continuation in
-            // If no loadingViewModel or no pending animation, return immediately
-            if loadingViewModel == nil || animationCompletionContinuations.isEmpty {
+            guard loadingViewModel != nil else {
+                continuation.resume()
+                return
+            }
+
+            if educationAnimationFinished {
                 continuation.resume()
             } else {
                 animationCompletionContinuations.append(continuation)
