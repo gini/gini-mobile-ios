@@ -40,12 +40,11 @@ extension CameraViewController {
             self.delegate?.camera(self, didSelect: .explorer)
         }
         alertViewController.addAction(filesAlertAction)
-        
-        alertViewController.view.tintColor = .GiniCapture.accent1
+
         let eInvoiceAlertActionTitle = NSLocalizedStringPreferredFormat("ginicapture.camera.popupOptionEInvoice",
-                                                                     comment: "E-Invoice action")
+                                                                        comment: "E-Invoice action")
         let eInvoiceAlertAction = UIAlertAction(title: eInvoiceAlertActionTitle,
-                                             style: .default) { [unowned self] _ in
+                                                style: .default) { [unowned self] _ in
             GiniAnalyticsManager.track(event: .uploadDocumentsTapped, screenName: .camera)
             self.delegate?.camera(self, didSelect: .eInvoice)
         }
