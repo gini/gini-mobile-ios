@@ -69,14 +69,14 @@ class OnboardingPageCell: UICollectionViewCell {
 
     func updateConstraintsForCurrentTraits() {
         if UIDevice.current.isIpad {
-            if UIWindow.orientation.isLandscape {
+            if UIDevice.current.isLandscape {
                 topConstraint?.constant = Constants.compactTopPadding
                 iconBottomConstraint.constant = calculateIconMargin()
             } else {
                 topConstraint?.constant = Constants.regularTopPadding
                 iconBottomConstraint.constant = Constants.maxIconPadding
             }
-        } else if currentInterfaceOrientation.isPortrait {
+        } else if !UIDevice.current.isIphoneAndLandscape {
             topConstraint?.constant = Constants.compactTopPadding
             iconBottomConstraint.constant = calculateIconMargin()
         }
