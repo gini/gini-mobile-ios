@@ -19,26 +19,26 @@ final class QRCodeEducationLoadingViewModel {
         self.items = items
     }
 
-    /*
-     Starts the animation and calls `completion` once all items are shown.
-     Each item is set on the main thread and displayed for its specified duration.
-     If no items are available, the method returns immediately.
+    /**
+     Starts the sequential display of all educational animation items.
+
+     - Ensures each item is presented on the main thread by assigning it to `currentItem`.
+     - Waits asynchronously for the specified duration of each item before proceeding to the next.
+     - If no items are available, the method exits immediately without performing any actions.
+
+     This method is `async` and can be awaited. It is intended to be called inside an `async` context,
+     such as a `Task` block, to manage the lifecycle of the animation flow.
      */
-    func start(completion: (() -> Void)? = nil) {
-        Task {
-            guard !items.isEmpty else {
-                completion?()
-                return
-            }
+    func start() async {
+        guard !items.isEmpty else {
+            return
+        }
 
-            for item in items {
-                await MainActor.run {
-                    self.currentItem = item
-                }
-                try? await Task.sleep(nanoseconds: item.durationInNanoseconds)
+        for item in items {
+            await MainActor.run {
+                self.currentItem = item
             }
-
-            completion?()
+            try? await Task.sleep(nanoseconds: item.durationInNanoseconds)
         }
     }
 }
