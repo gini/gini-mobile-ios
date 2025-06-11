@@ -172,7 +172,7 @@ public final class DocumentPickerCoordinator: NSObject {
 
      - parameter viewController: View controller which presentes the gallery picker
      */
-    public func showDocumentPicker(from viewController: UIViewController,
+    func showDocumentPicker(from viewController: UIViewController,
                                    device: UIDevice = UIDevice.current) {
         let documentPicker = GiniDocumentPickerViewController(documentTypes: acceptedDocumentTypes, in: .import)
         documentPicker.delegate = self
@@ -191,7 +191,7 @@ public final class DocumentPickerCoordinator: NSObject {
      - Parameters:
         - viewController: The view controller that presents the E-Invoice picker.
      */
-    public func showEInvoicePicker(from viewController: UIViewController) {
+    func showEInvoicePicker(from viewController: UIViewController) {
         let eInvoicePicker = GiniDocumentPickerViewController(documentTypes: acceptedEInvoiceTypes,
                                                               in: .import)
         eInvoicePicker.delegate = self
