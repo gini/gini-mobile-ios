@@ -129,8 +129,14 @@ final class DigitalInvoiceViewController: UIViewController {
                                                  multiplier: Constants.tabletWidthMultiplier)])
         } else {
             NSLayoutConstraint.activate([
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+                tableView.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor,
+                    constant: Constants.horizontalPadding
+                ),
+                tableView.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor,
+                    constant: -Constants.horizontalPadding
+                )
             ])
         }
     }
@@ -216,7 +222,6 @@ final class DigitalInvoiceViewController: UIViewController {
         bottomNavigationBar?.isHidden = true
     }
 
-
     private func configureBottomNavBarForPortrait() {
         NSLayoutConstraint.deactivate(proceedViewTableConstraints)
         proceedView.removeFromSuperview()
@@ -287,10 +292,19 @@ final class DigitalInvoiceViewController: UIViewController {
     private func constraintProceedViewInBottomNavBarContainer() {
         // Setup internal constraints
         NSLayoutConstraint.activate([
-            proceedView.topAnchor.constraint(equalTo: landscapeBottomNavigationBarContainerView.topAnchor, constant: Constants.padding),
-            proceedView.bottomAnchor.constraint(equalTo: landscapeBottomNavigationBarContainerView.safeAreaLayoutGuide.bottomAnchor),
-            proceedView.leadingAnchor.constraint(equalTo: landscapeBottomNavigationBarContainerView.safeAreaLayoutGuide.leadingAnchor),
-            proceedView.trailingAnchor.constraint(equalTo: landscapeBottomNavigationBarContainerView.safeAreaLayoutGuide.trailingAnchor)
+            proceedView.topAnchor.constraint(
+                equalTo: landscapeBottomNavigationBarContainerView.topAnchor,
+                constant: Constants.padding
+            ),
+            proceedView.bottomAnchor.constraint(
+                equalTo: landscapeBottomNavigationBarContainerView.safeAreaLayoutGuide.bottomAnchor
+            ),
+            proceedView.leadingAnchor.constraint(
+                equalTo: landscapeBottomNavigationBarContainerView.safeAreaLayoutGuide.leadingAnchor
+            ),
+            proceedView.trailingAnchor.constraint(
+                equalTo: landscapeBottomNavigationBarContainerView.safeAreaLayoutGuide.trailingAnchor
+            )
         ])
     }
 
@@ -472,6 +486,7 @@ extension DigitalInvoiceViewController: DigitalInvoiceSkontoTableViewCellDelegat
 
 private extension DigitalInvoiceViewController {
     enum Constants {
+        static let horizontalPadding: CGFloat = 16
         static let padding: CGFloat = 16
         static let labelPadding: CGFloat = 24
         static let tabletWidthMultiplier: CGFloat = 0.7
