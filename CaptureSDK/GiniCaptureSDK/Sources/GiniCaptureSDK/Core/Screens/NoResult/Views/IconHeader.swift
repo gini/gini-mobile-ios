@@ -1,8 +1,7 @@
 //
-//  NoResultHeader.swift
+//  IconHeader.swift
 //  GiniCapture
 //
-//  Created by Krzysztof Kryniecki on 22/08/2022.
 //  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
@@ -60,6 +59,11 @@ final class IconHeader: UIView {
         }
     }
 
+    private lazy var iconLeadingConstraint: NSLayoutConstraint = {
+        iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                               constant: Constants.iconLeadingPadding)
+    }()
+
     fileprivate func configureAccessibility() {
         isAccessibilityElement = false
         accessibilityElements = [iconImageView, headerLabel]
@@ -73,11 +77,24 @@ final class IconHeader: UIView {
 
         translatesAutoresizingMaskIntoConstraints = false
         setupView()
+        updateConstraintsForCurrentTraits()
         configureAccessibility()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        let didVerticalTraitsChange = traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass
+        let didHorizontalTraitsChange = traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass
+        let shouldUpdateConstraints =  didVerticalTraitsChange || didHorizontalTraitsChange
+
+        if shouldUpdateConstraints {
+            updateConstraintsForCurrentTraits()
+        }
     }
 
     private func setupView() {
@@ -90,8 +107,7 @@ final class IconHeader: UIView {
         addSubview(iconImageView)
 
         NSLayoutConstraint.activate([iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-                                     iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                                            constant: Constants.iconLeadingPadding),
+                                     iconLeadingConstraint,
                                      iconImageView.widthAnchor.constraint(equalToConstant: Constants.iconSize.width),
                                      iconImageView.heightAnchor.constraint(equalToConstant: Constants.iconSize.height)])
     }
@@ -110,9 +126,18 @@ final class IconHeader: UIView {
                                                                            constant: -Constants.headerTrailingPadding)])
     }
 
+    private func updateConstraintsForCurrentTraits() {
+        if UIDevice.current.isLandscape {
+            iconLeadingConstraint.constant = Constants.iconLeadingPaddingLandscape
+        } else {
+            iconLeadingConstraint.constant = Constants.iconLeadingPadding
+        }
+    }
+
     private struct Constants {
-        static let iconSize = CGSize(width: 24.0, height: 24.0)
-        static let iconLeadingPadding = 35.0
+        static let iconSize: CGSize = CGSize(width: 24.0, height: 24.0)
+        static let iconLeadingPadding: CGFloat = 35.0
+        static let iconLeadingPaddingLandscape: CGFloat = 75.0
         static let headerLeadingPadding: CGFloat = 19
         static let headerTopBottomPadding: CGFloat = 22
         static let headerTrailingPadding: CGFloat = 16

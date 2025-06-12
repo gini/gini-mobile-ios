@@ -13,12 +13,8 @@ class ErrorScreenViewController: UIViewController {
 
     private lazy var buttonsView: ButtonsView = {
         let view = ButtonsView(
-            enterButtonTitle: NSLocalizedStringPreferredFormat(
-                "ginicapture.error.enterManually",
-                comment: "Enter manually button title"),
-            retakeButtonTitle: NSLocalizedStringPreferredFormat(
-                "ginicapture.error.backToCamera",
-                comment: "Back to camera button title"))
+            enterButtonTitle: Strings.enterButtonTitle,
+            retakeButtonTitle: Strings.retakeButtonTitle)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.enterButton.isHidden = viewModel.isEnterManuallyHidden()
         view.retakeButton.isHidden = viewModel.isRetakePressedHidden()
@@ -116,8 +112,7 @@ class ErrorScreenViewController: UIViewController {
     }
 
     func setupView() {
-        title = NSLocalizedStringPreferredFormat("ginicapture.error.title",
-                                                 comment: "Error screen title")
+        title = Strings.screenTitle
         configureErrorHeader()
         configureErrorContent()
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
@@ -132,9 +127,7 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureErrorHeader() {
-        errorHeader.iconAccessibilityLabel = NSLocalizedStringPreferredFormat(
-            "ginicapture.error.title",
-            comment: "Error screen title")
+        errorHeader.iconAccessibilityLabel = Strings.screenTitle
         errorHeader.text = errorType.title()
         errorHeader.image = UIImageNamedPreferred(named: errorType.iconName())
     }
@@ -155,8 +148,7 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureBottomNavigationBar() {
-        let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
-                                                           comment: "Back to camera")
+        let buttonTitle = Strings.backToCameraTitle
         if giniConfiguration.bottomNavigationBarEnabled {
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.leftBarButtonItem = nil
@@ -241,8 +233,8 @@ class ErrorScreenViewController: UIViewController {
             ])
         } else {
             NSLayoutConstraint.activate([
-                errorHeader.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-                errorHeader.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+                errorHeader.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
         }
         errorHeader.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
@@ -250,8 +242,6 @@ class ErrorScreenViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             errorHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            errorHeader.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            errorHeader.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             errorHeader.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
                                                 multiplier: Constants.errorHeaderHeightMultiplier)
         ])
@@ -335,6 +325,20 @@ private extension ErrorScreenViewController {
         static let iPadButtonsWidth: CGFloat = 280
         static let navigationBarHeight: CGFloat = 110
         static let navigationBarHeightLandscape: CGFloat = 64
+    }
+    
+    private struct Strings {
+        static let enterButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.error.enterManually",
+                                                                       comment: "Enter manually button title")
+
+        static let retakeButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.error.backToCamera",
+                                                                        comment: "Back to camera button title")
+
+        static let screenTitle = NSLocalizedStringPreferredFormat("ginicapture.error.title",
+                                                                  comment: "Error screen title")
+
+        static let backToCameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
+                                                                            comment: "Back to camera")
     }
 
     func getBottomBarHeight() -> CGFloat {
