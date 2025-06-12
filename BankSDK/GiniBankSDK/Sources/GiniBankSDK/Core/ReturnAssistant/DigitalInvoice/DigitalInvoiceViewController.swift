@@ -129,8 +129,14 @@ final class DigitalInvoiceViewController: UIViewController {
                                                  multiplier: Constants.tabletWidthMultiplier)])
         } else {
             NSLayoutConstraint.activate([
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.horizentalPadding),
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.horizentalPadding)
+                tableView.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor,
+                    constant: Constants.horizontalPadding
+                ),
+                tableView.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor,
+                    constant: -Constants.horizontalPadding
+                )
             ])
         }
     }
@@ -287,10 +293,19 @@ final class DigitalInvoiceViewController: UIViewController {
     private func constrainProceedViewInFooterContainer() {
         // Setup internal constraints
         NSLayoutConstraint.activate([
-            proceedView.topAnchor.constraint(equalTo: landscapeFooterContainerView.topAnchor, constant: Constants.padding),
-            proceedView.bottomAnchor.constraint(equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.bottomAnchor),
-            proceedView.leadingAnchor.constraint(equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.leadingAnchor),
-            proceedView.trailingAnchor.constraint(equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.trailingAnchor)
+            proceedView.topAnchor.constraint(
+                equalTo: landscapeFooterContainerView.topAnchor,
+                constant: Constants.padding
+            ),
+            proceedView.bottomAnchor.constraint(
+                equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.bottomAnchor
+            ),
+            proceedView.leadingAnchor.constraint(
+                equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.leadingAnchor
+            ),
+            proceedView.trailingAnchor.constraint(
+                equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.trailingAnchor
+            )
         ])
     }
 
