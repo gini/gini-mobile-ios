@@ -8,6 +8,9 @@ import GiniBankAPILibrary
 import UIKit
 import MobileCoreServices
 
+/**
+ A Gini Capture document made from a XML file.
+ */
 final public class GiniXMLDocument: NSObject, GiniCaptureDocument {
     static let acceptedXMLTypes: [String] = [kUTTypeXML as String]
 
@@ -21,11 +24,12 @@ final public class GiniXMLDocument: NSObject, GiniCaptureDocument {
     public let xmlFileName: String?
 
     /**
-     Initializes a GiniXMLDocument
+     Initializes a `GiniXMLDocument` with XML data, an optional file name, and optional upload metadata.
 
-     - Parameter data: XML data
-     - Parameter fileName: XML file name
-
+     - Parameters:
+       - data: The raw contents of the XML document.
+       - fileName: The name of the XML file, if available.
+       - uploadMetadata: Optional metadata to be included when uploading the document.
      */
     init(data: Data, fileName: String?, uploadMetadata: Document.UploadMetadata? = nil) {
         self.data = data

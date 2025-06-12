@@ -219,3 +219,5 @@
 
 "ginicapture.ibandetection.multipleibansdetected" = "IBAN detected";
 "ginicapture.ibandetection.takephoto" = "Take a photo";
+
+"ginicapture.education.loading.accessibility" = "Analyzing invoice in progress";

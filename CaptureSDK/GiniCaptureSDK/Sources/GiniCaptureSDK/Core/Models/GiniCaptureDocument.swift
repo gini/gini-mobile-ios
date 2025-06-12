@@ -8,7 +8,6 @@
 
 import GiniBankAPILibrary
 import UIKit
-import MobileCoreServices
 
 /**
  * Document processed by the _GiniCapture_ library.
