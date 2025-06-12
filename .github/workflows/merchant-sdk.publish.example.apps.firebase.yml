@@ -14,7 +14,9 @@ concurrency:
 
 jobs:
   upload-version:
-    runs-on: macos-latest    
+    runs-on: macos-latest
+    permissions:
+      contents: read    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

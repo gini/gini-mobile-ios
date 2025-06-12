@@ -10,6 +10,8 @@ on:
 jobs:
   check:
     runs-on: macos-latest
+    permissions:
+      contents: read
     strategy:
       matrix:
         target: [GiniInternalPaymentSDK]
