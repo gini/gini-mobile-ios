@@ -473,7 +473,7 @@ extension DigitalInvoiceViewController: DigitalInvoiceSkontoTableViewCellDelegat
 
 private extension DigitalInvoiceViewController {
     enum Constants {
-        static let horizentalPadding: CGFloat = 16
+        static let horizontalPadding: CGFloat = 16
         static let padding: CGFloat = 16
         static let labelPadding: CGFloat = 24
         static let tabletWidthMultiplier: CGFloat = 0.7
