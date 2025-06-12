@@ -41,7 +41,7 @@ final class DigitalInvoiceViewController: UIViewController {
         return containerView
     }()
 
-    private lazy var landscapeFooterContainerView: UIView = UIView()
+    private lazy var landscapeBottomNavigationBarContainerView: UIView = UIView()
 
     private let viewModel: DigitalInvoiceViewModel
     private let configuration = GiniBankConfiguration.shared
@@ -57,7 +57,7 @@ final class DigitalInvoiceViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: proceedView.topAnchor)
     ]
 
-    private lazy var bottomNavigationBarContraints: [NSLayoutConstraint] = {
+    private lazy var bottomNavigationBarConstraints: [NSLayoutConstraint] = {
         guard let bottomNavigationBar else {
             return []
         }
@@ -157,7 +157,7 @@ final class DigitalInvoiceViewController: UIViewController {
 
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
 
-                NSLayoutConstraint.activate(bottomNavigationBarContraints)
+                NSLayoutConstraint.activate(bottomNavigationBarConstraints)
             }
 
             proceedView.isHidden = true
@@ -185,29 +185,29 @@ final class DigitalInvoiceViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        updateFooterViewForIphoneOrientation()
+        configureBottomNavBarForiPhoneOrientation()
     }
 
-    private func updateFooterViewForIphoneOrientation() {
+    private func configureBottomNavBarForiPhoneOrientation() {
         guard UIDevice.current.isIphone else { return }
 
         let isLandscape = UIDevice.current.isLandscape
 
         if isLandscape {
-            updateFooterForLandscape()
+            configureBottomNavBarForLandscape()
         } else {
-            updateFooterForPortrait()
+            configureBottomNavBarForPortrait()
         }
     }
 
-    private func updateFooterForLandscape() {
+    private func configureBottomNavBarForLandscape() {
         NSLayoutConstraint.deactivate(proceedViewConstraints)
         proceedView.removeFromSuperview()
 
-        setupLandscapeFooterView()
+        setupLandscapeBottomNavigation()
 
         if configuration.bottomNavigationBarEnabled {
-            bottomNavigationBarContraints.last?.isActive = false
+            bottomNavigationBarConstraints.last?.isActive = false
         }
 
         NSLayoutConstraint.activate(proceedViewTableConstraints)
@@ -217,13 +217,13 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
 
-    private func updateFooterForPortrait() {
+    private func configureBottomNavBarForPortrait() {
         NSLayoutConstraint.deactivate(proceedViewTableConstraints)
         proceedView.removeFromSuperview()
         tableView.tableFooterView = nil
 
         if configuration.bottomNavigationBarEnabled {
-            bottomNavigationBarContraints.last?.isActive = true
+            bottomNavigationBarConstraints.last?.isActive = true
         }
 
         proceedViewTableConstraints.last?.isActive = false
@@ -277,24 +277,24 @@ final class DigitalInvoiceViewController: UIViewController {
 
     }
 
-    // MARK: - Landscape Footer Setup
-    private func setupLandscapeFooterView() {
-        landscapeFooterContainerView.addSubview(proceedView)
-        constrainProceedViewInFooterContainer()
-        applyFooterContainerHeightAndAssign()
+    // MARK: - Bottom Navigation Setup for Landscape
+    private func setupLandscapeBottomNavigation() {
+        landscapeBottomNavigationBarContainerView.addSubview(proceedView)
+        constraintProceedViewInBottomNavBarContainer()
+        applyBottomNavBarContainerHeightAndAssign()
     }
 
-    private func constrainProceedViewInFooterContainer() {
+    private func constraintProceedViewInBottomNavBarContainer() {
         // Setup internal constraints
         NSLayoutConstraint.activate([
-            proceedView.topAnchor.constraint(equalTo: landscapeFooterContainerView.topAnchor, constant: Constants.padding),
-            proceedView.bottomAnchor.constraint(equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.bottomAnchor),
-            proceedView.leadingAnchor.constraint(equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.leadingAnchor),
-            proceedView.trailingAnchor.constraint(equalTo: landscapeFooterContainerView.safeAreaLayoutGuide.trailingAnchor)
+            proceedView.topAnchor.constraint(equalTo: landscapeBottomNavigationBarContainerView.topAnchor, constant: Constants.padding),
+            proceedView.bottomAnchor.constraint(equalTo: landscapeBottomNavigationBarContainerView.safeAreaLayoutGuide.bottomAnchor),
+            proceedView.leadingAnchor.constraint(equalTo: landscapeBottomNavigationBarContainerView.safeAreaLayoutGuide.leadingAnchor),
+            proceedView.trailingAnchor.constraint(equalTo: landscapeBottomNavigationBarContainerView.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
 
-    private func applyFooterContainerHeightAndAssign() {
+    private func applyBottomNavBarContainerHeightAndAssign() {
         let targetWidth = view.bounds.width
 
         // Calculate fitting height via Auto Layout
@@ -303,8 +303,8 @@ final class DigitalInvoiceViewController: UIViewController {
             verticalFittingPriority: .fittingSizeLevel
         )
 
-        landscapeFooterContainerView.frame.size.height = fittingSize.height
-        tableView.tableFooterView = landscapeFooterContainerView
+        landscapeBottomNavigationBarContainerView.frame.size.height = fittingSize.height
+        tableView.tableFooterView = landscapeBottomNavigationBarContainerView
     }
 }
 
