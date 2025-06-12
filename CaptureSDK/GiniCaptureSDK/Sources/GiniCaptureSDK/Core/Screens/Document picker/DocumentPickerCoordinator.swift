@@ -390,17 +390,22 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
 
         let itemProviders = session.items.map { $0.itemProvider }
 
-        let pdfCount = itemProviders.filter {
-            guard let pdfIdentifier = pdfIdentifier else { return false }
-            return $0.hasItemConformingToTypeIdentifier(pdfIdentifier)
-        }.count
+        let pdfConformingProviders: [NSItemProvider] = {
+            guard let pdfIdentifier else { return [] }
+            return itemProviders.filter {
+                $0.hasItemConformingToTypeIdentifier(pdfIdentifier)
+            }
+        }()
 
-        let xmlCount: Int = eInvoiceEnabled
-            ? itemProviders.filter {
-                guard let xmlIdentifier = xmlIdentifier else { return false }
-                return $0.hasItemConformingToTypeIdentifier(xmlIdentifier)
-            }.count
-            : 0
+        let xmlConformingProviders: [NSItemProvider] = {
+            guard let xmlIdentifier else { return [] }
+            return itemProviders.filter {
+                $0.hasItemConformingToTypeIdentifier(xmlIdentifier)
+            }
+        }()
+
+        let pdfCount = pdfConformingProviders.count
+        let xmlCount = eInvoiceEnabled ? xmlConformingProviders.count : 0
 
         let totalItems = pdfCount + xmlCount
         return totalItems <= 1 && isPDFSelectionAllowed
