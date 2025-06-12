@@ -192,11 +192,10 @@ final class DigitalInvoiceViewController: UIViewController {
         guard UIDevice.current.isIphone else { return }
 
         let isLandscape = UIDevice.current.isLandscape
-        let footerExists = tableView.tableFooterView != nil
 
-        if isLandscape && !footerExists {
+        if isLandscape {
             updateFooterForLandscape()
-        } else if !isLandscape && footerExists {
+        } else {
             updateFooterForPortrait()
         }
     }
@@ -299,11 +298,7 @@ final class DigitalInvoiceViewController: UIViewController {
         let targetWidth = view.bounds.width
 
         // Calculate fitting height via Auto Layout
-        let fittingSize = proceedView.systemLayoutSizeFitting(
-            CGSize(
-                width: targetWidth,
-                height: UIView.layoutFittingCompressedSize.height
-            ),
+        let fittingSize = proceedView.systemLayoutSizeFitting(CGSize(width: targetWidth, height: UIView.layoutFittingCompressedSize.height),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel
         )
