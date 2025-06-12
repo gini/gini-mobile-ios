@@ -147,8 +147,6 @@ public protocol GiniCaptureError: Error {
     case qrCodeFormatNotValid
 
     public var message: String {
-        let isEInvoiceEnabled = GiniCaptureUserDefaultsStorage.eInvoiceEnabled ?? false
-
         switch self {
         case .exceededMaxFileSize:
             return NSLocalizedStringPreferredFormat(
