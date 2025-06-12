@@ -43,7 +43,7 @@ jobs:
         bundler-cache: true
 
     - name: Publish GiniHealthSDK documentation to the release repo
-      uses: maierj/fastlane-action@v3.1.0
+      uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
       with:
         lane: 'publish_docs'
         options: >

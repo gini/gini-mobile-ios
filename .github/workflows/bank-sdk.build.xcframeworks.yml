@@ -49,7 +49,7 @@ jobs:
           bundler-cache: true
     
       - name: Add resources to BankSDK target for generated Xcode project
-        uses: maierj/fastlane-action@v3.1.0
+        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         with:
           lane: 'add_resources'
           options: >
@@ -62,7 +62,7 @@ jobs:
             }
         
       - name: Add resources to CaptureSDK target for generated Xcode project
-        uses: maierj/fastlane-action@v3.1.0
+        uses: maierj/fastlane-action@5a3b971aaa26776459bb26894d6c1a1a84a311a7 # v3.1.0
         with:
           lane: 'add_resources'
           options: >
