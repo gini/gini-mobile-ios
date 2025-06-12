@@ -29,7 +29,6 @@ final class QuantityView: UIView {
         textField.isUserInteractionEnabled = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.adjustsFontForContentSizeCategory = true
-        textField.accessibilityTraits = .updatesFrequently
         return textField
     }()
 
@@ -146,6 +145,7 @@ final class QuantityView: UIView {
     }
 
     private func notifyQuantityChange(newValue: String) {
+        /// This delay is needed to ensure that VoiceOver has finished processing the touch event from the button. Otherwise it will not be announced.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             UIAccessibility.post(notification: .announcement, argument: newValue)
         }
