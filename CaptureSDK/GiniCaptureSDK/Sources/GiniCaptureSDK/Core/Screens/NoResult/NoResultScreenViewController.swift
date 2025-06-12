@@ -2,7 +2,6 @@
 //  NoResultScreenViewController.swift
 //  GiniCapture
 //
-//  Created by Krzysztof Kryniecki on 22/08/2022.
 //  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
@@ -17,15 +16,10 @@ final class NoResultScreenViewController: UIViewController {
 
         var description: String {
             switch self {
-            case .pdf:
-                return NSLocalizedStringPreferredFormat("ginicapture.noresult.header",
-                                                        comment: "no results header")
-            case .image:
-                return NSLocalizedStringPreferredFormat("ginicapture.noresult.header",
-                                                        comment: "no results header")
+            case .pdf, .image:
+                return Strings.noResultsHeader
             case .qrCode:
-                return NSLocalizedStringPreferredFormat("ginicapture.noresult.header.qrcode",
-                                                        comment: "no results header for qr codes")
+                return Strings.noResultsQRHeader
             case .custom(let text):
                 return text
             }
@@ -41,12 +35,8 @@ final class NoResultScreenViewController: UIViewController {
 
     lazy var buttonsView: ButtonsView = {
         let view = ButtonsView(
-            enterButtonTitle: NSLocalizedStringPreferredFormat(
-                "ginicapture.noresult.enterManually",
-                comment: "Enter manually button title"),
-            retakeButtonTitle: NSLocalizedStringPreferredFormat(
-                "ginicapture.noresult.retakeImages",
-                comment: "Retake images button title"))
+            enterButtonTitle: Strings.enterButtonTitle,
+            retakeButtonTitle: Strings.retakeButtonTitle)
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.enterButton.isHidden = viewModel.isEnterManuallyHidden()
@@ -140,12 +130,10 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureMainView() {
-        title = NSLocalizedStringPreferredFormat("ginicapture.noresult.title",
-                                                 comment: "No result screen title")
-        header.iconAccessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.noresult.title",
-                                                                                   comment: "No result screen title")
+        title = Strings.screenTitle
+        header.iconAccessibilityLabel = Strings.screenTitle
         header.text = type.description
-        header.image = UIImageNamedPreferred(named: "alertTriangle")
+        header.image = UIImageNamedPreferred(named: Constants.alertTriangleImageName)
 
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2,
                                          dark: UIColor.GiniCapture.dark2).uiColor()
@@ -155,8 +143,7 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureCustomBottomNavigationBar() {
-        let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
-                                                           comment: "Back")
+        let buttonTitle = Strings.backToCameraTitle
         if giniConfiguration.bottomNavigationBarEnabled {
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.leftBarButtonItem = nil
@@ -283,15 +270,18 @@ final class NoResultScreenViewController: UIViewController {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 header.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                                          multiplier: Constants.iPadWidthMultiplier),
+                                              multiplier: Constants.iPadWidthMultiplier),
                 header.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                header.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
         }
 
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             header.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
                                            multiplier: Constants.contentHeightMultiplier)
         ])
@@ -380,5 +370,26 @@ final class NoResultScreenViewController: UIViewController {
         static let contentHeightMultiplier: CGFloat = 0.3
         static let iPadWidthMultiplier: CGFloat = 0.7
         static let navigationBarHeight: CGFloat = 114
+        static let alertTriangleImageName: String = "alertTriangle"
+    }
+
+    private struct Strings {
+        static let noResultsHeader = NSLocalizedStringPreferredFormat("ginicapture.noresult.header",
+                                                                      comment: "no results header")
+
+        static let noResultsQRHeader = NSLocalizedStringPreferredFormat("ginicapture.noresult.header.qrcode",
+                                                                        comment: "no results header for qr codes")
+
+        static let enterButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.noresult.enterManually",
+                                                                       comment: "Enter manually button title")
+
+        static let retakeButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.noresult.retakeImages",
+                                                                        comment: "Retake images button title")
+
+        static let screenTitle = NSLocalizedStringPreferredFormat("ginicapture.noresult.title",
+                                                                  comment: "No result screen title")
+
+        static let backToCameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
+                                                                              comment: "Back")
     }
 }
