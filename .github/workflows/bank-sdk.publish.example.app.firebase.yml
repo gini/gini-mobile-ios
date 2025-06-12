@@ -59,7 +59,7 @@ jobs:
           cp $PP_PATH2 ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Setup Manual Signing for Xcode project
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@dffc446db9ba5a0c4446edb5bca1c5c473a806c5 # v1.245.0
         with:
           ruby-version: '3.2.0'
           bundler-cache: true
