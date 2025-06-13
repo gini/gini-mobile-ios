@@ -66,6 +66,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
         return stackView
     }()
 
+    private var safeArea: UILayoutGuide { view.safeAreaLayoutGuide }
     private let viewModel: SkontoViewModel
     private let alertFactory: SkontoAlertFactory
     private let configuration = GiniBankConfiguration.shared
@@ -158,17 +159,39 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     }
 
     private func setupStackViewConstraints() {
-        NSLayoutConstraint.activate([
+        var constraints: [NSLayoutConstraint] = [
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ]
+
+        if UIDevice.current.isIphone {
+            constraints += iphoneConstraints()
+        } else {
+            constraints += ipadConstraints()
+        }
+
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    private func iphoneConstraints() -> [NSLayoutConstraint] {
+        [
+            stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor,
                                                constant: Constants.containerPadding),
-            stackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
+            stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor,
+                                                constant: -Constants.containerPadding)
+        ]
+    }
+
+    private func ipadConstraints() -> [NSLayoutConstraint] {
+        [
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: safeArea.leadingAnchor,
+                                               constant: Constants.containerPadding),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: safeArea.trailingAnchor,
                                                 constant: -Constants.containerPadding),
-            stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
-                                             constant: -2 * Constants.containerPadding)
-        ])
+                                             constant: -2 * Constants.containerPadding),
+            stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
+        ]
     }
 
     private func setupWithDiscountGroupViewConstraints() {
