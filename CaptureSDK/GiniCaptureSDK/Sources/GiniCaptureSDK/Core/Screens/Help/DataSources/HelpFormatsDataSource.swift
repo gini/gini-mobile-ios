@@ -78,10 +78,9 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
                 "ginicapture.help.supportedFormats.section.1.item.5",
                 comment: "supported format for section 1 item 5"))
         if GiniCaptureUserDefaultsStorage.eInvoiceEnabled ?? false {
-            sections[0].formats.append(
-                NSLocalizedStringPreferredFormat(
-                    "ginicapture.help.supportedFormats.section.1.item.6",
-                    comment: "supported format for section 1 item 6"))
+            let item = NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.section.1.item.6",
+                                                        comment: "supported format for section 1 item 6")
+            sections[0].formats.append(item)
         }
         return sections
     }()
