@@ -332,10 +332,13 @@ extension DigitalInvoiceSkontoViewController {
             return
         }
 
-        let contentOffset = keyboardFrame.height + Constants.containerPadding
-        UIView.animate(withDuration: animationDuration) {
-            self.scrollView.contentInset.bottom = contentOffset
-            self.scrollView.scrollIndicatorInsets.bottom = contentOffset
+        let keyboardHeight = keyboardFrame.height
+        let keyboardOffset = calculateKeyboardOffset(for: withDiscountContainerView, keyboardHeight: keyboardHeight)
+
+        UIView.animate(withDuration: animationDuration) { [weak self] in
+            self?.scrollView.contentInset.bottom = keyboardHeight
+            self?.scrollView.verticalScrollIndicatorInsets.bottom = keyboardHeight
+            self?.scrollView.setContentOffset(CGPoint(x: 0, y: keyboardOffset), animated: true)
         }
     }
 
@@ -345,10 +348,18 @@ extension DigitalInvoiceSkontoViewController {
             return
         }
 
-        UIView.animate(withDuration: animationDuration) {
-            self.scrollView.contentInset.bottom = Constants.containerPadding
-            self.scrollView.scrollIndicatorInsets.bottom = Constants.scrollIndicatorInset
+        UIView.animate(withDuration: animationDuration) { [weak self] in
+            self?.scrollView.contentInset.bottom = Constants.containerPadding
+            self?.scrollView.verticalScrollIndicatorInsets.bottom = Constants.scrollIndicatorInset
         }
+    }
+
+    private func calculateKeyboardOffset(for targetView: UIView, keyboardHeight: CGFloat) -> CGFloat {
+        let targetFrameInScrollView = scrollView.convert(targetView.frame, from: targetView.superview)
+        let scrollViewBottomMarginDifference = (scrollView.superview?.bounds.height ?? 0) - scrollView.frame.maxY
+        let keyboardTotalHeight = keyboardHeight + Constants.containerPadding
+        let keyboardOffsetOverProceedView = keyboardTotalHeight - scrollViewBottomMarginDifference
+        return max(0, targetFrameInScrollView.maxY - scrollView.bounds.height + keyboardOffsetOverProceedView)
     }
 }
 
