@@ -22,7 +22,7 @@ final class IconHeader: UIView {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = GiniConfiguration.shared.textStyleFonts[.subheadline]
-        label.textColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
+        label.textColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -98,7 +98,7 @@ final class IconHeader: UIView {
     }
 
     private func setupView() {
-        backgroundColor = GiniColor(light: UIColor.GiniCapture.error4, dark: UIColor.GiniCapture.error1).uiColor()
+        backgroundColor = GiniColor(light: .GiniCapture.error4, dark: .GiniCapture.error1).uiColor()
         addIconImageView()
         addHeaderLabel()
     }
