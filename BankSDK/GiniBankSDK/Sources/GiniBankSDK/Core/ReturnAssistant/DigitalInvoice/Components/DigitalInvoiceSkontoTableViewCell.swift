@@ -100,9 +100,10 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     // MARK: - Setup Methods
     private func setupViews() {
         selectionStyle = .none
-        backgroundColor = .giniColorScheme().container.background.uiColor()
+        backgroundColor = .clear
+        contentView.backgroundColor = .giniColorScheme().container.background.uiColor()
         clipsToBounds = true
-        layer.cornerRadius = 8
+        layer.cornerRadius = Constants.cornerRadius
         layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         contentView.addSubview(mainStackView)
     }
@@ -180,5 +181,6 @@ private extension DigitalInvoiceSkontoTableViewCell {
         static let stackViewVerticalSpacing: CGFloat = 16.0
         static let editButtonMinWidth: CGFloat = 80.0
         static let horizontalPadding: CGFloat = 16.0
+        static let cornerRadius: CGFloat = 8.0
     }
 }
