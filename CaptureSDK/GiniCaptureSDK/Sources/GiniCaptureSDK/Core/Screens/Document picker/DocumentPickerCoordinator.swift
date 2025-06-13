@@ -384,10 +384,6 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         let pdfIdentifier = GiniPDFDocument.acceptedPDFTypes.first
         let identifiers = eInvoiceEnabled ? [pdfIdentifier, xmlIdentifier] : [pdfIdentifier]
 
-        guard session.hasItemsConforming(toTypeIdentifiers: identifiers.compactMap { $0 }) else {
-            return true
-        }
-
         let itemProviders = session.items.map { $0.itemProvider }
 
         let pdfConformingProviders: [NSItemProvider] = {
@@ -405,9 +401,17 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         }()
 
         let pdfCount = pdfConformingProviders.count
-        let xmlCount = eInvoiceEnabled ? xmlConformingProviders.count : 0
-
+        let xmlCount = xmlConformingProviders.count
         let totalItems = pdfCount + xmlCount
+
+        if !eInvoiceEnabled, xmlCount > 0 {
+            return false
+        }
+
+        guard session.hasItemsConforming(toTypeIdentifiers: identifiers.compactMap { $0 }) else {
+            return true
+        }
+
         return totalItems <= 1 && isPDFSelectionAllowed
     }
 }
