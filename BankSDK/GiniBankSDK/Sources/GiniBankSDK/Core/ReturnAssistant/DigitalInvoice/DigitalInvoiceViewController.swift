@@ -129,14 +129,10 @@ final class DigitalInvoiceViewController: UIViewController {
                                                  multiplier: Constants.tabletWidthMultiplier)])
         } else {
             NSLayoutConstraint.activate([
-                tableView.leadingAnchor.constraint(
-                    equalTo: view.leadingAnchor,
-                    constant: Constants.horizontalPadding
-                ),
-                tableView.trailingAnchor.constraint(
-                    equalTo: view.trailingAnchor,
-                    constant: -Constants.horizontalPadding
-                )
+                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                   constant: Constants.horizontalPadding),
+                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                    constant: -Constants.horizontalPadding)
             ])
         }
     }
@@ -291,12 +287,14 @@ final class DigitalInvoiceViewController: UIViewController {
 
     private func constraintProceedViewInBottomNavBarContainer() {
         // Setup internal constraints
+        let safeArea = landscapeBottomNavBarContainer.safeAreaLayoutGuide
+
         NSLayoutConstraint.activate([
-            proceedView.topAnchor.constraint(equalTo: landscapeBottomNavBarContainer.topAnchor,
+            proceedView.topAnchor.constraint(equalTo: safeArea.topAnchor,
                                              constant: Constants.padding),
-            proceedView.bottomAnchor.constraint(equalTo: landscapeBottomNavBarContainer.safeAreaLayoutGuide.bottomAnchor),
-            proceedView.leadingAnchor.constraint(equalTo: landscapeBottomNavBarContainer.safeAreaLayoutGuide.leadingAnchor),
-            proceedView.trailingAnchor.constraint(equalTo: landscapeBottomNavBarContainer.safeAreaLayoutGuide.trailingAnchor)
+            proceedView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+            proceedView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            proceedView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
         ])
     }
 
