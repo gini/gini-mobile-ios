@@ -153,8 +153,8 @@ public protocol GiniCaptureError: Error {
                 "ginicapture.camera.documentValidationError.excedeedFileSize",
                 comment: "Message text error shown in camera screen when a file size is higher than 10MB")
         case .imageFormatNotValid, .fileFormatNotValid, .qrCodeFormatNotValid:
-            let key = GiniCaptureUserDefaultsStorage.eInvoiceEnabled ?? false
-                ? "ginicapture.camera.documentValidationError.wrongFormatWithXML"
+            let isEInvoiceEnabled = GiniCaptureUserDefaultsStorage.eInvoiceEnabled ?? false
+            let key = isEInvoiceEnabled ? "ginicapture.camera.documentValidationError.wrongFormatWithXML"
                 : "ginicapture.camera.documentValidationError.wrongFormat"
             return NSLocalizedStringPreferredFormat(key, comment: "Wrong format (not PDF, JPEG, GIF, TIFF, PNG or XML)")
         case .pdfPageLengthExceeded:
