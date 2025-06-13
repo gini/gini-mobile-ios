@@ -34,9 +34,9 @@ final class NoResultScreenViewController: UIViewController {
     }()
 
     lazy var buttonsView: ButtonsView = {
-        let view = ButtonsView(
-            enterButtonTitle: Strings.enterButtonTitle,
-            retakeButtonTitle: Strings.retakeButtonTitle)
+        let view = ButtonsView(enterButtonTitle: Strings.enterButtonTitle,
+                               retakeButtonTitle: Strings.retakeButtonTitle)
+
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.enterButton.isHidden = viewModel.isEnterManuallyHidden()
@@ -53,13 +53,9 @@ final class NoResultScreenViewController: UIViewController {
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var buttonsBottomConstraint: NSLayoutConstraint?
     private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+
     private var numberOfButtons: Int {
-        return [
-            viewModel.isEnterManuallyHidden(),
-            viewModel.isRetakePressedHidden()
-        ].filter({
-            !$0
-        }).count
+        [viewModel.isEnterManuallyHidden(), viewModel.isRetakePressedHidden()].filter({ !$0 }).count
     }
 
     public init(giniConfiguration: GiniConfiguration,
@@ -97,27 +93,26 @@ final class NoResultScreenViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if numberOfButtons > 0 {
-            tableView.contentInset = UIEdgeInsets(
-                top: 0,
-                left: 0,
-                bottom: buttonsView.bounds.size.height + CGFloat(numberOfButtons) * GiniMargins.margin,
-                right: 0)
+            let bottomInset = buttonsView.bounds.size.height + CGFloat(numberOfButtons) * GiniMargins.margin
+
+            tableView.contentInset = UIEdgeInsets(top: 0,
+                                                  left: 0,
+                                                  bottom: bottomInset,
+                                                  right: 0)
         } else {
-            tableView.contentInset = UIEdgeInsets(
-                top: 0,
-                left: 0,
-                bottom: GiniMargins.margin,
-                right: 0)
+            tableView.contentInset = UIEdgeInsets(top: 0,
+                                                  left: 0,
+                                                  bottom: GiniMargins.margin,
+                                                  right: 0)
         }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        tableView.contentInset = UIEdgeInsets(
-            top: 0,
-            left: 0,
-            bottom: buttonsView.bounds.size.height + GiniMargins.margin,
-            right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0,
+                                              left: 0,
+                                              bottom: buttonsView.bounds.size.height + GiniMargins.margin,
+                                              right: 0)
     }
 
     private func setupView() {
@@ -135,8 +130,8 @@ final class NoResultScreenViewController: UIViewController {
         header.text = type.description
         header.image = UIImageNamedPreferred(named: Constants.alertTriangleImageName)
 
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2,
-                                         dark: UIColor.GiniCapture.dark2).uiColor()
+        view.backgroundColor = GiniColor(light: .GiniCapture.light2,
+                                         dark: .GiniCapture.dark2).uiColor()
         view.addSubview(header)
         view.addSubview(tableView)
         view.addSubview(buttonsView)
@@ -211,25 +206,19 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func registerCells() {
+        let helpSectionHeaderNib = UINib(nibName: "HelpFormatSectionHeader", bundle: giniCaptureBundle())
+
         switch type {
         case .pdf, .qrCode:
-            tableView.register(
-                UINib(
-                    nibName: "HelpFormatCell",
-                    bundle: giniCaptureBundle()),
-                forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
+            let nib = UINib(nibName: "HelpFormatCell", bundle: giniCaptureBundle())
+            tableView.register(nib, forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
         case .image, .custom(_):
-            tableView.register(
-                UINib(
-                    nibName: "HelpTipCell",
-                    bundle: giniCaptureBundle()),
-                forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
+            let nib = UINib(nibName: "HelpTipCell", bundle: giniCaptureBundle())
+            tableView.register(nib, forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
         }
-        tableView.register(
-            UINib(
-                nibName: "HelpFormatSectionHeader",
-                bundle: giniCaptureBundle()),
-            forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
+
+        tableView.register(helpSectionHeaderNib,
+                           forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -390,6 +379,6 @@ final class NoResultScreenViewController: UIViewController {
                                                                   comment: "No result screen title")
 
         static let backToCameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
-                                                                              comment: "Back")
+                                                                        comment: "Back")
     }
 }

@@ -12,9 +12,9 @@ class ErrorScreenViewController: UIViewController {
     lazy var errorHeader = IconHeader(frame: .zero)
 
     private lazy var buttonsView: ButtonsView = {
-        let view = ButtonsView(
-            enterButtonTitle: Strings.enterButtonTitle,
-            retakeButtonTitle: Strings.retakeButtonTitle)
+        let view = ButtonsView(enterButtonTitle: Strings.enterButtonTitle,
+                               retakeButtonTitle: Strings.retakeButtonTitle)
+
         view.translatesAutoresizingMaskIntoConstraints = false
         view.enterButton.isHidden = viewModel.isEnterManuallyHidden()
         view.retakeButton.isHidden = viewModel.isRetakePressedHidden()
@@ -53,12 +53,7 @@ class ErrorScreenViewController: UIViewController {
     private var bottomNavigationBar: UIView?
 
     private var numberOfButtons: Int {
-        return [
-            viewModel.isEnterManuallyHidden(),
-            viewModel.isRetakePressedHidden()
-        ].filter({
-            !$0
-        }).count
+        [viewModel.isEnterManuallyHidden(), viewModel.isRetakePressedHidden()].filter({ !$0 }).count
     }
 
     /**
@@ -115,7 +110,7 @@ class ErrorScreenViewController: UIViewController {
         title = Strings.screenTitle
         configureErrorHeader()
         configureErrorContent()
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        view.backgroundColor = GiniColor(light: .GiniCapture.light2, dark: .GiniCapture.dark2).uiColor()
         view.addSubview(errorHeader)
         view.addSubview(scrollView)
         scrollView.addSubview(errorContent)
@@ -135,7 +130,7 @@ class ErrorScreenViewController: UIViewController {
     private func configureErrorContent() {
         errorContent.text = errorType.content()
         errorContent.font = giniConfiguration.textStyleFonts[.body]
-        errorContent.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.light6).uiColor()
+        errorContent.textColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.light6).uiColor()
     }
 
     private func configureButtons() {
@@ -228,7 +223,7 @@ class ErrorScreenViewController: UIViewController {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 errorHeader.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                                               multiplier: Constants.iPadWidthMultiplier),
+                                                   multiplier: Constants.iPadWidthMultiplier),
                 errorHeader.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
@@ -326,7 +321,7 @@ private extension ErrorScreenViewController {
         static let navigationBarHeight: CGFloat = 110
         static let navigationBarHeightLandscape: CGFloat = 64
     }
-    
+
     private struct Strings {
         static let enterButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.error.enterManually",
                                                                        comment: "Enter manually button title")
@@ -338,17 +333,13 @@ private extension ErrorScreenViewController {
                                                                   comment: "Error screen title")
 
         static let backToCameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
-                                                                            comment: "Back to camera")
+                                                                        comment: "Back to camera")
     }
 
     func getBottomBarHeight() -> CGFloat {
-        if isiPhoneAndLandscape() {
+        if UIDevice.current.isIphoneAndLandscape {
             return Constants.navigationBarHeightLandscape
         }
         return Constants.navigationBarHeight
-    }
-
-    func isiPhoneAndLandscape() -> Bool {
-        return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
     }
 }
