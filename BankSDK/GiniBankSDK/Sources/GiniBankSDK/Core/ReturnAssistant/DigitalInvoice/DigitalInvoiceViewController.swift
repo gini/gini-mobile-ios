@@ -216,7 +216,6 @@ final class DigitalInvoiceViewController: UIViewController {
         bottomNavigationBar?.isHidden = true
     }
 
-
     private func configureBottomNavBarForPortrait() {
         NSLayoutConstraint.deactivate(proceedViewTableConstraints)
         proceedView.removeFromSuperview()
@@ -287,7 +286,8 @@ final class DigitalInvoiceViewController: UIViewController {
     private func constraintProceedViewInBottomNavBarContainer() {
         // Setup internal constraints
         NSLayoutConstraint.activate([
-            proceedView.topAnchor.constraint(equalTo: landscapeBottomNavBarContainer.topAnchor, constant: Constants.padding),
+            proceedView.topAnchor.constraint(equalTo: landscapeBottomNavBarContainer.topAnchor,
+                                             constant: Constants.padding),
             proceedView.bottomAnchor.constraint(equalTo: landscapeBottomNavBarContainer.safeAreaLayoutGuide.bottomAnchor),
             proceedView.leadingAnchor.constraint(equalTo: landscapeBottomNavBarContainer.safeAreaLayoutGuide.leadingAnchor),
             proceedView.trailingAnchor.constraint(equalTo: landscapeBottomNavBarContainer.safeAreaLayoutGuide.trailingAnchor)
@@ -296,12 +296,13 @@ final class DigitalInvoiceViewController: UIViewController {
 
     private func applyBottomNavBarContainerHeightAndAssign() {
         let targetWidth = view.bounds.width
+        let targetSize = CGSize(width: targetWidth,
+                                height: UIView.layoutFittingCompressedSize.height)
 
         // Calculate fitting height via Auto Layout
-        let fittingSize = proceedView.systemLayoutSizeFitting(CGSize(width: targetWidth, height: UIView.layoutFittingCompressedSize.height),
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel
-        )
+        let fittingSize = proceedView.systemLayoutSizeFitting(targetSize,
+                                                              withHorizontalFittingPriority: .required,
+                                                              verticalFittingPriority: .fittingSizeLevel)
 
         landscapeBottomNavBarContainer.frame.size.height = fittingSize.height
         tableView.tableFooterView = landscapeBottomNavBarContainer
