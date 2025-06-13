@@ -136,15 +136,6 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         separatorView.isHidden = false
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if UIDevice.current.isIphone {
-            let inset = safeAreaInsets.left + 16
-            leadingConstraint.constant = inset
-            trailingConstraint.constant = inset
-        }
-    }
-
     @objc func modeSwitchValueChange(sender: UISwitch) {
         if let viewModel = viewModel {
             delegate?.modeSwitchValueChanged(cell: self, lineItemViewModel: viewModel)

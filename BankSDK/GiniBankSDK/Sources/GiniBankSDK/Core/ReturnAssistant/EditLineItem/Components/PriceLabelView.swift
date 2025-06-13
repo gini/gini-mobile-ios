@@ -111,6 +111,7 @@ final class PriceLabelView: UIView {
             priceTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             priceTextField.trailingAnchor.constraint(equalTo: currencyLabel.leadingAnchor,
                                                      constant: -Constants.padding),
+            priceTextField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
 
             currencyLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
             currencyLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
