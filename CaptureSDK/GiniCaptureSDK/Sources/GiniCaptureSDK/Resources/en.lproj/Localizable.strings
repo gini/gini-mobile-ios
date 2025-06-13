@@ -40,6 +40,7 @@
 "ginicapture.camera.documentValidationError.excedeedFileSize" = "This file is too large.";
 "ginicapture.camera.documentValidationError.tooManyPages" = "The document can only have a maximum of 10 pages.";
 "ginicapture.camera.documentValidationError.wrongFormat" = "Only files of the formats jpg, png, gif or PDF can be analysed.";
+"ginicapture.camera.documentValidationError.wrongFormatWithXML" = "Only files of the formats jpg, png, gif, PDF or XML can be analysed.";
 "ginicapture.camera.documentValidationError.pdfPasswordProtected" = "Password protected documents cannot be analysed.";
 "ginicapture.camera.fileImportButtonLabel" = "Files";
 "ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Flash On";
@@ -147,6 +148,7 @@
 "ginicapture.help.supportedFormats.section.1.item.3" = "PDF documents of up to 10 pages";
 "ginicapture.help.supportedFormats.section.1.item.4" = "QR codes";
 "ginicapture.help.supportedFormats.section.1.item.5" = "Photos of monitors or screens";
+"ginicapture.help.supportedFormats.section.1.item.6" = "E-Invoices: XRechnung (XML), ZUGFeRD (PDF)";
 "ginicapture.help.supportedFormats.section.2.title" = "not supported formats";
 "ginicapture.help.supportedFormats.section.2.item.1" = "Handwriting";
 "ginicapture.help.supportedFormats.section.2.item.2" = "Photos of monitors or screens";
