@@ -13,14 +13,12 @@ final class NoResultScreenViewController: UIViewController {
         case image
         case pdf
         case qrCode
+        case xml
         case custom(String)
 
         var description: String {
             switch self {
-            case .pdf:
-                return NSLocalizedStringPreferredFormat("ginicapture.noresult.header",
-                                                        comment: "no results header")
-            case .image:
+            case .pdf, .image, .xml:
                 return NSLocalizedStringPreferredFormat("ginicapture.noresult.header",
                                                         comment: "no results header")
             case .qrCode:
@@ -90,12 +88,10 @@ final class NoResultScreenViewController: UIViewController {
             let tipsDS = HelpTipsDataSource()
             tipsDS.showHeader = true
             self.dataSource = tipsDS
-        case .pdf:
+        case .pdf, .xml, .custom(_):
             self.dataSource = HelpFormatsDataSource()
         case .qrCode:
             self.dataSource = HelpFormatsDataSource(isQRCodeContent: true)
-        case .custom(_):
-            self.dataSource = HelpFormatsDataSource()
         }
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -236,24 +232,18 @@ final class NoResultScreenViewController: UIViewController {
 
     private func registerCells() {
         switch type {
-        case .pdf, .qrCode:
-            tableView.register(
-                UINib(
-                    nibName: "HelpFormatCell",
-                    bundle: giniCaptureBundle()),
-                forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
+        case .pdf, .qrCode, .xml:
+            tableView.register(UINib(nibName: "HelpFormatCell",
+                                     bundle: giniCaptureBundle()),
+                               forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
         case .image, .custom(_):
-            tableView.register(
-                UINib(
-                    nibName: "HelpTipCell",
-                    bundle: giniCaptureBundle()),
-                forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
+            tableView.register(UINib(nibName: "HelpTipCell",
+                                     bundle: giniCaptureBundle()),
+                               forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
         }
-        tableView.register(
-            UINib(
-                nibName: "HelpFormatSectionHeader",
-                bundle: giniCaptureBundle()),
-            forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
+        tableView.register(UINib(nibName: "HelpFormatSectionHeader",
+                                 bundle: giniCaptureBundle()),
+                           forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
