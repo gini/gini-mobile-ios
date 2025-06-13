@@ -39,7 +39,7 @@ public extension UIDevice {
         isIphone && isLandscape
     }
 
-    private func isPortrait() -> Bool {
+    func isPortrait() -> Bool {
         // iOS 16 and higher - the most reliable and up-to-date way
         if #available(iOS 16.0, *) {
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {

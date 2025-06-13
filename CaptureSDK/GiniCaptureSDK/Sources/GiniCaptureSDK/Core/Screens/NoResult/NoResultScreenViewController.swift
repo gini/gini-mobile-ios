@@ -2,7 +2,6 @@
 //  NoResultScreenViewController.swift
 //  GiniCapture
 //
-//  Created by Krzysztof Kryniecki on 22/08/2022.
 //  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
@@ -17,15 +16,10 @@ final class NoResultScreenViewController: UIViewController {
 
         var description: String {
             switch self {
-            case .pdf:
-                return NSLocalizedStringPreferredFormat("ginicapture.noresult.header",
-                                                        comment: "no results header")
-            case .image:
-                return NSLocalizedStringPreferredFormat("ginicapture.noresult.header",
-                                                        comment: "no results header")
+            case .pdf, .image:
+                return Strings.noResultsHeader
             case .qrCode:
-                return NSLocalizedStringPreferredFormat("ginicapture.noresult.header.qrcode",
-                                                        comment: "no results header for qr codes")
+                return Strings.noResultsQRHeader
             case .custom(let text):
                 return text
             }
@@ -40,13 +34,9 @@ final class NoResultScreenViewController: UIViewController {
     }()
 
     lazy var buttonsView: ButtonsView = {
-        let view = ButtonsView(
-            enterButtonTitle: NSLocalizedStringPreferredFormat(
-                "ginicapture.noresult.enterManually",
-                comment: "Enter manually button title"),
-            retakeButtonTitle: NSLocalizedStringPreferredFormat(
-                "ginicapture.noresult.retakeImages",
-                comment: "Retake images button title"))
+        let view = ButtonsView(enterButtonTitle: Strings.enterButtonTitle,
+                               retakeButtonTitle: Strings.retakeButtonTitle)
+
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.enterButton.isHidden = viewModel.isEnterManuallyHidden()
@@ -55,15 +45,7 @@ final class NoResultScreenViewController: UIViewController {
         return view
     }()
 
-    lazy var header: IconHeader = {
-        if let header = IconHeader().loadNib() as? IconHeader {
-            header.headerLabel.adjustsFontForContentSizeCategory = true
-            header.headerLabel.adjustsFontSizeToFitWidth = true
-            header.translatesAutoresizingMaskIntoConstraints = false
-        return header
-        }
-        fatalError("No result header not found")
-    }()
+    lazy var header = IconHeader()
     private(set) var dataSource: HelpDataSource
     private var giniConfiguration: GiniConfiguration
     private let type: NoResultType
@@ -71,13 +53,9 @@ final class NoResultScreenViewController: UIViewController {
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var buttonsBottomConstraint: NSLayoutConstraint?
     private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+
     private var numberOfButtons: Int {
-        return [
-            viewModel.isEnterManuallyHidden(),
-            viewModel.isRetakePressedHidden()
-        ].filter({
-            !$0
-        }).count
+        [viewModel.isEnterManuallyHidden(), viewModel.isRetakePressedHidden()].filter({ !$0 }).count
     }
 
     public init(giniConfiguration: GiniConfiguration,
@@ -115,27 +93,26 @@ final class NoResultScreenViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if numberOfButtons > 0 {
-            tableView.contentInset = UIEdgeInsets(
-                top: 0,
-                left: 0,
-                bottom: buttonsView.bounds.size.height + CGFloat(numberOfButtons) * GiniMargins.margin,
-                right: 0)
+            let bottomInset = buttonsView.bounds.size.height + CGFloat(numberOfButtons) * GiniMargins.margin
+
+            tableView.contentInset = UIEdgeInsets(top: 0,
+                                                  left: 0,
+                                                  bottom: bottomInset,
+                                                  right: 0)
         } else {
-            tableView.contentInset = UIEdgeInsets(
-                top: 0,
-                left: 0,
-                bottom: GiniMargins.margin,
-                right: 0)
+            tableView.contentInset = UIEdgeInsets(top: 0,
+                                                  left: 0,
+                                                  bottom: GiniMargins.margin,
+                                                  right: 0)
         }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        tableView.contentInset = UIEdgeInsets(
-            top: 0,
-            left: 0,
-            bottom: buttonsView.bounds.size.height + GiniMargins.margin,
-            right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0,
+                                              left: 0,
+                                              bottom: buttonsView.bounds.size.height + GiniMargins.margin,
+                                              right: 0)
     }
 
     private func setupView() {
@@ -148,26 +125,20 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureMainView() {
-        title = NSLocalizedStringPreferredFormat("ginicapture.noresult.title",
-                                                 comment: "No result screen title")
-        header.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.noresult.title",
-                                                                                   comment: "No result screen title")
-        header.headerLabel.text = type.description
-        header.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
-        header.headerLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
-                                                 dark: UIColor.GiniCapture.light1).uiColor()
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2,
-                                         dark: UIColor.GiniCapture.dark2).uiColor()
+        title = Strings.screenTitle
+        header.iconAccessibilityLabel = Strings.screenTitle
+        header.text = type.description
+        header.image = UIImageNamedPreferred(named: Constants.alertTriangleImageName)
+
+        view.backgroundColor = GiniColor(light: .GiniCapture.light2,
+                                         dark: .GiniCapture.dark2).uiColor()
         view.addSubview(header)
         view.addSubview(tableView)
         view.addSubview(buttonsView)
-        header.backgroundColor = GiniColor(light: UIColor.GiniCapture.error4,
-                                           dark: UIColor.GiniCapture.error1).uiColor()
     }
 
     private func configureCustomBottomNavigationBar() {
-        let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
-                                                           comment: "Back")
+        let buttonTitle = Strings.backToCameraTitle
         if giniConfiguration.bottomNavigationBarEnabled {
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.leftBarButtonItem = nil
@@ -235,25 +206,19 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func registerCells() {
+        let helpSectionHeaderNib = UINib(nibName: "HelpFormatSectionHeader", bundle: giniCaptureBundle())
+
         switch type {
         case .pdf, .qrCode:
-            tableView.register(
-                UINib(
-                    nibName: "HelpFormatCell",
-                    bundle: giniCaptureBundle()),
-                forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
+            let nib = UINib(nibName: "HelpFormatCell", bundle: giniCaptureBundle())
+            tableView.register(nib, forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
         case .image, .custom(_):
-            tableView.register(
-                UINib(
-                    nibName: "HelpTipCell",
-                    bundle: giniCaptureBundle()),
-                forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
+            let nib = UINib(nibName: "HelpTipCell", bundle: giniCaptureBundle())
+            tableView.register(nib, forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
         }
-        tableView.register(
-            UINib(
-                nibName: "HelpFormatSectionHeader",
-                bundle: giniCaptureBundle()),
-            forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
+
+        tableView.register(helpSectionHeaderNib,
+                           forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -293,23 +258,19 @@ final class NoResultScreenViewController: UIViewController {
         header.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                header.headerStack.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                                          multiplier: Constants.iPadWidthMultiplier),
-                header.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+                header.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                              multiplier: Constants.iPadWidthMultiplier),
+                header.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
             NSLayoutConstraint.activate([
-                header.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                            constant: Constants.sidePadding),
-                header.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                             constant: -Constants.sidePadding)
+                header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                header.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
         }
+
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            header.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.contentHeight),
             header.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
                                            multiplier: Constants.contentHeightMultiplier)
         ])
@@ -371,10 +332,10 @@ final class NoResultScreenViewController: UIViewController {
         } else {
             NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(
-                    equalTo: view.leadingAnchor,
+                    equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                     constant: GiniMargins.margin),
                 tableView.trailingAnchor.constraint(
-                    equalTo: view.trailingAnchor,
+                    equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                     constant: -GiniMargins.margin)
             ])
         }
@@ -398,5 +359,26 @@ final class NoResultScreenViewController: UIViewController {
         static let contentHeightMultiplier: CGFloat = 0.3
         static let iPadWidthMultiplier: CGFloat = 0.7
         static let navigationBarHeight: CGFloat = 114
+        static let alertTriangleImageName: String = "alertTriangle"
+    }
+
+    private struct Strings {
+        static let noResultsHeader = NSLocalizedStringPreferredFormat("ginicapture.noresult.header",
+                                                                      comment: "no results header")
+
+        static let noResultsQRHeader = NSLocalizedStringPreferredFormat("ginicapture.noresult.header.qrcode",
+                                                                        comment: "no results header for qr codes")
+
+        static let enterButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.noresult.enterManually",
+                                                                       comment: "Enter manually button title")
+
+        static let retakeButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.noresult.retakeImages",
+                                                                        comment: "Retake images button title")
+
+        static let screenTitle = NSLocalizedStringPreferredFormat("ginicapture.noresult.title",
+                                                                  comment: "No result screen title")
+
+        static let backToCameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
+                                                                        comment: "Back")
     }
 }
