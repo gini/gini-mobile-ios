@@ -175,7 +175,7 @@ final class EditLineItemView: UIView {
 		priceContainerView.addSubview(priceErrorView)
         setupScrollViewConstraints()
 		setupPriceContainerViewConstraints()
-        setupConstraintStackView()
+        setupStackViewConstraints()
     }
 
     private func setupScrollViewConstraints() {
@@ -187,22 +187,16 @@ final class EditLineItemView: UIView {
         ])
     }
 
-    private func setupConstraintStackView() {
+    private func setupStackViewConstraints() {
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(
-                equalTo: scrollView.contentLayoutGuide.topAnchor,
-                constant: Constants.verticalPadding
-            ),
-            stackView.leadingAnchor.constraint(
-                equalTo: scrollView.contentLayoutGuide.leadingAnchor,
-                constant: Constants.horizontalPadding
-            ),
+            stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
+                                           constant: Constants.verticalPadding),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor,
+                                               constant: Constants.horizontalPadding),
             stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            stackView.widthAnchor.constraint(
-                equalTo: scrollView.frameLayoutGuide.widthAnchor,
-                constant: -2 * Constants.horizontalPadding
-            )
+            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor,
+                                             constant: -2 * Constants.horizontalPadding)
         ])
     }
 
@@ -213,7 +207,8 @@ final class EditLineItemView: UIView {
 			nameLabelView.trailingAnchor.constraint(equalTo: nameContainerView.trailingAnchor),
             nameLabelView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.itemContainerMaxHeight),
 
-			nameErrorView.topAnchor.constraint(equalTo: nameLabelView.bottomAnchor, constant: Constants.errorPadding),
+			nameErrorView.topAnchor.constraint(equalTo: nameLabelView.bottomAnchor,
+                                               constant: Constants.errorPadding),
 			nameErrorView.leadingAnchor.constraint(equalTo: nameContainerView.leadingAnchor),
 			nameErrorView.trailingAnchor.constraint(equalTo: nameContainerView.trailingAnchor),
 			nameErrorView.bottomAnchor.constraint(equalTo: nameContainerView.bottomAnchor)
@@ -227,7 +222,8 @@ final class EditLineItemView: UIView {
 			priceLabelView.trailingAnchor.constraint(equalTo: priceContainerView.trailingAnchor),
             priceLabelView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.itemContainerMaxHeight),
 
-			priceErrorView.topAnchor.constraint(equalTo: priceLabelView.bottomAnchor, constant: Constants.errorPadding),
+			priceErrorView.topAnchor.constraint(equalTo: priceLabelView.bottomAnchor,
+                                                constant: Constants.errorPadding),
 			priceErrorView.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor),
 			priceErrorView.trailingAnchor.constraint(equalTo: priceContainerView.trailingAnchor),
 			priceErrorView.bottomAnchor.constraint(equalTo: priceContainerView.bottomAnchor)
