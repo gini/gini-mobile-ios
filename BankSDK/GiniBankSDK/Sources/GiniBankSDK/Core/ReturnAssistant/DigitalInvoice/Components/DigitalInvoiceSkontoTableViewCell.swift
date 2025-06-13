@@ -42,6 +42,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         label.adjustsFontForContentSizeCategory = true
         label.font = GiniBankConfiguration.shared.textStyleFonts[.bodyBold]
         label.textColor = .giniColorScheme().text.success.uiColor()
+        label.numberOfLines = 0
         return label
     }()
 
@@ -59,6 +60,11 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
     private lazy var toggleSwitch: UISwitch = {
         let toggle = UISwitch()
         toggle.onTintColor = .GiniBank.accent1
+        let size = toggle.intrinsicContentSize
+        NSLayoutConstraint.activate([
+            toggle.widthAnchor.constraint(equalToConstant: size.width),
+            toggle.heightAnchor.constraint(equalToConstant: size.height)
+        ])
         return toggle
     }()
 
@@ -82,7 +88,7 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         stackView.axis = .horizontal
         stackView.spacing = Constants.toggleSwitchSpacing
         stackView.alignment = .top
-        stackView.distribution = .fill
+        stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
