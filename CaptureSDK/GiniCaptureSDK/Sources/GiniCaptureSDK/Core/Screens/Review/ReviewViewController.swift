@@ -552,6 +552,7 @@ extension ReviewViewController {
         if pages.isNotEmpty {
             guard pages.count > 1 else { return }
             self.scrollToItem(at: IndexPath(row: currentPage, section: 0))
+            pageControl.currentPage = currentPage
         }
     }
 }
