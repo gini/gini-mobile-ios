@@ -418,7 +418,7 @@ extension ReviewViewController {
         guard UIDevice.current.isIphone else {
             return
         }
-        let isLandscape = currentInterfaceOrientation.isLandscape
+        let isLandscape = UIDevice.current.isLandscape
         buttonContainer.axis = isLandscape ? .vertical : .horizontal
 
         if giniConfiguration.bottomNavigationBarEnabled {
@@ -581,7 +581,7 @@ extension ReviewViewController {
     }
 
     private func scrollToItem(at indexPath: IndexPath) {
-        let iphoneLandscape = UIDevice.current.isIphone && currentInterfaceOrientation.isLandscape
+        let iphoneLandscape = UIDevice.current.isIphoneAndLandscape
         let scrollPosition: UICollectionView.ScrollPosition = {
             guard iphoneLandscape else {
                 return .centeredHorizontally
@@ -754,7 +754,7 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                insetForSectionAt section: Int) -> UIEdgeInsets {
-        let margin = (self.view.bounds.width - (currentInterfaceOrientation.isLandscape && UIDevice.current.isIphone ? Constants.trailingCollectionPadding : 0) - self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAt: IndexPath(row: 0, section: 0)).width) / 2
+        let margin = (self.view.bounds.width - (UIDevice.current.isIphoneAndLandscape ? Constants.trailingCollectionPadding : 0) - self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAt: IndexPath(row: 0, section: 0)).width) / 2
         return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
     }
 
