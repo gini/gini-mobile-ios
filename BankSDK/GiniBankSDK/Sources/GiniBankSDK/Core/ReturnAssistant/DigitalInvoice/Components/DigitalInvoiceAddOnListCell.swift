@@ -102,13 +102,6 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
             }
         }
     }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if UIDevice.current.isIphone {
-            contentView.frame = contentView.frame.insetBy(dx: safeAreaInsets.left + Constants.horizontalPadding, dy: 0)
-        }
-    }
 }
 
 private extension DigitalInvoiceAddOnListCell {
