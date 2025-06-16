@@ -109,7 +109,7 @@ public final class DocumentPickerCoordinator: NSObject {
             return []
         }
     }
-    
+
     fileprivate var acceptedEInvoiceTypes: [String] {
         let acceptedPDFTypes = isPDFSelectionAllowed ? GiniPDFDocument.acceptedPDFTypes : []
         return GiniXMLDocument.acceptedXMLTypes + acceptedPDFTypes
@@ -170,10 +170,10 @@ public final class DocumentPickerCoordinator: NSObject {
     /**
      Shows the File explorer picker from a given viewController
 
-     - parameter viewController: View controller which presentes the gallery picker
+     - Parameters:
+        - viewController: View controller which presentes the gallery picker
      */
-    func showDocumentPicker(from viewController: UIViewController,
-                                   device: UIDevice = UIDevice.current) {
+    func showDocumentPicker(from viewController: UIViewController) {
         let documentPicker = GiniDocumentPickerViewController(documentTypes: acceptedDocumentTypes, in: .import)
         documentPicker.delegate = self
 
