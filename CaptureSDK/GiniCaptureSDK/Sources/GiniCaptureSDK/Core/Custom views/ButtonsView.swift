@@ -76,6 +76,5 @@ private extension ButtonsView {
     enum Constants {
         static let buttonMinimumHeight: CGFloat = 50
         static let verticalSpacing: CGFloat = 12
-
     }
 }

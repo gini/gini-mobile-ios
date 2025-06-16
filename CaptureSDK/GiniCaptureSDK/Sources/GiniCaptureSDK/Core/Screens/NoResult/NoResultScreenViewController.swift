@@ -39,8 +39,8 @@ final class NoResultScreenViewController: UIViewController {
 
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        view.secondaryButton.isHidden = false
-        view.primaryButton.isHidden = false
+        view.secondaryButton.isHidden = viewModel.isEnterManuallyHidden()
+        view.primaryButton.isHidden = viewModel.isRetakePressedHidden()
 
         return view
     }()

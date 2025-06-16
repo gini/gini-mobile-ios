@@ -48,7 +48,6 @@ class ErrorScreenViewController: UIViewController {
     let viewModel: BottomButtonsViewModel
     private let errorType: ErrorType
     private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
-//    private var buttonsHeightConstraint: NSLayoutConstraint?
     private var buttonsBottomConstraint: NSLayoutConstraint?
     private var bottomNavigationBar: UIView?
 
