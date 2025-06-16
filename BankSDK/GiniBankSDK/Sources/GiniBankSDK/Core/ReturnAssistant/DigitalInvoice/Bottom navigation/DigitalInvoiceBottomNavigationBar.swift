@@ -263,7 +263,7 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
             proceedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             proceedButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
-            proceedButton.heightAnchor.constraint(equalToConstant: Constants.proceedButtonHeight)
+            proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.proceedButtonHeight)
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([

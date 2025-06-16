@@ -59,7 +59,6 @@ final class EditLineItemViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        calculateContainerHeight()
         setupView()
         setupConstraints()
         setupPanGesture()
@@ -135,16 +134,6 @@ final class EditLineItemViewController: UIViewController {
         }
         containerViewHeightConstraint?.isActive = true
         containerViewBottomConstraint?.isActive = true
-    }
-
-    private func calculateContainerHeight() {
-        let normalSize: CGFloat = 17 // size of the .body textstyle when the font is not set bigger in accessibility
-        if let pointSize = GiniBankConfiguration.shared.textStyleFonts[.body]?.pointSize {
-            let diff = pointSize - normalSize
-            let height = defaultHeight + 6 * diff // adding the extra difference for the 6 lines of the edit screen
-            defaultHeight = min(height, self.view.frame.height)
-            currentContainerHeight = min(height, self.view.frame.height)
-        }
     }
 
     private func animatePresentContainer() {
@@ -247,7 +236,7 @@ final class EditLineItemViewController: UIViewController {
         }
 
     private func setBottomConstraint(gestureYTranslation: CGFloat = 0) {
-        if UIApplication.shared.statusBarOrientation.isLandscape,
+        if UIDevice.current.isLandscape,
            self.isKeyboardPresented,
            self.keyboardHeight > 200 { // checking if digital keyboard is presented.
             containerViewBottomConstraint?.constant = -(view.frame.height - currentContainerHeight - Constants.topPadding - gestureYTranslation)
