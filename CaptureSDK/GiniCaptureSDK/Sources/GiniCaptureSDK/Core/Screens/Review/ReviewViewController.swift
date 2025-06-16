@@ -436,14 +436,17 @@ extension ReviewViewController {
 
         trailingConstraints.forEach { $0.constant = isLandscape ? -Constants.trailingCollectionPadding : 0 }
         let portraitConstraintsToActivate = giniConfiguration.bottomNavigationBarEnabled
-                                                        ? bottomNavigationBarAdditionalConstraints + pageControlConstraints
-                                                        : buttonContainerConstraints + pageControlConstraints
+            ? (bottomNavigationBarAdditionalConstraints + pageControlConstraints)
+            : (buttonContainerConstraints + pageControlConstraints)
         let constraintsToActivate = isLandscape
             ? buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
             : portraitConstraintsToActivate
-
-        let portraitBottomBarConstraintsToDeactivate = giniConfiguration.bottomNavigationBarEnabled ? bottomNavigationBarAdditionalConstraints : []
-        let portraitConstraintsToDeactivate = buttonContainerHorizontalConstraints + pageControlHorizontalConstraints + portraitBottomBarConstraintsToDeactivate
+        let portraitBottomBarConstraintsToDeactivate = giniConfiguration.bottomNavigationBarEnabled
+            ? bottomNavigationBarAdditionalConstraints
+            : []
+        let portraitConstraintsToDeactivate =
+            buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
+            + portraitBottomBarConstraintsToDeactivate
         let constraintsToDeactivate = isLandscape
             ? bottomNavigationBarAdditionalConstraints + buttonContainerConstraints + pageControlConstraints
             : portraitConstraintsToDeactivate
@@ -474,7 +477,8 @@ extension ReviewViewController {
     // MARK: - Loading indicator
 
     private func addLoadingView() {
-        guard !giniConfiguration.bottomNavigationBarEnabled || (buttonContainer.superview != nil && UIDevice.current.isIphone) else { return }
+        guard !giniConfiguration.bottomNavigationBarEnabled
+              || (buttonContainer.superview != nil && UIDevice.current.isIphone) else { return }
         if let loadingIndicator {
             loadingIndicator.removeFromSuperview()
             self.loadingIndicator = nil
@@ -754,7 +758,12 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                insetForSectionAt section: Int) -> UIEdgeInsets {
-        let margin = (self.view.bounds.width - (UIDevice.current.isIphoneAndLandscape ? Constants.trailingCollectionPadding : 0) - self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAt: IndexPath(row: 0, section: 0)).width) / 2
+        let margin = (self.view.bounds.width
+                    - (UIDevice.current.isIphoneAndLandscape ? Constants.trailingCollectionPadding : 0)
+                    - self.collectionView(collectionView,
+                                          layout: collectionViewLayout,
+                                          sizeForItemAt: IndexPath(row: 0, section: 0)).width
+                   ) / 2
         return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
     }
 
