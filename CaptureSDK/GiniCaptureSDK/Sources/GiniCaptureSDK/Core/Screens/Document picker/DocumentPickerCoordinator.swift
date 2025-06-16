@@ -47,6 +47,9 @@ public protocol DocumentPickerCoordinatorDelegate: AnyObject {
 
     /// File explorer picker
     case explorer
+
+    /// E-Invoice file picker (XML and PDF support)
+    case eInvoice
 }
 
 /**
@@ -107,6 +110,11 @@ public final class DocumentPickerCoordinator: NSObject {
         }
     }
 
+    fileprivate var acceptedEInvoiceTypes: [String] {
+        let acceptedPDFTypes = isPDFSelectionAllowed ? GiniPDFDocument.acceptedPDFTypes : []
+        return GiniXMLDocument.acceptedXMLTypes + acceptedPDFTypes
+    }
+
     /**
      Designated initializer for the `DocumentPickerCoordinator`.
 
@@ -162,10 +170,10 @@ public final class DocumentPickerCoordinator: NSObject {
     /**
      Shows the File explorer picker from a given viewController
 
-     - parameter viewController: View controller which presentes the gallery picker
+     - Parameters:
+        - viewController: View controller which presentes the gallery picker
      */
-    public func showDocumentPicker(from viewController: UIViewController,
-                                   device: UIDevice = UIDevice.current) {
+    func showDocumentPicker(from viewController: UIViewController) {
         let documentPicker = GiniDocumentPickerViewController(documentTypes: acceptedDocumentTypes, in: .import)
         documentPicker.delegate = self
 
@@ -174,7 +182,26 @@ public final class DocumentPickerCoordinator: NSObject {
         currentPickerDismissesAutomatically = true
         currentPickerViewController = documentPicker
 
-        viewController.present(documentPicker, animated: true, completion: nil)
+        viewController.present(documentPicker, animated: true)
+    }
+
+    /**
+     Shows the E-Invoice file picker from a given view controller.
+
+     - Parameters:
+        - viewController: The view controller that presents the E-Invoice picker.
+     */
+    func showEInvoicePicker(from viewController: UIViewController) {
+        let eInvoicePicker = GiniDocumentPickerViewController(documentTypes: acceptedEInvoiceTypes,
+                                                              in: .import)
+        eInvoicePicker.delegate = self
+        eInvoicePicker.allowsMultipleSelection = true
+        eInvoicePicker.view.tintColor = .GiniCapture.accent1
+
+        currentPickerDismissesAutomatically = true
+        currentPickerViewController = eInvoicePicker
+
+        viewController.present(eInvoicePicker, animated: true)
     }
 
     /**
@@ -285,7 +312,7 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
 
 extension DocumentPickerCoordinator: UIDropInteractionDelegate {
     public func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
-        guard isPDFDropSelectionAllowed(forSession: session) else {
+        guard isDropSelectionAllowed(forSession: session) else {
             return false
         }
 
@@ -293,9 +320,11 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         switch giniConfiguration.fileImportSupportedTypes {
         case .pdf_and_images:
             return (session.canLoadObjects(ofClass: GiniImageDocument.self) ||
-                session.canLoadObjects(ofClass: GiniPDFDocument.self)) && isMultipleItemsSelectionAllowed
+                    session.canLoadObjects(ofClass: GiniPDFDocument.self) ||
+                    session.canLoadObjects(ofClass: GiniXMLDocument.self)) && isMultipleItemsSelectionAllowed
         case .pdf:
-            return session.canLoadObjects(ofClass: GiniPDFDocument.self) && isMultipleItemsSelectionAllowed
+            return (session.canLoadObjects(ofClass: GiniPDFDocument.self) ||
+                    session.canLoadObjects(ofClass: GiniXMLDocument.self)) && isMultipleItemsSelectionAllowed
         case .none:
             return false
         }
@@ -322,6 +351,12 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
             }
         }
 
+        loadDocuments(ofClass: GiniXMLDocument.self, from: session, in: dispatchGroup) { xmlItems in
+            if let xmls = xmlItems {
+                documents.append(contentsOf: xmls as [GiniCaptureDocument])
+            }
+        }
+
         dispatchGroup.notify(queue: DispatchQueue.main) {
             self.currentPickerDismissesAutomatically = true
             self.delegate?.documentPicker(self, didPick: documents)
@@ -343,16 +378,41 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         }
     }
 
-    private func isPDFDropSelectionAllowed(forSession session: UIDropSession) -> Bool {
-        if session.hasItemsConforming(toTypeIdentifiers: GiniPDFDocument.acceptedPDFTypes) {
-            let pdfIdentifier = GiniPDFDocument.acceptedPDFTypes[0]
-            let pdfItems = session.items.filter { $0.itemProvider.hasItemConformingToTypeIdentifier(pdfIdentifier) }
+    private func isDropSelectionAllowed(forSession session: UIDropSession) -> Bool {
+        let eInvoiceEnabled = GiniCaptureUserDefaultsStorage.eInvoiceEnabled ?? false
+        let xmlIdentifier = GiniXMLDocument.acceptedXMLTypes.first
+        let pdfIdentifier = GiniPDFDocument.acceptedPDFTypes.first
+        let identifiers = eInvoiceEnabled ? [pdfIdentifier, xmlIdentifier] : [pdfIdentifier]
 
-            if pdfItems.count > 1 || !isPDFSelectionAllowed {
-                return false
+        let itemProviders = session.items.map { $0.itemProvider }
+
+        let pdfConformingProviders: [NSItemProvider] = {
+            guard let pdfIdentifier else { return [] }
+            return itemProviders.filter {
+                $0.hasItemConformingToTypeIdentifier(pdfIdentifier)
             }
+        }()
+
+        let xmlConformingProviders: [NSItemProvider] = {
+            guard let xmlIdentifier else { return [] }
+            return itemProviders.filter {
+                $0.hasItemConformingToTypeIdentifier(xmlIdentifier)
+            }
+        }()
+
+        let pdfCount = pdfConformingProviders.count
+        let xmlCount = xmlConformingProviders.count
+        let totalItems = pdfCount + xmlCount
+
+        let hasInvalidXmlState = !eInvoiceEnabled && xmlCount > 0
+        guard !hasInvalidXmlState else {
+            return false
         }
 
-        return true
+        guard session.hasItemsConforming(toTypeIdentifiers: identifiers.compactMap { $0 }) else {
+            return true
+        }
+
+        return totalItems <= 1 && isPDFSelectionAllowed
     }
 }

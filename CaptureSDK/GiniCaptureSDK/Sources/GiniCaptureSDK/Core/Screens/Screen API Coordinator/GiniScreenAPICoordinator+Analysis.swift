@@ -114,6 +114,9 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         case .qrcode:
             noResultType = .qrCode
             shouldDisplay = true
+        case .xml:
+            noResultType = .xml
+            shouldDisplay = true
         default:
             shouldDisplay = false
         }

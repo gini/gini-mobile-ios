@@ -152,16 +152,11 @@ public protocol GiniCaptureError: Error {
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.documentValidationError.excedeedFileSize",
                 comment: "Message text error shown in camera screen when a file size is higher than 10MB")
-        case .imageFormatNotValid:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.documentValidationError.wrongFormat",
-                comment: "Message text error shown in camera screen when a file " +
-                    "has a wrong format (neither PDF, JPEG, GIF, TIFF or PNG)")
-        case .fileFormatNotValid:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.documentValidationError.wrongFormat",
-                comment: "Message text error shown in camera screen when a file " +
-                "has a wrong format (neither PDF, JPEG, GIF, TIFF or PNG)")
+        case .imageFormatNotValid, .fileFormatNotValid, .qrCodeFormatNotValid:
+            let isEInvoiceEnabled = GiniCaptureUserDefaultsStorage.eInvoiceEnabled ?? false
+            let key = isEInvoiceEnabled ? "ginicapture.camera.documentValidationError.wrongFormatWithXML"
+                : "ginicapture.camera.documentValidationError.wrongFormat"
+            return NSLocalizedStringPreferredFormat(key, comment: "Wrong format (not PDF, JPEG, GIF, TIFF, PNG or XML)")
         case .pdfPageLengthExceeded:
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.documentValidationError.tooManyPages",
@@ -170,11 +165,6 @@ public protocol GiniCaptureError: Error {
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.documentValidationError.pdfPasswordProtected",
                 comment: "Message text error shown when there pdf uplaoded is password protected")
-        case .qrCodeFormatNotValid:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.documentValidationError.wrongFormat",
-                comment: "Message text error shown in camera screen when a file " +
-                "has a wrong format (neither PDF, JPEG, GIF, TIFF or PNG)")
         case .unknown:
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.documentValidationError.general",

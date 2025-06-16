@@ -278,6 +278,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 DispatchQueue.main.async {
                     GiniBankUserDefaultsStorage.clientConfiguration = configuration
                     GiniCaptureUserDefaultsStorage.qrCodeEducationEnabled = configuration.qrCodeEducationEnabled
+                    GiniCaptureUserDefaultsStorage.eInvoiceEnabled = configuration.eInvoiceEnabled
                     self.initializeAnalytics(with: configuration)
                 }
             case .failure(let error):

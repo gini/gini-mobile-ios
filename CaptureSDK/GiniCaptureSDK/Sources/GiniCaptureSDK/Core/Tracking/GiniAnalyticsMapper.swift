@@ -45,6 +45,8 @@ class GiniAnalyticsMapper {
             return "image"
         case .qrcode:
             return "qrCode"
+        case .xml:
+            return "xml"
         }
     }
 
