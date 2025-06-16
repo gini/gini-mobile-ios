@@ -643,7 +643,6 @@ final class CameraViewController: UIViewController {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.warning)
 
-        qrCodeOverLay.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3) {
             self.qrCodeOverLay.isHidden = false
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.warning3)
