@@ -17,16 +17,6 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
 
     weak var delegate: DigitalInvoiceSkontoTableViewCellDelegate?
 
-    private lazy var containerView: UIView = {
-        let view = UIView()
-
-        view.backgroundColor = .giniColorScheme().container.background.uiColor()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.round(corners: [.bottomLeft, .bottomRight], radius: Constants.cornerRadius)
-
-        return view
-    }()
-
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
@@ -126,35 +116,16 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                   constant: Constants.stackViewHorizontalSpacing),
+            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                    constant: -Constants.stackViewHorizontalSpacing),
+            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                               constant: Constants.stackViewVerticalSpacing),
+            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                                  constant: -Constants.stackViewVerticalSpacing),
             titleLabel.heightAnchor.constraint(greaterThanOrEqualTo: toggleSwitch.heightAnchor),
             editButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.editButtonMinWidth)
-        ])
-    }
-
-    private func setupContainerView() {
-        contentView.addSubview(containerView)
-
-        NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                   constant: Constants.stackViewHorizontalSpacing),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                    constant: -Constants.stackViewHorizontalSpacing)
-        ])
-    }
-
-    private func setupMainStackView() {
-        containerView.addSubview(mainStackView)
-
-        NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
-                                                   constant: Constants.stackViewHorizontalSpacing),
-            mainStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
-                                                    constant: -Constants.stackViewHorizontalSpacing),
-            mainStackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor,
-                                                  constant: -Constants.stackViewVerticalSpacing)
         ])
     }
 
