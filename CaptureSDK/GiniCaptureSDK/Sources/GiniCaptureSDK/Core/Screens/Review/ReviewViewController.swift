@@ -477,8 +477,11 @@ extension ReviewViewController {
     // MARK: - Loading indicator
 
     private func addLoadingView() {
-        guard !giniConfiguration.bottomNavigationBarEnabled
-              || (buttonContainer.superview != nil && UIDevice.current.isIphone) else { return }
+        let isBottomNavDisabled = !giniConfiguration.bottomNavigationBarEnabled
+        let isButtonInView = buttonContainer.superview != nil
+        let isOnIphone = UIDevice.current.isIphone
+
+        guard isBottomNavDisabled || (isButtonInView && isOnIphone) else { return }
         if let loadingIndicator {
             loadingIndicator.removeFromSuperview()
             self.loadingIndicator = nil
@@ -758,12 +761,13 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                insetForSectionAt section: Int) -> UIEdgeInsets {
-        let margin = (self.view.bounds.width
-                    - (UIDevice.current.isIphoneAndLandscape ? Constants.trailingCollectionPadding : 0)
-                    - self.collectionView(collectionView,
-                                          layout: collectionViewLayout,
-                                          sizeForItemAt: IndexPath(row: 0, section: 0)).width
-                   ) / 2
+        let itemSize = self.collectionView(collectionView,
+                                           layout: collectionViewLayout,
+                                           sizeForItemAt: IndexPath(row: 0, section: 0)).width
+
+        let trailingPadding = UIDevice.current.isIphoneAndLandscape ? Constants.trailingCollectionPadding : 0
+
+        let margin = (self.view.bounds.width - trailingPadding - itemSize) / 2
         return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
     }
 
