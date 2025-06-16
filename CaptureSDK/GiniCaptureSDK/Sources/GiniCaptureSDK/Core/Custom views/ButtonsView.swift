@@ -9,39 +9,39 @@ import UIKit
 
 class ButtonsView: UIView {
     private let giniConfiguration = GiniConfiguration.shared
-    lazy var enterButton: MultilineTitleButton = {
-        let button = MultilineTitleButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(enterButtonTitle, for: .normal)
-        button.accessibilityLabel = enterButtonTitle
-        return button
-    }()
+    lazy var secondaryButton: MultilineTitleButton = configureStackViewButton(title: secondaryButtonTitle)
+    lazy var primaryButton: MultilineTitleButton = configureStackViewButton(title: primaryButtonTitle)
 
-    lazy var retakeButton: MultilineTitleButton = {
+    private func configureStackViewButton(title: String) -> MultilineTitleButton {
         let button = MultilineTitleButton()
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(retakeButtonTitle, for: .normal)
-        button.accessibilityLabel = retakeButtonTitle
-        return button
-    }()
+        button.accessibilityLabel = title
 
+        // Apply minimum height constraint
+        NSLayoutConstraint.activate([
+            button.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonMinimumHeight)
+        ])
+        return button
+    }
     private lazy var buttonsView: UIStackView = {
         let stackView = UIStackView()
-        stackView.addArrangedSubview(retakeButton)
-        stackView.addArrangedSubview(enterButton)
+        stackView.addArrangedSubview(primaryButton)
+        stackView.addArrangedSubview(secondaryButton)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
-        stackView.spacing = 12
+        stackView.spacing = Constants.verticalSpacing
         return stackView
     }()
 
-    private let enterButtonTitle: String
-    private let retakeButtonTitle: String
+    private let secondaryButtonTitle: String
+    private let primaryButtonTitle: String
 
-    init(enterButtonTitle: String, retakeButtonTitle: String) {
-        self.enterButtonTitle = enterButtonTitle
-        self.retakeButtonTitle = retakeButtonTitle
+    init(secondaryButtonTitle: String, primaryButtonTitle: String) {
+        self.secondaryButtonTitle = secondaryButtonTitle
+        self.primaryButtonTitle = primaryButtonTitle
         super.init(frame: CGRect.zero)
         addSubview(buttonsView)
         configureButtons()
@@ -53,14 +53,28 @@ class ButtonsView: UIView {
         ])
     }
 
+    private func updateStackViewAxis() {
+        buttonsView.axis = UIDevice.current.isLandscape ? .horizontal : .vertical
+    }
+
     private func configureButtons() {
-        retakeButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        retakeButton.configure(with: giniConfiguration.primaryButtonConfiguration)
-        enterButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        enterButton.configure(with: giniConfiguration.secondaryButtonConfiguration)
+        primaryButton.configure(with: giniConfiguration.primaryButtonConfiguration)
+        secondaryButton.configure(with: giniConfiguration.secondaryButtonConfiguration)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateStackViewAxis()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+private extension ButtonsView {
+    enum Constants {
+        static let buttonMinimumHeight: CGFloat = 50
+        static let verticalSpacing: CGFloat = 12
     }
 }

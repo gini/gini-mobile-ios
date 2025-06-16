@@ -34,13 +34,13 @@ final class NoResultScreenViewController: UIViewController {
     }()
 
     lazy var buttonsView: ButtonsView = {
-        let view = ButtonsView(enterButtonTitle: Strings.enterButtonTitle,
-                               retakeButtonTitle: Strings.retakeButtonTitle)
+        let view = ButtonsView(secondaryButtonTitle: Strings.enterButtonTitle,
+                               primaryButtonTitle: Strings.retakeButtonTitle)
 
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        view.enterButton.isHidden = viewModel.isEnterManuallyHidden()
-        view.retakeButton.isHidden = viewModel.isRetakePressedHidden()
+        view.secondaryButton.isHidden = viewModel.isEnterManuallyHidden()
+        view.primaryButton.isHidden = viewModel.isRetakePressedHidden()
 
         return view
     }()
@@ -50,7 +50,6 @@ final class NoResultScreenViewController: UIViewController {
     private var giniConfiguration: GiniConfiguration
     private let type: NoResultType
     private let viewModel: BottomButtonsViewModel
-    private var buttonsHeightConstraint: NSLayoutConstraint?
     private var buttonsBottomConstraint: NSLayoutConstraint?
     private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
 
@@ -181,14 +180,6 @@ final class NoResultScreenViewController: UIViewController {
         view.layoutSubviews()
     }
 
-    private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
-        if numberOfButtons == 1 {
-            return Constants.singleButtonHeight
-        } else {
-            return Constants.twoButtonsHeight
-        }
-    }
-
     private func configureTableView() {
         registerCells()
         tableView.delegate = self.dataSource
@@ -230,10 +221,10 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureButtons() {
-        buttonsView.enterButton.addTarget(self,
+        buttonsView.secondaryButton.addTarget(self,
                                           action: #selector(didPressEnterManually),
                                           for: .touchUpInside)
-        buttonsView.retakeButton.addTarget(self,
+        buttonsView.primaryButton.addTarget(self,
                                            action: #selector(didPressRetake),
                                            for: .touchUpInside)
     }
@@ -270,7 +261,7 @@ final class NoResultScreenViewController: UIViewController {
         }
 
         NSLayoutConstraint.activate([
-            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             header.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
                                            multiplier: Constants.contentHeightMultiplier)
         ])
@@ -284,34 +275,22 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureButtonsViewConstraints() {
-        let buttonsConstraint = buttonsView.heightAnchor.constraint(
-            greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
-        )
-        buttonsHeightConstraint = buttonsConstraint
-
-        let bottomConstraint: NSLayoutConstraint
         if giniConfiguration.bottomNavigationBarEnabled,
            let navBar = navigationBarBottomAdapter?.injectedView() {
-            bottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: navBar.topAnchor)
+            buttonsBottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: navBar.topAnchor)
         } else {
-            bottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                                   constant: -GiniMargins.margin)
+            buttonsBottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                                          constant: -GiniMargins.margin)
         }
-        buttonsBottomConstraint = bottomConstraint
 
-        NSLayoutConstraint.activate([
-            buttonsConstraint,
-            bottomConstraint
-        ])
+        buttonsBottomConstraint?.isActive = true
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                buttonsView.leadingAnchor.constraint(
-                    equalTo: view.leadingAnchor,
-                    constant: GiniMargins.margin),
-                buttonsView.trailingAnchor.constraint(
-                    equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.margin)
+                buttonsView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                     constant: GiniMargins.margin),
+                buttonsView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                      constant: -GiniMargins.margin)
             ])
         } else {
             NSLayoutConstraint.activate([
