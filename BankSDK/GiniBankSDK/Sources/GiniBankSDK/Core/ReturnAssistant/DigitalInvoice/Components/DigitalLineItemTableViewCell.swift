@@ -25,6 +25,11 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     @IBOutlet weak var unitPriceLabel: UILabel!
     @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
+
+    override var canBecomeFocused: Bool {
+        false
+    }
+
     private let configuration = GiniBankConfiguration.shared
 
     var viewModel: DigitalLineItemTableViewCellViewModel? {

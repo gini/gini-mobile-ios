@@ -241,8 +241,6 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     func updateValues() {
-        tableView.reloadData()
-
         if configuration.bottomNavigationBarEnabled {
             navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencySymbol: viewModel.totalPrice?.string)
             navigationBarBottomAdapter?.updateProceedButtonState(enabled: viewModel.isPayButtonEnabled())
@@ -355,7 +353,7 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
                 if let invoice = viewModel.invoice {
                     let maxCharactersCount = Constants.nameMaxCharactersCount
                     cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
-                                                                           index: indexPath.row,
+                                                                           indexPath: indexPath,
                                                                            invoiceNumTotal: invoice.numTotal,
                                                                            invoiceLineItemsCount:
                                                                            invoice.lineItems.count,
@@ -420,6 +418,8 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
         GiniAnalyticsManager.track(event: .itemSwitchTapped,
                                    screenName: .returnAssistant,
                                    properties: [GiniAnalyticsProperty(key: .switchActive, value: isLineItemSelected)])
+        
+        tableView.reloadRows(at: [lineItemViewModel.indexPath], with: .none)
         updateValues()
     }
 

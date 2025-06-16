@@ -93,6 +93,10 @@ class DigitalInvoiceSkontoTableViewCell: UITableViewCell {
         return stackView
     }()
 
+    override var canBecomeFocused: Bool {
+        false
+    }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
