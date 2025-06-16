@@ -186,7 +186,7 @@ jobs:
 
       - name: Comment on issue
         if: ${{ env.JIRA_TICKET_NAME != null }}
-        uses: atlassian/gajira-comment@v3
+        uses: atlassian/gajira-comment@ca13f8850ea309cf44a6e4e0c49d9aa48ac3ca4c # v3.0.1
         with:
           issue: ${{ env.JIRA_TICKET_NAME }}
           comment: Build bank example app ${{ steps.distribute.outputs.FIREBASE_CONSOLE_URI }} and app tester build can be downloaded from here ${{ steps.distribute.outputs.TESTING_URI }}
