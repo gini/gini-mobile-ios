@@ -404,7 +404,8 @@ extension DocumentPickerCoordinator: UIDropInteractionDelegate {
         let xmlCount = xmlConformingProviders.count
         let totalItems = pdfCount + xmlCount
 
-        if !eInvoiceEnabled, xmlCount > 0 {
+        let hasInvalidXmlState = !eInvoiceEnabled && xmlCount > 0
+        guard !hasInvalidXmlState else {
             return false
         }
 
