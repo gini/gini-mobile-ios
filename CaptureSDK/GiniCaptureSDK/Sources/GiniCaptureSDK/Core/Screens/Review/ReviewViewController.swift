@@ -444,8 +444,8 @@ extension ReviewViewController {
         let portraitBottomBarConstraintsToDeactivate = giniConfiguration.bottomNavigationBarEnabled
             ? bottomNavigationBarAdditionalConstraints
             : []
-        let portraitConstraintsToDeactivate =
-            buttonContainerHorizontalConstraints + pageControlHorizontalConstraints
+        let portraitConstraintsToDeactivate = buttonContainerHorizontalConstraints
+            + pageControlHorizontalConstraints
             + portraitBottomBarConstraintsToDeactivate
         let constraintsToDeactivate = isLandscape
             ? bottomNavigationBarAdditionalConstraints + buttonContainerConstraints + pageControlConstraints
