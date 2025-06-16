@@ -12,10 +12,6 @@ protocol GiniInputAccessoryViewDelegate: AnyObject {
     func inputAccessoryViewDidCancel(_ view: GiniInputAccessoryView)
 }
 
-protocol GiniInputAccessoryViewPresentable {
-    var inputAccessoryView: UIView? { get set }
-}
-
 final class GiniInputAccessoryView: UIView {
 
     private lazy var toolbar: UIToolbar = {
@@ -70,7 +66,7 @@ final class GiniInputAccessoryView: UIView {
     // MARK: - Initialization
 
     init(fields: [UIView]) {
-        let toolbarHeight = 44
+        let toolbarHeight: Int = 44
 
         self.textFields = fields
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: toolbarHeight))
@@ -114,7 +110,7 @@ final class GiniInputAccessoryView: UIView {
     private func updateButtonStates() {
         let enabledTintColor: UIColor = .giniColorScheme().inputAccessoryView.tintColor.uiColor()
         let disabledTintColor: UIColor = .giniColorScheme().inputAccessoryView.disabledTintColor.uiColor()
-        
+
         previousButton.isEnabled = currentIndex > 0
         nextButton.isEnabled = currentIndex < textFields.count - 1
         previousButton.tintColor = previousButton.isEnabled ? enabledTintColor : disabledTintColor
@@ -139,26 +135,5 @@ final class GiniInputAccessoryView: UIView {
 
     @objc private func cancelTapped() {
         delegate?.inputAccessoryViewDidCancel(self)
-    }
-}
-
-extension UIViewController {
-
-    func setupInputAccessoryView(for views: [GiniInputAccessoryViewPresentable]) {
-        let accessoryView = GiniInputAccessoryView(fields: views.compactMap { $0 as? UIView })
-
-        accessoryView.delegate = self as? GiniInputAccessoryViewDelegate
-
-        for var view in views {
-            view.inputAccessoryView = accessoryView
-        }
-    }
-    
-    func updateCurrentField(_ field: GiniInputAccessoryViewPresentable) {
-        let inputAccessoryView = field.inputAccessoryView as? GiniInputAccessoryView
-        
-        guard let view = field as? UIView else { return }
-        
-        inputAccessoryView?.updateCurrentField(view)
     }
 }

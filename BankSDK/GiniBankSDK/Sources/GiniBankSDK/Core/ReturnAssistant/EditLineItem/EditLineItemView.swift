@@ -4,6 +4,7 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
+import Combine
 import GiniCaptureSDK
 import UIKit
 
@@ -25,7 +26,6 @@ final class EditLineItemView: UIView {
         button.titleLabel?.textColor = .GiniBank.accent1
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.accessibilityValue = title
         return button
     }()
 
@@ -38,7 +38,6 @@ final class EditLineItemView: UIView {
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.attributedText = NSAttributedString(string: title, attributes: textAttributes(for: .bodyBold))
         label.adjustsFontForContentSizeCategory = true
-        label.accessibilityValue = title
         return label
     }()
 
@@ -56,7 +55,6 @@ final class EditLineItemView: UIView {
         button.titleLabel?.textColor = .GiniBank.accent1
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.accessibilityValue = title
         return button
     }()
 
@@ -128,6 +126,8 @@ final class EditLineItemView: UIView {
         return view
     }()
 
+    private var cancellables: Set<AnyCancellable> = []
+
     var viewModel: EditLineItemViewModel? {
         didSet {
             guard let viewModel = viewModel else { return }
@@ -140,6 +140,7 @@ final class EditLineItemView: UIView {
 
         setupView()
         setupConstraints()
+        bindViews()
     }
 
     required init?(coder: NSCoder) {
@@ -176,6 +177,7 @@ final class EditLineItemView: UIView {
         setupScrollViewConstraints()
 		setupPriceContainerViewConstraints()
         setupStackViewConstraints()
+        setupInputAccessoryView(for: [nameLabelView, priceLabelView])
     }
 
     private func setupScrollViewConstraints() {
@@ -198,6 +200,22 @@ final class EditLineItemView: UIView {
             stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor,
                                              constant: -2 * Constants.horizontalPadding)
         ])
+    }
+
+    private func bindViews() {
+        nameLabelView.$didStartEditing
+            .dropFirst()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                updateCurrentField(nameLabelView)
+            }.store(in: &cancellables)
+
+        priceLabelView.$didStartEditing
+            .dropFirst()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                updateCurrentField(priceLabelView)
+            }.store(in: &cancellables)
     }
 
 	private func setupNameContainerViewConstraints() {
@@ -362,6 +380,22 @@ extension EditLineItemView: PriceLabelViewDelegate {
         UIView.animate(withDuration: Constants.animationDuration) {
             self.currencyPicker.alpha = 1
         }
+    }
+}
+
+// MARK: - GiniInputAccessoryView delegate methods
+
+extension EditLineItemView: GiniInputAccessoryViewDelegate {
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectPrevious field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectNext field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryViewDidCancel(_ view: GiniInputAccessoryView) {
+        endEditing(true)
     }
 }
 
