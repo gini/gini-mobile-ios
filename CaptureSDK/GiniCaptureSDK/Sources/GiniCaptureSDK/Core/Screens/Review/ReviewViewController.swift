@@ -765,7 +765,8 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
                                            layout: collectionViewLayout,
                                            sizeForItemAt: IndexPath(row: 0, section: 0)).width
 
-        let trailingPadding = UIDevice.current.isIphoneAndLandscape ? Constants.trailingCollectionPadding : 0
+        let trailingPadding = currentInterfaceOrientation.isLandscape &&
+                              UIDevice.current.isIphone ? Constants.trailingCollectionPadding : 0
 
         let margin = (self.view.bounds.width - trailingPadding - itemSize) / 2
         return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
