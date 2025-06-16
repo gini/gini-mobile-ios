@@ -174,7 +174,7 @@ jobs:
 
       - name: Login to jira
         if: ${{ env.JIRA_TICKET_NAME != null }}
-        uses: justin-jhg/gajira-login@v1
+        uses: justin-jhg/gajira-login@ca13f8850ea309cf44a6e4e0c49d9aa48ac3ca4c # v3.0.1
         env:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
