@@ -93,6 +93,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
         setupView()
         setupConstraints()
         setupKeyboardObservers()
+        setupInputAccessoryView(for: [withDiscountPriceView, expiryDateView])
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -291,6 +292,7 @@ extension DigitalInvoiceSkontoViewController: SkontoExpiryDateViewDelegate {
     func expiryDateTextFieldTapped() {
         GiniAnalyticsManager.track(event: .dueDateTapped,
                                    screenName: .returnAssistantSkonto)
+        updateCurrentField(expiryDateView)
     }
 }
 
@@ -298,6 +300,7 @@ extension DigitalInvoiceSkontoViewController: SkontoWithDiscountPriceViewDelegat
     func withDiscountPriceTextFieldTapped() {
         GiniAnalyticsManager.track(event: .finalAmountTapped,
                                    screenName: .returnAssistantSkonto)
+        updateCurrentField(withDiscountPriceView)
     }
 }
 
@@ -346,6 +349,22 @@ extension DigitalInvoiceSkontoViewController {
             self.scrollView.contentInset.bottom = Constants.containerPadding
             self.scrollView.scrollIndicatorInsets.bottom = Constants.scrollIndicatorInset
         }
+    }
+}
+
+// MARK: - GiniInputAccessoryView delegate methods
+
+extension DigitalInvoiceSkontoViewController: GiniInputAccessoryViewDelegate {
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectPrevious field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectNext field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryViewDidCancel(_ view: GiniInputAccessoryView) {
+        endEditing()
     }
 }
 
