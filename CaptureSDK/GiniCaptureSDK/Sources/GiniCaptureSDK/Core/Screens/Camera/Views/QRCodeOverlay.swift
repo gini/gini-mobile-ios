@@ -103,6 +103,21 @@ final class IncorrectQRCodeTextContainer: UIView {
 
 final class QRCodeOverlay: UIView {
     private let configuration = GiniConfiguration.shared
+    private var educationViewModel: QRCodeEducationLoadingViewModel?
+    private var educationLoadingView: QRCodeEducationLoadingView?
+    private let useCustomLoadingView: Bool = true
+    private var educationTask: Task<Void, Never>?
+    private var educationFlowController: EducationFlowController?
+
+    /**
+     The currently running education flow task, if any.
+     
+     This task represents the education flow started by `showAnimation()`
+     when the QR code education view is shown.
+     */
+    public var currentEducationTask: Task<Void, Never>? {
+        educationTask
+    }
 
     private lazy var correctQRFeedback: CorrectQRCodeTextContainer = {
         let view = CorrectQRCodeTextContainer()
@@ -132,6 +147,7 @@ final class QRCodeOverlay: UIView {
         let indicatorView = UIActivityIndicatorView()
         indicatorView.hidesWhenStopped = true
         indicatorView.style = .large
+        indicatorView.color = .GiniCapture.light1
         return indicatorView
     }()
 
@@ -172,6 +188,36 @@ final class QRCodeOverlay: UIView {
     }
 
     private func addLoadingView() {
+        let shouldDisplayEducation = configuration.qrCodeScanningEnabled &&
+                                     !configuration.onlyQRCodeScanningEnabled &&
+                                     configuration.fileImportSupportedTypes != .none
+        let controller = EducationFlowController.qrCodeFlowController(displayIfNeeded: shouldDisplayEducation)
+        educationFlowController = controller
+
+        let nextState = controller.nextState()
+        switch nextState {
+        case .showMessage(let messageIndex):
+            addEducationLoadingView(messageIndex: messageIndex)
+        case .showOriginalFlow:
+            addOriginalLoadingView()
+        }
+    }
+
+    private func addEducationLoadingView(messageIndex: Int) {
+        let loadingItems = EducationFlowContent.qrCode(messageIndex: messageIndex).items
+
+        let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
+        educationViewModel = viewModel
+
+        let customViewStyle = QRCodeEducationLoadingView.Style(textColor: .GiniCapture.light1,
+                                                               analysingTextColor: .GiniCapture.light3)
+        let view = QRCodeEducationLoadingView(viewModel: viewModel, style: customViewStyle)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        educationLoadingView = view
+        addSubview(view)
+    }
+
+    private func addOriginalLoadingView() {
         let loadingIndicator: UIView
 
         if let customLoadingIndicator = configuration.customLoadingIndicator?.injectedView() {
@@ -188,7 +234,7 @@ final class QRCodeOverlay: UIView {
     func layoutViews(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
         layoutCorrectQRCode(centeringBy: cameraFrame, on: viewController)
         layoutIncorrectQRCode(centeringBy: cameraFrame)
-        layoutLoadingIndicator(centeringBy: cameraFrame)
+        layoutLoadingIndicator(centeringBy: cameraFrame, on: viewController)
     }
 
     private func layoutCorrectQRCode(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
@@ -220,7 +266,57 @@ final class QRCodeOverlay: UIView {
         ])
     }
 
-    private func layoutLoadingIndicator(centeringBy cameraFrame: UIView) {
+    private func layoutLoadingIndicator(centeringBy cameraFrame: UIView,
+                                        on viewController: UIViewController) {
+        if let educationLoadingView {
+            let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
+            if isAccessibilityCategory && UIDevice.current.isIphoneAndLandscape {
+                layoutEducationLoadingView(educationLoadingView,
+                                           cameraFrame: cameraFrame,
+                                           on: viewController)
+            } else {
+                layoutEducationLoadingView(educationLoadingView,
+                                           cameraFrame: cameraFrame)
+            }
+        } else {
+            layoutDefaultLoadingView(cameraFrame: cameraFrame)
+        }
+    }
+    private var educationLoadingConstraints: [NSLayoutConstraint] = []
+
+    private func layoutEducationLoadingView(_ view: UIView,
+                                            cameraFrame: UIView,
+                                            on viewController: UIViewController? = nil) {
+        NSLayoutConstraint.deactivate(educationLoadingConstraints)
+        educationLoadingConstraints.removeAll()
+
+        var constraints: [NSLayoutConstraint] = [
+            view.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor)
+        ]
+
+        if let viewController = viewController {
+            var horizontalPadding: CGFloat = 0
+            if UIDevice.current.isIphoneAndLandscape {
+                horizontalPadding = Constants.educationLoadingHorizontalPadding
+            }
+            constraints.append(view.leadingAnchor.constraint(equalTo: viewController.view.leadingAnchor,
+                                                             constant: horizontalPadding))
+            constraints.append(view.trailingAnchor.constraint(equalTo: viewController.view.trailingAnchor,
+                                                              constant: -horizontalPadding))
+            constraints.append(view.topAnchor.constraint(equalTo: correctQRFeedback.bottomAnchor))
+        } else {
+            constraints.append(view.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor))
+            constraints.append(view.trailingAnchor.constraint(equalTo: cameraFrame.trailingAnchor))
+            constraints.append(view.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.topAnchor,
+                                                         constant: Constants.educationLoadingViewTopPadding))
+        }
+
+        educationLoadingConstraints = constraints
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    private func layoutDefaultLoadingView(cameraFrame: UIView) {
         NSLayoutConstraint.activate([
             loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
@@ -253,12 +349,20 @@ final class QRCodeOverlay: UIView {
      */
     public func showAnimation() {
         checkMarkImageView.isHidden = true
-        loadingContainer.isHidden = false
 
-        if let loadingIndicator = configuration.customLoadingIndicator {
-            loadingIndicator.startAnimation()
+        if let educationViewModel {
+            educationTask = Task { [weak self] in
+                await educationViewModel.start()
+                self?.educationFlowController?.markMessageAsShown()
+            }
+            educationLoadingView?.isHidden = false
         } else {
-            loadingIndicatorView.startAnimating()
+            loadingContainer.isHidden = false
+            if let loadingIndicator = configuration.customLoadingIndicator {
+                loadingIndicator.startAnimation()
+            } else {
+                loadingIndicatorView.startAnimating()
+            }
         }
     }
 
@@ -267,18 +371,24 @@ final class QRCodeOverlay: UIView {
      */
     public func hideAnimation() {
         checkMarkImageView.isHidden = true
-        loadingContainer.isHidden = true
-
-        if let loadingIndicator = configuration.customLoadingIndicator {
-            loadingIndicator.stopAnimation()
+        if let educationLoadingView {
+            educationLoadingView.isHidden = true
         } else {
-            loadingIndicatorView.stopAnimating()
+            loadingContainer.isHidden = true
+            if let customIndicator = configuration.customLoadingIndicator {
+                customIndicator.stopAnimation()
+            } else {
+                loadingIndicatorView.stopAnimating()
+            }
         }
     }
 }
 
 private enum Constants {
     static let spacing: CGFloat = 8
+    static let educationLoadingViewPadding: CGFloat = 28
+    static let educationLoadingViewTopPadding: CGFloat = 6
     static let topSpacing: CGFloat = 2
     static let iconSize = CGSize(width: 56, height: 56)
+    static let educationLoadingHorizontalPadding:CGFloat = 56
 }
