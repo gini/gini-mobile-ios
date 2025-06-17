@@ -300,15 +300,24 @@ class OnboardingViewController: UIViewController {
                 let newOffset = CGPoint(x: CGFloat(visiblePageIndex) * size.width, y: 0)
                 self.pagesCollection.setContentOffset(newOffset, animated: false)
             }
-        }) { _ in
+        }) { [weak self] _ in
             // Reset the flag after the transition completes
-            self.dataSource.isProgrammaticScroll = false
+            self?.dataSource.isProgrammaticScroll = false
+            self?.notiftLayoutChangeAfterRotation()
         }
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         pagesCollection.collectionViewLayout.invalidateLayout()
+    }
+    
+    /// This is to notify VoiceOver that the layout changed with the presentation of the Onboarding screen. The delay is needed to ensure that
+    /// VoiceOver has already finished processing the UI changes.
+    private func notiftLayoutChangeAfterRotation() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIAccessibility.post(notification: .layoutChanged, argument: self.view)
+        }
     }
 
     deinit {

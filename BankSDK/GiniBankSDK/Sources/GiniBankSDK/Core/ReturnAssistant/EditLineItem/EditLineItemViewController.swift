@@ -79,21 +79,14 @@ final class EditLineItemViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         isRotating = true
-
         coordinator.animate(alongsideTransition: { [weak self] _ in
             if UIDevice.current.isIpad {
                 self?.animatePresentContainer()
             }
         }) { [weak self] _ in
             self?.isRotating = false
-
-            if self?.isKeyboardPresented == true,
-               self?.activeTextField != nil {
-                // Small delay to ensure layout has been updated after rotation
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self?.adjustContainerForActiveTextField()
-                }
-            }
+            self?.view.endEditing(true)
+            self?.activeTextField?.becomeFirstResponder()
         }
     }
 
@@ -325,19 +318,17 @@ final class EditLineItemViewController: UIViewController {
             self.keyboardHeight = keyboardHeight
 
             isKeyboardPresented = true
-
-            /// Only auto-adjust if we're not rotating. During rotation, we'll handle this in the completion block
-            guard !isRotating else { return }
             adjustContainerForActiveTextField()
         }
     }
 
     private func keyboardWillDisappear() {
-        /// Ignore keyboard disappear notifications during device rotation as iOS temporarily hides/shows keyboard during orientation changes
-        guard !isRotating else { return }
-
         isKeyboardPresented = false
-        activeTextField = nil
+
+        if !isRotating {
+            activeTextField = nil
+        }
+
         if UIDevice.current.isIpad {
             animateContainerToInitialPosition()
         } else {
@@ -352,8 +343,6 @@ final class EditLineItemViewController: UIViewController {
 
     private func adjustContainerForActiveTextField() {
         guard let activeTextField = activeTextField else { return }
-
-        view.layoutIfNeeded()
 
         let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
         let textFieldBottomY = textFieldFrame.maxY
