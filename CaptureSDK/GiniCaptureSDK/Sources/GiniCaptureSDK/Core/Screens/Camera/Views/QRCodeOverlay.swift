@@ -70,13 +70,22 @@ final class IncorrectQRCodeTextContainer: UIView {
 
     private lazy var textStackView: UIStackView = {
         let textStackView = UIStackView()
-        textStackView.axis = .vertical
-        textStackView.distribution = .fill
-        textStackView.spacing = Constants.spacing
-        textStackView.backgroundColor = .GiniCapture.warning3
         textStackView.translatesAutoresizingMaskIntoConstraints = false
+        configureTextStackView(textStackView)
         return textStackView
     }()
+
+    private func configureTextStackView(_ stackView: UIStackView) {
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.spacing = Constants.spacing
+        stackView.backgroundColor = .GiniCapture.warning3
+        stackView.layer.cornerRadius = Constants.cornerRadius
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = Constants.stackViewMargins
+    }
 
     private lazy var scrollView: UIScrollView = {
             let scrollView = UIScrollView()
@@ -107,15 +116,11 @@ final class IncorrectQRCodeTextContainer: UIView {
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
             // textStackView inside scrollView
-            textStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
-                                               constant: Constants.spacing * 2),
-            textStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor,
-                                                   constant: Constants.spacing * 2),
-            textStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor,
-                                                    constant: -Constants.spacing * 2),
-            textStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor,
-                                                  constant: -Constants.spacing * 2),
-            textStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -Constants.spacing * 4)
+            textStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            textStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            textStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            textStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            textStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
     }
 }
@@ -300,6 +305,11 @@ final class QRCodeOverlay: UIView {
 
 private enum Constants {
     static let spacing: CGFloat = 8
+    static let cornerRadius: CGFloat = 8
     static let topSpacing: CGFloat = 2
     static let iconSize = CGSize(width: 56, height: 56)
+    static let stackViewMargins = UIEdgeInsets(top: spacing * 2,
+                                               left: spacing * 2,
+                                               bottom: spacing * 2,
+                                               right: spacing * 2)
 }
