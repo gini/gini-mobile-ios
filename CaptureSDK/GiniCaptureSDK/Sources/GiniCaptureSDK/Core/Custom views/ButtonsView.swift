@@ -51,6 +51,8 @@ class ButtonsView: UIView {
             buttonsView.topAnchor.constraint(equalTo: topAnchor),
             buttonsView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+
+        updateStackViewAxis()
     }
 
     private func updateStackViewAxis() {
