@@ -35,12 +35,15 @@ final class EditLineItemViewController: UIViewController {
     private var currentBottomPadding: CGFloat = 0
 
     private var defaultHeight: CGFloat = 400
+    private var isRotating: Bool = false
     private var isKeyboardPresented: Bool = false
     private var keyboardHeight: CGFloat = 0
 
     private var containerViewHeightConstraint: NSLayoutConstraint?
     private var containerViewBottomConstraint: NSLayoutConstraint?
     private var activeTextField: UITextField?
+
+    /// Stores Combine subscriptions to prevent memory leaks and enable proper cleanup
     private var cancellables = Set<AnyCancellable>()
 
     init(lineItemViewModel: EditLineItemViewModel) {
@@ -75,11 +78,23 @@ final class EditLineItemViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
+        isRotating = true
+
         coordinator.animate(alongsideTransition: { [weak self] _ in
             if UIDevice.current.isIpad {
                 self?.animatePresentContainer()
             }
-        })
+        }) { [weak self] _ in
+            self?.isRotating = false
+
+            if self?.isKeyboardPresented == true,
+               self?.activeTextField != nil {
+                // Small delay to ensure layout has been updated after rotation
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self?.adjustContainerForActiveTextField()
+                }
+            }
+        }
     }
 
     private func setupView() {
@@ -310,11 +325,17 @@ final class EditLineItemViewController: UIViewController {
             self.keyboardHeight = keyboardHeight
 
             isKeyboardPresented = true
+
+            /// Only auto-adjust if we're not rotating. During rotation, we'll handle this in the completion block
+            guard !isRotating else { return }
             adjustContainerForActiveTextField()
         }
     }
 
     private func keyboardWillDisappear() {
+        /// Ignore keyboard disappear notifications during device rotation as iOS temporarily hides/shows keyboard during orientation changes
+        guard !isRotating else { return }
+
         isKeyboardPresented = false
         activeTextField = nil
         if UIDevice.current.isIpad {
@@ -326,12 +347,13 @@ final class EditLineItemViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
         cancellables.removeAll()
     }
 
     private func adjustContainerForActiveTextField() {
         guard let activeTextField = activeTextField else { return }
+
+        view.layoutIfNeeded()
 
         let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
         let textFieldBottomY = textFieldFrame.maxY
