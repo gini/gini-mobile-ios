@@ -37,7 +37,7 @@ final class IBANDetectionOverlay: UIView {
             textContainer.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor,
                                                    constant: Constants.standardMargin),
             textContainer.trailingAnchor.constraint(equalTo: cameraFrame.trailingAnchor,
-                                                   constant: -Constants.standardMargin)
+                                                    constant: -Constants.standardMargin)
         ])
     }
 

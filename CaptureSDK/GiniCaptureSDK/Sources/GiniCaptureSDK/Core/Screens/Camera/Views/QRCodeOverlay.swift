@@ -70,7 +70,6 @@ final class IncorrectQRCodeTextContainer: UIView {
 
     private lazy var textStackView: UIStackView = {
         let textStackView = UIStackView()
-        textStackView.translatesAutoresizingMaskIntoConstraints = false
         configureTextStackView(textStackView)
         return textStackView
     }()
@@ -88,10 +87,10 @@ final class IncorrectQRCodeTextContainer: UIView {
     }
 
     private lazy var scrollView: UIScrollView = {
-            let scrollView = UIScrollView()
-            scrollView.translatesAutoresizingMaskIntoConstraints = false
-            return scrollView
-        }()
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
 
     init() {
         super.init(frame: .zero)
@@ -176,7 +175,7 @@ final class QRCodeOverlay: UIView {
         let textStackView = UIStackView()
         textStackView.axis = .vertical
         textStackView.distribution = .fillProportionally
-        textStackView.spacing = Constants.spacing * 2
+        textStackView.spacing = Constants.expandedSpacing
         textStackView.translatesAutoresizingMaskIntoConstraints = false
         textStackView.isHidden = true
         return textStackView
@@ -225,7 +224,7 @@ final class QRCodeOverlay: UIView {
             correctQRFeedback.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.topAnchor,
                                                    constant: Constants.topSpacing),
             correctQRFeedback.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
-                                                       constant: Constants.spacing * 2),
+                                                       constant: Constants.expandedSpacing),
 
             checkMarkImageView.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             checkMarkImageView.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
@@ -307,9 +306,10 @@ private enum Constants {
     static let spacing: CGFloat = 8
     static let cornerRadius: CGFloat = 8
     static let topSpacing: CGFloat = 2
+    static let expandedSpacing: CGFloat = 16
     static let iconSize = CGSize(width: 56, height: 56)
-    static let stackViewMargins = UIEdgeInsets(top: spacing * 2,
-                                               left: spacing * 2,
-                                               bottom: spacing * 2,
-                                               right: spacing * 2)
+    static let stackViewMargins = UIEdgeInsets(top: expandedSpacing,
+                                               left: expandedSpacing,
+                                               bottom: expandedSpacing,
+                                               right: expandedSpacing)
 }
