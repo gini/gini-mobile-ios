@@ -4,6 +4,7 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
+import Combine
 import GiniCaptureSDK
 import UIKit
 
@@ -30,15 +31,17 @@ final class EditLineItemViewController: UIViewController {
         return view
     }()
 
-    private var currentContainerHeight: CGFloat = 300
+    private var currentContainerHeight: CGFloat = 400
     private var currentBottomPadding: CGFloat = 0
 
-    private var defaultHeight: CGFloat = 355
+    private var defaultHeight: CGFloat = 400
     private var isKeyboardPresented: Bool = false
     private var keyboardHeight: CGFloat = 0
 
     private var containerViewHeightConstraint: NSLayoutConstraint?
     private var containerViewBottomConstraint: NSLayoutConstraint?
+    private var activeTextField: UITextField?
+    private var cancellables = Set<AnyCancellable>()
 
     init(lineItemViewModel: EditLineItemViewModel) {
         super.init(nibName: nil, bundle: nil)
@@ -51,10 +54,7 @@ final class EditLineItemViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear),
-                                               name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear),
-                                               name: UIResponder.keyboardWillShowNotification, object: nil)
+        registerToNotifications()
     }
 
     override func viewDidLoad() {
@@ -91,6 +91,31 @@ final class EditLineItemViewController: UIViewController {
 			containerView.round(corners: [.topLeft, .topRight],
 								radius: Constants.cornerRadius)
 		}
+    }
+
+    private func registerToNotifications() {
+        NotificationCenter.default
+            .publisher(for: UIResponder.keyboardWillHideNotification)
+            .sink { [weak self] _ in
+                self?.keyboardWillDisappear()
+            }.store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UIResponder.keyboardWillShowNotification)
+            .sink { [weak self] notification in
+                self?.keyboardWillAppear(notification)
+            }.store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UITextField.textDidBeginEditingNotification)
+            .compactMap({ $0.object as? UITextField })
+            .sink { [weak self] textField in
+                self?.activeTextField = textField
+
+                if self?.isKeyboardPresented == true {
+                    self?.adjustContainerForActiveTextField()
+                }
+            }.store(in: &cancellables)
     }
 
     private func setupConstraints() {
@@ -238,8 +263,10 @@ final class EditLineItemViewController: UIViewController {
     private func setBottomConstraint(gestureYTranslation: CGFloat = 0) {
         if UIDevice.current.isLandscape,
            self.isKeyboardPresented,
-           self.keyboardHeight > 200 { // checking if digital keyboard is presented.
-            containerViewBottomConstraint?.constant = -(view.frame.height - currentContainerHeight - Constants.topPadding - gestureYTranslation)
+           // checking if digital keyboard is presented.
+           self.keyboardHeight > 200 {
+            let constant = -(view.frame.height - currentContainerHeight - Constants.topPadding - gestureYTranslation)
+            containerViewBottomConstraint?.constant = constant
         } else {
             containerViewBottomConstraint?.constant = -(currentBottomPadding - gestureYTranslation)
         }
@@ -276,7 +303,6 @@ final class EditLineItemViewController: UIViewController {
     }
 
     // MARK: - Handle keyboard appearance
-    @objc
     private func keyboardWillAppear(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
@@ -284,35 +310,13 @@ final class EditLineItemViewController: UIViewController {
             self.keyboardHeight = keyboardHeight
 
             isKeyboardPresented = true
-            if UIDevice.current.isIpad {
-                if currentBottomPadding < keyboardHeight {
-                    var bottomPadding: CGFloat
-
-                    if keyboardHeight + currentContainerHeight > view.frame.height {
-                        bottomPadding = view.frame.height - currentContainerHeight - Constants.topPadding
-                    } else {
-                        bottomPadding = keyboardHeight
-                    }
-
-                    UIView.animate(withDuration: Constants.animationDuration) {
-                        self.containerViewBottomConstraint?.constant = -bottomPadding
-                        self.view.layoutIfNeeded()
-                    }
-                }
-            } else {
-                let height = min(self.defaultHeight + keyboardHeight, self.view.frame.height)
-                UIView.animate(withDuration: Constants.animationDuration) {
-                    self.containerViewHeightConstraint?.constant = height
-                    self.view.layoutIfNeeded()
-                }
-                currentContainerHeight = height
-            }
+            adjustContainerForActiveTextField()
         }
     }
 
-    @objc
     private func keyboardWillDisappear() {
         isKeyboardPresented = false
+        activeTextField = nil
         if UIDevice.current.isIpad {
             animateContainerToInitialPosition()
         } else {
@@ -323,6 +327,37 @@ final class EditLineItemViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
+        cancellables.removeAll()
+    }
+
+    private func adjustContainerForActiveTextField() {
+        guard let activeTextField = activeTextField else { return }
+
+        let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
+        let textFieldBottomY = textFieldFrame.maxY
+        let availableHeight = view.frame.height - keyboardHeight
+
+        if textFieldBottomY > availableHeight - Constants.textFieldPadding {
+            let neededOffset = textFieldBottomY - availableHeight + Constants.textFieldPadding
+
+            if UIDevice.current.isIpad {
+                let newBottomPadding = currentBottomPadding + neededOffset
+                UIView.animate(withDuration: Constants.animationDuration) { [weak self] in
+                    self?.containerViewBottomConstraint?.constant = -newBottomPadding
+                    self?.view.layoutIfNeeded()
+                }
+            } else {
+                let newHeight = currentContainerHeight + neededOffset
+                let maxHeight = min(newHeight, Constants.maximumContainerHeight)
+
+                UIView.animate(withDuration: Constants.animationDuration) { [weak self] in
+                    self?.containerViewHeightConstraint?.constant = maxHeight
+                    self?.view.layoutIfNeeded()
+                }
+
+                currentContainerHeight = maxHeight
+            }
+        }
     }
 }
 
@@ -336,5 +371,6 @@ private extension EditLineItemViewController {
         static let animationDuration: CGFloat = 0.3
         static let topPadding: CGFloat = 36
 		static let cornerRadius: CGFloat = 16
+        static let textFieldPadding: CGFloat = 16
     }
 }
