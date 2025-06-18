@@ -303,7 +303,7 @@ class OnboardingViewController: UIViewController {
         }) { [weak self] _ in
             // Reset the flag after the transition completes
             self?.dataSource.isProgrammaticScroll = false
-            self?.notiftLayoutChangeAfterRotation()
+            self?.notifyLayoutChangedAfterRotation()
         }
     }
 
@@ -314,7 +314,7 @@ class OnboardingViewController: UIViewController {
     
     /// This is to notify VoiceOver that the layout changed with the presentation of the Onboarding screen. The delay is needed to ensure that
     /// VoiceOver has already finished processing the UI changes.
-    private func notiftLayoutChangeAfterRotation() {
+    private func notifyLayoutChangedAfterRotation() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             UIAccessibility.post(notification: .layoutChanged, argument: self.view)
         }

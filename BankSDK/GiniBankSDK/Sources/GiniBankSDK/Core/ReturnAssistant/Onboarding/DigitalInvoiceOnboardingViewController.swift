@@ -68,7 +68,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
         let configuration = GiniBankConfiguration.shared
         configuration.digitalInvoiceOnboardingIllustrationAdapter?.pageDidAppear()
-        notiftLayoutChangeAfterPresentingOnboarding()
+        notifyLayoutChangedAfterPresentingOnboarding()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -231,7 +231,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     /// This is to notify VoiceOver that the layout changed with the presentation of the Onboarding screen. The delay is needed to ensure that
     /// VoiceOver has already finished processing the UI changes.
-    private func notiftLayoutChangeAfterPresentingOnboarding() {
+    private func notifyLayoutChangedAfterPresentingOnboarding() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             UIAccessibility.post(notification: .layoutChanged, argument: self.view)
         }
