@@ -84,8 +84,9 @@ final class QRCodeEducationLoadingView: UIView {
 
     private func setupViews() {
         let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
-        // Hide image view on pre-notch devices and 200% font size enabled
-        let isAccessibilityDeviceWithoutNotch = !UIDevice.current.hasNotch && isAccessibilityCategory
+        let isIPhoneWithoutNotch = UIDevice.current.isIphone && !UIDevice.current.hasNotch
+        // Hide image view on without notch devices and 200% font size enabled
+        let isAccessibilityDeviceWithoutNotch = isIPhoneWithoutNotch && isAccessibilityCategory
         imageView.isHidden = isAccessibilityDeviceWithoutNotch
 
         addSubview(imageView)
