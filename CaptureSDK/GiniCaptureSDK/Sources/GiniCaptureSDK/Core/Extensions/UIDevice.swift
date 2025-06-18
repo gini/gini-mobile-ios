@@ -70,4 +70,16 @@ public extension UIDevice {
             return UIDevice.current.orientation.isPortrait
         }
     }
+
+    var hasNotch: Bool {
+        // This covers: iPhone SE (all generations), iPhone 6/6s/7/8 series
+        guard let window = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow }) else {
+            return false
+        }
+        // Pre-notch devices have no bottom safe area (0pt)
+        return window.safeAreaInsets.bottom > 0
+    }
 }
