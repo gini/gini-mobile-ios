@@ -252,6 +252,7 @@ final class DigitalInvoiceViewController: UIViewController {
                 navigationBarBottomAdapter?.updateSkontoSavingsInfoVisibility(hidden: !isSkontoApplied)
             }
         }
+        tableView.reloadData()
         proceedView.configure(viewModel: viewModel)
     }
 
