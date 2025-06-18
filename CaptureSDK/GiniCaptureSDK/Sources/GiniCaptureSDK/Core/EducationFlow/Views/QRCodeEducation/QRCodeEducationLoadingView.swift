@@ -83,11 +83,40 @@ final class QRCodeEducationLoadingView: UIView {
     }
 
     private func setupViews() {
+        let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
+        // Hide image view on pre-notch devices and 200% font size enabled
+        let isAccessibilityDeviceWithoutNotch = !UIDevice.current.hasNotch && isAccessibilityCategory
+        imageView.isHidden = isAccessibilityDeviceWithoutNotch
+
         addSubview(imageView)
         addSubview(textLabel)
         addSubview(animatedSuffixLabelView)
         animatedSuffixLabelView.startAnimating()
 
+        if isAccessibilityDeviceWithoutNotch {
+            configureAccessibilityPreNotchConstraints()
+        } else {
+            configureStandardNotchConstraints()
+        }
+    }
+
+    private func configureAccessibilityPreNotchConstraints() {
+        NSLayoutConstraint.activate([
+            // Text label positioned at top (where image would be)
+            textLabel.topAnchor.constraint(equalTo: topAnchor),
+            textLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            textLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+            // Animated suffix label with adjusted spacing
+            animatedSuffixLabelView.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
+                                                         constant: Constants.minTextToAnalysingSpacing),
+            animatedSuffixLabelView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            animatedSuffixLabelView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            animatedSuffixLabelView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
+
+    private func configureStandardNotchConstraints() {
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -98,12 +127,12 @@ final class QRCodeEducationLoadingView: UIView {
             textLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             animatedSuffixLabelView.topAnchor.constraint(greaterThanOrEqualTo: imageView.bottomAnchor,
-                                                constant: Constants.imageToAnalysingSpacing),
+                                                         constant: Constants.imageToAnalysingSpacing),
             animatedSuffixLabelView.leadingAnchor.constraint(equalTo: leadingAnchor),
             animatedSuffixLabelView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             animatedSuffixLabelView.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
-                                                constant: Constants.minTextToAnalysingSpacing),
+                                                         constant: Constants.minTextToAnalysingSpacing),
             animatedSuffixLabelView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
