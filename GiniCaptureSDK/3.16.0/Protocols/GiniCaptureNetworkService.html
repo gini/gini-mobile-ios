@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>GiniCaptureNetworkService Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Protocol/GiniCaptureNetworkService" class="dashAnchor"></a>
+
+    <a title="GiniCaptureNetworkService Protocol Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+        <img class="logo-icon" src="../img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">GiniCaptureSDK Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      GiniCaptureNetworkService Protocol Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AnalysisResult.html">AnalysisResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AnalysisViewController.html">AnalysisViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CameraButtonsViewModel.html">CameraButtonsViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Constraints.html">Constraints</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CustomDocumentValidationError.html">CustomDocumentValidationError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CustomDocumentValidationResult.html">CustomDocumentValidationResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultLogger.html">DefaultLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DocumentPickerCoordinator.html">DocumentPickerCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DocumentService.html">DocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniAnalyticsManager.html">GiniAnalyticsManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBarButton.html">GiniBarButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniCapture.html">GiniCapture</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniCaptureButton.html">GiniCaptureButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniCaptureDocumentBuilder.html">GiniCaptureDocumentBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniCaptureDocumentValidator.html">GiniCaptureDocumentValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniCaptureErrorLogger.html">GiniCaptureErrorLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniCaptureFont.html">GiniCaptureFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniColor.html">GiniColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniConfiguration.html">GiniConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniConfiguration/GiniCaptureImportFileTypes.html">– GiniCaptureImportFileTypes</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniConfiguration/GiniEntryPoint.html">– GiniEntryPoint</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniImageDocument.html">GiniImageDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniNetworkingScreenAPICoordinator.html">GiniNetworkingScreenAPICoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniPDFDocument.html">GiniPDFDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniQRCodeDocument.html">GiniQRCodeDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniScreenAPICoordinator.html">GiniScreenAPICoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ImageOnboardingIllustrationAdapter.html">ImageOnboardingIllustrationAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/MultilineTitleButton.html">MultilineTitleButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/OnboardingImageView.html">OnboardingImageView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/QRCodesExtractor.html">QRCodesExtractor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ReviewViewController.html">ReviewViewController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global%20Variables.html#/s:14GiniCaptureSDK0aB10SDKVersionSSvp">GiniCaptureSDKVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global%20Variables.html#/s:14GiniCaptureSDK20originalDocumentNameSSSgvp">originalDocumentName</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enumerations.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/AmountCurrency.html">AmountCurrency</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/AnalysisError.html">AnalysisError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/AnalysisScreenEventType.html">AnalysisScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/AnalysisStrings.html">AnalysisStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BarButtonType.html">BarButtonType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/CameraError.html">CameraError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/CameraNavigationBarBottomButton.html">CameraNavigationBarBottomButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/CameraScreenEventType.html">CameraScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DocumentImportMethod.html">DocumentImportMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DocumentPickerType.html">DocumentPickerType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DocumentSource.html">DocumentSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DocumentValidationError.html">DocumentValidationError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ErrorType.html">ErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/FilePickerError.html">FilePickerError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniAnalyticsEvent.html">GiniAnalyticsEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniAnalyticsPropertyKey.html">GiniAnalyticsPropertyKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniAnalyticsScreen.html">GiniAnalyticsScreen</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniAnalyticsSuperProperty.html">GiniAnalyticsSuperProperty</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniAnalyticsUserProperty.html">GiniAnalyticsUserProperty</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniCaptureColors.html">GiniCaptureColors</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniCaptureDocumentType.html">GiniCaptureDocumentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniEntryPointAnalytics.html">GiniEntryPointAnalytics</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniLineItemAnalytics.html">GiniLineItemAnalytics</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/HelpMenuItem.html">HelpMenuItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ImageAssetsStrings.html">ImageAssetsStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/OnboardingNavigationBarBottomButton.html">OnboardingNavigationBarBottomButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/OnboardingScreenEventType.html">OnboardingScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/OnboardingStrings.html">OnboardingStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/QRCodesFormat.html">QRCodesFormat</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ReviewError.html">ReviewError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ReviewScreenEventType.html">ReviewScreenEventType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions.html#/AppKit">AppKit</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Bundle.html">Bundle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Decimal.html">Decimal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIColor.html">UIColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIColor/GiniCapture.html">– GiniCapture</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIDevice.html">UIDevice</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIFont.html">UIFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIFont/TextStyle.html">– TextStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UILabel.html">UILabel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UINavigationController.html">UINavigationController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIViewController.html">UIViewController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:14GiniCaptureSDK32NSLocalizedStringPreferredFormat_11fallbackKey7comment14isCustomizableS2S_S2SSbtF">NSLocalizedStringPreferredFormat(_:fallbackKey:comment:isCustomizable:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:14GiniCaptureSDK16UIColorPreferred5namedSo0D0CSS_tF">UIColorPreferred(named:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:14GiniCaptureSDK26UIColorPreferredByProvider5namedSo0D0CSS_tF">UIColorPreferredByProvider(named:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:14GiniCaptureSDK21UIImageNamedPreferred5namedSo0D0CSgSS_tF">UIImageNamedPreferred(named:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:14GiniCaptureSDK04giniB6BundleSo8NSBundleCyF">giniCaptureBundle()</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AnalysisDelegate.html">AnalysisDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AnalysisScreenTrackingDelegate.html">AnalysisScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CameraBottomNavigationBarAdapter.html">CameraBottomNavigationBarAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CameraScreenTrackingDelegate.html">CameraScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CustomLoadingIndicatorAdapter.html">CustomLoadingIndicatorAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CustomResourceProvider.html">CustomResourceProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Diffable.html">Diffable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DocumentPickerCoordinatorDelegate.html">DocumentPickerCoordinatorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DocumentServiceProtocol.html">DocumentServiceProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ErrorNavigationBarBottomAdapter.html">ErrorNavigationBarBottomAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniAnalyticsPropertyValue.html">GiniAnalyticsPropertyValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureDelegate.html">GiniCaptureDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureDocument.html">GiniCaptureDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureError.html">GiniCaptureError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureErrorLoggerDelegate.html">GiniCaptureErrorLoggerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureNetworkService.html">GiniCaptureNetworkService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureResultsDelegate.html">GiniCaptureResultsDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:14GiniCaptureSDK0aB16TrackingDelegateP">GiniCaptureTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniLogger.html">GiniLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HelpBottomNavigationBarAdapter.html">HelpBottomNavigationBarAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ImagePickerBottomNavigationBarAdapter.html">ImagePickerBottomNavigationBarAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/InjectedViewAdapter.html">InjectedViewAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LocalizableStringResource.html">LocalizableStringResource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/OnButtonLoadingIndicatorAdapter.html">OnButtonLoadingIndicatorAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/OnboardingIllustrationAdapter.html">OnboardingIllustrationAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/OnboardingNavigationBarBottomAdapter.html">OnboardingNavigationBarBottomAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/OnboardingScreenTrackingDelegate.html">OnboardingScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PreferredButtonResource.html">PreferredButtonResource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ReviewScreenBottomNavigationBarAdapter.html">ReviewScreenBottomNavigationBarAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ReviewScreenTrackingDelegate.html">ReviewScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ReviewViewControllerDelegate.html">ReviewViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/UploadDelegate.html">UploadDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structures.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ButtonConfiguration.html">ButtonConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ErrorLog.html">ErrorLog</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Event.html">Event</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ExtractionAmount.html">ExtractionAmount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/GiniAnalyticsConfiguration.html">GiniAnalyticsConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/GiniAnalyticsProperty.html">GiniAnalyticsProperty</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/GiniCapturePage.html">GiniCapturePage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/GiniErrorAnalytics.html">GiniErrorAnalytics</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/GiniMargins.html">GiniMargins</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs.html#/s:14GiniCaptureSDK0A20QueuedAnalyticsEventV">GiniQueuedAnalyticsEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/OnboardingPage.html">OnboardingPage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs.html#/s:14GiniCaptureSDK14RoundedCornersV">RoundedCorners</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Type Aliases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:14GiniCaptureSDK18AnalysisCompletiona">AnalysisCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:14GiniCaptureSDK24DocumentLayoutCompletiona">DocumentLayoutCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:14GiniCaptureSDK29DocumentPagePreviewCompletiona">DocumentPagePreviewCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:14GiniCaptureSDK22DocumentPagsCompletiona">DocumentPagsCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:14GiniCaptureSDK0aB15NetworkDelegatea">GiniCaptureNetworkDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:14GiniCaptureSDK17LocalizationEntrya">LocalizationEntry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:14GiniCaptureSDK24UploadDocumentCompletiona">UploadDocumentCompletion</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>GiniCaptureNetworkService</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">GiniCaptureNetworkService</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK0aB14NetworkServiceP6delete8document10completiony0A14BankAPILibrary8DocumentV_ys6ResultOySSAG0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/delete(document:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB14NetworkServiceP6delete8document10completiony0A14BankAPILibrary8DocumentV_ys6ResultOySSAG0A5ErrorOGctF">delete(document:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">delete</span><span class="p">(</span><span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">,</span>
+            <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">GiniError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK0aB14NetworkServiceP7cleanupyyF"></a>
+                    <a name="//apple_ref/swift/Method/cleanup()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB14NetworkServiceP7cleanupyyF">cleanup()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">cleanup</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK0aB14NetworkServiceP7analyse16partialDocuments8metadata17cancellationToken10completionySay0A14BankAPILibrary19PartialDocumentInfoVG_AI0P0V8MetadataVSgAI012CancellationK0Cys6ResultOyAN8document_AI010ExtractionT0C010extractionT0tAI0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/analyse(partialDocuments:metadata:cancellationToken:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB14NetworkServiceP7analyse16partialDocuments8metadata17cancellationToken10completionySay0A14BankAPILibrary19PartialDocumentInfoVG_AI0P0V8MetadataVSgAI012CancellationK0Cys6ResultOyAN8document_AI010ExtractionT0C010extractionT0tAI0A5ErrorOGctF">analyse(partialDocuments:metadata:cancellationToken:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">analyse</span><span class="p">(</span><span class="nv">partialDocuments</span><span class="p">:</span> <span class="p">[</span><span class="kt">PartialDocumentInfo</span><span class="p">],</span>
+             <span class="nv">metadata</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">Metadata</span><span class="p">?,</span>
+             <span class="nv">cancellationToken</span><span class="p">:</span> <span class="kt">CancellationToken</span><span class="p">,</span>
+             <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">(</span><span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">,</span> <span class="nv">extractionResult</span><span class="p">:</span> <span class="kt">ExtractionResult</span><span class="p">),</span> <span class="kt">GiniError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK0aB14NetworkServiceP6upload8document8metadata10completionyAA0aB8Document_p_0A14BankAPILibrary0J0V8MetadataVSgys6ResultOyAkI0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/upload(document:metadata:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB14NetworkServiceP6upload8document8metadata10completionyAA0aB8Document_p_0A14BankAPILibrary0J0V8MetadataVSgys6ResultOyAkI0A5ErrorOGctF">upload(document:metadata:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">upload</span><span class="p">(</span><span class="nv">document</span><span class="p">:</span> <span class="kt"><a href="../Protocols/GiniCaptureDocument.html">GiniCaptureDocument</a></span><span class="p">,</span>
+            <span class="nv">metadata</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">Metadata</span><span class="p">?,</span>
+            <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:14GiniCaptureSDK24UploadDocumentCompletiona">UploadDocumentCompletion</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK0aB14NetworkServiceP12sendFeedback8document18updatedExtractions0i8CompoundJ010completiony0A14BankAPILibrary8DocumentV_SayAI10ExtractionCGSDySSSayANGGSgys6ResultOyytAI0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/sendFeedback(document:updatedExtractions:updatedCompoundExtractions:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB14NetworkServiceP12sendFeedback8document18updatedExtractions0i8CompoundJ010completiony0A14BankAPILibrary8DocumentV_SayAI10ExtractionCGSDySSSayANGGSgys6ResultOyytAI0A5ErrorOGctF">sendFeedback(document:updatedExtractions:updatedCompoundExtractions:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">sendFeedback</span><span class="p">(</span><span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">,</span>
+                  <span class="nv">updatedExtractions</span><span class="p">:</span> <span class="p">[</span><span class="kt">Extraction</span><span class="p">],</span>
+                  <span class="nv">updatedCompoundExtractions</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="p">[[</span><span class="kt">Extraction</span><span class="p">]]]?,</span>
+                  <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">GiniError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK0aB14NetworkServiceP12sendFeedback10documentId18updatedExtractions0j8CompoundK010completionySS_Say0A14BankAPILibrary10ExtractionCGSDySSSayALGGSgys6ResultOyytAI0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/sendFeedback(documentId:updatedExtractions:updatedCompoundExtractions:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB14NetworkServiceP12sendFeedback10documentId18updatedExtractions0j8CompoundK010completionySS_Say0A14BankAPILibrary10ExtractionCGSDySSSayALGGSgys6ResultOyytAI0A5ErrorOGctF">sendFeedback(documentId:updatedExtractions:updatedCompoundExtractions:completion:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Sends feedback for a document based on the provided document ID, updated extractions, and updated compound extractions.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">sendFeedback</span><span class="p">(</span><span class="nv">documentId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                  <span class="nv">updatedExtractions</span><span class="p">:</span> <span class="p">[</span><span class="kt">Extraction</span><span class="p">],</span>
+                  <span class="nv">updatedCompoundExtractions</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="p">[[</span><span class="kt">Extraction</span><span class="p">]]]?,</span>
+                  <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">GiniError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK0aB14NetworkServiceP3log10errorEvent10completiony0A14BankAPILibrary05ErrorH0V_ys6ResultOyytAG0aL0OGctF"></a>
+                    <a name="//apple_ref/swift/Method/log(errorEvent:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB14NetworkServiceP3log10errorEvent10completiony0A14BankAPILibrary05ErrorH0V_ys6ResultOyytAG0aL0OGctF">log(errorEvent:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">log</span><span class="p">(</span><span class="nv">errorEvent</span><span class="p">:</span> <span class="kt">ErrorEvent</span><span class="p">,</span>
+         <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">GiniError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK0aB14NetworkServiceP6layout3for10completiony0A14BankAPILibrary8DocumentV_ys6ResultOyAI6LayoutVAG0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/layout(for:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB14NetworkServiceP6layout3for10completiony0A14BankAPILibrary8DocumentV_ys6ResultOyAI6LayoutVAG0A5ErrorOGctF">layout(for:completion:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Retrieves the layout of a given document</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">layout</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">,</span>
+            <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:14GiniCaptureSDK24DocumentLayoutCompletiona">DocumentLayoutCompletion</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK0aB14NetworkServiceP5pages3for10completiony0A14BankAPILibrary8DocumentV_ys6ResultOySayAI4PageVGAG0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/pages(for:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB14NetworkServiceP5pages3for10completiony0A14BankAPILibrary8DocumentV_ys6ResultOySayAI4PageVGAG0A5ErrorOGctF">pages(for:completion:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Retrieves the pages of a given document</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">pages</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:14GiniCaptureSDK22DocumentPagsCompletiona">DocumentPagsCompletion</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK0aB14NetworkServiceP12documentPage3for10pageNumber4size10completiony0A14BankAPILibrary8DocumentV_SiAK0G0V4SizeOys6ResultOy10Foundation4DataVAI0A5ErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/documentPage(for:pageNumber:size:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB14NetworkServiceP12documentPage3for10pageNumber4size10completiony0A14BankAPILibrary8DocumentV_SiAK0G0V4SizeOys6ResultOy10Foundation4DataVAI0A5ErrorOGctF">documentPage(for:pageNumber:size:completion:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Retrieves the page data of a document for a specified page number and size</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">documentPage</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">Document</span><span class="p">,</span>
+                  <span class="nv">pageNumber</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+                  <span class="nv">size</span><span class="p">:</span> <span class="kt">GiniBankAPILibrary</span><span class="o">.</span><span class="kt">Document</span><span class="o">.</span><span class="kt">Page</span><span class="o">.</span><span class="kt">Size</span><span class="p">,</span>
+                  <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:14GiniCaptureSDK29DocumentPagePreviewCompletiona">DocumentPagePreviewCompletion</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2025 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2025-06-18)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

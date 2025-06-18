@@ -1,0 +1,3876 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/GiniBarButton.swift",
+      "line": 27,
+      "symbol": "BarButtonType.cancel",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/GiniBarButton.swift",
+      "line": 28,
+      "symbol": "BarButtonType.help",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/GiniBarButton.swift",
+      "line": 29,
+      "symbol": "BarButtonType.back(title:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/GiniBarButton.swift",
+      "line": 30,
+      "symbol": "BarButtonType.done",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/GiniBarButton.swift",
+      "line": 31,
+      "symbol": "BarButtonType.skip",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/GiniBarButton.swift",
+      "line": 215,
+      "symbol": "GiniBarButton.setContentHuggingPriority(_:for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/GiniBarButton.swift",
+      "line": 222,
+      "symbol": "GiniBarButton.setContentCompressionResistancePriority(_:for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/Array.swift",
+      "line": 47,
+      "symbol": "Diffable",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/Array.swift",
+      "line": 48,
+      "symbol": "Diffable.primaryKey",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/Array.swift",
+      "line": 49,
+      "symbol": "Diffable.isUpdated(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/Bundle.swift",
+      "line": 11,
+      "symbol": "Bundle.appName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/Collection.swift",
+      "line": 25,
+      "symbol": "Collection.containsDifferentTypes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/Collection.swift",
+      "line": 34,
+      "symbol": "Collection.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/Collection.swift",
+      "line": 40,
+      "symbol": "Array.remove(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/Collection.swift",
+      "line": 46,
+      "symbol": "Array.index(of:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/Collection.swift",
+      "line": 53,
+      "symbol": "Array.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/Dictionary.swift",
+      "line": 11,
+      "symbol": "Optional.dictionary",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/String.swift",
+      "line": 20,
+      "symbol": "String.localized(resource:args:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/UIColor.swift",
+      "line": 11,
+      "symbol": "UIColor.from(hex:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/UIDevice.swift",
+      "line": 12,
+      "symbol": "UIDevice.isIpad",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/UIDevice.swift",
+      "line": 16,
+      "symbol": "UIDevice.isIphone",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/UIDevice.swift",
+      "line": 20,
+      "symbol": "UIDevice.isSmallIphone",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/UIDevice.swift",
+      "line": 42,
+      "symbol": "UIDevice.isPortrait()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/UIFont.swift",
+      "line": 32,
+      "symbol": "UIFont.TextStyle.bodyBold",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/UIFont.swift",
+      "line": 33,
+      "symbol": "UIFont.TextStyle.calloutBold",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/UIFont.swift",
+      "line": 34,
+      "symbol": "UIFont.TextStyle.footnoteBold",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/UIFont.swift",
+      "line": 35,
+      "symbol": "UIFont.TextStyle.title2Bold",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/UIFont.swift",
+      "line": 36,
+      "symbol": "UIFont.TextStyle.title1Bold",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Extensions/UINavigationController.swift",
+      "line": 12,
+      "symbol": "UINavigationController.applyStyle(withConfiguration:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniCapture.swift",
+      "line": 11,
+      "symbol": "GiniCaptureNetworkDelegate",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 9,
+      "symbol": "GiniCaptureColors",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 10,
+      "symbol": "GiniCaptureColors.accent01",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 11,
+      "symbol": "GiniCaptureColors.accent02",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 12,
+      "symbol": "GiniCaptureColors.accent03",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 13,
+      "symbol": "GiniCaptureColors.accent04",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 14,
+      "symbol": "GiniCaptureColors.accent05",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 15,
+      "symbol": "GiniCaptureColors.dark01",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 16,
+      "symbol": "GiniCaptureColors.dark02",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 17,
+      "symbol": "GiniCaptureColors.dark03",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 18,
+      "symbol": "GiniCaptureColors.dark04",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 19,
+      "symbol": "GiniCaptureColors.dark05",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 20,
+      "symbol": "GiniCaptureColors.dark06",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 21,
+      "symbol": "GiniCaptureColors.dark07",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 22,
+      "symbol": "GiniCaptureColors.error01",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 23,
+      "symbol": "GiniCaptureColors.error02",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 24,
+      "symbol": "GiniCaptureColors.error03",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 25,
+      "symbol": "GiniCaptureColors.error04",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 26,
+      "symbol": "GiniCaptureColors.error05",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 27,
+      "symbol": "GiniCaptureColors.light01",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 28,
+      "symbol": "GiniCaptureColors.light02",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 29,
+      "symbol": "GiniCaptureColors.light03",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 30,
+      "symbol": "GiniCaptureColors.light04",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 31,
+      "symbol": "GiniCaptureColors.light05",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 32,
+      "symbol": "GiniCaptureColors.light06",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 33,
+      "symbol": "GiniCaptureColors.success01",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 34,
+      "symbol": "GiniCaptureColors.success02",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 35,
+      "symbol": "GiniCaptureColors.success03",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 36,
+      "symbol": "GiniCaptureColors.success04",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 37,
+      "symbol": "GiniCaptureColors.success05",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 38,
+      "symbol": "GiniCaptureColors.warning01",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 39,
+      "symbol": "GiniCaptureColors.warning02",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 40,
+      "symbol": "GiniCaptureColors.warning03",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 41,
+      "symbol": "GiniCaptureColors.warning04",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 42,
+      "symbol": "GiniCaptureColors.warning05",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 50,
+      "symbol": "GiniCaptureColors.preferredUIColor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 56,
+      "symbol": "UIColor.GiniCapture",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 57,
+      "symbol": "UIColor.GiniCapture.accent1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 60,
+      "symbol": "UIColor.GiniCapture.accent2",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 63,
+      "symbol": "UIColor.GiniCapture.accent3",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 66,
+      "symbol": "UIColor.GiniCapture.accent4",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 69,
+      "symbol": "UIColor.GiniCapture.accent5",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 72,
+      "symbol": "UIColor.GiniCapture.dark1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 75,
+      "symbol": "UIColor.GiniCapture.dark2",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 78,
+      "symbol": "UIColor.GiniCapture.dark3",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 81,
+      "symbol": "UIColor.GiniCapture.dark4",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 84,
+      "symbol": "UIColor.GiniCapture.dark5",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 87,
+      "symbol": "UIColor.GiniCapture.dark6",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 90,
+      "symbol": "UIColor.GiniCapture.dark7",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 93,
+      "symbol": "UIColor.GiniCapture.error1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 96,
+      "symbol": "UIColor.GiniCapture.error2",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 99,
+      "symbol": "UIColor.GiniCapture.error3",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 102,
+      "symbol": "UIColor.GiniCapture.error4",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 105,
+      "symbol": "UIColor.GiniCapture.error5",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 108,
+      "symbol": "UIColor.GiniCapture.light1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 111,
+      "symbol": "UIColor.GiniCapture.light2",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 114,
+      "symbol": "UIColor.GiniCapture.light3",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 117,
+      "symbol": "UIColor.GiniCapture.light4",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 120,
+      "symbol": "UIColor.GiniCapture.light5",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 123,
+      "symbol": "UIColor.GiniCapture.light6",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 126,
+      "symbol": "UIColor.GiniCapture.success1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 129,
+      "symbol": "UIColor.GiniCapture.success2",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 132,
+      "symbol": "UIColor.GiniCapture.success3",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 135,
+      "symbol": "UIColor.GiniCapture.success4",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 138,
+      "symbol": "UIColor.GiniCapture.success5",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 141,
+      "symbol": "UIColor.GiniCapture.warning1",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 144,
+      "symbol": "UIColor.GiniCapture.warning2",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 147,
+      "symbol": "UIColor.GiniCapture.warning3",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 150,
+      "symbol": "UIColor.GiniCapture.warning4",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniColors.swift",
+      "line": 153,
+      "symbol": "UIColor.GiniCapture.warning5",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 29,
+      "symbol": "GiniColor.uiColor()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 66,
+      "symbol": "GiniConfiguration.GiniCaptureImportFileTypes.none",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 67,
+      "symbol": "GiniConfiguration.GiniCaptureImportFileTypes.pdf",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 68,
+      "symbol": "GiniConfiguration.GiniCaptureImportFileTypes.pdf_and_images",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 103,
+      "symbol": "GiniConfiguration.primaryButtonConfiguration",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 113,
+      "symbol": "GiniConfiguration.secondaryButtonConfiguration",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 125,
+      "symbol": "GiniConfiguration.transparentButtonConfiguration",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 135,
+      "symbol": "GiniConfiguration.cameraControlButtonConfiguration",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 145,
+      "symbol": "GiniConfiguration.addPageButtonConfiguration",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 432,
+      "symbol": "GiniConfiguration.closeButtonResource",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 433,
+      "symbol": "GiniConfiguration.helpButtonResource",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 434,
+      "symbol": "GiniConfiguration.backToCameraButtonResource",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 435,
+      "symbol": "GiniConfiguration.backToMenuButtonResource",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 436,
+      "symbol": "GiniConfiguration.nextButtonResource",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 437,
+      "symbol": "GiniConfiguration.cancelButtonResource",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 554,
+      "symbol": "GiniConfiguration.GiniEntryPoint.button",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/GiniConfiguration.swift",
+      "line": 556,
+      "symbol": "GiniConfiguration.GiniEntryPoint.field",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ButtonConfiguration.swift",
+      "line": 10,
+      "symbol": "ButtonConfiguration",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ButtonConfiguration.swift",
+      "line": 64,
+      "symbol": "GiniCaptureButton",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ButtonConfiguration.swift",
+      "line": 66,
+      "symbol": "GiniCaptureButton.traitCollectionDidChange(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ButtonConfiguration.swift",
+      "line": 71,
+      "symbol": "GiniCaptureButton",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ButtonConfiguration.swift",
+      "line": 72,
+      "symbol": "GiniCaptureButton.configure(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/GiniCaptureDocumentValidator.swift",
+      "line": 11,
+      "symbol": "GiniCaptureDocumentValidator",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/GiniCaptureDocumentValidator.swift",
+      "line": 13,
+      "symbol": "GiniCaptureDocumentValidator.maxPagesCount",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/GiniCaptureUtils.swift",
+      "line": 10,
+      "symbol": "giniCaptureBundle()",
+      "symbol_kind": "source.lang.swift.decl.function.free",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/GiniCaptureUtils.swift",
+      "line": 169,
+      "symbol": "Constraints",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/GiniCaptureUtils.swift",
+      "line": 175,
+      "symbol": "Constraints.active(item:attr:relatedBy:to:attr:multiplier:constant:priority:identifier:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/GiniCaptureUtils.swift",
+      "line": 269,
+      "symbol": "RoundedCorners",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ImageMetaInformationManager.swift",
+      "line": 21,
+      "symbol": "DocumentImportMethod",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ImageMetaInformationManager.swift",
+      "line": 22,
+      "symbol": "DocumentImportMethod.openWith",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ImageMetaInformationManager.swift",
+      "line": 23,
+      "symbol": "DocumentImportMethod.picker",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ImageMetaInformationManager.swift",
+      "line": 45,
+      "symbol": "DocumentSource",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ImageMetaInformationManager.swift",
+      "line": 46,
+      "symbol": "DocumentSource.camera",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ImageMetaInformationManager.swift",
+      "line": 47,
+      "symbol": "DocumentSource.external",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/ImageMetaInformationManager.swift",
+      "line": 48,
+      "symbol": "DocumentSource.appName(name:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/LocalizableStringResource.swift",
+      "line": 11,
+      "symbol": "LocalizationEntry",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/LocalizableStringResource.swift",
+      "line": 13,
+      "symbol": "LocalizableStringResource",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/LocalizableStringResource.swift",
+      "line": 14,
+      "symbol": "LocalizableStringResource.tableName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/LocalizableStringResource.swift",
+      "line": 15,
+      "symbol": "LocalizableStringResource.tableEntry",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/LocalizableStringResource.swift",
+      "line": 16,
+      "symbol": "LocalizableStringResource.fallbackTableEntry",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/LocalizableStringResource.swift",
+      "line": 17,
+      "symbol": "LocalizableStringResource.isCustomizable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/LocalizableStringResource.swift",
+      "line": 20,
+      "symbol": "LocalizableStringResource",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/LocalizableStringResource.swift",
+      "line": 22,
+      "symbol": "LocalizableStringResource.localizedFormat",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/AnalysisStrings.swift",
+      "line": 10,
+      "symbol": "AnalysisStrings",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/AnalysisStrings.swift",
+      "line": 12,
+      "symbol": "AnalysisStrings.analysisErrorMessage",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/AnalysisStrings.swift",
+      "line": 12,
+      "symbol": "AnalysisStrings.cancelledMessage",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/AnalysisStrings.swift",
+      "line": 12,
+      "symbol": "AnalysisStrings.documentCreationErrorMessage",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/AnalysisStrings.swift",
+      "line": 14,
+      "symbol": "AnalysisStrings.tableName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/AnalysisStrings.swift",
+      "line": 18,
+      "symbol": "AnalysisStrings.tableEntry",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/AnalysisStrings.swift",
+      "line": 29,
+      "symbol": "AnalysisStrings.isCustomizable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/AnalysisStrings.swift",
+      "line": 33,
+      "symbol": "AnalysisStrings.fallbackTableEntry",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/ImageAssetsStrings.swift",
+      "line": 10,
+      "symbol": "ImageAssetsStrings",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/ImageAssetsStrings.swift",
+      "line": 12,
+      "symbol": "ImageAssetsStrings.openWithTutorialStep1",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/ImageAssetsStrings.swift",
+      "line": 12,
+      "symbol": "ImageAssetsStrings.openWithTutorialStep2",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/ImageAssetsStrings.swift",
+      "line": 12,
+      "symbol": "ImageAssetsStrings.openWithTutorialStep3",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/ImageAssetsStrings.swift",
+      "line": 14,
+      "symbol": "ImageAssetsStrings.tableName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/ImageAssetsStrings.swift",
+      "line": 18,
+      "symbol": "ImageAssetsStrings.tableEntry",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/ImageAssetsStrings.swift",
+      "line": 29,
+      "symbol": "ImageAssetsStrings.isCustomizable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/ImageAssetsStrings.swift",
+      "line": 33,
+      "symbol": "ImageAssetsStrings.fallbackTableEntry",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/OnboardingStrings.swift",
+      "line": 10,
+      "symbol": "OnboardingStrings",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/OnboardingStrings.swift",
+      "line": 12,
+      "symbol": "OnboardingStrings.onboardingFirstPageText",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/OnboardingStrings.swift",
+      "line": 12,
+      "symbol": "OnboardingStrings.onboardingFourthPageText",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/OnboardingStrings.swift",
+      "line": 12,
+      "symbol": "OnboardingStrings.onboardingSecondPageText",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/OnboardingStrings.swift",
+      "line": 12,
+      "symbol": "OnboardingStrings.onboardingThirdPageText",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/OnboardingStrings.swift",
+      "line": 13,
+      "symbol": "OnboardingStrings.onboardingFifthPageText",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/OnboardingStrings.swift",
+      "line": 15,
+      "symbol": "OnboardingStrings.tableName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/OnboardingStrings.swift",
+      "line": 19,
+      "symbol": "OnboardingStrings.tableEntry",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/OnboardingStrings.swift",
+      "line": 34,
+      "symbol": "OnboardingStrings.isCustomizable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Localization/String Resources/OnboardingStrings.swift",
+      "line": 38,
+      "symbol": "OnboardingStrings.fallbackTableEntry",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/PreferredButtonResource.swift",
+      "line": 12,
+      "symbol": "PreferredButtonResource",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/PreferredButtonResource.swift",
+      "line": 14,
+      "symbol": "PreferredButtonResource.preferredImage",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/PreferredButtonResource.swift",
+      "line": 15,
+      "symbol": "PreferredButtonResource.preferredText",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/QRCodesExtractor.swift",
+      "line": 10,
+      "symbol": "QRCodesFormat",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/QRCodesExtractor.swift",
+      "line": 11,
+      "symbol": "QRCodesFormat.epc06912",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/QRCodesExtractor.swift",
+      "line": 12,
+      "symbol": "QRCodesFormat.eps4mobile",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/QRCodesExtractor.swift",
+      "line": 13,
+      "symbol": "QRCodesFormat.bezahl",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/QRCodesExtractor.swift",
+      "line": 14,
+      "symbol": "QRCodesFormat.giniQRCode",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/QRCodesExtractor.swift",
+      "line": 30,
+      "symbol": "QRCodesExtractor",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/QRCodesExtractor.swift",
+      "line": 32,
+      "symbol": "QRCodesExtractor.epsCodeUrlKey",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/QRCodesExtractor.swift",
+      "line": 33,
+      "symbol": "QRCodesExtractor.giniCodeUrlKey",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Utils.swift",
+      "line": 29,
+      "symbol": "GiniMargins",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Utils.swift",
+      "line": 30,
+      "symbol": "GiniMargins.margin",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Utils.swift",
+      "line": 31,
+      "symbol": "GiniMargins.horizontalMargin",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Utils.swift",
+      "line": 32,
+      "symbol": "GiniMargins.iPadAspectScale",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logger.swift",
+      "line": 32,
+      "symbol": "GiniLogger",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logger.swift",
+      "line": 43,
+      "symbol": "DefaultLogger",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logging/ErrorLog.swift",
+      "line": 9,
+      "symbol": "ErrorLog",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logging/ErrorLog.swift",
+      "line": 11,
+      "symbol": "ErrorLog.deviceModel",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logging/ErrorLog.swift",
+      "line": 12,
+      "symbol": "ErrorLog.osName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logging/ErrorLog.swift",
+      "line": 13,
+      "symbol": "ErrorLog.osVersion",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logging/ErrorLog.swift",
+      "line": 14,
+      "symbol": "ErrorLog.captureVersion",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logging/ErrorLog.swift",
+      "line": 15,
+      "symbol": "ErrorLog.description",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logging/ErrorLog.swift",
+      "line": 16,
+      "symbol": "ErrorLog.error",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logging/GiniCaptureErrorLogger.swift",
+      "line": 10,
+      "symbol": "GiniCaptureErrorLogger",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logging/GiniCaptureErrorLogger.swift",
+      "line": 14,
+      "symbol": "GiniCaptureErrorLogger.handleErrorLog(error:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logging/GiniCaptureErrorLoggerDelegate.swift",
+      "line": 10,
+      "symbol": "GiniCaptureErrorLoggerDelegate",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Logging/GiniCaptureErrorLoggerDelegate.swift",
+      "line": 11,
+      "symbol": "GiniCaptureErrorLoggerDelegate.handleErrorLog(error:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/ExtractionAmount.swift",
+      "line": 11,
+      "symbol": "ExtractionAmount",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/ExtractionAmount.swift",
+      "line": 12,
+      "symbol": "ExtractionAmount.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/ExtractionAmount.swift",
+      "line": 13,
+      "symbol": "ExtractionAmount.currency",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/ExtractionAmount.swift",
+      "line": 15,
+      "symbol": "ExtractionAmount.init(value:currency:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/ExtractionAmount.swift",
+      "line": 36,
+      "symbol": "AmountCurrency",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/ExtractionAmount.swift",
+      "line": 37,
+      "symbol": "AmountCurrency.CHF",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/ExtractionAmount.swift",
+      "line": 37,
+      "symbol": "AmountCurrency.EUR",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/ExtractionAmount.swift",
+      "line": 37,
+      "symbol": "AmountCurrency.GBP",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/ExtractionAmount.swift",
+      "line": 37,
+      "symbol": "AmountCurrency.USD",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 17,
+      "symbol": "GiniCaptureDocument.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 18,
+      "symbol": "GiniCaptureDocument.uploadMetadata",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 19,
+      "symbol": "GiniCaptureDocument.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 20,
+      "symbol": "GiniCaptureDocument.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 21,
+      "symbol": "GiniCaptureDocument.previewImage",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 22,
+      "symbol": "GiniCaptureDocument.isReviewable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 23,
+      "symbol": "GiniCaptureDocument.isImported",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 28,
+      "symbol": "GiniCaptureDocumentType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 29,
+      "symbol": "GiniCaptureDocumentType.pdf",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 30,
+      "symbol": "GiniCaptureDocumentType.image",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 31,
+      "symbol": "GiniCaptureDocumentType.qrcode",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 57,
+      "symbol": "GiniCaptureDocumentBuilder.deviceOrientation",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 58,
+      "symbol": "GiniCaptureDocumentBuilder.importMethod",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureDocument.swift",
+      "line": 109,
+      "symbol": "GiniCaptureDocumentBuilder.generateUploadMetadata()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureFont.swift",
+      "line": 26,
+      "symbol": "GiniCaptureFont.regular",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureFont.swift",
+      "line": 27,
+      "symbol": "GiniCaptureFont.bold",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureFont.swift",
+      "line": 28,
+      "symbol": "GiniCaptureFont.light",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureFont.swift",
+      "line": 29,
+      "symbol": "GiniCaptureFont.thin",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureFont.swift",
+      "line": 30,
+      "symbol": "GiniCaptureFont.isEnabled",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureFont.swift",
+      "line": 32,
+      "symbol": "GiniCaptureFont.init(regular:bold:light:thin:isEnabled:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCaptureFont.swift",
+      "line": 40,
+      "symbol": "GiniCaptureFont.with(weight:size:style:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCapturePage.swift",
+      "line": 15,
+      "symbol": "GiniCapturePage.document",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCapturePage.swift",
+      "line": 16,
+      "symbol": "GiniCapturePage.error",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCapturePage.swift",
+      "line": 17,
+      "symbol": "GiniCapturePage.isUploaded",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCapturePage.swift",
+      "line": 19,
+      "symbol": "GiniCapturePage.primaryKey",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCapturePage.swift",
+      "line": 23,
+      "symbol": "GiniCapturePage.init(document:error:isUploaded:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniCapturePage.swift",
+      "line": 29,
+      "symbol": "GiniCapturePage.isUpdated(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 11,
+      "symbol": "GiniCaptureError",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 12,
+      "symbol": "GiniCaptureError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 31,
+      "symbol": "CameraError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 53,
+      "symbol": "ReviewError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 82,
+      "symbol": "FilePickerError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 109,
+      "symbol": "AnalysisError.unknown",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 111,
+      "symbol": "AnalysisError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 144,
+      "symbol": "DocumentValidationError.pdfPasswordProtected",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 149,
+      "symbol": "DocumentValidationError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 195,
+      "symbol": "CustomDocumentValidationError.init(message:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 199,
+      "symbol": "CustomDocumentValidationError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 204,
+      "symbol": "CustomDocumentValidationResult",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 213,
+      "symbol": "CustomDocumentValidationResult.success()",
+      "symbol_kind": "source.lang.swift.decl.function.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniError.swift",
+      "line": 217,
+      "symbol": "CustomDocumentValidationResult.failure(withError:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 13,
+      "symbol": "GiniImageDocument",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 20,
+      "symbol": "GiniImageDocument.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 21,
+      "symbol": "GiniImageDocument.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 22,
+      "symbol": "GiniImageDocument.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 23,
+      "symbol": "GiniImageDocument.previewImage",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 24,
+      "symbol": "GiniImageDocument.isReviewable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 25,
+      "symbol": "GiniImageDocument.isImported",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 26,
+      "symbol": "GiniImageDocument.uploadMetadata",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 27,
+      "symbol": "GiniImageDocument.rotationDelta",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 32,
+      "symbol": "GiniImageDocument.isFromOtherApp",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 82,
+      "symbol": "GiniImageDocument",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 84,
+      "symbol": "GiniImageDocument.readableTypeIdentifiersForItemProvider",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniImageDocument.swift",
+      "line": 88,
+      "symbol": "GiniImageDocument.object(withItemProviderData:typeIdentifier:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniPDFDocument.swift",
+      "line": 13,
+      "symbol": "GiniPDFDocument",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniPDFDocument.swift",
+      "line": 17,
+      "symbol": "GiniPDFDocument.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniPDFDocument.swift",
+      "line": 18,
+      "symbol": "GiniPDFDocument.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniPDFDocument.swift",
+      "line": 19,
+      "symbol": "GiniPDFDocument.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniPDFDocument.swift",
+      "line": 20,
+      "symbol": "GiniPDFDocument.previewImage",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniPDFDocument.swift",
+      "line": 21,
+      "symbol": "GiniPDFDocument.isReviewable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniPDFDocument.swift",
+      "line": 22,
+      "symbol": "GiniPDFDocument.isImported",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniPDFDocument.swift",
+      "line": 23,
+      "symbol": "GiniPDFDocument.uploadMetadata",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniPDFDocument.swift",
+      "line": 120,
+      "symbol": "GiniPDFDocument",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniPDFDocument.swift",
+      "line": 122,
+      "symbol": "GiniPDFDocument.readableTypeIdentifiersForItemProvider",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniPDFDocument.swift",
+      "line": 126,
+      "symbol": "GiniPDFDocument.object(withItemProviderData:typeIdentifier:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniQRCodeDocument.swift",
+      "line": 21,
+      "symbol": "GiniQRCodeDocument.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniQRCodeDocument.swift",
+      "line": 22,
+      "symbol": "GiniQRCodeDocument.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniQRCodeDocument.swift",
+      "line": 25,
+      "symbol": "GiniQRCodeDocument.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniQRCodeDocument.swift",
+      "line": 26,
+      "symbol": "GiniQRCodeDocument.previewImage",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniQRCodeDocument.swift",
+      "line": 29,
+      "symbol": "GiniQRCodeDocument.isReviewable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniQRCodeDocument.swift",
+      "line": 30,
+      "symbol": "GiniQRCodeDocument.isImported",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniQRCodeDocument.swift",
+      "line": 31,
+      "symbol": "GiniQRCodeDocument.uploadMetadata",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniQRCodeDocument.swift",
+      "line": 44,
+      "symbol": "GiniQRCodeDocument.extractedParameters",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniQRCodeDocument.swift",
+      "line": 47,
+      "symbol": "GiniQRCodeDocument.qrCodeFormat",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Models/GiniQRCodeDocument.swift",
+      "line": 81,
+      "symbol": "GiniQRCodeDocument.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis/AnalysisViewController.swift",
+      "line": 41,
+      "symbol": "AnalysisViewController.trackingDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis/AnalysisViewController.swift",
+      "line": 135,
+      "symbol": "AnalysisViewController.viewDidLoad()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis/AnalysisViewController.swift",
+      "line": 142,
+      "symbol": "AnalysisViewController.viewWillAppear(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis/AnalysisViewController.swift",
+      "line": 150,
+      "symbol": "AnalysisViewController.viewDidAppear(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis/AnalysisViewController.swift",
+      "line": 159,
+      "symbol": "AnalysisViewController.viewWillDisappear(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis/AnalysisViewController.swift",
+      "line": 165,
+      "symbol": "AnalysisViewController.viewDidLayoutSubviews()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Camera/CameraButtonsViewModel.swift",
+      "line": 13,
+      "symbol": "CameraButtonsViewModel",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Camera/CameraButtonsViewModel.swift",
+      "line": 33,
+      "symbol": "CameraButtonsViewModel.trackingDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Camera/CameraButtonsViewModel.swift",
+      "line": 34,
+      "symbol": "CameraButtonsViewModel.init(trackingDelegate:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Camera/CameraViewController+Actions.swift",
+      "line": 27,
+      "symbol": "CameraViewController.setupCamera(bottomAnchor:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Camera/CameraViewController+Actions.swift",
+      "line": 31,
+      "symbol": "CameraViewController.stopLoadingIndicater()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Views/DefaultCameraBottomNavigationBarAdapter.swift",
+      "line": 10,
+      "symbol": "CameraNavigationBarBottomButton",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Views/DefaultCameraBottomNavigationBarAdapter.swift",
+      "line": 11,
+      "symbol": "CameraNavigationBarBottomButton.back",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Views/DefaultCameraBottomNavigationBarAdapter.swift",
+      "line": 12,
+      "symbol": "CameraNavigationBarBottomButton.help",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
+      "line": 262,
+      "symbol": "DocumentPickerCoordinator.documentPicker(_:didPickDocumentsAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
+      "line": 275,
+      "symbol": "DocumentPickerCoordinator.documentPicker(_:didPickDocumentAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
+      "line": 279,
+      "symbol": "DocumentPickerCoordinator.documentPickerWasCancelled(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
+      "line": 287,
+      "symbol": "DocumentPickerCoordinator.dropInteraction(_:canHandle:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
+      "line": 304,
+      "symbol": "DocumentPickerCoordinator.dropInteraction(_:sessionDidUpdate:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
+      "line": 309,
+      "symbol": "DocumentPickerCoordinator.dropInteraction(_:performDrop:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/BottomNavigation/ErrorNavigationBarBottomAdapter.swift",
+      "line": 9,
+      "symbol": "ErrorNavigationBarBottomAdapter",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/BottomNavigation/ErrorNavigationBarBottomAdapter.swift",
+      "line": 10,
+      "symbol": "ErrorNavigationBarBottomAdapter.setBackButtonClickedActionCallback(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/ErrorType.swift",
+      "line": 24,
+      "symbol": "ErrorType.connection",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/ErrorType.swift",
+      "line": 25,
+      "symbol": "ErrorType.request",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/ErrorType.swift",
+      "line": 26,
+      "symbol": "ErrorType.server",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/ErrorType.swift",
+      "line": 27,
+      "symbol": "ErrorType.authentication",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/ErrorType.swift",
+      "line": 28,
+      "symbol": "ErrorType.unexpected",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/ErrorType.swift",
+      "line": 29,
+      "symbol": "ErrorType.maintenance",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/ErrorType.swift",
+      "line": 30,
+      "symbol": "ErrorType.outage",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/ErrorType.swift",
+      "line": 67,
+      "symbol": "ErrorType.iconName()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/ErrorType.swift",
+      "line": 96,
+      "symbol": "ErrorType.title()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error/ErrorType.swift",
+      "line": 101,
+      "symbol": "ErrorType.content()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help/DataSources/HelpMenu/HelpMenuItem.swift",
+      "line": 22,
+      "symbol": "HelpMenuItem.noResultsTips",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help/DataSources/HelpMenu/HelpMenuItem.swift",
+      "line": 23,
+      "symbol": "HelpMenuItem.openWithTutorial",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help/DataSources/HelpMenu/HelpMenuItem.swift",
+      "line": 24,
+      "symbol": "HelpMenuItem.supportedFormats",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help/DataSources/HelpMenu/HelpMenuItem.swift",
+      "line": 25,
+      "symbol": "HelpMenuItem.custom(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Onboarding/protocols/OnboardingNavigationBarBottomAdapter.swift",
+      "line": 11,
+      "symbol": "OnboardingNavigationBarBottomButton",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Onboarding/protocols/OnboardingNavigationBarBottomAdapter.swift",
+      "line": 12,
+      "symbol": "OnboardingNavigationBarBottomButton.skip",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Onboarding/protocols/OnboardingNavigationBarBottomAdapter.swift",
+      "line": 13,
+      "symbol": "OnboardingNavigationBarBottomButton.next",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Onboarding/protocols/OnboardingNavigationBarBottomAdapter.swift",
+      "line": 14,
+      "symbol": "OnboardingNavigationBarBottomButton.getStarted",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review/ReviewViewController.swift",
+      "line": 315,
+      "symbol": "ReviewViewController.init(coder:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review/ReviewViewController.swift",
+      "line": 368,
+      "symbol": "ReviewViewController.viewDidLoad()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review/ReviewViewController.swift",
+      "line": 377,
+      "symbol": "ReviewViewController.viewDidAppear(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review/ReviewViewController.swift",
+      "line": 392,
+      "symbol": "ReviewViewController.viewWillLayoutSubviews()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review/ReviewViewController.swift",
+      "line": 397,
+      "symbol": "ReviewViewController.viewDidLayoutSubviews()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review/ReviewViewController.swift",
+      "line": 717,
+      "symbol": "ReviewViewController.collectionView(_:numberOfItemsInSection:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review/ReviewViewController.swift",
+      "line": 724,
+      "symbol": "ReviewViewController.collectionView(_:cellForItemAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review/ReviewViewController.swift",
+      "line": 755,
+      "symbol": "ReviewViewController.collectionView(_:layout:sizeForItemAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review/ReviewViewController.swift",
+      "line": 761,
+      "symbol": "ReviewViewController.collectionView(_:layout:insetForSectionAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review/ReviewViewController.swift",
+      "line": 775,
+      "symbol": "ReviewViewController.collectionView(_:didSelectItemAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator+Camera.swift",
+      "line": 15,
+      "symbol": "UploadDelegate.uploadDidFail(for:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator+Camera.swift",
+      "line": 16,
+      "symbol": "UploadDelegate.uploadDidComplete(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator+Camera.swift",
+      "line": 338,
+      "symbol": "GiniScreenAPICoordinator.uploadDidComplete(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator+Camera.swift",
+      "line": 345,
+      "symbol": "GiniScreenAPICoordinator.uploadDidFail(for:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 11,
+      "symbol": "GiniScreenAPICoordinator",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 13,
+      "symbol": "GiniScreenAPICoordinator",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 19,
+      "symbol": "GiniScreenAPICoordinator.screenAPINavigationController",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 32,
+      "symbol": "GiniScreenAPICoordinator.trackingDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 46,
+      "symbol": "GiniScreenAPICoordinator.giniConfiguration",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 47,
+      "symbol": "GiniScreenAPICoordinator.pages",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 48,
+      "symbol": "GiniScreenAPICoordinator.visionDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 80,
+      "symbol": "GiniScreenAPICoordinator",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 80,
+      "symbol": "GiniScreenAPICoordinator.init(withDelegate:giniConfiguration:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 87,
+      "symbol": "GiniScreenAPICoordinator.start(withDocuments:animated:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 205,
+      "symbol": "GiniScreenAPICoordinator",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 207,
+      "symbol": "GiniScreenAPICoordinator",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 224,
+      "symbol": "GiniScreenAPICoordinator.finishWithCancellation()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 337,
+      "symbol": "GiniScreenAPICoordinator",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 340,
+      "symbol": "GiniScreenAPICoordinator",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
+      "line": 341,
+      "symbol": "GiniScreenAPICoordinator.navigationController(_:animationControllerFor:from:to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 9,
+      "symbol": "GiniAnalyticsEvent",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 11,
+      "symbol": "GiniAnalyticsEvent.screenShown",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 12,
+      "symbol": "GiniAnalyticsEvent.closeTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 13,
+      "symbol": "GiniAnalyticsEvent.sdkOpened",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 14,
+      "symbol": "GiniAnalyticsEvent.sdkClosed",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 15,
+      "symbol": "GiniAnalyticsEvent.proceedTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 16,
+      "symbol": "GiniAnalyticsEvent.previewZoomed",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 17,
+      "symbol": "GiniAnalyticsEvent.invoicePreviewTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 18,
+      "symbol": "GiniAnalyticsEvent.tryAgainTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 21,
+      "symbol": "GiniAnalyticsEvent.captureTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 22,
+      "symbol": "GiniAnalyticsEvent.importFilesTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 23,
+      "symbol": "GiniAnalyticsEvent.uploadPhotosTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 24,
+      "symbol": "GiniAnalyticsEvent.uploadDocumentsTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 25,
+      "symbol": "GiniAnalyticsEvent.flashTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 26,
+      "symbol": "GiniAnalyticsEvent.helpTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 27,
+      "symbol": "GiniAnalyticsEvent.multiplePagesCapturedTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 28,
+      "symbol": "GiniAnalyticsEvent.errorDialogShown",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 29,
+      "symbol": "GiniAnalyticsEvent.qr_code_scanned",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 32,
+      "symbol": "GiniAnalyticsEvent.cameraPermissionShown",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 33,
+      "symbol": "GiniAnalyticsEvent.cameraPermissionTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 34,
+      "symbol": "GiniAnalyticsEvent.giveAccessTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 37,
+      "symbol": "GiniAnalyticsEvent.deletePagesTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 38,
+      "symbol": "GiniAnalyticsEvent.addPagesTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 39,
+      "symbol": "GiniAnalyticsEvent.pageSwiped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 40,
+      "symbol": "GiniAnalyticsEvent.fullScreenPageTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 43,
+      "symbol": "GiniAnalyticsEvent.enterManuallyTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 44,
+      "symbol": "GiniAnalyticsEvent.retakeImagesTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 45,
+      "symbol": "GiniAnalyticsEvent.backToCameraTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 48,
+      "symbol": "GiniAnalyticsEvent.helpItemTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 51,
+      "symbol": "GiniAnalyticsEvent.skipTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 52,
+      "symbol": "GiniAnalyticsEvent.nextStepTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 53,
+      "symbol": "GiniAnalyticsEvent.getStartedTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 56,
+      "symbol": "GiniAnalyticsEvent.dismissed",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 57,
+      "symbol": "GiniAnalyticsEvent.saveTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 58,
+      "symbol": "GiniAnalyticsEvent.editTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 59,
+      "symbol": "GiniAnalyticsEvent.itemSwitchTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 62,
+      "symbol": "GiniAnalyticsEvent.skontoSwitchTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 63,
+      "symbol": "GiniAnalyticsEvent.finalAmountTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 64,
+      "symbol": "GiniAnalyticsEvent.fullAmountTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsEvent.swift",
+      "line": 65,
+      "symbol": "GiniAnalyticsEvent.dueDateTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsManager.swift",
+      "line": 10,
+      "symbol": "GiniAnalyticsManager",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsManager.swift",
+      "line": 25,
+      "symbol": "GiniAnalyticsManager.initializeAnalytics(with:analyticsAPIService:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsManager.swift",
+      "line": 34,
+      "symbol": "GiniAnalyticsManager.cleanManager()",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsManager.swift",
+      "line": 42,
+      "symbol": "GiniAnalyticsManager.setSessionId()",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsManager.swift",
+      "line": 63,
+      "symbol": "GiniAnalyticsManager.trackScreenShown(screenName:properties:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsManager.swift",
+      "line": 78,
+      "symbol": "GiniAnalyticsManager.track(event:screenName:properties:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsManager.swift",
+      "line": 159,
+      "symbol": "GiniAnalyticsManager.trackUserProperties(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsManager.swift",
+      "line": 165,
+      "symbol": "GiniAnalyticsManager.registerSuperProperties(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 9,
+      "symbol": "GiniAnalyticsProperty",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 10,
+      "symbol": "GiniAnalyticsProperty.key",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 11,
+      "symbol": "GiniAnalyticsProperty.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 13,
+      "symbol": "GiniAnalyticsProperty.init(key:value:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 19,
+      "symbol": "GiniAnalyticsPropertyValue",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 20,
+      "symbol": "GiniAnalyticsPropertyValue.analyticsPropertyValue()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 24,
+      "symbol": "String.analyticsPropertyValue()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 30,
+      "symbol": "Int.analyticsPropertyValue()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 36,
+      "symbol": "Bool.analyticsPropertyValue()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 42,
+      "symbol": "Array.analyticsPropertyValue()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 47,
+      "symbol": "GiniAnalyticsPropertyKey",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 48,
+      "symbol": "GiniAnalyticsPropertyKey.screenName",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 50,
+      "symbol": "GiniAnalyticsPropertyKey.flashActive",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 51,
+      "symbol": "GiniAnalyticsPropertyKey.qrCodeValid",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 52,
+      "symbol": "GiniAnalyticsPropertyKey.numberOfPagesScanned",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 53,
+      "symbol": "GiniAnalyticsPropertyKey.ibanDetectionLayerVisible",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 55,
+      "symbol": "GiniAnalyticsPropertyKey.errorMessage",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 56,
+      "symbol": "GiniAnalyticsPropertyKey.errorCode",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 57,
+      "symbol": "GiniAnalyticsPropertyKey.errorType",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 59,
+      "symbol": "GiniAnalyticsPropertyKey.hasCustomItems",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 60,
+      "symbol": "GiniAnalyticsPropertyKey.helpItems",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 61,
+      "symbol": "GiniAnalyticsPropertyKey.itemTapped",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 62,
+      "symbol": "GiniAnalyticsPropertyKey.customOnboardingTitle",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 64,
+      "symbol": "GiniAnalyticsPropertyKey.itemsChanged",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 65,
+      "symbol": "GiniAnalyticsPropertyKey.switchActive",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 66,
+      "symbol": "GiniAnalyticsPropertyKey.permissionStatus",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 67,
+      "symbol": "GiniAnalyticsPropertyKey.status",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 70,
+      "symbol": "GiniAnalyticsPropertyKey.edgeCaseType",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsProperties.swift",
+      "line": 71,
+      "symbol": "GiniAnalyticsPropertyKey.skontoActive",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 9,
+      "symbol": "GiniAnalyticsScreen",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 10,
+      "symbol": "GiniAnalyticsScreen.camera",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 11,
+      "symbol": "GiniAnalyticsScreen.review",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 12,
+      "symbol": "GiniAnalyticsScreen.reviewZoom",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 13,
+      "symbol": "GiniAnalyticsScreen.analysis",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 14,
+      "symbol": "GiniAnalyticsScreen.noResults",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 15,
+      "symbol": "GiniAnalyticsScreen.error",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 16,
+      "symbol": "GiniAnalyticsScreen.help",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 17,
+      "symbol": "GiniAnalyticsScreen.onboardingFlatPaper",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 18,
+      "symbol": "GiniAnalyticsScreen.onboardingLighting",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 19,
+      "symbol": "GiniAnalyticsScreen.onboardingMultipage",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 20,
+      "symbol": "GiniAnalyticsScreen.onboardingQRcode",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 21,
+      "symbol": "GiniAnalyticsScreen.onboardingCustom",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 22,
+      "symbol": "GiniAnalyticsScreen.onboardingReturnAssistant",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 23,
+      "symbol": "GiniAnalyticsScreen.returnAssistant",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 24,
+      "symbol": "GiniAnalyticsScreen.editReturnAssistant",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 25,
+      "symbol": "GiniAnalyticsScreen.cameraPermissionView",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 26,
+      "symbol": "GiniAnalyticsScreen.cameraAccess",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 27,
+      "symbol": "GiniAnalyticsScreen.skonto",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 28,
+      "symbol": "GiniAnalyticsScreen.returnAssistantSkonto",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 29,
+      "symbol": "GiniAnalyticsScreen.skontoInvoicePreview",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsScreen.swift",
+      "line": 30,
+      "symbol": "GiniAnalyticsScreen.skontoInvoicePreviewError",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsSuperProperty.swift",
+      "line": 9,
+      "symbol": "GiniAnalyticsSuperProperty",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsSuperProperty.swift",
+      "line": 10,
+      "symbol": "GiniAnalyticsSuperProperty.entryPoint",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsSuperProperty.swift",
+      "line": 11,
+      "symbol": "GiniAnalyticsSuperProperty.giniClientID",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsSuperProperty.swift",
+      "line": 12,
+      "symbol": "GiniAnalyticsSuperProperty.documentId",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsSuperProperty.swift",
+      "line": 13,
+      "symbol": "GiniAnalyticsSuperProperty.documentType",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 9,
+      "symbol": "GiniAnalyticsUserProperty",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 10,
+      "symbol": "GiniAnalyticsUserProperty.voiceOverEnabled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 11,
+      "symbol": "GiniAnalyticsUserProperty.guidedAccessEnabled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 12,
+      "symbol": "GiniAnalyticsUserProperty.boldTextEnabled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 13,
+      "symbol": "GiniAnalyticsUserProperty.grayscaleEnabled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 14,
+      "symbol": "GiniAnalyticsUserProperty.speakSelectionEnabled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 15,
+      "symbol": "GiniAnalyticsUserProperty.speakScreenEnabled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 16,
+      "symbol": "GiniAnalyticsUserProperty.assistiveTouchEnabled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 17,
+      "symbol": "GiniAnalyticsUserProperty.returnReasonsEnabled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 18,
+      "symbol": "GiniAnalyticsUserProperty.returnAssistantEnabled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 19,
+      "symbol": "GiniAnalyticsUserProperty.bankSDKVersion",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 20,
+      "symbol": "GiniAnalyticsUserProperty.captureSDKVersion",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniAnalyticsUserProperty.swift",
+      "line": 21,
+      "symbol": "GiniAnalyticsUserProperty.instantPaymentEnabled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniCaptureTrackingDelegate.swift",
+      "line": 37,
+      "symbol": "OnboardingScreenTrackingDelegate.onOnboardingScreenEvent(event:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniCaptureTrackingDelegate.swift",
+      "line": 56,
+      "symbol": "CameraScreenTrackingDelegate.onCameraScreenEvent(event:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniCaptureTrackingDelegate.swift",
+      "line": 73,
+      "symbol": "ReviewScreenTrackingDelegate.onReviewScreenEvent(event:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/GiniCaptureTrackingDelegate.swift",
+      "line": 94,
+      "symbol": "AnalysisScreenTrackingDelegate.onAnalysisScreenEvent(event:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniAnalyticsConfiguration.swift",
+      "line": 23,
+      "symbol": "GiniAnalyticsConfiguration.clientID",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniAnalyticsConfiguration.swift",
+      "line": 24,
+      "symbol": "GiniAnalyticsConfiguration.userJourneyAnalyticsEnabled",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniEntryPointAnalytics.swift",
+      "line": 9,
+      "symbol": "GiniEntryPointAnalytics",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniEntryPointAnalytics.swift",
+      "line": 10,
+      "symbol": "GiniEntryPointAnalytics.button",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniEntryPointAnalytics.swift",
+      "line": 11,
+      "symbol": "GiniEntryPointAnalytics.field",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniEntryPointAnalytics.swift",
+      "line": 12,
+      "symbol": "GiniEntryPointAnalytics.openWith",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniEntryPointAnalytics.swift",
+      "line": 14,
+      "symbol": "GiniEntryPointAnalytics.makeFrom(entryPoint:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniErrorAnalytics.swift",
+      "line": 11,
+      "symbol": "GiniErrorAnalytics.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniErrorAnalytics.swift",
+      "line": 12,
+      "symbol": "GiniErrorAnalytics.code",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniErrorAnalytics.swift",
+      "line": 13,
+      "symbol": "GiniErrorAnalytics.reason",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniLineItemAnalytics.swift",
+      "line": 9,
+      "symbol": "GiniLineItemAnalytics",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniLineItemAnalytics.swift",
+      "line": 10,
+      "symbol": "GiniLineItemAnalytics.name",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniLineItemAnalytics.swift",
+      "line": 11,
+      "symbol": "GiniLineItemAnalytics.quantity",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniLineItemAnalytics.swift",
+      "line": 12,
+      "symbol": "GiniLineItemAnalytics.price",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Tracking/Models/GiniQueuedAnalyticsEvent.swift",
+      "line": 9,
+      "symbol": "GiniQueuedAnalyticsEvent",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift",
+      "line": 8,
+      "symbol": "GiniCaptureSDKVersion",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/AnalysisResult.swift",
+      "line": 11,
+      "symbol": "AnalysisResult",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/AnalysisResult.swift",
+      "line": 49,
+      "symbol": "AnalysisResult.candidates",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/AnalysisResult.swift",
+      "line": 51,
+      "symbol": "AnalysisResult.init(extractions:lineItems:skontoDiscounts:images:document:candidates:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 17,
+      "symbol": "originalDocumentName",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 19,
+      "symbol": "DocumentService",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 22,
+      "symbol": "DocumentService.document",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 23,
+      "symbol": "DocumentService.analysisCancellationToken",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 24,
+      "symbol": "DocumentService.metadata",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 28,
+      "symbol": "DocumentService.init(lib:metadata:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 33,
+      "symbol": "DocumentService.init(giniCaptureNetworkService:metadata:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 38,
+      "symbol": "DocumentService.upload(document:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 81,
+      "symbol": "DocumentService.startAnalysis(completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 108,
+      "symbol": "DocumentService.cancelAnalysis()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 122,
+      "symbol": "DocumentService.remove(document:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 137,
+      "symbol": "DocumentService.resetToInitialState()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 146,
+      "symbol": "DocumentService.update(imageDocument:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 150,
+      "symbol": "DocumentService.sendFeedback(with:updatedCompoundExtractions:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 162,
+      "symbol": "DocumentService.sendSkontoFeedback(with:updatedCompoundExtractions:retryCount:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 224,
+      "symbol": "DocumentService.sortDocuments(withSameOrderAs:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 231,
+      "symbol": "DocumentService.log(errorEvent:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 244,
+      "symbol": "DocumentService.layout(completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 261,
+      "symbol": "DocumentService.pages(completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentService.swift",
+      "line": 278,
+      "symbol": "DocumentService.documentPage(pageNumber:size:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 11,
+      "symbol": "UploadDocumentCompletion",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 12,
+      "symbol": "AnalysisCompletion",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 13,
+      "symbol": "DocumentLayoutCompletion",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 14,
+      "symbol": "DocumentPagePreviewCompletion",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 15,
+      "symbol": "DocumentPagsCompletion",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 17,
+      "symbol": "DocumentServiceProtocol",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 19,
+      "symbol": "DocumentServiceProtocol.document",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 20,
+      "symbol": "DocumentServiceProtocol.metadata",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 21,
+      "symbol": "DocumentServiceProtocol.analysisCancellationToken",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 23,
+      "symbol": "DocumentServiceProtocol.cancelAnalysis()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 24,
+      "symbol": "DocumentServiceProtocol.remove(document:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 25,
+      "symbol": "DocumentServiceProtocol.resetToInitialState()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 26,
+      "symbol": "DocumentServiceProtocol.sendFeedback(with:updatedCompoundExtractions:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 27,
+      "symbol": "DocumentServiceProtocol.sendSkontoFeedback(with:updatedCompoundExtractions:retryCount:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 30,
+      "symbol": "DocumentServiceProtocol.startAnalysis(completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 31,
+      "symbol": "DocumentServiceProtocol.sortDocuments(withSameOrderAs:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 32,
+      "symbol": "DocumentServiceProtocol.upload(document:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 34,
+      "symbol": "DocumentServiceProtocol.update(imageDocument:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 35,
+      "symbol": "DocumentServiceProtocol.log(errorEvent:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 37,
+      "symbol": "DocumentServiceProtocol.layout(completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 38,
+      "symbol": "DocumentServiceProtocol.pages(completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 39,
+      "symbol": "DocumentServiceProtocol.documentPage(pageNumber:size:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/DocumentServiceProtocol.swift",
+      "line": 44,
+      "symbol": "DocumentServiceProtocol",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/Extensions/GiniCapture+GiniCaptureDelegate.swift",
+      "line": 77,
+      "symbol": "GiniCapture.removeStoredCredentials(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 10,
+      "symbol": "GiniCaptureNetworkService",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 11,
+      "symbol": "GiniCaptureNetworkService.delete(document:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 13,
+      "symbol": "GiniCaptureNetworkService.cleanup()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 15,
+      "symbol": "GiniCaptureNetworkService.analyse(partialDocuments:metadata:cancellationToken:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 19,
+      "symbol": "GiniCaptureNetworkService.upload(document:metadata:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 22,
+      "symbol": "GiniCaptureNetworkService.sendFeedback(document:updatedExtractions:updatedCompoundExtractions:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 26,
+      "symbol": "GiniCaptureNetworkService.sendFeedback(documentId:updatedExtractions:updatedCompoundExtractions:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 30,
+      "symbol": "GiniCaptureNetworkService.log(errorEvent:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 33,
+      "symbol": "GiniCaptureNetworkService.layout(for:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 35,
+      "symbol": "GiniCaptureNetworkService.pages(for:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 36,
+      "symbol": "GiniCaptureNetworkService.documentPage(for:pageNumber:size:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniCaptureNetworkService.swift",
+      "line": 43,
+      "symbol": "GiniCaptureNetworkService",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
+      "line": 34,
+      "symbol": "GiniNetworkingScreenAPICoordinator",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
+      "line": 35,
+      "symbol": "GiniNetworkingScreenAPICoordinator.resultsDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
+      "line": 36,
+      "symbol": "GiniNetworkingScreenAPICoordinator.documentService",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
+      "line": 38,
+      "symbol": "GiniNetworkingScreenAPICoordinator.init(client:resultsDelegate:giniConfiguration:documentMetadata:api:trackingDelegate:lib:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
+      "line": 56,
+      "symbol": "GiniNetworkingScreenAPICoordinator.init(resultsDelegate:giniConfiguration:documentMetadata:trackingDelegate:captureNetworkService:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
+      "line": 94,
+      "symbol": "GiniNetworkingScreenAPICoordinator.deliver(result:and:to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
+      "line": 169,
+      "symbol": "GiniNetworkingScreenAPICoordinator",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios"
+}
