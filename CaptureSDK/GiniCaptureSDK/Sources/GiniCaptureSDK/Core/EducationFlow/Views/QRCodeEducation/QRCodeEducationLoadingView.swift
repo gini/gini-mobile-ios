@@ -94,13 +94,13 @@ final class QRCodeEducationLoadingView: UIView {
         animatedSuffixLabelView.startAnimating()
 
         if isAccessibilityDeviceWithoutNotch {
-            configureAccessibilityPreNotchConstraints()
+            configureWithoutNotchConstraints()
         } else {
             configureStandardNotchConstraints()
         }
     }
 
-    private func configureAccessibilityPreNotchConstraints() {
+    private func configureWithoutNotchConstraints() {
         NSLayoutConstraint.activate([
             // Text label positioned at top (where image would be)
             textLabel.topAnchor.constraint(equalTo: topAnchor),
