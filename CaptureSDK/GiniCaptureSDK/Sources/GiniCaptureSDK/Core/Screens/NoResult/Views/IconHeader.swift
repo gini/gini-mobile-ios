@@ -143,27 +143,3 @@ final class IconHeader: UIView {
         static let headerTrailingPadding: CGFloat = 16
     }
 }
-
-/// This is to see in realtime the preview of the component to be built. This helps to not to have
-/// to run the app with each change.
-#if DEBUG
-@available(iOS 17, *)
-#Preview {
-    let vc = UIViewController()
-
-    let iconHeader = IconHeader(frame: .zero)
-
-    vc.view.addSubview(iconHeader)
-    NSLayoutConstraint.activate([
-        iconHeader.leadingAnchor.constraint(equalTo: vc.view.leadingAnchor),
-        iconHeader.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor),
-        iconHeader.topAnchor.constraint(equalTo: vc.view.safeAreaLayoutGuide.topAnchor)
-    ])
-
-    iconHeader.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
-
-    iconHeader.image = UIImage(systemName: "person.circle")
-
-    return vc
-}
-#endif
