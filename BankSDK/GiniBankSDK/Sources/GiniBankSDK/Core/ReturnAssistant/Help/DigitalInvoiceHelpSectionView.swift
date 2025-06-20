@@ -12,8 +12,7 @@ final class DigitalInvoiceHelpSectionView: UIView {
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.isAccessibilityElement = true
-        imageView.accessibilityTraits = .none
+        imageView.isAccessibilityElement = false
         return imageView
     }()
 
@@ -23,6 +22,7 @@ final class DigitalInvoiceHelpSectionView: UIView {
         titleLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         titleLabel.font = configuration.textStyleFonts[.bodyBold]
         titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.isAccessibilityElement = false
         titleLabel.numberOfLines = 0
         return titleLabel
     }()
@@ -30,6 +30,7 @@ final class DigitalInvoiceHelpSectionView: UIView {
     private lazy var descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.isAccessibilityElement = false
         descriptionLabel.numberOfLines = 0
         descriptionLabel.textColor = GiniColor(light: .GiniBank.dark6,
                                                dark: .GiniBank.light6).uiColor()
@@ -43,22 +44,31 @@ final class DigitalInvoiceHelpSectionView: UIView {
     init(content: DigitalInvoiceHelpSection) {
         super.init(frame: .zero)
 
+        let accessibilityText = "\(content.title)\n\(content.description)"
+
         setupView(with: content)
+        setupAccessibility(text: accessibilityText)
         setupConstraints()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupView(with content: DigitalInvoiceHelpSection) {
         backgroundColor = .clear
         iconImageView.image = content.icon
-        iconImageView.accessibilityValue = content.title
         titleLabel.text = content.title
-        titleLabel.accessibilityValue = content.title
         descriptionLabel.text = content.description
-        descriptionLabel.accessibilityValue = content.description
 
         addSubview(iconImageView)
         addSubview(titleLabel)
         addSubview(descriptionLabel)
+    }
+
+    private func setupAccessibility(text: String) {
+        isAccessibilityElement = true
+        accessibilityLabel = text
     }
 
     private func setupConstraints() {
@@ -77,10 +87,6 @@ final class DigitalInvoiceHelpSectionView: UIView {
             descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             descriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 

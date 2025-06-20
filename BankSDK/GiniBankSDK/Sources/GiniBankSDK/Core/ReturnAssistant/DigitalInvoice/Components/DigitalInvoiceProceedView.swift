@@ -20,9 +20,7 @@ class DigitalInvoiceProceedView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
-                                                                   comment: "Proceed")
-        button.accessibilityValue = buttonTitle
+        let buttonTitle = Strings.proceedButtonTitle
         button.setTitle(buttonTitle, for: .normal)
         button.addTarget(self, action: #selector(proceedButtonTapped), for: .touchUpInside)
         return button
@@ -34,10 +32,8 @@ class DigitalInvoiceProceedView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.subheadline]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        let labelText = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
-                                                                 comment: "Total")
+        let labelText = Strings.totalStringLabel
         label.text = labelText
-        label.accessibilityValue = labelText
         return label
     }()
 
@@ -223,22 +219,16 @@ class DigitalInvoiceProceedView: UIView {
 
         let finalAmountString = viewModel.totalPrice?.localizedStringWithCurrencyCode
         finalAmountToPayLabel.text = finalAmountString
-        finalAmountToPayLabel.accessibilityValue = finalAmountString
 
         if let skontoViewModel = viewModel.skontoViewModel {
             let isSkontoApplied = skontoViewModel.isSkontoApplied
             skontoBadgeView.isHidden = !isSkontoApplied
             let formattedPercentageDiscounted = skontoViewModel.formattedPercentageDiscounted
-            let percentageText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
-                                                                          comment: "%@ Skonto discount")
-            let skontoPercentageLabelText = String.localizedStringWithFormat(percentageText,
-                                                                             formattedPercentageDiscounted)
+            let skontoPercentageLabelText = Strings.percentageText(formattedPercentageDiscounted)
             skontoPercentageLabel.text = skontoPercentageLabelText
-            skontoPercentageLabel.accessibilityValue = skontoPercentageLabelText
             savingsAmountLabel.isHidden = !isSkontoApplied
             let savingsAmountLabelText = skontoViewModel.savingsAmountString
             savingsAmountLabel.text = savingsAmountLabelText
-            savingsAmountLabel.accessibilityValue = savingsAmountLabelText
         }
     }
 
@@ -261,5 +251,20 @@ private extension DigitalInvoiceProceedView {
         static let totalValueLabelTopPadding: CGFloat = 4
         static let savingsAmountLabelTopPadding: CGFloat = 2
         static let tabletWidthMultiplier: CGFloat = 0.7
+    }
+
+    private struct Strings {
+        static let proceedButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
+                                                                                 comment: "Proceed")
+
+        static let totalStringLabel = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
+                                                                               comment: "Total")
+
+        static let percentageText: (String) -> String = { replacementText in
+            let formatString = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
+                                                                          comment: "%@ Skonto discount")
+
+            return String.localizedStringWithFormat(formatString, replacementText)
+        }
     }
 }

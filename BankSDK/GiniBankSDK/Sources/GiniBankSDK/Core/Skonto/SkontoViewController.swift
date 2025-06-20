@@ -297,8 +297,10 @@ final class SkontoViewController: UIViewController {
 
         mainStackView.addArrangedSubview(proceedContainerView)
         NSLayoutConstraint.activate([
-            proceedContainerView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            proceedContainerView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor)
+            proceedContainerView.leadingAnchor.constraint(equalTo: mainStackView.safeAreaLayoutGuide.leadingAnchor,
+                                                          constant: Constants.landscapeHorizontalPadding),
+            proceedContainerView.trailingAnchor.constraint(equalTo: mainStackView.safeAreaLayoutGuide.trailingAnchor,
+                                                           constant: -Constants.landscapeHorizontalPadding)
         ])
 
         updateScrollViewBottomToViewConstraint(to: view.safeAreaLayoutGuide.bottomAnchor)
@@ -645,6 +647,7 @@ private extension SkontoViewController {
         static let scrollIndicatorInset: CGFloat = 0
         static let tabletWidthMultiplier: CGFloat = 0.7
         static let navigationBarViewDefaultHeight: CGFloat = 62
+        static let landscapeHorizontalPadding: CGFloat = 16
 
         static var scrollViewLandscapeIphoneContentInsets: UIEdgeInsets {
             UIEdgeInsets(top: containerPadding, left: 0, bottom: 0, right: 0)

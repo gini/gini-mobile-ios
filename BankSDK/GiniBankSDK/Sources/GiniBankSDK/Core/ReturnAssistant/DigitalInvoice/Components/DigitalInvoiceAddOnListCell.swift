@@ -26,6 +26,10 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
         return view
     }()
 
+    override var canBecomeFocused: Bool {
+        false
+    }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -100,13 +104,6 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
                     addOnStackView.addArrangedSubview(view)
                 }
             }
-        }
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if UIDevice.current.isIphone {
-            contentView.frame = contentView.frame.insetBy(dx: safeAreaInsets.left + Constants.horizontalPadding, dy: 0)
         }
     }
 }

@@ -144,6 +144,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             withReuseIdentifier: reuseId,
             for: indexPath) as? OnboardingPageCell {
             configureCell(cell: cell, indexPath: indexPath)
+            cell.updateConstraintsForCurrentTraits()
             return cell
         }
         fatalError("OnboardingPageCell wasn't initialized")

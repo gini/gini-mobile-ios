@@ -66,6 +66,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
         return stackView
     }()
 
+    private var safeArea: UILayoutGuide { view.safeAreaLayoutGuide }
     private let viewModel: SkontoViewModel
     private let alertFactory: SkontoAlertFactory
     private let configuration = GiniBankConfiguration.shared
@@ -93,6 +94,7 @@ class DigitalInvoiceSkontoViewController: UIViewController {
         setupView()
         setupConstraints()
         setupKeyboardObservers()
+        setupInputAccessoryView(for: [withDiscountPriceView, expiryDateView])
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -158,17 +160,39 @@ class DigitalInvoiceSkontoViewController: UIViewController {
     }
 
     private func setupStackViewConstraints() {
-        NSLayoutConstraint.activate([
+        var constraints: [NSLayoutConstraint] = [
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ]
+
+        if UIDevice.current.isIphone {
+            constraints += iphoneConstraints()
+        } else {
+            constraints += ipadConstraints()
+        }
+
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    private func iphoneConstraints() -> [NSLayoutConstraint] {
+        [
+            stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor,
                                                constant: Constants.containerPadding),
-            stackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
+            stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor,
+                                                constant: -Constants.containerPadding)
+        ]
+    }
+
+    private func ipadConstraints() -> [NSLayoutConstraint] {
+        [
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: safeArea.leadingAnchor,
+                                               constant: Constants.containerPadding),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: safeArea.trailingAnchor,
                                                 constant: -Constants.containerPadding),
-            stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
-                                             constant: -2 * Constants.containerPadding)
-        ])
+                                             constant: -2 * Constants.containerPadding),
+            stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
+        ]
     }
 
     private func setupWithDiscountGroupViewConstraints() {
@@ -291,6 +315,7 @@ extension DigitalInvoiceSkontoViewController: SkontoExpiryDateViewDelegate {
     func expiryDateTextFieldTapped() {
         GiniAnalyticsManager.track(event: .dueDateTapped,
                                    screenName: .returnAssistantSkonto)
+        updateCurrentField(expiryDateView)
     }
 }
 
@@ -298,6 +323,7 @@ extension DigitalInvoiceSkontoViewController: SkontoWithDiscountPriceViewDelegat
     func withDiscountPriceTextFieldTapped() {
         GiniAnalyticsManager.track(event: .finalAmountTapped,
                                    screenName: .returnAssistantSkonto)
+        updateCurrentField(withDiscountPriceView)
     }
 }
 
@@ -329,10 +355,13 @@ extension DigitalInvoiceSkontoViewController {
             return
         }
 
-        let contentOffset = keyboardFrame.height + Constants.containerPadding
-        UIView.animate(withDuration: animationDuration) {
-            self.scrollView.contentInset.bottom = contentOffset
-            self.scrollView.scrollIndicatorInsets.bottom = contentOffset
+        let keyboardHeight = keyboardFrame.height
+        let keyboardOffset = calculateKeyboardOffset(for: withDiscountContainerView, keyboardHeight: keyboardHeight)
+
+        UIView.animate(withDuration: animationDuration) { [weak self] in
+            self?.scrollView.contentInset.bottom = keyboardHeight
+            self?.scrollView.verticalScrollIndicatorInsets.bottom = keyboardHeight
+            self?.scrollView.setContentOffset(CGPoint(x: 0, y: keyboardOffset), animated: true)
         }
     }
 
@@ -342,10 +371,34 @@ extension DigitalInvoiceSkontoViewController {
             return
         }
 
-        UIView.animate(withDuration: animationDuration) {
-            self.scrollView.contentInset.bottom = Constants.containerPadding
-            self.scrollView.scrollIndicatorInsets.bottom = Constants.scrollIndicatorInset
+        UIView.animate(withDuration: animationDuration) { [weak self] in
+            self?.scrollView.contentInset.bottom = Constants.containerPadding
+            self?.scrollView.verticalScrollIndicatorInsets.bottom = Constants.scrollIndicatorInset
         }
+    }
+
+    private func calculateKeyboardOffset(for targetView: UIView, keyboardHeight: CGFloat) -> CGFloat {
+        let targetFrameInScrollView = scrollView.convert(targetView.frame, from: targetView.superview)
+        let scrollViewBottomMarginDifference = (scrollView.superview?.bounds.height ?? 0) - scrollView.frame.maxY
+        let keyboardTotalHeight = keyboardHeight + Constants.containerPadding
+        let keyboardOffsetOverProceedView = keyboardTotalHeight - scrollViewBottomMarginDifference
+        return max(0, targetFrameInScrollView.maxY - scrollView.bounds.height + keyboardOffsetOverProceedView)
+    }
+}
+
+// MARK: - GiniInputAccessoryView delegate methods
+
+extension DigitalInvoiceSkontoViewController: GiniInputAccessoryViewDelegate {
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectPrevious field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectNext field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryViewDidCancel(_ view: GiniInputAccessoryView) {
+        endEditing()
     }
 }
 

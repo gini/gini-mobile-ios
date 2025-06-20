@@ -12,10 +12,14 @@ struct DigitalLineItemTableViewCellViewModel {
 
     var lineItem: DigitalInvoice.LineItem
 
-    let index: Int
+    let indexPath: IndexPath
     let invoiceNumTotal: Int
     let invoiceLineItemsCount: Int
     let nameMaxCharactersCount: Int
+    
+    var index: Int {
+        indexPath.row
+    }
 
     private var quantityString: String {
         let string = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.quantity",
