@@ -268,19 +268,24 @@ final class QRCodeOverlay: UIView {
 
     private func layoutLoadingIndicator(centeringBy cameraFrame: UIView,
                                         on viewController: UIViewController) {
-        if let educationLoadingView {
-            let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
-            if isAccessibilityCategory && UIDevice.current.isIphoneAndLandscape {
-                layoutEducationLoadingView(educationLoadingView,
-                                           cameraFrame: cameraFrame,
-                                           on: viewController)
-            } else {
-                layoutEducationLoadingView(educationLoadingView,
-                                           cameraFrame: cameraFrame)
-            }
-        } else {
+
+        guard let educationLoadingView else {
             layoutDefaultLoadingView(cameraFrame: cameraFrame)
+            return
         }
+
+        let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
+        // Check if is iPhone and landscape orientation and 200% font size enabled
+        if isAccessibilityCategory && UIDevice.current.isIphoneAndLandscape {
+            // For iPhone landscape mode with large font size, educationLoadingView is added to the viewController
+            layoutEducationLoadingView(educationLoadingView,
+                                       cameraFrame: cameraFrame,
+                                       on: viewController)
+        } else {
+            layoutEducationLoadingView(educationLoadingView,
+                                       cameraFrame: cameraFrame)
+        }
+
     }
     private var educationLoadingConstraints: [NSLayoutConstraint] = []
 
@@ -308,8 +313,7 @@ final class QRCodeOverlay: UIView {
         } else {
             constraints.append(view.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor))
             constraints.append(view.trailingAnchor.constraint(equalTo: cameraFrame.trailingAnchor))
-            constraints.append(view.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.topAnchor,
-                                                         constant: Constants.educationLoadingViewTopPadding))
+            constraints.append(view.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.bottomAnchor))
         }
 
         educationLoadingConstraints = constraints
@@ -386,9 +390,8 @@ final class QRCodeOverlay: UIView {
 
 private enum Constants {
     static let spacing: CGFloat = 8
-    static let educationLoadingViewPadding: CGFloat = 28
     static let educationLoadingViewTopPadding: CGFloat = 6
     static let topSpacing: CGFloat = 2
     static let iconSize = CGSize(width: 56, height: 56)
-    static let educationLoadingHorizontalPadding:CGFloat = 56
+    static let educationLoadingHorizontalPadding: CGFloat = 56
 }
