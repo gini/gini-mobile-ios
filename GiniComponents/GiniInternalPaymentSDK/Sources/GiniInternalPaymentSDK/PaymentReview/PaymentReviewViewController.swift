@@ -400,7 +400,7 @@ fileprivate extension PaymentReviewViewController {
         view.addSubview(mainView)
         mainView.backgroundColor = model.configuration.backgroundColor
         NSLayoutConstraint.activate([
-            mainView.topAnchor.constraint(equalTo: view.topAnchor),
+            mainView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             mainView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             mainView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -467,11 +467,12 @@ fileprivate extension PaymentReviewViewController {
         flowLayout.minimumInteritemSpacing = Constants.collectionViewPadding
         flowLayout.minimumLineSpacing = Constants.collectionViewPadding
         flowLayout.scrollDirection = .horizontal // Enable horizontal scrolling
-
+        
         let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
         collection.backgroundColor = model.configuration.backgroundColor
         collection.delegate = self
         collection.dataSource = self
+        collection.isPagingEnabled = true
         collection.register(cellType: PageCollectionViewCell.self)
         return collection
     }
@@ -690,11 +691,10 @@ extension PaymentReviewViewController {
         let isPortrait = orientation == .vertical
         let showCollectionView = model.displayMode == .documentCollection
         
-        var constraints = [] as [NSLayoutConstraint]
+        var constraints: [NSLayoutConstraint] = []
         
         if showCollectionView {
-            let navigationBarHeight = self.navigationController?.navigationBar.frame.maxY ?? 0
-            constraints.append(collectionView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: navigationBarHeight))
+            constraints.append(collectionView.topAnchor.constraint(equalTo: mainView.topAnchor))
             constraints.append(collectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor))
             constraints.append(paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor))
         }
@@ -720,7 +720,7 @@ extension PaymentReviewViewController {
         coordinator.animate(alongsideTransition: { context in
             self.updateLayoutForCurrentOrientation()
             self.view.layoutIfNeeded()
-            self.collectionView.reloadData()
+            self.collectionView.contentOffset = .zero
             self.isViewRotating = false
         }, completion: nil)
     }
