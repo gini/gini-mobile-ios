@@ -11,7 +11,7 @@ protocol NameLabelViewDelegate: AnyObject {
     func nameLabelViewTextFieldDidChange(on: NameLabelView)
 }
 
-final class NameLabelView: UIView {
+final class NameLabelView: UIView, GiniInputAccessoryViewPresentable {
     private lazy var configuration = GiniBankConfiguration.shared
     weak var delegate: NameLabelViewDelegate?
 
@@ -33,7 +33,6 @@ final class NameLabelView: UIView {
         label.adjustsFontForContentSizeCategory = true
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.name", comment: "Name")
         label.text = title
-        label.accessibilityValue = title
         return label
     }()
 
@@ -47,6 +46,22 @@ final class NameLabelView: UIView {
         return textField
     }()
 
+    override var inputAccessoryView: UIView? {
+        get {
+            nameTextField.inputAccessoryView
+        }
+
+        set {
+            nameTextField.inputAccessoryView = newValue
+        }
+    }
+
+    override var isFirstResponder: Bool {
+        nameTextField.isFirstResponder
+    }
+
+    @Published var didStartEditing = false
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -56,6 +71,14 @@ final class NameLabelView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        nameTextField.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        nameTextField.resignFirstResponder()
     }
 
     private func setupView() {
@@ -83,6 +106,10 @@ final class NameLabelView: UIView {
 
     @objc private func textFieldDidChange(_ textField: UITextField) {
         delegate?.nameLabelViewTextFieldDidChange(on: self)
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        didStartEditing = true
     }
 }
 

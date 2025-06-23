@@ -9,27 +9,15 @@ import UIKit
 
 class ErrorScreenViewController: UIViewController {
     private var giniConfiguration: GiniConfiguration
-    lazy var errorHeader: IconHeader = {
-        if let header = IconHeader().loadNib() as? IconHeader {
-            header.headerLabel.adjustsFontForContentSizeCategory = true
-            header.headerLabel.adjustsFontSizeToFitWidth = true
-            header.translatesAutoresizingMaskIntoConstraints = false
-        return header
-        }
-        fatalError("Error header not found")
-    }()
+    lazy var errorHeader = IconHeader(frame: .zero)
 
     private lazy var buttonsView: ButtonsView = {
-        let view = ButtonsView(
-            enterButtonTitle: NSLocalizedStringPreferredFormat(
-                "ginicapture.error.enterManually",
-                comment: "Enter manually button title"),
-            retakeButtonTitle: NSLocalizedStringPreferredFormat(
-                "ginicapture.error.backToCamera",
-                comment: "Back to camera button title"))
+        let view = ButtonsView(secondaryButtonTitle: Strings.enterButtonTitle,
+                               primaryButtonTitle: Strings.retakeButtonTitle)
+
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.enterButton.isHidden = viewModel.isEnterManuallyHidden()
-        view.retakeButton.isHidden = viewModel.isRetakePressedHidden()
+        view.secondaryButton.isHidden = viewModel.isEnterManuallyHidden()
+        view.primaryButton.isHidden = viewModel.isRetakePressedHidden()
         return view
     }()
 
@@ -50,27 +38,21 @@ class ErrorScreenViewController: UIViewController {
     }()
 
     private lazy var navigationBarHeightConstraint: NSLayoutConstraint? = {
-        guard let navbar = bottomNavigationBar else {
+        guard let bottomNavigationBar else {
             return nil
         }
-        let constraint = navbar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
+        let constraint = bottomNavigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
         return constraint
     }()
 
     let viewModel: BottomButtonsViewModel
     private let errorType: ErrorType
     private var navigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
-    private var buttonsHeightConstraint: NSLayoutConstraint?
     private var buttonsBottomConstraint: NSLayoutConstraint?
     private var bottomNavigationBar: UIView?
 
     private var numberOfButtons: Int {
-        return [
-            viewModel.isEnterManuallyHidden(),
-            viewModel.isRetakePressedHidden()
-        ].filter({
-            !$0
-        }).count
+        [viewModel.isEnterManuallyHidden(), viewModel.isRetakePressedHidden()].filter({ !$0 }).count
     }
 
     /**
@@ -124,11 +106,10 @@ class ErrorScreenViewController: UIViewController {
     }
 
     func setupView() {
-        title = NSLocalizedStringPreferredFormat("ginicapture.error.title",
-                                                 comment: "Error screen title")
+        title = Strings.screenTitle
         configureErrorHeader()
         configureErrorContent()
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        view.backgroundColor = GiniColor(light: .GiniCapture.light2, dark: .GiniCapture.dark2).uiColor()
         view.addSubview(errorHeader)
         view.addSubview(scrollView)
         scrollView.addSubview(errorContent)
@@ -140,40 +121,28 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureErrorHeader() {
-        errorHeader.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat(
-            "ginicapture.error.title",
-            comment: "Error screen title")
-        errorHeader.headerLabel.text = errorType.title()
-        errorHeader.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
-        errorHeader.headerLabel.textColor = GiniColor(
-            light: UIColor.GiniCapture.dark1,
-            dark: UIColor.GiniCapture.light1
-        ).uiColor()
-        errorHeader.backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.error4,
-            dark: UIColor.GiniCapture.error1
-        ).uiColor()
-        errorHeader.iconImageView.image = UIImageNamedPreferred(named: errorType.iconName())
+        errorHeader.iconAccessibilityLabel = Strings.screenTitle
+        errorHeader.text = errorType.title()
+        errorHeader.image = UIImageNamedPreferred(named: errorType.iconName())
     }
 
     private func configureErrorContent() {
         errorContent.text = errorType.content()
         errorContent.font = giniConfiguration.textStyleFonts[.body]
-        errorContent.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.light6).uiColor()
+        errorContent.textColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.light6).uiColor()
     }
 
     private func configureButtons() {
-        buttonsView.enterButton.addTarget(self,
+        buttonsView.secondaryButton.addTarget(self,
                                           action: #selector(didPressEnterManually),
                                           for: .touchUpInside)
-        buttonsView.retakeButton.addTarget(self,
+        buttonsView.primaryButton.addTarget(self,
                                            action: #selector(didPressRetake),
                                            for: .touchUpInside)
     }
 
     private func configureBottomNavigationBar() {
-        let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
-                                                           comment: "Back to camera")
+        let buttonTitle = Strings.backToCameraTitle
         if giniConfiguration.bottomNavigationBarEnabled {
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.leftBarButtonItem = nil
@@ -233,14 +202,6 @@ class ErrorScreenViewController: UIViewController {
         viewModel.didPressBack()
     }
 
-    private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
-        if numberOfButtons == 1 {
-            return Constants.singleButtonHeight
-        } else {
-            return Constants.twoButtonsHeight
-        }
-    }
-
     private func configureConstraints() {
         configureHeaderConstraints()
         configureScrollViewConstraints()
@@ -252,16 +213,14 @@ class ErrorScreenViewController: UIViewController {
     private func configureHeaderConstraints() {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                errorHeader.headerStack.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                                               multiplier: Constants.iPadWidthMultiplier),
-                errorHeader.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+                errorHeader.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                   multiplier: Constants.iPadWidthMultiplier),
+                errorHeader.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
             NSLayoutConstraint.activate([
-                errorHeader.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                                 constant: Constants.sidePadding),
-                errorHeader.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                                  constant: -Constants.sidePadding)
+                errorHeader.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
         }
         errorHeader.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
@@ -269,10 +228,6 @@ class ErrorScreenViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             errorHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            errorHeader.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            errorHeader.heightAnchor.constraint(
-                greaterThanOrEqualToConstant: Constants.errorHeaderMinHeight),
             errorHeader.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
                                                 multiplier: Constants.errorHeaderHeightMultiplier)
         ])
@@ -281,24 +236,18 @@ class ErrorScreenViewController: UIViewController {
     private func configureScrollViewConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: errorHeader.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor)
         ])
     }
 
     private func configureButtonsViewConstraints() {
-        let buttonsConstraint =  buttonsView.heightAnchor.constraint(
-            greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
-        )
-        buttonsHeightConstraint = buttonsConstraint
-        let bottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                                   constant: -GiniMargins.margin)
-        buttonsBottomConstraint = bottomConstraint
-        NSLayoutConstraint.activate([
-            buttonsConstraint,
-            bottomConstraint
-        ])
+        buttonsBottomConstraint = buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                                      constant: -GiniMargins.margin)
+
+        buttonsBottomConstraint?.isActive = true
+
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 buttonsView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
@@ -325,9 +274,9 @@ class ErrorScreenViewController: UIViewController {
             ])
         } else {
             NSLayoutConstraint.activate([
-                errorContent.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                errorContent.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                                                       constant: Constants.textContentMargin),
-                errorContent.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                errorContent.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                                                        constant: -Constants.textContentMargin)
             ])
         }
@@ -358,14 +307,24 @@ private extension ErrorScreenViewController {
         static let navigationBarHeightLandscape: CGFloat = 64
     }
 
+    private struct Strings {
+        static let enterButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.error.enterManually",
+                                                                       comment: "Enter manually button title")
+
+        static let retakeButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.error.backToCamera",
+                                                                        comment: "Back to camera button title")
+
+        static let screenTitle = NSLocalizedStringPreferredFormat("ginicapture.error.title",
+                                                                  comment: "Error screen title")
+
+        static let backToCameraTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.error.backToCamera",
+                                                                        comment: "Back to camera")
+    }
+
     func getBottomBarHeight() -> CGFloat {
-        if isiPhoneAndLandscape() {
+        if UIDevice.current.isIphoneAndLandscape {
             return Constants.navigationBarHeightLandscape
         }
         return Constants.navigationBarHeight
-    }
-
-    func isiPhoneAndLandscape() -> Bool {
-        return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
     }
 }
