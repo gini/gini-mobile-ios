@@ -97,7 +97,9 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             linksFont: GiniHealthConfiguration.shared.font(for: .linkBold),
             linksColor: GiniColor.accent1.uiColor(),
             separatorColor: GiniColor.standard5.uiColor(),
-            backgroundColor: GiniColor.standard7.uiColor()
+            backgroundColor: GiniColor.standard7.uiColor(),
+            closeIcon: GiniHealthImage.close.preferredUIImage(),
+            closeIconTintColor: GiniColor.standard2.uiColor()
         )
     }
 
