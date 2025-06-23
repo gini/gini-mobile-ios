@@ -10,6 +10,12 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var pagesCollection: UICollectionView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var nextButton: MultilineTitleButton!
+    @IBOutlet weak var buttonCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var collectionViewToPageControlConstraint: NSLayoutConstraint!
+    @IBOutlet weak var collectionViewToViewBottomConstraint: NSLayoutConstraint!
+    private var bottomPaddingPageIndicatorConstraint: NSLayoutConstraint!
+    private var navigationBarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var skipBottomBarButton: MultilineTitleButton!
     private(set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
@@ -29,8 +35,15 @@ class OnboardingViewController: UIViewController {
         pagesCollection.register(
             UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()),
             forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier)
+        pagesCollection.register(
+            UINib(nibName: "OnboardingPageCellLandscapeIphone", bundle: giniCaptureBundle()),
+            forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier + "iphoneland")
+        pagesCollection.register(
+            UINib(nibName: "OnboardingPageCellLandscapeIphoneSmall", bundle: giniCaptureBundle()),
+            forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier + "iphoneland-small")
         pagesCollection.isPagingEnabled = true
         pagesCollection.showsHorizontalScrollIndicator = false
+        pagesCollection.contentInsetAdjustmentBehavior = .never
         pagesCollection.dataSource = dataSource
         pagesCollection.delegate = dataSource
         dataSource.delegate = self
@@ -46,17 +59,15 @@ class OnboardingViewController: UIViewController {
         pageControl.addTarget(self, action: #selector(self.pageControlSelectionAction(_:)), for: .valueChanged)
         pageControl.numberOfPages = dataSource.pageModels.count
         pageControl.isAccessibilityElement = true
-        configureNavigationButtons(for: 0)
-        pageControl.currentPage = 0
+        updatePageControlAndNavigationButtons(at: 0)
     }
 
     private func setupView() {
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         configureCollectionView()
+        configureBasicNavigation()
         if configuration.bottomNavigationBarEnabled {
             configureBottomNavigation()
-        } else {
-            configureBasicNavigation()
         }
         configurePageControl()
     }
@@ -66,14 +77,73 @@ class OnboardingViewController: UIViewController {
         setupView()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if UIDevice.current.isIphone {
+            if view.currentInterfaceOrientation.isLandscape {
+
+                if configuration.onboardingNavigationBarBottomAdapter != nil {
+                    bottomNavigationBar?.isHidden = false
+                    nextButton?.isHidden = true
+                    skipBottomBarButton?.isHidden = true
+                } else {
+                    bottomNavigationBar?.isHidden = true
+                    nextButton?.isHidden = false
+                    skipBottomBarButton?.isHidden = !configuration.bottomNavigationBarEnabled
+                        || pageControl.currentPage == dataSource.pageModels.count - 1
+                }
+
+                let safeareaLeftPadding = view.safeAreaInsets.left
+                let safeareaRightPadding = view.safeAreaInsets.right
+
+                // icon leading constraint size from safearea
+                let iconPadding: CGFloat = 56
+                let iconWidth: CGFloat = 220
+                let viewWidth = view.bounds.width
+
+                // it'll be easier to start with the zero point of the view
+                let startOffset = -viewWidth/2
+
+                // distance from X=0 to icon view right edge x
+                let toIconOffset = safeareaLeftPadding + iconPadding + iconWidth
+
+                // width of stackview with texts, including padding. safe area isn't counted, as constraints are bound to safe area
+                let textStackWidthWithPadding = viewWidth - toIconOffset - safeareaRightPadding
+
+                // X of the right edge of the icon view + half of text stack width
+                let xOffset = startOffset + toIconOffset + (textStackWidthWithPadding / 2)
+                let isIphoneSmall = UIDevice.current.isSmallIphone
+
+                buttonCenterXConstraint.constant = isIphoneSmall ? 0 : xOffset
+                collectionViewToPageControlConstraint.isActive = false
+                collectionViewToViewBottomConstraint.isActive = true
+            } else {
+                buttonCenterXConstraint.constant = 0
+                collectionViewToViewBottomConstraint.isActive = false
+                collectionViewToPageControlConstraint.isActive = true
+                bottomNavigationBar?.isHidden = !configuration.bottomNavigationBarEnabled
+                nextButton?.isHidden = configuration.bottomNavigationBarEnabled
+                skipBottomBarButton?.isHidden = true
+            }
+            pagesCollection.reloadData()
+        }
+    }
+
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
+
+        bottomPaddingPageIndicatorConstraint = navigationBar.topAnchor.constraint(
+            equalTo: pageControl.bottomAnchor,
+            constant: getBottomPaddingForPageController()
+        )
+        navigationBarHeightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: getBottomBarHeight())
         NSLayoutConstraint.activate([
-            navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 46),
+            bottomPaddingPageIndicatorConstraint,
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBarHeightConstraint
         ])
     }
 
@@ -81,7 +151,14 @@ class OnboardingViewController: UIViewController {
         nextButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         nextButton.configure(with: GiniConfiguration.shared.primaryButtonConfiguration)
         nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
+        nextButton.titleLabel?.numberOfLines = 1
+
+        skipBottomBarButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        skipBottomBarButton.configure(with: GiniConfiguration.shared.transparentButtonConfiguration)
+        skipBottomBarButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
+
         configureNextButton()
+        configureSkipBottomButton()
 
         configureSkipButton()
     }
@@ -121,7 +198,7 @@ class OnboardingViewController: UIViewController {
     }
 
     private func removeButtons() {
-        nextButton.removeFromSuperview()
+        nextButton.isHidden = true
     }
 
     private func configureSkipButton() {
@@ -132,14 +209,21 @@ class OnboardingViewController: UIViewController {
     private func configureGetStartedButton() {
         let getStartedTitle = NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
                                                                comment: "Get Started button")
+
         nextButton.setTitle(getStartedTitle, for: .normal)
-        nextButton.accessibilityValue = getStartedTitle
+    }
+
+    private func configureSkipBottomButton() {
+        let title = NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
+                                                     comment: "Skip button")
+
+        skipBottomBarButton.setTitle(title, for: .normal)
     }
 
     private func configureNextButton() {
         let nextButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
                                                                comment: "Next button")
-        nextButton.accessibilityValue = nextButtonTitle
+
         nextButton.setTitle(nextButtonTitle, for: .normal)
     }
 
@@ -157,8 +241,10 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func pageControlSelectionAction(_ sender: UIPageControl) {
-        let index = IndexPath(item: sender.currentPage, section: 0)
+        let pageIndex = sender.currentPage
+        let index = IndexPath(item: pageIndex, section: 0)
         pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+        updatePageControlAndNavigationButtons(at: pageIndex)
     }
 
     @objc private func nextPage() {
@@ -194,6 +280,11 @@ class OnboardingViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
+        if configuration.bottomNavigationBarEnabled {
+            bottomPaddingPageIndicatorConstraint.constant = getBottomPaddingForPageController()
+            navigationBarHeightConstraint.constant = getBottomBarHeight()
+        }
+
         // Calculate the current visible page index
         let visiblePageIndex = Int(round(pagesCollection.contentOffset.x / pagesCollection.bounds.width))
 
@@ -209,9 +300,10 @@ class OnboardingViewController: UIViewController {
                 let newOffset = CGPoint(x: CGFloat(visiblePageIndex) * size.width, y: 0)
                 self.pagesCollection.setContentOffset(newOffset, animated: false)
             }
-        }) { _ in
+        }) { [weak self] _ in
             // Reset the flag after the transition completes
-            self.dataSource.isProgrammaticScroll = false
+            self?.dataSource.isProgrammaticScroll = false
+            self?.notifyLayoutChangedAfterRotation()
         }
     }
 
@@ -219,9 +311,22 @@ class OnboardingViewController: UIViewController {
         super.viewWillLayoutSubviews()
         pagesCollection.collectionViewLayout.invalidateLayout()
     }
+    
+    /// This is to notify VoiceOver that the layout changed with the presentation of the Onboarding screen. The delay is needed to ensure that
+    /// VoiceOver has already finished processing the UI changes.
+    private func notifyLayoutChangedAfterRotation() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIAccessibility.post(notification: .layoutChanged, argument: self.view)
+        }
+    }
 
     deinit {
         navigationBarBottomAdapter?.onDeinit()
+    }
+
+    private func updatePageControlAndNavigationButtons(at pageIndex: Int) {
+        configureNavigationButtons(for: pageIndex)
+        pageControl.currentPage = pageIndex
     }
 }
 
@@ -230,8 +335,7 @@ extension OnboardingViewController: OnboardingScreen {
         guard pageControl.currentPage != pageIndex else { return }
 
         sendGiniAnalyticsEventPageSwiped()
-        configureNavigationButtons(for: pageIndex)
-        pageControl.currentPage = pageIndex
+        updatePageControlAndNavigationButtons(at: pageIndex)
     }
 
     private func sendGiniAnalyticsEventPageSwiped() {
@@ -250,6 +354,10 @@ extension OnboardingViewController: OnboardingScreen {
                 let bottomNavigationBar = bottomNavigationBar {
                 navigationBarBottomAdapter?.showButtons(navigationButtons: [.getStarted],
                                                         navigationBar: bottomNavigationBar)
+                skipBottomBarButton.isHidden = true
+                if nextButton != nil {
+                    configureGetStartedButton()
+                }
             } else {
                 navigationItem.rightBarButtonItem = nil
                 if nextButton != nil {
@@ -258,9 +366,15 @@ extension OnboardingViewController: OnboardingScreen {
             }
         default:
             if configuration.bottomNavigationBarEnabled,
-                let bottomNavigationBar = bottomNavigationBar {
+                let bottomNavigationBar = bottomNavigationBar,
+               configuration.onboardingNavigationBarBottomAdapter == nil {
                 navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next],
                                                         navigationBar: bottomNavigationBar)
+                skipBottomBarButton.isHidden = !(UIDevice.current.isIphone &&
+                                                 view.currentInterfaceOrientation.isLandscape)
+                if nextButton != nil {
+                    configureNextButton()
+                }
             } else {
                 configureSkipButton()
 
@@ -275,5 +389,32 @@ extension OnboardingViewController: OnboardingScreen {
 class CollectionFlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
+    }
+}
+
+private extension OnboardingViewController {
+    enum Constants {
+        static let pageControlBottomBarPadding: CGFloat = 46
+        static let pageControlBottomBarPaddingLandscape: CGFloat = 0
+        static let bottomBarHeightPortrait: CGFloat = 110
+        static let bottomBarHeightLandscape: CGFloat = 64
+    }
+
+    func getBottomPaddingForPageController() -> CGFloat {
+        if isiPhoneAndLandscape() {
+            return Constants.pageControlBottomBarPaddingLandscape
+        }
+        return Constants.pageControlBottomBarPadding
+    }
+
+    func getBottomBarHeight() -> CGFloat {
+        if isiPhoneAndLandscape() {
+            return Constants.bottomBarHeightLandscape
+        }
+        return Constants.bottomBarHeightPortrait
+    }
+
+    func isiPhoneAndLandscape() -> Bool {
+        return UIDevice.current.isIphone && view.currentInterfaceOrientation.isLandscape
     }
 }
