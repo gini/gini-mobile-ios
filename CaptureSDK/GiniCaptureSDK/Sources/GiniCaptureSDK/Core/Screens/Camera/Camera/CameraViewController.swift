@@ -475,8 +475,8 @@ final class CameraViewController: UIViewController {
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cameraPreviewBottomContraint]
-        )
+            cameraPreviewBottomContraint
+        ])
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
