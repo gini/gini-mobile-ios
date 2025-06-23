@@ -518,6 +518,7 @@ fileprivate extension PaymentReviewViewController {
         button.isHidden = !model.showPaymentReviewCloseButton
         button.setImage(model.configuration.paymentReviewClose , for: .normal)
         button.addTarget(self, action: #selector(closeButtonClicked), for: .touchUpInside)
+        button.accessibilityLabel = model.strings.closeButtonAccessibilityLabel
         return button
     }
 

@@ -40,14 +40,17 @@ public struct InstallAppStrings {
     let moreInformationTipPattern: String
     let moreInformationNotePattern: String
     let continueLabelText: String
+    let accesibilityAppStoreText: String
 
     public init(titlePattern: String,
                 moreInformationTipPattern: String,
                 moreInformationNotePattern: String,
-                continueLabelText: String) {
+                continueLabelText: String,
+                accesibilityAppStoreText: String) {
         self.titlePattern = titlePattern
         self.moreInformationTipPattern = moreInformationTipPattern
         self.moreInformationNotePattern = moreInformationNotePattern
         self.continueLabelText = continueLabelText
+        self.accesibilityAppStoreText = accesibilityAppStoreText
     }
 }

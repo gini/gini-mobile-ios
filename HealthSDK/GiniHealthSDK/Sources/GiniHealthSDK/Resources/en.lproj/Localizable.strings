@@ -11,6 +11,8 @@
 "gini.health.reviewscreen.usage.placeholder" = "Reference number";
 "gini.health.reviewscreen.banking.app.button.label" = "To the banking app";
 "gini.health.reviewscreen.infobar.message" = "Please check the pre-filled data.";
+"gini.health.reviewscreen.invoice.image.content.description" = "Invoice document";
+"gini.health.reviewscreen.close.button.accesibility.label" = "Close";
 "gini.health.errors.default" = "Oops something went wrong. Please try again.";
 "gini.health.errors.failed.payment.request.creation" = "Oops something went wrong. Please try again.";
 "gini.health.errors.failed.recipient.non.empty.check" = "Recipient is required.";
@@ -60,3 +62,5 @@
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Or take a screenshot and upload it directly in your [BANK] app using the Photo Payment functionality";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Share with [BANK] app";
 "gini.health.paymentcomponent.share.invoice.pdf.filename.default" = "payment-information";
+"gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR Code";
+"gini.health.paymentcomponent.install.app.bottom.sheet.appstore" = "App Store";
