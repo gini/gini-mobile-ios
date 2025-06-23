@@ -82,12 +82,15 @@ final class QRCodeEducationLoadingView: UIView {
         animatedSuffixLabelView.stopAnimating()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Call when horizontal/vertical size class or orientation may have changed
+        configureImageViewVisibility()
+    }
+
     private func setupViews() {
-        let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
-        let isIPhoneWithoutNotch = UIDevice.current.isIphone && !UIDevice.current.hasNotch
-        // Hide image view on without notch devices and 200% font size enabled
-        let isAccessibilityDeviceWithoutNotch = isIPhoneWithoutNotch && isAccessibilityCategory
-        imageView.isHidden = isAccessibilityDeviceWithoutNotch
+        configureImageViewVisibility()
 
         addSubview(imageView)
         addSubview(textLabel)
@@ -99,6 +102,22 @@ final class QRCodeEducationLoadingView: UIView {
         } else {
             configureStandardNotchConstraints()
         }
+    }
+
+    private var isAccessibilityDeviceWithoutNotch: Bool {
+        let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
+        let isIPhoneWithoutNotch = UIDevice.current.isIphone && !UIDevice.current.hasNotch
+        return isIPhoneWithoutNotch && isAccessibilityCategory
+    }
+
+    private func configureImageViewVisibility() {
+        // Hide image view on devices without notch and 200% font size enabled
+        // Hide image view on landscape iPhone with bottom navigation bar enabled and 200% font size enabled
+        let navigationBottomBarEnabled = giniConfiguration.bottomNavigationBarEnabled
+        let isLandscapeWithBottomBar = navigationBottomBarEnabled && UIDevice.current.isIphoneAndLandscape
+        let shouldHideImageView = isAccessibilityDeviceWithoutNotch || isLandscapeWithBottomBar || (isAccessibilityDeviceWithoutNotch && navigationBottomBarEnabled)
+
+        imageView.isHidden = shouldHideImageView
     }
 
     private func configureWithoutNotchConstraints() {
@@ -133,9 +152,12 @@ final class QRCodeEducationLoadingView: UIView {
             animatedSuffixLabelView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             animatedSuffixLabelView.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
-                                                         constant: Constants.minTextToAnalysingSpacing),
-            animatedSuffixLabelView.bottomAnchor.constraint(equalTo: bottomAnchor)
+                                                         constant: Constants.minTextToAnalysingSpacing)
         ])
+
+        let bottomConstraint = animatedSuffixLabelView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        bottomConstraint.priority = .defaultHigh
+        bottomConstraint.isActive = true
     }
 
     private func bind() {
