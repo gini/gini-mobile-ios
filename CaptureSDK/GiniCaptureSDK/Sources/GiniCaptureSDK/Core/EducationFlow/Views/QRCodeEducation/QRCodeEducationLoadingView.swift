@@ -121,6 +121,12 @@ final class QRCodeEducationLoadingView: UIView {
     }
 
     private func configureWithoutNotchConstraints() {
+        if isAccessibilityDeviceWithoutNotch && giniConfiguration.bottomNavigationBarEnabled {
+            textLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        } else {
+            textLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        }
+
         NSLayoutConstraint.activate([
             // Text label positioned at top (where image would be)
             textLabel.topAnchor.constraint(equalTo: topAnchor),

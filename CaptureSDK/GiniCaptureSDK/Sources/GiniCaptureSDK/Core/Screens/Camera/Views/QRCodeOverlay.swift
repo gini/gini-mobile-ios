@@ -237,9 +237,20 @@ final class QRCodeOverlay: UIView {
         layoutLoadingIndicator(centeringBy: cameraFrame, on: viewController)
     }
 
+    private var isAccessibilityDeviceWithoutNotch: Bool {
+        let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
+        let isIPhoneWithoutNotch = UIDevice.current.isIphoneAndLandscape && !UIDevice.current.hasNotch
+        return isIPhoneWithoutNotch && isAccessibilityCategory
+    }
+
     private func layoutCorrectQRCode(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
         let correctQRCenterYAnchor = correctQRFeedback.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor)
         correctQRCenterYAnchor.priority = .defaultLow
+        if isAccessibilityDeviceWithoutNotch && configuration.bottomNavigationBarEnabled {
+            correctQRFeedback.setContentCompressionResistancePriority(.required, for: .vertical)
+        } else {
+            correctQRFeedback.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        }
 
         NSLayoutConstraint.activate([
             correctQRFeedback.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
