@@ -46,7 +46,7 @@
 "gini.health.paymentcomponent.select.bank.label" = "Bank auswählen";
 "gini.health.paymentcomponent.select.your.bank.label" = "Bank auswählen und bezahlen";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Mit der [BANK]-App teilen";
-"gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Alternativ können Sie ein Screenshot von dieser Seite machen mit der Fotoüberweisung Funktion der [BANK] öffnen.";
+"gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Alternativ können Sie einen Screenshot von dieser Seite machen mit der Fotoüberweisung Funktion der [BANK] öffnen.";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.title" = "Teilen Sie diesen QR-Zahlungscode mit Ihrer Banking-App";
 "gini.health.paymentcomponent.share.invoice.pdf.filename.default" = "Zahlungsinformationen";
 "gini.health.paymentcomponent.to.banking.app.label" = "Zur Banking App";
