@@ -355,7 +355,9 @@ private extension GiniBankNetworkingScreenApiCoordinator {
             switch result {
             case let .success(extractionResult):
                 self.setDocumentIdAsUserProperty()
-                self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
+                Task {
+                    await self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
+                }
             case let .failure(error):
                 guard error != .requestCancelled else { return }
 
@@ -366,18 +368,18 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         }
     }
 
+    // handleSuccessfulAnalysis runs entirely on the main actor.
+    @MainActor
     private func handleSuccessfulAnalysis(with extractionResult: ExtractionResult,
-                                          networkDelegate: GiniCaptureNetworkDelegate) {
-        Task {
-            if let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController {
-                await analysisVC.waitUntilAnimationCompleted()
-            } else if let qrCodeVC = screenAPINavigationController.children.last as? QRCodeEducationPresenting,
-                      let task = qrCodeVC.educationTask {
-                _ = await task.value
-            }
-
-            presentNextScreen(extractionResult: extractionResult, delegate: networkDelegate)
+                                          networkDelegate: GiniCaptureNetworkDelegate) async {
+        if let analysisVC = screenAPINavigationController.children.last as? AnalysisViewController {
+            await analysisVC.waitUntilAnimationCompleted()
+        } else if let qrCodeVC = screenAPINavigationController.children.last as? QRCodeEducationPresenting,
+                  let task = qrCodeVC.educationTask {
+            _ = await task.value
         }
+
+        presentNextScreen(extractionResult: extractionResult, delegate: networkDelegate)
     }
 
     @MainActor
