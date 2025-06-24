@@ -25,6 +25,11 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     @IBOutlet weak var unitPriceLabel: UILabel!
     @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
+
+    override var canBecomeFocused: Bool {
+        false
+    }
+
     private let configuration = GiniBankConfiguration.shared
 
     var viewModel: DigitalLineItemTableViewCellViewModel? {
@@ -134,15 +139,6 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         // When reusing cells, reset the rounded corners and the separator view visibility to their default values
         backgroundContainerView.round(radius: 0)
         separatorView.isHidden = false
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if UIDevice.current.isIphone {
-            let inset = safeAreaInsets.left + 16
-            leadingConstraint.constant = inset
-            trailingConstraint.constant = inset
-        }
     }
 
     @objc func modeSwitchValueChange(sender: UISwitch) {
