@@ -4,6 +4,7 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
+import Combine
 import GiniCaptureSDK
 import UIKit
 
@@ -17,6 +18,7 @@ final class EditLineItemView: UIView {
         button.setAttributedTitle(NSAttributedString(string: title, attributes: textAttributes(for: .body)),
                                   for: .normal)
         button.setTitle(title, for: .normal)
+        button.titleLabel?.numberOfLines = 0
         button.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
         button.isExclusiveTouch = true
         // The color is set twice because in some iOS versions the `setTitleColor` does not change the color
@@ -24,7 +26,6 @@ final class EditLineItemView: UIView {
         button.titleLabel?.textColor = .GiniBank.accent1
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.accessibilityValue = title
         return button
     }()
 
@@ -33,10 +34,10 @@ final class EditLineItemView: UIView {
                                                              comment: "Edit")
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.attributedText = NSAttributedString(string: title, attributes: textAttributes(for: .bodyBold))
         label.adjustsFontForContentSizeCategory = true
-        label.accessibilityValue = title
         return label
     }()
 
@@ -44,6 +45,7 @@ final class EditLineItemView: UIView {
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.savebutton",
                                                              comment: "Save")
         let button = UIButton()
+        button.titleLabel?.numberOfLines = 0
         button.setAttributedTitle(NSAttributedString(string: title, attributes: textAttributes(for: .bodyBold)),
                                   for: .normal)
         button.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
@@ -53,8 +55,13 @@ final class EditLineItemView: UIView {
         button.titleLabel?.textColor = .GiniBank.accent1
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.accessibilityValue = title
         return button
+    }()
+
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
     }()
 
     private lazy var stackView: UIStackView = {
@@ -119,6 +126,8 @@ final class EditLineItemView: UIView {
         return view
     }()
 
+    private var cancellables: Set<AnyCancellable> = []
+
     var viewModel: EditLineItemViewModel? {
         didSet {
             guard let viewModel = viewModel else { return }
@@ -131,6 +140,7 @@ final class EditLineItemView: UIView {
 
         setupView()
         setupConstraints()
+        bindViews()
     }
 
     required init?(coder: NSCoder) {
@@ -151,7 +161,8 @@ final class EditLineItemView: UIView {
         addSubview(titleLabel)
         addSubview(saveButton)
 
-        addSubview(stackView)
+        addSubview(scrollView)
+        scrollView.addSubview(stackView)
 
         stackView.addArrangedSubview(nameContainerView)
         stackView.addArrangedSubview(priceContainerView)
@@ -163,34 +174,77 @@ final class EditLineItemView: UIView {
 
 		priceContainerView.addSubview(priceLabelView)
 		priceContainerView.addSubview(priceErrorView)
+        setupScrollViewConstraints()
 		setupPriceContainerViewConstraints()
+        setupStackViewConstraints()
+        setupInputAccessoryView(for: [nameLabelView, priceLabelView])
+    }
+
+    private func setupScrollViewConstraints() {
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: saveButton.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+
+    private func setupStackViewConstraints() {
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor,
+                                           constant: Constants.verticalPadding),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor,
+                                               constant: Constants.horizontalPadding),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor,
+                                             constant: -2 * Constants.horizontalPadding)
+        ])
+    }
+
+    private func bindViews() {
+        nameLabelView.$didStartEditing
+            .dropFirst()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                updateCurrentField(nameLabelView)
+            }.store(in: &cancellables)
+
+        priceLabelView.$didStartEditing
+            .dropFirst()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                updateCurrentField(priceLabelView)
+            }.store(in: &cancellables)
     }
 
 	private func setupNameContainerViewConstraints() {
 		NSLayoutConstraint.activate([
-			nameLabelView.topAnchor.constraint(equalTo: nameContainerView.topAnchor, constant: 0),
-			nameLabelView.leadingAnchor.constraint(equalTo: nameContainerView.leadingAnchor, constant: 0),
-			nameLabelView.trailingAnchor.constraint(equalTo: nameContainerView.trailingAnchor, constant: 0),
-			nameLabelView.heightAnchor.constraint(equalToConstant: Constants.itemContainerMaxHeight),
+			nameLabelView.topAnchor.constraint(equalTo: nameContainerView.topAnchor),
+			nameLabelView.leadingAnchor.constraint(equalTo: nameContainerView.leadingAnchor),
+			nameLabelView.trailingAnchor.constraint(equalTo: nameContainerView.trailingAnchor),
+            nameLabelView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.itemContainerMaxHeight),
 
-			nameErrorView.topAnchor.constraint(equalTo: nameLabelView.bottomAnchor, constant: Constants.errorPadding),
-			nameErrorView.leadingAnchor.constraint(equalTo: nameContainerView.leadingAnchor, constant: 0),
-			nameErrorView.trailingAnchor.constraint(equalTo: nameContainerView.trailingAnchor, constant: 0),
-			nameErrorView.bottomAnchor.constraint(equalTo: nameContainerView.bottomAnchor, constant: 0)
+			nameErrorView.topAnchor.constraint(equalTo: nameLabelView.bottomAnchor,
+                                               constant: Constants.errorPadding),
+			nameErrorView.leadingAnchor.constraint(equalTo: nameContainerView.leadingAnchor),
+			nameErrorView.trailingAnchor.constraint(equalTo: nameContainerView.trailingAnchor),
+			nameErrorView.bottomAnchor.constraint(equalTo: nameContainerView.bottomAnchor)
 		])
 	}
 
 	private func setupPriceContainerViewConstraints() {
 		NSLayoutConstraint.activate([
-			priceLabelView.topAnchor.constraint(equalTo: priceContainerView.topAnchor, constant: 0),
-			priceLabelView.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor, constant: 0),
-			priceLabelView.trailingAnchor.constraint(equalTo: priceContainerView.trailingAnchor, constant: 0),
-			priceLabelView.heightAnchor.constraint(equalToConstant: Constants.itemContainerMaxHeight),
+			priceLabelView.topAnchor.constraint(equalTo: priceContainerView.topAnchor),
+			priceLabelView.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor),
+			priceLabelView.trailingAnchor.constraint(equalTo: priceContainerView.trailingAnchor),
+            priceLabelView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.itemContainerMaxHeight),
 
-			priceErrorView.topAnchor.constraint(equalTo: priceLabelView.bottomAnchor, constant: Constants.errorPadding),
-			priceErrorView.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor, constant: 0),
-			priceErrorView.trailingAnchor.constraint(equalTo: priceContainerView.trailingAnchor, constant: 0),
-			priceErrorView.bottomAnchor.constraint(equalTo: priceContainerView.bottomAnchor, constant: 0)
+			priceErrorView.topAnchor.constraint(equalTo: priceLabelView.bottomAnchor,
+                                                constant: Constants.errorPadding),
+			priceErrorView.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor),
+			priceErrorView.trailingAnchor.constraint(equalTo: priceContainerView.trailingAnchor),
+			priceErrorView.bottomAnchor.constraint(equalTo: priceContainerView.bottomAnchor)
 		])
 	}
 
@@ -200,6 +254,7 @@ final class EditLineItemView: UIView {
                                                   constant: Constants.horizontalPadding),
             cancelButton.topAnchor.constraint(equalTo: topAnchor,
                                               constant: Constants.verticalPadding),
+            cancelButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.headerButtonMinimunHeight),
 
             titleLabel.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor),
             titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: cancelButton.trailingAnchor,
@@ -212,12 +267,9 @@ final class EditLineItemView: UIView {
                                             constant: Constants.verticalPadding),
             saveButton.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                  constant: -Constants.horizontalPadding),
+            saveButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.headerButtonMinimunHeight),
 
-			stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.verticalPadding),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.horizontalPadding),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.horizontalPadding),
-
-			quantityView.heightAnchor.constraint(equalToConstant: Constants.itemContainerMaxHeight)
+            quantityView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.itemContainerMaxHeight)
         ])
     }
 
@@ -331,6 +383,22 @@ extension EditLineItemView: PriceLabelViewDelegate {
     }
 }
 
+// MARK: - GiniInputAccessoryView delegate methods
+
+extension EditLineItemView: GiniInputAccessoryViewDelegate {
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectPrevious field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryView(_ view: GiniInputAccessoryView, didSelectNext field: UIView) {
+        field.becomeFirstResponder()
+    }
+
+    func inputAccessoryViewDidCancel(_ view: GiniInputAccessoryView) {
+        endEditing(true)
+    }
+}
+
 private extension EditLineItemView {
     enum Constants {
         static let verticalPadding: CGFloat = 24
@@ -343,5 +411,6 @@ private extension EditLineItemView {
         static let maximumFontSize: CGFloat = 20
 		static let itemContainerMaxHeight: CGFloat = 64
 		static let animationDuration: CGFloat = 0.3
+        static let headerButtonMinimunHeight: CGFloat = 50
     }
 }
