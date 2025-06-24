@@ -145,13 +145,14 @@ public final class PaymentInfoViewController: UIViewController {
     
     private func addCloseButton() {
         let closeIconTintColor = viewModel.configuration.closeIconTintColor
-        let closeButtonIcon = viewModel.configuration.closeIcon?.withRenderingMode(.alwaysTemplate).withTintColor(closeIconTintColor)
+        let closeButtonIcon = viewModel.configuration.closeIcon?.withRenderingMode(.alwaysTemplate)
 
         let closeButton = UIBarButtonItem(image: closeButtonIcon,
                                           style: .plain,
                                           target: self,
                                           action: #selector(didTapCloseButton))
 
+        closeButton.tintColor = closeIconTintColor
         navigationItem.leftBarButtonItem = closeButton
     }
     
