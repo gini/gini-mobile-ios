@@ -2,14 +2,14 @@
 
 <!-- Briefly explain **what** this PR does and **why**. Mention the motivation, feature, or issue it's addressing. -->
 
-[closes TICKET-###]<!-- Replace with JIRA/GitLab ticket if relevant -->
+[closes TICKET-###]<!-- Replace with JIRA ticket if relevant -->
 
 ## Implementation
 
 
 <!--
 
-Some description of HOW you achieved it. Perhaps give a high level description of the chnages you did. Did you need to refactor something? What tradeoffs did you take? Are there things in here which you’d particularly like people to pay close attention to?
+Some description of HOW you achieved it. Perhaps give a high level description of the chnages you did. Did you need to refactor something? What tradeoffs did you take?
 
 -->
 
