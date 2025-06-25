@@ -55,7 +55,7 @@ final class QRCodeEducationLoadingView: UIView {
 
     private lazy var animatedSuffixLabelView: GiniAnimatedSuffixLabelView = {
         let labelFont = giniConfiguration.textStyleFonts[.caption1]
-        let view = GiniAnimatedSuffixLabelView(baseText: LocalizedStrings.loadingBaseText,
+        let view = GiniAnimatedSuffixLabelView(baseText: Strings.loadingBaseText,
                                                font: labelFont,
                                                textColor: style.analysingTextColor)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -128,7 +128,7 @@ final class QRCodeEducationLoadingView: UIView {
     private func configure(with model: QRCodeEducationLoadingItem) {
         imageView.image = model.image
         textLabel.text = model.text
-        let announcementArgument = model.text + "\n" + LocalizedStrings.loadingAccessibilityText
+        let announcementArgument = model.text + "\n" + Strings.loadingAccessibilityText
         UIAccessibility.post(notification: .announcement, argument: announcementArgument)
     }
 }
@@ -142,7 +142,7 @@ private extension QRCodeEducationLoadingView {
 }
 
 private extension QRCodeEducationLoadingView {
-    enum LocalizedStrings {
+    struct Strings {
         static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
                                                                       comment: "analyzing")
 

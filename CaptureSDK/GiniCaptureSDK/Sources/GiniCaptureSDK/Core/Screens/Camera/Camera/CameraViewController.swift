@@ -647,7 +647,7 @@ final class CameraViewController: UIViewController {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.warning)
 
-        qrCodeOverLay.isUserInteractionEnabled = false
+        qrCodeOverLay.isUserInteractionEnabled = isAccessibilityLargeTextEnabled()
         UIView.animate(withDuration: 0.3) {
             self.qrCodeOverLay.isHidden = false
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.warning3)
@@ -658,6 +658,11 @@ final class CameraViewController: UIViewController {
 
         sendGiniAnalyticsEventForInvalidQRCode()
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
+    }
+
+    private func isAccessibilityLargeTextEnabled() -> Bool {
+        let contentSizeCategory = UIApplication.shared.preferredContentSizeCategory
+        return contentSizeCategory.isAccessibilityCategory
     }
 
     private func playVoiceOverMessage(success: Bool) {
