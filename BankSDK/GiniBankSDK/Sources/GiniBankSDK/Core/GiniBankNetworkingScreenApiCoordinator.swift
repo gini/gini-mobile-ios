@@ -354,12 +354,12 @@ private extension GiniBankNetworkingScreenApiCoordinator {
         documentService.startAnalysis { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .success(extractionResult):
+            case .success(let extractionResult):
                 self.setDocumentIdAsUserProperty()
                 Task {
                     await self.handleSuccessfulAnalysis(with: extractionResult, networkDelegate: networkDelegate)
                 }
-            case let .failure(error):
+            case .failure(let error):
                 guard error != .requestCancelled else { return }
 
                 DispatchQueue.main.async { [weak self] in
