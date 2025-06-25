@@ -36,6 +36,8 @@ public protocol GiniErrorProtocol {
  - maintenance: Error indicating that the system is under maintenance.
  - outage: Error indicating that the service is unavailable due to outage.
  - server: Error indicating that the server is unavailable.
+ - noInternetConnection: Error indicating that there is no internet connection.
+ - clientSide: Error indicating a client-side error in the 4xx range (excluding specific cases like 404).
  - unknown: An unknown error occurred.
  */
 
@@ -51,8 +53,9 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
     case maintenance(errorCode: Int)
     case outage(errorCode: Int)
     case server(errorCode: Int)
-    case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
     case noInternetConnection
+    case clientSide(response: HTTPURLResponse? = nil, data: Data? = nil)
+    case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
 
     public var message: String {
         switch self {
@@ -80,6 +83,8 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
             return "An unexpected server error occurred"
         case .noInternetConnection:
             return "No internet connection"
+        case .clientSide:
+            return "Client side errors between 402 and 498 except 404"
         case .unknown:
             return "Unknown"
         }
@@ -113,5 +118,67 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
         default:
             return nil
         }
+    }
+}
+
+public extension GiniError {
+    static func from(statusCode: Int,
+                     response: HTTPURLResponse?,
+                     data: Data?) -> GiniError {
+        switch statusCode {
+            case 401:
+                return .unauthorized(response: response, data: data)
+            case 500...599:
+                return handleServerError(statusCode: statusCode)
+            case 400...499:
+                return handleClientError(statusCode: statusCode, response: response, data: data)
+            default:
+                return .unknown(response: response, data: data)
+        }
+    }
+
+    private static func handleServerError(statusCode: Int) -> GiniError {
+        switch statusCode {
+            case 500:
+                return .outage(errorCode: statusCode)
+            case 503:
+                return .maintenance(errorCode: statusCode)
+            case 501, 502, 504...599:
+                return .server(errorCode: statusCode)
+            default:
+                return .unknown(response: nil, data: nil)
+        }
+    }
+
+    private static func handleClientError(statusCode: Int,
+                                          response: HTTPURLResponse?,
+                                          data: Data?) -> GiniError {
+        switch statusCode {
+            case 400:
+                return handleBadRequest(response: response, data: data)
+            case 404:
+                return .notFound(response: response, data: data)
+            case 406:
+                return .notAcceptable(response: response, data: data)
+            case 429:
+                return .tooManyRequests(response: response, data: data)
+            case 402...498:
+                return .clientSide(response: response, data: data)
+            default:
+                return .unknown(response: response, data: data)
+        }
+    }
+
+    private static func handleBadRequest(response: HTTPURLResponse?, data: Data?) -> GiniError {
+        guard let data = data else {
+            return .badRequest(response: response, data: nil)
+        }
+
+        if let errorInfo = try? JSONDecoder().decode([String: String].self, from: data),
+           errorInfo["error"] == "invalid_grant" {
+            return .unauthorized(response: response, data: data)
+        }
+
+        return .badRequest(response: response, data: data)
     }
 }

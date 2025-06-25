@@ -27,19 +27,14 @@ import GiniBankAPILibrary
     }
 
     public func uiColor() -> UIColor {
-        if #available(iOS 13, *) {
-            return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
-                if UITraitCollection.userInterfaceStyle == .dark {
-                    /// Return the color for Dark Mode
-                    return self.dark
-                } else {
-                    /// Return the color for Light Mode
-                    return self.light
-                }
+        return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
+            if UITraitCollection.userInterfaceStyle == .dark {
+                /// Return the color for Dark Mode
+                return self.dark
+            } else {
+                /// Return the color for Light Mode
+                return self.light
             }
-        } else {
-            /// Return a fallback color for iOS 12 and lower.
-            return self.light
         }
     }
 }
@@ -277,6 +272,16 @@ import GiniBankAPILibrary
       * Set an adapter implementation to show a custom bottom navigation bar on the image picker screen.
      */
     public var imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
+
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the error screens.
+     */
+    public var errorNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
+
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the no results screen.
+     */
+    public var noResultsNavigationBarBottomAdapter: ErrorNavigationBarBottomAdapter?
 
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.

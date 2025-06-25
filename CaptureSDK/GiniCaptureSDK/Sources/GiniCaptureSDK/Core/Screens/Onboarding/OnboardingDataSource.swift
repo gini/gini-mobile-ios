@@ -60,11 +60,8 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             cell.iconView.icon = UIImageNamedPreferred(named: pageModel.page.imageName)
         }
         cell.iconView.accessibilityValue = pageModel.page.title
-
         cell.descriptionLabel.text = pageModel.page.description
-        cell.descriptionLabel.accessibilityValue = pageModel.page.description
         cell.titleLabel.text = pageModel.page.title
-        cell.titleLabel.accessibilityValue = pageModel.page.title
     }
 
     private func defaultOnboardingPagesDataSource() -> [OnboardingPageModel] {
@@ -139,10 +136,15 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let isIphoneLandscape = UIDevice.current.isIphone && collectionView.currentInterfaceOrientation.isLandscape
+        let isIphoneSmall = UIDevice.current.isSmallIphone
+        let suffix = isIphoneSmall ? "iphoneland-small" : "iphoneland"
+        let reuseId = isIphoneLandscape ? OnboardingPageCell.reuseIdentifier + suffix : OnboardingPageCell.reuseIdentifier
         if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: OnboardingPageCell.reuseIdentifier,
+            withReuseIdentifier: reuseId,
             for: indexPath) as? OnboardingPageCell {
             configureCell(cell: cell, indexPath: indexPath)
+            cell.updateConstraintsForCurrentTraits()
             return cell
         }
         fatalError("OnboardingPageCell wasn't initialized")
@@ -176,21 +178,14 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     }
 
     // MARK: - Display the page number in page control of collection view cell
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // this method is called twice when the screen is displayed for the first time
-        guard !isInitialScroll else {
-            isInitialScroll = false
-            return
-        }
-
+    private func updateCurrentPage(_ scrollView: UIScrollView) {
         guard scrollView.frame.width > 0 else { return }
 
         let pageWidth = scrollView.frame.width
         let contentOffsetX = scrollView.contentOffset.x
-        let adjustedContentOffsetX = max(0, contentOffsetX)
-        let pageIndex = Int((adjustedContentOffsetX + pageWidth / 2) / pageWidth)
+        let pageIndex = Int(round(contentOffsetX / pageWidth))
         currentPageIndex = max(0, pageIndex)
-        delegate?.didScroll(pageIndex: pageIndex)
+        delegate?.didScroll(pageIndex: currentPageIndex)
     }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -199,6 +194,11 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         isProgrammaticScroll = false
+        updateCurrentPage(scrollView)
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        updateCurrentPage(scrollView)
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout

@@ -86,6 +86,12 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
     public func start(withDocuments documents: [GiniCaptureDocument]?,
                       animated: Bool = false) -> UIViewController {
+        return start(withDocuments: documents, animated: animated, backAnimation: false)
+    }
+
+    private func start(withDocuments documents: [GiniCaptureDocument]?,
+                       animated: Bool = false,
+                       backAnimation: Bool) -> UIViewController {
         var viewControllers: [UIViewController] = []
 
         if let documents = documents, !documents.isEmpty {
@@ -124,7 +130,13 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
             viewControllers = [reviewViewController, cameraViewController]
         }
 
-        self.screenAPINavigationController.setViewControllers(viewControllers, animated: animated)
+        if backAnimation {
+            let delegate = SingleTransitionLeftSlideNavigationDelegate()
+            screenAPINavigationController.delegate = delegate
+            screenAPINavigationController.setViewControllers(viewControllers, animated: true)
+        } else {
+            screenAPINavigationController.setViewControllers(viewControllers, animated: animated)
+        }
         return ContainerNavigationController(rootViewController: self.screenAPINavigationController,
                                              parent: self)
     }
@@ -203,7 +215,14 @@ extension GiniScreenAPICoordinator {
         }
     }
 
+    @objc func finishWithRetake() {
+        pages = []
+        trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .retry))
+        backToCamera()
+    }
+
     @objc public func finishWithCancellation() {
+        setOnboardingShownStatus()
         if let delegate = self.visionDelegate {
             delegate.didCancelCapturing()
         } else {
@@ -242,6 +261,7 @@ extension GiniScreenAPICoordinator {
 
     private func navigateBack() {
         if screenAPINavigationController.viewControllers.count > 1 {
+            setOnboardingShownStatus(show: true)
             screenAPINavigationController.popViewController(animated: true)
         } else {
             finishWithCancellation()
@@ -310,6 +330,7 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func backToCamera() {
+        setOnboardingShownStatus(show: true)
         _ = start(withDocuments: nil, animated: true)
     }
 }
@@ -376,5 +397,17 @@ extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
         barButton.addAction(self, #selector(back))
         viewController.navigationItem.leftBarButtonItem = barButton.barButton
         return viewController
+    }
+}
+
+// MARK: - Helper Method to set Onboarding status on every launch
+
+extension GiniScreenAPICoordinator {
+    func hasOnboardingShownOnLaunch() -> Bool {
+        return UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowAtLaunch")
+    }
+
+    func setOnboardingShownStatus(show: Bool = false) {
+        return UserDefaults.standard.set(show, forKey: "ginicapture.defaults.onboardingShowAtLaunch")
     }
 }

@@ -65,12 +65,13 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             viewController.stopLoadingIndicater()
             return
         }
+        let bottomAnchor = viewController.topNavBarAnchor ?? viewController.view.bottomAnchor
         if shouldShowOnboarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
-                viewController.setupCamera()
+                viewController.setupCamera(bottomAnchor: bottomAnchor)
             })
         } else {
-            viewController.setupCamera()
+            viewController.setupCamera(bottomAnchor: bottomAnchor)
         }
     }
 
@@ -148,7 +149,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             !UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed") {
             UserDefaults.standard.set(true, forKey: "ginicapture.defaults.onboardingShowed")
             return true
-        } else if giniConfiguration.onboardingShowAtLaunch {
+        } else if giniConfiguration.onboardingShowAtLaunch && !hasOnboardingShownOnLaunch(){
             return true
         }
 

@@ -12,6 +12,7 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
 
     var bottomNavigationBar: UIView?
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    var bottomNavigationBarHeightConstraint: NSLayoutConstraint?
 
     private enum HelpImportCellType {
         case selectInvoice
@@ -43,6 +44,7 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        updateBottomBarHeightBasedOnOrientation()
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin * 2, right: 0)
     }
 
@@ -185,7 +187,7 @@ extension HelpImportViewController: UITableViewDataSource {
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.bodyBold]
         cell.descriptionLabel.backgroundColor = UIColor.clear
         cell.descriptionLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
-                                                    dark: UIColor.GiniCapture.dark7).uiColor()
+                                                    dark: UIColor.GiniCapture.light6).uiColor()
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.contentView.backgroundColor = UIColor.clear

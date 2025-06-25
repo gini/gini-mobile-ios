@@ -20,9 +20,7 @@ class DigitalInvoiceProceedView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
-                                                                   comment: "Proceed")
-        button.accessibilityValue = buttonTitle
+        let buttonTitle = Strings.proceedButtonTitle
         button.setTitle(buttonTitle, for: .normal)
         button.addTarget(self, action: #selector(proceedButtonTapped), for: .touchUpInside)
         return button
@@ -34,10 +32,8 @@ class DigitalInvoiceProceedView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.subheadline]
         label.textColor = .giniColorScheme().text.primary.uiColor()
-        let labelText = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
-                                                                 comment: "Total")
+        let labelText = Strings.totalStringLabel
         label.text = labelText
-        label.accessibilityValue = labelText
         return label
     }()
 
@@ -155,7 +151,7 @@ class DigitalInvoiceProceedView: UIView {
     private func setupTotalStringLabelConstraints() {
         NSLayoutConstraint.activate([
             totalStringLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
-            totalStringLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+            totalStringLabel.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
                                                       constant: Constants.padding),
             totalStringLabel.trailingAnchor.constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
                                                        constant: -Constants.badgeHorizontalPadding)
@@ -166,9 +162,9 @@ class DigitalInvoiceProceedView: UIView {
         NSLayoutConstraint.activate([
             finalAmountToPayLabel.topAnchor.constraint(equalTo: totalStringLabel.bottomAnchor,
                                                        constant: Constants.totalValueLabelTopPadding),
-            finalAmountToPayLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+            finalAmountToPayLabel.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
                                                            constant: Constants.padding),
-            finalAmountToPayLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+            finalAmountToPayLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.safeAreaLayoutGuide.trailingAnchor,
                                                             constant: -Constants.padding)
         ])
     }
@@ -178,7 +174,7 @@ class DigitalInvoiceProceedView: UIView {
             savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
                                                     constant: Constants.savingsAmountLabelTopPadding),
             savingsAmountLabel.leadingAnchor.constraint(equalTo: finalAmountToPayLabel.leadingAnchor),
-            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
+            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.safeAreaLayoutGuide.trailingAnchor,
                                                          constant: -Constants.padding)
         ])
     }
@@ -186,7 +182,7 @@ class DigitalInvoiceProceedView: UIView {
     private func setupSkontoBadgeViewConstraints() {
         NSLayoutConstraint.activate([
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalStringLabel.centerYAnchor),
-            skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+            skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor,
                                                       constant: -Constants.padding),
 
             skontoPercentageLabel.topAnchor.constraint(equalTo: skontoBadgeView.topAnchor,
@@ -207,7 +203,8 @@ class DigitalInvoiceProceedView: UIView {
             proceedButton.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
             proceedButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            proceedButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
+            proceedButton.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
+                                                   constant: Constants.padding),
             proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.proceedButtonHeight)
         ])
     }
@@ -222,22 +219,16 @@ class DigitalInvoiceProceedView: UIView {
 
         let finalAmountString = viewModel.totalPrice?.localizedStringWithCurrencyCode
         finalAmountToPayLabel.text = finalAmountString
-        finalAmountToPayLabel.accessibilityValue = finalAmountString
 
         if let skontoViewModel = viewModel.skontoViewModel {
             let isSkontoApplied = skontoViewModel.isSkontoApplied
             skontoBadgeView.isHidden = !isSkontoApplied
             let formattedPercentageDiscounted = skontoViewModel.formattedPercentageDiscounted
-            let percentageText = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
-                                                                          comment: "%@ Skonto discount")
-            let skontoPercentageLabelText = String.localizedStringWithFormat(percentageText,
-                                                                             formattedPercentageDiscounted)
+            let skontoPercentageLabelText = Strings.percentageText(formattedPercentageDiscounted)
             skontoPercentageLabel.text = skontoPercentageLabelText
-            skontoPercentageLabel.accessibilityValue = skontoPercentageLabelText
             savingsAmountLabel.isHidden = !isSkontoApplied
             let savingsAmountLabelText = skontoViewModel.savingsAmountString
             savingsAmountLabel.text = savingsAmountLabelText
-            savingsAmountLabel.accessibilityValue = savingsAmountLabelText
         }
     }
 
@@ -260,5 +251,20 @@ private extension DigitalInvoiceProceedView {
         static let totalValueLabelTopPadding: CGFloat = 4
         static let savingsAmountLabelTopPadding: CGFloat = 2
         static let tabletWidthMultiplier: CGFloat = 0.7
+    }
+
+    private struct Strings {
+        static let proceedButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
+                                                                                 comment: "Proceed")
+
+        static let totalStringLabel = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
+                                                                               comment: "Total")
+
+        static let percentageText: (String) -> String = { replacementText in
+            let formatString = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.total.skontopercentage",
+                                                                          comment: "%@ Skonto discount")
+
+            return String.localizedStringWithFormat(formatString, replacementText)
+        }
     }
 }

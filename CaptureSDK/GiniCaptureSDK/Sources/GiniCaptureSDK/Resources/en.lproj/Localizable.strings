@@ -21,6 +21,7 @@
 "ginicapture.navigationbar.help.backToMenu"     = "Help";
 "ginicapture.navigationbar.analysis.backToReview" = "Review";
 "ginicapture.navigationbar.accessibility.back" = "Back";
+"ginicapture.navigationbar.error.backToCamera"   = "Camera";
 
 
 "ginicapture.camera.captureButton" = "Capture";
@@ -88,7 +89,7 @@
 "ginicapture.review.unknownError"       = "An unknown error has occurred on the review screen";
 "ginicapture.review.delete"             = "Delete page";
 
-"ginicapture.analysis.screenTitle" = "Review";
+"ginicapture.analysis.screenTitle" = "Analysis";
 "ginicapture.analysis.loadingText" = "Analyzing documents";
 "ginicapture.analysis.loadingText.pdf" = "Analyzing\n%@";
 "ginicapture.analysis.suggestion.1" = "Good lighting";
@@ -132,8 +133,7 @@
 "ginicapture.help.import.importtoapp.desc" = "Please select your Banking App from the list to start the analysis and transfer process.";
 "ginicapture.help.import.importtoapp.accessibility" = "Select Banking App from the list to start the analysis process";
 "ginicapture.help.import.draganddrop.title" = "Drag and drop on iPad";
-"ginicapture.help.import.draganddrop.desc" = "If your iPad is running iOS 12 or newer, you can
-conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to start a payment. To do this, open your Banking App and open the Files app as a second app on the screen. Select the desired invoice file in the Files app and drag this over to your Banking App.";
+"ginicapture.help.import.draganddrop.desc" = "You can conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to start a payment. To do this, open your Banking App and open the Files app as a second app on the screen. Select the desired invoice file in the Files app and drag this over to your Banking App.";
 "ginicapture.help.import.draganddrop.accessibility" = "On tablet you can use the drag and drop function to move the file into the banking app";
 
 "ginicapture.help.supportedFormats.title" = "Formats";
@@ -208,7 +208,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.albums.footer" = "Use \"Select more photos\" button to select more photos or deselect to remove access.";
 
 "ginicapture.QRscanning.correct" = "QR code detected";
-"ginicapture.QRscanning.incorrect.title" = "Unkown QR code";
+"ginicapture.QRscanning.incorrect.title" = "Unknown QR code";
 "ginicapture.QRscanning.incorrect.description" = "This code does not contain any payment details. Please use another QR code or take an image of your invoice.";
 "ginicapture.QRscanning.loading" = "Retrieving invoice";
 
