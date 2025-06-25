@@ -122,8 +122,10 @@ final class QRCodeEducationLoadingView: UIView {
 
     private func configureWithoutNotchConstraints() {
         if isAccessibilityDeviceWithoutNotch && giniConfiguration.bottomNavigationBarEnabled {
+            // Allow vertical compression so the label doesn't push other UI elements in compact layouts
             textLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         } else {
+            // Prevent compression to ensure the label remains fully visible when layout space allows
             textLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         }
 

@@ -270,8 +270,10 @@ final class QRCodeOverlay: UIView {
         let correctQRCenterYAnchor = correctQRFeedback.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor)
         correctQRCenterYAnchor.priority = .defaultLow
         if isAccessibilityDeviceWithoutNotch && configuration.bottomNavigationBarEnabled {
+            // Use .required (1000) to strongly prevent vertical compression — keep correctQRFeedback fully visible
             correctQRFeedback.setContentCompressionResistancePriority(.required, for: .vertical)
         } else {
+            // Use .defaultHigh (750) to resist compression but allow it if space is tight
             correctQRFeedback.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         }
 
