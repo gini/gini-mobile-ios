@@ -272,7 +272,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
         Self.currentCoordinator = self
         setupAnalytics(withDocuments: documents)
-        configurationService?.fetchConfigurations { result in
+        configurationService?.fetchConfigurations { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let configuration):
                 DispatchQueue.main.async {
