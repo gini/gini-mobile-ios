@@ -260,9 +260,22 @@ final class QRCodeOverlay: UIView {
         layoutLoadingIndicator(centeringBy: cameraFrame, on: viewController)
     }
 
+    private var isAccessibilityDeviceWithoutNotch: Bool {
+        let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
+        let isIPhoneWithoutNotch = UIDevice.current.isIphoneAndLandscape && !UIDevice.current.hasNotch
+        return isIPhoneWithoutNotch && isAccessibilityCategory
+    }
+
     private func layoutCorrectQRCode(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
         let correctQRCenterYAnchor = correctQRFeedback.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor)
         correctQRCenterYAnchor.priority = .defaultLow
+        if isAccessibilityDeviceWithoutNotch && configuration.bottomNavigationBarEnabled {
+            // Use .required (1000) to strongly prevent vertical compression — keep correctQRFeedback fully visible
+            correctQRFeedback.setContentCompressionResistancePriority(.required, for: .vertical)
+        } else {
+            // Use .defaultHigh (750) to resist compression but allow it if space is tight
+            correctQRFeedback.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        }
 
         NSLayoutConstraint.activate([
             correctQRFeedback.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
@@ -293,19 +306,24 @@ final class QRCodeOverlay: UIView {
 
     private func layoutLoadingIndicator(centeringBy cameraFrame: UIView,
                                         on viewController: UIViewController) {
-        if let educationLoadingView {
-            let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
-            if isAccessibilityCategory && UIDevice.current.isIphoneAndLandscape {
-                layoutEducationLoadingView(educationLoadingView,
-                                           cameraFrame: cameraFrame,
-                                           on: viewController)
-            } else {
-                layoutEducationLoadingView(educationLoadingView,
-                                           cameraFrame: cameraFrame)
-            }
-        } else {
+
+        guard let educationLoadingView else {
             layoutDefaultLoadingView(cameraFrame: cameraFrame)
+            return
         }
+
+        let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
+        // Check if is iPhone and landscape orientation and 200% font size enabled
+        if isAccessibilityCategory && UIDevice.current.isIphoneAndLandscape {
+            // For iPhone landscape mode with large font size, educationLoadingView is added to the viewController
+            layoutEducationLoadingView(educationLoadingView,
+                                       cameraFrame: cameraFrame,
+                                       on: viewController)
+        } else {
+            layoutEducationLoadingView(educationLoadingView,
+                                       cameraFrame: cameraFrame)
+        }
+
     }
     private var educationLoadingConstraints: [NSLayoutConstraint] = []
 
@@ -333,8 +351,7 @@ final class QRCodeOverlay: UIView {
         } else {
             constraints.append(view.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor))
             constraints.append(view.trailingAnchor.constraint(equalTo: cameraFrame.trailingAnchor))
-            constraints.append(view.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.topAnchor,
-                                                         constant: Constants.educationLoadingViewTopPadding))
+            constraints.append(view.topAnchor.constraint(greaterThanOrEqualTo: correctQRFeedback.bottomAnchor))
         }
 
         educationLoadingConstraints = constraints
@@ -417,7 +434,7 @@ private enum Constants {
     static let topSpacing: CGFloat = 2
     static let expandedSpacing: CGFloat = 16
     static let iconSize = CGSize(width: 56, height: 56)
-    static let educationLoadingHorizontalPadding:CGFloat = 56
+    static let educationLoadingHorizontalPadding: CGFloat = 56
     static let stackViewMargins = UIEdgeInsets(top: expandedSpacing,
                                                left: expandedSpacing,
                                                bottom: expandedSpacing,

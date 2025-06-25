@@ -447,7 +447,7 @@ final class CameraViewController: UIViewController {
     private lazy var cameraPreviewBottomContraint: NSLayoutConstraint =
     cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 
-    private func setQRCodeOverLayLayout() {
+    private func setQRCodeOverlayLayout() {
         if qrCodeScanningOnlyEnabled {
             qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.qrCodeFrameView,
                                       on: cameraPreviewViewController)
@@ -458,7 +458,7 @@ final class CameraViewController: UIViewController {
     }
 
     private func configureConstraints() {
-        setQRCodeOverLayLayout()
+        setQRCodeOverlayLayout()
         ibanDetectionOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView,
                                          on: cameraPreviewViewController)
 
@@ -475,8 +475,8 @@ final class CameraViewController: UIViewController {
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cameraPreviewBottomContraint]
-        )
+            cameraPreviewBottomContraint
+        ])
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
@@ -512,7 +512,7 @@ final class CameraViewController: UIViewController {
 
         coordinator.animate(alongsideTransition: { [weak self] _ in
             self?.configureCameraPanesBasedOnOrientation()
-            self?.setQRCodeOverLayLayout()
+            self?.setQRCodeOverlayLayout()
         })
     }
 

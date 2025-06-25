@@ -82,12 +82,70 @@ final class QRCodeEducationLoadingView: UIView {
         animatedSuffixLabelView.stopAnimating()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Call when horizontal/vertical size class or orientation may have changed
+        configureImageViewVisibility()
+    }
+
     private func setupViews() {
+        configureImageViewVisibility()
+
         addSubview(imageView)
         addSubview(textLabel)
         addSubview(animatedSuffixLabelView)
         animatedSuffixLabelView.startAnimating()
 
+        if isAccessibilityDeviceWithoutNotch {
+            configureWithoutNotchConstraints()
+        } else {
+            configureStandardNotchConstraints()
+        }
+    }
+
+    private var isAccessibilityDeviceWithoutNotch: Bool {
+        let isAccessibilityCategory = GiniAccessibility.isFontSizeAtLeastAccessibilityMedium
+        let isIPhoneWithoutNotch = UIDevice.current.isIphone && !UIDevice.current.hasNotch
+        return isIPhoneWithoutNotch && isAccessibilityCategory
+    }
+
+    private func configureImageViewVisibility() {
+        // Hide image view on devices without notch and 200% font size enabled
+        // Hide image view on landscape iPhone with bottom navigation bar enabled and 200% font size enabled
+        let navigationBottomBarEnabled = giniConfiguration.bottomNavigationBarEnabled
+        let isLandscapeWithBottomBar = navigationBottomBarEnabled && UIDevice.current.isIphoneAndLandscape
+        let shouldHideImageView = isAccessibilityDeviceWithoutNotch || isLandscapeWithBottomBar
+        || (isAccessibilityDeviceWithoutNotch && navigationBottomBarEnabled)
+
+        imageView.isHidden = shouldHideImageView
+    }
+
+    private func configureWithoutNotchConstraints() {
+        if isAccessibilityDeviceWithoutNotch && giniConfiguration.bottomNavigationBarEnabled {
+            // Allow vertical compression so the label doesn't push other UI elements in compact layouts
+            textLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        } else {
+            // Prevent compression to ensure the label remains fully visible when layout space allows
+            textLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        }
+
+        NSLayoutConstraint.activate([
+            // Text label positioned at top (where image would be)
+            textLabel.topAnchor.constraint(equalTo: topAnchor),
+            textLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            textLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+            // Animated suffix label with adjusted spacing
+            animatedSuffixLabelView.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
+                                                         constant: Constants.minTextToAnalysingSpacing),
+            animatedSuffixLabelView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            animatedSuffixLabelView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            animatedSuffixLabelView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
+
+    private func configureStandardNotchConstraints() {
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -98,14 +156,17 @@ final class QRCodeEducationLoadingView: UIView {
             textLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             animatedSuffixLabelView.topAnchor.constraint(greaterThanOrEqualTo: imageView.bottomAnchor,
-                                                constant: Constants.imageToAnalysingSpacing),
+                                                         constant: Constants.imageToAnalysingSpacing),
             animatedSuffixLabelView.leadingAnchor.constraint(equalTo: leadingAnchor),
             animatedSuffixLabelView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             animatedSuffixLabelView.topAnchor.constraint(greaterThanOrEqualTo: textLabel.bottomAnchor,
-                                                constant: Constants.minTextToAnalysingSpacing),
-            animatedSuffixLabelView.bottomAnchor.constraint(equalTo: bottomAnchor)
+                                                         constant: Constants.minTextToAnalysingSpacing)
         ])
+
+        let bottomConstraint = animatedSuffixLabelView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        bottomConstraint.priority = .defaultHigh
+        bottomConstraint.isActive = true
     }
 
     private func bind() {
@@ -146,7 +207,8 @@ private extension QRCodeEducationLoadingView {
         static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
                                                                       comment: "analyzing")
 
-        static let loadingAccessibilityText = NSLocalizedStringPreferredFormat("ginicapture.education.loading.accessibility",
+        static let loadingAccessibilityLocalizedStringKey = "ginicapture.education.loading.accessibility"
+        static let loadingAccessibilityText = NSLocalizedStringPreferredFormat(loadingAccessibilityLocalizedStringKey,
                                                                                comment: "analyzing")
     }
 }
