@@ -115,7 +115,8 @@ final class QRCodeEducationLoadingView: UIView {
         // Hide image view on landscape iPhone with bottom navigation bar enabled and 200% font size enabled
         let navigationBottomBarEnabled = giniConfiguration.bottomNavigationBarEnabled
         let isLandscapeWithBottomBar = navigationBottomBarEnabled && UIDevice.current.isIphoneAndLandscape
-        let shouldHideImageView = isAccessibilityDeviceWithoutNotch || isLandscapeWithBottomBar || (isAccessibilityDeviceWithoutNotch && navigationBottomBarEnabled)
+        let shouldHideImageView = isAccessibilityDeviceWithoutNotch || isLandscapeWithBottomBar
+        || (isAccessibilityDeviceWithoutNotch && navigationBottomBarEnabled)
 
         imageView.isHidden = shouldHideImageView
     }
@@ -206,7 +207,8 @@ private extension QRCodeEducationLoadingView {
         static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.education.loadingText",
                                                                       comment: "analyzing")
 
-        static let loadingAccessibilityText = NSLocalizedStringPreferredFormat("ginicapture.education.loading.accessibility",
+        static let loadingAccessibilityLocalizedStringKey = "ginicapture.education.loading.accessibility"
+        static let loadingAccessibilityText = NSLocalizedStringPreferredFormat(loadingAccessibilityLocalizedStringKey,
                                                                                comment: "analyzing")
     }
 }
