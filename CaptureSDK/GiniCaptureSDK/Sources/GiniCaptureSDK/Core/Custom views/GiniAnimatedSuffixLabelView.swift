@@ -12,7 +12,7 @@ final class GiniAnimatedSuffixLabelView: UIView {
     private let suffixLabel = UILabel()
 
     private var animationCancellable: AnyCancellable?
-    private var currentStep = 0
+    private var currentStep: Int = 0
 
     private let baseText: String
     private let suffixSymbol: String
