@@ -87,7 +87,7 @@ final class ImagePickerViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if UIDevice.current.isIphone {
-            let isLandscape = currentInterfaceOrientation.isLandscape
+            let isLandscape = Device.orientation.isLandscape
             bottomNavigationBarHeightConstraint?.constant = isLandscape ? CameraBottomNavigationBar.Constants.heightLandscape : CameraBottomNavigationBar.Constants.heightPortrait
         }
     }
@@ -237,12 +237,17 @@ extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return ImagePickerCollectionViewCell.size(
-            itemsInARow: currentInterfaceOrientation.isLandscape ? Constants.imagesInRowLandscape : Constants.imagesInRowPortrait,
-            collectionViewLayout: collectionViewLayout,
-            leftSafeArea: UIApplication.shared.keyWindow?.rootViewController?.view.safeAreaInsets.left ?? 0,
-            rightSafeArea: UIApplication.shared.keyWindow?.rootViewController?.view.safeAreaInsets.left ?? 0
-        )
+        let keyWindow = UIApplication.shared.giniCurrentKeyWindow
+
+        let leftSafeArea = keyWindow?.safeAreaInsets.left ?? 0
+        let rightSafeArea = keyWindow?.safeAreaInsets.right ?? 0
+
+        let itemsInARow: Int = Device.orientation.isLandscape ? Constants.imagesInRowLandscape : Constants.imagesInRowPortrait
+
+        return ImagePickerCollectionViewCell.size(itemsInARow: itemsInARow,
+                                                  collectionViewLayout: collectionViewLayout,
+                                                  leftSafeArea: leftSafeArea,
+                                                  rightSafeArea: rightSafeArea)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
