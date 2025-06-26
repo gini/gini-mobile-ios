@@ -514,13 +514,58 @@ platform :ios do
   end
 
   desc "Distribute the app to Firebase App Distribution"
-  lane :distribute_to_firebase do |options|
-    firebase_app_distribution(
-      app: ENV['APP_ID'],
-      #ipa_path: options[:ipa_path],
-      groups: ENV['DISTRIBUTION_GROUPS'],
-      release_notes: ENV['RELEASE_NOTES'],
-      service_credentials_file: options[:TOKEN_PATH]
-    )
+  lane :distribute_to_firebase do
+    UI.message("🔥 Starting Firebase App Distribution")
+    
+    # Verify required environment variables
+    required_vars = ['FIREBASE_APP_ID', 'FIREBASE_SERVICE_ACCOUNT_JSON', 'IPA_FILE', 'DISTRIBUTION_GROUPS']
+    required_vars.each do |var|
+      if ENV[var].nil? || ENV[var].empty?
+        UI.user_error!("❌ Required environment variable '#{var}' is not defined")
+      end
+    end
+    
+    # Create temporary file for service account
+    require 'tempfile'
+    service_account_file = Tempfile.new(['firebase-service-account', '.json'])
+    
+    begin
+      # Write service account credentials to temporary file
+      File.write(service_account_file.path, ENV['FIREBASE_SERVICE_ACCOUNT_JSON'])
+      UI.message("📝 Service account file created at: #{service_account_file.path}")
+      
+      # Verify IPA file exists
+      ipa_path = ENV['IPA_FILE']
+      unless File.exist?(ipa_path)
+        UI.user_error!("❌ IPA file does not exist: #{ipa_path}")
+      end
+      
+      UI.message("📱 Distributing IPA: #{ipa_path}")
+      UI.message("🎯 App ID: #{ENV['FIREBASE_APP_ID']}")
+      UI.message("👥 Groups: #{ENV['DISTRIBUTION_GROUPS']}")
+      
+      # Use official Firebase App Distribution plugin
+      firebase_app_distribution(
+        app: ENV['FIREBASE_APP_ID'],
+        ipa_path: ipa_path,
+        groups: ENV['DISTRIBUTION_GROUPS'],
+        release_notes: ENV['RELEASE_NOTES'] || "Automatic distribution from CI/CD",
+        service_credentials_file: service_account_file.path
+      )
+      
+      UI.success("✅ Firebase distribution completed successfully!")
+      
+    rescue => e
+      UI.error("❌ Error during distribution: #{e.message}")
+      UI.error("Error details: #{e.backtrace.first(5).join('\n')}")
+      raise e
+    ensure
+      # Clean up temporary file
+      if service_account_file
+        service_account_file.close
+        service_account_file.unlink
+        UI.message("🧹 Temporary service account file removed")
+      end
+    end
   end
 end

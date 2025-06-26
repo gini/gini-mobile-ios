@@ -137,15 +137,18 @@ jobs:
 
       - name: Distribute to Firebase
         id: distribute
-        run: ${{ github.workspace }}/.github/bin/distribute-to-firebase.sh
+        run: |
+          echo "🔥 Starting Firebase distribution with Fastlane"
+          bundle exec fastlane distribute_to_firebase
         env:
-          APP_ID: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
-          FIREBASE_SERVICE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
+          FIREBASE_APP_ID: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           IPA_FILE: GiniHealthSDKExample.ipa
           DISTRIBUTION_GROUPS: testers
           RELEASE_NOTES: |
-            ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
-            ${{ github.event.head_commit.message }}
+            🚀 Build ${{ github.run_number }} from ${{ github.ref_name }}
+            📝 Commit: ${{ github.sha }}
+            💬 Message: ${{ github.event.head_commit.message }}
 
   post-distribute:
     needs: [prepare, distribute]
