@@ -15,6 +15,8 @@
 
 default_platform(:ios)
 
+ENV["MATCH_GIT_BASIC_AUTHORIZATION"] = ""
+
 platform :ios do
   desc <<~DOC
     Generate certificates
@@ -42,4 +44,49 @@ platform :ios do
     register_devices(devices_file: "./devices.txt")
   end
 
+  
+desc <<~DOC
+Runs unit tests for a given target using the `scan` action (a wrapper around xcodebuild).
+
+Parameters:
+- `target`: The name of the target whose test scheme will be executed. Example: `GinBankSDK`.
+- `destination`: The destination for the tests. Example: `platform=iOS Simulator,name=iPhone 15,OS=17.4`.
+
+DOC
+# Set the lines below before Fastlane runs in Github Actions
+# env:
+#     FASTLANE_SKIP_SUMMARY: true
+
+lane :run_unit_tests do |options|
+  target = options[:target]
+  destination = options[:destination]
+  clientSecret = options[:clientSecret]
+
+  unless target && destination
+    UI.user_error!("Missing 'target' or 'destination' parameter. Pass both to run the tests.")
+  end
+
+  scan(
+    workspace: "GiniMobile.xcworkspace",
+    scheme: target,
+    clean: true,
+    destination: destination,
+    disable_concurrent_testing: false,
+    xcargs: [
+      'CLIENT_ID="gini-mobile-test"',
+      "CLIENT_SECRET=#{clientSecret}",
+      'CODE_SIGNING_REQUIRED=NO',
+      'CODE_SIGN_IDENTITY=""',
+      'ONLY_ACTIVE_ARCH=NO'
+    ].join(' '),
+    output_types: "",                 # prevent report generation
+    output_directory: "./tmp_test_output",
+    fail_build: true,
+    code_coverage: true
+  )
+  
+  # Clean up the report file that were generated
+  sh("rm -rf ./tmp_test_output") if File.exist?("./tmp_test_output")
+  sh("rm -rf ./tmp_derived_data") if File.exist?("./tmp_derived_data")
+end
 end
