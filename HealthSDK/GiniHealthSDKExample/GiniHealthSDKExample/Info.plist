@@ -57,6 +57,7 @@
 	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>ginipay-PBJWducqgKNAR</string>
 		<string>ginipay-insurance-bank-mock</string>
 		<string>ginipay-cbwm</string>
 		<string>ginipay-consorsbank</string>
