@@ -144,7 +144,7 @@ jobs:
           FIREBASE_APP_ID: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_FIREBASE_ID }}
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           IPA_FILE: GiniHealthSDKExample.ipa
-          DISTRIBUTION_GROUPS: testers
+          DISTRIBUTION_GROUPS: gini-internal
           RELEASE_NOTES: |
             🚀 Build ${{ github.run_number }} from ${{ github.ref_name }}
             📝 Commit: ${{ github.sha }}
