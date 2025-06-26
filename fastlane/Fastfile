@@ -516,6 +516,15 @@ platform :ios do
   desc "Distribute the app to Firebase App Distribution"
   lane :distribute_to_firebase do
     UI.message("🔥 Starting Firebase App Distribution")
+
+    # Debug: List current directory contents
+    UI.message("📁 Current directory: #{Dir.pwd}")
+    UI.message("📂 Files in current directory:")
+    Dir.glob("*").each { |file| UI.message("  - #{file}") }
+
+    # Debug: Look for IPA files specifically
+    ipa_files = Dir.glob("*.ipa")
+    UI.message("🔍 Found IPA files: #{ipa_files}")
     
     # Verify required environment variables
     required_vars = ['FIREBASE_APP_ID', 'FIREBASE_SERVICE_ACCOUNT_JSON', 'IPA_FILE', 'DISTRIBUTION_GROUPS']
@@ -536,8 +545,23 @@ platform :ios do
       
       # Verify IPA file exists
       ipa_path = ENV['IPA_FILE']
+
+      # Add .ipa extension if not present
+      unless ipa_path.end_with?('.ipa')
+        ipa_path = "#{ipa_path}.ipa"
+        UI.message("🔧 Added .ipa extension: #{ipa_path}")
+      end
+
       unless File.exist?(ipa_path)
-        UI.user_error!("❌ IPA file does not exist: #{ipa_path}")
+        UI.message("❓ IPA file not found at: #{ipa_path}")
+
+        # Look for any IPA files in current directory
+        if ipa_files.any?
+          ipa_path = ipa_files.first
+          UI.message("🔍 Using found IPA file: #{ipa_path}")
+        else
+          UI.user_error!("❌ No IPA files found in current directory. Available files: #{Dir.glob('*').join(', ')}")
+        end
       end
       
       UI.message("📱 Distributing IPA: #{ipa_path}")
