@@ -5,7 +5,8 @@ name: Generate SBOMs for all projects
 #       https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/using-the-dependency-submission-api
 on:
   workflow_dispatch:
-
+permissions:
+  contents: read
 jobs:
   generate-sbom:
     runs-on: ubuntu-latest
