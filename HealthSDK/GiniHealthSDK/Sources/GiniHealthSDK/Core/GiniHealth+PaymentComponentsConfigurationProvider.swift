@@ -136,7 +136,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             loadingIndicatorStyle: UIActivityIndicatorView.Style.large,
             loadingIndicatorColor: GiniHealthColorPalette.accent1.preferredColor(),
             infoBarLabelTextColor: GiniHealthColorPalette.dark7.preferredColor(),
-            infoBarBackgroundColor: GiniHealthColorPalette.success1.preferredColor(),
+            infoBarBackgroundColor: GiniColor.success1.uiColor(),
             mainViewBackgroundColor: GiniColor.standard7.uiColor(),
             infoContainerViewBackgroundColor: GiniColor.standard7.uiColor(),
             paymentReviewClose: GiniHealthImage.paymentReviewClose.preferredUIImage(),
