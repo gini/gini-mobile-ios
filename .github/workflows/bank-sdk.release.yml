@@ -1,4 +1,7 @@
 name: Release Bank SDK
+permissions:
+  contents: write
+  packages: write
 on:
   push:
     tags:

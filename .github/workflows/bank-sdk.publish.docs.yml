@@ -1,4 +1,6 @@
 name: Publish docs for Bank SDK
+permissions:
+  contents: read
 on:
   push:
     tags:
