@@ -1,4 +1,6 @@
 name: Check Merchant SDK
+permissions:
+  contents: read
 on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
@@ -17,8 +19,6 @@ concurrency:
 jobs:
   check:
     runs-on: macos-latest
-    permissions:
-      contents: read
     strategy:
       matrix:
         target: [GiniMerchantSDK]

@@ -1,4 +1,6 @@
 name: Check Gini Utilites
+permissions:
+  contents: read
 on:
   pull_request:
    types: [opened, reopened, synchronize, ready_for_review]
@@ -10,8 +12,6 @@ on:
 jobs:
   check:
     runs-on: macos-latest
-    permissions:
-      contents: read
     strategy:
       matrix:
         target: [GiniUtilites]
