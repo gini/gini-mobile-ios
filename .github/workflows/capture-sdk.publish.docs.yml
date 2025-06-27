@@ -1,4 +1,7 @@
 name: Publish docs for Capture SDK
+permissions:
+  contents: read
+  packages: write
 on:
   push:
     tags:
