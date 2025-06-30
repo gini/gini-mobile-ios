@@ -26,7 +26,7 @@ final class CameraViewController: UIViewController {
         return cameraPreviewViewController
     }()
 
-    private lazy var qrCodeOverLay: QRCodeOverlay = {
+    lazy var qrCodeOverLay: QRCodeOverlay = {
         let view = QRCodeOverlay()
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -447,7 +447,7 @@ final class CameraViewController: UIViewController {
     private lazy var cameraPreviewBottomContraint: NSLayoutConstraint =
     cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 
-    private func configureConstraints() {
+    private func setQRCodeOverlayLayout() {
         if qrCodeScanningOnlyEnabled {
             qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.qrCodeFrameView,
                                       on: cameraPreviewViewController)
@@ -455,7 +455,10 @@ final class CameraViewController: UIViewController {
             qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView,
                                       on: cameraPreviewViewController)
         }
+    }
 
+    private func configureConstraints() {
+        setQRCodeOverlayLayout()
         ibanDetectionOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView,
                                          on: cameraPreviewViewController)
 
@@ -472,8 +475,8 @@ final class CameraViewController: UIViewController {
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cameraPreviewBottomContraint]
-        )
+            cameraPreviewBottomContraint
+        ])
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
@@ -509,6 +512,7 @@ final class CameraViewController: UIViewController {
 
         coordinator.animate(alongsideTransition: { [weak self] _ in
             self?.configureCameraPanesBasedOnOrientation()
+            self?.setQRCodeOverlayLayout()
         })
     }
 

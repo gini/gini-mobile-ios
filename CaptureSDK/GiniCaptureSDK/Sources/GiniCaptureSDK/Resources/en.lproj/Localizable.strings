@@ -32,7 +32,7 @@
 "ginicapture.camera.filepicker.photoLibraryAccessDenied" = "Permission to access your photos gallery is required to analyse saved photos";
 "ginicapture.camera.filepicker.mixedDocumentsUnsupported" = "It is only possible to select one file type at the same time.";
 "ginicapture.camera.filepicker.failedToOpenDocument" = "The file could not be opened. Please use a different file type.";
-"ginicapture.camera.filepicker.multiplePdfErrorMessage" = "It is only possible to select one PDF at a time.";
+"ginicapture.camera.filepicker.multiplePdfErrorMessage" = "Only one invoice can be uploaded at a time.";
 "ginicapture.camera.filepicker.errorPopup.cancelButton" = "Cancel";
 "ginicapture.camera.filepicker.errorPopup.confirmButton" = "OK";
 "ginicapture.camera.filepicker.errorPopup.grantAccessButton" = "Grant permission";
@@ -40,6 +40,7 @@
 "ginicapture.camera.documentValidationError.excedeedFileSize" = "This file is too large.";
 "ginicapture.camera.documentValidationError.tooManyPages" = "The document can only have a maximum of 10 pages.";
 "ginicapture.camera.documentValidationError.wrongFormat" = "Only files of the formats jpg, png, gif or PDF can be analysed.";
+"ginicapture.camera.documentValidationError.wrongFormatWithXML" = "Only files of the formats jpg, png, gif, PDF or XML can be analysed.";
 "ginicapture.camera.documentValidationError.pdfPasswordProtected" = "Password protected documents cannot be analysed.";
 "ginicapture.camera.fileImportButtonLabel" = "Files";
 "ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Flash On";
@@ -65,6 +66,7 @@
 "ginicapture.camera.popupTitleImportPDF" = "Import PDF";
 "ginicapture.camera.popupOptionPhotos" = "Upload photo";
 "ginicapture.camera.popupOptionFiles" = "Upload files";
+"ginicapture.camera.popupOptionEInvoice" = "Upload E-Invoice";
 "ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Cancel";
 
@@ -108,6 +110,9 @@
 "ginicapture.analysis.error.analysis" = "An error occurred while parsing the document.";
 "ginicapture.analysis.error.cancelled" = "The analysis was cancelled";
 "ginicapture.analysis.defaultPdfDokumentTitle" = "PDF document";
+"ginicapture.analysis.education.loadingText" = "analyzing";
+"ginicapture.analysis.education.loading.intro" = "In case you didn’t know...";
+"ginicapture.analysis.education.loading.uploadTip" = "Upload PDFs, images, or GIFs";
 
 "ginicapture.help.openWithTutorial.title" = "Open documents from other apps";
 
@@ -143,6 +148,7 @@
 "ginicapture.help.supportedFormats.section.1.item.3" = "PDF documents of up to 10 pages";
 "ginicapture.help.supportedFormats.section.1.item.4" = "QR codes";
 "ginicapture.help.supportedFormats.section.1.item.5" = "Photos of monitors or screens";
+"ginicapture.help.supportedFormats.section.1.item.6" = "E-Invoices: XRechnung (XML), ZUGFeRD (PDF)";
 "ginicapture.help.supportedFormats.section.2.title" = "not supported formats";
 "ginicapture.help.supportedFormats.section.2.item.1" = "Handwriting";
 "ginicapture.help.supportedFormats.section.2.item.2" = "Photos of monitors or screens";
@@ -211,6 +217,9 @@
 "ginicapture.QRscanning.incorrect.title" = "Unknown QR code";
 "ginicapture.QRscanning.incorrect.description" = "This code does not contain any payment details. Please use another QR code or take an image of your invoice.";
 "ginicapture.QRscanning.loading" = "Retrieving invoice";
+"ginicapture.QRscanning.education.loading.captureTip" = "You can take photos of receipts or remittance slips – even without a QR code";
 
 "ginicapture.ibandetection.multipleibansdetected" = "IBAN detected";
 "ginicapture.ibandetection.takephoto" = "Take a photo";
+
+"ginicapture.education.loading.accessibility" = "Analyzing invoice in progress";
