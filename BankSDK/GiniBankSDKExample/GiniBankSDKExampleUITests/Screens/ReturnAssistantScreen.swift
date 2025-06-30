@@ -23,6 +23,7 @@ class ReturnAssistantScreen {
     let minusButton: XCUIElement
     let proceedButton: XCUIElement
     let saveButton: XCUIElement
+    var doneKeyboard: XCUIElement
     
     
     init(app: XCUIApplication, locale: String) {
@@ -34,24 +35,29 @@ class ReturnAssistantScreen {
             digitalInvoiceTitleText = app.staticTexts["Digital invoice"]
             cancelButtonNavigation = app.navigationBars.buttons["Cancel"]
             editButton = app.buttons["Edit"]
-            proceedButton = app.buttons["Proceed"]
+            proceedButton = app.buttons["Confirm and proceed"]
             saveButton = app.buttons["Save"]
+            minusButton = app.buttons["Decrease quantity"]
+            plusButton = app.buttons["Increase quantity"]
+            doneKeyboard = app.buttons["Done"]
             
         case "de":
             helpButton = app.buttons["Hilfe"]
-            getStartedButton = app.staticTexts["Los geht’s"]
+            getStartedButton = app.buttons["Los geht’s"]
             digitalInvoiceTitleText = app.staticTexts["Digitale Rechnung"]
             cancelButtonNavigation = app.navigationBars.buttons["Abbrechen"]
             editButton = app.buttons["Bearbeiten"]
-            proceedButton = app.buttons["Weiter"]
+            proceedButton = app.buttons["Bestätigen und weiter"]
             saveButton = app.buttons["Speichern"]
+            minusButton = app.buttons["Anzahl verringern"]
+            plusButton = app.buttons["Anzahl erhöhen"]
+            doneKeyboard = app.buttons["Fertig"]
         default:
             fatalError("Locale \(locale) is not supported")
         }
         nameTextField = app.textFields.element(boundBy: 2)
         priceTextField = app.textFields.element(boundBy: 3)
         quantityTextField = app.textFields.element(boundBy: 4)
-        minusButton = app.buttons["quantity minus icon"]
-        plusButton = app.buttons["quantity plus icon"]
+        
     }
 }

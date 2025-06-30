@@ -164,6 +164,8 @@ class GiniReturnAssistantScreenUITests: GiniBankSDKExampleUITests {
         mainScreen.clearInputField(element: returnAssistantScreen.nameTextField)
         returnAssistantScreen.nameTextField.tap()
         returnAssistantScreen.nameTextField.typeText("New Product")
+        //Tap Fertig
+        returnAssistantScreen.doneKeyboard.tap()
         //Tap plus button
         returnAssistantScreen.plusButton.tap()
         //Tap plus button

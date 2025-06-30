@@ -27,20 +27,20 @@ class MainScreen {
         case "en":
             deleteButton = app.buttons["Delete"]
             sendFeedbackButton = app.navigationBars.buttons["Send feedback and close"]
-            recentsButton = app.buttons["Recents"]
-            recentsText = app.staticTexts["Recents"]
+            recentsButton = app.buttons["Recents"].firstMatch
+            recentsText = app.staticTexts["Recents"].firstMatch
         case "de":
             deleteButton = app.buttons["Löschen"]
             sendFeedbackButton = app.navigationBars.buttons["Feedback senden und schließen"]
-            recentsButton = app.buttons["Verlauf"]
-            recentsText = app.staticTexts["Verlauf"]
+            recentsButton = app.buttons["Verlauf"].firstMatch
+            recentsText = app.staticTexts["Verlauf"].firstMatch
         default:
             fatalError("Locale \(locale) is not supported")
         }
-        
+        //photoPaymentButton
         photoPaymentButton = app.buttons[MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue]
-        cameraIconButton = app.buttons[MainScreenAccessibilityIdentifiers.photoPaymentButton.rawValue]
-        configurationButton = app.buttons[MainScreenAccessibilityIdentifiers.metaInformationLabel.rawValue]
+        cameraIconButton = app.buttons[MainScreenAccessibilityIdentifiers.cameraIconButton.rawValue]
+        configurationButton = app.buttons[MainScreenAccessibilityIdentifiers.settingsButton.rawValue]
     }
     
     /*
@@ -64,6 +64,9 @@ class MainScreen {
         if buttonToTap.exists {
             buttonToTap.tap()
         }
+        
+//        XCUIDevice.shared.orientation = .landscapeLeft
+        
     }
 
     /*
@@ -158,17 +161,29 @@ class MainScreen {
     }
     
     func tapFileWithName(fileName: String) {
-
         sleep(1)
-        if  recentsButton.exists {
+
+        if recentsButton.exists {
             recentsButton.tap()
         } else if recentsText.exists {
             recentsText.tap()
         }
-          
-        let fileElement = app.staticTexts[fileName].firstMatch
-        XCTAssertTrue(fileElement.waitForExistence(timeout: 5),
+
+        var fileElement = app.staticTexts[fileName].firstMatch
+        var swipeAttempts = 0
+
+        while !fileElement.exists && swipeAttempts < 4 {
+            
+            XCUIDevice.shared.orientation = .portrait
+            app.swipeUp()
+            swipeAttempts += 1
+            sleep(1) 
+            fileElement = app.staticTexts[fileName].firstMatch
+        }
+
+        XCTAssertTrue(fileElement.waitForExistence(timeout: 3),
                       "Please add file with file name '\(fileName)' to the device before launching the test.")
+        
         fileElement.tap()
     }
     

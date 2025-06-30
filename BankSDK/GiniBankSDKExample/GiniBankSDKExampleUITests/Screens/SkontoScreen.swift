@@ -13,6 +13,7 @@ class SkontoScreen {
     let app: XCUIApplication
     let skontoTitleText: XCUIElement
     let backButtonNavigation: XCUIElement
+    let backButtonSkontoHelp: XCUIElement
     let helpButton: XCUIElement
     let proceedButton: XCUIElement
     let skontoSwitch: XCUIElement
@@ -29,16 +30,18 @@ class SkontoScreen {
         switch locale {
         case "en":
             helpButton = app.buttons["Help"]
-            proceedButton = app.buttons["Proceed"]
+            proceedButton = app.buttons["Confirm and proceed"]
             skontoTitleText = app.buttons["Discount"]
-            backButtonNavigation = app.buttons["Back"]
+            backButtonNavigation = app.buttons["Camera Back"]
+            backButtonSkontoHelp = app.buttons["Skonto discount Back"]
             gotItButton = app.buttons["Understood"]
             
         case "de":
             helpButton = app.buttons["Hilfe"]
-            proceedButton = app.buttons["Zahlung fortsetzen"]
+            proceedButton = app.buttons["Bestätigen und weiter"]
             skontoTitleText = app.buttons["Skonto"]
-            backButtonNavigation = app.buttons["Zurück"]
+            backButtonNavigation = app.buttons["Kamera Zurück"]
+            backButtonSkontoHelp = app.buttons["Skonto Zurück"]
             gotItButton = app.buttons["Verstanden"]
 
         default:

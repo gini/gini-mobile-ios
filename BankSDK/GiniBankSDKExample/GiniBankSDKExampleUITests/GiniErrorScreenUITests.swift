@@ -43,8 +43,8 @@ import XCTest
          XCTAssertTrue(errorScreen.enterManuallyButton.waitForExistence(timeout: 20))
          errorScreen.cancelButton.tap()
          //Assert that Take picture is displayed and hittable
-         XCTAssertTrue(mainScreen.photoPaymentButton.waitForExistence(timeout: 5))
-         XCTAssertTrue(mainScreen.photoPaymentButton.isHittable)
+         XCTAssertTrue(captureScreen.captureButton.waitForExistence(timeout: 5))
+         XCTAssertTrue(captureScreen.captureButton.isHittable)
  }
 
  func testErrorScreenEnterManually() throws {
