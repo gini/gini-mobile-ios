@@ -9,7 +9,7 @@ public enum APIEnvironment: String {
         case .production:
             return .default
         case .stage:
-            return .custom(domain: "pay-api.pia.stage.gini.net", tokenSource: nil)
+            return .custom(domain: "pay-api.stage.gini.net", tokenSource: nil)
         }
     }
 

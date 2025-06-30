@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "cloud-off.pdf",
+      "filename" : "errorCloud.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "errorCloudDark.pdf",
       "idiom" : "universal"
     }
   ],

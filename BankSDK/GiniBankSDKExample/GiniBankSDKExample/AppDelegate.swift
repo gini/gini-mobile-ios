@@ -20,7 +20,6 @@ import GiniBankSDK
         window = UIWindow(frame: UIScreen.main.bounds)
         coordinator = AppCoordinator(window: window ?? UIWindow())
         coordinator.start()
-
         return true
     }
 
@@ -46,4 +45,3 @@ import GiniBankSDK
         return true
     }
 }
-

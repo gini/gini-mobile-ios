@@ -135,11 +135,25 @@ public final class PaymentInfoViewController: UIViewController {
     }
 
     private func setupView() {
+        addCloseButton()
         setupViewHierarchy()
         setupViewAttributes()
         setupViewConstraints()
         setupInitialLayout()
         setupViewVisibility()
+    }
+    
+    private func addCloseButton() {
+        let closeIconTintColor = viewModel.configuration.closeIconTintColor
+        let closeButtonIcon = viewModel.configuration.closeIcon?.withRenderingMode(.alwaysTemplate)
+
+        let closeButton = UIBarButtonItem(image: closeButtonIcon,
+                                          style: .plain,
+                                          target: self,
+                                          action: #selector(didTapCloseButton))
+
+        closeButton.tintColor = closeIconTintColor
+        navigationItem.leftBarButtonItem = closeButton
     }
     
     private func setupViewHierarchy() {
@@ -269,6 +283,10 @@ public final class PaymentInfoViewController: UIViewController {
         NSLayoutConstraint.deactivate(heightsQuestionsTableView)
         heightsQuestionsTableView = [questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: questionsTableView.contentSize.height)]
         NSLayoutConstraint.activate(heightsQuestionsTableView)
+    }
+    
+    @objc private func didTapCloseButton() {
+        dismiss(animated: true)
     }
 
     // Handle orientation change

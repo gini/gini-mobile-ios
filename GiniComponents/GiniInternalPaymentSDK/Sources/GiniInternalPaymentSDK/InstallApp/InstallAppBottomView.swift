@@ -252,7 +252,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
     private func setButtonsState() {
         appStoreImageView.isHidden = viewModel.isBankInstalled
         continueButton.isHidden = !viewModel.isBankInstalled
-        poweredByGiniView.isHidden = viewModel.isBankInstalled
+        poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
         moreInformationLabel.text = viewModel.moreInformationLabelText
         
         continueButton.didTapButton = { [weak self] in
