@@ -542,7 +542,49 @@ public final class GiniBankConfiguration: NSObject {
     }
 
     // MARK: - Transfer summary sending and cleanup
+    // Deprecated method - Please use sendTransferSummary()
+    /**
+     Function for clean up
+     - Parameters:
+     - paymentRecipient: paymentRecipient description
+     - paymentReference: paymentReference description
+     - iban: iban description
+     - bic: bic description
+     - amountToPay: amountToPay description
+     */
 
+    // swiftlint:disable line_length
+    @available(*, deprecated, message: "Please use sendTransferSummary() to provide the required transfer summary first (if the user has completed TAN verification) and then cleanup() to let the SDK free up used resources")
+    // swiftlint:enable line_length
+    // swiftlint:disable function_parameter_count
+    // swiftlint:disable function_body_length
+    public func cleanup(paymentRecipient: String,
+                        paymentReference: String,
+                        paymentPurpose: String,
+                        iban: String,
+                        bic: String,
+                        amountToPay: ExtractionAmount) {
+        guard let documentService = documentService else { return }
+
+        let updatedExtractions = generateBasicExtractions(paymentRecipient: paymentRecipient,
+                                                          paymentReference: paymentReference,
+                                                          paymentPurpose: paymentPurpose,
+                                                          iban: iban,
+                                                          bic: bic,
+                                                          amountToPayString: amountToPay.formattedString())
+
+        if let lineItems = lineItems {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: ["lineItems": lineItems])
+        } else {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: nil)
+        }
+
+        documentService.resetToInitialState()
+        self.documentService = nil
+        self.lineItems = nil
+    }
     // swiftlint:enable function_body_length
     // swiftlint:enable function_parameter_count
 
