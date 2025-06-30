@@ -36,7 +36,9 @@ enum GiniHealthColorPalette: String {
     case feedback3 = "Feedback03"
     case feedback4 = "Feedback04"
 
-    case success1 = "Success01"
+    case lightSuccess1 = "Success01Light"
+    case darkSuccess1 = "Success01Dark"
+
     case success2 = "Success02"
     case success3 = "Success03"
     case success4 = "Success04"
@@ -67,6 +69,8 @@ extension GiniColor {
     static let accent1 = GiniColor(lightModeColorName: .accent1, darkModeColorName: .accent1)
 
     static let feedback1 = GiniColor(lightModeColorName: .feedback1, darkModeColorName: .feedback1)
+    
+    static let success1 = GiniColor(lightModeColorName: .lightSuccess1, darkModeColorName: .darkSuccess1)
 }
 
 extension GiniColor {
