@@ -21,6 +21,7 @@ public final class MoreInformationView: UIButton {
     private lazy var moreInformationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
         
         let attributes: [NSAttributedString.Key: Any] = [
@@ -37,6 +38,7 @@ public final class MoreInformationView: UIButton {
         let imageView = UIImageView(image: viewModel.configuration.moreInformationIcon)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = viewModel.configuration.moreInformationAccentColor
+        imageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
