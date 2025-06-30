@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>GiniError Enumeration Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Enum/GiniError" class="dashAnchor"></a>
+
+    <a title="GiniError Enumeration Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+        <img class="logo-icon" src="../img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">GiniBankAPILibrary Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      GiniError Enumeration Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../getting-started.html">Getting started</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../migration-guide.html">Migration guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AnalyticsService.html">AnalyticsService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CancellationToken.html">CancellationToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ClientConfigurationService.html">ClientConfigurationService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDocumentService.html">DefaultDocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction.html">Extraction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction/Box.html">– Box</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Extraction/Candidate.html">– Candidate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ExtractionResult.html">ExtractionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBankAPI.html">GiniBankAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBankAPI/Builder.html">– Builder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PaymentService.html">PaymentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ReturnReason.html">ReturnReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Token.html">Token</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:18GiniBankAPILibrary0abC7VersionSSvp">GiniBankAPILibraryVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/APIDomain.html">APIDomain</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniError.html">GiniError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/LogLevel.html">LogLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/UserDomain.html">UserDomain</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AlternativeTokenSource.html">AlternativeTokenSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AnalyticsServiceProtocol.html">AnalyticsServiceProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ClientConfigurationServiceProtocol.html">ClientConfigurationServiceProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DocumentService.html">DocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniErrorProtocol.html">GiniErrorProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PaymentServiceProtocol.html">PaymentServiceProtocol</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AmplitudeBaseEvent.html">AmplitudeBaseEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AmplitudeBaseEvent/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AmplitudeEventOptions.html">AmplitudeEventOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AmplitudeEventsBatchPayload.html">AmplitudeEventsBatchPayload</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Client.html">Client</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ClientConfiguration.html">ClientConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CompositeDocument.html">CompositeDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CompositeDocumentInfo.html">CompositeDocumentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document.html">Document</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Layout.html">– Layout</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Page.html">– Page</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/UploadMetadata.html">– UploadMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Progress.html">– Progress</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Origin.html">– Origin</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/SourceClassification.html">– SourceClassification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/DocType.html">– DocType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Links.html">– Links</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/TypeV2.html">– TypeV2</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Document/Metadata.html">– Metadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ErrorEvent.html">ErrorEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Structs.html#/s:18GiniBankAPILibrary5LinksV">Links</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PartialDocumentInfo.html">PartialDocumentInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Payment.html">Payment</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Structs.html#/s:18GiniBankAPILibrary12PaymentLinksV">PaymentLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentRequest.html">PaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ResolvedPaymentRequest.html">ResolvedPaymentRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Type Aliases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary16CompletionResulta">CompletionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Typealiases.html#/s:18GiniBankAPILibrary15PaymentRequestsa">PaymentRequests</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>GiniError</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">GiniError</span> <span class="p">:</span> <span class="kt">Error</span><span class="p">,</span> <span class="kt"><a href="../Protocols/GiniErrorProtocol.html">GiniErrorProtocol</a></span><span class="p">,</span> <span class="kt">Equatable</span></code></pre>
+
+                </div>
+              </div>
+            <p>Enum representing different types of errors that can occur while interacting with the Gini API.</p>
+
+<ul>
+<li>badRequest: Error indicating that the request was invalid.</li>
+<li>notAcceptable: Error indicating that the request was not acceptable.</li>
+<li>notFound: Error indicating that the requested resource was not found.</li>
+<li>noResponse: Error indicating that no response was received.</li>
+<li>parseError: Error indicating that there was an error parsing the response.</li>
+<li>requestCancelled: Error indicating that the request was cancelled.</li>
+<li>tooManyRequests: Error indicating that too many requests have been made.</li>
+<li>unauthorized: Error indicating that the request was unauthorized.</li>
+<li>maintenance: Error indicating that the system is under maintenance.</li>
+<li>outage: Error indicating that the service is unavailable due to outage.</li>
+<li>server: Error indicating that the server is unavailable.</li>
+<li>noInternetConnection: Error indicating that there is no internet connection.</li>
+<li>clientSide: Error indicating a client-side error in the 4xx range (excluding specific cases like 404).</li>
+<li>unknown: An unknown error occurred.</li>
+</ul>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO10badRequestyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/badRequest(response:data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO10badRequestyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF">badRequest(response:data:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">badRequest</span><span class="p">(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO13notAcceptableyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/notAcceptable(response:data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO13notAcceptableyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF">notAcceptable(response:data:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">notAcceptable</span><span class="p">(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO8notFoundyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/notFound(response:data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO8notFoundyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF">notFound(response:data:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">notFound</span><span class="p">(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO10noResponseyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/noResponse" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO10noResponseyA2CmF">noResponse</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">noResponse</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO05parseD0yACSS_So17NSHTTPURLResponseCSg10Foundation4DataVSgtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/parseError(message:response:data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO05parseD0yACSS_So17NSHTTPURLResponseCSg10Foundation4DataVSgtcACmF">parseError(message:response:data:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">parseError</span><span class="p">(</span><span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO16requestCancelledyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/requestCancelled" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO16requestCancelledyA2CmF">requestCancelled</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">requestCancelled</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO15tooManyRequestsyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/tooManyRequests(response:data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO15tooManyRequestsyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF">tooManyRequests(response:data:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">tooManyRequests</span><span class="p">(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO12unauthorizedyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/unauthorized(response:data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO12unauthorizedyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF">unauthorized(response:data:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">unauthorized</span><span class="p">(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO11maintenanceyACSi_tcACmF"></a>
+                    <a name="//apple_ref/swift/Element/maintenance(errorCode:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO11maintenanceyACSi_tcACmF">maintenance(errorCode:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">maintenance</span><span class="p">(</span><span class="nv">errorCode</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO6outageyACSi_tcACmF"></a>
+                    <a name="//apple_ref/swift/Element/outage(errorCode:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO6outageyACSi_tcACmF">outage(errorCode:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">outage</span><span class="p">(</span><span class="nv">errorCode</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO6serveryACSi_tcACmF"></a>
+                    <a name="//apple_ref/swift/Element/server(errorCode:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO6serveryACSi_tcACmF">server(errorCode:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">server</span><span class="p">(</span><span class="nv">errorCode</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO20noInternetConnectionyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/noInternetConnection" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO20noInternetConnectionyA2CmF">noInternetConnection</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">noInternetConnection</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO10clientSideyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/clientSide(response:data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO10clientSideyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF">clientSide(response:data:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">clientSide</span><span class="p">(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO7unknownyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/unknown(response:data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO7unknownyACSo17NSHTTPURLResponseCSg_10Foundation4DataVSgtcACmF">unknown(response:data:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">unknown</span><span class="p">(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO7messageSSvp"></a>
+                    <a name="//apple_ref/swift/Property/message" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO7messageSSvp">message</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO8responseSo17NSHTTPURLResponseCSgvp"></a>
+                    <a name="//apple_ref/swift/Property/response" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO8responseSo17NSHTTPURLResponseCSgvp">response</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO4data10Foundation4DataVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/data" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO4data10Foundation4DataVSgvp">data</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:18GiniBankAPILibrary0A5ErrorO4from10statusCode8response4dataACSi_So17NSHTTPURLResponseCSg10Foundation4DataVSgtFZ"></a>
+                    <a name="//apple_ref/swift/Method/from(statusCode:response:data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:18GiniBankAPILibrary0A5ErrorO4from10statusCode8response4dataACSi_So17NSHTTPURLResponseCSg10Foundation4DataVSgtFZ">from(statusCode:response:data:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">from</span><span class="p">(</span><span class="nv">statusCode</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+                 <span class="nv">response</span><span class="p">:</span> <span class="kt">HTTPURLResponse</span><span class="p">?,</span>
+                 <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">GiniError</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2025 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2025-06-30)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
