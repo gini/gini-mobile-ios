@@ -304,7 +304,7 @@ public final class PaymentReviewContainerView: UIView {
     private func setupRecipientStackViewConstraints() {
         NSLayoutConstraint.activate([
             recipientTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
-            recipientErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            recipientErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
         ])
     }
 
@@ -317,8 +317,8 @@ public final class PaymentReviewContainerView: UIView {
             ibanTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             amountTextFieldWidthConstraint,
-            ibanErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
-            amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            ibanErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
             amountErrorLabelWidthConstraint
         ])
     }
@@ -326,7 +326,7 @@ public final class PaymentReviewContainerView: UIView {
     private func setupUsageStackViewConstraints() {
         NSLayoutConstraint.activate([
             usageTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
-            usageErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight)
+            usageErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight)
         ])
     }
     
@@ -334,8 +334,8 @@ public final class PaymentReviewContainerView: UIView {
         NSLayoutConstraint.activate([
             ibanTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
-            ibanErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
-            amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            ibanErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
         ])
     }
     
@@ -344,8 +344,8 @@ public final class PaymentReviewContainerView: UIView {
             amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             usageTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             amountTextFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountLandscapeWidth),
-            usageErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
-            amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            usageErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
             amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountLandscapeWidth)
         ])
     }
@@ -913,7 +913,7 @@ extension PaymentReviewContainerView {
         static let leftRightPaymentInfoContainerLandscapePadding = 56.0
         static let topBottomPaymentInfoContainerPadding = 16.0
         static let textFieldHeight = 56.0
-        static let errorLabelHeight = 12.0
+        static let errorLabelHeight = 42.0
         static let amountPortraitWidth = 95.0
         static let amountLandscapeWidth = 120.0
         static let animationDuration: CGFloat = 0.3
