@@ -30,6 +30,7 @@ public final class BanksBottomView: BottomSheetViewController {
         label.text = viewModel.strings.selectBankTitleText
         label.textColor = viewModel.configuration.selectBankAccentColor
         label.font = viewModel.configuration.selectBankFont
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
         return label
@@ -53,6 +54,7 @@ public final class BanksBottomView: BottomSheetViewController {
         label.text = viewModel.strings.descriptionText
         label.textColor = viewModel.configuration.descriptionAccentColor
         label.font = viewModel.configuration.descriptionFont
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
         return label
     }()
@@ -182,9 +184,11 @@ public final class BanksBottomView: BottomSheetViewController {
 
     private func setupTitleViewConstraints() {
         NSLayoutConstraint.activate([
-            titleView.heightAnchor.constraint(equalToConstant: Constants.heightTitleView),
+            titleView.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.heightTitleView),
             titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             titleLabel.centerYAnchor.constraint(equalTo: titleView.centerYAnchor),
+            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: titleView.topAnchor, constant: Constants.descriptionTopPadding),
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: titleView.bottomAnchor, constant: -Constants.descriptionTopPadding),
             closeTitleIconImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             closeTitleIconImageView.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
             closeTitleIconImageView.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
@@ -252,7 +256,7 @@ public final class BanksBottomView: BottomSheetViewController {
 
 extension BanksBottomView {
     enum Constants {
-        static let heightTitleView = 19.0
+        static let heightTitleView = 49.0
         static let descriptionTopPadding = 4.0
         static let viewPaddingConstraint = 16.0
         static let topAnchorTitleView = 32.0
