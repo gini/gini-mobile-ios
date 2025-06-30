@@ -44,7 +44,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
             attachAction()
         } else {
             // Show the TransactionDocsAlertController every time
-            showAndSaveTransactionDocsAlert(on: controller, 
+            showAndSaveTransactionDocsAlert(on: controller,
                                             defaultAction: defaultAction,
                                             attachAction: attachAction)
         }

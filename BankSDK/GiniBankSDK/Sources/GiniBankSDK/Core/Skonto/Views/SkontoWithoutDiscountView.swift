@@ -6,7 +6,7 @@
 
 import UIKit
 
-class SkontoWithoutDiscountView: UIView {
+class SkontoWithoutDiscountView: UIView, GiniInputAccessoryViewPresentable {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.title",
@@ -48,6 +48,16 @@ class SkontoWithoutDiscountView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    
+    override var inputAccessoryView: UIView? {
+        get {
+            priceView.inputAccessoryView
+        }
+        
+        set {
+            priceView.inputAccessoryView = newValue
+        }
+    }
 
     private let configuration = GiniBankConfiguration.shared
 
@@ -71,6 +81,14 @@ class SkontoWithoutDiscountView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        priceView.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        priceView.resignFirstResponder()
     }
 
     private func setupView() {

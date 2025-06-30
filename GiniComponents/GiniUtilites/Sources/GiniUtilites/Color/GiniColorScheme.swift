@@ -272,6 +272,19 @@ public struct GiniColorScheme {
         }
     }
 
+    public struct InputAccessoryView {
+        public var background: GiniColor
+        public var tintColor: GiniColor
+        public var disabledTintColor: GiniColor
+        public init(background: GiniColor,
+                    tintColor: GiniColor,
+                    disabledTintColor: GiniColor) {
+            self.background = background
+            self.tintColor = tintColor
+            self.disabledTintColor = disabledTintColor
+        }
+    }
+
     public var background: Background
     public var actionSheet: ActionSheet
     public var alert: Alert
@@ -290,7 +303,8 @@ public struct GiniColorScheme {
     public var buttonOutlined: ButtonOutlined
     public var textField: TextField
     public var toggle: Toggle
-    
+    public var inputAccessoryView: InputAccessoryView
+
     public init(background: Background,
                 actionSheet: ActionSheet,
                 alert: Alert,
@@ -308,7 +322,8 @@ public struct GiniColorScheme {
                 button: Button,
                 buttonOutlined: ButtonOutlined,
                 textField: TextField,
-                toggle: Toggle) {
+                toggle: Toggle,
+                inputAccessoryView: InputAccessoryView) {
         self.background = background
         self.actionSheet = actionSheet
         self.alert = alert
@@ -327,5 +342,6 @@ public struct GiniColorScheme {
         self.buttonOutlined = buttonOutlined
         self.textField = textField
         self.toggle = toggle
+        self.inputAccessoryView = inputAccessoryView
     }
 }

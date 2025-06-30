@@ -63,7 +63,7 @@ platform :ios do
       MESSAGE
 
       if ci
-        configure_git_on_ci_machines("Team Mobile Schorsch", "team-mobile@gini.net")
+        configure_git_on_ci_machines("Team Mobile Schorsch", "valentina.iancu@gini.net")
       end
 
       release_repo_path = checkout_release_repo(repo_url, repo_user, repo_password)
@@ -159,7 +159,7 @@ platform :ios do
      MESSAGE
 
       if ci
-        configure_git_on_ci_machines("Team Mobile Schorsch", "team-mobile@gini.net")
+        configure_git_on_ci_machines("Team Mobile Schorsch", "valentina.iancu@gini.net")
       end
 
       # Clear gh-pages directory 
@@ -425,7 +425,7 @@ platform :ios do
       MESSAGE
 
       if ci
-        configure_git_on_ci_machines("Team Mobile Schorsch", "team-mobile@gini.net")
+        configure_git_on_ci_machines("Team Mobile Schorsch", "valentina.iancu@gini.net")
       end
 
       sbom_paths = []

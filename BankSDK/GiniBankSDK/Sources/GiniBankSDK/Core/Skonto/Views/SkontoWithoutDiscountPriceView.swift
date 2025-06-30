@@ -21,6 +21,16 @@ class SkontoWithoutDiscountPriceView: UIView {
 
     private var viewModel: SkontoViewModel
 
+    override var inputAccessoryView: UIView? {
+        get {
+            amountView.inputAccessoryView
+        }
+
+        set {
+            amountView.inputAccessoryView = newValue
+        }
+    }
+
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -35,6 +45,14 @@ class SkontoWithoutDiscountPriceView: UIView {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        amountView.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        amountView.resignFirstResponder()
     }
 
     private func setupView() {

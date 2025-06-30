@@ -27,7 +27,8 @@ extension UIColor {
             button: createButtonColorScheme(),
             buttonOutlined: createButtonOutlinedColorScheme(),
             textField: createTextFieldColorScheme(),
-            toggle: createToggleColorScheme()
+            toggle: createToggleColorScheme(),
+            inputAccessoryView: createInputAccessoryViewColorScheme()
         )
     }
 
@@ -180,6 +181,14 @@ extension UIColor {
             trackOn: GiniColor(lightModeColor: .GiniBank.accent1, darkModeColor: .GiniBank.accent1),
             trackOff: GiniColor(lightModeColor: .GiniBank.light4, darkModeColor: .GiniBank.dark4),
             disabledTrack: GiniColor(lightModeColor: .GiniBank.light4, darkModeColor: .GiniBank.dark4)
+        )
+    }
+
+    private static func createInputAccessoryViewColorScheme() -> GiniColorScheme.InputAccessoryView {
+        return GiniColorScheme.InputAccessoryView(
+            background: GiniColor(lightModeColor: .GiniBank.light1, darkModeColor: .GiniBank.dark2),
+            tintColor: GiniColor(lightModeColor: .GiniBank.dark6, darkModeColor: .GiniBank.light6),
+            disabledTintColor: GiniColor(lightModeColor: .GiniBank.light4, darkModeColor: .GiniBank.dark6)
         )
     }
 }

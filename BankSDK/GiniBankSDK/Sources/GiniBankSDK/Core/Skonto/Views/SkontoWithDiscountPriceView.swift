@@ -11,7 +11,7 @@ protocol SkontoWithDiscountPriceViewDelegate: AnyObject {
     func withDiscountPriceTextFieldTapped()
 }
 
-class SkontoWithDiscountPriceView: UIView {
+class SkontoWithDiscountPriceView: UIView, GiniInputAccessoryViewPresentable {
     private lazy var amountView: SkontoAmountToPayView = {
         let view = SkontoAmountToPayView(title: title,
                                          price: viewModel.skontoAmountToPay)
@@ -24,6 +24,17 @@ class SkontoWithDiscountPriceView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
+
+    override var inputAccessoryView: UIView? {
+        get {
+            amountView.inputAccessoryView
+        }
+
+        set {
+            amountView.inputAccessoryView = newValue
+        }
+    }
+
     weak var delegate: SkontoWithDiscountPriceViewDelegate?
 
     init(viewModel: SkontoViewModel) {
@@ -40,6 +51,14 @@ class SkontoWithDiscountPriceView: UIView {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        amountView.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        amountView.resignFirstResponder()
     }
 
     private func setupView() {

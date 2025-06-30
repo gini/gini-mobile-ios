@@ -87,6 +87,7 @@ class SkontoWithDiscountHeaderView: UIView {
         addSubview(discountSwitch)
         setupConstraints()
         bindViewModel()
+        adjustStackViewLayout()
     }
 
     private func setupConstraints() {
