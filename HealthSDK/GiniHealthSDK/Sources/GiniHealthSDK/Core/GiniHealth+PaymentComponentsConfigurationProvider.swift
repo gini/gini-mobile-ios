@@ -44,7 +44,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
 
     public var installAppConfiguration: InstallAppConfiguration {
         InstallAppConfiguration(
-            titleAccentColor: GiniColor.standard2.uiColor(),
+            titleAccentColor: GiniColor.standard1.uiColor(),
             titleFont: GiniHealthConfiguration.shared.font(for: .subtitle1),
             moreInformationFont: GiniHealthConfiguration.shared.font(for: .captions1),
             moreInformationTextColor: GiniColor.standard4.uiColor(),
