@@ -93,6 +93,11 @@ jobs:
   
       - name: Generate XCFrameworks
         run: |
+         xcodebuild -create-xcframework \
+          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniUtilites.framework \
+          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniUtilites.framework \
+          -output GiniUtilites.xcframework &&\
+          \
           xcodebuild -create-xcframework \
           -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework \
           -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework \
@@ -163,6 +168,7 @@ jobs:
           cp $PP_PATH2 ~/Library/MobileDevice/Provisioning\ Profiles
 
           # sign xcframeworks
+          codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniUtilites.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankAPILibrary.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniCaptureSDK.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankSDK.xcframework && \
@@ -175,6 +181,7 @@ jobs:
         with:
           name: GiniBankSDKFramework
           path: |
+            GiniUtilites.xcframework
             GiniBankAPILibrary.xcframework
             GiniBankSDK.xcframework
             GiniCaptureSDK.xcframework
