@@ -645,6 +645,7 @@ public final class PaymentReviewContainerView: UIView {
             self?.payButtonClicked()
         }
         payInvoiceButton.accessibilityLabel = viewModel.strings.payInvoiceLabelText
+        payInvoiceButton.accessibilityHint = viewModel.strings.payInvoiceAccessibilityHint
         payInvoiceButton.isAccessibilityElement = true
         payInvoiceButton.accessibilityTraits = .button
     }

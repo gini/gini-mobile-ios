@@ -10,6 +10,7 @@
 "gini.health.reviewscreen.amount.placeholder" = "Amount";
 "gini.health.reviewscreen.usage.placeholder" = "Reference number";
 "gini.health.reviewscreen.banking.app.button.label" = "To the banking app";
+"gini.health.reviewscreen.banking.app.button.hint" = "It opens  the banking app to complete the payment.";
 "gini.health.reviewscreen.infobar.message" = "Please check the pre-filled data.";
 "gini.health.reviewscreen.invoice.image.content.description" = "Invoice document";
 "gini.health.reviewscreen.close.button.accesibility.label" = "Close";
@@ -62,5 +63,5 @@
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Or take a screenshot and upload it directly in your [BANK] app using the Photo Payment functionality";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Share with [BANK] app";
 "gini.health.paymentcomponent.share.invoice.pdf.filename.default" = "payment-information";
-"gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR Code";
+"gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR code for initiating a SEPA bank transfer.";
 "gini.health.paymentcomponent.install.app.bottom.sheet.appstore" = "App Store";

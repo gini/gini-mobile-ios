@@ -53,11 +53,12 @@
 "gini.health.paymentcomponent.your.bank.label" = "Ihre Bank";
 "gini.health.reviewscreen.amount.placeholder" = "Betrag";
 "gini.health.reviewscreen.banking.app.button.label" = "Zur Banking App";
+"gini.health.reviewscreen.banking.app.button.hint" = "Es öffnet  die Banking-App, um die Zahlung abzuschließen.";
 "gini.health.reviewscreen.iban.placeholder" = "IBAN";
 "gini.health.reviewscreen.infobar.message" = "Bitte überprüfen Sie die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder" = "Verwendungszweck";
-"gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR-Code";
+"gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR-Code zur Einleitung einer SEPA-Überweisung.";
 "gini.health.paymentcomponent.install.app.bottom.sheet.appstore" = "App-Store";
 "gini.health.reviewscreen.close.button.accesibility.label" = "Schließen";
 
@@ -111,11 +112,12 @@
 "gini.health.paymentcomponent.your.bank.label.informal" = "Ihre Bank";
 "gini.health.reviewscreen.amount.placeholder.informal" = "Betrag";
 "gini.health.reviewscreen.banking.app.button.label.informal" = "Zur Banking App";
+"gini.health.reviewscreen.banking.app.button.hint.informal" = "Es öffnet  die Banking-App, um die Zahlung abzuschließen.";
 "gini.health.reviewscreen.iban.placeholder.informal" = "IBAN";
 "gini.health.reviewscreen.infobar.message.informal" = "Bitte überprüfe die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder.informal" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder.informal" = "Verwendungszweck";
-"gini.health.paymentcomponent.share.invoice.qr.code.image.informal" = "QR-Code";
+"gini.health.paymentcomponent.share.invoice.qr.code.image.informal" = "QR-Code zur Einleitung einer SEPA-Überweisung.";
 "gini.health.paymentcomponent.install.app.bottom.sheet.appstore.informal" = "App-Store";
 "gini.health.reviewscreen.close.button.accesibility.label.informal" = "Schließen";
 "gini.health.reviewscreen.invoice.image.content.description" = "Rechnungsdokument";
