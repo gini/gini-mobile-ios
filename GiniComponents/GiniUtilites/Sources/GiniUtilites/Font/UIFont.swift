@@ -19,5 +19,16 @@ extension UIFont.TextStyle {
     public static let body1: UIFont.TextStyle = .init(rawValue: "kBody1")
     public static let body2: UIFont.TextStyle = .init(rawValue: "kBody2")
     public static let captions1: UIFont.TextStyle = .init(rawValue: "kCaptions1")
-    public static let captions2: UIFont.TextStyle = .init(rawValue: "kCaptions2")
+    public static let captions2: UIFont.TextStyle = .init(rawValue: "UICTFontTextStyleCaption2")
+}
+
+extension UIFont {
+    
+    public func limitingFontSize(to fontSizeLimit: CGFloat) -> UIFont {
+        if self.pointSize > fontSizeLimit {
+            return self.withSize(fontSizeLimit)
+        } else {
+            return self
+        }
+    }
 }

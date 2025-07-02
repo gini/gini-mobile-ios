@@ -32,6 +32,8 @@ extension GiniHealth: PaymentComponentsStringsProvider {
                                                                   comment: "purpose failed non empty check"),
             payInvoiceLabelText: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.banking.app.button.label",
                                                                   comment: "Title label used for the pay invoice button default"),
+            payInvoiceAccessibilityHint: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.banking.app.button.hint",
+                                                                          comment: "Accessibility hint used for the pay invoice button default"),
             selectBankAccessibilityText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.select.bank.label",
                                                                           comment: "Accesibility label for the select bank button")
         )

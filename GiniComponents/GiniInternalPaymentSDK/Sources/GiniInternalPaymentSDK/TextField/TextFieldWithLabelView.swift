@@ -12,7 +12,8 @@ public final class TextFieldWithLabelView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontForContentSizeCategory = true
+        label.font = FontProvider().font(for: .footnote)
+        label.enableScaling()
         return label
     }()
 
@@ -46,8 +47,10 @@ public final class TextFieldWithLabelView: UIView {
         self.layer.borderColor = configuration.borderColor.cgColor
         self.backgroundColor = configuration.backgroundColor
         self.textField.textColor = isUserInteractionEnabled ? configuration.textColor : configuration.placeholderForegroundColor
+        self.textField.font = configuration.textFont
         self.textField.attributedPlaceholder = NSAttributedString(string: "",
                                                                   attributes: [.foregroundColor: configuration.placeholderForegroundColor])
+        
         self.titleLabel.textColor = configuration.placeholderForegroundColor
     }
     
@@ -136,3 +139,24 @@ private extension TextFieldWithLabelView {
         static let textFieldTopPadding: CGFloat = 0
     }
 }
+
+
+#if DEBUG
+@available(iOS 17, *)
+#Preview {
+    let frame = CGRect(x: 16, y: 200, width: 300, height: 60)
+    let textFieldWithLabelView = TextFieldWithLabelView(frame: frame)
+    let configuration = TextFieldConfiguration(backgroundColor: .systemBackground,
+                                               borderColor: .lightGray,
+                                               textColor: .black,
+                                               textFont: FontProvider().font(for: .body1),
+                                               cornerRadius: 12.0,
+                                               borderWidth: 1.0,
+                                               placeholderForegroundColor: .lightGray)
+                                               
+    textFieldWithLabelView.configure(configuration: configuration)
+    textFieldWithLabelView.customConfigure(labelTitle: "IBAN")
+    
+    return textFieldWithLabelView
+}
+#endif

@@ -32,6 +32,8 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
                                                                   comment: "purpose failed non empty check"),
             payInvoiceLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.banking.app.button.label",
                                                                   comment: "Title label used for the pay invoice button"),
+            payInvoiceAccessibilityHint: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.banking.app.button.hint",
+                                                                          comment: "Title label used for the pay invoice button"),
             selectBankAccessibilityText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label",
                                                                           comment: "Accesibility label for the select bank button")
         )

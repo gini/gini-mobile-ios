@@ -8,6 +8,7 @@
 
 import UIKit
 import GiniUtilites
+import Combine
 
 public final class PaymentInfoViewController: UIViewController {
     let viewModel: PaymentInfoViewModel
@@ -110,6 +111,7 @@ public final class PaymentInfoViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = Constants.questionTitleHeight
         tableView.estimatedSectionHeaderHeight = Constants.questionTitleHeight
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.estimatedSectionFooterHeight = 1.0
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
@@ -117,7 +119,11 @@ public final class PaymentInfoViewController: UIViewController {
         return tableView
     }()
     
-    private var heightsQuestionsTableView: [NSLayoutConstraint] = []
+    private lazy var tableViewQuestionHeightConstraint: NSLayoutConstraint = {
+        questionsTableView.heightAnchor.constraint(equalToConstant: Constants.questionTitleHeight)
+    }()
+    
+    private var cancellables = Set<AnyCancellable>()
     
     public init(viewModel: PaymentInfoViewModel) {
         self.viewModel = viewModel
@@ -132,6 +138,7 @@ public final class PaymentInfoViewController: UIViewController {
         super.viewDidLoad()
         self.title = viewModel.strings.titleText
         self.setupView()
+        bindToTableViewSizeUpdates()
     }
 
     private func setupView() {
@@ -269,7 +276,7 @@ public final class PaymentInfoViewController: UIViewController {
             questionsTableView.topAnchor.constraint(equalTo: questionsTitleLabel.bottomAnchor),
             questionsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.leftRightPadding),
             questionsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.leftRightPadding),
-            questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: Double(viewModel.questions.count) * Constants.questionTitleHeight),
+            tableViewQuestionHeightConstraint,
             questionsTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.leftRightPadding)
         ])
     }
@@ -279,10 +286,15 @@ public final class PaymentInfoViewController: UIViewController {
         viewModel.questions[section].isExtended = !isExtended
         questionsTableView.reloadData()
         questionsTableView.layoutIfNeeded()
-        // Small hack needed to satisfy automatic dimension table view inside scrollView
-        NSLayoutConstraint.deactivate(heightsQuestionsTableView)
-        heightsQuestionsTableView = [questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: questionsTableView.contentSize.height)]
-        NSLayoutConstraint.activate(heightsQuestionsTableView)
+    }
+    
+    private func bindToTableViewSizeUpdates() {
+        questionsTableView.publisher(for: \.contentSize)
+            .receive(on: DispatchQueue.main)
+            .filter { $0.height > 0 }
+            .sink { [weak self] value in
+                self?.tableViewQuestionHeightConstraint.constant = value.height
+            }.store(in: &cancellables)
     }
     
     @objc private func didTapCloseButton() {
@@ -375,7 +387,7 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        Constants.questionTitleHeight
+        UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

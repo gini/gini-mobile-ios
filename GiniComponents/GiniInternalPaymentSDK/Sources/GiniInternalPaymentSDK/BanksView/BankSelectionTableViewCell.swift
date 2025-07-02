@@ -11,7 +11,14 @@ import GiniUtilites
 
 class BankSelectionTableViewCell: UITableViewCell, ReusableView {
     private let cellView = UIView()
-    private let bankNameLabel = UILabel()
+    
+    private let bankNameLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+    
     private let bankImageView = UIImageView()
     private let selectionIndicatorImageView = UIImageView()
     
@@ -64,7 +71,6 @@ private extension BankSelectionTableViewCell {
     
     func setupConstraints() {
         cellView.translatesAutoresizingMaskIntoConstraints = false
-        bankNameLabel.translatesAutoresizingMaskIntoConstraints = false
         bankImageView.translatesAutoresizingMaskIntoConstraints = false
         selectionIndicatorImageView.translatesAutoresizingMaskIntoConstraints = false
         

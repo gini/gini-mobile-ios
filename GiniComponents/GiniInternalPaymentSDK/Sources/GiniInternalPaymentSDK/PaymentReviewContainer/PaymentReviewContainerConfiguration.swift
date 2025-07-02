@@ -58,6 +58,7 @@ public struct PaymentReviewContainerStrings {
     let amountErrorMessage: String
     let purposeErrorMessage: String
     let payInvoiceLabelText: String
+    let payInvoiceAccessibilityHint: String
     let selectBankAccessibilityText: String
 
     public init(emptyCheckErrorMessage: String,
@@ -71,6 +72,7 @@ public struct PaymentReviewContainerStrings {
                 amountErrorMessage: String,
                 purposeErrorMessage: String,
                 payInvoiceLabelText: String,
+                payInvoiceAccessibilityHint: String,
                 selectBankAccessibilityText: String) {
         self.emptyCheckErrorMessage = emptyCheckErrorMessage
         self.ibanCheckErrorMessage = ibanCheckErrorMessage
@@ -83,6 +85,7 @@ public struct PaymentReviewContainerStrings {
         self.amountErrorMessage = amountErrorMessage
         self.purposeErrorMessage = purposeErrorMessage
         self.payInvoiceLabelText = payInvoiceLabelText
+        self.payInvoiceAccessibilityHint = payInvoiceAccessibilityHint
         self.selectBankAccessibilityText = selectBankAccessibilityText
     }
 }
