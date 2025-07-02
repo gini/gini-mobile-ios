@@ -53,7 +53,7 @@
 "gini.health.paymentcomponent.your.bank.label" = "Ihre Bank";
 "gini.health.reviewscreen.amount.placeholder" = "Betrag";
 "gini.health.reviewscreen.banking.app.button.label" = "Zur Banking App";
-"gini.health.reviewscreen.banking.app.button.hint" = "Es öffnet  die Banking-App, um die Zahlung abzuschließen.";
+"gini.health.reviewscreen.banking.app.button.hint" = "Es öffnet die Banking-App, um die Zahlung abzuschließen.";
 "gini.health.reviewscreen.iban.placeholder" = "IBAN";
 "gini.health.reviewscreen.infobar.message" = "Bitte überprüfen Sie die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder" = "Empfänger";
@@ -112,7 +112,7 @@
 "gini.health.paymentcomponent.your.bank.label.informal" = "Ihre Bank";
 "gini.health.reviewscreen.amount.placeholder.informal" = "Betrag";
 "gini.health.reviewscreen.banking.app.button.label.informal" = "Zur Banking App";
-"gini.health.reviewscreen.banking.app.button.hint.informal" = "Es öffnet  die Banking-App, um die Zahlung abzuschließen.";
+"gini.health.reviewscreen.banking.app.button.hint.informal" = "Es öffnet die Banking-App, um die Zahlung abzuschließen.";
 "gini.health.reviewscreen.iban.placeholder.informal" = "IBAN";
 "gini.health.reviewscreen.infobar.message.informal" = "Bitte überprüfe die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder.informal" = "Empfänger";

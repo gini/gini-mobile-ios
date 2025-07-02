@@ -10,7 +10,7 @@
 "gini.health.reviewscreen.amount.placeholder" = "Amount";
 "gini.health.reviewscreen.usage.placeholder" = "Reference number";
 "gini.health.reviewscreen.banking.app.button.label" = "To the banking app";
-"gini.health.reviewscreen.banking.app.button.hint" = "It opens  the banking app to complete the payment.";
+"gini.health.reviewscreen.banking.app.button.hint" = "It opens the banking app to complete the payment.";
 "gini.health.reviewscreen.infobar.message" = "Please check the pre-filled data.";
 "gini.health.reviewscreen.invoice.image.content.description" = "Invoice document";
 "gini.health.reviewscreen.close.button.accesibility.label" = "Close";
