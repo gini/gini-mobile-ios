@@ -162,7 +162,7 @@ import GiniBankAPILibrary
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
-    @objc public var logger: GiniLogger = DefaultLogger()
+    public var logger: GiniLogger = DefaultLogger()
 
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
