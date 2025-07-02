@@ -225,15 +225,22 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         let contentPadding = isPortrait ? 0 : (Constants.landscapePaddingRatio * view.frame.width)
         
         let constraints = [
-            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: contentPadding),
-            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -contentPadding),
-            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * contentPadding),
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                      constant: contentPadding),
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
+                                                       constant: -contentPadding),
+            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
+                                                    constant: -2 * contentPadding),
             qrImageView.widthAnchor.constraint(equalToConstant: qrCodeSize),
             qrImageView.heightAnchor.constraint(equalToConstant: qrCodeSize),
-            paymentInfoStackView.leadingAnchor.constraint(equalTo: paymentInfoView.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            paymentInfoStackView.trailingAnchor.constraint(equalTo: paymentInfoView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            paymentInfoStackView.topAnchor.constraint(equalTo: paymentInfoView.topAnchor, constant: Constants.viewPaddingConstraint),
-            paymentInfoStackView.bottomAnchor.constraint(equalTo: paymentInfoView.bottomAnchor, constant: -Constants.viewPaddingConstraint)
+            paymentInfoStackView.leadingAnchor.constraint(equalTo: paymentInfoView.leadingAnchor,
+                                                          constant: Constants.viewPaddingConstraint),
+            paymentInfoStackView.trailingAnchor.constraint(equalTo: paymentInfoView.trailingAnchor,
+                                                           constant: -Constants.viewPaddingConstraint),
+            paymentInfoStackView.topAnchor.constraint(equalTo: paymentInfoView.topAnchor,
+                                                      constant: Constants.viewPaddingConstraint),
+            paymentInfoStackView.bottomAnchor.constraint(equalTo: paymentInfoView.bottomAnchor,
+                                                         constant: -Constants.viewPaddingConstraint)
         ]
 
         if isPortrait {

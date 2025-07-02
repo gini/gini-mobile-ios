@@ -52,7 +52,11 @@ public final class PaymentComponentView: UIView {
     
     private let bottomView = EmptyView()
     
-    private let bottomStackView = EmptyStackView().orientation(.horizontal).spacing(Constants.bottomStackViewSpacing)
+    private let bottomStackView: EmptyStackView = {
+        EmptyStackView()
+            .orientation(.horizontal)
+            .spacing(Constants.bottomStackViewSpacing)
+    }()
     
     private lazy var moreInformationView: MoreInformationView = {
         let viewModel = viewModel.moreInformationViewModel

@@ -578,7 +578,9 @@ fileprivate extension PaymentReviewViewController {
         container.insertSubview(infoBar, belowSubview: paymentInfoContainerView)
         infoBar.addSubview(infoBarLabel)
 
-        let bottomConstraint = infoBar.bottomAnchor.constraint(equalTo: isBottomSheetPresented ? paymentInfoContainerView.topAnchor : topBarView.topAnchor, constant: Constants.infoBarHeight + Constants.heightTopBarView)
+        let topAnchor = isBottomSheetPresented ? paymentInfoContainerView.topAnchor : topBarView.topAnchor
+        let bottomConstraint = infoBar.bottomAnchor.constraint(equalTo: topAnchor,
+                                                               constant: Constants.infoBarHeight)
         infoBarBottomConstraint = bottomConstraint
         NSLayoutConstraint.activate([
             infoBarBottomConstraint!,

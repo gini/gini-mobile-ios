@@ -74,7 +74,8 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
             extendedImageView.widthAnchor.constraint(equalToConstant: extendedImageView.frame.width),
             extendedImageView.heightAnchor.constraint(equalToConstant: extendedImageView.frame.height),
             extendedImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            extendedImageView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: Constants.titleRightPadding),
+            extendedImageView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor,
+                                                       constant: Constants.titleRightPadding),
             extendedImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
