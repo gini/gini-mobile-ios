@@ -1,11 +1,5 @@
 name: Publish GiniBankSDKExample to Firebase Distribution
 on:
-  pull_request:
-    types: [opened, reopened, synchronize, ready_for_review]
-    paths:
-      - 'BankSDK/**'
-      - 'CaptureSDK/**'
-      - 'BankAPILibrary/**'
   workflow_dispatch:
 
 concurrency:
@@ -13,44 +7,7 @@ concurrency:
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
-  check-bank-api-libray:
-    if: github.event_name != 'workflow_dispatch'
-    uses: ./.github/workflows/bank-api-library.check.yml
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
-    
-  check-bank-api-libray-docs:
-    if: github.event_name != 'workflow_dispatch'
-    needs: check-bank-api-libray
-    uses: ./.github/workflows/bank-api-library.build.docs.yml
-
-  check-capture:
-    if: github.event_name != 'workflow_dispatch'
-    needs: check-bank-api-libray-docs
-    uses: ./.github/workflows/capture-sdk.check.yml
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
-
-  check-capture-docs:
-    if: github.event_name != 'workflow_dispatch'
-    needs: check-capture
-    uses: ./.github/workflows/capture-sdk.build.docs.yml
-    
-  check-bank:
-    if: github.event_name != 'workflow_dispatch'
-    needs: check-capture-docs
-    uses: ./.github/workflows/bank-sdk.check.yml
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
-
-  check-bank-docs:
-    if: github.event_name != 'workflow_dispatch'
-    needs: check-bank
-    uses: ./.github/workflows/bank-sdk.build.docs.yml
-
-
   upload-version:
-    needs: check-bank-docs
     runs-on: macos-latest    
     steps:
       - name: Checkout repository
