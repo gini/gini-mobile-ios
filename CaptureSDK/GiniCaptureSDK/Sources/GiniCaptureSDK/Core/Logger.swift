@@ -33,6 +33,6 @@ public final class DefaultLogger: GiniLogger {
     public func log(message: String) {
         let prefix = "[ GiniCapture ]"
 
-        GiniUtilites.Log(message, event: .custom(prefix))
+        Log(message, event: .custom(prefix))
     }
 }
