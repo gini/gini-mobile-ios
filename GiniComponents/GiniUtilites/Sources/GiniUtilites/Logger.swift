@@ -31,7 +31,7 @@ public enum LogLevel {
 }
 
 public func Log(_ message: String,
-         event: LogEvent) {
+                event: LogEvent) {
     let prefix = event.value
 
     // When having the `OS_ACTIVITY_MODE` disabled, NSLog messages are not printed
