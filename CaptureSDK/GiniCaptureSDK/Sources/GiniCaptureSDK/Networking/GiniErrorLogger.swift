@@ -7,6 +7,7 @@
 
 import Foundation
 import GiniBankAPILibrary
+import GiniUtilites
 
 class GiniErrorLogger: GiniCaptureErrorLoggerDelegate {
     
@@ -17,7 +18,7 @@ class GiniErrorLogger: GiniCaptureErrorLoggerDelegate {
     }
     
     public func handleErrorLog(error: ErrorLog) {
-        GiniCaptureSDK.Log(message: "Sending error log to Gini: \(error)", event: "📝")
+        Log(message: "Sending error log to Gini: \(error)", event: "📝")
         documentService.log(errorEvent: ErrorEvent.from(error))
     }
 }
