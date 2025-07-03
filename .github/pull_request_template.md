@@ -1,11 +1,8 @@
-## Scope
+## Pull Request Description
 
 <!-- Briefly explain **what** this PR does and **why**. Mention the motivation, feature, or issue it's addressing. -->
 
-[closes TICKET-###]<!-- Replace with JIRA ticket if relevant -->
-
-## Implementation
-
+[PP-####]<!-- Closes ticket number PP-####; Replace with JIRA ticket if relevant -->
 
 <!--
 
@@ -13,7 +10,7 @@ Some description of HOW you achieved it. Perhaps give a high level description o
 
 -->
 
-## Testing
+## Notes for Reviewers
 
 <!--
 
@@ -25,11 +22,9 @@ You can include:
 - iOS versions tested (e.g. 16.0, 17.5) 
 - Manual checks (e.g. flow tested: onboarding, permissions, error states) 
 - Unit tests added or updated 
-
+ 
+ Include screenshots, screen recordings, or simulator gifs for UI changes. 
+ 
+ - Optional: Anything that needs extra attention in review? Are there TODOs, known limitations, or follow-up work? 
+ 
  -->
-
-## Screenshots / Demo (if applicable)
-<!-- Include screenshots, screen recordings, or simulator gifs for UI changes. -->
-
-## Notes for Reviewers
-<!-- Optional: Anything that needs extra attention in review? Are there TODOs, known limitations, or follow-up work? -->
