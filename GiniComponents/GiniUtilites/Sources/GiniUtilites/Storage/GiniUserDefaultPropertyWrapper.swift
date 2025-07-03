@@ -6,18 +6,38 @@
 
 
 import Foundation
+/**
+ A property wrapper for storing and retrieving `Codable` values in `UserDefaults`.
+
+ This wrapper automatically encodes and decodes the wrapped value using `JSONEncoder` and `JSONDecoder`.
+*/
 
 @propertyWrapper
-struct GiniUserDefault<T: Codable> {
+public struct GiniUserDefault<T: Codable> {
+    // The key used to store the value in `UserDefaults`.
     let key: String
+    // The default value returned if no value is found for the given key.
     let defaultValue: T
 
-    init(_ key: String, defaultValue: T) {
+    /**
+     Initializes the property wrapper.
+
+     - Parameters:
+     - key: The `UserDefaults` key.
+     - defaultValue: A fallback value to return if no data is stored.
+     */
+    public init(_ key: String, defaultValue: T) {
         self.key = key
         self.defaultValue = defaultValue
     }
 
-    var wrappedValue: T {
+    /**
+     The wrapped value that can be accessed or modified.
+
+     - Returns: The decoded value from `UserDefaults` if present and valid, otherwise the default value.
+     - Sets: The value is encoded and stored in `UserDefaults`.
+     */
+    public var wrappedValue: T {
         get {
             // Handle Codable types with JSON encoding/decoding
             if let data = UserDefaults.standard.data(forKey: key),

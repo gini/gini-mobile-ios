@@ -404,10 +404,10 @@ extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
 
 extension GiniScreenAPICoordinator {
     func hasOnboardingShownOnLaunch() -> Bool {
-        return UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowAtLaunch")
+        GiniCaptureUserDefaultsStorage.onboardingShowAtLaunch
     }
 
     func setOnboardingShownStatus(show: Bool = false) {
-        return UserDefaults.standard.set(show, forKey: "ginicapture.defaults.onboardingShowAtLaunch")
+        GiniCaptureUserDefaultsStorage.onboardingShowAtLaunch = show
     }
 }
