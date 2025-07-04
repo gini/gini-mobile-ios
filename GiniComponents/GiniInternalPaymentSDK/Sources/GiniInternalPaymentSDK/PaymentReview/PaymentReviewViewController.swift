@@ -30,7 +30,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     lazy var paymentInfoContainerView = buildPaymentInfoContainerView()
     lazy var collectionView = buildCollectionView()
     lazy var pageControl = buildPageControl()
-    
+
     private let topBarView = EmptyView()
     private lazy var barLineView: UIView = {
         let view = UIView()
@@ -39,7 +39,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
 
@@ -52,7 +52,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     /// The model instance containing data and methods for handling the payment review process.
     public let model: PaymentReviewModel
     private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
-    
+
     private var currentPaymentInfoState: PaymentInfoState = .expanded
 
     init(viewModel: PaymentReviewModel,
@@ -175,7 +175,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
         }
         setupInitialLayout()
     }
-    
+
     deinit {
         unsubscribeFromNotifications()
     }
@@ -428,7 +428,7 @@ fileprivate extension PaymentReviewViewController {
 
     func layoutPaymentInfoContainerView() {
         paymentInfoContainerView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let container = model.displayMode == .bottomSheet ? (view ?? UIView()) : mainView
         container.addSubview(paymentInfoContainerView)
         container.backgroundColor = .clear
@@ -438,7 +438,7 @@ fileprivate extension PaymentReviewViewController {
             paymentInfoContainerView.trailingAnchor.constraint(equalTo: container.trailingAnchor)
         ])
     }
-    
+
     func layoutTopBarView() {
         topBarView.backgroundColor = model.configuration.mainViewBackgroundColor
         topBarView.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadius)
@@ -471,7 +471,7 @@ fileprivate extension PaymentReviewViewController {
         flowLayout.minimumInteritemSpacing = Constants.collectionViewPadding
         flowLayout.minimumLineSpacing = Constants.collectionViewPadding
         flowLayout.scrollDirection = .horizontal // Enable horizontal scrolling
-        
+
         let collection = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
         collection.backgroundColor = model.configuration.backgroundColor
         collection.delegate = self
@@ -622,14 +622,14 @@ fileprivate extension PaymentReviewViewController {
             self.view.layoutIfNeeded()
         }, completion: completion)
     }
-    
+
     func setupDraggableBottomView() {
         let panGesturePaymentInfoView = UIPanGestureRecognizer(target: self, action: #selector(handlePaymentContainerPanGesture(_:)))
         let panGestureTopBarView = UIPanGestureRecognizer(target: self, action: #selector(handlePaymentContainerPanGesture(_:)))
         paymentInfoContainerView.addGestureRecognizer(panGesturePaymentInfoView)
         topBarView.addGestureRecognizer(panGestureTopBarView)
     }
-    
+
     @objc private func handlePaymentContainerPanGesture(_ gesture: UIPanGestureRecognizer) {
         let velocity = gesture.velocity(in: view).y
 
@@ -638,7 +638,7 @@ fileprivate extension PaymentReviewViewController {
             togglePaymentInfo(to: targetState)
         }
     }
-    
+
     private func togglePaymentInfo(to state: PaymentInfoState) {
         guard !UIDevice.isPortrait() else { return }
         guard state != currentPaymentInfoState else { return }
@@ -678,31 +678,31 @@ extension PaymentReviewViewController {
         }
         collectionView.reloadData()
     }
-    
+
     private func setupPortraitConstraints() {
         currentPaymentInfoState = .expanded
         setupConstraints(for: .vertical)
     }
-    
+
     private func setupLandscapeConstraints() {
         setupConstraints(for: .horizontal)
     }
-    
+
     private func setupConstraints(for orientation: NSLayoutConstraint.Axis) {
         // Deactivate previous constraints
         NSLayoutConstraint.deactivate(landscapeConstraints + portraitConstraints)
 
         let isPortrait = orientation == .vertical
         let showCollectionView = model.displayMode == .documentCollection
-        
+
         var constraints: [NSLayoutConstraint] = []
-        
+
         if showCollectionView {
             constraints.append(collectionView.topAnchor.constraint(equalTo: mainView.topAnchor))
             constraints.append(collectionView.bottomAnchor.constraint(equalTo: paymentInfoContainerView.topAnchor))
             constraints.append(paymentInfoContainerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor))
         }
-        
+
         if isPortrait {
             portraitConstraints = constraints
             NSLayoutConstraint.activate(portraitConstraints)
@@ -711,7 +711,7 @@ extension PaymentReviewViewController {
             NSLayoutConstraint.activate(landscapeConstraints)
         }
     }
-    
+
     // Handle orientation change
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         isViewRotating = true
