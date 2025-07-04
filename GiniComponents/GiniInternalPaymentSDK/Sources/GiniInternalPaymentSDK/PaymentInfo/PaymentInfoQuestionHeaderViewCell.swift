@@ -38,6 +38,10 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         return imageView
     }()
     
+    override var canBecomeFocused: Bool {
+        true
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(titleLabel)

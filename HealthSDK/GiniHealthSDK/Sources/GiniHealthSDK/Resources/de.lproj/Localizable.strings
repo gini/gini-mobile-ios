@@ -5,10 +5,9 @@
  //  Copyright © 2024 Gini GmbH. All rights reserved.
 
 */
-
 "gini.health.alert.ok.title" = "OK";
 "gini.health.errors.default" = "Oh da ist was schief gelaufen. Probieren Sie es bitte noch einmal.";
-"gini.health.errors.failed.amount.non.empty.check" = "Ungültig.";
+"gini.health.errors.failed.amount.non.empty.check" = "Betrag ist notwendig.";
 "gini.health.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig.";
 "gini.health.errors.failed.iban.non.empty.check" = "IBAN ist notwendig.";
 "gini.health.errors.failed.iban.validation.check" = "IBAN ist ungültig.";
@@ -47,7 +46,7 @@
 "gini.health.paymentcomponent.select.bank.label" = "Bank auswählen";
 "gini.health.paymentcomponent.select.your.bank.label" = "Bank auswählen und bezahlen";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Mit der [BANK]-App teilen";
-"gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Alternativ können Sie ein Screenshot von dieser Seite machen mit der Fotoüberweisung Funktion der [BANK] öffnen.";
+"gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Alternativ können Sie einen Screenshot von dieser Seite machen mit der Fotoüberweisung Funktion der [BANK] öffnen.";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.title" = "Teilen Sie diesen QR-Zahlungscode mit Ihrer Banking-App";
 "gini.health.paymentcomponent.share.invoice.pdf.filename.default" = "Zahlungsinformationen";
 "gini.health.paymentcomponent.to.banking.app.label" = "Zur Banking App";
@@ -58,12 +57,15 @@
 "gini.health.reviewscreen.infobar.message" = "Bitte überprüfen Sie die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder" = "Verwendungszweck";
+"gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR-Code";
+"gini.health.paymentcomponent.install.app.bottom.sheet.appstore" = "App-Store";
+"gini.health.reviewscreen.close.button.accesibility.label" = "Schließen";
 
 // INFORMAL KEYS - German informal localization strings
 
 "gini.health.alert.ok.title.informal" = "OK";
 "gini.health.errors.default.informal" = "Oh da ist was schief gelaufen. Probiere es bitte noch einmal.";
-"gini.health.errors.failed.amount.non.empty.check.informal" = "Ungültig.";
+"gini.health.errors.failed.amount.non.empty.check.informal" = "Betrag ist notwendig.";
 "gini.health.errors.failed.default.textfield.validation.check.informal" = "Das Feld ist ungültig.";
 "gini.health.errors.failed.iban.non.empty.check.informal" = "IBAN ist notwendig.";
 "gini.health.errors.failed.iban.validation.check.informal" = "IBAN ist ungültig.";
@@ -102,7 +104,7 @@
 "gini.health.paymentcomponent.select.bank.label.informal" = "Bank auswählen";
 "gini.health.paymentcomponent.select.your.bank.label.informal" = "Bank auswählen und bezahlen";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text.informal" = "Mit der [BANK]-App teilen";
-"gini.health.paymentcomponent.share.invoice.bottom.sheet.description.informal" = "Alternativ kannst du ein Screenshot von dieser Seite machen und mit der Fotoüberweisung Funktion der [BANK] öffnen.";
+"gini.health.paymentcomponent.share.invoice.bottom.sheet.description.informal" = "Alternativ kannst du einen Screenshot von dieser Seite machen und mit der Fotoüberweisung Funktion der [BANK] öffnen.";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.title.informal" = "Teile diesen QR-Zahlungscode mit deiner Banking-App";
 "gini.health.paymentcomponent.share.invoice.pdf.filename.default.informal" = "Zahlungsinformationen";
 "gini.health.paymentcomponent.to.banking.app.label.informal" = "Zur Banking App";
@@ -113,3 +115,7 @@
 "gini.health.reviewscreen.infobar.message.informal" = "Bitte überprüfe die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder.informal" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder.informal" = "Verwendungszweck";
+"gini.health.paymentcomponent.share.invoice.qr.code.image.informal" = "QR-Code";
+"gini.health.paymentcomponent.install.app.bottom.sheet.appstore.informal" = "App-Store";
+"gini.health.reviewscreen.close.button.accesibility.label.informal" = "Schließen";
+"gini.health.reviewscreen.invoice.image.content.description" = "Rechnungsdokument";

@@ -9,16 +9,16 @@
 import UIKit
 import GiniUtilites
 
-public final class PaymentPrimaryButton: UIView {
+public final class PaymentPrimaryButton: UIButton {
     public var didTapButton: (() -> Void)?
     
     private lazy var contentView: UIView = {
         let view = EmptyView()
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnPayInvoiceView)))
+        view.isUserInteractionEnabled = false
         return view
     }()
     
-    private lazy var titleLabel: UILabel = {
+    private lazy var buttonTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
@@ -41,12 +41,15 @@ public final class PaymentPrimaryButton: UIView {
         return imageView
     }()
     
-    private var trailingConstraint: NSLayoutConstraint?
+    private var titleTrailingConstraint: NSLayoutConstraint?
+    private var titleLeadingConstraint: NSLayoutConstraint?
     
     public init() {
         super.init(frame: .zero)
+        
+        addTarget(self, action: #selector(tapOnPayInvoiceView), for: .touchUpInside)
         addSubview(contentView)
-        contentView.addSubview(titleLabel)
+        contentView.addSubview(buttonTitleLabel)
         setupConstraints()
     }
     
@@ -55,16 +58,19 @@ public final class PaymentPrimaryButton: UIView {
     }
     
     private func setupConstraints() {
-        trailingConstraint = contentView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor)
+        titleLeadingConstraint = contentView.leadingAnchor.constraint(equalTo: buttonTitleLabel.leadingAnchor, constant: -Constants.titlePadding)
+        titleTrailingConstraint = contentView.trailingAnchor.constraint(equalTo: buttonTitleLabel.trailingAnchor, constant: Constants.titlePadding)
+        
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.topAnchor.constraint(equalTo: topAnchor),
             contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            contentView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            contentView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            contentView.centerYAnchor.constraint(equalTo: buttonTitleLabel.centerYAnchor)
         ])
-        trailingConstraint?.isActive = true
+        
+        titleLeadingConstraint?.isActive = true
+        titleTrailingConstraint?.isActive = true
     }
         
     private func setupLeftImageConstraints() {
@@ -72,6 +78,9 @@ public final class PaymentPrimaryButton: UIView {
         leftImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         leftImageView.widthAnchor.constraint(equalToConstant: leftImageView.frame.width).isActive = true
         leftImageView.heightAnchor.constraint(equalToConstant: leftImageView.frame.height).isActive = true
+        
+        titleLeadingConstraint?.isActive = false
+        buttonTitleLabel.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor).isActive = true
     }
     
     private func setupRightImageConstraints() {
@@ -79,8 +88,9 @@ public final class PaymentPrimaryButton: UIView {
         rightImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         rightImageView.widthAnchor.constraint(equalToConstant: rightImageView.frame.width).isActive = true
         rightImageView.heightAnchor.constraint(equalToConstant: rightImageView.frame.height).isActive = true
-        trailingConstraint?.isActive = false
-        titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -(Constants.contentTrailingPadding + Constants.bankIconSize)).isActive = true
+        
+        titleTrailingConstraint?.isActive = false
+        buttonTitleLabel.trailingAnchor.constraint(equalTo: rightImageView.leadingAnchor).isActive = true
     }
         
     @objc private func tapOnPayInvoiceView() {
@@ -95,8 +105,8 @@ public extension PaymentPrimaryButton {
         self.contentView.layer.borderColor = configuration.borderColor.cgColor
         self.contentView.layer.shadowColor = configuration.shadowColor.cgColor
 
-        self.titleLabel.textColor = configuration.titleColor
-        self.titleLabel.font = configuration.titleFont
+        self.buttonTitleLabel.textColor = configuration.titleColor
+        self.buttonTitleLabel.font = configuration.titleFont
     }
     
     func customConfigure(text: String,
@@ -105,10 +115,9 @@ public extension PaymentPrimaryButton {
                          leftImageData: Data? = nil,
                          rightImageData: Data? = nil) {
         contentView.backgroundColor = backgroundColor
-        contentView.isUserInteractionEnabled = true
         
-        titleLabel.text = text
-        titleLabel.textColor = textColor
+        buttonTitleLabel.text = text
+        buttonTitleLabel.textColor = textColor
         
         // Configure left image if provided
         if let leftImageData {
@@ -134,5 +143,6 @@ extension PaymentPrimaryButton {
         static let bankIconCornerRadius: CGFloat = 8
         static let contentLeadingPadding: CGFloat = 19
         static let contentTrailingPadding: CGFloat = 8
+        static let titlePadding: CGFloat = 16
     }
 }

@@ -97,7 +97,9 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             linksFont: GiniHealthConfiguration.shared.font(for: .linkBold),
             linksColor: GiniColor.accent1.uiColor(),
             separatorColor: GiniColor.standard5.uiColor(),
-            backgroundColor: GiniColor.standard7.uiColor()
+            backgroundColor: GiniColor.standard7.uiColor(),
+            closeIcon: GiniHealthImage.close.preferredUIImage(),
+            closeIconTintColor: GiniColor.standard2.uiColor()
         )
     }
 
@@ -139,6 +141,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             infoContainerViewBackgroundColor: GiniColor.standard7.uiColor(),
             paymentReviewClose: GiniHealthImage.paymentReviewClose.preferredUIImage(),
             backgroundColor: GiniColor(lightModeColorName: .light7, darkModeColorName: .light7).uiColor(),
+            rectangleColor: GiniColor.standard5.uiColor(),
             infoBarLabelFont: GiniHealthConfiguration.shared.font(for: .captions1),
             statusBarStyle: GiniHealthConfiguration.shared.paymentReviewStatusBarStyle,
             pageIndicatorTintColor: GiniColor.standard4.uiColor(),

@@ -31,7 +31,9 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
             purposeErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.purpose.non.empty.check",
                                                                   comment: "purpose failed non empty check"),
             payInvoiceLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.banking.app.button.label",
-                                                                  comment: "Title label used for the pay invoice button")
+                                                                  comment: "Title label used for the pay invoice button"),
+            selectBankAccessibilityText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label",
+                                                                          comment: "Accesibility label for the select bank button")
         )
     }
 
@@ -58,7 +60,9 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
             moreInformationNotePattern: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.notes.description",
                                                                          comment: "Text for notes information label"),
             continueLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.continue.button.text",
-                                                                comment: "Title label used for the Continue button")
+                                                                comment: "Title label used for the Continue button"),
+            accesibilityAppStoreText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.appstore",
+                                                                       comment: "Accesibility label for the App Store button")
         )
     }
     
@@ -77,7 +81,9 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
             ibanLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.iban.placeholder",
                                                             comment: "placeholder text for iban input field"),
             purposeLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
-                                                               comment: "placeholder text for usage input field")
+                                                               comment: "placeholder text for usage input field"),
+            accesibilityQRCodeImageText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.qr.code.image",
+                                                                          comment: "accessibility label for qr code image")
         )
     }
     
@@ -144,7 +150,11 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
             defaultErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.default",
                                                                   comment: "default error message"),
             createPaymentErrorMessage: NSLocalizedStringPreferredFormat("gini.merchant.errors.failed.payment.request.creation",
-                                                                        comment: "error for creating payment request")
+                                                                        comment: "error for creating payment request"),
+            invoiceImageAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.invoice.image.content.description",
+                                                                             comment: "accessibility label for invoice image"),
+            closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.close.button.accesibility.label",
+                                                                            comment: "accessibility label for close button")
         )
     }
     

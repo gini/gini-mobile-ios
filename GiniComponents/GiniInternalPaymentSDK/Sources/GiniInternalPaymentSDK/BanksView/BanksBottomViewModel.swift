@@ -40,8 +40,8 @@ public final class BanksBottomViewModel {
 
     var paymentProviders: [PaymentProviderAdditionalInfo] = []
     private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider?
+    var maximumViewHeight: CGFloat = 0
 
-    let maximumViewHeight: CGFloat = UIScreen.main.bounds.height - Constants.topPaddingView
     let rowHeight: CGFloat = Constants.cellSizeHeight
     var bottomViewHeight: CGFloat = 0
     var heightTableView: CGFloat = 0
@@ -97,9 +97,16 @@ public final class BanksBottomViewModel {
         self.calculateHeights()
     }
 
-    private func calculateHeights() {
+    func calculateHeights() {
         let totalTableViewHeight = CGFloat(paymentProviders.count) * Constants.cellSizeHeight
         let totalBottomViewHeight = Constants.blankBottomViewHeight + totalTableViewHeight
+        var topPaddingView: CGFloat = 0
+        if UIDevice.isPortrait() {
+            topPaddingView = Constants.topPaddingViewPortrait
+        } else {
+            topPaddingView = Constants.topPaddingViewLandscape
+        }
+        maximumViewHeight = UIScreen.main.bounds.height - topPaddingView
         if totalBottomViewHeight > maximumViewHeight {
             self.heightTableView = maximumViewHeight - Constants.blankBottomViewHeight
             self.bottomViewHeight = maximumViewHeight
@@ -141,6 +148,7 @@ extension BanksBottomViewModel {
     enum Constants {
         static let blankBottomViewHeight: CGFloat = 200.0
         static let cellSizeHeight: CGFloat = 64.0
-        static let topPaddingView: CGFloat = 100.0
+        static let topPaddingViewPortrait: CGFloat = 100.0
+        static let topPaddingViewLandscape: CGFloat = 20.0
     }
 }
