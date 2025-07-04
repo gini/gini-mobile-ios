@@ -6,17 +6,22 @@
 //
 
 
+import Combine
 import UIKit
 import GiniUtilites
 
-public final class InstallAppBottomView: BottomSheetViewController {
+public final class InstallAppBottomView: GiniBottomSheetViewController {
+    
+    public var shouldShowDragIndicator: Bool {
+        true
+    }
 
     var viewModel: InstallAppBottomViewModel
 
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
 
-    private let contentView = EmptyView()
+    private let contentView = EmptyScrollView()
     private let contentStackView = EmptyStackView().orientation(.vertical)
 
     private let titleView = EmptyView()
@@ -96,6 +101,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
     }()
     
     private let buttonsView: UIView = EmptyView()
+    private var cancellables = Set<AnyCancellable>()
     
     private let bottomView = EmptyView()
 
@@ -115,7 +121,8 @@ public final class InstallAppBottomView: BottomSheetViewController {
 
     public init(viewModel: InstallAppBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
         self.viewModel = viewModel
-        super.init(configuration: bottomSheetConfiguration)
+        super.init(nibName: nil, bundle: nil)
+        view.backgroundColor = bottomSheetConfiguration.backgroundColor
     }
 
     required init?(coder: NSCoder) {
@@ -123,7 +130,9 @@ public final class InstallAppBottomView: BottomSheetViewController {
     }
 
     private func setupView() {
+        configureBottomSheet()
         setupViewHierarchy()
+        bindToContentSizeUpdates()
         setupLayout()
         setupListeners()
         setButtonsState()
@@ -142,8 +151,15 @@ public final class InstallAppBottomView: BottomSheetViewController {
         contentStackView.addArrangedSubview(buttonsView)
         bottomView.addSubview(poweredByGiniView)
         contentStackView.addArrangedSubview(bottomView)
-        contentView.addSubview(contentStackView)
-        self.setContent(content: contentView)
+        contentView.addContentSubview(contentStackView)
+        setContent(contentView)
+    }
+    
+    private func setContent(_ content: UIView) {
+        view.addSubview(content)
+        content.makeConstraints { builder in
+            builder.edges.equalTo(view.safeAreaLayoutGuide)
+        }
     }
 
     private func setupViewVisibility() {
@@ -262,7 +278,8 @@ public final class InstallAppBottomView: BottomSheetViewController {
 
     private func setupTitleViewConstraints() {
         NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                                  constant: Constants.contentViewTopPadding),
             contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
@@ -318,6 +335,14 @@ public final class InstallAppBottomView: BottomSheetViewController {
         ])
     }
     
+    private func bindToContentSizeUpdates() {
+        contentView.$size
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedSize in
+                self?.updateBottomSheetHeight(updatedSize.height)
+            }.store(in: &cancellables)
+    }
+    
     @objc
     private func tapOnContinueButton() {
         viewModel.didTapOnContinue()
@@ -353,6 +378,7 @@ public final class InstallAppBottomView: BottomSheetViewController {
 extension InstallAppBottomView {
     enum Constants {
         static let viewPaddingConstraint = 16.0
+        static let contentViewTopPadding = 48.0
         static let bankIconSize = 36.0
         static let bankIconCornerRadius = 6.0
         static let bankIconBorderWidth = 1.0

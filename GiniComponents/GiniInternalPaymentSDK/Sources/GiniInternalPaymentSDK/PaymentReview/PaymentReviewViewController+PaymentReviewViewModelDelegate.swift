@@ -8,9 +8,8 @@
 import UIKit
 
 extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
-    func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController) {
-        bottomSheet.minHeight = paymentInfoContainerView.frame.height
-        presentBottomSheet(viewController: bottomSheet)
+    func presentInstallAppBottomSheet(bottomSheet: UIViewController) {
+        present(bottomSheet, animated: true)
     }
 
     func createPaymentRequestAndOpenBankApp() {
