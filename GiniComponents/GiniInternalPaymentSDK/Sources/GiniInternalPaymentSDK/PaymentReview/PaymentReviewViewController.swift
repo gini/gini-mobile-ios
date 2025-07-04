@@ -151,7 +151,6 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
 
     override public func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        unsubscribeFromNotifications()
         model.viewDidDisappear()
     }
 
@@ -175,6 +174,10 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             setContent(content: paymentInfoContainerView)
         }
         setupInitialLayout()
+    }
+    
+    deinit {
+        unsubscribeFromNotifications()
     }
 
     // MARK: - Pay Button Action
@@ -269,6 +272,7 @@ extension PaymentReviewViewController {
             resetViewTransformForLandscape()
         }
 
+        resetViewTransform()
         keyboardWillShowCalled = false
     }
 
