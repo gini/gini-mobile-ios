@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-publish
+  group: ${{ github.workflow }}-${{ github.ref }}-pull-request
   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
 
 jobs:
@@ -43,4 +43,5 @@ jobs:
     uses: ./.github/workflows/bank-sdk.build.docs.yml
 
   upload-version:
+    needs: check-bank-docs
     uses: ./.github/workflows/bank-sdk.publish.example.app.firebase.yml
