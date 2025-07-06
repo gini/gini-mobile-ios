@@ -41,6 +41,14 @@ public final class EmptyScrollView: UIScrollView {
             make.centerX.equalToSuperview()
         }
         
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: contentLayoutGuide.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: contentLayoutGuide.bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: contentLayoutGuide.trailingAnchor),
+            contentView.centerXAnchor.constraint(equalTo: contentLayoutGuide.centerXAnchor)
+        ])
+        
         bindToSizeUpdates()
     }
     
