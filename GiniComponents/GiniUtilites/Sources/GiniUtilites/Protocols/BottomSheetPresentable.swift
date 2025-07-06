@@ -12,16 +12,16 @@ public protocol BottomSheetPresentable {
     
     var shouldShowDragIndicator: Bool { get }
     
-    func configureBottomSheet()
+    func configureBottomSheet(shouldIncludeLargeDetent: Bool)
     func updateBottomSheetHeight(_ height: CGFloat)
 }
 
 public extension BottomSheetPresentable where Self: UIViewController {
     
-    func configureBottomSheet() {
+    func configureBottomSheet(shouldIncludeLargeDetent: Bool = false) {
         if #available(iOS 15, *),
            let presentationController = sheetPresentationController {
-            presentationController.detents = [.medium()]
+            presentationController.detents = [shouldIncludeLargeDetent ? .large() : .medium()]
             presentationController.prefersGrabberVisible = true
             presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
             presentationController.prefersEdgeAttachedInCompactHeight = false
