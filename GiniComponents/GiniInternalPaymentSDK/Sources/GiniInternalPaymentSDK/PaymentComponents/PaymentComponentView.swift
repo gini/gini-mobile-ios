@@ -21,6 +21,7 @@ public final class PaymentComponentView: UIView {
         label.text = viewModel.strings.selectYourBankLabelText
         label.textColor = viewModel.configuration.selectYourBankAccentColor
         label.font = viewModel.configuration.selectYourBankLabelFont
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
         return label
     }()

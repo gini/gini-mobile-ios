@@ -31,6 +31,7 @@ public final class PaymentSecondaryButton: UIButton {
         label.numberOfLines = 0
         label.lineBreakMode = .byTruncatingTail
         label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
 
