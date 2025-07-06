@@ -11,7 +11,7 @@ import GiniUtilites
 
 protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: UIViewController)
-    func presentBankSelectionBottomSheet(bottomSheet: BottomSheetViewController)
+    func presentBankSelectionBottomSheet(bottomSheet: UIViewController)
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest(paymentRequestId: String)
 }

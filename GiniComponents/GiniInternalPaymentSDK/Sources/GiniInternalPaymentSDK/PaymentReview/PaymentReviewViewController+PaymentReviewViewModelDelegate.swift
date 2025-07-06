@@ -28,7 +28,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
                                                        paymentRequestId: paymentRequestId)
     }
 
-    func presentBankSelectionBottomSheet(bottomSheet: BottomSheetViewController) {
-        presentBottomSheet(viewController: bottomSheet)
+    func presentBankSelectionBottomSheet(bottomSheet: UIViewController) {
+        present(bottomSheet, animated: true)
     }
 }
