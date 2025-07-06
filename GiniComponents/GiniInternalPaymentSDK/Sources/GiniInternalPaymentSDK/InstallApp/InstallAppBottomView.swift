@@ -157,9 +157,13 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     
     private func setContent(_ content: UIView) {
         view.addSubview(content)
-        content.makeConstraints { builder in
-            builder.edges.equalTo(view.safeAreaLayoutGuide)
-        }
+        
+        NSLayoutConstraint.activate([
+            content.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            content.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            content.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            content.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
 
     private func setupViewVisibility() {
