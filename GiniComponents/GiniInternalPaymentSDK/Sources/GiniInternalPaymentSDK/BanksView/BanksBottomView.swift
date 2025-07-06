@@ -8,7 +8,7 @@
 import UIKit
 import GiniUtilites
 
-public final class BanksBottomView: BottomSheetViewController {
+public final class BanksBottomView: GiniBottomSheetViewController {
 
     var viewModel: BanksBottomViewModel
 
@@ -68,7 +68,7 @@ public final class BanksBottomView: BottomSheetViewController {
         tableView.dataSource = self
         tableView.register(cellType: BankSelectionTableViewCell.self)
         tableView.estimatedRowHeight = viewModel.rowHeight
-        tableView.rowHeight = viewModel.rowHeight
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .clear
@@ -90,6 +90,10 @@ public final class BanksBottomView: BottomSheetViewController {
         PoweredByGiniView(viewModel: viewModel.poweredByGiniViewModel)
     }()
     
+    public var shouldShowDragIndicator: Bool {
+        true
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -99,7 +103,8 @@ public final class BanksBottomView: BottomSheetViewController {
 
     public init(viewModel: BanksBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
         self.viewModel = viewModel
-        super.init(configuration: bottomSheetConfiguration)
+        super.init(nibName: nil, bundle: nil)
+        view.backgroundColor = bottomSheetConfiguration.backgroundColor
     }
     
     required init?(coder: NSCoder) {
@@ -116,7 +121,7 @@ public final class BanksBottomView: BottomSheetViewController {
         portraitConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            paymentProvidersTableView.heightAnchor.constraint(equalToConstant: viewModel.heightTableView)
+            paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
         ]
         NSLayoutConstraint.activate(portraitConstraints)
     }
@@ -128,7 +133,7 @@ public final class BanksBottomView: BottomSheetViewController {
         landscapeConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: landscapePadding),
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -landscapePadding),
-            paymentProvidersTableView.heightAnchor.constraint(equalToConstant: viewModel.heightTableView)
+            paymentProvidersTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: viewModel.heightTableView)
         ]
         NSLayoutConstraint.activate(landscapeConstraints)
     }
@@ -138,6 +143,7 @@ public final class BanksBottomView: BottomSheetViewController {
     }
 
     private func setupView() {
+        configureBottomSheet(shouldIncludeLargeDetent: true)
         setupViewHierarchy()
         setupViewAttributes()
         setupLayout()
@@ -159,7 +165,7 @@ public final class BanksBottomView: BottomSheetViewController {
         bottomView.addSubview(bottomStackView)
         contentStackView.addArrangedSubview(bottomView)
         contentView.addSubview(contentStackView)
-        self.setContent(content: contentView)
+        view.addSubview(contentView)
     }
 
     private func setupViewAttributes() {
@@ -169,16 +175,28 @@ public final class BanksBottomView: BottomSheetViewController {
 
     private func setupLayout() {
         setupContentViewConstraints()
+        setupContentStackViewConstraints()
         setupTitleViewConstraints()
         setupDescriptionConstraints()
         setupTableViewConstraints()
         setupPoweredByGiniConstraints()
     }
-
+    
     private func setupContentViewConstraints() {
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: contentStackView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: contentStackView.bottomAnchor)
+            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                constant: -Constants.viewPaddingConstraint),
+            contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                             constant: Constants.viewPaddingConstraint)
+        ])
+    }
+
+    private func setupContentStackViewConstraints() {
+        NSLayoutConstraint.activate([
+            contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 
@@ -289,11 +307,6 @@ extension BanksBottomView: UITableViewDataSource, UITableViewDelegate {
         let invoiceTableViewCellModel = viewModel.paymentProvidersViewModel(paymentProvider: viewModel.paymentProviders[indexPath.row])
         cell.cellViewModel = invoiceTableViewCellModel
         return cell
-    }
-    
-    /// We indicate the height of a bank row
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        viewModel.rowHeight
     }
     
     /// BanksBottomView event when a bank is selected from the list
