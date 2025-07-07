@@ -29,6 +29,12 @@ public final class PaymentInfoViewModel {
     var shouldShowBrandedView: Bool {
         clientConfiguration?.ingredientBrandType == .fullVisible
     }
+    
+    var accessibilityBankListText: String {
+        let bankNames = paymentProviders.map { $0.name }.joined(separator: ", ")
+        
+        return String(format: strings.supportedBanksText, bankNames)
+    }
 
     public init(paymentProviders: GiniHealthAPILibrary.PaymentProviders,
                 configuration: PaymentInfoConfiguration,

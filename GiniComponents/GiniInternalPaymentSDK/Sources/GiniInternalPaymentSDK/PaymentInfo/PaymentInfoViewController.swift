@@ -47,6 +47,8 @@ public final class PaymentInfoViewController: UIViewController {
         collectionView.isScrollEnabled = true
         collectionView.register(PaymentInfoBankCollectionViewCell.self,
                                 forCellWithReuseIdentifier: PaymentInfoBankCollectionViewCell.identifier)
+        collectionView.isAccessibilityElement = true
+        collectionView.accessibilityLabel = viewModel.accessibilityBankListText
         return collectionView
     }()
     
@@ -160,6 +162,7 @@ public final class PaymentInfoViewController: UIViewController {
                                           action: #selector(didTapCloseButton))
 
         closeButton.tintColor = closeIconTintColor
+        closeButton.accessibilityLabel = viewModel.strings.accessibilityCloseText
         navigationItem.leftBarButtonItem = closeButton
     }
     

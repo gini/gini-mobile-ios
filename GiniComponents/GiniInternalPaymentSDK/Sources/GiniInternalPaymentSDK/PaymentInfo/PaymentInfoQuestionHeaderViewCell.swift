@@ -69,8 +69,10 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor,
+                                            constant: Constants.contentPadding),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor,
+                                               constant: -Constants.contentPadding),
             extendedImageView.widthAnchor.constraint(equalToConstant: extendedImageView.frame.width),
             extendedImageView.heightAnchor.constraint(equalToConstant: extendedImageView.frame.height),
             extendedImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -104,5 +106,6 @@ extension PaymentInfoQuestionHeaderViewCell {
         static let titleLineHeight = 1.15
         static let titleRightPadding = 16.0
         static let imageSize = 24.0
+        static let contentPadding = 16.0
     }
 }

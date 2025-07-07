@@ -72,9 +72,10 @@ public struct PaymentInfoConfiguration {
 }
 
 public struct PaymentInfoStrings {
+    let accessibilityCloseText: String
     let giniWebsiteText: String
     let giniURLText: String
-
+    let supportedBanksText: String
     let questionsTitleText: String
     let answerPrivacyPolicyText: String
     let privacyPolicyURLText: String
@@ -85,8 +86,10 @@ public struct PaymentInfoStrings {
     let answers: [String]
     let questions: [String]
 
-    public init(giniWebsiteText: String,
+    public init(accessibilityCloseText: String,
+                giniWebsiteText: String,
                 giniURLText: String,
+                supportedBanksText: String,
                 questionsTitleText: String,
                 answerPrivacyPolicyText: String,
                 privacyPolicyURLText: String,
@@ -95,10 +98,12 @@ public struct PaymentInfoStrings {
                 payBillsDescriptionText: String,
                 answers: [String],
                 questions: [String]) {
+        self.accessibilityCloseText = accessibilityCloseText
         self.answers = answers
         self.questions = questions
         self.giniURLText = giniURLText
         self.giniWebsiteText = giniWebsiteText
+        self.supportedBanksText = supportedBanksText
         self.titleText = titleText
         self.payBillsTitleText = payBillsTitleText
         self.payBillsDescriptionText = payBillsDescriptionText
