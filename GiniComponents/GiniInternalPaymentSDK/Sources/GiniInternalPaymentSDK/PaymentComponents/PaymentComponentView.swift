@@ -48,6 +48,7 @@ public final class PaymentComponentView: UIView {
         button.customConfigure(text: viewModel.strings.ctaLabelText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
+        button.accessibilityLabel = viewModel.strings.ctaLabelText
         return button
     }()
     
@@ -140,6 +141,7 @@ public final class PaymentComponentView: UIView {
                                          rightImageTintColor: viewModel.configuration.chevronDownIconColor,
                                          shouldShowLabel: viewModel.showPaymentComponentInOneRow ? !viewModel.hasBankSelected : true)
         payInvoiceButton.isHidden = !viewModel.hasBankSelected
+        selectBankButton.accessibilityLabel = viewModel.selectBankButtonText
         selectBankButton.heightAnchor.constraint(greaterThanOrEqualToConstant: heightConstantSelectBankButton).isActive = true
     }
 

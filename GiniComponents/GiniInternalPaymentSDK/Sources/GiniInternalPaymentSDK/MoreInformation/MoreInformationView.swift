@@ -31,6 +31,7 @@ public final class MoreInformationView: UIButton {
         ]
         let moreInformationActionableAttributtedString = NSMutableAttributedString(string: viewModel.strings.moreInformationActionablePartText, attributes: attributes)
         label.attributedText = moreInformationActionableAttributtedString
+        accessibilityLabel = moreInformationActionableAttributtedString.string
         return label
     }()
     
