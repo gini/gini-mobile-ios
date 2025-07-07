@@ -36,10 +36,6 @@ public final class EmptyScrollView: UIScrollView {
     
     private func setupView() {
         addSubview(contentView)
-        contentView.makeConstraints { make in
-            make.edges.equalTo(contentLayoutGuide)
-            make.centerX.equalToSuperview()
-        }
         
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: contentLayoutGuide.topAnchor),
