@@ -47,8 +47,8 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             titleAccentColor: GiniColor.standard2.uiColor(),
             titleFont: GiniHealthConfiguration.shared.font(for: .subtitle1),
             moreInformationFont: GiniHealthConfiguration.shared.font(for: .captions1),
-            moreInformationTextColor: GiniColor.standard3.uiColor(),
-            moreInformationAccentColor: GiniColor.standard3.uiColor(),
+            moreInformationTextColor: GiniColor.standard4.uiColor(),
+            moreInformationAccentColor: GiniColor.standard8.uiColor(),
             moreInformationIcon: GiniHealthImage.info.preferredUIImage(),
             appStoreIcon: GiniHealthImage.appStore.preferredUIImage(),
             bankIconBorderColor: GiniColor.standard5.uiColor()
@@ -69,7 +69,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             titleAccentColor: GiniColor.standard2.uiColor(),
             descriptionFont: GiniHealthConfiguration.shared.font(for: .captions1),
             descriptionTextColor: GiniColor.standard3.uiColor(),
-            descriptionAccentColor: GiniColor.standard3.uiColor(),
+            descriptionAccentColor: GiniColor.standard4.uiColor(),
             paymentInfoBorderColor: GiniColor.standard5.uiColor(),
             titlePaymentInfoTextColor: GiniColor.standard4.uiColor(),
             subtitlePaymentInfoTextColor: GiniColor.standard1.uiColor(),
@@ -136,7 +136,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             loadingIndicatorStyle: UIActivityIndicatorView.Style.large,
             loadingIndicatorColor: GiniHealthColorPalette.accent1.preferredColor(),
             infoBarLabelTextColor: GiniHealthColorPalette.dark7.preferredColor(),
-            infoBarBackgroundColor: GiniHealthColorPalette.success1.preferredColor(),
+            infoBarBackgroundColor: GiniColor.success1.uiColor(),
             mainViewBackgroundColor: GiniColor.standard7.uiColor(),
             infoContainerViewBackgroundColor: GiniColor.standard7.uiColor(),
             paymentReviewClose: GiniHealthImage.paymentReviewClose.preferredUIImage(),
@@ -161,10 +161,10 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
 
     public var moreInformationConfiguration: MoreInformationConfiguration {
         MoreInformationConfiguration(
-            moreInformationAccentColor: GiniColor.standard2.uiColor(),
+            moreInformationAccentColor: GiniColor.standard8.uiColor(),
             moreInformationTextColor: GiniColor.standard4.uiColor(),
             moreInformationLinkFont: GiniHealthConfiguration.shared.font(for: .captions2),
-            moreInformationIcon: GiniHealthImage.info.preferredUIImage()
+            moreInformationIcon: GiniHealthImage.info.preferredUIImage().withRenderingMode(.alwaysTemplate)
         )
     }
 
