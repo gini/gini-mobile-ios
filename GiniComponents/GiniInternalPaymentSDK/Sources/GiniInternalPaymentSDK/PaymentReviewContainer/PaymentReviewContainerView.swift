@@ -625,6 +625,7 @@ public final class PaymentReviewContainerView: UIView {
             self?.tapOnBankPicker()
         }
         selectBankButton.accessibilityLabel = viewModel.strings.selectBankAccessibilityText
+        selectBankButton.accessibilityHint = viewModel.strings.selectBankAccessibilityHint
         selectBankButton.isAccessibilityElement = true
         selectBankButton.accessibilityTraits = .button
     }

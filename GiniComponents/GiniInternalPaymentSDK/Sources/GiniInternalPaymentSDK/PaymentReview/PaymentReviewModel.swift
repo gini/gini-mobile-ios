@@ -218,7 +218,6 @@ public class PaymentReviewModel: NSObject {
 
     func openBankSelectionBottomSheet() {
         guard let banksPickerBottomSheet = bottomSheetsProvider?.bankSelectionBottomSheet() as? BanksBottomView else { return }
-        banksPickerBottomSheet.modalPresentationStyle = .overFullScreen
         banksPickerBottomSheet.viewModel.viewDelegate = self
         viewModelDelegate?.presentBankSelectionBottomSheet(bottomSheet: banksPickerBottomSheet)
     }
