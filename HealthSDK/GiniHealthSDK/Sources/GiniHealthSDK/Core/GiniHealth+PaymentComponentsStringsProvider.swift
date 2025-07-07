@@ -151,7 +151,7 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             descriptionText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.providers.list.description",
                                                               comment: "Top description text on payment providers bottom sheet"),
             closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.close.button.accesibility.label",
-                                                                            comment: "Close button accessibility label text"),
+                                                                            comment: "Close button accessibility label text")
         )
     }
 
