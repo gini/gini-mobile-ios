@@ -56,12 +56,10 @@ public final class TextFieldWithLabelView: UIView {
     
     func customConfigure(labelTitle: NSAttributedString) {
         titleLabel.attributedText = labelTitle
-        titleLabel.accessibilityValue = labelTitle.string
     }
 
     func customConfigure(labelTitle: String) {
         titleLabel.text = labelTitle
-        titleLabel.accessibilityValue = labelTitle
     }
 
     func setInputAccesoryView(view: UIView?) {
