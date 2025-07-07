@@ -427,6 +427,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         label.textAlignment = .left
         label.font = isTitle ? viewModel.configuration.titlePaymentInfoFont : viewModel.configuration.subtitlePaymentInfoFont
         label.textColor = isTitle ? viewModel.configuration.titlePaymentInfoTextColor : viewModel.configuration.subtitlePaymentInfoTextColor
+        label.numberOfLines = 0
         return label
     }
 
