@@ -10,6 +10,7 @@ our Health SDK is now fully compliant with (WCAG) 2.2 AAA
 We’ve designed the SDK to work seamlessly with iOS accessibility features, so users who rely on these tools can fully interact with your app.
 
 ### Key accessibility areas Currently supported:
+
  - **VoiceOver**: Enables users to navigate and interact with the interface without needing to see the screen.
  - **Contrast**: Text and UI elements meet contrast ratio requirements to ensure good readability.
  - **Orientation**: The SDK adapts seamlessly to both orientations - enhancing usability and delivering a consistent experience across all device layouts.
