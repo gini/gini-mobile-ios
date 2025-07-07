@@ -22,6 +22,7 @@ enum GiniHealthColorPalette: String {
     case dark5 = "Dark05"
     case dark6 = "Dark06"
     case dark7 = "Dark07"
+    case dark8 = "Dark08"
 
     case light1 = "Light01"
     case light2 = "Light02"
@@ -30,6 +31,7 @@ enum GiniHealthColorPalette: String {
     case light5 = "Light05"
     case light6 = "Light06"
     case light7 = "Light07"
+    case light8 = "Light08"
 
     case feedback1 = "Feedback01"
     case feedback2 = "Feedback02"
@@ -65,6 +67,7 @@ extension GiniColor {
     static let standard5 = GiniColor(lightModeColorName: .dark5, darkModeColorName: .light5)
     static let standard6 = GiniColor(lightModeColorName: .dark6, darkModeColorName: .light6)
     static let standard7 = GiniColor(lightModeColorName: .dark7, darkModeColorName: .light7)
+    static let standard8 = GiniColor(lightModeColorName: .dark8, darkModeColorName: .light8)
 
     static let accent1 = GiniColor(lightModeColorName: .accent1, darkModeColorName: .accent1)
 
