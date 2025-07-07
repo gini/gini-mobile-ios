@@ -17,6 +17,22 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     private let contentView = EmptyView()
     private let contentStackView = EmptyStackView().orientation(.vertical)
+    
+    private lazy var closeButtonContainerView: EmptyView = {
+        let view = EmptyView()
+        return view
+    }()
+    
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(viewModel.configuration.closeTitleIcon.withRenderingMode(.alwaysTemplate),
+                        for: .normal)
+        button.addTarget(self, action: #selector(tapOnCloseIcon), for: .touchUpInside)
+        button.tintColor = viewModel.configuration.closeIconAccentColor
+        button.accessibilityLabel = viewModel.strings.closeButtonAccessibilityLabel
+        return button
+    }()
 
     private lazy var titleView: UIView = {
         let view = EmptyView()
@@ -117,6 +133,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     // Portrait Layout Constraints
     private func setupPortraitConstraints() {
+        closeButtonContainerView.isHidden = true
         deactivateAllConstraints()
         portraitConstraints = [
             contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -128,6 +145,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     // Landscape Layout Constraints
     private func setupLandscapeConstraints(screenWidth: CGFloat) {
+        closeButtonContainerView.isHidden = false
         deactivateAllConstraints()
         let landscapePadding: CGFloat = (Constants.landscapePaddingRatio * screenWidth)
         landscapeConstraints = [
@@ -150,6 +168,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     }
 
     private func setupViewHierarchy() {
+        addCloseButton()
         titleView.addSubview(titleLabel)
         titleView.addSubview(closeTitleIconImageView)
         contentStackView.addArrangedSubview(titleView)
@@ -182,6 +201,21 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         setupPoweredByGiniConstraints()
     }
     
+    private func addCloseButton() {
+        closeButtonContainerView.addSubview(closeButton)
+        
+        NSLayoutConstraint.activate([
+            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
+            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
+            closeButton.topAnchor.constraint(equalTo: closeButtonContainerView.topAnchor),
+            closeButton.bottomAnchor.constraint(equalTo: closeButtonContainerView.bottomAnchor),
+            closeButton.trailingAnchor.constraint(equalTo: closeButtonContainerView.trailingAnchor,
+                                                 constant: -Constants.viewPaddingConstraint),
+        ])
+        
+        contentStackView.addArrangedSubview(closeButtonContainerView)
+    }
+    
     private func setupContentViewConstraints() {
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -202,11 +236,10 @@ public final class BanksBottomView: GiniBottomSheetViewController {
 
     private func setupTitleViewConstraints() {
         NSLayoutConstraint.activate([
-            titleView.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.heightTitleView),
             titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             titleLabel.centerYAnchor.constraint(equalTo: titleView.centerYAnchor),
-            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: titleView.topAnchor, constant: Constants.descriptionTopPadding),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: titleView.bottomAnchor, constant: -Constants.descriptionTopPadding),
+            titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.descriptionTopPadding),
+            titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor, constant: -Constants.descriptionTopPadding),
             closeTitleIconImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             closeTitleIconImageView.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
             closeTitleIconImageView.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
@@ -246,6 +279,7 @@ public final class BanksBottomView: GiniBottomSheetViewController {
     @objc
     private func tapOnCloseIcon() {
         viewModel.didTapOnClose()
+        dismiss(animated: true)
     }
 
     // Handle orientation change
