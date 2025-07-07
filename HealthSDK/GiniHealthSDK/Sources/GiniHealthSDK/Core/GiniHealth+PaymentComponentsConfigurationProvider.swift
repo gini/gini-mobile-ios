@@ -51,7 +51,9 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             moreInformationAccentColor: GiniColor.standard3.uiColor(),
             moreInformationIcon: GiniHealthImage.info.preferredUIImage(),
             appStoreIcon: GiniHealthImage.appStore.preferredUIImage(),
-            bankIconBorderColor: GiniColor.standard5.uiColor()
+            bankIconBorderColor: GiniColor.standard5.uiColor(),
+            closeIcon: GiniHealthImage.close.preferredUIImage(),
+            closeIconAccentColor: GiniColor.standard2.uiColor()
         )
     }
 
