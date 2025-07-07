@@ -48,7 +48,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             titleFont: GiniHealthConfiguration.shared.font(for: .subtitle1),
             moreInformationFont: GiniHealthConfiguration.shared.font(for: .captions1),
             moreInformationTextColor: GiniColor.standard4.uiColor(),
-            moreInformationAccentColor: GiniColor.standard3.uiColor(),
+            moreInformationAccentColor: GiniColor.standard8.uiColor(),
             moreInformationIcon: GiniHealthImage.info.preferredUIImage(),
             appStoreIcon: GiniHealthImage.appStore.preferredUIImage(),
             bankIconBorderColor: GiniColor.standard5.uiColor()
@@ -161,10 +161,10 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
 
     public var moreInformationConfiguration: MoreInformationConfiguration {
         MoreInformationConfiguration(
-            moreInformationAccentColor: GiniColor.standard2.uiColor(),
+            moreInformationAccentColor: GiniColor.standard8.uiColor(),
             moreInformationTextColor: GiniColor.standard4.uiColor(),
             moreInformationLinkFont: GiniHealthConfiguration.shared.font(for: .captions2),
-            moreInformationIcon: GiniHealthImage.info.preferredUIImage()
+            moreInformationIcon: GiniHealthImage.info.preferredUIImage().withRenderingMode(.alwaysTemplate)
         )
     }
 
