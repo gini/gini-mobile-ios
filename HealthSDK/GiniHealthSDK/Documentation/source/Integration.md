@@ -6,6 +6,7 @@ The Gini Health SDK for iOS provides all the UI and functionality needed to use 
 The Gini Health API provides an information extraction service for analyzing health invoices. Specifically, it extracts information such as the document sender or the payment relevant information (amount to pay, IBAN, etc.). In addition it also provides a secure channel for sharing payment related information between clients. 
 
 > ⚠️  **Important:**
+
 For supporting each payment provider you need to specify `LSApplicationQueriesSchemes` in your `Info.plist` file. App schemes for specification will be provided by Gini.
 
 
@@ -43,6 +44,7 @@ If you want to use _Certificate pinning_, provide metadata for the upload proces
 ```
 
 > ⚠️  **Important:**
+
 You should have received Gini Health API client credentials from us. Please get in touch with us in case you don't have them.
 
 You can easy initialize `GiniHealth` with the client credentials:
@@ -55,7 +57,9 @@ Or initialize it with previously created `GiniHealthAPI`:
 ```swift
  let healthSDK = GiniHealth(with: giniApiLib)
 ```
+
 ## Handeling documents
+
 ### Document upload
  
 For the document upload if you plan to do it with `GiniHealth`. First you need get document service and create partial document.
@@ -176,9 +180,8 @@ If you need to hadle a flow with a document/invoice use a code snippet below:
     healthSDK.setConfiguration(giniHealthConfiguration)
 ```
 
-Other configuration options are availible [here](https://developer.gini.net/gini-mobile-ios/GiniHealthSDK/5.5.0/Classes/GiniHealthConfiguration.html)
-
 ### 2. Start the Payment Flow
+
 After configuring the healthSDK, you should call can start a payment flow:
 
 If you have a document/invoice:
@@ -216,8 +219,10 @@ health.startPaymentFlow(documentId: nil,
 ```
 
 ### Optional (Recommended start payment entry button):
+
 We also provide trust marker information for creating a subview that displays the available banks and their respective numbers. See Figma [here](https://www.figma.com/design/tHVSZ2BOlnx1mrfFrWeo87/iOS-Gini-Health-SDK-5.6-UI-Customization--WCAG-2.1-?node-id=16914-16138&t=vrAVy8gvjhDLHRca-1)
 For that please call next method:
+
 ```swift
     let logos = health.fetchBankLogos().logos // for the first two payment providers available
     let additionalBankNumberToShow = health.fetchBankLogos().additionalBankCount // for the number of additional payment providers available
