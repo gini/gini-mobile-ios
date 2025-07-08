@@ -60,6 +60,7 @@ private extension BankSelectionTableViewCell {
         contentView.addSubview(cellView)
         backgroundColor = .clear
         selectionStyle = .none
+        accessibilityTraits = .button
         
         cellView.addSubview(bankImageView)
         cellView.addSubview(bankNameLabel)
@@ -110,6 +111,7 @@ private extension BankSelectionTableViewCell {
         
         let isSelected = cellViewModel.shouldShowSelectionIcon
 
+        accessibilityTraits = isSelected ? [.button, .selected] : .button
         bankImageView.image = cellViewModel.bankImageIcon
         bankImageView.layer.borderColor = cellViewModel.colors.bankIconBorderColor.cgColor
 
