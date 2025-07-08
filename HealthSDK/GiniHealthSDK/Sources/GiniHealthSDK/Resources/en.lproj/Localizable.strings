@@ -37,7 +37,7 @@
 "gini.health.paymentcomponent.your.bank.label" = "Your bank";
 "gini.health.paymentcomponent.payment.providers.list.description" = "You can only pay the bill if you have an account with one of the banks listed below.";
 "gini.health.paymentcomponent.payment.info.title.label" = "More information";
-"gini.health.paymentcomponent.payment.info.supportedbanks.label" = "Supported banks %@";
+"gini.health.paymentcomponent.payment.info.supported.banks.label" = "Supported banks %@";
 "gini.health.paymentcomponent.payment.info.pay.bills.title.label" = "Pay bills easily with the banking app.";
 "gini.health.paymentcomponent.payment.info.pay.bills.description.label" = "Medical bills and other submitted receipts can now be paid very easily.\nThe payment data such as IBAN, amount, recipient and purpose are seamlessly transferred to the banking app, and the payment only needs to be confirmed there.\nYou can also park the invoice and pay it within 3 months after uploading.\nThe data is encrypted and transferred securely to your banking app. The data protection regulations of your bank apply.\nSupported by the largest banks. Integration by Gini[LINK].";
 "gini.health.paymentcomponent.payment.info.pay.bills.description.clickable.text" = "Gini[LINK]";

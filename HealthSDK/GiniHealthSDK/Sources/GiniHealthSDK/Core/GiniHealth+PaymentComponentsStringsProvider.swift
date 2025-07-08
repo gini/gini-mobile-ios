@@ -103,7 +103,7 @@ extension GiniHealth: PaymentComponentsStringsProvider {
                                                               comment: "Word range that's clickable in pay bills description"),
             giniURLText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.info.gini.link",
                                                           comment: "Gini website link url"),
-            supportedBanksText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.info.supportedbanks.label",
+            supportedBanksText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.info.supported.banks.label",
                                                                  comment: "supported banks label text"),
             questionsTitleText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.payment.info.questions.title.label",
                                                                  comment: "Payment Info questions title label text"),

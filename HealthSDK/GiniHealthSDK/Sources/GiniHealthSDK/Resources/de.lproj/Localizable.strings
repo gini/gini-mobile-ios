@@ -22,7 +22,7 @@
 "gini.health.paymentcomponent.install.app.bottom.sheet.title" = "Rechnungsdaten bereit zum Teilen mit der [BANK]";
 "gini.health.paymentcomponent.more.information.label" = "Bezahldaten an Banking-App übergeben und dort direkt bezahlen. Mehr Informationen.";
 "gini.health.paymentcomponent.more.information.underlined.part" = "Mehr Informationen.";
-"gini.health.paymentcomponent.payment.info.supportedbanks.label" = "Unterstützte Banken %@";
+"gini.health.paymentcomponent.payment.info.supported.banks.label" = "Unterstützte Banken %@";
 "gini.health.paymentcomponent.pay.invoice.label" = "Rechnung bezahlen";
 "gini.health.paymentcomponent.payment.info.gini.link" = "https://gini.net/";
 "gini.health.paymentcomponent.payment.info.gini.privacypolicy.link" = "";
@@ -107,7 +107,7 @@
 "gini.health.paymentcomponent.payment.info.questions.question.5.informal" = "Welches Format muss die eingereichte Rechnung haben?";
 "gini.health.paymentcomponent.payment.info.questions.question.6.informal" = "Wie erkenne ich, welche Banken unterstützt werden?";
 "gini.health.paymentcomponent.payment.info.title.label.informal" = "Mehr Informationen";
-"gini.health.paymentcomponent.payment.info.supportedbanks.label.informal" = "Unterstützte Banken %@";
+"gini.health.paymentcomponent.payment.info.supported.banks.label.informal" = "Unterstützte Banken %@";
 "gini.health.paymentcomponent.payment.providers.list.description.informal" = "Du kannst die Rechnung nur bezahlen, wenn du ein Konto bei einer der unten aufgeführten Banken hast.";
 "gini.health.paymentcomponent.powered.by.gini.label.informal" = "Powered by";
 "gini.health.paymentcomponent.select.bank.label.informal" = "Bank auswählen";
