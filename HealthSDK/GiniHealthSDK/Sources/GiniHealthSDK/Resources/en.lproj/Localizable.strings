@@ -20,7 +20,7 @@
 "gini.health.errors.failed.iban.non.empty.check" = "IBAN is required.";
 "gini.health.errors.failed.iban.validation.check" = "IBAN is not valid.";
 "gini.health.errors.failed.amount.non.empty.check" = "Amount is required.";
-"gini.health.errors.failed.purpose.non.empty.check" = "Purpose is required.";
+"gini.health.errors.failed.purpose.non.empty.check" = "Reference is required.";
 "gini.health.errors.failed.default.textfield.validation.check" = "The field is not valid.";
 
 "gini.health.alert.ok.title" = "OK";
