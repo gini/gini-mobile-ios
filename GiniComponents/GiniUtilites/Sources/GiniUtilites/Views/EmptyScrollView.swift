@@ -4,7 +4,6 @@
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
 
-
 import UIKit
 import Combine
 
