@@ -6,6 +6,7 @@
 
 */
 "gini.health.alert.ok.title" = "OK";
+"gini.health.close.button.accessibility.label" = "Schließen";
 "gini.health.errors.default" = "Oh da ist was schief gelaufen. Probieren Sie es bitte noch einmal.";
 "gini.health.errors.failed.amount.non.empty.check" = "Betrag ist notwendig.";
 "gini.health.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig.";
@@ -21,6 +22,7 @@
 "gini.health.paymentcomponent.install.app.bottom.sheet.title" = "Rechnungsdaten bereit zum Teilen mit der [BANK]";
 "gini.health.paymentcomponent.more.information.label" = "Bezahldaten an Banking-App übergeben und dort direkt bezahlen. Mehr Informationen.";
 "gini.health.paymentcomponent.more.information.underlined.part" = "Mehr Informationen.";
+"gini.health.paymentcomponent.payment.info.supported.banks.label" = "Unterstützte Banken %@";
 "gini.health.paymentcomponent.pay.invoice.label" = "Rechnung bezahlen";
 "gini.health.paymentcomponent.payment.info.gini.link" = "https://gini.net/";
 "gini.health.paymentcomponent.payment.info.gini.privacypolicy.link" = "";
@@ -34,6 +36,7 @@
 "gini.health.paymentcomponent.payment.info.questions.answer.5" = "Ob Foto einer Rechnung, Screenshot, oder digitales PDF – jedes Format ist geeignet. Bitte achten Sie lediglich darauf, dass alle Bezahlinformationen, wie IBAN, Empfänger, Verwendungszweck und Betrag sichtbar und nicht abgeschnitten sind.";
 "gini.health.paymentcomponent.payment.info.questions.answer.6" = "Im Bank-Auswahlmenü werden die Banken angezeigt, die, die Gini-Bezahlfunktion unterstützen. Voraussetzung für die Nutzung ist, dass Sie die mobile Banking-App ihrer Bank auf demselben Smartphone oder Tablet installiert haben, auf dem Sie die Versicherungs-App nutzen. Sollten Sie keine der Banking-Apps installiert haben, können Sie diese aus dem Apple App- oder Google Playstore herunterladen. Eine anschließende Aktivierung der Banking-App kann nötig sein.";
 "gini.health.paymentcomponent.payment.info.questions.answer.clickable.text" = "Datenschutzerklärung[LINK]";
+"gini.health.paymentcomponent.payment.info.questions.title.label" = "Häufig gestellte Fragen";
 "gini.health.paymentcomponent.payment.info.questions.question.1" = "Kann ich Rechnungen einreichen und später bezahlen?";
 "gini.health.paymentcomponent.payment.info.questions.question.2" = "Ist der Service kostenlos?";
 "gini.health.paymentcomponent.payment.info.questions.question.3" = "Sind meine Daten sicher?";
@@ -44,6 +47,7 @@
 "gini.health.paymentcomponent.payment.providers.list.description" = "Sie können die Rechnung nur bezahlen, wenn Sie ein Konto bei einer der unten aufgeführten Banken haben.";
 "gini.health.paymentcomponent.powered.by.gini.label" = "Powered by";
 "gini.health.paymentcomponent.select.bank.label" = "Bank auswählen";
+"gini.health.paymentcomponent.select.bank.hint" = "Wählen Sie Ihre Bank aus der Dropdown-Liste aus. Verwenden Sie die Pfeiltasten, um durch die Optionen zu navigieren, und drücken Sie die Eingabetaste, um Ihre Bank auszuwählen. Diese Auswahl ist erforderlich, um fortzufahren.";
 "gini.health.paymentcomponent.select.your.bank.label" = "Bank auswählen und bezahlen";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text" = "Mit der [BANK]-App teilen";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.description" = "Alternativ können Sie einen Screenshot von dieser Seite machen mit der Fotoüberweisung Funktion der [BANK] öffnen.";
@@ -53,17 +57,20 @@
 "gini.health.paymentcomponent.your.bank.label" = "Ihre Bank";
 "gini.health.reviewscreen.amount.placeholder" = "Betrag";
 "gini.health.reviewscreen.banking.app.button.label" = "Zur Banking App";
+"gini.health.reviewscreen.banking.app.button.hint" = "Es öffnet die Banking-App, um die Zahlung abzuschließen.";
 "gini.health.reviewscreen.iban.placeholder" = "IBAN";
 "gini.health.reviewscreen.infobar.message" = "Bitte überprüfen Sie die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder" = "Verwendungszweck";
-"gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR-Code";
+"gini.health.paymentcomponent.share.invoice.qr.code.image" = "QR-Code zur Einleitung einer SEPA-Überweisung.";
 "gini.health.paymentcomponent.install.app.bottom.sheet.appstore" = "App-Store";
-"gini.health.reviewscreen.close.button.accesibility.label" = "Schließen";
+"gini.health.reviewscreen.invoice.image.content.description" = "Rechnungsdokument";
+"gini.health.paymentcomponent.install.app.bottom.sheet.bank.logo" = "[BANK] Logo";
 
 // INFORMAL KEYS - German informal localization strings
 
 "gini.health.alert.ok.title.informal" = "OK";
+"gini.health.close.button.accessibility.label.informal" = "Schließen";
 "gini.health.errors.default.informal" = "Oh da ist was schief gelaufen. Probiere es bitte noch einmal.";
 "gini.health.errors.failed.amount.non.empty.check.informal" = "Betrag ist notwendig.";
 "gini.health.errors.failed.default.textfield.validation.check.informal" = "Das Feld ist ungültig.";
@@ -92,6 +99,7 @@
 "gini.health.paymentcomponent.payment.info.questions.answer.5.informal" = "Ob Foto einer Rechnung, Screenshot, oder digitales PDF – jedes Format ist geeignet. Bitte achte lediglich darauf, dass alle Bezahlinformationen, wie IBAN, Empfänger, Verwendungszweck und Betrag sichtbar und nicht abgeschnitten sind.";
 "gini.health.paymentcomponent.payment.info.questions.answer.6.informal" = "Im Bank-Auswahlmenü werden die Banken angezeigt, die, die Gini-Bezahlfunktion unterstützen. Voraussetzung für die Nutzung ist, dass du die mobile Banking-App ihrer Bank auf demselben Smartphone oder Tablet installiert hast, auf dem du die Versicherungs-App nutzt. Solltest du keine der Banking-Apps installiert haben, kannst du diese aus dem Apple App- oder Google Playstore herunterladen. Eine anschließende Aktivierung der Banking-App kann nötig sein.";
 "gini.health.paymentcomponent.payment.info.questions.answer.clickable.text.informal" = "Datenschutzerklärung[LINK]";
+"gini.health.paymentcomponent.payment.info.questions.title.label.informal" = "Häufig gestellte Fragen";
 "gini.health.paymentcomponent.payment.info.questions.question.1.informal" = "Kann ich Rechnungen einreichen und später bezahlen?";
 "gini.health.paymentcomponent.payment.info.questions.question.2.informal" = "Ist der Service kostenlos?";
 "gini.health.paymentcomponent.payment.info.questions.question.3.informal" = "Sind meine Daten sicher?";
@@ -99,9 +107,11 @@
 "gini.health.paymentcomponent.payment.info.questions.question.5.informal" = "Welches Format muss die eingereichte Rechnung haben?";
 "gini.health.paymentcomponent.payment.info.questions.question.6.informal" = "Wie erkenne ich, welche Banken unterstützt werden?";
 "gini.health.paymentcomponent.payment.info.title.label.informal" = "Mehr Informationen";
+"gini.health.paymentcomponent.payment.info.supported.banks.label.informal" = "Unterstützte Banken %@";
 "gini.health.paymentcomponent.payment.providers.list.description.informal" = "Du kannst die Rechnung nur bezahlen, wenn du ein Konto bei einer der unten aufgeführten Banken hast.";
 "gini.health.paymentcomponent.powered.by.gini.label.informal" = "Powered by";
 "gini.health.paymentcomponent.select.bank.label.informal" = "Bank auswählen";
+"gini.health.paymentcomponent.select.bank.hint.informal" = "Wählen Sie Ihre Bank aus der Dropdown-Liste aus. Verwenden Sie die Pfeiltasten, um durch die Optionen zu navigieren, und drücken Sie die Eingabetaste, um Ihre Bank auszuwählen. Diese Auswahl ist erforderlich, um fortzufahren.";
 "gini.health.paymentcomponent.select.your.bank.label.informal" = "Bank auswählen und bezahlen";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.continue.button.text.informal" = "Mit der [BANK]-App teilen";
 "gini.health.paymentcomponent.share.invoice.bottom.sheet.description.informal" = "Alternativ kannst du einen Screenshot von dieser Seite machen und mit der Fotoüberweisung Funktion der [BANK] öffnen.";
@@ -111,11 +121,12 @@
 "gini.health.paymentcomponent.your.bank.label.informal" = "Ihre Bank";
 "gini.health.reviewscreen.amount.placeholder.informal" = "Betrag";
 "gini.health.reviewscreen.banking.app.button.label.informal" = "Zur Banking App";
+"gini.health.reviewscreen.banking.app.button.hint.informal" = "Es öffnet die Banking-App, um die Zahlung abzuschließen.";
 "gini.health.reviewscreen.iban.placeholder.informal" = "IBAN";
 "gini.health.reviewscreen.infobar.message.informal" = "Bitte überprüfe die vorausgefüllten Felder";
 "gini.health.reviewscreen.recipient.placeholder.informal" = "Empfänger";
 "gini.health.reviewscreen.usage.placeholder.informal" = "Verwendungszweck";
-"gini.health.paymentcomponent.share.invoice.qr.code.image.informal" = "QR-Code";
+"gini.health.paymentcomponent.share.invoice.qr.code.image.informal" = "QR-Code zur Einleitung einer SEPA-Überweisung.";
 "gini.health.paymentcomponent.install.app.bottom.sheet.appstore.informal" = "App-Store";
-"gini.health.reviewscreen.close.button.accesibility.label.informal" = "Schließen";
-"gini.health.reviewscreen.invoice.image.content.description" = "Rechnungsdokument";
+"gini.health.reviewscreen.invoice.image.content.description.informal" = "Rechnungsdokument";
+"gini.health.paymentcomponent.install.app.bottom.sheet.bank.logo.informal" = "[BANK] Logo";

@@ -21,6 +21,7 @@ public final class MoreInformationView: UIButton {
     private lazy var moreInformationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
         
         let attributes: [NSAttributedString.Key: Any] = [
@@ -30,6 +31,7 @@ public final class MoreInformationView: UIButton {
         ]
         let moreInformationActionableAttributtedString = NSMutableAttributedString(string: viewModel.strings.moreInformationActionablePartText, attributes: attributes)
         label.attributedText = moreInformationActionableAttributtedString
+        accessibilityLabel = moreInformationActionableAttributtedString.string
         return label
     }()
     
@@ -37,6 +39,7 @@ public final class MoreInformationView: UIButton {
         let imageView = UIImageView(image: viewModel.configuration.moreInformationIcon)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = viewModel.configuration.moreInformationAccentColor
+        imageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -71,8 +74,9 @@ public final class MoreInformationView: UIButton {
             moreInformationIcon.widthAnchor.constraint(equalToConstant: Constants.infoIconSize),
             moreInformationIcon.heightAnchor.constraint(equalToConstant: Constants.infoIconSize),
             moreInformationLabel.leadingAnchor.constraint(equalTo: moreInformationIcon.trailingAnchor, constant: Constants.spacingPadding),
-            moreInformationLabel.centerYAnchor.constraint(equalTo: moreInformationIcon.centerYAnchor),
             moreInformationLabel.trailingAnchor.constraint(equalTo: mainContainer.trailingAnchor),
+            moreInformationLabel.topAnchor.constraint(equalTo: mainContainer.topAnchor),
+            moreInformationLabel.bottomAnchor.constraint(equalTo: mainContainer.bottomAnchor),
             mainContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
             mainContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainContainer.topAnchor.constraint(equalTo: topAnchor),

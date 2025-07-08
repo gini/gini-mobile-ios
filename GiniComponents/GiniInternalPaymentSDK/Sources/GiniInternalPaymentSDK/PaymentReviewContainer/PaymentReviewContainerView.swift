@@ -303,8 +303,8 @@ public final class PaymentReviewContainerView: UIView {
 
     private func setupRecipientStackViewConstraints() {
         NSLayoutConstraint.activate([
-            recipientTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            recipientErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            recipientTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            recipientErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
         ])
     }
 
@@ -314,38 +314,38 @@ public final class PaymentReviewContainerView: UIView {
         let amountErrorLabelWidthConstraint = amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountPortraitWidth)
         amountErrorLabelWidthConstraint.priority = .required - 1
         NSLayoutConstraint.activate([
-            ibanTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            amountTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
+            ibanTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             amountTextFieldWidthConstraint,
-            ibanErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
-            amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            ibanErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
             amountErrorLabelWidthConstraint
         ])
     }
 
     private func setupUsageStackViewConstraints() {
         NSLayoutConstraint.activate([
-            usageTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            usageErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight)
+            usageTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            usageErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight)
         ])
     }
     
     private func setupFirstStackViewsConstraints() {
         NSLayoutConstraint.activate([
-            ibanTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            amountTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            ibanErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
-            amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            ibanTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            ibanErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
         ])
     }
     
     private func setupSecondStackViewsConstraints() {
         NSLayoutConstraint.activate([
-            amountTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            usageTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            amountTextFieldView.widthAnchor.constraint(equalToConstant: Constants.amountLandscapeWidth),
-            usageErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
-            amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            usageTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            amountTextFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountLandscapeWidth),
+            usageErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
             amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountLandscapeWidth)
         ])
     }
@@ -625,6 +625,7 @@ public final class PaymentReviewContainerView: UIView {
             self?.tapOnBankPicker()
         }
         selectBankButton.accessibilityLabel = viewModel.strings.selectBankAccessibilityText
+        selectBankButton.accessibilityHint = viewModel.strings.selectBankAccessibilityHint
         selectBankButton.isAccessibilityElement = true
         selectBankButton.accessibilityTraits = .button
     }
@@ -645,6 +646,7 @@ public final class PaymentReviewContainerView: UIView {
             self?.payButtonClicked()
         }
         payInvoiceButton.accessibilityLabel = viewModel.strings.payInvoiceLabelText
+        payInvoiceButton.accessibilityHint = viewModel.strings.payInvoiceAccessibilityHint
         payInvoiceButton.isAccessibilityElement = true
         payInvoiceButton.accessibilityTraits = .button
     }
@@ -710,6 +712,7 @@ public final class PaymentReviewContainerView: UIView {
     private func buildErrorLabel() -> UILabel {
         let label = UILabel()
         label.font = viewModel.configuration.errorLabelFont
+        label.enableScaling()
         label.textColor = viewModel.configuration.errorLabelTextColor
         label.numberOfLines = 0
         return label
@@ -912,7 +915,7 @@ extension PaymentReviewContainerView {
         static let leftRightPaymentInfoContainerLandscapePadding = 56.0
         static let topBottomPaymentInfoContainerPadding = 16.0
         static let textFieldHeight = 56.0
-        static let errorLabelHeight = 12.0
+        static let errorLabelHeight = 42.0
         static let amountPortraitWidth = 95.0
         static let amountLandscapeWidth = 120.0
         static let animationDuration: CGFloat = 0.3

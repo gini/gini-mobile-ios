@@ -21,6 +21,7 @@ public final class PaymentComponentView: UIView {
         label.text = viewModel.strings.selectYourBankLabelText
         label.textColor = viewModel.configuration.selectYourBankAccentColor
         label.font = viewModel.configuration.selectYourBankLabelFont
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 0
         return label
     }()
@@ -47,12 +48,17 @@ public final class PaymentComponentView: UIView {
         button.customConfigure(text: viewModel.strings.ctaLabelText,
                                textColor: viewModel.paymentProviderColors?.text.toColor(),
                                backgroundColor: viewModel.paymentProviderColors?.background.toColor())
+        button.accessibilityLabel = viewModel.strings.ctaLabelText
         return button
     }()
     
     private let bottomView = EmptyView()
     
-    private let bottomStackView = EmptyStackView().orientation(.horizontal)
+    private let bottomStackView: EmptyStackView = {
+        EmptyStackView()
+            .orientation(.horizontal)
+            .spacing(Constants.bottomStackViewSpacing)
+    }()
     
     private lazy var moreInformationView: MoreInformationView = {
         let viewModel = viewModel.moreInformationViewModel
@@ -87,10 +93,11 @@ public final class PaymentComponentView: UIView {
         contentStackView.addArrangedSubview(buttonsView)
         
         bottomStackView.addArrangedSubview(moreInformationView)
-        bottomStackView.addArrangedSubview(UIView())
+        
         if viewModel.shouldShowBrandedView {
             bottomStackView.addArrangedSubview(poweredByGiniView)
         }
+        
         bottomView.addSubview(bottomStackView)
         contentStackView.addArrangedSubview(bottomView)
         
@@ -134,7 +141,8 @@ public final class PaymentComponentView: UIView {
                                          rightImageTintColor: viewModel.configuration.chevronDownIconColor,
                                          shouldShowLabel: viewModel.showPaymentComponentInOneRow ? !viewModel.hasBankSelected : true)
         payInvoiceButton.isHidden = !viewModel.hasBankSelected
-        selectBankButton.heightAnchor.constraint(equalToConstant: heightConstantSelectBankButton).isActive = true
+        selectBankButton.accessibilityLabel = viewModel.selectBankButtonText
+        selectBankButton.heightAnchor.constraint(greaterThanOrEqualToConstant: heightConstantSelectBankButton).isActive = true
     }
 
     var heightConstantSelectBankButton: Double {
@@ -155,7 +163,7 @@ public final class PaymentComponentView: UIView {
             selectYourBankLabel.leadingAnchor.constraint(equalTo: selectYourBankView.leadingAnchor),
             selectYourBankLabel.trailingAnchor.constraint(equalTo: selectYourBankView.trailingAnchor),
             selectYourBankLabel.topAnchor.constraint(equalTo: selectYourBankView.topAnchor),
-            selectYourBankLabel.bottomAnchor.constraint(equalTo: selectYourBankView.bottomAnchor)
+            selectYourBankLabel.bottomAnchor.constraint(equalTo: selectYourBankView.bottomAnchor, constant: -Constants.selectYourBankLabelBottomPadding),
         ])
     }
     
@@ -175,7 +183,6 @@ public final class PaymentComponentView: UIView {
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor),
             bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
-            bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
         ])
     }
 
@@ -198,10 +205,12 @@ extension PaymentComponentView: MoreInformationViewProtocol {
 
 extension PaymentComponentView {
     private enum Constants {
-        static let contentTopPadding = 8.0
+        static let contentTopPadding = 16.0
         static let contentBottomPadding: CGFloat = 4
+        static let selectYourBankLabelBottomPadding = 8.0
         static let buttonsSpacing = 8.0
         static let buttonsTopBottomSpacing = 4.0
+        static let bottomStackViewSpacing = 16.0
         static let bottomViewHeight = 44.0
         static let defaultButtonHeihgt = 44.0
     }

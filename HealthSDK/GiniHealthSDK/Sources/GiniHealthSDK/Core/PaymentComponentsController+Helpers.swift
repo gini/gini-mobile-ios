@@ -303,7 +303,7 @@ extension PaymentComponentsController {
 
      - Returns: A configured `BottomSheetViewController` for the app installation process.
      */
-    public func installAppBottomSheet() -> BottomSheetViewController {
+    public func installAppBottomSheet() -> UIViewController {
         previousPresentedViews.removeAll()
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                   installAppConfiguration: configurationProvider.installAppConfiguration,

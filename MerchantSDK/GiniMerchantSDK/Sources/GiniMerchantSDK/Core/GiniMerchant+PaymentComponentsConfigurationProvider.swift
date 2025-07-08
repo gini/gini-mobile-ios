@@ -51,7 +51,9 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             moreInformationAccentColor: GiniColor.standard3.uiColor(),
             moreInformationIcon: GiniMerchantImage.info.preferredUIImage(),
             appStoreIcon: GiniMerchantImage.appStore.preferredUIImage(),
-            bankIconBorderColor: GiniColor.standard5.uiColor()
+            bankIconBorderColor: GiniColor.standard5.uiColor(),
+            closeIcon: GiniMerchantImage.close.preferredUIImage(),
+            closeIconAccentColor: GiniColor.standard2.uiColor()
         )
     }
 

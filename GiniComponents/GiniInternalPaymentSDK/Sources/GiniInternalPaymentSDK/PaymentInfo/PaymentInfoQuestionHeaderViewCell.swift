@@ -34,6 +34,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.backgroundColor = .clear
+        imageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.imageSize, height: Constants.imageSize)
         return imageView
     }()
@@ -68,10 +69,15 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.titleRightPadding),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor,
+                                            constant: Constants.contentPadding),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor,
+                                               constant: -Constants.contentPadding),
             extendedImageView.widthAnchor.constraint(equalToConstant: extendedImageView.frame.width),
             extendedImageView.heightAnchor.constraint(equalToConstant: extendedImageView.frame.height),
             extendedImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            extendedImageView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor,
+                                                       constant: Constants.titleRightPadding),
             extendedImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
@@ -98,7 +104,8 @@ struct PaymentInfoQuestionHeaderViewModel {
 extension PaymentInfoQuestionHeaderViewCell {
     private enum Constants {
         static let titleLineHeight = 1.15
-        static let titleRightPadding = 85.0
+        static let titleRightPadding = 16.0
         static let imageSize = 24.0
+        static let contentPadding = 16.0
     }
 }

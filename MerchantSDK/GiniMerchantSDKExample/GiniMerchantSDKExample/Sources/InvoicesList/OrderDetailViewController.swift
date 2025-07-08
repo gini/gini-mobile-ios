@@ -158,7 +158,6 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
     func didTapOnBankPicker(documentId: String?) {
         print("✅ Tapped on Bank Picker on :\(documentId ?? "")")
         let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
-        bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
         self.dismissAndPresent(viewController: bankSelectionBottomSheet, animated: false)
     }
 

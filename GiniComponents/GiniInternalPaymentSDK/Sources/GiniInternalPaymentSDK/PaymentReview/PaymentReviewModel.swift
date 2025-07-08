@@ -10,15 +10,15 @@ import GiniHealthAPILibrary
 import GiniUtilites
 
 protocol PaymentReviewViewModelDelegate: AnyObject {
-    func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
-    func presentBankSelectionBottomSheet(bottomSheet: BottomSheetViewController)
+    func presentInstallAppBottomSheet(bottomSheet: UIViewController)
+    func presentBankSelectionBottomSheet(bottomSheet: UIViewController)
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest(paymentRequestId: String)
 }
 
 /// BottomSheetsProviderProtocol defines methods for providing custom bottom sheets.
 public protocol BottomSheetsProviderProtocol: AnyObject {
-    func installAppBottomSheet() -> BottomSheetViewController
+    func installAppBottomSheet() -> UIViewController
     func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> BottomSheetViewController
     func bankSelectionBottomSheet() -> UIViewController
 }
@@ -209,7 +209,6 @@ public class PaymentReviewModel: NSObject {
     func openInstallAppBottomSheet() {
         guard let installAppBottomSheet = bottomSheetsProvider?.installAppBottomSheet() as? InstallAppBottomView else { return }
         installAppBottomSheet.viewModel.viewDelegate = self
-        installAppBottomSheet.modalPresentationStyle = .overFullScreen
         viewModelDelegate?.presentInstallAppBottomSheet(bottomSheet: installAppBottomSheet)
     }
 
@@ -219,7 +218,6 @@ public class PaymentReviewModel: NSObject {
 
     func openBankSelectionBottomSheet() {
         guard let banksPickerBottomSheet = bottomSheetsProvider?.bankSelectionBottomSheet() as? BanksBottomView else { return }
-        banksPickerBottomSheet.modalPresentationStyle = .overFullScreen
         banksPickerBottomSheet.viewModel.viewDelegate = self
         viewModelDelegate?.presentBankSelectionBottomSheet(bottomSheet: banksPickerBottomSheet)
     }

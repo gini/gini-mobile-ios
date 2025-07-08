@@ -47,7 +47,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.accessibilityTraits = .image
         imageView.isAccessibilityElement = true
-        imageView.accessibilityLabel = viewModel.strings.accesibilityQRCodeImageText
+        imageView.accessibilityLabel = viewModel.strings.accessibilityQRCodeImageText
         return imageView
     }()
     
@@ -222,20 +222,25 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         let isPortrait = orientation == .vertical
         
         let qrCodeSize = isPortrait ? Constants.qrCodeImageSizePortrait : Constants.qrCodeImageSizeLandscape
-        let bottomViewHeight = isPortrait ? Constants.bottomViewPortraitHeight : Constants.bottomViewLandscapeHeight
         let contentPadding = isPortrait ? 0 : (Constants.landscapePaddingRatio * view.frame.width)
         
         let constraints = [
-            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: contentPadding),
-            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -contentPadding),
-            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * contentPadding),
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                      constant: contentPadding),
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
+                                                       constant: -contentPadding),
+            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor,
+                                                    constant: -2 * contentPadding),
             qrImageView.widthAnchor.constraint(equalToConstant: qrCodeSize),
             qrImageView.heightAnchor.constraint(equalToConstant: qrCodeSize),
-            paymentInfoStackView.leadingAnchor.constraint(equalTo: paymentInfoView.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            paymentInfoStackView.trailingAnchor.constraint(equalTo: paymentInfoView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            paymentInfoStackView.topAnchor.constraint(equalTo: paymentInfoView.topAnchor, constant: Constants.viewPaddingConstraint),
-            paymentInfoStackView.bottomAnchor.constraint(equalTo: paymentInfoView.bottomAnchor, constant: -Constants.viewPaddingConstraint),
-            paymentInfoView.heightAnchor.constraint(equalToConstant: bottomViewHeight)
+            paymentInfoStackView.leadingAnchor.constraint(equalTo: paymentInfoView.leadingAnchor,
+                                                          constant: Constants.viewPaddingConstraint),
+            paymentInfoStackView.trailingAnchor.constraint(equalTo: paymentInfoView.trailingAnchor,
+                                                           constant: -Constants.viewPaddingConstraint),
+            paymentInfoStackView.topAnchor.constraint(equalTo: paymentInfoView.topAnchor,
+                                                      constant: Constants.viewPaddingConstraint),
+            paymentInfoStackView.bottomAnchor.constraint(equalTo: paymentInfoView.bottomAnchor,
+                                                         constant: -Constants.viewPaddingConstraint)
         ]
 
         if isPortrait {
@@ -382,7 +387,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     }
     
     private func generateRecipientIbanStackView(orientation: NSLayoutConstraint.Axis) -> UIStackView {
-        let recipientIBANStackView = createStackView(distribution: .fillEqually, spacing: Constants.viewPaddingConstraint, orientation: orientation)
+        let recipientIBANStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: orientation)
         
         let recipientStackView = generateInfoStackView(title: viewModel.strings.recipientLabelText, subtitle: viewModel.paymentInfo?.recipient)
         let ibanStackView = generateInfoStackView(title: viewModel.strings.ibanLabelText, subtitle: viewModel.paymentInfo?.iban)
@@ -392,17 +397,18 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     }
 
     private func generateInfoStackView(title: String, subtitle: String?) -> UIStackView {
-        let stackView = createStackView(distribution: .fillEqually, spacing: Constants.paymentInfoFieldsSpacing, orientation: .vertical)
+        let stackView = createStackView(distribution: .fill, spacing: Constants.paymentInfoFieldsSpacing, orientation: .vertical)
+        let valueLabel = createLabel(text: subtitle ?? "", isTitle: false)
+        valueLabel.adjustsFontSizeToFitWidth = true
+        
         stackView.addArrangedSubview(createLabel(text: title, isTitle: true))
-        stackView.addArrangedSubview(createLabel(text: subtitle ?? "", isTitle: false))
-        NSLayoutConstraint.activate([
-            stackView.heightAnchor.constraint(equalToConstant: 42) // Set the height constraint
-        ])
+        stackView.addArrangedSubview(valueLabel)
+
         return stackView
     }
 
     private func generateAmountPurposeStackView() -> UIStackView {
-        let amountPurposeStackView = createStackView(distribution: .fillEqually, spacing: Constants.viewPaddingConstraint, orientation: .horizontal)
+        let amountPurposeStackView = createStackView(distribution: .fill, spacing: Constants.viewPaddingConstraint, orientation: .horizontal)
         var stackViews: [UIStackView] = []
         
         if let amountToPayString = viewModel.paymentInfo?.amount, let amountToPay = Price(extractionString: amountToPayString) {
@@ -421,6 +427,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         label.textAlignment = .left
         label.font = isTitle ? viewModel.configuration.titlePaymentInfoFont : viewModel.configuration.subtitlePaymentInfoFont
         label.textColor = isTitle ? viewModel.configuration.titlePaymentInfoTextColor : viewModel.configuration.subtitlePaymentInfoTextColor
+        label.numberOfLines = 0
         return label
     }
 

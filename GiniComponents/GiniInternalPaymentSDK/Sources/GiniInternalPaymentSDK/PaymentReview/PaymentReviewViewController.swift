@@ -565,10 +565,11 @@ fileprivate extension PaymentReviewViewController {
         let label = UILabel()
         label.textColor = model.configuration.infoBarLabelTextColor
         label.font = model.configuration.infoBarLabelFont
-        label.adjustsFontForContentSizeCategory = true
         label.text = model.strings.infoBarMessage
         label.textAlignment = .center
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+        label.adjustsFontSizeToFitWidth = true
         return label
     }
 
@@ -581,16 +582,19 @@ fileprivate extension PaymentReviewViewController {
         container.insertSubview(infoBar, belowSubview: paymentInfoContainerView)
         infoBar.addSubview(infoBarLabel)
 
-        let bottomConstraint = infoBar.bottomAnchor.constraint(equalTo: isBottomSheetPresented ? paymentInfoContainerView.topAnchor : topBarView.topAnchor, constant: Constants.infoBarHeight)
+        let topAnchor = isBottomSheetPresented ? paymentInfoContainerView.topAnchor : topBarView.topAnchor
+        let bottomConstraint = infoBar.bottomAnchor.constraint(equalTo: topAnchor,
+                                                               constant: Constants.infoBarHeight)
         infoBarBottomConstraint = bottomConstraint
         NSLayoutConstraint.activate([
-            bottomConstraint,
+            infoBarBottomConstraint!,
             infoBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             infoBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            infoBar.heightAnchor.constraint(equalToConstant: Constants.infoBarHeight),
-
-            infoBarLabel.centerXAnchor.constraint(equalTo: infoBar.centerXAnchor),
-            infoBarLabel.topAnchor.constraint(equalTo: infoBar.topAnchor, constant: Constants.infoBarLabelPadding)
+            infoBar.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.infoBarHeight),
+            infoBarLabel.topAnchor.constraint(equalTo: infoBar.topAnchor, constant: Constants.infoBarLabelPadding),
+            infoBarLabel.bottomAnchor.constraint(equalTo: infoBar.bottomAnchor, constant: -Constants.infoBarLabelPadding),
+            infoBarLabel.leadingAnchor.constraint(equalTo: infoBar.leadingAnchor, constant: Constants.infoBarLabelPadding),
+            infoBarLabel.trailingAnchor.constraint(equalTo: infoBar.trailingAnchor, constant: -Constants.infoBarLabelPadding)
         ])
     }
 
@@ -742,7 +746,7 @@ extension PaymentReviewViewController {
         static let pageControlHeight = 20.0
         static let collectionViewPadding = 10.0
         static let cornerRadius = 8.0
-        static let moveHeightInfoBar = 24.0
+        static let moveHeightInfoBar = 8.0
         static let collectionViewBottomPadding = 20.0
         static let keyboardOverlapPadding = 20.0
         static let cornerRadiusTopRectangle = 2.0

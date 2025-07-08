@@ -389,7 +389,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
 
      - Returns: A configured `BottomSheetViewController` for the app installation process.
      */
-    public func installAppBottomSheet() -> BottomSheetViewController {
+    public func installAppBottomSheet() -> UIViewController {
         previousPresentedView = nil
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                   installAppConfiguration: configurationProvider.installAppConfiguration,
