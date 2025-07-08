@@ -168,7 +168,7 @@ Please follow the steps below for the payment component integration.
 ### 1. Setup `GiniHealthConfiguration`.
 
 > ⚠️  **Important:**
-If you need to hadle a flow with a document/invoice use a code snippet below:
+If you need to handle a flow with a document/invoice use a code snippet below:
 
 ```swift
     private let giniHealthConfiguration: GiniHealthConfiguration = {
