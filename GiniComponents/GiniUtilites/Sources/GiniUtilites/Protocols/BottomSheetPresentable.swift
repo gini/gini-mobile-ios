@@ -42,6 +42,13 @@ public protocol BottomSheetPresentable {
     var shouldShowDragIndicator: Bool { get }
     
     /**
+     Determines whether the sheet should be visible on full screen in compact modes.
+     
+     - Returns: `true` if the sheet should be displayed in full screen when in landscape mode, `false` otherwise.
+     */
+    var shouldShowInFullScreenInLandscapeMode: Bool { get }
+    
+    /**
      Configures the bottom sheet presentation with the specified detent options.
      
      This method sets up the sheet presentation controller with appropriate detents and behavior.
@@ -94,7 +101,7 @@ public extension BottomSheetPresentable where Self: UIViewController {
             presentationController.detents = [shouldIncludeLargeDetent ? .large() : .medium()]
             presentationController.prefersGrabberVisible = shouldShowDragIndicator
             presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
-            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.prefersEdgeAttachedInCompactHeight = !shouldShowInFullScreenInLandscapeMode
         }
     }
     
