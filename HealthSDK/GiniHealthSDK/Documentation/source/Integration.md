@@ -47,7 +47,7 @@ If you want to use _Certificate pinning_, provide metadata for the upload proces
 
 You should have received Gini Health API client credentials from us. Please get in touch with us in case you don't have them.
 
-You can easy initialize `GiniHealth` with the client credentials:
+You can easily initialize `GiniHealth` with the client credentials:
 
 ```swift
  let healthSDK = GiniHealth(id: clientID, secret: clientPassword, domain: clientDomain)
