@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class AccesibleView: UIView {
+public class AccessibleView: UIView {
 
     public override var canBecomeFocused: Bool {
         true
