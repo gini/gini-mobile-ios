@@ -49,7 +49,7 @@ public struct ShareInvoiceStrings {
     let amountLabelText: String
     let ibanLabelText: String
     let purposeLabelText: String
-    let accesibilityQRCodeImageText: String
+    let accessibilityQRCodeImageText: String
 
     public init(continueLabelText: String,
                 titleTextPattern: String,
@@ -58,7 +58,7 @@ public struct ShareInvoiceStrings {
                 amountLabelText: String,
                 ibanLabelText: String,
                 purposeLabelText: String,
-                accesibilityQRCodeImageText: String) {
+                accessibilityQRCodeImageText: String) {
         self.continueLabelText = continueLabelText
         self.titleTextPattern = titleTextPattern
         self.descriptionTextPattern = descriptionTextPattern
@@ -66,6 +66,6 @@ public struct ShareInvoiceStrings {
         self.amountLabelText = amountLabelText
         self.ibanLabelText = ibanLabelText
         self.purposeLabelText = purposeLabelText
-        self.accesibilityQRCodeImageText = accesibilityQRCodeImageText
+        self.accessibilityQRCodeImageText = accessibilityQRCodeImageText
     }
 }

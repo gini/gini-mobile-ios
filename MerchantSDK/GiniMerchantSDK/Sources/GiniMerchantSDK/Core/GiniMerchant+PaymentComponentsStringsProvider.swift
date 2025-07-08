@@ -35,7 +35,7 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
             payInvoiceAccessibilityHint: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.banking.app.button.hint",
                                                                           comment: "Title label used for the pay invoice button"),
             selectBankAccessibilityText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.select.bank.label",
-                                                                          comment: "Accesibility label for the select bank button"),
+                                                                          comment: "Accessibility label for the select bank button"),
             selectBankAccessibilityHint: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.select.bank.hint",
                                                                           comment: "Accessibility hint for the select bank button")
         )
@@ -66,10 +66,10 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
             continueLabelText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.continue.button.text",
                                                                 comment: "Title label used for the Continue button"),
             accessibilityAppStoreText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.install.app.bottom.sheet.appstore",
-                                                                        comment: "Accesibility label for the App Store button"),
+                                                                        comment: "Accessibility label for the App Store button"),
             accessibilityBankLogoText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.install.app.bottom.sheet.bank.logo",
                                                                         comment: "Accessibility label for the bank logo image"),
-            accessibilityCloseIconText: NSLocalizedStringPreferredFormat("gini.health.close.button.accesibility.label",
+            accessibilityCloseIconText: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
                                                                          comment: "close button accessibility label text")
         )
     }
@@ -90,14 +90,14 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
                                                             comment: "placeholder text for iban input field"),
             purposeLabelText: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.usage.placeholder",
                                                                comment: "placeholder text for usage input field"),
-            accesibilityQRCodeImageText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.qr.code.image",
-                                                                          comment: "accessibility label for qr code image")
+            accessibilityQRCodeImageText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.share.invoice.qr.code.image",
+                                                                           comment: "accessibility label for qr code image")
         )
     }
     
     public var paymentInfoStrings: PaymentInfoStrings {
         PaymentInfoStrings(
-            accessibilityCloseText: NSLocalizedStringPreferredFormat("gini.health.close.button.accesibility.label",
+            accessibilityCloseText: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
                                                                      comment: "close button accessibility label text"),
             giniWebsiteText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.info.pay.bills.description.clickable.text",
                                                               comment: "Word range that's clickable in pay bills description"),
@@ -150,7 +150,7 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
                                                                   comment: "Select bank text from the top label on payment providers bottom sheet"),
             descriptionText: NSLocalizedStringPreferredFormat("gini.merchant.paymentcomponent.payment.providers.list.description",
                                                               comment: "Top description text on payment providers bottom sheet"),
-            closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.close.button.accesibility.label",
+            closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
                                                                             comment: "Close button accessibility label text")
         )
     }
@@ -167,7 +167,7 @@ extension GiniMerchant: PaymentComponentsStringsProvider {
                                                                         comment: "error for creating payment request"),
             invoiceImageAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.invoice.image.content.description",
                                                                              comment: "accessibility label for invoice image"),
-            closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.close.button.accesibility.label",
+            closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.merchant.reviewscreen.close.button.accessibility.label",
                                                                             comment: "accessibility label for close button")
         )
     }

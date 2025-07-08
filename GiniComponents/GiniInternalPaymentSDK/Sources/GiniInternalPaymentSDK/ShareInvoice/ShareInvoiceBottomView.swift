@@ -47,7 +47,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.accessibilityTraits = .image
         imageView.isAccessibilityElement = true
-        imageView.accessibilityLabel = viewModel.strings.accesibilityQRCodeImageText
+        imageView.accessibilityLabel = viewModel.strings.accessibilityQRCodeImageText
         return imageView
     }()
     

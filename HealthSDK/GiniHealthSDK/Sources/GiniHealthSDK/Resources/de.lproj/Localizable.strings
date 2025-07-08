@@ -6,7 +6,7 @@
 
 */
 "gini.health.alert.ok.title" = "OK";
-"gini.health.close.button.accesibility.label" = "Schließen";
+"gini.health.close.button.accessibility.label" = "Schließen";
 "gini.health.errors.default" = "Oh da ist was schief gelaufen. Probieren Sie es bitte noch einmal.";
 "gini.health.errors.failed.amount.non.empty.check" = "Betrag ist notwendig.";
 "gini.health.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig.";
@@ -69,7 +69,7 @@
 // INFORMAL KEYS - German informal localization strings
 
 "gini.health.alert.ok.title.informal" = "OK";
-"gini.health.close.button.accesibility.label.informal" = "Schließen";
+"gini.health.close.button.accessibility.label.informal" = "Schließen";
 "gini.health.errors.default.informal" = "Oh da ist was schief gelaufen. Probiere es bitte noch einmal.";
 "gini.health.errors.failed.amount.non.empty.check.informal" = "Betrag ist notwendig.";
 "gini.health.errors.failed.default.textfield.validation.check.informal" = "Das Feld ist ungültig.";
