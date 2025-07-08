@@ -24,6 +24,8 @@
 
 "gini.health.alert.ok.title" = "OK";
 "gini.health.close.button.accessibility.label" = "Close";
+"gini.health.bottomSheet.grabber.accessibility.label" = "Sheet grabber";
+"gini.health.bottomSheet.grabber.accessibility.hint" = "Double tap to dismiss";
 
 "gini.health.paymentcomponent.more.information.label" = "Transfer payment data to the banking app and pay there directly. More information.";
 "gini.health.paymentcomponent.more.information.underlined.part" = "More information.";

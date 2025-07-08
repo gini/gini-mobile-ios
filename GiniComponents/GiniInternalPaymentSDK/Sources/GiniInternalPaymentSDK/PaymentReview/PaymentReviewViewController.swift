@@ -31,15 +31,6 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     lazy var collectionView = buildCollectionView()
     lazy var pageControl = buildPageControl()
 
-    private let topBarView = EmptyView()
-    private lazy var barLineView: UIView = {
-        let view = UIView()
-        view.backgroundColor = model.configuration.rectangleColor
-        view.layer.cornerRadius = Constants.cornerRadiusTopRectangle
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
 
@@ -169,8 +160,10 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             layoutCloseButton()
             setupDraggableBottomView()
         case .bottomSheet:
+            setupAccessibility()
             layoutPaymentInfoContainerView()
             layoutInfoBar()
+            setupTapToDismiss()
             setContent(content: paymentInfoContainerView)
         }
         setupInitialLayout()
@@ -632,6 +625,19 @@ fileprivate extension PaymentReviewViewController {
         let panGestureTopBarView = UIPanGestureRecognizer(target: self, action: #selector(handlePaymentContainerPanGesture(_:)))
         paymentInfoContainerView.addGestureRecognizer(panGesturePaymentInfoView)
         topBarView.addGestureRecognizer(panGestureTopBarView)
+    }
+    
+    func setupTapToDismiss() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonClicked(_:)))
+        barLineView.addGestureRecognizer(tapGesture)
+    }
+    
+    func setupAccessibility() {
+        barLineView.isUserInteractionEnabled = true
+        barLineView.accessibilityTraits = .button
+        barLineView.accessibilityLabel = model.strings.sheetGrabberAccessibilityLabel
+        barLineView.accessibilityHint = model.strings.sheetGrabberAccessibilityHint
+        barLineView.isAccessibilityElement = true
     }
 
     @objc private func handlePaymentContainerPanGesture(_ gesture: UIPanGestureRecognizer) {

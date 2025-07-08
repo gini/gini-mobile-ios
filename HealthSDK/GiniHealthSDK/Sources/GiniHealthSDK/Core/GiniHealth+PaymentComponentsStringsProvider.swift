@@ -51,7 +51,9 @@ extension GiniHealth: PaymentComponentsStringsProvider {
                 NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.continue.to.overview.label",
                                              comment: "Title label used for the pay invoice button when overview is available") :
                 NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.to.banking.app.label",
-                                                 comment: "Title label used for the pay invoice button when you jump to the banking app")
+                                                 comment: "Title label used for the pay invoice button when you jump to the banking app"),
+            selectYourBankAccessibilityHint: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.select.bank.hint",
+                                                                              comment: "Select your bank accessibility hint text")
         )
     }
 
@@ -168,7 +170,11 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             invoiceImageAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.invoice.image.content.description",
                                                                              comment: "accessibility label for invoice image"),
             closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
-                                                                            comment: "accessibility label for close button")
+                                                                            comment: "accessibility label for close button"),
+            sheetGrabberAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.bottomSheet.grabber.accessibility.label",
+                                                                             comment: "Sheet grabber accessibility label"),
+            sheetGrabberAccessibilityHint: NSLocalizedStringPreferredFormat("gini.health.bottomSheet.grabber.accessibility.hint",
+                                                                            comment: "Sheet grabber accessibility hint text")
         )
     }
 

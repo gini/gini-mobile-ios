@@ -7,6 +7,8 @@
 */
 "gini.health.alert.ok.title" = "OK";
 "gini.health.close.button.accessibility.label" = "Schließen";
+"gini.health.bottomSheet.grabber.accessibility.label" = "Anfassbereich";
+"gini.health.bottomSheet.grabber.accessibility.hint" = "Doppeltippen zum Schließen";
 "gini.health.errors.default" = "Oh da ist was schief gelaufen. Probieren Sie es bitte noch einmal.";
 "gini.health.errors.failed.amount.non.empty.check" = "Betrag ist notwendig.";
 "gini.health.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig.";
@@ -71,6 +73,8 @@
 
 "gini.health.alert.ok.title.informal" = "OK";
 "gini.health.close.button.accessibility.label.informal" = "Schließen";
+"gini.health.bottomSheet.grabber.accessibility.label.informal" = "Anfassbereich";
+"gini.health.bottomSheet.grabber.accessibility.hint.informal" = "Doppeltippen zum Schließen";
 "gini.health.errors.default.informal" = "Oh da ist was schief gelaufen. Probiere es bitte noch einmal.";
 "gini.health.errors.failed.amount.non.empty.check.informal" = "Betrag ist notwendig.";
 "gini.health.errors.failed.default.textfield.validation.check.informal" = "Das Feld ist ungültig.";
