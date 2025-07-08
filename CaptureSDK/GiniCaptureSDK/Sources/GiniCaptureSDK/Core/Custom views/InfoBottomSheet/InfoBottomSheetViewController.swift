@@ -149,37 +149,30 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     // MARK: - Setup Constraints
 
     private func setupConstraints() {
-        contentScrollView.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(Constants.contentScrollViewTopPadding)
-            $0.leading.equalToSuperview().inset(Constants.contentStackViewHorizontalPadding)
-            $0.trailing.equalToSuperview().inset(Constants.contentStackViewHorizontalPadding)
+        contentScrollView.giniMakeConstraints {
+            $0.top.equalTo(view.safeTop).constant(Constants.contentScrollViewTopPadding)
+            $0.horizontal.equalToSuperview().constant(Constants.contentStackViewHorizontalPadding)
         }
 
-        buttonsViewContainer.makeConstraints {
-            $0.top.equalTo(contentScrollView.bottom).offset(Constants.contentStackViewTopPadding)
-            $0.leading.equalToSuperview().inset(Constants.contentStackViewHorizontalPadding)
-            $0.trailing.equalToSuperview().inset(Constants.contentStackViewHorizontalPadding)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(Constants.contentStackViewBottomPadding)
+        buttonsViewContainer.giniMakeConstraints {
+            $0.top.equalTo(contentScrollView.bottom + Constants.contentStackViewTopPadding)
+            $0.leading.equalToSuperview().constant(Constants.contentStackViewHorizontalPadding)
+            $0.trailing.equalToSuperview().constant(-Constants.contentStackViewHorizontalPadding)
+            $0.bottom.equalTo(view.safeBottom).constant(-Constants.contentStackViewBottomPadding)
         }
-
-        imageRoundContainer.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.width.equalTo(Constants.imageContainerSize)
-            $0.height.equalTo(Constants.imageContainerSize)
+        imageRoundContainer.giniMakeConstraints {
+            $0.vertical.equalToSuperview()
+            $0.size.equalTo(Constants.imageContainerSize)
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview()
-            $0.bottom.equalToSuperview()
         }
 
-        contentStackView.makeConstraints {
+        contentStackView.giniMakeConstraints {
             $0.edges.equalToSuperview()
         }
 
-        iconImageView.makeConstraints {
-            $0.width.equalTo(Constants.iconSize)
-            $0.height.equalTo(Constants.iconSize)
-            $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview()
+        iconImageView.giniMakeConstraints {
+            $0.size.equalTo(Constants.iconSize)
+            $0.center.equalToSuperview()
         }
     }
 
