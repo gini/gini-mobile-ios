@@ -36,6 +36,7 @@
 "gini.health.paymentcomponent.payment.info.questions.answer.5" = "Ob Foto einer Rechnung, Screenshot, oder digitales PDF – jedes Format ist geeignet. Bitte achten Sie lediglich darauf, dass alle Bezahlinformationen, wie IBAN, Empfänger, Verwendungszweck und Betrag sichtbar und nicht abgeschnitten sind.";
 "gini.health.paymentcomponent.payment.info.questions.answer.6" = "Im Bank-Auswahlmenü werden die Banken angezeigt, die, die Gini-Bezahlfunktion unterstützen. Voraussetzung für die Nutzung ist, dass Sie die mobile Banking-App ihrer Bank auf demselben Smartphone oder Tablet installiert haben, auf dem Sie die Versicherungs-App nutzen. Sollten Sie keine der Banking-Apps installiert haben, können Sie diese aus dem Apple App- oder Google Playstore herunterladen. Eine anschließende Aktivierung der Banking-App kann nötig sein.";
 "gini.health.paymentcomponent.payment.info.questions.answer.clickable.text" = "Datenschutzerklärung[LINK]";
+"gini.health.paymentcomponent.payment.info.questions.title.label" = "Häufig gestellte Fragen";
 "gini.health.paymentcomponent.payment.info.questions.question.1" = "Kann ich Rechnungen einreichen und später bezahlen?";
 "gini.health.paymentcomponent.payment.info.questions.question.2" = "Ist der Service kostenlos?";
 "gini.health.paymentcomponent.payment.info.questions.question.3" = "Sind meine Daten sicher?";
@@ -98,6 +99,7 @@
 "gini.health.paymentcomponent.payment.info.questions.answer.5.informal" = "Ob Foto einer Rechnung, Screenshot, oder digitales PDF – jedes Format ist geeignet. Bitte achte lediglich darauf, dass alle Bezahlinformationen, wie IBAN, Empfänger, Verwendungszweck und Betrag sichtbar und nicht abgeschnitten sind.";
 "gini.health.paymentcomponent.payment.info.questions.answer.6.informal" = "Im Bank-Auswahlmenü werden die Banken angezeigt, die, die Gini-Bezahlfunktion unterstützen. Voraussetzung für die Nutzung ist, dass du die mobile Banking-App ihrer Bank auf demselben Smartphone oder Tablet installiert hast, auf dem du die Versicherungs-App nutzt. Solltest du keine der Banking-Apps installiert haben, kannst du diese aus dem Apple App- oder Google Playstore herunterladen. Eine anschließende Aktivierung der Banking-App kann nötig sein.";
 "gini.health.paymentcomponent.payment.info.questions.answer.clickable.text.informal" = "Datenschutzerklärung[LINK]";
+"gini.health.paymentcomponent.payment.info.questions.title.label.informal" = "Häufig gestellte Fragen";
 "gini.health.paymentcomponent.payment.info.questions.question.1.informal" = "Kann ich Rechnungen einreichen und später bezahlen?";
 "gini.health.paymentcomponent.payment.info.questions.question.2.informal" = "Ist der Service kostenlos?";
 "gini.health.paymentcomponent.payment.info.questions.question.3.informal" = "Sind meine Daten sicher?";

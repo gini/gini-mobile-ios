@@ -167,7 +167,7 @@ extension GiniHealth: PaymentComponentsStringsProvider {
                                                                         comment: "error for creating payment request"),
             invoiceImageAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.invoice.image.content.description",
                                                                              comment: "accessibility label for invoice image"),
-            closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.close.button.accessibility.label",
+            closeButtonAccessibilityLabel: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
                                                                             comment: "accessibility label for close button")
         )
     }

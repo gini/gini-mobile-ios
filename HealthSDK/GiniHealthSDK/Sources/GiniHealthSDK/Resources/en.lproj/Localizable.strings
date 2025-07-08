@@ -13,7 +13,6 @@
 "gini.health.reviewscreen.banking.app.button.hint" = "It opens the banking app to complete the payment.";
 "gini.health.reviewscreen.infobar.message" = "Please check the pre-filled data.";
 "gini.health.reviewscreen.invoice.image.content.description" = "Invoice document";
-"gini.health.reviewscreen.close.button.accessibility.label" = "Close";
 "gini.health.errors.default" = "Oops something went wrong. Please try again.";
 "gini.health.errors.failed.payment.request.creation" = "Oops something went wrong. Please try again.";
 "gini.health.errors.failed.recipient.non.empty.check" = "Recipient is required.";
