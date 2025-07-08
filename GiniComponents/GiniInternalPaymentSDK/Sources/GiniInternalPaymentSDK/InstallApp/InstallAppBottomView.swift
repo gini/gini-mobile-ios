@@ -15,6 +15,10 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     public var shouldShowDragIndicator: Bool {
         true
     }
+    
+    public var shouldShowInFullScreenInLandscapeMode: Bool {
+        true
+    }
 
     var viewModel: InstallAppBottomViewModel
 
@@ -133,6 +137,12 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         setupView()
         setupInitialLayout()
     }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        notifyLayoutChanged()
+    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -146,6 +156,15 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
+    /// VoiceOver has already finished processing the UI changes.
+    private func notifyLayoutChanged() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let self = self else { return }
+            UIAccessibility.post(notification: .layoutChanged, argument: contentView)
+        }
     }
 
     private func setupView() {
@@ -313,7 +332,10 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     private func setButtonsState() {
         appStoreImageView.isHidden = viewModel.isBankInstalled
         continueButton.isHidden = !viewModel.isBankInstalled
+        appStoreImageView.accessibilityElementsHidden = !viewModel.isBankInstalled
+        continueButton.accessibilityElementsHidden = !viewModel.isBankInstalled
         poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
+        poweredByGiniView.accessibilityElementsHidden = !viewModel.shouldShowBrandedView
         moreInformationLabel.text = viewModel.moreInformationLabelText
         
         continueButton.didTapButton = { [weak self] in
@@ -413,9 +435,10 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         // Perform layout updates with animation
-        coordinator.animate(alongsideTransition: { context in
-            self.updateLayoutForCurrentOrientation()
-            self.view.layoutIfNeeded()
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            self?.updateLayoutForCurrentOrientation()
+            self?.view.layoutIfNeeded()
+            self?.notifyLayoutChanged()
         }, completion: nil)
     }
 }
