@@ -140,7 +140,7 @@ This method enables clients to delete multiple documents simultaneously by passi
 
 ## Subscribing to GiniHealthDelegate
 
-Confirming to `GiniHealthDelegate` protocol will allow you:
+Conforming to `GiniHealthDelegate` protocol will allow you:
 - Configure an option for implementing a custom error handling or keep an internal one.
 - Getting a payment requestId which you will need for checking the payment status.
 
