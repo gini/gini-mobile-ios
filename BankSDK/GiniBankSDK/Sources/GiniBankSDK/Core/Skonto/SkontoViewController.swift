@@ -645,7 +645,7 @@ private extension SkontoViewController {
         static let scrollViewSideInset: CGFloat = 0
         static let groupCornerRadius: CGFloat = 8
         static let scrollIndicatorInset: CGFloat = 0
-        static let tabletWidthMultiplier: CGFloat = 0.7
+        static let tabletWidthMultiplier: CGFloat = 0.71
         static let navigationBarViewDefaultHeight: CGFloat = 62
         static let landscapeHorizontalPadding: CGFloat = 16
 
