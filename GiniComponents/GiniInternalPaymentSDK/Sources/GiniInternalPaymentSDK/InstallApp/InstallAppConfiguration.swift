@@ -46,7 +46,7 @@ public struct InstallAppStrings {
     let moreInformationTipPattern: String
     let moreInformationNotePattern: String
     let continueLabelText: String
-    let accesibilityAppStoreText: String
+    let accessibilityAppStoreText: String
     let accessibilityBankLogoText: String
     let accessibilityCloseIconText: String
 
@@ -54,14 +54,14 @@ public struct InstallAppStrings {
                 moreInformationTipPattern: String,
                 moreInformationNotePattern: String,
                 continueLabelText: String,
-                accesibilityAppStoreText: String,
+                accessibilityAppStoreText: String,
                 accessibilityBankLogoText: String,
                 accessibilityCloseIconText: String) {
         self.titlePattern = titlePattern
         self.moreInformationTipPattern = moreInformationTipPattern
         self.moreInformationNotePattern = moreInformationNotePattern
         self.continueLabelText = continueLabelText
-        self.accesibilityAppStoreText = accesibilityAppStoreText
+        self.accessibilityAppStoreText = accessibilityAppStoreText
         self.accessibilityBankLogoText = accessibilityBankLogoText
         self.accessibilityCloseIconText = accessibilityCloseIconText
     }

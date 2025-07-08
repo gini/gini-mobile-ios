@@ -115,7 +115,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         button.addTarget(self, action: #selector(tapOnAppStoreButton), for: .touchUpInside)
         button.isAccessibilityElement = true
         button.accessibilityTraits = .button
-        button.accessibilityLabel = viewModel.strings.accesibilityAppStoreText
+        button.accessibilityLabel = viewModel.strings.accessibilityAppStoreText
         return button
     }()
     
