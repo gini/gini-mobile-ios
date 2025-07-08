@@ -58,7 +58,7 @@ Or initialize it with previously created `GiniHealthAPI`:
  let healthSDK = GiniHealth(with: giniApiLib)
 ```
 
-## Handeling documents
+## Handling documents
 
 ### Document upload
  
