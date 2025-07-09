@@ -1,5 +1,5 @@
 //
-//  BottomSheetPresentable.swift
+//  GiniBottomSheetPresentable.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
@@ -9,7 +9,7 @@ import UIKit
 /**
  A type alias for view controllers that can be presented as bottom sheets.
  */
-public typealias GiniBottomSheetViewController = UIViewController & BottomSheetPresentable
+public typealias GiniBottomSheetViewController = UIViewController & GiniBottomSheetPresentable
 
 /**
  A protocol that provides bottom sheet presentation functionality to UIViewController instances.
@@ -29,7 +29,7 @@ public typealias GiniBottomSheetViewController = UIViewController & BottomSheetP
  - ``configureBottomSheet(shouldIncludeLargeDetent:)``
  - ``updateBottomSheetHeight(_:)``
  */
-public protocol BottomSheetPresentable {
+public protocol GiniBottomSheetPresentable {
     
     /**
      Determines whether the drag indicator (grabber) should be visible on the bottom sheet.
@@ -92,7 +92,7 @@ public protocol BottomSheetPresentable {
     func updateBottomSheetHeight(_ height: CGFloat)
 }
 
-public extension BottomSheetPresentable where Self: UIViewController {
+public extension GiniBottomSheetPresentable where Self: UIViewController {
     
     func configureBottomSheet(shouldIncludeLargeDetent: Bool = false) {
         /// For iOS versions prior to 15, the view controller will be presented as a standard modal sheet
