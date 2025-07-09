@@ -414,7 +414,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol, Botto
      - Parameter paymentRequestId: Payment request id generated from the payment info extracted from the order
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
-    public func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> BottomSheetViewController {
+    public func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> UIViewController {
         previousPresentedView = nil
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,

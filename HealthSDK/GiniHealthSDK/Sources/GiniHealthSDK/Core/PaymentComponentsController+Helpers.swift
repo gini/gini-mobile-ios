@@ -327,7 +327,7 @@ extension PaymentComponentsController {
      - Parameter paymentRequestId: The payment request id from generated from the payment info extracted from the invoice
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
-    public func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> BottomSheetViewController {
+    public func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> UIViewController {
         previousPresentedViews.removeAll()
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,

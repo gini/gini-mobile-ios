@@ -6,19 +6,19 @@
 //
 
 
+import Combine
 import UIKit
 import GiniUtilites
 
-public final class ShareInvoiceBottomView: BottomSheetViewController {
+public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
 
     var viewModel: ShareInvoiceBottomViewModel
 
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
 
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var scrollView: EmptyScrollView = {
+        let scrollView = EmptyScrollView()
         scrollView.showsVerticalScrollIndicator = false
         scrollView.bounces = true
         return scrollView
@@ -103,9 +103,18 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     private let topStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let bottomStackView = EmptyStackView().orientation(.vertical)
     private let splitStacKView = EmptyStackView().distribution(.fill)
+    private var cancellables = Set<AnyCancellable>()
     
     // Add a property to store the height constraint
     private var scrollViewHeightConstraint: NSLayoutConstraint?
+    
+    public var shouldShowDragIndicator: Bool {
+        true
+    }
+    
+    public var shouldShowInFullScreenInLandscapeMode: Bool {
+        false
+    }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,16 +122,33 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         setupInitialLayout()
     }
     
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        notifyLayoutChanged()
+    }
+    
     public init(viewModel: ShareInvoiceBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
         self.viewModel = viewModel
-        super.init(configuration: bottomSheetConfiguration)
+        super.init(nibName: nil, bundle: nil)
+        view.backgroundColor = bottomSheetConfiguration.backgroundColor
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
+    /// VoiceOver has already finished processing the UI changes.
+    private func notifyLayoutChanged() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let self = self else { return }
+            UIAccessibility.post(notification: .layoutChanged, argument: contentStackView)
+        }
+    }
+    
     private func setupView() {
+        configureBottomSheet()
         setupViewHierarchy()
         setupLayout()
         setButtonsState()
@@ -132,6 +158,7 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     private func setupViewHierarchy() {
         // Add contentStackView to the UIScrollView
         scrollView.addSubview(contentStackView)
+        bindToSizeUpdates()
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         
         // Apply constraints for contentStackView
@@ -162,7 +189,18 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     
         setupSplitStackViewHierarchy()
         // Add the UIScrollView to the main container
-        self.setContent(content: scrollView)
+        setContent(content: scrollView)
+    }
+    
+    private func setContent(content: UIView) {
+        view.addSubview(content)
+        
+        NSLayoutConstraint.activate([
+            content.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            content.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            content.topAnchor.constraint(equalTo: view.topAnchor),
+            content.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
 
     private func setupViewVisibility() {
@@ -177,16 +215,12 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         splitStacKView.addArrangedSubview(bottomStackView)
         contentStackView.addArrangedSubview(titleView)
         contentStackView.addArrangedSubview(splitStacKView)
-        
-        // Calculate and update scrollView height dynamically
-        DispatchQueue.main.async {
-            self.updateScrollViewHeight(scrollView: self.scrollView)
-        }
     }
     
     private func setupContentStackViewConstraints(in scrollView: UIScrollView) {
         NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor,
+                                                  constant: Constants.viewPaddingConstraint),
             contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
     }
@@ -263,25 +297,6 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
     
     private func setupLandscapeConstraints() {
         setupConstraints(for: .horizontal)
-    }
-
-    // Function to dynamically update scrollView height
-    private func updateScrollViewHeight(scrollView: UIScrollView) {
-        // Force layout to calculate the content size
-        scrollView.layoutIfNeeded()
-        let contentHeight = contentStackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        
-        // Deactivate the existing height constraint if it exists
-        if let existingConstraint = scrollViewHeightConstraint {
-            existingConstraint.isActive = false
-        }
-        // Adjust the scrollView height
-        let scrollViewHeight = contentHeight + (2 * Constants.viewPaddingConstraint)
-        scrollViewHeightConstraint = scrollView.heightAnchor.constraint(equalToConstant: scrollViewHeight)
-        scrollViewHeightConstraint?.isActive = true
-        
-        // If needed, adjust bottom sheet constraints or animations
-        self.view.layoutIfNeeded()
     }
 
     private func setupLayout() {
@@ -438,6 +453,14 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         stackView.axis = orientation
         return stackView
     }
+    
+    private func bindToSizeUpdates() {
+        scrollView.$size
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] size in
+                self?.updateBottomSheetHeight(size.height)
+            }.store(in: &cancellables)
+    }
 
     // Handle orientation change
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -446,7 +469,9 @@ public final class ShareInvoiceBottomView: BottomSheetViewController {
         // Perform layout updates with animation
         coordinator.animate(alongsideTransition: { context in
             self.updateViews()
-        }, completion: nil)
+        }, completion: { [weak self] _ in
+            self?.notifyLayoutChanged()
+        })
     }
 }
 
