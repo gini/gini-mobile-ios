@@ -148,7 +148,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         view.addSubview(contentScrollView)
         view.addSubview(buttonsViewContainer)
 
-        contentScrollView.addSubview(contentStackView)
+        contentScrollView.addContentSubview(contentStackView)
 
         contentStackView.addArrangedSubview(imageContainer)
         contentStackView.addArrangedSubview(textContentStackView)
@@ -213,14 +213,21 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         contentScrollViewLeadingConstraint = contentScrollViewConstraints.first { $0.firstAttribute == .leading }
         contentScrollViewTrailingConstraint = contentScrollViewConstraints.first { $0.firstAttribute == .trailing }
 
-
         let buttonsViewContainerConstraints = buttonsViewContainer.giniMakeConstraints {
             $0.top.equalTo(contentScrollView.bottom + Constants.buttonContainerViewTopPadding)
             $0.horizontal.equalToSuperview().constant(Constants.buttonsViewContainerHorizontalPaddingPortrait)
             $0.bottom.equalTo(view.safeBottom).constant(-Constants.contentStackViewBottomPadding)
         }
-        buttonsViewContainerLeadingConstraint = buttonsViewContainerConstraints.first { $0.firstAttribute == .leading }
-        buttonsViewContainerTrailingConstraint = buttonsViewContainerConstraints.first { $0.firstAttribute == .trailing }
+
+        buttonsViewContainer.setContentHuggingPriority(.required, for: .vertical)
+        buttonsViewContainer.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        buttonsViewContainerLeadingConstraint = buttonsViewContainerConstraints.first {
+            $0.firstAttribute == .leading
+        }
+        buttonsViewContainerTrailingConstraint = buttonsViewContainerConstraints.first {
+            $0.firstAttribute == .trailing
+        }
 
         contentStackView.giniMakeConstraints {
             $0.edges.equalToSuperview()
