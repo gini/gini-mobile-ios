@@ -112,6 +112,10 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         setupConstraints()
     }
 
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        configureAccessibility()
+    }
     public override func loadView() {
         super.loadView()
 
@@ -249,6 +253,14 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 
     @objc func didPressPrimary() {
         buttonsViewModel.didPressPrimary()
+    }
+
+    private func configureAccessibility() {
+        isAccessibilityElement = false
+
+        iconImageView.isAccessibilityElement = true
+        iconImageView.accessibilityLabel = viewModel.title
+        iconImageView.accessibilityTraits = .image
     }
 }
 extension InfoBottomSheetViewController {
