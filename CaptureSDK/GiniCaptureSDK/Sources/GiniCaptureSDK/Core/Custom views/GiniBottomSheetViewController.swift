@@ -19,7 +19,15 @@ public protocol GiniBottomSheetPresentable {
     /// A Boolean value indicating whether a drag indicator (grabber) should be shown at the top of the sheet.
     var shouldShowDragIndicator: Bool { get }
 
-    /*
+
+    /**
+     Determines whether the sheet should be visible on full screen in compact modes.
+
+     - Returns: `true` if the sheet should be displayed in full screen when in landscape mode, `false` otherwise.
+     */
+    var shouldShowInFullScreenInLandscapeMode: Bool { get }
+
+    /**
      Configures the bottom sheet presentation for the view controller.
 
      - Parameters:
@@ -28,7 +36,7 @@ public protocol GiniBottomSheetPresentable {
      */
     func configureBottomSheet(shouldIncludeLargeDetent: Bool)
 
-    /*
+    /**
      Updates the bottom sheet's height using a custom detent.
 
      - Parameters:
@@ -39,7 +47,7 @@ public protocol GiniBottomSheetPresentable {
 
 public extension GiniBottomSheetPresentable where Self: UIViewController {
 
-    /*
+    /**
      Configures the view controller to be presented as a bottom sheet.
 
      - Parameters:
@@ -53,13 +61,16 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
             presentationController.detents = [shouldIncludeLargeDetent ? .large() : .medium()]
             presentationController.prefersGrabberVisible = shouldShowDragIndicator
             presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            // It determines whether a sheet-style presentation should appear edge-attached (i.e., pinned to the bottom of the screen)
+            // when the height class is compact — such as in landscape mode on an iPhone.
+            presentationController.prefersEdgeAttachedInCompactHeight = !shouldShowInFullScreenInLandscapeMode
         } else {
             // Fallback for iOS 13–14
             modalPresentationStyle = .pageSheet
         }
     }
 
-    /*
+    /**
      Dynamically updates the bottom sheet height using a custom detent.
 
      On iOS 13–15, this sets the `preferredContentSize`.
