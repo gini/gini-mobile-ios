@@ -44,6 +44,12 @@ public class GiniConstraintMaker {
         GiniCompoundConstraintAttribute(attributes: [top, bottom])
     }
 
+    public func constraint(for attribute: NSLayoutConstraint.Attribute) -> NSLayoutConstraint? {
+        return constraints.first(where: {
+            $0.firstAttribute == attribute && $0.firstItem as? UIView === view
+        })
+    }
+
     internal func addConstraint(_ constraint: NSLayoutConstraint) {
         constraints.append(constraint)
     }
