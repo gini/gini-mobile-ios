@@ -16,10 +16,11 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     private var cancellables = Set<AnyCancellable>()
 
     private let contentStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = Constants.contentStackViewSpacing
-        return stack
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = Constants.contentStackViewSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
 
     private let imageContainer = UIView()
@@ -72,8 +73,8 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         return label
     }()
 
-    // MARK: - Buttons Container
     lazy var buttonsViewContainer: ButtonsView = {
+        // TODO: check this
         let view = ButtonsView(secondaryButtonTitle: buttonsViewModel.secondaryTitle ?? "",
                                primaryButtonTitle: buttonsViewModel.primaryTitle ?? "")
         view.secondaryButton.isHidden = buttonsViewModel.secondaryTitle == nil
@@ -84,9 +85,15 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         return view
     }()
 
+    // MARK: GiniBottomSheetPresentable protocol
     public var shouldShowDragIndicator: Bool {
         false
     }
+
+    public var shouldShowInFullScreenInLandscapeMode: Bool {
+        true
+    }
+
     // MARK: - View Lifecycle
 
     init(viewModel: InfoBottomSheetViewModel,
@@ -102,22 +109,29 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
         setupConstraints()
+    }
+
+    public override func loadView() {
+        super.loadView()
+
+        setupView()
+        adjustPhoneLayoutForCurrentOrientation()
     }
 
     public override func viewWillTransition(to size: CGSize,
                                             with coordinator: any UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        guard UIDevice.current.isIphone else { return }
         coordinator.animate(alongsideTransition: { [weak self] _ in
-            self?.updateViewOrientation()
+            self?.adjustPhoneLayoutForCurrentOrientation()
         })
     }
 
     // MARK: - Setup UI
 
     private func setupView() {
-
-        // TODO: add a bit of explanation here
+        // this is needed to ensure that the bottom sheet is displayed full screen when the font size is at least accessibility medium.
         configureBottomSheet(shouldIncludeLargeDetent: GiniAccessibility.isFontSizeAtLeastAccessibilityMedium)
         view.backgroundColor = GiniColor(light: .GiniCapture.light1,
                                          dark: .GiniCapture.dark3).uiColor()
@@ -139,35 +153,77 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         imageRoundContainer.addSubview(iconImageView)
         textContentStackView.addArrangedSubview(headerLabel)
         textContentStackView.addArrangedSubview(descriptionLabel)
-
     }
 
-    private func updateViewOrientation() {
-        configureBottomSheet(shouldIncludeLargeDetent: GiniAccessibility.isFontSizeAtLeastAccessibilityMedium)
+    private func adjustPhoneLayoutForCurrentOrientation() {
+        let isLandscape = UIDevice.current.isLandscape
+        let hasNotch = UIDevice.current.hasNotch
+        imageContainer.isHidden = isLandscape
+
+        if isLandscape {
+            contentScrollViewTopConstraint?.constant = hasNotch
+            ? Constants.contentScrollViewLandscapeTopPadding.withNotch
+            : Constants.contentScrollViewLandscapeTopPadding.withoutNotch
+
+            let contentScrollViewHorizontalPadding = hasNotch
+            ? Constants.contentScrollViewLandscapeHorizontalPadding.withNotch
+            : Constants.contentScrollViewLandscapeHorizontalPadding.withoutNotch
+
+            contentScrollViewLeadingConstraint?.constant = contentScrollViewHorizontalPadding
+            contentScrollViewTrailingConstraint?.constant = -contentScrollViewHorizontalPadding
+
+            let buttonsViewContainerHorizontalPadding = hasNotch
+            ? Constants.buttonsViewContainerLandscapeHorizontalPadding.withNotch
+            : Constants.buttonsViewContainerLandscapeHorizontalPadding.withoutNotch
+
+            buttonsViewContainerLeadingConstraint?.constant = buttonsViewContainerHorizontalPadding
+            buttonsViewContainerTrailingConstraint?.constant = -buttonsViewContainerHorizontalPadding
+        } else {
+            contentScrollViewTopConstraint?.constant = Constants.contentScrollViewTopPaddingPortrait
+            contentScrollViewLeadingConstraint?.constant = Constants.contentScrollViewHorizontalPaddingPortrait
+            contentScrollViewTrailingConstraint?.constant = -Constants.contentScrollViewHorizontalPaddingPortrait
+
+            buttonsViewContainerLeadingConstraint?.constant = Constants.buttonsViewContainerHorizontalPaddingPortrait
+            buttonsViewContainerTrailingConstraint?.constant = -Constants.buttonsViewContainerHorizontalPaddingPortrait
+        }
+
+        view.layoutIfNeeded()
     }
 
     // MARK: - Setup Constraints
+    private var contentScrollViewTopConstraint: NSLayoutConstraint?
+    private var contentScrollViewLeadingConstraint: NSLayoutConstraint?
+    private var contentScrollViewTrailingConstraint: NSLayoutConstraint?
+    private var buttonsViewContainerLeadingConstraint: NSLayoutConstraint?
+    private var buttonsViewContainerTrailingConstraint: NSLayoutConstraint?
 
     private func setupConstraints() {
-        contentScrollView.giniMakeConstraints {
-            $0.top.equalTo(view.safeTop).constant(Constants.contentScrollViewTopPadding)
-            $0.horizontal.equalToSuperview().constant(Constants.contentStackViewHorizontalPadding)
+        let contentScrollViewConstraints = contentScrollView.giniMakeConstraints {
+            $0.top.equalTo(view.safeTop).constant(Constants.contentScrollViewTopPaddingPortrait)
+            $0.horizontal.equalToSuperview().constant(Constants.contentScrollViewHorizontalPaddingPortrait)
         }
 
-        buttonsViewContainer.giniMakeConstraints {
-            $0.top.equalTo(contentScrollView.bottom + Constants.contentStackViewTopPadding)
-            $0.leading.equalToSuperview().constant(Constants.contentStackViewHorizontalPadding)
-            $0.trailing.equalToSuperview().constant(-Constants.contentStackViewHorizontalPadding)
+        contentScrollViewTopConstraint = contentScrollViewConstraints.first { $0.firstAttribute == .top }
+        contentScrollViewLeadingConstraint = contentScrollViewConstraints.first { $0.firstAttribute == .leading }
+        contentScrollViewTrailingConstraint = contentScrollViewConstraints.first { $0.firstAttribute == .trailing }
+
+
+        let buttonsViewContainerConstraints = buttonsViewContainer.giniMakeConstraints {
+            $0.top.equalTo(contentScrollView.bottom + Constants.buttonContainerViewTopPadding)
+            $0.horizontal.equalToSuperview().constant(Constants.buttonsViewContainerHorizontalPaddingPortrait)
             $0.bottom.equalTo(view.safeBottom).constant(-Constants.contentStackViewBottomPadding)
         }
+        buttonsViewContainerLeadingConstraint = buttonsViewContainerConstraints.first { $0.firstAttribute == .leading }
+        buttonsViewContainerTrailingConstraint = buttonsViewContainerConstraints.first { $0.firstAttribute == .trailing }
+
+        contentStackView.giniMakeConstraints {
+            $0.edges.equalToSuperview()
+        }
+
         imageRoundContainer.giniMakeConstraints {
             $0.vertical.equalToSuperview()
             $0.size.equalTo(Constants.imageContainerSize)
             $0.centerX.equalToSuperview()
-        }
-
-        contentStackView.giniMakeConstraints {
-            $0.edges.equalToSuperview()
         }
 
         iconImageView.giniMakeConstraints {
@@ -188,15 +244,19 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 extension InfoBottomSheetViewController {
     // MARK: - Constants
     private struct Constants {
-        static let contentScrollViewTopPadding: CGFloat = 40
+        static let contentScrollViewTopPaddingPortrait: CGFloat = 40
+        static let contentScrollViewHorizontalPaddingPortrait: CGFloat = 24
+        static let contentScrollViewLandscapeTopPadding: (withNotch: CGFloat, withoutNotch: CGFloat) = (108, 81)
+        static let contentScrollViewLandscapeHorizontalPadding: (withNotch: CGFloat, withoutNotch: CGFloat) = (186, 61)
+
         static let contentStackViewSpacing: CGFloat = 40
-        static let iconSize: CGFloat = 24
-        static let safeLeadingPadding: CGFloat = 35
-        static let contentStackViewTopPadding: CGFloat = 40
         static let contentStackViewBottomPadding: CGFloat = 19
-        static let contentStackViewHorizontalPadding: CGFloat = 24
-        static let buttonSpacing: CGFloat = 12
+
+        static let buttonsViewContainerHorizontalPaddingPortrait: CGFloat = 24
+        static let buttonContainerViewTopPadding: CGFloat = 40
+        static let buttonsViewContainerLandscapeHorizontalPadding: (withNotch: CGFloat, withoutNotch: CGFloat) = (56, 16)
+
+        static let iconSize: CGFloat = 24
         static let imageContainerSize: CGFloat = 40
-        static let imageViewPadding: CGFloat = 8
     }
 }
