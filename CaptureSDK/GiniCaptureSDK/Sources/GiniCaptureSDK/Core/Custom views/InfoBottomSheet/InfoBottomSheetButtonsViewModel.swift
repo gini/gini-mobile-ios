@@ -16,8 +16,8 @@ final class InfoBottomSheetButtonsViewModel {
     private let secondaryButton: Button?
 
     init(_ primary: Button? = nil, _ secondary: Button? = nil) {
-        self.primaryButton = primary
-        self.secondaryButton = secondary
+        primaryButton = primary
+        secondaryButton = secondary
     }
 
     var primaryTitle: String? {

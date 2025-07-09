@@ -153,6 +153,8 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         imageRoundContainer.addSubview(iconImageView)
         textContentStackView.addArrangedSubview(headerLabel)
         textContentStackView.addArrangedSubview(descriptionLabel)
+
+        configureButtons()
     }
 
     private func adjustPhoneLayoutForCurrentOrientation() {
@@ -234,11 +236,19 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 
     private func configureButtons() {
         buttonsViewContainer.secondaryButton.addTarget(self,
-                                                       action: #selector(buttonsViewModel.didPressSecondary),
+                                                       action: #selector(didPressSecondary),
                                                        for: .touchUpInside)
         buttonsViewContainer.primaryButton.addTarget(self,
-                                                     action: #selector(buttonsViewModel.didPressPrimary),
+                                                     action: #selector(didPressPrimary),
                                                      for: .touchUpInside)
+    }
+
+    @objc func didPressSecondary() {
+       buttonsViewModel.didPressSecondary()
+    }
+
+    @objc func didPressPrimary() {
+        buttonsViewModel.didPressPrimary()
     }
 }
 extension InfoBottomSheetViewController {
