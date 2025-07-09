@@ -117,8 +117,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         button.setImage(viewModel.configuration.appStoreIcon, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(tapOnAppStoreButton), for: .touchUpInside)
-        button.isAccessibilityElement = true
-        button.accessibilityTraits = .button
         button.accessibilityLabel = viewModel.strings.accessibilityAppStoreText
         return button
     }()
@@ -332,10 +330,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     private func setButtonsState() {
         appStoreImageView.isHidden = viewModel.isBankInstalled
         continueButton.isHidden = !viewModel.isBankInstalled
-        appStoreImageView.accessibilityElementsHidden = !viewModel.isBankInstalled
-        continueButton.accessibilityElementsHidden = !viewModel.isBankInstalled
         poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
-        poweredByGiniView.accessibilityElementsHidden = !viewModel.shouldShowBrandedView
         moreInformationLabel.text = viewModel.moreInformationLabelText
         
         continueButton.didTapButton = { [weak self] in
