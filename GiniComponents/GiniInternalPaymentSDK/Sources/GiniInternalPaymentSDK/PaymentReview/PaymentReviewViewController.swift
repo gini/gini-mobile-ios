@@ -160,12 +160,12 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             layoutCloseButton()
             setupDraggableBottomView()
         case .bottomSheet:
-            setupAccessibility()
             layoutPaymentInfoContainerView()
             layoutInfoBar()
             setupTapToDismiss()
             setContent(content: paymentInfoContainerView)
         }
+        
         setupInitialLayout()
     }
 
@@ -623,8 +623,10 @@ fileprivate extension PaymentReviewViewController {
     func setupDraggableBottomView() {
         let panGesturePaymentInfoView = UIPanGestureRecognizer(target: self, action: #selector(handlePaymentContainerPanGesture(_:)))
         let panGestureTopBarView = UIPanGestureRecognizer(target: self, action: #selector(handlePaymentContainerPanGesture(_:)))
+        let tapGestureBarLineView = UITapGestureRecognizer(target: self, action: #selector(handlePaymentContainerTapGesture(_:)))
         paymentInfoContainerView.addGestureRecognizer(panGesturePaymentInfoView)
         topBarView.addGestureRecognizer(panGestureTopBarView)
+        barLineView.addGestureRecognizer(tapGestureBarLineView)
     }
     
     func setupTapToDismiss() {
@@ -632,12 +634,19 @@ fileprivate extension PaymentReviewViewController {
         barLineView.addGestureRecognizer(tapGesture)
     }
     
-    func setupAccessibility() {
+    func setupAccessiblityToCollapse() {
         barLineView.isUserInteractionEnabled = true
+        barLineView.isAccessibilityElement = true
+        barLineView.accessibilityTraits = .button
+        barLineView.accessibilityLabel = model.strings.sheetGrabberAccessibilityLabel
+    }
+    
+    func setupAccessibilityToDismiss() {
+        barLineView.isUserInteractionEnabled = true
+        barLineView.isAccessibilityElement = true
         barLineView.accessibilityTraits = .button
         barLineView.accessibilityLabel = model.strings.sheetGrabberAccessibilityLabel
         barLineView.accessibilityHint = model.strings.sheetGrabberAccessibilityHint
-        barLineView.isAccessibilityElement = true
     }
 
     @objc private func handlePaymentContainerPanGesture(_ gesture: UIPanGestureRecognizer) {
@@ -647,6 +656,10 @@ fileprivate extension PaymentReviewViewController {
             let targetState: PaymentInfoState = velocity > 0 ? .collapsed : .expanded
             togglePaymentInfo(to: targetState)
         }
+    }
+    
+    @objc private func handlePaymentContainerTapGesture(_ gesture: UITapGestureRecognizer) {
+        togglePaymentInfo(to: currentPaymentInfoState == .expanded ? .collapsed : .expanded)
     }
 
     private func togglePaymentInfo(to state: PaymentInfoState) {
@@ -736,7 +749,16 @@ extension PaymentReviewViewController {
             self.view.layoutIfNeeded()
             self.collectionView.contentOffset = .zero
             self.isViewRotating = false
-        }, completion: nil)
+        }, completion: { [weak self] _ in
+            let isDocumentAndLandscapeOrientation = self?.model.displayMode == .documentCollection && !UIDevice.isPortrait()
+            let isWithoutDocument = self?.model.displayMode == .bottomSheet
+            
+            if isDocumentAndLandscapeOrientation {
+                self?.setupAccessiblityToCollapse()
+            } else if isWithoutDocument {
+                self?.setupAccessibilityToDismiss()
+            }
+        })
     }
 }
 
