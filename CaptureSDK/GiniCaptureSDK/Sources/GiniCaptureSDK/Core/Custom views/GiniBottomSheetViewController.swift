@@ -19,7 +19,6 @@ public protocol GiniBottomSheetPresentable {
     /// A Boolean value indicating whether a drag indicator (grabber) should be shown at the top of the sheet.
     var shouldShowDragIndicator: Bool { get }
 
-
     /**
      Determines whether the sheet should be visible on full screen in compact modes.
 
