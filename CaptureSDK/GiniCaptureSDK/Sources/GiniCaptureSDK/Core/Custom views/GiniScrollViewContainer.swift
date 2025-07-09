@@ -56,4 +56,3 @@ public final class GiniScrollViewContainer: UIScrollView {
             }.store(in: &cancellables)
     }
 }
-
