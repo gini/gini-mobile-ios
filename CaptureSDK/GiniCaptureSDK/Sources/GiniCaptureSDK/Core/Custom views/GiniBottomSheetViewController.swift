@@ -72,15 +72,12 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
     /**
      Dynamically updates the bottom sheet height using a custom detent.
 
-     On iOS 13–15, this sets the `preferredContentSize`.
      On iOS 16+, it defines and applies a custom detent with the given height.
 
      - Parameters:
      - height: The target height for the bottom sheet.
      */
     func updateBottomSheetHeight(to height: CGFloat) {
-        // Fallback for iOS 13, 14 and 15
-        preferredContentSize = CGSize(width: view.bounds.width, height: height)
 
         if #available(iOS 16.0, *),
            let presentationController = sheetPresentationController {
