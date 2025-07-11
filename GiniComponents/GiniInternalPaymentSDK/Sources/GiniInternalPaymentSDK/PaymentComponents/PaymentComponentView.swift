@@ -106,8 +106,18 @@ public final class PaymentComponentView: UIView {
         updateAvailableViews()
         updateButtonsViews()
         setupGestures()
+        setupAccessibility()
     }
 
+    private func setupAccessibility() {
+        accessibilityElements = [
+            selectYourBankLabel,
+            selectBankButton,
+            payInvoiceButton,
+            moreInformationView
+        ]
+    }
+    
     private func activateAllConstraints() {
         activateContentStackViewConstraints()
         activateSelectYourBankButtonConstraints()
