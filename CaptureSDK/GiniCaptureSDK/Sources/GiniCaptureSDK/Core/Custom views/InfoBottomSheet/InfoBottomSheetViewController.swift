@@ -131,11 +131,30 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         })
     }
 
+
     // MARK: - Setup UI
+    private var shouldForceFullScreen: Bool {
+        guard UIDevice.current.isIphone else { return false }
+
+        // always full screen for accessibility font size
+        if GiniAccessibility.isFontSizeAtLeastAccessibilityMedium {
+            return true
+        }
+
+        let screenHeight = UIScreen.main.bounds.height
+        let hasNotch = UIDevice.current.hasNotch
+
+        // Force full screen on devices without notch or with small screens
+        if !hasNotch && screenHeight < 736 {
+            return true
+        }
+
+        return false
+    }
 
     private func setupView() {
         // this is needed to ensure that the bottom sheet is displayed full screen when the font size is at least accessibility medium.
-        configureBottomSheet(shouldIncludeLargeDetent: GiniAccessibility.isFontSizeAtLeastAccessibilityMedium)
+        configureBottomSheet(shouldIncludeLargeDetent: shouldForceFullScreen)
         view.backgroundColor = GiniColor(light: .GiniCapture.light1,
                                          dark: .GiniCapture.dark3).uiColor()
 
@@ -161,6 +180,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     }
 
     private func adjustPhoneLayoutForCurrentOrientation() {
+        guard UIDevice.current.isIphone else { return }
         let isLandscape = UIDevice.current.isLandscape
         let hasNotch = UIDevice.current.hasNotch
         imageContainer.isHidden = isLandscape
@@ -206,6 +226,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         let contentScrollViewConstraints = contentScrollView.giniMakeConstraints {
             $0.top.equalTo(view.safeTop).constant(Constants.contentScrollViewTopPaddingPortrait)
             $0.horizontal.equalToSuperview().constant(Constants.contentScrollViewHorizontalPaddingPortrait)
+            $0.bottom.equalTo(buttonsViewContainer.top).constant(-Constants.buttonContainerViewTopPadding)
         }
 
         contentScrollViewTopConstraint = contentScrollViewConstraints.first { $0.firstAttribute == .top }
