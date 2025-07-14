@@ -15,9 +15,9 @@ import Foundation
 @propertyWrapper
 public struct GiniUserDefault<T: Codable> {
     // The key used to store the value in `UserDefaults`.
-    let key: String
+    private let key: String
     // The default value returned if no value is found for the given key.
-    let defaultValue: T
+    private let defaultValue: T
 
     /**
      Initializes the property wrapper.
