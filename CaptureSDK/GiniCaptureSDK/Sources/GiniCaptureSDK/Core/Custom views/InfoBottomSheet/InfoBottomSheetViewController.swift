@@ -114,7 +114,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        if UIDevice.current.isIpad {
+        if UIDevice.current.isIpad && !GiniAccessibility.isFontSizeAtLeastAccessibilityMedium {
             updateBottomSheetHeight(to: Constants.bottomSheetHeightIPad)
         }
     }
@@ -153,12 +153,12 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 
     // MARK: - Setup UI
     private var shouldForceFullScreen: Bool {
-        guard UIDevice.current.isIphone else { return false }
-
-        // always full screen for accessibility font size
+        // always full screen for accessibility font size both for iPad and iPhone
         if GiniAccessibility.isFontSizeAtLeastAccessibilityMedium {
             return true
         }
+
+        guard UIDevice.current.isIphone else { return false }
 
         let screenHeight = UIScreen.main.bounds.height
         let hasNotch = UIDevice.current.hasNotch
