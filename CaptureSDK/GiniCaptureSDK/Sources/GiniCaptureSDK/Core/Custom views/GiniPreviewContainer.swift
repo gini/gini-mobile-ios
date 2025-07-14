@@ -18,6 +18,8 @@ struct GiniViewControllerPreview<ViewController: UIViewController>: UIViewContro
         return viewControllerBuilder()
     }
 
-    func updateUIViewController(_ uiViewController: ViewController, context: Context) {}
+    func updateUIViewController(_ uiViewController: ViewController, context: Context) {
+        // Intentionally left empty – no dynamic updates needed for static preview
+    }
 }
 #endif
