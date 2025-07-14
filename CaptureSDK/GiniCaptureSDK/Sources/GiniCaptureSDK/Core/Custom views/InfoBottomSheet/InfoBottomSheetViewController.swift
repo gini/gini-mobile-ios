@@ -125,12 +125,23 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     public override func viewWillTransition(to size: CGSize,
                                             with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        guard UIDevice.current.isIphone else { return }
+        // Called only during device orientation changes (e.g., portrait ↔ landscape),
+        // and allows animating layout updates alongside the rotation.
+
         coordinator.animate(alongsideTransition: { [weak self] _ in
             self?.adjustPhoneLayoutForCurrentOrientation()
         })
     }
 
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Called when any UI trait changes (e.g., orientation, size class, text size, dark mode)
+        // not necessarily tied to device rotation. Use this for general layout updates.
+        // when the font size changes >= .accessibilityMedium, we need to update the bottom sheet to be full screen
+        configureBottomSheet(shouldIncludeLargeDetent: shouldForceFullScreen)
+        adjustPhoneLayoutForCurrentOrientation()
+    }
 
     // MARK: - Setup UI
     private var shouldForceFullScreen: Bool {
