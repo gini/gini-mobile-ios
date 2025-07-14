@@ -426,14 +426,14 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
 
     private func generateInfoStackView(title: String, subtitle: String?) -> UIStackView {
         let stackView = createStackView(distribution: .fill, spacing: Constants.paymentInfoFieldsSpacing, orientation: .vertical)
-        let titleLabel = createLabel(text: title, isTitle: true)
+        let placeholderLabel = createLabel(text: title, isTitle: true)
         let valueLabel = createLabel(text: subtitle ?? "", isTitle: false)
         valueLabel.adjustsFontSizeToFitWidth = true
         
-        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(placeholderLabel)
         stackView.addArrangedSubview(valueLabel)
         
-        dynamicInfoLabels.append(titleLabel)
+        dynamicInfoLabels.append(placeholderLabel)
         dynamicInfoLabels.append(valueLabel)
 
         return stackView
