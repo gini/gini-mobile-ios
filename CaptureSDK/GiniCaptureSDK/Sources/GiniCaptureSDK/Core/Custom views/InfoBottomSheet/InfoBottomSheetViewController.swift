@@ -111,10 +111,18 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         setupConstraints()
     }
 
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if UIDevice.current.isIpad {
+            updateBottomSheetHeight(to: Constants.bottomSheetHeightIPad)
+        }
+    }
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         configureAccessibility()
     }
+
     public override func loadView() {
         super.loadView()
 
@@ -319,5 +327,7 @@ extension InfoBottomSheetViewController {
 
         static let iconSize: CGFloat = 24
         static let imageContainerSize: CGFloat = 40
+
+        static let bottomSheetHeightIPad: CGFloat = 439
     }
 }
