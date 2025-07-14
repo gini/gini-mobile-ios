@@ -62,7 +62,7 @@ public final class PaymentComponentBottomView: GiniBottomSheetViewController {
 
     private func setupView() {
         addScrollViewConstraints()
-        configureBottomSheet()
+        configureBottomSheet(shouldIncludeLargeDetent: true)
         bindToSizeUpdate()
         setContent()
         contentView.addSubview(paymentView)
@@ -86,7 +86,7 @@ public final class PaymentComponentBottomView: GiniBottomSheetViewController {
     }
     
     private func setContent() {
-        emptyScrollView.addSubview(contentView)
+        emptyScrollView.addContentSubview(contentView)
         
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: emptyScrollView.topAnchor,
