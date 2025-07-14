@@ -164,7 +164,7 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
         let hasNotch = UIDevice.current.hasNotch
 
         // Force full screen on devices without notch or with small screens
-        if !hasNotch && screenHeight < 736 {
+        if !hasNotch && screenHeight < Constants.smallScreenMaxHeight {
             return true
         }
 
@@ -329,5 +329,6 @@ extension InfoBottomSheetViewController {
         static let imageContainerSize: CGFloat = 40
 
         static let bottomSheetHeightIPad: CGFloat = 439
+        static let smallScreenMaxHeight: CGFloat = 736
     }
 }
