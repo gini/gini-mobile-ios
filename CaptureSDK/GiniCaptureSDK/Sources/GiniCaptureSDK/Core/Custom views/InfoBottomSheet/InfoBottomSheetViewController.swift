@@ -74,7 +74,6 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
     }()
 
     lazy var buttonsViewContainer: ButtonsView = {
-        // TODO: check this
         let view = ButtonsView(secondaryButtonTitle: buttonsViewModel.secondaryTitle ?? "",
                                primaryButtonTitle: buttonsViewModel.primaryTitle ?? "")
         view.secondaryButton.isHidden = buttonsViewModel.secondaryTitle == nil
