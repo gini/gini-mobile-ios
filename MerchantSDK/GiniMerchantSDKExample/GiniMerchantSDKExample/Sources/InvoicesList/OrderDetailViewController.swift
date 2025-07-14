@@ -127,7 +127,6 @@ final class OrderDetailViewController: UIViewController {
         view.endEditing(true)
 
         let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
-        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
 
         let paymentInfo = obtainPaymentInfo()
         if paymentInfo.isComplete && order.price.value != .zero {

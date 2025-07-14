@@ -1,5 +1,5 @@
 //
-//  AccesibleView.swift
+//  AccessibleView.swift
 //
 //  Copyright © 2025 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class AccesibleView: UIView {
+public class AccessibleView: UIView {
 
     public override var canBecomeFocused: Bool {
         true

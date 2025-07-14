@@ -19,7 +19,7 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
 /// BottomSheetsProviderProtocol defines methods for providing custom bottom sheets.
 public protocol BottomSheetsProviderProtocol: AnyObject {
     func installAppBottomSheet() -> UIViewController
-    func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> BottomSheetViewController
+    func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> UIViewController
     func bankSelectionBottomSheet() -> UIViewController
 }
 

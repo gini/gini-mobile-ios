@@ -145,8 +145,7 @@ extension PaymentComponentsController {
     
     func presentPaymentViewBottomSheet() {
         let paymentViewBottomSheet = paymentViewBottomSheet(documentId: documentId ?? "")
-        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
-        self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: false)
+        self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: true)
     }
     
     private func dismissAndPresent(viewController: UIViewController, animated: Bool) {
@@ -328,7 +327,7 @@ extension PaymentComponentsController {
      - Parameter paymentRequestId: The payment request id from generated from the payment info extracted from the invoice
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
-    public func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> BottomSheetViewController {
+    public func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> UIViewController {
         previousPresentedViews.removeAll()
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
@@ -648,7 +647,6 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         GiniUtilites.Log("Tapped on Bank Picker on :\(documentId ?? "")", event: .success)
         if GiniHealthConfiguration.shared.useBottomPaymentComponentView {
             let bankSelectionBottomSheet = bankSelectionBottomSheet()
-            bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
             dismissAndPresent(viewController: bankSelectionBottomSheet, animated: false)
         }
     }

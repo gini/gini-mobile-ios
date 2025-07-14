@@ -25,6 +25,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.textAlignment = .left
+        label.isAccessibilityElement = false
         return label
     }()
     
@@ -49,6 +50,9 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         addSubview(extendedImageView)
         setupConstraints()
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedOnView)))
+        accessibilityElements = [titleLabel, extendedImageView]
+        accessibilityTraits = .button
+        isAccessibilityElement = true
     }
     
     required init?(coder: NSCoder) {
@@ -63,6 +67,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         titleLabel.textColor = viewModel.titleColor
         titleLabel.font = viewModel.titleFont
         extendedImageView.image = viewModel.extendedIcon
+        accessibilityLabel = viewModel.titleText
     }
     
     private func setupConstraints() {

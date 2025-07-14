@@ -142,6 +142,7 @@ public final class PaymentComponentView: UIView {
                                          shouldShowLabel: viewModel.showPaymentComponentInOneRow ? !viewModel.hasBankSelected : true)
         payInvoiceButton.isHidden = !viewModel.hasBankSelected
         selectBankButton.accessibilityLabel = viewModel.selectBankButtonText
+        selectBankButton.accessibilityHint = viewModel.strings.selectYourBankAccessibilityHint
         selectBankButton.heightAnchor.constraint(greaterThanOrEqualToConstant: heightConstantSelectBankButton).isActive = true
     }
 

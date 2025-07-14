@@ -15,6 +15,10 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     public var shouldShowDragIndicator: Bool {
         true
     }
+    
+    public var shouldShowInFullScreenInLandscapeMode: Bool {
+        true
+    }
 
     var viewModel: InstallAppBottomViewModel
 
@@ -113,8 +117,6 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         button.setImage(viewModel.configuration.appStoreIcon, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(tapOnAppStoreButton), for: .touchUpInside)
-        button.isAccessibilityElement = true
-        button.accessibilityTraits = .button
         button.accessibilityLabel = viewModel.strings.accessibilityAppStoreText
         return button
     }()
@@ -133,6 +135,12 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         setupView()
         setupInitialLayout()
     }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        notifyLayoutChanged()
+    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -146,6 +154,15 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
+    /// VoiceOver has already finished processing the UI changes.
+    private func notifyLayoutChanged() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let self = self else { return }
+            UIAccessibility.post(notification: .layoutChanged, argument: contentView)
+        }
     }
 
     private func setupView() {
@@ -413,9 +430,10 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         // Perform layout updates with animation
-        coordinator.animate(alongsideTransition: { context in
-            self.updateLayoutForCurrentOrientation()
-            self.view.layoutIfNeeded()
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            self?.updateLayoutForCurrentOrientation()
+            self?.view.layoutIfNeeded()
+            self?.notifyLayoutChanged()
         }, completion: nil)
     }
 }

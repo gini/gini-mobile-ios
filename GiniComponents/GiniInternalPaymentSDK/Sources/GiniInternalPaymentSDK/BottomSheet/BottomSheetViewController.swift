@@ -29,11 +29,11 @@ open class BottomSheetViewController: UIViewController {
     private let contentView = EmptyView()
 
     /// Top bar view that draggable to dismiss
-    private let topBarView = EmptyView()
+    let topBarView = EmptyView()
 
     /// Top view bar
-    private lazy var barLineView: AccesibleView = {
-        let view = AccesibleView()
+    lazy var barLineView: AccessibleView = {
+        let view = AccessibleView()
         view.backgroundColor = configuration.rectangleColor
         view.layer.cornerRadius = Constants.cornerRadiusTopRectangle
         view.translatesAutoresizingMaskIntoConstraints = false

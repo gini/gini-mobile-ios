@@ -110,6 +110,10 @@ public final class BanksBottomView: GiniBottomSheetViewController {
         true
     }
     
+    public var shouldShowInFullScreenInLandscapeMode: Bool {
+        true
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
