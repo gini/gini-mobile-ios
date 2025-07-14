@@ -139,7 +139,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        notifyLayoutChanged()
+        postAccessibilityFocus()
     }
 
     deinit {
@@ -158,9 +158,10 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     
     /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
     /// VoiceOver has already finished processing the UI changes.
-    private func notifyLayoutChanged() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+    private func postAccessibilityFocus() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
+            self.accessibilityViewIsModal = true
             UIAccessibility.post(notification: .layoutChanged, argument: contentView)
         }
     }
@@ -173,8 +174,19 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         setupListeners()
         setButtonsState()
         setupViewVisibility()
+        setupAccessibility()
     }
 
+    private func setupAccessibility() {
+        accessibilityElements = [
+            titleLabel,
+            bankIconImageView,
+            moreInformationLabel,
+            appStoreImageView,
+            continueButton
+        ]
+    }
+    
     private func setupViewHierarchy() {
         addCloseButton()
         titleView.addSubview(titleLabel)
@@ -321,6 +333,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
 
     @objc private func willEnterForeground() {
         setButtonsState()
+        postAccessibilityFocus()
     }
     
     @objc private func tapOnCloseIcon() {
@@ -433,7 +446,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
         coordinator.animate(alongsideTransition: { [weak self] context in
             self?.updateLayoutForCurrentOrientation()
             self?.view.layoutIfNeeded()
-            self?.notifyLayoutChanged()
+            self?.postAccessibilityFocus()
         }, completion: nil)
     }
 }
