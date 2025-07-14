@@ -5,6 +5,7 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
+import Combine
 import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
@@ -35,10 +36,14 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     private var landscapeConstraints: [NSLayoutConstraint] = []
 
     private var infoBarBottomConstraint: NSLayoutConstraint?
+    private lazy var paymentInfoContainerViewHeightConstraint: NSLayoutConstraint = {
+        paymentInfoContainerView.heightAnchor.constraint(equalToConstant: view.bounds.height / 2)
+    }()
 
     private var showInfoBarOnce = true
     private var keyboardWillShowCalled = false
     private var isViewRotating = false
+    private var cancellables = Set<AnyCancellable>()
 
     /// The model instance containing data and methods for handling the payment review process.
     public let model: PaymentReviewModel
@@ -60,6 +65,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+        bindToSizeUpdates()
         subscribeOnNotifications()
         dismissKeyboardOnTap()
         setupViewModel()
@@ -231,6 +237,14 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
                                               name: "amount_to_pay")
         let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
         model.sendFeedback(updatedExtractions: updatedExtractions)
+    }
+    
+    private func bindToSizeUpdates() {
+        paymentInfoContainerView.$updatedSize
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedSize in
+                self?.paymentInfoContainerViewHeightConstraint.constant = updatedSize.height
+            }.store(in: &cancellables)
     }
 }
 
@@ -428,7 +442,8 @@ fileprivate extension PaymentReviewViewController {
 
         NSLayoutConstraint.activate([
             paymentInfoContainerView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            paymentInfoContainerView.trailingAnchor.constraint(equalTo: container.trailingAnchor)
+            paymentInfoContainerView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            paymentInfoContainerViewHeightConstraint
         ])
     }
 
@@ -621,10 +636,8 @@ fileprivate extension PaymentReviewViewController {
     }
 
     func setupDraggableBottomView() {
-        let panGesturePaymentInfoView = UIPanGestureRecognizer(target: self, action: #selector(handlePaymentContainerPanGesture(_:)))
         let panGestureTopBarView = UIPanGestureRecognizer(target: self, action: #selector(handlePaymentContainerPanGesture(_:)))
         let tapGestureBarLineView = UITapGestureRecognizer(target: self, action: #selector(handlePaymentContainerTapGesture(_:)))
-        paymentInfoContainerView.addGestureRecognizer(panGesturePaymentInfoView)
         topBarView.addGestureRecognizer(panGestureTopBarView)
         barLineView.addGestureRecognizer(tapGestureBarLineView)
     }
