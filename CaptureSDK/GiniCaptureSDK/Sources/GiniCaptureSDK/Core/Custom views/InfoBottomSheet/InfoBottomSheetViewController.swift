@@ -303,18 +303,19 @@ public class InfoBottomSheetViewController: GiniBottomSheetViewController {
 }
 extension InfoBottomSheetViewController {
     // MARK: - Constants
+    typealias NotchConditionalPadding = (withNotch: CGFloat, withoutNotch: CGFloat)
     private struct Constants {
         static let contentScrollViewTopPaddingPortrait: CGFloat = 40
         static let contentScrollViewHorizontalPaddingPortrait: CGFloat = 24
-        static let contentScrollViewLandscapeTopPadding: (withNotch: CGFloat, withoutNotch: CGFloat) = (108, 81)
-        static let contentScrollViewLandscapeHorizontalPadding: (withNotch: CGFloat, withoutNotch: CGFloat) = (186, 61)
+        static let contentScrollViewLandscapeTopPadding: NotchConditionalPadding = (108, 81)
+        static let contentScrollViewLandscapeHorizontalPadding: NotchConditionalPadding = (186, 61)
 
         static let contentStackViewSpacing: CGFloat = 40
         static let contentStackViewBottomPadding: CGFloat = 19
 
         static let buttonsViewContainerHorizontalPaddingPortrait: CGFloat = 24
         static let buttonContainerViewTopPadding: CGFloat = 40
-        static let buttonsViewContainerLandscapeHorizontalPadding: (withNotch: CGFloat, withoutNotch: CGFloat) = (56, 16)
+        static let buttonsViewContainerLandscapeHorizontalPadding: NotchConditionalPadding = (56, 16)
 
         static let iconSize: CGFloat = 24
         static let imageContainerSize: CGFloat = 40
