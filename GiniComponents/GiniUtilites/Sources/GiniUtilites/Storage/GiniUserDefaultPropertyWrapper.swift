@@ -10,6 +10,8 @@ import Foundation
  A property wrapper for storing and retrieving `Codable` values in `UserDefaults`.
 
  This wrapper automatically encodes and decodes the wrapped value using `JSONEncoder` and `JSONDecoder`.
+
+ - note: Internal usage only.
 */
 
 @propertyWrapper
