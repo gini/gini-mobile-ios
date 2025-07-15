@@ -25,7 +25,6 @@ public enum TextFieldType: Int {
 public final class PaymentReviewContainerView: UIView {
     private let ibanValidator = IBANValidator()
 
-    private lazy var scrollView: EmptyScrollView = EmptyScrollView()
     private lazy var recipientErrorLabel = buildErrorLabel()
     private lazy var usageErrorLabel = buildErrorLabel()
     private lazy var ibanErrorLabel = buildErrorLabel()
@@ -99,9 +98,8 @@ public final class PaymentReviewContainerView: UIView {
 
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
-    private var cancellables = Set<AnyCancellable>()
     
-    @Published var updatedSize: CGSize = .zero
+    @Published var willShowLandscapeError = false
 
     public init(viewModel: PaymentReviewContainerViewModel) {
         self.viewModel = viewModel
@@ -115,6 +113,8 @@ public final class PaymentReviewContainerView: UIView {
         setupLayout(isPortrait: isPortrait)
         if shouldUpdateUI {
             configureUI()
+        } else {
+            updateErrorStateIfNeeded()
         }
     }
     
@@ -125,6 +125,14 @@ public final class PaymentReviewContainerView: UIView {
         case .collapsed:
             toggleExpandedViews(isHidden: true)
             resignAllInputFields()
+        }
+    }
+    
+    private func updateErrorStateIfNeeded() {
+        if UIDevice.isPortrait() {
+            validateAllInputFields()
+        } else {
+            hideErrorLabels()
         }
     }
 
@@ -224,20 +232,7 @@ public final class PaymentReviewContainerView: UIView {
         
         paymentInfoStackView.addArrangedSubview(UIView())
         
-        bindToSizeUpdates()
-        scrollView.addContentSubview(paymentInfoStackView)
-
-        addSubview(scrollView)
-        addScrollViewConstraints()
-    }
-    
-    private func addScrollViewConstraints() {
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
+        addSubview(paymentInfoStackView)
     }
     
     private func addBrandedViewToViewHierarchy() {
@@ -266,8 +261,8 @@ public final class PaymentReviewContainerView: UIView {
 
     private func setupContainerContraints() {
         NSLayoutConstraint.activate([
-            paymentInfoStackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : Constants.topBottomPaymentInfoContainerPadding),
-            paymentInfoStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : -Constants.topBottomPaymentInfoContainerPadding)
+            paymentInfoStackView.topAnchor.constraint(equalTo: topAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : Constants.topBottomPaymentInfoContainerPadding),
+            paymentInfoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : -Constants.topBottomPaymentInfoContainerPadding)
         ])
     }
 
@@ -302,8 +297,8 @@ public final class PaymentReviewContainerView: UIView {
 
         let isPortrait = orientation == .vertical
         let constraints = [
-            paymentInfoStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: isPortrait ? Constants.leftRightPaymentInfoContainerPortraitPadding : Constants.leftRightPaymentInfoContainerLandscapePadding),
-            paymentInfoStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: isPortrait ? -Constants.leftRightPaymentInfoContainerPortraitPadding : -Constants.leftRightPaymentInfoContainerLandscapePadding),
+            paymentInfoStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: isPortrait ? Constants.leftRightPaymentInfoContainerPortraitPadding : Constants.leftRightPaymentInfoContainerLandscapePadding),
+            paymentInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: isPortrait ? -Constants.leftRightPaymentInfoContainerPortraitPadding : -Constants.leftRightPaymentInfoContainerLandscapePadding),
             bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPortraitPadding),
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPortraitPadding),
         ]
@@ -578,10 +573,16 @@ public final class PaymentReviewContainerView: UIView {
             errorLabel = usageErrorLabel
             errorMessage = viewModel.strings.purposeErrorMessage
         }
-        if errorLabel.isHidden {
-            errorLabel.isHidden = false
-            errorLabel.text = errorMessage
+        
+        if UIDevice.isPortrait() {
+            if errorLabel.isHidden {
+                errorLabel.isHidden = false
+                errorLabel.text = errorMessage
+            }
+        } else {
+            showErrorBottomSheet(errorMessage: errorMessage)
         }
+        
         updateAmountIbanErrorState()
     }
 
@@ -602,6 +603,13 @@ public final class PaymentReviewContainerView: UIView {
         }
         disablePayButtonIfNeeded()
         updateAmountIbanErrorState()
+    }
+    
+    private func showErrorBottomSheet(errorMessage: String) {
+        willShowLandscapeError = true
+        let errorScreen = ErrorBottomSheet()
+        errorScreen.configure(errorMessage: errorMessage, font: viewModel.configuration.errorLabelFont)
+        parentViewController?.giniTopMostViewController().present(errorScreen, animated: true)
     }
 
     // MARK: - Pay button
@@ -624,11 +632,17 @@ public final class PaymentReviewContainerView: UIView {
         case .usageFieldTag:
             errorLabel = usageErrorLabel
         }
-        if errorLabel.isHidden {
-            errorLabel.isHidden = false
+        
+        if UIDevice.isPortrait() {
+            if errorLabel.isHidden {
+                errorLabel.isHidden = false
 
-            errorLabel.text = errorMessage
+                errorLabel.text = errorMessage
+            }
+        } else {
+            showErrorBottomSheet(errorMessage: errorMessage)
         }
+        
         updateAmountIbanErrorState()
     }
 
@@ -741,23 +755,6 @@ public final class PaymentReviewContainerView: UIView {
         textFieldView.isUserInteractionEnabled = isEditable
         textFieldView.setKeyboardType(keyboardType: keyboardType)
         return textFieldView
-    }
-    
-    private func bindToSizeUpdates() {
-        scrollView.$size
-            .filter({
-                if UIDevice.isPortrait() {
-                    let halfScreenHeight = UIScreen.main.bounds.height * 0.8
-                    
-                    return $0.height <= halfScreenHeight
-                } else {
-                    let percentageScreenHeight = UIScreen.main.bounds.height * 0.8
-                    return $0.height < percentageScreenHeight
-                }
-            })
-            .sink { [weak self] size in
-                self?.updatedSize = size
-            }.store(in: &cancellables)
     }
 }
 
@@ -961,5 +958,93 @@ extension PaymentReviewContainerView {
         static let errorTopMargin = 9.0
         static let lockIconHeight = 11.0
         static let buttonsSpacing = 8.0
+    }
+}
+
+/// Private class for showing error messages in a bottom sheet when the user is in landscape mode.
+/// Making it private since it is a temporary solution for the landscape mode error handling only on this screen.
+private class ErrorBottomSheet: GiniBottomSheetViewController {
+    
+    private let scrollView: EmptyScrollView = {
+        EmptyScrollView()
+    }()
+    
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 16)
+        label.adjustsFontForContentSizeCategory = true
+        label.textColor = .label
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    var shouldShowDragIndicator: Bool {
+        true
+    }
+    
+    var shouldShowInFullScreenInLandscapeMode: Bool {
+        false
+    }
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .systemBackground
+        addSCrollView()
+        bindToSizeUpdates()
+        addErrorLabel()
+        configureBottomSheet(shouldIncludeLargeDetent: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        startTimer()
+    }
+    
+    func configure(errorMessage: String, font: UIFont) {
+        errorLabel.font = font
+        errorLabel.text = errorMessage
+    }
+    
+    
+    func addSCrollView() {
+        view.addSubview(scrollView)
+        
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    func addErrorLabel() {
+        scrollView.addContentSubview(errorLabel)
+        
+        NSLayoutConstraint.activate([
+            errorLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            errorLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            errorLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 32),
+            errorLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16.0)
+        ])
+    }
+    
+    func bindToSizeUpdates() {
+        scrollView.$size
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] size in
+                self?.updateBottomSheetHeight(size.height)
+            }.store(in: &cancellables)
+    }
+    
+    func startTimer() {
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
+            self?.dismiss(animated: true)
+        }
     }
 }

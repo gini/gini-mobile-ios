@@ -36,18 +36,15 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
     private var landscapeConstraints: [NSLayoutConstraint] = []
 
     private var infoBarBottomConstraint: NSLayoutConstraint?
-    private lazy var paymentInfoContainerViewHeightConstraint: NSLayoutConstraint = {
-        paymentInfoContainerView.heightAnchor.constraint(equalToConstant: view.bounds.height / 2)
-    }()
 
     private var showInfoBarOnce = true
     private var keyboardWillShowCalled = false
     private var isViewRotating = false
-    private var cancellables = Set<AnyCancellable>()
 
     /// The model instance containing data and methods for handling the payment review process.
     public let model: PaymentReviewModel
     private var selectedPaymentProvider: GiniHealthAPILibrary.PaymentProvider
+    private var cancellables = Set<AnyCancellable>()
 
     private var currentPaymentInfoState: PaymentInfoState = .expanded
 
@@ -65,8 +62,8 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        bindToSizeUpdates()
         subscribeOnNotifications()
+        bindToPaymentInfoContainerViewUpdates()
         dismissKeyboardOnTap()
         setupViewModel()
         layoutUI()
@@ -237,14 +234,6 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
                                               name: "amount_to_pay")
         let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
         model.sendFeedback(updatedExtractions: updatedExtractions)
-    }
-    
-    private func bindToSizeUpdates() {
-        paymentInfoContainerView.$updatedSize
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] updatedSize in
-                self?.paymentInfoContainerViewHeightConstraint.constant = updatedSize.height
-            }.store(in: &cancellables)
     }
 }
 
@@ -442,8 +431,7 @@ fileprivate extension PaymentReviewViewController {
 
         NSLayoutConstraint.activate([
             paymentInfoContainerView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            paymentInfoContainerView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            paymentInfoContainerViewHeightConstraint
+            paymentInfoContainerView.trailingAnchor.constraint(equalTo: container.trailingAnchor)
         ])
     }
 
@@ -469,6 +457,17 @@ fileprivate extension PaymentReviewViewController {
     func updatePaymentInfoContainerView() {
         selectedPaymentProvider = model.selectedPaymentProvider
         paymentInfoContainerView.updateSelectedPaymentProvider(model.selectedPaymentProvider)
+    }
+    
+    private func bindToPaymentInfoContainerViewUpdates() {
+        paymentInfoContainerView.$willShowLandscapeError
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .sink { [weak self] willShowLandscapeError in
+                guard willShowLandscapeError else { return }
+                
+                self?.view.endEditing(true)
+            }.store(in: &cancellables)
     }
 }
 
