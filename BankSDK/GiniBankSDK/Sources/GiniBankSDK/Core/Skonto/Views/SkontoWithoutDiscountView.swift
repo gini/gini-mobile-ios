@@ -6,13 +6,13 @@
 
 import UIKit
 
-class SkontoWithoutDiscountView: UIView {
+class SkontoWithoutDiscountView: UIView, GiniInputAccessoryViewPresentable {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.withoutdiscount.title",
                                                              comment: "Without Skonto discount")
         label.text = title
-        label.textColor = .giniColorScheme().text.primary.uiColor()
+        label.textColor = .giniBankColorScheme().text.primary.uiColor()
         label.font = configuration.textStyleFonts[.bodyBold]
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
@@ -28,7 +28,7 @@ class SkontoWithoutDiscountView: UIView {
                                                              comment: "• Active")
         label.text = title
         label.font = configuration.textStyleFonts[.footnoteBold]
-        label.textColor = UIColor.giniColorScheme().text.success.uiColor()
+        label.textColor = UIColor.giniBankColorScheme().text.success.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -48,6 +48,16 @@ class SkontoWithoutDiscountView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    
+    override var inputAccessoryView: UIView? {
+        get {
+            priceView.inputAccessoryView
+        }
+        
+        set {
+            priceView.inputAccessoryView = newValue
+        }
+    }
 
     private let configuration = GiniBankConfiguration.shared
 
@@ -73,9 +83,17 @@ class SkontoWithoutDiscountView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func becomeFirstResponder() -> Bool {
+        priceView.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        priceView.resignFirstResponder()
+    }
+
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().container.background.uiColor()
+        backgroundColor = .giniBankColorScheme().container.background.uiColor()
         addSubview(stackView)
         addSubview(priceView)
         setupConstraints()

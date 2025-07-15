@@ -11,12 +11,14 @@ protocol SkontoExpiryDateViewDelegate: AnyObject {
     func expiryDateTextFieldTapped()
 }
 
-class SkontoExpiryDateView: UIView {
+class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = title
+        label.numberOfLines = 1
+        label.enableScaling()
         label.font = configuration.textStyleFonts[.footnote]
-        label.textColor = .giniColorScheme().text.secondary.uiColor()
+        label.textColor = .giniBankColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -25,7 +27,7 @@ class SkontoExpiryDateView: UIView {
     private lazy var textField: TextFieldActionsDisabled = {
         let textField = TextFieldActionsDisabled()
         textField.text = viewModel.dueDate.currentShortString
-        textField.textColor = .giniColorScheme().text.primary.uiColor()
+        textField.textColor = .giniBankColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.adjustsFontForContentSizeCategory = true
@@ -35,7 +37,7 @@ class SkontoExpiryDateView: UIView {
 
     private lazy var calendarImageView: UIImageView = {
         let imageView = UIImageView(image: GiniImages.calendar.image)
-        imageView.tintColor = .giniColorScheme().placeholder.tint.uiColor()
+        imageView.tintColor = .giniBankColorScheme().placeholder.tint.uiColor()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -43,7 +45,7 @@ class SkontoExpiryDateView: UIView {
 
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderColor = UIColor.giniColorScheme().textField.border.uiColor().cgColor
+        view.layer.borderColor = UIColor.giniBankColorScheme().textField.border.uiColor().cgColor
         view.layer.borderWidth = 1
         view.layer.cornerRadius = Constants.cornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -55,6 +57,25 @@ class SkontoExpiryDateView: UIView {
     private let configuration = GiniBankConfiguration.shared
 
     private var viewModel: SkontoViewModel
+
+    /// This is needed to avoid the circular reference between this element and its container
+    private var privateInputAccessoryView: UIView?
+    
+    override var inputAccessoryView: UIView? {
+        get {
+            privateInputAccessoryView
+        }
+
+        set {
+            privateInputAccessoryView = newValue
+            textField.inputAccessoryView = newValue
+        }
+    }
+
+    override var isFirstResponder: Bool {
+        textField.isFirstResponder
+    }
+
     weak var delegate: SkontoExpiryDateViewDelegate?
 
     init(viewModel: SkontoViewModel) {
@@ -67,10 +88,18 @@ class SkontoExpiryDateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func becomeFirstResponder() -> Bool {
+        textField.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        textField.resignFirstResponder()
+    }
+
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         isAccessibilityElement = true
-        backgroundColor = .giniColorScheme().textField.background.uiColor()
+        backgroundColor = .giniBankColorScheme().textField.background.uiColor()
         addSubview(containerView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(textField)
@@ -78,6 +107,7 @@ class SkontoExpiryDateView: UIView {
         setupConstraints()
         textField.addTarget(self, action: #selector(textFieldTapped), for: .editingDidBegin)
         configureDatePicker()
+
         bindViewModel()
     }
 
@@ -146,7 +176,7 @@ class SkontoExpiryDateView: UIView {
         datePicker.date = viewModel.dueDate
         let currentDate = Date().inBerlinTimeZone
         var dateComponent = DateComponents()
-        dateComponent.month = 6
+        dateComponent.month = Constants.numberOfMonths
         let endDate = Calendar.current.date(byAdding: dateComponent, to: currentDate)
         datePicker.minimumDate = currentDate
         datePicker.maximumDate = endDate
@@ -169,5 +199,6 @@ private extension SkontoExpiryDateView {
         static let imageHorizontalPadding: CGFloat = 10
         static let imageSize: CGFloat = 22
         static let cornerRadius: CGFloat = 8
+        static let numberOfMonths = 6
     }
 }

@@ -9,6 +9,7 @@ import Foundation
 import XCTest
 @testable import GiniUtilites
 @testable import GiniBankAPILibrary
+@testable import GiniUtilites
 
 class BankAPILibraryIntegrationTests: BaseIntegrationTest {
     private let validator = IBANValidator()

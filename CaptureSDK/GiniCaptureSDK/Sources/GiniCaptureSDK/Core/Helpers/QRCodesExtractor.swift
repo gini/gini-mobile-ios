@@ -32,7 +32,7 @@ public final class QRCodesExtractor {
 
     public static let epsCodeUrlKey = "epsPaymentQRCodeUrl"
     public static let giniCodeUrlKey = "giniPaymentQRCodeUrl"
-    
+
     class func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
         switch qrCodeFormat {
         case .some(.bezahl):

@@ -10,13 +10,22 @@ import UIKit
 protocol HelpBottomBarEnabledViewController: UIViewController {
     var bottomNavigationBar: UIView? {get set}
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter? {get set}
+    var bottomNavigationBarHeightConstraint: NSLayoutConstraint? {get set}
 
     func configureBottomNavigationBar(
         configuration: GiniConfiguration,
         under underView: UIView)
+    func updateBottomBarHeightBasedOnOrientation()
 }
 
 extension HelpBottomBarEnabledViewController {
+
+    func updateBottomBarHeightBasedOnOrientation() {
+        if UIDevice.current.isIphone {
+            let isLandscape = currentInterfaceOrientation.isLandscape
+            bottomNavigationBarHeightConstraint?.constant = isLandscape ? CameraBottomNavigationBar.Constants.heightLandscape : CameraBottomNavigationBar.Constants.heightPortrait
+        }
+    }
 
     func configureCustomTopNavigationBar() {
         navigationItem.leftBarButtonItem = nil
@@ -31,11 +40,12 @@ extension HelpBottomBarEnabledViewController {
         bottomNavigationBar.translatesAutoresizingMaskIntoConstraints = false
         superView.addSubview(bottomNavigationBar)
         superView.bringSubviewToFront(bottomNavigationBar)
+        bottomNavigationBarHeightConstraint = bottomNavigationBar.heightAnchor.constraint(equalToConstant: 114)
         NSLayoutConstraint.activate([
             bottomNavigationBar.bottomAnchor.constraint(equalTo: superView.bottomAnchor),
             bottomNavigationBar.leadingAnchor.constraint(equalTo: superView.leadingAnchor),
             bottomNavigationBar.trailingAnchor.constraint(equalTo: superView.trailingAnchor),
-            bottomNavigationBar.heightAnchor.constraint(equalToConstant: bottomNavigationBar.frame.height),
+            bottomNavigationBarHeightConstraint!,
             view.bottomAnchor.constraint(equalTo: bottomNavigationBar.topAnchor)
         ])
         superView.layoutSubviews()

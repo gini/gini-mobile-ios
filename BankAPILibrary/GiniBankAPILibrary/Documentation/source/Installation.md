@@ -10,7 +10,7 @@ Once you have your Swift package set up, adding `GiniBankAPILibrary` as a depend
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/bank-api-library-ios.git", .exact("3.5.0"))
+    .package(url: "https://github.com/gini/bank-api-library-ios.git", .exact("3.8.0"))
 ]
 ```
 

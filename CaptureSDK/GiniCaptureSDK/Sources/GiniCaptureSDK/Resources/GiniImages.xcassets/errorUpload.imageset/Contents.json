@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "upload.pdf",
+      "filename" : "errorUpload.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "errorUploadDark.pdf",
       "idiom" : "universal"
     }
   ],

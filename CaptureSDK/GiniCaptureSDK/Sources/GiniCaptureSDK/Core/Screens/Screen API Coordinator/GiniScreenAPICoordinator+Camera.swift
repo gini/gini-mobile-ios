@@ -56,6 +56,8 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         case .explorer:
             documentPickerCoordinator.isPDFSelectionAllowed = pages.isEmpty
             documentPickerCoordinator.showDocumentPicker(from: viewController)
+        case .eInvoice:
+            documentPickerCoordinator.showEInvoicePicker(from: viewController)
         }
     }
 
@@ -65,12 +67,13 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             viewController.stopLoadingIndicater()
             return
         }
+        let bottomAnchor = viewController.topNavBarAnchor ?? viewController.view.bottomAnchor
         if shouldShowOnboarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
-                viewController.setupCamera()
+                viewController.setupCamera(bottomAnchor: bottomAnchor)
             })
         } else {
-            viewController.setupCamera()
+            viewController.setupCamera(bottomAnchor: bottomAnchor)
         }
     }
 
@@ -145,10 +148,10 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
 
     private func shouldShowOnboarding() -> Bool {
         if giniConfiguration.onboardingShowAtFirstLaunch &&
-            !UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed") {
-            UserDefaults.standard.set(true, forKey: "ginicapture.defaults.onboardingShowed")
+            !GiniCaptureUserDefaultsStorage.onboardingShowed {
+            GiniCaptureUserDefaultsStorage.onboardingShowed = true
             return true
-        } else if giniConfiguration.onboardingShowAtLaunch {
+        } else if giniConfiguration.onboardingShowAtLaunch && !hasOnboardingShownOnLaunch(){
             return true
         }
 
@@ -193,7 +196,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                 switch documentsType {
                 case .image:
                     showReview()
-                case .qrcode, .pdf:
+                case .qrcode, .pdf, .xml:
                     showAnalysisScreen()
                 }
             }
@@ -288,7 +291,7 @@ extension GiniScreenAPICoordinator {
             return
         }
 
-        guard documentsToValidate.filter({ $0.type == .pdf }).count <= 1 else {
+        guard documentsToValidate.filter({ $0.type == .pdf || $0.type == .xml }).count <= 1 else {
             completion(.failure(FilePickerError.multiplePdfsUnsupported))
             return
         }

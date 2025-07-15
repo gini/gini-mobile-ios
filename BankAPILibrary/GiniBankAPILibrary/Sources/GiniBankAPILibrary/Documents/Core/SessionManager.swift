@@ -127,6 +127,10 @@ private extension SessionManager {
                            taskType: TaskType,
                            cancellationToken: CancellationToken?,
                            completion: @escaping CompletionResult<T.ResponseType>) {
+        guard var request = resource.request else {
+            completion(.failure(.unknown(response: nil, data: nil)))
+            return
+        }
         if let authServiceType = resource.authServiceType {
             var accessToken: String?
             var authType: AuthType?
@@ -144,7 +148,6 @@ private extension SessionManager {
             }
 
             if let accessToken = accessToken, let header = authType {
-                var request = resource.request
                 let authHeader = AuthHelper.authorizationHeader(for: accessToken, headerType: header)
                 request.addValue(authHeader.value, forHTTPHeaderField: authHeader.key)
                 dataTask(for: resource,
@@ -162,7 +165,7 @@ private extension SessionManager {
 
         } else {
             dataTask(for: resource,
-                     finalRequest: resource.request,
+                     finalRequest: request,
                      type: taskType,
                      cancellationToken: cancellationToken,
                      completion: completion).resume()
@@ -265,6 +268,10 @@ private extension SessionManager {
                                             response: HTTPURLResponse,
                                             data: Data,
                                             completion: @escaping CompletionResult<T.ResponseType>) {
+        let method = request.httpMethod ?? "unknown method"
+        let url = request.url?.absoluteString ?? "unknown URL"
+        let dataString = String(data: data, encoding: .utf8) ?? "nil"
+
         do {
             let result = try resource.parsed(response: response, data: data)
             GiniBankAPILibrary.Log("Success: \(request.httpMethod!) - \(request.url!)", event: .success)
@@ -277,8 +284,7 @@ private extension SessionManager {
                 """, event: .error)
             completion(.failure(.parseError(message: "Failed to parse response",
                                             response: response,
-                                            data: data))
-            )
+                                            data: data)))
         }
     }
 
@@ -289,36 +295,8 @@ private extension SessionManager {
                                           taskType: TaskType,
                                           cancellationToken: CancellationToken?,
                                           completion: @escaping CompletionResult<T.ResponseType>) {
-        switch statusCode {
-        case 400:
-            guard let responseData = data else {
-                completion(.failure(.badRequest(response: response, data: nil)))
-                return
-            }
-
-            guard let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
-                errorInfo["error"] == "invalid_grant" else {
-                completion(.failure(.badRequest(response: response, data: data)))
-                return
-            }
-            completion(.failure(.unauthorized(response: response, data: data)))
-        case 401:
-            completion(.failure(.unauthorized(response: response, data: data)))
-        case 404:
-            completion(.failure(.notFound(response: response, data: data)))
-        case 406:
-            completion(.failure(.notAcceptable(response: response, data: data)))
-        case 429:
-            completion(.failure(.tooManyRequests(response: response, data: data)))
-        case 503:
-            completion(.failure(.maintenance(errorCode: statusCode)))
-        case 500:
-            completion(.failure(.outage(errorCode: statusCode)))
-        case 501, 502, 504...599:
-            completion(.failure(.server(errorCode: statusCode)))
-        default:
-            completion(.failure(.unknown(response: response, data: data)))
-        }
+        let error = GiniError.from(statusCode: statusCode, response: response, data: data)
+        completion(.failure(error))
     }
 
     private func downloadTaskCompletionHandler<T: Resource>(for resource: T,

@@ -121,25 +121,28 @@ public final class PaymentReviewContainerView: UIView {
         if viewModel.configuration.showBanksPicker {
             buttonsStackView.addArrangedSubview(selectBankButton)
         }
+        
         buttonsStackView.addArrangedSubview(payInvoiceButton)
         buttonsView.addSubview(buttonsStackView)
-
-        bottomStackView.addArrangedSubview(UIView())
-        if viewModel.shouldShowBrandedView {
-            bottomStackView.addArrangedSubview(poweredByGiniView)
-        }
-        bottomView.addSubview(bottomStackView)
-
         paymentInfoStackView.addArrangedSubview(recipientStackView)
-
         paymentInfoStackView.addArrangedSubview(ibanAmountContainerStackView)
-
         paymentInfoStackView.addArrangedSubview(usageStackView)
         paymentInfoStackView.addArrangedSubview(buttonsView)
-        paymentInfoStackView.addArrangedSubview(bottomView)
+        
+        if viewModel.shouldShowBrandedView {
+            addBrandedViewToViewHierarchy()
+        }
+        
         paymentInfoStackView.addArrangedSubview(UIView())
 
         self.addSubview(paymentInfoStackView)
+    }
+    
+    private func addBrandedViewToViewHierarchy() {
+        bottomStackView.addArrangedSubview(UIView())
+        bottomStackView.addArrangedSubview(poweredByGiniView)
+        bottomView.addSubview(bottomStackView)
+        paymentInfoStackView.addArrangedSubview(bottomView)
     }
 
     // MARK: Layout & Constraints
@@ -150,7 +153,10 @@ public final class PaymentReviewContainerView: UIView {
         setupIbanAmountStackViewsConstraints()
         setupUsageStackViewConstraints()
         setupButtonConstraints()
-        setupPoweredByGiniConstraints()
+        
+        if viewModel.shouldShowBrandedView {
+            setupPoweredByGiniConstraints()
+        }
     }
 
     private func setupContainerContraints() {
@@ -376,7 +382,7 @@ public final class PaymentReviewContainerView: UIView {
     fileprivate func fillInInputFields() {
         if let extractions = viewModel.extractions {
             recipientTextFieldView.text = extractions.first(where: {$0.name == "payment_recipient"})?.value
-            ibanTextFieldView.text = extractions.first(where: {$0.name == "iban"})?.value
+            ibanTextFieldView.text = extractions.first(where: {$0.name == "iban"})?.value.uppercased()
             usageTextFieldView.text = extractions.first(where: {$0.name == "payment_purpose"})?.value
             if let amountString = extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
                 self.amountToPay = amountToPay
@@ -672,15 +678,23 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
     }
 
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if TextFieldType(rawValue: textField.tag) == .amountFieldTag,
-           let text = textField.text,
-           let textRange = Range(range, in: text) {
+        switch TextFieldType(rawValue: textField.tag) {
+        case .amountFieldTag:
+            guard let text = textField.text,
+                  let textRange = Range(range, in: text) else {
+                return true
+            }
+            
             let updatedText = text.replacingCharacters(in: textRange, with: string)
             adjustAmountValue(textField: textField, updatedText: updatedText)
             disablePayButtonIfNeeded()
             return false
-           }
-        return true
+        case .ibanFieldTag:
+            handleIBANUppercase(textField: textField, range: range, replacementString: string)
+            return false
+        default:
+            return true
+        }
     }
 
     private func adjustAmountValue(textField: UITextField, updatedText: String) {
@@ -707,6 +721,16 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
                     textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
                 }
             }
+        }
+    }
+    
+    private func handleIBANUppercase(textField: UITextField, range: NSRange, replacementString string: String) {
+        if let text = textField.text,
+           let textRange = Range(range, in: text) {
+            let updatedText = text.replacingCharacters(in: textRange, with: string).uppercased()
+            textField.text = updatedText
+        } else {
+            textField.text = string.uppercased()
         }
     }
 

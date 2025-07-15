@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import GiniCaptureSDK
 
 protocol SkontoAmountViewDelegate: AnyObject {
     func textFieldPriceChanged(editedText: String)
@@ -15,8 +16,10 @@ class SkontoAmountToPayView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = titleLabelText
+        label.numberOfLines = 1
+        label.enableScaling()
         label.font = configuration.textStyleFonts[.footnote]
-        label.textColor = .giniColorScheme().text.secondary.uiColor()
+        label.textColor = .giniBankColorScheme().text.secondary.uiColor()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -26,7 +29,7 @@ class SkontoAmountToPayView: UIView {
         let textField = PriceTextField()
         textField.priceDelegate = self
         textField.text = textFieldInitialText
-        textField.textColor = .giniColorScheme().text.primary.uiColor()
+        textField.textColor = .giniBankColorScheme().text.primary.uiColor()
         textField.font = configuration.textStyleFonts[.body]
         textField.borderStyle = .none
         textField.keyboardType = .numberPad
@@ -42,7 +45,7 @@ class SkontoAmountToPayView: UIView {
     private lazy var currencyLabel: UILabel = {
         let label = UILabel()
         label.text = currencyLabelText
-        label.textColor = .giniColorScheme().text.secondary.uiColor()
+        label.textColor = .giniBankColorScheme().text.secondary.uiColor()
         label.font = configuration.textStyleFonts[.body]
         label.adjustsFontForContentSizeCategory = true
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -62,7 +65,7 @@ class SkontoAmountToPayView: UIView {
 
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderColor = UIColor.giniColorScheme().textField.border.uiColor().cgColor
+        view.layer.borderColor = UIColor.giniBankColorScheme().textField.border.uiColor().cgColor
         view.layer.borderWidth = isEditable ? 1 : 0
         view.layer.cornerRadius = Constants.cornerRadius
         view.isAccessibilityElement = true
@@ -79,7 +82,7 @@ class SkontoAmountToPayView: UIView {
 
     private lazy var validationLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .giniColorScheme().textField.supportingError.uiColor()
+        label.textColor = .giniBankColorScheme().textField.supportingError.uiColor()
         label.font = configuration.textStyleFonts[.caption1]
         label.numberOfLines = 0
         label.isHidden = true
@@ -100,6 +103,25 @@ class SkontoAmountToPayView: UIView {
     private let currencyLabelText: String
     private var isEditable: Bool
     private let configuration = GiniBankConfiguration.shared
+
+    /// This is needed to avoid the circular reference between this element and its container
+    private var privateInputAccessoryView: UIView?
+
+    override var inputAccessoryView: UIView? {
+        get {
+            privateInputAccessoryView
+        }
+
+        set {
+            privateInputAccessoryView = newValue
+            textField.inputAccessoryView = newValue
+        }
+    }
+
+    override var isFirstResponder: Bool {
+        textField.isFirstResponder
+    }
+
     weak var delegate: SkontoAmountViewDelegate?
 
     init(title: String,
@@ -117,9 +139,17 @@ class SkontoAmountToPayView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func becomeFirstResponder() -> Bool {
+        textField.becomeFirstResponder()
+    }
+
+    override func resignFirstResponder() -> Bool {
+        textField.resignFirstResponder()
+    }
+
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .giniColorScheme().textField.background.uiColor()
+        backgroundColor = .giniBankColorScheme().textField.background.uiColor()
         addSubview(mainStackView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(stackView)
@@ -180,6 +210,8 @@ class SkontoAmountToPayView: UIView {
         guard validationLabel.isHidden else {
             return
         }
+        
+        UIAccessibility.post(notification: .announcement, argument: message)
         validationLabel.text = message
         validationLabel.isHidden = false
     }
