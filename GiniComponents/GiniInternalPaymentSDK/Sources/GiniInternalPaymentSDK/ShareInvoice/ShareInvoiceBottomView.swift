@@ -105,6 +105,8 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     private let splitStacKView = EmptyStackView().distribution(.fill)
     private var cancellables = Set<AnyCancellable>()
     
+    private var dynamicInfoLabels: [UILabel] = []
+    
     // Add a property to store the height constraint
     private var scrollViewHeightConstraint: NSLayoutConstraint?
     
@@ -126,6 +128,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         super.viewDidAppear(animated)
         
         notifyLayoutChanged()
+        setupAccessibility()
     }
     
     public init(viewModel: ShareInvoiceBottomViewModel, bottomSheetConfiguration: BottomSheetConfiguration) {
@@ -153,6 +156,15 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         setupLayout()
         setButtonsState()
         setupViewVisibility()
+    }
+    
+    private func setupAccessibility() {
+        accessibilityElements = [
+            titleLabel,
+            qrImageView,
+            continueButton,
+            descriptionLabel
+        ] + dynamicInfoLabels
     }
 
     private func setupViewHierarchy() {
@@ -240,6 +252,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         } else {
             setupLandscapeConstraints()
         }
+        setupAccessibility()
     }
 
     private func setupConstraints(for orientation: NSLayoutConstraint.Axis) {
@@ -413,11 +426,15 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
 
     private func generateInfoStackView(title: String, subtitle: String?) -> UIStackView {
         let stackView = createStackView(distribution: .fill, spacing: Constants.paymentInfoFieldsSpacing, orientation: .vertical)
+        let placeholderLabel = createLabel(text: title, isTitle: true)
         let valueLabel = createLabel(text: subtitle ?? "", isTitle: false)
         valueLabel.adjustsFontSizeToFitWidth = true
         
-        stackView.addArrangedSubview(createLabel(text: title, isTitle: true))
+        stackView.addArrangedSubview(placeholderLabel)
         stackView.addArrangedSubview(valueLabel)
+        
+        dynamicInfoLabels.append(placeholderLabel)
+        dynamicInfoLabels.append(valueLabel)
 
         return stackView
     }
