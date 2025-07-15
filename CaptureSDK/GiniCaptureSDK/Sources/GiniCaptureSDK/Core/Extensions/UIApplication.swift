@@ -15,4 +15,11 @@ extension UIApplication {
             self.open(settingsUrl, options: [:], completionHandler: nil)
         }
     }
+
+    var giniCurrentKeyWindow: UIWindow? {
+        return self.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
+    }
 }
