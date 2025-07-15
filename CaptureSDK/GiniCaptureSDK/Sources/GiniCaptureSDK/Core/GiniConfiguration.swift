@@ -8,6 +8,8 @@
 
 import UIKit
 import GiniBankAPILibrary
+import GiniUtilites
+
 /**
  The `GiniColor` class allows to customize color for the light and the dark modes.
  */
@@ -162,7 +164,7 @@ import GiniBankAPILibrary
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
-    @objc public var logger: GiniLogger = DefaultLogger()
+    public var logger: GiniLogger = DefaultLogger(prefix: "[GiniCapture SDK]")
 
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,

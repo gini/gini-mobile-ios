@@ -7,6 +7,7 @@
 
 import TrustKit
 import GiniBankAPILibrary
+import GiniUtilites
 
 public extension GiniBankAPI.Builder {
     
