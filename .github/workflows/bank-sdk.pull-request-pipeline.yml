@@ -8,9 +8,13 @@ on:
       - 'BankAPILibrary/**'
   workflow_dispatch:
 
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref }}-pull-request
+#   cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-pull-request
-  cancel-in-progress: ${{ !contains(github.ref, 'refs/tags/')}}
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
 
 jobs:
   check-bank-api-libray:
