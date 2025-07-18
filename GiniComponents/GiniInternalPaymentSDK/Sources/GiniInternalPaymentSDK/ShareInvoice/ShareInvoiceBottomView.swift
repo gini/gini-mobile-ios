@@ -159,7 +159,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     }
     
     private func setupAccessibility() {
-        accessibilityElements = [
+        view.accessibilityElements = [
             titleLabel,
             qrImageView,
             continueButton,

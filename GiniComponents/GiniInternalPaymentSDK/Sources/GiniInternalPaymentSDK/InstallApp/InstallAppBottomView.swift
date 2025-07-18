@@ -178,7 +178,7 @@ public final class InstallAppBottomView: GiniBottomSheetViewController {
     }
 
     private func setupAccessibility() {
-        accessibilityElements = [
+        view.accessibilityElements = [
             titleLabel,
             bankIconImageView,
             moreInformationLabel,
