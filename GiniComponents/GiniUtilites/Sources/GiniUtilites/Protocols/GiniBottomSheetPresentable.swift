@@ -98,10 +98,19 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
         /// For iOS versions prior to 15, the view controller will be presented as a standard modal sheet
         if #available(iOS 15, *),
            let presentationController = sheetPresentationController {
-            presentationController.detents = [shouldIncludeLargeDetent ? .large() : .medium()]
             presentationController.prefersGrabberVisible = shouldShowDragIndicator
             presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
             presentationController.prefersEdgeAttachedInCompactHeight = !shouldShowInFullScreenInLandscapeMode
+            
+            if #available(iOS 16, *) {
+                let halfScreenDetent = UISheetPresentationController.Detent.custom { context in
+                    self.view.bounds.height / 2
+                }
+                
+                presentationController.detents = [shouldIncludeLargeDetent ? .large() : halfScreenDetent]
+            } else {
+                presentationController.detents = [shouldIncludeLargeDetent ? .large() : .medium()]
+            }
         }
     }
     
@@ -116,6 +125,7 @@ public extension GiniBottomSheetPresentable where Self: UIViewController {
                 return height
             }
             
+            presentationController.prefersGrabberVisible = shouldShowDragIndicator
             presentationController.detents = [customDetent]
             presentationController.selectedDetentIdentifier = identifier
         }
