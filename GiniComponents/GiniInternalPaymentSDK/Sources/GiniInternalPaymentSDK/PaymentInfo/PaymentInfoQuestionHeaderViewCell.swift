@@ -67,6 +67,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         titleLabel.textColor = viewModel.titleColor
         titleLabel.font = viewModel.titleFont
         extendedImageView.image = viewModel.extendedIcon
+        extendedImageView.tintColor = viewModel.iconTintColor
         accessibilityLabel = viewModel.titleText
     }
     
@@ -97,12 +98,15 @@ struct PaymentInfoQuestionHeaderViewModel {
     let titleFont: UIFont
     let titleColor: UIColor
     let extendedIcon: UIImage
+    let iconTintColor: UIColor
 
-    init(titleText: String, titleFont: UIFont, titleColor: UIColor, extendedIcon: UIImage) {
+
+    init(titleText: String, titleFont: UIFont, titleColor: UIColor, extendedIcon: UIImage, iconTintColor: UIColor) {
         self.titleText = titleText
         self.titleFont = titleFont
         self.titleColor = titleColor
-        self.extendedIcon = extendedIcon
+        self.extendedIcon = extendedIcon.withRenderingMode(.alwaysTemplate)
+        self.iconTintColor = iconTintColor
     }
 }
 
