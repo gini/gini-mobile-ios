@@ -112,7 +112,8 @@ public final class PaymentInfoViewModel {
         PaymentInfoQuestionHeaderViewModel(titleText: questions[index].title, 
                                            titleFont: configuration.questionHeaderFont,
                                            titleColor: configuration.questionHeaderTitleColor,
-                                           extendedIcon: questions[index].isExtended ? configuration.questionHeaderMinusIcon : configuration.questionHeaderPlusIcon)
+                                           extendedIcon: questions[index].isExtended ? configuration.questionHeaderMinusIcon : configuration.questionHeaderPlusIcon,
+                                           iconTintColor: configuration.questionHeaderIconTintColor)
     }
 
     func infoBankCellModel(at index: Int) -> PaymentInfoBankCollectionViewCellModel {
