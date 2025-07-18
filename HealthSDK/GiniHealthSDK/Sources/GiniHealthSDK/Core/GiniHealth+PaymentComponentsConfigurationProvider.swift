@@ -101,7 +101,8 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             separatorColor: GiniColor.standard5.uiColor(),
             backgroundColor: GiniColor.standard7.uiColor(),
             closeIcon: GiniHealthImage.close.preferredUIImage(),
-            closeIconTintColor: GiniColor.standard2.uiColor()
+            closeIconTintColor: GiniColor.standard2.uiColor(),
+            questionHeaderIconTintColor: GiniColor.accent1.uiColor()
         )
     }
 
@@ -136,7 +137,7 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
     public var paymentReviewConfiguration: PaymentReviewConfiguration {
         PaymentReviewConfiguration(
             loadingIndicatorStyle: UIActivityIndicatorView.Style.large,
-            loadingIndicatorColor: GiniHealthColorPalette.accent1.preferredColor(),
+            loadingIndicatorColor: GiniColor.accent1.uiColor(),
             infoBarLabelTextColor: GiniHealthColorPalette.dark7.preferredColor(),
             infoBarBackgroundColor: GiniColor.success1.uiColor(),
             mainViewBackgroundColor: GiniColor.standard7.uiColor(),
