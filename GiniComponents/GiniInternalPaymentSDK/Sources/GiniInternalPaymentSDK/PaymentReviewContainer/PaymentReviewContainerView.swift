@@ -5,7 +5,7 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-
+import Combine
 import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
@@ -98,6 +98,8 @@ public final class PaymentReviewContainerView: UIView {
 
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
+    
+    @Published var willShowLandscapeError = false
 
     public init(viewModel: PaymentReviewContainerViewModel) {
         self.viewModel = viewModel
@@ -111,6 +113,8 @@ public final class PaymentReviewContainerView: UIView {
         setupLayout(isPortrait: isPortrait)
         if shouldUpdateUI {
             configureUI()
+        } else {
+            updateErrorStateIfNeeded()
         }
     }
     
@@ -121,6 +125,14 @@ public final class PaymentReviewContainerView: UIView {
         case .collapsed:
             toggleExpandedViews(isHidden: true)
             resignAllInputFields()
+        }
+    }
+    
+    private func updateErrorStateIfNeeded() {
+        if UIDevice.isPortrait() {
+            validateAllInputFields()
+        } else {
+            hideErrorLabels()
         }
     }
 
@@ -219,8 +231,8 @@ public final class PaymentReviewContainerView: UIView {
         }
         
         paymentInfoStackView.addArrangedSubview(UIView())
-
-        self.addSubview(paymentInfoStackView)
+        
+        addSubview(paymentInfoStackView)
     }
     
     private func addBrandedViewToViewHierarchy() {
@@ -249,8 +261,8 @@ public final class PaymentReviewContainerView: UIView {
 
     private func setupContainerContraints() {
         NSLayoutConstraint.activate([
-            paymentInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : Constants.topBottomPaymentInfoContainerPadding),
-            paymentInfoStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : -Constants.topBottomPaymentInfoContainerPadding)
+            paymentInfoStackView.topAnchor.constraint(equalTo: topAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : Constants.topBottomPaymentInfoContainerPadding),
+            paymentInfoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : -Constants.topBottomPaymentInfoContainerPadding)
         ])
     }
 
@@ -285,8 +297,8 @@ public final class PaymentReviewContainerView: UIView {
 
         let isPortrait = orientation == .vertical
         let constraints = [
-            paymentInfoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: isPortrait ? Constants.leftRightPaymentInfoContainerPortraitPadding : Constants.leftRightPaymentInfoContainerLandscapePadding),
-            paymentInfoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: isPortrait ? -Constants.leftRightPaymentInfoContainerPortraitPadding : -Constants.leftRightPaymentInfoContainerLandscapePadding),
+            paymentInfoStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: isPortrait ? Constants.leftRightPaymentInfoContainerPortraitPadding : Constants.leftRightPaymentInfoContainerLandscapePadding),
+            paymentInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: isPortrait ? -Constants.leftRightPaymentInfoContainerPortraitPadding : -Constants.leftRightPaymentInfoContainerLandscapePadding),
             bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPortraitPadding),
             bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPortraitPadding),
         ]
@@ -304,12 +316,12 @@ public final class PaymentReviewContainerView: UIView {
     private func setupRecipientStackViewConstraints() {
         NSLayoutConstraint.activate([
             recipientTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
-            recipientErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
+            recipientErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
         ])
     }
 
     private func setupIbanAmountStackViewsConstraints() {
-        let amountTextFieldWidthConstraint = amountTextFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountPortraitWidth)
+        let amountTextFieldWidthConstraint = amountTextFieldView.widthAnchor.constraint(equalToConstant: Constants.amountPortraitWidth)
         amountTextFieldWidthConstraint.priority = .required - 1
         let amountErrorLabelWidthConstraint = amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountPortraitWidth)
         amountErrorLabelWidthConstraint.priority = .required - 1
@@ -317,8 +329,8 @@ public final class PaymentReviewContainerView: UIView {
             ibanTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             amountTextFieldWidthConstraint,
-            ibanErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
-            amountErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
+            ibanErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
             amountErrorLabelWidthConstraint
         ])
     }
@@ -326,7 +338,7 @@ public final class PaymentReviewContainerView: UIView {
     private func setupUsageStackViewConstraints() {
         NSLayoutConstraint.activate([
             usageTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
-            usageErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight)
+            usageErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight)
         ])
     }
     
@@ -334,8 +346,8 @@ public final class PaymentReviewContainerView: UIView {
         NSLayoutConstraint.activate([
             ibanTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
-            ibanErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
-            amountErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
+            ibanErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
         ])
     }
     
@@ -343,10 +355,10 @@ public final class PaymentReviewContainerView: UIView {
         NSLayoutConstraint.activate([
             amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             usageTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
-            amountTextFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountLandscapeWidth),
-            usageErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
-            amountErrorLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.errorLabelHeight),
-            amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountLandscapeWidth)
+            amountTextFieldView.widthAnchor.constraint(equalToConstant: Constants.amountLandscapeWidth),
+            usageErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountLandscapeWidth)
         ])
     }
 
@@ -561,10 +573,16 @@ public final class PaymentReviewContainerView: UIView {
             errorLabel = usageErrorLabel
             errorMessage = viewModel.strings.purposeErrorMessage
         }
-        if errorLabel.isHidden {
-            errorLabel.isHidden = false
-            errorLabel.text = errorMessage
+        
+        if UIDevice.isPortrait() {
+            if errorLabel.isHidden {
+                errorLabel.isHidden = false
+                errorLabel.text = errorMessage
+            }
+        } else {
+            showErrorBottomSheet(errorMessage: errorMessage)
         }
+        
         updateAmountIbanErrorState()
     }
 
@@ -585,6 +603,13 @@ public final class PaymentReviewContainerView: UIView {
         }
         disablePayButtonIfNeeded()
         updateAmountIbanErrorState()
+    }
+    
+    private func showErrorBottomSheet(errorMessage: String) {
+        willShowLandscapeError = true
+        let errorScreen = ErrorBottomSheet()
+        errorScreen.configure(errorMessage: errorMessage, font: viewModel.configuration.errorLabelFont)
+        parentViewController?.giniTopMostViewController().present(errorScreen, animated: true)
     }
 
     // MARK: - Pay button
@@ -607,11 +632,17 @@ public final class PaymentReviewContainerView: UIView {
         case .usageFieldTag:
             errorLabel = usageErrorLabel
         }
-        if errorLabel.isHidden {
-            errorLabel.isHidden = false
+        
+        if UIDevice.isPortrait() {
+            if errorLabel.isHidden {
+                errorLabel.isHidden = false
 
-            errorLabel.text = errorMessage
+                errorLabel.text = errorMessage
+            }
+        } else {
+            showErrorBottomSheet(errorMessage: errorMessage)
         }
+        
         updateAmountIbanErrorState()
     }
 
@@ -712,9 +743,9 @@ public final class PaymentReviewContainerView: UIView {
     private func buildErrorLabel() -> UILabel {
         let label = UILabel()
         label.font = viewModel.configuration.errorLabelFont
-        label.enableScaling()
         label.textColor = viewModel.configuration.errorLabelTextColor
-        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 2
         return label
     }
 
@@ -915,9 +946,9 @@ extension PaymentReviewContainerView {
         static let leftRightPaymentInfoContainerLandscapePadding = 56.0
         static let topBottomPaymentInfoContainerPadding = 16.0
         static let textFieldHeight = 56.0
-        static let errorLabelHeight = 42.0
+        static let errorLabelHeight = 20.0
         static let amountPortraitWidth = 95.0
-        static let amountLandscapeWidth = 120.0
+        static let amountLandscapeWidth = 160.0
         static let animationDuration: CGFloat = 0.3
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let heightToolbar = 40.0
@@ -927,5 +958,93 @@ extension PaymentReviewContainerView {
         static let errorTopMargin = 9.0
         static let lockIconHeight = 11.0
         static let buttonsSpacing = 8.0
+    }
+}
+
+/// Private class for showing error messages in a bottom sheet when the user is in landscape mode.
+/// Making it private since it is a temporary solution for the landscape mode error handling only on this screen.
+private class ErrorBottomSheet: GiniBottomSheetViewController {
+    
+    private let scrollView: EmptyScrollView = {
+        EmptyScrollView()
+    }()
+    
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 16)
+        label.adjustsFontForContentSizeCategory = true
+        label.textColor = .label
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    var shouldShowDragIndicator: Bool {
+        true
+    }
+    
+    var shouldShowInFullScreenInLandscapeMode: Bool {
+        false
+    }
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .systemBackground
+        addScrollView()
+        bindToSizeUpdates()
+        addErrorLabel()
+        configureBottomSheet(shouldIncludeLargeDetent: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        startErrorDismiss()
+    }
+    
+    func configure(errorMessage: String, font: UIFont) {
+        errorLabel.font = font
+        errorLabel.text = errorMessage
+    }
+    
+    
+    func addScrollView() {
+        view.addSubview(scrollView)
+        
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    func addErrorLabel() {
+        scrollView.addContentSubview(errorLabel)
+        
+        NSLayoutConstraint.activate([
+            errorLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            errorLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            errorLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 32),
+            errorLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16.0)
+        ])
+    }
+    
+    func bindToSizeUpdates() {
+        scrollView.$size
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] size in
+                self?.updateBottomSheetHeight(size.height)
+            }.store(in: &cancellables)
+    }
+    
+    func startErrorDismiss() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            self?.dismiss(animated: true)
+        }
     }
 }

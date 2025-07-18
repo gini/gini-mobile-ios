@@ -11,7 +11,7 @@ import GiniUtilites
 
 public final class PoweredByGiniView: UIView {
     private let viewModel: PoweredByGiniViewModel
-    private let mainContainer = EmptyView()
+    private let mainContainer = AccessibleView()
 
     private lazy var poweredByGiniLabel: UILabel = {
         let label = UILabel()
@@ -21,6 +21,7 @@ public final class PoweredByGiniView: UIView {
         label.font = viewModel.configuration.poweredByGiniLabelFont
         label.numberOfLines = Constants.textNumberOfLines
         label.adjustsFontSizeToFitWidth = true
+        label.isAccessibilityElement = false
         label.textAlignment = .right
         return label
     }()
@@ -37,6 +38,7 @@ public final class PoweredByGiniView: UIView {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupView()
+        setupAccessibility()
     }
     
     required init?(coder: NSCoder) {
@@ -63,6 +65,12 @@ public final class PoweredByGiniView: UIView {
             giniImageView.widthAnchor.constraint(equalToConstant: giniImageView.frame.width),
             giniImageView.centerYAnchor.constraint(equalTo: mainContainer.centerYAnchor)
         ])
+    }
+    
+    private func setupAccessibility() {
+        mainContainer.isAccessibilityElement = true
+        mainContainer.accessibilityLabel = viewModel.strings.poweredByGiniText + "Gini"
+        mainContainer.accessibilityElements = [poweredByGiniLabel, giniImageView]
     }
 }
 
