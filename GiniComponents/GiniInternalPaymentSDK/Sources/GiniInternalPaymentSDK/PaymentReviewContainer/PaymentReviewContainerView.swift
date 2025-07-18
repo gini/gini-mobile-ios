@@ -994,7 +994,7 @@ private class ErrorBottomSheet: GiniBottomSheetViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        addSCrollView()
+        addScrollView()
         bindToSizeUpdates()
         addErrorLabel()
         configureBottomSheet(shouldIncludeLargeDetent: true)
@@ -1003,7 +1003,7 @@ private class ErrorBottomSheet: GiniBottomSheetViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        startTimer()
+        startErrorDismiss()
     }
     
     func configure(errorMessage: String, font: UIFont) {
@@ -1012,7 +1012,7 @@ private class ErrorBottomSheet: GiniBottomSheetViewController {
     }
     
     
-    func addSCrollView() {
+    func addScrollView() {
         view.addSubview(scrollView)
         
         NSLayoutConstraint.activate([
@@ -1042,8 +1042,8 @@ private class ErrorBottomSheet: GiniBottomSheetViewController {
             }.store(in: &cancellables)
     }
     
-    func startTimer() {
-        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
+    func startErrorDismiss() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
             self?.dismiss(animated: true)
         }
     }
