@@ -99,7 +99,8 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             linksFont: GiniMerchantConfiguration.shared.font(for: .linkBold),
             linksColor: GiniColor.accent1.uiColor(),
             separatorColor: GiniColor.standard5.uiColor(),
-            backgroundColor: GiniColor.standard7.uiColor()
+            backgroundColor: GiniColor.standard7.uiColor(),
+            questionHeaderIconTintColor: GiniColor.accent1.uiColor()
         )
     }
     
