@@ -647,7 +647,7 @@ fileprivate extension PaymentReviewViewController {
         barLineView.addGestureRecognizer(tapGesture)
     }
     
-    func setupAccessiblityToCollapse() {
+    func setupAccessibilityToCollapse() {
         barLineView.isUserInteractionEnabled = true
         barLineView.isAccessibilityElement = true
         barLineView.accessibilityTraits = .button
@@ -772,7 +772,7 @@ extension PaymentReviewViewController {
         let isWithoutDocument = model.displayMode == .bottomSheet
         
         if isDocumentAndLandscapeOrientation {
-            setupAccessiblityToCollapse()
+            setupAccessibilityToCollapse()
         } else if isWithoutDocument {
             setupAccessibilityToDismiss()
         }
