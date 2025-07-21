@@ -76,7 +76,9 @@ extension GiniHealth: PaymentComponentsConfigurationProvider {
             titlePaymentInfoTextColor: GiniColor.standard4.uiColor(),
             subtitlePaymentInfoTextColor: GiniColor.standard1.uiColor(),
             titlepaymentInfoFont: GiniHealthConfiguration.shared.font(for: .captions2),
-            subtitlePaymentInfoFont: GiniHealthConfiguration.shared.font(for: .body2)
+            subtitlePaymentInfoFont: GiniHealthConfiguration.shared.font(for: .body2),
+            closeIcon: GiniHealthImage.close.preferredUIImage(),
+            closeIconAccentColor: GiniColor.standard2.uiColor()
         )
     }
 

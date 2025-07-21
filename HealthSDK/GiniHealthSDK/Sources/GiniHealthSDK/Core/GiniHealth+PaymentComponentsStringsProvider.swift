@@ -93,7 +93,9 @@ extension GiniHealth: PaymentComponentsStringsProvider {
             purposeLabelText: NSLocalizedStringPreferredFormat("gini.health.reviewscreen.usage.placeholder",
                                                                comment: "placeholder text for usage input field"),
             accessibilityQRCodeImageText: NSLocalizedStringPreferredFormat("gini.health.paymentcomponent.share.invoice.qr.code.image",
-                                                                           comment: "accessibility label for qr code image")
+                                                                           comment: "accessibility label for qr code image"),
+            accessibilityCloseIconText: NSLocalizedStringPreferredFormat("gini.health.close.button.accessibility.label",
+                                                                         comment: "close button accessibility label text")
         )
     }
 

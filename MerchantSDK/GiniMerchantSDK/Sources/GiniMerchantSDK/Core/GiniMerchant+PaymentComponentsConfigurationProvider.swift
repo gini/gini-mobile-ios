@@ -76,7 +76,9 @@ extension GiniMerchant: PaymentComponentsConfigurationProvider {
             titlePaymentInfoTextColor: GiniColor.standard4.uiColor(),
             subtitlePaymentInfoTextColor: GiniColor.standard1.uiColor(),
             titlepaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .captions2),
-            subtitlePaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .body2)
+            subtitlePaymentInfoFont: GiniMerchantConfiguration.shared.font(for: .body2),
+            closeIcon: GiniMerchantImage.close.preferredUIImage(),
+            closeIconAccentColor: GiniColor.standard2.uiColor()
         )
     }
     
