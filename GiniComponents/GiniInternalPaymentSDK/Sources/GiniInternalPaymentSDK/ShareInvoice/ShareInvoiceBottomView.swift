@@ -160,9 +160,10 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     /// This is to notify VoiceOver that the layout changed. The delay is needed to ensure that
     /// VoiceOver has already finished processing the UI changes.
     private func notifyLayoutChanged() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
             guard let self = self else { return }
-            UIAccessibility.post(notification: .layoutChanged, argument: contentStackView)
+            self.accessibilityViewIsModal = true
+            UIAccessibility.post(notification: .layoutChanged, argument: closeButton)
         }
     }
     
@@ -176,6 +177,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     
     private func setupAccessibility() {
         view.accessibilityElements = [
+            closeButton,
             titleLabel,
             qrImageView,
             continueButton,
