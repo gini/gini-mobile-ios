@@ -16,6 +16,22 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
 
     private var portraitConstraints: [NSLayoutConstraint] = []
     private var landscapeConstraints: [NSLayoutConstraint] = []
+    
+    private lazy var closeButtonContainerView: EmptyView = {
+        let view = EmptyView()
+        return view
+    }()
+    
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(viewModel.configuration.closeIcon.withRenderingMode(.alwaysTemplate),
+                        for: .normal)
+        button.addTarget(self, action: #selector(didTapOnCloseButton), for: .touchUpInside)
+        button.tintColor = viewModel.configuration.closeIconAccentColor
+        button.accessibilityLabel = viewModel.strings.accessibilityCloseIconText
+        return button
+    }()
 
     private lazy var scrollView: EmptyScrollView = {
         let scrollView = EmptyScrollView()
@@ -218,6 +234,21 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
     private func setupViewVisibility() {
         poweredByGiniView.isHidden = !viewModel.shouldShowBrandedView
     }
+    
+    private func addCloseButton() {
+        closeButtonContainerView.addSubview(closeButton)
+        
+        NSLayoutConstraint.activate([
+            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeIconSize),
+            closeButton.heightAnchor.constraint(equalToConstant: Constants.closeIconSize),
+            closeButton.topAnchor.constraint(equalTo: closeButtonContainerView.topAnchor),
+            closeButton.bottomAnchor.constraint(equalTo: closeButtonContainerView.bottomAnchor),
+            closeButton.trailingAnchor.constraint(equalTo: closeButtonContainerView.trailingAnchor,
+                                                  constant: -Constants.viewPaddingConstraint),
+        ])
+        
+        contentStackView.addArrangedSubview(closeButtonContainerView)
+    }
 
     fileprivate func setupSplitStackViewHierarchy() {
         splitStacKView.removeAllArrangedSubviews()
@@ -225,6 +256,7 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         
         splitStacKView.addArrangedSubview(topStackView)
         splitStacKView.addArrangedSubview(bottomStackView)
+        addCloseButton()
         contentStackView.addArrangedSubview(titleView)
         contentStackView.addArrangedSubview(splitStacKView)
     }
@@ -395,6 +427,12 @@ public final class ShareInvoiceBottomView: GiniBottomSheetViewController {
         openPaymentProvidersAppStoreLink(urlString: viewModel.selectedPaymentProvider?.appStoreUrlIOS)
     }
     
+    @objc
+    private func didTapOnCloseButton() {
+        dismiss(animated: true)
+    }
+        
+    
     private func openPaymentProvidersAppStoreLink(urlString: String?) {
         guard let urlString = urlString else {
             print("AppStore link unavailable for this payment provider")
@@ -511,5 +549,6 @@ extension ShareInvoiceBottomView {
         static let paymentInfoCornerRadius = 16.0
         static let paymentInfoFieldsSpacing = 4.0
         static let landscapePaddingRatio = 0.15
+        static let closeIconSize = 24.0
     }
 }
