@@ -169,6 +169,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             setContent(content: paymentInfoContainerView)
         }
         
+        configureSheetGrabberAccessibility()
         setupInitialLayout()
     }
 
@@ -762,15 +763,19 @@ extension PaymentReviewViewController {
             self.collectionView.contentOffset = .zero
             self.isViewRotating = false
         }, completion: { [weak self] _ in
-            let isDocumentAndLandscapeOrientation = self?.model.displayMode == .documentCollection && !UIDevice.isPortrait()
-            let isWithoutDocument = self?.model.displayMode == .bottomSheet
-            
-            if isDocumentAndLandscapeOrientation {
-                self?.setupAccessiblityToCollapse()
-            } else if isWithoutDocument {
-                self?.setupAccessibilityToDismiss()
-            }
+            self?.configureSheetGrabberAccessibility()
         })
+    }
+    
+    private func configureSheetGrabberAccessibility() {
+        let isDocumentAndLandscapeOrientation = model.displayMode == .documentCollection && !UIDevice.isPortrait()
+        let isWithoutDocument = model.displayMode == .bottomSheet
+        
+        if isDocumentAndLandscapeOrientation {
+            setupAccessiblityToCollapse()
+        } else if isWithoutDocument {
+            setupAccessibilityToDismiss()
+        }
     }
 }
 
