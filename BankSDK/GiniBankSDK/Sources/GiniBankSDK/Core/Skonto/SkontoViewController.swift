@@ -146,6 +146,7 @@ final class SkontoViewController: UIViewController {
         sendAnalyticsScreenShown()
     }
 
+    // Called when the view's safe area insets change
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
         if firstAppearance {
