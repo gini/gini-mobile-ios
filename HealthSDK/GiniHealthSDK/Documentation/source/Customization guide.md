@@ -18,7 +18,7 @@ We provide a global color palette `GiniColors.xcassets` which you are free to ov
 For example, if you want to override Accent01 color you need to create an Accent01.colorset with your wished value in your main bundle.
 The custom colors are then applied to all screens.
 
-Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/tHVSZ2BOlnx1mrfFrWeo87/iOS-Gini-Health-SDK-5.6-UI-Customization--WCAG-2.1-?node-id=17097-10318&t=ENcTlgQXNxzCSinS-0)).
+Find the names of the color resources in the color palette (you can also view it in Figma [here](https://www.figma.com/design/tHVSZ2BOlnx1mrfFrWeo87/iOS-Gini-Health-SDK-5.6-UI-Customization--WCAG-2.1-?node-id=17116-10662&t=c9DZis1WfjNZMiQi-0)).
 
 ### Images
 
@@ -30,7 +30,7 @@ If you want to override specific SDK images:
 ### Typography
 
 We provide global typography based on text appearance styles from UIFont.TextStyle.
-Preview our typography and find the names of the style resources (you can also view it in Figma [here](https://www.figma.com/design/tHVSZ2BOlnx1mrfFrWeo87/iOS-Gini-Health-SDK-5.6-UI-Customization--WCAG-2.1-?node-id=17097-10410&t=ENcTlgQXNxzCSinS-0)).
+Preview our typography and find the names of the style resources (you can also view it in Figma [here](https://www.figma.com/design/tHVSZ2BOlnx1mrfFrWeo87/iOS-Gini-Health-SDK-5.6-UI-Customization--WCAG-2.1-?node-id=17116-10470&t=c9DZis1WfjNZMiQi-0)).
 
 In the example below you can see to override a font for `.body1`
 
