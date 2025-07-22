@@ -169,6 +169,7 @@ public final class PaymentReviewViewController: BottomSheetViewController, UIGes
             setContent(content: paymentInfoContainerView)
         }
         
+        configureSheetGrabberAccessibility()
         setupInitialLayout()
     }
 
@@ -646,7 +647,7 @@ fileprivate extension PaymentReviewViewController {
         barLineView.addGestureRecognizer(tapGesture)
     }
     
-    func setupAccessiblityToCollapse() {
+    func setupAccessibilityToCollapse() {
         barLineView.isUserInteractionEnabled = true
         barLineView.isAccessibilityElement = true
         barLineView.accessibilityTraits = .button
@@ -762,15 +763,19 @@ extension PaymentReviewViewController {
             self.collectionView.contentOffset = .zero
             self.isViewRotating = false
         }, completion: { [weak self] _ in
-            let isDocumentAndLandscapeOrientation = self?.model.displayMode == .documentCollection && !UIDevice.isPortrait()
-            let isWithoutDocument = self?.model.displayMode == .bottomSheet
-            
-            if isDocumentAndLandscapeOrientation {
-                self?.setupAccessiblityToCollapse()
-            } else if isWithoutDocument {
-                self?.setupAccessibilityToDismiss()
-            }
+            self?.configureSheetGrabberAccessibility()
         })
+    }
+    
+    private func configureSheetGrabberAccessibility() {
+        let isDocumentAndLandscapeOrientation = model.displayMode == .documentCollection && !UIDevice.isPortrait()
+        let isWithoutDocument = model.displayMode == .bottomSheet
+        
+        if isDocumentAndLandscapeOrientation {
+            setupAccessibilityToCollapse()
+        } else if isWithoutDocument {
+            setupAccessibilityToDismiss()
+        }
     }
 }
 
