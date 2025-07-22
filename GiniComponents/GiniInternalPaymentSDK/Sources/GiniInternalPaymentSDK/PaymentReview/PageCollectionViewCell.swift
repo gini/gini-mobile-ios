@@ -17,7 +17,7 @@ public class PageCollectionViewCell: UICollectionViewCell, ReusableView {
         return iv
     }()
 
-    fileprivate func addImageView() {
+    private func addImageView() {
         contentView.addSubview(pageImageView)
     }
     
