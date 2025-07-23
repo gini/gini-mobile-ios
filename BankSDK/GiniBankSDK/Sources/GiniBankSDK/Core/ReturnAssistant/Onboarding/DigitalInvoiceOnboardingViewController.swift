@@ -206,6 +206,8 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         if GiniBankConfiguration.shared.bottomNavigationBarEnabled {
             navigationBarHeightConstraint.constant = getBottomBarHeight()
         }
+        updateAccessibilityElements()
+
         guard UIDevice.current.isIpad else { return }
         coordinator.animate(alongsideTransition: { [weak self] _ in
             guard let self = self else { return }
@@ -216,6 +218,15 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                                                                                 multiplier: self.widthMultiplier)
             self.scrollViewWidthAnchor.isActive = true
         })
+    }
+
+    private func updateAccessibilityElements() {
+        let isLandscape = UIDevice.current.isLandscape
+        if isLandscape {
+            view.accessibilityElements = [horizontalItem]
+        } else {
+            view.accessibilityElements = [topImageView as Any, firstLabel as Any, secondLabel as Any, doneButton as Any]
+        }
     }
 
     @objc func doneAction(_ sender: UIButton!) {
