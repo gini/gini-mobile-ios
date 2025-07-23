@@ -39,9 +39,11 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
 
         stack.translatesAutoresizingMaskIntoConstraints = false
         doneButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        let widthConstraint = doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.doneButtonMinWidth)
-            widthConstraint.priority = .defaultHigh
+
+        let widthConstraint = doneButton.widthAnchor
+            .constraint(greaterThanOrEqualToConstant: Constants.doneButtonMinWidth)
+
+        widthConstraint.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
             widthConstraint,
@@ -157,8 +159,10 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
             // Constraints for the scroll view itself
             rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
             rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
-            rightStackViewContainerScrollable.leadingAnchor.constraint(equalTo: topImageView.trailingAnchor,
-                                                                       constant: Constants.horizontalSpacingBetweenImageViewAndText),
+            rightStackViewContainerScrollable.leadingAnchor.constraint(
+                equalTo: topImageView.trailingAnchor,
+                constant: Constants.horizontalSpacingBetweenImageViewAndText
+            ),
             rightStackViewContainerScrollable.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
     }
