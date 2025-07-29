@@ -229,8 +229,17 @@ final class AppCoordinator: Coordinator {
         screenAPICoordinator.start()
 	
         add(childCoordinator: screenAPICoordinator as Coordinator)
-		screenAPICoordinator.rootViewController.modalPresentationStyle = .overFullScreen
-		screenAPICoordinator.rootViewController.modalTransitionStyle = .coverVertical
+		//screenAPICoordinator.rootViewController.modalPresentationStyle = .overFullScreen
+		//screenAPICoordinator.rootViewController.modalTransitionStyle = .coverVertical
+        
+        if #available(iOS 15, *),
+           let presentationController = screenAPICoordinator.rootViewController.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
+        
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
     

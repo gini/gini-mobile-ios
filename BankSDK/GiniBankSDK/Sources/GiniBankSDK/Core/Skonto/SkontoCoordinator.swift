@@ -34,7 +34,15 @@ final class SkontoCoordinator: Coordinator {
     private var navigationController: UINavigationController
 
     func start() {
-        navigationController.pushViewController(rootViewController, animated: true)
+        if #available(iOS 15, *),
+           let presentationController = rootViewController.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
+        navigationController.giniTopMostViewController().present(rootViewController, animated: true)
+        //navigationController.pushViewController(rootViewController, animated: true)
     }
 
     init(_ navigationController: UINavigationController,
@@ -50,7 +58,15 @@ final class SkontoCoordinator: Coordinator {
 extension SkontoCoordinator: SkontoViewModelDelegate {
     func didTapHelp() {
         let helpViewController = SkontoHelpViewController()
-        navigationController.pushViewController(helpViewController, animated: true)
+        //navigationController.pushViewController(helpViewController, animated: true)
+        if #available(iOS 15, *),
+           let presentationController = helpViewController.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
+        navigationController.giniTopMostViewController().present(helpViewController, animated: true)
     }
     func didTapDocumentPreview(on viewModel: SkontoViewModel) {
         delegate?.didTapDocumentPreview(self, viewModel)

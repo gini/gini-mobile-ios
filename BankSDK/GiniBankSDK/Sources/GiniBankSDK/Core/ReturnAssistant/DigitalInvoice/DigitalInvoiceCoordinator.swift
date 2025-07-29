@@ -36,7 +36,17 @@ final class DigitalInvoiceCoordinator: Coordinator {
     private var navigationController: UINavigationController
 
     func start() {
-        navigationController.pushViewController(rootViewController, animated: true)
+        //navigationController.pushViewController(rootViewController, animated: true)
+        if #available(iOS 15, *),
+           let presentationController = rootViewController.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
+        
+        navigationController.giniTopMostViewController().present(rootViewController,
+                                                         animated: true)
     }
 
     // swiftlint:disable force_cast
@@ -68,7 +78,18 @@ final class DigitalInvoiceCoordinator: Coordinator {
         storyboard.instantiateViewController(withIdentifier: onboardingViewControllerName)
         as! DigitalInvoiceOnboardingViewController
         digitalInvoiceOnboardingViewController.delegate = digitalInvoiceViewController
-        navigationController.present(digitalInvoiceOnboardingViewController, animated: true)
+        //navigationController.present(digitalInvoiceOnboardingViewController, animated: true)
+        
+        if #available(iOS 15, *),
+           let presentationController = digitalInvoiceOnboardingViewController.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
+        
+        navigationController.giniTopMostViewController().present(digitalInvoiceOnboardingViewController,
+                                                         animated: true)
     }
 
     // swiftlint:enable force_cast
@@ -83,7 +104,18 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
         let digitalInvoiceHelViewModel = DigitalInvoiceHelpViewModel()
         let digitalInvoiceHelpViewController = DigitalInvoiceHelpViewController(viewModel: digitalInvoiceHelViewModel)
 
-        navigationController.pushViewController(digitalInvoiceHelpViewController, animated: true)
+        //navigationController.pushViewController(digitalInvoiceHelpViewController, animated: true)
+        
+        if #available(iOS 15, *),
+           let presentationController = digitalInvoiceHelpViewController.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
+        
+        navigationController.giniTopMostViewController().present(digitalInvoiceHelpViewController,
+                                                         animated: true)
     }
 
     func didTapCancel(on viewModel: DigitalInvoiceViewModel) {
@@ -111,6 +143,7 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
         viewModel.delegate = self
         let viewController = EditLineItemViewController(lineItemViewModel: viewModel)
         viewController.modalPresentationStyle = .overCurrentContext
+        
         navigationController.present(viewController, animated: true)
     }
 }
@@ -149,11 +182,22 @@ extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
 extension DigitalInvoiceCoordinator: SkontoViewModelDelegate {
     func didTapHelp() {
         let helpViewController = SkontoHelpViewController()
-        navigationController.pushViewController(helpViewController, animated: true)
+        //navigationController.pushViewController(helpViewController, animated: true)
+        
+        if #available(iOS 15, *),
+           let presentationController = helpViewController.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
+        
+        navigationController.giniTopMostViewController().present(helpViewController,
+                                                         animated: true)
     }
 
     func didTapBack() {
-        self.navigationController.popViewController(animated: true)
+        self.navigationController.dismiss(animated: true)
     }
 
     func didTapDocumentPreview(on viewModel: SkontoViewModel) {

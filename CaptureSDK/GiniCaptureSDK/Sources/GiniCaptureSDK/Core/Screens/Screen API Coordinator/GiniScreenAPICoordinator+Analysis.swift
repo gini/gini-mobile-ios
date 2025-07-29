@@ -98,7 +98,17 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                                                        type: errorType,
                                                        viewModel: viewModel)
 
-        screenAPINavigationController.pushViewController(viewController, animated: animated)
+        //screenAPINavigationController.pushViewController(viewController, animated: animated)
+        if #available(iOS 15, *),
+           let presentationController = viewController.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
+        
+        screenAPINavigationController.giniTopMostViewController().present(viewController,
+                                                         animated: true)
     }
 
     public func tryDisplayNoResultsScreen() {
@@ -126,8 +136,19 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             DispatchQueue.main.async {
                 self.noResultsViewController = noResultsScreen
                 self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .noResults))
-                self.screenAPINavigationController.pushViewController(
-                    noResultsScreen, animated: true)
+                //self.screenAPINavigationController.pushViewController(
+                //    noResultsScreen, animated: true)
+                
+                if #available(iOS 15, *),
+                   let presentationController = noResultsScreen.sheetPresentationController {
+                    presentationController.prefersGrabberVisible = true
+                    presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+                    presentationController.prefersEdgeAttachedInCompactHeight = false
+                    presentationController.detents = [.large()]
+                }
+                
+                self.screenAPINavigationController.giniTopMostViewController().present(noResultsScreen,
+                                                                 animated: true)
             }
         }
     }

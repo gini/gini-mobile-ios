@@ -302,8 +302,16 @@ extension GiniScreenAPICoordinator {
         let menuItems = helpMenuViewController.dataSource.items
         let helpViewControllerForOneItem = helpItemViewController(for: helpMenuViewController.dataSource.items[0])
         let helpViewControllerToPush = menuItems.count == 1 ? helpViewControllerForOneItem : helpMenuViewController
-
-        screenAPINavigationController.pushViewController(helpViewControllerToPush, animated: true)
+        
+        if #available(iOS 15, *),
+           let presentationController = helpViewControllerToPush.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
+        
+        screenAPINavigationController.present(helpViewControllerToPush, animated: true)
 
     }
 
@@ -326,7 +334,18 @@ extension GiniScreenAPICoordinator {
         }
         analysisViewController = createAnalysisScreen(withDocument: firstDocument)
         analysisViewController?.trackingDelegate = trackingDelegate
-        screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
+        //screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
+        
+        if #available(iOS 15, *),
+           let presentationController = analysisViewController?.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
+        
+        screenAPINavigationController.giniTopMostViewController().present(analysisViewController!,
+                                                         animated: true)
     }
 
     @objc func backToCamera() {
@@ -366,11 +385,47 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
 
 }
 
+public extension UIViewController {
+    
+    func giniTopMostViewController() -> UIViewController {
+        if let navigation = self as? UINavigationController {
+            return navigation.visibleViewController?.giniTopMostViewController() ?? navigation
+        }
+        
+        if let tabBarController = self as? UITabBarController {
+            if let selectedTab = tabBarController.selectedViewController {
+                return selectedTab.giniTopMostViewController()
+            }
+            return tabBarController
+        }
+        
+        if let presentedViewController = self.presentedViewController {
+            return presentedViewController.giniTopMostViewController()
+        }
+        
+        if let pageViewController = self as? UIPageViewController,
+           let firstViewController = pageViewController.viewControllers?.first {
+            return firstViewController.giniTopMostViewController()
+        }
+        
+        return self
+    }
+}
+
 // MARK: - HelpMenuViewControllerDelegate
 
 extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
     func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuItem) {
-        screenAPINavigationController.pushViewController(helpItemViewController(for: item),
+        let vc = helpItemViewController(for: item)
+        if #available(iOS 15, *),
+           let presentationController = vc.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
+        
+        screenAPINavigationController.giniTopMostViewController().present(vc,
                                                          animated: true)
     }
 

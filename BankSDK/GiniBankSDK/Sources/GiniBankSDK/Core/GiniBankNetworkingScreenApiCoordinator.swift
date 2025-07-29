@@ -625,7 +625,15 @@ extension GiniBankNetworkingScreenApiCoordinator: SkontoCoordinatorDelegate {
         let screenTitle = SkontoDocumentPagesViewModel.screenTitle
         let viewController = DocumentPagesViewController(screenTitle: screenTitle,
                                                          errorButtonTitle: errorButtonTitle)
-        viewController.modalPresentationStyle = .overCurrentContext
+        //viewController.modalPresentationStyle = .overCurrentContext
+        
+        if #available(iOS 15, *),
+           let presentationController = viewController.sheetPresentationController {
+            presentationController.prefersGrabberVisible = true
+            presentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+            presentationController.prefersEdgeAttachedInCompactHeight = false
+            presentationController.detents = [.large()]
+        }
         screenAPINavigationController.present(viewController, animated: true)
 
         guard let documentPagesViewModel = skontoViewModel.documentPagesViewModel else {

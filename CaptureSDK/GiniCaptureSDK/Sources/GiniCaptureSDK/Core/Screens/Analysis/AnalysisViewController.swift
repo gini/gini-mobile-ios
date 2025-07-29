@@ -159,6 +159,7 @@ import UIKit
         super.viewWillDisappear(animated)
 
         removeCaptureSuggestions()
+        dismiss(animated: true)
     }
 
     public override func viewDidLayoutSubviews() {
