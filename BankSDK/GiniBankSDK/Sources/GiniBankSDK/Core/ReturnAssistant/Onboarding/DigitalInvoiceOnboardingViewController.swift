@@ -226,7 +226,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         if isLandscape {
             view.accessibilityElements = [horizontalItem]
         } else {
-            view.accessibilityElements = [topImageView as Any, firstLabel as Any, secondLabel as Any, doneButton as Any]
+            view.accessibilityElements = [topImageView, firstLabel, secondLabel, doneButton].compactMap { $0 }
         }
     }
 
