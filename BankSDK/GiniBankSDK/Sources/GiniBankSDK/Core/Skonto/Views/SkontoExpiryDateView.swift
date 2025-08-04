@@ -209,6 +209,5 @@ private extension SkontoExpiryDateView {
         static let numberOfMonths = 6
         static let withoutDiscountHintKey: String = "ginibank.skonto.editableField.accessibility"
         static let withoutDiscountHintComment: String = "Double tap to edit"
-
     }
 }
