@@ -248,7 +248,7 @@ private extension SkontoAmountToPayView {
         static let padding: CGFloat = 12
         static let stackViewSpacing: CGFloat = 4
         static let cornerRadius: CGFloat = 8
-        static let hintKey: String = "ginibank.skonto.discount.accessibility.hint.editableField"
+        static let hintKey: String = "ginibank.skonto.editableField.accessibility"
         static let hintComment: String = "Double tap to edit"
     }
 }

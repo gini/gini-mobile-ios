@@ -207,7 +207,7 @@ private extension SkontoExpiryDateView {
         static let imageSize: CGFloat = 22
         static let cornerRadius: CGFloat = 8
         static let numberOfMonths = 6
-        static let withoutDiscountHintKey: String = "ginibank.skonto.discount.accessibility.hint.editableField"
+        static let withoutDiscountHintKey: String = "ginibank.skonto.editableField.accessibility"
         static let withoutDiscountHintComment: String = "Double tap to edit"
 
     }
