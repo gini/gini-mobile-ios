@@ -60,7 +60,7 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
 
     /// This is needed to avoid the circular reference between this element and its container
     private var privateInputAccessoryView: UIView?
-    
+
     override var inputAccessoryView: UIView? {
         get {
             privateInputAccessoryView
@@ -165,7 +165,7 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         textField.isUserInteractionEnabled = isSkontoApplied
         calendarImageView.isHidden = !isSkontoApplied
         textField.text = dueDateString
-        
+
         if isSkontoApplied {
             accessibilityHint = NSLocalizedStringPreferredGiniBankFormat(Constants.withoutDiscountHintKey,
                                                                          comment: Constants.withoutDiscountHintComment)
