@@ -224,7 +224,7 @@
 
 "ginicapture.education.loading.accessibility" = "Analyzing invoice in progress";
 
-// MARK: - Document marked as paied warning
+// MARK: - Document marked as paid warning
 "ginicapture.document.paid.warning.title" = "Document marked as paid";
 "ginicapture.document.paid.warning.description" = "This document states that it has already been paid. Please check the note in the document to be sure.";
 "ginicapture.document.paid.warning.proceedButtonTitle" = "Proceed anyway";
