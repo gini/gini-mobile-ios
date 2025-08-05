@@ -292,18 +292,30 @@ final class SkontoViewController: UIViewController {
     }
 
     private func setupProceedContainerInLandscape() {
+
         proceedContainerView.removeFromSuperview()
         NSLayoutConstraint.deactivate(proceedContainerConstraints)
 
-        mainStackView.addArrangedSubview(proceedContainerView)
-        NSLayoutConstraint.activate([
-            proceedContainerView.leadingAnchor.constraint(equalTo: mainStackView.safeAreaLayoutGuide.leadingAnchor,
-                                                          constant: Constants.landscapeHorizontalPadding),
-            proceedContainerView.trailingAnchor.constraint(equalTo: mainStackView.safeAreaLayoutGuide.trailingAnchor,
-                                                           constant: -Constants.landscapeHorizontalPadding)
-        ])
+        // added proceedContainerView to self.view and expand full width for iPad
+        // just like iPhone on portrait
+        if UIDevice.current.isIpad {
+            attachProceedContainerViewIfNeeded()
 
-        updateScrollViewBottomToViewConstraint(to: view.safeAreaLayoutGuide.bottomAnchor)
+            updateScrollViewBottomToViewConstraint(to: proceedContainerView.topAnchor)
+        } else {
+
+            mainStackView.addArrangedSubview(proceedContainerView)
+            NSLayoutConstraint.activate([
+                proceedContainerView.leadingAnchor.constraint(equalTo: mainStackView.safeAreaLayoutGuide.leadingAnchor,
+                                                              constant: Constants.landscapeHorizontalPadding),
+                proceedContainerView.trailingAnchor.constraint(
+                    equalTo: mainStackView.safeAreaLayoutGuide.trailingAnchor,
+                    constant: -Constants.landscapeHorizontalPadding
+                )
+            ])
+
+            updateScrollViewBottomToViewConstraint(to: view.safeAreaLayoutGuide.bottomAnchor)
+        }
     }
 
     private func attachProceedContainerViewIfNeeded() {
