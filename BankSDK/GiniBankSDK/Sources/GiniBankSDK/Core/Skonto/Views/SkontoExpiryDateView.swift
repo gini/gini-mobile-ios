@@ -167,10 +167,9 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         textField.text = dueDateString
 
         if isSkontoApplied {
-            accessibilityHint = NSLocalizedStringPreferredGiniBankFormat(Constants.withoutDiscountHintKey,
-                                                                         comment: Constants.withoutDiscountHintComment)
+            accessibilityHint = Strings.accessibilityHint
         } else {
-            containerView.accessibilityHint = nil
+            accessibilityHint = nil
         }
     }
 
@@ -207,7 +206,12 @@ private extension SkontoExpiryDateView {
         static let imageSize: CGFloat = 22
         static let cornerRadius: CGFloat = 8
         static let numberOfMonths = 6
+    }
+
+    struct Strings {
         static let withoutDiscountHintKey: String = "ginibank.skonto.editableField.accessibility"
         static let withoutDiscountHintComment: String = "Double tap to edit"
+        static let accessibilityHint = NSLocalizedStringPreferredGiniBankFormat(withoutDiscountHintKey,
+                                                                                comment: withoutDiscountHintComment)
     }
 }
