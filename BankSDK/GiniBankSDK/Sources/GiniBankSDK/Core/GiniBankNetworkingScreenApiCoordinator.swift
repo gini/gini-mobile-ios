@@ -387,7 +387,7 @@ private extension GiniBankNetworkingScreenApiCoordinator {
     @MainActor
     private func presentNextScreen(extractionResult: ExtractionResult,
                                    delegate: GiniCaptureNetworkDelegate) {
-        // TODO: There is a separate ticket to show DcoumentMarkedAsPaidViewController based on a backend object
+        // TODO: There is a separate ticket to show DocumentMarkedAsPaidViewController based on a backend object
         // for now will be displayed every time
         presentDocumentMarkedAsPaidBottomSheet { [weak self] in
             guard let self else { return }
