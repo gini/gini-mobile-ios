@@ -168,7 +168,7 @@ final class SkontoViewController: UIViewController {
     }
 
     private func setupView() {
-        title = LocalizedStrings.screenTitle
+        title = Strings.screenTitle
         edgesForExtendedLayout = []
         view.backgroundColor = .giniColorScheme().background.primary.uiColor()
 
@@ -210,7 +210,7 @@ final class SkontoViewController: UIViewController {
         helpButton.addAction(self, #selector(helpButtonTapped))
         navigationItem.rightBarButtonItem = helpButton.barButton
 
-        let backButton = GiniBarButton(ofType: .back(title: LocalizedStrings.backButtonTitle))
+        let backButton = GiniBarButton(ofType: .back(title: Strings.backButtonTitle))
         backButton.addAction(self, #selector(backButtonTapped))
         navigationItem.leftBarButtonItem = backButton.barButton
     }
@@ -658,7 +658,7 @@ private extension SkontoViewController {
         }
     }
 
-    enum LocalizedStrings {
+    struct Strings {
         static let screenTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.screen.title",
                                                                           comment: "Skonto discount")
         static let backButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.skonto.backbutton.title",
