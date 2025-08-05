@@ -5,6 +5,15 @@
 //
 import UIKit
 
+/**
+ An active constraint builder for a specific view and layout attribute.
+ Encapsulates the logic for creating and modifying NSLayoutConstraints using a fluent API.
+
+ Example: `maker.top.equalTo(otherView).constant(16)`
+
+ Internally uses `GiniViewConstraintAttribute` as the target for constraints.
+ */
+
 public class GiniConstraintAttribute {
     internal let view: UIView
     internal let attribute: NSLayoutConstraint.Attribute
