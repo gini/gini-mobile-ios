@@ -106,7 +106,7 @@ public class GiniConstraintAttribute {
         )
         newConstraint.priority = original.priority
 
-        // Înlocuiește în maker
+        // Replace in maker
         if let index = maker.constraints.firstIndex(of: original) {
             maker.constraints.remove(at: index)
         }
