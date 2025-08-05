@@ -165,11 +165,18 @@ class SkontoExpiryDateView: UIView, GiniInputAccessoryViewPresentable {
         textField.isUserInteractionEnabled = isSkontoApplied
         calendarImageView.isHidden = !isSkontoApplied
         textField.text = dueDateString
+        configureAccessibility(isSkontoApplied)
+    }
 
+    private func configureAccessibility(_ isSkontoApplied: Bool) {
         if isSkontoApplied {
             accessibilityHint = Strings.accessibilityHint
+            // Marks the element as editable and frequently updated for VoiceOver
+            accessibilityTraits = [.updatesFrequently]
         } else {
             accessibilityHint = nil
+            // Marks the element as static and disabled for VoiceOver
+            accessibilityTraits = [.staticText, .notEnabled]
         }
     }
 
