@@ -146,8 +146,9 @@ final class SkontoViewController: UIViewController {
         sendAnalyticsScreenShown()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    // Called when the view's safe area insets change
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
         if firstAppearance {
             adjustPhoneLayoutForCurrentOrientation()
         }
