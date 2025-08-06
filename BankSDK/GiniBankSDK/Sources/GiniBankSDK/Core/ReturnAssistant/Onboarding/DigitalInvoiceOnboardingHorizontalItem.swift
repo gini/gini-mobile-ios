@@ -39,14 +39,9 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
 
         stack.translatesAutoresizingMaskIntoConstraints = false
         doneButton.translatesAutoresizingMaskIntoConstraints = false
-
-        let widthConstraint = doneButton.widthAnchor
-            .constraint(greaterThanOrEqualToConstant: Constants.doneButtonMinWidth)
-
-        widthConstraint.priority = .defaultHigh
-
         NSLayoutConstraint.activate([
-            widthConstraint,
+            stack.widthAnchor.constraint(equalToConstant: Constants.stackViewWidth),
+            doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.doneButtonMinWidth),
             doneButton.heightAnchor.constraint(equalToConstant: Constants.doneButtonHeight)
         ])
         return stack
@@ -154,15 +149,14 @@ class DigitalInvoiceOnboardingHorizontalItem: UIView {
             topImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.paddingLarge),
             topImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
                                                   constant: Constants.paddingLarge),
-            topImageView.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.imageWidth),
+            topImageView.widthAnchor.constraint(equalToConstant: 220),
 
             // Constraints for the scroll view itself
             rightStackViewContainerScrollable.topAnchor.constraint(equalTo: topImageView.topAnchor),
             rightStackViewContainerScrollable.bottomAnchor.constraint(equalTo: bottomAnchor),
             rightStackViewContainerScrollable.leadingAnchor.constraint(
                 equalTo: topImageView.trailingAnchor,
-                constant: Constants.horizontalSpacingBetweenImageViewAndText
-            ),
+                constant: Constants.horizontalSpacingBetweenImageViewAndText),
             rightStackViewContainerScrollable.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
     }
@@ -180,7 +174,6 @@ private extension DigitalInvoiceOnboardingHorizontalItem {
         static let stackViewItemSpacing: CGFloat = 40
         static let doneButtonMinWidth: CGFloat = 170
         static let doneButtonHeight: CGFloat = 50
-        static let imageWidth: CGFloat = 220
     }
 
     func shouldHideButton() -> Bool {
