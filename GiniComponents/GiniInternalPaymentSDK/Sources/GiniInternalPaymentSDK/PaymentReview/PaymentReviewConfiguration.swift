@@ -15,6 +15,7 @@ public struct PaymentReviewConfiguration {
     let infoContainerViewBackgroundColor: UIColor
     let paymentReviewClose: UIImage
     let backgroundColor: UIColor
+    let rectangleColor: UIColor
     let infoBarLabelFont: UIFont
     let statusBarStyle: UIStatusBarStyle
     let pageIndicatorTintColor: UIColor
@@ -30,6 +31,7 @@ public struct PaymentReviewConfiguration {
                 infoContainerViewBackgroundColor: UIColor,
                 paymentReviewClose: UIImage,
                 backgroundColor: UIColor,
+                rectangleColor: UIColor,
                 infoBarLabelFont: UIFont,
                 statusBarStyle: UIStatusBarStyle,
                 pageIndicatorTintColor: UIColor,
@@ -43,6 +45,7 @@ public struct PaymentReviewConfiguration {
         self.mainViewBackgroundColor = mainViewBackgroundColor
         self.infoContainerViewBackgroundColor = infoContainerViewBackgroundColor
         self.backgroundColor = backgroundColor
+        self.rectangleColor = rectangleColor
         self.infoBarLabelFont = infoBarLabelFont
         self.statusBarStyle = statusBarStyle
         self.pageIndicatorTintColor = pageIndicatorTintColor
@@ -58,14 +61,26 @@ public struct PaymentReviewStrings {
     public let infoBarMessage: String
     public let defaultErrorMessage: String
     public let createPaymentErrorMessage: String
+    public let invoiceImageAccessibilityLabel: String
+    public let closeButtonAccessibilityLabel: String
+    public let sheetGrabberAccessibilityLabel: String
+    public let sheetGrabberAccessibilityHint: String
 
     public init(alertOkButtonTitle: String,
                 infoBarMessage: String,
                 defaultErrorMessage: String,
-                createPaymentErrorMessage: String) {
+                createPaymentErrorMessage: String,
+                invoiceImageAccessibilityLabel: String,
+                closeButtonAccessibilityLabel: String,
+                sheetGrabberAccessibilityLabel: String,
+                sheetGrabberAccessibilityHint: String) {
         self.alertOkButtonTitle = alertOkButtonTitle
         self.infoBarMessage = infoBarMessage
         self.defaultErrorMessage = defaultErrorMessage
         self.createPaymentErrorMessage = createPaymentErrorMessage
+        self.invoiceImageAccessibilityLabel = invoiceImageAccessibilityLabel
+        self.closeButtonAccessibilityLabel = closeButtonAccessibilityLabel
+        self.sheetGrabberAccessibilityLabel = sheetGrabberAccessibilityLabel
+        self.sheetGrabberAccessibilityHint = sheetGrabberAccessibilityHint
     }
 }

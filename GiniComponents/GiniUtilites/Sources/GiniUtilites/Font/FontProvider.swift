@@ -43,18 +43,18 @@ private extension FontProvider {
     }
 
     private static let defaultFonts : [UIFont.TextStyle: UIFont] = [
-        .headline1: createFont(textStyle: .headline1, size: 26, weight: .regular),
-        .headline2: createFont(textStyle: .headline2, size: 20, weight: .bold),
-        .headline3: createFont(textStyle: .headline3, size: 18, weight: .bold),
-        .captions1: createFont(textStyle: .captions1, size: 13, weight: .regular),
-        .captions2: createFont(textStyle: .captions2, size: 12, weight: .regular),
-        .linkBold: createFont(textStyle: .linkBold, size: 14, weight: .bold),
-        .subtitle1: createFont(textStyle: .subtitle1, size: 16, weight: .bold),
-        .subtitle2: createFont(textStyle: .subtitle2, size: 14, weight: .medium),
-        .input: createFont(textStyle: .input, size: 16, weight: .medium),
-        .button: createFont(textStyle: .button, size: 16, weight: .bold),
-        .body1: createFont(textStyle: .body1, size: 16, weight: .regular),
-        .body2: createFont(textStyle: .body2, size: 14, weight: .regular)
+        .headline1: createFont(textStyle: .headline, size: 26, weight: .regular),
+        .headline2: createFont(textStyle: .headline, size: 20, weight: .bold),
+        .headline3: createFont(textStyle: .headline, size: 18, weight: .bold),
+        .captions1: createFont(textStyle: .caption1, size: 13, weight: .regular),
+        .captions2: createFont(textStyle: .caption2, size: 12, weight: .regular),
+        .linkBold: createFont(textStyle: .footnote, size: 14, weight: .bold),
+        .subtitle1: createFont(textStyle: .subheadline, size: 16, weight: .bold),
+        .subtitle2: createFont(textStyle: .subheadline, size: 14, weight: .medium),
+        .input: createFont(textStyle: .caption1, size: 16, weight: .medium),
+        .button: createFont(textStyle: .caption2, size: 16, weight: .bold),
+        .body1: createFont(textStyle: .body, size: 16, weight: .regular),
+        .body2: createFont(textStyle: .body, size: 14, weight: .regular)
     ]
 }
 

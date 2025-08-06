@@ -5,7 +5,7 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-
+import Combine
 import UIKit
 import GiniUtilites
 import GiniHealthAPILibrary
@@ -34,11 +34,21 @@ public final class PaymentReviewContainerView: UIView {
     private let recipientStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let ibanAmountContainerStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let ibanAmountHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fill).spacing(Constants.stackViewSpacing)
+    
+    private let firstStackContainerView = EmptyStackView().orientation(.vertical).distribution(.fill)
+    private let firstStackHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fillEqually).spacing(Constants.stackViewSpacing)
+    private let firstErrorsHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fillEqually)
+    
+    private let secondStackContainerView = EmptyStackView().orientation(.vertical).distribution(.fill)
+    private let secondStackHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fill).spacing(Constants.stackViewSpacing)
+    private let secondErrorsHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fill)
 
     private let ibanAmountErrorsHorizontalStackView = EmptyStackView().orientation(.horizontal).distribution(.fill)
+    private let recipientErrorStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let ibanErrorStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let amountErrorStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
     private let usageStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
+    private let usageErrorStackView = EmptyStackView().orientation(.vertical).distribution(.fill)
 
     private lazy var recipientTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.recipientFieldTag.rawValue, isEditable: !viewModel.configuration.lockedFields)
     private lazy var ibanTextFieldView = buildTextFieldWithLabelView(tag: TextFieldType.ibanFieldTag.rawValue, isEditable: !viewModel.configuration.lockedFields)
@@ -78,45 +88,119 @@ public final class PaymentReviewContainerView: UIView {
     private var paymentInputFields: [TextFieldWithLabelView] = []
     private var paymentInputFieldsErrorLabels: [UILabel] = []
     private var coupledErrorLabels: [UILabel] = []
+    private var firstCoupledErrorsLabels: [UILabel] = []
+    private var secondCoupleErrorsLabels: [UILabel] = []
     private let viewModel: PaymentReviewContainerViewModel
     /// A closure that is called when the pay button is clicked.
     public var onPayButtonClicked: (() -> Void)?
     /// A closure that is called when the banks selection button is clicked.
     public var onBankSelectionButtonClicked: (() -> Void)?
 
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
+    
+    @Published var willShowLandscapeError = false
+
     public init(viewModel: PaymentReviewContainerViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
-        setupViewHierarchy()
-        setupLayout()
-        configureUI()
+        setupView()
+    }
+    
+    public func setupView(shouldUpdateUI: Bool = true) {
+        let isPortrait = UIDevice.isPortrait()
+        setupViewHierarchy(isPortrait: isPortrait)
+        setupLayout(isPortrait: isPortrait)
+        if shouldUpdateUI {
+            configureUI()
+        } else {
+            updateErrorStateIfNeeded()
+        }
+    }
+    
+    func updateViews(for paymentInfoState: PaymentInfoState) {
+        switch paymentInfoState {
+        case .expanded:
+            toggleExpandedViews(isHidden: false)
+        case .collapsed:
+            toggleExpandedViews(isHidden: true)
+            resignAllInputFields()
+        }
+    }
+    
+    private func updateErrorStateIfNeeded() {
+        if UIDevice.isPortrait() {
+            validateAllInputFields()
+        } else {
+            hideErrorLabels()
+        }
+    }
+
+    private func toggleExpandedViews(isHidden: Bool) {
+        UIView.animate(withDuration: 0.3) {
+            self.firstStackContainerView.isHidden = isHidden
+            self.secondStackContainerView.isHidden = isHidden
+        }
+    }
+    
+    private func resignAllInputFields() {
+        paymentInputFields.forEach( { _ = $0.resignFirstResponder() })
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupViewHierarchy() {
+    private func setupViewHierarchy(isPortrait: Bool) {
+        subviews.forEach { $0.removeFromSuperview() }
+
         paymentInputFields = [recipientTextFieldView, amountTextFieldView, ibanTextFieldView, usageTextFieldView]
         paymentInputFieldsErrorLabels = [recipientErrorLabel, amountErrorLabel, ibanErrorLabel, usageErrorLabel]
-        coupledErrorLabels = [amountErrorLabel, ibanErrorLabel]
+        if isPortrait {
+            coupledErrorLabels = [amountErrorLabel, ibanErrorLabel]
 
-        recipientStackView.addArrangedSubview(recipientTextFieldView)
-        recipientStackView.addArrangedSubview(recipientErrorLabel)
+            recipientStackView.addArrangedSubview(recipientTextFieldView)
+            recipientStackView.addArrangedSubview(recipientErrorLabel)
 
-        ibanAmountHorizontalStackView.addArrangedSubview(ibanTextFieldView)
-        ibanAmountHorizontalStackView.addArrangedSubview(amountTextFieldView)
+            ibanAmountHorizontalStackView.addArrangedSubview(ibanTextFieldView)
+            ibanAmountHorizontalStackView.addArrangedSubview(amountTextFieldView)
 
-        ibanErrorStackView.addArrangedSubview(ibanErrorLabel)
-        amountErrorStackView.addArrangedSubview(amountErrorLabel)
-        ibanAmountErrorsHorizontalStackView.addArrangedSubview(ibanErrorStackView)
-        ibanAmountErrorsHorizontalStackView.addArrangedSubview(amountErrorStackView)
+            ibanErrorStackView.addArrangedSubview(ibanErrorLabel)
+            amountErrorStackView.addArrangedSubview(amountErrorLabel)
+            ibanAmountErrorsHorizontalStackView.addArrangedSubview(ibanErrorStackView)
+            ibanAmountErrorsHorizontalStackView.addArrangedSubview(amountErrorStackView)
 
-        ibanAmountContainerStackView.addArrangedSubview(ibanAmountHorizontalStackView)
-        ibanAmountContainerStackView.addArrangedSubview(ibanAmountErrorsHorizontalStackView)
+            ibanAmountContainerStackView.addArrangedSubview(ibanAmountHorizontalStackView)
+            ibanAmountContainerStackView.addArrangedSubview(ibanAmountErrorsHorizontalStackView)
 
-        usageStackView.addArrangedSubview(usageTextFieldView)
-        usageStackView.addArrangedSubview(usageErrorLabel)
+            usageStackView.addArrangedSubview(usageTextFieldView)
+            usageStackView.addArrangedSubview(usageErrorLabel)
+        } else {
+            firstCoupledErrorsLabels = [recipientErrorLabel, ibanErrorLabel]
+            secondCoupleErrorsLabels = [amountErrorLabel, usageErrorLabel]
+
+            firstStackHorizontalStackView.addArrangedSubview(recipientTextFieldView)
+            firstStackHorizontalStackView.addArrangedSubview(ibanTextFieldView)
+
+            recipientErrorStackView.addArrangedSubview(recipientErrorLabel)
+            ibanErrorStackView.addArrangedSubview(ibanErrorLabel)
+            firstErrorsHorizontalStackView.addArrangedSubview(recipientErrorStackView)
+            firstErrorsHorizontalStackView.addArrangedSubview(ibanErrorStackView)
+
+            secondStackHorizontalStackView.addArrangedSubview(amountTextFieldView)
+            secondStackHorizontalStackView.addArrangedSubview(usageTextFieldView)
+
+            amountErrorStackView.addArrangedSubview(amountErrorLabel)
+            usageErrorStackView.addArrangedSubview(usageErrorLabel)
+            secondErrorsHorizontalStackView.addArrangedSubview(amountErrorStackView)
+            secondErrorsHorizontalStackView.addArrangedSubview(usageErrorStackView)
+
+            firstStackContainerView.addArrangedSubview(firstStackHorizontalStackView)
+            firstStackContainerView.addArrangedSubview(firstErrorsHorizontalStackView)
+
+            secondStackContainerView.addArrangedSubview(secondStackHorizontalStackView)
+            secondStackContainerView.addArrangedSubview(secondErrorsHorizontalStackView)
+        }
 
         if viewModel.configuration.showBanksPicker {
             buttonsStackView.addArrangedSubview(selectBankButton)
@@ -124,9 +208,22 @@ public final class PaymentReviewContainerView: UIView {
         
         buttonsStackView.addArrangedSubview(payInvoiceButton)
         buttonsView.addSubview(buttonsStackView)
-        paymentInfoStackView.addArrangedSubview(recipientStackView)
-        paymentInfoStackView.addArrangedSubview(ibanAmountContainerStackView)
-        paymentInfoStackView.addArrangedSubview(usageStackView)
+
+        bottomStackView.addArrangedSubview(UIView())
+        if viewModel.shouldShowBrandedView {
+            bottomStackView.addArrangedSubview(poweredByGiniView)
+        }
+        bottomView.addSubview(bottomStackView)
+        
+        paymentInfoStackView.removeAllArrangedSubviews()
+        if isPortrait {
+            paymentInfoStackView.addArrangedSubview(recipientStackView)
+            paymentInfoStackView.addArrangedSubview(ibanAmountContainerStackView)
+            paymentInfoStackView.addArrangedSubview(usageStackView)
+        } else {
+            paymentInfoStackView.addArrangedSubview(firstStackContainerView)
+            paymentInfoStackView.addArrangedSubview(secondStackContainerView)
+        }
         paymentInfoStackView.addArrangedSubview(buttonsView)
         
         if viewModel.shouldShowBrandedView {
@@ -134,8 +231,8 @@ public final class PaymentReviewContainerView: UIView {
         }
         
         paymentInfoStackView.addArrangedSubview(UIView())
-
-        self.addSubview(paymentInfoStackView)
+        
+        addSubview(paymentInfoStackView)
     }
     
     private func addBrandedViewToViewHierarchy() {
@@ -147,24 +244,25 @@ public final class PaymentReviewContainerView: UIView {
 
     // MARK: Layout & Constraints
 
-    private func setupLayout() {
+    private func setupLayout(isPortrait: Bool) {
         setupContainerContraints()
-        setupRecipientStackViewConstraints()
-        setupIbanAmountStackViewsConstraints()
-        setupUsageStackViewConstraints()
-        setupButtonConstraints()
-        
-        if viewModel.shouldShowBrandedView {
-            setupPoweredByGiniConstraints()
+        if isPortrait {
+            setupRecipientStackViewConstraints()
+            setupIbanAmountStackViewsConstraints()
+            setupUsageStackViewConstraints()
+        } else {
+            setupFirstStackViewsConstraints()
+            setupSecondStackViewsConstraints()
         }
+        setupButtonConstraints()
+        setupPoweredByGiniConstraints()
+        updateLayoutForCurrentOrientation(isPortrait: isPortrait)
     }
 
     private func setupContainerContraints() {
         NSLayoutConstraint.activate([
-            paymentInfoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPadding),
-            paymentInfoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPadding),
-            paymentInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : Constants.topBottomPaymentInfoContainerPadding),
-            paymentInfoStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : -Constants.topBottomPaymentInfoContainerPadding)
+            paymentInfoStackView.topAnchor.constraint(equalTo: topAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : Constants.topBottomPaymentInfoContainerPadding),
+            paymentInfoStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: viewModel.dispayMode == .bottomSheet ? 0 : -Constants.topBottomPaymentInfoContainerPadding)
         ])
     }
 
@@ -178,32 +276,89 @@ public final class PaymentReviewContainerView: UIView {
         addDoneButtonForNumPad(amountTextFieldView)
     }
 
+    private func updateLayoutForCurrentOrientation(isPortrait: Bool) {
+        if isPortrait {
+            setupPortraitConstraints()
+        } else {
+            setupLandscapeConstraints()
+        }
+    }
+
+    private func setupPortraitConstraints() {
+        setupConstraints(for: .vertical)
+    }
+
+    private func setupLandscapeConstraints() {
+        setupConstraints(for: .horizontal)
+    }
+
+    private func setupConstraints(for orientation: NSLayoutConstraint.Axis) {
+        NSLayoutConstraint.deactivate(landscapeConstraints + portraitConstraints)
+
+        let isPortrait = orientation == .vertical
+        let constraints = [
+            paymentInfoStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: isPortrait ? Constants.leftRightPaymentInfoContainerPortraitPadding : Constants.leftRightPaymentInfoContainerLandscapePadding),
+            paymentInfoStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: isPortrait ? -Constants.leftRightPaymentInfoContainerPortraitPadding : -Constants.leftRightPaymentInfoContainerLandscapePadding),
+            bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPortraitPadding),
+            bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPortraitPadding),
+        ]
+
+        if isPortrait {
+            portraitConstraints = constraints
+            NSLayoutConstraint.activate(portraitConstraints)
+        } else {
+            landscapeConstraints = constraints
+            NSLayoutConstraint.activate(landscapeConstraints)
+        }
+    }
+
+
     private func setupRecipientStackViewConstraints() {
         NSLayoutConstraint.activate([
-            recipientTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            recipientErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            recipientTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            recipientErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
         ])
     }
 
     private func setupIbanAmountStackViewsConstraints() {
-        let amountTextFieldWidthConstraint = amountTextFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountWidth)
+        let amountTextFieldWidthConstraint = amountTextFieldView.widthAnchor.constraint(equalToConstant: Constants.amountPortraitWidth)
         amountTextFieldWidthConstraint.priority = .required - 1
-        let amountErrorLabelWidthConstraint = amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountWidth)
+        let amountErrorLabelWidthConstraint = amountErrorLabel.widthAnchor.constraint(equalToConstant: Constants.amountPortraitWidth)
         amountErrorLabelWidthConstraint.priority = .required - 1
         NSLayoutConstraint.activate([
-            ibanTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            amountTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
+            ibanTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
             amountTextFieldWidthConstraint,
-            ibanErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
-            amountErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight),
+            ibanErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
             amountErrorLabelWidthConstraint
         ])
     }
 
     private func setupUsageStackViewConstraints() {
         NSLayoutConstraint.activate([
-            usageTextFieldView.heightAnchor.constraint(equalToConstant: Constants.textFieldHeight),
-            usageErrorLabel.heightAnchor.constraint(equalToConstant: Constants.errorLabelHeight)
+            usageTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            usageErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight)
+        ])
+    }
+    
+    private func setupFirstStackViewsConstraints() {
+        NSLayoutConstraint.activate([
+            ibanTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            ibanErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
+        ])
+    }
+    
+    private func setupSecondStackViewsConstraints() {
+        NSLayoutConstraint.activate([
+            amountTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            usageTextFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textFieldHeight),
+            amountTextFieldView.widthAnchor.constraint(equalToConstant: Constants.amountLandscapeWidth),
+            usageErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorLabelHeight),
+            amountErrorLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.amountLandscapeWidth)
         ])
     }
 
@@ -219,8 +374,6 @@ public final class PaymentReviewContainerView: UIView {
 
     private func setupPoweredByGiniConstraints() {
         NSLayoutConstraint.activate([
-            bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.leftRightPaymentInfoContainerPadding),
-            bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.leftRightPaymentInfoContainerPadding),
             bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
             bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor),
             bottomStackView.heightAnchor.constraint(equalToConstant: Constants.bottomViewHeight)
@@ -420,10 +573,16 @@ public final class PaymentReviewContainerView: UIView {
             errorLabel = usageErrorLabel
             errorMessage = viewModel.strings.purposeErrorMessage
         }
-        if errorLabel.isHidden {
-            errorLabel.isHidden = false
-            errorLabel.text = errorMessage
+        
+        if UIDevice.isPortrait() {
+            if errorLabel.isHidden {
+                errorLabel.isHidden = false
+                errorLabel.text = errorMessage
+            }
+        } else {
+            showErrorBottomSheet(errorMessage: errorMessage)
         }
+        
         updateAmountIbanErrorState()
     }
 
@@ -444,6 +603,13 @@ public final class PaymentReviewContainerView: UIView {
         }
         disablePayButtonIfNeeded()
         updateAmountIbanErrorState()
+    }
+    
+    private func showErrorBottomSheet(errorMessage: String) {
+        willShowLandscapeError = true
+        let errorScreen = ErrorBottomSheet()
+        errorScreen.configure(errorMessage: errorMessage, font: viewModel.configuration.errorLabelFont)
+        parentViewController?.giniTopMostViewController().present(errorScreen, animated: true)
     }
 
     // MARK: - Pay button
@@ -466,11 +632,17 @@ public final class PaymentReviewContainerView: UIView {
         case .usageFieldTag:
             errorLabel = usageErrorLabel
         }
-        if errorLabel.isHidden {
-            errorLabel.isHidden = false
+        
+        if UIDevice.isPortrait() {
+            if errorLabel.isHidden {
+                errorLabel.isHidden = false
 
-            errorLabel.text = errorMessage
+                errorLabel.text = errorMessage
+            }
+        } else {
+            showErrorBottomSheet(errorMessage: errorMessage)
         }
+        
         updateAmountIbanErrorState()
     }
 
@@ -483,6 +655,10 @@ public final class PaymentReviewContainerView: UIView {
         selectBankButton.didTapButton = { [weak self] in
             self?.tapOnBankPicker()
         }
+        selectBankButton.accessibilityLabel = viewModel.strings.selectBankAccessibilityText
+        selectBankButton.accessibilityHint = viewModel.strings.selectBankAccessibilityHint
+        selectBankButton.isAccessibilityElement = true
+        selectBankButton.accessibilityTraits = .button
     }
 
     @objc
@@ -500,6 +676,10 @@ public final class PaymentReviewContainerView: UIView {
         payInvoiceButton.didTapButton = { [weak self] in
             self?.payButtonClicked()
         }
+        payInvoiceButton.accessibilityLabel = viewModel.strings.payInvoiceLabelText
+        payInvoiceButton.accessibilityHint = viewModel.strings.payInvoiceAccessibilityHint
+        payInvoiceButton.isAccessibilityElement = true
+        payInvoiceButton.accessibilityTraits = .button
     }
 
     fileprivate func addDoneButtonForNumPad(_ textFieldView: TextFieldWithLabelView) {
@@ -526,7 +706,7 @@ public final class PaymentReviewContainerView: UIView {
     private func updateAmountIbanErrorState() {
         ibanAmountErrorsHorizontalStackView.isHidden = coupledErrorLabels.allSatisfy { $0.isHidden }
     }
-
+    
     // MARK: - Pay Button Action
     fileprivate func payButtonClicked() {
         self.endEditing(true)
@@ -556,10 +736,16 @@ public final class PaymentReviewContainerView: UIView {
         }
     }
 
+    func textFieldEdited() -> UITextField? {
+        paymentInfoStackView.findFirstResponder()
+    }
+    
     private func buildErrorLabel() -> UILabel {
         let label = UILabel()
         label.font = viewModel.configuration.errorLabelFont
         label.textColor = viewModel.configuration.errorLabelTextColor
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 2
         return label
     }
 
@@ -569,6 +755,20 @@ public final class PaymentReviewContainerView: UIView {
         textFieldView.isUserInteractionEnabled = isEditable
         textFieldView.setKeyboardType(keyboardType: keyboardType)
         return textFieldView
+    }
+}
+
+extension UIView {
+    func findFirstResponder() -> UITextField? {
+        if self is UITextField, self.isFirstResponder {
+            return self as? UITextField
+        }
+        for subview in subviews {
+            if let responder = subview.findFirstResponder() {
+                return responder
+            }
+        }
+        return nil
     }
 }
 
@@ -742,11 +942,13 @@ extension PaymentReviewContainerView: UITextFieldDelegate {
 extension PaymentReviewContainerView {
     enum Constants {
         static let buttonViewHeight = 56.0
-        static let leftRightPaymentInfoContainerPadding = 8.0
+        static let leftRightPaymentInfoContainerPortraitPadding = 8.0
+        static let leftRightPaymentInfoContainerLandscapePadding = 56.0
         static let topBottomPaymentInfoContainerPadding = 16.0
         static let textFieldHeight = 56.0
-        static let errorLabelHeight = 12.0
-        static let amountWidth = 95.0
+        static let errorLabelHeight = 20.0
+        static let amountPortraitWidth = 95.0
+        static let amountLandscapeWidth = 160.0
         static let animationDuration: CGFloat = 0.3
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let heightToolbar = 40.0
@@ -756,5 +958,93 @@ extension PaymentReviewContainerView {
         static let errorTopMargin = 9.0
         static let lockIconHeight = 11.0
         static let buttonsSpacing = 8.0
+    }
+}
+
+/// Private class for showing error messages in a bottom sheet when the user is in landscape mode.
+/// Making it private since it is a temporary solution for the landscape mode error handling only on this screen.
+private class ErrorBottomSheet: GiniBottomSheetViewController {
+    
+    private let scrollView: EmptyScrollView = {
+        EmptyScrollView()
+    }()
+    
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 16)
+        label.adjustsFontForContentSizeCategory = true
+        label.textColor = .label
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    var shouldShowDragIndicator: Bool {
+        true
+    }
+    
+    var shouldShowInFullScreenInLandscapeMode: Bool {
+        false
+    }
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .systemBackground
+        addScrollView()
+        bindToSizeUpdates()
+        addErrorLabel()
+        configureBottomSheet(shouldIncludeLargeDetent: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        startErrorDismiss()
+    }
+    
+    func configure(errorMessage: String, font: UIFont) {
+        errorLabel.font = font
+        errorLabel.text = errorMessage
+    }
+    
+    
+    func addScrollView() {
+        view.addSubview(scrollView)
+        
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    func addErrorLabel() {
+        scrollView.addContentSubview(errorLabel)
+        
+        NSLayoutConstraint.activate([
+            errorLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            errorLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            errorLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 32),
+            errorLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16.0)
+        ])
+    }
+    
+    func bindToSizeUpdates() {
+        scrollView.$size
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] size in
+                self?.updateBottomSheetHeight(size.height)
+            }.store(in: &cancellables)
+    }
+    
+    func startErrorDismiss() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            self?.dismiss(animated: true)
+        }
     }
 }

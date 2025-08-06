@@ -37,8 +37,19 @@ import UIKit
     var didShowAnalysis: (() -> Void)?
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
-
+    private let useCustomLoadingView: Bool = true
+    private var loadingViewModel: QRCodeEducationLoadingViewModel?
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
+
+    private var animationCompletionContinuations: [CheckedContinuation<Void, Never>] = []
+    private var educationFlowController: EducationFlowController?
+    private var educationAnimationFinished: Bool = false
+    private var shouldShowOriginalFlow: Bool {
+        guard let state = educationFlowController?.nextState() else {
+            return false
+        }
+        return state == .showOriginalFlow
+    }
 
     // User interface
     private var imageView: UIImageView = {
@@ -64,20 +75,12 @@ import UIKit
         loadingText.isAccessibilityElement = true
         loadingText.numberOfLines = 0
 
-        if document.type == .pdf {
-            if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
-                originalDocumentName = documentTitle
-                let titleString = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
-                                                                   comment: "Analysis screen loading text for PDF")
-
-                loadingText.text = String(format: titleString, documentTitle)
-            } else {
-                loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
-                                                                    comment: "Analysis screen loading text for images")
-            }
+        if document.type == .pdf,
+           let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
+            originalDocumentName = documentTitle
+            loadingText.text = String(format: LocalizedStrings.loadingPDFText, documentTitle)
         } else {
-            loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
-                                                                comment: "Analysis screen loading text for images")
+            loadingText.text = LocalizedStrings.loadingBaseText
         }
 
         return loadingText
@@ -137,12 +140,8 @@ import UIKit
 
         // Configure view hierachy
         setupView()
-    }
 
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if document is GiniImageDocument {
+        if document is GiniImageDocument && shouldShowOriginalFlow {
             showCaptureSuggestions(giniConfiguration: giniConfiguration)
         }
     }
@@ -232,6 +231,22 @@ import UIKit
     }
 
     private func configureLoadingIndicator() {
+        let displayEducationFlow = !document.isImported && giniConfiguration.fileImportSupportedTypes != .none
+        educationFlowController = EducationFlowController
+            .captureInvoiceFlowController(displayIfNeeded: displayEducationFlow)
+
+        let nextState = educationFlowController?.nextState()
+        switch nextState {
+        case .showMessage:
+            showEducationLoadingMessage()
+        case .showOriginalFlow:
+            showOriginalLoadingMessage()
+        case .none:
+            showOriginalLoadingMessage()
+        }
+    }
+
+    private func showOriginalLoadingMessage() {
         loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
         loadingIndicatorView.accessibilityValue = loadingIndicatorText.text
 
@@ -244,6 +259,68 @@ import UIKit
         } else {
             addLoadingText(below: loadingIndicatorView)
             loadingIndicatorView.startAnimating()
+        }
+        // immediately mark animation complete
+        animationCompletionContinuations.forEach { $0.resume() }
+        animationCompletionContinuations.removeAll()
+    }
+
+    private func showEducationLoadingMessage() {
+        let loadingItems = EducationFlowContent.captureInvoice.items
+        let viewModel = QRCodeEducationLoadingViewModel(items: loadingItems)
+        loadingViewModel = viewModel
+        let customLoadingView = QRCodeEducationLoadingView(viewModel: viewModel)
+        customLoadingView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(customLoadingView)
+
+        NSLayoutConstraint.activate([
+            customLoadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            customLoadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            customLoadingView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+                                                       constant: Constants.educationLoadingViewPadding),
+            customLoadingView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
+                                                        constant: -Constants.educationLoadingViewPadding)
+        ])
+
+        Task {
+            await finalizeEducationAnimation(viewModel)
+        }
+    }
+
+    /**
+     Handles the finalization of the education animation sequence:
+     - Starts the view model lifecycle.
+     - Resumes all pending animation completion continuations.
+     - Clears the continuation list to avoid memory leaks or duplicate calls.
+     - Flags the animation as finished to update UI state.
+     - Marks the educational message as shown to prevent it from appearing again.
+     */
+    private func finalizeEducationAnimation(_ viewModel: QRCodeEducationLoadingViewModel) async {
+        await viewModel.start()
+        animationCompletionContinuations.forEach { $0.resume() }
+        animationCompletionContinuations.removeAll()
+        educationAnimationFinished = true
+        educationFlowController?.markMessageAsShown()
+    }
+
+    /**
+     Suspends the current task until the animation inside the analysis screen has completed.
+
+     If the animation is already completed, this method returns immediately.
+     Otherwise, it suspends execution and resumes once the animation finishes.
+     */
+    public func waitUntilAnimationCompleted() async {
+        await withCheckedContinuation { continuation in
+            guard loadingViewModel != nil else {
+                continuation.resume()
+                return
+            }
+
+            if educationAnimationFinished {
+                continuation.resume()
+            } else {
+                animationCompletionContinuations.append(continuation)
+            }
         }
     }
 
@@ -318,8 +395,18 @@ import UIKit
 private extension AnalysisViewController {
     enum Constants {
         static let padding: CGFloat = 16
+        static let educationLoadingViewPadding: CGFloat = 28
         static let loadingIndicatorContainerHeight: CGFloat = 60
         static let loadingIndicatorContainerHorizontalCenterYInset: CGFloat = 96 / 2
         static let widthMultiplier: CGFloat = 0.9
+    }
+
+    enum LocalizedStrings {
+        static let loadingPDFText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
+                                                                     comment: "Analysis screen loading text for PDF")
+
+        static let loadingBaseText = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
+                                                                      comment: "Analysis screen loading base text")
+
     }
 }

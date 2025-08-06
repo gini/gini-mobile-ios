@@ -127,7 +127,6 @@ final class OrderDetailViewController: UIViewController {
         view.endEditing(true)
 
         let paymentViewBottomSheet = paymentComponentsController.paymentViewBottomSheet(documentID: nil)
-        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
 
         let paymentInfo = obtainPaymentInfo()
         if paymentInfo.isComplete && order.price.value != .zero {
@@ -158,7 +157,6 @@ extension OrderDetailViewController: GiniInternalPaymentSDK.PaymentComponentView
     func didTapOnBankPicker(documentId: String?) {
         print("✅ Tapped on Bank Picker on :\(documentId ?? "")")
         let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
-        bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
         self.dismissAndPresent(viewController: bankSelectionBottomSheet, animated: false)
     }
 
