@@ -146,8 +146,9 @@ final class SkontoViewController: UIViewController {
         sendAnalyticsScreenShown()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    // Called when the view's safe area insets change
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
         if firstAppearance {
             adjustPhoneLayoutForCurrentOrientation()
         }
@@ -292,18 +293,30 @@ final class SkontoViewController: UIViewController {
     }
 
     private func setupProceedContainerInLandscape() {
+
         proceedContainerView.removeFromSuperview()
         NSLayoutConstraint.deactivate(proceedContainerConstraints)
 
-        mainStackView.addArrangedSubview(proceedContainerView)
-        NSLayoutConstraint.activate([
-            proceedContainerView.leadingAnchor.constraint(equalTo: mainStackView.safeAreaLayoutGuide.leadingAnchor,
-                                                          constant: Constants.landscapeHorizontalPadding),
-            proceedContainerView.trailingAnchor.constraint(equalTo: mainStackView.safeAreaLayoutGuide.trailingAnchor,
-                                                           constant: -Constants.landscapeHorizontalPadding)
-        ])
+        // added proceedContainerView to self.view and expand full width for iPad
+        // just like iPhone on portrait
+        if UIDevice.current.isIpad {
+            attachProceedContainerViewIfNeeded()
 
-        updateScrollViewBottomToViewConstraint(to: view.safeAreaLayoutGuide.bottomAnchor)
+            updateScrollViewBottomToViewConstraint(to: proceedContainerView.topAnchor)
+        } else {
+
+            mainStackView.addArrangedSubview(proceedContainerView)
+            NSLayoutConstraint.activate([
+                proceedContainerView.leadingAnchor.constraint(equalTo: mainStackView.safeAreaLayoutGuide.leadingAnchor,
+                                                              constant: Constants.landscapeHorizontalPadding),
+                proceedContainerView.trailingAnchor.constraint(
+                    equalTo: mainStackView.safeAreaLayoutGuide.trailingAnchor,
+                    constant: -Constants.landscapeHorizontalPadding
+                )
+            ])
+
+            updateScrollViewBottomToViewConstraint(to: view.safeAreaLayoutGuide.bottomAnchor)
+        }
     }
 
     private func attachProceedContainerViewIfNeeded() {
@@ -645,7 +658,11 @@ private extension SkontoViewController {
         static let scrollViewSideInset: CGFloat = 0
         static let groupCornerRadius: CGFloat = 8
         static let scrollIndicatorInset: CGFloat = 0
-        static let tabletWidthMultiplier: CGFloat = 0.7
+        // This multiplier was chosen to accommodate 200% text scaling on iPads,
+        // ensuring proper layout and readability for Dynamic Type support.
+        // This multiplier was chosen to accommodate 200% text scaling on iPads,
+        // ensuring proper layout and readability for Dynamic Type support.
+        static let tabletWidthMultiplier: CGFloat = 0.71
         static let navigationBarViewDefaultHeight: CGFloat = 62
         static let landscapeHorizontalPadding: CGFloat = 16
 
