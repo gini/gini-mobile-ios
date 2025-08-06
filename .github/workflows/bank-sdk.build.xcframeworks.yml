@@ -1,7 +1,6 @@
 name: Build BankSDK XCFrameworks
 permissions:
   contents: read
-  secrets: read
 on:
   push:
     tags:
