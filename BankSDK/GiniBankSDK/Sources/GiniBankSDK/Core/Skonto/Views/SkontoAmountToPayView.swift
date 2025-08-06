@@ -197,13 +197,18 @@ class SkontoAmountToPayView: UIView {
         if isEditable {
             textField.text = price.localizedStringWithoutCurrencyCode ?? ""
             containerView.accessibilityHint = Strings.accessibilityHint
+            // Marks the element as editable and frequently updated for VoiceOver
+            containerView.accessibilityTraits = [.updatesFrequently]
         } else {
             textField.text = price.localizedStringWithCurrencyCode ?? ""
             containerView.accessibilityHint = nil
+            // Marks the element as static and disabled for VoiceOver
+            containerView.accessibilityTraits = [.staticText, .notEnabled]
         }
         self.isEditable = isEditable
         containerView.layer.borderWidth = isEditable ? 1 : 0
         containerView.accessibilityValue = accessibilityValue
+
         textField.isUserInteractionEnabled = isEditable
         currencyLabel.isHidden = !isEditable
     }
