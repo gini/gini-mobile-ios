@@ -145,8 +145,7 @@ extension PaymentComponentsController {
     
     func presentPaymentViewBottomSheet() {
         let paymentViewBottomSheet = paymentViewBottomSheet(documentId: documentId ?? "")
-        paymentViewBottomSheet.modalPresentationStyle = .overFullScreen
-        self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: false)
+        self.dismissAndPresent(viewController: paymentViewBottomSheet, animated: true)
     }
     
     private func dismissAndPresent(viewController: UIViewController, animated: Bool) {
@@ -303,7 +302,7 @@ extension PaymentComponentsController {
 
      - Returns: A configured `BottomSheetViewController` for the app installation process.
      */
-    public func installAppBottomSheet() -> BottomSheetViewController {
+    public func installAppBottomSheet() -> UIViewController {
         previousPresentedViews.removeAll()
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                   installAppConfiguration: configurationProvider.installAppConfiguration,
@@ -328,7 +327,7 @@ extension PaymentComponentsController {
      - Parameter paymentRequestId: The payment request id from generated from the payment info extracted from the invoice
      - Returns: A configured `BottomSheetViewController` for sharing invoices.
      */
-    public func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> BottomSheetViewController {
+    public func shareInvoiceBottomSheet(qrCodeData: Data, paymentRequestId: String) -> UIViewController {
         previousPresentedViews.removeAll()
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: healthSelectedPaymentProvider,
                                                                       configuration: configurationProvider.shareInvoiceConfiguration,
@@ -420,7 +419,8 @@ extension PaymentComponentsController {
             self?.sharePDF(pdfURL: pdfPath, paymentRequestId: paymentRequestId, viewController: viewController) { [weak self] (activity, actionOnShareSheet, _, _) in
                 if !actionOnShareSheet {
                     guard let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet else { return }
-                    self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
+                    shareInvoiceBottomSheet.updateViews()
+                    self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: true)
                 }
             }
         })
@@ -647,7 +647,6 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
         GiniUtilites.Log("Tapped on Bank Picker on :\(documentId ?? "")", event: .success)
         if GiniHealthConfiguration.shared.useBottomPaymentComponentView {
             let bankSelectionBottomSheet = bankSelectionBottomSheet()
-            bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
             dismissAndPresent(viewController: bankSelectionBottomSheet, animated: false)
         }
     }
@@ -707,9 +706,8 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
             case .success(let image):
                 DispatchQueue.main.async {
                     let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet(qrCodeData: image, paymentRequestId: paymentRequestId)
-                    shareInvoiceBottomSheet?.modalPresentationStyle = .overFullScreen
                     guard let shareInvoiceBottomSheet else { return }
-                    self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
+                    self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: true)
                 }
             case .failure(let error):
                 self?.handleError(error)
@@ -801,9 +799,8 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     private func presentShareInvoiceBottomSheet(with qrCodeData: Data, paymentRequestId: String) {
         DispatchQueue.main.async { [weak self] in
             let shareInvoiceBottomSheet = self?.shareInvoiceBottomSheet(qrCodeData: qrCodeData, paymentRequestId: paymentRequestId)
-            shareInvoiceBottomSheet?.modalPresentationStyle = .overFullScreen
             guard let shareInvoiceBottomSheet else { return }
-            self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: false)
+            self?.dismissAndPresent(viewController: shareInvoiceBottomSheet, animated: true)
         }
     }
 
