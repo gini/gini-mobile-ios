@@ -31,8 +31,14 @@ class SkontoWithDiscountHeaderView: UIView {
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = UIColor.giniColorScheme().text.success.uiColor()
         label.adjustsFontForContentSizeCategory = true
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+
+        if UIDevice.current.isIpad {
+            label.setContentHuggingPriority(.required, for: .horizontal)
+            label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        } else {
+            label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+            label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        }
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
