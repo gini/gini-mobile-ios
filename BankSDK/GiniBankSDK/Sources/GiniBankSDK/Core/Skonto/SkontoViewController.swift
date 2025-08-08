@@ -146,7 +146,19 @@ final class SkontoViewController: UIViewController {
         sendAnalyticsScreenShown()
     }
 
-    // Called when the view's safe area insets change
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // On devices without a notch (i.e., no safe area insets at the top),
+        // viewSafeAreaInsetsDidChange() does not called on first appearance.
+        // So we manually trigger the layout adjustment here as a fallback.
+        if firstAppearance && !UIDevice.current.hasNotch {
+            adjustPhoneLayoutForCurrentOrientation()
+        }
+    }
+
+    // This is reliably called on devices that does have a notch
+    // (i.e., have safe area insets)
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
         if firstAppearance {
