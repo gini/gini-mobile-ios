@@ -1,4 +1,6 @@
 name: Build HealthSDK XCFrameworks XCode 16
+permissions:
+  contents: read
 on:
   push:
     tags:
