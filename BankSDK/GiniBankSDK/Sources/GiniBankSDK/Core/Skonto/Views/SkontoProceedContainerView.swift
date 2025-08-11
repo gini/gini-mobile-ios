@@ -119,6 +119,10 @@ class SkontoProceedContainerView: UIView {
     private var skontoBadgeCompactLeadingConstraint: NSLayoutConstraint?
     private var totalAmountStackViewDefultLeadingConstraint: NSLayoutConstraint?
     private var skontoBadgeMinWidthConstraint: NSLayoutConstraint?
+    private var proceedButtonTopToSavingsAmountConstraint: NSLayoutConstraint?
+    private var proceedButtonTopToFinalAmountConstraint: NSLayoutConstraint?
+    private var portraitConstraints: [NSLayoutConstraint] = []
+    private var landscapeConstraints: [NSLayoutConstraint] = []
 
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
@@ -149,13 +153,13 @@ class SkontoProceedContainerView: UIView {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         adjustLayoutForAccessibility()
+        updateLayoutForCurrentOrientation()
     }
 
     private func setupConstraints() {
         let multiplier: CGFloat = UIDevice.current.isIpad ? Constants.tabletWidthMultiplier : 1.0
-        let contentViewTrailingAnchor = contentView.safeAreaLayoutGuide.trailingAnchor
-
         let skontoCompactLeadinConstraint = Constants.skontoBadgeCompactLeadingConstraint
+
         skontoBadgeCompactLeadingConstraint = skontoBadgeView.leadingAnchor
             .constraint(equalTo: totalStringLabel.trailingAnchor,
                         constant: skontoCompactLeadinConstraint)
@@ -163,6 +167,9 @@ class SkontoProceedContainerView: UIView {
         totalAmountStackViewDefultLeadingConstraint = totalAmountStackView.trailingAnchor
             .constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
                         constant: -Constants.badgeHorizontalPadding)
+
+        setupSavingsAmountLabelConstraints()
+        setupProceedButtonTopConstraints()
 
         NSLayoutConstraint.activate([
             contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -179,12 +186,6 @@ class SkontoProceedContainerView: UIView {
             totalAmountStackView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
                                                           constant: Constants.padding),
 
-            savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
-                                                    constant: Constants.savingsAmountLabelTopPadding),
-            savingsAmountLabel.leadingAnchor.constraint(equalTo: finalAmountToPayLabel.leadingAnchor),
-            savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentViewTrailingAnchor,
-                                                         constant: -Constants.padding),
-
             skontoBadgeView.centerYAnchor.constraint(equalTo: totalStringLabel.centerYAnchor),
             skontoBadgeView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor,
                                                       constant: -Constants.padding),
@@ -198,15 +199,78 @@ class SkontoProceedContainerView: UIView {
             skontoPercentageLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor,
                                                             constant: -Constants.badgeHorizontalPadding),
 
-            proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
-                                               constant: Constants.verticalPadding),
             proceedButton.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -Constants.verticalPadding),
             proceedButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             proceedButton.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,
                                                    constant: Constants.padding),
+            proceedButton.trailingAnchor.constraint(lessThanOrEqualTo: contentView.safeAreaLayoutGuide.trailingAnchor,
+                                                    constant: -Constants.padding),
+
             proceedButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.proceedButtonHeight)
         ])
+
+        updateLayoutForCurrentOrientation()
+    }
+
+    private func setupSavingsAmountLabelConstraints() {
+        portraitConstraints = setupPortraitSavingsAmountLabelConstraints()
+        landscapeConstraints = setupLandscapeSavingsAmountLabelConstraints()
+    }
+
+    private func setupProceedButtonTopConstraints() {
+        proceedButtonTopToSavingsAmountConstraint = proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
+                                                                                       constant: Constants.verticalPadding)
+
+        proceedButtonTopToFinalAmountConstraint = proceedButton.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
+                                                                                     constant: Constants.verticalPadding)
+    }
+
+    private func setupPortraitSavingsAmountLabelConstraints() -> [NSLayoutConstraint] {
+        let safeAreaTrailing = contentView.safeAreaLayoutGuide.trailingAnchor
+        let top = savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
+                                                          constant: Constants.savingsAmountLabelTopPadding)
+        let leading = savingsAmountLabel.leadingAnchor.constraint(equalTo: finalAmountToPayLabel.leadingAnchor)
+        let trailing = savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: safeAreaTrailing,
+                                                                    constant: -Constants.padding)
+        return [top, leading, trailing]
+    }
+
+    private func setupLandscapeSavingsAmountLabelConstraints() -> [NSLayoutConstraint] {
+        let top = savingsAmountLabel.topAnchor.constraint(equalTo: skontoBadgeView.bottomAnchor,
+                                                          constant: Constants.savingsAmountLabelTopPadding)
+        let leading = savingsAmountLabel.leadingAnchor.constraint(equalTo: skontoBadgeView.leadingAnchor)
+        let trailing = savingsAmountLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor)
+
+        return [top, leading, trailing]
+    }
+
+    private func activatePortraitConstraints() {
+        NSLayoutConstraint.deactivate(landscapeConstraints)
+        NSLayoutConstraint.activate(portraitConstraints)
+
+        proceedButtonTopToSavingsAmountConstraint?.isActive = true
+        proceedButtonTopToFinalAmountConstraint?.isActive = false
+        
+    }
+
+    private func activateLandscapeConstraints() {
+        NSLayoutConstraint.deactivate(portraitConstraints)
+        NSLayoutConstraint.activate(landscapeConstraints)
+
+        proceedButtonTopToSavingsAmountConstraint?.isActive = false
+        proceedButtonTopToFinalAmountConstraint?.isActive = true
+    }
+
+    private func updateLayoutForCurrentOrientation() {
+        let isIphone = UIDevice.current.isIphone
+        let isLandscape = UIDevice.current.isLandscape
+
+        if isIphone && isLandscape {
+            activateLandscapeConstraints()
+        } else {
+            activatePortraitConstraints()
+        }
     }
 
     private func adjustLayoutForAccessibility() {
