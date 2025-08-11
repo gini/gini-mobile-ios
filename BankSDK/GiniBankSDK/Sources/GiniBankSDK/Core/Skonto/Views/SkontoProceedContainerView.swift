@@ -119,11 +119,26 @@ class SkontoProceedContainerView: UIView {
     private var skontoBadgeCompactLeadingConstraint: NSLayoutConstraint?
     private var totalAmountStackViewDefultLeadingConstraint: NSLayoutConstraint?
     private var skontoBadgeMinWidthConstraint: NSLayoutConstraint?
-    private var proceedButtonTopToSavingsAmountConstraint: NSLayoutConstraint?
+    private var proceedButtonTopToSavingsConstraint: NSLayoutConstraint?
     private var proceedButtonTopToFinalAmountConstraint: NSLayoutConstraint?
-    private var portraitConstraints: [NSLayoutConstraint] = []
-    private var landscapeConstraints: [NSLayoutConstraint] = []
 
+    private lazy var portraitSavingsAmountLabelConstraints: [NSLayoutConstraint] = {
+        let safeAreaTrailing = contentView.safeAreaLayoutGuide.trailingAnchor
+        let top = savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
+                                                          constant: Constants.savingsAmountLabelTopPadding)
+        let leading = savingsAmountLabel.leadingAnchor.constraint(equalTo: finalAmountToPayLabel.leadingAnchor)
+        let trailing = savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: safeAreaTrailing,
+                                                                    constant: -Constants.padding)
+        return [top, leading, trailing]
+    }()
+
+    private lazy var landscapeSavingsAmountLabelConstraints: [NSLayoutConstraint] = {
+        let top = savingsAmountLabel.topAnchor.constraint(equalTo: skontoBadgeView.bottomAnchor,
+                                                          constant: Constants.savingsAmountLabelTopPadding)
+        let leading = savingsAmountLabel.leadingAnchor.constraint(equalTo: skontoBadgeView.leadingAnchor)
+        let trailing = savingsAmountLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor)
+        return [top, leading, trailing]
+    }()
     init(viewModel: SkontoViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -168,7 +183,6 @@ class SkontoProceedContainerView: UIView {
             .constraint(lessThanOrEqualTo: skontoBadgeView.leadingAnchor,
                         constant: -Constants.badgeHorizontalPadding)
 
-        setupSavingsAmountLabelConstraints()
         setupProceedButtonTopConstraints()
 
         NSLayoutConstraint.activate([
@@ -213,60 +227,41 @@ class SkontoProceedContainerView: UIView {
         updateLayoutForCurrentOrientation()
     }
 
-    private func setupSavingsAmountLabelConstraints() {
-        portraitConstraints = setupPortraitSavingsAmountLabelConstraints()
-        landscapeConstraints = setupLandscapeSavingsAmountLabelConstraints()
-    }
-
     private func setupProceedButtonTopConstraints() {
-        proceedButtonTopToSavingsAmountConstraint = proceedButton.topAnchor.constraint(equalTo: savingsAmountLabel.bottomAnchor,
-                                                                                       constant: Constants.verticalPadding)
+        proceedButtonTopToSavingsConstraint = proceedButton.topAnchor.constraint(
+            equalTo: savingsAmountLabel.bottomAnchor,
+            constant: Constants.verticalPadding
+        )
 
-        proceedButtonTopToFinalAmountConstraint = proceedButton.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
-                                                                                     constant: Constants.verticalPadding)
-    }
-
-    private func setupPortraitSavingsAmountLabelConstraints() -> [NSLayoutConstraint] {
-        let safeAreaTrailing = contentView.safeAreaLayoutGuide.trailingAnchor
-        let top = savingsAmountLabel.topAnchor.constraint(equalTo: finalAmountToPayLabel.bottomAnchor,
-                                                          constant: Constants.savingsAmountLabelTopPadding)
-        let leading = savingsAmountLabel.leadingAnchor.constraint(equalTo: finalAmountToPayLabel.leadingAnchor)
-        let trailing = savingsAmountLabel.trailingAnchor.constraint(lessThanOrEqualTo: safeAreaTrailing,
-                                                                    constant: -Constants.padding)
-        return [top, leading, trailing]
-    }
-
-    private func setupLandscapeSavingsAmountLabelConstraints() -> [NSLayoutConstraint] {
-        let top = savingsAmountLabel.topAnchor.constraint(equalTo: skontoBadgeView.bottomAnchor,
-                                                          constant: Constants.savingsAmountLabelTopPadding)
-        let leading = savingsAmountLabel.leadingAnchor.constraint(equalTo: skontoBadgeView.leadingAnchor)
-        let trailing = savingsAmountLabel.trailingAnchor.constraint(equalTo: skontoBadgeView.trailingAnchor)
-
-        return [top, leading, trailing]
+        proceedButtonTopToFinalAmountConstraint = proceedButton.topAnchor.constraint(
+            equalTo: finalAmountToPayLabel.bottomAnchor,
+            constant: Constants.verticalPadding
+        )
     }
 
     private func activatePortraitConstraints() {
-        NSLayoutConstraint.deactivate(landscapeConstraints)
-        NSLayoutConstraint.activate(portraitConstraints)
+        NSLayoutConstraint.deactivate(landscapeSavingsAmountLabelConstraints +
+                                      [proceedButtonTopToFinalAmountConstraint].compactMap { $0 })
 
-        proceedButtonTopToSavingsAmountConstraint?.isActive = true
-        proceedButtonTopToFinalAmountConstraint?.isActive = false
-        
+        NSLayoutConstraint.activate(portraitSavingsAmountLabelConstraints +
+                                    [proceedButtonTopToSavingsConstraint].compactMap { $0 })
     }
 
     private func activateLandscapeConstraints() {
-        NSLayoutConstraint.deactivate(portraitConstraints)
-        NSLayoutConstraint.activate(landscapeConstraints)
+        NSLayoutConstraint.deactivate(portraitSavingsAmountLabelConstraints +
+                                      [proceedButtonTopToSavingsConstraint].compactMap { $0 })
 
-        proceedButtonTopToSavingsAmountConstraint?.isActive = false
-        proceedButtonTopToFinalAmountConstraint?.isActive = true
+        NSLayoutConstraint.activate(landscapeSavingsAmountLabelConstraints +
+                                    [proceedButtonTopToFinalAmountConstraint].compactMap { $0 })
     }
 
     private func updateLayoutForCurrentOrientation() {
-        let isIphone = UIDevice.current.isIphone
-        let isLandscape = UIDevice.current.isLandscape
+        guard UIDevice.current.isIphone else {
+            activatePortraitConstraints()
+            return
+        }
 
-        if isIphone && isLandscape {
+        if UIDevice.current.isLandscape {
             activateLandscapeConstraints()
         } else {
             activatePortraitConstraints()
