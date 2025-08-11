@@ -62,17 +62,20 @@ final class InvoicesListViewModel {
     let dispatchGroup = DispatchGroup()
     var shouldRefetchExtractions = false
     var documentIdToRefetch: String?
+    let shouldUseAlternativeNavigation: Bool
 
     init(coordinator: InvoicesListCoordinator,
          invoices: [DocumentWithExtractions]? = nil,
          documentService: GiniHealthSDK.DefaultDocumentService,
          hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
-         health: GiniHealth) {
+         health: GiniHealth,
+         shouldUseAlternativeNavigation: Bool) {
         self.coordinator = coordinator
         self.hardcodedInvoicesController = hardcodedInvoicesController
         self.invoices = invoices ?? hardcodedInvoicesController.getInvoicesWithExtractions()
         self.documentService = documentService
         self.health = health
+        self.shouldUseAlternativeNavigation = shouldUseAlternativeNavigation
         self.health.paymentDelegate = self
     }
     
@@ -208,7 +211,16 @@ extension InvoicesListViewModel {
     func didTapOnOpenFlow(documentId: String?) {
         documentIdToRefetch = documentId
         guard !checkDocumentForMultipleInvoices(documentID: documentId ?? "") else { return }
-        health.startPaymentFlow(documentId: documentId, paymentInfo: obtainPaymentInfo(for: documentId), navigationController: self.coordinator.invoicesListNavigationController, trackingDelegate: self)
+        
+        if shouldUseAlternativeNavigation {
+            let navigationController = UINavigationController()
+            navigationController.setNavigationBarHidden(true, animated: false)
+            navigationController.view.backgroundColor = .clear
+            coordinator.invoicesListNavigationController.present(navigationController, animated: true)
+            health.startPaymentFlow(documentId: documentId, paymentInfo: obtainPaymentInfo(for: documentId), navigationController: navigationController, trackingDelegate: self)
+        } else {
+            health.startPaymentFlow(documentId: documentId, paymentInfo: obtainPaymentInfo(for: documentId), navigationController: self.coordinator.invoicesListNavigationController, trackingDelegate: self)
+        }
     }
 
     private func obtainPaymentInfo(for documentId: String?) -> PaymentInfo? {
@@ -239,6 +251,12 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
             } else {
                 self.coordinator.invoicesListViewController.hideActivityIndicator()
             }
+        }
+    }
+    
+    func didDismissPaymentComponents() {
+        if shouldUseAlternativeNavigation {
+            coordinator.invoicesListNavigationController?.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
 }

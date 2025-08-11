@@ -14,6 +14,7 @@ enum SwitchType {
     case showBrandedView
     case useBottomPaymentComponent
     case showPaymentCloseButton
+    case useAlternativeNavigation
 }
 
 protocol DebugMenuDelegate: AnyObject {
@@ -64,6 +65,9 @@ class DebugMenuViewController: UIViewController {
     private lazy var closeButtonOptionLabel: UILabel = rowTitle("Show Payment Review Close Button")
     private var closeButtonSwitch: UISwitch!
     private lazy var closeButtonRow: UIStackView = stackView(axis: .horizontal, subviews: [closeButtonOptionLabel, closeButtonSwitch])
+    private lazy var useAlternativeNavigationLabel = rowTitle("User alternative navigation")
+    private var useAlternativeNavigationSwitch: UISwitch!
+    private lazy var useAlternativeNavigationRow = stackView(axis: .horizontal, subviews: [useAlternativeNavigationLabel, useAlternativeNavigationSwitch])
     
     private lazy var popupDurationTitleLabel: UILabel = rowTitle("Popup Duration Time")
     
@@ -103,11 +107,13 @@ class DebugMenuViewController: UIViewController {
          useBottomPaymentComponent: Bool,
          paymentComponentConfiguration: PaymentComponentConfiguration,
          showPaymentCloseButton: Bool,
-         popupDuration: TimeInterval) {
+         popupDuration: TimeInterval,
+         shouldUseAlternativeNavigation: Bool) {
         super.init(nibName: nil, bundle: nil)
         self.reviewScreenSwitch = self.switchView(isOn: showReviewScreen)
         self.bottomPaymentComponentSwitch = self.switchView(isOn: useBottomPaymentComponent)
         self.closeButtonSwitch = self.switchView(isOn: showPaymentCloseButton)
+        self.useAlternativeNavigationSwitch = self.switchView(isOn: shouldUseAlternativeNavigation)
         self.popupDurationSlider.value = Float(popupDuration)
     }
 
@@ -168,6 +174,7 @@ class DebugMenuViewController: UIViewController {
         let spacer = UIView()
         let views = [
             titleLabel,
+            useAlternativeNavigationRow,
             localizationRow,
             reviewScreenRow,
             bottomPaymentComponentEditableRow,
@@ -190,6 +197,7 @@ class DebugMenuViewController: UIViewController {
             mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: spacing),
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -spacing),
 
+            useAlternativeNavigationRow.heightAnchor.constraint(equalToConstant: rowHeight),
             localizationRow.heightAnchor.constraint(equalToConstant: rowHeight),
             reviewScreenRow.heightAnchor.constraint(equalToConstant: rowHeight),
             bottomPaymentComponentEditableRow.heightAnchor.constraint(equalToConstant: rowHeight),
@@ -325,14 +333,16 @@ extension DebugMenuViewController: UIPickerViewDelegate, UIPickerViewDataSource 
 private extension DebugMenuViewController {
     @objc private func switchValueChanged(_ sender: UISwitch) {
         switch sender {
-            case reviewScreenSwitch:
-                delegate?.didChangeSwitchValue(type: .showReviewScreen, isOn: sender.isOn)
-            case bottomPaymentComponentSwitch:
-                delegate?.didChangeSwitchValue(type: .useBottomPaymentComponent, isOn: sender.isOn)
-            case closeButtonSwitch:
-                delegate?.didChangeSwitchValue(type: .showPaymentCloseButton, isOn: sender.isOn)
-            default:
-                break
+        case reviewScreenSwitch:
+            delegate?.didChangeSwitchValue(type: .showReviewScreen, isOn: sender.isOn)
+        case bottomPaymentComponentSwitch:
+            delegate?.didChangeSwitchValue(type: .useBottomPaymentComponent, isOn: sender.isOn)
+        case closeButtonSwitch:
+            delegate?.didChangeSwitchValue(type: .showPaymentCloseButton, isOn: sender.isOn)
+        case useAlternativeNavigationSwitch:
+            delegate?.didChangeSwitchValue(type: .useAlternativeNavigation, isOn: sender.isOn)
+        default:
+            break
         }
     }
 }

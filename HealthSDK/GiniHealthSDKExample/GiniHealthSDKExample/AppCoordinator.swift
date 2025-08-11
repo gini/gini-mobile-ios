@@ -15,6 +15,7 @@ import GiniUtilites
 
 final class AppCoordinator: Coordinator {
     
+    private var shouldUseAlternativeNavigation = false
     var childCoordinators: [Coordinator] = []
     fileprivate let window: UIWindow
     fileprivate var screenAPIViewController: UIViewController?
@@ -325,7 +326,8 @@ final class AppCoordinator: Coordinator {
             invoicesListCoordinator.start(documentService: self.health.documentService,
                                           hardcodedInvoicesController: self.hardcodedInvoicesController,
                                           health: self.health,
-                                          invoices: invoices)
+                                          invoices: invoices,
+                                          shouldUseAlternativeNavigation: self.shouldUseAlternativeNavigation)
             self.add(childCoordinator: invoicesListCoordinator)
             self.rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
         }
@@ -344,7 +346,8 @@ final class AppCoordinator: Coordinator {
         orderListCoordinator.start(documentService: health.documentService,
                                    hardcodedOrdersController: HardcodedOrdersController(),
                                    health: health,
-                                   orders: orders)
+                                   orders: orders,
+                                   shouldUseAlternativeNavigation: shouldUseAlternativeNavigation)
         add(childCoordinator: orderListCoordinator)
         rootViewController.present(orderListCoordinator.rootViewController, animated: true)
     }
@@ -400,6 +403,12 @@ extension AppCoordinator: GiniHealthDelegate {
     func didCreatePaymentRequest(paymentRequestId: String) {
         GiniUtilites.Log("Created payment request with id \(paymentRequestId)", event: .success)
     }
+    
+    func didDismissHealthSDK() {
+        if shouldUseAlternativeNavigation {
+            rootViewController.presentedViewController?.dismiss(animated: true)
+        }
+    }
 }
 
 //MARK: - DebugMenuPresenterDelegate
@@ -410,7 +419,8 @@ extension AppCoordinator: DebugMenuPresenter {
                                                               useBottomPaymentComponent: giniHealthConfiguration.useBottomPaymentComponentView,
                                                               paymentComponentConfiguration: health.paymentComponentConfiguration,
                                                               showPaymentCloseButton: giniHealthConfiguration.showPaymentReviewCloseButton,
-                                                              popupDuration: giniHealthConfiguration.popupDurationPaymentReview)
+                                                              popupDuration: giniHealthConfiguration.popupDurationPaymentReview,
+                                                              shouldUseAlternativeNavigation: shouldUseAlternativeNavigation)
         debugMenuViewController.delegate = self
         rootViewController.present(debugMenuViewController, animated: true)
     }
@@ -428,6 +438,8 @@ extension AppCoordinator: DebugMenuDelegate {
             giniHealthConfiguration.useBottomPaymentComponentView = isOn
         case .showPaymentCloseButton:
             giniHealthConfiguration.showPaymentReviewCloseButton = isOn
+        case .useAlternativeNavigation:
+            shouldUseAlternativeNavigation = isOn
         }
     }
 
