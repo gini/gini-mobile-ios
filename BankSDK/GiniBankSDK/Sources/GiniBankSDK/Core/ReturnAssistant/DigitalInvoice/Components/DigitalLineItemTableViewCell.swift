@@ -123,6 +123,12 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         nameLabel.font = configuration.textStyleFonts[.body]
         unitPriceLabel.font = configuration.textStyleFonts[.body]
         editButton.titleLabel?.font = configuration.textStyleFonts[.body]
+
+        accessibilityElements = [nameLabel,
+                                 modeSwitch,
+                                 unitPriceLabel,
+                                 priceLabel,
+                                 editButton].compactMap { $0 }
     }
 
     private func setTextWithLimit(for label: UILabel, text: String, maxCharacters: Int) {
