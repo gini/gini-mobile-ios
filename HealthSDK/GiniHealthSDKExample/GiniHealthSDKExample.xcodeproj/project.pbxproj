@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		282DD2C32E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 282DD2C22E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy */; };
 		284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284A534F2A86493100183EA7 /* SelectAPIViewController.xib */; };
 		288F88502E4A5563004D7A60 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 288F884F2E4A5563004D7A60 /* FirebaseAnalytics */; };
 		288F88522E4A5563004D7A60 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 288F88512E4A5563004D7A60 /* FirebaseCrashlytics */; };
@@ -75,6 +76,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		282DD2C22E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
 		288F88552E4A6289004D7A60 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3AC824B42CA2B16500DE37C0 /* GiniHealthSDKExampleTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GiniHealthSDKExampleTests.xctestplan; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				8ADEE2F12C2C3C9B006D3526 /* Resources */,
 				F4EC38CC273C21E5007045DC /* LaunchScreen.storyboard */,
 				F4EC38CF273C21E5007045DC /* Info.plist */,
+				282DD2C22E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy */,
 			);
 			path = GiniHealthSDKExample;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 				7DB661952B5687F7004537AA /* health-invoice-2.jpg in Resources */,
 				F464B17627CD2147001735B9 /* Localizable.strings in Resources */,
 				F4EC38FA273C2311007045DC /* Base.lproj in Resources */,
+				282DD2C32E4B6AC600A4EDCE /* PrivacyInfo.xcprivacy in Resources */,
 				7DD0B95E2CF75E9100C5176C /* invoice-13MB.pdf in Resources */,
 				7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */,
 				8ADEE2FA2C2CB2E4006D3526 /* invoice-12MB.png in Resources */,
