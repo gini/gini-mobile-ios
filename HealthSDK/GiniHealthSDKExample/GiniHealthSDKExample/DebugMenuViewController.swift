@@ -65,7 +65,10 @@ class DebugMenuViewController: UIViewController {
     private lazy var closeButtonOptionLabel: UILabel = rowTitle("Show Payment Review Close Button")
     private var closeButtonSwitch: UISwitch!
     private lazy var closeButtonRow: UIStackView = stackView(axis: .horizontal, subviews: [closeButtonOptionLabel, closeButtonSwitch])
-    private lazy var useAlternativeNavigationLabel = rowTitle("User alternative navigation")
+    
+    /// This option allows to test the navigation flow when the consumer app creates a new `UINavigationController` instance to start the payment flow. Instead of using the existing one.
+    /// by using this flow the consumer app will be listening to the new `delegate` method in the `GiniHealthSDK` to handle the navigation.
+    private lazy var useAlternativeNavigationLabel = rowTitle("Use alternative navigation")
     private var useAlternativeNavigationSwitch: UISwitch!
     private lazy var useAlternativeNavigationRow = stackView(axis: .horizontal, subviews: [useAlternativeNavigationLabel, useAlternativeNavigationSwitch])
     
