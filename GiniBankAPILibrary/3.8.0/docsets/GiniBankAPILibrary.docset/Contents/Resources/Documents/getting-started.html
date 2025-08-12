@@ -277,6 +277,14 @@
         <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
 </code></pre>
 
+<p>If you want to use only your own authentication, please add <code><a href="Protocols/AlternativeTokenSource.html">AlternativeTokenSource</a></code> protocol implementation:</p>
+<pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">apiLib</span> <span class="o">=</span>  <span class="kt">GiniBankAPI</span><span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">customApiDomain</span><span class="p">:</span> <span class="s">"pay-api.gini.net"</span><span class="p">,</span>
+                                   <span class="nv">alternativeTokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">)</span>
+                                 <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+</code></pre>
+
+<p>The token you provide will be added as a bearer token to all <code>pay-api.gini.net</code> requests.</p>
+
 <p>If you want to use a transparent proxy with your own authentication you can specify your own domain and add <code><a href="Protocols/AlternativeTokenSource.html">AlternativeTokenSource</a></code> protocol implementation:</p>
 <pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">apiLib</span> <span class="o">=</span>  <span class="kt">GiniBankAPI</span><span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">customApiDomain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
                                    <span class="nv">alternativeTokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">)</span>
@@ -333,6 +341,15 @@
                  <span class="nv">pinningConfig</span><span class="p">:</span> <span class="n">yourPublicPinningConfig</span><span class="p">)</span>
         <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
 </code></pre>
+
+<p>If you want to use only your own authentication, please add <code><a href="Protocols/AlternativeTokenSource.html">AlternativeTokenSource</a></code> protocol implementation:</p>
+<pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">apiLib</span> <span class="o">=</span>  <span class="kt">GiniBankAPI</span><span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">customApiDomain</span><span class="p">:</span> <span class="s">"pay-api.gini.net"</span><span class="p">,</span>
+                                   <span class="nv">alternativeTokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">,</span>
+                                   <span class="nv">pinningConfig</span><span class="p">:</span> <span class="n">yourPublicPinningConfig</span><span class="p">)</span>
+                          <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+</code></pre>
+
+<p>The token you provide will be added as a bearer token to all <code>pay-api.gini.net</code> requests.</p>
 <h2 id='extract-hash-from-gini-net' class='heading'>Extract Hash From gini.net</h2>
 
 <p>The current Gini Bank API public key SHA256 hash digest in Base64 encoding can be extracted with the following openssl commands:</p>
@@ -381,7 +398,7 @@
 <p>⚠️  <strong>Important</strong></p>
 
 <ul>
-<li>The document metadata for the upload process is intended to be used for reporting. You can find out more about it in the <a href="https://pay-api.gini.net/documentation">Gini Bank API</a> documentation.</li>
+<li>The document metadata for the upload process is intended to be used for reporting. You can find out more about it in the <a href="https://gini.atlassian.net/wiki/spaces/PA1/pages/36733064/Submit+Files">Gini Bank API</a> documentation.</li>
 </ul>
 </blockquote>
 
@@ -406,7 +423,7 @@
 </blockquote>
 <h4 id='setting-the-document-type-hint' class='heading'>Setting the document type hint</h4>
 
-<p>To easily set the document type hint we introduced the <code>DocType</code> enum. It is safer and easier to use than a String. For more details about the document type hints see the Document Type Hints in the <a href="https://pay-api.gini.net/documentation/#document-types">Gini Bank API documentation</a></p>
+<p>To easily set the document type hint we introduced the <code>DocType</code> enum. It is safer and easier to use than a String. For more details about the document type hints see the Document Type Hints in the <a href="https://gini.atlassian.net/wiki/spaces/PA1/pages/36831615/Document+Types">Gini Bank API documentation</a></p>
 <h3 id='getting-extractions' class='heading'>Getting extractions</h3>
 
 <p>After you have successfully created the partial documents, you most likely want to get the extractions for the document. Composite documents consist of previously created partial documents. You can consider creating partial documents analogous to uploading pages of a document and creating a composite document analogous to processing those pages as a single document.</p>
@@ -448,9 +465,9 @@
 
 <p>Depending on your use case your app probably presents the extractions to the user and gives them the opportunity to correct them. By sending us transfer summary for the extractions we are able to continuously improve the extraction quality.</p>
 
-<p>We provide a sample test case <a href="https://github.com/gini/gini-mobile-ios/blob/main/BankAPILibrary/GiniBankAPILibraryExample/GiniBankAPILibraryExampleTests/TransferSummaryIntegrationTest.swift">here</a> to verify that extraction transfer summary sending works. You may use it along with the example pdf and json files as a starting point to write your own test case.</p>
+<p>We provide a sample test case <a href="https://github.com/gini/gini-mobile-ios/blob/GiniBankAPILibrary%3B3.8.0/BankSDK/GiniBankSDKExample/Tests/IntegrationTests/TransferSummary/TransferSummaryIntegrationTest.swift">here</a> to verify that extraction transfer summary sending works. You may use it along with the example pdf and json files as a starting point to write your own test case.</p>
 
-<p>The sample test case is based on the Bank API documentation&rsquo;s <a href="https://pay-api.gini.net/documentation/#test-example">recommended steps</a> for testing extraction feedback sending.</p>
+<p>The sample test case is based on the Bank API documentation&rsquo;s <a href="https://gini.atlassian.net/wiki/spaces/PA1/pages/36733143/Submit+Transfer+Summary+on+Extractions#Test-example">recommended steps</a> for testing extraction feedback sending.</p>
 
 <p>Your app should send transfer summary only for the extractions the user has seen and accepted. Transfer summary should be sent for corrected extractions and for correct extractions. The code example below shows how to correct extractions and send transfer summary.</p>
 <pre class="highlight swift"><code><span class="k">guard</span> <span class="k">let</span> <span class="nv">document</span> <span class="o">=</span> <span class="n">document</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
@@ -488,7 +505,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2025 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2025-06-30)</p>
+      <p>&copy; 2025 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2025-08-12)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
